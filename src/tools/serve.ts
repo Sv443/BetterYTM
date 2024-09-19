@@ -4,14 +4,16 @@ import express, { NextFunction, Request, Response } from "express";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
 
-const envPort = Number(process.env.DEV_SERVER_PORT);
+const { argv, env, exit, stdout } = process;
+
+const envPort = Number(env.DEV_SERVER_PORT);
 
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Whether to log requests to the console */
 const enableLogging = false;
 
-const autoExitRaw = process.argv.find(arg => arg.startsWith("--auto-exit-time="))?.split("=")[1];
+const autoExitRaw = argv.find(arg => arg.startsWith("--auto-exit-time="))?.split("=")[1];
 /** Time in milliseconds after which the process should automatically exit */
 const autoExitTime: number | undefined = !isNaN(Number(autoExitRaw)) ? Number(autoExitRaw) * 1000 : undefined;
 
@@ -19,7 +21,7 @@ const app = express();
 
 enableLogging &&
   app.use((_req, _res, next) => {
-    process.stdout.write("*");
+    stdout.write("*");
     next();
   });
 
@@ -43,7 +45,7 @@ app.use("/assets", express.static(
 const server = app.listen(devServerPort, "0.0.0.0", () => {
   console.log(`Dev server is running on port ${devServerPort}`);
   if(enableLogging)
-    process.stdout.write("\nRequests: ");
+    stdout.write("\nRequests: ");
   else
     console.log("\x1b[2m(request logging is disabled)\x1b[0m");
   console.log();
@@ -51,7 +53,7 @@ const server = app.listen(devServerPort, "0.0.0.0", () => {
   if(autoExitTime) {
     console.log(`Exiting in ${autoExitTime / 1000}s...`);
     setTimeout(() => {
-      server.close(() => setImmediate(() => process.exit(0)));
+      server.close(() => setImmediate(() => exit(0)));
     }, autoExitTime);
   }
 });

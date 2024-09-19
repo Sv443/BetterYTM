@@ -9,6 +9,8 @@ import locales from "../../assets/locales.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
 import type { RollupArgs } from "../types.js";
 
+const { argv, env, stdout } = process;
+
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
 
@@ -32,8 +34,6 @@ type BuildStats = {
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
 const buildUuid = randomUUID();
-
-const { env } = process;
 
 type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
 
@@ -176,7 +176,7 @@ I welcome every contribution on GitHub!
     console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
     console.info();
 
-    ringBell && process.stdout.write("\u0007");
+    ringBell && stdout.write("\u0007");
 
     const buildStatsNew: BuildStats = {
       sizeKiB,
@@ -337,7 +337,7 @@ function getCliArg<TReturn extends string = string>(name: string, defaultVal: TR
 function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
 function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
-  const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
+  const arg = argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
   const val = arg?.split("=")?.[1];
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
 }
@@ -369,5 +369,5 @@ async function getLinkedPkgs() {
 
 /** Schedules an exit after I/O events finish */
 function exit(code: number) {
-  setImmediate(() => process.exit(code));
+  setImmediate(() => exit(code));
 }
