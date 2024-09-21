@@ -216,11 +216,14 @@ export async function initAutoLike() {
 
           if(likeRendererEl.getAttribute("like-status") !== "LIKE") {
             likeBtnEl.click();
+
             getFeature("autoLikeShowToast") && showIconToast({
               message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
+              subtitle: t("auto_like_click_to_configure"),
               icon: "icon-auto_like",
               onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-            });
+            }).catch(e => error("Error while showing auto-like toast:", e));
+
             log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
           }
         };
@@ -280,6 +283,7 @@ export async function initAutoLike() {
                     likeBtn.click();
                     getFeature("autoLikeShowToast") && showIconToast({
                       message: t("auto_liked_a_channels_video", likeChan.name),
+                      subtitle: t("auto_like_click_to_configure"),
                       icon: "icon-auto_like",
                       onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
                     });

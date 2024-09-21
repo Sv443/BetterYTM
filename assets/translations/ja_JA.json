@@ -165,6 +165,7 @@
     "auto_like_disabled_toast": "自動的に好きにするのを無効にしました",
     "auto_liked_a_channels_song": "%1 が好きな曲",
     "auto_liked_a_channels_video": "%1 が好きなビデオ",
+    "auto_like_click_to_configure": "クリックして構成",
     "auto_like_export_or_import_tooltip": "自動的に好きなチャンネルをエクスポートまたはインポートする",
     "auto_like_export_import_title": "自動的に好きなチャンネルをエクスポートまたはインポート",
     "auto_like_export_desc": "次のテキストをコピーして自動的に好きなチャンネルをエクスポートします。",
