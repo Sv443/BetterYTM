@@ -23,16 +23,14 @@ export const createButton = ({
   const btn = document.createElement("button");
   btn.type = "button";
   btn.innerText = label;
-  if (onClick) {
+  if(onClick)
     btn.addEventListener("click", onClick);
-  }
 
   const mode = primary ? "storybook-button--primary" : "storybook-button--secondary";
-  btn.className = ["storybook-button", `storybook-button--${size}`, mode].join(" ");
+  btn.classList.add("storybook-button", `storybook-button--${size}`, mode);
 
-  if (backgroundColor) {
+  if(backgroundColor)
     btn.style.backgroundColor = backgroundColor;
-  }
 
   return btn;
 };

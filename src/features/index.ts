@@ -27,23 +27,6 @@ type AdornmentFunc =
   | ((...args: any[]) => Promise<string | undefined>)
   | Promise<string | undefined>;
 
-/** Decoration elements that can be added next to the label */
-const adornments = {
-  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
-  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-  globe: async () => await resourceAsString("icon-globe_small") ?? "",
-  alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-  reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
-} satisfies Record<string, AdornmentFunc>;
-
-/** Order of adornment elements in the {@linkcode combineAdornments()} function */
-const adornmentOrder = new Map<AdornmentFunc, number>();
-adornmentOrder.set(adornments.alert, 0);
-adornmentOrder.set(adornments.experimental, 1);
-adornmentOrder.set(adornments.globe, 2);
-adornmentOrder.set(adornments.reloadRequired, 3);
-adornmentOrder.set(adornments.advanced, 4);
-
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraAttributes?: string) =>
   `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraAttributes ? " " + extraAttributes : ""}>${await resourceAsString(resource) ?? ""}</span>`;
@@ -70,6 +53,23 @@ const combineAdornments = (
     resolve(html.join(""));
   }
 );
+
+/** Decoration elements that can be added next to the label */
+const adornments = {
+  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
+  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
+  globe: async () => await resourceAsString("icon-globe_small") ?? "",
+  alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
+  reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+} satisfies Record<string, AdornmentFunc>;
+
+/** Order of adornment elements in the {@linkcode combineAdornments()} function */
+const adornmentOrder = new Map<AdornmentFunc, number>();
+adornmentOrder.set(adornments.alert, 0);
+adornmentOrder.set(adornments.experimental, 1);
+adornmentOrder.set(adornments.globe, 2);
+adornmentOrder.set(adornments.reloadRequired, 3);
+adornmentOrder.set(adornments.advanced, 4);
 
 //#region select options
 
