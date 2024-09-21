@@ -9,7 +9,7 @@ import locales from "../../assets/locales.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
 import type { RollupArgs } from "../types.js";
 
-const { argv, env, stdout } = process;
+const { argv, env, exit, stdout } = process;
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
@@ -185,13 +185,13 @@ I welcome every contribution on GitHub!
     };
     await writeFile(".build.json", JSON.stringify(buildStatsNew));
 
-    exit(0);
+    schedExit(0);
   }
   catch(err) {
     console.error("\x1b[31mError while adding userscript header:\x1b[0m");
     console.error(err);
 
-    exit(1);
+    schedExit(1);
   }
 })();
 
@@ -360,7 +360,7 @@ async function getLinkedPkgs() {
     }
     catch(err) {
       console.error(`Couldn't read linked package at '${entry.link}':`, err);
-      exit(1);
+      schedExit(1);
     }
   }
 
@@ -368,6 +368,6 @@ async function getLinkedPkgs() {
 }
 
 /** Schedules an exit after I/O events finish */
-function exit(code: number) {
+function schedExit(code: number) {
   setImmediate(() => exit(code));
 }
