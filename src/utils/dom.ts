@@ -242,12 +242,12 @@ let ttPolicy: TTPolicy | undefined;
 /** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
 export function setInnerHtml(element: HTMLElement, html: string) {
   if(!ttPolicy && window?.trustedTypes?.createPolicy) {
-    ttPolicy = window.trustedTypes.createPolicy("my-policy", {
+    ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
       createHTML: (dirty: string) => DOMPurify.sanitize(dirty, {
         RETURN_TRUSTED_TYPE: true,
       }) as unknown as string,
     });
   }
 
-  element.innerHTML = ttPolicy?.createHTML(html) ?? html;
+  element.innerHTML = ttPolicy?.createHTML(html) ?? DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
 }
