@@ -122,8 +122,11 @@ async function renderBody() {
   const searchbarEl = document.createElement("input");
   searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
   searchbarEl.placeholder = t("search_placeholder");
-  searchbarEl.type = "search";
+  searchbarEl.type = searchbarEl.role = "search";
   searchbarEl.tabIndex = 0;
+  searchbarEl.autofocus = true;
+  searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
+  searchbarEl.spellcheck = false;
 
   searchbarEl.addEventListener("input", () => {
     const searchVal = searchbarEl.value.trim().toLowerCase();
