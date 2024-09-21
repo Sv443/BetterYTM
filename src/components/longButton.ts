@@ -26,7 +26,7 @@ type LongBtnOptions = {
     href: string;
   }
   | {
-    /** Callback function to execute when the button is clicked */
+    /** Callback function to execute when the button is interacted with */
     onClick: (evt: MouseEvent | KeyboardEvent) => void;
   }
   | {
@@ -36,7 +36,7 @@ type LongBtnOptions = {
     toggleInitialState?: boolean;
     /** Callback function to execute when the button is toggled */
     onToggle: (enabled: boolean, evt: MouseEvent | KeyboardEvent) => void;
-    /** Predicate function to determine if the button should be toggled on click */
+    /** Predicate function to determine if the button should be toggled on interaction */
     togglePredicate?: (evt: MouseEvent | KeyboardEvent) => boolean;
   }
 );
