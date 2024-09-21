@@ -161,7 +161,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "github";
-    const buildNumberRaw = "3b7852c0";
+    const buildNumberRaw = "746d3c8a";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -2469,7 +2469,7 @@ I welcome every contribution on GitHub!
     	"dependency-cruiser": "^16.3.10",
     	dotenv: "^16.4.5",
     	eslint: "^9.5.0",
-    	"eslint-plugin-storybook": "^0.9.0--canary.165.991522a.0",
+    	"eslint-plugin-storybook": "^0.9.0--canary.156.ed236ca.0",
     	express: "^4.19.2",
     	globals: "^15.6.0",
     	knip: "^5.22.2",
