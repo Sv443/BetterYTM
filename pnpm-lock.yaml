@@ -97,7 +97,7 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       eslint-plugin-storybook:
-        specifier: 0.9.0--canary.165.991522a.0
+        specifier: ^0.9.0--canary.165.991522a.0
         version: 0.9.0--canary.165.991522a.0(eslint@9.5.0)(typescript@5.5.2)
       express:
         specifier: ^4.19.2
