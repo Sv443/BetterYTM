@@ -7,7 +7,7 @@ type ListenerOpts = AddEventListenerOptions & {
 
 /**
  * Adds generic, accessible interaction listeners to the passed element.  
- * All listeners have the default behavior prevented and stop propagation (for keyboard events only as long as the captured key is valid).
+ * All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
  * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
  */
 export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, listenerOptions?: ListenerOpts) {

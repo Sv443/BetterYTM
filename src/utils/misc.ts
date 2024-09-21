@@ -1,4 +1,4 @@
-import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLength, type ResourceKey, type StringGen } from "../types.js";
@@ -34,7 +34,7 @@ export function getSessionId(): string | null {
     let sesId = window.sessionStorage.getItem("_bytm-session-id");
 
     if(!sesId)
-      window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
+      window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(10, 36));
 
     return sesId;
   }
@@ -180,7 +180,7 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   }
 
   // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-  await pauseFor(250);
+  await pauseFor(randRange(250, 500));
 
   return parsed;
 }
