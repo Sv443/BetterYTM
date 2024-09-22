@@ -55,7 +55,6 @@
   - Added license for plugin-related source code, see [license-for-plugins.txt](https://github.com/Sv443/BetterYTM/blob/develop/license-for-plugins.txt)
   - Added advanced feature to change the startup timeout (only impacts plugin initialization for now)
   - Now using a blue logo is instead of the red BetterYTM logo when the script was compiled in development (preview) mode
-  - Fixed missing configuration keys in development/preview mode instead of potentially breaking the script
   - Added Storybook for easier and faster development of components
   - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
   - Migrated to pnpm for faster compilation times
@@ -63,6 +62,7 @@
   - Made `getThumbnailUrl()` and `getBestThumbnailUrl()` use the domain `youtube.com` to prevent cross-origin issues
   - Added custom error instances `LyricsError` and `PluginError` for better error handling using `instanceof`
   - Changed the feature identifier key for `showVotesFormat` to `numbersFormat` as it is now generic and available to plugins through the `formatNumber()` function
+  - Feature config keys will now be corrected on each page load (meaning missing keys will be set to their default and extra keys will be removed)
 - **Plugin Changes:**  
   <sup>See the [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for the latest documentation of the plugin interface</sup>
   - Changed the way plugins are registered by making the `registerPlugin()` function the sole argument passed by the `bytm:registerPlugin` event. Call this function synchronously to register your plugin.
