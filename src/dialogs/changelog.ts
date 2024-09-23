@@ -30,7 +30,7 @@ export async function getChangelogDialog() {
         anchor.ariaLabel = anchor.title = anchor.href;
         anchor.target = "_blank";
       }
-  
+
       const firstDetails = mdContElem.querySelector<HTMLDetailsElement>("details");
       if(firstDetails)
         firstDetails.open = true;

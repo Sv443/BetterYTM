@@ -267,7 +267,7 @@
     "feature_desc_setInitialTabVolume": "Sets the volume level to a specific value once when opening the site",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "This feature is incompatible with the \"Volume level shared between tabs\" feature and will be ignored while using the shared volume feature!",
     "feature_desc_initialTabVolumeLevel": "The value to set the volume level to when opening the site",
-  
+
     "feature_desc_lyricsQueueButton": "Add a button to each song in a list to open its lyrics page",
     "feature_desc_deleteFromQueueButton": "Add a button to each song in a list to quickly remove it",
     "feature_desc_listButtonsPlacement": "Where should the list buttons show up?",

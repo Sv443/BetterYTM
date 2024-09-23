@@ -50,7 +50,7 @@ export async function getAutoLikeDialog() {
 
     autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
   }
-  
+
   if(!autoLikeImExDialog) {
     autoLikeImExDialog = new ExImDialog({
       id: "auto-like-channels-export-import",

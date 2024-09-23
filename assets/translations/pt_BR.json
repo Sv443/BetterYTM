@@ -267,7 +267,7 @@
     "feature_desc_setInitialTabVolume": "Definir o nível de volume para um valor específico ao abrir o site",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Este recurso é incompatível com o recurso \"Volume compartilhado entre guias\" e será ignorado ao usar o recurso de volume compartilhado!",
     "feature_desc_initialTabVolumeLevel": "O valor para definir o nível de volume ao abrir o site",
-  
+
     "feature_desc_lyricsQueueButton": "Adicionar um botão a cada música em uma lista para abrir sua página de letras",
     "feature_desc_deleteFromQueueButton": "Adicionar um botão a cada música em uma lista para removê-la rapidamente",
     "feature_desc_listButtonsPlacement": "Onde os botões da lista devem aparecer?",

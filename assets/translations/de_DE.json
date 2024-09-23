@@ -267,7 +267,7 @@
     "feature_desc_setInitialTabVolume": "Setze den Lautstärkepegel auf einen bestimmten Wert, wenn die Seite geöffnet wird",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Diese Funktion ist mit der Funktion \"Lautstärke zwischen Tabs teilen\" nicht kompatibel und wird ignoriert, während die Funktion zum Teilen der Lautstärke aktiviert ist.",
     "feature_desc_initialTabVolumeLevel": "Der Wert, auf den die Lautstärke eingestellt werden soll, wenn die Seite geöffnet wird",
-  
+
     "feature_desc_lyricsQueueButton": "Füge einen Knopf zu jedem Song in einer Liste hinzu, um die Songtext-Seite zu öffnen",
     "feature_desc_deleteFromQueueButton": "Füge einen Knopf zu jedem Song in einer Liste hinzu, um ihn schnell zu entfernen",
     "feature_desc_listButtonsPlacement": "Wo sollen die Listen-Knöpfe erscheinen?",

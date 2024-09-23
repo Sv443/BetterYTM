@@ -136,7 +136,7 @@ async function addQueueButtons(
         const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
         if(!songInfo)
           return;
-      
+
         const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
         song = songEl?.textContent;
         artist = artistEl?.textContent;

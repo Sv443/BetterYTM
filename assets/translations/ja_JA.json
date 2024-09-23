@@ -266,7 +266,7 @@
     "feature_desc_setInitialTabVolume": "サイトを開いたときに音量レベルを特定の値に設定する",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "この機能は「タブ間で音量を共有する」機能と互換性がなく、共有音量機能を使用している間は無視されます！",
     "feature_desc_initialTabVolumeLevel": "サイトを開いたときに音量レベルを設定する値",
-  
+
     "feature_desc_lyricsQueueButton": "リスト内の各曲にボタンを追加して、歌詞ページを開く",
     "feature_desc_deleteFromQueueButton": "リスト内の各曲にボタンを追加して、すばやく削除する",
     "feature_desc_listButtonsPlacement": "リストボタンの配置場所",
