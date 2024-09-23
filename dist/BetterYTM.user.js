@@ -44,6 +44,9 @@
 // @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/showVotes.css
 // @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/volSliderSize.css
 // @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/changelog.md
+// @resource          font-cascadia_code_ttf     https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/fonts/CascadiaCode.ttf
+// @resource          font-cascadia_code_woff    https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/fonts/CascadiaCode.woff
+// @resource          font-cascadia_code_woff2   https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/fonts/CascadiaCode.woff2
 // @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/plus_circle_small.svg
 // @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/alert.svg
 // @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/arrow_down.svg
@@ -161,7 +164,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "github";
-    const buildNumberRaw = "0c6b1095";
+    const buildNumberRaw = "772d6c1b";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -7323,7 +7326,8 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
 ─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify
 ─ This markdown parser library: https://github.com/markedjs/marked
 ─ This tiny event listener library: https://github.com/ai/nanoevents
-─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript`;
+─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript
+─ The Cascadia Code font: https://github.com/microsoft/cascadia-code`;
         console.log(`\
 %c${scriptInfo.name}%cv${scriptInfo.version}%c • ${scriptInfo.namespace}%c
 
@@ -7508,6 +7512,7 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
     /** Initializes global CSS variables */
     function initGlobalCssVars() {
         try {
+            loadFonts();
             const applyVars = () => {
                 setGlobalCssVars({
                     "inner-height": `${window.innerHeight}px`,
@@ -7522,6 +7527,29 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
         catch (err) {
             error("Couldn't initialize global CSS variables:", err);
         }
+    }
+    async function loadFonts() {
+        const fonts = {
+            "Cascadia Code": {
+                woff: await getResourceUrl("font-cascadia_code_woff"),
+                woff2: await getResourceUrl("font-cascadia_code_woff2"),
+                ttf: await getResourceUrl("font-cascadia_code_ttf"),
+            },
+        };
+        let css = "";
+        for (const [font, urls] of Object.entries(fonts))
+            css += `\
+@font-face {
+  font-family: "${font}";
+  src: url("${urls.woff2}") format("woff2"),
+    url("${urls.woff}") format("woff"),
+    url("${urls.ttf}") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+`;
+        addStyle(css, "fonts");
     }
     //#region dev menu cmds
     /** Registers dev commands using `GM.registerMenuCommand` */
