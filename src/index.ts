@@ -1,5 +1,5 @@
 import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
-import { addStyleFromResource, domLoaded, setGlobalCssVars, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, domLoaded, getResourceUrl, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -58,7 +58,8 @@ import { MarkdownDialog } from "./components/index.js";
 ─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify
 ─ This markdown parser library: https://github.com/markedjs/marked
 ─ This tiny event listener library: https://github.com/ai/nanoevents
-─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript`;
+─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript
+─ The Cascadia Code font: https://github.com/microsoft/cascadia-code`;
 
   console.log(
     `\
@@ -316,6 +317,8 @@ async function injectCssBundle() {
 /** Initializes global CSS variables */
 function initGlobalCssVars() {
   try {
+    loadFonts();
+
     const applyVars = () => {
       setGlobalCssVars({
         "inner-height": `${window.innerHeight}px`,
@@ -331,6 +334,32 @@ function initGlobalCssVars() {
   catch(err) {
     error("Couldn't initialize global CSS variables:", err);
   }
+}
+
+async function loadFonts() {
+  const fonts = {
+    "Cascadia Code": {
+      woff: await getResourceUrl("font-cascadia_code_woff"),
+      woff2: await getResourceUrl("font-cascadia_code_woff2"),
+      ttf: await getResourceUrl("font-cascadia_code_ttf"),
+    },
+  };
+
+  let css = "";
+  for(const [font, urls] of Object.entries(fonts))
+    css += `\
+@font-face {
+  font-family: "${font}";
+  src: url("${urls.woff2}") format("woff2"),
+    url("${urls.woff}") format("woff"),
+    url("${urls.ttf}") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+`;
+
+  addStyle(css, "fonts");
 }
 
 //#region dev menu cmds
