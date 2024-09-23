@@ -548,7 +548,7 @@ select.bytm-ftconf-input {
   background-color: #222;
   border-radius: 3px;
   padding: 1px 5px;
-  font-family: monospace;
+  font-family: "Cascadia Code", "Consolas", monospace;
 }
 
 .bytm-markdown-container h2 {

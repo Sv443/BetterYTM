@@ -7,7 +7,7 @@
   - Added an experimental feature to like songs and videos of certain channels (on both sites) automatically.  
     Since this feature is still experimental, to be able to turn it on, you first need to enable advanced mode in the settings.  
     The button to toggle auto-liking will only show up on channel pages until the next update. Please report any issues you encounter.
-  - Added the ability to show the approximate amount of likes and dislikes on the currently playing song (powered by [ReturnYoutubeDislike](https://returnyoutubedislike.com/))
+  - Added the ability to show the approximate amount of likes and dislikes on the currently playing song (powered by [Return YouTube Dislike](https://returnyoutubedislike.com/))
   - Added support for themes set by the [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) extension
   - Added a dialog for listing the currently installed and active plugins including some metadata
 - **Changes:**
@@ -31,6 +31,7 @@
   - Removed unnecessary experimental feature "advancedLyricsFilter" as the API's native search improved a lot
   - Made all integration features configurable and gave them their own config category
   - Created a prompt dialog to replace the browser's native dialogs, which could accidentally be turned off by the user and would softlock the script
+  - Made all &lt;code&gt; tags use the [Cascadia Code](https://github.com/microsoft/cascadia-code) font
 - **Fixes:**
   - Fixed major bug that threw "This document requires 'TrustedHTML' assignment" errors on Chromium browsers
   - Adjusted script to UI redesign of playlists
