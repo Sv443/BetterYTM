@@ -164,7 +164,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "greasyfork";
-    const buildNumberRaw = "772d6c1b";
+    const buildNumberRaw = "45ec6f0c";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -2019,9 +2019,9 @@ I welcome every contribution on GitHub!
                 removeListenersOnDestroy: false,
                 small: true,
                 verticalAlign: "top",
-                renderHeader: renderHeader$4,
-                renderBody: renderBody$4,
-                renderFooter,
+                renderHeader: renderHeader$5,
+                renderBody: renderBody$5,
+                renderFooter: renderFooter$1,
             });
             siteEvents.on("autoLikeChannelsUpdated", async () => {
                 try {
@@ -2075,7 +2075,7 @@ I welcome every contribution on GitHub!
         return autoLikeDialog;
     }
     //#region header
-    async function renderHeader$4() {
+    async function renderHeader$5() {
         const headerEl = document.createElement("h2");
         headerEl.classList.add("bytm-dialog-title");
         headerEl.role = "heading";
@@ -2085,7 +2085,7 @@ I welcome every contribution on GitHub!
         return headerEl;
     }
     //#region body
-    async function renderBody$4() {
+    async function renderBody$5() {
         const contElem = document.createElement("div");
         const descriptionEl = document.createElement("p");
         descriptionEl.classList.add("bytm-auto-like-channels-desc");
@@ -2211,7 +2211,7 @@ I welcome every contribution on GitHub!
         return contElem;
     }
     //#region footer
-    function renderFooter() {
+    function renderFooter$1() {
         const wrapperEl = document.createElement("div");
         wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
         const addNewBtnElem = document.createElement("button");
@@ -2289,8 +2289,8 @@ I welcome every contribution on GitHub!
                 closeOnEscPress: true,
                 small: true,
                 verticalAlign: "top",
-                renderHeader: renderHeader$3,
-                renderBody: renderBody$3,
+                renderHeader: renderHeader$4,
+                renderBody: renderBody$4,
             });
             changelogDialog.on("render", () => {
                 const mdContElem = document.querySelector("#bytm-changelog-dialog-text");
@@ -2308,7 +2308,7 @@ I welcome every contribution on GitHub!
         }
         return changelogDialog;
     }
-    async function renderHeader$3() {
+    async function renderHeader$4() {
         const headerEl = document.createElement("h2");
         headerEl.classList.add("bytm-dialog-title");
         headerEl.role = "heading";
@@ -2317,7 +2317,7 @@ I welcome every contribution on GitHub!
         headerEl.textContent = headerEl.ariaLabel = t("changelog_menu_title", scriptInfo.name);
         return headerEl;
     }
-    async function renderBody$3() {
+    async function renderBody$4() {
         const contElem = document.createElement("div");
         const mdContElem = document.createElement("div");
         mdContElem.id = "bytm-changelog-dialog-text";
@@ -2341,8 +2341,8 @@ I welcome every contribution on GitHub!
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 small: true,
-                renderHeader: renderHeader$2,
-                renderBody: renderBody$2,
+                renderHeader: renderHeader$3,
+                renderBody: renderBody$3,
             });
             // make config menu inert while help dialog is open
             featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
@@ -2350,14 +2350,14 @@ I welcome every contribution on GitHub!
         }
         return featHelpDialog;
     }
-    async function renderHeader$2() {
+    async function renderHeader$3() {
         const headerEl = document.createElement("div");
         const helpIconSvg = await resourceAsString("icon-help");
         if (helpIconSvg)
             setInnerHtml(headerEl, helpIconSvg);
         return headerEl;
     }
-    async function renderBody$2() {
+    async function renderBody$3() {
         var _a, _b;
         const contElem = document.createElement("div");
         const featDescElem = document.createElement("h3");
@@ -2544,11 +2544,11 @@ I welcome every contribution on GitHub!
             closeOnEscPress: true,
             destroyOnClose: true,
             small: true,
-            renderHeader: renderHeader$1,
-            renderBody: renderBody$1,
+            renderHeader: renderHeader$2,
+            renderBody: renderBody$2,
         });
     }
-    async function renderHeader$1() {
+    async function renderHeader$2() {
         const titleElem = document.createElement("h2");
         titleElem.id = "bytm-plugin-list-title";
         titleElem.classList.add("bytm-dialog-title");
@@ -2558,7 +2558,7 @@ I welcome every contribution on GitHub!
         titleElem.textContent = t("plugin_list_title");
         return titleElem;
     }
-    async function renderBody$1() {
+    async function renderBody$2() {
         var _a;
         const listContainerEl = document.createElement("div");
         listContainerEl.id = "bytm-plugin-list-container";
@@ -2680,13 +2680,13 @@ I welcome every contribution on GitHub!
                 closeOnEscPress: true,
                 destroyOnClose: true,
                 small: true,
-                renderHeader,
-                renderBody: () => renderBody({ latestTag, changelogHtml }),
+                renderHeader: renderHeader$1,
+                renderBody: () => renderBody$1({ latestTag, changelogHtml }),
             });
         }
         return verNotifDialog;
     }
-    async function renderHeader() {
+    async function renderHeader$1() {
         const logoEl = document.createElement("img");
         logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
         logoEl.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
@@ -2694,7 +2694,7 @@ I welcome every contribution on GitHub!
         return logoEl;
     }
     let disableUpdateCheck = false;
-    async function renderBody({ latestTag, changelogHtml, }) {
+    async function renderBody$1({ latestTag, changelogHtml, }) {
         disableUpdateCheck = false;
         const wrapperEl = document.createElement("div");
         const pEl = document.createElement("p");
@@ -2907,6 +2907,7 @@ I welcome every contribution on GitHub!
         footerCont.classList.add("bytm-menu-footer-cont");
         const reloadFooterCont = document.createElement("div");
         const reloadFooterEl = document.createElement("div");
+        reloadFooterEl.id = "bytm-menu-footer-reload-hint";
         reloadFooterEl.classList.add("bytm-menu-footer", "hidden");
         reloadFooterEl.setAttribute("aria-hidden", "true");
         reloadFooterEl.textContent = t("reload_hint");
@@ -2999,49 +3000,56 @@ I welcome every contribution on GitHub!
         featuresCont.id = "bytm-menu-opts";
         const onCfgChange = async (key, initialVal, newVal) => {
             var _a, _b, _c, _d;
-            const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
-            info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
-            const featConf = JSON.parse(JSON.stringify(getFeatures()));
-            featConf[key] = newVal;
-            const changedKeys = initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object"
-                && featConf[k] !== initConfig$1[k]) : [];
-            const requiresReload = 
-            // @ts-ignore
-            changedKeys.some((k) => { var _a; return ((_a = featInfo[k]) === null || _a === void 0 ? void 0 : _a.reloadRequired) !== false; });
-            await setFeatures(featConf);
-            // @ts-ignore
-            (_b = (_a = featInfo[key]) === null || _a === void 0 ? void 0 : _a.change) === null || _b === void 0 ? void 0 : _b.call(_a, key, initialVal, newVal);
-            if (requiresReload) {
-                reloadFooterEl.classList.remove("hidden");
-                reloadFooterEl.setAttribute("aria-hidden", "false");
-            }
-            else if (!requiresReload) {
-                reloadFooterEl.classList.add("hidden");
-                reloadFooterEl.setAttribute("aria-hidden", "true");
-            }
-            if (initLocale !== featConf.locale) {
-                await initTranslations(featConf.locale);
-                setLocale(featConf.locale);
-                const newText = t("lang_changed_prompt_reload");
-                const newLangEmoji = ((_c = langMapping[featConf.locale]) === null || _c === void 0 ? void 0 : _c.emoji) ? `${langMapping[featConf.locale].emoji}\n` : "";
-                const initLangEmoji = ((_d = langMapping[initLocale]) === null || _d === void 0 ? void 0 : _d.emoji) ? `${langMapping[initLocale].emoji}\n` : "";
-                const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
-                if (await showPrompt({
-                    type: "confirm",
-                    message: confirmText,
-                    confirmBtnText: () => `${t("prompt_confirm")} / ${tl(initLocale, "prompt_confirm")}`,
-                    confirmBtnTooltip: () => `${t("click_to_confirm_tooltip")} / ${tl(initLocale, "click_to_confirm_tooltip")}`,
-                    denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")} / ${tl(initLocale, type === "alert" ? "prompt_close" : "prompt_cancel")}`,
-                    denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
-                })) {
-                    closeCfgMenu();
-                    disableBeforeUnload();
-                    location.reload();
+            try {
+                const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
+                info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+                const featConf = JSON.parse(JSON.stringify(getFeatures()));
+                featConf[key] = newVal;
+                const changedKeys = initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object"
+                    && featConf[k] !== initConfig$1[k]) : [];
+                const requiresReload = 
+                // @ts-ignore
+                changedKeys.some((k) => { var _a; return ((_a = featInfo[k]) === null || _a === void 0 ? void 0 : _a.reloadRequired) !== false; });
+                await setFeatures(featConf);
+                // @ts-ignore
+                (_b = (_a = featInfo[key]) === null || _a === void 0 ? void 0 : _a.change) === null || _b === void 0 ? void 0 : _b.call(_a, key, initialVal, newVal);
+                if (requiresReload) {
+                    reloadFooterEl.classList.remove("hidden");
+                    reloadFooterEl.setAttribute("aria-hidden", "false");
                 }
+                else {
+                    reloadFooterEl.classList.add("hidden");
+                    reloadFooterEl.setAttribute("aria-hidden", "true");
+                }
+                if (initLocale !== featConf.locale) {
+                    await initTranslations(featConf.locale);
+                    setLocale(featConf.locale);
+                    const newText = t("lang_changed_prompt_reload");
+                    const newLangEmoji = ((_c = langMapping[featConf.locale]) === null || _c === void 0 ? void 0 : _c.emoji) ? `${langMapping[featConf.locale].emoji}\n` : "";
+                    const initLangEmoji = ((_d = langMapping[initLocale]) === null || _d === void 0 ? void 0 : _d.emoji) ? `${langMapping[initLocale].emoji}\n` : "";
+                    const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
+                    if (await showPrompt({
+                        type: "confirm",
+                        message: confirmText,
+                        confirmBtnText: () => `${t("prompt_confirm")} / ${tl(initLocale, "prompt_confirm")}`,
+                        confirmBtnTooltip: () => `${t("click_to_confirm_tooltip")} / ${tl(initLocale, "click_to_confirm_tooltip")}`,
+                        denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")} / ${tl(initLocale, type === "alert" ? "prompt_close" : "prompt_cancel")}`,
+                        denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
+                    })) {
+                        closeCfgMenu();
+                        disableBeforeUnload();
+                        location.reload();
+                    }
+                }
+                else if (getLocale() !== featConf.locale)
+                    setLocale(featConf.locale);
             }
-            else if (getLocale() !== featConf.locale)
-                setLocale(featConf.locale);
-            emitSiteEvent("configOptionChanged", key, initialVal, newVal);
+            catch (err) {
+                error("Error while reacting to config change:", err);
+            }
+            finally {
+                emitSiteEvent("configOptionChanged", key, initialVal, newVal);
+            }
         };
         /** Call whenever the feature config is changed */
         const confChanged = UserUtils.debounce(onCfgChange, 333, "falling");
@@ -3539,6 +3547,186 @@ I welcome every contribution on GitHub!
                 scrollIndicator.classList.add("bytm-hidden");
             }
         }
+    }
+
+    let welcomeDialog = null;
+    /** Creates and/or returns the import dialog */
+    async function getWelcomeDialog() {
+        if (!welcomeDialog) {
+            welcomeDialog = new BytmDialog({
+                id: "welcome",
+                width: 700,
+                height: 500,
+                closeBtnEnabled: true,
+                closeOnBgClick: true,
+                closeOnEscPress: true,
+                destroyOnClose: true,
+                renderHeader,
+                renderBody,
+                renderFooter,
+            });
+            welcomeDialog.on("render", retranslateWelcomeMenu);
+        }
+        return welcomeDialog;
+    }
+    async function renderHeader() {
+        const titleWrapperElem = document.createElement("div");
+        titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
+        const titleLogoElem = document.createElement("img");
+        titleLogoElem.id = "bytm-welcome-menu-title-logo";
+        titleLogoElem.classList.add("bytm-no-select");
+        titleLogoElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+        const titleElem = document.createElement("h2");
+        titleElem.id = "bytm-welcome-menu-title";
+        titleElem.classList.add("bytm-dialog-title");
+        titleElem.role = "heading";
+        titleElem.ariaLevel = "1";
+        titleElem.tabIndex = 0;
+        titleWrapperElem.appendChild(titleLogoElem);
+        titleWrapperElem.appendChild(titleElem);
+        return titleWrapperElem;
+    }
+    async function renderBody() {
+        const contentWrapper = document.createElement("div");
+        contentWrapper.id = "bytm-welcome-menu-content-wrapper";
+        // locale switcher
+        const localeCont = document.createElement("div");
+        localeCont.id = "bytm-welcome-menu-locale-cont";
+        const localeImg = document.createElement("img");
+        localeImg.id = "bytm-welcome-menu-locale-img";
+        localeImg.classList.add("bytm-no-select");
+        localeImg.src = await getResourceUrl("icon-globe");
+        const localeSelectElem = document.createElement("select");
+        localeSelectElem.id = "bytm-welcome-menu-locale-select";
+        for (const [locale, { name }] of Object.entries(langMapping)) {
+            const localeOptionElem = document.createElement("option");
+            localeOptionElem.value = locale;
+            localeOptionElem.textContent = name;
+            localeSelectElem.appendChild(localeOptionElem);
+        }
+        localeSelectElem.value = getFeature("locale");
+        localeSelectElem.addEventListener("change", async () => {
+            const selectedLocale = localeSelectElem.value;
+            const feats = Object.assign({}, getFeatures());
+            feats.locale = selectedLocale;
+            setFeatures(feats);
+            await initTranslations(selectedLocale);
+            setLocale(selectedLocale);
+            retranslateWelcomeMenu();
+        });
+        localeCont.appendChild(localeImg);
+        localeCont.appendChild(localeSelectElem);
+        contentWrapper.appendChild(localeCont);
+        // text
+        const textCont = document.createElement("div");
+        textCont.id = "bytm-welcome-menu-text-cont";
+        const textElem = document.createElement("p");
+        textElem.id = "bytm-welcome-menu-text";
+        const textElems = [];
+        const line1Elem = document.createElement("span");
+        line1Elem.id = "bytm-welcome-text-line1";
+        line1Elem.tabIndex = 0;
+        textElems.push(line1Elem);
+        const br1Elem = document.createElement("br");
+        textElems.push(br1Elem);
+        const line2Elem = document.createElement("span");
+        line2Elem.id = "bytm-welcome-text-line2";
+        line2Elem.tabIndex = 0;
+        textElems.push(line2Elem);
+        const br2Elem = document.createElement("br");
+        textElems.push(br2Elem);
+        const br3Elem = document.createElement("br");
+        textElems.push(br3Elem);
+        const line3Elem = document.createElement("span");
+        line3Elem.id = "bytm-welcome-text-line3";
+        line3Elem.tabIndex = 0;
+        textElems.push(line3Elem);
+        const br4Elem = document.createElement("br");
+        textElems.push(br4Elem);
+        const line4Elem = document.createElement("span");
+        line4Elem.id = "bytm-welcome-text-line4";
+        line4Elem.tabIndex = 0;
+        textElems.push(line4Elem);
+        const br5Elem = document.createElement("br");
+        textElems.push(br5Elem);
+        const br6Elem = document.createElement("br");
+        textElems.push(br6Elem);
+        const line5Elem = document.createElement("span");
+        line5Elem.id = "bytm-welcome-text-line5";
+        line5Elem.tabIndex = 0;
+        textElems.push(line5Elem);
+        textElems.forEach((elem) => textElem.appendChild(elem));
+        textCont.appendChild(textElem);
+        contentWrapper.appendChild(textCont);
+        return contentWrapper;
+    }
+    /** Retranslates all elements inside the welcome menu */
+    function retranslateWelcomeMenu() {
+        const getLink = (href) => {
+            return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
+        };
+        const changes = {
+            "#bytm-welcome-menu-title": (e) => e.textContent = e.ariaLabel = t("welcome_menu_title", scriptInfo.name),
+            "#bytm-welcome-menu-title-close": (e) => e.ariaLabel = e.title = t("close_menu_tooltip"),
+            "#bytm-welcome-menu-open-cfg": (e) => {
+                e.textContent = e.ariaLabel = t("config_menu");
+                e.ariaLabel = e.title = t("open_config_menu_tooltip");
+            },
+            "#bytm-welcome-menu-open-changelog": (e) => {
+                e.textContent = e.ariaLabel = t("open_changelog");
+                e.ariaLabel = e.title = t("open_changelog_tooltip");
+            },
+            "#bytm-welcome-menu-footer-close": (e) => {
+                e.textContent = e.ariaLabel = t("close");
+                e.ariaLabel = e.title = t("close_menu_tooltip");
+            },
+            "#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
+            "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo.name)),
+            "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
+            "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(packageJson.funding.url))),
+            "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(packageJson.bugs.url))),
+        };
+        for (const [selector, fn] of Object.entries(changes)) {
+            const el = document.querySelector(selector);
+            if (!el) {
+                warn(`Couldn't find element in welcome menu with selector '${selector}'`);
+                continue;
+            }
+            fn(el);
+        }
+    }
+    async function renderFooter() {
+        const footerCont = document.createElement("div");
+        footerCont.id = "bytm-welcome-menu-footer-cont";
+        const openCfgElem = document.createElement("button");
+        openCfgElem.id = "bytm-welcome-menu-open-cfg";
+        openCfgElem.classList.add("bytm-btn");
+        openCfgElem.addEventListener("click", () => {
+            welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+            openCfgMenu();
+        });
+        const openChangelogElem = document.createElement("button");
+        openChangelogElem.id = "bytm-welcome-menu-open-changelog";
+        openChangelogElem.classList.add("bytm-btn");
+        openChangelogElem.addEventListener("click", async () => {
+            const dlg = await getChangelogDialog();
+            await dlg.mount();
+            welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+            await dlg.open();
+        });
+        const closeBtnElem = document.createElement("button");
+        closeBtnElem.id = "bytm-welcome-menu-footer-close";
+        closeBtnElem.classList.add("bytm-btn");
+        closeBtnElem.addEventListener("click", async () => {
+            welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+        });
+        const leftButtonsCont = document.createElement("div");
+        leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
+        leftButtonsCont.appendChild(openCfgElem);
+        leftButtonsCont.appendChild(openChangelogElem);
+        footerCont.appendChild(leftButtonsCont);
+        footerCont.appendChild(closeBtnElem);
+        return footerCont;
     }
 
     const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
@@ -5621,14 +5809,14 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
         globe: async () => { var _a; return (_a = await resourceAsString("icon-globe_small")) !== null && _a !== void 0 ? _a : ""; },
         alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-        reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+        reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
     };
     /** Order of adornment elements in the {@linkcode combineAdornments()} function */
     const adornmentOrder = new Map();
     adornmentOrder.set(adornments.alert, 0);
     adornmentOrder.set(adornments.experimental, 1);
     adornmentOrder.set(adornments.globe, 2);
-    adornmentOrder.set(adornments.reloadRequired, 3);
+    adornmentOrder.set(adornments.reload, 3);
     adornmentOrder.set(adornments.advanced, 4);
     /** Common options for config items of type "select" */
     const options = {
@@ -5710,13 +5898,13 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             type: "toggle",
             category: "layout",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         removeShareTrackingParam: {
             type: "toggle",
             category: "layout",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         removeShareTrackingParamSites: {
             type: "select",
@@ -5724,14 +5912,14 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             options: options.siteSelection,
             default: "all",
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         fixSpacing: {
             type: "toggle",
             category: "layout",
             default: true,
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         thumbnailOverlayBehavior: {
             type: "select",
@@ -5750,13 +5938,13 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             type: "toggle",
             category: "layout",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         thumbnailOverlayShowIndicator: {
             type: "toggle",
             category: "layout",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         thumbnailOverlayIndicatorOpacity: {
             type: "slider",
@@ -5767,7 +5955,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             default: 40,
             unit: "%",
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         thumbnailOverlayImageFit: {
             type: "select",
@@ -5779,7 +5967,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             ],
             default: "cover",
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         hideCursorOnIdle: {
             type: "toggle",
@@ -5806,13 +5994,13 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             category: "layout",
             default: true,
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         showVotes: {
             type: "toggle",
             category: "layout",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         // archived idea for future version
         // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
@@ -5825,14 +6013,14 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         //     { value: "blueGray", label: t("vote_ratio_blue_gray") },
         //   ],
         //   default: "disabled",
-        //   textAdornment: adornments.reloadRequired,
+        //   textAdornment: adornments.reload,
         // },
         //#region cat:volume
         volumeSliderLabel: {
             type: "toggle",
             category: "volume",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         volumeSliderSize: {
             type: "number",
@@ -5842,7 +6030,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             step: 5,
             default: 150,
             unit: "px",
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         volumeSliderStep: {
             type: "slider",
@@ -5851,7 +6039,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             max: 25,
             default: 2,
             unit: "%",
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         volumeSliderScrollStep: {
             type: "slider",
@@ -5860,21 +6048,21 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             max: 25,
             default: 4,
             unit: "%",
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         volumeSharedBetweenTabs: {
             type: "toggle",
             category: "volume",
             default: false,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         setInitialTabVolume: {
             type: "toggle",
             category: "volume",
             default: false,
             textAdornment: () => getFeature("volumeSharedBetweenTabs")
-                ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
-                : adornments.reloadRequired(),
+                ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+                : adornments.reload(),
         },
         initialTabVolumeLevel: {
             type: "slider",
@@ -5885,8 +6073,8 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             default: 100,
             unit: "%",
             textAdornment: () => getFeature("volumeSharedBetweenTabs")
-                ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
-                : adornments.reloadRequired(),
+                ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+                : adornments.reload(),
             reloadRequired: false,
             enable: noop,
         },
@@ -5895,13 +6083,13 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             type: "toggle",
             category: "songLists",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         deleteFromQueueButton: {
             type: "toggle",
             category: "songLists",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         listButtonsPlacement: {
             type: "select",
@@ -5912,26 +6100,26 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             ],
             default: "everywhere",
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         scrollToActiveSongBtn: {
             type: "toggle",
             category: "songLists",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         clearQueueBtn: {
             type: "toggle",
             category: "songLists",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         //#region cat:behavior
         disableBeforeUnloadPopup: {
             type: "toggle",
             category: "behavior",
             default: false,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         closeToastsTimeout: {
             type: "number",
@@ -5949,14 +6137,14 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             category: "behavior",
             default: true,
             helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         rememberSongTimeSites: {
             type: "select",
             category: "behavior",
             options: options.siteSelection,
             default: "all",
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         rememberSongTimeDuration: {
             type: "number",
@@ -6039,7 +6227,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             type: "toggle",
             category: "input",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         numKeysSkipToTime: {
             type: "toggle",
@@ -6052,7 +6240,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             type: "toggle",
             category: "input",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         autoLikeChannelToggleBtn: {
             type: "toggle",
@@ -6068,7 +6256,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         //   type: "toggle",
         //   category: "input",
         //   default: false,
-        //   textAdornment: adornments.reloadRequired,
+        //   textAdornment: adornments.reload,
         // },
         autoLikeTimeout: {
             type: "slider",
@@ -6102,7 +6290,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             type: "toggle",
             category: "lyrics",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         errorOnLyricsNotFound: {
             type: "toggle",
@@ -6190,27 +6378,27 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             options: options.siteSelectionOrNone,
             default: "all",
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         sponsorBlockIntegration: {
             type: "toggle",
             category: "integrations",
             default: true,
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         themeSongIntegration: {
             type: "toggle",
             category: "integrations",
             default: false,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         themeSongLightness: {
             type: "select",
             category: "integrations",
             options: options.colorLightness,
             default: "darker",
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         //#region cat:plugins
         openPluginList: {
@@ -6228,7 +6416,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             step: 0.1,
             unit: "s",
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         //#region cat:general
         locale: {
@@ -6236,20 +6424,20 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             category: "general",
             options: options.locale,
             default: getPreferredLocale(),
-            textAdornment: () => combineAdornments([adornments.globe, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
         },
         localeFallback: {
             type: "toggle",
             category: "general",
             default: true,
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         versionCheck: {
             type: "toggle",
             category: "general",
             default: true,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         checkVersionNow: {
             type: "button",
@@ -6289,13 +6477,13 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             category: "general",
             default: true,
             advanced: true,
-            textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
         },
         resetConfig: {
             type: "button",
             category: "general",
             click: promptResetConfig,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         logLevel: {
             type: "select",
@@ -6305,7 +6493,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
                 { value: 1, label: t("log_level_info") },
             ],
             default: 1,
-            textAdornment: adornments.reloadRequired,
+            textAdornment: adornments.reload,
         },
         advancedMode: {
             type: "toggle",
@@ -7188,6 +7376,24 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         }
     }
     let ttPolicy;
+    // workaround for supporting `target="_blank"` links without compromising security:
+    const tempTargetAttrName = `data-tmp-target-${UserUtils.randomId(6, 36)}`;
+    DOMPurify.addHook("beforeSanitizeAttributes", (node) => {
+        if (node.tagName === "A") {
+            if (!node.hasAttribute("target"))
+                node.setAttribute("target", "_self");
+            if (node.hasAttribute("target"))
+                node.setAttribute(tempTargetAttrName, node.getAttribute("target"));
+        }
+    });
+    DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+        if (node.tagName === "A" && node.hasAttribute(tempTargetAttrName)) {
+            node.setAttribute("target", node.getAttribute(tempTargetAttrName));
+            node.removeAttribute(tempTargetAttrName);
+            if (node.getAttribute("target") === "_blank")
+                node.setAttribute("rel", "noopener noreferrer");
+        }
+    });
     /** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
     function setInnerHtml(element, html) {
         var _a, _b;
@@ -7405,7 +7611,7 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
             //#region welcome dlg
             if (typeof await GM.getValue("bytm-installed") !== "string") {
                 // open welcome menu with language selector
-                const dlg = await getPluginListDialog();
+                const dlg = await getWelcomeDialog();
                 dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
                 info("Showing welcome menu");
                 await dlg.open();
