@@ -170,6 +170,7 @@ async function mountCfgMenu() {
   const reloadFooterCont = document.createElement("div");
 
   const reloadFooterEl = document.createElement("div");
+  reloadFooterEl.id = "bytm-menu-footer-reload-hint";
   reloadFooterEl.classList.add("bytm-menu-footer", "hidden");
   reloadFooterEl.setAttribute("aria-hidden", "true");
   reloadFooterEl.textContent = t("reload_hint");
@@ -282,62 +283,68 @@ async function mountCfgMenu() {
     initialVal: string | number | boolean | HotkeyObj,
     newVal: string | number | boolean | HotkeyObj,
   ) => {
-    const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
-    info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+    try {
+      const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
+      info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
-    const featConf = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
+      const featConf = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
 
-    featConf[key] = newVal as never;
+      featConf[key] = newVal as never;
 
-    const changedKeys = initConfig ? Object.keys(featConf).filter((k) =>
-      typeof featConf[k as FeatureKey] !== "object"
-      && featConf[k as FeatureKey] !== initConfig![k as FeatureKey]
-    ) : [];
-    const requiresReload =
+      const changedKeys = initConfig ? Object.keys(featConf).filter((k) =>
+        typeof featConf[k as FeatureKey] !== "object"
+        && featConf[k as FeatureKey] !== initConfig![k as FeatureKey]
+      ) : [];
+      const requiresReload =
+        // @ts-ignore
+        changedKeys.some((k) => featInfo[k as keyof typeof featInfo]?.reloadRequired !== false);
+
+      await setFeatures(featConf);
+
       // @ts-ignore
-      changedKeys.some((k) => featInfo[k as keyof typeof featInfo]?.reloadRequired !== false);
+      featInfo[key]?.change?.(key, initialVal, newVal);
 
-    await setFeatures(featConf);
-
-    // @ts-ignore
-    featInfo[key]?.change?.(key, initialVal, newVal);
-
-    if(requiresReload) {
-      reloadFooterEl.classList.remove("hidden");
-      reloadFooterEl.setAttribute("aria-hidden", "false");
-    }
-    else if(!requiresReload) {
-      reloadFooterEl.classList.add("hidden");
-      reloadFooterEl.setAttribute("aria-hidden", "true");
-    }
-
-    if(initLocale !== featConf.locale) {
-      await initTranslations(featConf.locale);
-      setLocale(featConf.locale);
-      const newText = t("lang_changed_prompt_reload");
-
-      const newLangEmoji = localeMapping[featConf.locale]?.emoji ? `${localeMapping[featConf.locale].emoji}\n` : "";
-      const initLangEmoji = localeMapping[initLocale!]?.emoji ? `${localeMapping[initLocale!].emoji}\n` : "";
-
-      const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
-
-      if(await showPrompt({
-        type: "confirm",
-        message: confirmText,
-        confirmBtnText: () => `${t("prompt_confirm")} / ${tl(initLocale!, "prompt_confirm")}`,
-        confirmBtnTooltip: () => `${t("click_to_confirm_tooltip")} / ${tl(initLocale!, "click_to_confirm_tooltip")}`,
-        denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")} / ${tl(initLocale!, type === "alert" ? "prompt_close" : "prompt_cancel")}`,
-        denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale!, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
-      })) {
-        closeCfgMenu();
-        disableBeforeUnload();
-        location.reload();
+      if(requiresReload) {
+        reloadFooterEl.classList.remove("hidden");
+        reloadFooterEl.setAttribute("aria-hidden", "false");
       }
-    }
-    else if(getLocale() !== featConf.locale)
-      setLocale(featConf.locale);
+      else {
+        reloadFooterEl.classList.add("hidden");
+        reloadFooterEl.setAttribute("aria-hidden", "true");
+      }
 
-    emitSiteEvent("configOptionChanged", key, initialVal, newVal);
+      if(initLocale !== featConf.locale) {
+        await initTranslations(featConf.locale);
+        setLocale(featConf.locale);
+        const newText = t("lang_changed_prompt_reload");
+
+        const newLangEmoji = localeMapping[featConf.locale]?.emoji ? `${localeMapping[featConf.locale].emoji}\n` : "";
+        const initLangEmoji = localeMapping[initLocale!]?.emoji ? `${localeMapping[initLocale!].emoji}\n` : "";
+
+        const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
+
+        if(await showPrompt({
+          type: "confirm",
+          message: confirmText,
+          confirmBtnText: () => `${t("prompt_confirm")} / ${tl(initLocale!, "prompt_confirm")}`,
+          confirmBtnTooltip: () => `${t("click_to_confirm_tooltip")} / ${tl(initLocale!, "click_to_confirm_tooltip")}`,
+          denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")} / ${tl(initLocale!, type === "alert" ? "prompt_close" : "prompt_cancel")}`,
+          denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale!, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
+        })) {
+          closeCfgMenu();
+          disableBeforeUnload();
+          location.reload();
+        }
+      }
+      else if(getLocale() !== featConf.locale)
+        setLocale(featConf.locale);
+    }
+    catch(err) {
+      error("Error while reacting to config change:", err);
+    }
+    finally {
+      emitSiteEvent("configOptionChanged", key, initialVal, newVal);
+    }
   };
 
   /** Call whenever the feature config is changed */
