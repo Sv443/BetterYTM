@@ -120,10 +120,13 @@ This project is based on my extensive template for making a userscript with Type
 <br><br>
 
 ### Attributions:
-This userscript depends on these runtime libraries:
+This userscript depends on these projects:
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
+- [Cascadia Code](https://github.com/microsoft/cascadia-code)
 - [compare-versions](https://npmjs.org/package/compare-versions)
-- [marked](https://npmjs.org/package/marked)
+- [DOMPurify](https://github.com/cure53/DOMPurify)
+- [Marked](https://npmjs.org/package/marked)
+- [Nano Events](https://github.com/ai/nanoevents)
 - [tslib](https://npmjs.org/package/tslib)
   
 For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
