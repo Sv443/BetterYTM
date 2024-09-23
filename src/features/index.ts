@@ -60,7 +60,7 @@ const adornments = {
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
   globe: async () => await resourceAsString("icon-globe_small") ?? "",
   alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-  reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+  reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
 } satisfies Record<string, AdornmentFunc>;
 
 /** Order of adornment elements in the {@linkcode combineAdornments()} function */
@@ -68,7 +68,7 @@ const adornmentOrder = new Map<AdornmentFunc, number>();
 adornmentOrder.set(adornments.alert, 0);
 adornmentOrder.set(adornments.experimental, 1);
 adornmentOrder.set(adornments.globe, 2);
-adornmentOrder.set(adornments.reloadRequired, 3);
+adornmentOrder.set(adornments.reload, 3);
 adornmentOrder.set(adornments.advanced, 4);
 
 //#region select options
@@ -165,13 +165,13 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   removeShareTrackingParamSites: {
     type: "select",
@@ -179,14 +179,14 @@ export const featInfo = {
     options: options.siteSelection,
     default: "all",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   fixSpacing: {
     type: "toggle",
     category: "layout",
     default: true,
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   thumbnailOverlayBehavior: {
     type: "select",
@@ -205,13 +205,13 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   thumbnailOverlayShowIndicator: {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   thumbnailOverlayIndicatorOpacity: {
     type: "slider",
@@ -222,7 +222,7 @@ export const featInfo = {
     default: 40,
     unit: "%",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   thumbnailOverlayImageFit: {
     type: "select",
@@ -234,7 +234,7 @@ export const featInfo = {
     ],
     default: "cover",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   hideCursorOnIdle: {
     type: "toggle",
@@ -261,13 +261,13 @@ export const featInfo = {
     category: "layout",
     default: true,
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   showVotes: {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   // archived idea for future version
   // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
@@ -280,7 +280,7 @@ export const featInfo = {
   //     { value: "blueGray", label: t("vote_ratio_blue_gray") },
   //   ],
   //   default: "disabled",
-  //   textAdornment: adornments.reloadRequired,
+  //   textAdornment: adornments.reload,
   // },
 
   //#region cat:volume
@@ -288,7 +288,7 @@ export const featInfo = {
     type: "toggle",
     category: "volume",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   volumeSliderSize: {
     type: "number",
@@ -298,7 +298,7 @@ export const featInfo = {
     step: 5,
     default: 150,
     unit: "px",
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   volumeSliderStep: {
     type: "slider",
@@ -307,7 +307,7 @@ export const featInfo = {
     max: 25,
     default: 2,
     unit: "%",
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   volumeSliderScrollStep: {
     type: "slider",
@@ -316,21 +316,21 @@ export const featInfo = {
     max: 25,
     default: 4,
     unit: "%",
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   volumeSharedBetweenTabs: {
     type: "toggle",
     category: "volume",
     default: false,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   setInitialTabVolume: {
     type: "toggle",
     category: "volume",
     default: false,
     textAdornment: () => getFeature("volumeSharedBetweenTabs")
-      ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
-      : adornments.reloadRequired(),
+      ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+      : adornments.reload(),
   },
   initialTabVolumeLevel: {
     type: "slider",
@@ -341,8 +341,8 @@ export const featInfo = {
     default: 100,
     unit: "%",
     textAdornment: () => getFeature("volumeSharedBetweenTabs")
-      ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
-      : adornments.reloadRequired(),
+      ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+      : adornments.reload(),
     reloadRequired: false,
     enable: noop,
   },
@@ -352,13 +352,13 @@ export const featInfo = {
     type: "toggle",
     category: "songLists",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   deleteFromQueueButton: {
     type: "toggle",
     category: "songLists",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   listButtonsPlacement: {
     type: "select",
@@ -369,19 +369,19 @@ export const featInfo = {
     ],
     default: "everywhere",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   scrollToActiveSongBtn: {
     type: "toggle",
     category: "songLists",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   clearQueueBtn: {
     type: "toggle",
     category: "songLists",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
 
   //#region cat:behavior
@@ -389,7 +389,7 @@ export const featInfo = {
     type: "toggle",
     category: "behavior",
     default: false,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   closeToastsTimeout: {
     type: "number",
@@ -407,14 +407,14 @@ export const featInfo = {
     category: "behavior",
     default: true,
     helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   rememberSongTimeSites: {
     type: "select",
     category: "behavior",
     options: options.siteSelection,
     default: "all",
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   rememberSongTimeDuration: {
     type: "number",
@@ -498,7 +498,7 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   numKeysSkipToTime: {
     type: "toggle",
@@ -511,7 +511,7 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   autoLikeChannelToggleBtn: {
     type: "toggle",
@@ -527,7 +527,7 @@ export const featInfo = {
   //   type: "toggle",
   //   category: "input",
   //   default: false,
-  //   textAdornment: adornments.reloadRequired,
+  //   textAdornment: adornments.reload,
   // },
   autoLikeTimeout: {
     type: "slider",
@@ -562,7 +562,7 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   errorOnLyricsNotFound: {
     type: "toggle",
@@ -651,27 +651,27 @@ export const featInfo = {
     options: options.siteSelectionOrNone,
     default: "all",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   sponsorBlockIntegration: {
     type: "toggle",
     category: "integrations",
     default: true,
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   themeSongIntegration: {
     type: "toggle",
     category: "integrations",
     default: false,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   themeSongLightness: {
     type: "select",
     category: "integrations",
     options: options.colorLightness,
     default: "darker",
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
 
   //#region cat:plugins
@@ -690,7 +690,7 @@ export const featInfo = {
     step: 0.1,
     unit: "s",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
 
   //#region cat:general
@@ -699,20 +699,20 @@ export const featInfo = {
     category: "general",
     options: options.locale,
     default: getPreferredLocale(),
-    textAdornment: () => combineAdornments([adornments.globe, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
   },
   localeFallback: {
     type: "toggle",
     category: "general",
     default: true,
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   versionCheck: {
     type: "toggle",
     category: "general",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   checkVersionNow: {
     type: "button",
@@ -752,13 +752,13 @@ export const featInfo = {
     category: "general",
     default: true,
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   resetConfig: {
     type: "button",
     category: "general",
     click: promptResetConfig,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   logLevel: {
     type: "select",
@@ -768,7 +768,7 @@ export const featInfo = {
       { value: 1, label: t("log_level_info") },
     ],
     default: 1,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.reload,
   },
   advancedMode: {
     type: "toggle",
