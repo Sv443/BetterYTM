@@ -239,10 +239,24 @@ export function copyToClipboard(text: Stringifiable) {
 
 let ttPolicy: TTPolicy | undefined;
 
-DOMPurify.addHook("afterSanitizeAttributes", function (node) {
-  if("target" in node) {
-    node.setAttribute("target", "_blank");
-    node.setAttribute("rel", "noopener noreferrer");
+// workaround for supporting `target="_blank"` links without compromising security:
+const tempTargetAttrName = `data-tmp-target-${randomId(6, 36)}`;
+
+DOMPurify.addHook("beforeSanitizeAttributes", (node) => {
+  if(node.tagName === "A") {
+    if(!node.hasAttribute("target"))
+      node.setAttribute("target", "_self");
+    if(node.hasAttribute("target"))
+      node.setAttribute(tempTargetAttrName, node.getAttribute("target")!);
+  }
+});
+
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if(node.tagName === "A" && node.hasAttribute(tempTargetAttrName)) {
+    node.setAttribute("target", node.getAttribute(tempTargetAttrName)!);
+    node.removeAttribute(tempTargetAttrName);
+    if(node.getAttribute("target") === "_blank")
+      node.setAttribute("rel", "noopener noreferrer");
   }
 });
 
@@ -256,5 +270,6 @@ export function setInnerHtml(element: HTMLElement, html: string) {
     });
   }
 
-  element.innerHTML = ttPolicy?.createHTML(html) ?? DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
+  element.innerHTML = ttPolicy?.createHTML(html)
+    ?? DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
 }
