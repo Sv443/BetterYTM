@@ -15,17 +15,17 @@
 ### Features:
 All of these can be toggled and configured in the configuration menu.
 - Layout & User Experience:
-  - Auto-like your favorite channels' songs and videos
-  - Show the amount of likes and dislikes on songs (powered by returnyoutubedislike.com)
+  - Show the approximate amount of likes and dislikes on songs (powered by returnyoutubedislike.com)
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
-  - Set a custom size and step resolution for the volume slider and show a percentage label next to it
-  - Improvements to clickability of song titles and thumbnails when wanting to open them in a new tab
-  - Remember the time of the last played song to resume playback after reloading or reopening the tab
   - Quickly scroll to the currently active song in the queue by clicking a button
+  - Set a custom size and step resolution for the volume slider and show a percentage label next to it
+  - Remember the time of the last played song to resume playback after reloading or reopening the tab
+  - Improve clickability of song titles and thumbnails when wanting to open them in a new tab
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
 - Input / Interaction:
+  - Auto-like songs and videos of your favorite creators on both YouTube and YouTube Music
   - Use arrow keys to skip forward or backward by a configurable amount of time
   - Press number keys to skip to a percentage of the currently playing song
   - Press a hotkey on a video/song to switch between YouTube and YouTube Music, while keeping the video time
@@ -36,7 +36,7 @@ All of these can be toggled and configured in the configuration menu.
 <br>
 
 To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
-If you disabled the watermark, you can still click your avatar in the top right corner on YTM or open the left sidebar on YT to open it.  
+If you disabled the watermark, you can still open it by clicking your avatar in the top right corner on YTM or through the left sidebar on YT.  
   
 My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
 

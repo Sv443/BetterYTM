@@ -4,7 +4,7 @@ BetterYTM integrates with other extensions and tools to provide a smoother exper
   - BYTM has a plugin system that allows users to write their own userscripts to extend the functionality of BYTM and benefit from its APIs
 - [Dark Reader](https://darkreader.org/)
   - BYTM disables the extension entirely in YTM because the site doesn't even have a light theme
-  - Dark Reader is disabled for some elements, as it breaks BYTM's precise styling
+  - Dark Reader is also explicitly disabled for some elements, as it breaks BYTM's precise styling
 - [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube)
   - BYTM integrates the set theme in its own UI elements on YT
 - [Return YouTube Dislike](https://returnyoutubedislike.com/)
