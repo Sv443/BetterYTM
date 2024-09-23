@@ -239,6 +239,13 @@ export function copyToClipboard(text: Stringifiable) {
 
 let ttPolicy: TTPolicy | undefined;
 
+DOMPurify.addHook("afterSanitizeAttributes", function (node) {
+  if("target" in node) {
+    node.setAttribute("target", "_blank");
+    node.setAttribute("rel", "noopener noreferrer");
+  }
+});
+
 /** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
 export function setInnerHtml(element: HTMLElement, html: string) {
   if(!ttPolicy && window?.trustedTypes?.createPolicy) {
