@@ -267,7 +267,7 @@
     "feature_desc_setInitialTabVolume": "साइट खोलने पर वॉल्यूम स्तर को एक विशिष्ट मान पर सेट करें",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "यह सुविधा \"टैब के बीच साझा वॉल्यूम स्तर\" सुविधा के साथ असंगत है और साझा वॉल्यूम सुविधा का उपयोग करते समय नजरअंदाज किया जाएगा!",
     "feature_desc_initialTabVolumeLevel": "साइट खोलने पर वॉल्यूम स्तर को सेट करने के लिए मान",
-  
+
     "feature_desc_lyricsQueueButton": "प्रत्येक गीत में एक बटन जोड़ें जो इसके बोल वेबपृष्ठ को खोलता है",
     "feature_desc_deleteFromQueueButton": "प्रत्येक गीत में एक बटन जोड़ें जो इसे त्वरित रूप से कतार से हटाता है",
     "feature_desc_listButtonsPlacement": "कतार में बटन कहाँ दिखाएं?",

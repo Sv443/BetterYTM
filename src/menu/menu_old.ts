@@ -218,9 +218,9 @@ async function mountCfgMenu() {
           let newData = JSON.parse(JSON.stringify(parsed.data));
           const sortedMigrations = Object.entries(migrations)
             .sort(([a], [b]) => Number(a) - Number(b));
-  
+
           let curFmtVer = Number(parsed.formatVersion);
-  
+
           for(const [fmtVer, migrationFunc] of sortedMigrations) {
             const ver = Number(fmtVer);
             if(curFmtVer < formatVersion && curFmtVer < ver) {
@@ -239,9 +239,9 @@ async function mountCfgMenu() {
         }
         else if(parsed.formatVersion !== formatVersion)
           return await showPrompt({ type: "alert", message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
-  
+
         await setFeatures({ ...getFeatures(), ...parsed.data });
-  
+
         if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
           disableBeforeUnload();
           return location.reload();
@@ -891,7 +891,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
   clearTimeout(hiddenCopiedTxtTimeout);
-  
+
   openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
   setCurrentDialogId(openDialogs?.[0] ?? null);
 
@@ -942,7 +942,7 @@ export async function openCfgMenu() {
 function checkToggleScrollIndicator() {
   const featuresCont = document.querySelector<HTMLElement>("#bytm-menu-opts");
   const scrollIndicator = document.querySelector<HTMLElement>("#bytm-menu-scroll-indicator");
-  
+
   // disable scroll indicator if container doesn't scroll
   if(featuresCont && scrollIndicator) {
     const verticalScroll = isScrollable(featuresCont).vertical;

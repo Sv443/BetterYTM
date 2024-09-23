@@ -1,4 +1,4 @@
-/** @type {import('dependency-cruiser').IConfiguration} */
+/** @type {import("dependency-cruiser").IConfiguration} */
 module.exports = {
   forbidden: [
     {
@@ -125,7 +125,7 @@ module.exports = {
     },
 
     /* rules you might want to tweak for your specific situation: */
-    
+
     {
       name: "not-to-spec",
       comment:
@@ -220,11 +220,11 @@ module.exports = {
        module systems it knows of. It's the default because it's the safe option
        It might come at a performance penalty, though.
        moduleSystems: ['amd', 'cjs', 'es6', 'tsd']
-      
+
        As in practice only commonjs ('cjs') and ecmascript modules ('es6')
        are widely used, you can limit the moduleSystems to those.
      */
-    
+
     // moduleSystems: ['cjs', 'es6'],
 
     /* prefix for links in html and svg output (e.g. 'https://github.com/you/yourrepo/blob/main/'
@@ -238,7 +238,7 @@ module.exports = {
        "specify": for each dependency identify whether it only exists before compilation or also after
      */
     tsPreCompilationDeps: true,
-    
+
     /* list of extensions to scan that aren't javascript or compile-to-javascript.
        Empty by default. Only put extensions in here that you want to take into
        account that are _not_ parsable.
@@ -295,7 +295,7 @@ module.exports = {
        a hack.
     */
     // exoticRequireStrings: [],
-    
+
     /* options to pass on to enhanced-resolve, the package dependency-cruiser
        uses to resolve module references to disk. The values below should be
        suitable for most situations
@@ -325,7 +325,7 @@ module.exports = {
          See [this specification](https://github.com/defunctzombie/package-browser-field-spec) and
          the webpack [resolve.alias](https://webpack.js.org/configuration/resolve/#resolvealiasfields)
          documentation 
-         
+
          Defaults to an empty array (= don't use alias fields).
        */
       // aliasFields: ["browser"],

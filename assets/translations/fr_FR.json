@@ -267,7 +267,7 @@
     "feature_desc_setInitialTabVolume": "Définir le niveau de volume sur une valeur spécifique une fois lors de l'ouverture du site",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Cette fonctionnalité est incompatible avec la fonctionnalité \"Niveau de volume partagé entre les onglets\" et sera ignorée lors de l'utilisation de la fonctionnalité de volume partagé!",
     "feature_desc_initialTabVolumeLevel": "La valeur à définir pour le niveau de volume lors de l'ouverture du site",
-  
+
     "feature_desc_lyricsQueueButton": "Ajouter un bouton à chaque chanson dans une liste pour ouvrir sa page de paroles",
     "feature_desc_deleteFromQueueButton": "Ajouter un bouton à chaque chanson dans une liste pour la supprimer rapidement",
     "feature_desc_listButtonsPlacement": "Où les boutons de liste doivent-ils apparaître?",

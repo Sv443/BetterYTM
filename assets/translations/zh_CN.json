@@ -267,7 +267,7 @@
     "feature_desc_setInitialTabVolume": "打开网站时将音量级别设置为特定值",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "此功能与 \"音量级别在标签页之间共享\" 功能不兼容，将在使用共享音量功能时被忽略！",
     "feature_desc_initialTabVolumeLevel": "打开网站时将音量级别设置为的值",
-  
+
     "feature_desc_lyricsQueueButton": "在每首歌曲的列表中添加一个按钮，以打开其歌词页面",
     "feature_desc_deleteFromQueueButton": "在每首歌曲的列表中添加一个按钮，以快速删除它",
     "feature_desc_listButtonsPlacement": "列表按钮应该显示在哪里？",

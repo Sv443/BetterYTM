@@ -40,9 +40,9 @@ export async function initArrowKeySkip() {
       skipBy *= -1;
 
     log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-    
+
     const vidElem = getVideoElement();
-    
+
     if(vidElem)
       vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
   });

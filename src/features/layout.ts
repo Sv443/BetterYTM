@@ -572,13 +572,13 @@ export async function initThumbnailOverlay() {
           indicatorElem.style.display = "none";
           indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
         }
-      
+
         const thumbImgElem = document.createElement("img");
         thumbImgElem.id = "bytm-thumbnail-overlay-img";
         thumbImgElem.role = "presentation";
         thumbImgElem.ariaHidden = "true";
         thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
-      
+
         overlayElem.appendChild(thumbImgElem);
         playerEl.appendChild(overlayElem);
         indicatorElem && playerEl.appendChild(indicatorElem);
@@ -595,7 +595,7 @@ export async function initThumbnailOverlay() {
           applyThumbUrl(params.get("v")!);
           updateOverlayVisibility();
         }
-      
+
         // toggle button
         if(toggleBtnShown) {
           const toggleBtnElem = createRipple(document.createElement("a"));
@@ -603,19 +603,19 @@ export async function initThumbnailOverlay() {
           toggleBtnElem.role = "button";
           toggleBtnElem.tabIndex = 0;
           toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
-      
+
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
             invertOverlay = !invertOverlay;
             updateOverlayVisibility();
           });
-      
+
           const imgElem = document.createElement("img");
           imgElem.classList.add("bytm-generic-btn-img");
-      
+
           toggleBtnElem.appendChild(imgElem);
-      
+
           addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
             listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
           });
