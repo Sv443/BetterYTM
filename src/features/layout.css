@@ -1,5 +1,9 @@
 /* #region misc */
 
+:root {
+  --bytm-font-monospace: "Cascadia Code", "Consolas", monospace;
+}
+
 .bytm-disable-scroll {
   overflow: hidden !important;
 }

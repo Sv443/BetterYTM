@@ -74,7 +74,8 @@
 
 .bytm-auto-like-channel-id {
   cursor: text;
-  font-size: 1.1rem;
+  font-family: var(--bytm-font-monospace);
+  font-size: 1.2rem;
   color: #aaa;
   margin-left: 10px;
 }
