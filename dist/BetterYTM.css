@@ -548,7 +548,7 @@ select.bytm-ftconf-input {
   background-color: #222;
   border-radius: 3px;
   padding: 1px 5px;
-  font-family: "Cascadia Code", "Consolas", monospace;
+  font-family: var(--bytm-font-monospace);
 }
 
 .bytm-markdown-container h2 {
@@ -1550,6 +1550,10 @@ hr {
 
 /* #region misc */
 
+:root {
+  --bytm-font-monospace: "Cascadia Code", "Consolas", monospace;
+}
+
 .bytm-disable-scroll {
   overflow: hidden !important;
 }
@@ -2085,7 +2089,8 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 
 .bytm-auto-like-channel-id {
   cursor: text;
-  font-size: 1.1rem;
+  font-family: var(--bytm-font-monospace);
+  font-size: 1.2rem;
   color: #aaa;
   margin-left: 10px;
 }
