@@ -304,11 +304,20 @@ function getRequireEntry(entry: RequireObjPkg) {
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
-    for(const [locale, { userscriptDesc }] of Object.entries(locales)) {
+    for(const [locale, { userscriptDesc, ...rest }] of Object.entries(locales)) {
       let loc = locale.replace(/_/, "-");
       if(loc.length < 5)
         loc += " ".repeat(5 - loc.length);
       descriptions.push(`// @description:${loc} ${userscriptDesc}`);
+
+      if("altLocales" in rest) {
+        for(const altLoc of rest.altLocales) {
+          let alt = altLoc.replace(/_/, "-");
+          if(alt.length < 5)
+            alt += " ".repeat(5 - alt.length);
+          descriptions.push(`// @description:${alt} ${userscriptDesc}`);
+        }
+      }
     }
     return descriptions.join("\n") + "\n";
   }
