@@ -4,7 +4,7 @@
 <!-- #region 2.1.0 -->
 ## 2.1.0
 - **Added features:**
-  - Added an experimental feature to like songs and videos of certain channels (on both sites) automatically.  
+  - Added a feature to like songs and videos of certain channels (on both sites) automatically.  
     The button to toggle auto-liking will only show up on channel pages until the next update. Please report any issues you encounter.
   - Added the ability to show the approximate amount of likes and dislikes on the currently playing song (powered by [Return YouTube Dislike](https://returnyoutubedislike.com/))
   - Added support for themes set by the [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) extension
@@ -13,8 +13,8 @@
   - Made song/video time remembering enabled by default on YT too
   - Made reset button in config menu a feature of type `button`
   - Welcome menu is now shown on YT too
-  - Added Ctrl modifier key to every lyrics button to open a lyrics search prompt
-  - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
+  - Added <kbd>Ctrl</kbd> modifier key to every lyrics button to open a lyrics search prompt
+  - Added <kbd>Shift</kbd> and <kbd>Ctrl</kbd> modifier keys to the above-queue buttons that will skip prompts or customize their behavior in other ways
   - Arrow key and number key skipping works more reliably and now also in the config menu
   - Changed default settings for some features.  
     After updating, if the values were unchanged from their previous default, they will automatically have the new default value:
@@ -44,7 +44,7 @@
   - Fixed thumbnail overlay not updating in fullscreen mode and in the mini player
   - Fixed video time restoring breaking after pausing for a longer time
   - Fixed toasts being shown with a 1000x higher duration than intended
-  - Fixed volume slider features not working on the reduced size layout for screens with <1150px width
+  - Fixed volume slider features not working anymore when display width shrinks to below 1150px
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
@@ -70,7 +70,7 @@
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
-    - `createRipple()` to create a click ripple animation effect on a given element (experimental)
+    - `createRipple()` to create a click ripple animation effect on a given element
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
     - `showPrompt()` to show a styled dialog that replaces the `confirm()`, `alert()` and `prompt()` functions
