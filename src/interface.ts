@@ -188,8 +188,8 @@ export function initInterface() {
 
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
 export function setGlobalProp<
-  TKey extends keyof Window["BYTM"],
-  TValue = Window["BYTM"][TKey],
+  TKey extends keyof BytmObject,
+  TValue = BytmObject[TKey],
 >(
   key: TKey | (string & {}),
   value: TValue,
