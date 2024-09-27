@@ -4,14 +4,37 @@
 // @version           2.1.0
 // @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en    Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-CA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-AU Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:en-UK Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es    Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es-MX Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
 // @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr    Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CA Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-BE Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CH Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-LU Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
 // @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi    YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi-NP YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
 // @description:ja-JA YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:ja    YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
 // @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt    Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt-PT Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
 // @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh    YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-only
@@ -164,7 +187,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "greasyfork";
-    const buildNumberRaw = "45ec6f0c";
+    const buildNumberRaw = "18ad9821";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -1301,6 +1324,11 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"de",
+    		"de_AT",
+    		"de_CH"
     	]
     };
     var en_US = {
@@ -1310,6 +1338,12 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"en",
+    		"en_CA",
+    		"en_GB",
+    		"en_AU"
     	]
     };
     var en_UK = {
@@ -1328,6 +1362,10 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"es",
+    		"es_MX"
     	]
     };
     var fr_FR = {
@@ -1337,6 +1375,13 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"fr",
+    		"fr_CA",
+    		"fr_BE",
+    		"fr_CH",
+    		"fr_LU"
     	]
     };
     var hi_IN = {
@@ -1346,6 +1391,10 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"hi",
+    		"hi_NP"
     	]
     };
     var ja_JA = {
@@ -1355,6 +1404,10 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"ja",
+    		"ja_JP"
     	]
     };
     var pt_BR = {
@@ -1364,6 +1417,10 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"pt",
+    		"pt_PT"
     	]
     };
     var zh_CN = {
@@ -1373,6 +1430,11 @@ I welcome every contribution on GitHub!
     	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
     	authors: [
     		"Sv443"
+    	],
+    	altLocales: [
+    		"zh",
+    		"zh_TW",
+    		"zh_HK"
     	]
     };
     var langMapping = {
@@ -1558,7 +1620,7 @@ I welcome every contribution on GitHub!
     }
     //#region resources
     /**
-     * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
+     * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
      * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
      */
     async function getResourceUrl(name) {
