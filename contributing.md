@@ -215,6 +215,17 @@ The main files you will be working with are:
     The final locale code should be in the format `languageCode_localeCode` (e.g. `en_US`, `en_UK`, ...)
   2. Add a translation file for the locale by following the instructions in the [translations section](#adding-translations-for-a-new-language)
   3. Your locale will be immediately available in the userscript after the next build.
+- Creating a release:
+  1. Make sure the version in `package.json` is bumped according to [semantic versioning](https://semver.org/)
+  2. Run `pnpm i` so the version is updated in the lockfile
+  3. Update the `changelog.md` with the new version and an exhaustive list of changes that were made
+  4. Make sure all files are committed before the built userscript is, so the next build will have the correct build number
+  5. Run `pnpm run build-prod` to build the userscript for all hosts
+  6. Commit and push the built files
+  7. Create a new release on GitHub with a tag that follows the format of the previous releases, a copy of the relevant section in the changelog and an install button that points to the built userscript on GitHub (make sure it uses the version tag in its URL to ensure the correct version is installed)
+  8. Update the userscript on GreasyFork and OpenUserJS from the built files  
+    GreasyFork also needs the relevant section of the changelog, but the internal and plugin changes should be trimmed out
+  9. Send an announcement in the Discord server linking to the install pages and the changelog, with a summary of the most important changes
 
 
 <br><br><br>
