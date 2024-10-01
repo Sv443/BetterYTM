@@ -302,7 +302,7 @@ export async function getChangelogHtmlWithDetails() {
 
     const getVerId = (verStr: string) => verStr.trim().replace(/[._#\s-]/g, "");
 
-    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\" tabindex=\"0\">");
+    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
 
     const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
     for(const match of h2Matches) {
@@ -313,7 +313,7 @@ export async function getChangelogHtmlWithDetails() {
       changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
     }
 
-    changelogHtml = `<details class="bytm-changelog-version-details" tabindex="0">${changelogHtml}</details>`;
+    changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
 
     return changelogHtml;
   }
