@@ -187,7 +187,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "openuserjs";
-    const buildNumberRaw = "df3b8045";
+    const buildNumberRaw = "e7e974e6";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -1696,7 +1696,7 @@ I welcome every contribution on GitHub!
             const changelogMd = await getChangelogMd();
             let changelogHtml = await parseMarkdown(changelogMd);
             const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
-            changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\" tabindex=\"0\">");
+            changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
             const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
             for (const match of h2Matches) {
                 const [fullMatch, , verStr] = match;
@@ -1705,7 +1705,7 @@ I welcome every contribution on GitHub!
                 const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
                 changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
             }
-            changelogHtml = `<details class="bytm-changelog-version-details" tabindex="0">${changelogHtml}</details>`;
+            changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
             return changelogHtml;
         }
         catch (err) {
