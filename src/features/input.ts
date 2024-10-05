@@ -342,6 +342,8 @@ export async function initAutoLike() {
 async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null, extraClasses?: string[]) {
   const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
 
+  log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
+
   siteEvents.on("autoLikeChannelsUpdated", () => {
     const buttonEl = document.querySelector<HTMLElement>(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
     if(!buttonEl)

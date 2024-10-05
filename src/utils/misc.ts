@@ -106,14 +106,14 @@ export function parseChannelIdFromUrl(url: string | URL) {
 /** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
 export function sanitizeChannelId(channelId: string) {
   channelId = String(channelId).trim();
-  return isValidChannelId(channelId)
+  return isValidChannelId(channelId) || channelId.startsWith("@")
     ? channelId
     : `@${channelId}`;
 }
 
-/** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
+/** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
 export function isValidChannelId(channelId: string) {
-  return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
+  return channelId.match(/^(UC|@)[\w-]+$/) !== null;
 }
 
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
