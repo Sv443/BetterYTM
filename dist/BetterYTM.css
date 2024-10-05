@@ -2090,7 +2090,7 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 .bytm-auto-like-channel-id {
   cursor: text;
   font-family: var(--bytm-font-monospace);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: #aaa;
   margin-left: 10px;
 }

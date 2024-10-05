@@ -91,7 +91,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@typescript-eslint/utils": "^8.0.0",
-    "concurrently": "^8.2.2",
+    "concurrently": "^9.0.1",
     "dependency-cruiser": "^16.3.10",
     "dotenv": "^16.4.5",
     "eslint": "^9.5.0",
