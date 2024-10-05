@@ -23,7 +23,7 @@ function getOutputFileName(suffix) {
   return `BetterYTM${suffix ?? ""}.user.js`;
 }
 
-export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async () => {
+export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async () => {
   const passCliArgs = {
     mode: args["config-mode"] ?? (process.env.NODE_ENV === "production" ? "production" : "development"),
     branch: args["config-branch"] ?? "develop",
