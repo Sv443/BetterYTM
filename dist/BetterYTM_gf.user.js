@@ -187,7 +187,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "greasyfork";
-    const buildNumberRaw = "e7e974e6";
+    const buildNumberRaw = "0c02b8e0";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -1533,13 +1533,13 @@ I welcome every contribution on GitHub!
     /** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
     function sanitizeChannelId(channelId) {
         channelId = String(channelId).trim();
-        return isValidChannelId(channelId)
+        return isValidChannelId(channelId) || channelId.startsWith("@")
             ? channelId
             : `@${channelId}`;
     }
-    /** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
+    /** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
     function isValidChannelId(channelId) {
-        return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
+        return channelId.match(/^(UC|@)[\w-]+$/) !== null;
     }
     /** Returns the thumbnail URL for a video with either a given quality identifier or index */
     function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
@@ -2530,7 +2530,7 @@ I welcome every contribution on GitHub!
     	"@typescript-eslint/eslint-plugin": "^8.0.0",
     	"@typescript-eslint/parser": "^8.0.0",
     	"@typescript-eslint/utils": "^8.0.0",
-    	concurrently: "^8.2.2",
+    	concurrently: "^9.0.1",
     	"dependency-cruiser": "^16.3.10",
     	dotenv: "^16.4.5",
     	eslint: "^9.5.0",
@@ -4937,6 +4937,7 @@ I welcome every contribution on GitHub!
     async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
         var _a;
         const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
+        log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
         siteEvents.on("autoLikeChannelsUpdated", () => {
             var _a, _b;
             const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
