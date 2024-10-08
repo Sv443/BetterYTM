@@ -10,7 +10,7 @@
   "css-vol_slider_size": "style/volSliderSize.css",
   "doc-changelog": {
     "path": "/changelog.md?u=$UUID",
-    "ref": "main"
+    "ref": "$BRANCH"
   },
   "font-cascadia_code_ttf": "fonts/CascadiaCode.ttf",
   "font-cascadia_code_woff": "fonts/CascadiaCode.woff",
