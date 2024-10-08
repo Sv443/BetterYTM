@@ -234,8 +234,11 @@ async function exists(path: string) {
   }
 }
 
-/** Resolves the value of a GitHub ref */
-function resolveRef(refVal: string, buildNbr: string) {
+/** Resolves the value of an entry in resources.json */
+function resolveVal(value: string, buildNbr: string) {
+  if(!value.includes("$"))
+    return value;
+
   const replacements = [
     ["\\$MODE", mode],
     ["\\$BRANCH", branch],
@@ -244,7 +247,7 @@ function resolveRef(refVal: string, buildNbr: string) {
     ["\\$UUID", buildUuid],
   ];
 
-  return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), refVal);
+  return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), value);
 };
 
 /** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
@@ -257,8 +260,8 @@ async function getResourceDirectives(ref: string) {
     const resourcesRef = Object.entries(resources).reduce<Record<string, Record<"path" | "ref", string>>>((acc, [key, val]) => {
       acc[key] = {
         ...(typeof val === "object"
-          ? { path: val.path, ref: resolveRef(val.ref, ref) }
-          : { path: getResourceUrl(val, ref), ref }
+          ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref) }
+          : { path: getResourceUrl(resolveVal(val, ref), ref), ref }
         ),
       };
       return acc;
