@@ -1,6 +1,6 @@
 import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp } from "@sv443-network/userutils";
 import { disableBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, getVideoTime, info, log, t } from "./utils/index.js";
+import { compressionSupported, error, getVideoTime, info, log, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -9,7 +9,7 @@ import type { FeatureConfig, FeatureKey, NumberLength } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 8;
+export const formatVersion = 9;
 
 export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   // @ts-ignore
@@ -116,6 +116,13 @@ export const migrations: DataMigrationsDict = {
     }
     return useDefaultConfig(oldData, [
       "autoLikeChannels"
+    ]);
+  },
+  // 8 -> 9 (v2.2)
+  9: (oldData: FeatureConfig) => {
+    oldData.locale = oldData.locale.replace("_", "-") as TrLocale;
+    return useDefaultConfig(oldData, [
+      "autoLikePlayerBarToggleBtn",
     ]);
   },
 } as const satisfies DataMigrationsDict;

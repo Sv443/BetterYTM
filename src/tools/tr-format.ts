@@ -12,11 +12,11 @@ const includeBased = Boolean(process.argv.find((v) => v.match(/--include-based/)
 
 async function run() {
   console.log("\nReformatting translation files...");
-  const en_US = await readFile("./assets/translations/en_US.json", "utf-8");
-  const en_US_obj = JSON.parse(en_US);
+  const enUS = await readFile("./assets/translations/en-US.json", "utf-8");
+  const enUS_obj = JSON.parse(enUS);
 
   const localeKeysRaw = Object.keys(locales) as TrLocale[];
-  const localeKeys = localeKeysRaw.filter((key) => key !== "en_US") as Exclude<TrLocale, "en_US">[];
+  const localeKeys = localeKeysRaw.filter((key) => key !== "en-US") as Exclude<TrLocale, "en-US">[];
 
   let reformattedAmt = 0;
 
@@ -24,21 +24,21 @@ async function run() {
     if(onlyLocales && !onlyLocales.includes(locale))
       continue;
 
-    // use en_US as base, replace values with values from locale file
+    // use en-US as base, replace values with values from locale file
 
-    let localeFile = en_US;
+    let localeFile = enUS;
     const localeObj = JSON.parse(await readFile(`./assets/translations/${locale}.json`, "utf-8"));
 
     if(!includeBased && localeObj.base)
       continue;
 
-    for(const k of Object.keys(en_US_obj.translations)) {
+    for(const k of Object.keys(enUS_obj.translations)) {
       const val = localeObj?.translations?.[k];
       if(val)
         localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(val).trim()}"`);
       else {
         if(prepTranslate)
-          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n    "${k}": "",\n    "${k}": "${escapeJsonVal(en_US_obj.translations[k]).trim()}",`);
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n    "${k}": "",\n    "${k}": "${escapeJsonVal(enUS_obj.translations[k]).trim()}",`);
         else
           localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
       }

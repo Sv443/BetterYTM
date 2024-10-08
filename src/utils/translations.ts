@@ -5,7 +5,7 @@ import { getFeature } from "../config.js";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import langMapping from "../../assets/locales.json" with { type: "json" };
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import tr_enUS from "../../assets/translations/en_US.json";
+import tr_enUS from "../../assets/translations/en-US.json";
 
 export type TrLocale = keyof typeof langMapping;
 export type TrKey = keyof (typeof tr_enUS["translations"]);
@@ -27,7 +27,7 @@ export async function initTranslations(locale: TrLocale) {
     let fallbackTrans: Partial<typeof tr_enUS> = {};
 
     if(getFeature("localeFallback"))
-      fallbackTrans = await fetchLocaleJson("en_US");
+      fallbackTrans = await fetchLocaleJson("en-US");
 
     // merge with base translations if specified
     const baseTransFile = transFile.base ? await fetchLocaleJson(transFile.base) : undefined;
