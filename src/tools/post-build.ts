@@ -234,6 +234,19 @@ async function exists(path: string) {
   }
 }
 
+/** Resolves the value of a GitHub ref */
+function resolveRef(refVal: string, buildNbr: string) {
+  const replacements = [
+    ["\\$MODE", mode],
+    ["\\$BRANCH", branch],
+    ["\\$HOST", host],
+    ["\\$BUILD_NUMBER", buildNbr],
+    ["\\$UUID", buildUuid],
+  ];
+
+  return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), refVal);
+};
+
 /** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
 async function getResourceDirectives(ref: string) {
   try {
@@ -244,7 +257,7 @@ async function getResourceDirectives(ref: string) {
     const resourcesRef = Object.entries(resources).reduce<Record<string, Record<"path" | "ref", string>>>((acc, [key, val]) => {
       acc[key] = {
         ...(typeof val === "object"
-          ? { path: val.path, ref: val.ref }
+          ? { path: val.path, ref: resolveRef(val.ref, ref) }
           : { path: getResourceUrl(val, ref), ref }
         ),
       };
@@ -262,12 +275,12 @@ async function getResourceDirectives(ref: string) {
 
     const sortedResourceEntries = Object.entries(resourcesRef).sort(([a], [b]) => a.localeCompare(b));
 
-    for(const [name, { path, ref }] of sortedResourceEntries) {
+    for(const [name, { path, ref: entryRef }] of sortedResourceEntries) {
       const bufferSpace = " ".repeat(longestName - name.length);
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
-          : getResourceUrl(path, ref)
+          : getResourceUrl(path, entryRef, ref === entryRef)
       }`);
     }
 
@@ -340,14 +353,16 @@ function getLocalizedDescriptions() {
  * Returns the full URL for a given resource path, based on the current mode and branch
  * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
  * @param ghRef The current build number (last shortened or full-length Git commit SHA1), branch name or tag name to use when fetching the resource when the asset source is GitHub
+ * @param useTagInProd Whether to use the tag name in production mode (true, default) or the branch name (false)
  */
-function getResourceUrl(path: string, ghRef: string) {
+function getResourceUrl(path: string, ghRef: string, useTagInProd = true) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
+  console.log("getResourceUrl", assetSource, path, ghRef);
   return assetSource === "local"
     ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUuid}`
-    : `https://raw.githubusercontent.com/${repo}/${mode === "development" ? ghRef : `v${pkg.version}`}${assetPath}${path}`;
+    : `https://raw.githubusercontent.com/${repo}/${mode === "development" || !useTagInProd ? ghRef : `v${pkg.version}`}${assetPath}${path}`;
 }
 
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
