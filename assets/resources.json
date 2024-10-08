@@ -8,7 +8,10 @@
   "css-fix_sponsorblock": "style/fixSponsorBlock.css",
   "css-show_votes": "style/showVotes.css",
   "css-vol_slider_size": "style/volSliderSize.css",
-  "doc-changelog": "/changelog.md",
+  "doc-changelog": {
+    "path": "/changelog.md",
+    "ref": "develop"
+  },
   "font-cascadia_code_ttf": "fonts/CascadiaCode.ttf",
   "font-cascadia_code_woff": "fonts/CascadiaCode.woff",
   "font-cascadia_code_woff2": "fonts/CascadiaCode.woff2",

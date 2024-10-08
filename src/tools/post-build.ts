@@ -235,29 +235,39 @@ async function exists(path: string) {
 }
 
 /** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
-async function getResourceDirectives(buildNbr: string) {
+async function getResourceDirectives(ref: string) {
   try {
     const directives: string[] = [];
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
-    const resources = JSON.parse(resourcesFile) as Record<string, string>;
+    const resources = JSON.parse(resourcesFile) as Record<string, string> | Record<string, { path: string; buildNbr: string }>;
 
-    resources["css-bundle"] = getResourceUrl("/dist/BetterYTM.css", buildNbr);
+    const resourcesRef = Object.entries(resources).reduce<Record<string, Record<"path" | "ref", string>>>((acc, [key, val]) => {
+      acc[key] = {
+        ...(typeof val === "object"
+          ? { path: val.path, ref: val.ref }
+          : { path: getResourceUrl(val, ref), ref }
+        ),
+      };
+      return acc;
+    }, {}) as Record<string, Record<"path" | "ref", string>>;
+
+    resourcesRef["css-bundle"] = { path: getResourceUrl("/dist/BetterYTM.css", ref), ref };
 
     for(const [locale] of Object.entries(locales))
-      resources[`trans-${locale}`] = `translations/${locale}.json`;
+      resourcesRef[`trans-${locale}`] = { path: getResourceUrl(`translations/${locale}.json`, ref), ref };
 
     let longestName = 0;
-    for(const name of Object.keys(resources))
+    for(const name of Object.keys(resourcesRef))
       longestName = Math.max(longestName, name.length);
 
-    const sortedResourceEntries = Object.entries(resources).sort(([a], [b]) => a.localeCompare(b));
+    const sortedResourceEntries = Object.entries(resourcesRef).sort(([a], [b]) => a.localeCompare(b));
 
-    for(const [name, path] of sortedResourceEntries) {
+    for(const [name, { path, ref }] of sortedResourceEntries) {
       const bufferSpace = " ".repeat(longestName - name.length);
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
-          : getResourceUrl(path, buildNbr)
+          : getResourceUrl(path, ref)
       }`);
     }
 
@@ -329,15 +339,15 @@ function getLocalizedDescriptions() {
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
  * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
- * @param buildNbr The current build number (last shortened or full-length Git commit SHA1)
+ * @param ghRef The current build number (last shortened or full-length Git commit SHA1), branch name or tag name to use when fetching the resource when the asset source is GitHub
  */
-function getResourceUrl(path: string, buildNbr: string) {
+function getResourceUrl(path: string, ghRef: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
   return assetSource === "local"
     ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUuid}`
-    : `https://raw.githubusercontent.com/${repo}/${mode === "development" ? buildNbr : `v${pkg.version}`}${assetPath}${path}`;
+    : `https://raw.githubusercontent.com/${repo}/${mode === "development" ? ghRef : `v${pkg.version}`}${assetPath}${path}`;
 }
 
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
