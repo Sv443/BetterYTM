@@ -5,13 +5,18 @@
 ## 2.2.0
 - **Fixes:**
   - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
+  - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
 
-<!-- <details><summary>Click to expand internal and plugin changes</summary>
-</details> -->
+<details><summary>Click to expand internal and plugin changes</summary>
 
-<!-- <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/76" rel="noopener noreferrer">See pull request for more info</a>
-</div> -->
+- **Plugin Changes:**  
+  - Since locale codes now have the correct format, all plugins now need to use the format `xx-YY` as well
+
+</details>
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/114" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>
