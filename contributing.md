@@ -36,16 +36,16 @@ Before submitting a translation, please check on [this document](https://github.
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**  
   
 To submit a translation, please follow these steps:
-1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
-2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to  
-  You can find lists of [ISO 639-1 alpha-2 language codes here](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes#Table) and [ISO 3166-1 alpha-2 country codes here.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)  
-  The final locale code should be in the format `languageCode_localeCode` (e.g. `en_US`, `en_UK`, ...)
+1. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
+2. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
+  You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
+  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-UK`, ...)
 3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
-  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -p -o=language_LOCALE` (see [this section](#editing-an-existing-translation) for more info).
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
 4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
-  Please duplicate the file `README-summary.md` and call it `README-summary-languageCode_localeCode.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
+  Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 5. If you want to submit a pull request with the translated file:
-    1. Duplicate the `en_US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
+    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
     2. Edit it to your translated version and keep the left side of the colon unchanged
     3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
     4. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
@@ -63,11 +63,11 @@ To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `pnpm run tr-format -p -o=language_LOCALE`, where `language_LOCALE` is the part of the file name before the `.json` extension  
-  This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en_US.json`
+3. Run the command `pnpm run tr-format -p -o=language-COUNTRY, where `language-COUNTRY` is the part of the file name before the `.json` extension  
+  This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
 5. Make sure there are no duplicate keys in the file
-6. Run the command `pnpm run tr-format -o=language_LOCALE` to make sure the file is formatted correctly
+6. Run the command `pnpm run tr-format -o=language-COUNTRY` to make sure the file is formatted correctly
 7. Test for syntax errors and update translation progress with the command `pnpm run tr-progress`
 8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice)
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [this section](#setting-up-the-project-for-local-development)
@@ -130,11 +130,11 @@ To edit an existing translation, please follow these steps:
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
   Will also be run automatically after every script build.
 - **`pnpm run tr-format <arguments>`**  
-  Reformats all translation files so they match that of the base file `en_US.json`  
+  Reformats all translation files so they match that of the base file `en-US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
-  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr_FR,de_DE"` or `-o="pt_BR"`)
+  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr-FR,de-DE"` or `-o="pt-BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
 - **`pnpm run tr-prep`**  
   Shorthand for `pnpm run tr-format --prep` (see above)
@@ -211,8 +211,8 @@ The main files you will be working with are:
 - Adding a locale (language & regional dialect):
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.  
-    You can find lists of [ISO 639-1 alpha-2 language codes here](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes#Table) and [ISO 3166-1 alpha-2 country codes here.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)  
-    The final locale code should be in the format `languageCode_localeCode` (e.g. `en_US`, `en_UK`, ...)
+    You can find [a list of BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
+    The final locale code should be in the format `language-COUNTRY` (e.g. `en-US`, `en-UK`, ...)
   2. Add a translation file for the locale by following the instructions in the [translations section](#adding-translations-for-a-new-language)
   3. Your locale will be immediately available in the userscript after the next build.
 - Creating a release:
@@ -480,8 +480,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     version: "4.2.0",                               // required
 >     iconUrl: "https://picsum.photos/128/128",       // required
 >     description: { // required
->       en_US: "This plugin does cool stuff",      // required
->       de_DE: "Dieses Plugin macht coole Sachen", // (all other locales are optional)
+>       "en-US": "This plugin does cool stuff",      // required
+>       "de-DE": "Dieses Plugin macht coole Sachen", // (all other locales are optional)
 >       // (see all supported locale codes in "assets/locales.json")
 >     },
 >     license: { // (optional)
@@ -949,7 +949,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.setLocale(myToken, "en_UK");
+> unsafeWindow.BYTM.setLocale(myToken, "en-UK");
 > ```
 > </details>
 
@@ -967,11 +967,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.getLocale(); // "en_US"
+> unsafeWindow.BYTM.getLocale(); // "en-US"
 > 
-> unsafeWindow.BYTM.setLocale("en_UK");
+> unsafeWindow.BYTM.setLocale("de-DE");
 > 
-> unsafeWindow.BYTM.getLocale(); // "en_UK"
+> unsafeWindow.BYTM.getLocale(); // "de-DE"
 > ```
 > </details>
 
@@ -1015,8 +1015,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.hasKeyFor("en_UK", "lyrics_rate_limited"); // true
-> unsafeWindow.BYTM.hasKeyFor("en_UK", "some_key_that_doesnt_exist"); // false
+> unsafeWindow.BYTM.hasKeyFor("en-UK", "lyrics_rate_limited"); // true
+> unsafeWindow.BYTM.hasKeyFor("en-UK", "some_key_that_doesnt_exist"); // false
 > ```
 > </details>
 
@@ -1030,7 +1030,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Returns the translation for the provided translation key and currently set locale.  
-> To see a list of translations, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+> To see a list of translations, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > Arguments:  
 > - `translationKey` - The key of the translation to get.
@@ -1041,7 +1041,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > const customConfigMenuTitle = document.createElement("div");
 > customConfigMenuTitle.textContent = unsafeWindow.BYTM.t("config_menu_title", "My cool BYTM Plugin");
-> // translated text: "My cool BYTM Plugin - Configuration" (if locale is en_US or en_UK)
+> // translated text: "My cool BYTM Plugin - Configuration" (if locale is en-US or en-UK)
 > ```
 > </details>
 
@@ -1055,7 +1055,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Returns the translation for the provided translation key, including pluralization identifier and currently set locale.  
-> To see a list of translations, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+> To see a list of translations, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > The pluralization identifier is determined by the number of items in the second argument.  
 > It can be either "1" or "n" and will be appended to the translation key separated by a hyphen.  
@@ -1096,7 +1096,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the translation for the provided translation key and locale.  
 > Useful to get the translation for a specific locale without changing the currently set locale.  
-> To see a list of possible translation values, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+> To see a list of possible translation values, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > Arguments:  
 > - `locale` - The locale to get the translation for.
@@ -1116,7 +1116,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the translation for the provided translation key, including pluralization identifier and locale.  
 > Useful to get the translation for a specific locale without changing the currently set locale.  
-> To see a list of possible translation values, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+> To see a list of possible translation values, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > Arguments:  
 > - `locale` - The locale to get the translation for.
@@ -2042,11 +2042,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > // (underscores in numbers are ignored in JS/TS)
 > const num = 123_456_789;
 > 
-> setLocale(myToken, "de_DE");             // German's commas and dots are swapped:
+> setLocale(myToken, "de-DE");             // German's commas and dots are swapped compared to English:
 > console.log(formatNumber(num, "short")); // 123,5 Mio.
 > console.log(formatNumber(num, "long"));  // 123.456.789
 > 
-> setLocale(myToken, "hi_HI");             // In Hindi it's a bit different:
+> setLocale(myToken, "hi-IN");             // In Hindi, the separators are sometimes every two digits:
 > console.log(formatNumber(num, "long"));  // 12,34,56,789
 > ```
 > </details>

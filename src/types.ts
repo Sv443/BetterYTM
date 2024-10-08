@@ -207,11 +207,11 @@ export type PluginDefResolvable = PluginDef | { plugin: Pick<PluginDef["plugin"]
 export type PluginDef = {
   plugin: PluginInfo & {
     /**
-     * Descriptions of at least en_US and optionally any other locale supported by BYTM.  
-     * When an untranslated locale is set, the description will default to the value of en_US
+     * Descriptions of at least en-US and optionally any other locale supported by BYTM.  
+     * When an untranslated locale is set, the description will default to the value of en-US
      */
     description: Partial<Record<keyof typeof locales, string>> & {
-      en_US: string;
+      "en-US": string;
     };
     /** URL to the plugin's icon - recommended size: 48x48 to 128x128 */
     iconUrl?: string;
