@@ -49,7 +49,7 @@
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Internal Changes:**
-  - Updated the [UserUtils library](https://github.com/Sv443-Network/UserUtils) to v7.2.1
+  - Updated the [UserUtils library](https://github.com/Sv443-Network/UserUtils) to v8.0.2
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
   - Now using a single query parameter for lyrics lookup
   - Added license for plugin-related source code, see [license-for-plugins.txt](https://github.com/Sv443/BetterYTM/blob/develop/license-for-plugins.txt)
