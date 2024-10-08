@@ -1,6 +1,21 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
+<!-- #region 2.2.0 -->
+## 2.2.0
+- **Fixes:**
+  - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
+
+<!-- <details><summary>Click to expand internal and plugin changes</summary>
+</details> -->
+
+<!-- <div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/76" rel="noopener noreferrer">See pull request for more info</a>
+</div> -->
+
+<div class="split"></div>
+<br>
+
 <!-- #region 2.1.0 -->
 ## 2.1.0
 - **Added features:**
