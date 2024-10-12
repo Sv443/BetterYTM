@@ -39,7 +39,7 @@ To submit a translation, please follow these steps:
 1. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
 2. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
   You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
-  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-UK`, ...)
+  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
 3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
   If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
 4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
@@ -212,7 +212,7 @@ The main files you will be working with are:
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.  
     You can find [a list of BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
-    The final locale code should be in the format `language-COUNTRY` (e.g. `en-US`, `en-UK`, ...)
+    The final locale code should be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
   2. Add a translation file for the locale by following the instructions in the [translations section](#adding-translations-for-a-new-language)
   3. Your locale will be immediately available in the userscript after the next build.
 - Creating a release:
@@ -949,7 +949,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.setLocale(myToken, "en-UK");
+> unsafeWindow.BYTM.setLocale(myToken, "en-GB");
 > ```
 > </details>
 
@@ -1015,8 +1015,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.hasKeyFor("en-UK", "lyrics_rate_limited"); // true
-> unsafeWindow.BYTM.hasKeyFor("en-UK", "some_key_that_doesnt_exist"); // false
+> unsafeWindow.BYTM.hasKeyFor("en-GB", "lyrics_rate_limited"); // true
+> unsafeWindow.BYTM.hasKeyFor("en-GB", "some_key_that_doesnt_exist"); // false
 > ```
 > </details>
 
@@ -1041,7 +1041,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > const customConfigMenuTitle = document.createElement("div");
 > customConfigMenuTitle.textContent = unsafeWindow.BYTM.t("config_menu_title", "My cool BYTM Plugin");
-> // translated text: "My cool BYTM Plugin - Configuration" (if locale is en-US or en-UK)
+> // translated text: "My cool BYTM Plugin - Configuration" (if locale is en-US or en-GB)
 > ```
 > </details>
 
