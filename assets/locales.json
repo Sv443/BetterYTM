@@ -13,11 +13,11 @@
     "emoji": "🇺🇸",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     "authors": ["Sv443"],
-    "altLocales": ["en", "en-CA", "en-GB", "en-AU"]
+    "altLocales": ["en", "en-CA", "en-AU"]
   },
-  "en-UK": {
-    "name": "English (United Kingdom)",
-    "nameEnglish": "English (UK)",
+  "en-GB": {
+    "name": "English (Great Britain)",
+    "nameEnglish": "English (GB)",
     "emoji": "🇬🇧",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     "authors": ["Sv443"]
@@ -46,7 +46,7 @@
     "authors": ["Sv443"],
     "altLocales": ["hi", "hi-NP"]
   },
-  "ja-JA": {
+  "ja-JP": {
     "name": "日本語 (日本)",
     "nameEnglish": "Japanese",
     "emoji": "🇯🇵",

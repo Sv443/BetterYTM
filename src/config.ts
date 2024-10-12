@@ -121,8 +121,14 @@ export const migrations: DataMigrationsDict = {
   // 8 -> 9 (v2.2)
   9: (oldData: FeatureConfig) => {
     oldData.locale = oldData.locale.replace("_", "-") as TrLocale;
+    if(oldData.locale as string === "ja-JA")
+      oldData.locale = "ja-JP";
+    if(oldData.locale as string === "en-GB")
+      oldData.locale = "en-GB";
     return useDefaultConfig(oldData, [
-      "autoLikePlayerBarToggleBtn",
+      "showToastOnLyricsError",
+      // TODO(V2.2):
+      // "autoLikePlayerBarToggleBtn",
     ]);
   },
 } as const satisfies DataMigrationsDict;

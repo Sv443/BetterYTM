@@ -18,7 +18,7 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 
 <br>
 
-If a translation is based on another translation, that means the keys from the base translation file are automatically applied if they are missing. This is used for locales that are very similar to each other, such as `en-UK` and `en-US`  
+If a translation is based on another translation, that means the keys from the base translation file are automatically applied if they are missing. This is used for locales that are very similar to each other, such as `en-GB` and `en-US`  
 This means to figure out which keys are untranslated, you will need to manually check against the base translation file.
 
 <br>
