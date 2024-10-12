@@ -9,8 +9,17 @@
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
+- **Internal Changes:**
+  - Changed the locale code format to match the [BCP 47](https://tools.ietf.org/html/bcp47) standard.
+    As part of this, all `_` underscores were replaced with `-` hyphens and the following locales had their country codes corrected:
+    - `en-UK` -> `en-GB`
+    - `ja-JA` -> `ja-JP`
 - **Plugin Changes:**  
-  - Since locale codes now have the correct format, all plugins now need to use the format `xx-YY` as well
+  - Migration guide:
+    - Since locale codes now have the format `xx-YY` and two were renamed, all plugins must implement those changes
+  - Added components:
+    - `createPopper()` to create an element that is attached to another element and gets shown on hover
+    - `createMultiSelect()` to create a multi-select, menu utilizing the `createPopper()` function for the dropdown menu
 
 </details>
 
