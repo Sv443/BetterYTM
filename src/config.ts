@@ -126,7 +126,6 @@ export const migrations: DataMigrationsDict = {
     if(oldData.locale as string === "en-GB")
       oldData.locale = "en-GB";
     return useDefaultConfig(oldData, [
-      "showToastOnLyricsError",
       // TODO(V2.2):
       // "autoLikePlayerBarToggleBtn",
     ]);
