@@ -7,8 +7,8 @@ import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
 import type { ResourceKey, VideoVotesObj } from "../types.js";
+import { showPrompt } from "../dialogs/prompt.js";
 import "./layout.css";
-import { showPrompt } from "src/dialogs/prompt.js";
 
 //#region cfg menu btns
 
