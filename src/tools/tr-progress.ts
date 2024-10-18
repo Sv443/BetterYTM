@@ -37,15 +37,15 @@ async function run() {
   const trs = Object.keys(translations);
   console.log(`Found ${trs.length} ${autoPlural("locale", trs)}:`, trs.join(", "));
 
-  const { en_US, ...restLocs } = translations;
+  const { "en-US": enUS, ...restLocs } = translations;
   const progress = {} as Record<TrLocale, number>;
 
   //#region progress table
 
   const progTableLines: string[] = [];
 
-  for(const [locale, translations] of Object.entries({ en_US, ...restLocs })) {
-    for(const [k] of Object.entries(en_US)) {
+  for(const [locale, translations] of Object.entries({ "en-US": enUS, ...restLocs })) {
+    for(const [k] of Object.entries(enUS)) {
       if(translations[k]) {
         if(!progress[locale as TrLocale])
           progress[locale as TrLocale] = 0;
@@ -54,7 +54,7 @@ async function run() {
     }
 
     const trKeys = progress[locale as TrLocale];
-    const origKeys = Object.keys(en_US).length;
+    const origKeys = Object.keys(enUS).length;
     const percent = Number(mapRange(trKeys, 0, origKeys, 0, 100).toFixed(1));
 
     const sym = trKeys === origKeys
@@ -68,12 +68,12 @@ async function run() {
     const baseTr = trFiles[locale as TrLocale]?.base;
 
     const keysCol = (
-      locale === "en_US"
+      locale === "en-US"
         ? `\`${origKeys}\` (default locale)`
         : `\`${trKeys}/${origKeys}\` (${percent}%)`
     );
 
-    progTableLines.push(`| ${locale === "en_US" || baseTr ? "" : sym} | [\`${locale}\`](./${locale}.json) | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : (locale === "en_US" ? "" : "─")} |`);
+    progTableLines.push(`| ${locale === "en-US" || baseTr ? "" : sym} | [\`${locale}\`](./${locale}.json) | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : (locale === "en-US" ? "" : "─")} |`);
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
   }
 
@@ -81,11 +81,11 @@ async function run() {
 
   const missingKeys = [] as string[];
 
-  for(const [locale, translations] of Object.entries({ en_US, ...restLocs })) {
+  for(const [locale, translations] of Object.entries({ "en-US": enUS, ...restLocs })) {
     const lines = [] as string[];
-    for(const [k] of Object.entries(en_US)) {
+    for(const [k] of Object.entries(enUS)) {
       if(!translations[k])
-        lines.push(`| \`${k}\` | \`${en_US[k].replace(/\n/gm, "\\n")}\` |`);
+        lines.push(`| \`${k}\` | \`${enUS[k].replace(/\n/gm, "\\n")}\` |`);
     }
     if(lines.length > 0) {
       missingKeys.push(`

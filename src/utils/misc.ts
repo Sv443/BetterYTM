@@ -239,32 +239,31 @@ export async function getResourceUrl(name: ResourceKey | "_") {
 
 /**
  * Returns the preferred locale of the user, provided it is supported by the userscript.  
- * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
+ * Prioritizes `navigator.language`, then `navigator.languages`, then `"en-US"` as a fallback.
  */
 export function getPreferredLocale(): TrLocale {
-  const navLang = navigator.language.replace(/-/g, "_");
-  const navLangs = navigator.languages
-    .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
-    .map(lang => lang.replace(/-/g, "_"));
+  const nvLang = navigator.language;
+  const nvLangs = navigator.languages
+    .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null);
 
-  if(Object.entries(langMapping).find(([key]) => key === navLang))
-    return navLang as TrLocale;
+  if(Object.entries(langMapping).find(([key]) => key === nvLang))
+    return nvLang as TrLocale;
 
-  for(const loc of navLangs) {
+  for(const loc of nvLangs) {
     if(Object.entries(langMapping).find(([key]) => key === loc))
       return loc as TrLocale;
   }
 
-  // if navigator.languages has entries that aren't locale codes in the format xx_XX
+  // if navigator.languages has entries that aren't locale codes in the format xx-XX
   if(navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
-    for(const lang of navLangs) {
+    for(const lang of nvLangs) {
       const foundLoc = Object.entries(langMapping).find(([ key ]) => key.startsWith(lang))?.[0];
       if(foundLoc)
         return foundLoc as TrLocale;
     }
   }
 
-  return "en_US";
+  return "en-US";
 }
 
 /** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
