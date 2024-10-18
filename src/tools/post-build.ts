@@ -99,6 +99,8 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
