@@ -106,8 +106,8 @@ async function init() {
 
     await initLyricsCache();
 
-    await initTranslations(features.locale ?? "en_US");
-    setLocale(features.locale ?? "en_US");
+    await initTranslations(features.locale ?? "en-US");
+    setLocale(features.locale ?? "en-US");
 
     try {
       initPlugins();

@@ -96,7 +96,7 @@ async function renderBody() {
     const descEl = document.createElement("p");
     descEl.classList.add("bytm-plugin-list-row-desc");
     descEl.tabIndex = 0;
-    descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description.en_US;
+    descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
     leftEl.appendChild(descEl);
 
     const linksList = document.createElement("div");
