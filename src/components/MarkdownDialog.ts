@@ -36,9 +36,7 @@ export class MarkdownDialog extends BytmDialog {
     const bodyEl = document.createElement("div");
     bodyEl.classList.add("bytm-md-dialog-body");
 
-    const mdCont = typeof this.opts.body === "string"
-      ? this.opts.body
-      : await consumeStringGen(this.opts.body);
+    const mdCont = await consumeStringGen(this.opts.body);
 
     const markdownEl = document.createElement("div");
     markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
