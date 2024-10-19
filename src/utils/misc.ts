@@ -194,7 +194,13 @@ export function getOS() {
 
 /** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
 export async function consumeStringGen(strGen: StringGen): Promise<string> {
-  return String(typeof strGen === "function" ? await strGen() : strGen);
+  return typeof strGen === "string"
+    ? strGen
+    : String(
+      typeof strGen === "function"
+        ? await strGen()
+        : strGen
+    );
 }
 
 /** Formats a number based on the config or the passed {@linkcode notation} */
@@ -242,12 +248,11 @@ export async function getResourceUrl(name: ResourceKey | "_") {
  * Prioritizes `navigator.language`, then `navigator.languages`, then `"en-US"` as a fallback.
  */
 export function getPreferredLocale(): TrLocale {
-  const nvLang = navigator.language;
   const nvLangs = navigator.languages
     .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null);
 
-  if(Object.entries(langMapping).find(([key]) => key === nvLang))
-    return nvLang as TrLocale;
+  if(Object.entries(langMapping).find(([key]) => key === navigator.language))
+    return navigator.language as TrLocale;
 
   for(const loc of nvLangs) {
     if(Object.entries(langMapping).find(([key]) => key === loc))
