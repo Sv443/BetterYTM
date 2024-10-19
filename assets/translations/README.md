@@ -22,7 +22,7 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | ✅ | [`es-ES`](./es-ES.json) | `324/324` (100%) | ─ |
 | ✅ | [`fr-FR`](./fr-FR.json) | `324/324` (100%) | ─ |
 | ✅ | [`hi-IN`](./hi-IN.json) | `324/324` (100%) | ─ |
-| ✅ | [`ja-JA`](./ja-JA.json) | `324/324` (100%) | ─ |
+| ✅ | [`ja-JP`](./ja-JP.json) | `324/324` (100%) | ─ |
 | ✅ | [`pt-BR`](./pt-BR.json) | `324/324` (100%) | ─ |
 | ✅ | [`zh-CN`](./zh-CN.json) | `324/324` (100%) | ─ |
 
