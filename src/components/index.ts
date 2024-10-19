@@ -4,6 +4,8 @@ export * from "./ExImDialog.js";
 export * from "./hotkeyInput.js";
 export * from "./longButton.js";
 export * from "./MarkdownDialog.js";
+export * from "./multiSelect.js";
+export * from "./popper.js";
 export * from "./ripple.js";
 export * from "./toast.js";
 export * from "./toggleInput.js";

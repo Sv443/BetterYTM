@@ -36,7 +36,8 @@ import {
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
 import { storeSerializer } from "./storeSerializer.js";
-import { MarkdownDialog } from "./components/index.js";
+import { BytmDialog, MarkdownDialog } from "./components/index.js";
+import { createPopper } from "./components/popper.js";
 
 //#region cns. watermark
 
@@ -535,3 +536,38 @@ function registerDevCommands() {
 }
 
 preInit();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dlg = new BytmDialog({
+    id: "test-angkga",
+    height: 400,
+    width: 500,
+    renderHeader() {
+      const header = document.createElement("h1");
+      header.textContent = "Test Dialog";
+      return header;
+    },
+    async renderBody() {
+      const body = document.createElement("div");
+      const popperTxt = document.createElement("p");
+      popperTxt.textContent = "Popper test";
+
+      const popperCont = document.createElement("div");
+      popperCont.textContent = "Hello my friend I am the text";
+      popperCont.style.backgroundColor = "#010233";
+      popperCont.style.color = "#fff";
+      popperCont.style.padding = "10px";
+
+      createPopper({
+        referenceElement: popperTxt,
+        popperContent: popperCont,
+        placement: "top",
+      });
+
+      body.appendChild(popperTxt);
+      body.appendChild(popperCont);
+      return body;
+    },
+  });
+  dlg.open();
+});

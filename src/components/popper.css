@@ -1,0 +1,7 @@
+.bytm-popper-content {
+  position: fixed;
+}
+
+.bytm-popper-content.hidden {
+  display: none;
+}
