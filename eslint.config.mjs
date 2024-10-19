@@ -26,6 +26,8 @@ const config = [
       "dist/**/*",
       "src/dev/**/*",
       "**/test.ts",
+      ".storybook/**/*",
+      "**/*.stories.ts",
     ],
   }, ...compat.extends(
     "eslint:recommended",
