@@ -39,7 +39,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -57,60 +57,60 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?u=60179f72-84c6-4ef3-a2f4-ca57da4b9492
-// @resource          font-cascadia_code_ttf     https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/fonts/CascadiaCode.ttf
-// @resource          font-cascadia_code_woff    https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/fonts/CascadiaCode.woff
-// @resource          font-cascadia_code_woff2   https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/fonts/CascadiaCode.woff2
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/plus_circle_small.svg
-// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/alert.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/lyrics.svg
-// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/help.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/images/external/openuserjs.png
-// @resource          trans-de-DE                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/de-DE.json
-// @resource          trans-en-GB                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/en-GB.json
-// @resource          trans-en-US                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/en-US.json
-// @resource          trans-es-ES                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/es-ES.json
-// @resource          trans-fr-FR                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/fr-FR.json
-// @resource          trans-hi-IN                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/hi-IN.json
-// @resource          trans-ja-JP                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/ja-JP.json
-// @resource          trans-pt-BR                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/pt-BR.json
-// @resource          trans-zh-CN                https://raw.githubusercontent.com/Sv443/BetterYTM/e53f4611/assets/translations/zh-CN.json
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.0.2/dist/index.global.js
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?u=6dd79b10-e7ba-47a8-b95f-dd441d669f4b
+// @resource          font-cascadia_code_ttf     https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/fonts/CascadiaCode.ttf
+// @resource          font-cascadia_code_woff    https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/fonts/CascadiaCode.woff
+// @resource          font-cascadia_code_woff2   https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/fonts/CascadiaCode.woff2
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/plus_circle_small.svg
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/alert.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/lyrics.svg
+// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/help.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/images/external/openuserjs.png
+// @resource          trans-de-DE                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/de-DE.json
+// @resource          trans-en-GB                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/en-GB.json
+// @resource          trans-en-US                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/en-US.json
+// @resource          trans-es-ES                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/es-ES.json
+// @resource          trans-fr-FR                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/fr-FR.json
+// @resource          trans-hi-IN                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/hi-IN.json
+// @resource          trans-ja-JP                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/ja-JP.json
+// @resource          trans-pt-BR                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/pt-BR.json
+// @resource          trans-zh-CN                https://raw.githubusercontent.com/Sv443/BetterYTM/ce2c1b91/assets/translations/zh-CN.json
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.1.6
@@ -165,7 +165,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "e53f4611";
+const buildNumberRaw = "ce2c1b91";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1545,7 +1545,11 @@ function getOS() {
 }
 /** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
 async function consumeStringGen(strGen) {
-    return String(typeof strGen === "function" ? await strGen() : strGen);
+    return typeof strGen === "string"
+        ? strGen
+        : String(typeof strGen === "function"
+            ? await strGen()
+            : strGen);
 }
 /** Formats a number based on the config or the passed {@linkcode notation} */
 function formatNumber(num, notation) {
@@ -1588,11 +1592,10 @@ async function getResourceUrl(name) {
  */
 function getPreferredLocale() {
     var _a;
-    const nvLang = navigator.language;
     const nvLangs = navigator.languages
         .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null);
-    if (Object.entries(langMapping).find(([key]) => key === nvLang))
-        return nvLang;
+    if (Object.entries(langMapping).find(([key]) => key === navigator.language))
+        return navigator.language;
     for (const loc of nvLangs) {
         if (Object.entries(langMapping).find(([key]) => key === loc))
             return loc;
@@ -1670,9 +1673,7 @@ async function getChangelogHtmlWithDetails() {
     async renderBody() {
         const bodyEl = document.createElement("div");
         bodyEl.classList.add("bytm-md-dialog-body");
-        const mdCont = typeof this.opts.body === "string"
-            ? this.opts.body
-            : await consumeStringGen(this.opts.body);
+        const mdCont = await consumeStringGen(this.opts.body);
         const markdownEl = document.createElement("div");
         markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
         markdownEl.tabIndex = 0;
@@ -2423,7 +2424,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^8.0.2",
+	"@sv443-network/userutils": "^8.1.0",
 	"compare-versions": "^6.1.0",
 	dompurify: "^3.1.6",
 	marked: "^12.0.2",
@@ -3739,6 +3740,531 @@ async function doVersionCheck(notifyNoUpdatesFound = false) {
         return;
     }
     return await noUpdateFound();
+}//#region beforeunload popup
+let beforeUnloadEnabled = true;
+/** Disables the popup before leaving the site */
+function disableBeforeUnload() {
+    beforeUnloadEnabled = false;
+    info("Disabled popup before leaving the site");
+}
+/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
+async function initBeforeUnloadHook() {
+    UserUtils.interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
+}
+//#region auto close toasts
+/** Closes toasts after a set amount of time */
+async function initAutoCloseToasts() {
+    const animTimeout = 300;
+    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
+        all: true,
+        continuous: true,
+        listener: async (toastContElems) => {
+            try {
+                for (const toastContElem of toastContElems) {
+                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
+                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
+                        continue;
+                    if (toastElem.classList.contains("bytm-closing"))
+                        continue;
+                    toastElem.classList.add("bytm-closing");
+                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
+                    await UserUtils.pauseFor(closeTimeout);
+                    toastElem.classList.remove("paper-toast-open");
+                    toastElem.addEventListener("transitionend", () => {
+                        toastElem.classList.remove("bytm-closing");
+                        toastElem.style.display = "none";
+                        clearNode(toastElem);
+                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+                    }, { once: true });
+                }
+            }
+            catch (err) {
+                error("Error in automatic toast closing:", err);
+            }
+        },
+    });
+    log("Initialized automatic toast closing");
+}
+let remVidsCache = [];
+/**
+ * Remembers the time of the last played video and resumes playback from that time.
+ * **Needs to be called *before* DOM is ready!**
+ */
+async function initRememberSongTime() {
+    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
+        return;
+    const storedDataRaw = await GM.getValue("bytm-rem-songs");
+    if (!storedDataRaw)
+        await GM.setValue("bytm-rem-songs", "[]");
+    try {
+        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+    }
+    catch (err) {
+        error("Error parsing stored video time data, defaulting to empty cache:", err);
+        await GM.setValue("bytm-rem-songs", "[]");
+        remVidsCache = [];
+    }
+    log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
+    await remTimeRestoreTime();
+    try {
+        if (!domLoaded)
+            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+        else
+            remTimeStartUpdateLoop();
+    }
+    catch (err) {
+        error("Error in video time remembering update loop:", err);
+    }
+}
+/** Tries to restore the time of the currently playing video */
+async function remTimeRestoreTime() {
+    if (location.pathname.startsWith("/watch")) {
+        const watchID = new URL(location.href).searchParams.get("v");
+        if (!watchID)
+            return;
+        if (initialParams.has("t"))
+            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+        const entry = remVidsCache.find(entry => entry.watchID === watchID);
+        if (entry) {
+            if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
+                await remTimeDeleteEntry(entry.watchID);
+                return;
+            }
+            else if (isNaN(Number(entry.songTime)))
+                return;
+            else {
+                let vidElem;
+                const doRestoreTime = async () => {
+                    var _a;
+                    if (!vidElem)
+                        vidElem = await waitVideoElementReady();
+                    const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                    await remTimeDeleteEntry(entry.watchID);
+                    info(`Restored ${getCurrentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                };
+                if (!domLoaded)
+                    document.addEventListener("DOMContentLoaded", doRestoreTime);
+                else
+                    doRestoreTime();
+            }
+        }
+    }
+}
+let lastSongTime = -1;
+let remVidCheckTimeout;
+/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
+async function remTimeStartUpdateLoop() {
+    var _a, _b, _c;
+    if (location.pathname.startsWith("/watch")) {
+        const watchID = getWatchId();
+        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+        if (watchID && songTime !== lastSongTime) {
+            lastSongTime = songTime;
+            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            // don't immediately update to reduce race conditions and only update if the video is playing
+            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
+                const entry = {
+                    watchID,
+                    songTime,
+                    updateTimestamp: Date.now(),
+                };
+                await remTimeUpsertEntry(entry);
+            }
+            // if the song is rewound to the beginning, update the entry accordingly
+            else if (!paused) {
+                const entry = remVidsCache.find(entry => entry.watchID === watchID);
+                if (entry && songTime <= entry.songTime)
+                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+            }
+        }
+    }
+    const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
+    for (const entry of expiredEntries)
+        await remTimeDeleteEntry(entry.watchID);
+    // for no overlapping calls and better error handling:
+    if (remVidCheckTimeout)
+        clearTimeout(remVidCheckTimeout);
+    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
+}
+/** Updates an existing or inserts a new entry to be remembered */
+async function remTimeUpsertEntry(data) {
+    const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
+    if (foundIdx >= 0)
+        remVidsCache[foundIdx] = data;
+    else
+        remVidsCache.push(data);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+}
+/** Deletes an entry in the "remember cache" */
+async function remTimeDeleteEntry(watchID) {
+    remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+}const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+//#region arrow key skip
+async function initArrowKeySkip() {
+    document.addEventListener("keydown", (evt) => {
+        var _a, _b, _c, _d, _e, _f;
+        if (!getFeature("arrowKeySupport"))
+            return;
+        if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
+            return;
+        const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
+        // discard the event when a (text) input is currently active, like when editing a playlist
+        if ((inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "") || ["volume-slider"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.id) !== null && _d !== void 0 ? _d : ""))
+            && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
+            return info(`Captured valid key to skip forward or backward but the current active element is <${(_e = document.activeElement) === null || _e === void 0 ? void 0 : _e.tagName.toLowerCase()}>, so the keypress is ignored`);
+        evt.preventDefault();
+        evt.stopImmediatePropagation();
+        let skipBy = (_f = getFeature("arrowKeySkipBy")) !== null && _f !== void 0 ? _f : featInfo.arrowKeySkipBy.default;
+        if (evt.code === "ArrowLeft")
+            skipBy *= -1;
+        log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
+        const vidElem = getVideoElement();
+        if (vidElem)
+            vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
+    });
+    log("Added arrow key press listener");
+}
+//#region site switch
+/** switch sites only if current video time is greater than this value */
+const videoTimeThreshold = 3;
+let siteSwitchEnabled = true;
+/** Initializes the site switch feature */
+async function initSiteSwitch(domain) {
+    document.addEventListener("keydown", (e) => {
+        var _a, _b;
+        if (!getFeature("switchBetweenSites"))
+            return;
+        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+            return;
+        const hk = getFeature("switchSitesHotkey");
+        if (siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
+            switchSite(domain === "yt" ? "ytm" : "yt");
+    });
+    siteEvents.on("hotkeyInputActive", (state) => {
+        if (!getFeature("switchBetweenSites"))
+            return;
+        siteSwitchEnabled = !state;
+    });
+    log("Initialized site switch listener");
+}
+/** Switches to the other site (between YT and YTM) */
+async function switchSite(newDomain) {
+    try {
+        if (!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
+            return warn("Not on a supported page, so the site switch is ignored");
+        let subdomain;
+        if (newDomain === "ytm")
+            subdomain = "music";
+        else if (newDomain === "yt")
+            subdomain = "www";
+        if (!subdomain)
+            throw new Error(`Unrecognized domain '${newDomain}'`);
+        disableBeforeUnload();
+        const { pathname, search, hash } = new URL(location.href);
+        const vt = await getVideoTime(0);
+        log(`Found video time of ${vt} seconds`);
+        const cleanSearch = search.split("&")
+            .filter((param) => !param.match(/^\??(t|time_continue)=/))
+            .join("&");
+        const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+            cleanSearch.includes("?")
+                ? `${cleanSearch.startsWith("?")
+                    ? cleanSearch
+                    : "?" + cleanSearch}&time_continue=${vt}`
+                : `?time_continue=${vt}`
+            : cleanSearch;
+        const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+        info(`Switching to domain '${newDomain}' at ${newUrl}`);
+        location.assign(newUrl);
+    }
+    catch (err) {
+        error("Error while switching site:", err);
+    }
+}
+//#region num keys skip
+const numKeysIgnoreTagNames = [...inputIgnoreTagNames];
+/** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
+async function initNumKeysSkip() {
+    document.addEventListener("keydown", (e) => {
+        var _a, _b;
+        if (!getFeature("numKeysSkipToTime"))
+            return;
+        if (!e.key.trim().match(/^[0-9]$/))
+            return;
+        // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
+        const ignoreElement = numKeysIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "");
+        if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
+            return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
+        const vidElem = getVideoElement();
+        if (!vidElem)
+            return warn("Could not find video element, so the keypress is ignored");
+        const newVidTime = vidElem.duration / (10 / Number(e.key));
+        if (!isNaN(newVidTime)) {
+            log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
+            vidElem.currentTime = newVidTime;
+        }
+    });
+    log("Added number key press listener");
+}
+//#region auto-like vids
+let canCompress$1 = false;
+/** DataStore instance for all auto-liked channels */
+const autoLikeStore = new UserUtils.DataStore({
+    id: "bytm-auto-like-channels",
+    formatVersion: 2,
+    defaultData: {
+        channels: [],
+    },
+    encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
+    decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
+    migrations: {
+        // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
+        2: (oldData) => ({
+            channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: isValidChannelId(ch.id.trim())
+                    ? ch.id.trim()
+                    : `@${ch.id.trim()}` }))),
+        }),
+    },
+});
+let autoLikeStoreLoaded = false;
+/** Inits the auto-like DataStore instance */
+async function initAutoLikeStore() {
+    if (autoLikeStoreLoaded)
+        return;
+    autoLikeStoreLoaded = true;
+    return autoLikeStore.loadData();
+}
+/** Initializes the auto-like feature */
+async function initAutoLike() {
+    try {
+        canCompress$1 = await compressionSupported();
+        await initAutoLikeStore();
+        //#SECTION ytm
+        if (getDomain() === "ytm") {
+            let timeout;
+            siteEvents.on("songTitleChanged", () => {
+                var _a;
+                const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
+                timeout && clearTimeout(timeout);
+                const ytmTryAutoLike = () => {
+                    const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
+                    const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
+                    const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
+                    if (!likeChan || !likeChan.enabled)
+                        return;
+                    if (artistEls.length === 0)
+                        return error("Couldn't auto-like channel because the artist element couldn't be found");
+                    const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
+                    const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
+                    if (!likeRendererEl || !likeBtnEl)
+                        return error("Couldn't auto-like channel because the like button couldn't be found");
+                    if (likeRendererEl.getAttribute("like-status") !== "LIKE") {
+                        likeBtnEl.click();
+                        getFeature("autoLikeShowToast") && showIconToast({
+                            message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
+                            subtitle: t("auto_like_click_to_configure"),
+                            icon: "icon-auto_like",
+                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                        }).catch(e => error("Error while showing auto-like toast:", e));
+                        log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+                    }
+                };
+                timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
+                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
+            });
+            siteEvents.on("pathChanged", (path) => {
+                if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
+                    const chanId = getCurrentChannelId();
+                    if (!chanId)
+                        return error("Couldn't extract channel ID from URL");
+                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+                    addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
+                        listener(headerCont) {
+                            var _a, _b, _c, _d;
+                            const buttonsCont = headerCont.querySelector(".buttons");
+                            if (buttonsCont) {
+                                const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
+                                const chanName = (_b = (_a = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                                lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
+                            }
+                            else {
+                                // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
+                                const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
+                                const chanName = (_d = (_c = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
+                                shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        //#SECTION yt
+        else if (getDomain() === "yt") {
+            addStyleFromResource("css-auto_like");
+            let timeout;
+            siteEvents.on("watchIdChanged", () => {
+                var _a;
+                const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
+                timeout && clearTimeout(timeout);
+                if (!location.pathname.startsWith("/watch"))
+                    return;
+                const ytTryAutoLike = () => {
+                    addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
+                        listener(chanElem) {
+                            var _a, _b;
+                            const chanElemId = (_b = (_a = chanElem.href.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split("/")[0]) !== null && _b !== void 0 ? _b : null;
+                            const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
+                            if (!likeChan || !likeChan.enabled)
+                                return;
+                            addSelectorListener("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
+                                listener(likeBtn) {
+                                    if (likeBtn.getAttribute("aria-pressed") !== "true") {
+                                        likeBtn.click();
+                                        getFeature("autoLikeShowToast") && showIconToast({
+                                            message: t("auto_liked_a_channels_video", likeChan.name),
+                                            subtitle: t("auto_like_click_to_configure"),
+                                            icon: "icon-auto_like",
+                                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                                        });
+                                        log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                };
+                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
+                timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
+            });
+            siteEvents.on("pathChanged", (path) => {
+                if (path.match(/(\/?@|\/?channel\/)\S+/)) {
+                    const chanId = getCurrentChannelId();
+                    if (!chanId)
+                        return error("Couldn't extract channel ID from URL");
+                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+                    addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
+                        listener(headerCont) {
+                            var _a, _b;
+                            const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
+                            if (!titleCont)
+                                return;
+                            const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                            const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
+                            if (buttonsCont) {
+                                addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
+                                    listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]),
+                                });
+                            }
+                            else if (titleCont)
+                                addAutoLikeToggleBtn(titleCont, chanId, chanName);
+                        }
+                    });
+                }
+            });
+        }
+        log("Initialized auto-like channels feature");
+    }
+    catch (err) {
+        error("Error while auto-liking channel:", err);
+    }
+}
+//#SECTION toggle btn
+/** Adds a toggle button to enable or disable auto-liking videos from a channel */
+async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
+    var _a;
+    const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
+    log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
+    siteEvents.on("autoLikeChannelsUpdated", () => {
+        var _a, _b;
+        const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+        if (!buttonEl)
+            return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
+        const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+        if (enabled)
+            buttonEl.classList.add("toggled");
+        else
+            buttonEl.classList.remove("toggled");
+    });
+    const buttonEl = await createLongBtn({
+        resourceName: `icon-auto_like${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : ""}`,
+        text: t("auto_like"),
+        title: t(`auto_like_button_tooltip${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : "_disabled"}`),
+        toggle: true,
+        toggleInitialState: (_a = chan === null || chan === void 0 ? void 0 : chan.enabled) !== null && _a !== void 0 ? _a : false,
+        togglePredicate(e) {
+            e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
+            return !e.shiftKey;
+        },
+        async onToggle(toggled) {
+            var _a;
+            try {
+                await autoLikeStore.loadData();
+                buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
+                const chanId = sanitizeChannelId((_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId);
+                const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+                const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
+                if (imgEl && imgHtml)
+                    setInnerHtml(imgEl, imgHtml);
+                if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+                    await autoLikeStore.setData({
+                        channels: [
+                            ...autoLikeStore.getData().channels,
+                            { id: chanId, name: channelName !== null && channelName !== void 0 ? channelName : "", enabled: toggled },
+                        ],
+                    });
+                }
+                else {
+                    await autoLikeStore.setData({
+                        channels: autoLikeStore.getData().channels
+                            .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { enabled: toggled }) : ch),
+                    });
+                }
+                emitSiteEvent("autoLikeChannelsUpdated");
+                showIconToast({
+                    message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+                    icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
+                });
+                log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
+            }
+            catch (err) {
+                error("Error while toggling auto-like channel:", err);
+            }
+        }
+    });
+    buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses !== null && extraClasses !== void 0 ? extraClasses : [])]);
+    buttonEl.dataset.channelId = channelId;
+    siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
+    siteEvents.on("autoLikeChannelsUpdated", async () => {
+        var _a, _b;
+        const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+        if (!buttonEl)
+            return;
+        const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+        if (enabled)
+            buttonEl.classList.add("toggled");
+        else
+            buttonEl.classList.remove("toggled");
+        const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+        const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
+        if (imgEl && imgHtml)
+            setInnerHtml(imgEl, imgHtml);
+    });
+}/** Central serializer for all data stores */
+let serializer;
+function getStoreSerializer() {
+    if (!serializer) {
+        serializer = new UserUtils.DataStoreSerializer([
+            configStore,
+            autoLikeStore,
+        ], {
+            addChecksum: true,
+            ensureIntegrity: true,
+        });
+    }
+    return serializer;
 }//#region cfg menu btns
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
@@ -4405,518 +4931,6 @@ function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
         likeBtn.title = likeBtn.ariaLabel = likesLabelText;
     if (dislikeBtn)
         dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
-}//#region beforeunload popup
-let beforeUnloadEnabled = true;
-/** Disables the popup before leaving the site */
-function disableBeforeUnload() {
-    beforeUnloadEnabled = false;
-    info("Disabled popup before leaving the site");
-}
-/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
-async function initBeforeUnloadHook() {
-    UserUtils.interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
-}
-//#region auto close toasts
-/** Closes toasts after a set amount of time */
-async function initAutoCloseToasts() {
-    const animTimeout = 300;
-    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
-        all: true,
-        continuous: true,
-        listener: async (toastContElems) => {
-            try {
-                for (const toastContElem of toastContElems) {
-                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
-                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
-                        continue;
-                    if (toastElem.classList.contains("bytm-closing"))
-                        continue;
-                    toastElem.classList.add("bytm-closing");
-                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
-                    await UserUtils.pauseFor(closeTimeout);
-                    toastElem.classList.remove("paper-toast-open");
-                    toastElem.addEventListener("transitionend", () => {
-                        toastElem.classList.remove("bytm-closing");
-                        toastElem.style.display = "none";
-                        clearNode(toastElem);
-                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
-                    }, { once: true });
-                }
-            }
-            catch (err) {
-                error("Error in automatic toast closing:", err);
-            }
-        },
-    });
-    log("Initialized automatic toast closing");
-}
-let remVidsCache = [];
-/**
- * Remembers the time of the last played video and resumes playback from that time.
- * **Needs to be called *before* DOM is ready!**
- */
-async function initRememberSongTime() {
-    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
-        return;
-    const storedDataRaw = await GM.getValue("bytm-rem-songs");
-    if (!storedDataRaw)
-        await GM.setValue("bytm-rem-songs", "[]");
-    try {
-        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-    }
-    catch (err) {
-        error("Error parsing stored video time data, defaulting to empty cache:", err);
-        await GM.setValue("bytm-rem-songs", "[]");
-        remVidsCache = [];
-    }
-    log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
-    await remTimeRestoreTime();
-    try {
-        if (!domLoaded)
-            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
-        else
-            remTimeStartUpdateLoop();
-    }
-    catch (err) {
-        error("Error in video time remembering update loop:", err);
-    }
-}
-/** Tries to restore the time of the currently playing video */
-async function remTimeRestoreTime() {
-    if (location.pathname.startsWith("/watch")) {
-        const watchID = new URL(location.href).searchParams.get("v");
-        if (!watchID)
-            return;
-        if (initialParams.has("t"))
-            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
-        const entry = remVidsCache.find(entry => entry.watchID === watchID);
-        if (entry) {
-            if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
-                await remTimeDeleteEntry(entry.watchID);
-                return;
-            }
-            else if (isNaN(Number(entry.songTime)))
-                return;
-            else {
-                let vidElem;
-                const doRestoreTime = async () => {
-                    var _a;
-                    if (!vidElem)
-                        vidElem = await waitVideoElementReady();
-                    const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
-                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                    await remTimeDeleteEntry(entry.watchID);
-                    info(`Restored ${getCurrentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-                };
-                if (!domLoaded)
-                    document.addEventListener("DOMContentLoaded", doRestoreTime);
-                else
-                    doRestoreTime();
-            }
-        }
-    }
-}
-let lastSongTime = -1;
-let remVidCheckTimeout;
-/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
-async function remTimeStartUpdateLoop() {
-    var _a, _b, _c;
-    if (location.pathname.startsWith("/watch")) {
-        const watchID = getWatchId();
-        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-        if (watchID && songTime !== lastSongTime) {
-            lastSongTime = songTime;
-            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-            // don't immediately update to reduce race conditions and only update if the video is playing
-            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
-                const entry = {
-                    watchID,
-                    songTime,
-                    updateTimestamp: Date.now(),
-                };
-                await remTimeUpsertEntry(entry);
-            }
-            // if the song is rewound to the beginning, update the entry accordingly
-            else if (!paused) {
-                const entry = remVidsCache.find(entry => entry.watchID === watchID);
-                if (entry && songTime <= entry.songTime)
-                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
-            }
-        }
-    }
-    const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
-    for (const entry of expiredEntries)
-        await remTimeDeleteEntry(entry.watchID);
-    // for no overlapping calls and better error handling:
-    if (remVidCheckTimeout)
-        clearTimeout(remVidCheckTimeout);
-    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
-}
-/** Updates an existing or inserts a new entry to be remembered */
-async function remTimeUpsertEntry(data) {
-    const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
-    if (foundIdx >= 0)
-        remVidsCache[foundIdx] = data;
-    else
-        remVidsCache.push(data);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-}
-/** Deletes an entry in the "remember cache" */
-async function remTimeDeleteEntry(watchID) {
-    remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-}const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
-//#region arrow key skip
-async function initArrowKeySkip() {
-    document.addEventListener("keydown", (evt) => {
-        var _a, _b, _c, _d, _e, _f;
-        if (!getFeature("arrowKeySupport"))
-            return;
-        if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
-            return;
-        const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
-        // discard the event when a (text) input is currently active, like when editing a playlist
-        if ((inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "") || ["volume-slider"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.id) !== null && _d !== void 0 ? _d : ""))
-            && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
-            return info(`Captured valid key to skip forward or backward but the current active element is <${(_e = document.activeElement) === null || _e === void 0 ? void 0 : _e.tagName.toLowerCase()}>, so the keypress is ignored`);
-        evt.preventDefault();
-        evt.stopImmediatePropagation();
-        let skipBy = (_f = getFeature("arrowKeySkipBy")) !== null && _f !== void 0 ? _f : featInfo.arrowKeySkipBy.default;
-        if (evt.code === "ArrowLeft")
-            skipBy *= -1;
-        log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-        const vidElem = getVideoElement();
-        if (vidElem)
-            vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
-    });
-    log("Added arrow key press listener");
-}
-//#region site switch
-/** switch sites only if current video time is greater than this value */
-const videoTimeThreshold = 3;
-let siteSwitchEnabled = true;
-/** Initializes the site switch feature */
-async function initSiteSwitch(domain) {
-    document.addEventListener("keydown", (e) => {
-        var _a, _b;
-        if (!getFeature("switchBetweenSites"))
-            return;
-        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
-            return;
-        const hk = getFeature("switchSitesHotkey");
-        if (siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
-            switchSite(domain === "yt" ? "ytm" : "yt");
-    });
-    siteEvents.on("hotkeyInputActive", (state) => {
-        if (!getFeature("switchBetweenSites"))
-            return;
-        siteSwitchEnabled = !state;
-    });
-    log("Initialized site switch listener");
-}
-/** Switches to the other site (between YT and YTM) */
-async function switchSite(newDomain) {
-    try {
-        if (!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
-            return warn("Not on a supported page, so the site switch is ignored");
-        let subdomain;
-        if (newDomain === "ytm")
-            subdomain = "music";
-        else if (newDomain === "yt")
-            subdomain = "www";
-        if (!subdomain)
-            throw new Error(`Unrecognized domain '${newDomain}'`);
-        disableBeforeUnload();
-        const { pathname, search, hash } = new URL(location.href);
-        const vt = await getVideoTime(0);
-        log(`Found video time of ${vt} seconds`);
-        const cleanSearch = search.split("&")
-            .filter((param) => !param.match(/^\??(t|time_continue)=/))
-            .join("&");
-        const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
-            cleanSearch.includes("?")
-                ? `${cleanSearch.startsWith("?")
-                    ? cleanSearch
-                    : "?" + cleanSearch}&time_continue=${vt}`
-                : `?time_continue=${vt}`
-            : cleanSearch;
-        const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
-        info(`Switching to domain '${newDomain}' at ${newUrl}`);
-        location.assign(newUrl);
-    }
-    catch (err) {
-        error("Error while switching site:", err);
-    }
-}
-//#region num keys skip
-const numKeysIgnoreTagNames = [...inputIgnoreTagNames];
-/** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
-async function initNumKeysSkip() {
-    document.addEventListener("keydown", (e) => {
-        var _a, _b;
-        if (!getFeature("numKeysSkipToTime"))
-            return;
-        if (!e.key.trim().match(/^[0-9]$/))
-            return;
-        // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-        const ignoreElement = numKeysIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "");
-        if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
-            return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
-        const vidElem = getVideoElement();
-        if (!vidElem)
-            return warn("Could not find video element, so the keypress is ignored");
-        const newVidTime = vidElem.duration / (10 / Number(e.key));
-        if (!isNaN(newVidTime)) {
-            log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
-            vidElem.currentTime = newVidTime;
-        }
-    });
-    log("Added number key press listener");
-}
-//#region auto-like vids
-let canCompress$1 = false;
-/** DataStore instance for all auto-liked channels */
-const autoLikeStore = new UserUtils.DataStore({
-    id: "bytm-auto-like-channels",
-    formatVersion: 2,
-    defaultData: {
-        channels: [],
-    },
-    encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
-    decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
-    migrations: {
-        // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
-        2: (oldData) => ({
-            channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: isValidChannelId(ch.id.trim())
-                    ? ch.id.trim()
-                    : `@${ch.id.trim()}` }))),
-        }),
-    },
-});
-let autoLikeStoreLoaded = false;
-/** Inits the auto-like DataStore instance */
-async function initAutoLikeStore() {
-    if (autoLikeStoreLoaded)
-        return;
-    autoLikeStoreLoaded = true;
-    return autoLikeStore.loadData();
-}
-/** Initializes the auto-like feature */
-async function initAutoLike() {
-    try {
-        canCompress$1 = await compressionSupported();
-        await initAutoLikeStore();
-        //#SECTION ytm
-        if (getDomain() === "ytm") {
-            let timeout;
-            siteEvents.on("songTitleChanged", () => {
-                var _a;
-                const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
-                timeout && clearTimeout(timeout);
-                const ytmTryAutoLike = () => {
-                    const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
-                    const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
-                    const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
-                    if (!likeChan || !likeChan.enabled)
-                        return;
-                    if (artistEls.length === 0)
-                        return error("Couldn't auto-like channel because the artist element couldn't be found");
-                    const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-                    const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
-                    if (!likeRendererEl || !likeBtnEl)
-                        return error("Couldn't auto-like channel because the like button couldn't be found");
-                    if (likeRendererEl.getAttribute("like-status") !== "LIKE") {
-                        likeBtnEl.click();
-                        getFeature("autoLikeShowToast") && showIconToast({
-                            message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
-                            subtitle: t("auto_like_click_to_configure"),
-                            icon: "icon-auto_like",
-                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                        }).catch(e => error("Error while showing auto-like toast:", e));
-                        log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
-                    }
-                };
-                timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
-                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
-            });
-            siteEvents.on("pathChanged", (path) => {
-                if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
-                    const chanId = getCurrentChannelId();
-                    if (!chanId)
-                        return error("Couldn't extract channel ID from URL");
-                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                    addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
-                        listener(headerCont) {
-                            var _a, _b, _c, _d;
-                            const buttonsCont = headerCont.querySelector(".buttons");
-                            if (buttonsCont) {
-                                const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
-                                const chanName = (_b = (_a = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
-                                lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
-                            }
-                            else {
-                                // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
-                                const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
-                                const chanName = (_d = (_c = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
-                                shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName);
-                            }
-                        }
-                    });
-                }
-            });
-        }
-        //#SECTION yt
-        else if (getDomain() === "yt") {
-            addStyleFromResource("css-auto_like");
-            let timeout;
-            siteEvents.on("watchIdChanged", () => {
-                var _a;
-                const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
-                timeout && clearTimeout(timeout);
-                if (!location.pathname.startsWith("/watch"))
-                    return;
-                const ytTryAutoLike = () => {
-                    addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
-                        listener(chanElem) {
-                            var _a, _b;
-                            const chanElemId = (_b = (_a = chanElem.href.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split("/")[0]) !== null && _b !== void 0 ? _b : null;
-                            const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
-                            if (!likeChan || !likeChan.enabled)
-                                return;
-                            addSelectorListener("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
-                                listener(likeBtn) {
-                                    if (likeBtn.getAttribute("aria-pressed") !== "true") {
-                                        likeBtn.click();
-                                        getFeature("autoLikeShowToast") && showIconToast({
-                                            message: t("auto_liked_a_channels_video", likeChan.name),
-                                            subtitle: t("auto_like_click_to_configure"),
-                                            icon: "icon-auto_like",
-                                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                                        });
-                                        log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
-                                    }
-                                }
-                            });
-                        }
-                    });
-                };
-                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
-                timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
-            });
-            siteEvents.on("pathChanged", (path) => {
-                if (path.match(/(\/?@|\/?channel\/)\S+/)) {
-                    const chanId = getCurrentChannelId();
-                    if (!chanId)
-                        return error("Couldn't extract channel ID from URL");
-                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                    addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
-                        listener(headerCont) {
-                            var _a, _b;
-                            const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
-                            if (!titleCont)
-                                return;
-                            const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
-                            const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
-                            if (buttonsCont) {
-                                addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
-                                    listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]),
-                                });
-                            }
-                            else if (titleCont)
-                                addAutoLikeToggleBtn(titleCont, chanId, chanName);
-                        }
-                    });
-                }
-            });
-        }
-        log("Initialized auto-like channels feature");
-    }
-    catch (err) {
-        error("Error while auto-liking channel:", err);
-    }
-}
-//#SECTION toggle btn
-/** Adds a toggle button to enable or disable auto-liking videos from a channel */
-async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
-    var _a;
-    const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
-    log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
-    siteEvents.on("autoLikeChannelsUpdated", () => {
-        var _a, _b;
-        const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
-        if (!buttonEl)
-            return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
-        const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
-        if (enabled)
-            buttonEl.classList.add("toggled");
-        else
-            buttonEl.classList.remove("toggled");
-    });
-    const buttonEl = await createLongBtn({
-        resourceName: `icon-auto_like${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : ""}`,
-        text: t("auto_like"),
-        title: t(`auto_like_button_tooltip${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : "_disabled"}`),
-        toggle: true,
-        toggleInitialState: (_a = chan === null || chan === void 0 ? void 0 : chan.enabled) !== null && _a !== void 0 ? _a : false,
-        togglePredicate(e) {
-            e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
-            return !e.shiftKey;
-        },
-        async onToggle(toggled) {
-            var _a;
-            try {
-                await autoLikeStore.loadData();
-                buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
-                const chanId = sanitizeChannelId((_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId);
-                const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-                const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
-                if (imgEl && imgHtml)
-                    setInnerHtml(imgEl, imgHtml);
-                if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
-                    await autoLikeStore.setData({
-                        channels: [
-                            ...autoLikeStore.getData().channels,
-                            { id: chanId, name: channelName !== null && channelName !== void 0 ? channelName : "", enabled: toggled },
-                        ],
-                    });
-                }
-                else {
-                    await autoLikeStore.setData({
-                        channels: autoLikeStore.getData().channels
-                            .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { enabled: toggled }) : ch),
-                    });
-                }
-                emitSiteEvent("autoLikeChannelsUpdated");
-                showIconToast({
-                    message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
-                    icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
-                });
-                log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
-            }
-            catch (err) {
-                error("Error while toggling auto-like channel:", err);
-            }
-        }
-    });
-    buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses !== null && extraClasses !== void 0 ? extraClasses : [])]);
-    buttonEl.dataset.channelId = channelId;
-    siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
-    siteEvents.on("autoLikeChannelsUpdated", async () => {
-        var _a, _b;
-        const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
-        if (!buttonEl)
-            return;
-        const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
-        if (enabled)
-            buttonEl.classList.add("toggled");
-        else
-            buttonEl.classList.remove("toggled");
-        const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-        const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
-        if (imgEl && imgHtml)
-            setInnerHtml(imgEl, imgHtml);
-    });
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
@@ -6440,6 +6454,21 @@ const featInfo = {
         click: promptResetConfig,
         textAdornment: adornments.reload,
     },
+    resetEverything: {
+        type: "button",
+        category: "general",
+        click: async () => {
+            if (await showPrompt({
+                type: "confirm",
+                message: t("reset_everything_confirm"),
+            })) {
+                await getStoreSerializer().resetStoresData();
+                location.reload();
+            }
+        },
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
     logLevel: {
         type: "select",
         category: "general",
@@ -6563,8 +6592,9 @@ const migrations = {
         if (oldData.locale === "en-GB")
             oldData.locale = "en-GB";
         return useDefaultConfig(oldData, [
-        // TODO(V2.2):
-        // "autoLikePlayerBarToggleBtn",
+            "resetEverything",
+            // TODO(V2.2):
+            // "autoLikePlayerBarToggleBtn",
         ]);
     },
 };
@@ -7458,14 +7488,7 @@ async function fetchVideoVotes(watchId) {
         error("Couldn't fetch video votes due to an error:", err);
         return undefined;
     }
-}/** Central serializer for all data stores */
-const storeSerializer = new UserUtils.DataStoreSerializer([
-    configStore,
-    autoLikeStore,
-], {
-    addChecksum: true,
-    ensureIntegrity: true,
-});//#region cns. watermark
+}//#region cns. watermark
 {
     // console watermark with sexy gradient
     const [styleGradient, gradientContBg] = (() => {
@@ -7828,14 +7851,14 @@ function registerDevCommands() {
         }
     });
     GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
-        const ser = await storeSerializer.serialize();
+        const ser = await getStoreSerializer().serialize();
         dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
         alert("See console.");
     });
     GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
         if (input && input.length > 0) {
-            await storeSerializer.deserialize(input);
+            await getStoreSerializer().deserialize(input);
             alert("Imported data. Reload the page to apply changes.");
         }
     });
