@@ -35,7 +35,7 @@ import {
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
-import { storeSerializer } from "./storeSerializer.js";
+import { getStoreSerializer } from "./storeSerializer.js";
 import { MarkdownDialog } from "./components/index.js";
 
 //#region cns. watermark
@@ -498,7 +498,7 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
-    const ser = await storeSerializer.serialize();
+    const ser = await getStoreSerializer().serialize();
     dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
     alert("See console.");
   });
@@ -506,7 +506,7 @@ function registerDevCommands() {
   GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
     if(input && input.length > 0) {
-      await storeSerializer.deserialize(input);
+      await getStoreSerializer().deserialize(input);
       alert("Imported data. Reload the page to apply changes.");
     }
   });
