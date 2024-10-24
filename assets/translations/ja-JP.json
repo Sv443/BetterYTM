@@ -350,7 +350,7 @@
     "feature_helptext_showToastOnGenericError": "スクリプトでエラーが発生し、それが一部の機能の正常な動作を妨げる場合、通知が表示され、そのことを通知します。\n問題が頻繁に発生する場合は、JavaScript コンソールからエラーをコピーして（通常は F12 メニューにあります）GitHub で問題を開いてください。",
     "feature_desc_resetConfig": "すべての設定をデフォルト値にリセットする",
     "feature_btn_resetConfig": "設定をリセット",
-    "feature_btn_resetConfig_running": "確認中...",
+    "feature_btn_resetConfig_running": "リセット中...",
     "feature_desc_advancedMode": "詳細設定を表示する（メニューを再読み込み）",
     "feature_helptext_advancedMode": "これを有効にすると、メニューが再読み込まれ、デフォルトで非表示になっている詳細設定が表示されます。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。メニューが過密になっていることを気にしない場合に役立ちます。"
   }

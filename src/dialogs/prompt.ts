@@ -2,8 +2,8 @@ import type { Emitter } from "nanoevents";
 import type { Stringifiable } from "@sv443-network/userutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
 import { BytmDialog, type BytmDialogEvents } from "../components/index.js";
+import { addSelectorListener } from "../observers.js";
 import "./prompt.css";
-import { addSelectorListener } from "src/observers.js";
 
 //#region types
 

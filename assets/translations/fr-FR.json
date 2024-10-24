@@ -351,7 +351,7 @@
     "feature_helptext_showToastOnGenericError": "Si une erreur se produit dans le script qui empêche certaines parties de fonctionner correctement, une notification sera affichée pour vous en informer.\nSi vous rencontrez souvent un problème, veuillez copier l'erreur de la console JavaScript (généralement dans le menu F12) et ouvrir un problème sur GitHub.",
     "feature_desc_resetConfig": "Réinitialiser tous les paramètres à leurs valeurs par défaut",
     "feature_btn_resetConfig": "Réinitialiser les paramètres",
-    "feature_btn_resetConfig_running": "Confirmation...",
+    "feature_btn_resetConfig_running": "Réinitialisation...",
     "feature_desc_advancedMode": "Afficher les paramètres avancés (cela recharge le menu)",
     "feature_helptext_advancedMode": "Après avoir activé cela, le menu se rechargera et affichera les paramètres avancés qui sont masqués par défaut.\nCela est utile si vous souhaitez personnaliser plus en profondeur le comportement du script et que vous ne vous souciez pas d'un menu surchargé."
   }

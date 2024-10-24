@@ -5,13 +5,27 @@
 ## 2.2.0
 - **Fixes:**
   - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
+  - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
 
-<!-- <details><summary>Click to expand internal and plugin changes</summary>
-</details> -->
+<details><summary>Click to expand internal and plugin changes</summary>
 
-<!-- <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/76" rel="noopener noreferrer">See pull request for more info</a>
-</div> -->
+- **Internal Changes:**
+  - Changed the locale code format to match the [BCP 47](https://tools.ietf.org/html/bcp47) standard.
+    As part of this, all `_` underscores were replaced with `-` hyphens and the following locales had their country codes corrected:
+    - `en-UK` -> `en-GB`
+    - `ja-JA` -> `ja-JP`
+- **Plugin Changes:**  
+  - Migration guide:
+    - Since locale codes now have the format `xx-YY` and two were renamed, all plugins must implement those changes
+  - Added components:
+    - `createPopper()` to create an element that is attached to another element and gets shown on hover
+    - `createMultiSelect()` to create a multi-select, menu utilizing the `createPopper()` function for the dropdown menu
+
+</details>
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/114" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>

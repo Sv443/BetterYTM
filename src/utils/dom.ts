@@ -1,10 +1,10 @@
 import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
+import DOMPurify from "dompurify";
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import type { ResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
-import DOMPurify from "dompurify";
-import { showPrompt } from "src/dialogs/prompt.js";
+import { showPrompt } from "../dialogs/prompt.js";
 
 /** Whether the DOM has finished loading and elements can be added or modified */
 export let domLoaded = false;

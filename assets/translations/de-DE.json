@@ -351,7 +351,10 @@
     "feature_helptext_showToastOnGenericError": "Sollte ein Fehler im Skript auftreten, der Teile davon daran hindert, korrekt zu funktionieren, wird eine Benachrichtigung angezeigt, um dich darüber zu informieren.\nWenn du ein Problem häufig hast, kopiere bitte den Fehler aus der JavaScript-Konsole (normalerweise im F12-Menü) und öffne bitte ein Issue auf GitHub.",
     "feature_desc_resetConfig": "Setze alle Einstellungen auf ihre Standardwerte zurück",
     "feature_btn_resetConfig": "Einstellungen zurücksetzen",
-    "feature_btn_resetConfig_running": "Am Zurücksetzen...",
+    "feature_btn_resetConfig_running": "Zurücksetzen...",
+    "feature_desc_resetEverything": "Setze alle gespeicherten Daten auf die Standardwerte zurück",
+    "feature_btn_resetEverything": "Alles zurücksetzen",
+    "feature_btn_resetEverything_running": "Zurücksetzen...",
     "feature_desc_advancedMode": "Erweiterte Einstellungen anzeigen (lädt Menü neu)",
     "feature_helptext_advancedMode": "Nachdem du dies aktiviert hast, wird das Menü neu geladen und erweiterte Einstellungen werden angezeigt, die standardmäßig ausgeblendet sind.\nDies ist nützlich, wenn du das Verhalten des Skripts tiefer anpassen möchtest und dir ein überfülltes Menü egal ist."
   }

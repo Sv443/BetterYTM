@@ -99,6 +99,8 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -331,7 +333,7 @@ function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
     for(const [locale, { userscriptDesc, ...rest }] of Object.entries(locales)) {
-      let loc = locale.replace(/_/, "-");
+      let loc = locale;
       if(loc.length < 5)
         loc += " ".repeat(5 - loc.length);
       descriptions.push(`// @description:${loc} ${userscriptDesc}`);
@@ -362,7 +364,6 @@ function getResourceUrl(path: string, ghRef: string, useTagInProd = true) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
-  console.log("getResourceUrl", assetSource, path, ghRef);
   return assetSource === "local"
     ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUuid}`
     : `https://raw.githubusercontent.com/${repo}/${mode === "development" || !useTagInProd ? ghRef : `v${pkg.version}`}${assetPath}${path}`;

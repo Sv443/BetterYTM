@@ -8,6 +8,7 @@ import langMapping from "../../assets/locales.json" with { type: "json" };
 import { getAutoLikeDialog, getPluginListDialog, showPrompt } from "../dialogs/index.js";
 import { showIconToast } from "../components/index.js";
 import { mode } from "../constants.js";
+import { getStoreSerializer } from "../storeSerializer.js";
 
 //#region re-exports
 
@@ -624,7 +625,7 @@ export const featInfo = {
     category: "lyrics",
     async click() {
       const entries = getLyricsCache().length;
-      const formattedEntries = entries.toLocaleString(getLocale().replace(/_/g, "-"), { style: "decimal", maximumFractionDigits: 0 });
+      const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
       if(await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
         await clearLyricsCache();
         await showPrompt({ type: "alert", message: t("lyrics_clear_cache_success") });
@@ -759,6 +760,21 @@ export const featInfo = {
     category: "general",
     click: promptResetConfig,
     textAdornment: adornments.reload,
+  },
+  resetEverything: {
+    type: "button",
+    category: "general",
+    click: async () => {
+      if(await showPrompt({
+        type: "confirm",
+        message: t("reset_everything_confirm"),
+      })) {
+        await getStoreSerializer().resetStoresData();
+        location.reload();
+      }
+    },
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   logLevel: {
     type: "select",

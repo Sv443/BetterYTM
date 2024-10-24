@@ -207,11 +207,11 @@ export type PluginDefResolvable = PluginDef | { plugin: Pick<PluginDef["plugin"]
 export type PluginDef = {
   plugin: PluginInfo & {
     /**
-     * Descriptions of at least en_US and optionally any other locale supported by BYTM.  
-     * When an untranslated locale is set, the description will default to the value of en_US
+     * Descriptions of at least en-US and optionally any other locale supported by BYTM.  
+     * When an untranslated locale is set, the description will default to the value of en-US
      */
     description: Partial<Record<keyof typeof locales, string>> & {
-      en_US: string;
+      "en-US": string;
     };
     /** URL to the plugin's icon - recommended size: 48x48 to 128x128 */
     iconUrl?: string;
@@ -638,6 +638,8 @@ export interface FeatureConfig {
   showToastOnGenericError: boolean;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
+  /** Button to reset every DataStore instance to their default values */
+  resetEverything: undefined;
   /** Whether to show advanced settings in the config menu */
   advancedMode: boolean;
 }
