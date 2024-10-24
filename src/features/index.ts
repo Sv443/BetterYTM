@@ -8,7 +8,7 @@ import langMapping from "../../assets/locales.json" with { type: "json" };
 import { getAutoLikeDialog, getPluginListDialog, showPrompt } from "../dialogs/index.js";
 import { showIconToast } from "../components/index.js";
 import { mode } from "../constants.js";
-import { storeSerializer } from "../storeSerializer.js";
+import { getStoreSerializer } from "../storeSerializer.js";
 
 //#region re-exports
 
@@ -769,7 +769,7 @@ export const featInfo = {
         type: "confirm",
         message: t("reset_everything_confirm"),
       })) {
-        await storeSerializer.resetStoresData();
+        await getStoreSerializer().resetStoresData();
         location.reload();
       }
     },
