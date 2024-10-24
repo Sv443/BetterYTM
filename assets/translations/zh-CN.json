@@ -351,7 +351,7 @@
     "feature_helptext_showToastOnGenericError": "如果脚本中发生错误，阻止其部分工作的通知将显示给您。\n如果您经常遇到问题，请从 JavaScript 控制台（通常在 F12 菜单中）复制错误，并在 GitHub 上打开一个问题。",
     "feature_desc_resetConfig": "重置所有设置为默认值",
     "feature_btn_resetConfig": "重置设置",
-    "feature_btn_resetConfig_running": "确认中...",
+    "feature_btn_resetConfig_running": "正在重置...",
     "feature_desc_advancedMode": "显示高级设置（重新加载菜单）",
     "feature_helptext_advancedMode": "启用此功能后，菜单将重新加载并显示默认情况下隐藏的高级设置。\n如果您想更深入地定制脚本的行为并不在意过于拥挤的菜单，这将很有用。"
   }

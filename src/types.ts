@@ -638,6 +638,8 @@ export interface FeatureConfig {
   showToastOnGenericError: boolean;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
+  /** Button to reset every DataStore instance to their default values */
+  resetEverything: undefined;
   /** Whether to show advanced settings in the config menu */
   advancedMode: boolean;
 }
