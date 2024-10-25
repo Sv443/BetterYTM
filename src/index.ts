@@ -35,7 +35,7 @@ import {
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
-import { getStoreSerializer } from "./storeSerializer.js";
+import { downloadData, getStoreSerializer } from "./serializer.js";
 import { MarkdownDialog } from "./components/index.js";
 
 //#region cns. watermark
@@ -530,6 +530,8 @@ function registerDevCommands() {
 
     await mdDlg.open();
   });
+
+  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
 
   log("Registered dev menu commands");
 }
