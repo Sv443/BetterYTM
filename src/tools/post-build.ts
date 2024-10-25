@@ -154,6 +154,7 @@ I welcome every contribution on GitHub!
     const finalUserscript = `${header}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 
     await writeFile(scriptPath, finalUserscript);
+    ringBell && stdout.write("\u0007");
 
     const envText = `${mode === "production" ? "\x1b[32m" : "\x1b[33m"}${mode}`;
     const sizeKiB = Number((Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2));
@@ -179,8 +180,6 @@ I welcome every contribution on GitHub!
     console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`);
     console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
     console.info();
-
-    ringBell && stdout.write("\u0007");
 
     const buildStatsNew: BuildStats = {
       sizeKiB,

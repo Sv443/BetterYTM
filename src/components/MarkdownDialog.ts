@@ -4,6 +4,7 @@ import { consumeStringGen } from "../utils/misc.js";
 import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 import type { StringGen } from "../types.js";
 
+/** Options for the MarkdownDialog - a `body` prop is required instead of `renderBody` */
 type MarkdownDialogOptions = Omit<BytmDialogOptions, "renderBody"> & {
   /** The markdown to render */
   body: StringGen;
