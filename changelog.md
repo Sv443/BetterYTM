@@ -1,8 +1,8 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
-<!-- #region 2.1.1 -->
-## 2.1.1
+<!-- #region 2.2.0 -->
+## 2.2.0
 - **Fixes:**
   - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
   - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
