@@ -169,7 +169,9 @@ I welcome every contribution on GitHub!
     let sizeIndicator = "";
     if(buildStats.sizeKiB) {
       const sizeDiff = sizeKiB - buildStats.sizeKiB;
-      sizeIndicator = " \x1b[2m[\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m↑↑↑" : (sizeDiff !== 0 ? "\x1b[32m↓↓↓" : "\x1b[32m===")) + "\x1b[0m\x1b[2m]\x1b[0m";
+      const sizeDiffTrunc = parseFloat(sizeDiff.toFixed(2));
+      if(sizeDiffTrunc !== 0)
+        sizeIndicator = " \x1b[2m(\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m+" : (sizeDiff !== 0 ? "\x1b[32m-" : "\x1b[32m")) + Math.abs(sizeDiffTrunc) + "\x1b[0m\x1b[2m)\x1b[0m";
     }
 
     console.info();
