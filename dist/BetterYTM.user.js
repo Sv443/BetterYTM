@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           2.1.0
+// @version           2.2.0
 // @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
@@ -39,7 +39,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -57,60 +57,60 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?u=d7fcae3d-cb47-4133-8fdc-138f99facba8
-// @resource          font-cascadia_code_ttf     https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/fonts/CascadiaCode.ttf
-// @resource          font-cascadia_code_woff    https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/fonts/CascadiaCode.woff
-// @resource          font-cascadia_code_woff2   https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/fonts/CascadiaCode.woff2
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/plus_circle_small.svg
-// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/alert.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/lyrics.svg
-// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/help.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/refresh.svg
-// @resource          icon-restore_time          https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/restore_time.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/images/external/openuserjs.png
-// @resource          trans-de-DE                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/de-DE.json
-// @resource          trans-en-GB                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/en-GB.json
-// @resource          trans-en-US                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/en-US.json
-// @resource          trans-es-ES                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/es-ES.json
-// @resource          trans-fr-FR                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/fr-FR.json
-// @resource          trans-hi-IN                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/hi-IN.json
-// @resource          trans-ja-JP                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/ja-JP.json
-// @resource          trans-pt-BR                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/pt-BR.json
-// @resource          trans-zh-CN                https://raw.githubusercontent.com/Sv443/BetterYTM/3e665ddc/assets/translations/zh-CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?u=8af5d819-2619-4342-b5e4-39cf19d017ce
+// @resource          font-cascadia_code_ttf     https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/fonts/CascadiaCode.ttf
+// @resource          font-cascadia_code_woff    https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/fonts/CascadiaCode.woff
+// @resource          font-cascadia_code_woff2   https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/fonts/CascadiaCode.woff2
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/plus_circle_small.svg
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/alert.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/lyrics.svg
+// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/help.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/refresh.svg
+// @resource          icon-restore_time          https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/restore_time.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/images/external/openuserjs.png
+// @resource          trans-de-DE                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/de-DE.json
+// @resource          trans-en-GB                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/en-GB.json
+// @resource          trans-en-US                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/en-US.json
+// @resource          trans-es-ES                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/es-ES.json
+// @resource          trans-fr-FR                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/fr-FR.json
+// @resource          trans-hi-IN                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/hi-IN.json
+// @resource          trans-ja-JP                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/ja-JP.json
+// @resource          trans-pt-BR                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/pt-BR.json
+// @resource          trans-zh-CN                https://raw.githubusercontent.com/Sv443/BetterYTM/29dc3579/assets/translations/zh-CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -166,7 +166,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "3e665ddc";
+const buildNumberRaw = "29dc3579";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -2362,7 +2362,7 @@ async function renderBody$3() {
     return contElem;
 }var name = "betterytm";
 var userscriptName = "BetterYTM";
-var version = "2.1.0";
+var version = "2.2.0";
 var description = "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™";
 var homepage = "https://github.com/Sv443/BetterYTM";
 var main = "./src/index.ts";
@@ -4076,6 +4076,30 @@ async function initAutoLike() {
                 timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
                 siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
             });
+            const recreateBtn = (headerCont, chanId) => {
+                var _a, _b, _c, _d, _e, _f;
+                const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title");
+                if (!titleCont)
+                    return;
+                const checkBtn = () => setTimeout(() => {
+                    if (!document.querySelector(".bytm-auto-like-toggle-btn"))
+                        recreateBtn(headerCont, chanId);
+                }, 250);
+                const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+                const buttonsCont = headerCont.querySelector(".buttons");
+                if (buttonsCont) {
+                    const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
+                    const chanName = (_d = (_c = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
+                    lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
+                }
+                else {
+                    // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
+                    const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
+                    const chanName = (_f = (_e = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _e === void 0 ? void 0 : _e.textContent) !== null && _f !== void 0 ? _f : null;
+                    shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName).then(checkBtn);
+                }
+            };
             siteEvents.on("pathChanged", (path) => {
                 if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
                     const chanId = getCurrentChannelId();
@@ -4083,21 +4107,7 @@ async function initAutoLike() {
                         return error("Couldn't extract channel ID from URL");
                     document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
                     addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
-                        listener(headerCont) {
-                            var _a, _b, _c, _d;
-                            const buttonsCont = headerCont.querySelector(".buttons");
-                            if (buttonsCont) {
-                                const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
-                                const chanName = (_b = (_a = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
-                                lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
-                            }
-                            else {
-                                // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
-                                const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
-                                const chanName = (_d = (_c = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
-                                shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName);
-                            }
-                        }
+                        listener: (el) => recreateBtn(el, chanId),
                     });
                 }
             });
@@ -4146,22 +4156,28 @@ async function initAutoLike() {
                     if (!chanId)
                         return error("Couldn't extract channel ID from URL");
                     document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                    addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
-                        listener(headerCont) {
-                            var _a, _b;
-                            const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
-                            if (!titleCont)
-                                return;
-                            const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
-                            const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
-                            if (buttonsCont) {
-                                addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
-                                    listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]),
-                                });
-                            }
-                            else if (titleCont)
-                                addAutoLikeToggleBtn(titleCont, chanId, chanName);
+                    const recreateBtn = (headerCont) => {
+                        var _a, _b;
+                        const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
+                        if (!titleCont)
+                            return;
+                        const checkBtn = () => setTimeout(() => {
+                            if (!document.querySelector(".bytm-auto-like-toggle-btn"))
+                                recreateBtn(headerCont);
+                        }, 350);
+                        const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                        log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+                        const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
+                        if (buttonsCont) {
+                            addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
+                                listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn),
+                            });
                         }
+                        else if (titleCont)
+                            addAutoLikeToggleBtn(titleCont, chanId, chanName).then(checkBtn);
+                    };
+                    addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
+                        listener: recreateBtn,
                     });
                 }
             });
@@ -4253,8 +4269,86 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
         if (imgEl && imgHtml)
             setInnerHtml(imgEl, imgHtml);
     });
+}let curLogLevel = LogLevel.Info;
+/** Common prefix to be able to tell logged messages apart and filter them in devtools */
+const consPrefix = `[${scriptInfo.name}]`;
+const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
+/** Sets the current log level. 0 = Debug, 1 = Info */
+function setLogLevel(level) {
+    curLogLevel = level;
+    setGlobalProp("logLevel", level);
+    if (curLogLevel !== level)
+        log("Set the log level to", LogLevel[level]);
+}
+/** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
+function getLogLevel(args) {
+    const minLogLvl = 0, maxLogLvl = 1;
+    if (typeof args.at(-1) === "number")
+        return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+    return LogLevel.Debug;
+}
+/**
+ * Logs all passed values to the console, as long as the log level is sufficient.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ */
+function log(...args) {
+    if (curLogLevel <= getLogLevel(args))
+        console.log(consPrefix, ...args);
+}
+/**
+ * Logs all passed values to the console as info, as long as the log level is sufficient.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ */
+function info(...args) {
+    if (curLogLevel <= getLogLevel(args))
+        console.info(consPrefix, ...args);
+}
+/** Logs all passed values to the console as a warning, no matter the log level. */
+function warn(...args) {
+    console.warn(consPrefix, ...args);
+}
+function getErrorDialog(errName, args) {
+    return new MarkdownDialog({
+        id: "generic-error",
+        height: 400,
+        width: 500,
+        small: true,
+        destroyOnClose: true,
+        renderHeader() {
+            const header = document.createElement("h2");
+            header.classList.add("bytm-dialog-title");
+            header.role = "heading";
+            header.ariaLevel = "1";
+            header.tabIndex = 0;
+            header.textContent = header.ariaLabel = errName;
+            return header;
+        },
+        body: `\
+${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
+    });
+}
+/** Logs all passed values to the console as an error, no matter the log level. */
+function error(...args) {
+    var _a, _b;
+    console.error(consPrefix, ...args);
+    if (getFeature("showToastOnGenericError")) {
+        const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
+        UserUtils.debounce(() => showIconToast({
+            message: t("generic_error_toast_encountered_error_type", errName),
+            subtitle: t("generic_error_toast_click_for_details"),
+            icon: "icon-error",
+            iconFill: "var(--bytm-error-col)",
+            onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
+        }))();
+    }
+}
+/** Logs all passed values to the console with a debug-specific prefix */
+function dbg(...args) {
+    console.log(consPrefixDbg, ...args);
 }/** Central serializer for all data stores */
 let serializer;
+/** Returns the serializer for all data stores */
 function getStoreSerializer() {
     if (!serializer) {
         serializer = new UserUtils.DataStoreSerializer([
@@ -4266,6 +4360,16 @@ function getStoreSerializer() {
         });
     }
     return serializer;
+}
+/** Downloads the current data stores as a single file */
+async function downloadData() {
+    const serializer = getStoreSerializer();
+    const pad = (num, len = 2) => String(num).padStart(len, "0");
+    const d = new Date();
+    const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+    const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
+    const data = JSON.stringify(JSON.parse(await serializer.serialize()), undefined, 2);
+    downloadFile(fileName, data, "application/json");
 }//#region cfg menu btns
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
@@ -4932,83 +5036,6 @@ function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
         likeBtn.title = likeBtn.ariaLabel = likesLabelText;
     if (dislikeBtn)
         dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
-}let curLogLevel = LogLevel.Info;
-/** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${scriptInfo.name}]`;
-const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
-/** Sets the current log level. 0 = Debug, 1 = Info */
-function setLogLevel(level) {
-    curLogLevel = level;
-    setGlobalProp("logLevel", level);
-    if (curLogLevel !== level)
-        log("Set the log level to", LogLevel[level]);
-}
-/** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
-function getLogLevel(args) {
-    const minLogLvl = 0, maxLogLvl = 1;
-    if (typeof args.at(-1) === "number")
-        return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
-    return LogLevel.Debug;
-}
-/**
- * Logs all passed values to the console, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
- */
-function log(...args) {
-    if (curLogLevel <= getLogLevel(args))
-        console.log(consPrefix, ...args);
-}
-/**
- * Logs all passed values to the console as info, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
- */
-function info(...args) {
-    if (curLogLevel <= getLogLevel(args))
-        console.info(consPrefix, ...args);
-}
-/** Logs all passed values to the console as a warning, no matter the log level. */
-function warn(...args) {
-    console.warn(consPrefix, ...args);
-}
-function getErrorDialog(errName, args) {
-    return new MarkdownDialog({
-        id: "generic-error",
-        height: 400,
-        width: 500,
-        small: true,
-        destroyOnClose: true,
-        renderHeader() {
-            const header = document.createElement("h2");
-            header.classList.add("bytm-dialog-title");
-            header.role = "heading";
-            header.ariaLevel = "1";
-            header.tabIndex = 0;
-            header.textContent = header.ariaLabel = errName;
-            return header;
-        },
-        body: `\
-${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
-    });
-}
-/** Logs all passed values to the console as an error, no matter the log level. */
-function error(...args) {
-    var _a, _b;
-    console.error(consPrefix, ...args);
-    if (getFeature("showToastOnGenericError")) {
-        const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
-        UserUtils.debounce(() => showIconToast({
-            message: t("generic_error_toast_encountered_error_type", errName),
-            subtitle: t("generic_error_toast_click_for_details"),
-            icon: "icon-error",
-            iconFill: "var(--bytm-error-col)",
-            onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-        }))();
-    }
-}
-/** Logs all passed values to the console with a debug-specific prefix */
-function dbg(...args) {
-    console.log(consPrefixDbg, ...args);
 }//#region Dark Reader
 /** Disables Dark Reader if it is present */
 async function disableDarkReader() {
@@ -7029,7 +7056,7 @@ function initObservers() {
                 // -> for example the /channel/UC... page#
                 //    enabled by "body"
                 const browseResponseSelector = "ytmusic-browse-response";
-                globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 75, subtree: true }));
                 globservers.body.addListener(browseResponseSelector, {
                     listener: () => globservers.browseResponse.enable(),
                 });
@@ -7139,7 +7166,7 @@ function initObservers() {
                 // -> header of the page
                 //    enabled by "ytdBrowse"
                 const ytAppHeaderSelector = "#header tp-yt-app-header";
-                globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 75, subtree: true }));
                 globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
                     listener: () => globservers.ytAppHeader.enable(),
                 });
@@ -7395,6 +7422,17 @@ function setInnerHtml(element, html) {
         });
     }
     element.innerHTML = (_b = ttPolicy === null || ttPolicy === void 0 ? void 0 : ttPolicy.createHTML(html)) !== null && _b !== void 0 ? _b : DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
+}
+/** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
+function downloadFile(fileName, data, mimeType = "text/plain") {
+    const blob = data instanceof Blob ? data : new Blob([data], { type: mimeType });
+    const a = document.createElement("a");
+    a.classList.add("bytm-hidden");
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => a.remove(), 50);
 }class LyricsError extends Error {
     constructor(message) {
         super(message);
@@ -7879,6 +7917,7 @@ function registerDevCommands() {
         });
         await mdDlg.open();
     });
+    GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
     log("Registered dev menu commands");
 }
 preInit();})(UserUtils,DOMPurify,compareVersions,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
