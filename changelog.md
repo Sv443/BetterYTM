@@ -1,11 +1,13 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
-<!-- #region 2.2.0 -->
-## 2.2.0
+<!-- #region 2.1.1 -->
+## 2.1.1
 - **Fixes:**
   - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
   - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
+  - Fixed errors in TamperMonkey because of missing `@connect` directives
+  - Fixed auto-like channel toggle button disappearing after changing channel page tabs on both pages
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
