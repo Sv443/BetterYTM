@@ -273,3 +273,16 @@ export function setInnerHtml(element: HTMLElement, html: string) {
   element.innerHTML = ttPolicy?.createHTML(html)
     ?? DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
 }
+
+/** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
+export function downloadFile(fileName: string, data: string | Blob, mimeType = "text/plain") {
+  const blob = data instanceof Blob ? data : new Blob([data], { type: mimeType });
+  const a = document.createElement("a");
+  a.classList.add("bytm-hidden");
+  a.href = URL.createObjectURL(blob);
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+
+  setTimeout(() => a.remove(), 50);
+}

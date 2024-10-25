@@ -8,7 +8,7 @@ import langMapping from "../../assets/locales.json" with { type: "json" };
 import { getAutoLikeDialog, getPluginListDialog, showPrompt } from "../dialogs/index.js";
 import { showIconToast } from "../components/index.js";
 import { mode } from "../constants.js";
-import { getStoreSerializer } from "../storeSerializer.js";
+import { getStoreSerializer } from "../serializer.js";
 
 //#region re-exports
 
