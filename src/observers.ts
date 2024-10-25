@@ -135,6 +135,7 @@ export function initObservers() {
       const browseResponseSelector = "ytmusic-browse-response";
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
         ...defaultObserverOptions,
+        defaultDebounce: 75,
         subtree: true,
       });
 
@@ -312,6 +313,7 @@ export function initObservers() {
       const ytAppHeaderSelector = "#header tp-yt-app-header";
       globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
+        defaultDebounce: 75,
         subtree: true,
       });
 
