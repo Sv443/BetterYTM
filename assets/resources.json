@@ -9,8 +9,8 @@
   "css-show_votes": "style/showVotes.css",
   "css-vol_slider_size": "style/volSliderSize.css",
   "doc-changelog": {
-    "path": "/changelog.md?u=$UUID",
-    "ref": "$BRANCH"
+    "path": "/changelog.md?u=$UID",
+    "ref": "main"
   },
   "font-cascadia_code_ttf": "fonts/CascadiaCode.ttf",
   "font-cascadia_code_woff": "fonts/CascadiaCode.woff",

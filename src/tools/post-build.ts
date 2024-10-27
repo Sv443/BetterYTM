@@ -1,7 +1,6 @@
 import { access, readFile, writeFile, constants as fsconst } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
 import "dotenv/config";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
@@ -33,7 +32,7 @@ type BuildStats = {
 
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
-const buildUuid = randomUUID();
+const buildUid = randomId(12, 36);
 
 type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
 
@@ -251,7 +250,7 @@ function resolveVal(value: string, buildNbr: string) {
     ["\\$BRANCH", branch],
     ["\\$HOST", host],
     ["\\$BUILD_NUMBER", buildNbr],
-    ["\\$UUID", buildUuid],
+    ["\\$UID", buildUid],
   ];
 
   return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), value);
@@ -370,7 +369,7 @@ function getResourceUrl(path: string, ghRef: string, useTagInProd = true) {
   if(path.startsWith("/"))
     assetPath = "";
   return assetSource === "local"
-    ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUuid}`
+    ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUid}`
     : `https://raw.githubusercontent.com/${repo}/${mode === "development" || !useTagInProd ? ghRef : `v${pkg.version}`}${assetPath}${path}`;
 }
 
@@ -413,4 +412,16 @@ async function getLinkedPkgs() {
 /** Schedules an exit after I/O events finish */
 function schedExit(code: number) {
   setImmediate(() => exit(code));
+}
+
+/** Generates a random ID of the given {@linkcode length} and {@linkcode radix} */
+function randomId(length = 16, radix = 16, randomCase = true) {
+  const arr = Array.from(
+    { length },
+    () => Math.floor(Math.random() * radix).toString(radix)
+  );
+  randomCase && arr.forEach((v, i) => {
+    arr[i] = v[Math.random() > 0.5 ? "toUpperCase" : "toLowerCase"]();
+  });
+  return arr.join("");
 }
