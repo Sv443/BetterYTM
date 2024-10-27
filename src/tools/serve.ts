@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import express, { NextFunction, Request, Response } from "express";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
+import type { Server } from "node:http";
 
 const { argv, env, exit, stdout } = process;
 
@@ -18,12 +19,12 @@ const autoExitRaw = argv.find(arg => arg.startsWith("--auto-exit-time="))?.split
 const autoExitTime: number | undefined = !isNaN(Number(autoExitRaw)) ? Number(autoExitRaw) * 1000 : undefined;
 
 const app = express();
+let server: Server;
 
-enableLogging &&
-  app.use((_req, _res, next) => {
-    stdout.write("*");
-    next();
-  });
+enableLogging && app.use((_req, _res, next) => {
+  stdout.write("*");
+  next();
+});
 
 app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
   if(typeof err === "string" || err instanceof Error)
@@ -42,18 +43,31 @@ app.use("/assets", express.static(
   resolve(fileURLToPath(import.meta.url), "../../../assets/")
 ));
 
-const server = app.listen(devServerPort, "0.0.0.0", () => {
-  console.log(`Dev server is running on port ${devServerPort}`);
-  if(enableLogging)
-    stdout.write("\nRequests: ");
-  else
-    console.log("\x1b[2m(request logging is disabled)\x1b[0m");
-  console.log();
+function closeAndExit(code: number) {
+  !server && setImmediate(() => exit(code));
+  server?.close(() =>
+    setImmediate(() =>
+      exit(code)
+    )
+  );
+}
 
-  if(autoExitTime) {
-    console.log(`Exiting in ${autoExitTime / 1000}s...`);
-    setTimeout(() => {
-      server.close(() => setImmediate(() => exit(0)));
-    }, autoExitTime);
-  }
-});
+try {
+  server = app.listen(devServerPort, "0.0.0.0", () => {
+    console.log(`Dev server is running on port ${devServerPort}`);
+    if(enableLogging)
+      stdout.write("\nRequests: ");
+    else
+      console.log("\x1b[2m(request logging is disabled)\x1b[0m");
+    console.log();
+
+    if(autoExitTime) {
+      console.log(`Exiting in ${autoExitTime / 1000}s...`);
+      setTimeout(() => closeAndExit(0), autoExitTime);
+    }
+  });
+}
+catch(err) {
+  console.error("\x1b[31mError starting dev server:\x1b[0m", err);
+  closeAndExit(1);
+}
