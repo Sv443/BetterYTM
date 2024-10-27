@@ -7,6 +7,8 @@ import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } fr
 import locales from "../../assets/locales.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
 import type { RollupArgs } from "../types.js";
+import { createHash } from "node:crypto";
+import { createReadStream } from "node:fs";
 
 const { argv, env, exit, stdout } = process;
 
@@ -263,34 +265,52 @@ async function getResourceDirectives(ref: string) {
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
     const resources = JSON.parse(resourcesFile) as Record<string, string> | Record<string, { path: string; buildNbr: string }>;
 
-    const resourcesRef = Object.entries(resources).reduce<Record<string, Record<"path" | "ref", string>>>((acc, [key, val]) => {
-      acc[key] = {
-        ...(typeof val === "object"
-          ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref) }
-          : { path: getResourceUrl(resolveVal(val, ref), ref), ref }
-        ),
-      };
-      return acc;
-    }, {}) as Record<string, Record<"path" | "ref", string>>;
+    // const resourcesRef = Object.entries(resources).reduce<Record<string, Record<"path" | "ref", string>>>((acc, [key, val]) => {
+    //   acc[key] = {
+    //     ...(typeof val === "object"
+    //       ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref) }
+    //       : { path: getResourceUrl(resolveVal(val, ref), ref), ref }
+    //     ),
+    //   };
+    //   return acc;
+    // }, {}) as Record<string, Record<"path" | "ref", string>>;
 
-    resourcesRef["css-bundle"] = { path: getResourceUrl("/dist/BetterYTM.css", ref), ref };
+    const resourcesHashed = {} as Record<string, Record<"path" | "ref", string> & Partial<Record<"hash", string>>>;
+
+    for(const [name, val] of Object.entries(resources)) {
+      const pathVal = typeof val === "object" ? val.path : val;
+      const hash = assetSource !== "local" && !pathVal.match(/^https?:\/\//)
+        ? await getFileHashSha256(pathVal.replace(/\?.+/g, ""))
+        : undefined;
+      resourcesHashed[name] = typeof val === "object"
+        ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref), hash }
+        : { path: getResourceUrl(resolveVal(val, ref), ref), ref, hash };
+    }
+
+    const addResourceHashed = async (name: string, path: string, ref: string) => {
+      if(assetSource !== "local" || !path.match(/^https?:\/\//))
+        return;
+      resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getFileHashSha256(path) };
+    };
+
+    await addResourceHashed("css-bundle", "/dist/BetterYTM.css", ref);
 
     for(const [locale] of Object.entries(locales))
-      resourcesRef[`trans-${locale}`] = { path: getResourceUrl(`translations/${locale}.json`, ref), ref };
+      await addResourceHashed(`trans-${locale}`, `translations/${locale}.json`, ref);
 
     let longestName = 0;
-    for(const name of Object.keys(resourcesRef))
+    for(const name of Object.keys(resourcesHashed))
       longestName = Math.max(longestName, name.length);
 
-    const sortedResourceEntries = Object.entries(resourcesRef).sort(([a], [b]) => a.localeCompare(b));
+    const sortedResourceEntries = Object.entries(resourcesHashed).sort(([a], [b]) => a.localeCompare(b));
 
-    for(const [name, { path, ref: entryRef }] of sortedResourceEntries) {
+    for(const [name, { path, ref: entryRef, hash }] of sortedResourceEntries) {
       const bufferSpace = " ".repeat(longestName - name.length);
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
           : getResourceUrl(path, entryRef, ref === entryRef)
-      }`);
+      }${hash ? `#sha256=${hash}` : ""}`);
     }
 
     return directives.join("\n");
@@ -424,4 +444,30 @@ function randomId(length = 16, radix = 16, randomCase = true) {
     arr[i] = v[Math.random() > 0.5 ? "toUpperCase" : "toLowerCase"]();
   });
   return arr.join("");
+}
+
+/**
+ * Calculates the SHA-256 hash of the file at the given path.  
+ * Uses {@linkcode resolveResourcePath()} to resolve the path, meaning paths prefixed with a slash are relative to the repository root, otherwise they are relative to the `assets` directory.
+ */
+function getFileHashSha256(path: string): Promise<string> {
+  path = resolveResourcePath(path);
+
+  return new Promise((res, rej) => {
+    const hash = createHash("sha256");
+    const stream = createReadStream(resolve(path));
+    stream.on("data", data => hash.update(data));
+    stream.on("end", () => res(hash.digest("base64")));
+    stream.on("error", rej);
+  });
+}
+
+/**
+ * Resolves the path to a resource.  
+ * If prefixed with a slash, the path is relative to the repository root, otherwise it is relative to the `assets` directory.
+ */
+function resolveResourcePath(path: string): string {
+  if(path.startsWith("/"))
+    return path.slice(1);
+  return `assets/${path}`;
 }
