@@ -12,10 +12,11 @@
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Internal Changes:**
-  - Changed the locale code format to match the [BCP 47](https://tools.ietf.org/html/bcp47) standard.
+  - Changed the locale code format to match the [BCP 47](https://tools.ietf.org/html/bcp47) standard.  
     As part of this, all `_` underscores were replaced with `-` hyphens and the following locales had their country codes corrected:
     - `en-UK` -> `en-GB`
     - `ja-JA` -> `ja-JP`
+  - Enabled Subresource Integrity (SRI) hashes for external resources to increase security
 - **Plugin Changes:**  
   - Migration guide:
     - Since locale codes now have the format `xx-YY` and two were renamed, all plugins must implement those changes
