@@ -1,0 +1,70 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "tools/post-build.ts",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/tools/post-build.ts",
+      "runtimeExecutable": "tsx",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**",
+      ],
+    },
+    {
+      "name": "tools/gen-readme.ts",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/tools/gen-readme.ts",
+      "runtimeExecutable": "tsx",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**",
+      ],
+    },
+    {
+      "name": "tools/serve.ts",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/tools/serve.ts",
+      "runtimeExecutable": "tsx",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**",
+      ],
+    },
+    {
+      "name": "tools/tr-format.ts",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/tools/tr-format.ts",
+      "runtimeExecutable": "tsx",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**",
+      ],
+    },
+    {
+      "name": "tools/tr-progress.ts",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/tools/tr-progress.ts",
+      "runtimeExecutable": "tsx",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
+      ]
+    }
+  ],
+}
