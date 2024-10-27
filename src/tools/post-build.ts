@@ -164,7 +164,9 @@ I welcome every contribution on GitHub!
       try {
         buildStats = JSON.parse(String(await readFile(".build.json"))) as BuildStats;
       }
-      catch(e) { void e; }
+      catch {
+        void 0;
+      }
     }
 
     let sizeIndicator = "";
@@ -175,11 +177,13 @@ I welcome every contribution on GitHub!
         sizeIndicator = " \x1b[2m(\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m+" : (sizeDiff !== 0 ? "\x1b[32m-" : "\x1b[32m")) + Math.abs(sizeDiffTrunc) + "\x1b[0m\x1b[2m)\x1b[0m";
     }
 
-    console.info();
-    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${buildNbr}`);
-    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`);
-    console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
-    console.info();
+    console.info([
+      "",
+      `Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${buildNbr}`,
+      `Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`,
+      `Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`,
+      "",
+    ].join("\n"));
 
     const buildStatsNew: BuildStats = {
       sizeKiB,
