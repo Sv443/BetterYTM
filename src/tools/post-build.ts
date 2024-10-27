@@ -265,16 +265,6 @@ async function getResourceDirectives(ref: string) {
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
     const resources = JSON.parse(resourcesFile) as Record<string, string> | Record<string, { path: string; buildNbr: string }>;
 
-    // const resourcesRef = Object.entries(resources).reduce<Record<string, Record<"path" | "ref", string>>>((acc, [key, val]) => {
-    //   acc[key] = {
-    //     ...(typeof val === "object"
-    //       ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref) }
-    //       : { path: getResourceUrl(resolveVal(val, ref), ref), ref }
-    //     ),
-    //   };
-    //   return acc;
-    // }, {}) as Record<string, Record<"path" | "ref", string>>;
-
     const resourcesHashed = {} as Record<string, Record<"path" | "ref", string> & Partial<Record<"hash", string>>>;
 
     for(const [name, val] of Object.entries(resources)) {
@@ -288,9 +278,18 @@ async function getResourceDirectives(ref: string) {
     }
 
     const addResourceHashed = async (name: string, path: string, ref: string) => {
-      if(assetSource !== "local" || !path.match(/^https?:\/\//))
-        return;
-      resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getFileHashSha256(path) };
+      try {
+        if(assetSource === "local")
+          return;
+        if(path.match(/^https?:\/\//)) {
+          resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: undefined };
+          return;
+        }
+        resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getFileHashSha256(path) };
+      }
+      catch(err) {
+        console.error(`\x1b[31mCouldn't add hashed resource '${name}':\x1b[0m`, err);
+      }
     };
 
     await addResourceHashed("css-bundle", "/dist/BetterYTM.css", ref);
@@ -393,6 +392,16 @@ function getResourceUrl(path: string, ghRef: string, useTagInProd = true) {
     : `https://raw.githubusercontent.com/${repo}/${mode === "development" || !useTagInProd ? ghRef : `v${pkg.version}`}${assetPath}${path}`;
 }
 
+/**
+ * Resolves the path to a resource.  
+ * If prefixed with a slash, the path is relative to the repository root, otherwise it is relative to the `assets` directory.
+ */
+function resolveResourcePath(path: string): string {
+  if(path.startsWith("/"))
+    return path.slice(1);
+  return `assets/${path}`;
+}
+
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
 function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
@@ -460,14 +469,4 @@ function getFileHashSha256(path: string): Promise<string> {
     stream.on("end", () => res(hash.digest("base64")));
     stream.on("error", rej);
   });
-}
-
-/**
- * Resolves the path to a resource.  
- * If prefixed with a slash, the path is relative to the repository root, otherwise it is relative to the `assets` directory.
- */
-function resolveResourcePath(path: string): string {
-  if(path.startsWith("/"))
-    return path.slice(1);
-  return `assets/${path}`;
 }
