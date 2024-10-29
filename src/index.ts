@@ -45,7 +45,7 @@ import { MarkdownDialog } from "./components/index.js";
   const [styleGradient, gradientContBg] = (() => {
     switch(mode) {
     case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"];
-    case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(44, 166, 178) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
+    case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(38, 160, 172) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
     }
   })();
   const styleCommon = "color: #fff; font-size: 1.3rem;";

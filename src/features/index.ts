@@ -22,6 +22,14 @@ export * from "./songLists.js";
 export * from "./versionCheck.js";
 export * from "./volume.js";
 
+//#region misc
+
+function noop() {
+  void 0;
+}
+
+void [noop];
+
 //#region adornments
 
 type AdornmentFunc =
@@ -796,10 +804,3 @@ export const featInfo = {
         emitSiteEvent("recreateCfgMenu"),
   },
 } as const satisfies FeatureInfo;
-
-
-function noop() {
-  void 0;
-}
-
-void [noop];
