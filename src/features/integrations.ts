@@ -46,11 +46,17 @@ export async function fixPlayerPageTheming() {
 /** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
 export async function fixThemeSong() {
   try {
+    await addStyleFromResource("css-hide_themesong_logo");
+
     const cssVarName = (() => {
       switch(getFeature("themeSongLightness")) {
-      case "darker": return "--ts-palette-darkmuted-hex";
-      case "normal": return "--ts-palette-muted-hex";
-      case "lighter": return "--ts-palette-lightmuted-hex";
+      default:
+      case "darker":
+        return "--ts-palette-darkmuted-hex";
+      case "normal":
+        return "--ts-palette-muted-hex";
+      case "lighter":
+        return "--ts-palette-lightmuted-hex";
       };
     })();
     document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
