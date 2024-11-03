@@ -8,6 +8,7 @@
   - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
   - Fixed errors in TamperMonkey because of missing `@connect` directives
   - Fixed auto-like channel toggle button disappearing after changing channel page tabs on both pages
+  - Fixed duplicate logo if the ThemeSong extension is installed
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
