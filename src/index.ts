@@ -226,10 +226,12 @@ async function onDomLoad() {
       if(feats.sponsorBlockIntegration)
         ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
 
+      const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
+
       if(feats.themeSongIntegration)
-        ftInit.push(["themeSongIntegration", fixThemeSong()]);
+        ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);
       else
-        ftInit.push(["themeSongIntegration", fixPlayerPageTheming()]);
+        ftInit.push(["themeSongIntegration", Promise.allSettled([fixPlayerPageTheming(), hideThemeSongLogo])]);
     }
 
     //#region (ytm+yt) cfg menu
