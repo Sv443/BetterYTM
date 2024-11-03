@@ -178,10 +178,13 @@ class PromptDialog extends BytmDialog {
 
 //#region showPrompt fn
 
-/** Shows a confirm() or alert() prompt dialog of the specified type and resolves true if the user confirms it or false if they cancel it - always resolves true with type "alert" */
-export function showPrompt(props: ConfirmRenderProps | AlertRenderProps): Promise<boolean>;
-/** Shows a prompt() dialog with the specified message and default value and resolves the entered value if the user confirms it or null if they cancel it */
+/** Shows a `confirm()`-like prompt dialog with the specified message and resolves true if the user confirms it or false if they deny or cancel it */
+export function showPrompt(props: ConfirmRenderProps): Promise<boolean>;
+/** Shows an `alert()`-like prompt dialog with the specified message and always resolves true once the user dismisses it */
+export function showPrompt(props: AlertRenderProps): Promise<true>;
+/** Shows a `prompt()`-like dialog with the specified message and default value and resolves the entered value if the user confirms it or null if they cancel it */
 export function showPrompt(props: PromptRenderProps): Promise<string | null>;
+/** Custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions */
 export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<PromptDialogResolveVal> {
   return new Promise<PromptDialogResolveVal>((resolve) => {
     if(BytmDialog.getOpenDialogs().includes("prompt-dialog"))
