@@ -6,6 +6,7 @@
   "css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
   "css-fix_spacing": "style/fixSpacing.css",
   "css-fix_sponsorblock": "style/fixSponsorBlock.css",
+  "css-hide_themesong_logo": "style/hideThemeSongLogo.css",
   "css-show_votes": "style/showVotes.css",
   "css-vol_slider_size": "style/volSliderSize.css",
   "doc-changelog": {
