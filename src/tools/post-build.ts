@@ -279,9 +279,7 @@ async function getResourceDirectives(ref: string) {
 
     const addResourceHashed = async (name: string, path: string, ref: string) => {
       try {
-        if(assetSource === "local")
-          return;
-        if(path.match(/^https?:\/\//)) {
+        if(assetSource === "local" || path.match(/^https?:\/\//)) {
           resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: undefined };
           return;
         }
