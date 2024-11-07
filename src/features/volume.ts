@@ -1,6 +1,6 @@
 import { addParent, debounce, type Stringifiable } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
-import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady } from "../utils/index.js";
+import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import "./volume.css";
@@ -69,7 +69,7 @@ export async function initVolumeFeatures() {
 
 //#region scroll step
 
-/** Initializes the volume slider scroll step features */
+/** Initializes the volume slider scroll step feature */
 function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElement) {
   for(const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
     volSliderCont.addEventListener(evtName, (e) => {
@@ -77,7 +77,10 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
       // cancels all the other events that would be fired
       e.stopImmediatePropagation();
 
-      const delta = (e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1;
+      const delta = Number((e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1);
+      if(isNaN(delta))
+        return warn("Invalid scroll delta:", delta);
+
       const volumeDir = -Math.sign(delta);
       const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
 

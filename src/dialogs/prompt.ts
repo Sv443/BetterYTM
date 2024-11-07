@@ -64,7 +64,7 @@ class PromptDialog extends BytmDialog {
   }
 
   protected emitResolve(val: PromptDialogResolveVal) {
-    (this.events as PromptDialogEmitter).emit("resolve", val);
+    this.events.emit("resolve", val);
   }
 
   protected async renderHeader({ type }: PromptDialogRenderProps) {

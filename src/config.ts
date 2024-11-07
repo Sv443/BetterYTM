@@ -5,7 +5,7 @@ import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
 import { closeCfgMenu } from "./menu/menu_old.js";
-import type { FeatureConfig, FeatureKey, NumberLength } from "./types.js";
+import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
@@ -111,7 +111,7 @@ export const migrations: DataMigrationsDict = {
   // 7 -> 8 (v2.1)
   8: (oldData: FeatureConfig) => {
     if("showVotesFormat" in oldData) {
-      oldData.numbersFormat = oldData.showVotesFormat as NumberLength;
+      oldData.numbersFormat = oldData.showVotesFormat as NumberLengthFormat;
       delete oldData.showVotesFormat;
     }
     return useDefaultConfig(oldData, [
