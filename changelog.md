@@ -23,9 +23,6 @@
 - **Plugin Changes:**  
   - Migration guide:
     - Since locale codes now have the format `xx-YY` and two were renamed, all plugins must implement those changes
-  - Added components:
-    - `createPopper()` to create an element that is attached to another element and gets shown on hover
-    - `createMultiSelect()` to create a multi-select, menu utilizing the `createPopper()` function for the dropdown menu
 
 </details>
 
