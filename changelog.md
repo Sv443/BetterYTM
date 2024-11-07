@@ -9,6 +9,8 @@
   - Fixed errors in TamperMonkey because of missing `@connect` directives
   - Fixed auto-like channel toggle button disappearing after changing channel page tabs on both pages
   - Fixed duplicate logo if the ThemeSong extension is installed
+- **Changes:**
+  - Replaced the monospace font Cascadia Code with [Cousine](https://fonts.google.com/specimen/Cousine)
 
 <details><summary>Click to expand internal and plugin changes</summary>
 

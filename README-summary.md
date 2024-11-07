@@ -119,8 +119,8 @@ This project is based on my extensive template for making a userscript with Type
 ### Attributions:
 This userscript depends on these projects:
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
-- [Cascadia Code](https://github.com/microsoft/cascadia-code)
 - [compare-versions](https://npmjs.org/package/compare-versions)
+- [Cousine font](https://fonts.google.com/specimen/Cousine)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
 - [Marked](https://npmjs.org/package/marked)
 - [Nano Events](https://github.com/ai/nanoevents)
