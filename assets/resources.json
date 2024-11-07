@@ -13,9 +13,9 @@
     "path": "/changelog.md?u=$UID",
     "ref": "main"
   },
-  "font-cascadia_code_ttf": "fonts/CascadiaCode.ttf",
-  "font-cascadia_code_woff": "fonts/CascadiaCode.woff",
-  "font-cascadia_code_woff2": "fonts/CascadiaCode.woff2",
+  "font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
+  "font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
+  "font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
   "icon-advanced_mode": "icons/plus_circle_small.svg",
   "icon-alert": "icons/alert.svg",
   "icon-arrow_down": "icons/arrow_down.svg",

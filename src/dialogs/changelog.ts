@@ -34,6 +34,10 @@ export async function getChangelogDialog() {
       const firstDetails = mdContElem.querySelector<HTMLDetailsElement>("details");
       if(firstDetails)
         firstDetails.open = true;
+
+      const kbdElems = mdContElem.querySelectorAll<HTMLElement>("kbd");
+      for(const kbdElem of kbdElems)
+        kbdElem.addEventListener("selectstart", (e) => e.preventDefault());
     });
   }
   return changelogDialog;

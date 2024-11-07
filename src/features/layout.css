@@ -1,7 +1,8 @@
 /* #region misc */
 
 :root {
-  --bytm-font-monospace: "Cascadia Code", "Consolas", monospace;
+  --bytm-font-monospace: "Cousine", "Consolas", monospace;
+  --bytm-font-size-monospace: 1.4rem;
 }
 
 .bytm-disable-scroll {

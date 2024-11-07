@@ -342,9 +342,9 @@ select.bytm-ftconf-input {
   --bytm-kbd-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
-  padding: 4px;
-  padding-top: 2px;
-  font-size: 0.95em;
+  padding: 4px 3px;
+  font-family: var(--bytm-font-monospace);
+  font-size: 1.25rem;
   line-height: 11px;
   background-color: #222;
   border: 1px solid #777;
@@ -373,6 +373,7 @@ select.bytm-ftconf-input {
   border-radius: 3px;
   padding: 1px 5px;
   font-family: var(--bytm-font-monospace);
+  font-size: var(--bytm-font-size-monospace);
 }
 
 .bytm-markdown-container h2 {

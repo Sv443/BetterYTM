@@ -59,7 +59,7 @@ import { MarkdownDialog } from "./components/index.js";
 ─ This markdown parser library: https://github.com/markedjs/marked
 ─ This tiny event listener library: https://github.com/ai/nanoevents
 ─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript
-─ The Cascadia Code font: https://github.com/microsoft/cascadia-code`;
+─ The Cousine font: https://fonts.google.com/specimen/Cousine`;
 
   console.log(
     `\
@@ -340,10 +340,10 @@ function initGlobalCssVars() {
 
 async function loadFonts() {
   const fonts = {
-    "Cascadia Code": {
-      woff: await getResourceUrl("font-cascadia_code_woff"),
-      woff2: await getResourceUrl("font-cascadia_code_woff2"),
-      ttf: await getResourceUrl("font-cascadia_code_ttf"),
+    "Cousine": {
+      woff: await getResourceUrl("font-cousine_woff"),
+      woff2: await getResourceUrl("font-cousine_woff2"),
+      ttf: await getResourceUrl("font-cousine_ttf"),
     },
   };
 
