@@ -375,7 +375,7 @@
   --bytm-kbd-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
-  padding: 4px 3px;
+  padding: 3px;
   font-family: var(--bytm-font-monospace);
   font-size: 1.25rem;
   line-height: 11px;
@@ -390,7 +390,7 @@
 }
 
 .bytm-markdown-container kbd:active {
-  padding-bottom: 2px;
+  padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
@@ -402,6 +402,8 @@
   background-color: #222;
   border-radius: 3px;
   padding: 1px 5px;
+  font-family: var(--bytm-font-monospace);
+  font-size: var(--bytm-font-size-monospace);
 }
 
 .bytm-markdown-container h2 {
@@ -455,6 +457,10 @@
 
 .bytm-markdown-container .pr-link-cont {
   padding-top: 10px;
+}
+
+.bytm-markdown-container details {
+  margin-top: 5px;
 }
 
 #bytm-feat-help-dialog-desc,

@@ -342,7 +342,7 @@ select.bytm-ftconf-input {
   --bytm-kbd-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
-  padding: 4px 3px;
+  padding: 3px;
   font-family: var(--bytm-font-monospace);
   font-size: 1.25rem;
   line-height: 11px;
@@ -356,15 +356,12 @@ select.bytm-ftconf-input {
     box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active,
-.bytm-kbd:active {
-  padding-bottom: 2px;
-  margin-top: 2px;
+.bytm-markdown-container kbd:active {
+  padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection,
-.bytm-kbd::selection {
+.bytm-markdown-container kbd::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -384,15 +381,53 @@ select.bytm-ftconf-input {
   margin-top: 30px;
 }
 
+.bytm-markdown-container ul li {
+  padding-left: 0px;
+}
+
+.bytm-markdown-container ul li::marker {
+  content: none;
+}
+
 .bytm-markdown-container ul li::before {
   content: "• ";
   font-weight: bolder;
 }
 
+.bytm-markdown-container ul li > ul li {
+  padding-left: 16px;
+}
+
+.bytm-markdown-container ul li > ul li::marker {
+  content: none;
+}
+
 .bytm-markdown-container ul li > ul li::before {
   white-space: pre-wrap;
-  content: "    • ";
+  content: "• ";
   font-weight: bolder;
+}
+
+.bytm-markdown-container ul li > ul li > ul li {
+  padding-left: 16px;
+}
+
+.bytm-markdown-container ul li > ul li > ul li::marker {
+  content: none;
+}
+
+.bytm-markdown-container ul li > ul li > ul li::before {
+  white-space: pre-wrap;
+  content: "• ";
+  font-weight: bolder;
+}
+
+.bytm-markdown-container .pr-link-cont {
+  padding-top: 10px;
+}
+
+.bytm-markdown-container details {
+  margin-top: 5px;
 }
 
 #bytm-feat-help-dialog-desc,

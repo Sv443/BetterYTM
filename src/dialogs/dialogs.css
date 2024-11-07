@@ -93,7 +93,7 @@
 
 /* #region cfg menu adornments */
 
-.bytm-ftitem-adornment svg path {
+.bytm-locale-icon svg path {
   fill: var(--bytm-locale-color, #fff);
 }
 
