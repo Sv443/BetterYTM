@@ -37,8 +37,8 @@ type AdornmentFunc =
   | Promise<string | undefined>;
 
 /** Creates an HTML string for the given adornment properties */
-const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraAttributes?: string) =>
-  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraAttributes ? " " + extraAttributes : ""}>${await resourceAsString(resource) ?? ""}</span>`;
+const getAdornHtml = async (className: string, title: string | undefined, resource: ResourceKey, extraAttributes?: string) =>
+  `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 
 /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 const combineAdornments = (
@@ -67,7 +67,7 @@ const combineAdornments = (
 const adornments = {
   advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-  globe: async () => getAdornHtml("bytm-locale-icon", t("locale"), "icon-globe_small"),
+  globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
   alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
   reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
 } satisfies Record<string, AdornmentFunc>;

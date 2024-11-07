@@ -88,6 +88,9 @@
 .bytm-adorn-icon {
   display: inline-flex;
   align-items: center;
+}
+
+.bytm-adorn-icon[title] {
   cursor: help;
 }
 
