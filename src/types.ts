@@ -104,9 +104,9 @@ export type VideoVotesObj = {
   timestamp: number;
 };
 
-export type NumberLength = "short" | "long";
+export type NumberLengthFormat = "short" | "long";
 
-export type ColorLightness = "darker" | "normal" | "lighter";
+export type ColorLightnessPref = "darker" | "normal" | "lighter";
 
 //#region global
 
@@ -373,8 +373,10 @@ export type InterfaceFunctions = {
 
 //#region feature defs
 
+/** Feature identifier */
 export type FeatureKey = keyof FeatureConfig;
 
+/** Feature category identifier */
 export type FeatureCategory =
   | "layout"
   | "volume"
@@ -457,8 +459,8 @@ type FeatureFuncProps = (
 
 /**
  * The feature info object that contains all properties necessary to construct the config menu and the feature config object.  
- * All values are loosely typed so try to only use this with the `satisfies` keyword.  
- * Use `typeof featInfo` (from `src/features/index.ts`) instead for full type safety.
+ * All values are loosely typed so try to only use this via `const myObj = {} satisfies FeatureInfo;`  
+ * For full type safety, use `typeof featInfo` (from `src/features/index.ts`) instead.
  */
 export type FeatureInfo = Record<
   keyof FeatureConfig,
@@ -484,7 +486,7 @@ export type FeatureInfo = Record<
 
 //#region feature config
 
-/** Feature configuration */
+/** Feature configuration object, as saved in memory and persistent storage */
 export interface FeatureConfig {
   //#region layout
   /** Show a BetterYTM watermark under the YTM logo */
@@ -516,7 +518,7 @@ export interface FeatureConfig {
   /** Whether to show the like/dislike ratio on the currently playing song */
   showVotes: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
-  numbersFormat: NumberLength;
+  numbersFormat: NumberLengthFormat;
 
   //#region volume
   /** Add a percentage label to the volume slider */
@@ -613,7 +615,7 @@ export interface FeatureConfig {
   /** Whether to adjust styles so they look better when using the ThemeSong extension */
   themeSongIntegration: boolean;
   /** Lightness of the color used when ThemeSong is enabled */
-  themeSongLightness: ColorLightness;
+  themeSongLightness: ColorLightnessPref;
 
   //#region plugins
   /** Button that opens the plugin list dialog */

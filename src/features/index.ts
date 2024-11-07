@@ -2,7 +2,7 @@ import { formatNumber, getLocale, getPreferredLocale, getResourceUrl, resourceAs
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
-import { FeatureInfo, type ColorLightness, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
+import { FeatureInfo, type ColorLightnessPref, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { getAutoLikeDialog, getPluginListDialog, showPrompt } from "../dialogs/index.js";
@@ -108,7 +108,7 @@ const options = {
       }];
     }, [] as SelectOption[])
     .sort((a, b) => a.label.localeCompare(b.label)),
-  colorLightness: (): SelectOption<ColorLightness>[] => [
+  colorLightness: (): SelectOption<ColorLightnessPref>[] => [
     { value: "darker", label: t("color_lightness_darker") },
     { value: "normal", label: t("color_lightness_normal") },
     { value: "lighter", label: t("color_lightness_lighter") },

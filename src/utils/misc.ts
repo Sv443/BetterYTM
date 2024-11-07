@@ -1,7 +1,7 @@
 import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
-import { type Domain, type NumberLength, type ResourceKey, type StringGen } from "../types.js";
+import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
 import { error, type TrLocale, warn, sendRequest, getLocale } from "./index.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
@@ -204,7 +204,7 @@ export async function consumeStringGen(strGen: StringGen): Promise<string> {
 }
 
 /** Formats a number based on the config or the passed {@linkcode notation} */
-export function formatNumber(num: number, notation?: NumberLength): string {
+export function formatNumber(num: number, notation?: NumberLengthFormat): string {
   return num.toLocaleString(
     getLocale().replace(/_/g, "-"),
     (notation ?? getFeature("numbersFormat")) === "short"
