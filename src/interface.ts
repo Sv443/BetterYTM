@@ -232,12 +232,14 @@ const registeredPluginTokens = new Map<string, string>();
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
-  // TODO(v1.3): check perms and ask user for initial activation
+  // TODO: check perms and ask user for initial activation
 
   const registerPlugin = (def: PluginDef): PluginRegisterResult => {
     try {
-      if(registeredPlugins.has(getPluginKey(def)))
-        throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': Plugin with the same name and namespace is already registered`);
+      const plKey = getPluginKey(def);
+
+      if(registeredPlugins.has(plKey))
+        throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
 
       const validationErrors = validatePluginDef(def);
       if(validationErrors)
@@ -246,13 +248,13 @@ export function initPlugins() {
       const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
       const token = randomId(32, 36, true);
 
-      registeredPlugins.set(getPluginKey(def), {
+      registeredPlugins.set(plKey, {
         def: def,
         events,
       });
-      registeredPluginTokens.set(getPluginKey(def), token);
+      registeredPluginTokens.set(plKey, token);
 
-      info(`Successfully registered plugin '${getPluginKey(def)}'`);
+      info(`Successfully registered plugin '${plKey}'`);
       setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 1);
 
       return {
