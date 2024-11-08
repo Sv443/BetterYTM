@@ -7,6 +7,8 @@ import { t } from "./translations.js";
 import { getFeature } from "../config.js";
 import packageJson from "../../package.json" with { type: "json" };
 
+//#region logging fns
+
 let curLogLevel = LogLevel.Info;
 
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
@@ -56,6 +58,29 @@ export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
 }
 
+/** Logs all passed values to the console as an error, no matter the log level. */
+export function error(...args: unknown[]): void {
+  console.error(consPrefix, ...args);
+
+  if(getFeature("showToastOnGenericError")) {
+    const errName = args.find(a => a instanceof Error)?.name ?? t("error");
+    debounce(() => showIconToast({
+      message: t("generic_error_toast_encountered_error_type", errName),
+      subtitle: t("generic_error_toast_click_for_details"),
+      icon: "icon-error",
+      iconFill: "var(--bytm-error-col)",
+      onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
+    }))();
+  }
+}
+
+/** Logs all passed values to the console with a debug-specific prefix */
+export function dbg(...args: unknown[]): void {
+  console.log(consPrefixDbg, ...args);
+}
+
+//#region error dialog
+
 function getErrorDialog(errName: string, args: unknown[]) {
   return new MarkdownDialog({
     id: "generic-error",
@@ -78,23 +103,18 @@ ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}
   });
 }
 
-/** Logs all passed values to the console as an error, no matter the log level. */
-export function error(...args: unknown[]): void {
-  console.error(consPrefix, ...args);
+//#region rrror classes
 
-  if(getFeature("showToastOnGenericError")) {
-    const errName = args.find(a => a instanceof Error)?.name ?? t("error");
-    debounce(() => showIconToast({
-      message: t("generic_error_toast_encountered_error_type", errName),
-      subtitle: t("generic_error_toast_click_for_details"),
-      icon: "icon-error",
-      iconFill: "var(--bytm-error-col)",
-      onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-    }))();
+export class LyricsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "LyricsError";
   }
 }
 
-/** Logs all passed values to the console with a debug-specific prefix */
-export function dbg(...args: unknown[]): void {
-  console.log(consPrefixDbg, ...args);
+export class PluginError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "PluginError";
+  }
 }
