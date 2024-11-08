@@ -160,19 +160,22 @@ I welcome every contribution on GitHub!
     const envText = `${mode === "production" ? "\x1b[32m" : "\x1b[33m"}${mode}`;
     const sizeKiB = Number((Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2));
 
-    let buildStats: Partial<BuildStats> = {};
+    let buildStats: Partial<BuildStats>[] = [];
     if(await exists(".build.json")) {
       try {
-        buildStats = JSON.parse(String(await readFile(".build.json"))) as BuildStats;
+        const buildJsonParsed = JSON.parse(String(await readFile(".build.json")));
+        buildStats = (Array.isArray(buildJsonParsed) ? buildJsonParsed : []) as Partial<BuildStats>[];
       }
       catch {
         void 0;
       }
     }
 
+    const prevBuildStats = buildStats.find((v) => v.mode === mode);
+
     let sizeIndicator = "";
-    if(buildStats.sizeKiB) {
-      const sizeDiff = sizeKiB - buildStats.sizeKiB;
+    if(prevBuildStats?.sizeKiB) {
+      const sizeDiff = sizeKiB - prevBuildStats.sizeKiB;
       const sizeDiffTrunc = parseFloat(sizeDiff.toFixed(2));
       if(sizeDiffTrunc !== 0)
         sizeIndicator = " \x1b[2m(\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m+" : (sizeDiff !== 0 ? "\x1b[32m-" : "\x1b[32m")) + Math.abs(sizeDiffTrunc) + "\x1b[0m\x1b[2m)\x1b[0m";
@@ -186,12 +189,18 @@ I welcome every contribution on GitHub!
       "",
     ].join("\n"));
 
-    const buildStatsNew: BuildStats = {
+    const curBuildStats: BuildStats = {
       sizeKiB,
       mode,
       timestamp: buildTs,
     };
-    await writeFile(".build.json", JSON.stringify(buildStatsNew));
+
+    const newBuildStats = [
+      curBuildStats,
+      ...(buildStats.filter((v) => v.mode !== mode)),
+    ];
+
+    await writeFile(".build.json", JSON.stringify(newBuildStats, undefined, 2));
 
     schedExit(0);
   }
