@@ -17,7 +17,7 @@ export interface ToggleInputProps {
 export async function createToggleInput({
   onChange,
   initialValue = false,
-  id = randomId(8, 26),
+  id = randomId(6, 36),
   labelPos = "left",
 }: ToggleInputProps) {
   const wrapperEl = document.createElement("div");
