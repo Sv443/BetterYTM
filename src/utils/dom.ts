@@ -171,7 +171,7 @@ export async function addStyle(css: string, ref?: string, transform: (css: strin
   if(!domLoaded)
     throw new Error("DOM has not finished loading yet");
   const elem = addGlobalStyle(await transform(css));
-  elem.id = `bytm-style-${ref ?? randomId(5, 36)}`;
+  elem.id = `bytm-style-${ref ?? randomId(6, 36)}`;
   return elem;
 }
 
