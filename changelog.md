@@ -3,19 +3,20 @@
 
 <!-- #region 2.2.0 -->
 ## 2.2.0
+- **Changes:**
+  - Replaced the monospace font Cascadia Code with [Cousine](https://fonts.google.com/specimen/Cousine)
 - **Fixes:**
   - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
   - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
   - Fixed errors in TamperMonkey because of missing `@connect` directives
   - Fixed auto-like channel toggle button disappearing after changing channel page tabs on both pages
   - Fixed duplicate logo if the ThemeSong extension is installed
-- **Changes:**
-  - Replaced the monospace font Cascadia Code with [Cousine](https://fonts.google.com/specimen/Cousine)
+  - Fixed tab opening with the resolved lyrics URL when ctrl-clicking the lyrics button
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Internal Changes:**
-  - Changed the locale code format to match the [BCP 47](https://tools.ietf.org/html/bcp47) standard.  
+  - **Breaking:** Changed the locale code format to match the [BCP 47](https://tools.ietf.org/html/bcp47) standard.  
     As part of this, all `_` underscores were replaced with `-` hyphens and the following locales had their country codes corrected:
     - `en-UK` -> `en-GB`
     - `ja-JA` -> `ja-JP`
