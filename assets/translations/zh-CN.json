@@ -86,8 +86,6 @@
     "advanced_mode_short": "高级",
     "experimental_feature": "实验性功能",
 
-    "open_current_lyrics": "在新标签页中打开当前歌曲的歌词",
-    "open_lyrics": "在新标签页中打开这首歌的歌词",
     "open_lyrics_search_prompt": "输入歌曲标题和艺术家以搜索歌词：",
     "lyrics_loading": "正在加载歌词 URL...",
     "lyrics_rate_limited-1": "您的请求正在被限制。\n请等待几秒钟再请求更多歌词。",

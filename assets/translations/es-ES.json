@@ -86,8 +86,6 @@
     "advanced_mode_short": "Avanzado",
     "experimental_feature": "Función experimental",
 
-    "open_current_lyrics": "Abrir la letra de la canción actual en una nueva pestaña",
-    "open_lyrics": "Abrir la letra de esta canción en una nueva pestaña",
     "open_lyrics_search_prompt": "Ingrese el título de la canción y el artista para buscar la letra:",
     "lyrics_loading": "Cargando URL de letras...",
     "lyrics_rate_limited-1": "Se está limitando la velocidad.\nEspere unos segundos antes de solicitar más letras.",

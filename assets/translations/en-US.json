@@ -87,8 +87,8 @@
     "advanced_mode_short": "Advanced",
     "experimental_feature": "Experimental feature",
 
-    "open_current_lyrics": "Open the current song's lyrics in a new tab",
-    "open_lyrics": "Open this song's lyrics in a new tab",
+    "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
+    "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",
     "open_lyrics_search_prompt": "Enter the song title and artist to search for the lyrics:",
     "lyrics_loading": "Loading lyrics URL...",
     "lyrics_rate_limited-1": "You are being rate limited.\nPlease wait a few seconds before requesting more lyrics.",
