@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import k from "kleur";
 import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 
@@ -15,7 +16,7 @@ interface TrFile {
 }
 
 async function run() {
-  console.log("\n\x1b[34mUpdating translation progress...\x1b[0m\n");
+  console.log(k.blue("\nUpdating translation progress...\n"));
 
   //#region parse
 
@@ -119,7 +120,7 @@ ${lines.join("\n")}\n
     .replace(/<!--#{{TR_MISSING_KEYS}}-->/m, missingKeys.length > 0 ? missingKeys.join("\n") : "No missing keys");
   await writeFile(join(trDir, "README.md"), readmeCont);
 
-  console.log(`\n\x1b[32mFinished updating translation progress\x1b[0m - updated file at '${relative(rootDir, join(trDir, "README.md"))}'\n`);
+  console.log(`\n${k.green("Finished updating translation progress")} - updated file at '${relative(rootDir, join(trDir, "README.md"))}'\n`);
 
   setImmediate(() => exit(0));
 }

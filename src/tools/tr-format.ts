@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+import k from "kleur";
 import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 
@@ -77,7 +78,7 @@ async function run() {
 
     reformattedAmt++;
   }
-  console.log(`\nDone reformatting \x1b[32m${reformattedAmt}\x1b[0m translation file${reformattedAmt === 1 ? "" : "s"}!\n`);
+  console.log(`\nDone reformatting ${k.green(reformattedAmt)} translation file${reformattedAmt === 1 ? "" : "s"}!\n`);
 }
 
 /** Escapes various characters for use as a JSON value */
