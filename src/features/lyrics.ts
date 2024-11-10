@@ -326,7 +326,8 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
     const url = linkElem.href ?? geniusUrl;
     if(!url || e instanceof MouseEvent)
       return;
-    openInTab(url);
+    if(!e.ctrlKey && !e.altKey)
+      openInTab(url);
   }, {
     preventDefault: false,
     stopPropagation: false,
@@ -337,7 +338,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   onInteraction(linkElem, async (e) => {
     if(e.ctrlKey || e.altKey) {
       e.preventDefault();
-      e.stopPropagation();
+      e.stopImmediatePropagation();
 
       const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
       if(search && search.length > 0)
