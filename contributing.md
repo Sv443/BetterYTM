@@ -126,6 +126,9 @@ To edit an existing translation, please follow these steps:
   Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
 - **`pnpm run gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
+- **`pnpm run tr-changed <keys>`**  
+  Removes the provided keys (comma-separated) from all translation files but `en-US.json`  
+  This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm run tr-format -p`
 - **`pnpm run tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
   Will also be run automatically after every script build.
@@ -153,7 +156,7 @@ To edit an existing translation, please follow these steps:
 > [!NOTE]
 > 
 > When you are using npm (as opposed to `pnpm`), read the following carefully:  
-> You will need to use a lone ` -- ` between the command name and the arguments, for example: `npm run --silent invisible -- "<command>"`  
+> You will need to use a lone ` -- ` between the command name and the arguments, for example: `pnpm run tr-format -- -p -o="de-DE"`  
 > This is so npm can tell the difference between arguments passed to it versus arguments passed to the script it is running.
 
 <br>
