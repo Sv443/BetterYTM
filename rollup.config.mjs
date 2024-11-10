@@ -4,7 +4,7 @@ import pluginJson from "@rollup/plugin-json";
 import pluginCss from "rollup-plugin-import-css";
 import pluginExecute from "rollup-plugin-execute";
 import typescript from "typescript";
-
+import k from "kleur";
 import "dotenv/config";
 import requireJson from "./assets/require.json" with { type: "json" };
 
@@ -68,7 +68,7 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
       // ignore circular dependency warnings
       if(warning.code !== "CIRCULAR_DEPENDENCY") {
         const { message, ...rest } = warning;
-        console.error(`\x1b[33m(!)\x1b[0m ${message}\n`, rest);
+        console.error(`${k.yellow("(!)")} ${message}\n`, rest);
       }
     },
     external: externalPkgs,

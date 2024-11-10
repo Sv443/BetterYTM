@@ -1,9 +1,10 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { Server } from "node:http";
 import express, { NextFunction, Request, Response } from "express";
+import k from "kleur";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
-import type { Server } from "node:http";
 
 const { argv, env, exit, stdout } = process;
 
@@ -28,7 +29,7 @@ enableLogging && app.use((_req, _res, next) => {
 
 app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
   if(typeof err === "string" || err instanceof Error)
-    console.error("\x1b[31mError in dev server:\x1b[0m\n", err);
+    console.error(k.red("Error in dev server:\n"), err);
 });
 
 app.use("/", express.static(
@@ -58,7 +59,7 @@ try {
     if(enableLogging)
       stdout.write("\nRequests: ");
     else
-      console.log("\x1b[2m(request logging is disabled)\x1b[0m");
+      console.log(k.gray("(request logging is disabled)"));
     console.log();
 
     if(autoExitTime) {
@@ -68,6 +69,6 @@ try {
   });
 }
 catch(err) {
-  console.error("\x1b[31mError starting dev server:\x1b[0m", err);
+  console.error(k.red("Error starting dev server:"), err);
   closeAndExit(1);
 }

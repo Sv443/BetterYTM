@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import k from "kleur";
 import type { PluginDef } from "../types.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 import pluginsJson from "../../assets/plugins.json" with { type: "json" };
@@ -46,7 +47,7 @@ async function run() {
     await writeFile(path, result);
   }
 
-  console.log("\n\x1b[32mReadme files generated successfully\x1b[0m\n");
+  console.log(k.green("\nReadme files generated successfully\n"));
 
   setImmediate(() => process.exit(0));
 }

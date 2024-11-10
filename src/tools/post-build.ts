@@ -2,6 +2,7 @@ import { access, readFile, writeFile, constants as fsconst } from "node:fs/promi
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
+import k from "kleur";
 import "dotenv/config";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import locales from "../../assets/locales.json" with { type: "json" };
@@ -157,7 +158,7 @@ I welcome every contribution on GitHub!
     await writeFile(scriptPath, finalUserscript);
     ringBell && stdout.write("\u0007");
 
-    const envText = `${mode === "production" ? "\x1b[32m" : "\x1b[33m"}${mode}`;
+    const envText = (mode === "production" ? k.magenta : k.blue)(mode);
     const sizeKiB = Number((Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2));
 
     let buildStats: Partial<BuildStats>[] = [];
@@ -177,15 +178,18 @@ I welcome every contribution on GitHub!
     if(prevBuildStats?.sizeKiB) {
       const sizeDiff = sizeKiB - prevBuildStats.sizeKiB;
       const sizeDiffTrunc = parseFloat(sizeDiff.toFixed(2));
-      if(sizeDiffTrunc !== 0)
-        sizeIndicator = " \x1b[2m(\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m+" : (sizeDiff !== 0 ? "\x1b[32m-" : "\x1b[32m")) + Math.abs(sizeDiffTrunc) + "\x1b[0m\x1b[2m)\x1b[0m";
+      if(sizeDiffTrunc !== 0) {
+        const sizeDiffCol = (sizeDiff > 0 ? k.yellow : k.green)().bold;
+        const sizeDiffNum = `${(sizeDiff > 0 ? "+" : (sizeDiff !== 0 ? "-" : ""))}${Math.abs(sizeDiffTrunc)}`;
+        sizeIndicator = ` ${k.gray("(")}${sizeDiffCol(sizeDiffNum)}${k.gray(")")}`;
+      }
     }
 
     console.info([
       "",
-      `Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${buildNbr}`,
-      `Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`,
-      `Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`,
+      `Successfully built for ${envText} - build number (last commit SHA): ${buildNbr}`,
+      `Outputted file '${relative("./", scriptPath)}' with a size of ${k.green(`${sizeKiB} KiB`)}${sizeIndicator}`,
+      `Userscript URL: ${k.blue().underline(devServerUserscriptUrl)}`,
       "",
     ].join("\n"));
 
@@ -205,9 +209,7 @@ I welcome every contribution on GitHub!
     schedExit(0);
   }
   catch(err) {
-    console.error("\x1b[31mError while adding userscript header:\x1b[0m");
-    console.error(err);
-
+    console.error(k.red("Error while adding userscript header:\n"), err);
     schedExit(1);
   }
 })();
@@ -233,7 +235,7 @@ function getLastCommitSha() {
   return new Promise<string>((res, rej) => {
     exec("git rev-parse --short HEAD", (err, stdout, stderr) => {
       if(err) {
-        console.error("\x1b[31mError while checking for last Git commit. Do you have Git installed?\x1b[0m\n", stderr);
+        console.error(k.red("Error while checking for last Git commit. Do you have Git installed?\n"), stderr);
         return rej(err);
       }
       return res(String(stdout).replace(/\r?\n/gm, "").trim());
@@ -295,7 +297,7 @@ async function getResourceDirectives(ref: string) {
         resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getFileHashSha256(path) };
       }
       catch(err) {
-        console.error(`\x1b[31mCouldn't add hashed resource '${name}':\x1b[0m`, err);
+        console.warn(k.yellow(`Couldn't add hashed resource '${name}':`), err);
       }
     };
 
@@ -380,7 +382,7 @@ function getLocalizedDescriptions() {
     return descriptions.join("\n") + "\n";
   }
   catch(err) {
-    console.warn("\x1b[33mNo localized descriptions found:\x1b[0m", err);
+    console.warn(k.yellow("No localized descriptions found:"), err);
   }
 }
 
