@@ -86,8 +86,6 @@
     "advanced_mode_short": "Avancé",
     "experimental_feature": "Fonctionnalité expérimentale",
 
-    "open_current_lyrics": "Ouvrir les paroles de la chanson en cours dans un nouvel onglet",
-    "open_lyrics": "Ouvrir les paroles de cette chanson dans un nouvel onglet",
     "open_lyrics_search_prompt": "Entrez le titre de la chanson et l'artiste pour rechercher les paroles:",
     "lyrics_loading": "Chargement de l'URL des paroles...",
     "lyrics_rate_limited-1": "Vous êtes limité par le taux.\nVeuillez patienter quelques secondes avant de demander plus de paroles.",

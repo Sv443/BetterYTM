@@ -86,8 +86,6 @@
     "advanced_mode_short": "Avançado",
     "experimental_feature": "Recurso experimental",
 
-    "open_current_lyrics": "Abrir as letras da música atual em uma nova guia",
-    "open_lyrics": "Abrir as letras desta música em uma nova guia",
     "open_lyrics_search_prompt": "Digite o título da música e o artista para pesquisar as letras:",
     "lyrics_loading": "Carregando URL das letras...",
     "lyrics_rate_limited-1": "Você está sendo limitado.\nAguarde alguns segundos antes de solicitar mais letras.",

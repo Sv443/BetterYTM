@@ -86,8 +86,6 @@
     "advanced_mode_short": "詳細モード",
     "experimental_feature": "実験的な機能",
 
-    "open_current_lyrics": "現在の曲の歌詞を新しいタブで開く",
-    "open_lyrics": "この曲の歌詞を新しいタブで開く",
     "open_lyrics_search_prompt": "歌詞を検索するには曲名とアーティスト名を入力してください：",
     "lyrics_loading": "歌詞 URL を読み込んでいます...",
     "lyrics_rate_limited-1": "レート制限されています。\nもう少し待ってから歌詞をリクエストしてください。",

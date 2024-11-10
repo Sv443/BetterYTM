@@ -86,8 +86,6 @@
     "advanced_mode_short": "Erweit.",
     "experimental_feature": "Experimentelle Funktion",
 
-    "open_current_lyrics": "Öffne den Songtext vom aktuellen Song in einem neuen Tab",
-    "open_lyrics": "Öffne den Songtext in einem neuen Tab",
     "open_lyrics_search_prompt": "Gib den Songtitel und den Künstler ein, um nach dem Songtext zu suchen:",
     "lyrics_loading": "Songtext-URL wird geladen...",
     "lyrics_rate_limited-1": "Du hast zu viele Anfragen gesendet.\nBitte warte ein paar Sekunden, bevor du weitere Songtexte anforderst.",
