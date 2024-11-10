@@ -61,6 +61,8 @@ class PromptDialog extends BytmDialog {
       renderBody: () => this.renderBody(props),
       renderFooter: () => this.renderFooter(props),
     });
+
+    this.on("render", this.focusOnRender);
   }
 
   protected emitResolve(val: PromptDialogResolveVal) {
@@ -100,7 +102,6 @@ class PromptDialog extends BytmDialog {
       inputElem.autocomplete = "off";
       inputElem.spellcheck = false;
       inputElem.value = "defaultValue" in rest ? rest.defaultValue ?? "" : "";
-      inputElem.autofocus = true;
 
       const inputEnterListener = (e: KeyboardEvent) => {
         if(e.key === "Enter") {
@@ -134,7 +135,6 @@ class PromptDialog extends BytmDialog {
       confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
       confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
-      confirmBtn.autofocus = type !== "prompt";
       confirmBtn.addEventListener("click", () => {
         this.emitResolve(type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
         promptDialog?.close();
@@ -147,8 +147,6 @@ class PromptDialog extends BytmDialog {
     closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
     closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
     closeBtn.tabIndex = 0;
-    if(type === "alert")
-      closeBtn.autofocus = true;
     closeBtn.addEventListener("click", () => {
       const resVals: Record<PromptType, boolean | null> = {
         alert: true,
@@ -173,6 +171,27 @@ class PromptDialog extends BytmDialog {
     if(typeof stringGen === "function")
       return await stringGen(curPromptType);
     return String(stringGen ?? fallback);
+  }
+
+  /** Called on render to focus on the confirm or cancel button or text input, depending on prompt type */
+  protected focusOnRender() {
+    const inputElem = document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input");
+
+    if(inputElem)
+      return inputElem.focus();
+
+    let captureEnterKey = true;
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" && captureEnterKey) {
+        const confBtn = document.querySelector<HTMLButtonElement>("#bytm-prompt-dialog-confirm");
+        const closeBtn = document.querySelector<HTMLButtonElement>("#bytm-prompt-dialog-close");
+
+        if(confBtn || closeBtn) {
+          confBtn?.click() ?? closeBtn?.click();
+          captureEnterKey = false;
+        }
+      }
+    }, { capture: true, once: true });
   }
 }
 
