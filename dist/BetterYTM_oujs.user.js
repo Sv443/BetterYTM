@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           2.1.0
+// @version           2.2.0
 // @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
@@ -10,9 +10,8 @@
 // @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:en    Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:en-CA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:en-AU Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-UK Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
 // @description:es    Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
 // @description:es-MX Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
@@ -25,7 +24,7 @@
 // @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
 // @description:hi    YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
 // @description:hi-NP YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
-// @description:ja-JA YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
 // @description:ja    YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
 // @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
 // @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
@@ -40,13 +39,15 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/logo/logo_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -56,60 +57,62 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/changelog.md
-// @resource          font-cascadia_code_ttf     https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/fonts/CascadiaCode.ttf
-// @resource          font-cascadia_code_woff    https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/fonts/CascadiaCode.woff
-// @resource          font-cascadia_code_woff2   https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/fonts/CascadiaCode.woff2
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/plus_circle_small.svg
-// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/alert.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/lyrics.svg
-// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/help.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.1.0/assets/translations/zh_CN.json
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.0.2/dist/index.global.js
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/aboveQueueBtns.css#sha256=AbBUD23ut57NcUG8d560d6ZPMiQviB8itV4N2AqUsQ4=
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/dist/BetterYTM.css#sha256=8V9r57Xa1Su/vp31nYoWhTeZ5SGmPZxvY/daJFltNvw=
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo    https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/main/changelog.md?u=26MI26295N5v#sha256=LLvP9P5fugWHHYNqn6jbjXTC0wTI8CuxoIep4oDz5eE=
+// @resource          font-cousine_ttf           https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/fonts/Cousine/Cousine-Regular.ttf#sha256=3NUmAE/P7E7COiHKRY6mER4eDURxwK3icEknEBtdzts=
+// @resource          font-cousine_woff          https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/fonts/Cousine/Cousine-Regular.woff#sha256=VEi7Zy63C3H0/+UD2MOkk35FMufP94uORI0flA24cJM=
+// @resource          font-cousine_woff2         https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/fonts/Cousine/Cousine-Regular.woff2#sha256=Rw3vpRf3bTAujjOoevj5BUUvlDFTkZb7zH3URXvGmW0=
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/plus_circle_small.svg#sha256=EUkGEgNKO99AHbhk88W1RkuFgE00+GXIC3QWLnWXJCc=
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/alert.svg#sha256=V+B+Z2U0yau2fB+XExY94Ic5Wg/p+mZgXqDjZ3lhg78=
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/arrow_down.svg#sha256=jtTMiYlQtVkZu6FHGH1MI1lezXoWg0uViAi1mEoKKQQ=
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/auto_like.svg#sha256=z/a/NhDg4oPj4/KXP2uPzs+V38UT3UxM8YhZe71Sh5I=
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/auto_like_enabled.svg#sha256=PxQhv4EAdXb2BkcXYgQ5TJKC49pjzY0kyDY/rj9+lYY=
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/clear_list.svg#sha256=1EU5h0xw5NkFAbUU59kfrr1Ke9Ui6LJ9zHQhEBMgl+0=
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/copy.svg#sha256=66sj77i0AwuB7kcuWV95MKz8gJ5eWrQ/VTqpMvWjt1w=
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/delete.svg#sha256=v6S0FrsvJ45xIF+TvzeSp/l8E8Eyh0KatBEfxuazvhk=
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/edit.svg#sha256=Hck4kGmeoloSWIWkbjWHnKEvdhJtIFY5O9KRTgl3mVo=
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/error.svg#sha256=9+7VNYGb7S76hDl6n01vk01CRW9XULWIDbXFpW+p/Rg=
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/beaker_small.svg#sha256=8mMm6igfnnHFqBylMN8TV2Ww6YeOfWG0Oq49iR9A1Ik=
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/globe.svg#sha256=G+NKmM6y7Ank5z/EOV4gj0tQszLoOpeWucNterW8Yek=
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/globe_small.svg#sha256=8KB7wookZWWuE8cPSH2WpwgNGxddjVeKTlyKrhFmaLM=
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/help.svg#sha256=a8lO+sznaGFnbQfjbOyCydVtuzJO9NBRHUbDCIUe6CY=
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/image.svg#sha256=9lB+dguBi9QBiqkNj52wv7eRS50oNaa6Y200mEZIL8Y=
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/image_filled.svg#sha256=mCFBRDA3BVvwc2xN6lGH5eVSE+VjWfj/BPYE6LizAXs=
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/link.svg#sha256=8YThvRBuJ4/yNkgATIkxQH1BdYjCK5k2/XRi36u7p/c=
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/lyrics.svg#sha256=+L4fFYsWiaM8gxfP1G1anRHYgfggPmt9mWeThTltCF4=
+// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/help.svg#sha256=a8lO+sznaGFnbQfjbOyCydVtuzJO9NBRHUbDCIUe6CY=
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/refresh.svg#sha256=NArBWzah/U42KJnYhe8oXTYRJxn2Je1ILMVQBQAxeSw=
+// @resource          icon-restore_time          https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/restore_time.svg#sha256=4enl1dD8022iAN5flRyXLJ6FcGD+w9ClMCW/kf8AY7E=
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/skip_to.svg#sha256=UtsFutOl7n+QwiO1ZQGyGBj5lsyGrULgKvoAmFjDGa8=
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/spinner.svg#sha256=pj8Ms7+/GPWA/hpl7pkbtzdGvL2fgIvk241iWUO/AQg=
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/icons/upload.svg#sha256=ufaBZkMv8RaLvoNdY2nG6egcIezB9fkgiNN/Xv0ZvJU=
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/close.png#sha256=XIZfYT+0R0kQuDR3AKaKu3F/+timMz6JMvA1wdhUpkA=
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/external/discord.png#sha256=w/7aw0lgtdS9s5wnW4S70H2ww8x5C6H3Bc2EulWnMi0=
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/external/github.png#sha256=MPwTJpkyHrsQ0PtuKL2lyoHXMmESsT8S9i7g9K3szwE=
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/external/greasyfork.png#sha256=C8CI6iPrIpyUbXPbcpdTN2R+XiQ9aL0LI6thE+7vEcY=
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/logo/logo_48.png#sha256=+DoIcM002UevjTGvAxHMULo2VGHcYjy8TWla3xeNdNs=
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/logo/logo_dev_48.png#sha256=bX5hzhFwROh3PLZu68ZPfL+pJF1HBnxkT7AoB7VnkEE=
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/images/external/openuserjs.png#sha256=LYfN7+1yfmagwPk+EfhKE6mZCOPJ8GB2cu5tKI/J+Vo=
+// @resource          trans-de-DE                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/de-DE.json#sha256=RYz0Y8nqFHx7USa2NTNRFMAN7ncr6aHZjgqsckeYtEI=
+// @resource          trans-en-GB                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/en-GB.json#sha256=zYvmENtA7hDHA98ZiuImMWEwgTvwWuU5936xb+wN8KE=
+// @resource          trans-en-US                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/en-US.json#sha256=DD1nvuPEKTwpBwWL2alTepdAdwwC2Ax4AQAwOLlPC1I=
+// @resource          trans-es-ES                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/es-ES.json#sha256=66Fmuwqp6Uwo5MoEZxLhSzXP8BdkveBctNfHU4SbbBY=
+// @resource          trans-fr-FR                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/fr-FR.json#sha256=4O2PhBxGrWqz/mJlBaab1Lzcs/P1opPMvWIt8fajJPU=
+// @resource          trans-hi-IN                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/hi-IN.json#sha256=IJIvrwoQPJ4YLm8aWZNVf1C4rocM9CbtPKHsGcbSUtc=
+// @resource          trans-ja-JP                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/ja-JP.json#sha256=IvJDZL5K1cXB5uRabCv9I373rGByKP0pwOvmR47PM/s=
+// @resource          trans-pt-BR                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/pt-BR.json#sha256=A42lpxuHH0FG6JqZldqjOzELjSgzzZ3ugOcHKo/3bHU=
+// @resource          trans-zh-CN                https://raw.githubusercontent.com/Sv443/BetterYTM/v2.2.0/assets/translations/zh-CN.json#sha256=kJPPd29sljo7qxmi9NEA3A/yhdKHtxYHU9K0r9to3g4=
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.1.6
@@ -128,7 +131,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function (UserUtils, compareVersions, marked, DOMPurify) {
+(function (UserUtils, DOMPurify, compareVersions, marked) {
     'use strict';
 
     function _interopNamespaceDefault(e) {
@@ -187,7 +190,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "openuserjs";
-    const buildNumberRaw = "fac9c72b";
+    const buildNumberRaw = "2c0a6e5d";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -329,7 +332,7 @@ I welcome every contribution on GitHub!
             const transFile = await fetchLocaleJson(locale);
             let fallbackTrans = {};
             if (getFeature("localeFallback"))
-                fallbackTrans = await fetchLocaleJson("en_US");
+                fallbackTrans = await fetchLocaleJson("en-US");
             // merge with base translations if specified
             const baseTransFile = transFile.base ? await fetchLocaleJson(transFile.base) : undefined;
             const translations = Object.assign(Object.assign(Object.assign({}, ((_a = fallbackTrans === null || fallbackTrans === void 0 ? void 0 : fallbackTrans.translations) !== null && _a !== void 0 ? _a : {})), ((_b = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _b !== void 0 ? _b : {})), transFile.translations);
@@ -1317,7 +1320,8 @@ I welcome every contribution on GitHub!
         return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
     }
 
-    var de_DE = {
+    var langMapping = {
+    	"de-DE": {
     	name: "Deutsch (Deutschland)",
     	nameEnglish: "German",
     	emoji: "🇩🇪",
@@ -1327,11 +1331,11 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"de",
-    		"de_AT",
-    		"de_CH"
+    		"de-AT",
+    		"de-CH"
     	]
-    };
-    var en_US = {
+    },
+    	"en-US": {
     	name: "English (United States)",
     	nameEnglish: "English (US)",
     	emoji: "🇺🇸",
@@ -1341,21 +1345,20 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"en",
-    		"en_CA",
-    		"en_GB",
-    		"en_AU"
+    		"en-CA",
+    		"en-AU"
     	]
-    };
-    var en_UK = {
-    	name: "English (United Kingdom)",
-    	nameEnglish: "English (UK)",
+    },
+    	"en-GB": {
+    	name: "English (Great Britain)",
+    	nameEnglish: "English (GB)",
     	emoji: "🇬🇧",
     	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     	authors: [
     		"Sv443"
     	]
-    };
-    var es_ES = {
+    },
+    	"es-ES": {
     	name: "Español (España)",
     	nameEnglish: "Spanish",
     	emoji: "🇪🇸",
@@ -1365,10 +1368,10 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"es",
-    		"es_MX"
+    		"es-MX"
     	]
-    };
-    var fr_FR = {
+    },
+    	"fr-FR": {
     	name: "Français (France)",
     	nameEnglish: "French",
     	emoji: "🇫🇷",
@@ -1378,13 +1381,13 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"fr",
-    		"fr_CA",
-    		"fr_BE",
-    		"fr_CH",
-    		"fr_LU"
+    		"fr-CA",
+    		"fr-BE",
+    		"fr-CH",
+    		"fr-LU"
     	]
-    };
-    var hi_IN = {
+    },
+    	"hi-IN": {
     	name: "हिंदी (भारत)",
     	nameEnglish: "Hindi",
     	emoji: "🇮🇳",
@@ -1394,10 +1397,10 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"hi",
-    		"hi_NP"
+    		"hi-NP"
     	]
-    };
-    var ja_JA = {
+    },
+    	"ja-JP": {
     	name: "日本語 (日本)",
     	nameEnglish: "Japanese",
     	emoji: "🇯🇵",
@@ -1407,10 +1410,10 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"ja",
-    		"ja_JP"
+    		"ja-JP"
     	]
-    };
-    var pt_BR = {
+    },
+    	"pt-BR": {
     	name: "Português (Brasil)",
     	nameEnglish: "Portuguese",
     	emoji: "🇧🇷",
@@ -1420,10 +1423,10 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"pt",
-    		"pt_PT"
+    		"pt-PT"
     	]
-    };
-    var zh_CN = {
+    },
+    	"zh-CN": {
     	name: "中文（简化，中国）",
     	nameEnglish: "Chinese (simpl.)",
     	emoji: "🇨🇳",
@@ -1433,20 +1436,10 @@ I welcome every contribution on GitHub!
     	],
     	altLocales: [
     		"zh",
-    		"zh_TW",
-    		"zh_HK"
+    		"zh-TW",
+    		"zh-HK"
     	]
-    };
-    var langMapping = {
-    	de_DE: de_DE,
-    	en_US: en_US,
-    	en_UK: en_UK,
-    	es_ES: es_ES,
-    	fr_FR: fr_FR,
-    	hi_IN: hi_IN,
-    	ja_JA: ja_JA,
-    	pt_BR: pt_BR,
-    	zh_CN: zh_CN
+    }
     };
 
     //#region misc
@@ -1603,7 +1596,11 @@ I welcome every contribution on GitHub!
     }
     /** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
     async function consumeStringGen(strGen) {
-        return String(typeof strGen === "function" ? await strGen() : strGen);
+        return typeof strGen === "string"
+            ? strGen
+            : String(typeof strGen === "function"
+                ? await strGen()
+                : strGen);
     }
     /** Formats a number based on the config or the passed {@linkcode notation} */
     function formatNumber(num, notation) {
@@ -1642,29 +1639,27 @@ I welcome every contribution on GitHub!
     }
     /**
      * Returns the preferred locale of the user, provided it is supported by the userscript.
-     * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
+     * Prioritizes `navigator.language`, then `navigator.languages`, then `"en-US"` as a fallback.
      */
     function getPreferredLocale() {
         var _a;
-        const navLang = navigator.language.replace(/-/g, "_");
-        const navLangs = navigator.languages
-            .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
-            .map(lang => lang.replace(/-/g, "_"));
-        if (Object.entries(langMapping).find(([key]) => key === navLang))
-            return navLang;
-        for (const loc of navLangs) {
+        const nvLangs = navigator.languages
+            .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null);
+        if (Object.entries(langMapping).find(([key]) => key === navigator.language))
+            return navigator.language;
+        for (const loc of nvLangs) {
             if (Object.entries(langMapping).find(([key]) => key === loc))
                 return loc;
         }
-        // if navigator.languages has entries that aren't locale codes in the format xx_XX
+        // if navigator.languages has entries that aren't locale codes in the format xx-XX
         if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
-            for (const lang of navLangs) {
+            for (const lang of nvLangs) {
                 const foundLoc = (_a = Object.entries(langMapping).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
                 if (foundLoc)
                     return foundLoc;
             }
         }
-        return "en_US";
+        return "en-US";
     }
     /** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
     async function resourceAsString(resource) {
@@ -1698,13 +1693,8 @@ I welcome every contribution on GitHub!
             const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
             changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
             const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
-            for (const match of h2Matches) {
-                const [fullMatch, , verStr] = match;
-                const verId = getVerId(verStr);
-                const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">${verStr}</h2>`;
-                const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
-                changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
-            }
+            for (const [fullMatch, , verStr] of h2Matches)
+                changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
             changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
             return changelogHtml;
         }
@@ -1736,9 +1726,7 @@ I welcome every contribution on GitHub!
         async renderBody() {
             const bodyEl = document.createElement("div");
             bodyEl.classList.add("bytm-md-dialog-body");
-            const mdCont = typeof this.opts.body === "string"
-                ? this.opts.body
-                : await consumeStringGen(this.opts.body);
+            const mdCont = await consumeStringGen(this.opts.body);
             const markdownEl = document.createElement("div");
             markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
             markdownEl.tabIndex = 0;
@@ -1859,7 +1847,7 @@ I welcome every contribution on GitHub!
     }
 
     /** Creates a simple toggle element */
-    async function createToggleInput({ onChange, initialValue = false, id = UserUtils.randomId(8, 26), labelPos = "left", }) {
+    async function createToggleInput({ onChange, initialValue = false, id = UserUtils.randomId(6, 36), labelPos = "left", }) {
         const wrapperEl = document.createElement("div");
         wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
         wrapperEl.role = "switch";
@@ -1925,6 +1913,7 @@ I welcome every contribution on GitHub!
                 renderBody: () => this.renderBody(props),
                 renderFooter: () => this.renderFooter(props),
             });
+            this.on("render", this.focusOnRender);
         }
         emitResolve(val) {
             this.events.emit("resolve", val);
@@ -1959,7 +1948,6 @@ I welcome every contribution on GitHub!
                 inputElem.autocomplete = "off";
                 inputElem.spellcheck = false;
                 inputElem.value = "defaultValue" in rest ? (_b = rest.defaultValue) !== null && _b !== void 0 ? _b : "" : "";
-                inputElem.autofocus = true;
                 const inputEnterListener = (e) => {
                     var _a, _b;
                     if (e.key === "Enter") {
@@ -1988,7 +1976,6 @@ I welcome every contribution on GitHub!
                 confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
                 confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
                 confirmBtn.tabIndex = 0;
-                confirmBtn.autofocus = type !== "prompt";
                 confirmBtn.addEventListener("click", () => {
                     var _a, _b, _c;
                     this.emitResolve(type === "confirm" ? true : (_c = (_b = (_a = (document.querySelector("#bytm-prompt-dialog-input"))) === null || _a === void 0 ? void 0 : _a.value) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : null);
@@ -2001,8 +1988,6 @@ I welcome every contribution on GitHub!
             closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
             closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
             closeBtn.tabIndex = 0;
-            if (type === "alert")
-                closeBtn.autofocus = true;
             closeBtn.addEventListener("click", () => {
                 const resVals = {
                     alert: true,
@@ -2024,7 +2009,26 @@ I welcome every contribution on GitHub!
                 return await stringGen(curPromptType);
             return String(stringGen !== null && stringGen !== void 0 ? stringGen : fallback);
         }
+        /** Called on render to focus on the confirm or cancel button or text input, depending on prompt type */
+        focusOnRender() {
+            const inputElem = document.querySelector("#bytm-prompt-dialog-input");
+            if (inputElem)
+                return inputElem.focus();
+            let captureEnterKey = true;
+            document.addEventListener("keydown", (e) => {
+                var _a;
+                if (e.key === "Enter" && captureEnterKey) {
+                    const confBtn = document.querySelector("#bytm-prompt-dialog-confirm");
+                    const closeBtn = document.querySelector("#bytm-prompt-dialog-close");
+                    if (confBtn || closeBtn) {
+                        (_a = confBtn === null || confBtn === void 0 ? void 0 : confBtn.click()) !== null && _a !== void 0 ? _a : closeBtn === null || closeBtn === void 0 ? void 0 : closeBtn.click();
+                        captureEnterKey = false;
+                    }
+                }
+            }, { capture: true, once: true });
+        }
     }
+    /** Custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions */
     function showPrompt(_a) {
         var { type } = _a, rest = __rest(_a, ["type"]);
         return new Promise((resolve) => {
@@ -2366,6 +2370,9 @@ I welcome every contribution on GitHub!
                 const firstDetails = mdContElem.querySelector("details");
                 if (firstDetails)
                     firstDetails.open = true;
+                const kbdElems = mdContElem.querySelectorAll("kbd");
+                for (const kbdElem of kbdElems)
+                    kbdElem.addEventListener("selectstart", (e) => e.preventDefault());
             });
         }
         return changelogDialog;
@@ -2440,7 +2447,7 @@ I welcome every contribution on GitHub!
 
     var name = "betterytm";
     var userscriptName = "BetterYTM";
-    var version = "2.1.0";
+    var version = "2.2.0";
     var description = "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™";
     var homepage = "https://github.com/Sv443/BetterYTM";
     var main = "./src/index.ts";
@@ -2459,6 +2466,7 @@ I welcome every contribution on GitHub!
     	"build-prod-gf": "pnpm run build-prod-base --config-host greasyfork --config-suffix _gf",
     	"build-prod-oujs": "pnpm run build-prod-base --config-host openuserjs --config-suffix _oujs",
     	"post-build": "pnpm run node-ts ./src/tools/post-build.ts",
+    	"tr-changed": "pnpm run node-ts ./src/tools/tr-changed.ts",
     	"tr-progress": "pnpm run node-ts ./src/tools/tr-progress.ts",
     	"tr-format": "pnpm run node-ts ./src/tools/tr-format.ts",
     	"tr-prep": "pnpm run tr-format -p",
@@ -2474,7 +2482,7 @@ I welcome every contribution on GitHub!
     };
     var engines = {
     	node: ">=19",
-    	npm: ">=8"
+    	pnpm: ">=6"
     };
     var repository = {
     	type: "git",
@@ -2503,7 +2511,7 @@ I welcome every contribution on GitHub!
     	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
     };
     var dependencies = {
-    	"@sv443-network/userutils": "^8.0.2",
+    	"@sv443-network/userutils": "^8.3.0",
     	"compare-versions": "^6.1.0",
     	dompurify: "^3.1.6",
     	marked: "^12.0.2",
@@ -2534,9 +2542,10 @@ I welcome every contribution on GitHub!
     	"dependency-cruiser": "^16.3.10",
     	dotenv: "^16.4.5",
     	eslint: "^9.5.0",
-    	"eslint-plugin-storybook": "^0.9.0--canary.156.ed236ca.0",
+    	"eslint-plugin-storybook": "^0.11.0",
     	express: "^4.19.2",
     	globals: "^15.6.0",
+    	kleur: "^4.1.5",
     	knip: "^5.22.2",
     	nanoevents: "^9.0.0",
     	nodemon: "^3.1.4",
@@ -2548,6 +2557,7 @@ I welcome every contribution on GitHub!
     	storybook: "^8.1.10",
     	"storybook-dark-mode": "^4.0.2",
     	"ts-node": "^10.9.2",
+    	tsx: "^4.19.2",
     	typescript: "^5.5.2"
     };
     var browserslist = [
@@ -2670,7 +2680,7 @@ I welcome every contribution on GitHub!
             const descEl = document.createElement("p");
             descEl.classList.add("bytm-plugin-list-row-desc");
             descEl.tabIndex = 0;
-            descEl.textContent = descEl.title = descEl.ariaLabel = (_a = plugin.description[getLocale()]) !== null && _a !== void 0 ? _a : plugin.description.en_US;
+            descEl.textContent = descEl.title = descEl.ariaLabel = (_a = plugin.description[getLocale()]) !== null && _a !== void 0 ? _a : plugin.description["en-US"];
             leftEl.appendChild(descEl);
             const linksList = document.createElement("div");
             linksList.classList.add("bytm-plugin-list-row-links-list");
@@ -3831,6 +3841,658 @@ I welcome every contribution on GitHub!
         return await noUpdateFound();
     }
 
+    //#region beforeunload popup
+    let beforeUnloadEnabled = true;
+    /** Disables the popup before leaving the site */
+    function disableBeforeUnload() {
+        beforeUnloadEnabled = false;
+        info("Disabled popup before leaving the site");
+    }
+    /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
+    async function initBeforeUnloadHook() {
+        UserUtils.interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
+    }
+    //#region auto close toasts
+    /** Closes toasts after a set amount of time */
+    async function initAutoCloseToasts() {
+        const animTimeout = 300;
+        addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
+            all: true,
+            continuous: true,
+            listener: async (toastContElems) => {
+                try {
+                    for (const toastContElem of toastContElems) {
+                        const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
+                        if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
+                            continue;
+                        if (toastElem.classList.contains("bytm-closing"))
+                            continue;
+                        toastElem.classList.add("bytm-closing");
+                        const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
+                        await UserUtils.pauseFor(closeTimeout);
+                        toastElem.classList.remove("paper-toast-open");
+                        toastElem.addEventListener("transitionend", () => {
+                            toastElem.classList.remove("bytm-closing");
+                            toastElem.style.display = "none";
+                            clearNode(toastElem);
+                            log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+                        }, { once: true });
+                    }
+                }
+                catch (err) {
+                    error("Error in automatic toast closing:", err);
+                }
+            },
+        });
+        log("Initialized automatic toast closing");
+    }
+    let remVidsCache = [];
+    /**
+     * Remembers the time of the last played video and resumes playback from that time.
+     * **Needs to be called *before* DOM is ready!**
+     */
+    async function initRememberSongTime() {
+        if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
+            return;
+        const storedDataRaw = await GM.getValue("bytm-rem-songs");
+        if (!storedDataRaw)
+            await GM.setValue("bytm-rem-songs", "[]");
+        try {
+            remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        }
+        catch (err) {
+            error("Error parsing stored video time data, defaulting to empty cache:", err);
+            await GM.setValue("bytm-rem-songs", "[]");
+            remVidsCache = [];
+        }
+        log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
+        await remTimeRestoreTime();
+        try {
+            if (!domLoaded)
+                document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+            else
+                remTimeStartUpdateLoop();
+        }
+        catch (err) {
+            error("Error in video time remembering update loop:", err);
+        }
+    }
+    /** Tries to restore the time of the currently playing video */
+    async function remTimeRestoreTime() {
+        if (location.pathname.startsWith("/watch")) {
+            const watchID = new URL(location.href).searchParams.get("v");
+            if (!watchID)
+                return;
+            if (initialParams.has("t"))
+                return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+            const entry = remVidsCache.find(entry => entry.watchID === watchID);
+            if (entry) {
+                if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
+                    await remTimeDeleteEntry(entry.watchID);
+                    return;
+                }
+                else if (isNaN(Number(entry.songTime)))
+                    return;
+                else {
+                    let vidElem;
+                    const doRestoreTime = async () => {
+                        var _a;
+                        if (!vidElem)
+                            vidElem = await waitVideoElementReady();
+                        const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                        vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                        await remTimeDeleteEntry(entry.watchID);
+                        info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                    };
+                    if (!domLoaded)
+                        document.addEventListener("DOMContentLoaded", doRestoreTime);
+                    else
+                        doRestoreTime();
+                }
+            }
+        }
+    }
+    let lastSongTime = -1;
+    let remVidCheckTimeout;
+    /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
+    async function remTimeStartUpdateLoop() {
+        var _a, _b, _c;
+        if (location.pathname.startsWith("/watch")) {
+            const watchID = getWatchId();
+            const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+            if (watchID && songTime !== lastSongTime) {
+                lastSongTime = songTime;
+                const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+                // don't immediately update to reduce race conditions and only update if the video is playing
+                // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+                if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
+                    const entry = {
+                        watchID,
+                        songTime,
+                        updateTimestamp: Date.now(),
+                    };
+                    await remTimeUpsertEntry(entry);
+                }
+                // if the song is rewound to the beginning, update the entry accordingly
+                else if (!paused) {
+                    const entry = remVidsCache.find(entry => entry.watchID === watchID);
+                    if (entry && songTime <= entry.songTime)
+                        await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+                }
+            }
+        }
+        const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
+        for (const entry of expiredEntries)
+            await remTimeDeleteEntry(entry.watchID);
+        // for no overlapping calls and better error handling:
+        if (remVidCheckTimeout)
+            clearTimeout(remVidCheckTimeout);
+        remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
+    }
+    /** Updates an existing or inserts a new entry to be remembered */
+    async function remTimeUpsertEntry(data) {
+        const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
+        if (foundIdx >= 0)
+            remVidsCache[foundIdx] = data;
+        else
+            remVidsCache.push(data);
+        await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+    }
+    /** Deletes an entry in the "remember cache" */
+    async function remTimeDeleteEntry(watchID) {
+        remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
+        await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+    }
+
+    const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+    //#region arrow key skip
+    async function initArrowKeySkip() {
+        document.addEventListener("keydown", (evt) => {
+            var _a, _b, _c, _d, _e, _f;
+            if (!getFeature("arrowKeySupport"))
+                return;
+            if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
+                return;
+            const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
+            // discard the event when a (text) input is currently active, like when editing a playlist
+            if ((inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "") || ["volume-slider"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.id) !== null && _d !== void 0 ? _d : ""))
+                && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
+                return info(`Captured valid key to skip forward or backward but the current active element is <${(_e = document.activeElement) === null || _e === void 0 ? void 0 : _e.tagName.toLowerCase()}>, so the keypress is ignored`);
+            evt.preventDefault();
+            evt.stopImmediatePropagation();
+            let skipBy = (_f = getFeature("arrowKeySkipBy")) !== null && _f !== void 0 ? _f : featInfo.arrowKeySkipBy.default;
+            if (evt.code === "ArrowLeft")
+                skipBy *= -1;
+            log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
+            const vidElem = getVideoElement();
+            if (vidElem)
+                vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
+        });
+        log("Added arrow key press listener");
+    }
+    //#region site switch
+    /** switch sites only if current video time is greater than this value */
+    const videoTimeThreshold = 3;
+    let siteSwitchEnabled = true;
+    /** Initializes the site switch feature */
+    async function initSiteSwitch(domain) {
+        document.addEventListener("keydown", (e) => {
+            var _a, _b;
+            if (!getFeature("switchBetweenSites"))
+                return;
+            if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+                return;
+            const hk = getFeature("switchSitesHotkey");
+            if (siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
+                switchSite(domain === "yt" ? "ytm" : "yt");
+        });
+        siteEvents.on("hotkeyInputActive", (state) => {
+            if (!getFeature("switchBetweenSites"))
+                return;
+            siteSwitchEnabled = !state;
+        });
+        log("Initialized site switch listener");
+    }
+    /** Switches to the other site (between YT and YTM) */
+    async function switchSite(newDomain) {
+        try {
+            if (!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
+                return warn("Not on a supported page, so the site switch is ignored");
+            let subdomain;
+            if (newDomain === "ytm")
+                subdomain = "music";
+            else if (newDomain === "yt")
+                subdomain = "www";
+            if (!subdomain)
+                throw new Error(`Unrecognized domain '${newDomain}'`);
+            disableBeforeUnload();
+            const { pathname, search, hash } = new URL(location.href);
+            const vt = await getVideoTime(0);
+            log(`Found video time of ${vt} seconds`);
+            const cleanSearch = search.split("&")
+                .filter((param) => !param.match(/^\??(t|time_continue)=/))
+                .join("&");
+            const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+                cleanSearch.includes("?")
+                    ? `${cleanSearch.startsWith("?")
+                    ? cleanSearch
+                    : "?" + cleanSearch}&time_continue=${vt}`
+                    : `?time_continue=${vt}`
+                : cleanSearch;
+            const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+            info(`Switching to domain '${newDomain}' at ${newUrl}`);
+            location.assign(newUrl);
+        }
+        catch (err) {
+            error("Error while switching site:", err);
+        }
+    }
+    //#region num keys skip
+    const numKeysIgnoreTagNames = [...inputIgnoreTagNames];
+    /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
+    async function initNumKeysSkip() {
+        document.addEventListener("keydown", (e) => {
+            var _a, _b;
+            if (!getFeature("numKeysSkipToTime"))
+                return;
+            if (!e.key.trim().match(/^[0-9]$/))
+                return;
+            // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
+            const ignoreElement = numKeysIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "");
+            if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
+                return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
+            const vidElem = getVideoElement();
+            if (!vidElem)
+                return warn("Could not find video element, so the keypress is ignored");
+            const newVidTime = vidElem.duration / (10 / Number(e.key));
+            if (!isNaN(newVidTime)) {
+                log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
+                vidElem.currentTime = newVidTime;
+            }
+        });
+        log("Added number key press listener");
+    }
+    //#region auto-like vids
+    let canCompress$1 = false;
+    /** DataStore instance for all auto-liked channels */
+    const autoLikeStore = new UserUtils.DataStore({
+        id: "bytm-auto-like-channels",
+        formatVersion: 2,
+        defaultData: {
+            channels: [],
+        },
+        encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
+        decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
+        migrations: {
+            // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
+            2: (oldData) => ({
+                channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: isValidChannelId(ch.id.trim())
+                        ? ch.id.trim()
+                        : `@${ch.id.trim()}` }))),
+            }),
+        },
+    });
+    let autoLikeStoreLoaded = false;
+    /** Inits the auto-like DataStore instance */
+    async function initAutoLikeStore() {
+        if (autoLikeStoreLoaded)
+            return;
+        autoLikeStoreLoaded = true;
+        return autoLikeStore.loadData();
+    }
+    /** Initializes the auto-like feature */
+    async function initAutoLike() {
+        try {
+            canCompress$1 = await compressionSupported();
+            await initAutoLikeStore();
+            //#SECTION ytm
+            if (getDomain() === "ytm") {
+                let timeout;
+                siteEvents.on("songTitleChanged", () => {
+                    var _a;
+                    const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
+                    timeout && clearTimeout(timeout);
+                    const ytmTryAutoLike = () => {
+                        const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
+                        const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
+                        const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
+                        if (!likeChan || !likeChan.enabled)
+                            return;
+                        if (artistEls.length === 0)
+                            return error("Couldn't auto-like channel because the artist element couldn't be found");
+                        const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
+                        const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
+                        if (!likeRendererEl || !likeBtnEl)
+                            return error("Couldn't auto-like channel because the like button couldn't be found");
+                        if (likeRendererEl.getAttribute("like-status") !== "LIKE") {
+                            likeBtnEl.click();
+                            getFeature("autoLikeShowToast") && showIconToast({
+                                message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
+                                subtitle: t("auto_like_click_to_configure"),
+                                icon: "icon-auto_like",
+                                onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                            }).catch(e => error("Error while showing auto-like toast:", e));
+                            log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+                        }
+                    };
+                    timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
+                    siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
+                });
+                const recreateBtn = (headerCont, chanId) => {
+                    var _a, _b, _c, _d, _e, _f;
+                    const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title");
+                    if (!titleCont)
+                        return;
+                    const checkBtn = () => setTimeout(() => {
+                        if (!document.querySelector(".bytm-auto-like-toggle-btn"))
+                            recreateBtn(headerCont, chanId);
+                    }, 250);
+                    const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                    log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+                    const buttonsCont = headerCont.querySelector(".buttons");
+                    if (buttonsCont) {
+                        const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
+                        const chanName = (_d = (_c = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
+                        lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
+                    }
+                    else {
+                        // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
+                        const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
+                        const chanName = (_f = (_e = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _e === void 0 ? void 0 : _e.textContent) !== null && _f !== void 0 ? _f : null;
+                        shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName).then(checkBtn);
+                    }
+                };
+                siteEvents.on("pathChanged", (path) => {
+                    if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
+                        const chanId = getCurrentChannelId();
+                        if (!chanId)
+                            return error("Couldn't extract channel ID from URL");
+                        document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+                        addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
+                            listener: (el) => recreateBtn(el, chanId),
+                        });
+                    }
+                });
+            }
+            //#SECTION yt
+            else if (getDomain() === "yt") {
+                addStyleFromResource("css-auto_like");
+                let timeout;
+                siteEvents.on("watchIdChanged", () => {
+                    var _a;
+                    const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
+                    timeout && clearTimeout(timeout);
+                    if (!location.pathname.startsWith("/watch"))
+                        return;
+                    const ytTryAutoLike = () => {
+                        addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
+                            listener(chanElem) {
+                                var _a, _b;
+                                const chanElemId = (_b = (_a = chanElem.href.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split("/")[0]) !== null && _b !== void 0 ? _b : null;
+                                const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
+                                if (!likeChan || !likeChan.enabled)
+                                    return;
+                                addSelectorListener("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
+                                    listener(likeBtn) {
+                                        if (likeBtn.getAttribute("aria-pressed") !== "true") {
+                                            likeBtn.click();
+                                            getFeature("autoLikeShowToast") && showIconToast({
+                                                message: t("auto_liked_a_channels_video", likeChan.name),
+                                                subtitle: t("auto_like_click_to_configure"),
+                                                icon: "icon-auto_like",
+                                                onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                                            });
+                                            log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    };
+                    siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
+                    timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
+                });
+                siteEvents.on("pathChanged", (path) => {
+                    if (path.match(/(\/?@|\/?channel\/)\S+/)) {
+                        const chanId = getCurrentChannelId();
+                        if (!chanId)
+                            return error("Couldn't extract channel ID from URL");
+                        document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+                        const recreateBtn = (headerCont) => {
+                            var _a, _b;
+                            const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
+                            if (!titleCont)
+                                return;
+                            const checkBtn = () => setTimeout(() => {
+                                if (!document.querySelector(".bytm-auto-like-toggle-btn"))
+                                    recreateBtn(headerCont);
+                            }, 350);
+                            const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                            log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+                            const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
+                            if (buttonsCont) {
+                                addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
+                                    listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn),
+                                });
+                            }
+                            else if (titleCont)
+                                addAutoLikeToggleBtn(titleCont, chanId, chanName).then(checkBtn);
+                        };
+                        addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
+                            listener: recreateBtn,
+                        });
+                    }
+                });
+            }
+            log("Initialized auto-like channels feature");
+        }
+        catch (err) {
+            error("Error while auto-liking channel:", err);
+        }
+    }
+    //#SECTION toggle btn
+    /** Adds a toggle button to enable or disable auto-liking videos from a channel */
+    async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
+        var _a;
+        const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
+        log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
+        siteEvents.on("autoLikeChannelsUpdated", () => {
+            var _a, _b;
+            const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+            if (!buttonEl)
+                return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
+            const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+            if (enabled)
+                buttonEl.classList.add("toggled");
+            else
+                buttonEl.classList.remove("toggled");
+        });
+        const buttonEl = await createLongBtn({
+            resourceName: `icon-auto_like${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : ""}`,
+            text: t("auto_like"),
+            title: t(`auto_like_button_tooltip${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : "_disabled"}`),
+            toggle: true,
+            toggleInitialState: (_a = chan === null || chan === void 0 ? void 0 : chan.enabled) !== null && _a !== void 0 ? _a : false,
+            togglePredicate(e) {
+                e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
+                return !e.shiftKey;
+            },
+            async onToggle(toggled) {
+                var _a;
+                try {
+                    await autoLikeStore.loadData();
+                    buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
+                    const chanId = sanitizeChannelId((_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId);
+                    const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+                    const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
+                    if (imgEl && imgHtml)
+                        setInnerHtml(imgEl, imgHtml);
+                    if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+                        await autoLikeStore.setData({
+                            channels: [
+                                ...autoLikeStore.getData().channels,
+                                { id: chanId, name: channelName !== null && channelName !== void 0 ? channelName : "", enabled: toggled },
+                            ],
+                        });
+                    }
+                    else {
+                        await autoLikeStore.setData({
+                            channels: autoLikeStore.getData().channels
+                                .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { enabled: toggled }) : ch),
+                        });
+                    }
+                    emitSiteEvent("autoLikeChannelsUpdated");
+                    showIconToast({
+                        message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+                        icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
+                    });
+                    log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
+                }
+                catch (err) {
+                    error("Error while toggling auto-like channel:", err);
+                }
+            }
+        });
+        buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses !== null && extraClasses !== void 0 ? extraClasses : [])]);
+        buttonEl.dataset.channelId = channelId;
+        siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
+        siteEvents.on("autoLikeChannelsUpdated", async () => {
+            var _a, _b;
+            const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+            if (!buttonEl)
+                return;
+            const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+            if (enabled)
+                buttonEl.classList.add("toggled");
+            else
+                buttonEl.classList.remove("toggled");
+            const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+            const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
+            if (imgEl && imgHtml)
+                setInnerHtml(imgEl, imgHtml);
+        });
+    }
+
+    //#region logging fns
+    let curLogLevel = LogLevel.Info;
+    /** Common prefix to be able to tell logged messages apart and filter them in devtools */
+    const consPrefix = `[${scriptInfo.name}]`;
+    const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
+    /** Sets the current log level. 0 = Debug, 1 = Info */
+    function setLogLevel(level) {
+        curLogLevel = level;
+        setGlobalProp("logLevel", level);
+        if (curLogLevel !== level)
+            log("Set the log level to", LogLevel[level]);
+    }
+    /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
+    function getLogLevel(args) {
+        const minLogLvl = 0, maxLogLvl = 1;
+        if (typeof args.at(-1) === "number")
+            return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+        return LogLevel.Debug;
+    }
+    /**
+     * Logs all passed values to the console, as long as the log level is sufficient.
+     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+     */
+    function log(...args) {
+        if (curLogLevel <= getLogLevel(args))
+            console.log(consPrefix, ...args);
+    }
+    /**
+     * Logs all passed values to the console as info, as long as the log level is sufficient.
+     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+     */
+    function info(...args) {
+        if (curLogLevel <= getLogLevel(args))
+            console.info(consPrefix, ...args);
+    }
+    /** Logs all passed values to the console as a warning, no matter the log level. */
+    function warn(...args) {
+        console.warn(consPrefix, ...args);
+    }
+    /** Logs all passed values to the console as an error, no matter the log level. */
+    function error(...args) {
+        var _a, _b;
+        console.error(consPrefix, ...args);
+        if (getFeature("showToastOnGenericError")) {
+            const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
+            UserUtils.debounce(() => showIconToast({
+                message: t("generic_error_toast_encountered_error_type", errName),
+                subtitle: t("generic_error_toast_click_for_details"),
+                icon: "icon-error",
+                iconFill: "var(--bytm-error-col)",
+                onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
+            }))();
+        }
+    }
+    /** Logs all passed values to the console with a debug-specific prefix */
+    function dbg(...args) {
+        console.log(consPrefixDbg, ...args);
+    }
+    //#region error dialog
+    function getErrorDialog(errName, args) {
+        return new MarkdownDialog({
+            id: "generic-error",
+            height: 400,
+            width: 500,
+            small: true,
+            destroyOnClose: true,
+            renderHeader() {
+                const header = document.createElement("h2");
+                header.classList.add("bytm-dialog-title");
+                header.role = "heading";
+                header.ariaLevel = "1";
+                header.tabIndex = 0;
+                header.textContent = header.ariaLabel = errName;
+                return header;
+            },
+            body: `\
+${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
+        });
+    }
+    //#region rrror classes
+    class LyricsError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "LyricsError";
+        }
+    }
+    class PluginError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "PluginError";
+        }
+    }
+
+    /** Central serializer for all data stores */
+    let serializer;
+    /** Returns the serializer for all data stores */
+    function getStoreSerializer() {
+        if (!serializer) {
+            serializer = new UserUtils.DataStoreSerializer([
+                configStore,
+                autoLikeStore,
+            ], {
+                addChecksum: true,
+                ensureIntegrity: true,
+            });
+        }
+        return serializer;
+    }
+    /** Downloads the current data stores as a single file */
+    async function downloadData() {
+        const serializer = getStoreSerializer();
+        const pad = (num, len = 2) => String(num).padStart(len, "0");
+        const d = new Date();
+        const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+        const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
+        const data = JSON.stringify(JSON.parse(await serializer.serialize()), undefined, 2);
+        downloadFile(fileName, data, "application/json");
+    }
+
     //#region cfg menu btns
     let logoExchanged = false, improveLogoCalled = false;
     /** Adds a watermark beneath the logo */
@@ -4499,601 +5161,6 @@ I welcome every contribution on GitHub!
             dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
     }
 
-    //#region beforeunload popup
-    let beforeUnloadEnabled = true;
-    /** Disables the popup before leaving the site */
-    function disableBeforeUnload() {
-        beforeUnloadEnabled = false;
-        info("Disabled popup before leaving the site");
-    }
-    /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
-    async function initBeforeUnloadHook() {
-        UserUtils.interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
-    }
-    //#region auto close toasts
-    /** Closes toasts after a set amount of time */
-    async function initAutoCloseToasts() {
-        const animTimeout = 300;
-        addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
-            all: true,
-            continuous: true,
-            listener: async (toastContElems) => {
-                try {
-                    for (const toastContElem of toastContElems) {
-                        const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
-                        if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
-                            continue;
-                        if (toastElem.classList.contains("bytm-closing"))
-                            continue;
-                        toastElem.classList.add("bytm-closing");
-                        const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
-                        await UserUtils.pauseFor(closeTimeout);
-                        toastElem.classList.remove("paper-toast-open");
-                        toastElem.addEventListener("transitionend", () => {
-                            toastElem.classList.remove("bytm-closing");
-                            toastElem.style.display = "none";
-                            clearNode(toastElem);
-                            log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
-                        }, { once: true });
-                    }
-                }
-                catch (err) {
-                    error("Error in automatic toast closing:", err);
-                }
-            },
-        });
-        log("Initialized automatic toast closing");
-    }
-    let remVidsCache = [];
-    /**
-     * Remembers the time of the last played video and resumes playback from that time.
-     * **Needs to be called *before* DOM is ready!**
-     */
-    async function initRememberSongTime() {
-        if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
-            return;
-        const storedDataRaw = await GM.getValue("bytm-rem-songs");
-        if (!storedDataRaw)
-            await GM.setValue("bytm-rem-songs", "[]");
-        try {
-            remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-        }
-        catch (err) {
-            error("Error parsing stored video time data, defaulting to empty cache:", err);
-            await GM.setValue("bytm-rem-songs", "[]");
-            remVidsCache = [];
-        }
-        log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
-        await remTimeRestoreTime();
-        try {
-            if (!domLoaded)
-                document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
-            else
-                remTimeStartUpdateLoop();
-        }
-        catch (err) {
-            error("Error in video time remembering update loop:", err);
-        }
-    }
-    /** Tries to restore the time of the currently playing video */
-    async function remTimeRestoreTime() {
-        if (location.pathname.startsWith("/watch")) {
-            const watchID = new URL(location.href).searchParams.get("v");
-            if (!watchID)
-                return;
-            if (initialParams.has("t"))
-                return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
-            const entry = remVidsCache.find(entry => entry.watchID === watchID);
-            if (entry) {
-                if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
-                    await remTimeDeleteEntry(entry.watchID);
-                    return;
-                }
-                else if (isNaN(Number(entry.songTime)))
-                    return;
-                else {
-                    let vidElem;
-                    const doRestoreTime = async () => {
-                        var _a;
-                        if (!vidElem)
-                            vidElem = await waitVideoElementReady();
-                        const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
-                        vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                        await remTimeDeleteEntry(entry.watchID);
-                        info(`Restored ${getCurrentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-                    };
-                    if (!domLoaded)
-                        document.addEventListener("DOMContentLoaded", doRestoreTime);
-                    else
-                        doRestoreTime();
-                }
-            }
-        }
-    }
-    let lastSongTime = -1;
-    let remVidCheckTimeout;
-    /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
-    async function remTimeStartUpdateLoop() {
-        var _a, _b, _c;
-        if (location.pathname.startsWith("/watch")) {
-            const watchID = getWatchId();
-            const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-            if (watchID && songTime !== lastSongTime) {
-                lastSongTime = songTime;
-                const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-                // don't immediately update to reduce race conditions and only update if the video is playing
-                // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-                if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
-                    const entry = {
-                        watchID,
-                        songTime,
-                        updateTimestamp: Date.now(),
-                    };
-                    await remTimeUpsertEntry(entry);
-                }
-                // if the song is rewound to the beginning, update the entry accordingly
-                else if (!paused) {
-                    const entry = remVidsCache.find(entry => entry.watchID === watchID);
-                    if (entry && songTime <= entry.songTime)
-                        await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
-                }
-            }
-        }
-        const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
-        for (const entry of expiredEntries)
-            await remTimeDeleteEntry(entry.watchID);
-        // for no overlapping calls and better error handling:
-        if (remVidCheckTimeout)
-            clearTimeout(remVidCheckTimeout);
-        remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
-    }
-    /** Updates an existing or inserts a new entry to be remembered */
-    async function remTimeUpsertEntry(data) {
-        const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
-        if (foundIdx >= 0)
-            remVidsCache[foundIdx] = data;
-        else
-            remVidsCache.push(data);
-        await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-    }
-    /** Deletes an entry in the "remember cache" */
-    async function remTimeDeleteEntry(watchID) {
-        remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
-        await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-    }
-
-    const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
-    //#region arrow key skip
-    async function initArrowKeySkip() {
-        document.addEventListener("keydown", (evt) => {
-            var _a, _b, _c, _d, _e, _f;
-            if (!getFeature("arrowKeySupport"))
-                return;
-            if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
-                return;
-            const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
-            // discard the event when a (text) input is currently active, like when editing a playlist
-            if ((inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "") || ["volume-slider"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.id) !== null && _d !== void 0 ? _d : ""))
-                && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
-                return info(`Captured valid key to skip forward or backward but the current active element is <${(_e = document.activeElement) === null || _e === void 0 ? void 0 : _e.tagName.toLowerCase()}>, so the keypress is ignored`);
-            evt.preventDefault();
-            evt.stopImmediatePropagation();
-            let skipBy = (_f = getFeature("arrowKeySkipBy")) !== null && _f !== void 0 ? _f : featInfo.arrowKeySkipBy.default;
-            if (evt.code === "ArrowLeft")
-                skipBy *= -1;
-            log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-            const vidElem = getVideoElement();
-            if (vidElem)
-                vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
-        });
-        log("Added arrow key press listener");
-    }
-    //#region site switch
-    /** switch sites only if current video time is greater than this value */
-    const videoTimeThreshold = 3;
-    let siteSwitchEnabled = true;
-    /** Initializes the site switch feature */
-    async function initSiteSwitch(domain) {
-        document.addEventListener("keydown", (e) => {
-            var _a, _b;
-            if (!getFeature("switchBetweenSites"))
-                return;
-            if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
-                return;
-            const hk = getFeature("switchSitesHotkey");
-            if (siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
-                switchSite(domain === "yt" ? "ytm" : "yt");
-        });
-        siteEvents.on("hotkeyInputActive", (state) => {
-            if (!getFeature("switchBetweenSites"))
-                return;
-            siteSwitchEnabled = !state;
-        });
-        log("Initialized site switch listener");
-    }
-    /** Switches to the other site (between YT and YTM) */
-    async function switchSite(newDomain) {
-        try {
-            if (!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
-                return warn("Not on a supported page, so the site switch is ignored");
-            let subdomain;
-            if (newDomain === "ytm")
-                subdomain = "music";
-            else if (newDomain === "yt")
-                subdomain = "www";
-            if (!subdomain)
-                throw new Error(`Unrecognized domain '${newDomain}'`);
-            disableBeforeUnload();
-            const { pathname, search, hash } = new URL(location.href);
-            const vt = await getVideoTime(0);
-            log(`Found video time of ${vt} seconds`);
-            const cleanSearch = search.split("&")
-                .filter((param) => !param.match(/^\??(t|time_continue)=/))
-                .join("&");
-            const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
-                cleanSearch.includes("?")
-                    ? `${cleanSearch.startsWith("?")
-                    ? cleanSearch
-                    : "?" + cleanSearch}&time_continue=${vt}`
-                    : `?time_continue=${vt}`
-                : cleanSearch;
-            const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
-            info(`Switching to domain '${newDomain}' at ${newUrl}`);
-            location.assign(newUrl);
-        }
-        catch (err) {
-            error("Error while switching site:", err);
-        }
-    }
-    //#region num keys skip
-    const numKeysIgnoreTagNames = [...inputIgnoreTagNames];
-    /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
-    async function initNumKeysSkip() {
-        document.addEventListener("keydown", (e) => {
-            var _a, _b;
-            if (!getFeature("numKeysSkipToTime"))
-                return;
-            if (!e.key.trim().match(/^[0-9]$/))
-                return;
-            // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-            const ignoreElement = numKeysIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "");
-            if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
-                return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
-            const vidElem = getVideoElement();
-            if (!vidElem)
-                return warn("Could not find video element, so the keypress is ignored");
-            const newVidTime = vidElem.duration / (10 / Number(e.key));
-            if (!isNaN(newVidTime)) {
-                log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
-                vidElem.currentTime = newVidTime;
-            }
-        });
-        log("Added number key press listener");
-    }
-    //#region auto-like vids
-    let canCompress$1 = false;
-    /** DataStore instance for all auto-liked channels */
-    const autoLikeStore = new UserUtils.DataStore({
-        id: "bytm-auto-like-channels",
-        formatVersion: 2,
-        defaultData: {
-            channels: [],
-        },
-        encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
-        decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
-        migrations: {
-            // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
-            2: (oldData) => ({
-                channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: isValidChannelId(ch.id.trim())
-                        ? ch.id.trim()
-                        : `@${ch.id.trim()}` }))),
-            }),
-        },
-    });
-    let autoLikeStoreLoaded = false;
-    /** Inits the auto-like DataStore instance */
-    async function initAutoLikeStore() {
-        if (autoLikeStoreLoaded)
-            return;
-        autoLikeStoreLoaded = true;
-        return autoLikeStore.loadData();
-    }
-    /** Initializes the auto-like feature */
-    async function initAutoLike() {
-        try {
-            canCompress$1 = await compressionSupported();
-            await initAutoLikeStore();
-            //#SECTION ytm
-            if (getDomain() === "ytm") {
-                let timeout;
-                siteEvents.on("songTitleChanged", () => {
-                    var _a;
-                    const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
-                    timeout && clearTimeout(timeout);
-                    const ytmTryAutoLike = () => {
-                        const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
-                        const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
-                        const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
-                        if (!likeChan || !likeChan.enabled)
-                            return;
-                        if (artistEls.length === 0)
-                            return error("Couldn't auto-like channel because the artist element couldn't be found");
-                        const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-                        const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
-                        if (!likeRendererEl || !likeBtnEl)
-                            return error("Couldn't auto-like channel because the like button couldn't be found");
-                        if (likeRendererEl.getAttribute("like-status") !== "LIKE") {
-                            likeBtnEl.click();
-                            getFeature("autoLikeShowToast") && showIconToast({
-                                message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
-                                subtitle: t("auto_like_click_to_configure"),
-                                icon: "icon-auto_like",
-                                onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                            }).catch(e => error("Error while showing auto-like toast:", e));
-                            log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
-                        }
-                    };
-                    timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
-                    siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
-                });
-                siteEvents.on("pathChanged", (path) => {
-                    if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
-                        const chanId = getCurrentChannelId();
-                        if (!chanId)
-                            return error("Couldn't extract channel ID from URL");
-                        document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                        addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
-                            listener(headerCont) {
-                                var _a, _b, _c, _d;
-                                const buttonsCont = headerCont.querySelector(".buttons");
-                                if (buttonsCont) {
-                                    const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
-                                    const chanName = (_b = (_a = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
-                                    lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
-                                }
-                                else {
-                                    // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
-                                    const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
-                                    const chanName = (_d = (_c = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
-                                    shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName);
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-            //#SECTION yt
-            else if (getDomain() === "yt") {
-                addStyleFromResource("css-auto_like");
-                let timeout;
-                siteEvents.on("watchIdChanged", () => {
-                    var _a;
-                    const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
-                    timeout && clearTimeout(timeout);
-                    if (!location.pathname.startsWith("/watch"))
-                        return;
-                    const ytTryAutoLike = () => {
-                        addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
-                            listener(chanElem) {
-                                var _a, _b;
-                                const chanElemId = (_b = (_a = chanElem.href.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split("/")[0]) !== null && _b !== void 0 ? _b : null;
-                                const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
-                                if (!likeChan || !likeChan.enabled)
-                                    return;
-                                addSelectorListener("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
-                                    listener(likeBtn) {
-                                        if (likeBtn.getAttribute("aria-pressed") !== "true") {
-                                            likeBtn.click();
-                                            getFeature("autoLikeShowToast") && showIconToast({
-                                                message: t("auto_liked_a_channels_video", likeChan.name),
-                                                subtitle: t("auto_like_click_to_configure"),
-                                                icon: "icon-auto_like",
-                                                onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                                            });
-                                            log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    };
-                    siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
-                    timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
-                });
-                siteEvents.on("pathChanged", (path) => {
-                    if (path.match(/(\/?@|\/?channel\/)\S+/)) {
-                        const chanId = getCurrentChannelId();
-                        if (!chanId)
-                            return error("Couldn't extract channel ID from URL");
-                        document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                        addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
-                            listener(headerCont) {
-                                var _a, _b;
-                                const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
-                                if (!titleCont)
-                                    return;
-                                const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
-                                const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
-                                if (buttonsCont) {
-                                    addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
-                                        listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]),
-                                    });
-                                }
-                                else if (titleCont)
-                                    addAutoLikeToggleBtn(titleCont, chanId, chanName);
-                            }
-                        });
-                    }
-                });
-            }
-            log("Initialized auto-like channels feature");
-        }
-        catch (err) {
-            error("Error while auto-liking channel:", err);
-        }
-    }
-    //#SECTION toggle btn
-    /** Adds a toggle button to enable or disable auto-liking videos from a channel */
-    async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
-        var _a;
-        const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
-        log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
-        siteEvents.on("autoLikeChannelsUpdated", () => {
-            var _a, _b;
-            const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
-            if (!buttonEl)
-                return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
-            const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
-            if (enabled)
-                buttonEl.classList.add("toggled");
-            else
-                buttonEl.classList.remove("toggled");
-        });
-        const buttonEl = await createLongBtn({
-            resourceName: `icon-auto_like${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : ""}`,
-            text: t("auto_like"),
-            title: t(`auto_like_button_tooltip${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : "_disabled"}`),
-            toggle: true,
-            toggleInitialState: (_a = chan === null || chan === void 0 ? void 0 : chan.enabled) !== null && _a !== void 0 ? _a : false,
-            togglePredicate(e) {
-                e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
-                return !e.shiftKey;
-            },
-            async onToggle(toggled) {
-                var _a;
-                try {
-                    await autoLikeStore.loadData();
-                    buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
-                    const chanId = sanitizeChannelId((_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId);
-                    const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-                    const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
-                    if (imgEl && imgHtml)
-                        setInnerHtml(imgEl, imgHtml);
-                    if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
-                        await autoLikeStore.setData({
-                            channels: [
-                                ...autoLikeStore.getData().channels,
-                                { id: chanId, name: channelName !== null && channelName !== void 0 ? channelName : "", enabled: toggled },
-                            ],
-                        });
-                    }
-                    else {
-                        await autoLikeStore.setData({
-                            channels: autoLikeStore.getData().channels
-                                .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { enabled: toggled }) : ch),
-                        });
-                    }
-                    emitSiteEvent("autoLikeChannelsUpdated");
-                    showIconToast({
-                        message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
-                        icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
-                    });
-                    log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
-                }
-                catch (err) {
-                    error("Error while toggling auto-like channel:", err);
-                }
-            }
-        });
-        buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses !== null && extraClasses !== void 0 ? extraClasses : [])]);
-        buttonEl.dataset.channelId = channelId;
-        siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
-        siteEvents.on("autoLikeChannelsUpdated", async () => {
-            var _a, _b;
-            const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
-            if (!buttonEl)
-                return;
-            const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
-            if (enabled)
-                buttonEl.classList.add("toggled");
-            else
-                buttonEl.classList.remove("toggled");
-            const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-            const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
-            if (imgEl && imgHtml)
-                setInnerHtml(imgEl, imgHtml);
-        });
-    }
-
-    let curLogLevel = LogLevel.Info;
-    /** Common prefix to be able to tell logged messages apart and filter them in devtools */
-    const consPrefix = `[${scriptInfo.name}]`;
-    const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
-    /** Sets the current log level. 0 = Debug, 1 = Info */
-    function setLogLevel(level) {
-        curLogLevel = level;
-        setGlobalProp("logLevel", level);
-        if (curLogLevel !== level)
-            log("Set the log level to", LogLevel[level]);
-    }
-    /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
-    function getLogLevel(args) {
-        const minLogLvl = 0, maxLogLvl = 1;
-        if (typeof args.at(-1) === "number")
-            return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
-        return LogLevel.Debug;
-    }
-    /**
-     * Logs all passed values to the console, as long as the log level is sufficient.
-     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
-     */
-    function log(...args) {
-        if (curLogLevel <= getLogLevel(args))
-            console.log(consPrefix, ...args);
-    }
-    /**
-     * Logs all passed values to the console as info, as long as the log level is sufficient.
-     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
-     */
-    function info(...args) {
-        if (curLogLevel <= getLogLevel(args))
-            console.info(consPrefix, ...args);
-    }
-    /** Logs all passed values to the console as a warning, no matter the log level. */
-    function warn(...args) {
-        console.warn(consPrefix, ...args);
-    }
-    function getErrorDialog(errName, args) {
-        return new MarkdownDialog({
-            id: "generic-error",
-            height: 400,
-            width: 500,
-            small: true,
-            destroyOnClose: true,
-            renderHeader() {
-                const header = document.createElement("h2");
-                header.classList.add("bytm-dialog-title");
-                header.role = "heading";
-                header.ariaLevel = "1";
-                header.tabIndex = 0;
-                header.textContent = header.ariaLabel = errName;
-                return header;
-            },
-            body: `\
-${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
-        });
-    }
-    /** Logs all passed values to the console as an error, no matter the log level. */
-    function error(...args) {
-        var _a, _b;
-        console.error(consPrefix, ...args);
-        if (getFeature("showToastOnGenericError")) {
-            const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
-            UserUtils.debounce(() => showIconToast({
-                message: t("generic_error_toast_encountered_error_type", errName),
-                subtitle: t("generic_error_toast_click_for_details"),
-                icon: "icon-error",
-                iconFill: "var(--bytm-error-col)",
-                onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-            }))();
-        }
-    }
-    /** Logs all passed values to the console with a debug-specific prefix */
-    function dbg(...args) {
-        console.log(consPrefixDbg, ...args);
-    }
-
     //#region Dark Reader
     /** Disables Dark Reader if it is present */
     async function disableDarkReader() {
@@ -5130,9 +5197,13 @@ ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}
         try {
             const cssVarName = (() => {
                 switch (getFeature("themeSongLightness")) {
-                    case "darker": return "--ts-palette-darkmuted-hex";
-                    case "normal": return "--ts-palette-muted-hex";
-                    case "lighter": return "--ts-palette-lightmuted-hex";
+                    default:
+                    case "darker":
+                        return "--ts-palette-darkmuted-hex";
+                    case "normal":
+                        return "--ts-palette-muted-hex";
+                    case "lighter":
+                        return "--ts-palette-lightmuted-hex";
                 }
                 ;
             })();
@@ -5398,7 +5469,8 @@ ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}
             const url = (_a = linkElem.href) !== null && _a !== void 0 ? _a : geniusUrl;
             if (!url || e instanceof MouseEvent)
                 return;
-            openInTab(url);
+            if (!e.ctrlKey && !e.altKey)
+                openInTab(url);
         }, {
             preventDefault: false,
             stopPropagation: false,
@@ -5407,7 +5479,7 @@ ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}
         onInteraction(linkElem, async (e) => {
             if (e.ctrlKey || e.altKey) {
                 e.preventDefault();
-                e.stopPropagation();
+                e.stopImmediatePropagation();
                 const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
                 if (search && search.length > 0)
                     openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
@@ -5704,7 +5776,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         onResize();
     }
     //#region scroll step
-    /** Initializes the volume slider scroll step features */
+    /** Initializes the volume slider scroll step feature */
     function initScrollStep(volSliderCont, sliderElem) {
         for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
             volSliderCont.addEventListener(evtName, (e) => {
@@ -5712,7 +5784,9 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
                 e.preventDefault();
                 // cancels all the other events that would be fired
                 e.stopImmediatePropagation();
-                const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
+                const delta = Number((_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1);
+                if (isNaN(delta))
+                    return warn("Invalid scroll delta:", delta);
                 const volumeDir = -Math.sign(delta);
                 const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
                 sliderElem.value = newVolume;
@@ -5848,8 +5922,11 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         log(`Set initial tab volume to ${initialVol}%`);
     }
 
+    //#region misc
+    function noop() {
+    }
     /** Creates an HTML string for the given adornment properties */
-    const getAdornHtml = async (className, title, resource, extraAttributes) => { var _a; return `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraAttributes ? " " + extraAttributes : ""}>${(_a = await resourceAsString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`; };
+    const getAdornHtml = async (className, title, resource, extraAttributes) => { var _a; return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${(_a = await resourceAsString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`; };
     /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
     const combineAdornments = (adornments) => new Promise(async (resolve) => {
         const sortedAdornments = adornments.sort((a, b) => {
@@ -5870,7 +5947,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
     const adornments = {
         advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
         experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-        globe: async () => { var _a; return (_a = await resourceAsString("icon-globe_small")) !== null && _a !== void 0 ? _a : ""; },
+        globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
         alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
         reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
     };
@@ -6415,7 +6492,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             category: "lyrics",
             async click() {
                 const entries = getLyricsCache().length;
-                const formattedEntries = entries.toLocaleString(getLocale().replace(/_/g, "-"), { style: "decimal", maximumFractionDigits: 0 });
+                const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
                 if (await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
                     await clearLyricsCache();
                     await showPrompt({ type: "alert", message: t("lyrics_clear_cache_success") });
@@ -6548,6 +6625,21 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             click: promptResetConfig,
             textAdornment: adornments.reload,
         },
+        resetEverything: {
+            type: "button",
+            category: "general",
+            click: async () => {
+                if (await showPrompt({
+                    type: "confirm",
+                    message: t("reset_everything_confirm"),
+                })) {
+                    await getStoreSerializer().resetStoresData();
+                    location.reload();
+                }
+            },
+            advanced: true,
+            textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        },
         logLevel: {
             type: "select",
             category: "general",
@@ -6567,11 +6659,9 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
                 emitSiteEvent("recreateCfgMenu"),
         },
     };
-    function noop() {
-    }
 
     /** If this number is incremented, the features object data will be migrated to the new format */
-    const formatVersion = 8;
+    const formatVersion = 9;
     const defaultData = Object.keys(featInfo)
         // @ts-ignore
         .filter((ftKey) => { var _a; return ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[ftKey]) === null || _a === void 0 ? void 0 : _a.default) !== undefined; })
@@ -6663,6 +6753,19 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             }
             return useDefaultConfig(oldData, [
                 "autoLikeChannels"
+            ]);
+        },
+        // 8 -> 9 (v2.2)
+        9: (oldData) => {
+            oldData.locale = oldData.locale.replace("_", "-");
+            if (oldData.locale === "ja-JA")
+                oldData.locale = "ja-JP";
+            if (oldData.locale === "en-GB")
+                oldData.locale = "en-GB";
+            return useDefaultConfig(oldData, [
+                "resetEverything",
+                // TODO(V2.2):
+                // "autoLikePlayerBarToggleBtn",
             ]);
         },
     };
@@ -6889,23 +6992,24 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
     const registeredPluginTokens = new Map();
     /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
     function initPlugins() {
-        // TODO(v1.3): check perms and ask user for initial activation
+        // TODO: check perms and ask user for initial activation
         const registerPlugin = (def) => {
             var _a, _b;
             try {
-                if (registeredPlugins.has(getPluginKey(def)))
-                    throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': Plugin with the same name and namespace is already registered`);
+                const plKey = getPluginKey(def);
+                if (registeredPlugins.has(plKey))
+                    throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
                 const validationErrors = validatePluginDef(def);
                 if (validationErrors)
                     throw new PluginError(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
                 const events = new NanoEmitter({ publicEmit: true });
                 const token = randomId(32, 36, true);
-                registeredPlugins.set(getPluginKey(def), {
+                registeredPlugins.set(plKey, {
                     def: def,
                     events,
                 });
-                registeredPluginTokens.set(getPluginKey(def), token);
-                info(`Successfully registered plugin '${getPluginKey(def)}'`);
+                registeredPluginTokens.set(plKey, token);
+                info(`Successfully registered plugin '${plKey}'`);
                 setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 1);
                 return {
                     info: getPluginInfo(token, def),
@@ -7100,7 +7204,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
                     // -> for example the /channel/UC... page#
                     //    enabled by "body"
                     const browseResponseSelector = "ytmusic-browse-response";
-                    globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                    globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 75, subtree: true }));
                     globservers.body.addListener(browseResponseSelector, {
                         listener: () => globservers.browseResponse.enable(),
                     });
@@ -7210,7 +7314,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
                     // -> header of the page
                     //    enabled by "ytdBrowse"
                     const ytAppHeaderSelector = "#header tp-yt-app-header";
-                    globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                    globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 75, subtree: true }));
                     globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
                         listener: () => globservers.ytAppHeader.enable(),
                     });
@@ -7381,7 +7485,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         if (!domLoaded)
             throw new Error("DOM has not finished loading yet");
         const elem = UserUtils.addGlobalStyle(await transform(css));
-        elem.id = `bytm-style-${ref !== null && ref !== void 0 ? ref : UserUtils.randomId(5, 36)}`;
+        elem.id = `bytm-style-${ref !== null && ref !== void 0 ? ref : UserUtils.randomId(6, 36)}`;
         return elem;
     }
     /**
@@ -7469,18 +7573,16 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         }
         element.innerHTML = (_b = ttPolicy === null || ttPolicy === void 0 ? void 0 : ttPolicy.createHTML(html)) !== null && _b !== void 0 ? _b : DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
     }
-
-    class LyricsError extends Error {
-        constructor(message) {
-            super(message);
-            this.name = "LyricsError";
-        }
-    }
-    class PluginError extends Error {
-        constructor(message) {
-            super(message);
-            this.name = "PluginError";
-        }
+    /** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
+    function downloadFile(fileName, data, mimeType = "text/plain") {
+        const blob = data instanceof Blob ? data : new Blob([data], { type: mimeType });
+        const a = document.createElement("a");
+        a.classList.add("bytm-hidden");
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => a.remove(), 50);
     }
 
     /**
@@ -7568,22 +7670,13 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
         }
     }
 
-    /** Central serializer for all data stores */
-    const storeSerializer = new UserUtils.DataStoreSerializer([
-        configStore,
-        autoLikeStore,
-    ], {
-        addChecksum: true,
-        ensureIntegrity: true,
-    });
-
     //#region cns. watermark
     {
         // console watermark with sexy gradient
         const [styleGradient, gradientContBg] = (() => {
             switch (mode) {
                 case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"];
-                case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(44, 166, 178) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
+                case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(38, 160, 172) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
             }
         })();
         const styleCommon = "color: #fff; font-size: 1.3rem;";
@@ -7596,7 +7689,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
 ─ This markdown parser library: https://github.com/markedjs/marked
 ─ This tiny event listener library: https://github.com/ai/nanoevents
 ─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript
-─ The Cascadia Code font: https://github.com/microsoft/cascadia-code`;
+─ The Cousine font: https://fonts.google.com/specimen/Cousine`;
         console.log(`\
 %c${scriptInfo.name}%cv${scriptInfo.version}%c • ${scriptInfo.namespace}%c
 
@@ -7627,8 +7720,8 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
             const features = await initConfig();
             setLogLevel(features.logLevel);
             await initLyricsCache();
-            await initTranslations((_a = features.locale) !== null && _a !== void 0 ? _a : "en_US");
-            setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en_US");
+            await initTranslations((_a = features.locale) !== null && _a !== void 0 ? _a : "en-US");
+            setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en-US");
             try {
                 initPlugins();
             }
@@ -7712,10 +7805,11 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
                 // #region (ytm) integrations
                 if (feats.sponsorBlockIntegration)
                     ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
+                const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
                 if (feats.themeSongIntegration)
-                    ftInit.push(["themeSongIntegration", fixThemeSong()]);
+                    ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);
                 else
-                    ftInit.push(["themeSongIntegration", fixPlayerPageTheming()]);
+                    ftInit.push(["themeSongIntegration", Promise.allSettled([fixPlayerPageTheming(), hideThemeSongLogo])]);
             }
             //#region (ytm+yt) cfg menu
             try {
@@ -7799,10 +7893,10 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
     }
     async function loadFonts() {
         const fonts = {
-            "Cascadia Code": {
-                woff: await getResourceUrl("font-cascadia_code_woff"),
-                woff2: await getResourceUrl("font-cascadia_code_woff2"),
-                ttf: await getResourceUrl("font-cascadia_code_ttf"),
+            "Cousine": {
+                woff: await getResourceUrl("font-cousine_woff"),
+                woff2: await getResourceUrl("font-cousine_woff2"),
+                ttf: await getResourceUrl("font-cousine_ttf"),
             },
         };
         let css = "";
@@ -7940,14 +8034,14 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
             }
         });
         GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
-            const ser = await storeSerializer.serialize();
+            const ser = await getStoreSerializer().serialize();
             dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
             alert("See console.");
         });
         GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
             const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
             if (input && input.length > 0) {
-                await storeSerializer.deserialize(input);
+                await getStoreSerializer().deserialize(input);
                 alert("Imported data. Reload the page to apply changes.");
             }
         });
@@ -7967,8 +8061,9 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
             });
             await mdDlg.open();
         });
+        GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
         log("Registered dev menu commands");
     }
     preInit();
 
-})(UserUtils, compareVersions, marked, DOMPurify);
+})(UserUtils, DOMPurify, compareVersions, marked);
