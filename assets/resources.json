@@ -10,7 +10,7 @@
   "css-show_votes": "style/showVotes.css",
   "css-vol_slider_size": "style/volSliderSize.css",
   "doc-changelog": {
-    "path": "/changelog.md?u=$UID",
+    "path": "/changelog.md",
     "ref": "main"
   },
   "font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",

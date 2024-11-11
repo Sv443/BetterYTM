@@ -2,9 +2,10 @@ import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, 
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
-import { error, type TrLocale, warn, sendRequest, getLocale } from "./index.js";
+import { error, type TrLocale, warn, sendRequest, getLocale, log } from "./index.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
+import resourcesJson from "../../assets/resources.json" with { type: "json" };
 
 //#region misc
 
@@ -224,17 +225,22 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
 
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
- * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache  
+ * @param uncached Set to true to fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
  */
-export async function getResourceUrl(name: ResourceKey | "_") {
-  let url = await GM.getResourceUrl(name);
+export async function getResourceUrl(name: ResourceKey | "_", uncached = false) {
+  let url = !uncached && await GM.getResourceUrl(name);
   if(!url || url.length === 0) {
     const resources = GM.info.script?.resources;
     const resUrl = Array.isArray(resources) ? resources.find(r => r.name === name)?.url : resources?.[name]?.url;
     if(typeof resUrl === "string") {
       const { pathname } = new URL(resUrl);
+
+      const resource = resourcesJson?.[name as keyof typeof resourcesJson];
+      const ref = typeof resource === "object" && "ref" in resource ? resource.ref : branch;
+
       if(pathname && pathname.startsWith("/") && pathname.length > 1)
-        return `https://raw.githubusercontent.com/${repo}/${branch}${pathname}`;
+        return `https://raw.githubusercontent.com/${repo}/${ref}${pathname}`;
     }
     warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
     // @ts-ignore
@@ -295,7 +301,9 @@ export function parseMarkdown(mdString: string) {
 
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
-  return await (await fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
+  const clRes = await fetchAdvanced(await getResourceUrl("doc-changelog", true));
+  log("Fetched changelog:", clRes);
+  return await clRes.text();
 }
 
 /** Returns the changelog as HTML with a details element for each version */
