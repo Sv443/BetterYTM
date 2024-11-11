@@ -81,6 +81,13 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
   try {
+    const unsupportedHandlers = [
+      "FireMonkey",
+    ];
+
+    if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
+      return alert(`BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+
     log("Session ID:", getSessionId());
     initInterface();
     setLogLevel(defaultLogLevel);
