@@ -10,7 +10,7 @@ import "./autoLike.css";
 import { showPrompt } from "./prompt.js";
 
 let autoLikeDialog: BytmDialog | null = null;
-let autoLikeImExDialog: ExImDialog | null = null;
+let autoLikeExImDialog: ExImDialog | null = null;
 
 /** Creates and/or returns the import dialog */
 export async function getAutoLikeDialog() {
@@ -35,8 +35,8 @@ export async function getAutoLikeDialog() {
 
     siteEvents.on("autoLikeChannelsUpdated", async () => {
       try {
-        if(autoLikeImExDialog?.isOpen())
-          autoLikeImExDialog.unmount();
+        if(autoLikeExImDialog?.isOpen())
+          autoLikeExImDialog.unmount();
         if(autoLikeDialog?.isOpen()) {
           autoLikeDialog.unmount();
           await autoLikeDialog.open();
@@ -51,8 +51,8 @@ export async function getAutoLikeDialog() {
     autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
   }
 
-  if(!autoLikeImExDialog) {
-    autoLikeImExDialog = new ExImDialog({
+  if(!autoLikeExImDialog) {
+    autoLikeExImDialog = new ExImDialog({
       id: "auto-like-channels-export-import",
       width: 800,
       height: 600,
@@ -76,7 +76,7 @@ export async function getAutoLikeDialog() {
           emitSiteEvent("autoLikeChannelsUpdated");
 
           showToast({ message: t("import_success") });
-          autoLikeImExDialog?.unmount();
+          autoLikeExImDialog?.unmount();
         }
         catch(err) {
           error("Couldn't import auto-like channels data:", err);
@@ -288,7 +288,7 @@ function renderFooter() {
 }
 
 async function openImportExportAutoLikeChannelsDialog() {
-  await autoLikeImExDialog?.open();
+  await autoLikeExImDialog?.open();
 }
 
 //#region add prompt

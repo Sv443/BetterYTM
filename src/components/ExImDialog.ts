@@ -82,6 +82,7 @@ export class ExImDialog extends BytmDialog {
       dataEl.value = t("click_to_reveal");
       onInteraction(dataEl, async () => {
         dataEl.value = typeof opts.exportData === "function" ? await opts.exportData() : opts.exportData;
+        dataEl.setSelectionRange(0, dataEl.value.length);
       });
 
       const exportCenterBtnCont = document.createElement("div");
