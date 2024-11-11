@@ -231,16 +231,17 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
 export async function getResourceUrl(name: ResourceKey | "_", uncached = false) {
   let url = !uncached && await GM.getResourceUrl(name);
   if(!url || url.length === 0) {
-    const resources = GM.info.script?.resources;
-    const resUrl = Array.isArray(resources) ? resources.find(r => r.name === name)?.url : resources?.[name]?.url;
-    if(typeof resUrl === "string") {
-      const { pathname } = new URL(resUrl);
-
-      const resource = resourcesJson?.[name as keyof typeof resourcesJson];
-      const ref = typeof resource === "object" && "ref" in resource ? resource.ref : branch;
+    const resObjOrStr = resourcesJson?.[name as keyof typeof resourcesJson];
+    if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+      const pathname = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
+      const ref = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : branch;
 
       if(pathname && pathname.startsWith("/") && pathname.length > 1)
         return `https://raw.githubusercontent.com/${repo}/${ref}${pathname}`;
+      else if(pathname && pathname.startsWith("http"))
+        return pathname;
+      else if(pathname && pathname.length > 0)
+        return `https://raw.githubusercontent.com/${repo}/${ref}/assets/${pathname}`;
     }
     warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
     // @ts-ignore
