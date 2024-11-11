@@ -229,12 +229,12 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
 export async function getResourceUrl(name: ResourceKey | "_") {
   let url = await GM.getResourceUrl(name);
   if(!url || url.length === 0) {
-    const resource = GM.info.script.resources?.[name].url;
-    if(typeof resource === "string") {
-      const resourceUrl = new URL(resource);
-      const resourcePath = resourceUrl.pathname;
-      if(resourcePath)
-        return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
+    const resources = GM.info.script?.resources;
+    const resUrl = Array.isArray(resources) ? resources.find(r => r.name === name)?.url : resources?.[name]?.url;
+    if(typeof resUrl === "string") {
+      const { pathname } = new URL(resUrl);
+      if(pathname && pathname.startsWith("/") && pathname.length > 1)
+        return `https://raw.githubusercontent.com/${repo}/${branch}${pathname}`;
     }
     warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
     // @ts-ignore
