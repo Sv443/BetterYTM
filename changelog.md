@@ -5,10 +5,11 @@
 ## 2.2.0
 - **Changes:**
   - Replaced the monospace font Cascadia Code with [Cousine](https://fonts.google.com/specimen/Cousine)
+  - Due to massive incompatibilities on FireMonkey, the script will show an error and not execute under the extension anymore
 - **Fixes:**
-  - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
-  - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
   - Fixed errors in TamperMonkey because of missing `@connect` directives
+  - Fixed locale codes not using the correct format (`en_US` instead of the correct format `en-US`)
+  - Fixed changelog not updating on new releases and thus the update notification dialog would also show an outdated changelog
   - Fixed auto-like channel toggle button disappearing after changing channel page tabs on both pages
   - Fixed duplicate logo if the ThemeSong extension is installed
   - Fixed tab opening with the resolved lyrics URL when ctrl-clicking the lyrics button
