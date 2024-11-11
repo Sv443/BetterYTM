@@ -1,5 +1,5 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement } from "../utils/index.js";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, warn } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
@@ -23,7 +23,10 @@ export function enableBeforeUnload() {
 
 /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
 export async function initBeforeUnloadHook() {
-  interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
+  if(GM?.info?.scriptHandler && GM.info.scriptHandler !== "FireMonkey")
+    interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
+  else
+    warn(`Event intercepting is not available in ${GM.info.scriptHandler}, please use a different userscript extension`);
 }
 
 //#region auto close toasts
