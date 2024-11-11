@@ -229,6 +229,7 @@ The main files you will be working with are:
   8. Update the userscript on GreasyFork and OpenUserJS from the built files  
     GreasyFork also needs the relevant section of the changelog, but the internal and plugin changes should be trimmed out
   9. Send an announcement in the Discord server linking to the install pages and the changelog, with a summary of the most important changes
+  10. Update the [BYTM plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) by setting the BYTM submodule to the *exact* commit matching the release and making sure everything else is compatible with the changes of the latest BYTM version
 
 
 <br><br><br>
