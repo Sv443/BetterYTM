@@ -52,7 +52,7 @@ Requires a userscript manager browser extension.
 I really recommend Violentmonkey: [Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) &bull; [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) &bull; [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)  
 
 </b>
-<sup>Other extensions are known to be less reliable and may not work as expected, especially on more restrictive browsers like Brave.</sup>
+<sup>Other extensions are known to be less reliable and may not work as expected, especially in isolated contexts like FireMonkey or the Brave browser.</sup>
 
 <br>
 
