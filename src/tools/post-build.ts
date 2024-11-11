@@ -317,7 +317,7 @@ async function getResourceDirectives(ref: string) {
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
-          : getResourceUrl(path, entryRef, ref === entryRef)
+          : getResourceUrl(path, entryRef)
       }${hash ? `#sha256=${hash}` : ""}`);
     }
 
@@ -389,16 +389,15 @@ function getLocalizedDescriptions() {
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
  * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
- * @param ghRef The current build number (last shortened or full-length Git commit SHA1), branch name or tag name to use when fetching the resource when the asset source is GitHub
- * @param useTagInProd Whether to use the tag name in production mode (true, default) or the branch name (false)
+ * @param ghRef The current build number (last shortened or full-length Git commit SHA1), branch name or tag name to use when fetching the resource when the asset source is GitHub - if not specified, uses the current version number
  */
-function getResourceUrl(path: string, ghRef: string, useTagInProd = true) {
+function getResourceUrl(path: string, ghRef?: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
   return assetSource === "local"
     ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUid}`
-    : `https://raw.githubusercontent.com/${repo}/${mode === "development" || !useTagInProd ? ghRef : `v${pkg.version}`}${assetPath}${path}`;
+    : `https://raw.githubusercontent.com/${repo}/${ghRef ?? `v${pkg.version}`}${assetPath}${path}`;
 }
 
 /**
