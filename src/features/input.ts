@@ -300,7 +300,7 @@ export async function initAutoLike() {
                       subtitle: t("auto_like_click_to_configure"),
                       icon: "icon-auto_like",
                       onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                    });
+                    }).catch(e => error("Error while showing auto-like toast:", e));
                     log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
                   }
                 }
@@ -419,8 +419,10 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
         emitSiteEvent("autoLikeChannelsUpdated");
         showIconToast({
           message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+          subtitle: t("auto_like_click_to_configure"),
           icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
-        });
+          onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+        }).catch(e => error("Error while showing auto-like toast:", e));
         log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
       }
       catch(err) {
