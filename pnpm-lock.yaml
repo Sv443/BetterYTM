@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sv443-network/userutils':
-        specifier: ^8.3.1
-        version: 8.3.1
+        specifier: ^8.3.3
+        version: 8.3.3
       compare-versions:
         specifier: ^6.1.0
         version: 6.1.0
@@ -1825,8 +1825,8 @@ packages:
   '@storybook/types@8.1.10':
     resolution: {integrity: sha512-UJ97iqI+0Mk13I6ayd3TaBfSFBkWnEauwTnFMQe1dN/L3wTh8laOBaLa0Vr3utRSnt2b5hpcw/nq7azB/Gx4Yw==}
 
-  '@sv443-network/userutils@8.3.1':
-    resolution: {integrity: sha512-dvcLtu7uMXEmwVvX1jr6vzEei5jWy96CG5OtAEC1U/aBG/+FodrmkIgO9Qa7ZF0WLLtp73cGWpKpuPXXdj3hPQ==}
+  '@sv443-network/userutils@8.3.3':
+    resolution: {integrity: sha512-m/iUruQo5gb3AxyimQOLd9M0NLORQIRNOdMYxjn+bN8eySfWQ0GNa3pCr27Xm7joTAUESKaw2VWHb3vyzKc4NA==}
 
   '@testing-library/dom@9.3.4':
     resolution: {integrity: sha512-FlS4ZWlp97iiNWig0Muq8p+3rVDjRiYE+YKGbAqXOu9nwJFFOdL00kFpz42M+4huzYi86vAK1sOOfyOG45muIQ==}
@@ -6886,7 +6886,7 @@ snapshots:
       '@types/express': 4.17.21
       file-system-cache: 2.3.0
 
-  '@sv443-network/userutils@8.3.1':
+  '@sv443-network/userutils@8.3.3':
     dependencies:
       nanoevents: 9.0.0
 
