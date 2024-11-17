@@ -392,6 +392,13 @@ export const featInfo = {
     default: true,
     textAdornment: adornments.reload,
   },
+  aboveQueueBtnsSticky: {
+    type: "toggle",
+    category: "songLists",
+    default: true,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+  },
 
   //#region cat:behavior
   disableBeforeUnloadPopup: {

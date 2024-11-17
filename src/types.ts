@@ -563,6 +563,8 @@ export interface FeatureConfig {
   rememberSongTimeReduction: number;
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
+  /** Whether the above queue button container should use sticky positioning */
+  aboveQueueBtnsSticky: boolean;
 
   //#region input
   /** Arrow keys skip forwards and backwards */

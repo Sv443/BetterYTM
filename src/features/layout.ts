@@ -370,6 +370,8 @@ export async function initAboveQueueBtns() {
 
   if(!await addStyleFromResource("css-above_queue_btns"))
     error("Couldn't add CSS for above queue buttons");
+  else if(getFeature("aboveQueueBtnsSticky"))
+    addStyleFromResource("css-above_queue_btns_sticky");
 
   const contBtns = [
     {

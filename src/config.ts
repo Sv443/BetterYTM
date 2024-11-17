@@ -131,6 +131,10 @@ export const migrations: DataMigrationsDict = {
       // "autoLikePlayerBarToggleBtn",
     ]);
   },
+  // 9 -> 10 (v2.2.1)
+  10: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+    "aboveQueueBtnsSticky",
+  ]),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */

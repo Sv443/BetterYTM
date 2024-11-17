@@ -1,6 +1,25 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
+<!-- #region 2.2.1 -->
+## 2.2.1
+- **Changes:**
+  - The above-queue-button container's sticky positioning can now be turned off with a new advanced feature toggle in the config menu
+
+<!-- <details><summary>Click to expand internal and plugin changes</summary>
+
+- **Internal Changes:**
+  - 
+
+</details> -->
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/121" rel="noopener noreferrer">See pull request for more info</a>
+</div>
+
+<div class="split"></div>
+<br>
+
 <!-- #region 2.2.0 -->
 ## 2.2.0
 - **Changes:**
