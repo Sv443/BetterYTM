@@ -254,8 +254,8 @@ async function exists(path: string) {
 }
 
 /** Resolves the value of an entry in resources.json */
-function resolveVal(value: string, buildNbr: string) {
-  if(!value.includes("$"))
+function resolveResourceVal(value: string, buildNbr: string) {
+  if(!(/\$/.test(value)))
     return value;
 
   const replacements = [
@@ -284,8 +284,8 @@ async function getResourceDirectives(ref: string) {
         ? await getFileHashSha256(pathVal.replace(/\?.+/g, ""))
         : undefined;
       resourcesHashed[name] = typeof val === "object"
-        ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref), hash }
-        : { path: getResourceUrl(resolveVal(val, ref), ref), ref, hash };
+        ? { path: resolveResourceVal(val.path, ref), ref: resolveResourceVal(val.ref, ref), hash }
+        : { path: getResourceUrl(resolveResourceVal(val, ref), ref), ref, hash };
     }
 
     const addResourceHashed = async (name: string, path: string, ref: string) => {

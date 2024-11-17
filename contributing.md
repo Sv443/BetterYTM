@@ -193,7 +193,8 @@ The main files you will be working with are:
 - Adding an asset (image, icon, stylesheet, translation file and misc. other files):
   1. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
   2. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
-    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.
+    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.  
+    The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
   3. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode.
   4. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
     This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
