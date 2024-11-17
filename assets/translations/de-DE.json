@@ -32,6 +32,7 @@
     "import_success": "Die Daten wurden erfolgreich importiert",
     "import_success_confirm_reload": "Die Daten wurden erfolgreich importiert.\nMöchtest du die Seite jetzt neu laden, um die Änderungen anzuwenden?",
     "reset_config_confirm": "Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\nDie Seite wird automatisch neu geladen.",
+    "reset_everything_confirm": "Möchtest du wirklich alle gespeicherten Daten auf die Standardwerte zurücksetzen?\nDie Seite wird automatisch neu geladen.",
     "copy": "Kopieren",
     "copy_to_clipboard": "In die Zwischenablage kopieren",
     "copy_to_clipboard_error": "Der Text konnte nicht in die Zwischenablage kopiert werden. Bitte kopiere ihn hier manuell:\n%1",
@@ -70,7 +71,7 @@
     "scroll_to_bottom": "Zum Ende der Wiedergabeliste scrollen",
     "volume_tooltip": "Lautstärke: %1% (Sensitivität: %2%)",
     "volume_shared_tooltip": "Lautstärke wird zwischen allen Tabs geteilt - deaktivieren in den Einstellungen",
-    "middle_click_open_tab": "Mittelklick um in einem neuen Tab zu öffnen",
+    "middle_click_open_tab": "Mittel-Klick um in einem neuen Tab zu öffnen",
     "example_toast": "Beispiel-Toast",
     "generic_error_toast_encountered_error_type": "%1 ist aufgetreten",
     "generic_error_toast_click_for_details": "Klicke für Details",
@@ -86,6 +87,8 @@
     "advanced_mode_short": "Erweit.",
     "experimental_feature": "Experimentelle Funktion",
 
+    "open_current_lyrics": "Songtext des aktuellen Songs öffnen - Shift-Klick, um in einem neuen Fenster zu öffnen oder Strg-Klick, um manuell zu suchen",
+    "open_lyrics": "Songtext in einem neuen Tab öffnen - Strg-Klick, um manuell zu suchen",
     "open_lyrics_search_prompt": "Gib den Songtitel und den Künstler ein, um nach dem Songtext zu suchen:",
     "lyrics_loading": "Songtext-URL wird geladen...",
     "lyrics_rate_limited-1": "Du hast zu viele Anfragen gesendet.\nBitte warte ein paar Sekunden, bevor du weitere Songtexte anforderst.",
@@ -329,6 +332,7 @@
     "feature_helptext_themeSongIntegration": "Wenn das ThemeSong Addon installiert ist, aber dieses Feature deaktiviert ist (oder umgekehrt), könntest du kaputtes Styling auf der Seite bemerken.\n\nBitte stelle immer sicher, dass dieses Feature reflektiert, ob das Addon installiert ist oder nicht!",
     "feature_desc_themeSongLightness": "Wie hell die Akzentfarben sein sollen, die vom aktuellen ThemeSong-Theme abgeleitet werden",
     "feature_helptext_themeSongLightness": "Je nach den Einstellungen, die du für das ThemeSong Addon gewählt hast, ermöglicht dir dieses Feature, die Helligkeit der Akzentfarben anzupassen, die vom aktuellen Theme abgeleitet werden.\n\nDieses Feature hat keinen Effekt, wenn das ThemeSong Addon nicht installiert ist.",
+
     "feature_desc_openPluginList": "Öffne die Liste der installierten Plugins",
     "feature_btn_openPluginList": "Liste öffnen",
     "feature_btn_openPluginList_running": "Wird geöffnet...",
