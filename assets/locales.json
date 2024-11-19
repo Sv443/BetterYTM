@@ -5,7 +5,7 @@
     "emoji": "🇩🇪",
     "userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
     "authors": ["Sv443"],
-    "altLocales": ["de", "de-AT", "de-CH"]
+    "altLocales": ["de", "de-AT", "de-CH", "de-LI", "de-LU"]
   },
   "en-US": {
     "name": "English (United States)",
@@ -13,14 +13,15 @@
     "emoji": "🇺🇸",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     "authors": ["Sv443"],
-    "altLocales": ["en", "en-CA", "en-AU"]
+    "altLocales": ["en", "en-CA"]
   },
   "en-GB": {
     "name": "English (Great Britain)",
     "nameEnglish": "English (GB)",
     "emoji": "🇬🇧",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-    "authors": ["Sv443"]
+    "authors": ["Sv443"],
+    "altLocales": ["en-AU", "en-IE", "en-NZ", "en-ZA"]
   },
   "es-ES": {
     "name": "Español (España)",
@@ -52,7 +53,7 @@
     "emoji": "🇯🇵",
     "userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
     "authors": ["Sv443"],
-    "altLocales": ["ja", "ja-JP"]
+    "altLocales": ["ja"]
   },
   "pt-BR": {
     "name": "Português (Brasil)",
@@ -68,6 +69,6 @@
     "emoji": "🇨🇳",
     "userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
     "authors": ["Sv443"],
-    "altLocales": ["zh", "zh-TW", "zh-HK"]
+    "altLocales": ["zh", "zh-TW", "zh-HK", "zh-SG"]
   }
 }
