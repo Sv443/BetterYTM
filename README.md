@@ -67,7 +67,8 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 </sup>
 <sup>
 
-To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (make sure to fully reinstall the userscript once the next release is out)
+If you want to install the latest (potentially unstable) development build, [look for the latest pull request](https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen) and click the install button there.  
+Please make sure to fully reinstall the userscript once the next release is out to avoid any issues.
 
 </sup>
 

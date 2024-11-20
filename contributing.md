@@ -240,6 +240,7 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
     GreasyFork also needs the relevant section of the changelog, but the internal and plugin changes should be trimmed out
   9. Send an announcement in the Discord server linking to the install pages and the changelog, with a summary of the most important changes
   10. Update the [BYTM plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) by setting the BYTM submodule to the *exact* commit matching the release and making sure everything else is compatible with the changes of the latest BYTM version
+  11. Create a release in the BYTM plugin template repository with the same tag as the BYTM release, following the format of the previous releases
 
 
 <br><br><br>
