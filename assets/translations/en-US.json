@@ -288,6 +288,7 @@
     "feature_desc_rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered song",
     "feature_helptext_rememberSongTimeReduction": "When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you have more context when listening to the part that was interrupted again.",
     "feature_desc_rememberSongTimeMinPlayTime": "Minimum amount of seconds a song needs to be played for its time to be remembered",
+    "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
     "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys \"H\" and \"L\". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.",

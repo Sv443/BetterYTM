@@ -77,7 +77,7 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
       // cancels all the other events that would be fired
       e.stopImmediatePropagation();
 
-      const delta = Number((e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1);
+      const delta = Number((e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>)?.detail ?? 1);
       if(isNaN(delta))
         return warn("Invalid scroll delta:", delta);
 

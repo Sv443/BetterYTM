@@ -288,6 +288,7 @@
     "feature_desc_rememberSongTimeReduction": "Wie viele Sekunden abgezogen werden sollen, wenn ein gespeicherter Song wiederhergestellt wird",
     "feature_helptext_rememberSongTimeReduction": "Wenn die Zeit eines Songs, die gespeichert wurde, wiederhergestellt wird, wird diese Anzahl von Sekunden von der gespeicherten Zeit abgezogen, damit du den Teil, der unterbrochen wurde, erneut hören kannst.",
     "feature_desc_rememberSongTimeMinPlayTime": "Mindestanzahl an Sekunden, die ein Song gespielt werden muss, damit die Zeit gespeichert wird",
+    "feature_desc_aboveQueueBtnsSticky": "Positioniere das Element, in dem die Knöpfe über der Wiedergabeliste sind, immer am oberen Rand",
 
     "feature_desc_arrowKeySupport": "Benutze die Pfeiltasten um vor- und zurückzuspulen",
     "feature_helptext_arrowKeySupport": "Normalerweise kannst du nur in 10 Sekunden Schritten vor- und zurückspulen, indem du die Tasten \"H\" und \"L\" benutzt. Diese Funktion ermöglicht es dir, auch die Pfeiltasten zu benutzen.\nUm die Anzahl der Sekunden zu ändern, um die gespult werden soll, benutze die Option unten.",

@@ -281,7 +281,7 @@ These are the ways to interact with BetterYTM; through constants, events and glo
   You can find all properties that are available and their types in the `declare global` block of [`src/types.ts`](src/types.ts)
 
 - Dynamic interaction is done through events that are dispatched on the `unsafeWindow` object.  
-  They all have the prefix `bytm:eventName` and are all dispatched with the `CustomEvent` interface, meaning their data can be read using the `detail` property.  
+  They all have the prefix `bytm:eventName` and are all dispatched with the [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) interface, meaning their data can be read using the `detail` property.  
   You can find all events that are available and their types in [`src/interface.ts`](src/interface.ts)  
     
   Additionally BetterYTM has an internal system called SiteEvents. They are dispatched using the format `bytm:siteEvent:eventName`  
