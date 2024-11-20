@@ -87,8 +87,7 @@ const devDirectives = mode === "development" ? `\
 // @name              ${pkg.userscriptName}
 // @namespace         ${pkg.homepage}
 // @version           ${pkg.version}
-// @description       ${pkg.description}\
-${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
+// @description       ${pkg.description}
 // @homepageURL       ${pkg.homepage}#readme
 // @supportURL        ${pkg.bugs.url}
 // @license           ${pkg.license}
@@ -97,12 +96,14 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
-// @run-at            document-start
+// @run-at            document-start\
+${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
+// @noframes
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -110,8 +111,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
-// @grant             unsafeWindow
-// @noframes\
+// @grant             unsafeWindow\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
 ${devDirectives ? "\n" + devDirectives : ""}
