@@ -5,6 +5,11 @@ import { copyToClipboard } from "../utils/dom.js";
 import { createLongBtn, createRipple, showToast } from "./index.js";
 import "./ExImDialog.css";
 
+// TODO: v2.3.0 overhaul:
+// - [ ] Use file down- and upload instead of textareas, including drag and drop functionality
+// - [ ] Still allow downloading the `exportDataSpecial`
+// - [ ] Checkboxes on both sides to configure which DataStore instances to import/export to/from
+
 type ExImDialogOpts =
   & Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
   & {
