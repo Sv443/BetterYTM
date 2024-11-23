@@ -1,7 +1,7 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants.js";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber } from "./utils/index.js";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
 import { getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
@@ -109,6 +109,7 @@ const globalFuncs: InterfaceFunctions = {
   getDomain,
   getResourceUrl,
   getSessionId,
+  reloadTab: reloadTabInterface,
 
   // dom:
   setInnerHtml,
@@ -409,6 +410,13 @@ export function resolveToken(token: string | undefined): string | undefined {
 }
 
 //#region proxy funcs
+
+/** Reloads the tab in a smarter way by preserving the current video's time and volume and making features like initial tab volume stand down if called */
+export async function reloadTabInterface(token: string | undefined) {
+  if(resolveToken(token) === undefined)
+    return;
+  return await reloadTab();
+}
 
 /**
  * Sets the new locale on the BYTM interface  

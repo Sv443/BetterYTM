@@ -4,7 +4,7 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, reloadTabInterface, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
@@ -266,6 +266,8 @@ export type PluginItem =
   }
   & Pick<PluginRegisterResult, "events">;
 
+//#region plugin interface
+
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
   // meta:
@@ -285,6 +287,8 @@ export type InterfaceFunctions = {
   getResourceUrl: typeof getResourceUrl;
   /** Returns the unique session ID for the current tab */
   getSessionId: typeof getSessionId;
+  /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used */
+  reloadTab: typeof reloadTabInterface;
 
   // dom:
   /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string */

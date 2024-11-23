@@ -1,8 +1,8 @@
-import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
+import { clamp, compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
-import { error, type TrLocale, warn, sendRequest, getLocale, log } from "./index.js";
+import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
@@ -219,6 +219,24 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
         maximumFractionDigits: 0,
       },
   );
+}
+
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameters `time_continue` and `bytm_volume` */
+export async function reloadTab() {
+  let time = 0, volume = 0;
+
+  if(getVideoElement()) {
+    time = (await getVideoTime() ?? 0) - 0.25;
+    volume = clamp(Math.round(getVideoElement()!.volume * 100), 0, 100);
+  }
+
+  const url = new URL(location.href);
+  if(time > 0)
+    url.searchParams.set("time_continue", String(time));
+  if(volume > 0)
+    url.searchParams.set("bytm_volume", String(volume));
+
+  location.href = url.href;
 }
 
 //#region resources

@@ -417,6 +417,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
+  - [reloadTab()](#reloadtab) 🔒 - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
 - DOM:
   - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
@@ -701,6 +702,21 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > }
 > ```
 > </details>
+
+<br>
+
+> ### reloadTab()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.reloadTab(token: string | undefined): Promise<void>
+> ```
+>  
+> Description:  
+> Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority.  
+> The tab will be reloaded, whether the video element is queryable in the DOM or not.  
+>   
+> Arguments:  
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will always return `undefined`)
 
 <br>
 

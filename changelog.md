@@ -5,13 +5,14 @@
 ## 2.2.1
 - **Changes:**
   - The above-queue-button container's sticky positioning can now be turned off with a new advanced feature toggle in the config menu
+  - Made finding the preferred locale based on the browser's language settings more reliable
 
-<!-- <details><summary>Click to expand internal and plugin changes</summary>
+<details><summary>Click to expand internal and plugin changes</summary>
 
-- **Internal Changes:**
-  - 
+- **Plugin Changes:**
+  - Added authenticated function `reloadTab()` to keep video time and volume and disable BYTM features like initial tab volume
 
-</details> -->
+</details>
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/121" rel="noopener noreferrer">See pull request for more info</a>
@@ -41,7 +42,7 @@
     - `en-UK` -> `en-GB`
     - `ja-JA` -> `ja-JP`
   - Enabled Subresource Integrity (SRI) hashes for external resources to increase security
-- **Plugin Changes:**  
+- **Plugin Changes:**
   - Migration guide:
     - Since locale codes now have the format `xx-YY` and two were renamed, all plugins must implement those changes
 

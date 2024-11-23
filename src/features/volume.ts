@@ -36,7 +36,7 @@ export async function initVolumeFeatures() {
 
     // the following are only run once:
 
-    if(getFeature("setInitialTabVolume"))
+    if(getFeature("setInitialTabVolume") || new URL(location.href).searchParams.has("bytm_volume"))
       setInitialTabVolume(sliderElem);
 
     if(typeof getFeature("volumeSliderSize") === "number")
@@ -249,7 +249,8 @@ export async function volumeSharedBetweenTabsDisabled() {
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {
   await waitVideoElementReady();
-  const initialVol = getFeature("initialTabVolumeLevel");
+  const urlVol = new URL(location.href).searchParams.get("bytm_volume");
+  const initialVol = urlVol ? Number(urlVol) / 100 : getFeature("initialTabVolumeLevel");
   if(getFeature("volumeSharedBetweenTabs")) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
     if(getFeature("volumeSharedBetweenTabs"))
@@ -257,5 +258,8 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
   }
   sliderElem.value = String(initialVol);
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-  log(`Set initial tab volume to ${initialVol}%`);
+
+  urlVol && history.replaceState({}, document.title, location.href.replace(/([&?]?bytm_volume=\d+($|&))/g, ""));
+
+  log(`Set initial tab volume to ${initialVol}%${urlVol ? " (from URL)" : "(from configuration)"}`);
 }
