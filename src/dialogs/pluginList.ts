@@ -149,7 +149,7 @@ async function renderBody() {
       const intentEl = document.createElement("div");
       intentEl.classList.add("bytm-plugin-list-row-intent-item");
       intentEl.tabIndex = 0;
-      intentEl.textContent = PluginIntent[intent];
+      intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
       intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
       rightEl.appendChild(intentEl);
     }
