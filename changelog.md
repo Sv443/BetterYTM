@@ -11,6 +11,7 @@
 
 - **Plugin Changes:**
   - Added authenticated function `reloadTab()` to keep video time and volume and disable BYTM features like initial tab volume
+  - Exposed the constants `initialParams` (initial URLParams object) and `sessionStorageAvailable` (bool) on the BYTM API
 
 </details>
 

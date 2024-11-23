@@ -1,4 +1,4 @@
-import { clamp, compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
@@ -221,22 +221,29 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
   );
 }
 
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameters `time_continue` and `bytm_volume` */
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
 export async function reloadTab() {
-  let time = 0, volume = 0;
+  try {
+    let time = 0, volume = 0;
 
-  if(getVideoElement()) {
-    time = (await getVideoTime() ?? 0) - 0.25;
-    volume = clamp(Math.round(getVideoElement()!.volume * 100), 0, 100);
+    if(getVideoElement()) {
+      time = (await getVideoTime() ?? 0) - 0.25;
+      volume = Math.round(getVideoElement()!.volume * 100);
+    }
+
+    const url = new URL(location.href);
+
+    if(isNaN(time) && time > 0)
+      url.searchParams.set("time_continue", String(time));
+    if(isNaN(volume) && volume > 0)
+      await GM.setValue("bytm-reload-tab-volume", String(volume));
+
+    location.href = url.href;
   }
-
-  const url = new URL(location.href);
-  if(time > 0)
-    url.searchParams.set("time_continue", String(time));
-  if(volume > 0)
-    url.searchParams.set("bytm_volume", String(volume));
-
-  location.href = url.href;
+  catch(err) {
+    error("Couldn't save video time and volume before reloading tab:", err);
+    location.reload();
+  }
 }
 
 //#region resources

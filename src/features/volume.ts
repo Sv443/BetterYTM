@@ -3,8 +3,8 @@ import { getFeature } from "../config.js";
 import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
-import "./volume.css";
 import { addSelectorListener } from "../observers.js";
+import "./volume.css";
 
 //#region init vol features
 
@@ -36,8 +36,7 @@ export async function initVolumeFeatures() {
 
     // the following are only run once:
 
-    if(getFeature("setInitialTabVolume") || new URL(location.href).searchParams.has("bytm_volume"))
-      setInitialTabVolume(sliderElem);
+    setInitialTabVolume(sliderElem);
 
     if(typeof getFeature("volumeSliderSize") === "number")
       setVolSliderSize();
@@ -248,18 +247,23 @@ export async function volumeSharedBetweenTabsDisabled() {
 
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {
+  const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
+  GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
+
+  if(!getFeature("setInitialTabVolume") || reloadTabVol === 0 || isNaN(reloadTabVol))
+    return;
+
   await waitVideoElementReady();
-  const urlVol = new URL(location.href).searchParams.get("bytm_volume");
-  const initialVol = urlVol ? Number(urlVol) / 100 : getFeature("initialTabVolumeLevel");
+
+  const initialVol = reloadTabVol > 0 ? Math.round(reloadTabVol) : getFeature("initialTabVolumeLevel");
+
   if(getFeature("volumeSharedBetweenTabs")) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
     if(getFeature("volumeSharedBetweenTabs"))
-      GM.setValue("bytm-shared-volume", String(initialVol));
+      GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
   }
   sliderElem.value = String(initialVol);
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
 
-  urlVol && history.replaceState({}, document.title, location.href.replace(/([&?]?bytm_volume=\d+($|&))/g, ""));
-
-  log(`Set initial tab volume to ${initialVol}%${urlVol ? " (from URL)" : "(from configuration)"}`);
+  log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
 }

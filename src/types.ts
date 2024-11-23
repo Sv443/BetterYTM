@@ -120,7 +120,7 @@ export type BytmObject =
   // information from the userscript header
   & typeof scriptInfo
   // certain variables from `src/constants.ts`
-  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "compressionFormat">
+  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "initialParams" | "compressionFormat" | "sessionStorageAvailable" | "scriptInfo">
   // global functions exposed through the interface in `src/interface.ts`
   & InterfaceFunctions
   // others
