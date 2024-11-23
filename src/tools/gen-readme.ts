@@ -97,8 +97,11 @@ async function genHeader() {
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>${pkgJson.userscriptName}</h1>
 
 ### ${pkgJson.description}
-${langStr}\
-`;
+
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+---
+
+Available in ${langStr}`;
 }
 
 async function genPluginList() {

@@ -3,12 +3,13 @@
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
-🇨🇳&nbsp;Chinese (simpl.), 🇬🇧&nbsp;English (GB), 🇺🇸&nbsp;English (US), 🇫🇷&nbsp;French, 🇩🇪&nbsp;German, 🇮🇳&nbsp;Hindi, 🇯🇵&nbsp;Japanese, 🇧🇷&nbsp;Portuguese, 🇪🇸&nbsp;Spanish
+
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+---
+
+Available in 🇨🇳&nbsp;Chinese (simpl.), 🇬🇧&nbsp;English (GB), 🇺🇸&nbsp;English (US), 🇫🇷&nbsp;French (FR), 🇩🇪&nbsp;German (DE), 🇮🇳&nbsp;Hindi (IN), 🇯🇵&nbsp;Japanese (JP), 🇧🇷&nbsp;Portuguese (BR), 🇪🇸&nbsp;Spanish (ES)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
-[**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
-  
----
 
 <br>
 
@@ -24,7 +25,7 @@ All of these can be toggled and configured in the configuration menu.
   - Improve clickability of song titles and thumbnails when wanting to open them in a new tab
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
-- Input / Interaction:
+- Input & Interaction:
   - Auto-like songs and videos of your favorite creators on both YouTube and YouTube Music
   - Use arrow keys to skip forward or backward by a configurable amount of time
   - Press number keys to skip to a percentage of the currently playing song
