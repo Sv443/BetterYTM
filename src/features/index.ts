@@ -1,4 +1,4 @@
-import { formatNumber, getLocale, getPreferredLocale, getResourceUrl, resourceAsString, t, tp } from "../utils/index.js";
+import { formatNumber, getLocale, getPreferredLocale, getResourceUrl, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
@@ -785,7 +785,7 @@ export const featInfo = {
         message: t("reset_everything_confirm"),
       })) {
         await getStoreSerializer().resetStoresData();
-        location.reload();
+        await reloadTab();
       }
     },
     advanced: true,

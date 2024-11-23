@@ -2,7 +2,7 @@ import { compress, debounce, isScrollable, type Stringifiable } from "@sv443-net
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, disableBeforeUnload } from "../features/index.js";
-import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml, type TrLocale, tl } from "../utils/index.js";
+import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml, type TrLocale, tl, reloadTab } from "../utils/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getFeatHelpDialog, showPrompt } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
@@ -185,7 +185,7 @@ async function mountCfgMenu() {
   reloadTxtEl.addEventListener("click", () => {
     closeCfgMenu();
     disableBeforeUnload();
-    location.reload();
+    reloadTab();
   });
 
   reloadFooterEl.appendChild(reloadTxtEl);
@@ -244,7 +244,7 @@ async function mountCfgMenu() {
 
         if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
           disableBeforeUnload();
-          return location.reload();
+          return reloadTab();
         }
 
         exImDlg.unmount();
@@ -333,7 +333,7 @@ async function mountCfgMenu() {
         })) {
           closeCfgMenu();
           disableBeforeUnload();
-          location.reload();
+          reloadTab();
         }
       }
       else if(getLocale() !== featConf.locale)

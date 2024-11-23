@@ -1,6 +1,6 @@
 import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp } from "@sv443-network/userutils";
 import { disableBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, getVideoTime, info, log, t, type TrLocale } from "./utils/index.js";
+import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -264,7 +264,7 @@ export async function promptResetConfig() {
       location.replace(url.href);
     }
     else
-      location.reload();
+      await reloadTab();
   }
 }
 

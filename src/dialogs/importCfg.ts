@@ -1,4 +1,4 @@
-import { error, tryToDecompressAndParse, t, warn, log } from "../utils/index.js";
+import { error, tryToDecompressAndParse, t, warn, log, reloadTab } from "../utils/index.js";
 import { BytmDialog } from "../components/index.js";
 import { scriptInfo } from "../constants.js";
 import { emitSiteEvent } from "../siteEvents.js";
@@ -109,7 +109,7 @@ async function renderFooter() {
 
       if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
         disableBeforeUnload();
-        return location.reload();
+        return reloadTab();
       }
 
       emitSiteEvent("rebuildCfgMenu", parsed.data);

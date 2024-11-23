@@ -1,5 +1,5 @@
 import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, domLoaded, getResourceUrl, setGlobalCssVars, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, domLoaded, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -382,7 +382,7 @@ function registerDevCommands() {
     if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
       await clearConfig();
       disableBeforeUnload();
-      location.reload();
+      await reloadTab();
     }
   }, "r");
 
@@ -391,7 +391,7 @@ function registerDevCommands() {
     await setFeatures(fixCfgKeys(oldFeats));
     dbg("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
     if(confirm("All missing or config values were set to their default values and extraneous ones were removed.\nDo you want to reload the page now?"))
-      location.reload();
+      await reloadTab();
   });
 
   GM.registerMenuCommand("List GM values in console with decompression", async () => {
