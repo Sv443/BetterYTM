@@ -222,6 +222,9 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
   );
 }
 
+/** add `time_continue` param only if current video time is greater than this value */
+const reloadTabVideoTimeThreshold = 3;
+
 /** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
 export async function reloadTab() {
   const win = getUnsafeWindow();
@@ -229,12 +232,12 @@ export async function reloadTab() {
     enableDiscardBeforeUnload();
 
     if((getVideoElement()?.readyState ?? 0) > 0) {
-      const time = (await getVideoTime() ?? 0) - 0.25;
+      const time = await getVideoTime(0) ?? 0;
       const volume = Math.round(getVideoElement()!.volume * 100);
 
       const url = new URL(win.location.href);
 
-      if(!isNaN(time) && time > 0)
+      if(!isNaN(time) && time > reloadTabVideoTimeThreshold)
         url.searchParams.set("time_continue", String(time));
       if(!isNaN(volume) && volume > 0)
         await GM.setValue("bytm-reload-tab-volume", String(volume));
@@ -255,7 +258,8 @@ export async function reloadTab() {
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
  * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache  
- * @param uncached Set to true to fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
+ * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
+ * @param uncached Set to true to always fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
  */
 export async function getResourceUrl(name: ResourceKey | "_", uncached = false) {
   let url = !uncached && await GM.getResourceUrl(name);
@@ -275,7 +279,7 @@ export async function getResourceUrl(name: ResourceKey | "_", uncached = false) 
         return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${pathName}`;
     }
 
-    warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
+    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
     // @ts-ignore
     url = await GM.getResourceUrl(name, false);
   }
