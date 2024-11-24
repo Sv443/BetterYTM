@@ -2,9 +2,9 @@ import type { NanoEmitter, Stringifiable } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, reloadTabInterface, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
@@ -288,7 +288,7 @@ export type InterfaceFunctions = {
   /** Returns the unique session ID for the current tab */
   getSessionId: typeof getSessionId;
   /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used */
-  reloadTab: typeof reloadTabInterface;
+  reloadTab: typeof reloadTab;
 
   // dom:
   /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string */
@@ -309,6 +309,10 @@ export type InterfaceFunctions = {
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
   /** Resolves the returned promise when the video element is queryable in the DOM */
   waitVideoElementReady: typeof waitVideoElementReady;
+  /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found */
+  getVideoElement: typeof getVideoElement;
+  /** Returns the CSS selector to the video element for both YTM and YT */
+  getVideoSelector: typeof getVideoSelector;
   /** (On YTM only) returns the current media type (video or song) */
   getCurrentMediaType: typeof getCurrentMediaType;
 

@@ -10,8 +10,11 @@
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Plugin Changes:**
-  - Added authenticated function `reloadTab()` to keep video time and volume and disable BYTM features like initial tab volume
-  - Exposed the constants `initialParams` (initial URLParams object) and `sessionStorageAvailable` (bool) on the BYTM API
+  - Added functions to the BYTM API:
+    - `reloadTab()` to reload the page while keeping video time and volume and disable BYTM features like initial tab volume
+    - `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
+    - `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
+  - Exposed the constants `initialParams` (URLSearchParams, the search params at the initial point of loading BYTM) and `sessionStorageAvailable` (boolean) on the BYTM API
 
 </details>
 

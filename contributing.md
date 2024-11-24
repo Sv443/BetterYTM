@@ -417,7 +417,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
-  - [reloadTab()](#reloadtab) 🔒 - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
+  - [reloadTab()](#reloadtab) - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
 - DOM:
   - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
@@ -429,6 +429,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
   - [waitVideoElementReady()](#waitvideoelementready) - Waits for the video element to be queryable in the DOM - has to be called after `bytm:observersReady`
+  - [getVideoElement()](#getvideoelement) - Returns the video element on the current page or null if there is none (on both YT and YTM)
+  - [getVideoSelector()](#getvideoselector) - Returns the CSS selector for the video element (on both YT and YTM)
   - [getCurrentMediaType()](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
@@ -708,15 +710,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### reloadTab()
 > Usage:
 > ```ts
-> unsafeWindow.BYTM.reloadTab(token: string | undefined): Promise<void>
+> unsafeWindow.BYTM.reloadTab(): Promise<void>
 > ```
 >  
 > Description:  
 > Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority.  
-> The tab will be reloaded, whether the video element is queryable in the DOM or not.  
->   
-> Arguments:  
-> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will always return `undefined`)
+> The tab will be reloaded, whether the video element is queryable in the DOM or not, but without video time and volume restoration in the latter case.
 
 <br>
 
@@ -939,6 +938,50 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
 >   console.log("The video element:", videoElement);
 > });
+> ```
+> </details>
+
+<br>
+
+> ### getVideoElement()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.getVideoElement(): HTMLVideoElement | null
+> ```
+>   
+> Description:  
+> Returns the video element on the current page or `null` if there is none.  
+> Works on both YouTube and YouTube Music.  
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // get the current video time and volume:
+> const { currentTime, volume } = unsafeWindow.BYTM.getVideoElement();
+> console.log("Video time:", currentTime, "Video volume:", volume);
+> ```
+> </details>
+
+<br>
+
+> ### getVideoSelector()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.getVideoSelector(): string
+> ```
+>   
+> Description:  
+> Returns the CSS selector for the video element on the current page.  
+> Works on both YouTube and YouTube Music.  
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // add CSS to an element that exists within the video element on both YT and YTM:
+> const videoSelector = unsafeWindow.BYTM.getVideoSelector();
+> const css = `${videoSelector} #my-element { border: 2px solid red; }`;
+> const styleElem = unsafeWindow.BYTM.UserUtils.addGlobalStyle(css);
+> styleElem.id = "my-element-style";
 > ```
 > </details>
 
