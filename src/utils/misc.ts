@@ -1,4 +1,4 @@
-import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
@@ -224,28 +224,29 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
 
 /** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
 export async function reloadTab() {
+  const win = getUnsafeWindow();
   try {
     enableDiscardBeforeUnload();
 
-    if(getVideoElement()) {
+    if((getVideoElement()?.readyState ?? 0) > 0) {
       const time = (await getVideoTime() ?? 0) - 0.25;
       const volume = Math.round(getVideoElement()!.volume * 100);
 
-      const url = new URL(location.href);
+      const url = new URL(win.location.href);
 
       if(!isNaN(time) && time > 0)
         url.searchParams.set("time_continue", String(time));
       if(!isNaN(volume) && volume > 0)
         await GM.setValue("bytm-reload-tab-volume", String(volume));
 
-      return location.replace(url);
+      return win.location.replace(url);
     }
 
-    location.reload();
+    win.location.reload();
   }
   catch(err) {
     error("Couldn't save video time and volume before reloading tab:", err);
-    location.reload();
+    win.location.reload();
   }
 }
 

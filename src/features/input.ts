@@ -43,7 +43,7 @@ export async function initArrowKeySkip() {
 
     const vidElem = getVideoElement();
 
-    if(vidElem)
+    if(vidElem && vidElem.readyState > 0)
       vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
   });
   log("Added arrow key press listener");
@@ -136,7 +136,7 @@ export async function initNumKeysSkip() {
       return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
 
     const vidElem = getVideoElement();
-    if(!vidElem)
+    if(!vidElem || vidElem.readyState === 0)
       return warn("Could not find video element, so the keypress is ignored");
 
     const newVidTime = vidElem.duration / (10 / Number(e.key));

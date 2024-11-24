@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", () => domLoaded = true);
 //#region vid time & vol.
 
 /** Returns the video element selector string based on the current domain */
-export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
+export function getVideoSelector() {
+  return getDomain() === "ytm"
+    ? "ytmusic-player video"
+    : "#player-container ytd-player video";
+}
 
 /** Returns the video element based on the current domain */
 export function getVideoElement() {
@@ -44,7 +48,7 @@ export function getVideoTime(precision = 2) {
     try {
       if(getDomain() === "ytm") {
         const vidElem = getVideoElement();
-        if(vidElem)
+        if(vidElem && vidElem.readyState > 0)
           return resolveWithVal(vidElem.currentTime);
 
         addSelectorListener<HTMLProgressElement>("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
@@ -54,7 +58,7 @@ export function getVideoTime(precision = 2) {
       }
       else if(getDomain() === "yt") {
         const vidElem = getVideoElement();
-        if(vidElem)
+        if(vidElem && vidElem.readyState > 0)
           return resolveWithVal(vidElem.currentTime);
 
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
@@ -137,7 +141,7 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   return new Promise(async (res, rej) => {
     try {
       const vidEl = getVideoElement();
-      if(vidEl?.readyState === 4)
+      if(vidEl && (vidEl?.readyState ?? 0) > 0)
         return res(vidEl);
 
       if(!location.pathname.startsWith("/watch"))

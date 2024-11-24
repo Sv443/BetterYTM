@@ -957,8 +957,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > // get the current video time and volume:
-> const { currentTime, volume } = unsafeWindow.BYTM.getVideoElement();
-> console.log("Video time:", currentTime, "Video volume:", volume);
+> const videoElem = unsafeWindow.BYTM.getVideoElement();
+> if(videoElem.readyState && videoElem.readyState >= 2)
+>   console.log("Video time:", videoElem.currentTime, "Video volume:", videoElem.volume);
+> else
+>   console.error("The video element is not ready yet");
 > ```
 > </details>
 
