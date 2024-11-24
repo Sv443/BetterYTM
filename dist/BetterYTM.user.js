@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,62 +62,62 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/aboveQueueBtns.css#sha256=sZieYj3MeIQT3HLfgFg0xiO0JQGWw/1bkQXzaAieZvQ=
-// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/dist/BetterYTM.css#sha256=9jNDIvLlCCWQf3S8U5ho/n345vNbATLJUyFFPIAJ0+Q=
-// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
-// @resource          doc-changelog               https://raw.githubusercontent.com/Sv443/BetterYTM/main/changelog.md#sha256=ZJfNJpP6hXp86pcZMdOCTiYPF15+kZdYcSk8ufHlqas=
-// @resource          font-cousine_ttf            https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/fonts/Cousine/Cousine-Regular.ttf#sha256=3NUmAE/P7E7COiHKRY6mER4eDURxwK3icEknEBtdzts=
-// @resource          font-cousine_woff           https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/fonts/Cousine/Cousine-Regular.woff#sha256=VEi7Zy63C3H0/+UD2MOkk35FMufP94uORI0flA24cJM=
-// @resource          font-cousine_woff2          https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/fonts/Cousine/Cousine-Regular.woff2#sha256=Rw3vpRf3bTAujjOoevj5BUUvlDFTkZb7zH3URXvGmW0=
-// @resource          icon-advanced_mode          https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/plus_circle_small.svg#sha256=EUkGEgNKO99AHbhk88W1RkuFgE00+GXIC3QWLnWXJCc=
-// @resource          icon-alert                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/alert.svg#sha256=V+B+Z2U0yau2fB+XExY94Ic5Wg/p+mZgXqDjZ3lhg78=
-// @resource          icon-arrow_down             https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/arrow_down.svg#sha256=jtTMiYlQtVkZu6FHGH1MI1lezXoWg0uViAi1mEoKKQQ=
-// @resource          icon-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/auto_like.svg#sha256=z/a/NhDg4oPj4/KXP2uPzs+V38UT3UxM8YhZe71Sh5I=
-// @resource          icon-auto_like_enabled      https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/auto_like_enabled.svg#sha256=PxQhv4EAdXb2BkcXYgQ5TJKC49pjzY0kyDY/rj9+lYY=
-// @resource          icon-clear_list             https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/clear_list.svg#sha256=1EU5h0xw5NkFAbUU59kfrr1Ke9Ui6LJ9zHQhEBMgl+0=
-// @resource          icon-copy                   https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/copy.svg#sha256=66sj77i0AwuB7kcuWV95MKz8gJ5eWrQ/VTqpMvWjt1w=
-// @resource          icon-delete                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/delete.svg#sha256=v6S0FrsvJ45xIF+TvzeSp/l8E8Eyh0KatBEfxuazvhk=
-// @resource          icon-edit                   https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/edit.svg#sha256=Hck4kGmeoloSWIWkbjWHnKEvdhJtIFY5O9KRTgl3mVo=
-// @resource          icon-error                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/error.svg#sha256=9+7VNYGb7S76hDl6n01vk01CRW9XULWIDbXFpW+p/Rg=
-// @resource          icon-experimental           https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/beaker_small.svg#sha256=8mMm6igfnnHFqBylMN8TV2Ww6YeOfWG0Oq49iR9A1Ik=
-// @resource          icon-globe                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/globe.svg#sha256=G+NKmM6y7Ank5z/EOV4gj0tQszLoOpeWucNterW8Yek=
-// @resource          icon-globe_small            https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/globe_small.svg#sha256=8KB7wookZWWuE8cPSH2WpwgNGxddjVeKTlyKrhFmaLM=
-// @resource          icon-help                   https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/help.svg#sha256=a8lO+sznaGFnbQfjbOyCydVtuzJO9NBRHUbDCIUe6CY=
-// @resource          icon-image                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/image.svg#sha256=9lB+dguBi9QBiqkNj52wv7eRS50oNaa6Y200mEZIL8Y=
-// @resource          icon-image_filled           https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/image_filled.svg#sha256=mCFBRDA3BVvwc2xN6lGH5eVSE+VjWfj/BPYE6LizAXs=
-// @resource          icon-link                   https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/link.svg#sha256=8YThvRBuJ4/yNkgATIkxQH1BdYjCK5k2/XRi36u7p/c=
-// @resource          icon-lyrics                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/lyrics.svg#sha256=+L4fFYsWiaM8gxfP1G1anRHYgfggPmt9mWeThTltCF4=
-// @resource          icon-prompt                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/help.svg#sha256=a8lO+sznaGFnbQfjbOyCydVtuzJO9NBRHUbDCIUe6CY=
-// @resource          icon-reload                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/refresh.svg#sha256=NArBWzah/U42KJnYhe8oXTYRJxn2Je1ILMVQBQAxeSw=
-// @resource          icon-restore_time           https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/restore_time.svg#sha256=4enl1dD8022iAN5flRyXLJ6FcGD+w9ClMCW/kf8AY7E=
-// @resource          icon-skip_to                https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/skip_to.svg#sha256=UtsFutOl7n+QwiO1ZQGyGBj5lsyGrULgKvoAmFjDGa8=
-// @resource          icon-spinner                https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/spinner.svg#sha256=pj8Ms7+/GPWA/hpl7pkbtzdGvL2fgIvk241iWUO/AQg=
-// @resource          icon-upload                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/icons/upload.svg#sha256=ufaBZkMv8RaLvoNdY2nG6egcIezB9fkgiNN/Xv0ZvJU=
-// @resource          img-close                   https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/close.png#sha256=XIZfYT+0R0kQuDR3AKaKu3F/+timMz6JMvA1wdhUpkA=
-// @resource          img-discord                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/external/discord.png#sha256=w/7aw0lgtdS9s5wnW4S70H2ww8x5C6H3Bc2EulWnMi0=
-// @resource          img-github                  https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/external/github.png#sha256=MPwTJpkyHrsQ0PtuKL2lyoHXMmESsT8S9i7g9K3szwE=
-// @resource          img-greasyfork              https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/external/greasyfork.png#sha256=C8CI6iPrIpyUbXPbcpdTN2R+XiQ9aL0LI6thE+7vEcY=
-// @resource          img-logo                    https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/logo/logo_48.png#sha256=+DoIcM002UevjTGvAxHMULo2VGHcYjy8TWla3xeNdNs=
-// @resource          img-logo_dev                https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/logo/logo_dev_48.png#sha256=bX5hzhFwROh3PLZu68ZPfL+pJF1HBnxkT7AoB7VnkEE=
-// @resource          img-openuserjs              https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/images/external/openuserjs.png#sha256=LYfN7+1yfmagwPk+EfhKE6mZCOPJ8GB2cu5tKI/J+Vo=
-// @resource          trans-de-DE                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/de-DE.json#sha256=oBAh1B/W13qDjnttMfKm8Hrt3qkKAqD59LEYzrpDMAI=
-// @resource          trans-en-GB                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/en-GB.json#sha256=zYvmENtA7hDHA98ZiuImMWEwgTvwWuU5936xb+wN8KE=
-// @resource          trans-en-US                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/en-US.json#sha256=cwsPVIRpBR/cVb8OukKIOJbtBAyUNc3VBJqlR89S5hI=
-// @resource          trans-es-ES                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/es-ES.json#sha256=66Fmuwqp6Uwo5MoEZxLhSzXP8BdkveBctNfHU4SbbBY=
-// @resource          trans-fr-FR                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/fr-FR.json#sha256=4O2PhBxGrWqz/mJlBaab1Lzcs/P1opPMvWIt8fajJPU=
-// @resource          trans-hi-IN                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/hi-IN.json#sha256=IJIvrwoQPJ4YLm8aWZNVf1C4rocM9CbtPKHsGcbSUtc=
-// @resource          trans-ja-JP                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/ja-JP.json#sha256=IvJDZL5K1cXB5uRabCv9I373rGByKP0pwOvmR47PM/s=
-// @resource          trans-pt-BR                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/pt-BR.json#sha256=A42lpxuHH0FG6JqZldqjOzELjSgzzZ3ugOcHKo/3bHU=
-// @resource          trans-zh-CN                 https://raw.githubusercontent.com/Sv443/BetterYTM/e53d111c/assets/translations/zh-CN.json#sha256=kJPPd29sljo7qxmi9NEA3A/yhdKHtxYHU9K0r9to3g4=
+// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/aboveQueueBtns.css#sha256=sZieYj3MeIQT3HLfgFg0xiO0JQGWw/1bkQXzaAieZvQ=
+// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/dist/BetterYTM.css#sha256=9jNDIvLlCCWQf3S8U5ho/n345vNbATLJUyFFPIAJ0+Q=
+// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          doc-changelog               https://raw.githubusercontent.com/Sv443/BetterYTM/main/changelog.md#sha256=zQzuIsJ8rXIiQ+HYHUCJskmRtcFWJDcgHRJwv4JF78k=
+// @resource          font-cousine_ttf            https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/fonts/Cousine/Cousine-Regular.ttf#sha256=3NUmAE/P7E7COiHKRY6mER4eDURxwK3icEknEBtdzts=
+// @resource          font-cousine_woff           https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/fonts/Cousine/Cousine-Regular.woff#sha256=VEi7Zy63C3H0/+UD2MOkk35FMufP94uORI0flA24cJM=
+// @resource          font-cousine_woff2          https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/fonts/Cousine/Cousine-Regular.woff2#sha256=Rw3vpRf3bTAujjOoevj5BUUvlDFTkZb7zH3URXvGmW0=
+// @resource          icon-advanced_mode          https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/plus_circle_small.svg#sha256=EUkGEgNKO99AHbhk88W1RkuFgE00+GXIC3QWLnWXJCc=
+// @resource          icon-alert                  https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/alert.svg#sha256=V+B+Z2U0yau2fB+XExY94Ic5Wg/p+mZgXqDjZ3lhg78=
+// @resource          icon-arrow_down             https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/arrow_down.svg#sha256=jtTMiYlQtVkZu6FHGH1MI1lezXoWg0uViAi1mEoKKQQ=
+// @resource          icon-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/auto_like.svg#sha256=z/a/NhDg4oPj4/KXP2uPzs+V38UT3UxM8YhZe71Sh5I=
+// @resource          icon-auto_like_enabled      https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/auto_like_enabled.svg#sha256=PxQhv4EAdXb2BkcXYgQ5TJKC49pjzY0kyDY/rj9+lYY=
+// @resource          icon-clear_list             https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/clear_list.svg#sha256=1EU5h0xw5NkFAbUU59kfrr1Ke9Ui6LJ9zHQhEBMgl+0=
+// @resource          icon-copy                   https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/copy.svg#sha256=66sj77i0AwuB7kcuWV95MKz8gJ5eWrQ/VTqpMvWjt1w=
+// @resource          icon-delete                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/delete.svg#sha256=v6S0FrsvJ45xIF+TvzeSp/l8E8Eyh0KatBEfxuazvhk=
+// @resource          icon-edit                   https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/edit.svg#sha256=Hck4kGmeoloSWIWkbjWHnKEvdhJtIFY5O9KRTgl3mVo=
+// @resource          icon-error                  https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/error.svg#sha256=9+7VNYGb7S76hDl6n01vk01CRW9XULWIDbXFpW+p/Rg=
+// @resource          icon-experimental           https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/beaker_small.svg#sha256=8mMm6igfnnHFqBylMN8TV2Ww6YeOfWG0Oq49iR9A1Ik=
+// @resource          icon-globe                  https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/globe.svg#sha256=G+NKmM6y7Ank5z/EOV4gj0tQszLoOpeWucNterW8Yek=
+// @resource          icon-globe_small            https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/globe_small.svg#sha256=8KB7wookZWWuE8cPSH2WpwgNGxddjVeKTlyKrhFmaLM=
+// @resource          icon-help                   https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/help.svg#sha256=a8lO+sznaGFnbQfjbOyCydVtuzJO9NBRHUbDCIUe6CY=
+// @resource          icon-image                  https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/image.svg#sha256=9lB+dguBi9QBiqkNj52wv7eRS50oNaa6Y200mEZIL8Y=
+// @resource          icon-image_filled           https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/image_filled.svg#sha256=mCFBRDA3BVvwc2xN6lGH5eVSE+VjWfj/BPYE6LizAXs=
+// @resource          icon-link                   https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/link.svg#sha256=8YThvRBuJ4/yNkgATIkxQH1BdYjCK5k2/XRi36u7p/c=
+// @resource          icon-lyrics                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/lyrics.svg#sha256=+L4fFYsWiaM8gxfP1G1anRHYgfggPmt9mWeThTltCF4=
+// @resource          icon-prompt                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/help.svg#sha256=a8lO+sznaGFnbQfjbOyCydVtuzJO9NBRHUbDCIUe6CY=
+// @resource          icon-reload                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/refresh.svg#sha256=NArBWzah/U42KJnYhe8oXTYRJxn2Je1ILMVQBQAxeSw=
+// @resource          icon-restore_time           https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/restore_time.svg#sha256=4enl1dD8022iAN5flRyXLJ6FcGD+w9ClMCW/kf8AY7E=
+// @resource          icon-skip_to                https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/skip_to.svg#sha256=UtsFutOl7n+QwiO1ZQGyGBj5lsyGrULgKvoAmFjDGa8=
+// @resource          icon-spinner                https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/spinner.svg#sha256=pj8Ms7+/GPWA/hpl7pkbtzdGvL2fgIvk241iWUO/AQg=
+// @resource          icon-upload                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/icons/upload.svg#sha256=ufaBZkMv8RaLvoNdY2nG6egcIezB9fkgiNN/Xv0ZvJU=
+// @resource          img-close                   https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/close.png#sha256=XIZfYT+0R0kQuDR3AKaKu3F/+timMz6JMvA1wdhUpkA=
+// @resource          img-discord                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/external/discord.png#sha256=w/7aw0lgtdS9s5wnW4S70H2ww8x5C6H3Bc2EulWnMi0=
+// @resource          img-github                  https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/external/github.png#sha256=MPwTJpkyHrsQ0PtuKL2lyoHXMmESsT8S9i7g9K3szwE=
+// @resource          img-greasyfork              https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/external/greasyfork.png#sha256=C8CI6iPrIpyUbXPbcpdTN2R+XiQ9aL0LI6thE+7vEcY=
+// @resource          img-logo                    https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/logo/logo_48.png#sha256=+DoIcM002UevjTGvAxHMULo2VGHcYjy8TWla3xeNdNs=
+// @resource          img-logo_dev                https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/logo/logo_dev_48.png#sha256=bX5hzhFwROh3PLZu68ZPfL+pJF1HBnxkT7AoB7VnkEE=
+// @resource          img-openuserjs              https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/images/external/openuserjs.png#sha256=LYfN7+1yfmagwPk+EfhKE6mZCOPJ8GB2cu5tKI/J+Vo=
+// @resource          trans-de-DE                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/de-DE.json#sha256=oBAh1B/W13qDjnttMfKm8Hrt3qkKAqD59LEYzrpDMAI=
+// @resource          trans-en-GB                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/en-GB.json#sha256=zYvmENtA7hDHA98ZiuImMWEwgTvwWuU5936xb+wN8KE=
+// @resource          trans-en-US                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/en-US.json#sha256=cwsPVIRpBR/cVb8OukKIOJbtBAyUNc3VBJqlR89S5hI=
+// @resource          trans-es-ES                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/es-ES.json#sha256=66Fmuwqp6Uwo5MoEZxLhSzXP8BdkveBctNfHU4SbbBY=
+// @resource          trans-fr-FR                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/fr-FR.json#sha256=4O2PhBxGrWqz/mJlBaab1Lzcs/P1opPMvWIt8fajJPU=
+// @resource          trans-hi-IN                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/hi-IN.json#sha256=IJIvrwoQPJ4YLm8aWZNVf1C4rocM9CbtPKHsGcbSUtc=
+// @resource          trans-ja-JP                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/ja-JP.json#sha256=IvJDZL5K1cXB5uRabCv9I373rGByKP0pwOvmR47PM/s=
+// @resource          trans-pt-BR                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/pt-BR.json#sha256=A42lpxuHH0FG6JqZldqjOzELjSgzzZ3ugOcHKo/3bHU=
+// @resource          trans-zh-CN                 https://raw.githubusercontent.com/Sv443/BetterYTM/3c03dc37/assets/translations/zh-CN.json#sha256=kJPPd29sljo7qxmi9NEA3A/yhdKHtxYHU9K0r9to3g4=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.3.3/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -173,7 +173,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "e53d111c";
+const buildNumberRaw = "3c03dc37";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1280,6 +1280,172 @@ async function createLongBtn(_a) {
     btnElem.appendChild(txtElem);
     iconPosition === "right" && btnElem.appendChild(imgElem);
     return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
+}//#region beforeunload popup
+let discardBeforeUnload = false;
+/** Disables the popup before leaving the site */
+function enableDiscardBeforeUnload() {
+    discardBeforeUnload = true;
+    info("Disabled popup before leaving the site");
+}
+/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
+async function initBeforeUnloadHook() {
+    try {
+        UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
+    }
+    catch (err) {
+        error("Error in beforeunload hook:", err);
+    }
+}
+//#region auto close toasts
+/** Closes toasts after a set amount of time */
+async function initAutoCloseToasts() {
+    const animTimeout = 300;
+    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
+        all: true,
+        continuous: true,
+        listener: async (toastContElems) => {
+            try {
+                for (const toastContElem of toastContElems) {
+                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
+                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
+                        continue;
+                    if (toastElem.classList.contains("bytm-closing"))
+                        continue;
+                    toastElem.classList.add("bytm-closing");
+                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
+                    await UserUtils.pauseFor(closeTimeout);
+                    toastElem.classList.remove("paper-toast-open");
+                    toastElem.addEventListener("transitionend", () => {
+                        toastElem.classList.remove("bytm-closing");
+                        toastElem.style.display = "none";
+                        clearNode(toastElem);
+                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+                    }, { once: true });
+                }
+            }
+            catch (err) {
+                error("Error in automatic toast closing:", err);
+            }
+        },
+    });
+    log("Initialized automatic toast closing");
+}
+let remVidsCache = [];
+/**
+ * Remembers the time of the last played video and resumes playback from that time.
+ * **Needs to be called *before* DOM is ready!**
+ */
+async function initRememberSongTime() {
+    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
+        return;
+    const storedDataRaw = await GM.getValue("bytm-rem-songs");
+    if (!storedDataRaw)
+        await GM.setValue("bytm-rem-songs", "[]");
+    try {
+        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+    }
+    catch (err) {
+        error("Error parsing stored video time data, defaulting to empty cache:", err);
+        await GM.setValue("bytm-rem-songs", "[]");
+        remVidsCache = [];
+    }
+    log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
+    await remTimeRestoreTime();
+    try {
+        if (!domLoaded)
+            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+        else
+            remTimeStartUpdateLoop();
+    }
+    catch (err) {
+        error("Error in video time remembering update loop:", err);
+    }
+}
+/** Tries to restore the time of the currently playing video */
+async function remTimeRestoreTime() {
+    if (location.pathname.startsWith("/watch")) {
+        const watchID = new URL(location.href).searchParams.get("v");
+        if (!watchID)
+            return;
+        if (initialParams.has("t"))
+            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+        const entry = remVidsCache.find(entry => entry.watchID === watchID);
+        if (entry) {
+            if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
+                await remTimeDeleteEntry(entry.watchID);
+                return;
+            }
+            else if (isNaN(Number(entry.songTime)))
+                return;
+            else {
+                let vidElem;
+                const doRestoreTime = async () => {
+                    var _a;
+                    if (!vidElem)
+                        vidElem = await waitVideoElementReady();
+                    const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                    await remTimeDeleteEntry(entry.watchID);
+                    info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                };
+                if (!domLoaded)
+                    document.addEventListener("DOMContentLoaded", doRestoreTime);
+                else
+                    doRestoreTime();
+            }
+        }
+    }
+}
+let lastSongTime = -1;
+let remVidCheckTimeout;
+/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
+async function remTimeStartUpdateLoop() {
+    var _a, _b, _c;
+    if (location.pathname.startsWith("/watch")) {
+        const watchID = getWatchId();
+        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+        if (watchID && songTime !== lastSongTime) {
+            lastSongTime = songTime;
+            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            // don't immediately update to reduce race conditions and only update if the video is playing
+            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
+                const entry = {
+                    watchID,
+                    songTime,
+                    updateTimestamp: Date.now(),
+                };
+                await remTimeUpsertEntry(entry);
+            }
+            // if the song is rewound to the beginning, update the entry accordingly
+            else if (!paused) {
+                const entry = remVidsCache.find(entry => entry.watchID === watchID);
+                if (entry && songTime <= entry.songTime)
+                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+            }
+        }
+    }
+    const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
+    for (const entry of expiredEntries)
+        await remTimeDeleteEntry(entry.watchID);
+    // for no overlapping calls and better error handling:
+    if (remVidCheckTimeout)
+        clearTimeout(remVidCheckTimeout);
+    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
+}
+/** Updates an existing or inserts a new entry to be remembered */
+async function remTimeUpsertEntry(data) {
+    const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
+    if (foundIdx >= 0)
+        remVidsCache[foundIdx] = data;
+    else
+        remVidsCache.push(data);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+}
+/** Deletes an entry in the "remember cache" */
+async function remTimeDeleteEntry(watchID) {
+    remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }var langMapping = {
 	"de-DE": {
 	name: "Deutsch (Deutschland)",
@@ -1634,17 +1800,18 @@ function formatNumber(num, notation) {
 async function reloadTab() {
     var _a;
     try {
-        let time = 0, volume = 0;
+        enableDiscardBeforeUnload();
         if (getVideoElement()) {
-            time = ((_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0) - 0.25;
-            volume = Math.round(getVideoElement().volume * 100);
+            const time = ((_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0) - 0.25;
+            const volume = Math.round(getVideoElement().volume * 100);
+            const url = new URL(location.href);
+            if (!isNaN(time) && time > 0)
+                url.searchParams.set("time_continue", String(time));
+            if (!isNaN(volume) && volume > 0)
+                await GM.setValue("bytm-reload-tab-volume", String(volume));
+            return location.replace(url);
         }
-        const url = new URL(location.href);
-        if (isNaN(time) && time > 0)
-            url.searchParams.set("time_continue", String(time));
-        if (isNaN(volume) && volume > 0)
-            await GM.setValue("bytm-reload-tab-volume", String(volume));
-        location.href = url.href;
+        location.reload();
     }
     catch (err) {
         error("Couldn't save video time and volume before reloading tab:", err);
@@ -3010,7 +3177,6 @@ async function mountCfgMenu() {
     reloadTxtEl.ariaLabel = reloadTxtEl.title = t("reload_tooltip");
     reloadTxtEl.addEventListener("click", () => {
         closeCfgMenu();
-        disableBeforeUnload();
         reloadTab();
     });
     reloadFooterEl.appendChild(reloadTxtEl);
@@ -3061,7 +3227,7 @@ async function mountCfgMenu() {
                     return await showPrompt({ type: "alert", message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
                 await setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
                 if (await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
-                    disableBeforeUnload();
+                    log("Reloading tab after importing configuration");
                     return reloadTab();
                 }
                 exImDlg.unmount();
@@ -3127,8 +3293,8 @@ async function mountCfgMenu() {
                     denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
                 })) {
                     closeCfgMenu();
-                    disableBeforeUnload();
-                    reloadTab();
+                    log("Reloading tab after changing language");
+                    await reloadTab();
                 }
             }
             else if (getLocale() !== featConf.locale)
@@ -3853,172 +4019,6 @@ async function doVersionCheck(notifyNoUpdatesFound = false) {
         return;
     }
     return await noUpdateFound();
-}//#region beforeunload popup
-let discardBeforeUnload = false;
-/** Disables the popup before leaving the site */
-function disableBeforeUnload() {
-    discardBeforeUnload = true;
-    info("Disabled popup before leaving the site");
-}
-/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
-async function initBeforeUnloadHook() {
-    try {
-        UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
-    }
-    catch (err) {
-        error("Error in beforeunload hook:", err);
-    }
-}
-//#region auto close toasts
-/** Closes toasts after a set amount of time */
-async function initAutoCloseToasts() {
-    const animTimeout = 300;
-    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
-        all: true,
-        continuous: true,
-        listener: async (toastContElems) => {
-            try {
-                for (const toastContElem of toastContElems) {
-                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
-                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
-                        continue;
-                    if (toastElem.classList.contains("bytm-closing"))
-                        continue;
-                    toastElem.classList.add("bytm-closing");
-                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
-                    await UserUtils.pauseFor(closeTimeout);
-                    toastElem.classList.remove("paper-toast-open");
-                    toastElem.addEventListener("transitionend", () => {
-                        toastElem.classList.remove("bytm-closing");
-                        toastElem.style.display = "none";
-                        clearNode(toastElem);
-                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
-                    }, { once: true });
-                }
-            }
-            catch (err) {
-                error("Error in automatic toast closing:", err);
-            }
-        },
-    });
-    log("Initialized automatic toast closing");
-}
-let remVidsCache = [];
-/**
- * Remembers the time of the last played video and resumes playback from that time.
- * **Needs to be called *before* DOM is ready!**
- */
-async function initRememberSongTime() {
-    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
-        return;
-    const storedDataRaw = await GM.getValue("bytm-rem-songs");
-    if (!storedDataRaw)
-        await GM.setValue("bytm-rem-songs", "[]");
-    try {
-        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-    }
-    catch (err) {
-        error("Error parsing stored video time data, defaulting to empty cache:", err);
-        await GM.setValue("bytm-rem-songs", "[]");
-        remVidsCache = [];
-    }
-    log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
-    await remTimeRestoreTime();
-    try {
-        if (!domLoaded)
-            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
-        else
-            remTimeStartUpdateLoop();
-    }
-    catch (err) {
-        error("Error in video time remembering update loop:", err);
-    }
-}
-/** Tries to restore the time of the currently playing video */
-async function remTimeRestoreTime() {
-    if (location.pathname.startsWith("/watch")) {
-        const watchID = new URL(location.href).searchParams.get("v");
-        if (!watchID)
-            return;
-        if (initialParams.has("t"))
-            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
-        const entry = remVidsCache.find(entry => entry.watchID === watchID);
-        if (entry) {
-            if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
-                await remTimeDeleteEntry(entry.watchID);
-                return;
-            }
-            else if (isNaN(Number(entry.songTime)))
-                return;
-            else {
-                let vidElem;
-                const doRestoreTime = async () => {
-                    var _a;
-                    if (!vidElem)
-                        vidElem = await waitVideoElementReady();
-                    const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
-                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                    await remTimeDeleteEntry(entry.watchID);
-                    info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-                };
-                if (!domLoaded)
-                    document.addEventListener("DOMContentLoaded", doRestoreTime);
-                else
-                    doRestoreTime();
-            }
-        }
-    }
-}
-let lastSongTime = -1;
-let remVidCheckTimeout;
-/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
-async function remTimeStartUpdateLoop() {
-    var _a, _b, _c;
-    if (location.pathname.startsWith("/watch")) {
-        const watchID = getWatchId();
-        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-        if (watchID && songTime !== lastSongTime) {
-            lastSongTime = songTime;
-            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-            // don't immediately update to reduce race conditions and only update if the video is playing
-            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
-                const entry = {
-                    watchID,
-                    songTime,
-                    updateTimestamp: Date.now(),
-                };
-                await remTimeUpsertEntry(entry);
-            }
-            // if the song is rewound to the beginning, update the entry accordingly
-            else if (!paused) {
-                const entry = remVidsCache.find(entry => entry.watchID === watchID);
-                if (entry && songTime <= entry.songTime)
-                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
-            }
-        }
-    }
-    const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
-    for (const entry of expiredEntries)
-        await remTimeDeleteEntry(entry.watchID);
-    // for no overlapping calls and better error handling:
-    if (remVidCheckTimeout)
-        clearTimeout(remVidCheckTimeout);
-    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
-}
-/** Updates an existing or inserts a new entry to be remembered */
-async function remTimeUpsertEntry(data) {
-    const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
-    if (foundIdx >= 0)
-        remVidsCache[foundIdx] = data;
-    else
-        remVidsCache.push(data);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-}
-/** Deletes an entry in the "remember cache" */
-async function remTimeDeleteEntry(watchID) {
-    remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 //#region arrow key skip
 async function initArrowKeySkip() {
@@ -4080,7 +4080,7 @@ async function switchSite(newDomain) {
             subdomain = "www";
         if (!subdomain)
             throw new Error(`Unrecognized domain '${newDomain}'`);
-        disableBeforeUnload();
+        enableDiscardBeforeUnload();
         const { pathname, search, hash } = new URL(location.href);
         const vt = await getVideoTime(0);
         log(`Found video time of ${vt} seconds`);
@@ -6885,7 +6885,7 @@ function setDefaultFeatures() {
 async function promptResetConfig() {
     if (await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
         closeCfgMenu();
-        disableBeforeUnload();
+        enableDiscardBeforeUnload();
         await setDefaultFeatures();
         if (location.pathname.startsWith("/watch")) {
             const videoTime = await getVideoTime(0);
@@ -6915,7 +6915,7 @@ const globalFuncs = {
     getDomain,
     getResourceUrl,
     getSessionId,
-    reloadTab: reloadTabInterface,
+    reloadTab,
     // dom:
     setInnerHtml,
     addSelectorListener,
@@ -6924,6 +6924,8 @@ const globalFuncs = {
     getThumbnailUrl,
     getBestThumbnailUrl,
     waitVideoElementReady,
+    getVideoElement,
+    getVideoSelector,
     getCurrentMediaType,
     // translations:
     /*🔒*/ setLocale: setLocaleInterface,
@@ -7110,12 +7112,6 @@ function resolveToken(token) {
         : undefined;
 }
 //#region proxy funcs
-/** Reloads the tab in a smarter way by preserving the current video's time and volume and making features like initial tab volume stand down if called */
-async function reloadTabInterface(token) {
-    if (resolveToken(token) === undefined)
-        return;
-    return await reloadTab();
-}
 /**
  * Sets the new locale on the BYTM interface
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
@@ -7750,7 +7746,7 @@ async function init() {
             emitInterface("bytm:fatalError", "Error while loading plugins");
         }
         if (features.disableBeforeUnloadPopup && domain === "ytm")
-            disableBeforeUnload();
+            enableDiscardBeforeUnload();
         if (features.rememberSongTime)
             initRememberSongTime();
         if (!domLoaded)
@@ -7942,7 +7938,6 @@ function registerDevCommands() {
     GM.registerMenuCommand("Reset config", async () => {
         if (confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
             await clearConfig();
-            disableBeforeUnload();
             await reloadTab();
         }
     }, "r");
