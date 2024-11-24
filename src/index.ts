@@ -19,7 +19,7 @@ import {
   // song lists
   initQueueButtons, initAboveQueueBtns,
   // behavior
-  initBeforeUnloadHook, disableBeforeUnload,
+  initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
   // input
   initArrowKeySkip, initSiteSwitch,
@@ -125,7 +125,7 @@ async function init() {
     }
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
-      disableBeforeUnload();
+      enableDiscardBeforeUnload();
 
     if(features.rememberSongTime)
       initRememberSongTime();
@@ -381,7 +381,6 @@ function registerDevCommands() {
   GM.registerMenuCommand("Reset config", async () => {
     if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
       await clearConfig();
-      disableBeforeUnload();
       await reloadTab();
     }
   }, "r");

@@ -1,7 +1,7 @@
 import { compress, debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
-import { featInfo, disableBeforeUnload } from "../features/index.js";
+import { featInfo } from "../features/index.js";
 import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml, type TrLocale, tl, reloadTab } from "../utils/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getFeatHelpDialog, showPrompt } from "../dialogs/index.js";
@@ -184,7 +184,6 @@ async function mountCfgMenu() {
   reloadTxtEl.ariaLabel = reloadTxtEl.title = t("reload_tooltip");
   reloadTxtEl.addEventListener("click", () => {
     closeCfgMenu();
-    disableBeforeUnload();
     reloadTab();
   });
 
@@ -243,7 +242,7 @@ async function mountCfgMenu() {
         await setFeatures({ ...getFeatures(), ...parsed.data });
 
         if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
-          disableBeforeUnload();
+          log("Reloading tab after importing configuration");
           return reloadTab();
         }
 
@@ -332,8 +331,8 @@ async function mountCfgMenu() {
           denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale!, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
         })) {
           closeCfgMenu();
-          disableBeforeUnload();
-          reloadTab();
+          log("Reloading tab after changing language");
+          await reloadTab();
         }
       }
       else if(getLocale() !== featConf.locale)

@@ -3,7 +3,6 @@ import { BytmDialog } from "../components/index.js";
 import { scriptInfo } from "../constants.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import { formatVersion, getFeatures, migrations, setFeatures } from "../config.js";
-import { disableBeforeUnload } from "../features/index.js";
 import { FeatureConfig } from "src/types.js";
 import { showPrompt } from "./prompt.js";
 
@@ -107,10 +106,8 @@ async function renderFooter() {
 
       await setFeatures({ ...getFeatures(), ...parsed.data });
 
-      if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
-        disableBeforeUnload();
-        return reloadTab();
-      }
+      if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") }))
+        return await reloadTab();
 
       emitSiteEvent("rebuildCfgMenu", parsed.data);
 

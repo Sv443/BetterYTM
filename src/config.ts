@@ -1,5 +1,5 @@
 import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp } from "@sv443-network/userutils";
-import { disableBeforeUnload, featInfo } from "./features/index.js";
+import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
 import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
@@ -253,7 +253,7 @@ export function setDefaultFeatures() {
 export async function promptResetConfig() {
   if(await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
     closeCfgMenu();
-    disableBeforeUnload();
+    enableDiscardBeforeUnload();
     await setDefaultFeatures();
     if(location.pathname.startsWith("/watch")) {
       const videoTime = await getVideoTime(0);

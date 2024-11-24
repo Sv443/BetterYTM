@@ -3,6 +3,7 @@ import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
 import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
+import { enableDiscardBeforeUnload } from "../features/behavior.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
@@ -224,21 +225,23 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
 /** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
 export async function reloadTab() {
   try {
-    let time = 0, volume = 0;
+    enableDiscardBeforeUnload();
 
     if(getVideoElement()) {
-      time = (await getVideoTime() ?? 0) - 0.25;
-      volume = Math.round(getVideoElement()!.volume * 100);
+      const time = (await getVideoTime() ?? 0) - 0.25;
+      const volume = Math.round(getVideoElement()!.volume * 100);
+
+      const url = new URL(location.href);
+
+      if(!isNaN(time) && time > 0)
+        url.searchParams.set("time_continue", String(time));
+      if(!isNaN(volume) && volume > 0)
+        await GM.setValue("bytm-reload-tab-volume", String(volume));
+
+      return location.replace(url);
     }
 
-    const url = new URL(location.href);
-
-    if(isNaN(time) && time > 0)
-      url.searchParams.set("time_continue", String(time));
-    if(isNaN(volume) && volume > 0)
-      await GM.setValue("bytm-reload-tab-volume", String(volume));
-
-    location.href = url.href;
+    location.reload();
   }
   catch(err) {
     error("Couldn't save video time and volume before reloading tab:", err);

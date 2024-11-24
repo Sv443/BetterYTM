@@ -1,7 +1,7 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
-import { disableBeforeUnload } from "./behavior.js";
+import { enableDiscardBeforeUnload } from "./behavior.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
@@ -89,7 +89,7 @@ async function switchSite(newDomain: Domain) {
     if(!subdomain)
       throw new Error(`Unrecognized domain '${newDomain}'`);
 
-    disableBeforeUnload();
+    enableDiscardBeforeUnload();
 
     const { pathname, search, hash } = new URL(location.href);
 

@@ -10,13 +10,13 @@ import { LogLevel } from "../types.js";
 let discardBeforeUnload = false;
 
 /** Disables the popup before leaving the site */
-export function disableBeforeUnload() {
+export function enableDiscardBeforeUnload() {
   discardBeforeUnload = true;
   info("Disabled popup before leaving the site");
 }
 
 /** (Re-)enables the popup before leaving the site */
-export function enableBeforeUnload() {
+export function disableDiscardBeforeUnload() {
   discardBeforeUnload = false;
   info("Enabled popup before leaving the site");
 }
