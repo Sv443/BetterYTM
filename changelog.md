@@ -1,6 +1,30 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
+<!-- #region 2.2.1 -->
+## 2.2.1
+- **Changes:**
+  - The above-queue-button container's sticky positioning can now be turned off with a new advanced feature toggle in the config menu
+  - Made finding the preferred locale based on the browser's language settings more reliable
+
+<details><summary>Click to expand internal and plugin changes</summary>
+
+- **Plugin Changes:**
+  - Added functions to the BYTM API:
+    - `reloadTab()` to reload the page while keeping video time and volume and disable BYTM features like initial tab volume
+    - `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
+    - `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
+  - Exposed the constants `initialParams` (URLSearchParams, the search params at the initial point of loading BYTM) and `sessionStorageAvailable` (boolean) on the BYTM API
+
+</details>
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/121" rel="noopener noreferrer">See pull request for more info</a>
+</div>
+
+<div class="split"></div>
+<br>
+
 <!-- #region 2.2.0 -->
 ## 2.2.0
 - **Changes:**
@@ -22,7 +46,7 @@
     - `en-UK` -> `en-GB`
     - `ja-JA` -> `ja-JP`
   - Enabled Subresource Integrity (SRI) hashes for external resources to increase security
-- **Plugin Changes:**  
+- **Plugin Changes:**
   - Migration guide:
     - Since locale codes now have the format `xx-YY` and two were renamed, all plugins must implement those changes
 

@@ -1,5 +1,6 @@
 {
   "css-above_queue_btns": "style/aboveQueueBtns.css",
+  "css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
   "css-anchor_improvements": "style/anchorImprovements.css",
   "css-auto_like": "style/autoLike.css",
   "css-fix_hdr": "style/fixHDR.css",

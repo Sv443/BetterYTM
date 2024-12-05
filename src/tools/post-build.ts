@@ -87,8 +87,7 @@ const devDirectives = mode === "development" ? `\
 // @name              ${pkg.userscriptName}
 // @namespace         ${pkg.homepage}
 // @version           ${pkg.version}
-// @description       ${pkg.description}\
-${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
+// @description       ${pkg.description}
 // @homepageURL       ${pkg.homepage}#readme
 // @supportURL        ${pkg.bugs.url}
 // @license           ${pkg.license}
@@ -97,12 +96,14 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
-// @run-at            document-start
+// @run-at            document-start\
+${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
+// @noframes
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -110,8 +111,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
-// @grant             unsafeWindow
-// @noframes\
+// @grant             unsafeWindow\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
 ${devDirectives ? "\n" + devDirectives : ""}
@@ -254,8 +254,8 @@ async function exists(path: string) {
 }
 
 /** Resolves the value of an entry in resources.json */
-function resolveVal(value: string, buildNbr: string) {
-  if(!value.includes("$"))
+function resolveResourceVal(value: string, buildNbr: string) {
+  if(!(/\$/.test(value)))
     return value;
 
   const replacements = [
@@ -284,8 +284,8 @@ async function getResourceDirectives(ref: string) {
         ? await getFileHashSha256(pathVal.replace(/\?.+/g, ""))
         : undefined;
       resourcesHashed[name] = typeof val === "object"
-        ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref), hash }
-        : { path: getResourceUrl(resolveVal(val, ref), ref), ref, hash };
+        ? { path: resolveResourceVal(val.path, ref), ref: resolveResourceVal(val.ref, ref), hash }
+        : { path: getResourceUrl(resolveResourceVal(val, ref), ref), ref, hash };
     }
 
     const addResourceHashed = async (name: string, path: string, ref: string) => {

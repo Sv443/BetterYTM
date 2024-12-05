@@ -1,7 +1,7 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
-import { disableBeforeUnload } from "./behavior.js";
+import { enableDiscardBeforeUnload } from "./behavior.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
@@ -43,7 +43,7 @@ export async function initArrowKeySkip() {
 
     const vidElem = getVideoElement();
 
-    if(vidElem)
+    if(vidElem && vidElem.readyState > 0)
       vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
   });
   log("Added arrow key press listener");
@@ -89,7 +89,7 @@ async function switchSite(newDomain: Domain) {
     if(!subdomain)
       throw new Error(`Unrecognized domain '${newDomain}'`);
 
-    disableBeforeUnload();
+    enableDiscardBeforeUnload();
 
     const { pathname, search, hash } = new URL(location.href);
 
@@ -136,7 +136,7 @@ export async function initNumKeysSkip() {
       return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
 
     const vidElem = getVideoElement();
-    if(!vidElem)
+    if(!vidElem || vidElem.readyState === 0)
       return warn("Could not find video element, so the keypress is ignored");
 
     const newVidTime = vidElem.duration / (10 / Number(e.key));
@@ -300,7 +300,7 @@ export async function initAutoLike() {
                       subtitle: t("auto_like_click_to_configure"),
                       icon: "icon-auto_like",
                       onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                    });
+                    }).catch(e => error("Error while showing auto-like toast:", e));
                     log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
                   }
                 }
@@ -419,8 +419,10 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
         emitSiteEvent("autoLikeChannelsUpdated");
         showIconToast({
           message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+          subtitle: t("auto_like_click_to_configure"),
           icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
-        });
+          onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+        }).catch(e => error("Error while showing auto-like toast:", e));
         log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
       }
       catch(err) {

@@ -1,11 +1,11 @@
 {
   "de-DE": {
     "name": "Deutsch (Deutschland)",
-    "nameEnglish": "German",
+    "nameEnglish": "German (DE)",
     "emoji": "🇩🇪",
     "userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
     "authors": ["Sv443"],
-    "altLocales": ["de", "de-AT", "de-CH"]
+    "altLocales": ["de", "de-AT", "de-CH", "de-LI", "de-LU"]
   },
   "en-US": {
     "name": "English (United States)",
@@ -13,18 +13,19 @@
     "emoji": "🇺🇸",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     "authors": ["Sv443"],
-    "altLocales": ["en", "en-CA", "en-AU"]
+    "altLocales": ["en", "en-CA"]
   },
   "en-GB": {
     "name": "English (Great Britain)",
     "nameEnglish": "English (GB)",
     "emoji": "🇬🇧",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-    "authors": ["Sv443"]
+    "authors": ["Sv443"],
+    "altLocales": ["en-AU", "en-IE", "en-NZ", "en-ZA"]
   },
   "es-ES": {
     "name": "Español (España)",
-    "nameEnglish": "Spanish",
+    "nameEnglish": "Spanish (ES)",
     "emoji": "🇪🇸",
     "userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
     "authors": ["Sv443"],
@@ -32,7 +33,7 @@
   },
   "fr-FR": {
     "name": "Français (France)",
-    "nameEnglish": "French",
+    "nameEnglish": "French (FR)",
     "emoji": "🇫🇷",
     "userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
     "authors": ["Sv443"],
@@ -40,7 +41,7 @@
   },
   "hi-IN": {
     "name": "हिंदी (भारत)",
-    "nameEnglish": "Hindi",
+    "nameEnglish": "Hindi (IN)",
     "emoji": "🇮🇳",
     "userscriptDesc": "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
     "authors": ["Sv443"],
@@ -48,15 +49,15 @@
   },
   "ja-JP": {
     "name": "日本語 (日本)",
-    "nameEnglish": "Japanese",
+    "nameEnglish": "Japanese (JP)",
     "emoji": "🇯🇵",
     "userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
     "authors": ["Sv443"],
-    "altLocales": ["ja", "ja-JP"]
+    "altLocales": ["ja"]
   },
   "pt-BR": {
     "name": "Português (Brasil)",
-    "nameEnglish": "Portuguese",
+    "nameEnglish": "Portuguese (BR)",
     "emoji": "🇧🇷",
     "userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
     "authors": ["Sv443"],
@@ -68,6 +69,6 @@
     "emoji": "🇨🇳",
     "userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
     "authors": ["Sv443"],
-    "altLocales": ["zh", "zh-TW", "zh-HK"]
+    "altLocales": ["zh", "zh-TW", "zh-HK", "zh-SG"]
   }
 }
