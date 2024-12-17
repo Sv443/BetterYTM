@@ -20,9 +20,9 @@
       "overviewRulerColor": "#ed0",
     },
     "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&+#*'\"/:]+)*)": { //#region test: (abc):
-      "backgroundColor": "#5df",
+      "backgroundColor": "#35b5d0",
       "color": "#000",
-      "overviewRulerColor": "#5df",
+      "overviewRulerColor": "#35b5d0",
     },
     "((<!--\\s*)?</?\\{\\{[A-Z_-]+\\}\\}>(\\s*-->)?)": { // <!-- <{{FOO}}> --> and <!-- </{{FOO}}> --> or <{{BAR}}> and </{{BAR}}>
       "backgroundColor": "#9af",
