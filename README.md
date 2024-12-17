@@ -60,12 +60,11 @@ I really recommend Violentmonkey: [Firefox](https://addons.mozilla.org/en-US/fir
 Once you have the extension, **[visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button** on the latest release.
 
 <br>
-
 <sup>
 
 Note: the `unsafeWindow` grant is required due to limitations in some browsers, [see this issue for more info.](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
-
 </sup>
+<br>
 <sup>
 
 If you want to install the latest (potentially unstable) development build, [look for the latest pull request](https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen) and click the install button there.  

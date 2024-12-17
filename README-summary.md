@@ -57,7 +57,6 @@ I really recommend Violentmonkey: [Firefox](https://addons.mozilla.org/en-US/fir
 Once you have the extension, click the install button at the top of this page!
 
 <br>
-
 <sup>
 
 Note: the `unsafeWindow` grant is required due to limitations in some browsers, [see this issue for more info.](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
