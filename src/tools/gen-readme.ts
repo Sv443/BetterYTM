@@ -87,10 +87,11 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
 }
 
 async function genHeader() {
-  const langStr = [ ...Object.values(locales) ]
-    .sort((a, b) => a.nameEnglish.localeCompare(b.nameEnglish))
-    .reduce((acc, { nameEnglish, emoji }, i) => {
-      return `${acc}${i > 0 ? ", " : ""}${emoji}&nbsp;${nameEnglish}`;
+  const langStr = [ ...Object.entries(locales) ]
+    .sort(([, a], [, b]) => a.nameEnglish.localeCompare(b.nameEnglish))
+    .reduce((acc, [locale, { emoji, nameEnglish }], i) => {
+      const countryCode = locale.split("-")[1];
+      return `${acc}${i > 0 ? ", " : ""}<abbr title="${nameEnglish}">${emoji}&nbsp;${countryCode}</abbr>`;
     }, "");
 
   return `\
@@ -98,10 +99,11 @@ async function genHeader() {
 
 ### ${pkgJson.description}
 
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
----
+<h4>Available in these languages: ${langStr}</h4>
 
-Available in ${langStr}`;
+---
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
+`;
 }
 
 async function genPluginList() {
