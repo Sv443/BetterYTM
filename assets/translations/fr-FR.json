@@ -134,7 +134,7 @@
     "close_and_ignore_until_reenabled": "Fermer et ignorer jusqu'à ce qu'il soit réactivé",
     "expand_release_notes": "Cliquez pour afficher les notes de version",
     "collapse_release_notes": "Cliquez pour réduire les notes de version",
-    "no_updates_found": "Aucune mise à jour trouvée.",
+    "no_new_version_found": "Aucune nouvelle version trouvée.",
 
     "thumbnail_overlay_behavior_never": "Jamais",
     "thumbnail_overlay_behavior_videos_only": "Seulement pour les vidéos",

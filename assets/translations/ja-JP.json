@@ -134,7 +134,7 @@
     "close_and_ignore_until_reenabled": "閉じて無視する（再有効化されるまで）",
     "expand_release_notes": "最新のリリースノートを展開する",
     "collapse_release_notes": "最新のリリースノートを折りたたむ",
-    "no_updates_found": "更新は見つかりませんでした。",
+    "no_new_version_found": "新しいバージョンは見つかりませんでした。",
 
     "thumbnail_overlay_behavior_never": "表示しない",
     "thumbnail_overlay_behavior_videos_only": "動画のみ",

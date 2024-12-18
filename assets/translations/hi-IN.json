@@ -134,7 +134,7 @@
     "close_and_ignore_until_reenabled": "बंद करें और नजरअंदाज करें जब तक पुनः सक्षम नहीं होता",
     "expand_release_notes": "नवीनतम रिलीज़ नोट्स खोलने के लिए क्लिक करें",
     "collapse_release_notes": "नवीनतम रिलीज़ नोट्स को संक्षेपित करने के लिए क्लिक करें",
-    "no_updates_found": "कोई अद्यतन नहीं मिला।",
+    "no_new_version_found": "कोई नया संस्करण नहीं मिला।",
 
     "thumbnail_overlay_behavior_never": "कभी नहीं",
     "thumbnail_overlay_behavior_videos_only": "केवल वीडियो के लिए",

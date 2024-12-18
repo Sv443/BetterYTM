@@ -134,7 +134,7 @@
     "close_and_ignore_until_reenabled": "关闭并忽略，直到重新启用",
     "expand_release_notes": "点击展开最新的更新日志",
     "collapse_release_notes": "点击折叠最新的更新日志",
-    "no_updates_found": "未找到更新。",
+    "no_new_version_found": "未找到新版本。",
 
     "thumbnail_overlay_behavior_never": "从不",
     "thumbnail_overlay_behavior_videos_only": "仅视频",

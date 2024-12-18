@@ -137,7 +137,7 @@
     "close_and_ignore_until_reenabled": "Schließen und ignorieren, bis in den Einstellungen reaktiviert",
     "expand_release_notes": "Klicke um die neuesten Release-Notes zu öffnen",
     "collapse_release_notes": "Klicke um die neuesten Release-Notes zu schließen",
-    "no_updates_found": "Keine Updates gefunden.",
+    "no_new_version_found": "Keine neue Version gefunden.",
 
     "thumbnail_overlay_behavior_never": "Nie",
     "thumbnail_overlay_behavior_videos_only": "Nur bei Videos",
