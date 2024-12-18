@@ -1,6 +1,6 @@
 import { compress, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
+import { branch, changelogUrl, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
 import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
@@ -342,7 +342,7 @@ export function parseMarkdown(mdString: string) {
 
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
-  const clRes = await fetchAdvanced(await getResourceUrl("doc-changelog", true));
+  const clRes = await fetchAdvanced(changelogUrl);
   log("Fetched changelog:", clRes);
   return await clRes.text();
 }

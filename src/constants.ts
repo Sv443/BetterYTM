@@ -18,6 +18,8 @@ export const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw) as "github
 /** The build number of the userscript */
 export const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw) as string; // asserted as generic string instead of literal
 
+export const changelogUrl = `https://raw.githubusercontent.com/${repo}/${branch}/changelog.md`;
+
 /** The URL search parameters at the earliest possible time */
 export const initialParams = new URL(location.href).searchParams;
 
