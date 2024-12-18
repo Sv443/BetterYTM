@@ -175,6 +175,7 @@
 #bytm-auto-like-channels-dialog-body {
   padding-left: 0;
   padding-right: 0;
+  padding-bottom: 0;
 }
 
 .bytm-dialog-bg {
@@ -215,12 +216,12 @@
 
 .bytm-dialog.align-top {
   top: 0;
-  transform: translate(-50%, 40px);
+  transform: translate(-50%, 20px);
 }
 
 .bytm-dialog.align-bottom {
   top: 100%;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, calc(-100% - 20px));
 }
 
 .bytm-dialog-body {
