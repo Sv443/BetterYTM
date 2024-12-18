@@ -17,7 +17,7 @@ export async function getWelcomeDialog() {
       width: 700,
       height: 500,
       closeBtnEnabled: true,
-      closeOnBgClick: true,
+      closeOnBgClick: false,
       closeOnEscPress: true,
       destroyOnClose: true,
       renderHeader,
