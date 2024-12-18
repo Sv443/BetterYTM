@@ -9,8 +9,8 @@ import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, crea
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { showPrompt } from "./dialogs/prompt.js";
-import type resources from "../assets/resources.json";
-import type locales from "../assets/locales.json";
+import resources from "../assets/resources.json" with { type: "json" }; // eslint-disable-line @typescript-eslint/no-unused-vars
+import locales from "../assets/locales.json" with { type: "json" }; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 //#region other
 
@@ -45,7 +45,7 @@ export type SiteSelection = Domain | "all";
 export type SiteSelectionOrNone = SiteSelection | "none";
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
-export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog" | "css-bundle";
+export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}` | "css-bundle";
 
 /** Describes a single hotkey */
 export type HotkeyObj = {

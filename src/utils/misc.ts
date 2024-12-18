@@ -255,6 +255,8 @@ export async function reloadTab() {
 
 //#region resources
 
+const alwaysExternalAssetRegexes = resourcesJson.alwaysExternalAssetPatterns.map(pat => new RegExp(pat));
+
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
  * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache  
@@ -265,13 +267,13 @@ export async function getResourceUrl(name: ResourceKey | "_", uncached = false) 
   let url = !uncached && await GM.getResourceUrl(name);
 
   if(!url || url.length === 0) {
-    const resObjOrStr = resourcesJson?.[name as keyof typeof resourcesJson];
+    const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
 
     if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
       const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
       const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : branch;
 
-      if(pathName && pathName.startsWith("/") && pathName.length > 1)
+      if(alwaysExternalAssetRegexes.some(re => re.test(name)) || (pathName?.startsWith("/") && pathName.length > 1))
         return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
       else if(pathName && pathName.startsWith("http"))
         return pathName;

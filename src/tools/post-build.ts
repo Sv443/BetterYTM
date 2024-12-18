@@ -2,14 +2,15 @@ import { access, readFile, writeFile, constants as fsconst } from "node:fs/promi
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
-import k from "kleur";
-import "dotenv/config";
-import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
-import locales from "../../assets/locales.json" with { type: "json" };
-import pkg from "../../package.json" with { type: "json" };
-import type { RollupArgs } from "../types.js";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
+import k from "kleur";
+import "dotenv/config";
+import type { RollupArgs } from "../types.js";
+import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
+import localesJson from "../../assets/locales.json" with { type: "json" };
+import resourcesJson from "../../assets/resources.json" with { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
 
 const { argv, env, exit, stdout } = process;
 
@@ -272,13 +273,22 @@ function resolveResourceVal(value: string, buildNbr: string) {
 /** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
 async function getResourceDirectives(ref: string) {
   try {
-    const directives: string[] = [];
-    const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
-    const resources = JSON.parse(resourcesFile) as Record<string, string> | Record<string, { path: string; buildNbr: string }>;
+    const directives: string[] = [],
+      resourcesRaw = JSON.parse(String(await readFile(join(assetFolderPath, "resources.json")))),
+      resources = "resources" in resourcesRaw
+        ? resourcesRaw.resources as Record<string, string> | Record<string, { path: string; buildNbr: string }>
+        : undefined,
+      resourcesHashed = {} as Record<string, Record<"path" | "ref", string> & Partial<Record<"hash", string>>>;
 
-    const resourcesHashed = {} as Record<string, Record<"path" | "ref", string> & Partial<Record<"hash", string>>>;
+    if(!resources)
+      throw new Error("No resources found in 'assets/resources.json'");
 
+    const externalAssetRegexes = resourcesJson.alwaysExternalAssetPatterns.map((p) => new RegExp(p));
     for(const [name, val] of Object.entries(resources)) {
+      // skip over all external assets
+      if(externalAssetRegexes.some((re) => re.test(name)))
+        continue;
+
       const pathVal = typeof val === "object" ? val.path : val;
       const hash = (
         assetSource !== "local"
@@ -294,6 +304,8 @@ async function getResourceDirectives(ref: string) {
 
     const addResourceHashed = async (name: string, path: string, ref: string) => {
       try {
+        if(externalAssetRegexes.some((re) => re.test(name)))
+          return;
         if(assetSource === "local" || path.match(/^https?:\/\//)) {
           resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: undefined };
           return;
@@ -307,7 +319,7 @@ async function getResourceDirectives(ref: string) {
 
     await addResourceHashed("css-bundle", "/dist/BetterYTM.css", ref);
 
-    for(const [locale] of Object.entries(locales))
+    for(const [locale] of Object.entries(localesJson))
       await addResourceHashed(`trans-${locale}`, `translations/${locale}.json`, ref);
 
     let longestName = 0;
@@ -368,7 +380,7 @@ function getRequireEntry(entry: RequireObjPkg) {
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
-    for(const [locale, { userscriptDesc, ...rest }] of Object.entries(locales)) {
+    for(const [locale, { userscriptDesc, ...rest }] of Object.entries(localesJson)) {
       let loc = locale;
       if(loc.length < 5)
         loc += " ".repeat(5 - loc.length);

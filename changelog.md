@@ -6,6 +6,7 @@
 - **Changes:**
   - The above-queue-button container's sticky positioning can now be turned off with a new advanced feature toggle in the config menu
   - Made finding the preferred locale based on the browser's language settings more reliable
+  - Heavily reduced amount of `@resource` directives to improve installation and updating time
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
