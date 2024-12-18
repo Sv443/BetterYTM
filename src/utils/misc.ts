@@ -1,6 +1,6 @@
 import { compress, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, changelogUrl, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
+import { buildNumber, changelogUrl, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
 import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
@@ -271,7 +271,7 @@ export async function getResourceUrl(name: ResourceKey | "_", uncached = false) 
 
     if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
       const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
-      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : branch;
+      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : buildNumber;
 
       if(alwaysExternalAssetRegexes.some(re => re.test(name)) || (pathName?.startsWith("/") && pathName.length > 1))
         return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
