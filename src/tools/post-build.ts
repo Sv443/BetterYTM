@@ -280,7 +280,11 @@ async function getResourceDirectives(ref: string) {
 
     for(const [name, val] of Object.entries(resources)) {
       const pathVal = typeof val === "object" ? val.path : val;
-      const hash = assetSource !== "local" && !pathVal.match(/^https?:\/\//)
+      const hash = (
+        assetSource !== "local"
+        && (typeof val === "object" && "integrity" in val ? val.integrity !== false : true)
+        && !pathVal.match(/^https?:\/\//)
+      )
         ? await getFileHashSha256(pathVal.replace(/\?.+/g, ""))
         : undefined;
       resourcesHashed[name] = typeof val === "object"
