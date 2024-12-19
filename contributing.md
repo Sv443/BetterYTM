@@ -52,8 +52,9 @@ To submit a translation, please follow these steps:
     1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
     2. Edit it to your translated version and keep the left side of the colon unchanged
     3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
-    4. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
-    5. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request
+    4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order
+    5. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
+    6. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request
 7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
   Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)
 
@@ -204,7 +205,7 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
   3. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
     If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.  
     The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
-  4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode.
+  4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode and if the asset key matches a pattern in `alwaysExternalAssetPatterns` in the `assets/resources.json` file.
   5. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
     This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
 - Adding a new site event:

@@ -51,6 +51,15 @@
     "img-greasyfork": "images/external/greasyfork.png",
     "img-logo_dev": "images/logo/logo_dev_48.png",
     "img-logo": "images/logo/logo_48.png",
-    "img-openuserjs": "images/external/openuserjs.png"
+    "img-openuserjs": "images/external/openuserjs.png",
+    "trans-de-DE": "translations/de-DE.json",
+    "trans-en-US": "translations/en-US.json",
+    "trans-en-GB": "translations/en-GB.json",
+    "trans-es-ES": "translations/es-ES.json",
+    "trans-fr-FR": "translations/fr-FR.json",
+    "trans-hi-IN": "translations/hi-IN.json",
+    "trans-ja-JP": "translations/ja-JP.json",
+    "trans-pt-BR": "translations/pt-BR.json",
+    "trans-zh-CN": "translations/zh-CN.json"
   }
 }
