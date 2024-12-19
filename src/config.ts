@@ -1,6 +1,6 @@
 import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp } from "@sv443-network/userutils";
-import { disableBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, getVideoTime, info, log, t, type TrLocale } from "./utils/index.js";
+import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
+import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -131,6 +131,10 @@ export const migrations: DataMigrationsDict = {
       // "autoLikePlayerBarToggleBtn",
     ]);
   },
+  // 9 -> 10 (v2.2.1)
+  10: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+    "aboveQueueBtnsSticky",
+  ]),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -249,7 +253,7 @@ export function setDefaultFeatures() {
 export async function promptResetConfig() {
   if(await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
     closeCfgMenu();
-    disableBeforeUnload();
+    enableDiscardBeforeUnload();
     await setDefaultFeatures();
     if(location.pathname.startsWith("/watch")) {
       const videoTime = await getVideoTime(0);
@@ -260,7 +264,7 @@ export async function promptResetConfig() {
       location.replace(url.href);
     }
     else
-      location.reload();
+      await reloadTab();
   }
 }
 

@@ -134,7 +134,7 @@
     "close_and_ignore_until_reenabled": "Cerrar y omitir hasta que se vuelva a habilitar",
     "expand_release_notes": "Haga clic para expandir las últimas notas de la versión",
     "collapse_release_notes": "Haga clic para contraer las últimas notas de la versión",
-    "no_updates_found": "No se encontraron actualizaciones.",
+    "no_new_version_found": "No se encontró una nueva versión.",
 
     "thumbnail_overlay_behavior_never": "Nunca",
     "thumbnail_overlay_behavior_videos_only": "Solo para videos",

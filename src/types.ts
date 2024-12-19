@@ -2,15 +2,15 @@ import type { NanoEmitter, Stringifiable } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { showPrompt } from "./dialogs/prompt.js";
-import type resources from "../assets/resources.json";
-import type locales from "../assets/locales.json";
+import resources from "../assets/resources.json" with { type: "json" }; // eslint-disable-line @typescript-eslint/no-unused-vars
+import locales from "../assets/locales.json" with { type: "json" }; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 //#region other
 
@@ -45,7 +45,7 @@ export type SiteSelection = Domain | "all";
 export type SiteSelectionOrNone = SiteSelection | "none";
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
-export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog" | "css-bundle";
+export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}` | "css-bundle";
 
 /** Describes a single hotkey */
 export type HotkeyObj = {
@@ -120,7 +120,7 @@ export type BytmObject =
   // information from the userscript header
   & typeof scriptInfo
   // certain variables from `src/constants.ts`
-  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "compressionFormat">
+  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "initialParams" | "compressionFormat" | "sessionStorageAvailable" | "scriptInfo">
   // global functions exposed through the interface in `src/interface.ts`
   & InterfaceFunctions
   // others
@@ -266,6 +266,8 @@ export type PluginItem =
   }
   & Pick<PluginRegisterResult, "events">;
 
+//#region plugin interface
+
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
   // meta:
@@ -285,6 +287,8 @@ export type InterfaceFunctions = {
   getResourceUrl: typeof getResourceUrl;
   /** Returns the unique session ID for the current tab */
   getSessionId: typeof getSessionId;
+  /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used */
+  reloadTab: typeof reloadTab;
 
   // dom:
   /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string */
@@ -305,6 +309,10 @@ export type InterfaceFunctions = {
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
   /** Resolves the returned promise when the video element is queryable in the DOM */
   waitVideoElementReady: typeof waitVideoElementReady;
+  /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found */
+  getVideoElement: typeof getVideoElement;
+  /** Returns the CSS selector to the video element for both YTM and YT */
+  getVideoSelector: typeof getVideoSelector;
   /** (On YTM only) returns the current media type (video or song) */
   getCurrentMediaType: typeof getCurrentMediaType;
 
@@ -563,6 +571,8 @@ export interface FeatureConfig {
   rememberSongTimeReduction: number;
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
+  /** Whether the above queue button container should use sticky positioning */
+  aboveQueueBtnsSticky: boolean;
 
   //#region input
   /** Arrow keys skip forwards and backwards */

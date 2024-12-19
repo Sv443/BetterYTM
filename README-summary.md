@@ -3,12 +3,13 @@
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
-🇨🇳&nbsp;Chinese (simpl.), 🇬🇧&nbsp;English (GB), 🇺🇸&nbsp;English (US), 🇫🇷&nbsp;French, 🇩🇪&nbsp;German, 🇮🇳&nbsp;Hindi, 🇯🇵&nbsp;Japanese, 🇧🇷&nbsp;Portuguese, 🇪🇸&nbsp;Spanish
+
+<h4>Available in these languages: <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="English (Great Britain)">🇬🇧&nbsp;GB</abbr>, <abbr title="English (United States)">🇺🇸&nbsp;US</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr>, <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr></h4>
+
+---
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
-[**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
-  
----
 
 <br>
 
@@ -24,7 +25,7 @@ All of these can be toggled and configured in the configuration menu.
   - Improve clickability of song titles and thumbnails when wanting to open them in a new tab
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
-- Input / Interaction:
+- Input & Interaction:
   - Auto-like songs and videos of your favorite creators on both YouTube and YouTube Music
   - Use arrow keys to skip forward or backward by a configurable amount of time
   - Press number keys to skip to a percentage of the currently playing song
@@ -43,30 +44,17 @@ My work relies on donations, so if you like this userscript please consider [sup
 <br><br>
 
 ## Installation:
-<b>
 
-Requires a userscript manager browser extension.  
-I really recommend Violentmonkey: [Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) &bull; [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) &bull; [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)  
+1. **Install a userscript manager browser extension - I really recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)).**  
+  <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
 
-</b>
-<sup>Other extensions are known to be less reliable and may not work as expected, especially in isolated contexts like FireMonkey or the Brave browser.</sup>
-
-<br>
-
-Once you have the extension, click the install button at the top of this page!
+2. **Then, [visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button on the latest release.**  
+  <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18#show_issue" target="_blank">more info here</a>).</sub>
 
 <br>
-
-<sup>
-
-Note: the `unsafeWindow` grant is required due to limitations in some browsers, [see this issue for more info.](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
-</sup>
-<br>
-<sup>
-
-To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (make sure to fully reinstall the userscript once the next release is out)
-
-</sup>
+  
+If you want to install the latest (potentially unstable) development build, [look for the latest pull request](https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen) and click the install button there.  
+Please make sure to manually remove and reinstall the userscript once the next release is out to avoid any issues.
 
 <br><br><br>
 

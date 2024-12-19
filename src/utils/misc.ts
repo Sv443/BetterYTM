@@ -1,8 +1,9 @@
-import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId, randRange } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
+import { buildNumber, changelogUrl, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
-import { error, type TrLocale, warn, sendRequest, getLocale, log } from "./index.js";
+import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
+import { enableDiscardBeforeUnload } from "../features/behavior.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
@@ -114,18 +115,18 @@ export function sanitizeChannelId(channelId: string) {
 
 /** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
 export function isValidChannelId(channelId: string) {
-  return channelId.match(/^(UC|@)[\w-]+$/) !== null;
+  return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
 }
 
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
-type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq" | ""}default`;
+type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq"}default` | "default";
 
 /** Returns the thumbnail URL for a video with the given watch ID and quality (defaults to "hqdefault") */
 export function getThumbnailUrl(watchId: string, quality?: ThumbQuality): string
 /** Returns the thumbnail URL for a video with the given watch ID and index (0 is low quality thumbnail, 1-3 are low quality frames from the video) */
-export function getThumbnailUrl(watchId: string, index: 0 | 1 | 2 | 3): string
+export function getThumbnailUrl(watchId: string, index?: 0 | 1 | 2 | 3): string
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
-export function getThumbnailUrl(watchId: string, qualityOrIndex: ThumbQuality | 0 | 1 | 2 | 3 = "maxresdefault") {
+export function getThumbnailUrl(watchId: string, qualityOrIndex: Prettify<ThumbQuality | 0 | 1 | 2 | 3> = "maxresdefault") {
   return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
 }
 
@@ -221,58 +222,97 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
   );
 }
 
+/** add `time_continue` param only if current video time is greater than this value */
+const reloadTabVideoTimeThreshold = 3;
+
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
+export async function reloadTab() {
+  const win = getUnsafeWindow();
+  try {
+    enableDiscardBeforeUnload();
+
+    if((getVideoElement()?.readyState ?? 0) > 0) {
+      const time = await getVideoTime(0) ?? 0;
+      const volume = Math.round(getVideoElement()!.volume * 100);
+
+      const url = new URL(win.location.href);
+
+      if(!isNaN(time) && time > reloadTabVideoTimeThreshold)
+        url.searchParams.set("time_continue", String(time));
+      if(!isNaN(volume) && volume > 0)
+        await GM.setValue("bytm-reload-tab-volume", String(volume));
+
+      return win.location.replace(url);
+    }
+
+    win.location.reload();
+  }
+  catch(err) {
+    error("Couldn't save video time and volume before reloading tab:", err);
+    win.location.reload();
+  }
+}
+
 //#region resources
 
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
  * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache  
- * @param uncached Set to true to fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
+ * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
+ * @param uncached Set to true to always fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
  */
 export async function getResourceUrl(name: ResourceKey | "_", uncached = false) {
   let url = !uncached && await GM.getResourceUrl(name);
-  if(!url || url.length === 0) {
-    const resObjOrStr = resourcesJson?.[name as keyof typeof resourcesJson];
-    if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-      const pathname = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
-      const ref = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : branch;
 
-      if(pathname && pathname.startsWith("/") && pathname.length > 1)
-        return `https://raw.githubusercontent.com/${repo}/${ref}${pathname}`;
-      else if(pathname && pathname.startsWith("http"))
-        return pathname;
-      else if(pathname && pathname.length > 0)
-        return `https://raw.githubusercontent.com/${repo}/${ref}/assets/${pathname}`;
+  if(!url || url.length === 0) {
+    const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
+
+    if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+      const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
+      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : buildNumber;
+
+      if((pathName?.startsWith("/") && pathName.length > 1))
+        return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
+      else if(pathName && pathName.startsWith("http"))
+        return pathName;
+      else if(pathName && pathName.length > 0)
+        return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${pathName}`;
     }
-    warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
+
+    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
     // @ts-ignore
     url = await GM.getResourceUrl(name, false);
   }
+
   return url;
 }
 
 /**
- * Returns the preferred locale of the user, provided it is supported by the userscript.  
- * Prioritizes `navigator.language`, then `navigator.languages`, then `"en-US"` as a fallback.
+ * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
+ * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
  */
 export function getPreferredLocale(): TrLocale {
-  const nvLangs = navigator.languages
-    .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null);
+  const sanEq = (str1: string, str2: string) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
 
-  if(Object.entries(langMapping).find(([key]) => key === navigator.language))
-    return navigator.language as TrLocale;
+  const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
+    .map((v) => v.replace(/_/g, "-"));
 
-  for(const loc of nvLangs) {
-    if(Object.entries(langMapping).find(([key]) => key === loc))
-      return loc as TrLocale;
-  }
+  for(const nvLoc of allNvLocs) {
+    const resolvedLoc = Object.entries(langMapping)
+      .find(([key, { altLocales }]) =>
+        sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc))
+      )?.[0];
+    if(resolvedLoc)
+      return resolvedLoc.trim() as TrLocale;
 
-  // if navigator.languages has entries that aren't locale codes in the format xx-XX
-  if(navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
-    for(const lang of nvLangs) {
-      const foundLoc = Object.entries(langMapping).find(([ key ]) => key.startsWith(lang))?.[0];
-      if(foundLoc)
-        return foundLoc as TrLocale;
-    }
+    const trimmedNvLoc = nvLoc.split("-")[0];
+    const resolvedFallbackLoc = Object.entries(langMapping)
+      .find(([key, { altLocales }]) =>
+        sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc))
+      )?.[0];
+
+    if(resolvedFallbackLoc)
+      return resolvedFallbackLoc.trim() as TrLocale;
   }
 
   return "en-US";
@@ -302,7 +342,7 @@ export function parseMarkdown(mdString: string) {
 
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
-  const clRes = await fetchAdvanced(await getResourceUrl("doc-changelog", true));
+  const clRes = await fetchAdvanced(changelogUrl);
   log("Fetched changelog:", clRes);
   return await clRes.text();
 }

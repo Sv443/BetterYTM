@@ -6,6 +6,7 @@ import { showPrompt } from "./dialogs/prompt.js";
 import { t } from "./utils/translations.js";
 import { error } from "./utils/logging.js";
 import { downloadFile } from "./utils/dom.js";
+import { reloadTab } from "./utils/misc.js";
 import packageJson from "../package.json" with { type: "json" };
 
 /** Central serializer for all data stores */
@@ -38,7 +39,7 @@ export async function importData(blob: File | Blob) {
       message: t("import_success_confirm_reload"),
     });
 
-    reload && location.reload();
+    reload && await reloadTab();
   }
   catch(err) {
     error(err);

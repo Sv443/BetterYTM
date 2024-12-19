@@ -137,7 +137,7 @@
     "close_and_ignore_until_reenabled": "Close and ignore until re-enabled",
     "expand_release_notes": "Click to expand the latest release notes",
     "collapse_release_notes": "Click to collapse the latest release notes",
-    "no_updates_found": "No updates found.",
+    "no_new_version_found": "No new version found.",
 
     "thumbnail_overlay_behavior_never": "Never",
     "thumbnail_overlay_behavior_videos_only": "Only for videos",
@@ -213,13 +213,21 @@
     "plugin_link_type_greasyfork": "GreasyFork",
     "plugin_link_type_openuserjs": "OpenUserJS",
 
+    "plugin_intent_name_ReadFeatureConfig": "Read Feature Config",
     "plugin_intent_description_ReadFeatureConfig": "This plugin can read the feature configuration",
+    "plugin_intent_name_WriteFeatureConfig": "Write Feature Config",
     "plugin_intent_description_WriteFeatureConfig": "This plugin can write to the feature configuration",
+    "plugin_intent_name_SeeHiddenConfigValues": "See Hidden Config Values",
     "plugin_intent_description_SeeHiddenConfigValues": "This plugin has access to hidden config values",
+    "plugin_intent_name_WriteLyricsCache": "Write Lyrics Cache",
     "plugin_intent_description_WriteLyricsCache": "This plugin can write to the lyrics cache",
+    "plugin_intent_name_WriteTranslations": "Write Translations",
     "plugin_intent_description_WriteTranslations": "This plugin can add new translations and overwrite existing ones",
+    "plugin_intent_name_CreateModalDialogs": "Create Modal Dialogs",
     "plugin_intent_description_CreateModalDialogs": "This plugin can create modal dialogs",
+    "plugin_intent_name_ReadAutoLikeData": "Read Auto-Like Data",
     "plugin_intent_description_ReadAutoLikeData": "This plugin can read auto-like data",
+    "plugin_intent_name_WriteAutoLikeData": "Write Auto-Like Data",
     "plugin_intent_description_WriteAutoLikeData": "This plugin can write to auto-like data",
 
     "plugin_validation_error_no_property": "No property '%1' with type '%2'",
@@ -288,6 +296,7 @@
     "feature_desc_rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered song",
     "feature_helptext_rememberSongTimeReduction": "When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you have more context when listening to the part that was interrupted again.",
     "feature_desc_rememberSongTimeMinPlayTime": "Minimum amount of seconds a song needs to be played for its time to be remembered",
+    "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
     "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys \"H\" and \"L\". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.",

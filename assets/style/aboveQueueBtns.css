@@ -1,5 +1,4 @@
 #side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer {
-  position: sticky;
   align-items: center;
   top: 0;
   z-index: 2;

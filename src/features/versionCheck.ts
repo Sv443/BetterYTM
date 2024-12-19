@@ -26,9 +26,9 @@ export async function initVersionCheck() {
 
 /**
  * Checks for a new version of the script and shows a dialog.  
- * If {@linkcode notifyNoUpdatesFound} is set to true, a dialog is also shown if no updates were found.
+ * If {@linkcode notifyNoNewVerFound} is set to true, a dialog is also shown if no updates were found.
  */
-export async function doVersionCheck(notifyNoUpdatesFound = false) {
+export async function doVersionCheck(notifyNoNewVerFound = false) {
   await GM.setValue("bytm-version-check", Date.now());
 
   const res = await sendRequest({
@@ -37,12 +37,12 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
   });
 
   // TODO: small dialog for "no update found" message?
-  const noUpdateFound = () => notifyNoUpdatesFound ? showPrompt({ type: "alert", message: t("no_updates_found") }) : undefined;
+  const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({ type: "alert", message: t("no_new_version_found") }) : undefined;
 
   const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 
   if(!latestTag)
-    return await noUpdateFound();
+    return await noNewVerFound();
 
   info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
 
@@ -51,5 +51,5 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
     await dialog.open();
     return;
   }
-  return await noUpdateFound();
+  return await noNewVerFound();
 }
