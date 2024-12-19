@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/aboveQueueBtns.css#sha256=sZieYj3MeIQT3HLfgFg0xiO0JQGWw/1bkQXzaAieZvQ=
-// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/dist/BetterYTM.css#sha256=CyA7eJcW79mkAAzXYmQLZqzX2cMTQompJndO/3zM9KA=
-// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/f03f1d0/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/aboveQueueBtns.css#sha256=sZieYj3MeIQT3HLfgFg0xiO0JQGWw/1bkQXzaAieZvQ=
+// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/dist/BetterYTM.css#sha256=CyA7eJcW79mkAAzXYmQLZqzX2cMTQompJndO/3zM9KA=
+// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.3.3/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -129,7 +129,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "f03f1d0";
+const buildNumberRaw = "120db71";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1588,7 +1588,16 @@ var resources = {
 	"img-greasyfork": "images/external/greasyfork.png",
 	"img-logo_dev": "images/logo/logo_dev_48.png",
 	"img-logo": "images/logo/logo_48.png",
-	"img-openuserjs": "images/external/openuserjs.png"
+	"img-openuserjs": "images/external/openuserjs.png",
+	"trans-de-DE": "translations/de-DE.json",
+	"trans-en-US": "translations/en-US.json",
+	"trans-en-GB": "translations/en-GB.json",
+	"trans-es-ES": "translations/es-ES.json",
+	"trans-fr-FR": "translations/fr-FR.json",
+	"trans-hi-IN": "translations/hi-IN.json",
+	"trans-ja-JP": "translations/ja-JP.json",
+	"trans-pt-BR": "translations/pt-BR.json",
+	"trans-zh-CN": "translations/zh-CN.json"
 };
 var resourcesJson = {
 	alwaysExternalAssetPatterns: alwaysExternalAssetPatterns,
@@ -1792,7 +1801,6 @@ async function reloadTab() {
     }
 }
 //#region resources
-const alwaysExternalAssetRegexes = resourcesJson.alwaysExternalAssetPatterns.map(pat => new RegExp(pat));
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
  * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
@@ -1807,7 +1815,7 @@ async function getResourceUrl(name, uncached = false) {
         if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
             const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
             const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : buildNumber;
-            if (alwaysExternalAssetRegexes.some(re => re.test(name)) || ((pathName === null || pathName === void 0 ? void 0 : pathName.startsWith("/")) && pathName.length > 1))
+            if (((pathName === null || pathName === void 0 ? void 0 : pathName.startsWith("/")) && pathName.length > 1))
                 return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
             else if (pathName && pathName.startsWith("http"))
                 return pathName;
