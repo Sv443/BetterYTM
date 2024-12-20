@@ -12,6 +12,25 @@
   },
   "editor.tabSize": 2,
 
+  "json.schemas": [
+    {
+      "fileMatch": ["**/locales.json"],
+      "url": ".vscode/schemas/locales.schema.json"
+    },
+    {
+      "fileMatch": ["**/require.json"],
+      "url": ".vscode/schemas/require.schema.json"
+    },
+    {
+      "fileMatch": ["**/resources.json"],
+      "url": ".vscode/schemas/resources.schema.json"
+    },
+    {
+      "fileMatch": ["**/translations/*-*.json"],
+      "url": ".vscode/schemas/translation.schema.json"
+    },
+  ],
+
   // requires extension: fabiospampinato.vscode-highlight
   "highlight.regexes": {
     "(TODO(\\((\\s|\\d|\\w|[,.-_+*&])+\\))?:?)": { // TODO: or TODO or TODO(xy): but not todo or todo:

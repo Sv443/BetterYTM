@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["translations"],
+  "description": "Translation file for a specific locale",
+  "properties": {
+    "base": {
+      "type": "string",
+      "pattern": "^[a-z]{2}-[A-Z]{2}$",
+      "description": "Optional base locale from which all missing translations are automatically inherited. Must be in the format ll-CC (language-country), e.g. en-US"
+    },
+    "translations": {
+      "type": "object",
+      "description": "Mapping of translation keys to strings",
+      "patternProperties": {
+        "^[a-zA-Z]([a-zA-Z0-9_-]+)?$": {
+          "type": "string",
+          "description": "Case sensitive translation key. May only contain letters, numbers, underscores, and hyphens."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

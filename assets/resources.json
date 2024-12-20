@@ -12,10 +12,14 @@
     "css-hide_themesong_logo": "style/hideThemeSongLogo.css",
     "css-show_votes": "style/showVotes.css",
     "css-vol_slider_size": "style/volSliderSize.css",
+    "doc-changelog": {
+      "path": "/changelog.md",
+      "ref": "main",
+      "integrity": false
+    },
     "doc-license": {
       "path": "/LICENSE.txt",
-      "ref": "$BRANCH",
-      "integrity": false
+      "ref": "$BRANCH"
     },
     "font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
     "font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",

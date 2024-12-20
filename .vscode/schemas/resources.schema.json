@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["resources"],
+  "description": "Contains all resources (images, fonts, stylesheets, etc.) used by BYTM",
+  "properties": {
+    "alwaysExternalAssetPatterns": {
+      "type": "array",
+      "description": "List of patterns passed to `new RegExp()` that should always be considered external assets (they won't be loaded via @resource)",
+      "items": {
+        "type": "string",
+        "format": "regex"
+      }
+    },
+    "resources": {
+      "type": "object",
+      "description": "Mapping of resource file identifiers and paths",
+      "patternProperties": {
+        "^[a-zA-Z]([a-zA-Z0-9_]+)?-[a-zA-Z0-9-_]+$": {
+          "description": "Resource key in the format `prefix-resource_name`",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "required": ["path"],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "Path or URL to the resource. If it starts with /, it's relative to the project root, else it's relative to the assets folder. Query strings and hashes are allowed. You may make use of $MODE, $BRANCH, $HOST, $BUILD_NUMBER and $UID"
+                },
+                "ref": {
+                  "type": "string",
+                  "description": "Branch, tag, or commit SHA to use when fetching the resource. You may make use of $MODE, $BRANCH, $HOST, $BUILD_NUMBER and $UID"
+                },
+                "integrity": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Whether to calculate a Subresource Integrity hash for the resource (works with any URLs too)"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
