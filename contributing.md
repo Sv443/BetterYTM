@@ -153,11 +153,6 @@ To edit an existing translation, please follow these steps:
 - **`pnpm run node-ts <path>`**  
   Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
   Also enables source map support and disables experimental warnings.
-- **`pnpm run dep-cruise`**  
-  Runs dependency-cruiser to show problems with the dependency tree like circular, missing or orphaned dependencies.
-- **`pnpm run dep-graph`**  
-  Generates a dependency graph of the project, visually showing the dependencies between files and problems with the dependency tree.  
-  Requires the [Graphviz](https://www.graphviz.org/download/) binary `dot` to be in the system PATH.
 
 > [!NOTE]
 > 

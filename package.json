@@ -30,9 +30,7 @@
     "test": "pnpm run node-ts ./test.ts",
     "knip": "knip",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "dep-cruise": "npx depcruise src",
-    "dep-graph": "npx depcruise src --include-only \"^src\" --output-type dot | dot -T svg > dependency-graph.svg && open-cli dependency-graph.svg -R"
+    "build-storybook": "storybook build"
   },
   "engines": {
     "node": ">=19",
@@ -93,7 +91,6 @@
     "@typescript-eslint/parser": "^8.0.0",
     "@typescript-eslint/utils": "^8.0.0",
     "concurrently": "^9.0.1",
-    "dependency-cruiser": "^16.3.10",
     "dotenv": "^16.4.5",
     "eslint": "^9.5.0",
     "eslint-plugin-storybook": "^0.11.0",
