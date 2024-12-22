@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sv443-network/userutils':
-        specifier: ^8.3.3
-        version: 8.3.3
+        specifier: ^8.4.0
+        version: 8.4.0
       compare-versions:
         specifier: ^6.1.0
         version: 6.1.0
@@ -1822,8 +1822,8 @@ packages:
   '@storybook/types@8.1.10':
     resolution: {integrity: sha512-UJ97iqI+0Mk13I6ayd3TaBfSFBkWnEauwTnFMQe1dN/L3wTh8laOBaLa0Vr3utRSnt2b5hpcw/nq7azB/Gx4Yw==}
 
-  '@sv443-network/userutils@8.3.3':
-    resolution: {integrity: sha512-m/iUruQo5gb3AxyimQOLd9M0NLORQIRNOdMYxjn+bN8eySfWQ0GNa3pCr27Xm7joTAUESKaw2VWHb3vyzKc4NA==}
+  '@sv443-network/userutils@8.4.0':
+    resolution: {integrity: sha512-DgMxcpq25IIwupOl3hTLCCmjU4oXrzOyajNoApVsTg2wPI02ZxPcx1YAmpoE19awxApJS+hJQseYdKWE3hFkCA==}
 
   '@testing-library/dom@9.3.4':
     resolution: {integrity: sha512-FlS4ZWlp97iiNWig0Muq8p+3rVDjRiYE+YKGbAqXOu9nwJFFOdL00kFpz42M+4huzYi86vAK1sOOfyOG45muIQ==}
@@ -3575,6 +3575,10 @@ packages:
 
   nanoevents@9.0.0:
     resolution: {integrity: sha512-X8pU7IOpgKXVLPxYUI55ymXc8XuBE+uypfEyEFBtHkD1EX9KavYTVc+vXZHFyHKzA1TaZoVDqklLdQBBrxIuAw==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+
+  nanoevents@9.1.0:
+    resolution: {integrity: sha512-Jd0fILWG44a9luj8v5kED4WI+zfkkgwKyRQKItTtlPfEsh7Lznfi1kr8/iZ+XAIss4Qq5GqRB0qtWbaz9ceO/A==}
     engines: {node: ^18.0.0 || >=20.0.0}
 
   nanoid@3.3.7:
@@ -6795,9 +6799,9 @@ snapshots:
       '@types/express': 4.17.21
       file-system-cache: 2.3.0
 
-  '@sv443-network/userutils@8.3.3':
+  '@sv443-network/userutils@8.4.0':
     dependencies:
-      nanoevents: 9.0.0
+      nanoevents: 9.1.0
 
   '@testing-library/dom@9.3.4':
     dependencies:
@@ -8671,6 +8675,8 @@ snapshots:
   ms@2.1.3: {}
 
   nanoevents@9.0.0: {}
+
+  nanoevents@9.1.0: {}
 
   nanoid@3.3.7: {}
 

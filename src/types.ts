@@ -1,4 +1,4 @@
-import type { NanoEmitter, Stringifiable } from "@sv443-network/userutils";
+import type { NanoEmitter } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
@@ -13,12 +13,6 @@ import resources from "../assets/resources.json" with { type: "json" }; // eslin
 import locales from "../assets/locales.json" with { type: "json" }; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 //#region other
-
-/**
- * Value that is either a string (or stringifiable value) or a sync or async function that returns a string (or a stringifiable value)  
- * Use `await consumeStringGen(strGen)` to get the actual string value from this type
- */
-export type StringGen = Stringifiable | (() => Stringifiable | Promise<Stringifiable>);
 
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{

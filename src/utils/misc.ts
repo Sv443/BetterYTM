@@ -1,7 +1,7 @@
 import { compress, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { buildNumber, changelogUrl, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
-import { type Domain, type NumberLengthFormat, type ResourceKey, type StringGen } from "../types.js";
+import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";
 import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
 import { getFeature } from "../config.js";
@@ -192,17 +192,6 @@ export function getOS() {
   if(navigator.userAgent.match(/mac(\s?os|intel)/i))
     return "mac";
   return "other";
-}
-
-/** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
-export async function consumeStringGen(strGen: StringGen): Promise<string> {
-  return typeof strGen === "string"
-    ? strGen
-    : String(
-      typeof strGen === "function"
-        ? await strGen()
-        : strGen
-    );
 }
 
 /** Formats a number based on the config or the passed {@linkcode notation} */
