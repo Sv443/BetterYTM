@@ -21,6 +21,7 @@ Or you can also [join my Discord server](https://dc.sv443.net) to get in touch o
 - [Developing a plugin that interfaces with BetterYTM](#developing-a-plugin-that-interfaces-with-betterytm)
   - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
   - [Global functions and classes on the plugin interface](#global-functions-and-classes)
+  - [CSS selectors and variables for use in plugins](#css-selectors-and-variables-for-use-in-plugins)
 
 <br><br>
 
@@ -2198,5 +2199,31 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 > </details>
 
+<br><br>
+
+## CSS selectors and variables for use in plugins:
+Just like the JS functions and variables, BetterYTM also provides a set of CSS selectors and variables that can be used to assist when styling elements in a plugin.  
+  
+These are the available selectors:
+| Selector | Description |
+| :--- | :--- |
+| `.bytm-dom-yt` | Applied to the root (HTML) element, only when on YouTube |
+| `.bytm-dom-ytm` | Applied to the root (HTML) element, only when on YT Music |
+| `.bytm-no-select` | Prevents text selection on the element and all its children |
+| `.bytm-generic-btn` | Needs to be applied to a button's wrapper element to give it the generic BetterYTM button appearance |
+| `.bytm-generic-btn-img` | Needs to be given to the button's svg icon or img element so it gets styled correctly |
+| `#bytm-dialog-container` | This is the container that holds all dialog elements |
+
+<br>
+
+And these are the available CSS variables:
+| Variable | Type | Description |
+| `--bytm-font-monospace` | `font` | Monospace fonts used for code blocks and similar elements |
+| `--bytm-themed-icon-col` | `hex-color` | Default color for icons that respects the page theme (on YT) |
+| `--bytm-themed-bg-col` | `hex-color` | Default background color that prefers the theme set by the ThemeSong extension (on YTM only) |
+| `--bytm-global-inner-height` | `px` | Inner height of the viewport |
+| `--bytm-global-outer-height` | `px` | Outer height of the viewport |
+| `--bytm-global-inner-width` | `px` | Inner width of the viewport |
+| `--bytm-global-outer-width` | `px` | Outer width of the viewport |
 
 <br><br><br><br><br><br>
