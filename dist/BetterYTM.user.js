@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,19 +62,19 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/aboveQueueBtns.css#sha256=sZieYj3MeIQT3HLfgFg0xiO0JQGWw/1bkQXzaAieZvQ=
-// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/dist/BetterYTM.css#sha256=CyA7eJcW79mkAAzXYmQLZqzX2cMTQompJndO/3zM9KA=
-// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/120db71/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.3.3/dist/index.global.js
+// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/dist/BetterYTM.css#sha256=JU4cnENLB/G8BZo0eN0BbOw1+1xbetqjqiyjUAf7/xw=
+// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.4.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.1.6
@@ -129,7 +129,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "120db71";
+const buildNumberRaw = "7152c156";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -256,7 +256,134 @@ function addLyricsCacheEntryBest(artist, song, url) {
     log("Added cache entry for best result", artist, "-", song, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
     return lyricsCacheMgr.setData({ cache });
-}/** Contains the identifiers of all initialized and loaded translation locales */
+}var langMapping = {
+	"de-DE": {
+	name: "Deutsch (Deutschland)",
+	nameEnglish: "German (Germany)",
+	emoji: "🇩🇪",
+	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"de",
+		"de-AT",
+		"de-CH",
+		"de-LI",
+		"de-LU"
+	]
+},
+	"en-US": {
+	name: "English (United States)",
+	nameEnglish: "English (United States)",
+	emoji: "🇺🇸",
+	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"en",
+		"en-CA"
+	]
+},
+	"en-GB": {
+	name: "English (Great Britain)",
+	nameEnglish: "English (Great Britain)",
+	emoji: "🇬🇧",
+	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"en-AU",
+		"en-IE",
+		"en-NZ",
+		"en-ZA"
+	]
+},
+	"es-ES": {
+	name: "Español (España)",
+	nameEnglish: "Spanish (Spain)",
+	emoji: "🇪🇸",
+	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"es",
+		"es-MX"
+	]
+},
+	"fr-FR": {
+	name: "Français (France)",
+	nameEnglish: "French (France)",
+	emoji: "🇫🇷",
+	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"fr",
+		"fr-CA",
+		"fr-BE",
+		"fr-CH",
+		"fr-LU"
+	]
+},
+	"hi-IN": {
+	name: "हिंदी (भारत)",
+	nameEnglish: "Hindi (India)",
+	emoji: "🇮🇳",
+	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"hi",
+		"hi-NP"
+	]
+},
+	"ja-JP": {
+	name: "日本語 (日本)",
+	nameEnglish: "Japanese (Japan)",
+	emoji: "🇯🇵",
+	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"ja"
+	]
+},
+	"pt-BR": {
+	name: "Português (Brasil)",
+	nameEnglish: "Portuguese (Brazil)",
+	emoji: "🇧🇷",
+	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"pt",
+		"pt-PT"
+	]
+},
+	"zh-CN": {
+	name: "中文（简化，中国）",
+	nameEnglish: "Chinese (Simplified, China)",
+	emoji: "🇨🇳",
+	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"zh",
+		"zh-TW",
+		"zh-HK",
+		"zh-SG"
+	]
+}
+};/** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set();
 /** Initializes the translations */
 async function initTranslations(locale) {
@@ -1194,7 +1321,6 @@ function hotkeyToString(hotkey) {
  * Provide either `resourceName` or `src` to specify the icon inside the button.
  */
 async function createLongBtn(_a) {
-    var _b;
     var { title, text, iconPosition, ripple } = _a, rest = __rest(_a, ["title", "text", "iconPosition", "ripple"]);
     if (["href", "onClick", "onToggle"].every((key) => !(key in rest)))
         throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
@@ -1229,7 +1355,7 @@ async function createLongBtn(_a) {
     if ("src" in rest)
         imgElem.src = rest.src;
     else
-        setInnerHtml(imgElem, (_b = await resourceAsString(rest.resourceName)) !== null && _b !== void 0 ? _b : "");
+        setInnerHtml(imgElem, await resourceAsString(rest.resourceName));
     const txtElem = document.createElement("span");
     txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
     txtElem.textContent = txtElem.ariaLabel = text;
@@ -1237,661 +1363,6 @@ async function createLongBtn(_a) {
     btnElem.appendChild(txtElem);
     iconPosition === "right" && btnElem.appendChild(imgElem);
     return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
-}//#region beforeunload popup
-let discardBeforeUnload = false;
-/** Disables the popup before leaving the site */
-function enableDiscardBeforeUnload() {
-    discardBeforeUnload = true;
-    info("Disabled popup before leaving the site");
-}
-/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
-async function initBeforeUnloadHook() {
-    try {
-        UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
-    }
-    catch (err) {
-        error("Error in beforeunload hook:", err);
-    }
-}
-//#region auto close toasts
-/** Closes toasts after a set amount of time */
-async function initAutoCloseToasts() {
-    const animTimeout = 300;
-    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
-        all: true,
-        continuous: true,
-        listener: async (toastContElems) => {
-            try {
-                for (const toastContElem of toastContElems) {
-                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
-                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
-                        continue;
-                    if (toastElem.classList.contains("bytm-closing"))
-                        continue;
-                    toastElem.classList.add("bytm-closing");
-                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
-                    await UserUtils.pauseFor(closeTimeout);
-                    toastElem.classList.remove("paper-toast-open");
-                    toastElem.addEventListener("transitionend", () => {
-                        toastElem.classList.remove("bytm-closing");
-                        toastElem.style.display = "none";
-                        clearNode(toastElem);
-                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
-                    }, { once: true });
-                }
-            }
-            catch (err) {
-                error("Error in automatic toast closing:", err);
-            }
-        },
-    });
-    log("Initialized automatic toast closing");
-}
-let remVidsCache = [];
-/**
- * Remembers the time of the last played video and resumes playback from that time.
- * **Needs to be called *before* DOM is ready!**
- */
-async function initRememberSongTime() {
-    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
-        return;
-    const storedDataRaw = await GM.getValue("bytm-rem-songs");
-    if (!storedDataRaw)
-        await GM.setValue("bytm-rem-songs", "[]");
-    try {
-        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-    }
-    catch (err) {
-        error("Error parsing stored video time data, defaulting to empty cache:", err);
-        await GM.setValue("bytm-rem-songs", "[]");
-        remVidsCache = [];
-    }
-    log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
-    await remTimeRestoreTime();
-    try {
-        if (!domLoaded)
-            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
-        else
-            remTimeStartUpdateLoop();
-    }
-    catch (err) {
-        error("Error in video time remembering update loop:", err);
-    }
-}
-/** Tries to restore the time of the currently playing video */
-async function remTimeRestoreTime() {
-    if (location.pathname.startsWith("/watch")) {
-        const watchID = new URL(location.href).searchParams.get("v");
-        if (!watchID)
-            return;
-        if (initialParams.has("t"))
-            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
-        const entry = remVidsCache.find(entry => entry.watchID === watchID);
-        if (entry) {
-            if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
-                await remTimeDeleteEntry(entry.watchID);
-                return;
-            }
-            else if (isNaN(Number(entry.songTime)))
-                return;
-            else {
-                let vidElem;
-                const doRestoreTime = async () => {
-                    var _a;
-                    if (!vidElem)
-                        vidElem = await waitVideoElementReady();
-                    const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
-                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                    await remTimeDeleteEntry(entry.watchID);
-                    info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-                };
-                if (!domLoaded)
-                    document.addEventListener("DOMContentLoaded", doRestoreTime);
-                else
-                    doRestoreTime();
-            }
-        }
-    }
-}
-let lastSongTime = -1;
-let remVidCheckTimeout;
-/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
-async function remTimeStartUpdateLoop() {
-    var _a, _b, _c;
-    if (location.pathname.startsWith("/watch")) {
-        const watchID = getWatchId();
-        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-        if (watchID && songTime !== lastSongTime) {
-            lastSongTime = songTime;
-            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-            // don't immediately update to reduce race conditions and only update if the video is playing
-            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
-                const entry = {
-                    watchID,
-                    songTime,
-                    updateTimestamp: Date.now(),
-                };
-                await remTimeUpsertEntry(entry);
-            }
-            // if the song is rewound to the beginning, update the entry accordingly
-            else if (!paused) {
-                const entry = remVidsCache.find(entry => entry.watchID === watchID);
-                if (entry && songTime <= entry.songTime)
-                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
-            }
-        }
-    }
-    const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
-    for (const entry of expiredEntries)
-        await remTimeDeleteEntry(entry.watchID);
-    // for no overlapping calls and better error handling:
-    if (remVidCheckTimeout)
-        clearTimeout(remVidCheckTimeout);
-    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
-}
-/** Updates an existing or inserts a new entry to be remembered */
-async function remTimeUpsertEntry(data) {
-    const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
-    if (foundIdx >= 0)
-        remVidsCache[foundIdx] = data;
-    else
-        remVidsCache.push(data);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-}
-/** Deletes an entry in the "remember cache" */
-async function remTimeDeleteEntry(watchID) {
-    remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-}var langMapping = {
-	"de-DE": {
-	name: "Deutsch (Deutschland)",
-	nameEnglish: "German (Germany)",
-	emoji: "🇩🇪",
-	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"de",
-		"de-AT",
-		"de-CH",
-		"de-LI",
-		"de-LU"
-	]
-},
-	"en-US": {
-	name: "English (United States)",
-	nameEnglish: "English (United States)",
-	emoji: "🇺🇸",
-	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"en",
-		"en-CA"
-	]
-},
-	"en-GB": {
-	name: "English (Great Britain)",
-	nameEnglish: "English (Great Britain)",
-	emoji: "🇬🇧",
-	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"en-AU",
-		"en-IE",
-		"en-NZ",
-		"en-ZA"
-	]
-},
-	"es-ES": {
-	name: "Español (España)",
-	nameEnglish: "Spanish (Spain)",
-	emoji: "🇪🇸",
-	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"es",
-		"es-MX"
-	]
-},
-	"fr-FR": {
-	name: "Français (France)",
-	nameEnglish: "French (France)",
-	emoji: "🇫🇷",
-	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"fr",
-		"fr-CA",
-		"fr-BE",
-		"fr-CH",
-		"fr-LU"
-	]
-},
-	"hi-IN": {
-	name: "हिंदी (भारत)",
-	nameEnglish: "Hindi (India)",
-	emoji: "🇮🇳",
-	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"hi",
-		"hi-NP"
-	]
-},
-	"ja-JP": {
-	name: "日本語 (日本)",
-	nameEnglish: "Japanese (Japan)",
-	emoji: "🇯🇵",
-	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"ja"
-	]
-},
-	"pt-BR": {
-	name: "Português (Brasil)",
-	nameEnglish: "Portuguese (Brazil)",
-	emoji: "🇧🇷",
-	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"pt",
-		"pt-PT"
-	]
-},
-	"zh-CN": {
-	name: "中文（简化，中国）",
-	nameEnglish: "Chinese (Simplified, China)",
-	emoji: "🇨🇳",
-	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"zh",
-		"zh-TW",
-		"zh-HK",
-		"zh-SG"
-	]
-}
-};var alwaysExternalAssetPatterns = [
-	"^icon-",
-	"^img-",
-	"^font-",
-	"^doc-",
-	"^trans-"
-];
-var resources = {
-	"css-above_queue_btns": "style/aboveQueueBtns.css",
-	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
-	"css-anchor_improvements": "style/anchorImprovements.css",
-	"css-auto_like": "style/autoLike.css",
-	"css-fix_hdr": "style/fixHDR.css",
-	"css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
-	"css-fix_spacing": "style/fixSpacing.css",
-	"css-fix_sponsorblock": "style/fixSponsorBlock.css",
-	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
-	"css-show_votes": "style/showVotes.css",
-	"css-vol_slider_size": "style/volSliderSize.css",
-	"doc-license": {
-		path: "/LICENSE.txt",
-		ref: "$BRANCH",
-		integrity: false
-	},
-	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
-	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
-	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
-	"icon-advanced_mode": "icons/plus_circle_small.svg",
-	"icon-alert": "icons/alert.svg",
-	"icon-arrow_down": "icons/arrow_down.svg",
-	"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
-	"icon-auto_like": "icons/auto_like.svg",
-	"icon-clear_list": "icons/clear_list.svg",
-	"icon-copy": "icons/copy.svg",
-	"icon-delete": "icons/delete.svg",
-	"icon-edit": "icons/edit.svg",
-	"icon-error": "icons/error.svg",
-	"icon-experimental": "icons/beaker_small.svg",
-	"icon-globe_small": "icons/globe_small.svg",
-	"icon-globe": "icons/globe.svg",
-	"icon-help": "icons/help.svg",
-	"icon-image_filled": "icons/image_filled.svg",
-	"icon-image": "icons/image.svg",
-	"icon-link": "icons/link.svg",
-	"icon-lyrics": "icons/lyrics.svg",
-	"icon-prompt": "icons/help.svg",
-	"icon-reload": "icons/refresh.svg",
-	"icon-restore_time": "icons/restore_time.svg",
-	"icon-skip_to": "icons/skip_to.svg",
-	"icon-speed": "icons/speed.svg",
-	"icon-spinner": "icons/spinner.svg",
-	"icon-upload": "icons/upload.svg",
-	"img-close": "images/close.png",
-	"img-discord": "images/external/discord.png",
-	"img-github": "images/external/github.png",
-	"img-greasyfork": "images/external/greasyfork.png",
-	"img-logo_dev": "images/logo/logo_dev_48.png",
-	"img-logo": "images/logo/logo_48.png",
-	"img-openuserjs": "images/external/openuserjs.png",
-	"trans-de-DE": "translations/de-DE.json",
-	"trans-en-US": "translations/en-US.json",
-	"trans-en-GB": "translations/en-GB.json",
-	"trans-es-ES": "translations/es-ES.json",
-	"trans-fr-FR": "translations/fr-FR.json",
-	"trans-hi-IN": "translations/hi-IN.json",
-	"trans-ja-JP": "translations/ja-JP.json",
-	"trans-pt-BR": "translations/pt-BR.json",
-	"trans-zh-CN": "translations/zh-CN.json"
-};
-var resourcesJson = {
-	alwaysExternalAssetPatterns: alwaysExternalAssetPatterns,
-	resources: resources
-};//#region misc
-let domain;
-/**
- * Returns the current domain as a constant string representation
- * @throws Throws if script runs on an unexpected website
- */
-function getDomain() {
-    if (domain)
-        return domain;
-    if (location.hostname.match(/^music\.youtube/))
-        return domain = "ytm";
-    else if (location.hostname.match(/youtube\./))
-        return domain = "yt";
-    else
-        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-}
-/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
-function getSessionId() {
-    try {
-        if (!sessionStorageAvailable)
-            throw new Error("Session storage unavailable");
-        let sesId = window.sessionStorage.getItem("_bytm-session-id");
-        if (!sesId)
-            window.sessionStorage.setItem("_bytm-session-id", sesId = UserUtils.randomId(10, 36));
-        return sesId;
-    }
-    catch (err) {
-        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
-        return null;
-    }
-}
-let isCompressionSupported;
-/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
-async function compressionSupported() {
-    if (typeof isCompressionSupported === "boolean")
-        return isCompressionSupported;
-    try {
-        await UserUtils.compress(".", compressionFormat, "string");
-        return isCompressionSupported = true;
-    }
-    catch (_a) {
-        return isCompressionSupported = false;
-    }
-}
-/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
-function arrayWithSeparators(array, separator = ", ", lastSeparator) {
-    const arr = [...array];
-    if (arr.length === 0)
-        return "";
-    else if (arr.length <= 2)
-        return arr.join(lastSeparator);
-    else
-        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
-}
-/** Returns the watch ID of the current video or null if not on a video page */
-function getWatchId() {
-    const { searchParams, pathname } = new URL(location.href);
-    return pathname.includes("/watch") ? searchParams.get("v") : null;
-}
-/**
- * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
- * Returns null if the current page is not a channel page or there was an error parsing the URL
- */
-function getCurrentChannelId() {
-    return parseChannelIdFromUrl(location.href);
-}
-/** Returns the channel ID from a URL or null if the URL is invalid */
-function parseChannelIdFromUrl(url) {
-    try {
-        const { pathname } = url instanceof URL ? url : new URL(url);
-        if (pathname.includes("/channel/"))
-            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
-        else if (pathname.includes("/@"))
-            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
-        else
-            return null;
-    }
-    catch (_a) {
-        return null;
-    }
-}
-/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
-function sanitizeChannelId(channelId) {
-    channelId = String(channelId).trim();
-    return isValidChannelId(channelId) || channelId.startsWith("@")
-        ? channelId
-        : `@${channelId}`;
-}
-/** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
-function isValidChannelId(channelId) {
-    return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
-}
-/** Returns the thumbnail URL for a video with either a given quality identifier or index */
-function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
-    return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
-}
-/** Returns the best available thumbnail URL for a video with the given watch ID */
-async function getBestThumbnailUrl(watchId) {
-    try {
-        const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
-        for (const quality of priorityList) {
-            let response;
-            const url = getThumbnailUrl(watchId, quality);
-            try {
-                response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
-            }
-            catch (err) {
-                error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
-                void err;
-            }
-            if (response && response.status < 300 && response.status >= 200)
-                return url;
-        }
-    }
-    catch (err) {
-        throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
-    }
-}
-/** Opens the given URL in a new tab, using GM.openInTab if available */
-function openInTab(href, background = false) {
-    try {
-        UserUtils.openInNewTab(href, background);
-    }
-    catch (_a) {
-        window.open(href, "_blank", "noopener noreferrer");
-    }
-}
-/** Tries to parse an uncompressed or compressed input string as a JSON object */
-async function tryToDecompressAndParse(input) {
-    let parsed = null;
-    try {
-        parsed = JSON.parse(input);
-    }
-    catch (_a) {
-        try {
-            parsed = JSON.parse(await UserUtils.decompress(input, compressionFormat, "string"));
-        }
-        catch (err) {
-            error("Couldn't decompress and parse data due to an error:", err);
-            return null;
-        }
-    }
-    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-    await UserUtils.pauseFor(UserUtils.randRange(250, 500));
-    return parsed;
-}
-/** Very crude OS detection */
-function getOS() {
-    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
-        return "mac";
-    return "other";
-}
-/** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
-async function consumeStringGen(strGen) {
-    return typeof strGen === "string"
-        ? strGen
-        : String(typeof strGen === "function"
-            ? await strGen()
-            : strGen);
-}
-/** Formats a number based on the config or the passed {@linkcode notation} */
-function formatNumber(num, notation) {
-    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation !== null && notation !== void 0 ? notation : getFeature("numbersFormat")) === "short"
-        ? {
-            notation: "compact",
-            compactDisplay: "short",
-            maximumFractionDigits: 1,
-        }
-        : {
-            style: "decimal",
-            maximumFractionDigits: 0,
-        });
-}
-/** add `time_continue` param only if current video time is greater than this value */
-const reloadTabVideoTimeThreshold = 3;
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
-async function reloadTab() {
-    var _a, _b, _c;
-    const win = UserUtils.getUnsafeWindow();
-    try {
-        enableDiscardBeforeUnload();
-        if (((_b = (_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.readyState) !== null && _b !== void 0 ? _b : 0) > 0) {
-            const time = (_c = await getVideoTime(0)) !== null && _c !== void 0 ? _c : 0;
-            const volume = Math.round(getVideoElement().volume * 100);
-            const url = new URL(win.location.href);
-            if (!isNaN(time) && time > reloadTabVideoTimeThreshold)
-                url.searchParams.set("time_continue", String(time));
-            if (!isNaN(volume) && volume > 0)
-                await GM.setValue("bytm-reload-tab-volume", String(volume));
-            return win.location.replace(url);
-        }
-        win.location.reload();
-    }
-    catch (err) {
-        error("Couldn't save video time and volume before reloading tab:", err);
-        win.location.reload();
-    }
-}
-//#region resources
-/**
- * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
- * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
- * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
- * @param uncached Set to true to always fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
- */
-async function getResourceUrl(name, uncached = false) {
-    var _a;
-    let url = !uncached && await GM.getResourceUrl(name);
-    if (!url || url.length === 0) {
-        const resObjOrStr = (_a = resourcesJson.resources) === null || _a === void 0 ? void 0 : _a[name];
-        if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-            const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
-            const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : buildNumber;
-            if (((pathName === null || pathName === void 0 ? void 0 : pathName.startsWith("/")) && pathName.length > 1))
-                return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
-            else if (pathName && pathName.startsWith("http"))
-                return pathName;
-            else if (pathName && pathName.length > 0)
-                return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${pathName}`;
-        }
-        warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
-        // @ts-ignore
-        url = await GM.getResourceUrl(name, false);
-    }
-    return url;
-}
-/**
- * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
- * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
- */
-function getPreferredLocale() {
-    var _a, _b;
-    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
-    const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
-        .map((v) => v.replace(/_/g, "-"));
-    for (const nvLoc of allNvLocs) {
-        const resolvedLoc = (_a = Object.entries(langMapping)
-            .find(([key, { altLocales }]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))) === null || _a === void 0 ? void 0 : _a[0];
-        if (resolvedLoc)
-            return resolvedLoc.trim();
-        const trimmedNvLoc = nvLoc.split("-")[0];
-        const resolvedFallbackLoc = (_b = Object.entries(langMapping)
-            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))) === null || _b === void 0 ? void 0 : _b[0];
-        if (resolvedFallbackLoc)
-            return resolvedFallbackLoc.trim();
-    }
-    return "en-US";
-}
-/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
-async function resourceAsString(resource) {
-    try {
-        const resourceUrl = await getResourceUrl(resource);
-        if (!resourceUrl)
-            throw new Error(`Couldn't find URL for resource '${resource}'`);
-        return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
-    }
-    catch (err) {
-        error("Couldn't get SVG element from resource:", err);
-        return null;
-    }
-}
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
-function parseMarkdown(mdString) {
-    return marked.marked.parse(mdString, {
-        async: true,
-        gfm: true,
-    });
-}
-/** Returns the content of the changelog markdown file */
-async function getChangelogMd() {
-    const clRes = await UserUtils.fetchAdvanced(changelogUrl);
-    log("Fetched changelog:", clRes);
-    return await clRes.text();
-}
-/** Returns the changelog as HTML with a details element for each version */
-async function getChangelogHtmlWithDetails() {
-    try {
-        const changelogMd = await getChangelogMd();
-        let changelogHtml = await parseMarkdown(changelogMd);
-        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
-        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
-        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
-        for (const [fullMatch, , verStr] of h2Matches)
-            changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
-        changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
-        return changelogHtml;
-    }
-    catch (err) {
-        return `Error while preparing changelog: ${err}`;
-    }
 }class MarkdownDialog extends BytmDialog {
     constructor(options) {
         super(Object.assign(Object.assign({}, options), { id: `md-${options.id}`, renderBody: () => this.renderBody() }));
@@ -1915,7 +1386,7 @@ async function getChangelogHtmlWithDetails() {
     async renderBody() {
         const bodyEl = document.createElement("div");
         bodyEl.classList.add("bytm-md-dialog-body");
-        const mdCont = await consumeStringGen(this.opts.body);
+        const mdCont = await UserUtils.consumeStringGen(this.opts.body);
         const markdownEl = document.createElement("div");
         markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
         markdownEl.tabIndex = 0;
@@ -2056,6 +1527,7 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
         toggleEl.id = `bytm-toggle-input-${id}`;
     const toggleKnobEl = document.createElement("div");
     toggleKnobEl.classList.add("bytm-toggle-input-knob");
+    // TODO: this doesn't make the knob show up on Chromium
     setInnerHtml(toggleKnobEl, "&nbsp;");
     const toggleElClicked = (e) => {
         e.preventDefault();
@@ -2104,9 +1576,7 @@ class PromptDialog extends BytmDialog {
     async renderHeader({ type }) {
         const headerEl = document.createElement("div");
         headerEl.id = "bytm-prompt-dialog-header";
-        const iconSvg = await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt");
-        if (iconSvg)
-            setInnerHtml(headerEl, iconSvg);
+        setInnerHtml(headerEl, await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt"));
         return headerEl;
     }
     async renderBody(_a) {
@@ -2598,9 +2068,7 @@ async function getFeatHelpDialog({ featKey, }) {
 }
 async function renderHeader$3() {
     const headerEl = document.createElement("div");
-    const helpIconSvg = await resourceAsString("icon-help");
-    if (helpIconSvg)
-        setInnerHtml(headerEl, helpIconSvg);
+    setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
 async function renderBody$3() {
@@ -2651,9 +2119,7 @@ var scripts = {
 	test: "pnpm run node-ts ./test.ts",
 	knip: "knip",
 	storybook: "storybook dev -p 6006",
-	"build-storybook": "storybook build",
-	"dep-cruise": "npx depcruise src",
-	"dep-graph": "npx depcruise src --include-only \"^src\" --output-type dot | dot -T svg > dependency-graph.svg && open-cli dependency-graph.svg -R"
+	"build-storybook": "storybook build"
 };
 var engines = {
 	node: ">=19",
@@ -2686,7 +2152,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^8.3.3",
+	"@sv443-network/userutils": "^8.4.0",
 	"compare-versions": "^6.1.0",
 	dompurify: "^3.1.6",
 	marked: "^12.0.2",
@@ -2714,7 +2180,6 @@ var devDependencies = {
 	"@typescript-eslint/parser": "^8.0.0",
 	"@typescript-eslint/utils": "^8.0.0",
 	concurrently: "^9.0.1",
-	"dependency-cruiser": "^16.3.10",
 	dotenv: "^16.4.5",
 	eslint: "^9.5.0",
 	"eslint-plugin-storybook": "^0.11.0",
@@ -4003,6 +3468,172 @@ async function doVersionCheck(notifyNoNewVerFound = false) {
         return;
     }
     return await noNewVerFound();
+}//#region beforeunload popup
+let discardBeforeUnload = false;
+/** Disables the popup before leaving the site */
+function enableDiscardBeforeUnload() {
+    discardBeforeUnload = true;
+    info("Disabled popup before leaving the site");
+}
+/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
+async function initBeforeUnloadHook() {
+    try {
+        UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
+    }
+    catch (err) {
+        error("Error in beforeunload hook:", err);
+    }
+}
+//#region auto close toasts
+/** Closes toasts after a set amount of time */
+async function initAutoCloseToasts() {
+    const animTimeout = 300;
+    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
+        all: true,
+        continuous: true,
+        listener: async (toastContElems) => {
+            try {
+                for (const toastContElem of toastContElems) {
+                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
+                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
+                        continue;
+                    if (toastElem.classList.contains("bytm-closing"))
+                        continue;
+                    toastElem.classList.add("bytm-closing");
+                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
+                    await UserUtils.pauseFor(closeTimeout);
+                    toastElem.classList.remove("paper-toast-open");
+                    toastElem.addEventListener("transitionend", () => {
+                        toastElem.classList.remove("bytm-closing");
+                        toastElem.style.display = "none";
+                        clearNode(toastElem);
+                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+                    }, { once: true });
+                }
+            }
+            catch (err) {
+                error("Error in automatic toast closing:", err);
+            }
+        },
+    });
+    log("Initialized automatic toast closing");
+}
+let remVidsCache = [];
+/**
+ * Remembers the time of the last played video and resumes playback from that time.
+ * **Needs to be called *before* DOM is ready!**
+ */
+async function initRememberSongTime() {
+    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
+        return;
+    const storedDataRaw = await GM.getValue("bytm-rem-songs");
+    if (!storedDataRaw)
+        await GM.setValue("bytm-rem-songs", "[]");
+    try {
+        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+    }
+    catch (err) {
+        error("Error parsing stored video time data, defaulting to empty cache:", err);
+        await GM.setValue("bytm-rem-songs", "[]");
+        remVidsCache = [];
+    }
+    log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
+    await remTimeRestoreTime();
+    try {
+        if (!domLoaded)
+            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+        else
+            remTimeStartUpdateLoop();
+    }
+    catch (err) {
+        error("Error in video time remembering update loop:", err);
+    }
+}
+/** Tries to restore the time of the currently playing video */
+async function remTimeRestoreTime() {
+    if (location.pathname.startsWith("/watch")) {
+        const watchID = new URL(location.href).searchParams.get("v");
+        if (!watchID)
+            return;
+        if (initialParams.has("t"))
+            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+        const entry = remVidsCache.find(entry => entry.watchID === watchID);
+        if (entry) {
+            if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
+                await remTimeDeleteEntry(entry.watchID);
+                return;
+            }
+            else if (isNaN(Number(entry.songTime)))
+                return;
+            else {
+                let vidElem;
+                const doRestoreTime = async () => {
+                    var _a;
+                    if (!vidElem)
+                        vidElem = await waitVideoElementReady();
+                    const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                    await remTimeDeleteEntry(entry.watchID);
+                    info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                };
+                if (!domLoaded)
+                    document.addEventListener("DOMContentLoaded", doRestoreTime);
+                else
+                    doRestoreTime();
+            }
+        }
+    }
+}
+let lastSongTime = -1;
+let remVidCheckTimeout;
+/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
+async function remTimeStartUpdateLoop() {
+    var _a, _b, _c;
+    if (location.pathname.startsWith("/watch")) {
+        const watchID = getWatchId();
+        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+        if (watchID && songTime !== lastSongTime) {
+            lastSongTime = songTime;
+            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            // don't immediately update to reduce race conditions and only update if the video is playing
+            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
+                const entry = {
+                    watchID,
+                    songTime,
+                    updateTimestamp: Date.now(),
+                };
+                await remTimeUpsertEntry(entry);
+            }
+            // if the song is rewound to the beginning, update the entry accordingly
+            else if (!paused) {
+                const entry = remVidsCache.find(entry => entry.watchID === watchID);
+                if (entry && songTime <= entry.songTime)
+                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+            }
+        }
+    }
+    const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
+    for (const entry of expiredEntries)
+        await remTimeDeleteEntry(entry.watchID);
+    // for no overlapping calls and better error handling:
+    if (remVidCheckTimeout)
+        clearTimeout(remVidCheckTimeout);
+    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
+}
+/** Updates an existing or inserts a new entry to be remembered */
+async function remTimeUpsertEntry(data) {
+    const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
+    if (foundIdx >= 0)
+        remVidsCache[foundIdx] = data;
+    else
+        remVidsCache.push(data);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+}
+/** Deletes an entry in the "remember cache" */
+async function remTimeDeleteEntry(watchID) {
+    remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 //#region arrow key skip
 async function initArrowKeySkip() {
@@ -4323,9 +3954,7 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
                 buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
                 const chanId = sanitizeChannelId((_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId);
                 const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-                const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
-                if (imgEl && imgHtml)
-                    setInnerHtml(imgEl, imgHtml);
+                imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`));
                 if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
                     await autoLikeStore.setData({
                         channels: [
@@ -4368,9 +3997,7 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
         else
             buttonEl.classList.remove("toggled");
         const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-        const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
-        if (imgEl && imgHtml)
-            setInnerHtml(imgEl, imgHtml);
+        imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`));
     });
 }//#region logging fns
 let curLogLevel = LogLevel.Info;
@@ -4463,6 +4090,364 @@ class PluginError extends Error {
     constructor(message) {
         super(message);
         this.name = "PluginError";
+    }
+}var alwaysExternalAssetPatterns = [
+	"^icon-",
+	"^img-",
+	"^font-",
+	"^doc-",
+	"^trans-"
+];
+var resources = {
+	"css-above_queue_btns": "style/aboveQueueBtns.css",
+	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
+	"css-anchor_improvements": "style/anchorImprovements.css",
+	"css-auto_like": "style/autoLike.css",
+	"css-fix_hdr": "style/fixHDR.css",
+	"css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
+	"css-fix_spacing": "style/fixSpacing.css",
+	"css-fix_sponsorblock": "style/fixSponsorBlock.css",
+	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
+	"css-show_votes": "style/showVotes.css",
+	"css-vol_slider_size": "style/volSliderSize.css",
+	"doc-changelog": {
+		path: "/changelog.md",
+		ref: "main",
+		integrity: false
+	},
+	"doc-license": {
+		path: "/LICENSE.txt",
+		ref: "$BRANCH"
+	},
+	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
+	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
+	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
+	"icon-advanced_mode": "icons/plus_circle_small.svg",
+	"icon-alert": "icons/alert.svg",
+	"icon-arrow_down": "icons/arrow_down.svg",
+	"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
+	"icon-auto_like": "icons/auto_like.svg",
+	"icon-clear_list": "icons/clear_list.svg",
+	"icon-copy": "icons/copy.svg",
+	"icon-delete": "icons/delete.svg",
+	"icon-edit": "icons/edit.svg",
+	"icon-error": "icons/error.svg",
+	"icon-experimental": "icons/beaker_small.svg",
+	"icon-globe_small": "icons/globe_small.svg",
+	"icon-globe": "icons/globe.svg",
+	"icon-help": "icons/help.svg",
+	"icon-image_filled": "icons/image_filled.svg",
+	"icon-image": "icons/image.svg",
+	"icon-link": "icons/link.svg",
+	"icon-lyrics": "icons/lyrics.svg",
+	"icon-prompt": "icons/help.svg",
+	"icon-reload": "icons/refresh.svg",
+	"icon-restore_time": "icons/restore_time.svg",
+	"icon-skip_to": "icons/skip_to.svg",
+	"icon-speed": "icons/speed.svg",
+	"icon-spinner": "icons/spinner.svg",
+	"icon-upload": "icons/upload.svg",
+	"img-close": "images/close.png",
+	"img-discord": "images/external/discord.png",
+	"img-github": "images/external/github.png",
+	"img-greasyfork": "images/external/greasyfork.png",
+	"img-logo_dev": "images/logo/logo_dev_48.png",
+	"img-logo": "images/logo/logo_48.png",
+	"img-openuserjs": "images/external/openuserjs.png",
+	"trans-de-DE": "translations/de-DE.json",
+	"trans-en-US": "translations/en-US.json",
+	"trans-en-GB": "translations/en-GB.json",
+	"trans-es-ES": "translations/es-ES.json",
+	"trans-fr-FR": "translations/fr-FR.json",
+	"trans-hi-IN": "translations/hi-IN.json",
+	"trans-ja-JP": "translations/ja-JP.json",
+	"trans-pt-BR": "translations/pt-BR.json",
+	"trans-zh-CN": "translations/zh-CN.json"
+};
+var resourcesJson = {
+	alwaysExternalAssetPatterns: alwaysExternalAssetPatterns,
+	resources: resources
+};//#region misc
+let domain;
+/**
+ * Returns the current domain as a constant string representation
+ * @throws Throws if script runs on an unexpected website
+ */
+function getDomain() {
+    if (domain)
+        return domain;
+    if (location.hostname.match(/^music\.youtube/))
+        return domain = "ytm";
+    else if (location.hostname.match(/youtube\./))
+        return domain = "yt";
+    else
+        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+}
+/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
+function getSessionId() {
+    try {
+        if (!sessionStorageAvailable)
+            throw new Error("Session storage unavailable");
+        let sesId = window.sessionStorage.getItem("_bytm-session-id");
+        if (!sesId)
+            window.sessionStorage.setItem("_bytm-session-id", sesId = UserUtils.randomId(10, 36));
+        return sesId;
+    }
+    catch (err) {
+        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+        return null;
+    }
+}
+let isCompressionSupported;
+/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
+async function compressionSupported() {
+    if (typeof isCompressionSupported === "boolean")
+        return isCompressionSupported;
+    try {
+        await UserUtils.compress(".", compressionFormat, "string");
+        return isCompressionSupported = true;
+    }
+    catch (_a) {
+        return isCompressionSupported = false;
+    }
+}
+/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
+function arrayWithSeparators(array, separator = ", ", lastSeparator) {
+    const arr = [...array];
+    if (arr.length === 0)
+        return "";
+    else if (arr.length <= 2)
+        return arr.join(lastSeparator);
+    else
+        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
+}
+/** Returns the watch ID of the current video or null if not on a video page */
+function getWatchId() {
+    const { searchParams, pathname } = new URL(location.href);
+    return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+/**
+ * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
+ * Returns null if the current page is not a channel page or there was an error parsing the URL
+ */
+function getCurrentChannelId() {
+    return parseChannelIdFromUrl(location.href);
+}
+/** Returns the channel ID from a URL or null if the URL is invalid */
+function parseChannelIdFromUrl(url) {
+    try {
+        const { pathname } = url instanceof URL ? url : new URL(url);
+        if (pathname.includes("/channel/"))
+            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
+        else if (pathname.includes("/@"))
+            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
+        else
+            return null;
+    }
+    catch (_a) {
+        return null;
+    }
+}
+/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
+function sanitizeChannelId(channelId) {
+    channelId = String(channelId).trim();
+    return isValidChannelId(channelId) || channelId.startsWith("@")
+        ? channelId
+        : `@${channelId}`;
+}
+/** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
+function isValidChannelId(channelId) {
+    return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
+}
+/** Returns the thumbnail URL for a video with either a given quality identifier or index */
+function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
+    return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+}
+/** Returns the best available thumbnail URL for a video with the given watch ID */
+async function getBestThumbnailUrl(watchId) {
+    try {
+        const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
+        for (const quality of priorityList) {
+            let response;
+            const url = getThumbnailUrl(watchId, quality);
+            try {
+                response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
+            }
+            catch (err) {
+                error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
+                void err;
+            }
+            if (response && response.status < 300 && response.status >= 200)
+                return url;
+        }
+    }
+    catch (err) {
+        throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
+    }
+}
+/** Opens the given URL in a new tab, using GM.openInTab if available */
+function openInTab(href, background = false) {
+    try {
+        UserUtils.openInNewTab(href, background);
+    }
+    catch (_a) {
+        window.open(href, "_blank", "noopener noreferrer");
+    }
+}
+/** Tries to parse an uncompressed or compressed input string as a JSON object */
+async function tryToDecompressAndParse(input) {
+    let parsed = null;
+    try {
+        parsed = JSON.parse(input);
+    }
+    catch (_a) {
+        try {
+            parsed = JSON.parse(await UserUtils.decompress(input, compressionFormat, "string"));
+        }
+        catch (err) {
+            error("Couldn't decompress and parse data due to an error:", err);
+            return null;
+        }
+    }
+    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
+    await UserUtils.pauseFor(UserUtils.randRange(250, 500));
+    return parsed;
+}
+/** Very crude OS detection */
+function getOS() {
+    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
+        return "mac";
+    return "other";
+}
+/** Formats a number based on the config or the passed {@linkcode notation} */
+function formatNumber(num, notation) {
+    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation !== null && notation !== void 0 ? notation : getFeature("numbersFormat")) === "short"
+        ? {
+            notation: "compact",
+            compactDisplay: "short",
+            maximumFractionDigits: 1,
+        }
+        : {
+            style: "decimal",
+            maximumFractionDigits: 0,
+        });
+}
+/** add `time_continue` param only if current video time is greater than this value */
+const reloadTabVideoTimeThreshold = 3;
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
+async function reloadTab() {
+    var _a, _b, _c;
+    const win = UserUtils.getUnsafeWindow();
+    try {
+        enableDiscardBeforeUnload();
+        if (((_b = (_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.readyState) !== null && _b !== void 0 ? _b : 0) > 0) {
+            const time = (_c = await getVideoTime(0)) !== null && _c !== void 0 ? _c : 0;
+            const volume = Math.round(getVideoElement().volume * 100);
+            const url = new URL(win.location.href);
+            if (!isNaN(time) && time > reloadTabVideoTimeThreshold)
+                url.searchParams.set("time_continue", String(time));
+            if (!isNaN(volume) && volume > 0)
+                await GM.setValue("bytm-reload-tab-volume", String(volume));
+            return win.location.replace(url);
+        }
+        win.location.reload();
+    }
+    catch (err) {
+        error("Couldn't save video time and volume before reloading tab:", err);
+        win.location.reload();
+    }
+}
+//#region resources
+/**
+ * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
+ * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
+ * @param uncached Set to true to always fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
+ */
+async function getResourceUrl(name, uncached = false) {
+    var _a;
+    let url = !uncached && await GM.getResourceUrl(name);
+    if (!url || url.length === 0) {
+        const resObjOrStr = (_a = resourcesJson.resources) === null || _a === void 0 ? void 0 : _a[name];
+        if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+            const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
+            const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : buildNumber;
+            if (((pathName === null || pathName === void 0 ? void 0 : pathName.startsWith("/")) && pathName.length > 1))
+                return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
+            else if (pathName && pathName.startsWith("http"))
+                return pathName;
+            else if (pathName && pathName.length > 0)
+                return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${pathName}`;
+        }
+        warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
+        // @ts-ignore
+        url = await GM.getResourceUrl(name, false);
+    }
+    return url;
+}
+/**
+ * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
+ * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
+ */
+function getPreferredLocale() {
+    var _a, _b;
+    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
+    const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
+        .map((v) => v.replace(/_/g, "-"));
+    for (const nvLoc of allNvLocs) {
+        const resolvedLoc = (_a = Object.entries(langMapping)
+            .find(([key, { altLocales }]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))) === null || _a === void 0 ? void 0 : _a[0];
+        if (resolvedLoc)
+            return resolvedLoc.trim();
+        const trimmedNvLoc = nvLoc.split("-")[0];
+        const resolvedFallbackLoc = (_b = Object.entries(langMapping)
+            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))) === null || _b === void 0 ? void 0 : _b[0];
+        if (resolvedFallbackLoc)
+            return resolvedFallbackLoc.trim();
+    }
+    return "en-US";
+}
+/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
+async function resourceAsString(resource) {
+    try {
+        const resourceUrl = await getResourceUrl(resource);
+        if (!resourceUrl)
+            throw new Error(`Couldn't find URL for resource '${resource}'`);
+        return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
+    }
+    catch (err) {
+        error("Couldn't get SVG element from resource:", err);
+        return null;
+    }
+}
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
+function parseMarkdown(mdString) {
+    return marked.marked.parse(mdString, {
+        async: true,
+        gfm: true,
+    });
+}
+/** Returns the content of the changelog markdown file */
+async function getChangelogMd() {
+    const clRes = await UserUtils.fetchAdvanced(changelogUrl);
+    log("Fetched changelog:", clRes);
+    return await clRes.text();
+}
+/** Returns the changelog as HTML with a details element for each version */
+async function getChangelogHtmlWithDetails() {
+    try {
+        const changelogMd = await getChangelogMd();
+        let changelogHtml = await parseMarkdown(changelogMd);
+        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
+        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+        for (const [fullMatch, , verStr] of h2Matches)
+            changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
+        changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
+        return changelogHtml;
+    }
+    catch (err) {
+        return `Error while preparing changelog: ${err}`;
     }
 }/** Central serializer for all data stores */
 let serializer;
@@ -4886,9 +4871,12 @@ async function initThumbnailOverlay() {
             if (getFeature("thumbnailOverlayToggleBtnShown")) {
                 addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
                     async listener(toggleBtnElem) {
-                        const toggleBtnImgElem = toggleBtnElem.querySelector("img");
-                        if (toggleBtnImgElem)
-                            toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}`);
+                        var _a;
+                        const toggleBtnIconElem = toggleBtnElem.querySelector("svg");
+                        if (toggleBtnIconElem) {
+                            setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay ? "_filled" : ""}`));
+                            (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
+                        }
                         if (toggleBtnElem)
                             toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
                     },
@@ -4926,6 +4914,7 @@ async function initThumbnailOverlay() {
             });
         });
         const createElements = async () => {
+            var _a;
             try {
                 // overlay
                 const overlayElem = document.createElement("div");
@@ -4975,9 +4964,8 @@ async function initThumbnailOverlay() {
                         invertOverlay = !invertOverlay;
                         updateOverlayVisibility();
                     });
-                    const imgElem = document.createElement("img");
-                    imgElem.classList.add("bytm-generic-btn-img");
-                    toggleBtnElem.appendChild(imgElem);
+                    setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
+                    (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
                     addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
                         listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
                     });
@@ -5221,15 +5209,13 @@ async function addActualLyricsBtn(likeContainer) {
     if (!songTitleElem)
         return warn("Couldn't find song title element");
     currentSongTitle = songTitleElem.title;
-    const spinnerIconUrl = await getResourceUrl("icon-spinner");
-    const lyricsIconUrl = await getResourceUrl("icon-lyrics");
-    const errorIconUrl = await getResourceUrl("icon-error");
     const onMutation = async (mutations) => {
         var _a, e_1, _b, _c;
+        var _d, _e, _f;
         try {
-            for (var _d = true, mutations_1 = __asyncValues(mutations), mutations_1_1; mutations_1_1 = await mutations_1.next(), _a = mutations_1_1.done, !_a; _d = true) {
+            for (var _g = true, mutations_1 = __asyncValues(mutations), mutations_1_1; mutations_1_1 = await mutations_1.next(), _a = mutations_1_1.done, !_a; _g = true) {
                 _c = mutations_1_1.value;
-                _d = false;
+                _g = false;
                 const mut = _c;
                 const newTitle = mut.target.title;
                 if (newTitle !== currentSongTitle && newTitle.length > 0) {
@@ -5238,13 +5224,12 @@ async function addActualLyricsBtn(likeContainer) {
                         continue;
                     lyricsBtn.style.cursor = "wait";
                     lyricsBtn.style.pointerEvents = "none";
-                    const imgElem = lyricsBtn.querySelector("img");
-                    imgElem.src = spinnerIconUrl;
-                    imgElem.classList.add("bytm-spinner");
+                    setInnerHtml(lyricsBtn, await resourceAsString("icon-spinner"));
+                    (_d = lyricsBtn.querySelector("svg")) === null || _d === void 0 ? void 0 : _d.classList.add("bytm-generic-btn-img", "bytm-spinner");
                     currentSongTitle = newTitle;
                     const url = await getCurrentLyricsUrl(); // can take a second or two
-                    imgElem.src = lyricsIconUrl;
-                    imgElem.classList.remove("bytm-spinner");
+                    setInnerHtml(lyricsBtn, await resourceAsString("icon-lyrics"));
+                    (_e = lyricsBtn.querySelector("svg")) === null || _e === void 0 ? void 0 : _e.classList.add("bytm-generic-btn-img");
                     if (!url) {
                         let artist, song;
                         if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
@@ -5252,7 +5237,8 @@ async function addActualLyricsBtn(likeContainer) {
                             song = navigator.mediaSession.metadata.title;
                         }
                         const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
-                        imgElem.src = errorIconUrl;
+                        setInnerHtml(lyricsBtn, await resourceAsString("icon-error"));
+                        (_f = lyricsBtn.querySelector("svg")) === null || _f === void 0 ? void 0 : _f.classList.add("bytm-generic-btn-img");
                         lyricsBtn.ariaLabel = lyricsBtn.title = t("lyrics_not_found_click_open_search");
                         lyricsBtn.style.cursor = "pointer";
                         lyricsBtn.style.pointerEvents = "all";
@@ -5273,7 +5259,7 @@ async function addActualLyricsBtn(likeContainer) {
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
         finally {
             try {
-                if (!_d && !_a && (_b = mutations_1.return)) await _b.call(mutations_1);
+                if (!_g && !_a && (_b = mutations_1.return)) await _b.call(mutations_1);
             }
             finally { if (e_1) throw e_1.error; }
         }
@@ -5446,6 +5432,7 @@ async function addGeniusUrlToLyricsBtn(btnElem, geniusUrl) {
 }
 /** Creates the base lyrics button element */
 async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
+    var _a;
     const linkElem = document.createElement("a");
     linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
     linkElem.ariaLabel = linkElem.title = t("lyrics_loading");
@@ -5454,9 +5441,6 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     linkElem.rel = "noopener noreferrer";
     linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
     linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-    const imgElem = document.createElement("img");
-    imgElem.classList.add("bytm-generic-btn-img");
-    imgElem.src = await getResourceUrl("icon-lyrics");
     onInteraction(linkElem, (e) => {
         var _a;
         const url = (_a = linkElem.href) !== null && _a !== void 0 ? _a : geniusUrl;
@@ -5468,7 +5452,8 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
         preventDefault: false,
         stopPropagation: false,
     });
-    linkElem.appendChild(imgElem);
+    setInnerHtml(linkElem, await resourceAsString("icon-lyrics"));
+    (_a = linkElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
     onInteraction(linkElem, async (e) => {
         if (e.ctrlKey || e.altKey) {
             e.preventDefault();
@@ -7564,9 +7549,14 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
             node.setAttribute("rel", "noopener noreferrer");
     }
 });
-/** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
+/**
+ * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.
+ * If no HTML string is given, the element's innerHTML will be set to an empty string.
+ */
 function setInnerHtml(element, html) {
     var _a, _b;
+    if (!html)
+        html = "";
     if (!ttPolicy && ((_a = window === null || window === void 0 ? void 0 : window.trustedTypes) === null || _a === void 0 ? void 0 : _a.createPolicy)) {
         ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
             createHTML: (dirty) => DOMPurify.sanitize(dirty, {
