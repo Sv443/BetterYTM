@@ -926,13 +926,13 @@ export async function openCfgMenu() {
   emitInterface("bytm:dialogOpened", undefined as unknown as BytmDialog);
   emitInterface("bytm:dialogOpened:cfg-menu" as "bytm:dialogOpened:id", undefined as unknown as BytmDialog);
 
-  checkToggleScrollIndicator();
-
   if(!menuBg)
     return warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
+
+  checkToggleScrollIndicator();
 }
 
 //#region chk scroll indicator
