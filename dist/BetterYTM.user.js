@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/dist/BetterYTM.css#sha256=JU4cnENLB/G8BZo0eN0BbOw1+1xbetqjqiyjUAf7/xw=
-// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/7152c156/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/dist/BetterYTM.css#sha256=JU4cnENLB/G8BZo0eN0BbOw1+1xbetqjqiyjUAf7/xw=
+// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.4.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -129,7 +129,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "7152c156";
+const buildNumberRaw = "ab5327bc";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3227,11 +3227,11 @@ async function openCfgMenu() {
     // since this menu doesn't have a BytmDialog instance, it's undefined here
     emitInterface("bytm:dialogOpened", undefined);
     emitInterface("bytm:dialogOpened:cfg-menu", undefined);
-    checkToggleScrollIndicator();
     if (!menuBg)
         return warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
+    checkToggleScrollIndicator();
 }
 //#region chk scroll indicator
 /** Checks if the features container is scrollable and toggles the scroll indicator accordingly */
