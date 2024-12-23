@@ -47,6 +47,7 @@ export async function createToggleInput({
 
   const toggleKnobEl = document.createElement("div");
   toggleKnobEl.classList.add("bytm-toggle-input-knob");
+  // TODO: this doesn't make the knob show up on Chromium
   setInnerHtml(toggleKnobEl, "&nbsp;");
 
   const toggleElClicked = (e: Event) => {

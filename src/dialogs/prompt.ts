@@ -72,9 +72,7 @@ class PromptDialog extends BytmDialog {
   protected async renderHeader({ type }: PromptDialogRenderProps) {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-prompt-dialog-header";
-    const iconSvg = await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt");
-    if(iconSvg)
-      setInnerHtml(headerEl, iconSvg);
+    setInnerHtml(headerEl, await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt"));
 
     return headerEl;
   }

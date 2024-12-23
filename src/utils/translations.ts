@@ -2,10 +2,10 @@ import { tr, Stringifiable, fetchAdvanced } from "@sv443-network/userutils";
 import { error, getResourceUrl, info } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
 import { getFeature } from "../config.js";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import langMapping from "../../assets/locales.json" with { type: "json" };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import tr_enUS from "../../assets/translations/en-US.json";
+import tr_enUS from "../../assets/translations/en-US.json" with { type: "json" };
+
+void [langMapping, tr_enUS];
 
 export type TrLocale = keyof typeof langMapping;
 export type TrKey = keyof (typeof tr_enUS["translations"]);

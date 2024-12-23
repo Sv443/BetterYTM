@@ -397,9 +397,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
         const chanId = sanitizeChannelId(buttonEl.dataset.channelId ?? channelId);
 
         const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-        const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
-        if(imgEl && imgHtml)
-          setInnerHtml(imgEl, imgHtml);
+        imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`));
 
         if(autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
           await autoLikeStore.setData({
@@ -447,8 +445,6 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
       buttonEl.classList.remove("toggled");
 
     const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-    const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
-    if(imgEl && imgHtml)
-      setInnerHtml(imgEl, imgHtml);
+    imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`));
   });
 }

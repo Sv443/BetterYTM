@@ -37,9 +37,7 @@ export async function getFeatHelpDialog({
 
 async function renderHeader() {
   const headerEl = document.createElement("div");
-  const helpIconSvg = await resourceAsString("icon-help");
-  if(helpIconSvg)
-    setInnerHtml(headerEl, helpIconSvg);
+  setInnerHtml(headerEl, await resourceAsString("icon-help"));
 
   return headerEl;
 }

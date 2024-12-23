@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -509,10 +509,12 @@ export async function initThumbnailOverlay() {
       if(getFeature("thumbnailOverlayToggleBtnShown")) {
         addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
           async listener(toggleBtnElem) {
-            const toggleBtnImgElem = toggleBtnElem.querySelector<HTMLImageElement>("img");
+            const toggleBtnIconElem = toggleBtnElem.querySelector<HTMLImageElement>("svg");
 
-            if(toggleBtnImgElem)
-              toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
+            if(toggleBtnIconElem) {
+              setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled"));
+              toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+            }
             if(toggleBtnElem)
               toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
           },
@@ -613,13 +615,12 @@ export async function initThumbnailOverlay() {
             updateOverlayVisibility();
           });
 
-          const imgElem = document.createElement("img");
-          imgElem.classList.add("bytm-generic-btn-img");
-
-          toggleBtnElem.appendChild(imgElem);
+          setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
+          toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
           addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
-            listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
+            listener: (likeContainer) =>
+              likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
           });
         }
 

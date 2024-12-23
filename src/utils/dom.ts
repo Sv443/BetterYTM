@@ -264,8 +264,14 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
   }
 });
 
-/** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
-export function setInnerHtml(element: HTMLElement, html: string) {
+/**
+ * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
+ * If no HTML string is given, the element's innerHTML will be set to an empty string.
+ */
+export function setInnerHtml(element: HTMLElement, html?: string | null) {
+  if(!html)
+    html = "";
+
   if(!ttPolicy && window?.trustedTypes?.createPolicy) {
     ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
       createHTML: (dirty: string) => DOMPurify.sanitize(dirty, {
