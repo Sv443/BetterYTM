@@ -1747,6 +1747,14 @@ body.bytm-dom-ytm
   --bytm-font-size-monospace: 1.4rem;
 }
 
+html:not([dark]) {
+  --bytm-themed-icon-col: #000;
+}
+
+html[dark] {
+  --bytm-themed-icon-col: #fff;
+}
+
 .bytm-disable-scroll {
   overflow: hidden !important;
 }
@@ -1859,6 +1867,11 @@ body.bytm-dom-ytm
   z-index: 1;
   width: 24px;
   height: 24px;
+}
+
+.bytm-dom-yt .bytm-generic-btn-img path {
+  /* YT has both dark and light theme, YTM only dark */
+  fill: var(--bytm-themed-icon-col, #fff);
 }
 
 .bytm-spinner {
