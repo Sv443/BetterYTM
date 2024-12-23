@@ -2220,7 +2220,7 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 }
 
 :root {
-  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
+  --bytm-themed-bg-col: var(--ts-playerpage-color, #030303);
 }
 
 #ts-visualizer-container #ThemeSong-Visualizer canvas {
@@ -2239,7 +2239,7 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0) 0%,
-    var(--bytm-themed-bg) 15%
+    var(--bytm-themed-bg-col) 15%
   );
   display: none;
   position: absolute;
@@ -2318,7 +2318,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
 .bytm-vol-slider-label {
   --bytm-slider-label-bg-col: var(
     --ytmusic-player-bar-background,
-    var(--bytm-themed-bg)
+    var(--bytm-themed-bg-col)
   );
   position: absolute;
   top: 50%;

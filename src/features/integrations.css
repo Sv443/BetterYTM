@@ -1,5 +1,5 @@
 :root {
-  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
+  --bytm-themed-bg-col: var(--ts-playerpage-color, #030303);
 }
 
 #ts-visualizer-container #ThemeSong-Visualizer canvas {

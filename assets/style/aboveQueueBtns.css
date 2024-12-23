@@ -4,7 +4,7 @@
   z-index: 2;
   padding: 16px 8px;
   margin: unset;
-  background-color: var(--bytm-themed-bg);
+  background-color: var(--bytm-themed-bg-col);
   border-bottom: 1px solid var(--ytmusic-divider);
   /* fallback for when the ThemeSong bg color is a gradient function instead of a color value */
   backdrop-filter: blur(8px);
