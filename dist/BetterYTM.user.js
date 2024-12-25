@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/dist/BetterYTM.css#sha256=JU4cnENLB/G8BZo0eN0BbOw1+1xbetqjqiyjUAf7/xw=
-// @resource          css-fix_hdr                 https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://raw.githubusercontent.com/Sv443/BetterYTM/ab5327bc/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/dist/BetterYTM.css#sha256=JU4cnENLB/G8BZo0eN0BbOw1+1xbetqjqiyjUAf7/xw=
+// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.4.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -125,24 +125,32 @@ var PluginIntent;
     PluginIntent[PluginIntent["ReadAutoLikeData"] = 64] = "ReadAutoLikeData";
     /** Plugin can write to auto-like data */
     PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
-})(PluginIntent || (PluginIntent = {}));// these variables will have their values replaced by the build script:
+})(PluginIntent || (PluginIntent = {}));// these strings will have their values replaced by the post-build script:
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "ab5327bc";
-/** The mode in which the script was built (production or development) */
-const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
-/** The branch to use in various URLs that point to the GitHub repo */
-const branch = (branchRaw.match(/^#{{.+}}$/) ? "main" : branchRaw);
+const buildNumberRaw = "53868f7a";
+const assetSourceRaw = "jsdelivr";
+const devServerPortRaw = "8710";
+const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
 /** Path to the GitHub repo */
 const repo = "Sv443/BetterYTM";
+/** The mode in which the script was built (production or development) */
+const mode = getRawVal(modeRaw, "production");
+/** The branch to use in various URLs that point to the GitHub repo */
+const branch = getRawVal(branchRaw, "main");
 /** Which host the userscript was installed from */
-const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
+const host = getRawVal(hostRaw, "github");
 /** The build number of the userscript */
-const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw); // asserted as generic string instead of literal
-const changelogUrl = `https://raw.githubusercontent.com/${repo}/${branch}/changelog.md`;
+const buildNumber = getRawVal(buildNumberRaw, "BUILD_ERROR!");
+/** The source of the assets - github, jsdelivr or local */
+const assetSource = getRawVal(assetSourceRaw, "jsdelivr");
+/** The port of the dev server */
+const devServerPort = Number(getRawVal(devServerPortRaw, 8710));
+/** URL to the changelog file */
+const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber !== null && buildNumber !== void 0 ? buildNumber : branch}/changelog.md`;
 /** The URL search parameters at the earliest possible time */
-const initialParams = new URL(location.href).searchParams;
+const initialParams = Object.assign({}, new URL(location.href).searchParams);
 /** Names of platforms by key of {@linkcode host} */
 const platformNames = {
     github: "GitHub",
@@ -155,7 +163,7 @@ const compressionFormat = "deflate-raw";
 const sessionStorageAvailable = typeof (sessionStorage === null || sessionStorage === void 0 ? void 0 : sessionStorage.setItem) === "function"
     && (() => {
         try {
-            const key = `_bytm_test_${UserUtils.randomId(6, 36)}`;
+            const key = `_bytm_test_${UserUtils.randomId(6, 36, false, true)}`;
             sessionStorage.setItem(key, "test");
             sessionStorage.removeItem(key);
             return true;
@@ -4110,14 +4118,10 @@ var resources = {
 	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
 	"css-show_votes": "style/showVotes.css",
 	"css-vol_slider_size": "style/volSliderSize.css",
-	"doc-changelog": {
-		path: "/changelog.md",
-		ref: "main",
-		integrity: false
-	},
 	"doc-license": {
 		path: "/LICENSE.txt",
-		ref: "$BRANCH"
+		ref: "$BRANCH",
+		integrity: false
 	},
 	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
 	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
@@ -4370,14 +4374,25 @@ async function getResourceUrl(name, uncached = false) {
     if (!url || url.length === 0) {
         const resObjOrStr = (_a = resourcesJson.resources) === null || _a === void 0 ? void 0 : _a[name];
         if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-            const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
-            const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : buildNumber;
-            if (((pathName === null || pathName === void 0 ? void 0 : pathName.startsWith("/")) && pathName.length > 1))
-                return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
-            else if (pathName && pathName.startsWith("http"))
-                return pathName;
-            else if (pathName && pathName.length > 0)
-                return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${pathName}`;
+            const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.path : resObjOrStr;
+            const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.ref : buildNumber;
+            if (pathName) {
+                return pathName.startsWith("http")
+                    ? pathName
+                    : (() => {
+                        let path = pathName;
+                        if (path.startsWith("/"))
+                            path = path.slice(1);
+                        switch (assetSource) {
+                            case "jsdelivr":
+                                return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/assets/${path}`;
+                            case "github":
+                                return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${path}`;
+                            case "local":
+                                return `http://localhost:${devServerPort}/assets/${path}`;
+                        }
+                    })();
+            }
         }
         warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
         // @ts-ignore
