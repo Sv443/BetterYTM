@@ -5,17 +5,21 @@
 ## 2.2.1
 - **Changes:**
   - The above-queue-button container's sticky positioning can now be turned off with a new advanced feature toggle in the config menu
-  - Made finding the preferred locale based on the browser's language settings more reliable
+  - Made finding the preferred locale based on the browser's language settings much more reliable
   - Heavily reduced amount of `@resource` directives to improve installation and updating time
+  - Resources are now loaded via JSDelivr's CDN for longer cache times and faster loading
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Plugin Changes:**
-  - Added functions to the BYTM API:
-    - `reloadTab()` to reload the page while keeping video time and volume and disable BYTM features like initial tab volume
-    - `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
-    - `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
-  - Exposed the constants `initialParams` (URLSearchParams, the search params at the initial point of loading BYTM) and `sessionStorageAvailable` (boolean) on the BYTM API
+  - Additions to the BYTM API (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md) for full documentation):
+    - Functions:
+      - `reloadTab()` as a better way to reload the page by keeping the same video time and volume and disabling BYTM features like initial tab volume
+      - `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
+      - `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
+    - Constants:
+      - `initialParams` ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)), the search params at the initial point of loading BYTM
+      - `sessionStorageAvailable` (boolean), whether the browser supports [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
 
 </details>
 
