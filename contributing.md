@@ -118,14 +118,14 @@ To edit an existing translation, please follow these steps:
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
   - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
   - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
-  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local` or `github` (default)
+  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
   - `pnpm run build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
-    Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
+    Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=jsdelivr`
   - `pnpm run build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
-    Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
+    Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=jsdelivr`
   - `pnpm run preview` - Same as `pnpm run build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
 - **`pnpm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!

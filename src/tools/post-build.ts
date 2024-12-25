@@ -43,7 +43,7 @@ type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TNa
 const mode = getCliArg<CliArg<"config-mode">>("mode", "development");
 const branch = getCliArg<CliArg<"config-branch">>("branch", (mode === "production" ? "main" : "develop"));
 const host = getCliArg<CliArg<"config-host">>("host", "github");
-const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "github");
+const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "jsdelivr");
 const suffix = getCliArg<CliArg<"config-suffix">>("suffix", "");
 
 const envPort = Number(env.DEV_SERVER_PORT);
@@ -145,6 +145,8 @@ I welcome every contribution on GitHub!
         BRANCH: branch,
         HOST: host,
         BUILD_NUMBER: buildNbr,
+        ASSET_SOURCE: assetSource,
+        DEV_SERVER_PORT: devServerPort,
       },
     );
 
@@ -411,9 +413,15 @@ function getResourceUrl(path: string, ghRef?: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
+  assetPath += path;
+  const finalPath = `${ghRef ?? `v${pkg.version}`}${assetPath}`;
   return assetSource === "local"
-    ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUid}`
-    : `https://raw.githubusercontent.com/${repo}/${ghRef ?? `v${pkg.version}`}${assetPath}${path}`;
+    ? `http://localhost:${devServerPort}${assetPath}?b=${buildUid}`
+    : (
+      assetSource === "github"
+        ? `https://raw.githubusercontent.com/${repo}/${finalPath}`
+        : `https://cdn.jsdelivr.net/gh/${repo}@${finalPath}`
+    );
 }
 
 /**

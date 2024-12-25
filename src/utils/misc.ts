@@ -1,6 +1,6 @@
 import { compress, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { buildNumber, changelogUrl, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
+import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";
 import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
@@ -257,15 +257,26 @@ export async function getResourceUrl(name: ResourceKey | "_", uncached = false) 
     const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
 
     if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-      const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr.path : resObjOrStr;
-      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr.ref : buildNumber;
+      const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
+      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber;
 
-      if((pathName?.startsWith("/") && pathName.length > 1))
-        return `https://raw.githubusercontent.com/${repo}/${ghRef}${pathName}`;
-      else if(pathName && pathName.startsWith("http"))
-        return pathName;
-      else if(pathName && pathName.length > 0)
-        return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${pathName}`;
+      if(pathName) {
+        return pathName.startsWith("http")
+          ? pathName
+          : (() => {
+            let path = pathName;
+            if(path.startsWith("/"))
+              path = path.slice(1);
+            switch(assetSource) {
+            case "jsdelivr":
+              return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/assets/${path}`;
+            case "github":
+              return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${path}`;
+            case "local":
+              return `http://localhost:${devServerPort}/assets/${path}`;
+            }
+          })();
+      }
     }
 
     warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);

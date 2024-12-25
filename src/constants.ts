@@ -1,27 +1,37 @@
 import { randomId } from "@sv443-network/userutils";
 import { LogLevel } from "./types.js";
 
-// these variables will have their values replaced by the build script:
+// these strings will have their values replaced by the post-build script:
 const modeRaw = "#{{MODE}}";
 const branchRaw = "#{{BRANCH}}";
 const hostRaw = "#{{HOST}}";
 const buildNumberRaw  = "#{{BUILD_NUMBER}}";
+const assetSourceRaw  = "#{{ASSET_SOURCE}}";
+const devServerPortRaw  = "#{{DEV_SERVER_PORT}}";
 
-/** The mode in which the script was built (production or development) */
-export const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw) as "production" | "development";
-/** The branch to use in various URLs that point to the GitHub repo */
-export const branch = (branchRaw.match(/^#{{.+}}$/) ? "main" : branchRaw) as "main" | "develop";
+const getRawVal = <T extends string | number>(rawVal: string, defaultVal: T) =>
+  (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal) as T;
+
 /** Path to the GitHub repo */
 export const repo = "Sv443/BetterYTM";
+/** The mode in which the script was built (production or development) */
+export const mode = getRawVal<"production" | "development">(modeRaw, "production");
+/** The branch to use in various URLs that point to the GitHub repo */
+export const branch = getRawVal<"main" | "develop">(branchRaw, "main");
 /** Which host the userscript was installed from */
-export const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw) as "github" | "greasyfork" | "openuserjs";
+export const host = getRawVal<"github" | "greasyfork" | "openuserjs">(hostRaw, "github");
 /** The build number of the userscript */
-export const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw) as string; // asserted as generic string instead of literal
+export const buildNumber = getRawVal<string>(buildNumberRaw, "BUILD_ERROR!");
+/** The source of the assets - github, jsdelivr or local */
+export const assetSource = getRawVal<"github" | "jsdelivr" | "local">(assetSourceRaw, "jsdelivr");
+/** The port of the dev server */
+export const devServerPort = Number(getRawVal<number>(devServerPortRaw, 8710));
 
-export const changelogUrl = `https://raw.githubusercontent.com/${repo}/${branch}/changelog.md`;
+/** URL to the changelog file */
+export const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber??branch}/changelog.md`;
 
 /** The URL search parameters at the earliest possible time */
-export const initialParams = new URL(location.href).searchParams;
+export const initialParams = Object.assign({}, new URL(location.href).searchParams);
 
 /** Names of platforms by key of {@linkcode host} */
 export const platformNames = {
@@ -38,7 +48,7 @@ export const sessionStorageAvailable =
   typeof sessionStorage?.setItem === "function"
   && (() => {
     try {
-      const key = `_bytm_test_${randomId(6, 36)}`;
+      const key = `_bytm_test_${randomId(6, 36, false, true)}`;
       sessionStorage.setItem(key, "test");
       sessionStorage.removeItem(key);
       return true;

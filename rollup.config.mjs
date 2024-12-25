@@ -28,7 +28,7 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
     mode: args["config-mode"] ?? (process.env.NODE_ENV === "production" ? "production" : "development"),
     branch: args["config-branch"] ?? "develop",
     host: args["config-host"] ?? "github",
-    assetSource: args["config-assetSource"] ?? "github",
+    assetSource: args["config-assetSource"] ?? "jsdelivr",
     suffix: args["config-suffix"] ?? "",
   };
   const passCliArgsStr = Object.entries(passCliArgs).map(([key, value]) => `--${key}=${value}`).join(" ");

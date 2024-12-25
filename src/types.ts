@@ -19,7 +19,7 @@ export type RollupArgs = Partial<{
   "config-mode": "development" | "production";
   "config-branch": "main" | "develop";
   "config-host": "greasyfork" | "github" | "openuserjs";
-  "config-assetSource": "local" | "github";
+  "config-assetSource": "local" | "github" | "jsdelivr";
   "config-suffix": string;
 }>;
 
