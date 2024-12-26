@@ -246,9 +246,9 @@ export async function reloadTab() {
 
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
- * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache  
+ * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache  
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
- * @param uncached Set to true to always fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
+ * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
 export async function getResourceUrl(name: ResourceKey | "_", uncached = false) {
   let url = !uncached && await GM.getResourceUrl(name);
@@ -320,14 +320,14 @@ export function getPreferredLocale(): TrLocale {
 
 /** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
 export async function resourceAsString(resource: ResourceKey | "_") {
+  const resourceUrl = await getResourceUrl(resource);
   try {
-    const resourceUrl = await getResourceUrl(resource);
     if(!resourceUrl)
       throw new Error(`Couldn't find URL for resource '${resource}'`);
     return await (await fetchAdvanced(resourceUrl)).text();
   }
   catch(err) {
-    error("Couldn't get SVG element from resource:", err);
+    error(`Couldn't get SVG element '${resource}' from resource at URL '${resourceUrl}':`, err);
     return null;
   }
 }
