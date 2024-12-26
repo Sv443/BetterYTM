@@ -1944,7 +1944,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
 >   
 > Properties:  
-> - `speed?: string` - The speed of the ripple effect. Can be "faster", "fast", "normal", "slow" or "slower" (defaults to "normal")
+> - `speed?: string` - The speed of the ripple effect. Can be "fastest", "fast", "normal", "slow" or "slowest" (defaults to "normal")
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 

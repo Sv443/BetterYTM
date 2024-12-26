@@ -2,24 +2,24 @@ import "./ripple.css";
 
 type RippleProps = {
   /** How fast should the animation be - defaults to "normal" */
-  speed?: "faster" | "fast" | "normal" | "slow" | "slower";
+  speed?: "fastest" | "fast" | "normal" | "slow" | "slowest";
 };
 
 /**
  * Creates an element with a ripple effect on click.
- * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
+ * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
 export function createRipple<TElem extends HTMLElement>(rippleElement: TElem, properties?: RippleProps): TElem;
 /**
  * Creates an element with a ripple effect on click.
- * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
+ * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
 export function createRipple(rippleElement?: undefined, properties?: RippleProps): HTMLDivElement;
 /**
  * Creates an element with a ripple effect on click.
- * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
+ * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
 export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, properties?: RippleProps) {
@@ -31,8 +31,7 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
   const rippleEl = rippleElement ?? document.createElement("div");
   rippleEl.classList.add("bytm-ripple", props.speed);
 
-  const updateRippleWidth = () => 
-    rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
+  const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
 
   rippleEl.addEventListener("mousedown", (e) => {
     updateRippleWidth();

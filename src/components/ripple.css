@@ -8,7 +8,7 @@ body .bytm-ripple {
   height: var(--bytm-ripple-height, auto);
 }
 
-body .bytm-ripple.faster {
+body .bytm-ripple.fastest {
   --bytm-ripple-anim-duration: 0.15s;
 }
 
@@ -20,12 +20,19 @@ body .bytm-ripple.slow {
   --bytm-ripple-anim-duration: 0.75s;
 }
 
-body .bytm-ripple.slower {
+body .bytm-ripple.slowest {
   --bytm-ripple-anim-duration: 1s;
 }
 
 .bytm-ripple-area {
   --bytm-ripple-min-size: 100px;
+  /* --bytm-ripple-cont-width is added at runtime since there's no better way of getting the parent's width */
+  --bytm-ripple-expanded-size: calc(
+    max(
+      var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
+      var(--bytm-ripple-min-size)
+    )
+  );
   position: absolute;
   background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.175));
   transform: translate(-50%, -50%);
@@ -42,19 +49,8 @@ body .bytm-ripple.slower {
     opacity: 1;
   }
   100% {
-    /* Variable is added to .bytm-ripple by JS at runtime since there's no better way of getting the parent's width inside of here */
-    width: calc(
-      max(
-        var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
-        var(--bytm-ripple-min-size)
-      )
-    );
-    height: calc(
-      max(
-        var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
-        var(--bytm-ripple-min-size)
-      )
-    );
+    width: var(--bytm-ripple-expanded-size, 100%);
+    height: var(--bytm-ripple-expanded-size, 100%);
     opacity: 0;
   }
 }

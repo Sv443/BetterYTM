@@ -20,6 +20,10 @@
     - Constants:
       - `initialParams` ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)), the search params at the initial point of loading BYTM
       - `sessionStorageAvailable` (boolean), whether the browser supports [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+  - Changes to the BYTM API:
+    - BREAKING: Renamed `createRipple()`'s `speed` prop values:
+      - From `faster` to `fastest`
+      - From `slower` to `slowest`
 
 </details>
 
