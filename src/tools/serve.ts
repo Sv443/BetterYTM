@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Server } from "node:http";
 import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
 import k from "kleur";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
@@ -20,6 +21,9 @@ const autoExitRaw = argv.find(arg => arg.startsWith("--auto-exit-time="))?.split
 const autoExitTime: number | undefined = !isNaN(Number(autoExitRaw)) ? Number(autoExitRaw) * 1000 : undefined;
 
 const app = express();
+
+app.use(cors());
+
 let server: Server;
 
 enableLogging && app.use((_req, _res, next) => {
