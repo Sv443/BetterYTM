@@ -31,7 +31,7 @@ export const devServerPort = Number(getRawVal<number>(devServerPortRaw, 8710));
 export const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber??branch}/changelog.md`;
 
 /** The URL search parameters at the earliest possible time */
-export const initialParams = Object.assign({}, new URL(location.href).searchParams);
+export const initialParams = new URL(location.href).searchParams;
 
 /** Names of platforms by key of {@linkcode host} */
 export const platformNames = {
