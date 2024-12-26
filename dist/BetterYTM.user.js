@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/dist/BetterYTM.css#sha256=JU4cnENLB/G8BZo0eN0BbOw1+1xbetqjqiyjUAf7/xw=
-// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@53868f7a/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/dist/BetterYTM.css#sha256=uqAnIweqbddc+SDYDXGJS1z8G3W86xvSLkKnRWedhq8=
+// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.4.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -129,7 +129,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "53868f7a";
+const buildNumberRaw = "739f1734";
 const assetSourceRaw = "jsdelivr";
 const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
@@ -150,7 +150,7 @@ const devServerPort = Number(getRawVal(devServerPortRaw, 8710));
 /** URL to the changelog file */
 const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber !== null && buildNumber !== void 0 ? buildNumber : branch}/changelog.md`;
 /** The URL search parameters at the earliest possible time */
-const initialParams = Object.assign({}, new URL(location.href).searchParams);
+const initialParams = new URL(location.href).searchParams;
 /** Names of platforms by key of {@linkcode host} */
 const platformNames = {
     github: "GitHub",
@@ -836,7 +836,7 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };/**
  * Creates an element with a ripple effect on click.
- * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
+ * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
 function createRipple(rippleElement, properties) {
@@ -2180,6 +2180,7 @@ var devDependencies = {
 	"@storybook/html": "^8.1.10",
 	"@storybook/html-vite": "^8.1.10",
 	"@storybook/test": "^8.1.10",
+	"@types/cors": "^2.8.17",
 	"@types/dompurify": "^3.0.5",
 	"@types/express": "^4.17.21",
 	"@types/greasemonkey": "^4.0.7",
@@ -2188,6 +2189,7 @@ var devDependencies = {
 	"@typescript-eslint/parser": "^8.0.0",
 	"@typescript-eslint/utils": "^8.0.0",
 	concurrently: "^9.0.1",
+	cors: "^2.8.5",
 	dotenv: "^16.4.5",
 	eslint: "^9.5.0",
 	"eslint-plugin-storybook": "^0.11.0",
@@ -4364,9 +4366,9 @@ async function reloadTab() {
 //#region resources
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
- * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
- * @param uncached Set to true to always fetch from the `raw.githubusercontent.com` URL instead of the GM resource cache
+ * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
 async function getResourceUrl(name, uncached = false) {
     var _a;
@@ -4424,14 +4426,14 @@ function getPreferredLocale() {
 }
 /** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
 async function resourceAsString(resource) {
+    const resourceUrl = await getResourceUrl(resource);
     try {
-        const resourceUrl = await getResourceUrl(resource);
         if (!resourceUrl)
             throw new Error(`Couldn't find URL for resource '${resource}'`);
         return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
     }
     catch (err) {
-        error("Couldn't get SVG element from resource:", err);
+        error(`Couldn't get SVG element '${resource}' from resource at URL '${resourceUrl}':`, err);
         return null;
     }
 }
