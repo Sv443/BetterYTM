@@ -1,9 +1,11 @@
 # BetterYTM - Contributing Guide
 Thank you for your interest in contributing to BetterYTM!  
 This guide will help you get started with contributing to the project.  
-It contains boatloads of information on internal workings, how to set up the project for local development, how to submit translations and how to develop a plugin that interfaces with BetterYTM.  
   
-If you have any questions or need help, feel free to contact me, [see my homepage](https://sv443.net/) for contact info.  
+It contains boatloads of information on internal workings, how to set up the project for local development, how to submit translations and how to develop a plugin that interfaces with BetterYTM.  
+Also, each folder of the project should contain a `README.md` file that further explains the contents of the folder and how to work with them in much more detail.  
+  
+If you have any questions or need help, feel free to contact me ([visit my homepage](https://sv443.net/) for contact info).  
 Or you can also [join my Discord server](https://dc.sv443.net) to get in touch or get help.  
 
 <br>

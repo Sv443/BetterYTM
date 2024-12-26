@@ -29,6 +29,7 @@ The keys of the object are the locale codes, and the values are the locale objec
 | `emoji`          | `string`   | The flag emoji of the locale                               |
 | `userscriptDesc` | `string`   | The description of the userscript in the locale's language |
 | `authors`        | `string[]` | The authors of the translations                            |
+| `altLocales`     | `string[]` | Alternative locales that are similar to this one           |
 
 <br>
 
@@ -61,16 +62,16 @@ The configuration object can have the following properties:
 
 ### [`require.json`](require.json)
 This file contains the npm libraries that are loaded into the runtime through the `@require` userscript directive.  
-This is done to massively reduce the bundle size and make use of the userscript extension's caching.  
-Each library will be set as an external in the [Rollup configuration](../rollup.config.js) to prevent it from including it in the bundle.  
-The version of each package will be inferred from [`package.json`](../package.json) to ensure consistent versions across the project.  
+This is done to massively reduce the bundle size and make use of the userscript manager extension's caching.  
+Each library will be set as an external in the [rollup configuration](../rollup.config.js) to prevent it from including it in the bundle.  
+The version of each package will be parsed from [`package.json`](../package.json)'s `dependencies` or `devDependencies` to ensure consistent versions across the project.  
   
 Inside the file is an array of objects, which each have one of the following properties:  
   
 Using npm packages through a CDN:
 | Property   | Type      | Description                                                                         |
 | :--------- | :-------- | :---------------------------------------------------------------------------------- |
-| `pkgName`  | `string`  | The name of the npm package, as in `npm i <pkgName>`                                |
+| `pkgName`  | `string`  | The name of the npm package, as in `npm i pkgName`                                |
 | `path`     | `string`  | The path to the file that should be loaded, relative to the library root dir        |
 | `global`   | `string`  | The name of the global variable that the library exports                            |
 | `baseUrl?` | `string`  | Base URL of the CDN to use - `https://cdn.jsdelivr.net/npm/` by default - package will be appended as `pkgName@versionFromPkgJson` |

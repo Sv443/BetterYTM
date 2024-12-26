@@ -8,7 +8,7 @@
 <h4>Available in these languages: <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="English (Great Britain)">🇬🇧&nbsp;GB</abbr>, <abbr title="English (United States)">🇺🇸&nbsp;US</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr>, <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr></h4>
 
 ---
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
 
@@ -47,7 +47,7 @@ If you disabled the watermark, you can still open it by clicking your avatar in 
 <br><br><br>
 
 ## Installation:
-
+Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
 1. **Install a userscript manager browser extension - I really recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)).**  
   <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
 
@@ -99,6 +99,21 @@ You can also join my Discord server and ask your questions there or just hang ou
 
 <br><br>
 
+## Privacy:
+BetterYTM does not collect any data about you that isn't strictly necessary for its features to work.  
+All data is recorded and stored on your device or on the servers of the site the script runs on.  
+  
+BetterYTM makes use of external services and APIs to provide some of its features, which may collect data about you.  
+In every case, only the bare minimum of data is sent to these services and only when necessary.  
+This data includes your IP address and the ID or title and author of the video you're watching.  
+  
+Find more info about the privacy of these services here:
+- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md)
+- [SponsorBlock - Privacy Policy](https://gist.github.com/ajayyy/aa9f8ded2b573d4f73a3ffa0ef74f796#requests-sent-to-the-server-while-using-the-extension)
+- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en)
+
+<br><br>
+
 ### Development:
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
@@ -119,9 +134,9 @@ This userscript depends on these projects:
   
 For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
   
-Icons:  
+#### Icon attributions:  
 - Most icons are from [Material Icons](https://fonts.google.com/icons)
-- For external icon attributions, see [`assets/images/external/`](assets/images/external/README.md)
+- For external icon attributions, see [`assets/images/external/README.md`](assets/images/external/README.md)
 
 <br><br>
 

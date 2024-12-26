@@ -102,7 +102,7 @@ async function genHeader() {
 <h4>Available in these languages: ${langStr}</h4>
 
 ---
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
 `;
 }
 
