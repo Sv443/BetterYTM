@@ -16,9 +16,9 @@ const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Whether to log requests to the console */
 const enableLogging = false;
 
-const autoExitRaw = argv.find(arg => arg.startsWith("--auto-exit-time="))?.split("=")[1];
+const autoExitRaw = Number(argv.find(arg => arg.startsWith("--auto-exit-time="))?.split("=")[1]);
 /** Time in milliseconds after which the process should automatically exit */
-const autoExitTime: number | undefined = !isNaN(Number(autoExitRaw)) ? Number(autoExitRaw) * 1000 : undefined;
+const autoExitTime: number | undefined = !isNaN(autoExitRaw) ? autoExitRaw * 1000 : undefined;
 
 const app = express();
 

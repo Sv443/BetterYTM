@@ -110,6 +110,7 @@ To edit an existing translation, please follow these steps:
   It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)).  
   Once it has finished building, a link will be printed to the console. Open it to install the userscript.  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
+  If you need to test with resources that weren't committed and pushed to GitHub yet, you may use `pnpm run dev-local` instead.
 - **`pnpm run build-prod`**  
   Builds the userscript for production for all hosts with their respective options already set.  
   Outputs the files using a suffix predefined in the `package.json` file.  
