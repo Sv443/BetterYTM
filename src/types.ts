@@ -9,8 +9,10 @@ import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, crea
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { showPrompt } from "./dialogs/prompt.js";
-import resources from "../assets/resources.json" with { type: "json" }; // eslint-disable-line @typescript-eslint/no-unused-vars
-import locales from "../assets/locales.json" with { type: "json" }; // eslint-disable-line @typescript-eslint/no-unused-vars
+import resources from "../assets/resources.json" with { type: "json" };
+import locales from "../assets/locales.json" with { type: "json" };
+
+void ["type imports only", resources, locales];
 
 //#region other
 
