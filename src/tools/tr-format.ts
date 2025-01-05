@@ -33,13 +33,13 @@ async function run() {
     if(!includeBased && localeObj.base)
       continue;
 
-    for(const k of Object.keys(enUS_obj.translations)) {
-      const val = localeObj?.translations?.[k];
+    for(const k of Object.keys(enUS_obj)) {
+      const val = localeObj?.[k];
       if(val)
         localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(val).trim()}"`);
       else {
         if(prepTranslate)
-          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n    "${k}": "",\n    "${k}": "${escapeJsonVal(enUS_obj.translations[k]).trim()}",`);
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n    "${k}": "",\n    "${k}": "${escapeJsonVal(enUS_obj[k]).trim()}",`);
         else
           localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
       }

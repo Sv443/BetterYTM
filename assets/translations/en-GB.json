@@ -1,7 +1,11 @@
 {
-  "base": "en-US",
-  "translations": {
-    "feature_category_behavior": "Behaviour",
-    "vote_ratio_blue_gray": "Blue and grey"
-  }
+  "meta": {
+    "base": "en-US",
+    "langName": "English",
+    "langNameEnglish": "English (Great Britain)",
+    "countryName": "Great Britain",
+    "authors": "Sv443"
+  },
+  "feature_category_behavior": "Behaviour",
+  "vote_ratio_blue_gray": "Blue and grey"
 }

@@ -8,7 +8,7 @@ import tr_enUS from "../../assets/translations/en-US.json" with { type: "json" }
 void [langMapping, tr_enUS];
 
 export type TrLocale = keyof typeof langMapping;
-export type TrKey = keyof (typeof tr_enUS["translations"]);
+export type TrKey = keyof typeof tr_enUS;
 type TFuncKey = TrKey | (string & {});
 
 /** Contains the identifiers of all initialized and loaded translation locales */
@@ -30,12 +30,14 @@ export async function initTranslations(locale: TrLocale) {
       fallbackTrans = await fetchLocaleJson("en-US");
 
     // merge with base translations if specified
-    const baseTransFile = transFile.base ? await fetchLocaleJson(transFile.base) : undefined;
+    const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
+      ? await fetchLocaleJson(transFile.base as TrLocale)
+      : undefined;
 
-    const translations: typeof tr_enUS["translations"] = {
-      ...(fallbackTrans?.translations ?? {}),
-      ...(baseTransFile?.translations ?? {}),
-      ...transFile.translations,
+    const translations: typeof tr_enUS = {
+      ...(fallbackTrans ?? {}),
+      ...(baseTransFile ?? {}),
+      ...transFile,
     };
 
     tr.addLanguage(locale, translations);
