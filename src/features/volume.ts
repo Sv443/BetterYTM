@@ -250,12 +250,15 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
   const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
   GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
 
-  if(!getFeature("setInitialTabVolume") || reloadTabVol === 0 || isNaN(reloadTabVol))
+  if((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
     return;
 
   await waitVideoElementReady();
 
-  const initialVol = reloadTabVol > 0 ? Math.round(reloadTabVol) : getFeature("initialTabVolumeLevel");
+  const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
+
+  if(isNaN(initialVol) || initialVol < 0 || initialVol > 100)
+    return;
 
   if(getFeature("volumeSharedBetweenTabs")) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
