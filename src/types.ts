@@ -1,4 +1,4 @@
-import type { NanoEmitter } from "@sv443-network/userutils";
+import type { NanoEmitter, Prettify } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
@@ -256,11 +256,12 @@ export type PluginEventMap =
   & InterfaceEventsMap;
 
 /** A plugin in either the queue or registered map */
-export type PluginItem = 
+export type PluginItem = Prettify<
   & {
     def: PluginDef;
   }
-  & Pick<PluginRegisterResult, "events">;
+  & Pick<PluginRegisterResult, "events">
+>;
 
 //#region plugin interface
 
