@@ -24,6 +24,8 @@ export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
 export const migrations: DataMigrationsDict = {
   // 1 -> 2 (<=v1.0)
   2: (oldData: Record<string, unknown>) => {
+    if(typeof oldData !== "object" || oldData === null)
+      return defaultData;
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
     delete oldData.queueButtons;
     return {

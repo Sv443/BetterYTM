@@ -704,7 +704,7 @@ export async function initHideCursorOnIdle() {
       };
 
       vidContainer.addEventListener("mouseenter", onMove);
-      vidContainer.addEventListener("mousemove", debounce(onMove, 200, "rising"));
+      vidContainer.addEventListener("mousemove", debounce(onMove, 200));
       vidContainer.addEventListener("mouseleave", () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
         hideTransTimer && clearTimeout(hideTransTimer);

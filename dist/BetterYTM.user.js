@@ -1,101 +1,203 @@
-// ==UserScript==
-// @name              BetterYTM
-// @namespace         https://github.com/Sv443/BetterYTM
-// @version           2.2.0
-// @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @homepageURL       https://github.com/Sv443/BetterYTM#readme
-// @supportURL        https://github.com/Sv443/BetterYTM/issues
-// @license           AGPL-3.0-only
-// @author            Sv443
-// @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/images/logo/logo_dev_48.png
-// @match             https://music.youtube.com/*
-// @match             https://www.youtube.com/*
-// @run-at            document-start
-// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-LI Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-LU Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en    Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-CA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-AU Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-IE Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-NZ Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-ZA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
-// @description:es    Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
-// @description:es-MX Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
-// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr    Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-CA Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-BE Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-CH Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-LU Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
-// @description:hi    YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
-// @description:hi-NP YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
-// @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
-// @description:ja    YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
-// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
-// @description:pt    Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
-// @description:pt-PT Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
-// @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh    YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @connect           api.sv443.net
-// @connect           github.com
-// @connect           raw.githubusercontent.com
-// @connect           youtube.com
-// @connect           returnyoutubedislikeapi.com
-// @noframes
-// @grant             GM.getValue
-// @grant             GM.setValue
-// @grant             GM.deleteValue
-// @grant             GM.getResourceUrl
-// @grant             GM.setClipboard
-// @grant             GM.xmlHttpRequest
-// @grant             GM.openInTab
-// @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/dist/BetterYTM.css#sha256=uqAnIweqbddc+SDYDXGJS1z8G3W86xvSLkKnRWedhq8=
-// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@739f1734/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.4.0/dist/index.global.js
-// @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
-// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.1.6
-// @grant             GM.registerMenuCommand
-// @grant             GM.listValues
-// ==/UserScript==
-/*
-▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
-█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
-█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
-█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
-
-        Made with ❤️ by Sv443
-I welcome every contribution on GitHub!
-  https://github.com/Sv443/BetterYTM
-*/
-
-/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this 🖕 */
-
-(function(UserUtils,DOMPurify,compareVersions,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
+(function(UserUtils,DOMPurify,compareVersions,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var alwaysExternalAssetPatterns = [
+	"^icon-",
+	"^img-",
+	"^font-",
+	"^doc-",
+	"^trans-"
+];
+var resources = {
+	"css-above_queue_btns": "style/aboveQueueBtns.css",
+	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
+	"css-anchor_improvements": "style/anchorImprovements.css",
+	"css-auto_like": "style/autoLike.css",
+	"css-fix_hdr": "style/fixHDR.css",
+	"css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
+	"css-fix_spacing": "style/fixSpacing.css",
+	"css-fix_sponsorblock": "style/fixSponsorBlock.css",
+	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
+	"css-show_votes": "style/showVotes.css",
+	"css-vol_slider_size": "style/volSliderSize.css",
+	"doc-license": {
+		path: "/LICENSE.txt",
+		ref: "$BRANCH",
+		integrity: false
+	},
+	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
+	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
+	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
+	"icon-advanced_mode": "icons/plus_circle_small.svg",
+	"icon-alert": "icons/alert.svg",
+	"icon-arrow_down": "icons/arrow_down.svg",
+	"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
+	"icon-auto_like": "icons/auto_like.svg",
+	"icon-clear_list": "icons/clear_list.svg",
+	"icon-copy": "icons/copy.svg",
+	"icon-delete": "icons/delete.svg",
+	"icon-edit": "icons/edit.svg",
+	"icon-error": "icons/error.svg",
+	"icon-experimental": "icons/beaker_small.svg",
+	"icon-globe_small": "icons/globe_small.svg",
+	"icon-globe": "icons/globe.svg",
+	"icon-help": "icons/help.svg",
+	"icon-image_filled": "icons/image_filled.svg",
+	"icon-image": "icons/image.svg",
+	"icon-link": "icons/link.svg",
+	"icon-lyrics": "icons/lyrics.svg",
+	"icon-prompt": "icons/help.svg",
+	"icon-reload": "icons/refresh.svg",
+	"icon-restore_time": "icons/restore_time.svg",
+	"icon-skip_to": "icons/skip_to.svg",
+	"icon-speed": "icons/speed.svg",
+	"icon-spinner": "icons/spinner.svg",
+	"icon-upload": "icons/upload.svg",
+	"img-close": "images/close.png",
+	"img-discord": "images/external/discord.png",
+	"img-github": "images/external/github.png",
+	"img-greasyfork": "images/external/greasyfork.png",
+	"img-logo_dev": "images/logo/logo_dev_48.png",
+	"img-logo": "images/logo/logo_48.png",
+	"img-openuserjs": "images/external/openuserjs.png",
+	"trans-de-DE": "translations/de-DE.json",
+	"trans-en-US": "translations/en-US.json",
+	"trans-en-GB": "translations/en-GB.json",
+	"trans-es-ES": "translations/es-ES.json",
+	"trans-fr-FR": "translations/fr-FR.json",
+	"trans-hi-IN": "translations/hi-IN.json",
+	"trans-ja-JP": "translations/ja-JP.json",
+	"trans-pt-BR": "translations/pt-BR.json",
+	"trans-zh-CN": "translations/zh-CN.json"
+};
+var resourcesJson = {
+	alwaysExternalAssetPatterns: alwaysExternalAssetPatterns,
+	resources: resources
+};var langMapping = {
+	"de-DE": {
+	name: "Deutsch (Deutschland)",
+	nameEnglish: "German (Germany)",
+	emoji: "🇩🇪",
+	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"de",
+		"de-AT",
+		"de-CH",
+		"de-LI",
+		"de-LU"
+	]
+},
+	"en-US": {
+	name: "English (United States)",
+	nameEnglish: "English (United States)",
+	emoji: "🇺🇸",
+	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"en",
+		"en-CA"
+	]
+},
+	"en-GB": {
+	name: "English (Great Britain)",
+	nameEnglish: "English (Great Britain)",
+	emoji: "🇬🇧",
+	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"en-AU",
+		"en-IE",
+		"en-NZ",
+		"en-ZA"
+	]
+},
+	"es-ES": {
+	name: "Español (España)",
+	nameEnglish: "Spanish (Spain)",
+	emoji: "🇪🇸",
+	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"es",
+		"es-MX"
+	]
+},
+	"fr-FR": {
+	name: "Français (France)",
+	nameEnglish: "French (France)",
+	emoji: "🇫🇷",
+	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"fr",
+		"fr-CA",
+		"fr-BE",
+		"fr-CH",
+		"fr-LU"
+	]
+},
+	"hi-IN": {
+	name: "हिंदी (भारत)",
+	nameEnglish: "Hindi (India)",
+	emoji: "🇮🇳",
+	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"hi",
+		"hi-NP"
+	]
+},
+	"ja-JP": {
+	name: "日本語 (日本)",
+	nameEnglish: "Japanese (Japan)",
+	emoji: "🇯🇵",
+	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"ja"
+	]
+},
+	"pt-BR": {
+	name: "Português (Brasil)",
+	nameEnglish: "Portuguese (Brazil)",
+	emoji: "🇧🇷",
+	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"pt",
+		"pt-PT"
+	]
+},
+	"zh-CN": {
+	name: "中文（简化，中国）",
+	nameEnglish: "Chinese (Simplified, China)",
+	emoji: "🇨🇳",
+	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
+	authors: [
+		"Sv443"
+	],
+	altLocales: [
+		"zh",
+		"zh-TW",
+		"zh-HK",
+		"zh-SG"
+	]
+}
+};// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -126,12 +228,12 @@ var PluginIntent;
     /** Plugin can write to auto-like data */
     PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
 })(PluginIntent || (PluginIntent = {}));// these strings will have their values replaced by the post-build script:
-const modeRaw = "development";
-const branchRaw = "develop";
-const hostRaw = "github";
-const buildNumberRaw = "739f1734";
-const assetSourceRaw = "jsdelivr";
-const devServerPortRaw = "8710";
+const modeRaw = "#{{MODE}}";
+const branchRaw = "#{{BRANCH}}";
+const hostRaw = "#{{HOST}}";
+const buildNumberRaw = "#{{BUILD_NUMBER}}";
+const assetSourceRaw = "#{{ASSET_SOURCE}}";
+const devServerPortRaw = "#{{DEV_SERVER_PORT}}";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
 /** Path to the GitHub repo */
 const repo = "Sv443/BetterYTM";
@@ -264,138 +366,10 @@ function addLyricsCacheEntryBest(artist, song, url) {
     log("Added cache entry for best result", artist, "-", song, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
     return lyricsCacheMgr.setData({ cache });
-}var langMapping = {
-	"de-DE": {
-	name: "Deutsch (Deutschland)",
-	nameEnglish: "German (Germany)",
-	emoji: "🇩🇪",
-	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"de",
-		"de-AT",
-		"de-CH",
-		"de-LI",
-		"de-LU"
-	]
-},
-	"en-US": {
-	name: "English (United States)",
-	nameEnglish: "English (United States)",
-	emoji: "🇺🇸",
-	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"en",
-		"en-CA"
-	]
-},
-	"en-GB": {
-	name: "English (Great Britain)",
-	nameEnglish: "English (Great Britain)",
-	emoji: "🇬🇧",
-	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"en-AU",
-		"en-IE",
-		"en-NZ",
-		"en-ZA"
-	]
-},
-	"es-ES": {
-	name: "Español (España)",
-	nameEnglish: "Spanish (Spain)",
-	emoji: "🇪🇸",
-	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"es",
-		"es-MX"
-	]
-},
-	"fr-FR": {
-	name: "Français (France)",
-	nameEnglish: "French (France)",
-	emoji: "🇫🇷",
-	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"fr",
-		"fr-CA",
-		"fr-BE",
-		"fr-CH",
-		"fr-LU"
-	]
-},
-	"hi-IN": {
-	name: "हिंदी (भारत)",
-	nameEnglish: "Hindi (India)",
-	emoji: "🇮🇳",
-	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"hi",
-		"hi-NP"
-	]
-},
-	"ja-JP": {
-	name: "日本語 (日本)",
-	nameEnglish: "Japanese (Japan)",
-	emoji: "🇯🇵",
-	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"ja"
-	]
-},
-	"pt-BR": {
-	name: "Português (Brasil)",
-	nameEnglish: "Portuguese (Brazil)",
-	emoji: "🇧🇷",
-	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"pt",
-		"pt-PT"
-	]
-},
-	"zh-CN": {
-	name: "中文（简化，中国）",
-	nameEnglish: "Chinese (Simplified, China)",
-	emoji: "🇨🇳",
-	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
-	authors: [
-		"Sv443"
-	],
-	altLocales: [
-		"zh",
-		"zh-TW",
-		"zh-HK",
-		"zh-SG"
-	]
-}
-};/** Contains the identifiers of all initialized and loaded translation locales */
+}/** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set();
 /** Initializes the translations */
 async function initTranslations(locale) {
-    var _a, _b;
     if (initializedLocales.has(locale))
         return;
     initializedLocales.add(locale);
@@ -405,8 +379,10 @@ async function initTranslations(locale) {
         if (getFeature("localeFallback"))
             fallbackTrans = await fetchLocaleJson("en-US");
         // merge with base translations if specified
-        const baseTransFile = transFile.base ? await fetchLocaleJson(transFile.base) : undefined;
-        const translations = Object.assign(Object.assign(Object.assign({}, ((_a = fallbackTrans === null || fallbackTrans === void 0 ? void 0 : fallbackTrans.translations) !== null && _a !== void 0 ? _a : {})), ((_b = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _b !== void 0 ? _b : {})), transFile.translations);
+        const baseTransFile = typeof (transFile === null || transFile === void 0 ? void 0 : transFile.meta) === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
+            ? await fetchLocaleJson(transFile.base)
+            : undefined;
+        const translations = Object.assign(Object.assign(Object.assign({}, (fallbackTrans !== null && fallbackTrans !== void 0 ? fallbackTrans : {})), (baseTransFile !== null && baseTransFile !== void 0 ? baseTransFile : {})), transFile);
         UserUtils.tr.addLanguage(locale, translations);
         info(`Loaded translations for locale '${locale}'`);
     }
@@ -2105,10 +2081,11 @@ var main = "./src/index.ts";
 var type = "module";
 var scripts = {
 	dev: "concurrently \"nodemon --exec pnpm run build-private-dev\" \"pnpm run serve\"",
+	"dev-local": "concurrently \"nodemon --exec pnpm run build-private-dev --config-assetSource=local\" \"pnpm run serve\"",
 	serve: "pnpm run node-ts ./src/tools/serve.ts",
 	lint: "eslint . && tsc --noEmit",
 	build: "rollup -c",
-	"build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
+	"build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
 	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
 	preview: "pnpm run build-prod-gh --config-assetSource=local && pnpm run serve --auto-exit-time=6",
 	"build-prod": "pnpm run build-prod-gh && pnpm run build-prod-gf && pnpm run build-prod-oujs",
@@ -2160,7 +2137,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^8.4.0",
+	"@sv443-network/userutils": "^9.0.2",
 	"compare-versions": "^6.1.0",
 	dompurify: "^3.1.6",
 	marked: "^12.0.2",
@@ -4101,79 +4078,7 @@ class PluginError extends Error {
         super(message);
         this.name = "PluginError";
     }
-}var alwaysExternalAssetPatterns = [
-	"^icon-",
-	"^img-",
-	"^font-",
-	"^doc-",
-	"^trans-"
-];
-var resources = {
-	"css-above_queue_btns": "style/aboveQueueBtns.css",
-	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
-	"css-anchor_improvements": "style/anchorImprovements.css",
-	"css-auto_like": "style/autoLike.css",
-	"css-fix_hdr": "style/fixHDR.css",
-	"css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
-	"css-fix_spacing": "style/fixSpacing.css",
-	"css-fix_sponsorblock": "style/fixSponsorBlock.css",
-	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
-	"css-show_votes": "style/showVotes.css",
-	"css-vol_slider_size": "style/volSliderSize.css",
-	"doc-license": {
-		path: "/LICENSE.txt",
-		ref: "$BRANCH",
-		integrity: false
-	},
-	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
-	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
-	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
-	"icon-advanced_mode": "icons/plus_circle_small.svg",
-	"icon-alert": "icons/alert.svg",
-	"icon-arrow_down": "icons/arrow_down.svg",
-	"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
-	"icon-auto_like": "icons/auto_like.svg",
-	"icon-clear_list": "icons/clear_list.svg",
-	"icon-copy": "icons/copy.svg",
-	"icon-delete": "icons/delete.svg",
-	"icon-edit": "icons/edit.svg",
-	"icon-error": "icons/error.svg",
-	"icon-experimental": "icons/beaker_small.svg",
-	"icon-globe_small": "icons/globe_small.svg",
-	"icon-globe": "icons/globe.svg",
-	"icon-help": "icons/help.svg",
-	"icon-image_filled": "icons/image_filled.svg",
-	"icon-image": "icons/image.svg",
-	"icon-link": "icons/link.svg",
-	"icon-lyrics": "icons/lyrics.svg",
-	"icon-prompt": "icons/help.svg",
-	"icon-reload": "icons/refresh.svg",
-	"icon-restore_time": "icons/restore_time.svg",
-	"icon-skip_to": "icons/skip_to.svg",
-	"icon-speed": "icons/speed.svg",
-	"icon-spinner": "icons/spinner.svg",
-	"icon-upload": "icons/upload.svg",
-	"img-close": "images/close.png",
-	"img-discord": "images/external/discord.png",
-	"img-github": "images/external/github.png",
-	"img-greasyfork": "images/external/greasyfork.png",
-	"img-logo_dev": "images/logo/logo_dev_48.png",
-	"img-logo": "images/logo/logo_48.png",
-	"img-openuserjs": "images/external/openuserjs.png",
-	"trans-de-DE": "translations/de-DE.json",
-	"trans-en-US": "translations/en-US.json",
-	"trans-en-GB": "translations/en-GB.json",
-	"trans-es-ES": "translations/es-ES.json",
-	"trans-fr-FR": "translations/fr-FR.json",
-	"trans-hi-IN": "translations/hi-IN.json",
-	"trans-ja-JP": "translations/ja-JP.json",
-	"trans-pt-BR": "translations/pt-BR.json",
-	"trans-zh-CN": "translations/zh-CN.json"
-};
-var resourcesJson = {
-	alwaysExternalAssetPatterns: alwaysExternalAssetPatterns,
-	resources: resources
-};//#region misc
+}//#region misc
 let domain;
 /**
  * Returns the current domain as a constant string representation
@@ -5902,10 +5807,12 @@ async function checkSharedVolume() {
 async function setInitialTabVolume(sliderElem) {
     const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
     GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
-    if (!getFeature("setInitialTabVolume") || reloadTabVol === 0 || isNaN(reloadTabVol))
+    if ((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
         return;
     await waitVideoElementReady();
-    const initialVol = reloadTabVol > 0 ? Math.round(reloadTabVol) : getFeature("initialTabVolumeLevel");
+    const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
+    if (isNaN(initialVol) || initialVol < 0 || initialVol > 100)
+        return;
     if (getFeature("volumeSharedBetweenTabs")) {
         lastCheckedSharedVolume = ignoreVal = initialVol;
         if (getFeature("volumeSharedBetweenTabs"))
@@ -8075,4 +7982,4 @@ function registerDevCommands() {
     GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
     log("Registered dev menu commands");
 }
-preInit();})(UserUtils,DOMPurify,compareVersions,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(UserUtils,DOMPurify,compareVersions,marked);//# sourceMappingURL=BetterYTM.user.js.map

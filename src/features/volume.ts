@@ -57,11 +57,10 @@ export async function initVolumeFeatures() {
 
     addSelectorListener<HTMLInputElement>("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
       listener: (el) => listener("expand", el),
-      debounceEdge: "falling",
     });
   };
 
-  window.addEventListener("resize", debounce(onResize, 150, "falling"));
+  window.addEventListener("resize", debounce(onResize, 150));
   waitVideoElementReady().then(onResize);
   onResize();
 }

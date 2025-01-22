@@ -163,8 +163,7 @@ async function renderBody() {
           .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
       });
     },
-    250,
-    "rising"
+    250
   );
 
   const sortedChannels = autoLikeStore

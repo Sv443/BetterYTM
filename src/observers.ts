@@ -51,7 +51,6 @@ const defaultObserverOptions: SelectorObserverOptions = {
   disableOnNoListeners: false,
   enableOnAddListener: false,
   defaultDebounce: 150,
-  defaultDebounceEdge: "rising",
 };
 
 /** Global SelectorObserver instances usable throughout the script for improved performance */
@@ -105,7 +104,6 @@ export function initObservers() {
     //    enabled immediately
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
-      defaultDebounceEdge: "falling",
       defaultDebounce: 150,
       subtree: false,
     });
@@ -118,7 +116,6 @@ export function initObservers() {
     const bytmDialogContainerSelector = "#bytm-dialog-container";
     globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
       ...defaultObserverOptions,
-      defaultDebounceEdge: "falling",
       defaultDebounce: 100,
       subtree: true,
     });

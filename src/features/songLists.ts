@@ -76,8 +76,6 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
       all: true,
       continuous: true,
       debounce: 150,
-      // TODO: switch to longer debounce time and edge type "risingIdle" after UserUtils update
-      debounceEdge: "falling",
       listener: checkAddGenericBtns,
     });
 

@@ -347,7 +347,7 @@ async function mountCfgMenu() {
   };
 
   /** Call whenever the feature config is changed */
-  const confChanged = debounce(onCfgChange, 333, "falling");
+  const confChanged = debounce(onCfgChange, 333);
 
   const featureCfg = getFeatures();
   const featureCfgWithCategories = Object.entries(featInfo)
@@ -406,7 +406,7 @@ async function mountCfgMenu() {
       const step = "step" in ftInfo ? ftInfo.step : undefined;
       const val = featureCfg[featKey as FeatureKey];
 
-      const initialVal = val ?? ftDefault ?? undefined;
+      const initialVal = val ?? ftDefault;
 
       const ftConfElem = document.createElement("div");
       ftConfElem.classList.add("bytm-ftitem");
@@ -667,6 +667,9 @@ async function mountCfgMenu() {
           // custom input element:
           let customInputEl: HTMLElement | undefined;
 
+          if(initialVal === undefined)
+            return;
+
           switch(type) {
           case "hotkey":
             customInputEl = createHotkeyInput({
@@ -850,7 +853,7 @@ async function mountCfgMenu() {
 
   (document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
 
-  window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250, "rising"));
+  window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250));
 
   log("Added menu element");
 

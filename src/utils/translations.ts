@@ -14,6 +14,9 @@ type TFuncKey = TrKey | (string & {});
 /** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set<TrLocale>();
 
+/** The currently active locale */
+let activeLocale: TrLocale = "en-US";
+
 /** Initializes the translations */
 export async function initTranslations(locale: TrLocale) {
   if(initializedLocales.has(locale))
@@ -40,7 +43,7 @@ export async function initTranslations(locale: TrLocale) {
       ...transFile,
     };
 
-    tr.addLanguage(locale, translations);
+    tr.addTranslations(locale, translations);
 
     info(`Loaded translations for locale '${locale}'`);
   }
@@ -63,14 +66,14 @@ async function fetchLocaleJson(locale: TrLocale) {
 
 /** Sets the current language for translations */
 export function setLocale(locale: TrLocale) {
-  tr.setLanguage(locale);
+  activeLocale = locale;
   setGlobalProp("locale", locale);
   emitInterface("bytm:setLocale", { locale });
 }
 
 /** Returns the currently set language */
 export function getLocale() {
-  return tr.getLanguage() as TrLocale;
+  return activeLocale;
 }
 
 /** Returns whether the given translation key exists in the current locale */
@@ -85,7 +88,7 @@ export function hasKeyFor(locale: TrLocale, key: TFuncKey) {
 
 /** Returns the translated string for the given key, after optionally inserting values */
 export function t(key: TFuncKey, ...values: Stringifiable[]) {
-  return tr(key, ...values);
+  return tl(activeLocale, key, ...values);
 }
 
 /**
@@ -99,7 +102,7 @@ export function tp(key: TFuncKey, num: number | unknown[] | NodeList, ...values:
 
 /** Returns the translated string for the given key in the specified locale, after optionally inserting values */
 export function tl(locale: TrLocale, key: TFuncKey, ...values: Stringifiable[]) {
-  return tr.forLang(locale, key, ...values);
+  return tr.for(locale, key, ...values);
 }
 
 /**
