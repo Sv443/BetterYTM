@@ -1,5 +1,5 @@
 import type { Emitter } from "nanoevents";
-import type { Stringifiable } from "@sv443-network/userutils";
+import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
 import { BytmDialog, type BytmDialogEvents } from "../components/index.js";
 import { addSelectorListener } from "../observers.js";
@@ -23,7 +23,7 @@ type AlertRenderProps = BaseRenderProps & {
 
 type PromptRenderProps = BaseRenderProps & {
   type: "prompt";
-  defaultValue?: string;
+  defaultValue?: StringGen;
 };
 
 type BaseRenderProps = {
@@ -99,7 +99,9 @@ class PromptDialog extends BytmDialog {
       inputElem.type = "text";
       inputElem.autocomplete = "off";
       inputElem.spellcheck = false;
-      inputElem.value = "defaultValue" in rest ? rest.defaultValue ?? "" : "";
+      inputElem.value = "defaultValue" in rest && rest.defaultValue
+        ? await consumeStringGen(rest.defaultValue)
+        : "";
 
       const inputEnterListener = (e: KeyboardEvent) => {
         if(e.key === "Enter") {

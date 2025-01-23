@@ -1,4 +1,4 @@
-import { compress, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify } from "@sv443-network/userutils";
+import { compress, consumeStringGen, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify, type StringGen } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";
@@ -165,15 +165,16 @@ export function openInTab(href: string, background = false) {
 }
 
 /** Tries to parse an uncompressed or compressed input string as a JSON object */
-export async function tryToDecompressAndParse<TData = Record<string, unknown>>(input: string): Promise<TData | null> {
+export async function tryToDecompressAndParse<TData = Record<string, unknown>>(input: StringGen): Promise<TData | null> {
   let parsed: TData | null = null;
+  const val = await consumeStringGen(input);
 
   try {
-    parsed = JSON.parse(input);
+    parsed = JSON.parse(val);
   }
   catch {
     try {
-      parsed = JSON.parse(await decompress(input, compressionFormat, "string"));
+      parsed = JSON.parse(await decompress(val, compressionFormat, "string"));
     }
     catch(err) {
       error("Couldn't decompress and parse data due to an error:", err);
@@ -240,6 +241,14 @@ export async function reloadTab() {
     error("Couldn't save video time and volume before reloading tab:", err);
     win.location.reload();
   }
+}
+
+/** Checks if the passed value is a {@linkcode StringGen} */
+export function isStringGen(val: unknown): val is StringGen {
+  return typeof val === "string"
+    || typeof val === "function"
+    || (typeof val === "object" && val !== null && "toString" in val && !val.toString().startsWith("[object"))
+    || val instanceof Promise;
 }
 
 //#region resources

@@ -1,4 +1,4 @@
-import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
+import { addGlobalStyle, consumeStringGen, getUnsafeWindow, randomId, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
@@ -171,10 +171,10 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
  * @param ref A reference string to identify the style element - defaults to a random 5-character string
  * @param transform A function to transform the CSS before adding it to the DOM
  */
-export async function addStyle(css: string, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
+export async function addStyle(css: StringGen, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
   if(!domLoaded)
     throw new Error("DOM has not finished loading yet");
-  const elem = addGlobalStyle(await transform(css));
+  const elem = addGlobalStyle(await transform(await consumeStringGen(css)));
   elem.id = `bytm-style-${ref ?? randomId(6, 36)}`;
   return elem;
 }
@@ -183,10 +183,10 @@ export async function addStyle(css: string, ref?: string, transform: (css: strin
  * Adds a global style element with the contents fetched from the specified resource starting with `css-`  
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
-export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
+export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => Stringifiable = (c) => c) {
   const css = await fetchCss(key);
   if(css) {
-    await addStyle(transform(css), key.slice(4));
+    await addStyle(String(transform(css)), key.slice(4));
     return true;
   }
   return false;
@@ -274,7 +274,7 @@ export function setInnerHtml(element: HTMLElement, html?: string | null) {
 
   if(!ttPolicy && window?.trustedTypes?.createPolicy) {
     ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
-      createHTML: (dirty: string) => DOMPurify.sanitize(dirty, {
+      createHTML: (dirty: Stringifiable) => DOMPurify.sanitize(String(dirty), {
         RETURN_TRUSTED_TYPE: true,
       }) as unknown as string,
     });

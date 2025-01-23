@@ -152,17 +152,16 @@ async function onDomLoad() {
   document.body.classList.add(`bytm-dom-${domain}`);
 
   try {
-    initGlobalCssVars();
+    initGlobalCss();
     initObservers();
 
-    await Promise.allSettled([
+    Promise.allSettled([
       injectCssBundle(),
       initVersionCheck(),
     ]);
   }
   catch(err) {
-    error("Fatal error in feature pre-init:", err);
-    return;
+    error("Encountered error in feature pre-init:", err);
   }
 
   log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
@@ -323,10 +322,10 @@ async function injectCssBundle() {
     error("Couldn't inject CSS bundle due to an error");
 }
 
-/** Initializes global CSS variables */
-function initGlobalCssVars() {
+/** Initializes global CSS values */
+function initGlobalCss() {
   try {
-    loadFonts();
+    initFonts();
 
     const applyVars = () => {
       setGlobalCssVars({
@@ -341,32 +340,33 @@ function initGlobalCssVars() {
     applyVars();
   }
   catch(err) {
-    error("Couldn't initialize global CSS variables:", err);
+    error("Couldn't initialize global CSS:", err);
   }
 }
 
-async function loadFonts() {
+async function initFonts() {
   const fonts = {
     "Cousine": {
       woff: await getResourceUrl("font-cousine_woff"),
       woff2: await getResourceUrl("font-cousine_woff2"),
-      ttf: await getResourceUrl("font-cousine_ttf"),
+      truetype: await getResourceUrl("font-cousine_ttf"),
     },
   };
 
   let css = "";
-  for(const [font, urls] of Object.entries(fonts))
+  for(const [fontName, urls] of Object.entries(fonts))
     css += `\
 @font-face {
-  font-family: "${font}";
-  src: url("${urls.woff2}") format("woff2"),
-    url("${urls.woff}") format("woff"),
-    url("${urls.ttf}") format("truetype");
+  font-family: "${fontName}";
+  src: ${
+  Object.entries(urls)
+    .map(([type, url]) => `url("${url}") format("${type}")`)
+    .join(", ")
+};
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
-`;
+}`;
 
   addStyle(css, "fonts");
 }
