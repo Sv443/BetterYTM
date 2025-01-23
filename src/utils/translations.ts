@@ -17,6 +17,9 @@ const initializedLocales = new Set<TrLocale>();
 /** The currently active locale */
 let activeLocale: TrLocale = "en-US";
 
+tr.addTransform(tr.transforms.percent);
+tr.addTransform(tr.transforms.templateLiteral);
+
 /** Initializes the translations */
 export async function initTranslations(locale: TrLocale) {
   if(initializedLocales.has(locale))
