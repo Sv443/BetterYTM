@@ -279,8 +279,8 @@ async function mountCfgMenu() {
 
   const onCfgChange = async (
     key: keyof typeof defaultData,
-    initialVal: string | number | boolean | HotkeyObj,
-    newVal: string | number | boolean | HotkeyObj,
+    initialVal: string | number | boolean | HotkeyObj | undefined,
+    newVal: string | number | boolean | HotkeyObj | undefined,
   ) => {
     try {
       const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
@@ -666,9 +666,6 @@ async function mountCfgMenu() {
         else {
           // custom input element:
           let customInputEl: HTMLElement | undefined;
-
-          if(initialVal === undefined)
-            return;
 
           switch(type) {
           case "hotkey":
