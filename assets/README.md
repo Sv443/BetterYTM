@@ -19,8 +19,8 @@
 <br>
 
 ### [`locales.json`](locales.json)
-This file contains a definition of the available locales and translations.  
-The keys of the object are the locale codes, and the values are the locale objects, with the following properties:  
+This file contains a definition of the available locales, which dictate the userscript header description, available locale setting values, translations and more.  
+The keys of the object are the locale codes (which follow the [BCP 47 standard](https://en.wikipedia.org/wiki/IETF_language_tag)), and the values are objects with the following properties (all required):  
   
 | Property         | Type       | Description                                                |
 | :--------------- | :--------- | :--------------------------------------------------------- |
@@ -42,7 +42,7 @@ The keys of the object are the locale codes, and the values are the locale objec
 
 ### [`resources.json`](resources.json)
 This file contains the resources that are loaded into the runtime through the `@resource` userscript directive.  
-That includes all icons, images, CSS files, fonts, translations and other assets.  
+That includes icons, images, CSS files, fonts, translations and other assets.  
 Configure which resources will always be fetched from the external asset source (GitHub's CDN) by editing the regexp patterns in the `alwaysExternalAssetPatterns` property.  
   
 Inside the file is an object under the `resources` prop, whose keys are the resource names and the values are the path to the resource or a configuration object (props are listed in the table below).  
