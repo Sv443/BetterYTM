@@ -1,3 +1,100 @@
+// ==UserScript==
+// @name              BetterYTM
+// @namespace         https://github.com/Sv443/BetterYTM
+// @version           2.2.0
+// @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @homepageURL       https://github.com/Sv443/BetterYTM#readme
+// @supportURL        https://github.com/Sv443/BetterYTM/issues
+// @license           AGPL-3.0-only
+// @author            Sv443
+// @copyright         Sv443 (https://github.com/Sv443)
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/images/logo/logo_dev_48.png
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start
+// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-LI Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-LU Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en    Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-CA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-AU Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-IE Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-NZ Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-ZA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es    Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es-MX Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr    Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CA Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-BE Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CH Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-LU Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi    YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi-NP YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:ja    YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt    Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt-PT Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh    YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @connect           api.sv443.net
+// @connect           github.com
+// @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
+// @noframes
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
+// @grant             unsafeWindow
+// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/dist/BetterYTM.css#sha256=uqAnIweqbddc+SDYDXGJS1z8G3W86xvSLkKnRWedhq8=
+// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.0.4/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
+// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.1.6
+// @grant             GM.registerMenuCommand
+// @grant             GM.listValues
+// ==/UserScript==
+/*
+▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+*/
+
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+
 (function(UserUtils,DOMPurify,compareVersions,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var alwaysExternalAssetPatterns = [
 	"^icon-",
 	"^img-",
@@ -228,12 +325,12 @@ var PluginIntent;
     /** Plugin can write to auto-like data */
     PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
 })(PluginIntent || (PluginIntent = {}));// these strings will have their values replaced by the post-build script:
-const modeRaw = "#{{MODE}}";
-const branchRaw = "#{{BRANCH}}";
-const hostRaw = "#{{HOST}}";
-const buildNumberRaw = "#{{BUILD_NUMBER}}";
-const assetSourceRaw = "#{{ASSET_SOURCE}}";
-const devServerPortRaw = "#{{DEV_SERVER_PORT}}";
+const modeRaw = "development";
+const branchRaw = "develop";
+const hostRaw = "github";
+const buildNumberRaw = "d844acc";
+const assetSourceRaw = "jsdelivr";
+const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
 /** Path to the GitHub repo */
 const repo = "Sv443/BetterYTM";
@@ -368,6 +465,10 @@ function addLyricsCacheEntryBest(artist, song, url) {
     return lyricsCacheMgr.setData({ cache });
 }/** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set();
+/** The currently active locale */
+let activeLocale = "en-US";
+UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
+UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
 /** Initializes the translations */
 async function initTranslations(locale) {
     if (initializedLocales.has(locale))
@@ -383,7 +484,7 @@ async function initTranslations(locale) {
             ? await fetchLocaleJson(transFile.base)
             : undefined;
         const translations = Object.assign(Object.assign(Object.assign({}, (fallbackTrans !== null && fallbackTrans !== void 0 ? fallbackTrans : {})), (baseTransFile !== null && baseTransFile !== void 0 ? baseTransFile : {})), transFile);
-        UserUtils.tr.addLanguage(locale, translations);
+        UserUtils.tr.addTranslations(locale, translations);
         info(`Loaded translations for locale '${locale}'`);
     }
     catch (err) {
@@ -402,13 +503,13 @@ async function fetchLocaleJson(locale) {
 }
 /** Sets the current language for translations */
 function setLocale(locale) {
-    UserUtils.tr.setLanguage(locale);
+    activeLocale = locale;
     setGlobalProp("locale", locale);
     emitInterface("bytm:setLocale", { locale });
 }
 /** Returns the currently set language */
 function getLocale() {
-    return UserUtils.tr.getLanguage();
+    return activeLocale;
 }
 /** Returns whether the given translation key exists in the current locale */
 function hasKey(key) {
@@ -421,7 +522,7 @@ function hasKeyFor(locale, key) {
 }
 /** Returns the translated string for the given key, after optionally inserting values */
 function t(key, ...values) {
-    return UserUtils.tr(key, ...values);
+    return tl(activeLocale, key, ...values);
 }
 /**
  * Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}
@@ -433,7 +534,7 @@ function tp(key, num, ...values) {
 }
 /** Returns the translated string for the given key in the specified locale, after optionally inserting values */
 function tl(locale, key, ...values) {
-    return UserUtils.tr.forLang(locale, key, ...values);
+    return UserUtils.tr.for(locale, key, ...values);
 }
 /**
  * Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}
@@ -1832,7 +1933,7 @@ async function renderBody$5() {
             channels: autoLikeStore.getData().channels
                 .map((ch) => ch.id === id ? Object.assign(Object.assign({}, ch), { enabled }) : ch),
         });
-    }, 250, "rising");
+    }, 250);
     const sortedChannels = autoLikeStore
         .getData().channels
         .sort((a, b) => a.name.localeCompare(b.name));
@@ -2137,7 +2238,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^9.0.2",
+	"@sv443-network/userutils": "^9.0.4",
 	"compare-versions": "^6.1.0",
 	dompurify: "^3.1.6",
 	marked: "^12.0.2",
@@ -2491,7 +2592,7 @@ let hiddenCopiedTxtTimeout;
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 async function mountCfgMenu() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d;
     if (isCfgMenuMounted)
         return;
     isCfgMenuMounted = true;
@@ -2744,7 +2845,7 @@ async function mountCfgMenu() {
         }
     };
     /** Call whenever the feature config is changed */
-    const confChanged = UserUtils.debounce(onCfgChange, 333, "falling");
+    const confChanged = UserUtils.debounce(onCfgChange, 333);
     const featureCfg = getFeatures();
     const featureCfgWithCategories = Object.entries(featInfo)
         .reduce((acc, [key, { category }]) => {
@@ -2791,7 +2892,7 @@ async function mountCfgMenu() {
             const { type, default: ftDefault } = ftInfo;
             const step = "step" in ftInfo ? ftInfo.step : undefined;
             const val = featureCfg[featKey];
-            const initialVal = (_a = val !== null && val !== void 0 ? val : ftDefault) !== null && _a !== void 0 ? _a : undefined;
+            const initialVal = val !== null && val !== void 0 ? val : ftDefault;
             const ftConfElem = document.createElement("div");
             ftConfElem.classList.add("bytm-ftitem");
             {
@@ -2813,7 +2914,7 @@ async function mountCfgMenu() {
                 textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
                 textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
                 let adornmentElem;
-                const adornContentAsync = (_b = ftInfo.textAdornment) === null || _b === void 0 ? void 0 : _b.call(ftInfo);
+                const adornContentAsync = (_a = ftInfo.textAdornment) === null || _a === void 0 ? void 0 : _a.call(ftInfo);
                 const adornContent = adornContentAsync instanceof Promise ? await adornContentAsync : adornContentAsync;
                 if ((typeof adornContentAsync === "string" || adornContentAsync instanceof Promise) && typeof adornContent !== "undefined") {
                     adornmentElem = document.createElement("span");
@@ -2823,7 +2924,7 @@ async function mountCfgMenu() {
                 }
                 let helpElem;
                 // @ts-ignore
-                const hasHelpTextFunc = typeof ((_c = featInfo[featKey]) === null || _c === void 0 ? void 0 : _c.helpText) === "function";
+                const hasHelpTextFunc = typeof ((_b = featInfo[featKey]) === null || _b === void 0 ? void 0 : _b.helpText) === "function";
                 // @ts-ignore
                 const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
                 if (hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
@@ -3153,13 +3254,13 @@ async function mountCfgMenu() {
     }
     menuContainer.appendChild(footerCont);
     backgroundElem.appendChild(menuContainer);
-    ((_d = document.querySelector("#bytm-dialog-container")) !== null && _d !== void 0 ? _d : document.body).appendChild(backgroundElem);
-    window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250, "rising"));
+    ((_c = document.querySelector("#bytm-dialog-container")) !== null && _c !== void 0 ? _c : document.body).appendChild(backgroundElem);
+    window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
     log("Added menu element");
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
-    (_e = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _e === void 0 ? void 0 : _e.removeAttribute("inert");
+    (_d = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _d === void 0 ? void 0 : _d.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
     siteEvents.on("recreateCfgMenu", async () => {
@@ -4959,7 +5060,7 @@ async function initHideCursorOnIdle() {
                 cursorHideTimerCb();
             };
             vidContainer.addEventListener("mouseenter", onMove);
-            vidContainer.addEventListener("mousemove", UserUtils.debounce(onMove, 200, "rising"));
+            vidContainer.addEventListener("mousemove", UserUtils.debounce(onMove, 200));
             vidContainer.addEventListener("mouseleave", () => {
                 cursorHideTimer && clearTimeout(cursorHideTimer);
                 hideTransTimer && clearTimeout(hideTransTimer);
@@ -5447,8 +5548,6 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             all: true,
             continuous: true,
             debounce: 150,
-            // TODO: switch to longer debounce time and edge type "risingIdle" after UserUtils update
-            debounceEdge: "falling",
             listener: checkAddGenericBtns,
         });
         siteEvents.on("pathChanged", () => {
@@ -5663,10 +5762,9 @@ async function initVolumeFeatures() {
         sizeSmOnce = true;
         addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
             listener: (el) => listener("expand", el),
-            debounceEdge: "falling",
         });
     };
-    window.addEventListener("resize", UserUtils.debounce(onResize, 150, "falling"));
+    window.addEventListener("resize", UserUtils.debounce(onResize, 150));
     waitVideoElementReady().then(onResize);
     onResize();
 }
@@ -6579,6 +6677,8 @@ const defaultData = Object.keys(featInfo)
 const migrations = {
     // 1 -> 2 (<=v1.0)
     2: (oldData) => {
+        if (typeof oldData !== "object" || oldData === null)
+            return defaultData;
         const queueBtnsEnabled = Boolean(oldData.queueButtons);
         delete oldData.queueButtons;
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
@@ -7063,7 +7163,6 @@ const defaultObserverOptions = {
     disableOnNoListeners: false,
     enableOnAddListener: false,
     defaultDebounce: 150,
-    defaultDebounceEdge: "rising",
 };
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 const globservers = {};
@@ -7098,13 +7197,13 @@ function initObservers() {
         //#region body
         // -> the entire <body> element - use sparingly due to performance impacts!
         //    enabled immediately
-        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounceEdge: "falling", defaultDebounce: 150, subtree: false }));
+        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 150, subtree: false }));
         globservers.body.enable();
         //#region bytmDialogContainer
         // -> the container for all BytmDialog instances
         //    enabled immediately
         const bytmDialogContainerSelector = "#bytm-dialog-container";
-        globservers.bytmDialogContainer = new UserUtils.SelectorObserver(bytmDialogContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounceEdge: "falling", defaultDebounce: 100, subtree: true }));
+        globservers.bytmDialogContainer = new UserUtils.SelectorObserver(bytmDialogContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 100, subtree: true }));
         globservers.bytmDialogContainer.enable();
         switch (getDomain()) {
             case "ytm": {
@@ -7982,4 +8081,4 @@ function registerDevCommands() {
     GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
     log("Registered dev menu commands");
 }
-preInit();})(UserUtils,DOMPurify,compareVersions,marked);//# sourceMappingURL=BetterYTM.user.js.map
+preInit();})(UserUtils,DOMPurify,compareVersions,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
