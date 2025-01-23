@@ -477,13 +477,12 @@ function schedExit(code: number) {
 
 /** Generates a random ID of the given {@linkcode length} and {@linkcode radix} */
 function randomId(length = 16, radix = 16, randomCase = true) {
-  const arr = Array.from(
+  let arr = Array.from(
     { length },
     () => Math.floor(Math.random() * radix).toString(radix)
   );
-  randomCase && arr.forEach((v, i) => {
-    arr[i] = v[Math.random() > 0.5 ? "toUpperCase" : "toLowerCase"]();
-  });
+  if(randomCase)
+    arr = arr.map((v) => v[Math.random() > 0.5 ? "toUpperCase" : "toLowerCase"]());
   return arr.join("");
 }
 
