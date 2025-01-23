@@ -758,7 +758,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > The instances are chained together in a way that the least specific observer is the parent of the more specific ones.  
 > This is done to limit the amount of checks that need to be run, especially on pages with a lot of dynamic content and if `continuous` listeners are used.  
-> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info and example code.  
+> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver) for more info and example code.  
 >   
 > ⚠️ Due to this chained architecture, the selector you pass can only start with an element that is a child of the observer's base element.  
 > If you provide a selector that starts higher up or directly on the base element, the listener will never be called.  
@@ -767,7 +767,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Arguments:  
 > - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which base element they observe in the file [`src/observers.ts`](src/observers.ts)
 > - `selector` - The CSS selector to observe for changes.
-> - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
+> - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver)
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
