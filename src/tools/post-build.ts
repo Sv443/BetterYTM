@@ -515,9 +515,8 @@ async function createSvgSpritesheet() {
 
       const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
       const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
-      const viewBox = iconSvg.match(/viewBox="([^"]+)"/)?.[1] ?? "0 0 24 24";
 
-      sprites.push(`<symbol id="bytm-svg-${name}" viewBox="${viewBox}">\n    ${iconSvg}\n  </symbol>`);
+      sprites.push(`<symbol id="bytm-svg-${name}">\n    ${iconSvg}\n  </symbol>`);
     }
 
     await writeFile(resolveResourcePath("spritesheet.svg"), `\
