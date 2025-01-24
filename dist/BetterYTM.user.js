@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/dist/BetterYTM.css#sha256=uqAnIweqbddc+SDYDXGJS1z8G3W86xvSLkKnRWedhq8=
-// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d844acc/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/dist/BetterYTM.css#sha256=uqAnIweqbddc+SDYDXGJS1z8G3W86xvSLkKnRWedhq8=
+// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3253de30/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.0.4/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -119,6 +119,7 @@ var resources = {
 		ref: "$BRANCH",
 		integrity: false
 	},
+	"doc-svg_spritesheet": "spritesheet.svg",
 	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
 	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
 	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
@@ -328,7 +329,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "d844acc";
+const buildNumberRaw = "3253de30";
 const assetSourceRaw = "jsdelivr";
 const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
@@ -1013,9 +1014,7 @@ class ExImDialog extends BytmDialog {
         headerEl.role = "heading";
         headerEl.ariaLevel = "1";
         headerEl.tabIndex = 0;
-        headerEl.textContent = headerEl.ariaLabel = typeof opts.title === "function"
-            ? await opts.title()
-            : opts.title;
+        headerEl.textContent = headerEl.ariaLabel = await UserUtils.consumeStringGen(opts.title);
         return headerEl;
     }
     //#region body
@@ -1030,16 +1029,14 @@ class ExImDialog extends BytmDialog {
             descEl.classList.add("bytm-exim-dialog-desc");
             descEl.role = "note";
             descEl.tabIndex = 0;
-            descEl.textContent = descEl.ariaLabel = typeof opts.descExport === "function"
-                ? await opts.descExport()
-                : opts.descExport;
+            descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descExport);
             const dataEl = document.createElement("textarea");
             dataEl.classList.add("bytm-exim-dialog-data");
             dataEl.readOnly = true;
             dataEl.tabIndex = 0;
             dataEl.value = t("click_to_reveal");
             onInteraction(dataEl, async () => {
-                dataEl.value = typeof opts.exportData === "function" ? await opts.exportData() : opts.exportData;
+                dataEl.value = await UserUtils.consumeStringGen(opts.exportData);
                 dataEl.setSelectionRange(0, dataEl.value.length);
             });
             const exportCenterBtnCont = document.createElement("div");
@@ -1050,7 +1047,7 @@ class ExImDialog extends BytmDialog {
                 resourceName: "icon-copy",
                 async onClick({ shiftKey }) {
                     const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-                    copyToClipboard(typeof copyData === "function" ? await copyData() : copyData);
+                    copyToClipboard(await UserUtils.consumeStringGen(copyData));
                     await showToast({ message: t("copied_to_clipboard") });
                 },
             }));
@@ -1065,9 +1062,7 @@ class ExImDialog extends BytmDialog {
             descEl.classList.add("bytm-exim-dialog-desc");
             descEl.role = "note";
             descEl.tabIndex = 0;
-            descEl.textContent = descEl.ariaLabel = typeof opts.descImport === "function"
-                ? await opts.descImport()
-                : opts.descImport;
+            descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descImport);
             const dataEl = document.createElement("textarea");
             dataEl.classList.add("bytm-exim-dialog-data");
             dataEl.tabIndex = 0;
@@ -1665,7 +1660,6 @@ class PromptDialog extends BytmDialog {
         return headerEl;
     }
     async renderBody(_a) {
-        var _b;
         var { type, message } = _a, rest = __rest(_a, ["type", "message"]);
         const contElem = document.createElement("div");
         contElem.classList.add(`bytm-prompt-type-${type}`);
@@ -1685,7 +1679,9 @@ class PromptDialog extends BytmDialog {
             inputElem.type = "text";
             inputElem.autocomplete = "off";
             inputElem.spellcheck = false;
-            inputElem.value = "defaultValue" in rest ? (_b = rest.defaultValue) !== null && _b !== void 0 ? _b : "" : "";
+            inputElem.value = "defaultValue" in rest && rest.defaultValue
+                ? await UserUtils.consumeStringGen(rest.defaultValue)
+                : "";
             const inputEnterListener = (e) => {
                 var _a, _b;
                 if (e.key === "Enter") {
@@ -2306,7 +2302,8 @@ var nodemonConfig = {
 	ignore: [
 		"dist/*",
 		"dev/*",
-		"*/stories/*"
+		"*/stories/*",
+		"assets/**/spritesheet.svg"
 	]
 };
 var packageJson = {
@@ -4309,12 +4306,13 @@ function openInTab(href, background = false) {
 /** Tries to parse an uncompressed or compressed input string as a JSON object */
 async function tryToDecompressAndParse(input) {
     let parsed = null;
+    const val = await UserUtils.consumeStringGen(input);
     try {
-        parsed = JSON.parse(input);
+        parsed = JSON.parse(val);
     }
     catch (_a) {
         try {
-            parsed = JSON.parse(await UserUtils.decompress(input, compressionFormat, "string"));
+            parsed = JSON.parse(await UserUtils.decompress(val, compressionFormat, "string"));
         }
         catch (err) {
             error("Couldn't decompress and parse data due to an error:", err);
@@ -5923,7 +5921,12 @@ async function setInitialTabVolume(sliderElem) {
 function noop() {
 }
 /** Creates an HTML string for the given adornment properties */
-const getAdornHtml = async (className, title, resource, extraAttributes) => { var _a; return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${(_a = await resourceAsString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`; };
+const getAdornHtml = async (className, title, resource, extraAttributes) => {
+    var _a;
+    title = title ? await UserUtils.consumeStringGen(title) : undefined;
+    extraAttributes = extraAttributes ? await UserUtils.consumeStringGen(extraAttributes) : undefined;
+    return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${(_a = await resourceAsString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`;
+};
 /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 const combineAdornments = (adornments) => new Promise(async (resolve) => {
     const sortedAdornments = adornments.sort((a, b) => {
@@ -7495,7 +7498,7 @@ function waitVideoElementReady() {
 async function addStyle(css, ref, transform = (c) => c) {
     if (!domLoaded)
         throw new Error("DOM has not finished loading yet");
-    const elem = UserUtils.addGlobalStyle(await transform(css));
+    const elem = UserUtils.addGlobalStyle(await transform(await UserUtils.consumeStringGen(css)));
     elem.id = `bytm-style-${ref !== null && ref !== void 0 ? ref : UserUtils.randomId(6, 36)}`;
     return elem;
 }
@@ -7506,7 +7509,7 @@ async function addStyle(css, ref, transform = (c) => c) {
 async function addStyleFromResource(key, transform = (c) => c) {
     const css = await fetchCss(key);
     if (css) {
-        await addStyle(transform(css), key.slice(4));
+        await addStyle(String(transform(css)), key.slice(4));
         return true;
     }
     return false;
@@ -7582,7 +7585,7 @@ function setInnerHtml(element, html) {
         html = "";
     if (!ttPolicy && ((_a = window === null || window === void 0 ? void 0 : window.trustedTypes) === null || _a === void 0 ? void 0 : _a.createPolicy)) {
         ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
-            createHTML: (dirty) => DOMPurify.sanitize(dirty, {
+            createHTML: (dirty) => DOMPurify.sanitize(String(dirty), {
                 RETURN_TRUSTED_TYPE: true,
             }),
         });
@@ -7769,16 +7772,16 @@ async function onDomLoad() {
     // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
     document.body.classList.add(`bytm-dom-${domain}`);
     try {
-        initGlobalCssVars();
+        initGlobalCss();
         initObservers();
-        await Promise.allSettled([
+        initSvgSpritesheet();
+        Promise.allSettled([
             injectCssBundle(),
             initVersionCheck(),
         ]);
     }
     catch (err) {
-        error("Fatal error in feature pre-init:", err);
-        return;
+        error("Encountered error in feature pre-init:", err);
     }
     log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
     try {
@@ -7890,10 +7893,10 @@ async function injectCssBundle() {
     if (!await addStyleFromResource("css-bundle"))
         error("Couldn't inject CSS bundle due to an error");
 }
-/** Initializes global CSS variables */
-function initGlobalCssVars() {
+/** Initializes global CSS values */
+function initGlobalCss() {
     try {
-        loadFonts();
+        initFonts();
         const applyVars = () => {
             setGlobalCssVars({
                 "inner-height": `${window.innerHeight}px`,
@@ -7906,31 +7909,39 @@ function initGlobalCssVars() {
         applyVars();
     }
     catch (err) {
-        error("Couldn't initialize global CSS variables:", err);
+        error("Couldn't initialize global CSS:", err);
     }
 }
-async function loadFonts() {
+async function initFonts() {
     const fonts = {
         "Cousine": {
             woff: await getResourceUrl("font-cousine_woff"),
             woff2: await getResourceUrl("font-cousine_woff2"),
-            ttf: await getResourceUrl("font-cousine_ttf"),
+            truetype: await getResourceUrl("font-cousine_ttf"),
         },
     };
     let css = "";
-    for (const [font, urls] of Object.entries(fonts))
+    for (const [fontName, urls] of Object.entries(fonts))
         css += `\
 @font-face {
-  font-family: "${font}";
-  src: url("${urls.woff2}") format("woff2"),
-    url("${urls.woff}") format("woff"),
-    url("${urls.ttf}") format("truetype");
+  font-family: "${fontName}";
+  src: ${Object.entries(urls)
+            .map(([type, url]) => `url("${url}") format("${type}")`)
+            .join(", ")};
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
-`;
+}`;
     addStyle(css, "fonts");
+}
+//#region svg spritesheet
+/** Initializes the SVG spritesheet */
+async function initSvgSpritesheet() {
+    const svgUrl = await getResourceUrl("doc-svg_spritesheet");
+    const div = document.createElement("div");
+    div.style.display = "none";
+    UserUtils.setInnerHtmlUnsafe(div, await (await UserUtils.fetchAdvanced(svgUrl)).text());
+    document.body.appendChild(div);
 }
 //#region dev menu cmds
 /** Registers dev commands using `GM.registerMenuCommand` */
