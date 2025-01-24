@@ -188,7 +188,7 @@ I welcome every contribution on GitHub!
       }
     }
 
-    await createSvgSpritesheet(buildNbr);
+    await createSvgSpritesheet();
 
     console.info([
       "",
@@ -505,7 +505,7 @@ function getFileHashSha256(path: string): Promise<string> {
 }
 
 /** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
-async function createSvgSpritesheet(buildNbr: string) {
+async function createSvgSpritesheet() {
   try {
     const sprites: string[] = [];
 
@@ -521,7 +521,7 @@ async function createSvgSpritesheet(buildNbr: string) {
     }
 
     await writeFile(resolveResourcePath("spritesheet.svg"), `\
-<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" data-build="${buildNbr}" style="display: none;" inert="true">
+<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" style="display: none;" inert="true">
   ${sprites.join("\n  ")}
 </svg>`
     );
