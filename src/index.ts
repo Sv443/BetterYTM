@@ -376,7 +376,7 @@ async function initFonts() {
 
 /** Initializes the SVG spritesheet */
 async function initSvgSpritesheet() {
-  const svgUrl = await getResourceUrl("icon-spritesheet");
+  const svgUrl = await getResourceUrl("doc-svg_spritesheet");
   const div = document.createElement("div");
   div.style.display = "none";
   setInnerHtmlUnsafe(div, await (await fetchAdvanced(svgUrl)).text());

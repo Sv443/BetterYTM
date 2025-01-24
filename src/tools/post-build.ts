@@ -504,7 +504,7 @@ function getFileHashSha256(path: string): Promise<string> {
   });
 }
 
-/** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/icons/spritesheet.svg` */
+/** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
 async function createSvgSpritesheet(buildNbr: string) {
   try {
     const sprites: string[] = [];
@@ -520,8 +520,8 @@ async function createSvgSpritesheet(buildNbr: string) {
       sprites.push(`<symbol id="bytm-svg-${name}" viewBox="${viewBox}">\n    ${iconSvg}\n  </symbol>`);
     }
 
-    await writeFile(resolveResourcePath("icons/spritesheet.svg"), `\
-<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-icon-container" data-build="${buildNbr}" style="display: none;" inert="true">
+    await writeFile(resolveResourcePath("spritesheet.svg"), `\
+<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" data-build="${buildNbr}" style="display: none;" inert="true">
   ${sprites.join("\n  ")}
 </svg>`
     );
