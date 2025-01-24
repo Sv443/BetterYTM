@@ -132,7 +132,8 @@
     "ignore": [
       "dist/*",
       "dev/*",
-      "*/stories/*"
+      "*/stories/*",
+      "assets/**/spritesheet.svg"
     ]
   }
 }
