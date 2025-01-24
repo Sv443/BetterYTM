@@ -1,9 +1,9 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
-<!-- #region 2.2.1 -->
-## 2.2.1
-- **Changes:**
+<!-- #region 2.3.0 -->
+## 2.3.0 - TODO:
+<!-- - **Changes:**
   - The above-queue-button container's sticky positioning can now be turned off with a new advanced feature toggle in the config menu
   - Made finding the preferred locale based on the browser's language settings much more reliable
   - Heavily reduced amount of `@resource` directives to improve installation and updating time
@@ -25,7 +25,7 @@
       - From `faster` to `fastest`
       - From `slower` to `slowest`
 
-</details>
+</details> -->
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/121" rel="noopener noreferrer">See pull request for more info</a>

@@ -507,24 +507,18 @@ function getFileHashSha256(path: string): Promise<string> {
 /** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/icons/spritesheet.svg` */
 async function createSvgSpritesheet(buildNbr: string) {
   try {
-    const sprites: string[] = [],
-      promises: Promise<void>[] = [];
+    const sprites: string[] = [];
 
     for(const [name, val] of Object.entries(resourcesJson.resources)) {
       if(!/^icon-/.test(name))
         continue;
 
-      promises.push(new Promise(async (res) => {
-        const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
-        const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
-        const viewBox = iconSvg.match(/viewBox="([^"]+)"/)?.[1] ?? "0 0 24 24";
+      const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
+      const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
+      const viewBox = iconSvg.match(/viewBox="([^"]+)"/)?.[1] ?? "0 0 24 24";
 
-        sprites.push(`<symbol id="bytm-svg-${name}" viewBox="${viewBox}">\n    ${iconSvg}\n  </symbol>`);
-        res();
-      }));
+      sprites.push(`<symbol id="bytm-svg-${name}" viewBox="${viewBox}">\n    ${iconSvg}\n  </symbol>`);
     }
-
-    await Promise.allSettled(promises);
 
     await writeFile(resolveResourcePath("icons/spritesheet.svg"), `\
 <svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-icon-container" data-build="${buildNbr}" style="display: none;" inert="true">

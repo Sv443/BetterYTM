@@ -1,4 +1,4 @@
-import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, pauseFor, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, domLoaded, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
@@ -154,6 +154,7 @@ async function onDomLoad() {
   try {
     initGlobalCss();
     initObservers();
+    initSvgSpritesheet();
 
     Promise.allSettled([
       injectCssBundle(),
@@ -369,6 +370,17 @@ async function initFonts() {
 }`;
 
   addStyle(css, "fonts");
+}
+
+//#region svg spritesheet
+
+/** Initializes the SVG spritesheet */
+async function initSvgSpritesheet() {
+  const svgUrl = await getResourceUrl("icon-spritesheet");
+  const div = document.createElement("div");
+  div.style.display = "none";
+  setInnerHtmlUnsafe(div, await (await fetchAdvanced(svgUrl)).text());
+  document.body.appendChild(div);
 }
 
 //#region dev menu cmds
