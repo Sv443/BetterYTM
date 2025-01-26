@@ -453,6 +453,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Feature config:
   - [getFeatures()](#getfeatures) 🔒 - Returns the current BYTM feature configuration object
   - [saveFeatures()](#savefeatures) 🔒 - Overwrites the current BYTM feature configuration object with the provided one
+  - [getDefaultFeatures()](#getdefaultfeatures) - Returns the default feature configuration object
 - Lyrics:
   - [fetchLyricsUrlTop()](#fetchlyricsurltop) - Fetches the URL to the lyrics page for the specified song
   - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
@@ -521,7 +522,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   },
 >   // The intents (permissions) the plugin needs to be granted to be able to use certain functions.
 >   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then sum all of them together to get the final intents number.
->   // If you have BYTM as a dependency/submodule, you can import the enum and add the values like so: `PluginIntent.Foo | PluginIntent.Bar`
+>   // If you have BYTM as a dependency/submodule, you can import the enum and join the values like so: `PluginIntent.Foo | PluginIntent.Bar`
 >   intents: 18,              // required
 >   contributors: [           // (optional)
 >     {                                            // (optional)
@@ -722,7 +723,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### setInnerHtml()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.setInnerHtml(element: HTMLElement, html: string): void
+> unsafeWindow.BYTM.setInnerHtml(element: HTMLElement, html?: Stringifiable | null): void
 > ```
 >   
 > Description:  
@@ -732,7 +733,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Arguments:  
 > - `element` - The element to set the innerHTML property of
-> - `html` - The HTML string to sanitize and set as the innerHTML property
+> - `html` - The HTML string to sanitize and set as the innerHTML property - if set to `undefined` or `null`, the innerHTML will be cleared
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -843,13 +844,27 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > In order for that edge case not to throw an error, the function would need to be called in response to a user interaction event (e.g. click) due to the strict automated interaction policy in browsers, otherwise an error can be thrown.  
 > Resolves with a number of seconds or `null` if the time couldn't be determined.  
 >   
+> ⚠️ If the video element isn't available yet (like when not on the `/watch` page), the Promise will only resolve once the user navigates to the video page.  
+> To solve this, you could use [`Promise.race()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race) in conjunction with [UserUtils' `pauseFor()` function](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#pausefor) to implement a timeout (see example).  
+> You can also use the site event `bytm:siteEvent:pathChanged` to listen for navigation changes to know at which point this function should resolve quickly.  
+>   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
+> const { UserUtils } = unsafeWindow.BYTM;
+> 
 > try {
->   // get the video time with 3 decimal digits
->   const videoTime = await unsafeWindow.BYTM.getVideoTime(3);
->   console.log(`The video time is ${videoTime}s`);
+>   const videoTime: number | undefined | null = await Promise.race([
+>     // get the video time with 3 decimal digits:
+>     unsafeWindow.BYTM.getVideoTime(3),
+>     // resolve with undefined if the video time couldn't be determined after 5 seconds:
+>     UserUtils.pauseFor(5000),
+>   ]);
+> 
+>   if(typeof videoTime === "number")
+>     console.log(`The video time is ${videoTime}s`);
+>   else
+>     console.error("Couldn't get the video time");
 > }
 > catch(err) {
 >   console.error("Couldn't get the video time, probably due to automated interaction restrictions");
@@ -870,11 +885,13 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Returns the URL to the thumbnail of the video with the specified watch/video ID and quality (resolution).  
-> If an index number is passed, 0 will return a very low resolution thumbnail and 1-3 will return a very low resolution frame from the video (if available).  
+> If an index number is passed, 0 will return a very low resolution thumbnail and 1-3 will return a very low resolution preview frame from the video (if available).  
+> For some videos, different qualities and indexes are not available. That is why using [`getBestThumbnailUrl()`](#getbestthumbnailurl) is recommended in most cases.  
 >   
 > Arguments:
 > - `watchID` - The watch/video ID of the video to get the thumbnail for
-> - `qualityOrIndex` - The quality or index of the thumbnail to get. Possible quality strings sorted by highest resolution first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`. If no quality is specified, `maxresdefault` (highest resolution) is used.
+> - `qualityOrIndex` - The quality or index of the thumbnail to get. If no quality is specified, `maxresdefault` (highest resolution) is used.  
+>   Quality values sorted by highest res first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`.
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -895,9 +912,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the URL to the best resolution thumbnail of the video with the specified watch/video ID.  
 > Will sequentially try to get the highest quality thumbnail available until one is found.  
-> Resolution priority list: `maxresdefault.jpg` > `sddefault.jpg` > `hqdefault.jpg` > `0.jpg`  
+> Resolution priority list: `maxresdefault` > `sddefault` > `hqdefault` > `0`  
 >   
-> If no thumbnail is found, the Promise will resolve with `undefined`  
+> This check is done by sending a HEAD request to each thumbnail URL and checking if the response status is 200.  
+> Other qualities are not checked since that would be overkill (sending 4 requests is already a lot).  
+>   
+> If no thumbnail is found after `0` is checked, the Promise will resolve with `undefined`  
 > May throw if an error occurs while fetching the thumbnails.  
 >   
 > Arguments:
@@ -931,6 +951,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > If the video element already exists, the Promise will resolve immediately.  
 > This function has to be called after the `bytm:observersReady` event has been dispatched.  
 >   
+> If the user lingers on a page that doesn't have a video element, the Promise will only resolve after they navigate to the `/watch` page.  
+> To curb this, you can listen to the site event `bytm:siteEvent:pathChanged` to know when the user navigates to a page where the video element is available, or use a timeout (see [`getVideoTime()`](#getvideotime) for an example)
+>   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
@@ -952,7 +975,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the video element on the current page or `null` if there is none.  
 > Works on both YouTube and YouTube Music.  
-> 
+> Contrary to [`waitVideoElementReady()`](#waitvideoelementready), this function will not wait until the video element is queryable in the DOM.  
+>   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
@@ -999,7 +1023,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the type of media that is currently playing (works on YTM only).  
 > It will return `"video"` for videos (manually uploaded to YT - plays an actual video) and `"song"` for songs (automatic YTM releases - only displays a static, square image).  
-> Throws an error if [`waitVideoElementReady()`](#waitvideoelementready) hasn't been awaited yet or the function is called on YT.  
+> Throws an error if [`waitVideoElementReady()`](#waitvideoelementready) hasn't been awaited yet.  
+> On YT, this function will always return `"video"`.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1026,7 +1051,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
-> - `locale` - The locale to set. Refer to the file [`assets/locales.json`](assets/locales.json) for a list of available locales.
+> - `locale` - The locale to set. Refer to the keys of the object in [`assets/locales.json`](assets/locales.json) for a list of available locales.
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1045,6 +1070,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Returns the currently set locale.  
+> Can be any key of the object in [`assets/locales.json`](assets/locales.json).  
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1091,7 +1117,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Returns true if the specified translation key exists in the specified locale.  
 >   
 > Arguments:  
-> - `locale` - The locale to check for the translation key in.
+> - `locale` - The locale to check for the translation key in - refer to the keys of the object in [`assets/locales.json`](assets/locales.json).
 > - `key` - The key of the translation to check for.
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
@@ -1178,11 +1204,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the translation for the provided translation key and locale.  
 > Useful to get the translation for a specific locale without changing the currently set locale.  
-> To see a list of possible translation values, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > Arguments:  
-> - `locale` - The locale to get the translation for.
-> - `translationKey` - The key of the translation to get.
+> - `locale` - The locale to get the translation for - refer to the keys of the object in [`assets/locales.json`](assets/locales.json).
+> - `translationKey` - The key of the translation to get - find all translation keys in [`assets/translations/en-US.json`](assets/translations/en-US.json).
 > - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
 > 
 > For an example, see [`t()`](#t) which behaves in the same way, but uses the currently set locale instead of a specified one.
@@ -1198,11 +1223,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the translation for the provided translation key, including pluralization identifier and locale.  
 > Useful to get the translation for a specific locale without changing the currently set locale.  
-> To see a list of possible translation values, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > Arguments:  
-> - `locale` - The locale to get the translation for.
-> - `key` - The key of the translation to get.
+> - `locale` - The locale to get the translation for - refer to the keys of the object in [`assets/locales.json`](assets/locales.json).
+> - `key` - The key of the translation to get - find all translation keys in [`assets/translations/en-US.json`](assets/translations/en-US.json).
 > - `num` - The number of items to determine the pluralization identifier from. Can also be an array or NodeList.
 > - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
 >   
@@ -1213,14 +1237,17 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### getFeatures()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.getFeatures(token: string | undefined): FeatureConfig
+> unsafeWindow.BYTM.getFeatures(token: string | undefined): FeatureConfig | undefined
 > ```
 >   
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
 > If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
-> In the future, an intent could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
+> In the future, a plugin intent (see [`registerPlugin()`](#registerplugin)) could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
+>   
+> Arguments:
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return undefined).
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1242,6 +1269,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Overwrites the current feature configuration object with the provided one.  
 > The object in memory is updated synchronously, while the one in GM storage is updated asynchronously once the Promise resolves.  
 >   
+> ⚠️ No validation is done on the provided object, so make sure it has all the required properties or you're gonna break stuff.  
+> A good way to ensure that is to spread your modifications over the result of a call to [`getFeatures()`](#getfeatures) or [`getDefaultFeatures()`](#getdefaultfeatures)  
+>   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
 > - `config` - The full config object to save. If properties are missing, BYTM will break!  
@@ -1256,8 +1286,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 >   const promise = unsafeWindow.BYTM.saveFeatures(myToken, newConfig);
 >   // new config is now saved in memory, but not yet in GM storage
->   // so this already returns the updated config:
->   console.log(unsafeWindow.BYTM.getFeatures());
+>   // so this will already return the updated config:
+>   console.log(unsafeWindow.BYTM.getFeatures(myToken));
 > 
 >   await promise;
 >   // now the data is saved persistently in GM storage and the page can
@@ -1267,6 +1297,19 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > updateVolSliderStep();
 > ```
 > </details>
+
+<br>
+
+> ### getDefaultFeatures()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.getDefaultFeatures(): FeatureConfig
+> ```
+>   
+> Description:  
+> Returns the default feature configuration object as a copy.  
+> This object is used as a fallback if the user's configuration is missing properties or when the user first installs BYTM.  
+> Since all hidden properties have not been populated with the user's sensitive data, this function will return the full object.
 
 <br>
 
@@ -1291,16 +1334,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> async function getLyricsUrl() {
->   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrlTop("Michael Jackson", "Thriller");
+> async function getLyricsUrl(artists: string, song: string) {
+>   const artistsSan = unsafeWindow.BYTM.sanitizeArtists(artists);
+>   const songSan = unsafeWindow.BYTM.sanitizeSong(song);
+>   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrlTop(artistsSan, songSan);
 > 
 >   if(lyricsUrl)
->     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
+>     console.log(`The lyrics URL for '${artist} - ${song}' is:`, lyricsUrl);
 >   else
->     console.log("Couldn't find the lyrics URL for this song");
+>     console.log("Couldn't find the lyrics URL");
 > }
 > 
-> getLyricsUrl();
+> await getLyricsUrl("Michael Jackson", "Thriller");
 > ```
 > </details>
 
@@ -1326,16 +1371,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> function tryToGetLyricsUrl() {
->   const lyricsEntry = unsafeWindow.BYTM.getLyricsCacheEntry("Michael Jackson", "Thriller");
+> function tryToGetLyricsUrl(artists: string, song: string) {
+>   const artistsSan = unsafeWindow.BYTM.sanitizeArtists(artists);
+>   const songSan = unsafeWindow.BYTM.sanitizeSong(song);
+>   const cacheEntry = await unsafeWindow.BYTM.getLyricsCacheEntry(artistsSan, songSan);
 > 
->   if(lyricsEntry)
->     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsEntry.url}'`);
+>   if(cacheEntry)
+>     console.log(`The lyrics URL for '${artist} - ${song}' is:`, cacheEntry.url);
 >   else
->     console.log("Couldn't find the lyrics URL for this song in cache");
+>     console.log("Couldn't find the lyrics URL in the cache");
 > }
 > 
-> tryToGetLyricsUrl();
+> await tryToGetLyricsUrl("Michael Jackson", "Thriller");
 > ```
 > </details>
 
@@ -1349,7 +1396,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Sanitizes the specified artist string to be used in fetching a lyrics URL.  
-> This tries to strip out special characters and co-artist names, separated by a comma or ampersand.  
+> This tries to strip out special characters and co-artist names, separated by a comma, bullet or ampersand.  
 > Returns (hopefully) a single artist name with leading and trailing whitespaces trimmed.  
 >   
 > Arguments:  
@@ -1359,7 +1406,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > // usually artist strings will only have one of these characters but this is just an example
-> const sanitizedArtists = unsafeWindow.BYTM.sanitizeArtists(" Michael Jackson    • Paul McCartney & Freddy Mercury, Frank Sinatra");
+> const sanitizedArtists = unsafeWindow.BYTM.sanitizeArtists("   Michael Jackson    • Paul McCartney & Freddy Mercury, Frank Sinatra   ");
 > console.log(sanitizedArtists); // "Michael Jackson"
 > ```
 > </details>
@@ -1374,8 +1421,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Sanitizes the specified song title string to be used in fetching a lyrics URL.  
-> This tries to strip out special characters and everything inside regular and square parentheses like `(Foo Remix)`.  
-> Returns (hopefully) a song title with leading and trailing whitespaces trimmed.  
+> This tries to strip out special characters and everything inside regular and square parentheses like `(Foo Remix)` or `[Bar Cover]`.  
+> Also trims all leading and trailing whitespaces.  
 >   
 > Arguments:  
 > - `songName` - The string of the song title to sanitize.
@@ -1383,7 +1430,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const sanitizedSong = unsafeWindow.BYTM.sanitizeSong(" Thriller (Freddy Mercury Cover) [Tommy Cash Remix]");
+> const sanitizedSong = unsafeWindow.BYTM.sanitizeSong("   Thriller (Tommy Cash Remix) [Freddy Mercury Cover]   ");
 > console.log(sanitizedSong); // "Thriller"
 > ```
 > </details>
