@@ -24,6 +24,7 @@
     - BREAKING: Renamed `createRipple()`'s `speed` prop values:
       - From `faster` to `fastest`
       - From `slower` to `slowest`
+    - `getCurrentMediaType()` now always returns `"video"` on YT instead of throwing an error
 
 </details> -->
 

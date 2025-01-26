@@ -219,12 +219,13 @@ export function clearNode(element: Element) {
 }
 
 /**
- * Returns an identifier for the currently playing media type on YTM (song or video).  
- * Only works on YTM and will throw on YT or if {@linkcode waitVideoElementReady} hasn't been awaited yet.
+ * Returns an identifier for the currently playing media type on YTM ("song" or "video").  
+ * Only works on YTM and will throw if {@linkcode waitVideoElementReady} hasn't been awaited yet.  
+ * On YT, it will always return "video".
  */
 export function getCurrentMediaType(): "video" | "song" {
   if(getDomain() === "yt")
-    throw new Error("currentMediaType() is only available on YTM!");
+    return "video";
   const songImgElem = document.querySelector("ytmusic-player #song-image");
   if(!songImgElem)
     throw new Error("Couldn't find the song image element. Use this function only after awaiting `waitVideoElementReady()`!");
@@ -268,20 +269,20 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
  * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
  * If no HTML string is given, the element's innerHTML will be set to an empty string.
  */
-export function setInnerHtml(element: HTMLElement, html?: string | null) {
+export function setInnerHtml(element: HTMLElement, html?: Stringifiable | null) {
   if(!html)
     html = "";
 
   if(!ttPolicy && window?.trustedTypes?.createPolicy) {
     ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
-      createHTML: (dirty: Stringifiable) => DOMPurify.sanitize(String(dirty), {
+      createHTML: (dirty: string) => DOMPurify.sanitize(dirty, {
         RETURN_TRUSTED_TYPE: true,
       }) as unknown as string,
     });
   }
 
-  element.innerHTML = ttPolicy?.createHTML(html)
-    ?? DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
+  element.innerHTML = ttPolicy?.createHTML(String(html))
+    ?? DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: false });
 }
 
 /** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
