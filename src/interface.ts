@@ -3,7 +3,7 @@ import * as compareVersions from "compare-versions";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
-import { getFeatures, setFeatures } from "./config.js";
+import { defaultData, getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
 import { type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
@@ -136,6 +136,7 @@ const globalFuncs: InterfaceFunctions = {
   // feature config:
   /*🔒*/ getFeatures: getFeaturesInterface,
   /*🔒*/ saveFeatures: saveFeaturesInterface,
+  getDefaultFeatures: () => JSON.parse(JSON.stringify(defaultData)),
 
   // lyrics:
   fetchLyricsUrlTop,

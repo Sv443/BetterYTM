@@ -17,6 +17,7 @@
       - `reloadTab()` as a better way to reload the page by keeping the same video time and volume and disabling BYTM features like initial tab volume
       - `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
       - `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
+      - `getDefaultFeatures()` to return the default / fallback feature configuration object
     - Constants:
       - `initialParams` ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)), the search params at the initial point of loading BYTM
       - `sessionStorageAvailable` (boolean), whether the browser supports [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)

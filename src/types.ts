@@ -336,6 +336,8 @@ export type InterfaceFunctions = {
   getFeatures: typeof getFeaturesInterface;
   /** 🔒 Overwrites the feature configuration with the provided one */
   saveFeatures: typeof saveFeaturesInterface;
+  /** Returns the default feature configuration */
+  getDefaultFeatures: () => FeatureConfig;
 
   // lyrics:
   /** Sanitizes the provided artist string - this needs to be done before calling other lyrics related functions! */
