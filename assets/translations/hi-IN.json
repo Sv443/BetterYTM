@@ -3,7 +3,9 @@
     "langName": "हिन्दी",
     "langNameEnglish": "Hindi (India)",
     "countryName": "भारत",
-    "authors": "Sv443"
+    "authors": [
+      "Sv443"
+    ]
   },
   "config_menu_option": "%1 कॉन्फ़िगरेशन",
   "config_menu_title": "%1 - कॉन्फ़िगरेशन",

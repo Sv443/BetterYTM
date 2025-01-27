@@ -4,7 +4,9 @@
     "langName": "English",
     "langNameEnglish": "English (Great Britain)",
     "countryName": "Great Britain",
-    "authors": "Sv443"
+    "authors": [
+      "Sv443"
+    ]
   },
   "feature_category_behavior": "Behaviour",
   "vote_ratio_blue_gray": "Blue and grey"

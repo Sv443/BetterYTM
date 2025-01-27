@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "required": ["meta"],
-  "description": "Mapping of translation keys to strings",
+  "description": "Mapping of translation keys to strings.",
   "patternProperties": {
     "^[a-zA-Z]([a-zA-Z0-9_-]+)?$": {
       "type": "string",
@@ -12,30 +12,40 @@
   "properties": {
     "meta": {
       "type": "object",
-      "description": "Metadata about the translation file",
+      "description": "Metadata about the translation file.",
+      "required": [
+        "langName",
+        "langNameEnglish",
+        "countryName",
+        "authors"
+      ],
       "properties": {
         "base": {
           "type": "string",
-          "description": "Optional base locale from which all missing translations are automatically inherited. Must be in the format \"ll-CC\" (language-country), e.g. en-US",
+          "description": "Optional base locale from which all missing translations are automatically inherited. Must be in the format \"ll-CC\" (language-country), e.g. en-US.",
           "pattern": "^[a-z]{2}-[A-Z]{2}$",
           "default": "en-US"
         },
         "langName": {
           "type": "string",
-          "description": "Name of the language in the language itself"
+          "description": "Name of the language in the language itself."
         },
         "langNameEnglish": {
           "type": "string",
-          "description": "Name of the language and the country (or locale) in English in the format \"Language (Country or Locale)\"",
+          "description": "Name of the language and the country (or locale) in English in the format \"Language (Country or Locale)\".",
           "pattern": "^[\\w\\s,._\\-&]+ \\([\\w\\s,._\\-&]+\\)$"
         },
         "countryName": {
           "type": "string",
-          "description": "Name of the country in the language itself"
+          "description": "Name of the country in the language itself."
         },
         "authors": {
-          "type": "string",
-          "description": "Name(s) of the author and contributors of the translation"
+          "type": "array",
+          "description": "Name(s) of the author and contributors of the translation.",
+          "items": {
+            "type": "string",
+            "description": "Name of the author or contributor."
+          }
         }
       }
     }

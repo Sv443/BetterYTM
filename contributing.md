@@ -56,7 +56,7 @@ To submit a translation, please follow these steps:
     2. Edit it to your translated version and keep the left side of the colon unchanged
     3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
     4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order
-    5. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
+    5. Add your name to the respective `authors` properties in [`assets/locales.json`](./assets/locales.json) and the translation file
     6. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request
 7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
   Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)

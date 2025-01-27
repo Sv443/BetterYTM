@@ -3,7 +3,9 @@
     "langName": "Español",
     "langNameEnglish": "Spanish (Spain)",
     "countryName": "España",
-    "authors": "Sv443"
+    "authors": [
+      "Sv443"
+    ]
   },
   "config_menu_option": "Configuración de %1",
   "config_menu_title": "%1 - Configuración",

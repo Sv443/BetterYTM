@@ -1,23 +1,26 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "array",
-  "description": "Configuration for libraries loaded via @require (only supports UMD bundles or user libraries)",
+  "description": "Configuration for libraries loaded via @require (only supports UMD bundles or user libraries).",
   "items": {
     "type": "object",
     "required": ["pkgName", "global"],
-    "description": "Configuration for a library (via UMD bundle or global variable)",
+    "description": "Configuration for a library (via UMD bundle or global variable).",
     "properties": {
       "pkgName": {
         "type": "string",
-        "description": "Full identifier of the NPM package"
+        "description": "Full identifier of the NPM package.",
+        "pattern": "^@?[a-z0-9-_/]+$"
       },
       "path": {
         "type": "string",
-        "description": "Path to the package's UMD/global bundle file, relative to the library root folder"
+        "description": "Path to the package's UMD/global bundle file, relative to the library root folder.",
+        "pattern": "^.+\\.(m|c)?(j|t)sx?$"
       },
       "global": {
         "type": "string",
-        "description": "Name of the global variable created in the package's UMD/global bundle"
+        "description": "Name of the global variable created in the package's UMD/global bundle.",
+        "pattern": "^[$_a-zA-Z][$_a-zA-Z0-9]*$"
       }
     },
     "additionalProperties": false

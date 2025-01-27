@@ -3,7 +3,9 @@
     "langName": "简体中文",
     "langNameEnglish": "Chinese (Simplified)",
     "countryName": "中国",
-    "authors": "Sv443"
+    "authors": [
+      "Sv443"
+    ]
   },
   "config_menu_option": "%1 配置",
   "config_menu_title": "%1 - 配置",

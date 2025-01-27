@@ -1,44 +1,48 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "description": "All locales and translations that are available in BYTM",
+  "description": "All locales and translations that are available in BYTM.",
   "patternProperties": {
     "^[a-z]{2}-[A-Z]{2}$": {
       "type": "object",
       "required": ["name", "nameEnglish", "emoji", "userscriptDesc", "authors", "altLocales"],
-      "description": "Locale code in the format ll-CC (language-country)",
+      "description": "Main locale code in the format \"ll-CC\" (language-COUNTRY).",
       "properties": {
         "name": {
           "type": "string",
-          "description": "Name and country of the language, e.g. \"Deutsch (Deutschland)\""
+          "description": "Native name and country of the language, e.g. \"Deutsch (Deutschland)\"."
         },
         "nameEnglish": {
           "type": "string",
-          "description": "English name and country of the language, e.g. \"German (Germany)\""
+          "description": "English name and country of the language, e.g. \"German (Germany)\".",
+          "pattern": "^.+ \\(.+\\)$"
         },
         "emoji": {
           "type": "string",
           "pattern": "^[\uD83C\uDDE6-\uDDFF\uD83C\uDDE6-\uDDFF]{4}$",
-          "description": "Flag emoji of the country"
+          "description": "Flag emoji of the country."
         },
         "userscriptDesc": {
           "type": "string",
-          "description": "Localized userscript description (from \"description\" in package.json)"
+          "description": "Localized userscript description (from \"description\" in package.json)."
         },
         "authors": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "List of authors that contributed to the translation"
+          "description": "List of authors that contributed to the translation."
         },
         "altLocales": {
           "type": "array",
           "items": {
+            "contains": {
+              "pattern": "^[a-z]{2}$"
+            },
             "type": "string",
             "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
           },
-          "description": "Alternative locale codes that will be redirected to this locale, e.g. for all German languages: [\"de\", \"de-AT\", \"de-CH\", \"de-LI\", \"de-LU\"]"
+          "description": "Alternative locale codes that will be redirected to this locale, e.g. for all German languages: [\"de\", \"de-AT\", \"de-CH\", \"de-LI\", \"de-LU\"]."
         }
       },
       "additionalProperties": false

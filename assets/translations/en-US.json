@@ -3,7 +3,9 @@
     "langName": "English",
     "langNameEnglish": "English (United States)",
     "countryName": "United States",
-    "authors": "Sv443"
+    "authors": [
+      "Sv443"
+    ]
   },
   "config_menu_option": "%1 Configuration",
   "config_menu_title": "%1 - Configuration",

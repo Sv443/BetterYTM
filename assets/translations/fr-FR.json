@@ -3,7 +3,9 @@
     "langName": "Français",
     "langNameEnglish": "French (France)",
     "countryName": "France",
-    "authors": "Sv443"
+    "authors": [
+      "Sv443"
+    ]
   },
   "config_menu_option": "Configuration de %1",
   "config_menu_title": "%1 - Configuration",
