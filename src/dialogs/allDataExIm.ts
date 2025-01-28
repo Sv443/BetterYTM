@@ -1,11 +1,11 @@
 import { consumeStringGen, type SerializedDataStore } from "@sv443-network/userutils";
-import { copyToClipboard, error, onInteraction, t } from "../utils/index.js";
-import { BytmDialog, createLongBtn, createRipple, showToast } from "../components/index.js";
+import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.js";
+import { createLongBtn, createRipple, showToast } from "../components/index.js";
 import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.js";
-import { allSerializerStoresIds, downloadData, getStoreSerializer } from "../serializer.js";
-import "./autoLike.css";
+import { getSerializerStoresIds, getStoreSerializer } from "../serializer.js";
+import packageJson from "../../package.json" with { type: "json" };
 
-let allDataExImDialog: BytmDialog | undefined;
+let allDataExImDialog: ExImDialog | undefined;
 
 /** Creates and/or returns the AllDataExIm dialog */
 export async function getAllDataExImDialog() {
@@ -75,7 +75,7 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
     dataEl.tabIndex = 0;
     dataEl.value = t("click_to_reveal");
 
-    for(const id of allSerializerStoresIds) {
+    for(const id of getSerializerStoresIds()) {
       const rowEl = document.createElement("div");
       rowEl.classList.add("bytm-all-data-exim-dialog-export-part-row");
       rowEl.title = t(`data_stores.disable.${id}`);
@@ -108,7 +108,9 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
 
       return JSON.stringify(
         (JSON.parse(data) as SerializedDataStore[])
-          .filter(({ id }) => exportIds.includes(id))
+          .filter(({ id }) => exportIds.includes(id)),
+        undefined,
+        2,
       );
     };
 
@@ -137,15 +139,22 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
       text: t("download"),
       resourceName: "icon-arrow_down",
       async onClick({ shiftKey }) {
-        const dlData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-        copyToClipboard(filter(await consumeStringGen(dlData)));
-        await downloadData();
+        const dlData = filter(await consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
+        copyToClipboard(dlData);
+
+        const pad = (num: number, len = 2) => String(num).padStart(len, "0");
+
+        const d = new Date();
+        const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+        const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
+
+        downloadFile(fileName, dlData, "application/json");
         await showToast({ message: t("downloaded_file_hint") });
       },
     }));
 
     exportCenterBtnCont.append(cpBtn, dlBtn);
-    exportPane.append(descEl, dataEl, exportCenterBtnCont);
+    exportPane.append(descEl, dataEl, exportPartsCont, exportCenterBtnCont);
   }
 
   //#region import

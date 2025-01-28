@@ -13,18 +13,18 @@ import packageJson from "../package.json" with { type: "json" };
 let serializer: DataStoreSerializer | undefined;
 
 /** Array of all data stores that are included in the DataStoreSerializer instance */
-export const allSerializerStores = [
+export const getSerializerStores = () => [
   configStore,
   autoLikeStore,
 ];
 
 /** Array of IDs of all stores included in the DataStoreSerializer instance */
-export const allSerializerStoresIds = allSerializerStores.map(store => store.id);
+export const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
 
 /** Returns the serializer for all data stores */
 export function getStoreSerializer() {
   if(!serializer) {
-    serializer = new DataStoreSerializer(allSerializerStores, {
+    serializer = new DataStoreSerializer(getSerializerStores(), {
       addChecksum: true,
       ensureIntegrity: true,
     });

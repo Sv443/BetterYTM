@@ -38,6 +38,7 @@ import {
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
+import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
 
 //#region cns. watermark
 
@@ -555,6 +556,9 @@ function registerDevCommands() {
   GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
 
   log("Registered dev menu commands");
+
+  //#DEBUG
+  getAllDataExImDialog().then(d => d.open());
 }
 
 preInit();

@@ -295,5 +295,5 @@ export function downloadFile(fileName: string, data: string | Blob, mimeType = "
   document.body.appendChild(a);
   a.click();
 
-  setTimeout(() => a.remove(), 50);
+  setTimeout(() => a.remove(), 1);
 }
