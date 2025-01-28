@@ -6,7 +6,10 @@ import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTransl
 import { initSiteEvents } from "./siteEvents.js";
 import { emitInterface, initInterface, initPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
-import { getWelcomeDialog, showPrompt } from "./dialogs/index.js";
+import { downloadData, getStoreSerializer } from "./serializer.js";
+import { MarkdownDialog } from "./components/index.js";
+import { getWelcomeDialog } from "./dialogs/welcome.js";
+import { showPrompt } from "./dialogs/prompt.js";
 import type { FeatureConfig } from "./types.js";
 import {
   // layout
@@ -35,8 +38,6 @@ import {
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
-import { downloadData, getStoreSerializer } from "./serializer.js";
-import { MarkdownDialog } from "./components/index.js";
 
 //#region cns. watermark
 

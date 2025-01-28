@@ -11,8 +11,7 @@ import "./ExImDialog.css";
 // - [ ] Still allow downloading the `exportDataSpecial`
 // - [ ] Checkboxes on both sides to configure which DataStore instances to import/export to/from
 
-type ExImDialogOpts =
-  & Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
+export type ExImDialogOpts = Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
   & {
     /** Title of the dialog */
     title: StringGen;
@@ -26,7 +25,8 @@ type ExImDialogOpts =
     exportData: StringGen;
     /** Optional variant of the data, used for special cases like when shift-clicking the copy button */
     exportDataSpecial?: StringGen;
-  };
+  }
+  & Partial<Pick<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">>;
 
 //#region class
 

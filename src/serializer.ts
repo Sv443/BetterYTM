@@ -12,13 +12,19 @@ import packageJson from "../package.json" with { type: "json" };
 /** Central serializer for all data stores */
 let serializer: DataStoreSerializer | undefined;
 
+/** Array of all data stores that are included in the DataStoreSerializer instance */
+export const allSerializerStores = [
+  configStore,
+  autoLikeStore,
+];
+
+/** Array of IDs of all stores included in the DataStoreSerializer instance */
+export const allSerializerStoresIds = allSerializerStores.map(store => store.id);
+
 /** Returns the serializer for all data stores */
 export function getStoreSerializer() {
   if(!serializer) {
-    serializer = new DataStoreSerializer([
-      configStore,
-      autoLikeStore,
-    ], {
+    serializer = new DataStoreSerializer(allSerializerStores, {
       addChecksum: true,
       ensureIntegrity: true,
     });

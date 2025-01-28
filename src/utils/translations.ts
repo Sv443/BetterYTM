@@ -46,7 +46,9 @@ export async function initTranslations(locale: TrLocale) {
       ...transFile,
     };
 
-    tr.addTranslations(locale, translations);
+    const { meta: { authors: _authors, ...meta }, ...trans } = translations;
+
+    tr.addTranslations(locale, { ...meta, ...trans });
 
     info(`Loaded translations for locale '${locale}'`);
   }

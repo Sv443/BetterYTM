@@ -4,10 +4,12 @@ import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../const
 import { featInfo } from "../features/index.js";
 import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml, type TrLocale, tl, reloadTab } from "../utils/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { getChangelogDialog, getFeatHelpDialog, showPrompt } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import { BytmDialog, ExImDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
 import { emitInterface } from "../interface.js";
+import { showPrompt } from "../dialogs/prompt.js";
+import { getFeatHelpDialog } from "../dialogs/featHelp.js";
+import { getChangelogDialog } from "../dialogs/changelog.js";
 import pkg from "../../package.json" with { type: "json" };
 import localeMapping from "../../assets/locales.json" with { type: "json" };
 import "./menu_old.css";

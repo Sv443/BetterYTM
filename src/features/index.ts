@@ -1,3 +1,4 @@
+import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
 import { formatNumber, getLocale, getPreferredLocale, getResourceUrl, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
@@ -5,11 +6,12 @@ import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, type ColorLightnessPref, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import { getAutoLikeDialog, getPluginListDialog, showPrompt } from "../dialogs/index.js";
 import { showIconToast } from "../components/index.js";
 import { mode } from "../constants.js";
 import { getStoreSerializer } from "../serializer.js";
-import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
+import { getAutoLikeDialog } from "../dialogs/autoLike.js";
+import { showPrompt } from "../dialogs/prompt.js";
+import { getPluginListDialog } from "../dialogs/pluginList.js";
 
 //#region re-exports
 
