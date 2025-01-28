@@ -1,183 +1,3 @@
-/* #region general */
-:root {
-  --bytm-locale-color: #5ea2ec;
-  --bytm-advanced-mode-color: #ceb663;
-  --bytm-experimental-col: #cc83e5;
-  --bytm-warning-col: #e5a63b;
-  --bytm-error-col: #fa5b5b;
-  --bytm-reload-col: #77e064;
-}
-
-/* TODO: after cfg menu migration, leave only dialog styles here */
-#bytm-cfg-dialog-bg,
-#bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1150px;
-  --bytm-menu-width-max: 1150px;
-  --bytm-dialog-height-max: 800px;
-  --bytm-menu-height-max: 800px;
-}
-
-/* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
-.bytm-dom-yt .bytm-dialog-bg,
-.bytm-dom-yt .bytm-menu-bg {
-  z-index: 10042;
-}
-
-.bytm-dom-yt .bytm-dialog,
-.bytm-dom-yt .bytm-menu {
-  z-index: 10069;
-}
-
-.bytm-dialog-body p {
-  overflow-wrap: break-word;
-}
-
-.bytm-dialog-body details summary {
-  cursor: pointer;
-  font-style: italic;
-}
-
-.bytm-secondary-label {
-  padding-left: 12px;
-  font-size: 1.3rem;
-}
-
-/* #region version notification */
-
-#bytm-version-notif-dialog-btns {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-#bytm-disable-update-check-wrapper {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  margin-top: 35px;
-}
-
-#bytm-disable-update-check-wrapper label {
-  padding-left: 12px;
-}
-
-#bytm-version-notif-changelog-cont {
-  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
-  overflow-y: auto;
-  margin: 10px 0px;
-}
-
-#bytm-version-notif-changelog-details {
-  margin-top: 15px;
-}
-
-.bytm-disable-update-check-toggle-label-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* #region cfg menu */
-
-.bytm-ftconf-adv-copy-btn {
-  margin: 0px 10px;
-}
-
-.bytm-adorn-icon {
-  display: inline-flex;
-  align-items: center;
-}
-
-.bytm-adorn-icon[title] {
-  cursor: help;
-}
-
-/* #region cfg menu adornments */
-
-.bytm-locale-icon svg path {
-  fill: var(--bytm-locale-color, #fff);
-}
-
-.bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #fff);
-}
-
-.bytm-experimental-icon svg path {
-  fill: var(--bytm-experimental-col, #fff);
-}
-
-.bytm-warning-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff);
-}
-
-.bytm-reload-icon svg path {
-  fill: var(--bytm-reload-col, #fff);
-}
-
-/* #region welcome dialog */
-
-#bytm-welcome-menu-title-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-welcome-menu-title-logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 20px;
-}
-
-#bytm-welcome-menu-content-wrapper {
-  overflow-y: auto;
-}
-
-#bytm-welcome-menu-locale-cont {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#bytm-welcome-menu-locale-img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
-}
-
-#bytm-welcome-menu-text-cont {
-  margin-top: 16px;
-}
-
-#bytm-welcome-menu-text {
-  font-size: 1.6rem;
-  line-height: 20px;
-}
-
-#bytm-welcome-menu-locale-select {
-  font-size: 1.6rem;
-}
-
-#bytm-welcome-menu-footer-cont {
-  display: flex;
-  justify-content: space-between;
-  border-radius: 0px 0px var(--bytm-menu-border-radius)
-    var(--bytm-menu-border-radius);
-}
-
-#bytm-auto-like-channels-dialog-body {
-  padding-left: 0;
-  padding-right: 0;
-  padding-bottom: 0;
-}
-
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
@@ -913,11 +733,6 @@ body .bytm-ripple.slowest {
   );
 }
 
-.bytm-auto-like-channels-footer-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
 #bytm-prompt-dialog-header {
   display: flex;
   flex-direction: row;
@@ -964,6 +779,155 @@ body .bytm-ripple.slowest {
 .bytm-prompt-dialog-button {
   padding: 2px 6px;
   font-size: 1.45rem;
+}
+
+.bytm-auto-like-channels-footer-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+:root {
+  --bytm-auto-like-btn-color: #bf87f0;
+}
+
+#bytm-auto-like-channels-list {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  /* idk how else to get the scroll bar to show up correctly */
+  max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)) - 300px);
+}
+
+.bytm-auto-like-channels-desc {
+  padding: 0px 15px;
+  white-space: pre-wrap;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.bytm-auto-like-channels-search-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 0px 15px;
+  margin-bottom: 10px;
+}
+
+.bytm-auto-like-channels-searchbar {
+  min-width: calc(min(250px, 50%));
+}
+
+.bytm-auto-like-channel-row-left-cont {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-auto-like-channel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-auto-like-channel-row.hidden {
+  display: none;
+}
+
+.bytm-auto-like-channel-row:hover {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-auto-like-channel-row
+  .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
+  --toggle-height: 18px !important;
+  --toggle-width: 36px !important;
+}
+
+.bytm-auto-like-channel-row .bytm-generic-btn {
+  --bytm-generic-btn-width: 30px;
+  --bytm-generic-btn-height: 30px;
+}
+
+.bytm-auto-like-channel-name-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bytm-auto-like-channel-id {
+  cursor: text;
+  font-family: var(--bytm-font-monospace);
+  font-size: 1.25rem;
+  color: #aaa;
+  margin-left: 10px;
+}
+
+/* add more specificity to override the default styles */
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn {
+  margin-right: 8px;
+  border: 1px solid var(--bytm-auto-like-btn-color);
+  box-sizing: border-box;
+  background-color: transparent;
+  transition: border-color 0.2s ease;
+  animation: none;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin {
+  margin: 0 0 0 8px;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
+  margin: 0 8px 0 0;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.bytm-dom-ytm
+  ytmusic-subscribe-button-renderer
+  #button-shape-subscribe:hover
+  > button {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn svg path {
+  fill: var(--bytm-auto-like-btn-color);
+  transition: fill 0.2s ease;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active svg path,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled svg path {
+  fill: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
+  font-weight: 500;
+  color: var(--bytm-auto-like-btn-color);
+  transition: color 0.2s ease;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active
+  .bytm-generic-long-btn-txt,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
+  .bytm-generic-long-btn-txt {
+  color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
 
 #bytm-plugin-list-dialog-bg {
@@ -1590,150 +1554,6 @@ hr {
   display: block;
   margin: 8px 0px 12px 0px;
   border: revert;
-}
-
-:root {
-  --bytm-auto-like-btn-color: #bf87f0;
-}
-
-#bytm-auto-like-channels-list {
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  /* idk how else to get the scroll bar to show up correctly */
-  max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)) - 300px);
-}
-
-.bytm-auto-like-channels-desc {
-  padding: 0px 15px;
-  white-space: pre-wrap;
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-}
-
-.bytm-auto-like-channels-search-cont {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  padding: 0px 15px;
-  margin-bottom: 10px;
-}
-
-.bytm-auto-like-channels-searchbar {
-  min-width: calc(min(250px, 50%));
-}
-
-.bytm-auto-like-channel-row-left-cont {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.bytm-auto-like-channel-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 15px;
-  transition: background-color 0.15s ease-out;
-}
-
-.bytm-auto-like-channel-row.hidden {
-  display: none;
-}
-
-.bytm-auto-like-channel-row:hover {
-  background-color: var(--bytm-menu-bg-highlight);
-}
-
-.bytm-auto-like-channel-row
-  .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
-  --toggle-height: 18px !important;
-  --toggle-width: 36px !important;
-}
-
-.bytm-auto-like-channel-row .bytm-generic-btn {
-  --bytm-generic-btn-width: 30px;
-  --bytm-generic-btn-height: 30px;
-}
-
-.bytm-auto-like-channel-name-label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.bytm-auto-like-channel-id {
-  cursor: text;
-  font-family: var(--bytm-font-monospace);
-  font-size: 1.25rem;
-  color: #aaa;
-  margin-left: 10px;
-}
-
-/* add more specificity to override the default styles */
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn {
-  margin-right: 8px;
-  border: 1px solid var(--bytm-auto-like-btn-color);
-  box-sizing: border-box;
-  background-color: transparent;
-  transition: border-color 0.2s ease;
-  animation: none;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin {
-  margin: 0 0 0 8px;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
-  margin: 0 8px 0 0;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-body.bytm-dom-ytm
-  ytmusic-subscribe-button-renderer
-  #button-shape-subscribe:hover
-  > button {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active,
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn svg path {
-  fill: var(--bytm-auto-like-btn-color);
-  transition: fill 0.2s ease;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active svg path,
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled svg path {
-  fill: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
-  font-weight: 500;
-  color: var(--bytm-auto-like-btn-color);
-  transition: color 0.2s ease;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active
-  .bytm-generic-long-btn-txt,
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
-  .bytm-generic-long-btn-txt {
-  color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
 
 /* #region misc */
