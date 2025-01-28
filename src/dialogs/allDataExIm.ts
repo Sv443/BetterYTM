@@ -88,6 +88,11 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
       chkEl.title = t(`data_stores.disable.${id}`);
 
       chkEl.addEventListener("change", async () => {
+        const kwd = chkEl.checked ? "disable" : "enable";
+        rowEl.title = t(`data_stores.${kwd}.${id}`);
+        chkEl.title = t(`data_stores.${kwd}.${id}`);
+        lblEl.textContent = t(`data_stores.${kwd}.${id}`);
+
         if(dataEl.classList.contains("revealed"))
           dataEl.value = filter(await consumeStringGen(opts.exportData));
       });
@@ -100,6 +105,7 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
       exportPartsCont.appendChild(rowEl);
     }
 
+    /** Filters out all data stores that are not checked */
     const filter = (data: string) => {
       const exportIds: string[] = [];
 
