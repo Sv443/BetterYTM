@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/dist/BetterYTM.css#sha256=7iURfDwKBmBFcY+VAZCRaPYV05sqvqZuruuJtndTiNM=
-// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@06ddb25f/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/dist/BetterYTM.css#sha256=kFSriGJ1TQTRp4PtgDS889JJpYJcVDC5eNrH9DAYcZM=
+// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.0.4/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -95,7 +95,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function(UserUtils,DOMPurify,compareVersions,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var alwaysExternalAssetPatterns = [
+(function(UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var alwaysExternalAssetPatterns = [
 	"^icon-",
 	"^img-",
 	"^font-",
@@ -329,7 +329,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "06ddb25f";
+const buildNumberRaw = "c172a04d";
 const assetSourceRaw = "jsdelivr";
 const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
@@ -913,676 +913,6 @@ class BytmDialog extends UserUtils.NanoEmitter {
         }
         return dialogWrapperEl;
     }
-}/**
- * Creates an element with a ripple effect on click.
- * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
- * @returns The passed element or the newly created element with the ripple effect.
- */
-function createRipple(rippleElement, properties) {
-    const props = Object.assign({ speed: "normal" }, properties);
-    const rippleEl = rippleElement !== null && rippleElement !== void 0 ? rippleElement : document.createElement("div");
-    rippleEl.classList.add("bytm-ripple", props.speed);
-    const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
-    rippleEl.addEventListener("mousedown", (e) => {
-        updateRippleWidth();
-        const x = e.clientX - rippleEl.getBoundingClientRect().left;
-        const y = e.clientY - rippleEl.getBoundingClientRect().top;
-        const rippleAreaEl = document.createElement("span");
-        rippleAreaEl.classList.add("bytm-ripple-area");
-        rippleAreaEl.style.left = `${Math.round(x)}px`;
-        rippleAreaEl.style.top = `${Math.round(y)}px`;
-        if (rippleEl.firstChild)
-            rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
-        else
-            rippleEl.appendChild(rippleAreaEl);
-        rippleAreaEl.addEventListener("animationend", () => rippleAreaEl.remove());
-    });
-    updateRippleWidth();
-    return rippleEl;
-}/**
- * Creates a generic, circular button element.
- * If `href` is provided, the button will be an anchor element.
- * If `onClick` is provided, the button will be a div element.
- * Provide either `resourceName` or `src` to specify the icon inside the button.
- */
-async function createCircularBtn(_a) {
-    var { title, ripple = true } = _a, rest = __rest(_a, ["title", "ripple"]);
-    let btnElem;
-    if ("href" in rest && rest.href) {
-        btnElem = document.createElement("a");
-        btnElem.href = rest.href;
-        btnElem.role = "button";
-        btnElem.target = "_blank";
-        btnElem.rel = "noopener noreferrer";
-    }
-    else if ("onClick" in rest && rest.onClick) {
-        btnElem = document.createElement("div");
-        rest.onClick && onInteraction(btnElem, rest.onClick);
-    }
-    else
-        throw new TypeError("Either 'href' or 'onClick' must be provided");
-    btnElem.classList.add("bytm-generic-btn");
-    btnElem.ariaLabel = btnElem.title = title;
-    btnElem.tabIndex = 0;
-    btnElem.role = "button";
-    const imgElem = document.createElement("img");
-    imgElem.classList.add("bytm-generic-btn-img");
-    imgElem.src = "src" in rest
-        ? rest.src instanceof Promise
-            ? await rest.src
-            : rest.src
-        : await getResourceUrl(rest.resourceName);
-    btnElem.appendChild(imgElem);
-    return ripple ? createRipple(btnElem) : btnElem;
-}const interactionKeys = ["Enter", " ", "Space"];
-/**
- * Adds generic, accessible interaction listeners to the passed element.
- * All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
- * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
- */
-function onInteraction(elem, listener, listenerOptions) {
-    const _a = listenerOptions !== null && listenerOptions !== void 0 ? listenerOptions : {}, { preventDefault = true, stopPropagation = true } = _a, listenerOpts = __rest(_a, ["preventDefault", "stopPropagation"]);
-    const proxListener = (e) => {
-        if (e instanceof KeyboardEvent) {
-            if (interactionKeys.includes(e.key)) {
-                preventDefault && e.preventDefault();
-                stopPropagation && e.stopPropagation();
-            }
-            else
-                return;
-        }
-        else if (e instanceof MouseEvent) {
-            preventDefault && e.preventDefault();
-            stopPropagation && e.stopPropagation();
-        }
-        // clean up the other listener that isn't automatically removed if `once` is set
-        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
-        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
-        listener(e);
-    };
-    elem.addEventListener("click", proxListener, listenerOpts);
-    elem.addEventListener("keydown", proxListener, listenerOpts);
-}//#region class
-/** Generic dialog for exporting and importing any string of data */
-class ExImDialog extends BytmDialog {
-    constructor(options) {
-        super(Object.assign({ renderHeader: () => ExImDialog.renderHeader(options), renderBody: () => ExImDialog.renderBody(options), renderFooter: undefined, closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, unmountOnClose: true, small: true }, options));
-    }
-    //#region header
-    static async renderHeader(opts) {
-        const headerEl = document.createElement("h2");
-        headerEl.classList.add("bytm-menu-title");
-        headerEl.role = "heading";
-        headerEl.ariaLevel = "1";
-        headerEl.tabIndex = 0;
-        headerEl.textContent = headerEl.ariaLabel = await UserUtils.consumeStringGen(opts.title);
-        return headerEl;
-    }
-    //#region body
-    static async renderBody(opts) {
-        const panesCont = document.createElement("div");
-        panesCont.classList.add("bytm-exim-dialog-panes-cont");
-        //#region export
-        const exportPane = document.createElement("div");
-        exportPane.classList.add("bytm-exim-dialog-pane", "export");
-        {
-            const descEl = document.createElement("p");
-            descEl.classList.add("bytm-exim-dialog-desc");
-            descEl.role = "note";
-            descEl.tabIndex = 0;
-            descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descExport);
-            const dataEl = document.createElement("textarea");
-            dataEl.classList.add("bytm-exim-dialog-data");
-            dataEl.readOnly = true;
-            dataEl.tabIndex = 0;
-            dataEl.value = t("click_to_reveal");
-            onInteraction(dataEl, async () => {
-                dataEl.value = await UserUtils.consumeStringGen(opts.exportData);
-                dataEl.setSelectionRange(0, dataEl.value.length);
-            });
-            const exportCenterBtnCont = document.createElement("div");
-            exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
-            const copyBtn = createRipple(await createLongBtn({
-                title: t("copy_to_clipboard"),
-                text: t("copy"),
-                resourceName: "icon-copy",
-                async onClick({ shiftKey }) {
-                    const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-                    copyToClipboard(await UserUtils.consumeStringGen(copyData));
-                    await showToast({ message: t("copied_to_clipboard") });
-                },
-            }));
-            exportCenterBtnCont.appendChild(copyBtn);
-            exportPane.append(descEl, dataEl, exportCenterBtnCont);
-        }
-        //#region import
-        const importPane = document.createElement("div");
-        importPane.classList.add("bytm-exim-dialog-pane", "import");
-        {
-            const descEl = document.createElement("p");
-            descEl.classList.add("bytm-exim-dialog-desc");
-            descEl.role = "note";
-            descEl.tabIndex = 0;
-            descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descImport);
-            const dataEl = document.createElement("textarea");
-            dataEl.classList.add("bytm-exim-dialog-data");
-            dataEl.tabIndex = 0;
-            const importCenterBtnCont = document.createElement("div");
-            importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
-            const importBtn = createRipple(await createLongBtn({
-                title: t("start_import_tooltip"),
-                text: t("import"),
-                resourceName: "icon-upload",
-                onClick: () => opts.onImport(dataEl.value),
-            }));
-            importCenterBtnCont.appendChild(importBtn);
-            importPane.append(descEl, dataEl, importCenterBtnCont);
-        }
-        panesCont.append(exportPane, importPane);
-        return panesCont;
-    }
-}/** EventEmitter instance that is used to detect various changes to the site and userscript */
-const siteEvents = new UserUtils.NanoEmitter({
-    publicEmit: true,
-});
-let observers = [];
-let lastWatchId = null;
-let lastPathname = null;
-let lastFullscreen;
-/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
-async function initSiteEvents() {
-    try {
-        if (getDomain() === "ytm") {
-            //#region queue
-            // the queue container always exists so it doesn't need an extra init function
-            const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
-                if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    emitSiteEvent("queueChanged", target);
-                }
-            });
-            // only observe added or removed elements
-            addSelectorListener("sidePanel", "#contents.ytmusic-player-queue", {
-                listener: (el) => {
-                    queueObs.observe(el, {
-                        childList: true,
-                    });
-                },
-            });
-            const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
-                if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    emitSiteEvent("autoplayQueueChanged", target);
-                }
-            });
-            addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
-                listener: (el) => {
-                    autoplayObs.observe(el, {
-                        childList: true,
-                    });
-                },
-            });
-            //#region player bar
-            let lastTitle = null;
-            addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
-                continuous: true,
-                listener: (titleElem) => {
-                    const oldTitle = lastTitle;
-                    const newTitle = titleElem.textContent;
-                    if (newTitle === lastTitle || !newTitle)
-                        return;
-                    lastTitle = newTitle;
-                    info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
-                    emitSiteEvent("songTitleChanged", newTitle, oldTitle);
-                    runIntervalChecks();
-                },
-            });
-            info("Successfully initialized SiteEvents observers");
-            observers = observers.concat([
-                queueObs,
-                autoplayObs,
-            ]);
-            //#region player
-            const playerFullscreenObs = new MutationObserver(([{ target }]) => {
-                var _a;
-                const isFullscreen = ((_a = target.getAttribute("player-ui-state")) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "FULLSCREEN";
-                if (lastFullscreen !== isFullscreen || typeof lastFullscreen === "undefined") {
-                    emitSiteEvent("fullscreenToggled", isFullscreen);
-                    lastFullscreen = isFullscreen;
-                }
-            });
-            if (getDomain() === "ytm") {
-                const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
-                    listener: (el) => {
-                        playerFullscreenObs.observe(el, {
-                            attributeFilter: ["player-ui-state"],
-                        });
-                    },
-                });
-                if (globserversReady)
-                    registerFullScreenObs();
-                else
-                    window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
-            }
-        }
-        window.addEventListener("bytm:ready", () => {
-            runIntervalChecks();
-            setInterval(runIntervalChecks, 100);
-            if (getDomain() === "ytm") {
-                addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
-                    listener(el) {
-                        const urlRefObs = new MutationObserver(([{ target }]) => {
-                            var _a;
-                            if (!target || !((_a = target === null || target === void 0 ? void 0 : target.href) === null || _a === void 0 ? void 0 : _a.includes("/watch")))
-                                return;
-                            const watchId = new URL(target.href).searchParams.get("v");
-                            checkWatchIdChange(watchId);
-                        });
-                        urlRefObs.observe(el, {
-                            attributeFilter: ["href"],
-                        });
-                    }
-                });
-            }
-            if (getDomain() === "ytm") {
-                setInterval(checkWatchIdChange, 250);
-                checkWatchIdChange();
-            }
-        }, {
-            once: true,
-        });
-    }
-    catch (err) {
-        error("Couldn't initialize site event observers due to an error:\n", err);
-    }
-}
-let bytmReady = false;
-window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
-/** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
-function emitSiteEvent(key, ...args) {
-    try {
-        if (!bytmReady) {
-            window.addEventListener("bytm:ready", () => {
-                bytmReady = true;
-                emitSiteEvent(key, ...args);
-            }, { once: true });
-            return;
-        }
-        siteEvents.emit(key, ...args);
-        emitInterface(`bytm:siteEvent:${key}`, args);
-    }
-    catch (err) {
-        error(`Couldn't emit site event "${key}" due to an error:\n`, err);
-    }
-}
-//#region other
-/** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
-function checkWatchIdChange(newId) {
-    const newWatchId = newId !== null && newId !== void 0 ? newId : new URL(location.href).searchParams.get("v");
-    if (newWatchId && newWatchId !== lastWatchId) {
-        info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
-        emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-        lastWatchId = newWatchId;
-    }
-}
-/** Periodically called to check for changes in the URL and emit associated siteEvents */
-function runIntervalChecks() {
-    if (!lastWatchId)
-        checkWatchIdChange();
-    if (location.pathname !== lastPathname) {
-        emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
-        lastPathname = String(location.pathname);
-    }
-}let otherHotkeyInputActive = false;
-const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
-/** Creates a hotkey input element */
-function createHotkeyInput({ initialValue, onChange, createTitle }) {
-    var _a;
-    const initialHotkey = initialValue;
-    let currentHotkey;
-    if (!createTitle)
-        createTitle = (value) => value;
-    const wrapperElem = document.createElement("div");
-    wrapperElem.classList.add("bytm-hotkey-wrapper");
-    const infoElem = document.createElement("span");
-    infoElem.classList.add("bytm-hotkey-info");
-    const inputElem = document.createElement("button");
-    inputElem.role = "button";
-    inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
-    inputElem.dataset.state = "inactive";
-    inputElem.innerText = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
-    inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
-    const resetElem = document.createElement("span");
-    resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
-    resetElem.role = "button";
-    resetElem.tabIndex = 0;
-    resetElem.textContent = `(${t("reset")})`;
-    resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
-    const deactivate = () => {
-        var _a;
-        if (!otherHotkeyInputActive)
-            return;
-        emitSiteEvent("hotkeyInputActive", false);
-        otherHotkeyInputActive = false;
-        const curHk = currentHotkey !== null && currentHotkey !== void 0 ? currentHotkey : initialValue;
-        inputElem.innerText = (_a = curHk === null || curHk === void 0 ? void 0 : curHk.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
-        inputElem.dataset.state = "inactive";
-        inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
-        setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
-    };
-    const activate = () => {
-        if (otherHotkeyInputActive)
-            return;
-        emitSiteEvent("hotkeyInputActive", true);
-        otherHotkeyInputActive = true;
-        inputElem.innerText = "< ... >";
-        inputElem.dataset.state = "active";
-        inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
-    };
-    const resetClicked = (e) => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        onChange(initialValue);
-        currentHotkey = initialValue;
-        deactivate();
-        inputElem.innerText = initialValue.code;
-        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
-        resetElem.classList.add("bytm-hidden");
-        inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
-    };
-    onInteraction(resetElem, resetClicked);
-    if (initialValue)
-        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
-    let lastKeyDown;
-    document.addEventListener("keypress", (e) => {
-        if (inputElem.dataset.state === "inactive")
-            return;
-        if ((lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.code) === e.code && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.shift) === e.shiftKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.ctrl) === e.ctrlKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.alt) === e.altKey)
-            return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        const hotkey = {
-            code: e.code,
-            shift: e.shiftKey,
-            ctrl: e.ctrlKey,
-            alt: e.altKey,
-        };
-        inputElem.innerText = hotkey.code;
-        inputElem.dataset.state = "inactive";
-        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
-        inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
-        onChange(hotkey);
-        currentHotkey = hotkey;
-    });
-    document.addEventListener("keydown", (e) => {
-        if (reservedKeys.filter(k => k !== "Tab").includes(e.code))
-            return;
-        if (inputElem.dataset.state !== "active")
-            return;
-        if (e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
-            deactivate();
-            return;
-        }
-        if (["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight"].includes(e.code))
-            return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        const hotkey = {
-            code: e.code,
-            shift: e.shiftKey,
-            ctrl: e.ctrlKey,
-            alt: e.altKey,
-        };
-        const keyChanged = (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.code) !== hotkey.code || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.shift) !== hotkey.shift || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.ctrl) !== hotkey.ctrl || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.alt) !== hotkey.alt;
-        lastKeyDown = hotkey;
-        onChange(hotkey);
-        currentHotkey = hotkey;
-        if (keyChanged) {
-            deactivate();
-            resetElem.classList.remove("bytm-hidden");
-        }
-        else
-            resetElem.classList.add("bytm-hidden");
-        inputElem.innerText = hotkey.code;
-        inputElem.dataset.state = "inactive";
-        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
-    });
-    siteEvents.on("cfgMenuClosed", deactivate);
-    inputElem.addEventListener("click", () => {
-        if (inputElem.dataset.state === "inactive")
-            activate();
-        else
-            deactivate();
-    });
-    inputElem.addEventListener("keydown", (e) => {
-        if (reservedKeys.includes(e.code))
-            return;
-        if (inputElem.dataset.state === "inactive")
-            activate();
-    });
-    wrapperElem.appendChild(resetElem);
-    wrapperElem.appendChild(infoElem);
-    wrapperElem.appendChild(inputElem);
-    return wrapperElem;
-}
-/** Returns HTML for the hotkey modifier keys info element */
-function getHotkeyInfoHtml(hotkey) {
-    const modifiers = [];
-    hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
-    hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
-    hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
-    return `\
-<div style="display: flex; align-items: center;">
-  <span>
-    ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
-  </span>
-  <span style="padding: 0px 5px;">
-    ${modifiers.length > 0 ? "+" : ""}
-  </span>
-</div>`;
-}
-/** Converts a hotkey object to a string */
-function hotkeyToString(hotkey) {
-    if (!hotkey)
-        return t("hotkey_key_none");
-    let str = "";
-    if (hotkey.ctrl)
-        str += `${t("hotkey_key_ctrl")}+`;
-    if (hotkey.shift)
-        str += `${t("hotkey_key_shift")}+`;
-    if (hotkey.alt)
-        str += `${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}+`;
-    str += hotkey.code;
-    return str;
-}/**
- * Creates a generic, circular, long button element with an icon and text.
- * Has classes for the enabled and disabled states for easier styling.
- * If `href` is provided, the button will be an anchor element.
- * If `onClick` or `onToggle` is provided, the button will be a div element.
- * Provide either `resourceName` or `src` to specify the icon inside the button.
- */
-async function createLongBtn(_a) {
-    var { title, text, iconPosition, ripple } = _a, rest = __rest(_a, ["title", "text", "iconPosition", "ripple"]);
-    if (["href", "onClick", "onToggle"].every((key) => !(key in rest)))
-        throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
-    let btnElem;
-    if ("href" in rest && rest.href) {
-        btnElem = document.createElement("a");
-        btnElem.href = rest.href;
-        btnElem.role = "button";
-        btnElem.target = "_blank";
-        btnElem.rel = "noopener noreferrer";
-    }
-    else
-        btnElem = document.createElement("div");
-    if ("toggle" in rest && rest.toggle) {
-        btnElem.classList.add("bytm-toggle");
-        if ("toggleInitialState" in rest && rest.toggleInitialState)
-            btnElem.classList.add("toggled");
-    }
-    onInteraction(btnElem, (evt) => {
-        var _a;
-        if ("onClick" in rest)
-            rest.onClick(evt);
-        if ("toggle" in rest && rest.toggle && ((_a = rest.togglePredicate) !== null && _a !== void 0 ? _a : (() => true))(evt))
-            rest.onToggle(btnElem.classList.toggle("toggled"), evt);
-    });
-    btnElem.classList.add("bytm-generic-btn", "long");
-    btnElem.ariaLabel = btnElem.title = title;
-    btnElem.tabIndex = 0;
-    btnElem.role = "button";
-    const imgElem = document.createElement("src" in rest ? "img" : "div");
-    imgElem.classList.add("bytm-generic-btn-img", iconPosition !== null && iconPosition !== void 0 ? iconPosition : "left");
-    if ("src" in rest)
-        imgElem.src = rest.src;
-    else
-        setInnerHtml(imgElem, await resourceAsString(rest.resourceName));
-    const txtElem = document.createElement("span");
-    txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
-    txtElem.textContent = txtElem.ariaLabel = text;
-    iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
-    btnElem.appendChild(txtElem);
-    iconPosition === "right" && btnElem.appendChild(imgElem);
-    return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
-}class MarkdownDialog extends BytmDialog {
-    constructor(options) {
-        super(Object.assign(Object.assign({}, options), { id: `md-${options.id}`, renderBody: () => this.renderBody() }));
-        Object.defineProperty(this, "opts", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.opts = options;
-    }
-    /** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
-    static async parseMd(md) {
-        return await marked.marked.parse(md, {
-            async: true,
-            gfm: true,
-            breaks: true,
-        });
-    }
-    /** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
-    async renderBody() {
-        const bodyEl = document.createElement("div");
-        bodyEl.classList.add("bytm-md-dialog-body");
-        const mdCont = await UserUtils.consumeStringGen(this.opts.body);
-        const markdownEl = document.createElement("div");
-        markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
-        markdownEl.tabIndex = 0;
-        setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
-        bodyEl.appendChild(markdownEl);
-        return bodyEl;
-    }
-}/** Max amount of seconds a toast can be shown for */
-const maxToastDuration = 30000;
-let timeout;
-/** Shows a toast message with an icon */
-async function showIconToast(_a) {
-    var { duration, position = "tr", iconPos = "left" } = _a, rest = __rest(_a, ["duration", "position", "iconPos"]);
-    if (typeof duration !== "number" || isNaN(duration))
-        duration = getFeature("toastDuration") * 1000;
-    if (duration <= 0)
-        return info("Toast duration is <= 0, so it won't be shown");
-    const toastWrapper = document.createElement("div");
-    toastWrapper.classList.add("bytm-toast-flex-wrapper");
-    let toastIcon;
-    if ("iconSrc" in rest) {
-        toastIcon = document.createElement("img");
-        toastIcon.classList.add("bytm-toast-icon", "img");
-        toastIcon.src = rest.iconSrc instanceof Promise
-            ? await rest.iconSrc
-            : rest.iconSrc;
-    }
-    else {
-        toastIcon = document.createElement("div");
-        toastIcon.classList.add("bytm-toast-icon");
-        const iconHtml = await resourceAsString(rest.icon);
-        if (iconHtml)
-            setInnerHtml(toastIcon, iconHtml);
-        if ("iconFill" in rest && rest.iconFill)
-            toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
-    }
-    const toastMessage = document.createElement("div");
-    toastMessage.classList.add("bytm-toast-message");
-    if ("message" in rest) {
-        toastMessage.textContent = rest.message;
-        if ("subtitle" in rest && rest.subtitle) {
-            const subtitleEl = document.createElement("div");
-            subtitleEl.classList.add("bytm-toast-subtitle");
-            subtitleEl.textContent = rest.subtitle;
-            toastMessage.appendChild(subtitleEl);
-        }
-    }
-    else
-        toastMessage.appendChild(rest.element);
-    iconPos === "left" && toastWrapper.appendChild(toastIcon);
-    toastWrapper.appendChild(toastMessage);
-    iconPos === "right" && toastWrapper.appendChild(toastIcon);
-    return await showToast({
-        duration,
-        position,
-        element: toastWrapper,
-        title: "message" in rest ? rest.message : rest.title,
-        onClick: rest.onClick,
-    });
-}
-/** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
-async function showToast(arg) {
-    const props = typeof arg === "string"
-        ? {
-            message: arg,
-            duration: getFeature("toastDuration") * 1000,
-        }
-        : arg;
-    const { duration: durationMs = getFeature("toastDuration") * 1000, onClick, position = "tr" } = props, rest = __rest(props, ["duration", "onClick", "position"]);
-    if (durationMs <= 0)
-        return info("Toast duration is <= 0, so it won't be shown");
-    if (document.querySelector("#bytm-toast"))
-        await closeToast();
-    const toastElem = document.createElement("div");
-    toastElem.classList.add(`pos-${position.toLowerCase()}`);
-    onClick && toastElem.classList.add("clickable");
-    toastElem.id = "bytm-toast";
-    toastElem.role = "alert";
-    toastElem.ariaLive = "polite";
-    toastElem.ariaAtomic = "true";
-    toastElem.addEventListener("click", async (e) => {
-        onClick === null || onClick === void 0 ? void 0 : onClick(e);
-        await closeToast();
-    }, { once: true });
-    if ("message" in rest)
-        toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
-    else {
-        toastElem.appendChild(rest.element);
-        toastElem.title = toastElem.ariaLabel = rest.title;
-    }
-    document.body.appendChild(toastElem);
-    UserUtils.pauseFor(100).then(() => {
-        toastElem.classList.add("visible");
-        if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
-            timeout && clearTimeout(timeout);
-            timeout = setTimeout(closeToast, UserUtils.clamp(durationMs, 250, maxToastDuration));
-        }
-    });
-    return toastElem;
-}
-/** Closes the currently open toast */
-async function closeToast() {
-    if (timeout) {
-        clearTimeout(timeout);
-        timeout = undefined;
-    }
-    const toastEls = document.querySelectorAll("#bytm-toast");
-    if (toastEls.length === 0)
-        return;
-    await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
-        toastEl.classList.remove("visible");
-        await UserUtils.pauseFor(300);
-        toastEl.remove();
-        await UserUtils.pauseFor(100);
-    }));
 }/** Creates a simple toggle element */
 async function createToggleInput({ onChange, initialValue = false, id = UserUtils.randomId(6, 36), labelPos = "left", }) {
     const wrapperEl = document.createElement("div");
@@ -1789,7 +1119,159 @@ var packageJson = {
 	devDependencies: devDependencies,
 	browserslist: browserslist,
 	nodemonConfig: nodemonConfig
-};let verNotifDialog = null;
+};/** EventEmitter instance that is used to detect various changes to the site and userscript */
+const siteEvents = new UserUtils.NanoEmitter({
+    publicEmit: true,
+});
+let observers = [];
+let lastWatchId = null;
+let lastPathname = null;
+let lastFullscreen;
+/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
+async function initSiteEvents() {
+    try {
+        if (getDomain() === "ytm") {
+            //#region queue
+            // the queue container always exists so it doesn't need an extra init function
+            const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0) {
+                    info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    emitSiteEvent("queueChanged", target);
+                }
+            });
+            // only observe added or removed elements
+            addSelectorListener("sidePanel", "#contents.ytmusic-player-queue", {
+                listener: (el) => {
+                    queueObs.observe(el, {
+                        childList: true,
+                    });
+                },
+            });
+            const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0) {
+                    info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    emitSiteEvent("autoplayQueueChanged", target);
+                }
+            });
+            addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
+                listener: (el) => {
+                    autoplayObs.observe(el, {
+                        childList: true,
+                    });
+                },
+            });
+            //#region player bar
+            let lastTitle = null;
+            addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
+                continuous: true,
+                listener: (titleElem) => {
+                    const oldTitle = lastTitle;
+                    const newTitle = titleElem.textContent;
+                    if (newTitle === lastTitle || !newTitle)
+                        return;
+                    lastTitle = newTitle;
+                    info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
+                    emitSiteEvent("songTitleChanged", newTitle, oldTitle);
+                    runIntervalChecks();
+                },
+            });
+            info("Successfully initialized SiteEvents observers");
+            observers = observers.concat([
+                queueObs,
+                autoplayObs,
+            ]);
+            //#region player
+            const playerFullscreenObs = new MutationObserver(([{ target }]) => {
+                var _a;
+                const isFullscreen = ((_a = target.getAttribute("player-ui-state")) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "FULLSCREEN";
+                if (lastFullscreen !== isFullscreen || typeof lastFullscreen === "undefined") {
+                    emitSiteEvent("fullscreenToggled", isFullscreen);
+                    lastFullscreen = isFullscreen;
+                }
+            });
+            if (getDomain() === "ytm") {
+                const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
+                    listener: (el) => {
+                        playerFullscreenObs.observe(el, {
+                            attributeFilter: ["player-ui-state"],
+                        });
+                    },
+                });
+                if (globserversReady)
+                    registerFullScreenObs();
+                else
+                    window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
+            }
+        }
+        window.addEventListener("bytm:ready", () => {
+            runIntervalChecks();
+            setInterval(runIntervalChecks, 100);
+            if (getDomain() === "ytm") {
+                addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+                    listener(el) {
+                        const urlRefObs = new MutationObserver(([{ target }]) => {
+                            var _a;
+                            if (!target || !((_a = target === null || target === void 0 ? void 0 : target.href) === null || _a === void 0 ? void 0 : _a.includes("/watch")))
+                                return;
+                            const watchId = new URL(target.href).searchParams.get("v");
+                            checkWatchIdChange(watchId);
+                        });
+                        urlRefObs.observe(el, {
+                            attributeFilter: ["href"],
+                        });
+                    }
+                });
+            }
+            if (getDomain() === "ytm") {
+                setInterval(checkWatchIdChange, 250);
+                checkWatchIdChange();
+            }
+        }, {
+            once: true,
+        });
+    }
+    catch (err) {
+        error("Couldn't initialize site event observers due to an error:\n", err);
+    }
+}
+let bytmReady = false;
+window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
+/** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
+function emitSiteEvent(key, ...args) {
+    try {
+        if (!bytmReady) {
+            window.addEventListener("bytm:ready", () => {
+                bytmReady = true;
+                emitSiteEvent(key, ...args);
+            }, { once: true });
+            return;
+        }
+        siteEvents.emit(key, ...args);
+        emitInterface(`bytm:siteEvent:${key}`, args);
+    }
+    catch (err) {
+        error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+    }
+}
+//#region other
+/** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
+function checkWatchIdChange(newId) {
+    const newWatchId = newId !== null && newId !== void 0 ? newId : new URL(location.href).searchParams.get("v");
+    if (newWatchId && newWatchId !== lastWatchId) {
+        info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
+        emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+        lastWatchId = newWatchId;
+    }
+}
+/** Periodically called to check for changes in the URL and emit associated siteEvents */
+function runIntervalChecks() {
+    if (!lastWatchId)
+        checkWatchIdChange();
+    if (location.pathname !== lastPathname) {
+        emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
+        lastPathname = String(location.pathname);
+    }
+}let verNotifDialog = null;
 /** Creates and/or returns the dialog to be shown when a new version is available */
 async function getVersionNotifDialog({ latestTag, }) {
     if (!verNotifDialog) {
@@ -2112,6 +1594,114 @@ async function doVersionCheck(notifyNoNewVerFound = false) {
         return;
     }
     return await noNewVerFound();
+}/** Max amount of seconds a toast can be shown for */
+const maxToastDuration = 30000;
+let timeout;
+/** Shows a toast message with an icon */
+async function showIconToast(_a) {
+    var { duration, position = "tr", iconPos = "left" } = _a, rest = __rest(_a, ["duration", "position", "iconPos"]);
+    if (typeof duration !== "number" || isNaN(duration))
+        duration = getFeature("toastDuration") * 1000;
+    if (duration <= 0)
+        return info("Toast duration is <= 0, so it won't be shown");
+    const toastWrapper = document.createElement("div");
+    toastWrapper.classList.add("bytm-toast-flex-wrapper");
+    let toastIcon;
+    if ("iconSrc" in rest) {
+        toastIcon = document.createElement("img");
+        toastIcon.classList.add("bytm-toast-icon", "img");
+        toastIcon.src = rest.iconSrc instanceof Promise
+            ? await rest.iconSrc
+            : rest.iconSrc;
+    }
+    else {
+        toastIcon = document.createElement("div");
+        toastIcon.classList.add("bytm-toast-icon");
+        const iconHtml = await resourceAsString(rest.icon);
+        if (iconHtml)
+            setInnerHtml(toastIcon, iconHtml);
+        if ("iconFill" in rest && rest.iconFill)
+            toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
+    }
+    const toastMessage = document.createElement("div");
+    toastMessage.classList.add("bytm-toast-message");
+    if ("message" in rest) {
+        toastMessage.textContent = rest.message;
+        if ("subtitle" in rest && rest.subtitle) {
+            const subtitleEl = document.createElement("div");
+            subtitleEl.classList.add("bytm-toast-subtitle");
+            subtitleEl.textContent = rest.subtitle;
+            toastMessage.appendChild(subtitleEl);
+        }
+    }
+    else
+        toastMessage.appendChild(rest.element);
+    iconPos === "left" && toastWrapper.appendChild(toastIcon);
+    toastWrapper.appendChild(toastMessage);
+    iconPos === "right" && toastWrapper.appendChild(toastIcon);
+    return await showToast({
+        duration,
+        position,
+        element: toastWrapper,
+        title: "message" in rest ? rest.message : rest.title,
+        onClick: rest.onClick,
+    });
+}
+/** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
+async function showToast(arg) {
+    const props = typeof arg === "string"
+        ? {
+            message: arg,
+            duration: getFeature("toastDuration") * 1000,
+        }
+        : arg;
+    const { duration: durationMs = getFeature("toastDuration") * 1000, onClick, position = "tr" } = props, rest = __rest(props, ["duration", "onClick", "position"]);
+    if (durationMs <= 0)
+        return info("Toast duration is <= 0, so it won't be shown");
+    if (document.querySelector("#bytm-toast"))
+        await closeToast();
+    const toastElem = document.createElement("div");
+    toastElem.classList.add(`pos-${position.toLowerCase()}`);
+    onClick && toastElem.classList.add("clickable");
+    toastElem.id = "bytm-toast";
+    toastElem.role = "alert";
+    toastElem.ariaLive = "polite";
+    toastElem.ariaAtomic = "true";
+    toastElem.addEventListener("click", async (e) => {
+        onClick === null || onClick === void 0 ? void 0 : onClick(e);
+        await closeToast();
+    }, { once: true });
+    if ("message" in rest)
+        toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
+    else {
+        toastElem.appendChild(rest.element);
+        toastElem.title = toastElem.ariaLabel = rest.title;
+    }
+    document.body.appendChild(toastElem);
+    UserUtils.pauseFor(100).then(() => {
+        toastElem.classList.add("visible");
+        if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
+            timeout && clearTimeout(timeout);
+            timeout = setTimeout(closeToast, UserUtils.clamp(durationMs, 250, maxToastDuration));
+        }
+    });
+    return toastElem;
+}
+/** Closes the currently open toast */
+async function closeToast() {
+    if (timeout) {
+        clearTimeout(timeout);
+        timeout = undefined;
+    }
+    const toastEls = document.querySelectorAll("#bytm-toast");
+    if (toastEls.length === 0)
+        return;
+    await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
+        toastEl.classList.remove("visible");
+        await UserUtils.pauseFor(300);
+        toastEl.remove();
+        await UserUtils.pauseFor(100);
+    }));
 }//#region beforeunload popup
 let discardBeforeUnload = false;
 /** Disables the popup before leaving the site */
@@ -2278,6 +1868,224 @@ async function remTimeUpsertEntry(data) {
 async function remTimeDeleteEntry(watchID) {
     remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
     await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+}const interactionKeys = ["Enter", " ", "Space"];
+/**
+ * Adds generic, accessible interaction listeners to the passed element.
+ * All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
+ * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
+ */
+function onInteraction(elem, listener, listenerOptions) {
+    const _a = listenerOptions !== null && listenerOptions !== void 0 ? listenerOptions : {}, { preventDefault = true, stopPropagation = true } = _a, listenerOpts = __rest(_a, ["preventDefault", "stopPropagation"]);
+    const proxListener = (e) => {
+        if (e instanceof KeyboardEvent) {
+            if (interactionKeys.includes(e.key)) {
+                preventDefault && e.preventDefault();
+                stopPropagation && e.stopPropagation();
+            }
+            else
+                return;
+        }
+        else if (e instanceof MouseEvent) {
+            preventDefault && e.preventDefault();
+            stopPropagation && e.stopPropagation();
+        }
+        // clean up the other listener that isn't automatically removed if `once` is set
+        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
+        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
+        listener(e);
+    };
+    elem.addEventListener("click", proxListener, listenerOpts);
+    elem.addEventListener("keydown", proxListener, listenerOpts);
+}/**
+ * Creates an element with a ripple effect on click.
+ * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
+ * @returns The passed element or the newly created element with the ripple effect.
+ */
+function createRipple(rippleElement, properties) {
+    const props = Object.assign({ speed: "normal" }, properties);
+    const rippleEl = rippleElement !== null && rippleElement !== void 0 ? rippleElement : document.createElement("div");
+    rippleEl.classList.add("bytm-ripple", props.speed);
+    const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
+    rippleEl.addEventListener("mousedown", (e) => {
+        updateRippleWidth();
+        const x = e.clientX - rippleEl.getBoundingClientRect().left;
+        const y = e.clientY - rippleEl.getBoundingClientRect().top;
+        const rippleAreaEl = document.createElement("span");
+        rippleAreaEl.classList.add("bytm-ripple-area");
+        rippleAreaEl.style.left = `${Math.round(x)}px`;
+        rippleAreaEl.style.top = `${Math.round(y)}px`;
+        if (rippleEl.firstChild)
+            rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
+        else
+            rippleEl.appendChild(rippleAreaEl);
+        rippleAreaEl.addEventListener("animationend", () => rippleAreaEl.remove());
+    });
+    updateRippleWidth();
+    return rippleEl;
+}/**
+ * Creates a generic, circular, long button element with an icon and text.
+ * Has classes for the enabled and disabled states for easier styling.
+ * If `href` is provided, the button will be an anchor element.
+ * If `onClick` or `onToggle` is provided, the button will be a div element.
+ * Provide either `resourceName` or `src` to specify the icon inside the button.
+ */
+async function createLongBtn(_a) {
+    var { title, text, iconPosition, ripple } = _a, rest = __rest(_a, ["title", "text", "iconPosition", "ripple"]);
+    if (["href", "onClick", "onToggle"].every((key) => !(key in rest)))
+        throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
+    let btnElem;
+    if ("href" in rest && rest.href) {
+        btnElem = document.createElement("a");
+        btnElem.href = rest.href;
+        btnElem.role = "button";
+        btnElem.target = "_blank";
+        btnElem.rel = "noopener noreferrer";
+    }
+    else
+        btnElem = document.createElement("div");
+    if ("toggle" in rest && rest.toggle) {
+        btnElem.classList.add("bytm-toggle");
+        if ("toggleInitialState" in rest && rest.toggleInitialState)
+            btnElem.classList.add("toggled");
+    }
+    onInteraction(btnElem, (evt) => {
+        var _a;
+        if ("onClick" in rest)
+            rest.onClick(evt);
+        if ("toggle" in rest && rest.toggle && ((_a = rest.togglePredicate) !== null && _a !== void 0 ? _a : (() => true))(evt))
+            rest.onToggle(btnElem.classList.toggle("toggled"), evt);
+    });
+    btnElem.classList.add("bytm-generic-btn", "long");
+    btnElem.ariaLabel = btnElem.title = title;
+    btnElem.tabIndex = 0;
+    btnElem.role = "button";
+    const imgElem = document.createElement("src" in rest ? "img" : "div");
+    imgElem.classList.add("bytm-generic-btn-img", iconPosition !== null && iconPosition !== void 0 ? iconPosition : "left");
+    if ("src" in rest)
+        imgElem.src = rest.src;
+    else
+        setInnerHtml(imgElem, await resourceAsString(rest.resourceName));
+    const txtElem = document.createElement("span");
+    txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
+    txtElem.textContent = txtElem.ariaLabel = text;
+    iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
+    btnElem.appendChild(txtElem);
+    iconPosition === "right" && btnElem.appendChild(imgElem);
+    return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
+}//#region class
+/** Generic dialog for exporting and importing any string of data */
+class ExImDialog extends BytmDialog {
+    constructor(options) {
+        super(Object.assign({ renderHeader: () => ExImDialog.renderHeader(options), renderBody: () => ExImDialog.renderBody(options), renderFooter: undefined, closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, unmountOnClose: true, small: true }, options));
+    }
+    //#region header
+    static async renderHeader(opts) {
+        const headerEl = document.createElement("h2");
+        headerEl.classList.add("bytm-menu-title");
+        headerEl.role = "heading";
+        headerEl.ariaLevel = "1";
+        headerEl.tabIndex = 0;
+        headerEl.textContent = headerEl.ariaLabel = await UserUtils.consumeStringGen(opts.title);
+        return headerEl;
+    }
+    //#region body
+    static async renderBody(opts) {
+        const panesCont = document.createElement("div");
+        panesCont.classList.add("bytm-exim-dialog-panes-cont");
+        //#region export
+        const exportPane = document.createElement("div");
+        exportPane.classList.add("bytm-exim-dialog-pane", "export");
+        {
+            const descEl = document.createElement("p");
+            descEl.classList.add("bytm-exim-dialog-desc");
+            descEl.role = "note";
+            descEl.tabIndex = 0;
+            descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descExport);
+            const dataEl = document.createElement("textarea");
+            dataEl.classList.add("bytm-exim-dialog-data");
+            dataEl.readOnly = true;
+            dataEl.tabIndex = 0;
+            dataEl.value = t("click_to_reveal");
+            onInteraction(dataEl, async () => {
+                dataEl.value = await UserUtils.consumeStringGen(opts.exportData);
+                dataEl.setSelectionRange(0, dataEl.value.length);
+            });
+            const exportCenterBtnCont = document.createElement("div");
+            exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
+            const copyBtn = createRipple(await createLongBtn({
+                title: t("copy_to_clipboard"),
+                text: t("copy"),
+                resourceName: "icon-copy",
+                async onClick({ shiftKey }) {
+                    const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
+                    copyToClipboard(await UserUtils.consumeStringGen(copyData));
+                    await showToast({ message: t("copied_to_clipboard") });
+                },
+            }));
+            exportCenterBtnCont.appendChild(copyBtn);
+            exportPane.append(descEl, dataEl, exportCenterBtnCont);
+        }
+        //#region import
+        const importPane = document.createElement("div");
+        importPane.classList.add("bytm-exim-dialog-pane", "import");
+        {
+            const descEl = document.createElement("p");
+            descEl.classList.add("bytm-exim-dialog-desc");
+            descEl.role = "note";
+            descEl.tabIndex = 0;
+            descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descImport);
+            const dataEl = document.createElement("textarea");
+            dataEl.classList.add("bytm-exim-dialog-data");
+            dataEl.tabIndex = 0;
+            const importCenterBtnCont = document.createElement("div");
+            importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
+            const importBtn = createRipple(await createLongBtn({
+                title: t("start_import_tooltip"),
+                text: t("import"),
+                resourceName: "icon-upload",
+                onClick: () => opts.onImport(dataEl.value),
+            }));
+            importCenterBtnCont.appendChild(importBtn);
+            importPane.append(descEl, dataEl, importCenterBtnCont);
+        }
+        panesCont.append(exportPane, importPane);
+        return panesCont;
+    }
+}/**
+ * Creates a generic, circular button element.
+ * If `href` is provided, the button will be an anchor element.
+ * If `onClick` is provided, the button will be a div element.
+ * Provide either `resourceName` or `src` to specify the icon inside the button.
+ */
+async function createCircularBtn(_a) {
+    var { title, ripple = true } = _a, rest = __rest(_a, ["title", "ripple"]);
+    let btnElem;
+    if ("href" in rest && rest.href) {
+        btnElem = document.createElement("a");
+        btnElem.href = rest.href;
+        btnElem.role = "button";
+        btnElem.target = "_blank";
+        btnElem.rel = "noopener noreferrer";
+    }
+    else if ("onClick" in rest && rest.onClick) {
+        btnElem = document.createElement("div");
+        rest.onClick && onInteraction(btnElem, rest.onClick);
+    }
+    else
+        throw new TypeError("Either 'href' or 'onClick' must be provided");
+    btnElem.classList.add("bytm-generic-btn");
+    btnElem.ariaLabel = btnElem.title = title;
+    btnElem.tabIndex = 0;
+    btnElem.role = "button";
+    const imgElem = document.createElement("img");
+    imgElem.classList.add("bytm-generic-btn-img");
+    imgElem.src = "src" in rest
+        ? rest.src instanceof Promise
+            ? await rest.src
+            : rest.src
+        : await getResourceUrl(rest.resourceName);
+    btnElem.appendChild(imgElem);
+    return ripple ? createRipple(btnElem) : btnElem;
 }let autoLikeDialog = null;
 let autoLikeExImDialog = null;
 /** Creates and/or returns the import dialog */
@@ -2915,6 +2723,37 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
         const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
         imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`));
     });
+}class MarkdownDialog extends BytmDialog {
+    constructor(options) {
+        super(Object.assign(Object.assign({}, options), { id: `md-${options.id}`, renderBody: () => this.renderBody() }));
+        Object.defineProperty(this, "opts", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.opts = options;
+    }
+    /** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
+    static async parseMd(md) {
+        return await marked.marked.parse(md, {
+            async: true,
+            gfm: true,
+            breaks: true,
+        });
+    }
+    /** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
+    async renderBody() {
+        const bodyEl = document.createElement("div");
+        bodyEl.classList.add("bytm-md-dialog-body");
+        const mdCont = await UserUtils.consumeStringGen(this.opts.body);
+        const markdownEl = document.createElement("div");
+        markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
+        markdownEl.tabIndex = 0;
+        setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
+        bodyEl.appendChild(markdownEl);
+        return bodyEl;
+    }
 }//#region logging fns
 let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
@@ -2995,17 +2834,28 @@ ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}
 ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
     });
 }
-//#region rrror classes
-class LyricsError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "LyricsError";
+//#region error classes
+class CustomError extends Error {
+    constructor(name, message, opts) {
+        super(message, opts);
+        Object.defineProperty(this, "time", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.name = name;
+        this.time = Date.now();
     }
 }
-class PluginError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "PluginError";
+class LyricsError extends CustomError {
+    constructor(message, opts) {
+        super("LyricsError", message, opts);
+    }
+}
+class PluginError extends CustomError {
+    constructor(message, opts) {
+        super("PluginError", message, opts);
     }
 }//#region misc
 let domain;
@@ -3555,6 +3405,167 @@ async function renderBody$2() {
     setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
     contElem.appendChild(mdContElem);
     return contElem;
+}let otherHotkeyInputActive = false;
+const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
+/** Creates a hotkey input element */
+function createHotkeyInput({ initialValue, onChange, createTitle }) {
+    var _a;
+    const initialHotkey = initialValue;
+    let currentHotkey;
+    if (!createTitle)
+        createTitle = (value) => value;
+    const wrapperElem = document.createElement("div");
+    wrapperElem.classList.add("bytm-hotkey-wrapper");
+    const infoElem = document.createElement("span");
+    infoElem.classList.add("bytm-hotkey-info");
+    const inputElem = document.createElement("button");
+    inputElem.role = "button";
+    inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
+    inputElem.dataset.state = "inactive";
+    inputElem.innerText = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+    inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
+    const resetElem = document.createElement("span");
+    resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
+    resetElem.role = "button";
+    resetElem.tabIndex = 0;
+    resetElem.textContent = `(${t("reset")})`;
+    resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
+    const deactivate = () => {
+        var _a;
+        if (!otherHotkeyInputActive)
+            return;
+        emitSiteEvent("hotkeyInputActive", false);
+        otherHotkeyInputActive = false;
+        const curHk = currentHotkey !== null && currentHotkey !== void 0 ? currentHotkey : initialValue;
+        inputElem.innerText = (_a = curHk === null || curHk === void 0 ? void 0 : curHk.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+        inputElem.dataset.state = "inactive";
+        inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
+        setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
+    };
+    const activate = () => {
+        if (otherHotkeyInputActive)
+            return;
+        emitSiteEvent("hotkeyInputActive", true);
+        otherHotkeyInputActive = true;
+        inputElem.innerText = "< ... >";
+        inputElem.dataset.state = "active";
+        inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
+    };
+    const resetClicked = (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        onChange(initialValue);
+        currentHotkey = initialValue;
+        deactivate();
+        inputElem.innerText = initialValue.code;
+        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
+        resetElem.classList.add("bytm-hidden");
+        inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
+    };
+    onInteraction(resetElem, resetClicked);
+    if (initialValue)
+        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
+    let lastKeyDown;
+    document.addEventListener("keypress", (e) => {
+        if (inputElem.dataset.state === "inactive")
+            return;
+        if ((lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.code) === e.code && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.shift) === e.shiftKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.ctrl) === e.ctrlKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.alt) === e.altKey)
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const hotkey = {
+            code: e.code,
+            shift: e.shiftKey,
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+        };
+        inputElem.innerText = hotkey.code;
+        inputElem.dataset.state = "inactive";
+        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
+        inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
+        onChange(hotkey);
+        currentHotkey = hotkey;
+    });
+    document.addEventListener("keydown", (e) => {
+        if (reservedKeys.filter(k => k !== "Tab").includes(e.code))
+            return;
+        if (inputElem.dataset.state !== "active")
+            return;
+        if (e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
+            deactivate();
+            return;
+        }
+        if (["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight"].includes(e.code))
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const hotkey = {
+            code: e.code,
+            shift: e.shiftKey,
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+        };
+        const keyChanged = (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.code) !== hotkey.code || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.shift) !== hotkey.shift || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.ctrl) !== hotkey.ctrl || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.alt) !== hotkey.alt;
+        lastKeyDown = hotkey;
+        onChange(hotkey);
+        currentHotkey = hotkey;
+        if (keyChanged) {
+            deactivate();
+            resetElem.classList.remove("bytm-hidden");
+        }
+        else
+            resetElem.classList.add("bytm-hidden");
+        inputElem.innerText = hotkey.code;
+        inputElem.dataset.state = "inactive";
+        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
+    });
+    siteEvents.on("cfgMenuClosed", deactivate);
+    inputElem.addEventListener("click", () => {
+        if (inputElem.dataset.state === "inactive")
+            activate();
+        else
+            deactivate();
+    });
+    inputElem.addEventListener("keydown", (e) => {
+        if (reservedKeys.includes(e.code))
+            return;
+        if (inputElem.dataset.state === "inactive")
+            activate();
+    });
+    wrapperElem.appendChild(resetElem);
+    wrapperElem.appendChild(infoElem);
+    wrapperElem.appendChild(inputElem);
+    return wrapperElem;
+}
+/** Returns HTML for the hotkey modifier keys info element */
+function getHotkeyInfoHtml(hotkey) {
+    const modifiers = [];
+    hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
+    hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
+    hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
+    return `\
+<div style="display: flex; align-items: center;">
+  <span>
+    ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
+  </span>
+  <span style="padding: 0px 5px;">
+    ${modifiers.length > 0 ? "+" : ""}
+  </span>
+</div>`;
+}
+/** Converts a hotkey object to a string */
+function hotkeyToString(hotkey) {
+    if (!hotkey)
+        return t("hotkey_key_none");
+    let str = "";
+    if (hotkey.ctrl)
+        str += `${t("hotkey_key_ctrl")}+`;
+    if (hotkey.shift)
+        str += `${t("hotkey_key_shift")}+`;
+    if (hotkey.alt)
+        str += `${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}+`;
+    str += hotkey.code;
+    return str;
 }//#region create menu
 let isCfgMenuMounted = false;
 let isCfgMenuOpen = false;
@@ -4268,8 +4279,8 @@ function closeCfgMenu(evt, enableScroll = true) {
     }
     const menuBg = document.querySelector("#bytm-cfg-menu-bg");
     clearTimeout(hiddenCopiedTxtTimeout);
-    openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
-    setCurrentDialogId((_b = openDialogs === null || openDialogs === void 0 ? void 0 : openDialogs[0]) !== null && _b !== void 0 ? _b : null);
+    UserUtils.openDialogs.splice(UserUtils.openDialogs.indexOf("cfg-menu"), 1);
+    setCurrentDialogId((_b = UserUtils.openDialogs === null || UserUtils.openDialogs === void 0 ? void 0 : UserUtils.openDialogs[0]) !== null && _b !== void 0 ? _b : null);
     // since this menu doesn't have a BytmDialog instance, it's undefined here
     emitInterface("bytm:dialogClosed", undefined);
     emitInterface("bytm:dialogClosed:cfg-menu", undefined);
@@ -4291,7 +4302,7 @@ async function openCfgMenu() {
     (_a = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
     const menuBg = document.querySelector("#bytm-cfg-menu-bg");
     setCurrentDialogId("cfg-menu");
-    openDialogs.unshift("cfg-menu");
+    UserUtils.openDialogs.unshift("cfg-menu");
     // since this menu doesn't have a BytmDialog instance, it's undefined here
     emitInterface("bytm:dialogOpened", undefined);
     emitInterface("bytm:dialogOpened:cfg-menu", undefined);
@@ -7758,6 +7769,10 @@ async function renderBody(opts) {
             chkEl.checked = true;
             chkEl.title = t(`data_stores.disable.${id}`);
             chkEl.addEventListener("change", async () => {
+                const kwd = chkEl.checked ? "disable" : "enable";
+                rowEl.title = t(`data_stores.${kwd}.${id}`);
+                chkEl.title = t(`data_stores.${kwd}.${id}`);
+                lblEl.textContent = t(`data_stores.${kwd}.${id}`);
                 if (dataEl.classList.contains("revealed"))
                     dataEl.value = filter(await UserUtils.consumeStringGen(opts.exportData));
             });
@@ -7767,6 +7782,7 @@ async function renderBody(opts) {
             rowEl.append(chkEl, lblEl);
             exportPartsCont.appendChild(rowEl);
         }
+        /** Filters out all data stores that are not checked */
         const filter = (data) => {
             const exportIds = [];
             for (const chkEl of exportPartsCont.querySelectorAll("input[type=checkbox]"))
@@ -8245,4 +8261,4 @@ function registerDevCommands() {
     //#DEBUG
     getAllDataExImDialog().then(d => d.open());
 }
-preInit();})(UserUtils,DOMPurify,compareVersions,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
