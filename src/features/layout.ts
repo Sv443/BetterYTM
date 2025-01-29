@@ -5,9 +5,10 @@ import { addSelectorListener } from "../observers.js";
 import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
-import { createCircularBtn, createRipple } from "../components/index.js";
-import type { ResourceKey, VideoVotesObj } from "../types.js";
 import { showPrompt } from "../dialogs/prompt.js";
+import { createRipple } from "../components/ripple.js";
+import { createCircularBtn } from "../components/circularButton.js";
+import type { ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
 
 //#region cfg menu btns

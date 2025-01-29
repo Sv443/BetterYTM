@@ -3,7 +3,9 @@ import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 import { t } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { copyToClipboard } from "../utils/dom.js";
-import { createLongBtn, createRipple, showToast } from "./index.js";
+import { createRipple } from "./ripple.js";
+import { createLongBtn } from "./longButton.js";
+import { showToast } from "./toast.js";
 import "./ExImDialog.css";
 
 // TODO: v2.3.0 overhaul:

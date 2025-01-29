@@ -5,10 +5,16 @@ import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
-import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { showPrompt } from "./dialogs/prompt.js";
+import type { BytmDialog } from "./components/BytmDialog.js";
+import type { ExImDialog } from "./components/ExImDialog.js";
+import type { createHotkeyInput } from "./components/hotkeyInput.js";
+import type { createToggleInput } from "./components/toggleInput.js";
+import type { createCircularBtn } from "./components/circularButton.js";
+import type { createRipple } from "./components/ripple.js";
+import type { showIconToast, showToast } from "./components/toast.js";
 import resources from "../assets/resources.json" with { type: "json" };
 import locales from "../assets/locales.json" with { type: "json" };
 

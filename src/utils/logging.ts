@@ -1,8 +1,9 @@
 import { clamp, debounce } from "@sv443-network/userutils";
+import { showIconToast } from "../components/toast.js";
+import { MarkdownDialog } from "../components/MarkdownDialog.js";
 import { scriptInfo } from "../constants.js";
 import { setGlobalProp } from "../interface.js";
 import { LogLevel } from "../types.js";
-import { MarkdownDialog, showIconToast } from "../components/index.js";
 import { t } from "./translations.js";
 import { getFeature } from "../config.js";
 import packageJson from "../../package.json" with { type: "json" };

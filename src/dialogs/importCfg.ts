@@ -1,5 +1,5 @@
 import { error, tryToDecompressAndParse, t, warn, log, reloadTab } from "../utils/index.js";
-import { BytmDialog } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { scriptInfo } from "../constants.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import { formatVersion, getFeatures, migrations, setFeatures } from "../config.js";

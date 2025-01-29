@@ -1,8 +1,10 @@
 import { consumeStringGen, type SerializedDataStore } from "@sv443-network/userutils";
 import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.js";
-import { createLongBtn, createRipple, showToast } from "../components/index.js";
 import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.js";
 import { getSerializerStoresIds, getStoreSerializer } from "../serializer.js";
+import { showToast } from "../components/toast.js";
+import { createRipple } from "../components/ripple.js";
+import { createLongBtn } from "../components/longButton.js";
 import packageJson from "../../package.json" with { type: "json" };
 
 let allDataExImDialog: ExImDialog | undefined;

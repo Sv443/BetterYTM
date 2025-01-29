@@ -1,6 +1,7 @@
 import { host, mode, platformNames, scriptInfo } from "../constants.js";
 import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, setInnerHtml, t } from "../utils/index.js";
-import { BytmDialog, createToggleInput } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
+import { createToggleInput } from "../components/toggleInput.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
 import pkg from "../../package.json" with { type: "json" };
 import { emitSiteEvent } from "../siteEvents.js";

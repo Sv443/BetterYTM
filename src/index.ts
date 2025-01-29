@@ -7,7 +7,7 @@ import { initSiteEvents } from "./siteEvents.js";
 import { emitInterface, initInterface, initPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
 import { downloadData, getStoreSerializer } from "./serializer.js";
-import { MarkdownDialog } from "./components/index.js";
+import { MarkdownDialog } from "./components/MarkdownDialog.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import type { FeatureConfig } from "./types.js";

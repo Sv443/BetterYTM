@@ -1,5 +1,5 @@
 import { resourceAsString, setInnerHtml, t } from "../utils/index.js";
-import { BytmDialog } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { featInfo } from "../features/index.js";
 import type { FeatureKey } from "../types.js";
 

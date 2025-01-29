@@ -7,8 +7,10 @@ import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
 import { compressionFormat } from "../constants.js";
 import { addSelectorListener } from "../observers.js";
-import { createLongBtn, createRipple, showIconToast } from "../components/index.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
+import { showIconToast } from "../components/toast.js";
+import { createLongBtn } from "../components/longButton.js";
+import { createRipple } from "../components/ripple.js";
 import "./input.css";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];

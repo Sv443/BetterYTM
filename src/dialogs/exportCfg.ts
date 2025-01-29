@@ -1,6 +1,6 @@
 import { compress } from "@sv443-network/userutils";
 import { compressionSupported, copyToClipboard, onInteraction, t } from "../utils/index.js";
-import { BytmDialog } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { compressionFormat, scriptInfo } from "../constants.js";
 import { formatVersion, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";

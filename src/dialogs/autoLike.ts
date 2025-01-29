@@ -1,13 +1,16 @@
 import { compress, debounce } from "@sv443-network/userutils";
 import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
-import { BytmDialog, createCircularBtn, createToggleInput, showToast } from "../components/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { compressionFormat } from "../constants.js";
 import type { AutoLikeData } from "../types.js";
-import "./autoLike.css";
 import { showPrompt } from "./prompt.js";
+import { BytmDialog } from "../components/BytmDialog.js";
+import { showToast } from "../components/toast.js";
+import { createToggleInput } from "../components/toggleInput.js";
+import { createCircularBtn } from "../components/circularButton.js";
+import "./autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
 let autoLikeExImDialog: ExImDialog | null = null;

@@ -1,6 +1,8 @@
 import type { StoryObj, Meta } from "@storybook/html";
 import { fn } from "@storybook/test";
-import { createCircularBtn, createLongBtn, createRipple } from "../components/index.js";
+import { createRipple } from "../components/ripple.js";
+import { createCircularBtn } from "../components/circularButton.js";
+import { createLongBtn } from "../components/longButton.js";
 import "../components/ripple.css";
 import "../features/layout.css";
 

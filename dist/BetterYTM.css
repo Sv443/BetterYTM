@@ -469,197 +469,6 @@ hr {
   margin-right: 6px;
 }
 
-/* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
-
-/* use `body` prefix for more specificity: */
-body .bytm-ripple {
-  position: relative;
-  overflow: hidden;
-  width: var(--bytm-ripple-width, auto);
-  height: var(--bytm-ripple-height, auto);
-}
-
-body .bytm-ripple.fastest {
-  --bytm-ripple-anim-duration: 0.15s;
-}
-
-body .bytm-ripple.fast {
-  --bytm-ripple-anim-duration: 0.35s;
-}
-
-body .bytm-ripple.slow {
-  --bytm-ripple-anim-duration: 0.75s;
-}
-
-body .bytm-ripple.slowest {
-  --bytm-ripple-anim-duration: 1s;
-}
-
-.bytm-ripple-area {
-  --bytm-ripple-min-size: 100px;
-  /* --bytm-ripple-cont-width is added at runtime since there's no better way of getting the parent's width */
-  --bytm-ripple-expanded-size: calc(
-    max(
-      var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
-      var(--bytm-ripple-min-size)
-    )
-  );
-  position: absolute;
-  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.175));
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  border-radius: 50%;
-  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.55s)
-    cubic-bezier(0.375, 0.33, 0.225, 0.93);
-}
-
-@keyframes bytm-scale-ripple {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 1;
-  }
-  100% {
-    width: var(--bytm-ripple-expanded-size, 100%);
-    height: var(--bytm-ripple-expanded-size, 100%);
-    opacity: 0;
-  }
-}
-
-.bytm-exim-dialog-panes-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  height: 100%;
-  overflow: hidden;
-}
-
-.bytm-exim-dialog-pane {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 48%;
-}
-
-.bytm-exim-dialog-center-btn-cont {
-  display: flex;
-  justify-content: center;
-}
-
-.bytm-exim-dialog-pane textarea {
-  height: 120px;
-  resize: none;
-}
-
-.bytm-hotkey-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
-}
-
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
-:root {
-  --bytm-toast-bg-color: #323232;
-  --bytm-toast-text-color: #fff;
-  --bytm-toast-offset-ver: 80px;
-  --bytm-toast-offset-hor: 25px;
-  --bytm-toast-transition-time: 0.5s;
-  --bytm-toast-transform-distance: 175px;
-}
-
-#bytm-toast {
-  position: fixed;
-  z-index: 1042069;
-  opacity: 0.000001;
-  pointer-events: none;
-  padding: 10px 16px;
-  border-radius: 3px;
-  font-size: 1.5rem;
-  cursor: default;
-
-  background-color: var(--bytm-toast-bg-color);
-  color: var(--bytm-toast-text-color);
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
-
-  transition:
-    opacity var(--bytm-toast-transition-time) ease,
-    transform var(--bytm-toast-transition-time) ease;
-}
-
-#bytm-toast.clickable {
-  cursor: pointer;
-}
-
-#bytm-toast.visible {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-#bytm-toast.pos-tl {
-  top: var(--bytm-toast-offset-ver);
-  left: var(--bytm-toast-offset-hor);
-  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
-}
-
-#bytm-toast.pos-tr {
-  top: var(--bytm-toast-offset-ver);
-  right: var(--bytm-toast-offset-hor);
-  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
-}
-
-#bytm-toast.pos-br {
-  bottom: var(--bytm-toast-offset-ver);
-  right: var(--bytm-toast-offset-hor);
-  transform: translate(0, var(--bytm-toast-transform-distance));
-}
-
-#bytm-toast.pos-bl {
-  bottom: var(--bytm-toast-offset-ver);
-  left: var(--bytm-toast-offset-hor);
-  transform: translate(0, var(--bytm-toast-transform-distance));
-}
-
-#bytm-toast.visible.pos-tl,
-#bytm-toast.visible.pos-tr,
-#bytm-toast.visible.pos-br,
-#bytm-toast.visible.pos-bl {
-  transform: translate(0, 0);
-}
-
-.bytm-toast-flex-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-.bytm-toast-icon.img,
-.bytm-toast-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-toast-icon path {
-  fill: var(--toast-icon-fill, #fff);
-}
-
-.bytm-toast-subtitle {
-  color: #ccc;
-  font-size: 1.2rem;
-  font-weight: 400;
-}
-
 .bytm-toggle-input-wrapper {
   --toggle-height: 20px;
   --toggle-width: 40px;
@@ -779,6 +588,180 @@ body .bytm-ripple.slowest {
 .bytm-prompt-dialog-button {
   padding: 2px 6px;
   font-size: 1.45rem;
+}
+
+:root {
+  --bytm-toast-bg-color: #323232;
+  --bytm-toast-text-color: #fff;
+  --bytm-toast-offset-ver: 80px;
+  --bytm-toast-offset-hor: 25px;
+  --bytm-toast-transition-time: 0.5s;
+  --bytm-toast-transform-distance: 175px;
+}
+
+#bytm-toast {
+  position: fixed;
+  z-index: 1042069;
+  opacity: 0.000001;
+  pointer-events: none;
+  padding: 10px 16px;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  cursor: default;
+
+  background-color: var(--bytm-toast-bg-color);
+  color: var(--bytm-toast-text-color);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+
+  transition:
+    opacity var(--bytm-toast-transition-time) ease,
+    transform var(--bytm-toast-transition-time) ease;
+}
+
+#bytm-toast.clickable {
+  cursor: pointer;
+}
+
+#bytm-toast.visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+#bytm-toast.pos-tl {
+  top: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-tr {
+  top: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-br {
+  bottom: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.pos-bl {
+  bottom: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.visible.pos-tl,
+#bytm-toast.visible.pos-tr,
+#bytm-toast.visible.pos-br,
+#bytm-toast.visible.pos-bl {
+  transform: translate(0, 0);
+}
+
+.bytm-toast-flex-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-toast-icon.img,
+.bytm-toast-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-toast-icon path {
+  fill: var(--toast-icon-fill, #fff);
+}
+
+.bytm-toast-subtitle {
+  color: #ccc;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+/* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
+
+/* use `body` prefix for more specificity: */
+body .bytm-ripple {
+  position: relative;
+  overflow: hidden;
+  width: var(--bytm-ripple-width, auto);
+  height: var(--bytm-ripple-height, auto);
+}
+
+body .bytm-ripple.fastest {
+  --bytm-ripple-anim-duration: 0.15s;
+}
+
+body .bytm-ripple.fast {
+  --bytm-ripple-anim-duration: 0.35s;
+}
+
+body .bytm-ripple.slow {
+  --bytm-ripple-anim-duration: 0.75s;
+}
+
+body .bytm-ripple.slowest {
+  --bytm-ripple-anim-duration: 1s;
+}
+
+.bytm-ripple-area {
+  --bytm-ripple-min-size: 100px;
+  /* --bytm-ripple-cont-width is added at runtime since there's no better way of getting the parent's width */
+  --bytm-ripple-expanded-size: calc(
+    max(
+      var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
+      var(--bytm-ripple-min-size)
+    )
+  );
+  position: absolute;
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.175));
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.55s)
+    cubic-bezier(0.375, 0.33, 0.225, 0.93);
+}
+
+@keyframes bytm-scale-ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: var(--bytm-ripple-expanded-size, 100%);
+    height: var(--bytm-ripple-expanded-size, 100%);
+    opacity: 0;
+  }
+}
+
+.bytm-exim-dialog-panes-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bytm-exim-dialog-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 48%;
+}
+
+.bytm-exim-dialog-center-btn-cont {
+  display: flex;
+  justify-content: center;
+}
+
+.bytm-exim-dialog-pane textarea {
+  height: 120px;
+  resize: none;
 }
 
 .bytm-auto-like-channels-footer-wrapper {
@@ -1056,6 +1039,23 @@ body.bytm-dom-ytm
 
 .bytm-plugin-list-row-intent-item {
   cursor: help;
+}
+
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
 }
 
 :root {

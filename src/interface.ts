@@ -7,8 +7,15 @@ import { defaultData, getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
 import { type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
-import { BytmDialog, ExImDialog, MarkdownDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import { showPrompt } from "./dialogs/prompt.js";
+import { BytmDialog } from "./components/BytmDialog.js";
+import { createHotkeyInput } from "./components/hotkeyInput.js";
+import { createToggleInput } from "./components/toggleInput.js";
+import { createCircularBtn } from "./components/circularButton.js";
+import { createRipple } from "./components/ripple.js";
+import { showIconToast, showToast } from "./components/toast.js";
+import { ExImDialog } from "./components/ExImDialog.js";
+import { MarkdownDialog } from "./components/MarkdownDialog.js";
 
 const { autoPlural, getUnsafeWindow, randomId, NanoEmitter } = UserUtils;
 

@@ -6,7 +6,7 @@ import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, type ColorLightnessPref, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import { showIconToast } from "../components/index.js";
+import { showIconToast } from "../components/toast.js";
 import { mode } from "../constants.js";
 import { getStoreSerializer } from "../serializer.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";

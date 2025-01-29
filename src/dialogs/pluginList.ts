@@ -1,4 +1,4 @@
-import { BytmDialog } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { getRegisteredPlugins } from "../interface.js";
 import { getLocale, t } from "../utils/translations.js";
 import { setInnerHtml } from "../utils/dom.js";
