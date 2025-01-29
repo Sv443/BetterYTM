@@ -103,18 +103,25 @@ ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}
   });
 }
 
-//#region rrror classes
+//#region error classes
 
-export class LyricsError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "LyricsError";
+export class CustomError extends Error {
+  public readonly time: number;
+  constructor(name: string, message: string, opts?: ErrorOptions) {
+    super(message, opts);
+    this.name = name;
+    this.time = Date.now();
   }
 }
 
-export class PluginError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "PluginError";
+export class LyricsError extends CustomError {
+  constructor(message: string, opts?: ErrorOptions) {
+    super("LyricsError", message, opts);
+  }
+}
+
+export class PluginError extends CustomError {
+  constructor(message: string, opts?: ErrorOptions) {
+    super("PluginError", message, opts);
   }
 }
