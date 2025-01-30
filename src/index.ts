@@ -1,6 +1,6 @@
 import { compress, decompress, fetchAdvanced, pauseFor, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, domLoaded, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
-import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
+import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { initSiteEvents } from "./siteEvents.js";
@@ -10,7 +10,6 @@ import { downloadData, getStoreSerializer } from "./serializer.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
 import { showPrompt } from "./dialogs/prompt.js";
-import type { FeatureConfig } from "./types.js";
 import {
   // layout
   addWatermark, initRemShareTrackParam,
@@ -404,14 +403,6 @@ function registerDevCommands() {
       await clearConfig();
       await reloadTab();
     }
-  }, "r");
-
-  GM.registerMenuCommand("Fix config values", async () => {
-    const oldFeats = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
-    await setFeatures(fixCfgKeys(oldFeats));
-    dbg("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
-    if(confirm("All missing or config values were set to their default values and extraneous ones were removed.\nDo you want to reload the page now?"))
-      await reloadTab();
   });
 
   GM.registerMenuCommand("List GM values in console with decompression", async () => {
@@ -434,7 +425,7 @@ function registerDevCommands() {
       const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
       dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
     }
-  }, "l");
+  });
 
   GM.registerMenuCommand("List GM values in console, without decompression", async () => {
     const keys = await GM.listValues();
@@ -467,7 +458,7 @@ function registerDevCommands() {
         dbg(`  Deleted ${key}`);
       }
     }
-  }, "d");
+  });
 
   GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
     const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation." });
@@ -481,17 +472,17 @@ function registerDevCommands() {
         dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
       }
     }
-  }, "n");
+  });
 
   GM.registerMenuCommand("Reset install timestamp", async () => {
     await GM.deleteValue("bytm-installed");
     dbg("Reset install time.");
-  }, "t");
+  });
 
   GM.registerMenuCommand("Reset version check timestamp", async () => {
     await GM.deleteValue("bytm-version-check");
     dbg("Reset version check time.");
-  }, "v");
+  });
 
   GM.registerMenuCommand("List active selector listeners in console", async () => {
     const lines = [] as string[];
@@ -508,7 +499,7 @@ function registerDevCommands() {
       });
     }
     dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
-  }, "s");
+  });
 
   GM.registerMenuCommand("Compress value", async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output." });
@@ -526,6 +517,8 @@ function registerDevCommands() {
     }
   });
 
+  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
+
   GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
     const ser = await getStoreSerializer().serialize();
     dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
@@ -540,9 +533,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Throw specific Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-
-  GM.registerMenuCommand("Throw generic Error", () => error());
+  GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
 
   GM.registerMenuCommand("Example MarkdownDialog", async () => {
     const mdDlg = new MarkdownDialog({
@@ -559,8 +550,6 @@ function registerDevCommands() {
 
     await mdDlg.open();
   });
-
-  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
 
   GM.registerMenuCommand("Toggle dev treatments", async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
