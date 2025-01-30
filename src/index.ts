@@ -310,6 +310,13 @@ async function onDomLoad() {
     catch(e) {
       warn("Couldn't register dev menu commands:", e);
     }
+
+    try {
+      runDevTreatments();
+    }
+    catch(e) {
+      warn("Couldn't run dev treatments:", e);
+    }
   }
   catch(err) {
     error("Feature error:", err);
@@ -555,10 +562,22 @@ function registerDevCommands() {
 
   GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
 
-  log("Registered dev menu commands");
+  GM.registerMenuCommand("Toggle dev treatments", async () => {
+    const val = !await GM.getValue("bytm-dev-treatments", false);
+    await GM.setValue("bytm-dev-treatments", val);
+    alert(`Dev treatments are now ${val ? "enabled" : "disabled"}. Page will reload.`);
+    await reloadTab();
+  });
 
-  //#DEBUG
-  getAllDataExImDialog().then(d => d.open());
+  log("Registered dev menu commands");
+}
+
+async function runDevTreatments() {
+  if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
+    return;
+
+  const dlg = await getAllDataExImDialog();
+  await dlg.open();
 }
 
 preInit();
