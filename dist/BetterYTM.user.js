@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/dist/BetterYTM.css#sha256=kFSriGJ1TQTRp4PtgDS889JJpYJcVDC5eNrH9DAYcZM=
-// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/dist/BetterYTM.css#sha256=kFSriGJ1TQTRp4PtgDS889JJpYJcVDC5eNrH9DAYcZM=
+// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.0.4/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -329,7 +329,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "f0491df4";
+const buildNumberRaw = "4892ba35";
 const assetSourceRaw = "jsdelivr";
 const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
@@ -971,6 +971,7 @@ var main = "./src/index.ts";
 var type = "module";
 var scripts = {
 	dev: "concurrently \"nodemon --exec pnpm run build-private-dev --config-assetSource=local\" \"pnpm run serve\"",
+	"dev-cdn": "concurrently \"nodemon --exec pnpm run build-private-dev\" \"pnpm run serve\"",
 	serve: "pnpm run node-ts ./src/tools/serve.ts",
 	lint: "eslint . && tsc --noEmit",
 	build: "rollup -c",
@@ -8126,13 +8127,6 @@ function registerDevCommands() {
             await clearConfig();
             await reloadTab();
         }
-    }, "r");
-    GM.registerMenuCommand("Fix config values", async () => {
-        const oldFeats = JSON.parse(JSON.stringify(getFeatures()));
-        await setFeatures(fixCfgKeys(oldFeats));
-        dbg("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
-        if (confirm("All missing or config values were set to their default values and extraneous ones were removed.\nDo you want to reload the page now?"))
-            await reloadTab();
     });
     GM.registerMenuCommand("List GM values in console with decompression", async () => {
         const keys = await GM.listValues();
@@ -8152,7 +8146,7 @@ function registerDevCommands() {
             const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
             dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
         }
-    }, "l");
+    });
     GM.registerMenuCommand("List GM values in console, without decompression", async () => {
         const keys = await GM.listValues();
         dbg(`GM values (${keys.length}):`);
@@ -8181,7 +8175,7 @@ function registerDevCommands() {
                 dbg(`  Deleted ${key}`);
             }
         }
-    }, "d");
+    });
     GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
         var _a;
         const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation." });
@@ -8195,15 +8189,15 @@ function registerDevCommands() {
                 dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
             }
         }
-    }, "n");
+    });
     GM.registerMenuCommand("Reset install timestamp", async () => {
         await GM.deleteValue("bytm-installed");
         dbg("Reset install time.");
-    }, "t");
+    });
     GM.registerMenuCommand("Reset version check timestamp", async () => {
         await GM.deleteValue("bytm-version-check");
         dbg("Reset version check time.");
-    }, "v");
+    });
     GM.registerMenuCommand("List active selector listeners in console", async () => {
         const lines = [];
         let listenersAmt = 0;
@@ -8219,7 +8213,7 @@ function registerDevCommands() {
             });
         }
         dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
-    }, "s");
+    });
     GM.registerMenuCommand("Compress value", async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output." });
         if (input && input.length > 0) {
@@ -8234,6 +8228,7 @@ function registerDevCommands() {
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     });
+    GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
     GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
         const ser = await getStoreSerializer().serialize();
         dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
@@ -8246,8 +8241,7 @@ function registerDevCommands() {
             alert("Imported data. Reload the page to apply changes.");
         }
     });
-    GM.registerMenuCommand("Throw specific Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-    GM.registerMenuCommand("Throw generic Error", () => error());
+    GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
     GM.registerMenuCommand("Example MarkdownDialog", async () => {
         const mdDlg = new MarkdownDialog({
             id: "example",
@@ -8262,7 +8256,6 @@ function registerDevCommands() {
         });
         await mdDlg.open();
     });
-    GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
     GM.registerMenuCommand("Toggle dev treatments", async () => {
         const val = !await GM.getValue("bytm-dev-treatments", false);
         await GM.setValue("bytm-dev-treatments", val);
