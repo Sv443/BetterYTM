@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"nodemon --exec pnpm run build-private-dev --config-assetSource=local\" \"pnpm run serve\"",
+    "dev-cdn": "concurrently \"nodemon --exec pnpm run build-private-dev\" \"pnpm run serve\"",
     "serve": "pnpm run node-ts ./src/tools/serve.ts",
     "lint": "eslint . && tsc --noEmit",
     "build": "rollup -c",

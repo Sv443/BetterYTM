@@ -105,17 +105,22 @@ To edit an existing translation, please follow these steps:
 ### These are the CLI commands available after setting up the project:
 - **`pnpm i`**  
   Run once to install dependencies
-- **`pnpm run dev`**  
+- **`pnpm dev`**  
   This is the command you want to use to locally develop and test BetterYTM.  
   It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)).  
+  It uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript.  
   Once it has finished building, a link will be printed to the console. Open it to install the userscript.  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
   If you need to test with resources that weren't committed and pushed to GitHub yet, you may use `pnpm run dev-local` instead.
-- **`pnpm run build-prod`**  
+- **`pnpm dev-cdn`**  
+  Works exactly like `pnpm dev`, but uses the default CDN as the asset source.  
+  Practically, this means the server doesn't have to be constantly running.  
+  But this also means that changes to the assets won't be reflected in the userscript until committed, pushed and the script is rebuilt.
+- **`pnpm build-prod`**  
   Builds the userscript for production for all hosts with their respective options already set.  
   Outputs the files using a suffix predefined in the `package.json` file.  
   Use this to build the userscript for distribution on all host/CDN platforms.
-- **`pnpm run build <arguments>`**  
+- **`pnpm build <arguments>`**  
   Builds the userscript with custom options  
   Arguments:  
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
@@ -125,36 +130,36 @@ To edit an existing translation, please follow these steps:
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
-  - `pnpm run build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
+  - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
     Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=jsdelivr`
-  - `pnpm run build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
+  - `pnpm build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
     Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=jsdelivr`
-  - `pnpm run preview` - Same as `pnpm run build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
-- **`pnpm run lint`**  
+  - `pnpm preview` - Same as `pnpm build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
+- **`pnpm lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
-- **`pnpm run storybook`**  
+- **`pnpm storybook`**  
   Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
-- **`pnpm run gen-readme`**  
+- **`pnpm gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
-- **`pnpm run tr-changed <keys>`**  
+- **`pnpm tr-changed <keys>`**  
   Removes the provided keys (comma-separated) from all translation files but `en-US.json`  
-  This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm run tr-format -p`
-- **`pnpm run tr-progress`**  
+  This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm tr-format -p`
+- **`pnpm tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
   Will also be run automatically after every script build.
-- **`pnpm run tr-format <arguments>`**  
+- **`pnpm tr-format <arguments>`**  
   Reformats all translation files so they match that of the base file `en-US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr-FR,de-DE"` or `-o="pt-BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
-- **`pnpm run tr-prep`**  
-  Shorthand for `pnpm run tr-format --prep` (see above)
-- **`pnpm run --silent invisible "<command>"`**  
+- **`pnpm tr-prep`**  
+  Shorthand for `pnpm tr-format --prep` (see above)
+- **`pnpm --silent invisible "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
-- **`pnpm run node-ts <path>`**  
+- **`pnpm node-ts <path>`**  
   Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
   Also enables source map support and disables experimental warnings.
 
