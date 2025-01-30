@@ -13,8 +13,9 @@
 <br>
 
 ## JSON file formats:
-> [!NOTE]  
-> Note: If a property is followed by a question mark, that means it is optional
+> [!NOTE]
+> 
+> Note: a property that's followed by a question mark means it is optional.
 
 <br>
 
@@ -69,13 +70,13 @@ The version of each package will be parsed from [`package.json`](../package.json
 Inside the file is an array of objects, which each have one of the following properties:  
   
 Using npm packages through a CDN:
-| Property   | Type      | Description                                                                         |
-| :--------- | :-------- | :---------------------------------------------------------------------------------- |
-| `pkgName`  | `string`  | The name of the npm package, as in `npm i pkgName`                                |
-| `path`     | `string`  | The path to the file that should be loaded, relative to the library root dir        |
-| `global`   | `string`  | The name of the global variable that the library exports                            |
+| Property   | Type      | Description                                                                                            |
+| :--------- | :-------- | :----------------------------------------------------------------------------------------------------- |
+| `pkgName`  | `string`  | The name of the npm package, as in `npm i pkgName`                                                     |
+| `path`     | `string`  | The path to the file that should be loaded, relative to the library root dir                           |
+| `global`   | `string`  | The name of the global variable that the library exports                                               |
 | `baseUrl?` | `string`  | Base URL of the CDN to use - `https://cdn.jsdelivr.net/npm/` by default - package will be appended as `pkgName@versionFromPkgJson` |
-| `link?`    | `boolean` | Whether `npm link` is active and the library should be force-included in the bundle |
+| `link?`    | `boolean` | Whether `npm link` is active and the library should be force-included in the bundle (false by default) |
 
 Using a direct URL:
 | Property | Type      | Description                                                                         |

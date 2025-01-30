@@ -34,8 +34,8 @@
     "build-storybook": "storybook build"
   },
   "engines": {
-    "node": ">=19",
-    "pnpm": ">=6"
+    "node": ">=20",
+    "pnpm": ">=9"
   },
   "repository": {
     "type": "git",

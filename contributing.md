@@ -48,7 +48,7 @@ To submit a translation, please follow these steps:
   You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
   The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
 4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
-  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
 5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
   Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 6. If you want to submit a pull request with the translated file:
@@ -71,12 +71,12 @@ To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `pnpm run tr-format -p -o=language-COUNTRY, where `language-COUNTRY` is the part of the file name before the `.json` extension  
+3. Run the command `pnpm tr-format -p -o=language-COUNTRY, where `language-COUNTRY` is the part of the file name before the `.json` extension  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
 5. Make sure there are no duplicate keys in the file
-6. Run the command `pnpm run tr-format -o=language-COUNTRY` to make sure the file is formatted correctly
-7. Test for syntax errors and update translation progress with the command `pnpm run tr-progress`
+6. Run the command `pnpm tr-format -o=language-COUNTRY` to make sure the file is formatted correctly
+7. Test for syntax errors and update translation progress with the command `pnpm tr-progress`
 8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice)
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [this section](#setting-up-the-project-for-local-development)
 10. Submit your pull request by [clicking here](https://github.com/Sv443/BetterYTM/compare/) and setting the `compare:` dropdown to your fork and the `base:` dropdown to `develop`  
@@ -98,20 +98,21 @@ To edit an existing translation, please follow these steps:
   Skip this step if you are using your own forked repository.
 5. Open a terminal in the project root and run `pnpm i`
 6. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
-7. Now you can run `pnpm run dev` to build the userscript and host it on a development server or check out the other commands below
+7. Now you can run `pnpm dev` or `pnpm dev-cdn` to build the userscript and host it on a development server or check out the other commands below
 
 <br>
 
 ### These are the CLI commands available after setting up the project:
 - **`pnpm i`**  
-  Run once to install dependencies
+  Run once to install dependencies.
 - **`pnpm dev`**  
   This is the command you want to use to locally develop and test BetterYTM.  
-  It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)).  
-  It uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript.  
-  Once it has finished building, a link will be printed to the console. Open it to install the userscript.  
+  It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager ([see extras](#extras)).  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
-  If you need to test with resources that weren't committed and pushed to GitHub yet, you may use `pnpm run dev-local` instead.
+    
+  This command uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript. Note that this also means the server needs to keep running for the userscript to work. If it's not running, you will run into weird errors because none of the necessary assets are able to be fetched.  
+    
+  Once the build is finished, a link will be printed to the console. Open it to install the userscript.
 - **`pnpm dev-cdn`**  
   Works exactly like `pnpm dev`, but uses the default CDN as the asset source.  
   Practically, this means the server doesn't have to be constantly running.  
@@ -155,7 +156,7 @@ To edit an existing translation, please follow these steps:
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr-FR,de-DE"` or `-o="pt-BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
 - **`pnpm tr-prep`**  
-  Shorthand for `pnpm tr-format --prep` (see above)
+  Shorthand for `pnpm tr-format --prep` (see above).
 - **`pnpm --silent invisible "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
@@ -166,13 +167,13 @@ To edit an existing translation, please follow these steps:
 > [!NOTE]
 > 
 > When you are using npm (as opposed to `pnpm`), read the following carefully:  
-> You will need to use a lone ` -- ` between the command name and the arguments, for example: `pnpm run tr-format -- -p -o="de-DE"`  
+> You will need to use a lone ` -- ` between the command name and the arguments, for example: `pnpm tr-format -- -p -o="de-DE"`  
 > This is so npm can tell the difference between arguments passed to it versus arguments passed to the script it is running.
 
 <br>
 
 ### Extras:
-- When using ViolentMonkey, after letting the command `pnpm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
+- When using ViolentMonkey, after letting the command `pnpm dev` or `pnpm dev-cdn` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
   This makes it so the userscript automatically updates when the code changes.  
   Note: the tab needs to stay open on Firefox or the script will not update itself.
 - To link any local JS file (like a work-in-progress library) in the userscript, add a `"link": "/path/to/script.umd.js"` property to the respective library in [`assets/require.json`](./assets/require.json) (relative or absolute path)  
@@ -238,7 +239,7 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
   2. Run `pnpm i` so the version is updated in the lockfile
   3. Update the `changelog.md` with the new version and an exhaustive list of changes that were made
   4. Make sure all files are committed before the built userscript is, so the next build will have the correct build number
-  5. Run `pnpm run build-prod` to build the userscript for all hosts
+  5. Run `pnpm build-prod` to build the userscript for all hosts
   6. Commit and push the built files
   7. Create a new release on GitHub with a tag that follows the format of the previous releases, a copy of the relevant section in the changelog and an install button that points to the built userscript on GitHub (make sure it uses the version tag in its URL to ensure the correct version is installed)
   8. Update the userscript on GreasyFork and OpenUserJS from the built files  
@@ -256,7 +257,8 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other "plugin" userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
-> [!TIP]  
+> [!TIP]
+> 
 > Want to quickly get started with a plugin? **Check out the [official plugin template.](https://github.com/Sv443/BetterYTM-Plugin-Template)**  
 > It is based on Vite and TypeScript and has all the necessary setup for you to start developing a plugin right away.  
 > It also contains some small examples to show you how to interact with the BYTM API.  
@@ -410,7 +412,8 @@ You may instead also just copy all necessary types over from the BetterYTM sourc
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
-> [!IMPORTANT]  
+> [!IMPORTANT]
+> 
 > Authenticated functions are marked with 🔒 and need to be passed a per-session and per-plugin authentication token. It can be acquired by calling [registerPlugin()](#registerplugin)  
 
 <br>
