@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,18 +62,18 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/dist/BetterYTM.css#sha256=kFSriGJ1TQTRp4PtgDS889JJpYJcVDC5eNrH9DAYcZM=
-// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c172a04d/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
+// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
+// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
+// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
+// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
+// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/dist/BetterYTM.css#sha256=kFSriGJ1TQTRp4PtgDS889JJpYJcVDC5eNrH9DAYcZM=
+// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
+// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
+// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
+// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
+// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
+// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
+// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f0491df4/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.0.4/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -329,7 +329,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "c172a04d";
+const buildNumberRaw = "f0491df4";
 const assetSourceRaw = "jsdelivr";
 const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
@@ -8048,6 +8048,12 @@ async function onDomLoad() {
         catch (e) {
             warn("Couldn't register dev menu commands:", e);
         }
+        try {
+            runDevTreatments();
+        }
+        catch (e) {
+            warn("Couldn't run dev treatments:", e);
+        }
     }
     catch (err) {
         error("Feature error:", err);
@@ -8257,8 +8263,18 @@ function registerDevCommands() {
         await mdDlg.open();
     });
     GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
+    GM.registerMenuCommand("Toggle dev treatments", async () => {
+        const val = !await GM.getValue("bytm-dev-treatments", false);
+        await GM.setValue("bytm-dev-treatments", val);
+        alert(`Dev treatments are now ${val ? "enabled" : "disabled"}. Page will reload.`);
+        await reloadTab();
+    });
     log("Registered dev menu commands");
-    //#DEBUG
-    getAllDataExImDialog().then(d => d.open());
+}
+async function runDevTreatments() {
+    if (mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
+        return;
+    const dlg = await getAllDataExImDialog();
+    await dlg.open();
 }
 preInit();})(UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
