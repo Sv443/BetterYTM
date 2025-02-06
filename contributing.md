@@ -211,7 +211,8 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
     If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.  
     The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
   4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode and if the asset key matches a pattern in `alwaysExternalAssetPatterns` in the `assets/resources.json` file.
-  5. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
+  5. If the asset is an SVG icon, it will be included in the file `assets/spritesheet.svg` so it can be referenced without needing to be fetched every time it's used. This spritesheet needs to be committed before the build, find out why in the next step.
+  6. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
     This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
 - Adding a new site event:
   1. Add your event to the `SiteEventsMap` type in [`src/siteEvents.ts`](./src/siteEvents.ts)
@@ -227,7 +228,7 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
   3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
   4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
   5. Write some documentation for the component inside this file (`contributing.md`), under the [global functions and classes section](#global-functions-and-classes) by following the format of the other documented components.
-- Adding a locale (language & regional dialect):
+- Adding a locale (language & country code):
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.  
     You can find [a list of BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
