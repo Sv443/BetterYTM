@@ -24,10 +24,6 @@
     "useDefineForClassFields": true,
     "noImplicitThis": false,
   },
-  "ts-node": {
-    "esm": true,
-    "preferTsExts": true,
-  },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",

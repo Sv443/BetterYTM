@@ -161,7 +161,7 @@ To edit an existing translation, please follow these steps:
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
 - **`pnpm node-ts <path>`**  
-  Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
+  Runs the TypeScript file at the given path using the regular node binary and [tsx.](https://tsx.is/)  
   Also enables source map support and disables experimental warnings.
 
 > [!NOTE]

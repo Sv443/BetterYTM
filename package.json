@@ -26,7 +26,7 @@
     "tr-format": "pnpm run node-ts ./src/tools/tr-format.ts",
     "tr-prep": "pnpm run tr-format -p",
     "gen-readme": "pnpm run node-ts ./src/tools/gen-readme.ts",
-    "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
+    "node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
     "invisible": "node --enable-source-maps src/tools/run-invisible.mjs",
     "test": "pnpm run node-ts ./test.ts",
     "knip": "knip",
@@ -110,7 +110,6 @@
     "rollup-plugin-import-css": "^3.5.8",
     "storybook": "^8.5.3",
     "storybook-dark-mode": "^4.0.2",
-    "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   },
