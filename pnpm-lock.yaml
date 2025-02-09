@@ -66,9 +66,6 @@ importers:
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.17
-      '@types/dompurify':
-        specifier: ^3.2.0
-        version: 3.2.0
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -1055,10 +1052,6 @@ packages:
 
   '@types/cors@2.8.17':
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
-
-  '@types/dompurify@3.2.0':
-    resolution: {integrity: sha512-Fgg31wv9QbLDA0SpTOXO3MaxySc4DKGLi8sna4/Utjo4r3ZRPdCt4UQee8BWr+Q5z21yifghREPJGYaEOEIACg==}
-    deprecated: This is a stub types definition. dompurify provides its own type definitions, so you do not need this installed.
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -3375,10 +3368,6 @@ snapshots:
   '@types/cors@2.8.17':
     dependencies:
       '@types/node': 20.17.17
-
-  '@types/dompurify@3.2.0':
-    dependencies:
-      dompurify: 3.2.4
 
   '@types/estree@1.0.6': {}
 

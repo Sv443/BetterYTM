@@ -85,7 +85,6 @@
     "@storybook/html-vite": "^8.5.3",
     "@storybook/test": "^8.5.3",
     "@types/cors": "^2.8.17",
-    "@types/dompurify": "^3.2.0",
     "@types/express": "^4.17.21",
     "@types/greasemonkey": "^4.0.7",
     "@types/node": "^20.17.17",
