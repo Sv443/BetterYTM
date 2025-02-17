@@ -3,7 +3,7 @@ import { formatNumber, getLocale, getPreferredLocale, getResourceUrl, reloadTab,
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
-import { FeatureInfo, type ColorLightnessPref, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
+import { FeatureInfo, LogLevel, type ColorLightnessPref, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { showIconToast } from "../components/toast.js";
@@ -801,10 +801,10 @@ export const featInfo = {
     type: "select",
     category: "general",
     options: () => [
-      { value: 0, label: t("log_level_debug") },
-      { value: 1, label: t("log_level_info") },
+      { value: LogLevel.Debug, label: t("log_level_debug") },
+      { value: LogLevel.Info, label: t("log_level_info") },
     ],
-    default: 1,
+    default: LogLevel.Info,
     textAdornment: adornments.reload,
   },
   advancedMode: {

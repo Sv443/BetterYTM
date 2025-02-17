@@ -40,12 +40,11 @@ export async function importData(blob: File | Blob) {
     const data = await blob.text();
     await serializer.deserialize(data);
 
-    const reload = await showPrompt({
+    if(await showPrompt({
       type: "confirm",
       message: t("import_success_confirm_reload"),
-    });
-
-    reload && await reloadTab();
+    }))
+      await reloadTab();
   }
   catch(err) {
     error(err);
