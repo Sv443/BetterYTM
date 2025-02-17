@@ -20,6 +20,8 @@ let activeLocale: TrLocale = "en-US";
 tr.addTransform(tr.transforms.percent);
 tr.addTransform(tr.transforms.templateLiteral);
 
+tr.setFallbackLanguage("en-US" satisfies TrLocale);
+
 /** Initializes the translations */
 export async function initTranslations(locale: TrLocale) {
   if(initializedLocales.has(locale))
