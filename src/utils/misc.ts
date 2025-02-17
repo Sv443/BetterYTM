@@ -327,16 +327,29 @@ export function getPreferredLocale(): TrLocale {
   return "en-US";
 }
 
-/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
+const resourceCache = new Map<string, string>();
+
+/**
+ * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.  
+ * Caches the resulting string if the resource key starts with `icon-`
+ */
 export async function resourceAsString(resource: ResourceKey | "_") {
+  if(resourceCache.has(resource))
+    return resourceCache.get(resource)!;
+
   const resourceUrl = await getResourceUrl(resource);
   try {
     if(!resourceUrl)
       throw new Error(`Couldn't find URL for resource '${resource}'`);
-    return await (await fetchAdvanced(resourceUrl)).text();
+    const str = await (await fetchAdvanced(resourceUrl)).text();
+
+    // since SVG is lightweight, caching it in memory is fine
+    if(resource.startsWith("icon-"))
+      resourceCache.set(resource, str);
+    return str;
   }
   catch(err) {
-    error(`Couldn't get SVG element '${resource}' from resource at URL '${resourceUrl}':`, err);
+    error(`Couldn't fetch resource '${resource}' at URL '${resourceUrl}' due to an error:`, err);
     return null;
   }
 }
