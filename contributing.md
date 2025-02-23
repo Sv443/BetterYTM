@@ -45,19 +45,19 @@ To submit a translation, please follow these steps:
 2. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
 3. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
   You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
-  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
+  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...).
 4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
   If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
-5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
+5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites.  
   Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 6. If you want to submit a pull request with the translated file:
     1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `language-COUNTRY.json`
-    2. Edit it to your translated version and keep the left side of the colon unchanged
-    3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
-    4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order
-    5. Add your name to the respective `authors` properties in [`assets/locales.json`](./assets/locales.json) and the translation file
-    6. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request
-7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
+    2. Edit it to your translated version and keep the left side of the colon unchanged.
+    3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered).
+    4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order.
+    5. Add your name to the respective `authors` properties in [`assets/locales.json`](./assets/locales.json) and the translation file.
+    6. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request.
+7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info.  
   Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)
 
 <br>
@@ -67,20 +67,20 @@ To submit a translation, please follow these steps:
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
 
 To edit an existing translation, please follow these steps:
-1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
-  Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
+1. Set up the project for local development by following the instructions in [the local setup section.](#setting-up-the-project-for-local-development)  
+  **Make sure you fork the repository and clone your own fork instead of the original repository, and to create a branch with a short but descriptive name.**  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `pnpm tr-format -p -o=language-COUNTRY, where `language-COUNTRY` is the part of the file name before the `.json` extension  
+3. Run the command `pnpm tr-format -p -o=language-COUNTRY`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
-5. Make sure there are no duplicate keys in the file
-6. Run the command `pnpm tr-format -o=language-COUNTRY` to make sure the file is formatted correctly
+5. Make sure there are no duplicate keys in the file.
+6. Run the command `pnpm tr-format -o=language-COUNTRY` to make sure the file is formatted correctly.
 7. Test for syntax errors and update translation progress with the command `pnpm tr-progress`
-8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice)
-9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [this section](#setting-up-the-project-for-local-development)
+8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice).
+9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [the local setup section.](#setting-up-the-project-for-local-development)
 10. Submit your pull request by [clicking here](https://github.com/Sv443/BetterYTM/compare/) and setting the `compare:` dropdown to your fork and the `base:` dropdown to `develop`  
-  Make sure to describe your changes in the pull request and reference the issue you are fixing, if applicable
-11. Check that the CI checks just above the comment box pass and then wait for the pull request to be reviewed and merged
+  Make sure to describe your changes in the pull request and reference the issue you are fixing, if applicable.
+11. Check that the CI checks just above the comment box pass and then wait for the pull request to be reviewed and merged.
 
 <br><br><br>
 
@@ -88,16 +88,17 @@ To edit an existing translation, please follow these steps:
 
 ## Setting up the project for local development:
 ### Requirements:
-1. Have current versions of Node.js, npm and Git installed
+1. Have current versions of Node.js, npm and Git installed.
 2. Install pnpm by running `npm i -g pnpm`
-3. Clone this repository  
+3. Clone this repository.  
   If you plan on contributing to the project through Git, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead.
-4. Switch to the `develop` branch by running `git checkout -b develop` in the project root.  
-  **I will only accept pull requests that were created from and to the `develop` branch**, since there is usually a newer version in progress on that branch compared to `main`  
+  **Also make sure to create a new branch from the upstream's `develop` branch with a short but descriptive name, and specify it when submitting your pull request at the end.**
+5. Switch to the `develop` branch (or your own one) by running `git checkout -b develop` in the project root.  
+  **I will only accept pull requests that originate from and are set to target the `develop` branch**, since there is usually a newer version in progress on that branch compared to `main`  
   Skip this step if you are using your own forked repository.
-5. Open a terminal in the project root and run `pnpm i`
-6. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
-7. Now you can run `pnpm dev` or `pnpm dev-cdn` to build the userscript and host it on a development server or check out the other commands below
+6. Open a terminal in the project root and run `pnpm i` to install all dependencies.
+7. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
+8. Now you can run `pnpm dev` to build the userscript and host it on a development server or check out the other commands below.
 
 <br>
 
