@@ -36,8 +36,7 @@ Before submitting a translation, please check on [this document](https://github.
 <br>
 
 ### Adding translations for a new language:
-> [!IMPORTANT]
-> 
+> [!IMPORTANT]  
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**  
   
 To submit a translation, please follow these steps:
@@ -64,9 +63,9 @@ To submit a translation, please follow these steps:
 <br>
 
 ### Editing an existing translation:
-> [!IMPORTANT]
-> 
+> [!IMPORTANT]  
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
+
 To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
@@ -164,8 +163,7 @@ To edit an existing translation, please follow these steps:
   Runs the TypeScript file at the given path using the regular node binary and [tsx.](https://tsx.is/)  
   Also enables source map support and disables experimental warnings.
 
-> [!NOTE]
-> 
+> [!NOTE]  
 > When you are using npm (as opposed to `pnpm`), read the following carefully:  
 > You will need to use a lone ` -- ` between the command name and the arguments, for example: `pnpm tr-format -- -p -o="de-DE"`  
 > This is so npm can tell the difference between arguments passed to it versus arguments passed to the script it is running.
@@ -258,8 +256,7 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other "plugin" userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
-> [!TIP]
-> 
+> [!TIP]  
 > Want to quickly get started with a plugin? **Check out the [official plugin template.](https://github.com/Sv443/BetterYTM-Plugin-Template)**  
 > It is based on Vite and TypeScript and has all the necessary setup for you to start developing a plugin right away.  
 > It also contains some small examples to show you how to interact with the BYTM API.  
@@ -413,8 +410,7 @@ You may instead also just copy all necessary types over from the BetterYTM sourc
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
-> [!IMPORTANT]
-> 
+> [!IMPORTANT]  
 > Authenticated functions are marked with 🔒 and need to be passed a per-session and per-plugin authentication token. It can be acquired by calling [registerPlugin()](#registerplugin)  
 
 <br>
