@@ -51,7 +51,7 @@ To submit a translation, please follow these steps:
 5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
   Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 6. If you want to submit a pull request with the translated file:
-    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
+    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `language-COUNTRY.json`
     2. Edit it to your translated version and keep the left side of the colon unchanged
     3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
     4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order
