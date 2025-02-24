@@ -24,10 +24,10 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: calc(min(100% - 60px, var(--bytm-menu-width-max)));
+  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
   border-radius: var(--bytm-menu-border-radius);
   height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-menu-height-max)));
+  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

@@ -468,6 +468,184 @@ hr {
   margin-right: 6px;
 }
 
+/* #region general */
+:root {
+  --bytm-locale-color: #5ea2ec;
+  --bytm-advanced-mode-color: #ceb663;
+  --bytm-experimental-col: #cc83e5;
+  --bytm-warning-col: #e5a63b;
+  --bytm-error-col: #fa5b5b;
+  --bytm-reload-col: #77e064;
+}
+
+/* TODO: after cfg menu migration, leave only dialog styles here */
+#bytm-cfg-dialog-bg,
+#bytm-cfg-menu-bg {
+  --bytm-dialog-width-max: 1150px;
+  --bytm-dialog-height-max: 900px;
+}
+
+/* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
+.bytm-dom-yt .bytm-dialog-bg,
+.bytm-dom-yt .bytm-menu-bg {
+  z-index: 10042;
+}
+
+.bytm-dom-yt .bytm-dialog,
+.bytm-dom-yt .bytm-menu {
+  z-index: 10069;
+}
+
+.bytm-dialog-body p {
+  overflow-wrap: break-word;
+}
+
+.bytm-dialog-body details summary {
+  cursor: pointer;
+  font-style: italic;
+}
+
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
+}
+
+/* #region version notification */
+
+#bytm-version-notif-dialog-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#bytm-disable-update-check-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 35px;
+}
+
+#bytm-disable-update-check-wrapper label {
+  padding-left: 12px;
+}
+
+#bytm-version-notif-changelog-cont {
+  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
+  overflow-y: auto;
+  margin: 10px 0px;
+}
+
+#bytm-version-notif-changelog-details {
+  margin-top: 15px;
+}
+
+.bytm-disable-update-check-toggle-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* #region cfg menu */
+
+.bytm-ftconf-adv-copy-btn {
+  margin: 0px 10px;
+}
+
+.bytm-adorn-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bytm-adorn-icon[title] {
+  cursor: help;
+}
+
+/* #region cfg menu adornments */
+
+.bytm-locale-icon svg path {
+  fill: var(--bytm-locale-color, #fff);
+}
+
+.bytm-advanced-mode-icon svg path {
+  fill: var(--bytm-advanced-mode-color, #fff);
+}
+
+.bytm-experimental-icon svg path {
+  fill: var(--bytm-experimental-col, #fff);
+}
+
+.bytm-warning-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-warning-icon svg path {
+  fill: var(--bytm-warning-col, #fff);
+}
+
+.bytm-reload-icon svg path {
+  fill: var(--bytm-reload-col, #fff);
+}
+
+/* #region welcome dialog */
+
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+#bytm-welcome-menu-content-wrapper {
+  overflow-y: auto;
+}
+
+#bytm-welcome-menu-locale-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#bytm-welcome-menu-locale-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+#bytm-welcome-menu-text-cont {
+  margin-top: 16px;
+}
+
+#bytm-welcome-menu-text {
+  font-size: 1.6rem;
+  line-height: 20px;
+}
+
+#bytm-welcome-menu-locale-select {
+  font-size: 1.6rem;
+}
+
+#bytm-welcome-menu-footer-cont {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0px 0px var(--bytm-menu-border-radius)
+    var(--bytm-menu-border-radius);
+}
+
+#bytm-auto-like-channels-dialog-body {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+}
+
 .bytm-toggle-input-wrapper {
   --toggle-height: 20px;
   --toggle-width: 40px;
@@ -1083,10 +1261,10 @@ body.bytm-dom-ytm
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: calc(min(100% - 60px, var(--bytm-menu-width-max)));
+  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
   border-radius: var(--bytm-menu-border-radius);
   height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-menu-height-max)));
+  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

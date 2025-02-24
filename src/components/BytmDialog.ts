@@ -1,10 +1,11 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "@sv443-network/userutils";
+import type { EventsMap } from "nanoevents";
 import { clearInner, domLoaded, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
-import type { EventsMap } from "nanoevents";
+import "../dialogs/dialogs.css";
 
 export interface BytmDialogOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
