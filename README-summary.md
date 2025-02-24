@@ -116,7 +116,7 @@ Find more info about the privacy of these services here:
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
-**For information on how to contribute to this project or how to develop a plugin for BetterYTM, see [the contributing guide](https://github.com/Sv443/BetterYTM/tree/main/contributing.md)**  
+**For information on how to set this project up locally, contribute to it, or create plugins for BetterYTM, see [the contributing guide](https://github.com/Sv443/BetterYTM/tree/main/contributing.md)**  
   
 > Note: Each folder contains a README.md file with further information about the contents. If you want to know more about a specific part of the project, please refer to these files.
 
