@@ -1,7 +1,7 @@
 ## Integrations with other extensions and tools
 BetterYTM integrates with other extensions and tools to provide a smoother experience:
-- (Any other userscript)
-  - BYTM has a plugin system that allows users to write their own userscripts to extend the functionality of BYTM and benefit from its APIs - [you can read about it here.](../../contributing.md#developing-a-plugin-that-interfaces-with-betterytm)
+- (Any other userscript or extension)
+  - BYTM has a plugin system that allows users to write their own userscripts or extensions to extend the functionality of BYTM and benefit from its API - [you can read about it here.](../../contributing.md#developing-a-plugin-that-interfaces-with-betterytm)
 - [Dark Reader](https://darkreader.org/)
   - BYTM disables Dark Reader entirely in YTM because the page doesn't even have a light theme.
   - Dark Reader is also disabled for a few elements on YT, because it would break BYTM's styling.
