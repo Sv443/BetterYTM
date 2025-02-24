@@ -102,11 +102,12 @@ You can also join my Discord server and ask your questions there or just hang ou
 
 ## Privacy:
 BetterYTM does not collect any data about you that isn't strictly necessary for its features to work.  
-All data is recorded and stored on your device or on the servers of the site the script runs on.  
+Your userscript manager extension's storage API is used to store all settings and data locally on your device.  
+Open its settings to see and manage this data or remove the userscript to automatically delete all data.  
   
 BetterYTM makes use of external services and APIs to provide some of its features, which may collect data about you.  
 In every case, only the bare minimum of data is sent to these services and only when necessary.  
-This data includes your IP address and the ID or title and author of the video you're watching.  
+This data includes the version of the userscript, your IP address, and the ID, title and author of the video you're watching.  
   
 Find more info about the privacy of these services here:
 - [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md)
@@ -119,7 +120,10 @@ Find more info about the privacy of these services here:
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
-**For information on how to contribute to this project, see [the contributing guide](./contributing.md)**
+**For information on how to contribute to this project, see [the contributing guide](./contributing.md)**  
+  
+> [!NOTE]  
+> Each folder contains a `README.md` file with further information about the contents. If you want to know more about a specific part of the project, please refer to these files.
 
 <br><br>
 
