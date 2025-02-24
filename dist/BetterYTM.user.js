@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f3e48fda/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -62,22 +62,10 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @resource          css-above_queue_btns        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/aboveQueueBtns.css#sha256=S+Pkz9xm785iQ5mmX+Z0RZgaCgPvCHqVIKOTX9r/Nt8=
-// @resource          css-above_queue_btns_sticky https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/aboveQueueBtnsSticky.css#sha256=BJX5ju+5L+4asy16iF3XOuiJUlPg5KNXkcGennJWGB0=
-// @resource          css-anchor_improvements     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/anchorImprovements.css#sha256=9WSAxeL1Tiv7ZCKrocNrvrQNWSbVY8/bv6wzf0lJ9pg=
-// @resource          css-auto_like               https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/autoLike.css#sha256=A4O2rPsBXjugn0EnF5e1L68Kn3KR7Qm9nlwqe8XWMTM=
-// @resource          css-bundle                  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/dist/BetterYTM.css#sha256=kFSriGJ1TQTRp4PtgDS889JJpYJcVDC5eNrH9DAYcZM=
-// @resource          css-fix_hdr                 https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixHDR.css#sha256=4GeuAroKiRD1asFe6cQ1UiSg+p82Jyl/8JeWXLNTgL8=
-// @resource          css-fix_playerpage_theming  https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixPlayerPageTheming.css#sha256=7xS+bvp7TJFdzyKztER8xYtsLhinTU1dAdmzuO057p0=
-// @resource          css-fix_spacing             https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixSpacing.css#sha256=T57yRp87wz/ye3i4MTRh/o7cFaQsUom4yjG/Kp4eevM=
-// @resource          css-fix_sponsorblock        https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/fixSponsorBlock.css#sha256=KY3RepJ8BaLPTM2n1+irvZUJCLlC0i2EiLzKRgz6z38=
-// @resource          css-hide_themesong_logo     https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/hideThemeSongLogo.css#sha256=Nvr0CaLm23d5dNlJ2bOaxLw2cHfH8KBnpPCbmbXgnOE=
-// @resource          css-show_votes              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/showVotes.css#sha256=Zxm4eBmg6GtFMCnzWRZXW08nr4pwk6aUCMb8x8xIsJU=
-// @resource          css-vol_slider_size         https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4892ba35/assets/style/volSliderSize.css#sha256=WKE/i2XjuE2HYfOkZ9N4QtEgKsWdrhMXZyb2cc+iAAk=
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.0.4/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
-// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.1.6
+// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.4
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -95,18 +83,12 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function(UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var alwaysExternalAssetPatterns = [
-	"^icon-",
-	"^img-",
-	"^font-",
-	"^doc-",
-	"^trans-"
-];
-var resources = {
+(function(UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var resources = {
 	"css-above_queue_btns": "style/aboveQueueBtns.css",
 	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
 	"css-anchor_improvements": "style/anchorImprovements.css",
 	"css-auto_like": "style/autoLike.css",
+	"css-bundle": "/dist/BetterYTM.css",
 	"css-fix_hdr": "style/fixHDR.css",
 	"css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
 	"css-fix_spacing": "style/fixSpacing.css",
@@ -166,7 +148,6 @@ var resources = {
 	"trans-zh-CN": "translations/zh-CN.json"
 };
 var resourcesJson = {
-	alwaysExternalAssetPatterns: alwaysExternalAssetPatterns,
 	resources: resources
 };var locales = {
 	"de-DE": {
@@ -329,7 +310,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4892ba35";
+const buildNumberRaw = "f3e48fda";
 const assetSourceRaw = "jsdelivr";
 const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
@@ -461,7 +442,7 @@ function addLyricsCacheEntryBest(artist, song, url) {
     cache.sort((a, b) => b.viewed - a.viewed);
     // always keep the cache <= max size
     cache.splice(getFeature("lyricsCacheMaxSize"));
-    log("Added cache entry for best result", artist, "-", song, "\n", entry);
+    log(`Added lyrics cache entry for best result:`, entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
     return lyricsCacheMgr.setData({ cache });
 }/******************************************************************************
@@ -478,7 +459,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol */
+/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
 
 
 function __rest(s, e) {
@@ -522,6 +503,7 @@ const initializedLocales = new Set();
 let activeLocale = "en-US";
 UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
 UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
+UserUtils.tr.setFallbackLanguage("en-US");
 /** Initializes the translations */
 async function initTranslations(locale) {
     if (initializedLocales.has(locale))
@@ -962,62 +944,15 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
     wrapperEl.appendChild(toggleWrapperEl);
     labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
     return wrapperEl;
-}var name = "betterytm";
-var userscriptName = "BetterYTM";
-var version = "2.2.0";
-var description = "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™";
+}var version = "2.2.0";
 var homepage = "https://github.com/Sv443/BetterYTM";
-var main = "./src/index.ts";
-var type = "module";
-var scripts = {
-	dev: "concurrently \"nodemon --exec pnpm run build-private-dev --config-assetSource=local\" \"pnpm run serve\"",
-	"dev-cdn": "concurrently \"nodemon --exec pnpm run build-private-dev\" \"pnpm run serve\"",
-	serve: "pnpm run node-ts ./src/tools/serve.ts",
-	lint: "eslint . && tsc --noEmit",
-	build: "rollup -c",
-	"build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
-	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
-	preview: "pnpm run build-prod-gh --config-assetSource=local && pnpm run serve --auto-exit-time=6",
-	"build-prod": "pnpm run build-prod-gh && pnpm run build-prod-gf && pnpm run build-prod-oujs",
-	"build-prod-base": "rollup -c --config-mode production --config-branch main",
-	"build-prod-gh": "pnpm run build-prod-base --config-host github",
-	"build-prod-gf": "pnpm run build-prod-base --config-host greasyfork --config-suffix _gf",
-	"build-prod-oujs": "pnpm run build-prod-base --config-host openuserjs --config-suffix _oujs",
-	"post-build": "pnpm run node-ts ./src/tools/post-build.ts",
-	"tr-changed": "pnpm run node-ts ./src/tools/tr-changed.ts",
-	"tr-progress": "pnpm run node-ts ./src/tools/tr-progress.ts",
-	"tr-format": "pnpm run node-ts ./src/tools/tr-format.ts",
-	"tr-prep": "pnpm run tr-format -p",
-	"gen-readme": "pnpm run node-ts ./src/tools/gen-readme.ts",
-	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
-	invisible: "node --enable-source-maps src/tools/run-invisible.mjs",
-	test: "pnpm run node-ts ./test.ts",
-	knip: "knip",
-	storybook: "storybook dev -p 6006",
-	"build-storybook": "storybook build"
-};
-var engines = {
-	node: ">=19",
-	pnpm: ">=6"
-};
-var repository = {
-	type: "git",
-	url: "git+https://github.com/Sv443/BetterYTM.git"
-};
-var author = {
-	name: "Sv443",
-	url: "https://github.com/Sv443"
-};
-var license = "AGPL-3.0-only";
 var bugs = {
 	url: "https://github.com/Sv443/BetterYTM/issues"
 };
 var funding = {
-	type: "github",
 	url: "https://github.com/sponsors/Sv443"
 };
 var hosts = {
-	github: "https://github.com/Sv443/BetterYTM",
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
@@ -1026,101 +961,13 @@ var updates = {
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
-var dependencies = {
-	"@sv443-network/userutils": "^9.0.4",
-	"compare-versions": "^6.1.0",
-	dompurify: "^3.1.6",
-	marked: "^12.0.2",
-	tslib: "^2.6.3"
-};
-var devDependencies = {
-	"@chromatic-com/storybook": "^1.5.0",
-	"@eslint/eslintrc": "^3.1.0",
-	"@rollup/plugin-json": "^6.1.0",
-	"@rollup/plugin-node-resolve": "^15.2.3",
-	"@rollup/plugin-terser": "^0.4.4",
-	"@rollup/plugin-typescript": "^11.1.6",
-	"@storybook/addon-essentials": "^8.1.10",
-	"@storybook/addon-interactions": "^8.1.10",
-	"@storybook/addon-links": "^8.1.10",
-	"@storybook/blocks": "^8.1.10",
-	"@storybook/html": "^8.1.10",
-	"@storybook/html-vite": "^8.1.10",
-	"@storybook/test": "^8.1.10",
-	"@types/cors": "^2.8.17",
-	"@types/dompurify": "^3.0.5",
-	"@types/express": "^4.17.21",
-	"@types/greasemonkey": "^4.0.7",
-	"@types/node": "^20.14.8",
-	"@typescript-eslint/eslint-plugin": "^8.0.0",
-	"@typescript-eslint/parser": "^8.0.0",
-	"@typescript-eslint/utils": "^8.0.0",
-	concurrently: "^9.0.1",
-	cors: "^2.8.5",
-	dotenv: "^16.4.5",
-	eslint: "^9.5.0",
-	"eslint-plugin-storybook": "^0.11.0",
-	express: "^4.19.2",
-	globals: "^15.6.0",
-	kleur: "^4.1.5",
-	knip: "^5.22.2",
-	nanoevents: "^9.0.0",
-	nodemon: "^3.1.4",
-	"open-cli": "^8.0.0",
-	pnpm: "^9.4.0",
-	rollup: "^4.18.0",
-	"rollup-plugin-execute": "^1.1.1",
-	"rollup-plugin-import-css": "^3.5.0",
-	storybook: "^8.1.10",
-	"storybook-dark-mode": "^4.0.2",
-	"ts-node": "^10.9.2",
-	tsx: "^4.19.2",
-	typescript: "^5.5.2"
-};
-var browserslist = [
-	"last 1 version",
-	"> 1%",
-	"not dead"
-];
-var nodemonConfig = {
-	watch: [
-		"src/**",
-		"assets/**",
-		"rollup.config.mjs",
-		".env",
-		"changelog.md",
-		"package.json"
-	],
-	ext: "ts,mts,js,jsx,mjs,json,html,css,svg,png",
-	ignore: [
-		"dist/*",
-		"dev/*",
-		"*/stories/*",
-		"assets/**/spritesheet.svg"
-	]
-};
 var packageJson = {
-	name: name,
-	userscriptName: userscriptName,
 	version: version,
-	description: description,
 	homepage: homepage,
-	main: main,
-	type: type,
-	scripts: scripts,
-	engines: engines,
-	repository: repository,
-	author: author,
-	license: license,
 	bugs: bugs,
 	funding: funding,
 	hosts: hosts,
-	updates: updates,
-	dependencies: dependencies,
-	devDependencies: devDependencies,
-	browserslist: browserslist,
-	nodemonConfig: nodemonConfig
-};/** EventEmitter instance that is used to detect various changes to the site and userscript */
+	updates: updates};/** EventEmitter instance that is used to detect various changes to the site and userscript */
 const siteEvents = new UserUtils.NanoEmitter({
     publicEmit: true,
 });
@@ -3071,13 +2918,15 @@ async function getResourceUrl(name, uncached = false) {
                         let path = pathName;
                         if (path.startsWith("/"))
                             path = path.slice(1);
+                        else
+                            path = `assets/${path}`;
                         switch (assetSource) {
                             case "jsdelivr":
-                                return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/assets/${path}`;
+                                return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
                             case "github":
-                                return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${path}`;
+                                return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
                             case "local":
-                                return `http://localhost:${devServerPort}/assets/${path}`;
+                                return `http://localhost:${devServerPort}/${path}`;
                         }
                     })();
             }
@@ -3110,16 +2959,26 @@ function getPreferredLocale() {
     }
     return "en-US";
 }
-/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
+const resourceCache = new Map();
+/**
+ * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.
+ * Caches the resulting string if the resource key starts with `icon-`
+ */
 async function resourceAsString(resource) {
+    if (resourceCache.has(resource))
+        return resourceCache.get(resource);
     const resourceUrl = await getResourceUrl(resource);
     try {
         if (!resourceUrl)
             throw new Error(`Couldn't find URL for resource '${resource}'`);
-        return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
+        const str = await (await UserUtils.fetchAdvanced(resourceUrl)).text();
+        // since SVG is lightweight, caching it in memory is fine
+        if (resource.startsWith("icon-"))
+            resourceCache.set(resource, str);
+        return str;
     }
     catch (err) {
-        error(`Couldn't get SVG element '${resource}' from resource at URL '${resourceUrl}':`, err);
+        error(`Couldn't fetch resource '${resource}' at URL '${resourceUrl}' due to an error:`, err);
         return null;
     }
 }
@@ -3174,9 +3033,9 @@ function getStoreSerializer() {
 /** Downloads the current data stores as a single file */
 async function downloadData() {
     const serializer = getStoreSerializer();
-    const pad = (num, len = 2) => String(num).padStart(len, "0");
+    const pad = (val, len = 2) => String(val).padStart(len, "0");
     const d = new Date();
-    const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+    const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
     const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
     const data = JSON.stringify(JSON.parse(await serializer.serialize()), undefined, 2);
     downloadFile(fileName, data, "application/json");
@@ -5298,8 +5157,8 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     linkElem.role = "button";
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
-    linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
-    linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
+    linkElem.style.visibility = "hidden";
+    linkElem.style.display = "none";
     onInteraction(linkElem, (e) => {
         var _a;
         const url = (_a = linkElem.href) !== null && _a !== void 0 ? _a : geniusUrl;
@@ -6489,10 +6348,10 @@ const featInfo = {
         type: "select",
         category: "general",
         options: () => [
-            { value: 0, label: t("log_level_debug") },
-            { value: 1, label: t("log_level_info") },
+            { value: LogLevel.Debug, label: t("log_level_debug") },
+            { value: LogLevel.Info, label: t("log_level_info") },
         ],
-        default: 1,
+        default: LogLevel.Info,
         textAdornment: adornments.reload,
     },
     advancedMode: {
@@ -7457,7 +7316,7 @@ function constructUrlString(baseUrl, params) {
 /**
  * Constructs a URL object from a base URL and a record of query parameters.
  * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
- * All values will be URI-encoded.
+ * All values will be stringified and then URI-encoded.
  * @returns Returns a URL object instead of a string
  */
 function constructUrl(base, params) {
