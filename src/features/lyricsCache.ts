@@ -112,7 +112,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, url: strin
   // always keep the cache <= max size
   cache.splice(getFeature("lyricsCacheMaxSize"));
 
-  log(`Added lyrics cache entry for best result:`, entry);
+  log("Added lyrics cache entry for best result:", entry);
 
   emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
   return lyricsCacheMgr.setData({ cache });

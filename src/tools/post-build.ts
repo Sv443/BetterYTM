@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import type { Stream } from "node:stream";
 import k from "kleur";
 import "dotenv/config";
 import type { RollupArgs } from "../types.js";
