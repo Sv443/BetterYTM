@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
+import type { Stream } from "node:stream";
 import k from "kleur";
 import "dotenv/config";
 import type { RollupArgs } from "../types.js";
@@ -287,10 +288,10 @@ async function getResourceDirectives(ref: string) {
     if(!resources)
       throw new Error("No resources found in 'assets/resources.json'");
 
-    const externalAssetRegexes = resourcesJson.alwaysExternalAssetPatterns.map((p) => new RegExp(p));
+    const extAssetPattern = new RegExp(resourcesJson.externalAssetPattern);
     for(const [name, val] of Object.entries(resources)) {
       // skip over all external assets
-      if(externalAssetRegexes.some((re) => re.test(name)))
+      if(extAssetPattern.test(name))
         continue;
 
       const pathVal = typeof val === "object" ? val.path : val;
@@ -308,11 +309,19 @@ async function getResourceDirectives(ref: string) {
 
     const addResourceHashed = async (name: string, path: string, ref: string) => {
       try {
-        if(externalAssetRegexes.some((re) => re.test(name)))
+        // don't add external assets
+        if(extAssetPattern.test(name))
           return;
-        if(assetSource === "local" || path.match(/^https?:\/\//)) {
+        if(assetSource === "local") {
           resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: undefined };
           return;
+        }
+        else if(validUrl(path)) {
+          // stream file from URL, hash it, add it to resourcesHashed
+          const res = await fetch(path);
+          if(!res.ok || !res.body)
+            return;
+          resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getStreamHashSha256(res.body) };
         }
         resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getFileHashSha256(path) };
       }
@@ -504,6 +513,18 @@ function getFileHashSha256(path: string): Promise<string> {
   });
 }
 
+/** Calculates the SHA-256 hash of a ReadableStream, like the `body` prop of a `fetch()` call */
+function getStreamHashSha256(rStream: ReadableStream): Promise<string> {
+  return new Promise((res, rej) => {
+    const hash = createHash("sha256");
+    rStream.pipeTo(new WritableStream({
+      write(chunk) {
+        hash.update(chunk);
+      },
+    })).then(() => res(hash.digest("base64"))).catch(rej);
+  });
+}
+
 /** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
 async function createSvgSpritesheet() {
   try {
@@ -528,5 +549,15 @@ async function createSvgSpritesheet() {
   catch(err) {
     console.error(k.red("Error while creating SVG spritesheet:"), err);
     return schedExit(1);
+  }
+}
+
+/** Checks if the given string is a valid URL with a protocol that starts with `http` */
+function validUrl(url: string) {
+  try {
+    return new URL(url).protocol.startsWith("http");
+  }
+  catch {
+    return false;
   }
 }
