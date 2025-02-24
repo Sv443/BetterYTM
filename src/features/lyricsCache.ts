@@ -112,7 +112,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, url: strin
   // always keep the cache <= max size
   cache.splice(getFeature("lyricsCacheMaxSize"));
 
-  log("Added cache entry for best result", artist, "-", song, "\n", entry);
+  log(`Added lyrics cache entry for best result:`, entry);
 
   emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
   return lyricsCacheMgr.setData({ cache });
@@ -152,7 +152,7 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
   // always keep the cache <= max size
   cache.splice(getFeature("lyricsCacheMaxSize"));
 
-  log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
+  log(`Added penalized cache entry (with a penalty fraction of ${penaltyFr}):\n`, entry);
 
   emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
   return lyricsCacheMgr.setData({ cache });
