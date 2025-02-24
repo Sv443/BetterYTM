@@ -4,14 +4,11 @@
   "required": ["resources"],
   "description": "Contains all resources (images, fonts, stylesheets, etc.) used by BYTM.",
   "properties": {
-    "alwaysExternalAssetPatterns": {
-      "type": "array",
-      "description": "List of patterns passed to `new RegExp()` that should always be considered external assets (they won't be loaded via @resource).",
-      "items": {
-        "type": "string",
-        "format": "regex",
-        "pattern": "^.+$"
-      }
+    "externalAssetPattern": {
+      "type": "string",
+      "description": "Pattern passed to `new RegExp()` that identifies an external asset that will be loaded via fetching from the CDN instead of a locally cached @resource.",
+      "format": "regex",
+      "pattern": "^.+$"
     },
     "resources": {
       "type": "object",

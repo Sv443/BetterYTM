@@ -43,7 +43,7 @@ The keys of the object are the locale codes (which follow the [BCP 47 standard](
 ### [`resources.json`](resources.json)
 This file contains the resources that are loaded into the runtime through the `@resource` userscript directive.  
 That includes icons, images, CSS files, fonts, translations and other assets.  
-Configure which resources will always be fetched from the external asset source (GitHub's CDN) by editing the regexp patterns in the `alwaysExternalAssetPatterns` property.  
+Configure which resources will always be fetched from the external asset source (GitHub's CDN) by editing the regexp pattern in the `externalAssetPattern` property.  
   
 Inside the file is an object under the `resources` prop, whose keys are the resource names and the values are the path to the resource or a configuration object (props are listed in the table below).  
 The path to the resource can be relative, in which case it's resolved relative to the `assets` directory.  
