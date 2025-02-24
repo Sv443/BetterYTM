@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f3e48fda/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@692d6cad/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -310,7 +310,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "f3e48fda";
+const buildNumberRaw = "692d6cad";
 const assetSourceRaw = "jsdelivr";
 const devServerPortRaw = "8710";
 const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
@@ -442,7 +442,7 @@ function addLyricsCacheEntryBest(artist, song, url) {
     cache.sort((a, b) => b.viewed - a.viewed);
     // always keep the cache <= max size
     cache.splice(getFeature("lyricsCacheMaxSize"));
-    log(`Added lyrics cache entry for best result:`, entry);
+    log("Added lyrics cache entry for best result:", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
     return lyricsCacheMgr.setData({ cache });
 }/******************************************************************************
