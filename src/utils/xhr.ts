@@ -21,7 +21,7 @@ export function constructUrlString(baseUrl: string, params: Record<string, Strin
 /**
  * Constructs a URL object from a base URL and a record of query parameters.  
  * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
- * All values will be URI-encoded.  
+ * All values will be stringified and then URI-encoded.  
  * @returns Returns a URL object instead of a string
  */
 export function constructUrl(base: string, params: Record<string, Stringifiable | null>) {

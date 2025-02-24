@@ -1,4 +1,4 @@
-import { DataStoreSerializer } from "@sv443-network/userutils";
+import { DataStoreSerializer, type Stringifiable } from "@sv443-network/userutils";
 
 import { configStore } from "./config.js";
 import { autoLikeStore } from "./features/input.js";
@@ -59,10 +59,10 @@ export async function importData(blob: File | Blob) {
 export async function downloadData() {
   const serializer = getStoreSerializer();
 
-  const pad = (num: number, len = 2) => String(num).padStart(len, "0");
+  const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
 
   const d = new Date();
-  const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+  const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
   const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
 
   const data = JSON.stringify(JSON.parse(await serializer.serialize()), undefined, 2);
