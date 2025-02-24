@@ -13,9 +13,8 @@
 <br>
 
 ## JSON file formats:
-> [!NOTE]
-> 
-> Note: a property that's followed by a question mark means it is optional.
+> [!NOTE]  
+> A property that's followed by a question mark means it is optional.
 
 <br>
 
