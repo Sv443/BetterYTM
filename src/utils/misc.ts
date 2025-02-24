@@ -276,13 +276,15 @@ export async function getResourceUrl(name: ResourceKey | "_", uncached = false) 
             let path = pathName;
             if(path.startsWith("/"))
               path = path.slice(1);
+            else
+              path = `assets/${path}`;
             switch(assetSource) {
             case "jsdelivr":
-              return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/assets/${path}`;
+              return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
             case "github":
-              return `https://raw.githubusercontent.com/${repo}/${ghRef}/assets/${path}`;
+              return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
             case "local":
-              return `http://localhost:${devServerPort}/assets/${path}`;
+              return `http://localhost:${devServerPort}/${path}`;
             }
           })();
       }

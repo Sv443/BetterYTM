@@ -5,6 +5,7 @@
     "css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
     "css-anchor_improvements": "style/anchorImprovements.css",
     "css-auto_like": "style/autoLike.css",
+    "css-bundle": "/dist/BetterYTM.css",
     "css-fix_hdr": "style/fixHDR.css",
     "css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
     "css-fix_spacing": "style/fixSpacing.css",

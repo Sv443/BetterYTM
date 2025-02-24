@@ -47,7 +47,7 @@ export type SiteSelection = Domain | "all";
 export type SiteSelectionOrNone = SiteSelection | "none";
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
-export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}` | "css-bundle";
+export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}`;
 
 /** Describes a single hotkey */
 export type HotkeyObj = {
