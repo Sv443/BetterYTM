@@ -3,12 +3,12 @@
 <br>
 
 ### Images:
-- Own PNG/JPG/GIF images are stored in [`assets/images`](./images)
-- External images are stored in [`assets/images/external`](./images/external)
-- The BYTM logo files are in [`assets/images/logo`](./images/logo)
-- SVG icons are stored in [`assets/icons`](./icons)
-- CSS stylesheets are in [`assets/style`](./style)
-- Translations are in [`assets/translations`](./translations)
+- Own PNG/JPG/GIF images are stored in [`assets/images/`](./images)
+- External images are stored in [`assets/images/external/`](./images/external)
+- The BYTM logo files are in [`assets/images/logo/`](./images/logo)
+- SVG icons are stored in [`assets/icons/`](./icons)
+- CSS stylesheets are in [`assets/style/`](./style)
+- Translations are in [`assets/translations/`](./translations)
 
 <br>
 
@@ -49,7 +49,7 @@ Inside the file is an object under the `resources` prop, whose keys are the reso
 The path to the resource can be relative, in which case it's resolved relative to the `assets` directory.  
 If it starts with a slash, it will be resolved relative to the project root (where `package.json` is).  
   
-All values will be run through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to replace placeholders with dynamic values.  
+All values will be run through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](../src/tools/post-build.ts) to replace placeholders with dynamic values.  
 For example, `$BRANCH` will be replaced with the branch name. Find all possible replacements in that function's declaration.  
   
 The configuration object can have the following properties:
