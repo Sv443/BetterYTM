@@ -1,31 +1,44 @@
 import { randomId } from "@sv443-network/userutils";
 import { LogLevel } from "./types.js";
 
-// these strings will have their values replaced by the post-build script:
-const modeRaw = "#{{MODE}}";
-const branchRaw = "#{{BRANCH}}";
-const hostRaw = "#{{HOST}}";
-const buildNumberRaw  = "#{{BUILD_NUMBER}}";
-const assetSourceRaw  = "#{{ASSET_SOURCE}}";
-const devServerPortRaw  = "#{{DEV_SERVER_PORT}}";
+type ConstTypes = {
+  mode: "production" | "development";
+  branch: "main" | "develop";
+  host: "github" | "greasyfork" | "openuserjs";
+  buildNumber: string;
+  assetSource: "github" | "jsdelivr" | "local";
+  devServerPort: number;
+};
 
-const getRawVal = <T extends string | number>(rawVal: string, defaultVal: T) =>
-  (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal) as T;
+// these strings will have their values replaced by the post-build script:
+const rawConsts = {
+  mode: "#{{MODE}}",
+  branch: "#{{BRANCH}}",
+  host: "#{{HOST}}",
+  buildNumber: "#{{BUILD_NUMBER}}",
+  assetSource: "#{{ASSET_SOURCE}}",
+  devServerPort: "#{{DEV_SERVER_PORT}}",
+} as const satisfies Record<keyof ConstTypes, string>;
+
+const getConst = <TKey extends keyof typeof rawConsts, TDefault extends string | number>(constKey: TKey, defaultVal: TDefault) => {
+  const val = rawConsts[constKey];
+  return (val.match(/^#{{.+}}$/) ? defaultVal : val) as ConstTypes[TKey] | TDefault;
+};
 
 /** Path to the GitHub repo */
 export const repo = "Sv443/BetterYTM";
 /** The mode in which the script was built (production or development) */
-export const mode = getRawVal<"production" | "development">(modeRaw, "production");
+export const mode = getConst("mode", "production");
 /** The branch to use in various URLs that point to the GitHub repo */
-export const branch = getRawVal<"main" | "develop">(branchRaw, "main");
+export const branch = getConst("branch", "main");
 /** Which host the userscript was installed from */
-export const host = getRawVal<"github" | "greasyfork" | "openuserjs">(hostRaw, "github");
+export const host = getConst("host", "github");
 /** The build number of the userscript */
-export const buildNumber = getRawVal<string>(buildNumberRaw, "BUILD_ERROR!");
+export const buildNumber = getConst("buildNumber", "!BUILD_ERROR!");
 /** The source of the assets - github, jsdelivr or local */
-export const assetSource = getRawVal<"github" | "jsdelivr" | "local">(assetSourceRaw, "jsdelivr");
+export const assetSource = getConst("assetSource", "jsdelivr");
 /** The port of the dev server */
-export const devServerPort = Number(getRawVal<number>(devServerPortRaw, 8710));
+export const devServerPort = Number(getConst("devServerPort", 8710));
 
 /** URL to the changelog file */
 export const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber??branch}/changelog.md`;
