@@ -34,7 +34,7 @@ body .bytm-ripple.slowest {
     )
   );
   position: absolute;
-  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.175));
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.125));
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
