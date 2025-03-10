@@ -116,6 +116,7 @@ async function addQueueButtons(
   if(getFeature("lyricsQueueButton")) {
     lyricsBtnElem = await createLyricsBtn(undefined, false);
 
+    lyricsBtnElem.classList.add("bytm-song-list-item-btn");
     lyricsBtnElem.ariaLabel = lyricsBtnElem.title = t("open_lyrics");
     lyricsBtnElem.style.display = "inline-flex";
     lyricsBtnElem.style.visibility = "initial";
@@ -227,7 +228,7 @@ async function addQueueButtons(
   if(getFeature("deleteFromQueueButton")) {
     deleteBtnElem = document.createElement("a");
     deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list"));
-    deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn");
+    deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn", "bytm-song-list-item-btn");
     deleteBtnElem.role = "button";
     deleteBtnElem.tabIndex = 0;
     deleteBtnElem.style.visibility = "initial";

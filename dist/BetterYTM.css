@@ -894,7 +894,7 @@ body .bytm-ripple.slowest {
     )
   );
   position: absolute;
-  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.175));
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.125));
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
@@ -2222,6 +2222,11 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   position: relative;
 }
 
+.bytm-queue-btn-container {
+  /* Scooch closer to the default YTM buttons */
+  transform: translateX(8px);
+}
+
 #side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
   background: rgba(255, 255, 255, 0.1);
   background: linear-gradient(
@@ -2295,6 +2300,26 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
   .bytm-generic-list-queue-btn-container
   a.bytm-generic-btn {
   visibility: visible !important;
+}
+
+.ytmusic-player-queue .bytm-song-list-item-btn,
+ytmusic-player-queue-item
+  ytmusic-menu-renderer
+  #button-shape.ytmusic-menu-renderer
+  button {
+  background-color: var(
+    --bytm-themesong-bg-accent-col,
+    var(--ts-palette-darkmuted-hex),
+    initial
+  );
+}
+
+.ytmusic-player-queue .bytm-song-list-item-btn:hover,
+ytmusic-player-queue-item
+  ytmusic-menu-renderer
+  #button-shape.ytmusic-menu-renderer:hover
+  button {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* #region volume slider */
