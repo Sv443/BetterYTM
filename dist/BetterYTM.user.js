@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@692d6cad/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@86c7957b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -307,27 +307,32 @@ var PluginIntent;
     /** Plugin can write to auto-like data */
     PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
 })(PluginIntent || (PluginIntent = {}));// these strings will have their values replaced by the post-build script:
-const modeRaw = "development";
-const branchRaw = "develop";
-const hostRaw = "github";
-const buildNumberRaw = "692d6cad";
-const assetSourceRaw = "jsdelivr";
-const devServerPortRaw = "8710";
-const getRawVal = (rawVal, defaultVal) => (rawVal.match(/^#{{.+}}$/) ? defaultVal : rawVal);
+const rawConsts = {
+    mode: "development",
+    branch: "develop",
+    host: "github",
+    buildNumber: "86c7957b",
+    assetSource: "jsdelivr",
+    devServerPort: "8710",
+};
+const getConst = (constKey, defaultVal) => {
+    const val = rawConsts[constKey];
+    return (val.match(/^#{{.+}}$/) ? defaultVal : val);
+};
 /** Path to the GitHub repo */
 const repo = "Sv443/BetterYTM";
 /** The mode in which the script was built (production or development) */
-const mode = getRawVal(modeRaw, "production");
+const mode = getConst("mode", "production");
 /** The branch to use in various URLs that point to the GitHub repo */
-const branch = getRawVal(branchRaw, "main");
+const branch = getConst("branch", "main");
 /** Which host the userscript was installed from */
-const host = getRawVal(hostRaw, "github");
+const host = getConst("host", "github");
 /** The build number of the userscript */
-const buildNumber = getRawVal(buildNumberRaw, "BUILD_ERROR!");
+const buildNumber = getConst("buildNumber", "!BUILD_ERROR!");
 /** The source of the assets - github, jsdelivr or local */
-const assetSource = getRawVal(assetSourceRaw, "jsdelivr");
+const assetSource = getConst("assetSource", "jsdelivr");
 /** The port of the dev server */
-const devServerPort = Number(getRawVal(devServerPortRaw, 8710));
+const devServerPort = Number(getConst("devServerPort", 8710));
 /** URL to the changelog file */
 const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber !== null && buildNumber !== void 0 ? buildNumber : branch}/changelog.md`;
 /** The URL search parameters at the earliest possible time */
@@ -5270,6 +5275,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
     let lyricsBtnElem;
     if (getFeature("lyricsQueueButton")) {
         lyricsBtnElem = await createLyricsBtn(undefined, false);
+        lyricsBtnElem.classList.add("bytm-song-list-item-btn");
         lyricsBtnElem.ariaLabel = lyricsBtnElem.title = t("open_lyrics");
         lyricsBtnElem.style.display = "inline-flex";
         lyricsBtnElem.style.visibility = "initial";
@@ -5359,7 +5365,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
     if (getFeature("deleteFromQueueButton")) {
         deleteBtnElem = document.createElement("a");
         deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list"));
-        deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn");
+        deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn", "bytm-song-list-item-btn");
         deleteBtnElem.role = "button";
         deleteBtnElem.tabIndex = 0;
         deleteBtnElem.style.visibility = "initial";
