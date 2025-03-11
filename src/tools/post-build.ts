@@ -53,19 +53,21 @@ const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOut
 
 const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${suffix}.user.js`;
+const userscriptMetaFile = `BetterYTM${suffix}.meta.js`;
 const distFolderPath = `./${rollupCfgOutputDir}/`;
 const assetFolderPath = "./assets/";
-// const hostScriptUrl = (() => {
-//   switch(host) {
-//   case "greasyfork":
-//     return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js";
-//   case "openuserjs":
-//     return "https://openuserjs.org/install/Sv443/BetterYTM.user.js";
-//   case "github":
-//   default:
-//     return `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
-//   }
-// })();
+
+const hostScriptUrl = (() => {
+  switch(host) {
+  case "greasyfork":
+    return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js";
+  case "openuserjs":
+    return "https://openuserjs.org/src/scripts/Sv443/BetterYTM.user.js";
+  default:
+    return `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptDistFile}`;
+  }
+})();
+const hostMetaUrl = `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptMetaFile}`;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
@@ -105,6 +107,8 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
 // @noframes
+// @updateURL         ${hostMetaUrl}
+// @downloadURL       ${hostScriptUrl}
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -117,7 +121,9 @@ ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
 ${devDirectives ? "\n" + devDirectives : ""}
 // ==/UserScript==
-/*
+`;
+
+  const footer = `/*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
 █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
 █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
@@ -156,9 +162,13 @@ I welcome every contribution on GitHub!
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
     // insert userscript header and final newline
-    const finalUserscript = `${header}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
+    const finalUserscript = `${header}${footer}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 
+    // write userscript
     await writeFile(scriptPath, finalUserscript);
+    // write meta file
+    await writeFile(join(rootPath, distFolderPath, userscriptMetaFile), header);
+
     ringBell && stdout.write("\u0007");
 
     const envText = (mode === "production" ? k.magenta : k.blue)(mode);
