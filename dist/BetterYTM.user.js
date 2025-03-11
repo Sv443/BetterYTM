@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@86c7957b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@37ddfc25/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -311,7 +311,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "86c7957b",
+    buildNumber: "37ddfc25",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -7754,7 +7754,7 @@ function preInit() {
             "FireMonkey",
         ];
         if (unsupportedHandlers.includes((_b = (_a = GM === null || GM === void 0 ? void 0 : GM.info) === null || _a === void 0 ? void 0 : _a.scriptHandler) !== null && _b !== void 0 ? _b : "_"))
-            return alert(`BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+            return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
         log("Session ID:", getSessionId());
         initInterface();
         setLogLevel(defaultLogLevel);
@@ -7988,7 +7988,7 @@ function registerDevCommands() {
     if (mode !== "development")
         return;
     GM.registerMenuCommand("Reset config", async () => {
-        if (confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
+        if (await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
             await clearConfig();
             await reloadTab();
         }
@@ -8031,7 +8031,7 @@ function registerDevCommands() {
     });
     GM.registerMenuCommand("Delete all GM values", async () => {
         const keys = await GM.listValues();
-        if (confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
+        if (await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
             dbg(`Clearing ${keys.length} GM values:`);
             if (keys.length === 0)
                 dbg("  No values found.");
@@ -8043,7 +8043,7 @@ function registerDevCommands() {
     });
     GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
         var _a;
-        const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation." });
+        const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
         if (!keys)
             return;
         for (const key of (_a = keys === null || keys === void 0 ? void 0 : keys.split(",")) !== null && _a !== void 0 ? _a : []) {
@@ -8080,30 +8080,26 @@ function registerDevCommands() {
         dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     });
     GM.registerMenuCommand("Compress value", async () => {
-        const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output." });
+        const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
         if (input && input.length > 0) {
             const compressed = await UserUtils.compress(input, compressionFormat);
             dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
         }
     });
     GM.registerMenuCommand("Decompress value", async () => {
-        const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output." });
+        const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
         if (input && input.length > 0) {
             const decompressed = await UserUtils.decompress(input, compressionFormat);
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     });
     GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
-    GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
-        const ser = await getStoreSerializer().serialize();
-        dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
-        alert("See console.");
-    });
     GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
-        const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
+        const input = await showPrompt({ type: "prompt", message: "Paste the content of the export file to import:", confirmBtnText: "Import" });
         if (input && input.length > 0) {
             await getStoreSerializer().deserialize(input);
-            alert("Imported data. Reload the page to apply changes.");
+            if (await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
+                await reloadTab();
         }
     });
     GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
@@ -8124,8 +8120,8 @@ function registerDevCommands() {
     GM.registerMenuCommand("Toggle dev treatments", async () => {
         const val = !await GM.getValue("bytm-dev-treatments", false);
         await GM.setValue("bytm-dev-treatments", val);
-        alert(`Dev treatments are now ${val ? "enabled" : "disabled"}. Page will reload.`);
-        await reloadTab();
+        if (await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
+            await reloadTab();
     });
     log("Registered dev menu commands");
 }
