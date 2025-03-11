@@ -87,7 +87,7 @@ function preInit() {
     ];
 
     if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
-      return alert(`BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+      return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
 
     log("Session ID:", getSessionId());
     initInterface();
@@ -399,7 +399,7 @@ function registerDevCommands() {
     return;
 
   GM.registerMenuCommand("Reset config", async () => {
-    if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
+    if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
       await clearConfig();
       await reloadTab();
     }
@@ -449,7 +449,7 @@ function registerDevCommands() {
 
   GM.registerMenuCommand("Delete all GM values", async () => {
     const keys = await GM.listValues();
-    if(confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
+    if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
       dbg(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
         dbg("  No values found.");
@@ -461,7 +461,7 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-    const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation." });
+    const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
     if(!keys)
       return;
     for(const key of keys?.split(",") ?? []) {
@@ -502,7 +502,7 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Compress value", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output." });
+    const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
       dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
@@ -510,7 +510,7 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Decompress value", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output." });
+    const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
       dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
@@ -519,17 +519,12 @@ function registerDevCommands() {
 
   GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
 
-  GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
-    const ser = await getStoreSerializer().serialize();
-    dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
-    alert("See console.");
-  });
-
   GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
+    const input = await showPrompt({ type: "prompt", message: "Paste the content of the export file to import:", confirmBtnText: "Import" });
     if(input && input.length > 0) {
       await getStoreSerializer().deserialize(input);
-      alert("Imported data. Reload the page to apply changes.");
+      if(await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
+        await reloadTab();
     }
   });
 
@@ -554,8 +549,8 @@ function registerDevCommands() {
   GM.registerMenuCommand("Toggle dev treatments", async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
-    alert(`Dev treatments are now ${val ? "enabled" : "disabled"}. Page will reload.`);
-    await reloadTab();
+    if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
+      await reloadTab();
   });
 
   log("Registered dev menu commands");
