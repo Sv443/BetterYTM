@@ -30,6 +30,7 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
     host: args["config-host"] ?? "github",
     assetSource: args["config-assetSource"] ?? "jsdelivr",
     suffix: args["config-suffix"] ?? "",
+    meta: args["config-gen-meta"] ?? "false",
   };
   const passCliArgsStr = Object.entries(passCliArgs).map(([key, value]) => `--${key}=${value}`).join(" ");
 

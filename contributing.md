@@ -111,12 +111,16 @@ To edit an existing translation, please follow these steps:
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
     
   This command uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript. Note that this also means the server needs to keep running for the userscript to work. If it's not running, you will run into weird errors because none of the necessary assets are able to be fetched.  
+  Also, no meta file will be generated, since it's not needed for local development.  
     
   Once the build is finished, a link will be printed to the console. Open it to install the userscript.
 - **`pnpm dev-cdn`**  
   Works exactly like `pnpm dev`, but uses the default CDN as the asset source.  
   Practically, this means the server doesn't have to be constantly running.  
-  But this also means that changes to the assets won't be reflected in the userscript until committed, pushed and the script is rebuilt.
+  But this also means that changes to the assets won't be reflected in the userscript until committed, pushed and the script is rebuilt.  
+  Also, no meta file will be generated, since it's not needed for local development.  
+    
+  Once the build is finished, a link will be printed to the console. Open it to install the userscript.
 - **`pnpm build-prod`**  
   Builds the userscript for production for all hosts with their respective options already set.  
   Outputs the files using a suffix predefined in the `package.json` file.  
@@ -129,6 +133,7 @@ To edit an existing translation, please follow these steps:
   - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
   - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
+  - `--config-gen-meta=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header. Can be either `true` (default) or `false`
     
   Shorthand commands:
   - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  

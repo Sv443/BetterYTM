@@ -45,6 +45,7 @@ const branch = getCliArg<CliArg<"config-branch">>("branch", (mode === "productio
 const host = getCliArg<CliArg<"config-host">>("host", "github");
 const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "jsdelivr");
 const suffix = getCliArg<CliArg<"config-suffix">>("suffix", "");
+const genMeta = getCliArg<CliArg<"config-gen-meta">>("meta", "true") === "true";
 
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
@@ -121,11 +122,9 @@ ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
 ${devDirectives ? "\n" + devDirectives : ""}
 // ==/UserScript==
-`;
-
-  const footer = `/*
-▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
-█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+/*
+▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
 █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
 █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
@@ -133,7 +132,9 @@ ${devDirectives ? "\n" + devDirectives : ""}
 I welcome every contribution on GitHub!
   https://github.com/Sv443/BetterYTM
 */
+`;
 
+  const footer = `
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 `;
@@ -167,7 +168,7 @@ I welcome every contribution on GitHub!
     // write userscript
     await writeFile(scriptPath, finalUserscript);
     // write meta file
-    await writeFile(join(rootPath, distFolderPath, userscriptMetaFile), header);
+    genMeta && await writeFile(join(rootPath, distFolderPath, userscriptMetaFile), header);
 
     ringBell && stdout.write("\u0007");
 
