@@ -1,8 +1,8 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, pauseFor } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -479,7 +479,7 @@ export async function initThumbnailOverlay() {
 
     /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
     const updateOverlayVisibility = async () => {
-      if(!domLoaded)
+      if(!isDomLoaded())
         return;
 
       const behavior = getFeature("thumbnailOverlayBehavior");

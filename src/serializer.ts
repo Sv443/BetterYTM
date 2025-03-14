@@ -56,7 +56,7 @@ export async function importData(blob: File | Blob) {
 }
 
 /** Downloads the current data stores as a single file */
-export async function downloadData() {
+export async function downloadData(useEncoding = true) {
   const serializer = getStoreSerializer();
 
   const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
@@ -65,7 +65,7 @@ export async function downloadData() {
   const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
   const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
 
-  const data = JSON.stringify(JSON.parse(await serializer.serialize()), undefined, 2);
+  const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
 
   downloadFile(fileName, data, "application/json");
 }

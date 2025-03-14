@@ -1,5 +1,5 @@
-import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement } from "../utils/index.js";
+import { clamp, interceptWindowEvent, isDomLoaded, pauseFor } from "@sv443-network/userutils";
+import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
@@ -113,7 +113,7 @@ export async function initRememberSongTime() {
   await remTimeRestoreTime();
 
   try {
-    if(!domLoaded)
+    if(!isDomLoaded())
       document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
     else
       remTimeStartUpdateLoop();
@@ -152,7 +152,7 @@ async function remTimeRestoreTime() {
           info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
         };
 
-        if(!domLoaded)
+        if(!isDomLoaded())
           document.addEventListener("DOMContentLoaded", doRestoreTime);
         else
           doRestoreTime();

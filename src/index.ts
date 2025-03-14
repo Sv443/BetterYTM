@@ -1,5 +1,5 @@
-import { compress, decompress, fetchAdvanced, pauseFor, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, domLoaded, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
+import { compress, decompress, fetchAdvanced, isDomLoaded, pauseFor, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
+import { addStyle, addStyleFromResource, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -131,7 +131,7 @@ async function init() {
     if(features.rememberSongTime)
       initRememberSongTime();
 
-    if(!domLoaded)
+    if(!isDomLoaded())
       document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
     else
       onDomLoad();
@@ -517,7 +517,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
+  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData(false));
 
   GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
     const input = await showPrompt({ type: "prompt", message: "Paste the content of the export file to import:", confirmBtnText: "Import" });

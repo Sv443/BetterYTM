@@ -1,14 +1,10 @@
-import { addGlobalStyle, consumeStringGen, getUnsafeWindow, randomId, type StringGen, type Stringifiable } from "@sv443-network/userutils";
+import { addGlobalStyle, consumeStringGen, getUnsafeWindow, isDomLoaded, randomId, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import type { ResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
 import { showPrompt } from "../dialogs/prompt.js";
-
-/** Whether the DOM has finished loading and elements can be added or modified */
-export let domLoaded = false;
-document.addEventListener("DOMContentLoaded", () => domLoaded = true);
 
 //#region vid time & vol.
 
@@ -172,7 +168,7 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
  * @param transform A function to transform the CSS before adding it to the DOM
  */
 export async function addStyle(css: StringGen, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
-  if(!domLoaded)
+  if(!isDomLoaded())
     throw new Error("DOM has not finished loading yet");
   const elem = addGlobalStyle(await transform(await consumeStringGen(css)));
   elem.id = `bytm-style-${ref ?? randomId(6, 36)}`;

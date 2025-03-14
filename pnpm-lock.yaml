@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sv443-network/userutils':
-        specifier: ^9.1.0
-        version: 9.1.0
+        specifier: ^9.2.1
+        version: 9.2.1
       compare-versions:
         specifier: ^6.1.1
         version: 6.1.1
@@ -30,6 +30,9 @@ importers:
       '@eslint/eslintrc':
         specifier: ^3.3.0
         version: 3.3.0
+      '@eslint/js':
+        specifier: ^9.22.0
+        version: 9.22.0
       '@rollup/plugin-json':
         specifier: ^6.1.0
         version: 6.1.0(rollup@4.35.0)
@@ -874,8 +877,8 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
-  '@sv443-network/userutils@9.1.0':
-    resolution: {integrity: sha512-/ohuTWi+5sD3OGP7pWn5qEWDthU41muWywIr7lv2cC4m73Y+Y0CyboyEl9rNM/vYjvRDc2fNsJOp5ruf8BOv0A==}
+  '@sv443-network/userutils@9.2.1':
+    resolution: {integrity: sha512-d1efzZnm5Jnrfm6dMqnv14KbyHaoRv31mPRaTfoIZUiKyisSd5TrALbe/FXAedgD4up6GUptevNjS94Xly1UOg==}
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -3088,7 +3091,7 @@ snapshots:
     dependencies:
       storybook: 8.6.4(prettier@3.3.2)
 
-  '@sv443-network/userutils@9.1.0':
+  '@sv443-network/userutils@9.2.1':
     dependencies:
       nanoevents: 9.1.0
 

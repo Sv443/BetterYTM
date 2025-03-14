@@ -1,7 +1,7 @@
 // hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "@sv443-network/userutils";
+import { isDomLoaded, NanoEmitter } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, domLoaded, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -262,7 +262,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       document.body.appendChild(bytmDialogCont);
     };
 
-    if(!domLoaded)
+    if(!isDomLoaded())
       document.addEventListener("DOMContentLoaded", createContainer);
     else
       createContainer();
