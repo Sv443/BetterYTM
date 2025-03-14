@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@755ac5dc/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@566e457b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -64,7 +64,7 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.1.0/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.2.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.4
@@ -313,7 +313,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "755ac5dc",
+    buildNumber: "566e457b",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -770,7 +770,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             bytmDialogCont.id = "bytm-dialog-container";
             document.body.appendChild(bytmDialogCont);
         };
-        if (!domLoaded)
+        if (!UserUtils.isDomLoaded())
             document.addEventListener("DOMContentLoaded", createContainer);
         else
             createContainer();
@@ -1629,7 +1629,7 @@ async function initRememberSongTime() {
     log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
     await remTimeRestoreTime();
     try {
-        if (!domLoaded)
+        if (!UserUtils.isDomLoaded())
             document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
         else
             remTimeStartUpdateLoop();
@@ -1665,7 +1665,7 @@ async function remTimeRestoreTime() {
                     await remTimeDeleteEntry(entry.watchID);
                     info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
                 };
-                if (!domLoaded)
+                if (!UserUtils.isDomLoaded())
                     document.addEventListener("DOMContentLoaded", doRestoreTime);
                 else
                     doRestoreTime();
@@ -3038,13 +3038,13 @@ function getStoreSerializer() {
     return serializer;
 }
 /** Downloads the current data stores as a single file */
-async function downloadData() {
+async function downloadData(useEncoding = true) {
     const serializer = getStoreSerializer();
     const pad = (val, len = 2) => String(val).padStart(len, "0");
     const d = new Date();
     const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
     const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
-    const data = JSON.stringify(JSON.parse(await serializer.serialize()), undefined, 2);
+    const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
     downloadFile(fileName, data, "application/json");
 }let pluginListDialog = null;
 /** Creates and/or returns the import dialog */
@@ -4572,7 +4572,7 @@ async function initThumbnailOverlay() {
             return error("Couldn't find video player element while adding thumbnail overlay");
         /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
         const updateOverlayVisibility = async () => {
-            if (!domLoaded)
+            if (!UserUtils.isDomLoaded())
                 return;
             const behavior = getFeature("thumbnailOverlayBehavior");
             let showOverlay = behavior === "always";
@@ -7068,10 +7068,7 @@ function initObservers() {
     catch (err) {
         error("Failed to initialize observers:", err);
     }
-}/** Whether the DOM has finished loading and elements can be added or modified */
-let domLoaded = false;
-document.addEventListener("DOMContentLoaded", () => domLoaded = true);
-//#region vid time & vol.
+}//#region vid time & vol.
 /** Returns the video element selector string based on the current domain */
 function getVideoSelector() {
     return getDomain() === "ytm"
@@ -7202,7 +7199,7 @@ function waitVideoElementReady() {
  * @param transform A function to transform the CSS before adding it to the DOM
  */
 async function addStyle(css, ref, transform = (c) => c) {
-    if (!domLoaded)
+    if (!UserUtils.isDomLoaded())
         throw new Error("DOM has not finished loading yet");
     const elem = UserUtils.addGlobalStyle(await transform(await UserUtils.consumeStringGen(css)));
     elem.id = `bytm-style-${ref !== null && ref !== void 0 ? ref : UserUtils.randomId(6, 36)}`;
@@ -7789,7 +7786,7 @@ async function init() {
             enableDiscardBeforeUnload();
         if (features.rememberSongTime)
             initRememberSongTime();
-        if (!domLoaded)
+        if (!UserUtils.isDomLoaded())
             document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
         else
             onDomLoad();
@@ -8095,7 +8092,7 @@ function registerDevCommands() {
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     });
-    GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
+    GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData(false));
     GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
         const input = await showPrompt({ type: "prompt", message: "Paste the content of the export file to import:", confirmBtnText: "Import" });
         if (input && input.length > 0) {
