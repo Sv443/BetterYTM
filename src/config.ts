@@ -1,6 +1,6 @@
 import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
+import { compressionSupported, error, getVideoTime, info, log, pureObj, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -11,14 +11,16 @@ import { showPrompt } from "./dialogs/prompt.js";
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 9;
 
-export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
-  // @ts-ignore
-  .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
-  .reduce<Partial<FeatureConfig>>((acc, key) => {
+export const defaultData = pureObj(
+  (Object.keys(featInfo) as (keyof typeof featInfo)[])
     // @ts-ignore
-    acc[key] = featInfo?.[key]?.default as unknown as undefined;
-    return acc;
-  }, {}) as FeatureConfig;
+    .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
+    .reduce<Partial<FeatureConfig>>((acc, key) => {
+      // @ts-ignore
+      acc[key] = featInfo?.[key]?.default as unknown as undefined;
+      return acc;
+    }, {}) as FeatureConfig
+);
 
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {

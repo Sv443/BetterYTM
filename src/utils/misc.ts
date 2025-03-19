@@ -251,6 +251,15 @@ export function isStringGen(val: unknown): val is StringGen {
     || val instanceof Promise;
 }
 
+/**
+ * Turns the passed object into a pure object without a prototype chain and without default properties like `toString`, `__defineGetter__`, etc.  
+ * This makes the object immune to prototype pollution attacks and allows for cleaner object literals, at the cost of being harder to work with in some cases.  
+ * It also effectively transforms a `Stringifiable` value into one that will throw a TypeError when stringified instead of defaulting to `[object Object]`
+ */
+export function pureObj<TObj extends object>(obj: TObj): TObj {
+  return Object.assign(Object.create(null), obj);
+}
+
 //#region resources
 
 /**
