@@ -487,7 +487,7 @@ export const featInfo = {
       { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode_video_change_manual") },
       { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode_video_change_auto") },
     ],
-    default: "initialPageLoad",
+    default: "videoChangeManual",
     reloadRequired: false,
     enable: noop,
   },
