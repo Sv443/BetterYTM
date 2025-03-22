@@ -37,7 +37,7 @@ import {
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
-import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
+// import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
 
 //#region cns. watermark
 
@@ -560,8 +560,8 @@ async function runDevTreatments() {
   if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
     return;
 
-  const dlg = await getAllDataExImDialog();
-  await dlg.open();
+  // const dlg = await getAllDataExImDialog();
+  // await dlg.open();
 }
 
 preInit();
