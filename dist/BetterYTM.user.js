@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@924b4020/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3a9ecb3b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -313,7 +313,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "924b4020",
+    buildNumber: "3a9ecb3b",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6072,7 +6072,7 @@ const featInfo = {
             { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode_video_change_manual") },
             { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode_video_change_auto") },
         ],
-        default: "initialPageLoad",
+        default: "videoChangeManual",
         reloadRequired: false,
         enable: noop,
     },
