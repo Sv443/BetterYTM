@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@566e457b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@14d873db/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -64,7 +64,7 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.2.1/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.4
@@ -313,7 +313,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "566e457b",
+    buildNumber: "14d873db",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -340,11 +340,11 @@ const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber !=
 /** The URL search parameters at the earliest possible time */
 const initialParams = new URL(location.href).searchParams;
 /** Names of platforms by key of {@linkcode host} */
-const platformNames = {
+const platformNames = UserUtils.purifyObj({
     github: "GitHub",
     greasyfork: "GreasyFork",
     openuserjs: "OpenUserJS",
-};
+});
 /** Default compression format used throughout BYTM */
 const compressionFormat = "deflate-raw";
 /** Whether sessionStorage is available and working */
@@ -366,11 +366,11 @@ const sessionStorageAvailable = typeof (sessionStorage === null || sessionStorag
  */
 const defaultLogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-const scriptInfo = {
+const scriptInfo = UserUtils.purifyObj({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-};let canCompress$2 = true;
+});let canCompress$2 = true;
 const lyricsCacheMgr = new UserUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
@@ -968,7 +968,7 @@ var updates = {
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
-var packageJson = {
+var pkg = {
 	version: version,
 	homepage: homepage,
 	bugs: bugs,
@@ -1144,7 +1144,7 @@ async function getVersionNotifDialog({ latestTag, }) {
             destroyOnClose: true,
             small: true,
             renderHeader: renderHeader$5,
-            renderBody: () => renderBody$6({ latestTag, changelogHtml }),
+            renderBody: () => renderBody$5({ latestTag, changelogHtml }),
         });
     }
     return verNotifDialog;
@@ -1157,7 +1157,7 @@ async function renderHeader$5() {
     return logoEl;
 }
 let disableUpdateCheck = false;
-async function renderBody$6({ latestTag, changelogHtml, }) {
+async function renderBody$5({ latestTag, changelogHtml, }) {
     disableUpdateCheck = false;
     const wrapperEl = document.createElement("div");
     const pEl = document.createElement("p");
@@ -1230,7 +1230,7 @@ async function renderBody$6({ latestTag, changelogHtml, }) {
     btnUpdate.tabIndex = 0;
     btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host]);
     onInteraction(btnUpdate, () => {
-        window.open(packageJson.updates[host]);
+        window.open(pkg.updates[host]);
         verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
     });
     const btnClose = document.createElement("button");
@@ -1607,6 +1607,16 @@ async function initAutoCloseToasts() {
     });
     log("Initialized automatic toast closing");
 }
+//#region auto scroll to active
+let initialAutoScrollToActiveSong = true;
+/** Initializes the autoScrollToActiveSong feature */
+async function initAutoScrollToActiveSong() {
+    siteEvents.on("watchIdChanged", () => getFeature("autoScrollToActiveSongMode") === "videoChange" && scrollToCurrentSongInQueue());
+    if (getFeature("autoScrollToActiveSongMode") !== "never" && initialAutoScrollToActiveSong) {
+        initialAutoScrollToActiveSong = false;
+        waitVideoElementReady().then(() => scrollToCurrentSongInQueue());
+    }
+}
 let remVidsCache = [];
 /**
  * Remembers the time of the last played video and resumes playback from that time.
@@ -1759,6 +1769,7 @@ function onInteraction(elem, listener, listenerOptions) {
 function createRipple(rippleElement, properties) {
     const props = Object.assign({ speed: "normal" }, properties);
     const rippleEl = rippleElement !== null && rippleElement !== void 0 ? rippleElement : document.createElement("div");
+    "additionalProps" in props && Object.assign(rippleEl, props.additionalProps);
     rippleEl.classList.add("bytm-ripple", props.speed);
     const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
     rippleEl.addEventListener("mousedown", (e) => {
@@ -1959,7 +1970,7 @@ async function getAutoLikeDialog() {
             small: true,
             verticalAlign: "top",
             renderHeader: renderHeader$4,
-            renderBody: renderBody$5,
+            renderBody: renderBody$4,
             renderFooter: renderFooter$1,
         });
         siteEvents.on("autoLikeChannelsUpdated", async () => {
@@ -2024,7 +2035,7 @@ async function renderHeader$4() {
     return headerEl;
 }
 //#region body
-async function renderBody$5() {
+async function renderBody$4() {
     const contElem = document.createElement("div");
     const descriptionEl = document.createElement("p");
     descriptionEl.classList.add("bytm-auto-like-channels-desc");
@@ -2648,20 +2659,18 @@ function info(...args) {
 function warn(...args) {
     console.warn(consPrefix, ...args);
 }
+const showErrToast = UserUtils.debounce((errName, ...args) => showIconToast({
+    message: t("generic_error_toast_encountered_error_type", errName),
+    subtitle: t("generic_error_toast_click_for_details"),
+    icon: "icon-error",
+    iconFill: "var(--bytm-error-col)",
+    onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
+}), 1000);
 /** Logs all passed values to the console as an error, no matter the log level. */
 function error(...args) {
     var _a, _b;
     console.error(consPrefix, ...args);
-    if (getFeature("showToastOnGenericError")) {
-        const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
-        UserUtils.debounce(() => showIconToast({
-            message: t("generic_error_toast_encountered_error_type", errName),
-            subtitle: t("generic_error_toast_click_for_details"),
-            icon: "icon-error",
-            iconFill: "var(--bytm-error-col)",
-            onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-        }))();
-    }
+    getFeature("showToastOnGenericError") && showErrToast((_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error"), ...args);
 }
 /** Logs all passed values to the console with a debug-specific prefix */
 function dbg(...args) {
@@ -2686,7 +2695,7 @@ function getErrorDialog(errName, args) {
         },
         body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", consPrefix, pkg.bugs.url)}`,
     });
 }
 //#region error classes
@@ -2903,6 +2912,18 @@ async function reloadTab() {
         win.location.reload();
     }
 }
+/** Scrolls to the current song in the queue if it's available */
+function scrollToCurrentSongInQueue(evt) {
+    const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+    if (!activeItem)
+        return false;
+    activeItem.scrollIntoView({
+        behavior: (evt === null || evt === void 0 ? void 0 : evt.shiftKey) ? "instant" : "smooth",
+        block: (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) || (evt === null || evt === void 0 ? void 0 : evt.altKey) ? "start" : "center",
+        inline: "center",
+    });
+    return true;
+}
 //#region resources
 /**
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
@@ -3025,16 +3046,13 @@ const getSerializerStores = () => [
     configStore,
     autoLikeStore,
 ];
-/** Array of IDs of all stores included in the DataStoreSerializer instance */
-const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
 /** Returns the serializer for all data stores */
 function getStoreSerializer() {
-    if (!serializer) {
+    if (!serializer)
         serializer = new UserUtils.DataStoreSerializer(getSerializerStores(), {
             addChecksum: true,
             ensureIntegrity: true,
         });
-    }
     return serializer;
 }
 /** Downloads the current data stores as a single file */
@@ -3043,7 +3061,7 @@ async function downloadData(useEncoding = true) {
     const pad = (val, len = 2) => String(val).padStart(len, "0");
     const d = new Date();
     const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
-    const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
+    const fileName = `BetterYTM ${pkg.version} data export ${dateStr}.json`;
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
     downloadFile(fileName, data, "application/json");
 }let pluginListDialog = null;
@@ -3059,7 +3077,7 @@ async function getPluginListDialog() {
         destroyOnClose: true,
         small: true,
         renderHeader: renderHeader$3,
-        renderBody: renderBody$4,
+        renderBody: renderBody$3,
     });
 }
 async function renderHeader$3() {
@@ -3072,7 +3090,7 @@ async function renderHeader$3() {
     titleElem.textContent = t("plugin_list_title");
     return titleElem;
 }
-async function renderBody$4() {
+async function renderBody$3() {
     var _a;
     const listContainerEl = document.createElement("div");
     listContainerEl.id = "bytm-plugin-list-container";
@@ -3081,7 +3099,7 @@ async function renderBody$4() {
         const noPluginsEl = document.createElement("div");
         noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
         noPluginsEl.tabIndex = 0;
-        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${pkg.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
         noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
         listContainerEl.appendChild(noPluginsEl);
         return listContainerEl;
@@ -3190,7 +3208,7 @@ async function getFeatHelpDialog({ featKey, }) {
             closeOnEscPress: true,
             small: true,
             renderHeader: renderHeader$2,
-            renderBody: renderBody$3,
+            renderBody: renderBody$2,
         });
         // make config menu inert while help dialog is open
         featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
@@ -3203,7 +3221,7 @@ async function renderHeader$2() {
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
-async function renderBody$3() {
+async function renderBody$2() {
     var _a, _b;
     const contElem = document.createElement("div");
     const featDescElem = document.createElement("h3");
@@ -3234,7 +3252,7 @@ async function getChangelogDialog() {
             small: true,
             verticalAlign: "top",
             renderHeader: renderHeader$1,
-            renderBody: renderBody$2,
+            renderBody: renderBody$1,
         });
         changelogDialog.on("render", () => {
             const mdContElem = document.querySelector("#bytm-changelog-dialog-text");
@@ -3264,7 +3282,7 @@ async function renderHeader$1() {
     headerEl.textContent = headerEl.ariaLabel = t("changelog_menu_title", scriptInfo.name);
     return headerEl;
 }
-async function renderBody$2() {
+async function renderBody$1() {
     const contElem = document.createElement("div");
     const mdContElem = document.createElement("div");
     mdContElem.id = "bytm-changelog-dialog-text";
@@ -3533,8 +3551,8 @@ async function mountCfgMenu() {
     };
     const links = [
         ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
-        ["greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
-        ["openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
+        ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
+        ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
     ];
     const hostLink = links.find(([name]) => name === host);
     const otherLinks = links.filter(([name]) => name !== host);
@@ -4490,16 +4508,7 @@ async function initAboveQueueBtns() {
             id: "scroll-to-active",
             resourceName: "icon-skip_to",
             titleKey: "scroll_to_playing",
-            async interaction(evt) {
-                const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-                if (!activeItem)
-                    return;
-                activeItem.scrollIntoView({
-                    behavior: evt.shiftKey ? "instant" : "smooth",
-                    block: evt.ctrlKey || evt.altKey ? "start" : "center",
-                    inline: "center",
-                });
-            },
+            interaction: async (evt) => scrollToCurrentSongInQueue(evt),
         },
         {
             condition: clearQueueBtn,
@@ -6037,6 +6046,18 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
+    autoScrollToActiveSongMode: {
+        type: "select",
+        category: "behavior",
+        options: () => [
+            { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
+            { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
+            { value: "videoChange", label: t("auto_scroll_to_active_song_mode_video_change") },
+        ],
+        default: "initialPageLoad",
+        reloadRequired: false,
+        enable: noop,
+    },
     //#region cat:input
     arrowKeySupport: {
         type: "toggle",
@@ -6371,8 +6392,8 @@ const featInfo = {
             emitSiteEvent("recreateCfgMenu"),
     },
 };/** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 9;
-const defaultData = Object.keys(featInfo)
+const formatVersion = 10;
+const defaultData = UserUtils.purifyObj(Object.keys(featInfo)
     // @ts-ignore
     .filter((ftKey) => { var _a; return ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[ftKey]) === null || _a === void 0 ? void 0 : _a.default) !== undefined; })
     .reduce((acc, key) => {
@@ -6380,7 +6401,7 @@ const defaultData = Object.keys(featInfo)
     // @ts-ignore
     acc[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
     return acc;
-}, {});
+}, {}));
 /** Config data format migration dictionary */
 const migrations = {
     // 1 -> 2 (<=v1.0)
@@ -6480,9 +6501,9 @@ const migrations = {
             // "autoLikePlayerBarToggleBtn",
         ]);
     },
-    // 9 -> 10 (v2.2.1)
+    // 9 -> 10 (v2.3.0)
     10: (oldData) => useDefaultConfig(oldData, [
-        "aboveQueueBtnsSticky",
+        "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
     ]),
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -6604,12 +6625,12 @@ async function promptResetConfig() {
 async function clearConfig() {
     await configStore.deleteData();
     info("Deleted config from persistent storage");
-}const { autoPlural, getUnsafeWindow, randomId, NanoEmitter } = UserUtils__namespace;
+}const { autoPlural, getUnsafeWindow, purifyObj, randomId, NanoEmitter } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
  */
-const globalFuncs = {
+const globalFuncs = purifyObj({
     // meta:
     /*🔒*/ getPluginInfo,
     // bytm-specific:
@@ -6660,7 +6681,7 @@ const globalFuncs = {
     showPrompt,
     // other:
     formatNumber,
-};
+});
 /** Initializes the BYTM interface */
 function initInterface() {
     const props = Object.assign(Object.assign(Object.assign({ 
@@ -6689,7 +6710,7 @@ function setGlobalProp(key, value) {
     // use unsafeWindow so the properties are available to plugins outside of the userscript's scope
     const win = getUnsafeWindow();
     if (typeof win.BYTM !== "object")
-        win.BYTM = {};
+        win.BYTM = purifyObj({});
     win.BYTM[key] = value;
 }
 /** Emits an event on the BYTM interface */
@@ -7402,7 +7423,7 @@ async function getWelcomeDialog() {
             closeOnEscPress: true,
             destroyOnClose: true,
             renderHeader,
-            renderBody: renderBody$1,
+            renderBody,
             renderFooter,
         });
         welcomeDialog.on("render", retranslateWelcomeMenu);
@@ -7426,7 +7447,7 @@ async function renderHeader() {
     titleWrapperElem.appendChild(titleElem);
     return titleWrapperElem;
 }
-async function renderBody$1() {
+async function renderBody() {
     const contentWrapper = document.createElement("div");
     contentWrapper.id = "bytm-welcome-menu-content-wrapper";
     // locale switcher
@@ -7522,9 +7543,9 @@ function retranslateWelcomeMenu() {
         },
         "#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
         "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo.name)),
-        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
-        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(packageJson.funding.url))),
-        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(packageJson.bugs.url))),
+        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
+        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url))),
+        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url))),
     };
     for (const [selector, fn] of Object.entries(changes)) {
         const el = document.querySelector(selector);
@@ -7567,157 +7588,8 @@ async function renderFooter() {
     footerCont.appendChild(leftButtonsCont);
     footerCont.appendChild(closeBtnElem);
     return footerCont;
-}let allDataExImDialog;
-/** Creates and/or returns the AllDataExIm dialog */
-async function getAllDataExImDialog() {
-    if (!allDataExImDialog) {
-        const eximOpts = {
-            id: "all-data-exim",
-            width: 800,
-            height: 1000,
-            closeBtnEnabled: true,
-            closeOnBgClick: true,
-            closeOnEscPress: true,
-            destroyOnClose: true,
-            removeListenersOnDestroy: false,
-            small: true,
-            verticalAlign: "top",
-            title: () => t("all_data_exim_title"),
-            descExport: () => t("all_data_exim_export_desc"),
-            descImport: () => t("all_data_exim_import_desc"),
-            exportData: async () => await getStoreSerializer().serialize(),
-            onImport,
-        };
-        allDataExImDialog = new ExImDialog(Object.assign(Object.assign({}, eximOpts), { renderBody: async () => await renderBody(eximOpts) }));
-    }
-    return allDataExImDialog;
-}
-/** Creates and/or returns the AutoLikeExIm dialog */
-async function onImport(data) {
-    try {
-        const serializer = getStoreSerializer();
-        await serializer.deserialize(data);
-        showToast(t("import_success"));
-    }
-    catch (err) {
-        error(err);
-        showToast(t("import_error"));
-    }
-}
-async function renderBody(opts) {
-    const panesCont = document.createElement("div");
-    panesCont.classList.add("bytm-all-data-exim-dialog-panes-cont");
-    //#region export
-    const exportPane = document.createElement("div");
-    exportPane.classList.add("bytm-all-data-exim-dialog-pane", "export");
-    {
-        const descEl = document.createElement("p");
-        descEl.classList.add("bytm-all-data-exim-dialog-desc");
-        descEl.role = "note";
-        descEl.tabIndex = 0;
-        descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descExport);
-        const exportPartsCont = document.createElement("div");
-        exportPartsCont.classList.add("bytm-all-data-exim-dialog-export-parts-cont");
-        const dataEl = document.createElement("textarea");
-        dataEl.classList.add("bytm-all-data-exim-dialog-data");
-        dataEl.readOnly = true;
-        dataEl.tabIndex = 0;
-        dataEl.value = t("click_to_reveal");
-        for (const id of getSerializerStoresIds()) {
-            const rowEl = document.createElement("div");
-            rowEl.classList.add("bytm-all-data-exim-dialog-export-part-row");
-            rowEl.title = t(`data_stores.disable.${id}`);
-            const chkEl = document.createElement("input");
-            chkEl.type = "checkbox";
-            chkEl.id = `bytm-all-data-exim-dialog-export-part-${id}`;
-            chkEl.dataset.storeId = id;
-            chkEl.checked = true;
-            chkEl.title = t(`data_stores.disable.${id}`);
-            chkEl.addEventListener("change", async () => {
-                const kwd = chkEl.checked ? "disable" : "enable";
-                rowEl.title = t(`data_stores.${kwd}.${id}`);
-                chkEl.title = t(`data_stores.${kwd}.${id}`);
-                lblEl.textContent = t(`data_stores.${kwd}.${id}`);
-                if (dataEl.classList.contains("revealed"))
-                    dataEl.value = filter(await UserUtils.consumeStringGen(opts.exportData));
-            });
-            const lblEl = document.createElement("label");
-            lblEl.htmlFor = chkEl.id;
-            lblEl.textContent = t(`data_stores.disable.${id}`);
-            rowEl.append(chkEl, lblEl);
-            exportPartsCont.appendChild(rowEl);
-        }
-        /** Filters out all data stores that are not checked */
-        const filter = (data) => {
-            const exportIds = [];
-            for (const chkEl of exportPartsCont.querySelectorAll("input[type=checkbox]"))
-                chkEl.checked && chkEl.dataset.storeId && exportIds.push(chkEl.dataset.storeId);
-            return JSON.stringify(JSON.parse(data)
-                .filter(({ id }) => exportIds.includes(id)), undefined, 2);
-        };
-        onInteraction(dataEl, async () => {
-            dataEl.classList.add("revealed");
-            dataEl.value = filter(await UserUtils.consumeStringGen(opts.exportData));
-            dataEl.setSelectionRange(0, dataEl.value.length);
-        });
-        const exportCenterBtnCont = document.createElement("div");
-        exportCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-        const cpBtn = createRipple(await createLongBtn({
-            title: t("copy_to_clipboard"),
-            text: t("copy"),
-            resourceName: "icon-copy",
-            async onClick({ shiftKey }) {
-                const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-                copyToClipboard(filter(await UserUtils.consumeStringGen(copyData)));
-                await showToast({ message: t("copied_to_clipboard") });
-            },
-        }));
-        const dlBtn = createRipple(await createLongBtn({
-            title: t("download_file"),
-            text: t("download"),
-            resourceName: "icon-arrow_down",
-            async onClick({ shiftKey }) {
-                const dlData = filter(await UserUtils.consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
-                copyToClipboard(dlData);
-                const pad = (num, len = 2) => String(num).padStart(len, "0");
-                const d = new Date();
-                const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
-                const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
-                downloadFile(fileName, dlData, "application/json");
-                await showToast({ message: t("downloaded_file_hint") });
-            },
-        }));
-        exportCenterBtnCont.append(cpBtn, dlBtn);
-        exportPane.append(descEl, dataEl, exportPartsCont, exportCenterBtnCont);
-    }
-    //#region import
-    const importPane = document.createElement("div");
-    importPane.classList.add("bytm-all-data-exim-dialog-pane", "import");
-    {
-        // TODO: file upload field
-        // TODO: select which stores to import
-        const descEl = document.createElement("p");
-        descEl.classList.add("bytm-all-data-exim-dialog-desc");
-        descEl.role = "note";
-        descEl.tabIndex = 0;
-        descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descImport);
-        const dataEl = document.createElement("textarea");
-        dataEl.classList.add("bytm-all-data-exim-dialog-data");
-        dataEl.tabIndex = 0;
-        const importCenterBtnCont = document.createElement("div");
-        importCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-        const importBtn = createRipple(await createLongBtn({
-            title: t("start_import_tooltip"),
-            text: t("import"),
-            resourceName: "icon-upload",
-            onClick: () => opts.onImport(dataEl.value),
-        }));
-        importCenterBtnCont.appendChild(importBtn);
-        importPane.append(descEl, dataEl, importCenterBtnCont);
-    }
-    panesCont.append(exportPane, importPane);
-    return panesCont;
-}//#region cns. watermark
+}// import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
+//#region cns. watermark
 {
     // console watermark with sexy gradient
     const [styleGradient, gradientContBg] = (() => {
@@ -7847,6 +7719,7 @@ async function onDomLoad() {
             //#region (ytm) behavior
             if (feats.closeToastsTimeout > 0)
                 ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
+            ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
             //#region (ytm) input
             ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
             if (feats.anchorImprovements)
@@ -8127,7 +8000,7 @@ function registerDevCommands() {
 async function runDevTreatments() {
     if (mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
         return;
-    const dlg = await getAllDataExImDialog();
-    await dlg.open();
+    // const dlg = await getAllDataExImDialog();
+    // await dlg.open();
 }
 preInit();})(UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
