@@ -1,6 +1,5 @@
-import { randomId } from "@sv443-network/userutils";
+import { purifyObj, randomId } from "@sv443-network/userutils";
 import { LogLevel } from "./types.js";
-import { pureObj } from "./utils/misc.js";
 
 type ConstTypes = {
   mode: "production" | "development";
@@ -48,7 +47,7 @@ export const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNu
 export const initialParams = new URL(location.href).searchParams;
 
 /** Names of platforms by key of {@linkcode host} */
-export const platformNames = pureObj({
+export const platformNames = purifyObj({
   github: "GitHub",
   greasyfork: "GreasyFork",
   openuserjs: "OpenUserJS",
@@ -79,7 +78,7 @@ export const sessionStorageAvailable =
 export const defaultLogLevel: LogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
 
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-export const scriptInfo = pureObj({
+export const scriptInfo = purifyObj({
   name: GM.info.script.name,
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,

@@ -1,7 +1,7 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } from "./constants.js";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, pureObj } from "./utils/index.js";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
 import { defaultData, getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
@@ -17,7 +17,7 @@ import { showIconToast, showToast } from "./components/toast.js";
 import { ExImDialog } from "./components/ExImDialog.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 
-const { autoPlural, getUnsafeWindow, randomId, NanoEmitter } = UserUtils;
+const { autoPlural, getUnsafeWindow, purifyObj, randomId, NanoEmitter } = UserUtils;
 
 //#region interface globals
 
@@ -108,7 +108,7 @@ export const allInterfaceEvents = [
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
  */
-const globalFuncs: InterfaceFunctions = pureObj({
+const globalFuncs: InterfaceFunctions = purifyObj({
   // meta:
   /*🔒*/ getPluginInfo,
 
@@ -211,7 +211,7 @@ export function setGlobalProp<
   const win = getUnsafeWindow();
 
   if(typeof win.BYTM !== "object")
-    win.BYTM = pureObj({}) as BytmObject;
+    win.BYTM = purifyObj({}) as BytmObject;
 
   win.BYTM[key] = value;
 }
