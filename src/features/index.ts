@@ -483,7 +483,9 @@ export const featInfo = {
     options: () => [
       { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
       { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
-      { value: "videoChange", label: t("auto_scroll_to_active_song_mode_video_change") },
+      { value: "videoChangeAll", label: t("auto_scroll_to_active_song_mode_video_change_all") },
+      { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode_video_change_manual") },
+      { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode_video_change_auto") },
     ],
     default: "initialPageLoad",
     reloadRequired: false,

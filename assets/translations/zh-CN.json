@@ -208,9 +208,12 @@
   "color_lightness_darker": "更暗",
   "color_lightness_normal": "正常",
   "color_lightness_lighter": "更亮",
+
   "auto_scroll_to_active_song_mode_never": "从不",
   "auto_scroll_to_active_song_mode_initial_page_load": "仅在第一次加载页面时",
-  "auto_scroll_to_active_song_mode_video_change": "在每个新视频上",
+  "auto_scroll_to_active_song_mode_video_change_all": "在每个视频更改时",
+  "auto_scroll_to_active_song_mode_video_change_manual": "仅在手动更改视频时",
+  "auto_scroll_to_active_song_mode_video_change_auto": "仅在过渡到下一个视频时",
 
   "plugin_list_title": "插件列表",
   "plugin_list_no_plugins": "当前未安装任何插件。\n访问 %1此页面%2 以获取更多信息。",

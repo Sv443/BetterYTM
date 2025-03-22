@@ -208,9 +208,12 @@
   "color_lightness_darker": "गहरे",
   "color_lightness_normal": "सामान्य",
   "color_lightness_lighter": "हल्का",
+
   "auto_scroll_to_active_song_mode_never": "कभी नहीं",
   "auto_scroll_to_active_song_mode_initial_page_load": "पहले पृष्ठ लोड पर केवल",
-  "auto_scroll_to_active_song_mode_video_change": "हर नए वीडियो पर",
+  "auto_scroll_to_active_song_mode_video_change_all": "हर वीडियो पर",
+  "auto_scroll_to_active_song_mode_video_change_manual": "केवल मैन्युअल वीडियो परिवर्तन पर",
+  "auto_scroll_to_active_song_mode_video_change_auto": "केवल अगले वीडियो पर जाते समय",
 
   "plugin_list_title": "प्लगइन सूची",
   "plugin_list_no_plugins": "कोई प्लगइन वर्तमान में स्थापित नहीं हैं।\nअधिक जानकारी के लिए %1इस पृष्ठ%2 पर जाएं।",

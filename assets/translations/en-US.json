@@ -211,7 +211,9 @@
 
   "auto_scroll_to_active_song_mode_never": "Never",
   "auto_scroll_to_active_song_mode_initial_page_load": "On first page load only",
-  "auto_scroll_to_active_song_mode_video_change": "On every new video",
+  "auto_scroll_to_active_song_mode_video_change_all": "On every video change",
+  "auto_scroll_to_active_song_mode_video_change_manual": "Only when manually changing videos",
+  "auto_scroll_to_active_song_mode_video_change_auto": "Only on automatic video transitions",
 
   "plugin_list_title": "Plugin List",
   "plugin_list_no_plugins": "No plugins are currently installed.\nVisit %1this page%2 for more information.",

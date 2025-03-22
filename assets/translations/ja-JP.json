@@ -208,9 +208,12 @@
   "color_lightness_darker": "暗い",
   "color_lightness_normal": "通常",
   "color_lightness_lighter": "明るい",
+
   "auto_scroll_to_active_song_mode_never": "しない",
   "auto_scroll_to_active_song_mode_initial_page_load": "初回のみ",
-  "auto_scroll_to_active_song_mode_video_change": "新しいビデオごと",
+  "auto_scroll_to_active_song_mode_video_change_all": "すべてのビデオの変更時",
+  "auto_scroll_to_active_song_mode_video_change_manual": "手動でビデオを変更するときのみ",
+  "auto_scroll_to_active_song_mode_video_change_auto": "次のビデオへの移行時のみ",
 
   "plugin_list_title": "プラグインリスト",
   "plugin_list_no_plugins": "現在インストールされているプラグインはありません。\n詳細については %1このページ%2 をご覧ください。",

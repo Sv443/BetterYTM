@@ -79,13 +79,29 @@ export async function initAutoCloseToasts() {
 
 let initialAutoScrollToActiveSong = true;
 
+let prevVidMaxTime = Infinity;
+let prevTime = -1;
+
 /** Initializes the autoScrollToActiveSong feature */
 export async function initAutoScrollToActiveSong() {
-  siteEvents.on("watchIdChanged", () => getFeature("autoScrollToActiveSongMode") === "videoChange" && scrollToCurrentSongInQueue());
+  setInterval(() => {
+    prevTime = getVideoElement()?.currentTime ?? -1;
+    prevVidMaxTime = getVideoElement()?.duration ?? Infinity;
+  }, 50);
+
+  siteEvents.on("watchIdChanged", (_, oldId) => {
+    if(!oldId)
+      return;
+    const isManualChange = prevTime < prevVidMaxTime - 1;
+    if(["videoChangeManual", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && isManualChange)
+      scrollToCurrentSongInQueue();
+    else if(["videoChangeAuto", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && !isManualChange)
+      scrollToCurrentSongInQueue();
+  });
 
   if(getFeature("autoScrollToActiveSongMode") !== "never" && initialAutoScrollToActiveSong) {
     initialAutoScrollToActiveSong = false;
-    waitVideoElementReady().then(() => scrollToCurrentSongInQueue());
+    scrollToCurrentSongInQueue();
   }
 }
 

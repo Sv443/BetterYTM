@@ -7,6 +7,7 @@ import { enableDiscardBeforeUnload } from "../features/behavior.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
+import { addSelectorListener } from "src/observers.js";
 
 //#region misc
 
@@ -251,19 +252,19 @@ export function isStringGen(val: unknown): val is StringGen {
     || val instanceof Promise;
 }
 
-/** Scrolls to the current song in the queue if it's available */
+/** Scrolls to the currently playing queue item in the queue once it's available */
 export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
-  const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-  if(!activeItem)
-    return false;
+  addSelectorListener("sidePanel", "ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]", {
+    listener(activeItem) {
+      activeItem.scrollIntoView({
+        behavior: evt?.shiftKey ? "instant" : "smooth",
+        block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
+        inline: "center",
+      });
 
-  activeItem.scrollIntoView({
-    behavior: evt?.shiftKey ? "instant" : "smooth",
-    block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
-    inline: "center",
+      log("Scrolled to active song in queue:", activeItem);
+    }
   });
-
-  return true;
 }
 
 //#region resources

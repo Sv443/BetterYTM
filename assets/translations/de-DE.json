@@ -208,9 +208,12 @@
   "color_lightness_darker": "Dunkler",
   "color_lightness_normal": "Normal",
   "color_lightness_lighter": "Heller",
+
   "auto_scroll_to_active_song_mode_never": "Nie",
   "auto_scroll_to_active_song_mode_initial_page_load": "Beim initialen Laden der Seite",
-  "auto_scroll_to_active_song_mode_video_change": "Bei jedem Video",
+  "auto_scroll_to_active_song_mode_video_change_all": "Bei jedem Video-Wechsel",
+  "auto_scroll_to_active_song_mode_video_change_manual": "Nur bei händischem Video-Wechsel",
+  "auto_scroll_to_active_song_mode_video_change_auto": "Nur beim Übergang zum nächsten Video",
 
   "plugin_list_title": "Plugin-Liste",
   "plugin_list_no_plugins": "Derzeit sind keine Plugins installiert.\nBesuche %1diese Seite%2 für mehr Informationen.",
