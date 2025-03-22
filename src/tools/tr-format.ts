@@ -3,11 +3,15 @@ import k from "kleur";
 import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 
-const prepTranslate = process.argv.find((v) => v.match(/--prep(are)?/) || v.toLowerCase() === "-p");
+const prepTranslateRaw = process.argv.find((v) => v.match(/--prep(are)?/) || v.toLowerCase() === "-p");
+const prepTranslate = prepTranslateRaw && prepTranslateRaw.length > 0;
 
 const onlyLocalesRaw = process.argv.find((v) => v.startsWith("--only") || v.toLowerCase().startsWith("-o"));
 const onlyLocales = onlyLocalesRaw?.split("=")[1]?.replace(/"/g, "")
   ?.replace(/\s/g, "")?.split(",") as TrLocale[] | undefined;
+
+const onlyKeysRaw = process.argv.find((v) => v.startsWith("--keys") || v.toLowerCase().startsWith("-k"));
+const onlyKeys = onlyKeysRaw?.split("=")[1]?.replace(/"/g, "").split(",").map(k => k.trim()) as string[] | undefined;
 
 const includeBased = Boolean(process.argv.find((v) => v.match(/--include-based/) || v.toLowerCase() === "-b"));
 
@@ -34,12 +38,27 @@ async function run() {
       continue;
 
     for(const k of Object.keys(enUS_obj)) {
+      // special treatment for the meta block
+      if(k === "meta") {
+        localeFile = localeFile.replace(/"meta":\s+{[^}]+\s{2}},?/m, `"meta": ${JSON.stringify(localeObj.meta, null, 2).replace(/\n/gm, "\n  ")},`);
+        continue;
+      }
+
+      // if --keys or -k is present, only update the keys specified:
+      if(onlyKeys && !onlyKeys.includes(k)) {
+        if(localeObj[k] === undefined)
+          continue;
+        // reset to the value in the current language's file:
+        localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(localeObj[k]).trim()}"`);
+        continue;
+      }
+
       const val = localeObj?.[k];
       if(val)
         localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(val).trim()}"`);
       else {
         if(prepTranslate)
-          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n    "${k}": "",\n    "${k}": "${escapeJsonVal(enUS_obj[k]).trim()}",`);
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n  "${k}": "",\n  "${k}": "${escapeJsonVal(enUS_obj[k]).trim()}",`);
         else
           localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
       }
