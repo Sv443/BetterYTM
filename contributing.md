@@ -481,7 +481,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br><br>
 
 > ### registerPlugin()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.registerPlugin(pluginDef: PluginDef): PluginRegisterResult
 > ```
@@ -596,7 +596,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getPluginInfo()
-> Usages:  
+> Signatures:  
 > ```ts
 > unsafeWindow.BYTM.getPluginInfo(token: string | undefined, name: string, namespace: string): PluginInfo | undefined
 > unsafeWindow.BYTM.getPluginInfo(token: string | undefined, pluginDef: { plugin: { name: string, namespace: string } }): PluginInfo | undefined
@@ -633,7 +633,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getDomain()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getDomain(): "yt" | "ytm"
 > ```
@@ -663,7 +663,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getResourceUrl()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getResourceUrl(): Promise<string>
 > ```
@@ -692,7 +692,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getSessionId()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getSessionId(): string | null
 > ```
@@ -720,7 +720,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### reloadTab()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.reloadTab(): Promise<void>
 > ```
@@ -732,7 +732,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### setInnerHtml()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.setInnerHtml(element: HTMLElement, html?: Stringifiable | null): void
 > ```
@@ -759,7 +759,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### addSelectorListener()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>): void
 > ```
@@ -800,7 +800,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### onInteraction()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.onInteraction(
 >   element: HTMLElement,
@@ -842,7 +842,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getVideoTime()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getVideoTime(precision?: number): Promise<number | null>
 > ```
@@ -886,7 +886,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getThumbnailUrl()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getThumbnailUrl(
 >   watchID: string,
@@ -915,7 +915,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getBestThumbnailUrl()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getBestThumbnailUrl(watchID: string): Promise<string | undefined>
 > ```
@@ -951,7 +951,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### waitVideoElementReady()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.waitVideoElementReady(): Promise<HTMLVideoElement>
 > ```
@@ -978,7 +978,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getVideoElement()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getVideoElement(): HTMLVideoElement | null
 > ```
@@ -1003,7 +1003,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getVideoSelector()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getVideoSelector(): string
 > ```
@@ -1026,7 +1026,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getCurrentMediaType()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getCurrentMediaType(): "video" | "song"
 > ```
@@ -1051,7 +1051,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### setLocale()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.setLocale(token: string | undefined, locale: string): void
 > ```
@@ -1074,7 +1074,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getLocale()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getLocale(): string
 > ```
@@ -1097,7 +1097,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### hasKey()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.hasKey(key: string): boolean
 > ```
@@ -1119,7 +1119,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### hasKeyFor()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.hasKeyFor(locale: string, key: string): boolean
 > ```
@@ -1142,7 +1142,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### t()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.t(key: TFuncKey, ...values: Stringifiable[]): string
 > ```
@@ -1167,7 +1167,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### tp()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.tp(key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]): string
 > ```
@@ -1207,7 +1207,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### tl()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.tl(locale: string, key: TFuncKey, ...values: Stringifiable[]): string
 > ```  
@@ -1226,7 +1226,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### tlp()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.tlp(locale: string, key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]): string
 > ```  
@@ -1246,7 +1246,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getFeatures()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getFeatures(token: string | undefined): FeatureConfig | undefined
 > ```
@@ -1271,7 +1271,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### saveFeatures()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.saveFeatures(token: string | undefined, config: FeatureConfig): Promise<void>
 > ```
@@ -1312,7 +1312,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getDefaultFeatures()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getDefaultFeatures(): FeatureConfig
 > ```
@@ -1325,7 +1325,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### fetchLyricsUrlTop()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.fetchLyricsUrlTop(artist: string, song: string): Promise<string | undefined>
 > ```
@@ -1363,7 +1363,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getLyricsCacheEntry()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getLyricsCacheEntry(artists: string, song: string): LyricsCacheEntry | undefined
 > ```
@@ -1400,7 +1400,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### sanitizeArtists()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.sanitizeArtists(artists: string): string
 > ```
@@ -1425,7 +1425,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### sanitizeSong()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.sanitizeSong(songName: string): string
 > ```
@@ -1449,7 +1449,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### getAutoLikeData()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getAutoLikeData(token: string | undefined): AutoLikeData
 > ```
@@ -1479,7 +1479,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### saveAutoLikeData()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.saveAutoLikeData(token: string | undefined, data: AutoLikeData): Promise<void>
 > ```
@@ -1517,7 +1517,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### fetchVideoVotes()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.fetchVideoVotes(videoId: string): Promise<VideoVotesObj | undefined>
 > ```
@@ -1550,7 +1550,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### BytmDialog
-> Usage:  
+> Signature:  
 > ```ts
 > new unsafeWindow.BYTM.BytmDialog(options: BytmDialogOptions): BytmDialog
 > ```
@@ -1680,7 +1680,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### ExImDialog
-> Usage:
+> Signature:
 > ```ts
 > new unsafeWindow.BYTM.ExImDialog(options: ExImDialogOptions): ExImDialog
 > ```
@@ -1774,7 +1774,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### MarkdownDialog
-> Usage:
+> Signature:
 > ```ts
 > new unsafeWindow.BYTM.MarkdownDialog(options: MarkdownDialogOptions): MarkdownDialog
 > ```
@@ -1827,7 +1827,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### createHotkeyInput()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.createHotkeyInput(inputProps: {
 >   initialValue?: HotkeyObj,
@@ -1856,7 +1856,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### createToggleInput()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.createToggleInput(toggleProps: {
 >   onChange: (value: boolean) => void,
@@ -1891,7 +1891,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### createCircularBtn()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.createCircularBtn(props: CircularBtnProps): Promise<HTMLElement>
 > ```
@@ -1925,7 +1925,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### createLongBtn()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.createLongBtn(props: LongBtnProps): Promise<HTMLElement>
 > ```
@@ -1993,9 +1993,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### createRipple()
-> Usages:  
+> Signatures:  
 > ```ts
+> // if an element is provided, the ripple effect will be applied to it:
 > unsafeWindow.BYTM.createRipple<TElement>(rippleElement: TElement, props?: RippleProps): TElement
+> // if no element is provided, an empty div will be created with the ripple effect:
 > unsafeWindow.BYTM.createRipple(rippleElement?: undefined, props?: RippleProps): HTMLDivElement
 > ```
 >   
@@ -2004,8 +2006,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > External CSS overrides can be used to change the color, size, speed values and opacity.  
 > The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
 >   
-> Properties:  
+> `RippleProps` properties:  
 > - `speed?: string` - The speed of the ripple effect. Can be "fastest", "fast", "normal", "slow" or "slowest" (defaults to "normal")
+> - `additionalProps?: TElement | HTMLDivElement` - Additional properties to apply to the created or passed ripple element
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -2013,13 +2016,16 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > const myBoringButton = document.querySelector("#my-boring-button");
 > if(myBoringButton)
 >   unsafeWindow.BYTM.createRipple(myBoringButton, { speed: "slowest" }); // it's as easy as this
+> 
+> // or create an empty div with the ripple effect:
+> const myRippleDiv = unsafeWindow.BYTM.createRipple({ speed: "fast" });
 > ```
 > </details>
 
 <br>
 
 > ### showToast()
-> Usages:  
+> Signatures:  
 > ```ts
 > unsafeWindow.BYTM.showToast(props: ToastProps): Promise<void>;
 > unsafeWindow.BYTM.showToast(message: string): Promise<void>;
@@ -2055,7 +2061,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### showIconToast()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.showIconToast(props: IconToastProps): Promise<void>
 > ```
@@ -2097,7 +2103,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### showPrompt()
-> Usage:  
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.showPrompt(props: ShowPromptProps): Promise<boolean>
 > ```
@@ -2166,7 +2172,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### formatNumber()
-> Usage:
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.formatNumber(num: number, notation?: "short" | "long"): string
 > ```
@@ -2194,7 +2200,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 <br>
 
 > ### NanoEmitter
-> Usage:  
+> Signature:  
 > ```ts
 > new unsafeWindow.BYTM.NanoEmitter<TEventMap>(settings: NanoEmitterSettings): NanoEmitter
 > ```

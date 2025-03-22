@@ -595,7 +595,7 @@ export interface FeatureConfig {
   autoLikeChannels: boolean;
   /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
   autoLikeChannelToggleBtn: boolean;
-  // TODO(v2.2):
+  // TODO:
   // /** Whether to show a toggle button in the media controls to enable/disable auto-liking for those channel(s) */
   // autoLikePlayerBarToggleBtn: boolean;
   /** How long to wait after a video has started playing to auto-like it */

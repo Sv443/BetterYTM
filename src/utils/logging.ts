@@ -59,20 +59,23 @@ export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
 }
 
-/** Logs all passed values to the console as an error, no matter the log level. */
-export function error(...args: unknown[]): void {
-  console.error(consPrefix, ...args);
-
-  if(getFeature("showToastOnGenericError")) {
-    const errName = args.find(a => a instanceof Error)?.name ?? t("error");
-    debounce(() => showIconToast({
+const showErrToast = debounce(
+  (errName: string, ...args: unknown[]) =>
+    showIconToast({
       message: t("generic_error_toast_encountered_error_type", errName),
       subtitle: t("generic_error_toast_click_for_details"),
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-    }))();
-  }
+    }),
+  1000,
+);
+
+/** Logs all passed values to the console as an error, no matter the log level. */
+export function error(...args: unknown[]): void {
+  console.error(consPrefix, ...args);
+
+  getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
 }
 
 /** Logs all passed values to the console with a debug-specific prefix */

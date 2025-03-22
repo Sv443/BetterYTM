@@ -23,12 +23,11 @@ export const getSerializerStoresIds = () => getSerializerStores().map(store => s
 
 /** Returns the serializer for all data stores */
 export function getStoreSerializer() {
-  if(!serializer) {
+  if(!serializer)
     serializer = new DataStoreSerializer(getSerializerStores(), {
       addChecksum: true,
       ensureIntegrity: true,
     });
-  }
   return serializer;
 }
 
