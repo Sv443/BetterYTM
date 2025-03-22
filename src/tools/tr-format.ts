@@ -34,7 +34,7 @@ async function run() {
     let localeFile = enUS;
     const localeObj = JSON.parse(await readFile(`./assets/translations/${locale}.json`, "utf-8"));
 
-    if(!includeBased && localeObj.base)
+    if(!includeBased && localeObj.meta.base)
       continue;
 
     for(const k of Object.keys(enUS_obj)) {
@@ -82,9 +82,9 @@ async function run() {
     }
 
     // reinsert base if present in locale file
-
-    if(localeObj.base)
-      localeFile = localeFile.replace(/\s*\{\s*/, `{\n  "base": "${localeObj.base}",\n  `);
+    // TODO:FIXME:
+    // if(localeObj.meta.base)
+    //   localeFile = localeFile.replace(/\s*\{\s*/, `{\n  "base": "${localeObj.meta.base}",\n  `);
 
     // add EOL newline if not present
     if(!localeFile.endsWith("\n"))

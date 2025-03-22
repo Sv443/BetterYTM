@@ -160,6 +160,7 @@ To edit an existing translation, please follow these steps:
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr-FR,de-DE"` or `-o="pt-BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
+  - `--keys="<keys>"` or `-k="<keys>"` - Ignores all keys except the ones specified (comma-separated)
 - **`pnpm tr-prep`**  
   Shorthand for `pnpm tr-format --prep` (see above).
 - **`pnpm --silent invisible "<command>"`**  
