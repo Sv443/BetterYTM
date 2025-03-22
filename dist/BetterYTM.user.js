@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@14d873db/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@924b4020/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -313,7 +313,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "14d873db",
+    buildNumber: "924b4020",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1609,12 +1609,27 @@ async function initAutoCloseToasts() {
 }
 //#region auto scroll to active
 let initialAutoScrollToActiveSong = true;
+let prevVidMaxTime = Infinity;
+let prevTime = -1;
 /** Initializes the autoScrollToActiveSong feature */
 async function initAutoScrollToActiveSong() {
-    siteEvents.on("watchIdChanged", () => getFeature("autoScrollToActiveSongMode") === "videoChange" && scrollToCurrentSongInQueue());
+    setInterval(() => {
+        var _a, _b, _c, _d;
+        prevTime = (_b = (_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.currentTime) !== null && _b !== void 0 ? _b : -1;
+        prevVidMaxTime = (_d = (_c = getVideoElement()) === null || _c === void 0 ? void 0 : _c.duration) !== null && _d !== void 0 ? _d : Infinity;
+    }, 50);
+    siteEvents.on("watchIdChanged", (_, oldId) => {
+        if (!oldId)
+            return;
+        const isManualChange = prevTime < prevVidMaxTime - 1;
+        if (["videoChangeManual", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && isManualChange)
+            scrollToCurrentSongInQueue();
+        else if (["videoChangeAuto", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && !isManualChange)
+            scrollToCurrentSongInQueue();
+    });
     if (getFeature("autoScrollToActiveSongMode") !== "never" && initialAutoScrollToActiveSong) {
         initialAutoScrollToActiveSong = false;
-        waitVideoElementReady().then(() => scrollToCurrentSongInQueue());
+        scrollToCurrentSongInQueue();
     }
 }
 let remVidsCache = [];
@@ -2912,17 +2927,18 @@ async function reloadTab() {
         win.location.reload();
     }
 }
-/** Scrolls to the current song in the queue if it's available */
+/** Scrolls to the currently playing queue item in the queue once it's available */
 function scrollToCurrentSongInQueue(evt) {
-    const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-    if (!activeItem)
-        return false;
-    activeItem.scrollIntoView({
-        behavior: (evt === null || evt === void 0 ? void 0 : evt.shiftKey) ? "instant" : "smooth",
-        block: (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) || (evt === null || evt === void 0 ? void 0 : evt.altKey) ? "start" : "center",
-        inline: "center",
+    addSelectorListener("sidePanel", "ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]", {
+        listener(activeItem) {
+            activeItem.scrollIntoView({
+                behavior: (evt === null || evt === void 0 ? void 0 : evt.shiftKey) ? "instant" : "smooth",
+                block: (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) || (evt === null || evt === void 0 ? void 0 : evt.altKey) ? "start" : "center",
+                inline: "center",
+            });
+            log("Scrolled to active song in queue:", activeItem);
+        }
     });
-    return true;
 }
 //#region resources
 /**
@@ -6052,7 +6068,9 @@ const featInfo = {
         options: () => [
             { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
             { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
-            { value: "videoChange", label: t("auto_scroll_to_active_song_mode_video_change") },
+            { value: "videoChangeAll", label: t("auto_scroll_to_active_song_mode_video_change_all") },
+            { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode_video_change_manual") },
+            { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode_video_change_auto") },
         ],
         default: "initialPageLoad",
         reloadRequired: false,
