@@ -39,6 +39,7 @@
   "import_success": "Datos importados correctamente",
   "import_success_confirm_reload": "Los datos se importaron correctamente.\n¿Desea recargar la página ahora para aplicar los cambios?",
   "reset_config_confirm": "¿Realmente quieres restablecer todos los ajustes a sus valores predeterminados?\nLa página se volverá a cargar automáticamente.",
+  "reset_everything_confirm": "Do you really want to reset all stored data to the default values?\nThe page will be automatically reloaded.",
   "copy": "Copiar",
   "copy_to_clipboard": "Copiar al portapapeles",
   "copy_to_clipboard_error": "No se pudo copiar el texto al portapapeles. Cópielo manualmente desde aquí:\n%1",
@@ -93,6 +94,8 @@
   "advanced_mode_short": "Avanzado",
   "experimental_feature": "Función experimental",
 
+  "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
+  "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",
   "open_lyrics_search_prompt": "Ingrese el título de la canción y el artista para buscar la letra:",
   "lyrics_loading": "Cargando URL de letras...",
   "lyrics_rate_limited-1": "Se está limitando la velocidad.\nEspere unos segundos antes de solicitar más letras.",
@@ -205,6 +208,9 @@
   "color_lightness_darker": "Más oscuro",
   "color_lightness_normal": "Normal",
   "color_lightness_lighter": "Más claro",
+  "auto_scroll_to_active_song_mode_never": "Nunca",
+  "auto_scroll_to_active_song_mode_initial_page_load": "Solo en la primera carga de la página",
+  "auto_scroll_to_active_song_mode_video_change": "En cada nuevo video",
 
   "plugin_list_title": "Lista de plugins",
   "plugin_list_no_plugins": "Actualmente no hay plugins instalados.\nVisite %1esta página%2 para obtener más información.",
@@ -217,13 +223,21 @@
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
 
+  "plugin_intent_name_ReadFeatureConfig": "Read Feature Config",
   "plugin_intent_description_ReadFeatureConfig": "Este plugin puede leer la configuración de la función",
+  "plugin_intent_name_WriteFeatureConfig": "Write Feature Config",
   "plugin_intent_description_WriteFeatureConfig": "Este plugin puede escribir en la configuración de la función",
+  "plugin_intent_name_SeeHiddenConfigValues": "See Hidden Config Values",
   "plugin_intent_description_SeeHiddenConfigValues": "Este plugin tiene acceso a valores de configuración ocultos",
+  "plugin_intent_name_WriteLyricsCache": "Write Lyrics Cache",
   "plugin_intent_description_WriteLyricsCache": "Este plugin puede escribir en la caché de letras",
+  "plugin_intent_name_WriteTranslations": "Write Translations",
   "plugin_intent_description_WriteTranslations": "Este plugin puede agregar nuevas traducciones y sobrescribir las existentes",
+  "plugin_intent_name_CreateModalDialogs": "Create Modal Dialogs",
   "plugin_intent_description_CreateModalDialogs": "Este plugin puede crear diálogos modales",
+  "plugin_intent_name_ReadAutoLikeData": "Read Auto-Like Data",
   "plugin_intent_description_ReadAutoLikeData": "Este plugin puede leer datos de me gusta automático",
+  "plugin_intent_name_WriteAutoLikeData": "Write Auto-Like Data",
   "plugin_intent_description_WriteAutoLikeData": "Este plugin puede escribir en datos de me gusta automático",
 
   "plugin_validation_error_no_property": "No hay ninguna propiedad '%1' con el tipo '%2'",
@@ -279,6 +293,7 @@
   "feature_helptext_listButtonsPlacement": "Hay varias listas de canciones en el sitio como páginas de álbumes, listas de reproducción y la cola de reproducción actual.\nCon esta opción, puede elegir dónde deben aparecer los botones de la lista.",
   "feature_desc_scrollToActiveSongBtn": "Agregue un botón para desplazarse hasta la canción que se está reproduciendo actualmente",
   "feature_desc_clearQueueBtn": "Agregue un botón para borrar rápidamente la cola de reproducción o la lista de reproducción actual",
+  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
   "feature_desc_disableBeforeUnloadPopup": "Evite la ventana emergente de confirmación que aparece al intentar salir del sitio mientras se reproduce una canción",
   "feature_helptext_disableBeforeUnloadPopup": "Cuando intenta salir del sitio mientras está reproduciendo una canción que lleva unos segundos, aparecerá una ventana emergente que le pedirá que confirme que desea salir del sitio. Podría decir algo así como \"tiene datos no guardados\" o \"este sitio está preguntando si desea cerrarlo\".\nEsta función deshabilita completamente esa ventana emergente.",
@@ -292,6 +307,7 @@
   "feature_desc_rememberSongTimeReduction": "Cuántos segundos restar al restaurar el tiempo de una canción recordada",
   "feature_helptext_rememberSongTimeReduction": "Al restaurar el tiempo de una canción que se recordó, se restarán esta cantidad de segundos del tiempo recordado para que pueda volver a escuchar la parte que se interrumpió.",
   "feature_desc_rememberSongTimeMinPlayTime": "Cantidad mínima de segundos que una canción debe reproducirse para recordar su tiempo",
+  "feature_desc_autoScrollToActiveSongMode": "¿Cuándo y si desplazarse automáticamente a la canción que se está reproduciendo actualmente?",
 
   "feature_desc_arrowKeySupport": "Use las teclas de flecha para saltar hacia adelante y hacia atrás en la canción que se está reproduciendo actualmente",
   "feature_helptext_arrowKeySupport": "Normalmente solo puede saltar hacia adelante y hacia atrás en un intervalo fijo de 10 segundos con las teclas \"H\" y \"L\". Esta función le permite usar las teclas de flecha también.\nPara cambiar la cantidad de segundos para saltar, use la opción a continuación.",
@@ -336,6 +352,7 @@
   "feature_helptext_themeSongIntegration": "Si la extensión ThemeSong está instalada pero esta función está desactivada (o viceversa), es posible que notes un estilo roto en el sitio.\n\n¡Asegúrate siempre de que esta función refleje si la extensión está instalada o no!",
   "feature_desc_themeSongLightness": "¿Qué tan claro deben ser los colores de acento derivados del tema actual de ThemeSong?",
   "feature_helptext_themeSongLightness": "Dependiendo de la configuración que hayas elegido para la extensión ThemeSong, esta función te permite ajustar la claridad de los colores de acento que se derivan del tema actual.\n\nEsta función no tendrá efecto si la extensión ThemeSong no está instalada.",
+
   "feature_desc_openPluginList": "Abrir la lista de plugins que tienes instalados",
   "feature_btn_openPluginList": "Abrir lista",
   "feature_btn_openPluginList_running": "Abriendo...",
@@ -357,6 +374,9 @@
   "feature_desc_resetConfig": "Restablecer todas las configuraciones a sus valores predeterminados",
   "feature_btn_resetConfig": "Restablecer configuraciones",
   "feature_btn_resetConfig_running": "Restableciendo...",
+  "feature_desc_resetEverything": "Reset all stored data to the default values",
+  "feature_btn_resetEverything": "Reset everything",
+  "feature_btn_resetEverything_running": "Resetting...",
   "feature_desc_advancedMode": "Mostrar configuración avanzada (recarga el menú)",
   "feature_helptext_advancedMode": "Después de habilitar esto, el menú se recargará y mostrará configuraciones avanzadas que están ocultas de forma predeterminada.\nEsto es útil si desea personalizar más profundamente el comportamiento del script y no le importa un menú abarrotado."
 }

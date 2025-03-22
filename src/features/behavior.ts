@@ -1,8 +1,9 @@
 import { clamp, interceptWindowEvent, isDomLoaded, pauseFor } from "@sv443-network/userutils";
-import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement } from "../utils/index.js";
+import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, scrollToCurrentSongInQueue } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
+import { siteEvents } from "../siteEvents.js";
 import { LogLevel } from "../types.js";
 
 //#region beforeunload popup
@@ -72,6 +73,20 @@ export async function initAutoCloseToasts() {
   });
 
   log("Initialized automatic toast closing");
+}
+
+//#region auto scroll to active
+
+let initialAutoScrollToActiveSong = true;
+
+/** Initializes the autoScrollToActiveSong feature */
+export async function initAutoScrollToActiveSong() {
+  siteEvents.on("watchIdChanged", () => getFeature("autoScrollToActiveSongMode") === "videoChange" && scrollToCurrentSongInQueue());
+
+  if(getFeature("autoScrollToActiveSongMode") !== "never" && initialAutoScrollToActiveSong) {
+    initialAutoScrollToActiveSong = false;
+    waitVideoElementReady().then(() => scrollToCurrentSongInQueue());
+  }
 }
 
 //#region remember song time

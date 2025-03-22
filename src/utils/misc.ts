@@ -251,13 +251,19 @@ export function isStringGen(val: unknown): val is StringGen {
     || val instanceof Promise;
 }
 
-/**
- * Turns the passed object into a pure object without a prototype chain and without default properties like `toString`, `__defineGetter__`, etc.  
- * This makes the object immune to prototype pollution attacks and allows for cleaner object literals, at the cost of being harder to work with in some cases.  
- * It also effectively transforms a `Stringifiable` value into one that will throw a TypeError when stringified instead of defaulting to `[object Object]`
- */
-export function pureObj<TObj extends object>(obj: TObj): TObj {
-  return Object.assign(Object.create(null), obj);
+/** Scrolls to the current song in the queue if it's available */
+export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
+  const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+  if(!activeItem)
+    return false;
+
+  activeItem.scrollIntoView({
+    behavior: evt?.shiftKey ? "instant" : "smooth",
+    block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
+    inline: "center",
+  });
+
+  return true;
 }
 
 //#region resources

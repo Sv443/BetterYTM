@@ -9,7 +9,7 @@ import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 9;
+export const formatVersion = 10;
 
 export const defaultData = pureObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
@@ -135,9 +135,9 @@ export const migrations: DataMigrationsDict = {
       // "autoLikePlayerBarToggleBtn",
     ]);
   },
-  // 9 -> 10 (v2.2.1)
+  // 9 -> 10 (v2.3.0)
   10: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "aboveQueueBtnsSticky",
+    "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
   ]),
 } as const satisfies DataMigrationsDict;
 

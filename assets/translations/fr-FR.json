@@ -39,6 +39,7 @@
   "import_success": "Données importées avec succès",
   "import_success_confirm_reload": "Les données ont été importées avec succès.\nVoulez-vous recharger la page maintenant pour appliquer les modifications?",
   "reset_config_confirm": "Voulez-vous vraiment réinitialiser tous les paramètres à leurs valeurs par défaut?\nLa page sera automatiquement rechargée.",
+  "reset_everything_confirm": "Do you really want to reset all stored data to the default values?\nThe page will be automatically reloaded.",
   "copy": "Copier",
   "copy_to_clipboard": "Copier dans le presse-papiers",
   "copy_to_clipboard_error": "Impossible de copier le texte dans le presse-papiers. Veuillez le copier manuellement d'ici:\n%1",
@@ -93,6 +94,8 @@
   "advanced_mode_short": "Avancé",
   "experimental_feature": "Fonctionnalité expérimentale",
 
+  "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
+  "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",
   "open_lyrics_search_prompt": "Entrez le titre de la chanson et l'artiste pour rechercher les paroles:",
   "lyrics_loading": "Chargement de l'URL des paroles...",
   "lyrics_rate_limited-1": "Vous êtes limité par le taux.\nVeuillez patienter quelques secondes avant de demander plus de paroles.",
@@ -205,6 +208,9 @@
   "color_lightness_darker": "Plus foncé",
   "color_lightness_normal": "Normal",
   "color_lightness_lighter": "Plus clair",
+  "auto_scroll_to_active_song_mode_never": "Jamais",
+  "auto_scroll_to_active_song_mode_initial_page_load": "Au premier chargement de la page uniquement",
+  "auto_scroll_to_active_song_mode_video_change": "À chaque nouvelle vidéo",
 
   "plugin_list_title": "Liste des plugins",
   "plugin_list_no_plugins": "Aucun plugin n'est actuellement installé.\nVisitez %1cette page%2 pour plus d'informations.",
@@ -217,13 +223,21 @@
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
 
+  "plugin_intent_name_ReadFeatureConfig": "Read Feature Config",
   "plugin_intent_description_ReadFeatureConfig": "Ce plugin peut lire la configuration de la fonctionnalité",
+  "plugin_intent_name_WriteFeatureConfig": "Write Feature Config",
   "plugin_intent_description_WriteFeatureConfig": "Ce plugin peut écrire dans la configuration de la fonctionnalité",
+  "plugin_intent_name_SeeHiddenConfigValues": "See Hidden Config Values",
   "plugin_intent_description_SeeHiddenConfigValues": "Ce plugin a accès à des valeurs de configuration cachées",
+  "plugin_intent_name_WriteLyricsCache": "Write Lyrics Cache",
   "plugin_intent_description_WriteLyricsCache": "Ce plugin peut écrire dans le cache des paroles",
+  "plugin_intent_name_WriteTranslations": "Write Translations",
   "plugin_intent_description_WriteTranslations": "Ce plugin peut ajouter de nouvelles traductions et écraser les existantes",
+  "plugin_intent_name_CreateModalDialogs": "Create Modal Dialogs",
   "plugin_intent_description_CreateModalDialogs": "Ce plugin peut créer des boîtes de dialogue modales",
+  "plugin_intent_name_ReadAutoLikeData": "Read Auto-Like Data",
   "plugin_intent_description_ReadAutoLikeData": "Ce plugin peut lire les données d'auto-aimer",
+  "plugin_intent_name_WriteAutoLikeData": "Write Auto-Like Data",
   "plugin_intent_description_WriteAutoLikeData": "Ce plugin peut écrire dans les données d'auto-aimer",
 
   "plugin_validation_error_no_property": "Aucune propriété '%1' avec le type '%2'",
@@ -279,6 +293,7 @@
   "feature_helptext_listButtonsPlacement": "Il existe diverses listes de chansons sur le site comme les pages d'album, les listes de lecture et la file d'attente en cours de lecture.\nAvec cette option, vous pouvez choisir où les boutons de liste doivent apparaître.",
   "feature_desc_scrollToActiveSongBtn": "Ajouter un bouton au-dessus de la file d'attente pour faire défiler jusqu'à la chanson en cours de lecture",
   "feature_desc_clearQueueBtn": "Ajouter un bouton au-dessus de la file d'attente ou de la liste de lecture en cours pour la vider rapidement",
+  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
   "feature_desc_disableBeforeUnloadPopup": "Empêcher la fenêtre contextuelle de confirmation qui apparaît lors de la tentative de quitter le site pendant qu'une chanson est en cours de lecture",
   "feature_helptext_disableBeforeUnloadPopup": "Lorsque vous essayez de quitter le site alors que vous êtes quelques secondes dans une chanson qui est en cours de lecture, une fenêtre contextuelle apparaîtra pour vous demander de confirmer que vous voulez quitter le site. Elle pourrait dire quelque chose comme \"vous avez des données non enregistrées\" ou \"ce site demande si vous voulez le fermer\".\nCette fonctionnalité désactive complètement cette fenêtre contextuelle.",
@@ -292,6 +307,7 @@
   "feature_desc_rememberSongTimeReduction": "De combien de secondes réduire le temps de la chanson mémorisée lors de sa restauration",
   "feature_helptext_rememberSongTimeReduction": "Lors de la restauration du temps d'une chanson qui a été mémorisée, ce nombre de secondes sera soustrait du temps mémorisé pour que vous puissiez réécouter la partie qui a été interrompue.",
   "feature_desc_rememberSongTimeMinPlayTime": "Temps minimum en secondes que la chanson doit être lue pour que son temps soit mémorisé",
+  "feature_desc_autoScrollToActiveSongMode": "Quand et si faire défiler jusqu'à la chanson en cours de lecture",
 
   "feature_desc_arrowKeySupport": "Utilisez les touches fléchées pour avancer et reculer dans la chanson en cours de lecture",
   "feature_helptext_arrowKeySupport": "Normalement, vous ne pouvez avancer et reculer que par intervalles fixes de 10 secondes avec les touches \"H\" et \"L\". Cette fonctionnalité vous permet d'utiliser aussi les touches fléchées.\nPour changer le nombre de secondes à sauter, utilisez l'option ci-dessous.",
@@ -336,6 +352,7 @@
   "feature_helptext_themeSongIntegration": "Si l'extension ThemeSong est installée mais que cette fonctionnalité est désactivée (ou vice versa), vous pourriez remarquer des problèmes de style sur le site.\n\nAssurez-vous toujours que cette fonctionnalité reflète si l'extension est installée ou non!",
   "feature_desc_themeSongLightness": "À quel point les couleurs d'accentuation dérivées du thème actuel de ThemeSong doivent-elles être claires",
   "feature_helptext_themeSongLightness": "En fonction des paramètres que vous avez choisis pour l'extension ThemeSong, cette fonctionnalité vous permet d'ajuster la clarté des couleurs d'accentuation dérivées du thème actuel.\n\nCette fonctionnalité n'aura aucun effet si l'extension ThemeSong n'est pas installée.",
+
   "feature_desc_openPluginList": "Ouvrir la liste des plugins que vous avez installés",
   "feature_btn_openPluginList": "Ouvrir la liste",
   "feature_btn_openPluginList_running": "Ouverture...",
@@ -357,6 +374,9 @@
   "feature_desc_resetConfig": "Réinitialiser tous les paramètres à leurs valeurs par défaut",
   "feature_btn_resetConfig": "Réinitialiser les paramètres",
   "feature_btn_resetConfig_running": "Réinitialisation...",
+  "feature_desc_resetEverything": "Reset all stored data to the default values",
+  "feature_btn_resetEverything": "Reset everything",
+  "feature_btn_resetEverything_running": "Resetting...",
   "feature_desc_advancedMode": "Afficher les paramètres avancés (cela recharge le menu)",
   "feature_helptext_advancedMode": "Après avoir activé cela, le menu se rechargera et affichera les paramètres avancés qui sont masqués par défaut.\nCela est utile si vous souhaitez personnaliser plus en profondeur le comportement du script et que vous ne vous souciez pas d'un menu surchargé."
 }

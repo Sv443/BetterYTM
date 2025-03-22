@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, pauseFor }
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString, scrollToCurrentSongInQueue } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -380,17 +380,7 @@ export async function initAboveQueueBtns() {
       id: "scroll-to-active",
       resourceName: "icon-skip_to",
       titleKey: "scroll_to_playing",
-      async interaction(evt: KeyboardEvent | MouseEvent) {
-        const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-        if(!activeItem)
-          return;
-
-        activeItem.scrollIntoView({
-          behavior: evt.shiftKey ? "instant" : "smooth",
-          block: evt.ctrlKey || evt.altKey ? "start" : "center",
-          inline: "center",
-        });
-      },
+      interaction: async (evt: KeyboardEvent | MouseEvent) => scrollToCurrentSongInQueue(evt),
     },
     {
       condition: clearQueueBtn,

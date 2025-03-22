@@ -39,6 +39,7 @@
   "import_success": "成功导入数据",
   "import_success_confirm_reload": "成功导入数据。\n您是否要重新加载页面以应用更改？",
   "reset_config_confirm": "您是否确实要将所有设置重置为默认值？\n页面将自动重新加载。",
+  "reset_everything_confirm": "Do you really want to reset all stored data to the default values?\nThe page will be automatically reloaded.",
   "copy": "复制",
   "copy_to_clipboard": "复制到剪贴板",
   "copy_to_clipboard_error": "无法将文本复制到剪贴板。请手动从这里复制：\n%1",
@@ -93,6 +94,8 @@
   "advanced_mode_short": "高级",
   "experimental_feature": "实验性功能",
 
+  "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
+  "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",
   "open_lyrics_search_prompt": "输入歌曲标题和艺术家以搜索歌词：",
   "lyrics_loading": "正在加载歌词 URL...",
   "lyrics_rate_limited-1": "您的请求正在被限制。\n请等待几秒钟再请求更多歌词。",
@@ -205,6 +208,9 @@
   "color_lightness_darker": "更暗",
   "color_lightness_normal": "正常",
   "color_lightness_lighter": "更亮",
+  "auto_scroll_to_active_song_mode_never": "从不",
+  "auto_scroll_to_active_song_mode_initial_page_load": "仅在第一次加载页面时",
+  "auto_scroll_to_active_song_mode_video_change": "在每个新视频上",
 
   "plugin_list_title": "插件列表",
   "plugin_list_no_plugins": "当前未安装任何插件。\n访问 %1此页面%2 以获取更多信息。",
@@ -217,13 +223,21 @@
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
 
+  "plugin_intent_name_ReadFeatureConfig": "Read Feature Config",
   "plugin_intent_description_ReadFeatureConfig": "此插件可以读取功能配置",
+  "plugin_intent_name_WriteFeatureConfig": "Write Feature Config",
   "plugin_intent_description_WriteFeatureConfig": "此插件可以写入功能配置",
+  "plugin_intent_name_SeeHiddenConfigValues": "See Hidden Config Values",
   "plugin_intent_description_SeeHiddenConfigValues": "此插件可以访问隐藏的配置值",
+  "plugin_intent_name_WriteLyricsCache": "Write Lyrics Cache",
   "plugin_intent_description_WriteLyricsCache": "此插件可以写入歌词缓存",
+  "plugin_intent_name_WriteTranslations": "Write Translations",
   "plugin_intent_description_WriteTranslations": "此插件可以添加新的翻译并覆盖现有的翻译",
+  "plugin_intent_name_CreateModalDialogs": "Create Modal Dialogs",
   "plugin_intent_description_CreateModalDialogs": "此插件可以创建模态对话框",
+  "plugin_intent_name_ReadAutoLikeData": "Read Auto-Like Data",
   "plugin_intent_description_ReadAutoLikeData": "此插件可以读取自动喜欢的数据",
+  "plugin_intent_name_WriteAutoLikeData": "Write Auto-Like Data",
   "plugin_intent_description_WriteAutoLikeData": "此插件可以写入自动喜欢的数据",
 
   "plugin_validation_error_no_property": "没有类型为 '%2' 的属性 '%1'",
@@ -279,6 +293,7 @@
   "feature_helptext_listButtonsPlacement": "网站上有各种歌曲列表，如专辑页面、播放列表和当前播放队列。\n使用此选项，您可以选择列表按钮应该显示在哪里。",
   "feature_desc_scrollToActiveSongBtn": "在队列中添加一个按钮，以滚动到当前播放的歌曲",
   "feature_desc_clearQueueBtn": "在当前播放的队列或播放列表上方添加一个按钮，以快速清除它",
+  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
   "feature_desc_disableBeforeUnloadPopup": "防止在播放歌曲时尝试离开网站时出现的确认弹出窗口",
   "feature_helptext_disableBeforeUnloadPopup": "当尝试在正在播放的歌曲中几秒钟后离开网站时，将出现一个弹出窗口，询问您是否要离开网站。它可能会说类似于 \"您有未保存的数据\" 或 \"此网站正在询问您是否要关闭它\"。\n此功能完全禁用了该弹出窗口。",
@@ -292,6 +307,7 @@
   "feature_desc_rememberSongTimeReduction": "恢复记住的歌曲时间时要减去多少秒",
   "feature_helptext_rememberSongTimeReduction": "当恢复记住的时间时，将从记住的时间中减去这么多秒，以便您可以重新听到被中断的部分。",
   "feature_desc_rememberSongTimeMinPlayTime": "歌曲需要播放多少秒才能记住其时间",
+  "feature_desc_autoScrollToActiveSongMode": "是否以及何时滚动到队列中当前播放的歌曲",
 
   "feature_desc_arrowKeySupport": "使用箭头键在当前播放的歌曲中前进和后退",
   "feature_helptext_arrowKeySupport": "通常，您只能使用 \"H\" 和 \"L\" 键以固定的 10 秒间隔前进和后退。此功能允许您也使用箭头键。\n要更改要跳过的秒数，请使用下面的选项。",
@@ -336,6 +352,7 @@
   "feature_helptext_themeSongIntegration": "如果安装了 ThemeSong 扩展但此功能已关闭（反之亦然），您可能会注意到网站上的样式损坏。\n\n请始终确保此功能反映了扩展程序是否已安装！",
   "feature_desc_themeSongLightness": "从当前 ThemeSong 主题派生的强调颜色应该有多亮",
   "feature_helptext_themeSongLightness": "根据您为 ThemeSong 扩展选择的设置，此功能允许您调整从当前主题派生的强调颜色的亮度。\n\n如果未安装 ThemeSong 扩展，此功能将不起作用。",
+
   "feature_desc_openPluginList": "打开您安装的插件列表",
   "feature_btn_openPluginList": "打开列表",
   "feature_btn_openPluginList_running": "正在打开...",
@@ -357,6 +374,9 @@
   "feature_desc_resetConfig": "重置所有设置为默认值",
   "feature_btn_resetConfig": "重置设置",
   "feature_btn_resetConfig_running": "正在重置...",
+  "feature_desc_resetEverything": "Reset all stored data to the default values",
+  "feature_btn_resetEverything": "Reset everything",
+  "feature_btn_resetEverything_running": "Resetting...",
   "feature_desc_advancedMode": "显示高级设置（重新加载菜单）",
   "feature_helptext_advancedMode": "启用此功能后，菜单将重新加载并显示默认情况下隐藏的高级设置。\n如果您想更深入地定制脚本的行为并不在意过于拥挤的菜单，这将很有用。"
 }

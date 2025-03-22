@@ -39,6 +39,7 @@
   "import_success": "データのインポートに成功しました",
   "import_success_confirm_reload": "データを正常にインポートしました。\n変更を適用するにはページを再読み込みしますか？",
   "reset_config_confirm": "すべての設定をデフォルト値にリセットしてもよろしいですか？\nページは自動的に再読み込みされます。",
+  "reset_everything_confirm": "Do you really want to reset all stored data to the default values?\nThe page will be automatically reloaded.",
   "copy": "コピー",
   "copy_to_clipboard": "クリップボードにコピー",
   "copy_to_clipboard_error": "テキストをクリップボードにコピーできませんでした。ここから手動でコピーしてください：\n%1",
@@ -93,6 +94,8 @@
   "advanced_mode_short": "詳細モード",
   "experimental_feature": "実験的な機能",
 
+  "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
+  "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",
   "open_lyrics_search_prompt": "歌詞を検索するには曲名とアーティスト名を入力してください：",
   "lyrics_loading": "歌詞 URL を読み込んでいます...",
   "lyrics_rate_limited-1": "レート制限されています。\nもう少し待ってから歌詞をリクエストしてください。",
@@ -205,6 +208,9 @@
   "color_lightness_darker": "暗い",
   "color_lightness_normal": "通常",
   "color_lightness_lighter": "明るい",
+  "auto_scroll_to_active_song_mode_never": "しない",
+  "auto_scroll_to_active_song_mode_initial_page_load": "初回のみ",
+  "auto_scroll_to_active_song_mode_video_change": "新しいビデオごと",
 
   "plugin_list_title": "プラグインリスト",
   "plugin_list_no_plugins": "現在インストールされているプラグインはありません。\n詳細については %1このページ%2 をご覧ください。",
@@ -216,13 +222,22 @@
   "plugin_link_type_bug": "バグを報告",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
+
+  "plugin_intent_name_ReadFeatureConfig": "Read Feature Config",
   "plugin_intent_description_ReadFeatureConfig": "このプラグインは機能構成を読み取ることができます",
+  "plugin_intent_name_WriteFeatureConfig": "Write Feature Config",
   "plugin_intent_description_WriteFeatureConfig": "このプラグインは機能構成に書き込むことができます",
+  "plugin_intent_name_SeeHiddenConfigValues": "See Hidden Config Values",
   "plugin_intent_description_SeeHiddenConfigValues": "このプラグインは隠し構成値にアクセスできます",
+  "plugin_intent_name_WriteLyricsCache": "Write Lyrics Cache",
   "plugin_intent_description_WriteLyricsCache": "このプラグインは歌詞キャッシュに書き込むことができます",
+  "plugin_intent_name_WriteTranslations": "Write Translations",
   "plugin_intent_description_WriteTranslations": "このプラグインは新しい翻訳を追加し、既存の翻訳を上書きできます",
+  "plugin_intent_name_CreateModalDialogs": "Create Modal Dialogs",
   "plugin_intent_description_CreateModalDialogs": "このプラグインはモーダルダイアログを作成できます",
+  "plugin_intent_name_ReadAutoLikeData": "Read Auto-Like Data",
   "plugin_intent_description_ReadAutoLikeData": "このプラグインは自動的に好きなデータを読み取ることができます",
+  "plugin_intent_name_WriteAutoLikeData": "Write Auto-Like Data",
   "plugin_intent_description_WriteAutoLikeData": "このプラグインは自動的に好きなデータに書き込むことができます",
 
   "plugin_validation_error_no_property": "タイプ '%2' のプロパティ '%1' がありません",
@@ -278,6 +293,7 @@
   "feature_helptext_listButtonsPlacement": "サイトにはアルバムページ、プレイリスト、現在再生中のキューなど、さまざまな曲リストがあります。\nこのオプションを使用すると、リストボタンを表示する場所を選択できます。",
   "feature_desc_scrollToActiveSongBtn": "現在再生中の曲にスクロールするボタンをキューの上に追加する",
   "feature_desc_clearQueueBtn": "現在再生中のキューまたはプレイリストの上にボタンを追加して、すばやくクリアする",
+  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
   "feature_desc_disableBeforeUnloadPopup": "曲が再生されている間にサイトを離れようとすると表示される確認ポップアップを防止する",
   "feature_helptext_disableBeforeUnloadPopup": "曲が再生されている間にサイトを離れようとすると、数秒後にポップアップが表示され、サイトを離れるかどうかを確認するように求められます。それは「保存されていないデータがあります」とか「このサイトを閉じるかどうかを尋ねています」とかのようなことが書かれているかもしれません。\nこの機能はそのポップアップを完全に無効にします。",
@@ -291,6 +307,7 @@
   "feature_desc_rememberSongTimeReduction": "記憶された曲の時間を復元するときに減算する秒数",
   "feature_helptext_rememberSongTimeReduction": "記憶された曲の時間を復元するときに、記憶された時間からこの秒数が減算され、中断された部分を再度聞くことができます。",
   "feature_desc_rememberSongTimeMinPlayTime": "曲の時間を記憶するために再生する必要のある最小秒数",
+  "feature_desc_autoScrollToActiveSongMode": "現在再生中の曲にスクロールするかどうか、およびそのタイミング",
 
   "feature_desc_arrowKeySupport": "現在再生中の曲で前後にスキップするには矢印キーを使用する",
   "feature_helptext_arrowKeySupport": "通常、キー \"H\" と \"L\" を使用して 10 秒間隔で前後にスキップすることができます。この機能を使用すると、矢印キーも使用できます。\nスキップする秒数を変更するには、以下のオプションを使用してください。",
@@ -335,6 +352,7 @@
   "feature_helptext_themeSongIntegration": "ThemeSong 拡張機能がインストールされている場合、この機能を有効にすると、サイトのスタイリングに問題が発生するのを防ぐためにいくつかの修正が行われます。\n\nこの機能は拡張機能がインストールされていない場合には効果がありませんので、その場合は有効にしたままにしておくことができます。",
   "feature_desc_themeSongLightness": "現在の ThemeSong テーマから派生したアクセントカラーの明るさ",
   "feature_helptext_themeSongLightness": "ThemeSong 拡張機能の設定に応じて、この機能を使用して、現在のテーマから派生したアクセントカラーの明るさを調整できます。\n\nThemeSong 拡張機能がインストールされていない場合、この機能は効果がありません。",
+
   "feature_desc_openPluginList": "インストールされているプラグインのリストを開く",
   "feature_btn_openPluginList": "リストを開く",
   "feature_btn_openPluginList_running": "開いています...",
@@ -356,6 +374,9 @@
   "feature_desc_resetConfig": "すべての設定をデフォルト値にリセットする",
   "feature_btn_resetConfig": "設定をリセット",
   "feature_btn_resetConfig_running": "リセット中...",
+  "feature_desc_resetEverything": "Reset all stored data to the default values",
+  "feature_btn_resetEverything": "Reset everything",
+  "feature_btn_resetEverything_running": "Resetting...",
   "feature_desc_advancedMode": "詳細設定を表示する（メニューを再読み込み）",
   "feature_helptext_advancedMode": "これを有効にすると、メニューが再読み込まれ、デフォルトで非表示になっている詳細設定が表示されます。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。メニューが過密になっていることを気にしない場合に役立ちます。"
 }

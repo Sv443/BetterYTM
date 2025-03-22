@@ -208,6 +208,9 @@
   "color_lightness_darker": "Dunkler",
   "color_lightness_normal": "Normal",
   "color_lightness_lighter": "Heller",
+  "auto_scroll_to_active_song_mode_never": "Nie",
+  "auto_scroll_to_active_song_mode_initial_page_load": "Beim initialen Laden der Seite",
+  "auto_scroll_to_active_song_mode_video_change": "Bei jedem Video",
 
   "plugin_list_title": "Plugin-Liste",
   "plugin_list_no_plugins": "Derzeit sind keine Plugins installiert.\nBesuche %1diese Seite%2 für mehr Informationen.",
@@ -288,8 +291,9 @@
   "feature_desc_deleteFromQueueButton": "Füge einen Knopf zu jedem Song in einer Liste hinzu, um ihn schnell zu entfernen",
   "feature_desc_listButtonsPlacement": "Wo sollen die Listen-Knöpfe erscheinen?",
   "feature_helptext_listButtonsPlacement": "Es gibt verschiedene Songlisten auf der Seite wie Albumseiten, Playlists und die aktuelle Wiedergabeliste.\nMit dieser Option kannst du wählen, wo die Listen-Knöpfe erscheinen sollen.",
-  "feature_desc_scrollToActiveSongBtn": "Füge einen Knopf über der Wiedergabeliste hinzu, um zum aktuell abgespielten Song zu scrollen",
+  "feature_desc_scrollToActiveSongBtn": "Füge einen Knopf über der Wiedergabeliste hinzu, um zum aktuell spielenden Song zu scrollen",
   "feature_desc_clearQueueBtn": "Füge einen Knopf über der Wiedergabeliste hinzu, um sie schnell zu leeren",
+  "feature_desc_aboveQueueBtnsSticky": "Positioniere das Element, in dem die Knöpfe über der Wiedergabeliste sind, immer am oberen Rand",
 
   "feature_desc_disableBeforeUnloadPopup": "Verhindere das Erscheinen des Bestätigungs-Popup beim Verlassen der Seite, während ein Song läuft",
   "feature_helptext_disableBeforeUnloadPopup": "Wenn du versuchst, die Seite zu verlassen, während ein Song läuft, erscheint ein Popup, das dich fragt, ob du die Seite wirklich verlassen möchtest. Es könnte etwas in der Art von \"Du hast ungespeicherte Daten\" oder \"Diese Seite fragt, ob du sie schließen möchtest\" sein.\nDiese Funktion deaktiviert dieses Popup vollständig.",
@@ -303,7 +307,7 @@
   "feature_desc_rememberSongTimeReduction": "Wie viele Sekunden abgezogen werden sollen, wenn ein gespeicherter Song wiederhergestellt wird",
   "feature_helptext_rememberSongTimeReduction": "Wenn die Zeit eines Songs, die gespeichert wurde, wiederhergestellt wird, wird diese Anzahl von Sekunden von der gespeicherten Zeit abgezogen, damit du den Teil, der unterbrochen wurde, erneut hören kannst.",
   "feature_desc_rememberSongTimeMinPlayTime": "Mindestanzahl an Sekunden, die ein Song gespielt werden muss, damit die Zeit gespeichert wird",
-  "feature_desc_aboveQueueBtnsSticky": "Positioniere das Element, in dem die Knöpfe über der Wiedergabeliste sind, immer am oberen Rand",
+  "feature_desc_autoScrollToActiveSongMode": "Ob und wann zu dem aktuell spielenden Song in der Wiedergabeliste gescrollt werden soll",
 
   "feature_desc_arrowKeySupport": "Benutze die Pfeiltasten um vor- und zurückzuspulen",
   "feature_helptext_arrowKeySupport": "Normalerweise kannst du nur in 10 Sekunden Schritten vor- und zurückspulen, indem du die Tasten \"H\" und \"L\" benutzt. Diese Funktion ermöglicht es dir, auch die Pfeiltasten zu benutzen.\nUm die Anzahl der Sekunden zu ändern, um die gespult werden soll, benutze die Option unten.",

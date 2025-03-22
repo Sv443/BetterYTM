@@ -477,6 +477,18 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
   },
+  autoScrollToActiveSongMode: {
+    type: "select",
+    category: "behavior",
+    options: () => [
+      { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
+      { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
+      { value: "videoChange", label: t("auto_scroll_to_active_song_mode_video_change") },
+    ],
+    default: "initialPageLoad",
+    reloadRequired: false,
+    enable: noop,
+  },
 
   //#region cat:input
   arrowKeySupport: {

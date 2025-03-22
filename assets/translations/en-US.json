@@ -209,6 +209,10 @@
   "color_lightness_normal": "Normal",
   "color_lightness_lighter": "Lighter",
 
+  "auto_scroll_to_active_song_mode_never": "Never",
+  "auto_scroll_to_active_song_mode_initial_page_load": "On first page load only",
+  "auto_scroll_to_active_song_mode_video_change": "On every new video",
+
   "plugin_list_title": "Plugin List",
   "plugin_list_no_plugins": "No plugins are currently installed.\nVisit %1this page%2 for more information.",
   "plugin_list_no_plugins_tooltip": "No plugins are currently installed.",
@@ -290,6 +294,7 @@
   "feature_helptext_listButtonsPlacement": "There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.",
   "feature_desc_scrollToActiveSongBtn": "Add a button above the queue to scroll to the currently playing song",
   "feature_desc_clearQueueBtn": "Add a button above the currently playing queue or playlist to quickly clear it",
+  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
   "feature_desc_disableBeforeUnloadPopup": "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
   "feature_helptext_disableBeforeUnloadPopup": "When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of \"you have unsaved data\" or \"this site is asking if you want to close it\".\nThis feature disables that popup entirely.",
@@ -303,7 +308,7 @@
   "feature_desc_rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered song",
   "feature_helptext_rememberSongTimeReduction": "When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you have more context when listening to the part that was interrupted again.",
   "feature_desc_rememberSongTimeMinPlayTime": "Minimum amount of seconds a song needs to be played for its time to be remembered",
-  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
+  "feature_desc_autoScrollToActiveSongMode": "Whether and when to scroll to the currently playing song in the queue",
 
   "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
   "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys \"H\" and \"L\". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.",

@@ -23,6 +23,7 @@ import {
   // behavior
   initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
+  initAutoScrollToActiveSong,
   // input
   initArrowKeySkip, initSiteSwitch,
   addAnchorImprovements, initNumKeysSkip,
@@ -214,6 +215,8 @@ async function onDomLoad() {
 
       if(feats.closeToastsTimeout > 0)
         ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
+
+      ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
 
       //#region (ytm) input
 

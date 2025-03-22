@@ -39,6 +39,7 @@
   "import_success": "डेटा सफलतापूर्वक आयात किया गया",
   "import_success_confirm_reload": "डेटा सफलतापूर्वक आयात किया गया है।\nक्या आप परिवर्तन लागू करने के लिए पृष्ठ को अब पुनः लोड करना चाहते हैं?",
   "reset_config_confirm": "क्या आप वास्तव में सभी सेटिंग्स को उनके डिफ़ॉल्ट मानों पर रीसेट करना चाहते हैं?\nपृष्ठ स्वचालित रूप से पुनः लोड हो जाएगा।",
+  "reset_everything_confirm": "Do you really want to reset all stored data to the default values?\nThe page will be automatically reloaded.",
   "copy": "कॉपी",
   "copy_to_clipboard": "क्लिपबोर्ड पर कॉपी करें",
   "copy_to_clipboard_error": "टेक्स्ट को क्लिपबोर्ड पर कॉपी नहीं किया जा सका। कृपया इसे यहां से मैन्युअल रूप से कॉपी करें:\n%1",
@@ -93,6 +94,8 @@
   "advanced_mode_short": "उन्नत",
   "experimental_feature": "प्रायोगिक सुविधा",
 
+  "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
+  "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",
   "open_lyrics_search_prompt": "बोल खोजने के लिए गीत का शीर्षक और कलाकार दर्ज करें:",
   "lyrics_loading": "बोल लोड हो रहे हैं...",
   "lyrics_rate_limited-1": "आपको रेट सीमित किया जा रहा है।\nकृपया अधिक बोल का अनुरोध करने से पहले कुछ सेकंड प्रतीक्षा करें।",
@@ -205,6 +208,9 @@
   "color_lightness_darker": "गहरे",
   "color_lightness_normal": "सामान्य",
   "color_lightness_lighter": "हल्का",
+  "auto_scroll_to_active_song_mode_never": "कभी नहीं",
+  "auto_scroll_to_active_song_mode_initial_page_load": "पहले पृष्ठ लोड पर केवल",
+  "auto_scroll_to_active_song_mode_video_change": "हर नए वीडियो पर",
 
   "plugin_list_title": "प्लगइन सूची",
   "plugin_list_no_plugins": "कोई प्लगइन वर्तमान में स्थापित नहीं हैं।\nअधिक जानकारी के लिए %1इस पृष्ठ%2 पर जाएं।",
@@ -217,13 +223,21 @@
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
 
+  "plugin_intent_name_ReadFeatureConfig": "Read Feature Config",
   "plugin_intent_description_ReadFeatureConfig": "यह प्लगइन फीचर कॉन्फ़िगरेशन को पढ़ सकता है",
+  "plugin_intent_name_WriteFeatureConfig": "Write Feature Config",
   "plugin_intent_description_WriteFeatureConfig": "यह प्लगइन फीचर कॉन्फ़िगरेशन में लिख सकता है",
+  "plugin_intent_name_SeeHiddenConfigValues": "See Hidden Config Values",
   "plugin_intent_description_SeeHiddenConfigValues": "इस प्लगइन में छिपे हुए कॉन्फ़िगरेशन मानों तक पहुंच है",
+  "plugin_intent_name_WriteLyricsCache": "Write Lyrics Cache",
   "plugin_intent_description_WriteLyricsCache": "यह प्लगइन गीत कैश में लिख सकता है",
+  "plugin_intent_name_WriteTranslations": "Write Translations",
   "plugin_intent_description_WriteTranslations": "यह प्लगइन नए अनुवाद जोड़ सकता है और मौजूदा अनुवादों को अधिलेखित कर सकता है",
+  "plugin_intent_name_CreateModalDialogs": "Create Modal Dialogs",
   "plugin_intent_description_CreateModalDialogs": "यह प्लगइन मोडल डायलॉग बना सकता है",
+  "plugin_intent_name_ReadAutoLikeData": "Read Auto-Like Data",
   "plugin_intent_description_ReadAutoLikeData": "यह प्लगइन ऑटो-पसंद डेटा पढ़ सकता है",
+  "plugin_intent_name_WriteAutoLikeData": "Write Auto-Like Data",
   "plugin_intent_description_WriteAutoLikeData": "यह प्लगइन ऑटो-पसंद डेटा में लिख सकता है",
 
   "plugin_validation_error_no_property": "कोई गुण '%1' जिसके पास '%2' प्रकार है नहीं है",
@@ -279,6 +293,7 @@
   "feature_helptext_listButtonsPlacement": "साइट पर विभिन्न गीत सूचियाँ हैं जैसे एल्बम पेज, प्लेलिस्ट और वर्तमान में चल रही कतार।\nइस विकल्प के साथ आप यह चुन सकते हैं कि बटन कहाँ दिखाएं।",
   "feature_desc_scrollToActiveSongBtn": "कतार में वर्तमान गीत के ऊपर स्क्रॉल करने के लिए एक बटन जोड़ें",
   "feature_desc_clearQueueBtn": "वर्तमान में चल रही कतार या प्लेलिस्ट के ऊपर त्वरित रूप से इसे साफ करने के लिए एक बटन जोड़ें",
+  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
 
   "feature_desc_disableBeforeUnloadPopup": "एक गीत चल रहे होने पर साइट छोड़ने का प्रयास करने पर आने वाली पुष्टि पॉपअप को रोकें",
   "feature_helptext_disableBeforeUnloadPopup": "जब आप वेबसाइट छोड़ने की कोशिश करते हैं जब आप एक गीत को थोड़े समय के लिए सुन रहे होते हैं, तो एक पॉपअप आता है जो आपसे पुष्टि करता है कि क्या आप वाकई साइट छोड़ना चाहते हैं। यह कुछ इस प्रकार का हो सकता है \"आपके पास असहेज डेटा है\" या \"यह साइट आपसे पूछ रही है कि क्या आप इसे बंद करना चाहते हैं\"।\nयह सुविधा इस पॉपअप को पूरी तरह से अक्षम करती है।",
@@ -292,6 +307,7 @@
   "feature_desc_rememberSongTimeReduction": "याद रखे गए गीत के समय को बहाल करते समय कितने सेकंड कम करें?",
   "feature_helptext_rememberSongTimeReduction": "जब याद किए गए गीत का समय बहाल किया जाता है, तो याद किए गए समय से यह संख्या घटाई जाएगी ताकि आप उस भाग को फिर से सुन सकें जिसे रोक दिया गया था।",
   "feature_desc_rememberSongTimeMinPlayTime": "गीत को याद रखने के लिए न्यूनतम समय (सेकंड) जिसे गीत को खेलना चाहिए",
+  "feature_desc_autoScrollToActiveSongMode": "वर्तमान में चल रहे गीत में ऑटो-स्क्रॉल करने का मोड",
 
   "feature_desc_arrowKeySupport": "वर्तमान में चल रहे गीत के मीडिया नियंत्रणों में एक बटन जो एरो कुंजियों का समर्थन करता है",
   "feature_helptext_arrowKeySupport": "सामान्य रूप से आप केवल बाएं और दाएं तीर कुंजियों का उपयोग करके एक निश्चित 10 सेकंड के अंतराल में छोड़ सकते हैं। इस सुविधा की मदद से आप तीर कुंजियों का उपयोग कर सकते हैं।\nछोड़ने के लिए सेकंडों की मात्रा बदलने के लिए, नीचे दिए गए विकल्प का उपयोग करें।",
@@ -336,6 +352,7 @@
   "feature_helptext_themeSongIntegration": "यदि थीमसॉंग एक्सटेंशन इंस्टॉल किया गया है लेकिन यह सुविधा बंद है (या उम्मीद है कि इसे बंद किया गया है), तो आप साइट पर टूटी हुई स्टाइलिंग देख सकते हैं।\n\nकृपया हमेशा सुनिश्चित करें कि यह सुविधा यह दर्शाती है कि एक्सटेंशन इंस्टॉल किया गया है या नहीं!",
   "feature_desc_themeSongLightness": "वर्तमान थीमसॉंग थीम से निकले एक्सेंट रंगों को कितना हल्का होना चाहिए",
   "feature_helptext_themeSongLightness": "थीमसॉंग एक्सटेंशन के लिए आपने जो सेटिंग्स चुनी हैं, उन एक्सेंट रंगों की हल्काई को समायोजित करने की अनुमति देती है।\n\nयदि थीमसॉंग एक्सटेंशन इंस्टॉल नहीं है, तो इस सुविधा का कोई प्रभाव नहीं होगा।",
+
   "feature_desc_openPluginList": "आपके द्वारा इंस्टॉल किए गए प्लगइनों की सूची खोलें",
   "feature_btn_openPluginList": "सूची खोलें",
   "feature_btn_openPluginList_running": "खोल रहा है...",
@@ -357,6 +374,9 @@
   "feature_desc_resetConfig": "सभी सेटिंग्स को उनके डिफ़ॉल्ट मानों पर रीसेट करें",
   "feature_btn_resetConfig": "सेटिंग्स रीसेट करें",
   "feature_btn_resetConfig_running": "रीसेट कर रहा है...",
+  "feature_desc_resetEverything": "Reset all stored data to the default values",
+  "feature_btn_resetEverything": "Reset everything",
+  "feature_btn_resetEverything_running": "Resetting...",
   "feature_desc_advancedMode": "उन्नत सेटिंग्स दिखाएं (मेनू को फिर से लोड करता है)",
   "feature_helptext_advancedMode": "इसे सक्षम करने के बाद, मेनू फिर से लोड होगा और डिफ़ॉल्ट रूप से छिपे हुए उन्नत सेटिंग्स दिखाएंगे।\nयह उपयोगी है यदि आप स्क्रिप्ट के व्यवहार को और गहराई से अनुकूलित करना चाहते हैं और एक अधिक भरा हुआ मेनू के बारे में चिंता नहीं करते।"
 }
