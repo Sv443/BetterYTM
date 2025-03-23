@@ -1,5 +1,5 @@
 import { autoPlural, clamp, interceptWindowEvent, isDomLoaded, pauseFor } from "@sv443-network/userutils";
-import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, scrollToCurrentSongInQueue } from "../utils/index.js";
+import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, scrollToCurrentSongInQueue, warn } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
@@ -109,11 +109,11 @@ export async function initAutoScrollToActiveSong() {
 
 interface RemVidObj {
   /** Watch ID */
-  watchID: string;
+  id: string;
   /** Time of the song/video in seconds */
-  songTime: number;
+  time: number;
   /** Timestamp this entry was last updated */
-  updateTimestamp: number;
+  updated: number;
 }
 
 /**
@@ -159,29 +159,29 @@ async function remTimeRestoreTime() {
   const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
 
   if(location.pathname.startsWith("/watch")) {
-    const watchID = new URL(location.href).searchParams.get("v");
-    if(!watchID)
+    const videoID = new URL(location.href).searchParams.get("v");
+    if(!videoID)
       return;
 
     if(initialParams.has("t"))
       return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
 
-    const entry = remVids.find(entry => entry.watchID === watchID);
+    const entry = remVids.find(entry => entry.id === videoID);
     if(entry) {
-      if(Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
-        await remTimeDeleteEntry(entry.watchID);
+      if(Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
+        await remTimeDeleteEntry(entry.id);
         return;
       }
-      else if(isNaN(Number(entry.songTime)))
-        return;
+      else if(isNaN(Number(entry.time)) || entry.time < 0)
+        return warn("Invalid time in remembered song time entry:", entry);
       else {
         let vidElem: HTMLVideoElement;
         const doRestoreTime = async () => {
           if(!vidElem)
             vidElem = await waitVideoElementReady();
-          const vidRestoreTime = entry.songTime - (getFeature("rememberSongTimeReduction") ?? 0);
+          const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction") ?? 0);
           vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-          await remTimeDeleteEntry(entry.watchID);
+          await remTimeDeleteEntry(entry.id);
           info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
         };
 
@@ -202,10 +202,10 @@ async function remTimeStartUpdateLoop() {
   const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
 
   if(location.pathname.startsWith("/watch")) {
-    const watchID = getWatchId();
+    const id = getWatchId();
     const songTime = await getVideoTime() ?? 0;
 
-    if(watchID && songTime !== lastSongTime) {
+    if(id && songTime !== lastSongTime) {
       lastSongTime = songTime;
 
       const paused = getVideoElement()?.paused ?? false;
@@ -214,24 +214,24 @@ async function remTimeStartUpdateLoop() {
       // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
       if(songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
         const entry = {
-          watchID,
-          songTime,
-          updateTimestamp: Date.now(),
+          id,
+          time: songTime,
+          updated: Date.now(),
         };
         await remTimeUpsertEntry(entry);
       }
       // if the song is rewound to the beginning, update the entry accordingly
       else if(!paused) {
-        const entry = remVids.find(entry => entry.watchID === watchID);
-        if(entry && songTime <= entry.songTime)
-          await remTimeUpsertEntry({ ...entry, songTime, updateTimestamp: Date.now() });
+        const entry = remVids.find(entry => entry.id === id);
+        if(entry && songTime <= entry.time)
+          await remTimeUpsertEntry({ ...entry, time: songTime, updated: Date.now() });
       }
     }
   }
 
-  const expiredEntries = remVids.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
+  const expiredEntries = remVids.filter(entry => Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000);
   for(const entry of expiredEntries)
-    await remTimeDeleteEntry(entry.watchID);
+    await remTimeDeleteEntry(entry.id);
 
   // for no overlapping calls and better error handling:
   if(remVidCheckTimeout)
@@ -242,7 +242,7 @@ async function remTimeStartUpdateLoop() {
 /** Updates an existing or inserts a new entry to be remembered */
 async function remTimeUpsertEntry(data: RemVidObj) {
   const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
-  const foundIdx = remVids.findIndex(entry => entry.watchID === data.watchID);
+  const foundIdx = remVids.findIndex(entry => entry.id === data.id);
 
   if(foundIdx >= 0)
     remVids[foundIdx] = data;
@@ -253,8 +253,8 @@ async function remTimeUpsertEntry(data: RemVidObj) {
 }
 
 /** Deletes an entry in the "remember cache" */
-async function remTimeDeleteEntry(watchID: string) {
+async function remTimeDeleteEntry(videoID: string) {
   const remVids = (JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[])
-    .filter(entry => entry.watchID !== watchID);
+    .filter(entry => entry.id !== videoID);
   await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }

@@ -729,13 +729,13 @@ export async function initShowVotes() {
   addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
     async listener(voteCont: HTMLElement): Promise<void> {
       try {
-        const watchId = getWatchId();
-        if(!watchId) {
+        const videoID = getWatchId();
+        if(!videoID) {
           await siteEvents.once("watchIdChanged");
           return initShowVotes();
         }
 
-        const voteObj = await fetchVideoVotes(watchId);
+        const voteObj = await fetchVideoVotes(videoID);
         if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
           return error("Couldn't fetch votes from the Return YouTube Dislike API");
 

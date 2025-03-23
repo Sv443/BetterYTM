@@ -122,28 +122,28 @@ export function isValidChannelId(channelId: string) {
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
 type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq"}default` | "default";
 
-/** Returns the thumbnail URL for a video with the given watch ID and quality (defaults to "hqdefault") */
-export function getThumbnailUrl(watchId: string, quality?: ThumbQuality): string
-/** Returns the thumbnail URL for a video with the given watch ID and index (0 is low quality thumbnail, 1-3 are low quality frames from the video) */
-export function getThumbnailUrl(watchId: string, index?: 0 | 1 | 2 | 3): string
+/** Returns the thumbnail URL for a video with the given video ID and quality (defaults to "hqdefault") */
+export function getThumbnailUrl(videoID: string, quality?: ThumbQuality): string
+/** Returns the thumbnail URL for a video with the given video ID and index (0 is low quality thumbnail, 1-3 are low quality frames from the video) */
+export function getThumbnailUrl(videoID: string, index?: 0 | 1 | 2 | 3): string
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
-export function getThumbnailUrl(watchId: string, qualityOrIndex: Prettify<ThumbQuality | 0 | 1 | 2 | 3> = "maxresdefault") {
-  return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+export function getThumbnailUrl(videoID: string, qualityOrIndex: Prettify<ThumbQuality | 0 | 1 | 2 | 3> = "maxresdefault") {
+  return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
 }
 
-/** Returns the best available thumbnail URL for a video with the given watch ID */
-export async function getBestThumbnailUrl(watchId: string) {
+/** Returns the best available thumbnail URL for a video with the given video ID */
+export async function getBestThumbnailUrl(videoID: string) {
   try {
     const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
 
     for(const quality of priorityList) {
       let response: GM.Response<unknown> | undefined;
-      const url = getThumbnailUrl(watchId, quality as ThumbQuality);
+      const url = getThumbnailUrl(videoID, quality as ThumbQuality);
       try {
         response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
       }
       catch(err) {
-        error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
+        error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
         void err;
       }
       if(response && response.status < 300 && response.status >= 200)
@@ -151,7 +151,7 @@ export async function getBestThumbnailUrl(watchId: string) {
     }
   }
   catch(err) {
-    throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
+    throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
   }
 }
 

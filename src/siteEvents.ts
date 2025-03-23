@@ -33,7 +33,7 @@ export interface SiteEventsMap {
    */
   songTitleChanged: (newTitle: string, oldTitle: string | null) => void;
   /**
-   * Emitted whenever the current song's watch ID changes.  
+   * Emitted whenever the current song's watch/video ID changes.  
    * If `oldId` is `null`, this is the first song played in the session.
    */
   watchIdChanged: (newId: string, oldId: string | null) => void;
@@ -81,7 +81,7 @@ export function removeAllObservers() {
   observers = [];
 }
 
-let lastWatchId: string | null = null;
+let lastVidId: string | null = null;
 let lastPathname: string | null = null;
 let lastFullscreen: boolean;
 
@@ -183,8 +183,8 @@ export async function initSiteEvents() {
             const urlRefObs = new MutationObserver(([ { target } ]) => {
               if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
                 return;
-              const watchId = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
-              checkWatchIdChange(watchId);
+              const videoID = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
+              checkVideoIdChange(videoID);
             });
 
             urlRefObs.observe(el, {
@@ -194,8 +194,8 @@ export async function initSiteEvents() {
         });
       }
       if(getDomain() === "ytm") {
-        setInterval(checkWatchIdChange, 250);
-        checkWatchIdChange();
+        setInterval(checkVideoIdChange, 250);
+        checkVideoIdChange();
       }
     }, {
       once: true,
@@ -230,19 +230,19 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
 //#region other
 
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
-function checkWatchIdChange(newId?: string | null) {
-  const newWatchId = newId ?? new URL(location.href).searchParams.get("v");
-  if(newWatchId && newWatchId !== lastWatchId) {
-    info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
-    emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-    lastWatchId = newWatchId;
+function checkVideoIdChange(newID?: string | null) {
+  const newVidID = newID ?? new URL(location.href).searchParams.get("v");
+  if(newVidID && newVidID !== lastVidId) {
+    info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newVidID}"`);
+    emitSiteEvent("watchIdChanged", newVidID, lastVidId);
+    lastVidId = newVidID;
   }
 }
 
 /** Periodically called to check for changes in the URL and emit associated siteEvents */
 export function runIntervalChecks() {
-  if(!lastWatchId)
-    checkWatchIdChange();
+  if(!lastVidId)
+    checkVideoIdChange();
 
   if(location.pathname !== lastPathname) {
     emitSiteEvent("pathChanged", String(location.pathname), lastPathname);

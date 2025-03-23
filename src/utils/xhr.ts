@@ -64,24 +64,24 @@ const voteCacheTTL = 1000 * 60 * 10;
 
 /**
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
- * @param watchId The watch ID of the video
+ * @param videoID The video ID of the video
  */
-export async function fetchVideoVotes(watchId: string): Promise<VideoVotesObj | undefined> {
+export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | undefined> {
   try {
-    if(voteCache.has(watchId)) {
-      const cached = voteCache.get(watchId)!;
+    if(voteCache.has(videoID)) {
+      const cached = voteCache.get(videoID)!;
       if(Date.now() - cached.timestamp < voteCacheTTL) {
-        info(`Returning cached video votes for watch ID '${watchId}':`, cached);
+        info(`Returning cached video votes for video ID '${videoID}':`, cached);
         return cached;
       }
       else
-        voteCache.delete(watchId);
+        voteCache.delete(videoID);
     }
 
     const votesRaw = JSON.parse(
       (await sendRequest({
         method: "GET",
-        url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
+        url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`,
       })).response
     ) as RYDVotesObj;
 
@@ -99,7 +99,7 @@ export async function fetchVideoVotes(watchId: string): Promise<VideoVotesObj | 
     };
     voteCache.set(votesObj.id, votesObj);
 
-    info(`Fetched video votes for watch ID '${watchId}':`, votesObj);
+    info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
 
     return votesObj;
   }

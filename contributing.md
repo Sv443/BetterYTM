@@ -890,18 +890,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Signature:
 > ```ts
 > unsafeWindow.BYTM.getThumbnailUrl(
->   watchID: string,
+>   videoID: string,
 >   qualityOrIndex: "maxresdefault" | "sddefault" | "hqdefault" | "mqdefault" | "default" | 0 | 1 | 2 | 3
 > ): string
 > ```
 >   
 > Description:  
-> Returns the URL to the thumbnail of the video with the specified watch/video ID and quality (resolution).  
+> Returns the URL to the thumbnail of the video with the specified video ID and quality (resolution).  
 > If an index number is passed, 0 will return a very low resolution thumbnail and 1-3 will return a very low resolution preview frame from the video (if available).  
 > For some videos, different qualities and indexes are not available. That is why using [`getBestThumbnailUrl()`](#getbestthumbnailurl) is recommended in most cases.  
 >   
 > Arguments:
-> - `watchID` - The watch/video ID of the video to get the thumbnail for
+> - `videoID` - The video ID of the video to get the thumbnail for
 > - `qualityOrIndex` - The quality or index of the thumbnail to get. If no quality is specified, `maxresdefault` (highest resolution) is used.  
 >   Quality values sorted by highest res first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`.
 >   
@@ -918,11 +918,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### getBestThumbnailUrl()
 > Signature:
 > ```ts
-> unsafeWindow.BYTM.getBestThumbnailUrl(watchID: string): Promise<string | undefined>
+> unsafeWindow.BYTM.getBestThumbnailUrl(videoID: string): Promise<string | undefined>
 > ```
 >   
 > Description:  
-> Returns the URL to the best resolution thumbnail of the video with the specified watch/video ID.  
+> Returns the URL to the best resolution thumbnail of the video with the specified video ID.  
 > Will sequentially try to get the highest quality thumbnail available until one is found.  
 > Resolution priority list: `maxresdefault` > `sddefault` > `hqdefault` > `0`  
 >   
@@ -933,7 +933,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > May throw if an error occurs while fetching the thumbnails.  
 >   
 > Arguments:
-> - `watchID` - The watch/video ID of the video to get the thumbnail for
+> - `videoID` - The video ID of the video to get the thumbnail for
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
