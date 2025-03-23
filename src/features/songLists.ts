@@ -186,15 +186,15 @@ async function addQueueButtons(
           queueItem.setAttribute("data-bytm-loading", "");
 
           if(imgEl) {
-            if(imgEl.tagName === "IMG")
+            if(imgEl.tagName === "IMG") {
               (imgEl as HTMLImageElement).src = await getResourceUrl("icon-spinner");
+              imgEl?.classList.add("bytm-spinner");
+            }
             else if(lyricsBtnElem) {
               setInnerHtml(lyricsBtnElem, await resourceAsString("icon-spinner"));
-              lyricsBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+              lyricsBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img", "bytm-spinner");
             }
           }
-
-          imgEl?.classList.add("bytm-spinner");
         }
 
         lyricsUrl = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.url ?? await fetchLyricsUrlTop(artistsSan, songSan);
@@ -210,14 +210,15 @@ async function addQueueButtons(
 
         const resetImgElem = async () => {
           if(imgEl) {
-            if(imgEl.tagName === "IMG")
+            if(imgEl.tagName === "IMG") {
               (imgEl as HTMLImageElement).src = lyricsIconUrl;
+              imgEl?.classList.remove("bytm-spinner");
+            }
             else if(lyricsBtnElem) {
               setInnerHtml(lyricsBtnElem, await resourceAsString("icon-lyrics"));
               lyricsBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
             }
           }
-          imgEl?.classList.remove("bytm-spinner");
         };
 
         if(!cachedLyricsEntry) {
@@ -250,16 +251,16 @@ async function addQueueButtons(
     deleteBtnElem.tabIndex = 0;
     deleteBtnElem.style.visibility = "initial";
 
-    const imgElem = document.createElement("img");
-    imgElem.classList.add("bytm-generic-btn-img");
-    imgElem.src = deleteIconUrl;
+    const delImgElem = document.createElement("img");
+    delImgElem.classList.add("bytm-generic-btn-img");
+    delImgElem.src = deleteIconUrl;
 
     onInteraction(deleteBtnElem, async (e: MouseEvent | KeyboardEvent) => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      imgElem.src = spinnerIconUrl;
-      imgElem.classList.add("bytm-spinner");
+      delImgElem.src = spinnerIconUrl;
+      delImgElem.classList.add("bytm-spinner");
 
       // container of the queue item popup menu - element gets reused for every queue item
       let queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
@@ -283,6 +284,9 @@ async function addQueueButtons(
 
         await pauseFor(15);
 
+        delImgElem.src = deleteIconUrl;
+        delImgElem.classList.remove("bytm-spinner");
+
         const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
         removeFromQueueBtn?.click();
 
@@ -296,7 +300,7 @@ async function addQueueButtons(
         if(!removeFromQueueBtn) {
           error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
           dotsBtnElem?.click();
-          imgElem.src = await getResourceUrl("icon-error");
+          delImgElem.src = await getResourceUrl("icon-error");
           if(deleteBtnElem)
             deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list"));
         }
@@ -309,7 +313,7 @@ async function addQueueButtons(
       }
     });
 
-    deleteBtnElem.appendChild(imgElem);
+    deleteBtnElem.appendChild(delImgElem);
   }
 
   lyricsBtnElem && queueBtnsCont.appendChild(createRipple(lyricsBtnElem));
