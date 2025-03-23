@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3a9ecb3b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3b490ad/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -313,7 +313,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3a9ecb3b",
+    buildNumber: "b3b490ad",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -979,7 +979,7 @@ const siteEvents = new UserUtils.NanoEmitter({
     publicEmit: true,
 });
 let observers = [];
-let lastWatchId = null;
+let lastVidId = null;
 let lastPathname = null;
 let lastFullscreen;
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
@@ -1068,8 +1068,8 @@ async function initSiteEvents() {
                             var _a;
                             if (!target || !((_a = target === null || target === void 0 ? void 0 : target.href) === null || _a === void 0 ? void 0 : _a.includes("/watch")))
                                 return;
-                            const watchId = new URL(target.href).searchParams.get("v");
-                            checkWatchIdChange(watchId);
+                            const videoID = new URL(target.href).searchParams.get("v");
+                            checkVideoIdChange(videoID);
                         });
                         urlRefObs.observe(el, {
                             attributeFilter: ["href"],
@@ -1078,8 +1078,8 @@ async function initSiteEvents() {
                 });
             }
             if (getDomain() === "ytm") {
-                setInterval(checkWatchIdChange, 250);
-                checkWatchIdChange();
+                setInterval(checkVideoIdChange, 250);
+                checkVideoIdChange();
             }
         }, {
             once: true,
@@ -1110,18 +1110,18 @@ function emitSiteEvent(key, ...args) {
 }
 //#region other
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
-function checkWatchIdChange(newId) {
-    const newWatchId = newId !== null && newId !== void 0 ? newId : new URL(location.href).searchParams.get("v");
-    if (newWatchId && newWatchId !== lastWatchId) {
-        info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
-        emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-        lastWatchId = newWatchId;
+function checkVideoIdChange(newID) {
+    const newVidID = newID !== null && newID !== void 0 ? newID : new URL(location.href).searchParams.get("v");
+    if (newVidID && newVidID !== lastVidId) {
+        info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newVidID}"`);
+        emitSiteEvent("watchIdChanged", newVidID, lastVidId);
+        lastVidId = newVidID;
     }
 }
 /** Periodically called to check for changes in the URL and emit associated siteEvents */
 function runIntervalChecks() {
-    if (!lastWatchId)
-        checkWatchIdChange();
+    if (!lastVidId)
+        checkVideoIdChange();
     if (location.pathname !== lastPathname) {
         emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
         lastPathname = String(location.pathname);
@@ -1632,7 +1632,6 @@ async function initAutoScrollToActiveSong() {
         scrollToCurrentSongInQueue();
     }
 }
-let remVidsCache = [];
 /**
  * Remembers the time of the last played video and resumes playback from that time.
  * **Needs to be called *before* DOM is ready!**
@@ -1643,15 +1642,16 @@ async function initRememberSongTime() {
     const storedDataRaw = await GM.getValue("bytm-rem-songs");
     if (!storedDataRaw)
         await GM.setValue("bytm-rem-songs", "[]");
+    let remVids;
     try {
-        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        remVids = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
     }
     catch (err) {
         error("Error parsing stored video time data, defaulting to empty cache:", err);
         await GM.setValue("bytm-rem-songs", "[]");
-        remVidsCache = [];
+        remVids = [];
     }
-    log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
+    log(`Initialized video time restoring with ${remVids.length} initial ${UserUtils.autoPlural("entry", remVids)}:`, remVids);
     await remTimeRestoreTime();
     try {
         if (!UserUtils.isDomLoaded())
@@ -1665,29 +1665,30 @@ async function initRememberSongTime() {
 }
 /** Tries to restore the time of the currently playing video */
 async function remTimeRestoreTime() {
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
     if (location.pathname.startsWith("/watch")) {
-        const watchID = new URL(location.href).searchParams.get("v");
-        if (!watchID)
+        const videoID = new URL(location.href).searchParams.get("v");
+        if (!videoID)
             return;
         if (initialParams.has("t"))
             return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
-        const entry = remVidsCache.find(entry => entry.watchID === watchID);
+        const entry = remVids.find(entry => entry.id === videoID);
         if (entry) {
-            if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
-                await remTimeDeleteEntry(entry.watchID);
+            if (Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
+                await remTimeDeleteEntry(entry.id);
                 return;
             }
-            else if (isNaN(Number(entry.songTime)))
-                return;
+            else if (isNaN(Number(entry.time)) || entry.time < 0)
+                return warn("Invalid time in remembered song time entry:", entry);
             else {
                 let vidElem;
                 const doRestoreTime = async () => {
                     var _a;
                     if (!vidElem)
                         vidElem = await waitVideoElementReady();
-                    const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                    const vidRestoreTime = entry.time - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
                     vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                    await remTimeDeleteEntry(entry.watchID);
+                    await remTimeDeleteEntry(entry.id);
                     info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
                 };
                 if (!UserUtils.isDomLoaded())
@@ -1703,33 +1704,34 @@ let remVidCheckTimeout;
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
 async function remTimeStartUpdateLoop() {
     var _a, _b, _c;
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
     if (location.pathname.startsWith("/watch")) {
-        const watchID = getWatchId();
+        const id = getWatchId();
         const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-        if (watchID && songTime !== lastSongTime) {
+        if (id && songTime !== lastSongTime) {
             lastSongTime = songTime;
             const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
             // don't immediately update to reduce race conditions and only update if the video is playing
             // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
             if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
                 const entry = {
-                    watchID,
-                    songTime,
-                    updateTimestamp: Date.now(),
+                    id,
+                    time: songTime,
+                    updated: Date.now(),
                 };
                 await remTimeUpsertEntry(entry);
             }
             // if the song is rewound to the beginning, update the entry accordingly
             else if (!paused) {
-                const entry = remVidsCache.find(entry => entry.watchID === watchID);
-                if (entry && songTime <= entry.songTime)
-                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+                const entry = remVids.find(entry => entry.id === id);
+                if (entry && songTime <= entry.time)
+                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { time: songTime, updated: Date.now() }));
             }
         }
     }
-    const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
+    const expiredEntries = remVids.filter(entry => Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000);
     for (const entry of expiredEntries)
-        await remTimeDeleteEntry(entry.watchID);
+        await remTimeDeleteEntry(entry.id);
     // for no overlapping calls and better error handling:
     if (remVidCheckTimeout)
         clearTimeout(remVidCheckTimeout);
@@ -1737,17 +1739,19 @@ async function remTimeStartUpdateLoop() {
 }
 /** Updates an existing or inserts a new entry to be remembered */
 async function remTimeUpsertEntry(data) {
-    const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+    const foundIdx = remVids.findIndex(entry => entry.id === data.id);
     if (foundIdx >= 0)
-        remVidsCache[foundIdx] = data;
+        remVids[foundIdx] = data;
     else
-        remVidsCache.push(data);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+        remVids.push(data);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }
 /** Deletes an entry in the "remember cache" */
-async function remTimeDeleteEntry(watchID) {
-    remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+async function remTimeDeleteEntry(videoID) {
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"))
+        .filter(entry => entry.id !== videoID);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }const interactionKeys = ["Enter", " ", "Space"];
 /**
  * Adds generic, accessible interaction listeners to the passed element.
@@ -2157,7 +2161,7 @@ async function renderBody$4() {
         const removeBtn = await createCircularBtn({
             resourceName: "icon-delete",
             title: t("remove_entry"),
-            async onClick() {
+            onClick() {
                 autoLikeStore.setData({
                     channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
                 });
@@ -2829,21 +2833,21 @@ function isValidChannelId(channelId) {
     return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
 }
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
-function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
-    return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+function getThumbnailUrl(videoID, qualityOrIndex = "maxresdefault") {
+    return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
 }
-/** Returns the best available thumbnail URL for a video with the given watch ID */
-async function getBestThumbnailUrl(watchId) {
+/** Returns the best available thumbnail URL for a video with the given video ID */
+async function getBestThumbnailUrl(videoID) {
     try {
         const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
         for (const quality of priorityList) {
             let response;
-            const url = getThumbnailUrl(watchId, quality);
+            const url = getThumbnailUrl(videoID, quality);
             try {
                 response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
             }
             catch (err) {
-                error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
+                error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
                 void err;
             }
             if (response && response.status < 300 && response.status >= 200)
@@ -2851,7 +2855,7 @@ async function getBestThumbnailUrl(watchId) {
         }
     }
     catch (err) {
-        throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
+        throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
     }
 }
 /** Opens the given URL in a new tab, using GM.openInTab if available */
@@ -4816,12 +4820,12 @@ async function initShowVotes() {
     addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
         async listener(voteCont) {
             try {
-                const watchId = getWatchId();
-                if (!watchId) {
+                const videoID = getWatchId();
+                if (!videoID) {
                     await siteEvents.once("watchIdChanged");
                     return initShowVotes();
                 }
-                const voteObj = await fetchVideoVotes(watchId);
+                const voteObj = await fetchVideoVotes(videoID);
                 if (!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
                     return error("Couldn't fetch votes from the Return YouTube Dislike API");
                 if (getFeature("showVotes")) {
@@ -5298,6 +5302,8 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
     queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
     const lyricsIconUrl = await getResourceUrl("icon-lyrics");
     const deleteIconUrl = await getResourceUrl("icon-delete");
+    const spinnerIconUrl = await getResourceUrl("icon-spinner");
+    await UserUtils.preloadImages([lyricsIconUrl, deleteIconUrl, spinnerIconUrl]);
     //#region lyrics btn
     let lyricsBtnElem;
     if (getFeature("lyricsQueueButton")) {
@@ -5310,14 +5316,14 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
         lyricsBtnElem.role = "link";
         lyricsBtnElem.tabIndex = 0;
         onInteraction(lyricsBtnElem, async (e) => {
-            var _a;
+            var _a, _b;
             e.preventDefault();
             e.stopImmediatePropagation();
             let song, artist;
             if (listType === "currentQueue") {
                 const songInfo = queueItem.querySelector(".song-info");
                 if (!songInfo)
-                    return;
+                    return error("Couldn't find song info element in queue item", queueItem);
                 const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
                 song = songEl === null || songEl === void 0 ? void 0 : songEl.textContent;
                 artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
@@ -5338,7 +5344,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                 }
             }
             else
-                return;
+                return error("Invalid list type:", listType);
             if (!song || !artist)
                 return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
             let lyricsUrl;
@@ -5351,15 +5357,20 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
             if (cachedLyricsEntry)
                 lyricsUrl = cachedLyricsEntry.url;
             else if (!queueItem.hasAttribute("data-bytm-loading")) {
-                const imgEl = lyricsBtnElem === null || lyricsBtnElem === void 0 ? void 0 : lyricsBtnElem.querySelector("img");
-                if (!imgEl)
-                    return;
+                const imgEl = lyricsBtnElem === null || lyricsBtnElem === void 0 ? void 0 : lyricsBtnElem.querySelector("img, svg");
                 if (!cachedLyricsEntry) {
                     queueItem.setAttribute("data-bytm-loading", "");
-                    imgEl.src = await getResourceUrl("icon-spinner");
-                    imgEl.classList.add("bytm-spinner");
+                    if (imgEl) {
+                        if (imgEl.tagName === "IMG")
+                            imgEl.src = await getResourceUrl("icon-spinner");
+                        else if (lyricsBtnElem) {
+                            setInnerHtml(lyricsBtnElem, await resourceAsString("icon-spinner"));
+                            (_a = lyricsBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
+                        }
+                    }
+                    imgEl === null || imgEl === void 0 ? void 0 : imgEl.classList.add("bytm-spinner");
                 }
-                lyricsUrl = (_a = cachedLyricsEntry === null || cachedLyricsEntry === void 0 ? void 0 : cachedLyricsEntry.url) !== null && _a !== void 0 ? _a : await fetchLyricsUrlTop(artistsSan, songSan);
+                lyricsUrl = (_b = cachedLyricsEntry === null || cachedLyricsEntry === void 0 ? void 0 : cachedLyricsEntry.url) !== null && _b !== void 0 ? _b : await fetchLyricsUrlTop(artistsSan, songSan);
                 if (lyricsUrl) {
                     emitInterface("bytm:lyricsLoaded", {
                         type: "queue",
@@ -5368,9 +5379,17 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                         url: lyricsUrl,
                     });
                 }
-                const resetImgElem = () => {
-                    imgEl.src = lyricsIconUrl;
-                    imgEl.classList.remove("bytm-spinner");
+                const resetImgElem = async () => {
+                    var _a;
+                    if (imgEl) {
+                        if (imgEl.tagName === "IMG")
+                            imgEl.src = lyricsIconUrl;
+                        else if (lyricsBtnElem) {
+                            setInnerHtml(lyricsBtnElem, await resourceAsString("icon-lyrics"));
+                            (_a = lyricsBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
+                        }
+                    }
+                    imgEl === null || imgEl === void 0 ? void 0 : imgEl.classList.remove("bytm-spinner");
                 };
                 if (!cachedLyricsEntry) {
                     queueItem.removeAttribute("data-bytm-loading");
@@ -5402,6 +5421,8 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
         onInteraction(deleteBtnElem, async (e) => {
             e.preventDefault();
             e.stopImmediatePropagation();
+            imgElem.src = spinnerIconUrl;
+            imgElem.classList.add("bytm-spinner");
             // container of the queue item popup menu - element gets reused for every queue item
             let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
             try {
@@ -5648,8 +5669,8 @@ async function setInitialTabVolume(sliderElem) {
     sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
     log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
 }//#region misc
-function noop() {
-}
+/** No-operation function used when `reloadRequired` is set to `false` to explicitly indicate that no `enable` function is needed */
+const noop = () => void 0;
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className, title, resource, extraAttributes) => {
     var _a;
@@ -5715,15 +5736,15 @@ const options = {
         { value: "lighter", label: t("color_lightness_lighter") },
     ],
 };
-//#region rendering
+//#region renderers
 /** Renders a long number with a thousands separator */
-function renderLongNumberValue(val, maximumFractionDigits = 0) {
+function renderNumberVal(val, maximumFractionDigits = 0) {
     return Number(val).toLocaleString(getLocale().replace(/_/g, "-"), {
         style: "decimal",
         maximumFractionDigits,
     });
 }
-//#region features
+//#region # features
 /**
  * Contains all possible features with their default values and other configuration.
  *
@@ -6214,12 +6235,12 @@ const featInfo = {
     lyricsCacheMaxSize: {
         type: "slider",
         category: "lyrics",
-        default: 2000,
+        default: 5000,
         min: 100,
-        max: 10000,
+        max: 50000,
         step: 100,
         unit: (val) => ` ${tp("unit_entries", val)}`,
-        renderValue: renderLongNumberValue,
+        renderValue: renderNumberVal,
         advanced: true,
         textAdornment: adornments.advanced,
         reloadRequired: false,
@@ -6520,8 +6541,10 @@ const migrations = {
         ]);
     },
     // 9 -> 10 (v2.3.0)
-    10: (oldData) => useDefaultConfig(oldData, [
+    10: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
+    ]), [
+        { key: "lyricsCacheMaxSize", oldDefault: 2000 },
     ]),
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -7392,22 +7415,22 @@ const voteCache = new Map();
 const voteCacheTTL = 1000 * 60 * 10;
 /**
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
- * @param watchId The watch ID of the video
+ * @param videoID The video ID of the video
  */
-async function fetchVideoVotes(watchId) {
+async function fetchVideoVotes(videoID) {
     try {
-        if (voteCache.has(watchId)) {
-            const cached = voteCache.get(watchId);
+        if (voteCache.has(videoID)) {
+            const cached = voteCache.get(videoID);
             if (Date.now() - cached.timestamp < voteCacheTTL) {
-                info(`Returning cached video votes for watch ID '${watchId}':`, cached);
+                info(`Returning cached video votes for video ID '${videoID}':`, cached);
                 return cached;
             }
             else
-                voteCache.delete(watchId);
+                voteCache.delete(videoID);
         }
         const votesRaw = JSON.parse((await sendRequest({
             method: "GET",
-            url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
+            url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`,
         })).response);
         if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
             error("Couldn't parse video votes due to an error:", votesRaw);
@@ -7421,7 +7444,7 @@ async function fetchVideoVotes(watchId) {
             timestamp: Date.now(),
         };
         voteCache.set(votesObj.id, votesObj);
-        info(`Fetched video votes for watch ID '${watchId}':`, votesObj);
+        info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
         return votesObj;
     }
     catch (err) {
