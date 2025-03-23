@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3b490ad/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4ca0c620/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -313,7 +313,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "b3b490ad",
+    buildNumber: "4ca0c620",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1650,6 +1650,11 @@ async function initRememberSongTime() {
         error("Error parsing stored video time data, defaulting to empty cache:", err);
         await GM.setValue("bytm-rem-songs", "[]");
         remVids = [];
+    }
+    if (remVids.some(e => "watchID" in e)) {
+        remVids = remVids.filter(e => "id" in e);
+        await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+        log(`Removed ${remVids.length} ${UserUtils.autoPlural("entry", remVids)} with an outdated format from the video time cache`);
     }
     log(`Initialized video time restoring with ${remVids.length} initial ${UserUtils.autoPlural("entry", remVids)}:`, remVids);
     await remTimeRestoreTime();
