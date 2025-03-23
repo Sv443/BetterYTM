@@ -1,4 +1,4 @@
-import { clamp, interceptWindowEvent, isDomLoaded, pauseFor } from "@sv443-network/userutils";
+import { autoPlural, clamp, interceptWindowEvent, isDomLoaded, pauseFor } from "@sv443-network/userutils";
 import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, scrollToCurrentSongInQueue } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
@@ -116,8 +116,6 @@ interface RemVidObj {
   updateTimestamp: number;
 }
 
-let remVidsCache: RemVidObj[] = [];
-
 /**
  * Remembers the time of the last played video and resumes playback from that time.  
  * **Needs to be called *before* DOM is ready!**
@@ -130,16 +128,18 @@ export async function initRememberSongTime() {
   if(!storedDataRaw)
     await GM.setValue("bytm-rem-songs", "[]");
 
+  let remVids: RemVidObj[];
+
   try {
-    remVidsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemVidObj[];
+    remVids = JSON.parse(String(storedDataRaw ?? "[]")) as RemVidObj[];
   }
   catch(err) {
     error("Error parsing stored video time data, defaulting to empty cache:", err);
     await GM.setValue("bytm-rem-songs", "[]");
-    remVidsCache = [];
+    remVids = [];
   }
 
-  log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
+  log(`Initialized video time restoring with ${remVids.length} initial ${autoPlural("entry", remVids)}:`, remVids);
 
   await remTimeRestoreTime();
 
@@ -156,6 +156,8 @@ export async function initRememberSongTime() {
 
 /** Tries to restore the time of the currently playing video */
 async function remTimeRestoreTime() {
+  const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
+
   if(location.pathname.startsWith("/watch")) {
     const watchID = new URL(location.href).searchParams.get("v");
     if(!watchID)
@@ -164,7 +166,7 @@ async function remTimeRestoreTime() {
     if(initialParams.has("t"))
       return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
 
-    const entry = remVidsCache.find(entry => entry.watchID === watchID);
+    const entry = remVids.find(entry => entry.watchID === watchID);
     if(entry) {
       if(Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
         await remTimeDeleteEntry(entry.watchID);
@@ -197,6 +199,8 @@ let remVidCheckTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
 async function remTimeStartUpdateLoop() {
+  const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
+
   if(location.pathname.startsWith("/watch")) {
     const watchID = getWatchId();
     const songTime = await getVideoTime() ?? 0;
@@ -218,14 +222,14 @@ async function remTimeStartUpdateLoop() {
       }
       // if the song is rewound to the beginning, update the entry accordingly
       else if(!paused) {
-        const entry = remVidsCache.find(entry => entry.watchID === watchID);
+        const entry = remVids.find(entry => entry.watchID === watchID);
         if(entry && songTime <= entry.songTime)
           await remTimeUpsertEntry({ ...entry, songTime, updateTimestamp: Date.now() });
       }
     }
   }
 
-  const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
+  const expiredEntries = remVids.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
   for(const entry of expiredEntries)
     await remTimeDeleteEntry(entry.watchID);
 
@@ -237,17 +241,20 @@ async function remTimeStartUpdateLoop() {
 
 /** Updates an existing or inserts a new entry to be remembered */
 async function remTimeUpsertEntry(data: RemVidObj) {
-  const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
-  if(foundIdx >= 0)
-    remVidsCache[foundIdx] = data;
-  else
-    remVidsCache.push(data);
+  const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
+  const foundIdx = remVids.findIndex(entry => entry.watchID === data.watchID);
 
-  await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+  if(foundIdx >= 0)
+    remVids[foundIdx] = data;
+  else
+    remVids.push(data);
+
+  await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }
 
 /** Deletes an entry in the "remember cache" */
 async function remTimeDeleteEntry(watchID: string) {
-  remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
-  await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
+  const remVids = (JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[])
+    .filter(entry => entry.watchID !== watchID);
+  await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }
