@@ -88,7 +88,7 @@ export const migrations: DataMigrationsDict = {
       ]), [
         { key: "rememberSongTimeSites", oldDefault: "ytm" },
         { key: "volumeSliderScrollStep", oldDefault: 10 },
-      ]
+      ],
     );
     "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
     "advancedLyricsFilter" in newData && delete newData.advancedLyricsFilter;
@@ -107,7 +107,7 @@ export const migrations: DataMigrationsDict = {
         "errorOnLyricsNotFound", "openPluginList",
       ]), [
         { key: "toastDuration", oldDefault: 3 },
-      ]
+      ],
     );
     newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
     return newData;
@@ -136,9 +136,13 @@ export const migrations: DataMigrationsDict = {
     ]);
   },
   // 9 -> 10 (v2.3.0)
-  10: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
-  ]),
+  10: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
+    useDefaultConfig(oldData, [
+      "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
+    ]), [
+      { key: "lyricsCacheMaxSize", oldDefault: 2000 },
+    ],
+  ),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
