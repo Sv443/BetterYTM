@@ -139,6 +139,12 @@ export async function initRememberSongTime() {
     remVids = [];
   }
 
+  if(remVids.some(e => "watchID" in e)) {
+    remVids = remVids.filter(e => "id" in e);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+    log(`Removed ${remVids.length} ${autoPlural("entry", remVids)} with an outdated format from the video time cache`);
+  }
+
   log(`Initialized video time restoring with ${remVids.length} initial ${autoPlural("entry", remVids)}:`, remVids);
 
   await remTimeRestoreTime();
