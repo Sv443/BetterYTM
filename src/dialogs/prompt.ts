@@ -54,7 +54,7 @@ class PromptDialog extends BytmDialog {
       height: 400,
       destroyOnClose: true,
       closeBtnEnabled: true,
-      closeOnBgClick: props.type === "alert",
+      closeOnBgClick: props.type !== "prompt",
       closeOnEscPress: true,
       small: true,
       renderHeader: () => this.renderHeader(props),
