@@ -27,11 +27,8 @@ export * from "./volume.js";
 
 //#region misc
 
-function noop() {
-  void 0;
-}
-
-void [noop];
+/** No-operation function used when `reloadRequired` is set to `false` to explicitly indicate that no `enable` function is needed */
+const noop = () => void 0;
 
 //#region adornments
 
@@ -121,10 +118,10 @@ const options = {
   ],
 };
 
-//#region rendering
+//#region renderers
 
 /** Renders a long number with a thousands separator */
-function renderLongNumberValue(val: string, maximumFractionDigits = 0) {
+function renderNumberVal(val: string, maximumFractionDigits = 0) {
   return Number(val).toLocaleString(
     getLocale().replace(/_/g, "-"),
     {
@@ -134,7 +131,7 @@ function renderLongNumberValue(val: string, maximumFractionDigits = 0) {
   );
 }
 
-//#region features
+//#region # features
 
 /**
  * Contains all possible features with their default values and other configuration.  
@@ -631,12 +628,12 @@ export const featInfo = {
   lyricsCacheMaxSize: {
     type: "slider",
     category: "lyrics",
-    default: 2000,
+    default: 5000,
     min: 100,
-    max: 10000,
+    max: 50_000,
     step: 100,
     unit: (val: number) => ` ${tp("unit_entries", val)}`,
-    renderValue: renderLongNumberValue,
+    renderValue: renderNumberVal,
     advanced: true,
     textAdornment: adornments.advanced,
     reloadRequired: false,

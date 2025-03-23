@@ -241,7 +241,7 @@ async function renderBody() {
     const removeBtn = await createCircularBtn({
       resourceName: "icon-delete",
       title: t("remove_entry"),
-      async onClick() {
+      onClick() {
         autoLikeStore.setData({
           channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
         });

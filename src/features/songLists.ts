@@ -1,5 +1,5 @@
-import { autoPlural, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, t } from "../utils/index.js";
+import { autoPlural, pauseFor, preloadImages } from "@sv443-network/userutils";
+import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t } from "../utils/index.js";
 import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
@@ -109,6 +109,9 @@ async function addQueueButtons(
 
   const lyricsIconUrl = await getResourceUrl("icon-lyrics");
   const deleteIconUrl = await getResourceUrl("icon-delete");
+  const spinnerIconUrl = await getResourceUrl("icon-spinner");
+
+  await preloadImages([lyricsIconUrl, deleteIconUrl, spinnerIconUrl]);
 
   //#region lyrics btn
   let lyricsBtnElem: HTMLAnchorElement | undefined;
@@ -134,7 +137,7 @@ async function addQueueButtons(
       if(listType === "currentQueue") {
         const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
         if(!songInfo)
-          return;
+          return error("Couldn't find song info element in queue item", queueItem);
 
         const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
         song = songEl?.textContent;
@@ -158,7 +161,8 @@ async function addQueueButtons(
           artist = artistEl?.textContent;
         }
       }
-      else return;
+      else
+        return error("Invalid list type:", listType);
 
       if(!song || !artist)
         return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
@@ -176,15 +180,21 @@ async function addQueueButtons(
       if(cachedLyricsEntry)
         lyricsUrl = cachedLyricsEntry.url;
       else if(!queueItem.hasAttribute("data-bytm-loading")) {
-        const imgEl = lyricsBtnElem?.querySelector<HTMLImageElement>("img");
-        if(!imgEl)
-          return;
+        const imgEl = lyricsBtnElem?.querySelector<HTMLImageElement | HTMLElement>("img, svg");
 
         if(!cachedLyricsEntry) {
           queueItem.setAttribute("data-bytm-loading", "");
 
-          imgEl.src = await getResourceUrl("icon-spinner");
-          imgEl.classList.add("bytm-spinner");
+          if(imgEl) {
+            if(imgEl.tagName === "IMG")
+              (imgEl as HTMLImageElement).src = await getResourceUrl("icon-spinner");
+            else if(lyricsBtnElem) {
+              setInnerHtml(lyricsBtnElem, await resourceAsString("icon-spinner"));
+              lyricsBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+            }
+          }
+
+          imgEl?.classList.add("bytm-spinner");
         }
 
         lyricsUrl = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.url ?? await fetchLyricsUrlTop(artistsSan, songSan);
@@ -198,9 +208,16 @@ async function addQueueButtons(
           });
         }
 
-        const resetImgElem = () => {
-          imgEl.src = lyricsIconUrl;
-          imgEl.classList.remove("bytm-spinner");
+        const resetImgElem = async () => {
+          if(imgEl) {
+            if(imgEl.tagName === "IMG")
+              (imgEl as HTMLImageElement).src = lyricsIconUrl;
+            else if(lyricsBtnElem) {
+              setInnerHtml(lyricsBtnElem, await resourceAsString("icon-lyrics"));
+              lyricsBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+            }
+          }
+          imgEl?.classList.remove("bytm-spinner");
         };
 
         if(!cachedLyricsEntry) {
@@ -240,6 +257,9 @@ async function addQueueButtons(
     onInteraction(deleteBtnElem, async (e: MouseEvent | KeyboardEvent) => {
       e.preventDefault();
       e.stopImmediatePropagation();
+
+      imgElem.src = spinnerIconUrl;
+      imgElem.classList.add("bytm-spinner");
 
       // container of the queue item popup menu - element gets reused for every queue item
       let queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
