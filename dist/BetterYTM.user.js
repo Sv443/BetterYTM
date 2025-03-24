@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7f87a5b3/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3a18866d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -313,7 +313,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "7f87a5b3",
+    buildNumber: "3a18866d",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -908,12 +908,14 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
     wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
     wrapperEl.role = "switch";
     wrapperEl.tabIndex = 0;
-    const labelEl = labelPos !== "off" && document.createElement("label");
+    const labelEl = labelPos !== "off" ? document.createElement("label") : undefined;
     if (labelEl) {
+        labelEl.id = `bytm-toggle-input-label-${id}`;
         labelEl.classList.add("bytm-toggle-input-label");
         labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
         if (id)
             labelEl.htmlFor = `bytm-toggle-input-${id}`;
+        wrapperEl.setAttribute("aria-labelledby", labelEl.id);
     }
     const toggleWrapperEl = document.createElement("div");
     toggleWrapperEl.classList.add("bytm-toggle-input");
@@ -3493,7 +3495,7 @@ let hiddenCopiedTxtTimeout;
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 async function mountCfgMenu() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     if (isCfgMenuMounted)
         return;
     isCfgMenuMounted = true;
@@ -3812,6 +3814,7 @@ async function mountCfgMenu() {
                     ftConfElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
                 }
                 const textElem = document.createElement("span");
+                textElem.id = `bytm-ftitem-text-${featKey}`;
                 textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
                 textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
                 let adornmentElem;
@@ -4005,6 +4008,8 @@ async function mountCfgMenu() {
                         labelElem.htmlFor = inputElemId;
                         ctrlElem.appendChild(labelElem);
                     }
+                    inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
+                    inputElem.setAttribute("aria-labelledby", (_c = labelElem === null || labelElem === void 0 ? void 0 : labelElem.id) !== null && _c !== void 0 ? _c : `bytm-ftitem-text-${featKey}`);
                     ctrlElem.appendChild(inputElem);
                 }
                 else {
@@ -4048,8 +4053,9 @@ async function mountCfgMenu() {
                                     customInputEl.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
                                 };
                                 // artificial timeout ftw
-                                if (Date.now() - startTs < 350)
-                                    setTimeout(finalize, 350 - (Date.now() - startTs));
+                                const rTime = UserUtils.randRange(200, 400);
+                                if (Date.now() - startTs < rTime)
+                                    setTimeout(finalize, rTime - (Date.now() - startTs));
                                 else
                                     finalize();
                             });
@@ -4057,6 +4063,12 @@ async function mountCfgMenu() {
                     }
                     if (customInputEl && !customInputEl.hasAttribute("aria-label"))
                         customInputEl.ariaLabel = t(`feature_desc_${featKey}`);
+                    customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
+                    if ((customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.getAttribute("aria-labelledby")) === null) {
+                        // try to find a label element to link to for a11y, else default to the text element
+                        const lbl = customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.querySelector("label");
+                        customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.setAttribute("aria-labelledby", lbl && lbl.id.length > 0 ? lbl.id : `bytm-ftitem-text-${featKey}`);
+                    }
                     ctrlElem.appendChild(customInputEl);
                 }
                 ftConfElem.appendChild(ctrlElem);
@@ -4155,13 +4167,13 @@ async function mountCfgMenu() {
     }
     menuContainer.appendChild(footerCont);
     backgroundElem.appendChild(menuContainer);
-    ((_c = document.querySelector("#bytm-dialog-container")) !== null && _c !== void 0 ? _c : document.body).appendChild(backgroundElem);
+    ((_d = document.querySelector("#bytm-dialog-container")) !== null && _d !== void 0 ? _d : document.body).appendChild(backgroundElem);
     window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
     log("Added menu element");
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
-    (_d = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _d === void 0 ? void 0 : _d.removeAttribute("inert");
+    (_e = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _e === void 0 ? void 0 : _e.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
     siteEvents.on("recreateCfgMenu", async () => {
