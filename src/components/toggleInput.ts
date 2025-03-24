@@ -25,12 +25,14 @@ export async function createToggleInput({
   wrapperEl.role = "switch";
   wrapperEl.tabIndex = 0;
 
-  const labelEl = labelPos !== "off" && document.createElement("label");
+  const labelEl = labelPos !== "off" ? document.createElement("label") : undefined;
   if(labelEl) {
+    labelEl.id = `bytm-toggle-input-label-${id}`;
     labelEl.classList.add("bytm-toggle-input-label");
     labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
     if(id)
       labelEl.htmlFor = `bytm-toggle-input-${id}`;
+    wrapperEl.setAttribute("aria-labelledby", labelEl.id);
   }
 
   const toggleWrapperEl = document.createElement("div");

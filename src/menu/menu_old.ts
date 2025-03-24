@@ -1,4 +1,4 @@
-import { compress, debounce, isScrollable, openDialogs, type Stringifiable } from "@sv443-network/userutils";
+import { compress, debounce, isScrollable, openDialogs, randRange, type Stringifiable } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo } from "../features/index.js";
@@ -435,6 +435,7 @@ async function mountCfgMenu() {
         }
 
         const textElem = document.createElement("span");
+        textElem.id = `bytm-ftitem-text-${featKey}`;
         textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
         textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
 
@@ -666,6 +667,10 @@ async function mountCfgMenu() {
             labelElem.htmlFor = inputElemId;
             ctrlElem.appendChild(labelElem);
           }
+
+          inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
+          inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
+
           ctrlElem.appendChild(inputElem);
         }
         else {
@@ -716,8 +721,9 @@ async function mountCfgMenu() {
               };
 
               // artificial timeout ftw
-              if(Date.now() - startTs < 350)
-                setTimeout(finalize, 350 - (Date.now() - startTs));
+              const rTime = randRange(200, 400);
+              if(Date.now() - startTs < rTime)
+                setTimeout(finalize, rTime - (Date.now() - startTs));
               else
                 finalize();
             });
@@ -726,6 +732,13 @@ async function mountCfgMenu() {
 
           if(customInputEl && !customInputEl.hasAttribute("aria-label"))
             customInputEl.ariaLabel = t(`feature_desc_${featKey}`);
+
+          customInputEl?.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
+          if(customInputEl?.getAttribute("aria-labelledby") === null) {
+            // try to find a label element to link to for a11y, else default to the text element
+            const lbl = customInputEl?.querySelector("label");
+            customInputEl?.setAttribute("aria-labelledby", lbl && lbl.id.length > 0 ? lbl.id : `bytm-ftitem-text-${featKey}`);
+          }
 
           ctrlElem.appendChild(customInputEl!);
         }
