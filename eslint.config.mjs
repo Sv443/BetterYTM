@@ -53,12 +53,15 @@ const config = [
     },
     rules: {
       "no-unreachable": "off",
-      quotes: ["error", "double"],
-      semi: ["error", "always"],
+      "quotes": ["error", "double"],
+      "semi": ["error", "always"],
       "eol-last": ["error", "always"],
       "no-async-promise-executor": "off",
       "no-cond-assign": "off",
-      indent: ["error", 2, {
+      "no-empty": ["error", {
+        allowEmptyCatch: true,
+      }],
+      "indent": ["error", 2, {
         ignoredNodes: ["VariableDeclaration[declarations.length=0]"],
       }],
       "@typescript-eslint/no-non-null-assertion": "off",
@@ -84,11 +87,14 @@ const config = [
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
     rules: {
       "@typescript-eslint/no-var-requires": "off",
-      quotes: ["error", "double"],
-      semi: ["error", "always"],
+      "quotes": ["error", "double"],
+      "semi": ["error", "always"],
       "eol-last": ["error", "always"],
       "no-async-promise-executor": "off",
-      indent: ["error", 2, {
+      "no-empty": ["error", {
+        allowEmptyCatch: true,
+      }],
+      "indent": ["error", 2, {
         ignoredNodes: ["VariableDeclaration[declarations.length=0]"],
       }],
       "no-unused-vars": ["warn", {

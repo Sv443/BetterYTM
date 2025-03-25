@@ -158,7 +158,7 @@ I welcome every contribution on GitHub!
     );
 
     if(mode === "production")
-      userscript = remSourcemapComments(userscript);
+      userscript = removeSourcemapComments(userscript);
     else
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
@@ -181,9 +181,7 @@ I welcome every contribution on GitHub!
         const buildJsonParsed = JSON.parse(String(await readFile(".build.json")));
         buildStats = (Array.isArray(buildJsonParsed) ? buildJsonParsed : []) as Partial<BuildStats>[];
       }
-      catch {
-        void 0;
-      }
+      catch {}
     }
 
     const prevBuildStats = buildStats.find((v) => v.mode === mode);
@@ -193,9 +191,9 @@ I welcome every contribution on GitHub!
       const sizeDiff = sizeKiB - prevBuildStats.sizeKiB;
       const sizeDiffTrunc = parseFloat(sizeDiff.toFixed(2));
       if(sizeDiffTrunc !== 0) {
-        const sizeDiffCol = (sizeDiff > 0 ? k.yellow : k.green)().bold;
+        const sizeCol = (sizeDiff > 0 ? k.yellow : k.green)().bold;
         const sizeDiffNum = `${(sizeDiff > 0 ? "+" : (sizeDiff !== 0 ? "-" : ""))}${Math.abs(sizeDiffTrunc)}`;
-        sizeIndicator = ` ${k.gray("(")}${sizeDiffCol(sizeDiffNum)}${k.gray(")")}`;
+        sizeIndicator = ` ${k.gray("(")}${sizeCol(sizeDiffNum)}${k.gray(")")}`;
       }
     }
 
@@ -238,7 +236,7 @@ function insertValues(userscript: string, replacements: Record<string, Stringifi
 }
 
 /** Removes sourcemapping comments */
-function remSourcemapComments(input: string) {
+function removeSourcemapComments(input: string) {
   return input
     .replace(/\/\/\s?#\s?sourceMappingURL\s?=\s?.+$/gm, "");
 }
@@ -271,7 +269,7 @@ async function exists(path: string) {
 
 /** Resolves the value of an entry in resources.json */
 function resolveResourceVal(value: string, buildNbr: string) {
-  if(!(/\$/.test(value)))
+  if(!(/\$[A-Z]+/.test(value)))
     return value;
 
   const replacements = [
@@ -280,7 +278,7 @@ function resolveResourceVal(value: string, buildNbr: string) {
     ["\\$HOST", host],
     ["\\$BUILD_NUMBER", buildNbr],
     ["\\$UID", buildUid],
-  ];
+  ] as const;
 
   return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), value);
 };
@@ -550,10 +548,12 @@ async function createSvgSpritesheet() {
       sprites.push(`<symbol id="bytm-svg-${name}">\n    ${iconSvg}\n  </symbol>`);
     }
 
-    await writeFile(resolveResourcePath("spritesheet.svg"), `\
+    await writeFile(
+      resolveResourcePath("spritesheet.svg"),
+      `\
 <svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" style="display: none;" inert="true">
   ${sprites.join("\n  ")}
-</svg>`
+</svg>`,
     );
   }
   catch(err) {
