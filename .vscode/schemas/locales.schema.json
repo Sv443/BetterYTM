@@ -5,7 +5,7 @@
   "patternProperties": {
     "^[a-z]{2}-[A-Z]{2}$": {
       "type": "object",
-      "required": ["name", "nameEnglish", "emoji", "userscriptDesc", "authors", "altLocales"],
+      "required": ["name", "nameEnglish", "emoji", "userscriptDesc", "authors", "altLocales", "textDir", "sentenceTerminator"],
       "description": "Main locale code in the format \"ll-CC\" (language-COUNTRY).",
       "properties": {
         "name": {
@@ -43,6 +43,16 @@
             "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
           },
           "description": "Alternative locale codes that will be redirected to this locale, e.g. for all German languages: [\"de\", \"de-AT\", \"de-CH\", \"de-LI\", \"de-LU\"]."
+        },
+        "textDir": {
+          "type": "string",
+          "enum": ["ltr", "rtl"],
+          "description": "Text direction of the language."
+        },
+        "sentenceTerminator": {
+          "type": "string",
+          "description": "The character that ends a neutral, informative sentence, e.g. \".\", \"।\" or \"。\".",
+          "pattern": "^.{1}$"
         }
       },
       "additionalProperties": false
