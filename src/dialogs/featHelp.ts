@@ -1,7 +1,8 @@
-import { resourceAsString, setInnerHtml, t } from "../utils/index.js";
+import { getLocale, resourceAsString, setInnerHtml, t } from "../utils/index.js";
 import { BytmDialog } from "../components/BytmDialog.js";
 import { featInfo } from "../features/index.js";
 import type { FeatureKey } from "../types.js";
+import locales from "../../assets/locales.json" with { type: "json" };
 
 let featHelpDialog: BytmDialog | null = null;
 let curFeatKey: FeatureKey | null = null;
@@ -45,10 +46,19 @@ async function renderHeader() {
 async function renderBody() {
   const contElem = document.createElement("div");
 
+  const localeObj = locales?.[getLocale()];
+
+  // insert sentence terminator if not present, to improve flow with screenreaders
+  let featText = t(`feature_desc_${curFeatKey}`);
+  if(localeObj) {
+    if(!featText.endsWith(localeObj.sentenceTerminator))
+      featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminator}${localeObj.textDir === "rtl" ? featText : ""}`;
+  }
+
   const featDescElem = document.createElement("h3");
   featDescElem.role = "subheading";
   featDescElem.tabIndex = 0;
-  featDescElem.textContent = t(`feature_desc_${curFeatKey}`);
+  featDescElem.textContent = featText;
   featDescElem.id = "bytm-feat-help-dialog-desc";
 
   const helpTextElem = document.createElement("div");
