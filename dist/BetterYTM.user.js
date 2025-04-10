@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3a18866d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5ad0bdbd/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -166,7 +166,9 @@ var resourcesJson = {
 		"de-CH",
 		"de-LI",
 		"de-LU"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "."
 },
 	"en-US": {
 	name: "English (United States)",
@@ -179,7 +181,9 @@ var resourcesJson = {
 	altLocales: [
 		"en",
 		"en-CA"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "."
 },
 	"en-GB": {
 	name: "English (Great Britain)",
@@ -194,7 +198,9 @@ var resourcesJson = {
 		"en-IE",
 		"en-NZ",
 		"en-ZA"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "."
 },
 	"es-ES": {
 	name: "Español (España)",
@@ -207,7 +213,9 @@ var resourcesJson = {
 	altLocales: [
 		"es",
 		"es-MX"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "."
 },
 	"fr-FR": {
 	name: "Français (France)",
@@ -223,7 +231,9 @@ var resourcesJson = {
 		"fr-BE",
 		"fr-CH",
 		"fr-LU"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "."
 },
 	"hi-IN": {
 	name: "हिंदी (भारत)",
@@ -236,7 +246,9 @@ var resourcesJson = {
 	altLocales: [
 		"hi",
 		"hi-NP"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "।"
 },
 	"ja-JP": {
 	name: "日本語 (日本)",
@@ -248,7 +260,9 @@ var resourcesJson = {
 	],
 	altLocales: [
 		"ja"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "。"
 },
 	"pt-BR": {
 	name: "Português (Brasil)",
@@ -261,7 +275,9 @@ var resourcesJson = {
 	altLocales: [
 		"pt",
 		"pt-PT"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "."
 },
 	"zh-CN": {
 	name: "中文（简化，中国）",
@@ -276,7 +292,9 @@ var resourcesJson = {
 		"zh-TW",
 		"zh-HK",
 		"zh-SG"
-	]
+	],
+	textDir: "ltr",
+	sentenceTerminator: "。"
 }
 };// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 var LogLevel;
@@ -313,7 +331,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3a18866d",
+    buildNumber: "5ad0bdbd",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3251,10 +3269,17 @@ async function renderHeader$2() {
 async function renderBody$2() {
     var _a, _b;
     const contElem = document.createElement("div");
+    const localeObj = locales === null || locales === void 0 ? void 0 : locales[getLocale()];
+    // insert sentence terminator if not present, to improve flow with screenreaders
+    let featText = t(`feature_desc_${curFeatKey}`);
+    if (localeObj) {
+        if (!featText.endsWith(localeObj.sentenceTerminator))
+            featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminator}${localeObj.textDir === "rtl" ? featText : ""}`;
+    }
     const featDescElem = document.createElement("h3");
     featDescElem.role = "subheading";
     featDescElem.tabIndex = 0;
-    featDescElem.textContent = t(`feature_desc_${curFeatKey}`);
+    featDescElem.textContent = featText;
     featDescElem.id = "bytm-feat-help-dialog-desc";
     const helpTextElem = document.createElement("div");
     helpTextElem.id = "bytm-feat-help-dialog-text";
