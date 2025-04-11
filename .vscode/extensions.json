@@ -2,6 +2,8 @@
   "recommendations": [
     "andywang.vscode-scriptmonkey",
     "dbaeumer.vscode-eslint",
+    "MylesMurphy.prettify-ts",
+    "yoavbls.pretty-ts-errors",
     "fabiospampinato.vscode-highlight",
   ],
   "unwantedRecommendations": [
