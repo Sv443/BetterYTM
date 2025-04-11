@@ -38,7 +38,7 @@
       "color": "black",
       "overviewRulerColor": "#ed0",
     },
-    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&+#*'\"/:]+)*)": { //#region test: (abc):
+    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&@+#*'\"/:]+)*)": { //#region foo: (@bar):
       "backgroundColor": "#35b5d0",
       "color": "#000",
       "overviewRulerColor": "#35b5d0",

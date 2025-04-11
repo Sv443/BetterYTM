@@ -14,31 +14,41 @@ import pkg from "../../package.json" with { type: "json" };
 
 const { argv, env, exit, stdout } = process;
 
+//#region types
+
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
 
+/** Resolves a CLI argument defined in {@linkcode RollupArgs} in the file `rollup.config.mjs` */
+type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
+
 /** An entry in the file `assets/require.json` */
 type RequireObj = RequireObjPkg | RequireObjUrl;
+
+/** Static URL-based package entry */
 type RequireObjUrl = {
   url: string;
 };
+
+/** npm-based package entry */
 type RequireObjPkg = {
   pkgName: keyof (typeof pkg)["dependencies"] | keyof (typeof pkg)["devDependencies"];
   baseUrl?: string;
   path?: string;
 };
 
+/** Build script stats, persisted in the file at {@linkcode buildStatsPath} */
 type BuildStats = {
   sizeKiB: number;
   mode: string;
   timestamp: number;
 };
 
+//#region vars
+
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
 const buildUid = randomId(12, 36);
-
-type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
 
 const mode = getCliArg<CliArg<"config-mode">>("mode", "development");
 const branch = getCliArg<CliArg<"config-branch">>("branch", (mode === "production" ? "main" : "develop"));
@@ -50,36 +60,36 @@ const genMeta = getCliArg<CliArg<"config-gen-meta">>("meta", "true") === "true";
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
-const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}`;
+const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}` as const;
 
-const repo = "Sv443/BetterYTM";
-const userscriptDistFile = `BetterYTM${suffix}.user.js`;
-const userscriptMetaFile = `BetterYTM${suffix}.meta.js`;
-const distFolderPath = `./${rollupCfgOutputDir}/`;
-const assetFolderPath = "./assets/";
+const repo = "Sv443/BetterYTM" as const;
+const userscriptDistFile = `BetterYTM${suffix}.user.js` as const;
+const userscriptMetaFile = `BetterYTM${suffix}.meta.js` as const;
+const distFolderPath = `./${rollupCfgOutputDir}/` as const;
+const assetFolderPath = "./assets/" as const;
+const buildStatsPath = ".build.json" as const;
 
 const hostScriptUrl = (() => {
   switch(host) {
-  case "greasyfork":
-    return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js";
-  case "openuserjs":
-    return "https://openuserjs.org/src/scripts/Sv443/BetterYTM.user.js";
-  default:
-    return `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptDistFile}`;
+  case "greasyfork": return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js" as const;
+  case "openuserjs": return "https://openuserjs.org/src/scripts/Sv443/BetterYTM.user.js" as const;
+  default:           return `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptDistFile}` as const;
   }
 })();
-const hostMetaUrl = `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptMetaFile}`;
+const hostMetaUrl = `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptMetaFile}` as const;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
 
 /** Directives that are only added in dev mode */
-const devDirectives = mode === "development" ? `\
-// @grant             GM.registerMenuCommand
-// @grant             GM.listValues\
-` : undefined;
+const devDirectives = mode !== "development"
+  ? undefined
+  : `// @grant             GM.registerMenuCommand
+// @grant             GM.listValues` as const;
 
-(async () => {
+//#region main
+
+async function main() {
   const buildNbr = await getLastCommitSha();
 
   const resourcesDirectives = await getResourceDirectives(buildNbr);
@@ -132,12 +142,12 @@ ${devDirectives ? "\n" + devDirectives : ""}
 I welcome every contribution on GitHub!
   https://github.com/Sv443/BetterYTM
 */
-`;
+` as const;
 
   const footer = `
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
-`;
+` as const;
 
   try {
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
@@ -176,9 +186,9 @@ I welcome every contribution on GitHub!
     const sizeKiB = Number((Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2));
 
     let buildStats: Partial<BuildStats>[] = [];
-    if(await exists(".build.json")) {
+    if(await exists(buildStatsPath)) {
       try {
-        const buildJsonParsed = JSON.parse(String(await readFile(".build.json")));
+        const buildJsonParsed = JSON.parse(String(await readFile(buildStatsPath)));
         buildStats = (Array.isArray(buildJsonParsed) ? buildJsonParsed : []) as Partial<BuildStats>[];
       }
       catch {}
@@ -218,7 +228,7 @@ I welcome every contribution on GitHub!
       ...(buildStats.filter((v) => v.mode !== mode)),
     ];
 
-    await writeFile(".build.json", JSON.stringify(newBuildStats, undefined, 2));
+    await writeFile(buildStatsPath, JSON.stringify(newBuildStats, undefined, 2));
 
     schedExit(0);
   }
@@ -226,7 +236,27 @@ I welcome every contribution on GitHub!
     console.error(k.red("Error while adding userscript header:\n"), err);
     schedExit(1);
   }
-})();
+};
+
+//#region process
+
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
+  const arg = argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
+  const val = arg?.split("=")?.[1];
+  return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
+}
+
+/** Schedules an exit after I/O events finish */
+function schedExit(code: number) {
+  setImmediate(() => exit(code));
+}
+
+//#region modify userscript
 
 /** Replaces tokens in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with their respective value */
 function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
@@ -236,10 +266,12 @@ function insertValues(userscript: string, replacements: Record<string, Stringifi
 }
 
 /** Removes sourcemapping comments */
-function removeSourcemapComments(input: string) {
-  return input
+function removeSourcemapComments(userscript: string) {
+  return userscript
     .replace(/\/\/\s?#\s?sourceMappingURL\s?=\s?.+$/gm, "");
 }
+
+//#region git
 
 /**
  * Used as a kind of "build number", though note it is always behind by at least one commit,
@@ -257,6 +289,9 @@ function getLastCommitSha() {
   });
 }
 
+//#region fs
+
+/** Checks if the given path exists and is readable and writable by the process */
 async function exists(path: string) {
   try {
     await access(path, fsconst.R_OK | fsconst.W_OK);
@@ -266,6 +301,36 @@ async function exists(path: string) {
     return false;
   }
 }
+
+/**
+ * Calculates the SHA-256 hash of the file at the given path.  
+ * Uses {@linkcode resolveResourcePath()} to resolve the path, meaning paths prefixed with a slash are relative to the repository root, otherwise they are relative to the `assets` directory.
+ */
+function getFileHashSha256(path: string): Promise<string> {
+  path = resolveResourcePath(path);
+
+  return new Promise((res, rej) => {
+    const hash = createHash("sha256");
+    const stream = createReadStream(resolve(path));
+    stream.on("data", data => hash.update(data));
+    stream.on("end", () => res(hash.digest("base64")));
+    stream.on("error", rej);
+  });
+}
+
+/** Calculates the SHA-256 hash of a ReadableStream, like the `body` prop of a `fetch()` call */
+function getStreamHashSha256(rStream: ReadableStream): Promise<string> {
+  return new Promise((res, rej) => {
+    const hash = createHash("sha256");
+    rStream.pipeTo(new WritableStream({
+      write(chunk) {
+        hash.update(chunk);
+      },
+    })).then(() => res(hash.digest("base64"))).catch(rej);
+  });
+}
+
+//#region @resource
 
 /** Resolves the value of an entry in resources.json */
 function resolveResourceVal(value: string, buildNbr: string) {
@@ -365,6 +430,39 @@ async function getResourceDirectives(ref: string) {
   }
 }
 
+//#region svg spritesheet
+
+/** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
+async function createSvgSpritesheet() {
+  try {
+    const sprites: string[] = [];
+
+    for(const [name, val] of Object.entries(resourcesJson.resources)) {
+      if(!/^icon-/.test(name))
+        continue;
+
+      const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
+      const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
+
+      sprites.push(`<symbol id="bytm-svg-${name}">\n    ${iconSvg}\n  </symbol>`);
+    }
+
+    const spritesheet = `\
+<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" style="display: none;" inert="true">
+  ${sprites.join("\n  ")}
+</svg>`;
+
+    await writeFile(resolveResourcePath("spritesheet.svg"), spritesheet);
+  }
+  catch(err) {
+    console.error(k.red("Error while creating SVG spritesheet:"), err);
+    return schedExit(1);
+  }
+}
+
+//#region @require
+
+/** Returns the `@require` directive block for each defined package in `assets/require.json`, using the version numbers from `package.json` if found */
 async function getRequireDirectives() {
   const directives: string[] = [];
   const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
@@ -380,6 +478,7 @@ async function getRequireDirectives() {
   return directives.length > 0 ? directives.join("\n") : undefined;
 }
 
+/** Returns the `@require` directive for a given package entry */
 function getRequireEntry(entry: RequireObjPkg) {
   const baseUrl = entry.baseUrl ?? "https://cdn.jsdelivr.net/npm/";
 
@@ -396,6 +495,36 @@ function getRequireEntry(entry: RequireObjPkg) {
 
   return `// @require           ${baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
 }
+
+//#region locally linked packages
+
+/** Returns all packages set as locally linked (similar to [`npm link`](https://docs.npmjs.com/cli/v9/commands/npm-link)) in `assets/require.json` */
+async function getLinkedPkgs() {
+  const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
+  const require = (JSON.parse(requireFile) as RequireObj[]);
+
+  let retStr = "";
+
+  for(const entry of require) {
+    if(!("link" in entry) || typeof entry.link !== "string" || !("pkgName" in entry))
+      continue;
+
+    try {
+      const scriptCont = String(await readFile(resolve(entry.link)));
+      const trimmedScript = scriptCont
+        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, "");
+      retStr += `\n// <link ${entry.pkgName}>\n${trimmedScript}\n// </link ${entry.pkgName}>\n\n`;
+    }
+    catch(err) {
+      console.error(`Couldn't read linked package at '${entry.link}':`, err);
+      schedExit(1);
+    }
+  }
+
+  return retStr;
+}
+
+//#region @description:localized
 
 /** Returns the @description directive block for each defined locale in `assets/locales.json` */
 function getLocalizedDescriptions() {
@@ -422,6 +551,8 @@ function getLocalizedDescriptions() {
     console.warn(k.yellow("No localized descriptions found:"), err);
   }
 }
+
+//#region @resource
 
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
@@ -453,46 +584,7 @@ function resolveResourcePath(path: string): string {
   return `assets/${path}`;
 }
 
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
-  const arg = argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
-  const val = arg?.split("=")?.[1];
-  return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
-}
-
-async function getLinkedPkgs() {
-  const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
-  const require = (JSON.parse(requireFile) as RequireObj[]);
-
-  let retStr = "";
-
-  for(const entry of require) {
-    if(!("link" in entry) || typeof entry.link !== "string" || !("pkgName" in entry))
-      continue;
-
-    try {
-      const scriptCont = String(await readFile(resolve(entry.link)));
-      const trimmedScript = scriptCont
-        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, "");
-      retStr += `\n// <link ${entry.pkgName}>\n${trimmedScript}\n// </link ${entry.pkgName}>\n\n`;
-    }
-    catch(err) {
-      console.error(`Couldn't read linked package at '${entry.link}':`, err);
-      schedExit(1);
-    }
-  }
-
-  return retStr;
-}
-
-/** Schedules an exit after I/O events finish */
-function schedExit(code: number) {
-  setImmediate(() => exit(code));
-}
+//#region misc
 
 /** Generates a random ID of the given {@linkcode length} and {@linkcode radix} */
 function randomId(length = 16, radix = 16, randomCase = true) {
@@ -505,63 +597,6 @@ function randomId(length = 16, radix = 16, randomCase = true) {
   return arr.join("");
 }
 
-/**
- * Calculates the SHA-256 hash of the file at the given path.  
- * Uses {@linkcode resolveResourcePath()} to resolve the path, meaning paths prefixed with a slash are relative to the repository root, otherwise they are relative to the `assets` directory.
- */
-function getFileHashSha256(path: string): Promise<string> {
-  path = resolveResourcePath(path);
-
-  return new Promise((res, rej) => {
-    const hash = createHash("sha256");
-    const stream = createReadStream(resolve(path));
-    stream.on("data", data => hash.update(data));
-    stream.on("end", () => res(hash.digest("base64")));
-    stream.on("error", rej);
-  });
-}
-
-/** Calculates the SHA-256 hash of a ReadableStream, like the `body` prop of a `fetch()` call */
-function getStreamHashSha256(rStream: ReadableStream): Promise<string> {
-  return new Promise((res, rej) => {
-    const hash = createHash("sha256");
-    rStream.pipeTo(new WritableStream({
-      write(chunk) {
-        hash.update(chunk);
-      },
-    })).then(() => res(hash.digest("base64"))).catch(rej);
-  });
-}
-
-/** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
-async function createSvgSpritesheet() {
-  try {
-    const sprites: string[] = [];
-
-    for(const [name, val] of Object.entries(resourcesJson.resources)) {
-      if(!/^icon-/.test(name))
-        continue;
-
-      const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
-      const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
-
-      sprites.push(`<symbol id="bytm-svg-${name}">\n    ${iconSvg}\n  </symbol>`);
-    }
-
-    await writeFile(
-      resolveResourcePath("spritesheet.svg"),
-      `\
-<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" style="display: none;" inert="true">
-  ${sprites.join("\n  ")}
-</svg>`,
-    );
-  }
-  catch(err) {
-    console.error(k.red("Error while creating SVG spritesheet:"), err);
-    return schedExit(1);
-  }
-}
-
 /** Checks if the given string is a valid URL with a protocol that starts with `http` */
 function validUrl(url: string) {
   try {
@@ -571,3 +606,5 @@ function validUrl(url: string) {
     return false;
   }
 }
+
+main();
