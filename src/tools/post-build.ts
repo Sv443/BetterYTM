@@ -60,7 +60,13 @@ const genMeta = getCliArg<CliArg<"config-gen-meta">>("meta", "true") === "true";
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
+/** Local URL of the userscript file when served by the dev server */
 const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}` as const;
+/** Extra `@grant` directives added when `mode` is `development` */
+const devGrants = [
+  "GM.registerMenuCommand",
+  "GM.listValues"
+] as const;
 
 const repo = "Sv443/BetterYTM" as const;
 const userscriptDistFile = `BetterYTM${suffix}.user.js` as const;
@@ -84,72 +90,16 @@ const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_
 /** Directives that are only added in dev mode */
 const devDirectives = mode !== "development"
   ? undefined
-  : `// @grant             GM.registerMenuCommand
-// @grant             GM.listValues` as const;
+  : devGrants.reduce((a, c) => `${a}// @grant             ${c}\n`, "");
 
 //#region main
 
+/** Main function that transforms the code built by rollup into the final userscript */
 async function main() {
   const buildNbr = await getLastCommitSha();
 
-  const resourcesDirectives = await getResourceDirectives(buildNbr);
-  const requireDirectives = await getRequireDirectives();
-  const localizedDescriptions = getLocalizedDescriptions();
-
-  const header = `\
-// ==UserScript==
-// @name              ${pkg.userscriptName}
-// @namespace         ${pkg.homepage}
-// @version           ${pkg.version}
-// @description       ${pkg.description}
-// @homepageURL       ${pkg.homepage}#readme
-// @supportURL        ${pkg.bugs.url}
-// @license           ${pkg.license}
-// @author            ${pkg.author.name}
-// @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
-// @match             https://music.youtube.com/*
-// @match             https://www.youtube.com/*
-// @run-at            document-start\
-${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
-// @connect           api.sv443.net
-// @connect           github.com
-// @connect           raw.githubusercontent.com
-// @connect           youtube.com
-// @connect           returnyoutubedislikeapi.com
-// @noframes
-// @updateURL         ${hostMetaUrl}
-// @downloadURL       ${hostScriptUrl}
-// @grant             GM.getValue
-// @grant             GM.setValue
-// @grant             GM.deleteValue
-// @grant             GM.getResourceUrl
-// @grant             GM.setClipboard
-// @grant             GM.xmlHttpRequest
-// @grant             GM.openInTab
-// @grant             unsafeWindow\
-${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
-${requireDirectives ? "\n" + requireDirectives : ""}\
-${devDirectives ? "\n" + devDirectives : ""}
-// ==/UserScript==
-/*
-▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
-█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
-█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
-█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
-
-        Made with ❤️ by Sv443
-I welcome every contribution on GitHub!
-  https://github.com/Sv443/BetterYTM
-*/
-` as const;
-
-  const footer = `
-/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this 🖕 */
-` as const;
-
   try {
+    const [header, subHeader] = await getHeaders(buildNbr);
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
@@ -173,7 +123,7 @@ I welcome every contribution on GitHub!
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
     // insert userscript header and final newline
-    const finalUserscript = `${header}${footer}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
+    const finalUserscript = `${header}${subHeader}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 
     // write userscript
     await writeFile(scriptPath, finalUserscript);
@@ -238,25 +188,7 @@ I welcome every contribution on GitHub!
   }
 };
 
-//#region process
-
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
-  const arg = argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
-  const val = arg?.split("=")?.[1];
-  return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
-}
-
-/** Schedules an exit after I/O events finish */
-function schedExit(code: number) {
-  setImmediate(() => exit(code));
-}
-
-//#region modify userscript
+//#region string replacements
 
 /** Replaces tokens in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with their respective value */
 function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
@@ -271,63 +203,67 @@ function removeSourcemapComments(userscript: string) {
     .replace(/\/\/\s?#\s?sourceMappingURL\s?=\s?.+$/gm, "");
 }
 
-//#region git
+//#region headers
 
-/**
- * Used as a kind of "build number", though note it is always behind by at least one commit,
- * as the act of putting this number in the userscript and committing it changes the hash again, indefinitely
- */
-function getLastCommitSha() {
-  return new Promise<string>((res, rej) => {
-    exec("git rev-parse --short HEAD", (err, stdout, stderr) => {
-      if(err) {
-        console.error(k.red("Error while checking for last Git commit. Do you have Git installed?\n"), stderr);
-        return rej(err);
-      }
-      return res(String(stdout).replace(/\r?\n/gm, "").trim());
-    });
-  });
-}
+/** Returns the header and subheader for the userscript */
+async function getHeaders(buildNbr: string) {
+  const resourcesDirectives = await getResourceDirectives(buildNbr);
+  const requireDirectives = await getRequireDirectives();
+  const localizedDescriptions = getLocalizedDescriptions();
 
-//#region fs
+  const header = `\
+// ==UserScript==
+// @name              ${pkg.userscriptName}
+// @namespace         ${pkg.homepage}
+// @version           ${pkg.version}
+// @description       ${pkg.description}
+// @homepageURL       ${pkg.homepage}#readme
+// @supportURL        ${pkg.bugs.url}
+// @license           ${pkg.license}
+// @author            ${pkg.author.name}
+// @copyright         ${pkg.author.name} (${pkg.author.url})
+// @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start\
+${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
+// @connect           api.sv443.net
+// @connect           github.com
+// @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
+// @noframes
+// @updateURL         ${hostMetaUrl}
+// @downloadURL       ${hostScriptUrl}
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
+// @grant             unsafeWindow\
+${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
+${requireDirectives ? "\n" + requireDirectives : ""}\
+${devDirectives ? "\n" + devDirectives : ""}
+// ==/UserScript==
+/*
+▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
-/** Checks if the given path exists and is readable and writable by the process */
-async function exists(path: string) {
-  try {
-    await access(path, fsconst.R_OK | fsconst.W_OK);
-    return true;
-  }
-  catch {
-    return false;
-  }
-}
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+*/
+` as const;
 
-/**
- * Calculates the SHA-256 hash of the file at the given path.  
- * Uses {@linkcode resolveResourcePath()} to resolve the path, meaning paths prefixed with a slash are relative to the repository root, otherwise they are relative to the `assets` directory.
- */
-function getFileHashSha256(path: string): Promise<string> {
-  path = resolveResourcePath(path);
-
-  return new Promise((res, rej) => {
-    const hash = createHash("sha256");
-    const stream = createReadStream(resolve(path));
-    stream.on("data", data => hash.update(data));
-    stream.on("end", () => res(hash.digest("base64")));
-    stream.on("error", rej);
-  });
-}
-
-/** Calculates the SHA-256 hash of a ReadableStream, like the `body` prop of a `fetch()` call */
-function getStreamHashSha256(rStream: ReadableStream): Promise<string> {
-  return new Promise((res, rej) => {
-    const hash = createHash("sha256");
-    rStream.pipeTo(new WritableStream({
-      write(chunk) {
-        hash.update(chunk);
-      },
-    })).then(() => res(hash.digest("base64"))).catch(rej);
-  });
+  const subHeader = `
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+` as const;
+  return [header, subHeader];
 }
 
 //#region @resource
@@ -430,7 +366,7 @@ async function getResourceDirectives(ref: string) {
   }
 }
 
-//#region svg spritesheet
+//#region @resource SVG spritesheet
 
 /** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
 async function createSvgSpritesheet() {
@@ -496,7 +432,7 @@ function getRequireEntry(entry: RequireObjPkg) {
   return `// @require           ${baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
 }
 
-//#region locally linked packages
+//#region @require (local link)
 
 /** Returns all packages set as locally linked (similar to [`npm link`](https://docs.npmjs.com/cli/v9/commands/npm-link)) in `assets/require.json` */
 async function getLinkedPkgs() {
@@ -584,7 +520,84 @@ function resolveResourcePath(path: string): string {
   return `assets/${path}`;
 }
 
-//#region misc
+//#region utils/process
+
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
+  const arg = argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
+  const val = arg?.split("=")?.[1];
+  return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
+}
+
+/** Schedules an exit after I/O events finish */
+function schedExit(code: number) {
+  setImmediate(() => exit(code));
+}
+
+//#region utils/git
+
+/**
+ * Used as a kind of "build number", though note it is always behind by at least one commit,
+ * as the act of putting this number in the userscript and committing it changes the hash again, indefinitely
+ */
+function getLastCommitSha() {
+  return new Promise<string>((res, rej) => {
+    exec("git rev-parse --short HEAD", (err, stdout, stderr) => {
+      if(err) {
+        console.error(k.red("\nError while checking for latest Git commit.\nPlease ensure you have Git installed and set up properly.\n"), stderr);
+        return rej(err);
+      }
+      return res(String(stdout).replace(/\r?\n/gm, "").trim());
+    });
+  });
+}
+
+//#region utils/fs
+
+/** Checks if the given path exists and is readable and writable by the process */
+async function exists(path: string) {
+  try {
+    await access(path, fsconst.R_OK | fsconst.W_OK);
+    return true;
+  }
+  catch {
+    return false;
+  }
+}
+
+/**
+ * Calculates the SHA-256 hash of the file at the given path.  
+ * Uses {@linkcode resolveResourcePath()} to resolve the path, meaning paths prefixed with a slash are relative to the repository root, otherwise they are relative to the `assets` directory.
+ */
+function getFileHashSha256(path: string): Promise<string> {
+  path = resolveResourcePath(path);
+
+  return new Promise((res, rej) => {
+    const hash = createHash("sha256");
+    const stream = createReadStream(resolve(path));
+    stream.on("data", data => hash.update(data));
+    stream.on("end", () => res(hash.digest("base64")));
+    stream.on("error", rej);
+  });
+}
+
+/** Calculates the SHA-256 hash of a ReadableStream, like the `body` prop of a `fetch()` call */
+function getStreamHashSha256(rStream: ReadableStream): Promise<string> {
+  return new Promise((res, rej) => {
+    const hash = createHash("sha256");
+    rStream.pipeTo(new WritableStream({
+      write(chunk) {
+        hash.update(chunk);
+      },
+    })).then(() => res(hash.digest("base64"))).catch(rej);
+  });
+}
+
+//#region utils/misc
 
 /** Generates a random ID of the given {@linkcode length} and {@linkcode radix} */
 function randomId(length = 16, radix = 16, randomCase = true) {
