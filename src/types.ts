@@ -50,6 +50,9 @@ export type SiteSelectionOrNone = SiteSelection | "none";
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
 export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}`;
 
+/** Key of a CSS resource in `assets/resources.json` */
+export type StyleResourceKey = ResourceKey & `css-${string}`;
+
 /** Describes a single hotkey */
 export type HotkeyObj = {
   code: string,
@@ -533,6 +536,8 @@ export interface FeatureConfig {
   showVotes: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
   numbersFormat: NumberLengthFormat;
+  /** Whether to remove all padding around the main content on the /watch page on YTM */
+  watchPageFullSize: boolean;
 
   //#region volume
   /** Add a percentage label to the volume slider */

@@ -140,6 +140,7 @@ export const migrations: DataMigrationsDict = {
     useDefaultConfig(oldData, [
       "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
       "frameSkip", "frameSkipWhilePlaying",
+      "watchPageFullSize",
     ]), [
       { key: "lyricsCacheMaxSize", oldDefault: 2000 },
     ],

@@ -278,6 +278,7 @@
   "feature_desc_showVotes": "Show the amount of likes and dislikes on the currently playing song",
   "feature_helptext_showVotes": "This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.",
   "feature_desc_numbersFormat": "How should numbers be formatted?",
+  "feature_desc_watchPageFullSize": "Make the main content on the /watch page use all available space",
 
   "feature_desc_volumeSliderLabel": "Add a percentage label next to the volume slider",
   "feature_desc_volumeSliderSize": "The width of the volume slider in pixels",

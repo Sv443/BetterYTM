@@ -281,8 +281,13 @@ export const featInfo = {
     default: true,
     textAdornment: adornments.reload,
   },
-  // archived idea for future version
-  // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
+  watchPageFullSize: {
+    type: "toggle",
+    category: "layout",
+    default: false,
+    textAdornment: adornments.reload,
+  },
+  // archived idea for future version (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes):
   // showVoteRatio: {
   //   type: "select",
   //   category: "layout",

@@ -1,5 +1,5 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
-import type { RYDVotesObj, ResourceKey, VideoVotesObj } from "../types.js";
+import type { RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
 import { error, info } from "./logging.js";
 
@@ -46,7 +46,7 @@ export function sendRequest<T = any>(details: GM.Request<T>) {
 }
 
 /** Fetches a CSS file from the specified resource with a key starting with `css-` */
-export async function fetchCss(key: ResourceKey & `css-${string}`) {
+export async function fetchCss(key: StyleResourceKey) {
   try {
     const css = await (await fetchAdvanced(await getResourceUrl(key))).text();
     return css ?? undefined;

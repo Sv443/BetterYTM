@@ -15,7 +15,7 @@ import {
   addWatermark, initRemShareTrackParam,
   fixSpacing, initThumbnailOverlay,
   initHideCursorOnIdle, fixHdrIssues,
-  initShowVotes,
+  initShowVotes, initWatchPageFullSize,
   // volume category:
   initVolumeFeatures,
   // song lists category:
@@ -199,6 +199,9 @@ async function onDomLoad() {
 
       if(feats.showVotes)
         ftInit.push(["showVotes", initShowVotes()]);
+
+      if(feats.watchPageFullSize)
+        ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
 
       //#region (ytm) volume
 

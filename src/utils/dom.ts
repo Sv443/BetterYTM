@@ -2,7 +2,7 @@ import { addGlobalStyle, consumeStringGen, getUnsafeWindow, isDomLoaded, randomI
 import DOMPurify from "dompurify";
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
-import type { ResourceKey, TTPolicy } from "../types.js";
+import type { StyleResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
 import { showPrompt } from "../dialogs/prompt.js";
 
@@ -183,7 +183,7 @@ export async function addStyle(css: StringGen, ref?: string, transform: (css: st
  * Adds a global style element with the contents fetched from the specified resource starting with `css-`  
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
-export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => Stringifiable = (c) => c) {
+export async function addStyleFromResource(key: StyleResourceKey, transform: (css: string) => Stringifiable = (c) => c) {
   const css = await fetchCss(key);
   if(css) {
     await addStyle(String(transform(css)), key.slice(4));

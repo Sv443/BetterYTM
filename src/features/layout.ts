@@ -825,3 +825,13 @@ function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, disl
   if(dislikeBtn)
     dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
 };
+
+//#region watch page full size
+
+/** Makes the watch page full size */
+export async function initWatchPageFullSize() {
+  if(!await addStyleFromResource("css-watch_page_full_size"))
+    error("Couldn't load stylesheet to make watch page full size");
+  else
+    log("Made watch page full size");
+}

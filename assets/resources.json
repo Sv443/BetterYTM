@@ -13,6 +13,7 @@
     "css-hide_themesong_logo": "style/hideThemeSongLogo.css",
     "css-show_votes": "style/showVotes.css",
     "css-vol_slider_size": "style/volSliderSize.css",
+    "css-watch_page_full_size": "style/watchPageFullSize.css",
     "doc-license": {
       "path": "/LICENSE.txt",
       "ref": "$BRANCH",
