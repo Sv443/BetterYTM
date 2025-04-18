@@ -11,31 +11,31 @@ import { MarkdownDialog } from "./components/MarkdownDialog.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import {
-  // layout
+  // layout category:
   addWatermark, initRemShareTrackParam,
   fixSpacing, initThumbnailOverlay,
   initHideCursorOnIdle, fixHdrIssues,
   initShowVotes,
-  // volume
+  // volume category:
   initVolumeFeatures,
-  // song lists
+  // song lists category:
   initQueueButtons, initAboveQueueBtns,
-  // behavior
+  // behavior category:
   initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
   initAutoScrollToActiveSong,
-  // input
-  initArrowKeySkip, initSiteSwitch,
-  addAnchorImprovements, initNumKeysSkip,
-  initAutoLike,
-  // lyrics
+  // input category:
+  initArrowKeySkip, initFrameSkip,
+  initSiteSwitch, addAnchorImprovements,
+  initNumKeysSkip, initAutoLike,
+  // lyrics category:
   addPlayerBarLyricsBtn, initLyricsCache,
-  // integrations
+  // integrations category:
   disableDarkReader, fixSponsorBlock,
   fixPlayerPageTheming, fixThemeSong,
-  // general
+  // general category:
   initVersionCheck,
-  // menu
+  // menu:
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
 // import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
@@ -222,6 +222,8 @@ async function onDomLoad() {
 
       ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
 
+      ftInit.push(["frameSkip", initFrameSkip()]);
+
       if(feats.anchorImprovements)
         ftInit.push(["anchorImprovements", addAnchorImprovements()]);
 
@@ -248,7 +250,7 @@ async function onDomLoad() {
     //#region (ytm+yt) cfg menu
     try {
       if(domain === "ytm") {
-        addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+        addSelectorListener("popupContainer", "tp-yt-iron-dropdown #contentWrapper ytmusic-multi-page-menu-renderer #container", {
           listener: addConfigMenuOptionYTM,
         });
       }

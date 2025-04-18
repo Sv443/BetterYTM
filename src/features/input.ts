@@ -48,7 +48,38 @@ export async function initArrowKeySkip() {
     if(vidElem && vidElem.readyState > 0)
       vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
   });
+
   log("Added arrow key press listener");
+}
+
+//#region frame skip
+
+/** Initializes the feature that lets users skip by a frame with the period and comma keys while the video is paused */
+export async function initFrameSkip() {
+  document.addEventListener("keydown", async (evt) => {
+    if(!getFeature("frameSkip"))
+      return;
+
+    if(!["Comma", "Period"].includes(evt.code))
+      return;
+
+    const vid = getVideoElement();
+    if(!vid || vid.readyState === 0)
+      return warn("Could not find video element or it hasn't loaded yet, so the keypress is ignored");
+
+    if(!getFeature("frameSkipWhilePlaying") && (vid.playbackRate === 0 || !vid.paused))
+      return;
+
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
+
+    const newTime = vid.currentTime + 0.04167 * (evt.code === "Comma" ? -1 : 1);
+    vid.currentTime = clamp(newTime, 0, vid.duration);
+
+    log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);
+  });
+
+  log("Added frame skip key press listener");
 }
 
 //#region site switch

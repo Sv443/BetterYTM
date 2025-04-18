@@ -508,6 +508,22 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
   },
+  frameSkip: {
+    type: "toggle",
+    category: "input",
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  frameSkipWhilePlaying: {
+    type: "toggle",
+    category: "input",
+    default: false,
+    reloadRequired: false,
+    enable: noop,
+    advanced: true,
+    textAdornment: adornments.advanced,
+  },
   switchBetweenSites: {
     type: "toggle",
     category: "input",

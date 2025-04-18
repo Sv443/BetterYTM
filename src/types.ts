@@ -18,7 +18,7 @@ import type { showIconToast, showToast } from "./components/toast.js";
 import resources from "../assets/resources.json" with { type: "json" };
 import locales from "../assets/locales.json" with { type: "json" };
 
-void ["type imports only", resources, locales];
+void ["type imports only:", resources, locales];
 
 //#region other
 
@@ -489,7 +489,7 @@ export type FeatureInfo = Record<
     valueHidden?: boolean;
     /** Transformation function called before the value is rendered in the config menu */
     renderValue?: (value: string) => string | Promise<string>;
-    /** HTML string that is appended to the end of a feature's text description */
+    /** HTML string that is prepended to the feature's text description */
     textAdornment?: () => (Promise<string | undefined> | string | undefined);
 
     /** Whether to only show this feature when advanced mode is activated (default false) */
@@ -587,6 +587,10 @@ export interface FeatureConfig {
   arrowKeySupport: boolean;
   /** By how many seconds to skip when pressing the arrow keys */
   arrowKeySkipBy: number;
+  /** Use . and , keys to skip by a frame while the video is paused */
+  frameSkip: boolean;
+  /** Allow frame skipping while the song is playing */
+  frameSkipWhilePlaying: boolean;
   /** Add a hotkey to switch between the YT and YTM sites on a video / song */
   switchBetweenSites: boolean;
   /** The hotkey that needs to be pressed to initiate the site switch */
