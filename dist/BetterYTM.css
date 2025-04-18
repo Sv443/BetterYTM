@@ -1785,8 +1785,6 @@ html[dark] {
   border: 1px solid transparent;
   border-radius: calc(var(--bytm-generic-btn-height, 36px) / 2);
   background-color: transparent;
-
-  transition: background-color 0.2s ease;
 }
 
 .bytm-generic-btn:hover {
