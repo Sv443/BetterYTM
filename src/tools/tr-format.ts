@@ -37,7 +37,12 @@ async function run() {
     if(!includeBased && localeObj.meta.base)
       continue;
 
+    const undefKeys: string[] = [];
+
     for(const k of Object.keys(enUS_obj)) {
+      if(localeObj[k] === undefined)
+        undefKeys.push(k);
+
       // special treatment for the meta block
       if(k === "meta") {
         localeFile = localeFile.replace(/"meta":\s+{[^}]+\s{2}},?/m, `"meta": ${JSON.stringify(localeObj.meta, null, 2).replace(/\n/gm, "\n  ")},`);
@@ -63,6 +68,12 @@ async function run() {
           localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
       }
     }
+
+    // if onlyKeys is set, remove all lines with keys that are in undefKeys, *excluding* the ones in onlyKeys
+    if(onlyKeys)
+      for(const k of undefKeys)
+        if(!onlyKeys.includes(k))
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
 
     // remove last trailing comma if present
 
