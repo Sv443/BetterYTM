@@ -579,7 +579,7 @@ export interface FeatureConfig {
   rememberSongTimeMinPlayTime: number;
   /** Whether the above queue button container should use sticky positioning */
   aboveQueueBtnsSticky: boolean;
-  /** Whether and when to automatically scroll to the active song in the queue */
+  /** When to automatically scroll to the active song in the queue */
   autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
 
   //#region input
