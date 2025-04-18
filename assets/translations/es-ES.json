@@ -225,7 +225,6 @@
   "plugin_link_type_bug": "Informar de un error",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
-
   "plugin_intent_description_ReadFeatureConfig": "Este plugin puede leer la configuración de la función",
   "plugin_intent_description_WriteFeatureConfig": "Este plugin puede escribir en la configuración de la función",
   "plugin_intent_description_SeeHiddenConfigValues": "Este plugin tiene acceso a valores de configuración ocultos",
@@ -307,6 +306,8 @@
   "feature_desc_arrowKeySupport": "Use las teclas de flecha para saltar hacia adelante y hacia atrás en la canción que se está reproduciendo actualmente",
   "feature_helptext_arrowKeySupport": "Normalmente solo puede saltar hacia adelante y hacia atrás en un intervalo fijo de 10 segundos con las teclas \"H\" y \"L\". Esta función le permite usar las teclas de flecha también.\nPara cambiar la cantidad de segundos para saltar, use la opción a continuación.",
   "feature_desc_arrowKeySkipBy": "Por cuántos segundos saltar al usar las teclas de flecha",
+  "feature_desc_frameSkip": "Utilice las teclas de punto y coma para avanzar o retroceder un cuadro cuando el video o la canción estén en pausa.",
+  "feature_desc_frameSkipWhilePlaying": "Utilice las teclas de punto y coma para avanzar o retroceder un cuadro mientras el video o la canción se están reproduciendo.",
   "feature_desc_switchBetweenSites": "Agregue una tecla de acceso rápido para cambiar entre los sitios YT y YTM en una canción",
   "feature_helptext_switchBetweenSites": "Al presionar esta tecla de acceso rápido, cambiará al otro sitio si está en YouTube o YouTube Music mientras se mantiene en el mismo video / canción.",
   "feature_desc_switchSitesHotkey": "¿Qué tecla de acceso rápido debe presionarse para cambiar de sitio?",

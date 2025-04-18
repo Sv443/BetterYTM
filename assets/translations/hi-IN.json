@@ -225,7 +225,6 @@
   "plugin_link_type_bug": "बग रिपोर्ट करें",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
-
   "plugin_intent_description_ReadFeatureConfig": "यह प्लगइन फीचर कॉन्फ़िगरेशन को पढ़ सकता है",
   "plugin_intent_description_WriteFeatureConfig": "यह प्लगइन फीचर कॉन्फ़िगरेशन में लिख सकता है",
   "plugin_intent_description_SeeHiddenConfigValues": "इस प्लगइन में छिपे हुए कॉन्फ़िगरेशन मानों तक पहुंच है",
@@ -307,6 +306,8 @@
   "feature_desc_arrowKeySupport": "वर्तमान में चल रहे गीत के मीडिया नियंत्रणों में एक बटन जो एरो कुंजियों का समर्थन करता है",
   "feature_helptext_arrowKeySupport": "सामान्य रूप से आप केवल बाएं और दाएं तीर कुंजियों का उपयोग करके एक निश्चित 10 सेकंड के अंतराल में छोड़ सकते हैं। इस सुविधा की मदद से आप तीर कुंजियों का उपयोग कर सकते हैं।\nछोड़ने के लिए सेकंडों की मात्रा बदलने के लिए, नीचे दिए गए विकल्प का उपयोग करें।",
   "feature_desc_arrowKeySkipBy": "एरो कुंजियों का उपयोग करते समय कितने सेकंड छोड़ें",
+  "feature_desc_frameSkip": "वीडियो या गीत को रोकने पर एक फ्रेम छोड़ें",
+  "feature_desc_frameSkipWhilePlaying": "वीडियो या गीत को रोकने पर एक फ्रेम छोड़ें",
   "feature_desc_switchBetweenSites": "वीडियो / गीत पर YT और YTM साइटों के बीच स्विच करने के लिए एक हॉटकी जोड़ें",
   "feature_helptext_switchBetweenSites": "इस हॉटकी को दबाने से आप वर्तमान में चल रहे वीडियो / गीत के बीच स्विच कर सकते हैं जब आप YT या YTM पर होते हैं।",
   "feature_desc_switchSitesHotkey": "साइटों को स्विच करने के लिए कौन सी हॉटकी दबानी चाहिए?",

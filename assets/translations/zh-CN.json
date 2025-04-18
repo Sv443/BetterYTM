@@ -225,7 +225,6 @@
   "plugin_link_type_bug": "报告错误",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
-
   "plugin_intent_description_ReadFeatureConfig": "此插件可以读取功能配置",
   "plugin_intent_description_WriteFeatureConfig": "此插件可以写入功能配置",
   "plugin_intent_description_SeeHiddenConfigValues": "此插件可以访问隐藏的配置值",
@@ -307,6 +306,10 @@
   "feature_desc_arrowKeySupport": "使用箭头键在当前播放的歌曲中前进和后退",
   "feature_helptext_arrowKeySupport": "通常，您只能使用 \"H\" 和 \"L\" 键以固定的 10 秒间隔前进和后退。此功能允许您也使用箭头键。\n要更改要跳过的秒数，请使用下面的选项。",
   "feature_desc_arrowKeySkipBy": "使用箭头键跳过多少秒",
+  "feature_desc_frameSkip": "",
+  "feature_desc_frameSkip": "Use the period and comma keys to skip forwards and backwards by a frame when the video or song is paused",
+  "feature_desc_frameSkipWhilePlaying": "",
+  "feature_desc_frameSkipWhilePlaying": "Also allow skipping by a frame while the video or song is still playing",
   "feature_desc_switchBetweenSites": "在视频 / 歌曲上添加一个热键，以在 YT 和 YTM 网站之间切换",
   "feature_helptext_switchBetweenSites": "按下此热键将在 YT 或 YTM 上切换到另一个站点，同时保持在同一视频 / 歌曲上。",
   "feature_desc_switchSitesHotkey": "需要按下哪个热键才能切换网站？",

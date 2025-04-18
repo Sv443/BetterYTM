@@ -225,7 +225,6 @@
   "plugin_link_type_bug": "Reportar um bug",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
-
   "plugin_intent_description_ReadFeatureConfig": "Este plugin pode ler a configuração do recurso",
   "plugin_intent_description_WriteFeatureConfig": "Este plugin pode escrever na configuração do recurso",
   "plugin_intent_description_SeeHiddenConfigValues": "Este plugin tem acesso a valores de configuração ocultos",
@@ -307,6 +306,8 @@
   "feature_desc_arrowKeySupport": "Use as teclas de seta para pular para a próxima ou anterior música na fila",
   "feature_helptext_arrowKeySupport": "Normalmente, você só pode pular para frente e para trás por um intervalo fixo de 10 segundos com as teclas \"H\" e \"L\". Este recurso permite que você use as teclas de seta também.\nPara alterar a quantidade de segundos a pular, use a opção abaixo.",
   "feature_desc_arrowKeySkipBy": "Por quantos segundos pular ao usar as teclas de seta",
+  "feature_desc_frameSkip": "Use as teclas de ponto e vírgula para pular para frente e para trás por um quadro quando o vídeo ou música estiver pausado",
+  "feature_desc_frameSkipWhilePlaying": "Use as teclas de ponto e vírgula para pular para frente e para trás por um quadro quando o vídeo ou música estiver tocando",
   "feature_desc_switchBetweenSites": "Adicione um atalho para alternar entre os sites YT e YTM em um vídeo / música",
   "feature_helptext_switchBetweenSites": "Pressionar este atalho alternará para o outro site se você estiver no YouTube ou YouTube Music, mantendo-se na mesma música / vídeo.",
   "feature_desc_switchSitesHotkey": "Qual tecla de atalho precisa ser pressionada para alternar entre os sites?",

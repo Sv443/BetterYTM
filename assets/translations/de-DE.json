@@ -315,6 +315,8 @@
   "feature_desc_arrowKeySupport": "Benutze die Pfeiltasten um vor- und zurückzuspulen",
   "feature_helptext_arrowKeySupport": "Normalerweise kannst du nur in 10 Sekunden Schritten vor- und zurückspulen, indem du die Tasten \"H\" und \"L\" benutzt. Diese Funktion ermöglicht es dir, auch die Pfeiltasten zu benutzen.\nUm die Anzahl der Sekunden zu ändern, um die gespult werden soll, benutze die Option unten.",
   "feature_desc_arrowKeySkipBy": "Um wie viele Sekunden vor- und zurückspulen, wenn die Pfeiltasten benutzt werden",
+  "feature_desc_frameSkip": "Mit den Tasten \"Punkt\" und \"Komma\" um einen Frame spulen, während der Song oder das Video pausiert ist",
+  "feature_desc_frameSkipWhilePlaying": "Erlaube das Spulen um einen Frame auch während der Song oder das Video noch läuft",
   "feature_desc_switchBetweenSites": "Füge einen Hotkey hinzu, um zwischen den YT und YTM Seiten zu wechseln",
   "feature_helptext_switchBetweenSites": "Wenn du auf YouTube oder YouTube Music bist, kannst du mit diesem Hotkey zur anderen Seite wechseln, während du auf demselben Video / Song bleibst.",
   "feature_desc_switchSitesHotkey": "Welcher Hotkey muss gedrückt werden, um zwischen den Seiten zu wechseln?",

@@ -225,7 +225,6 @@
   "plugin_link_type_bug": "Signaler un bug",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
-
   "plugin_intent_description_ReadFeatureConfig": "Ce plugin peut lire la configuration de la fonctionnalité",
   "plugin_intent_description_WriteFeatureConfig": "Ce plugin peut écrire dans la configuration de la fonctionnalité",
   "plugin_intent_description_SeeHiddenConfigValues": "Ce plugin a accès à des valeurs de configuration cachées",
@@ -307,6 +306,8 @@
   "feature_desc_arrowKeySupport": "Utilisez les touches fléchées pour avancer et reculer dans la chanson en cours de lecture",
   "feature_helptext_arrowKeySupport": "Normalement, vous ne pouvez avancer et reculer que par intervalles fixes de 10 secondes avec les touches \"H\" et \"L\". Cette fonctionnalité vous permet d'utiliser aussi les touches fléchées.\nPour changer le nombre de secondes à sauter, utilisez l'option ci-dessous.",
   "feature_desc_arrowKeySkipBy": "De combien de secondes sauter en utilisant les touches fléchées",
+  "feature_desc_frameSkip": "Utiliser les touches virgule et point pour avancer et reculer d'une image lorsque la vidéo ou la chanson est en pause",
+  "feature_desc_frameSkipWhilePlaying": "Utiliser les touches virgule et point pour avancer et reculer d'une image lorsque la vidéo ou la chanson est en cours de lecture",
   "feature_desc_switchBetweenSites": "Ajouter un raccourci pour passer d'un site à l'autre sur une vidéo / chanson",
   "feature_helptext_switchBetweenSites": "En appuyant sur ce raccourci, vous passerez à l'autre site si vous êtes sur YouTube ou YouTube Music tout en restant sur la même vidéo / chanson.",
   "feature_desc_switchSitesHotkey": "Quelle touche de raccourci doit être enfoncée pour passer d'un site à l'autre?",
