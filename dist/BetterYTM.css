@@ -2196,6 +2196,13 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   ytmusic-player-bar[slot="player-bar"]
   tp-yt-paper-icon-button
   svg
+  path,
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  yt-icon-button
+  svg
   path {
   fill: #fff;
 }

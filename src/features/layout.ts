@@ -1,4 +1,4 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, pauseFor } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
@@ -117,9 +117,11 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   cfgOptItemElem.tabIndex = 0;
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
 
-  onInteraction(cfgOptItemElem, (e: MouseEvent | KeyboardEvent) => {
-    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
+  onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
+    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button button");
     settingsBtnElem?.click();
+
+    await pauseFor(20);
 
     if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
