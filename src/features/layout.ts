@@ -1,4 +1,4 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
@@ -120,8 +120,6 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button button");
     settingsBtnElem?.click();
-
-    await pauseFor(20);
 
     if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
