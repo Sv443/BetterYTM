@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4fd92576/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@20a5160f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -99,6 +99,7 @@ I welcome every contribution on GitHub!
 	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
 	"css-show_votes": "style/showVotes.css",
 	"css-vol_slider_size": "style/volSliderSize.css",
+	"css-watch_page_full_size": "style/watchPageFullSize.css",
 	"doc-license": {
 		path: "/LICENSE.txt",
 		ref: "$BRANCH",
@@ -332,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "4fd92576",
+    buildNumber: "20a5160f",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5120,6 +5121,14 @@ function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
         likeBtn.title = likeBtn.ariaLabel = likesLabelText;
     if (dislikeBtn)
         dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
+}
+//#region watch page full size
+/** Makes the watch page full size */
+async function initWatchPageFullSize() {
+    if (!await addStyleFromResource("css-watch_page_full_size"))
+        error("Couldn't load stylesheet to make watch page full size");
+    else
+        log("Made watch page full size");
 }//#region Dark Reader
 /** Disables Dark Reader if it is present */
 async function disableDarkReader() {
@@ -6119,8 +6128,13 @@ const featInfo = {
         default: true,
         textAdornment: adornments.reload,
     },
-    // archived idea for future version
-    // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
+    watchPageFullSize: {
+        type: "toggle",
+        category: "layout",
+        default: false,
+        textAdornment: adornments.reload,
+    },
+    // archived idea for future version (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes):
     // showVoteRatio: {
     //   type: "select",
     //   category: "layout",
@@ -6786,6 +6800,7 @@ const migrations = {
     10: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
         "frameSkip", "frameSkipWhilePlaying",
+        "watchPageFullSize",
     ]), [
         { key: "lyricsCacheMaxSize", oldDefault: 2000 },
     ]),
@@ -7996,6 +8011,8 @@ async function onDomLoad() {
                 ftInit.push(["fixHdrIssues", fixHdrIssues()]);
             if (feats.showVotes)
                 ftInit.push(["showVotes", initShowVotes()]);
+            if (feats.watchPageFullSize)
+                ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
             //#region (ytm) volume
             ftInit.push(["volumeFeatures", initVolumeFeatures()]);
             //#region (ytm) song lists
