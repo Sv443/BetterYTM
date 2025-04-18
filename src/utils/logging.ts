@@ -103,6 +103,7 @@ function getErrorDialog(errName: string, args: unknown[]) {
     },
     body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+  
 ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
   });
 }

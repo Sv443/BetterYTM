@@ -6,7 +6,7 @@ import type { ResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
 import { showPrompt } from "../dialogs/prompt.js";
 
-//#region vid time & vol.
+//#region vid elem
 
 /** Returns the video element selector string based on the current domain */
 export function getVideoSelector() {
@@ -21,6 +21,8 @@ export function getVideoElement() {
 }
 
 let vidElemReady = false;
+
+//#region vid time
 
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).  
@@ -127,6 +129,8 @@ function ytForceShowVideoTime() {
 
   return true;
 }
+
+//#region vid ready
 
 /**
  * Waits for the video element to be in its readyState 4 / canplay state and returns it.  
