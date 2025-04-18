@@ -1,4 +1,4 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
@@ -28,7 +28,7 @@ export async function addWatermark() {
   improveLogo();
 
   const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
-    e.stopPropagation();
+    e.stopImmediatePropagation();
 
     if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
@@ -36,7 +36,7 @@ export async function addWatermark() {
       exchangeLogo();
   };
 
-  onInteraction(watermark, watermarkOpenMenu);
+  onInteraction(watermark, (e) => watermarkOpenMenu(e));
 
   addSelectorListener("navBar", "ytmusic-nav-bar #left-content", {
     listener: (logoElem) => logoElem.insertAdjacentElement("afterend", watermark),
@@ -104,6 +104,8 @@ function exchangeLogo() {
   });
 }
 
+//#region cfg menu options
+
 /** Called whenever the avatar popover menu exists on YTM to add a BYTM config menu button to the user menu popover */
 export async function addConfigMenuOptionYTM(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
@@ -115,11 +117,9 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   cfgOptItemElem.tabIndex = 0;
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
 
-  onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
+  onInteraction(cfgOptItemElem, (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
-
-    await pauseFor(20);
 
     if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
@@ -181,7 +181,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
     return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
 }
 
-//#region anchor impr.
+//#region anchor improvements
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
@@ -312,7 +312,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
-//#region share track par.
+//#region share track param
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {

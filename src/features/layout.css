@@ -230,6 +230,7 @@ button[disabled].bytm-busy {
 .bytm-cfg-menu-option {
   display: block;
   padding: 8px 0;
+  border-top: 1px solid var(--yt-spec-outline, rgba(255, 255, 255, 0.2));
 }
 
 .bytm-cfg-menu-option-item {
