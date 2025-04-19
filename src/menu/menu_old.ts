@@ -599,12 +599,12 @@ async function mountCfgMenu() {
             if(type === "toggle" && typeof initialVal !== "undefined")
               inputElem.checked = Boolean(initialVal);
 
-            const unitTxt = (
+            const getUnitTxt = (val: Stringifiable) => (
               "unit" in ftInfo && typeof ftInfo.unit === "string"
                 ? ftInfo.unit
                 : (
                   "unit" in ftInfo && typeof ftInfo.unit === "function"
-                    ? ftInfo.unit(Number(inputElem.value))
+                    ? ftInfo.unit(Number(val))
                     : ""
                 )
             );
@@ -614,11 +614,11 @@ async function mountCfgMenu() {
             if(type === "slider") {
               labelElem = document.createElement("label");
               labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-              labelElem.textContent = `${fmtVal(initialVal, featKey as FeatureKey)}${unitTxt}`;
+              labelElem.textContent = `${fmtVal(initialVal, featKey as FeatureKey)}${getUnitTxt(inputElem.value)}`;
 
               inputElem.addEventListener("input", () => {
                 if(labelElem && lastDisplayedVal !== inputElem.value) {
-                  labelElem.textContent = `${fmtVal(inputElem.value, featKey as FeatureKey)}${unitTxt}`;
+                  labelElem.textContent = `${fmtVal(inputElem.value, featKey as FeatureKey)}${getUnitTxt(inputElem.value)}`;
                   lastDisplayedVal = inputElem.value;
                 }
               });
