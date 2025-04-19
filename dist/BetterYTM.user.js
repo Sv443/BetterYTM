@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3cbc48c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@52da226a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "b3cbc48c",
+    buildNumber: "52da226a",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4137,20 +4137,20 @@ async function mountCfgMenu() {
                             inputElem.step = String(step);
                         if (type === "toggle" && typeof initialVal !== "undefined")
                             inputElem.checked = Boolean(initialVal);
-                        const unitTxt = ("unit" in ftInfo && typeof ftInfo.unit === "string"
+                        const getUnitTxt = (val) => ("unit" in ftInfo && typeof ftInfo.unit === "string"
                             ? ftInfo.unit
                             : ("unit" in ftInfo && typeof ftInfo.unit === "function"
-                                ? ftInfo.unit(Number(inputElem.value))
+                                ? ftInfo.unit(Number(val))
                                 : ""));
                         let labelElem;
                         let lastDisplayedVal;
                         if (type === "slider") {
                             labelElem = document.createElement("label");
                             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-                            labelElem.textContent = `${fmtVal(initialVal, featKey)}${unitTxt}`;
+                            labelElem.textContent = `${fmtVal(initialVal, featKey)}${getUnitTxt(inputElem.value)}`;
                             inputElem.addEventListener("input", () => {
                                 if (labelElem && lastDisplayedVal !== inputElem.value) {
-                                    labelElem.textContent = `${fmtVal(inputElem.value, featKey)}${unitTxt}`;
+                                    labelElem.textContent = `${fmtVal(inputElem.value, featKey)}${getUnitTxt(inputElem.value)}`;
                                     lastDisplayedVal = inputElem.value;
                                 }
                             });
@@ -6506,9 +6506,9 @@ const featInfo = {
         type: "slider",
         category: "lyrics",
         default: 5000,
-        min: 100,
+        min: 1000,
         max: 50000,
-        step: 100,
+        step: 500,
         unit: (val) => ` ${tp("unit_entries", val)}`,
         renderValue: renderNumberVal,
         advanced: true,
