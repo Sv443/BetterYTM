@@ -308,6 +308,8 @@
   "feature_desc_arrowKeySkipBy": "矢印キーを使用してスキップする秒数",
   "feature_desc_frameSkip": "ビデオ / 曲を一時停止しているときに、フレーム単位で前後にスキップする",
   "feature_desc_frameSkipWhilePlaying": "ビデオ / 曲を再生しているときに、フレーム単位で前後にスキップする",
+  "feature_desc_frameSkipAmount": "\"ピリオド\"と\"カンマ\"キーで何秒スキップするか",
+  "feature_helptext_frameSkipAmount": "この機能は YT でも利用可能で、約 0.0417 秒の固定値をスキップします。必要に応じて、ここで別の値を設定できます。",
   "feature_desc_switchBetweenSites": "ビデオ / 曲の YT と YTM サイトを切り替えるホットキーを追加する",
   "feature_helptext_switchBetweenSites": "このホットキーを押すと、同じビデオ / 曲のままで YouTube または YouTube Music のどちらかに切り替わります。",
   "feature_desc_switchSitesHotkey": "サイトを切り替えるために押す必要があるホットキーはどれですか？",

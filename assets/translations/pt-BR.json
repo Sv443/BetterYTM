@@ -308,6 +308,8 @@
   "feature_desc_arrowKeySkipBy": "Por quantos segundos pular ao usar as teclas de seta",
   "feature_desc_frameSkip": "Use as teclas de ponto e vírgula para pular para frente e para trás por um quadro quando o vídeo ou música estiver pausado",
   "feature_desc_frameSkipWhilePlaying": "Use as teclas de ponto e vírgula para pular para frente e para trás por um quadro quando o vídeo ou música estiver tocando",
+  "feature_desc_frameSkipAmount": "Quantos segundos devem ser pulados com as teclas \"ponto\" e \"vírgula\"",
+  "feature_helptext_frameSkipAmount": "Este recurso também está disponível no YT e pula um valor fixo de cerca de 0,0417 segundos. Se necessário, você pode definir outro valor aqui.",
   "feature_desc_switchBetweenSites": "Adicione um atalho para alternar entre os sites YT e YTM em um vídeo / música",
   "feature_helptext_switchBetweenSites": "Pressionar este atalho alternará para o outro site se você estiver no YouTube ou YouTube Music, mantendo-se na mesma música / vídeo.",
   "feature_desc_switchSitesHotkey": "Qual tecla de atalho precisa ser pressionada para alternar entre os sites?",

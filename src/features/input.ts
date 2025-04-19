@@ -73,7 +73,7 @@ export async function initFrameSkip() {
     evt.preventDefault();
     evt.stopImmediatePropagation();
 
-    const newTime = vid.currentTime + 0.04167 * (evt.code === "Comma" ? -1 : 1);
+    const newTime = vid.currentTime + getFeature("frameSkipAmount") * (evt.code === "Comma" ? -1 : 1);
     vid.currentTime = clamp(newTime, 0, vid.duration);
 
     log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);

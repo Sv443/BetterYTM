@@ -308,6 +308,8 @@
   "feature_desc_arrowKeySkipBy": "De combien de secondes sauter en utilisant les touches fléchées",
   "feature_desc_frameSkip": "Utiliser les touches virgule et point pour avancer et reculer d'une image lorsque la vidéo ou la chanson est en pause",
   "feature_desc_frameSkipWhilePlaying": "Utiliser les touches virgule et point pour avancer et reculer d'une image lorsque la vidéo ou la chanson est en cours de lecture",
+  "feature_desc_frameSkipAmount": "De combien de secondes sauter avec les touches \"point\" et \"virgule\"",
+  "feature_helptext_frameSkipAmount": "Cette fonctionnalité est également disponible sur YT et saute une valeur fixe d'environ 0,0417 secondes. Si nécessaire, vous pouvez définir une autre valeur ici.",
   "feature_desc_switchBetweenSites": "Ajouter un raccourci pour passer d'un site à l'autre sur une vidéo / chanson",
   "feature_helptext_switchBetweenSites": "En appuyant sur ce raccourci, vous passerez à l'autre site si vous êtes sur YouTube ou YouTube Music tout en restant sur la même vidéo / chanson.",
   "feature_desc_switchSitesHotkey": "Quelle touche de raccourci doit être enfoncée pour passer d'un site à l'autre?",

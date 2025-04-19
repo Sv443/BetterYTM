@@ -308,6 +308,8 @@
   "feature_desc_arrowKeySkipBy": "एरो कुंजियों का उपयोग करते समय कितने सेकंड छोड़ें",
   "feature_desc_frameSkip": "वीडियो या गीत को रोकने पर एक फ्रेम छोड़ें",
   "feature_desc_frameSkipWhilePlaying": "वीडियो या गीत को रोकने पर एक फ्रेम छोड़ें",
+  "feature_desc_frameSkipAmount": "\"पीरियड\" और \"कॉमा\" कुंजियों से कितने सेकंड छोड़े जाने चाहिए",
+  "feature_helptext_frameSkipAmount": "इस सुविधा को YT पर भी उपलब्ध है और यह लगभग 0.0417 सेकंड का एक निश्चित मान छोड़ता है। यदि आवश्यक हो, तो आप यहां एक अलग मान सेट कर सकते हैं।",
   "feature_desc_switchBetweenSites": "वीडियो / गीत पर YT और YTM साइटों के बीच स्विच करने के लिए एक हॉटकी जोड़ें",
   "feature_helptext_switchBetweenSites": "इस हॉटकी को दबाने से आप वर्तमान में चल रहे वीडियो / गीत के बीच स्विच कर सकते हैं जब आप YT या YTM पर होते हैं।",
   "feature_desc_switchSitesHotkey": "साइटों को स्विच करने के लिए कौन सी हॉटकी दबानी चाहिए?",

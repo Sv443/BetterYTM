@@ -529,6 +529,18 @@ export const featInfo = {
     advanced: true,
     textAdornment: adornments.advanced,
   },
+  frameSkipAmount: {
+    type: "number",
+    category: "input",
+    min: 0,
+    max: 1,
+    step: 0.0001,
+    default: 0.0417,
+    reloadRequired: false,
+    enable: noop,
+    advanced: true,
+    textAdornment: adornments.advanced,
+  },
   switchBetweenSites: {
     type: "toggle",
     category: "input",

@@ -596,6 +596,8 @@ export interface FeatureConfig {
   frameSkip: boolean;
   /** Allow frame skipping while the song is playing */
   frameSkipWhilePlaying: boolean;
+  /** Amount of seconds to skip when pressing the . and , keys */
+  frameSkipAmount: number;
   /** Add a hotkey to switch between the YT and YTM sites on a video / song */
   switchBetweenSites: boolean;
   /** The hotkey that needs to be pressed to initiate the site switch */
