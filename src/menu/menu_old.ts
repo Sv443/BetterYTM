@@ -435,7 +435,7 @@ async function mountCfgMenu() {
             ftConfElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
           }
 
-          if(!hasKeyFor("en-US", `feature_desc_${featKey}`)) {
+          if(!await hasKeyFor("en-US", `feature_desc_${featKey}`)) {
             error(`Missing en-US translation with key "feature_desc_${featKey}" for feature description, skipping this config menu feature...`);
             continue;
           }
@@ -463,7 +463,7 @@ async function mountCfgMenu() {
           // @ts-ignore
           const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
 
-          if(hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
+          if(await hasKey(`feature_helptext_${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
             const helpElemImgHtml = await resourceAsString("icon-help");
             if(helpElemImgHtml) {
               helpElem = document.createElement("div");
@@ -703,7 +703,7 @@ async function mountCfgMenu() {
               customInputEl = document.createElement("button");
               customInputEl.classList.add("bytm-btn");
               customInputEl.tabIndex = 0;
-              customInputEl.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+              customInputEl.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
               customInputEl.ariaLabel = customInputEl.title = t(`feature_desc_${featKey}`);
 
               onInteraction(customInputEl, async () => {
@@ -715,15 +715,15 @@ async function mountCfgMenu() {
 
                 (customInputEl as HTMLButtonElement).disabled = true;
                 customInputEl!.classList.add("bytm-busy");
-                customInputEl!.textContent = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+                customInputEl!.textContent = await hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
 
                 if(res instanceof Promise)
                   await res;
 
-                const finalize = () => {
+                const finalize = async () => {
                   (customInputEl as HTMLButtonElement).disabled = false;
                   customInputEl!.classList.remove("bytm-busy");
-                  customInputEl!.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                  customInputEl!.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
                 };
 
                 // artificial timeout ftw

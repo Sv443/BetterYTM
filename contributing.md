@@ -1100,7 +1100,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### hasKey()
 > Signature:  
 > ```ts
-> unsafeWindow.BYTM.hasKey(key: string): boolean
+> unsafeWindow.BYTM.hasKey(key: string): Promise<boolean>
 > ```
 >   
 > Description:  
@@ -1112,8 +1112,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.hasKey("lyrics_rate_limited"); // true
-> unsafeWindow.BYTM.hasKey("some_key_that_doesnt_exist"); // false
+> await unsafeWindow.BYTM.hasKey("lyrics_rate_limited"); // true
+> await unsafeWindow.BYTM.hasKey("some_key_that_doesnt_exist"); // false
 > ```
 > </details>
 
@@ -1122,11 +1122,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### hasKeyFor()
 > Signature:  
 > ```ts
-> unsafeWindow.BYTM.hasKeyFor(locale: string, key: string): boolean
+> unsafeWindow.BYTM.hasKeyFor(locale: string, key: string): Promise<boolean>
 > ```
 >   
 > Description:  
 > Returns true if the specified translation key exists in the specified locale.  
+> If the locale isn't loaded yet, it will be loaded before resolving the promise.  
 >   
 > Arguments:  
 > - `locale` - The locale to check for the translation key in - refer to the keys of the object in [`assets/locales.json`](assets/locales.json).
@@ -1135,8 +1136,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.hasKeyFor("en-GB", "lyrics_rate_limited"); // true
-> unsafeWindow.BYTM.hasKeyFor("en-GB", "some_key_that_doesnt_exist"); // false
+> await unsafeWindow.BYTM.hasKeyFor("en-GB", "lyrics_rate_limited"); // true
+> await unsafeWindow.BYTM.hasKeyFor("en-GB", "some_key_that_doesnt_exist"); // false
 > ```
 > </details>
 

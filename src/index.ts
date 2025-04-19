@@ -115,8 +115,13 @@ async function init() {
 
     await initLyricsCache();
 
-    await initTranslations(features.locale ?? "en-US");
-    setLocale(features.locale ?? "en-US");
+    const initLoc = features.locale ?? "en-US";
+    const locPromises: Promise<void>[] = [];
+    locPromises.push(initTranslations(initLoc));
+    // since en-US always has the complete set of keys, it needs to always be loaded:
+    initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
+    await Promise.allSettled(locPromises);
+    setLocale(initLoc);
 
     try {
       initPlugins();

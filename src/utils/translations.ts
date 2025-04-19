@@ -84,12 +84,14 @@ export function getLocale() {
 }
 
 /** Returns whether the given translation key exists in the current locale */
-export function hasKey(key: TFuncKey) {
-  return hasKeyFor(getLocale(), key);
+export async function hasKey(key: TFuncKey) {
+  return await hasKeyFor(getLocale(), key);
 }
 
-/** Returns whether the given translation key exists in the given locale */
-export function hasKeyFor(locale: TrLocale, key: TFuncKey) {
+/** Returns whether the given translation key exists in the given locale - if it hasn't been initialized yet, initializes it first. */
+export async function hasKeyFor(locale: TrLocale, key: TFuncKey) {
+  if(!initializedLocales.has(locale))
+    await initTranslations(locale);
   return typeof tr.getTranslations(locale)?.[key] === "string";
 }
 
