@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c20b8e79/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3cbc48c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "c20b8e79",
+    buildNumber: "b3cbc48c",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -575,12 +575,14 @@ function getLocale() {
     return activeLocale;
 }
 /** Returns whether the given translation key exists in the current locale */
-function hasKey(key) {
-    return hasKeyFor(getLocale(), key);
+async function hasKey(key) {
+    return await hasKeyFor(getLocale(), key);
 }
-/** Returns whether the given translation key exists in the given locale */
-function hasKeyFor(locale, key) {
+/** Returns whether the given translation key exists in the given locale - if it hasn't been initialized yet, initializes it first. */
+async function hasKeyFor(locale, key) {
     var _a;
+    if (!initializedLocales.has(locale))
+        await initTranslations(locale);
     return typeof ((_a = UserUtils.tr.getTranslations(locale)) === null || _a === void 0 ? void 0 : _a[key]) === "string";
 }
 /** Returns the translated string for the given key, after optionally inserting values */
@@ -2450,7 +2452,7 @@ async function initFrameSkip() {
             return;
         evt.preventDefault();
         evt.stopImmediatePropagation();
-        const newTime = vid.currentTime + 0.04167 * (evt.code === "Comma" ? -1 : 1);
+        const newTime = vid.currentTime + getFeature("frameSkipAmount") * (evt.code === "Comma" ? -1 : 1);
         vid.currentTime = UserUtils.clamp(newTime, 0, vid.duration);
         log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);
     });
@@ -4002,7 +4004,7 @@ async function mountCfgMenu() {
                         const adv = ftInfo.advanced ? " (advanced feature)" : "";
                         ftConfElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
                     }
-                    if (!hasKeyFor("en-US", `feature_desc_${featKey}`)) {
+                    if (!await hasKeyFor("en-US", `feature_desc_${featKey}`)) {
                         error(`Missing en-US translation with key "feature_desc_${featKey}" for feature description, skipping this config menu feature...`);
                         continue;
                     }
@@ -4024,7 +4026,7 @@ async function mountCfgMenu() {
                     const hasHelpTextFunc = typeof ((_b = featInfo[featKey]) === null || _b === void 0 ? void 0 : _b.helpText) === "function";
                     // @ts-ignore
                     const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
-                    if (hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
+                    if (await hasKey(`feature_helptext_${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
                         const helpElemImgHtml = await resourceAsString("icon-help");
                         if (helpElemImgHtml) {
                             helpElem = document.createElement("div");
@@ -4228,7 +4230,7 @@ async function mountCfgMenu() {
                                 customInputEl = document.createElement("button");
                                 customInputEl.classList.add("bytm-btn");
                                 customInputEl.tabIndex = 0;
-                                customInputEl.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                                customInputEl.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
                                 customInputEl.ariaLabel = customInputEl.title = t(`feature_desc_${featKey}`);
                                 onInteraction(customInputEl, async () => {
                                     if (customInputEl.disabled)
@@ -4237,13 +4239,13 @@ async function mountCfgMenu() {
                                     const res = ftInfo.click();
                                     customInputEl.disabled = true;
                                     customInputEl.classList.add("bytm-busy");
-                                    customInputEl.textContent = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+                                    customInputEl.textContent = await hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
                                     if (res instanceof Promise)
                                         await res;
-                                    const finalize = () => {
+                                    const finalize = async () => {
                                         customInputEl.disabled = false;
                                         customInputEl.classList.remove("bytm-busy");
-                                        customInputEl.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                                        customInputEl.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
                                     };
                                     // artificial timeout ftw
                                     const rTime = UserUtils.randRange(200, 400);
@@ -6372,6 +6374,18 @@ const featInfo = {
         advanced: true,
         textAdornment: adornments.advanced,
     },
+    frameSkipAmount: {
+        type: "number",
+        category: "input",
+        min: 0,
+        max: 1,
+        step: 0.0001,
+        default: 0.0417,
+        reloadRequired: false,
+        enable: noop,
+        advanced: true,
+        textAdornment: adornments.advanced,
+    },
     switchBetweenSites: {
         type: "toggle",
         category: "input",
@@ -6800,7 +6814,7 @@ const migrations = {
     10: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
         "frameSkip", "frameSkipWhilePlaying",
-        "watchPageFullSize",
+        "frameSkipAmount", "watchPageFullSize",
     ]), [
         { key: "lyricsCacheMaxSize", oldDefault: 2000 },
     ]),
@@ -7940,14 +7954,19 @@ function preInit() {
 }
 //#region init
 async function init() {
-    var _a, _b;
+    var _a;
     try {
         const domain = getDomain();
         const features = await initConfig();
         setLogLevel(features.logLevel);
         await initLyricsCache();
-        await initTranslations((_a = features.locale) !== null && _a !== void 0 ? _a : "en-US");
-        setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en-US");
+        const initLoc = (_a = features.locale) !== null && _a !== void 0 ? _a : "en-US";
+        const locPromises = [];
+        locPromises.push(initTranslations(initLoc));
+        // since en-US always has the complete set of keys, it needs to always be loaded:
+        initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
+        await Promise.allSettled(locPromises);
+        setLocale(initLoc);
         try {
             initPlugins();
         }
