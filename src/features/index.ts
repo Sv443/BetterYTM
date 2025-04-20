@@ -73,7 +73,7 @@ const adornments = {
   globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
   alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
   reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
-} satisfies Record<string, AdornmentFunc>;
+} as const satisfies Record<string, AdornmentFunc>;
 
 /** Order of adornment elements in the {@linkcode combineAdornments()} function */
 const adornmentOrder = new Map<AdornmentFunc, number>();
@@ -116,7 +116,7 @@ const options = {
     { value: "normal", label: t("color_lightness_normal") },
     { value: "lighter", label: t("color_lightness_lighter") },
   ],
-};
+} as const;
 
 //#region renderers
 
@@ -849,7 +849,8 @@ export const featInfo = {
       { value: LogLevel.Info, label: t("log_level_info") },
     ],
     default: LogLevel.Info,
-    textAdornment: adornments.reload,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },
   advancedMode: {
     type: "toggle",

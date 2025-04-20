@@ -384,7 +384,7 @@
   "feature_btn_resetConfig": "Reset settings",
   "feature_btn_resetConfig_running": "Resetting...",
   "feature_desc_resetEverything": "Reset all stored data to the default values",
-  "feature_helptext_resetEverything": "This will reset absolutely everything to its default values, including the feature configuration, the lyrics cache and auto-liked channels.\nThis will also reset all settings to their default values.\nThis is useful if you want to start over with a clean slate or if you are experiencing problems with the script.",
+  "feature_helptext_resetEverything": "This will reset absolutely everything to its default values, including the feature configuration, the lyrics cache and auto-liked channels.\nThis is useful if you want to start over with a clean slate or if you are experiencing problems with the script.",
   "feature_btn_resetEverything": "Reset everything",
   "feature_btn_resetEverything_running": "Resetting...",
   "feature_desc_advancedMode": "Show advanced settings (reloads the menu)",
