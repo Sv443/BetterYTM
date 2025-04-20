@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@52da226a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@18b3af38/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "52da226a",
+    buildNumber: "18b3af38",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6690,7 +6690,8 @@ const featInfo = {
             { value: LogLevel.Info, label: t("log_level_info") },
         ],
         default: LogLevel.Info,
-        textAdornment: adornments.reload,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
     },
     advancedMode: {
         type: "toggle",
