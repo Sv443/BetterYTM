@@ -1,13 +1,12 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { isDomLoaded, NanoEmitter } from "@sv443-network/userutils";
-import type { EventsMap } from "nanoevents";
 import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
 import "../dialogs/dialogs.css";
 
-export interface BytmDialogOptions {
+export type BytmDialogOptions = {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
   id: string;
   /** Target and max width of the dialog in pixels */
@@ -36,9 +35,9 @@ export interface BytmDialogOptions {
   renderHeader?: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the footer of the dialog - leave undefined for no footer */
   renderFooter?: () => HTMLElement | Promise<HTMLElement>;
-}
+};
 
-export interface BytmDialogEvents extends EventsMap {
+export type BytmDialogEvents = {
   /** Emitted just **after** the dialog is closed */
   close: () => void;
   /** Emitted just **after** the dialog is opened */

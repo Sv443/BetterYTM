@@ -2,7 +2,7 @@ import { randomId } from "@sv443-network/userutils";
 import { setInnerHtml, t } from "../utils/index.js";
 import "./toggleInput.css";
 
-export interface ToggleInputProps {
+export type ToggleInputProps = {
   /** Callback function that is called when the toggle is changed */
   onChange: (value: boolean) => void;
   /** Initial value of the toggle - defaults to false */
@@ -11,7 +11,7 @@ export interface ToggleInputProps {
   id?: string;
   /** Toggle label off or change position of the label relative to the toggle */
   labelPos?: "off" | "left" | "right";
-}
+};
 
 /** Creates a simple toggle element */
 export async function createToggleInput({

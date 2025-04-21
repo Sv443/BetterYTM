@@ -86,10 +86,10 @@ adornmentOrder.set(adornments.advanced, 4);
 
 //#region select options
 
-interface SelectOption<TValue = number | string> {
+type SelectOption<TValue = number | string> = {
   value: TValue;
   label: string;
-}
+};
 
 /** Common options for config items of type "select" */
 const options = {

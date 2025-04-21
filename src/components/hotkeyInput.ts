@@ -3,12 +3,12 @@ import { getOS, onInteraction, setInnerHtml, t } from "../utils/index.js";
 import type { HotkeyObj } from "../types.js";
 import "./hotkeyInput.css";
 
-interface HotkeyInputProps {
+type HotkeyInputProps = {
   initialValue?: HotkeyObj;
   onChange: (hotkey: HotkeyObj) => void;
   /** Function that returns the title and aria-label for the input element, given the hotkey value */
   createTitle?: (value: string) => string;
-}
+};
 
 let otherHotkeyInputActive = false;
 

@@ -107,14 +107,14 @@ export async function initAutoScrollToActiveSong() {
 
 //#region remember song time
 
-interface RemVidObj {
+type RemVidObj = {
   /** Watch ID */
   id: string;
   /** Time of the song/video in seconds */
   time: number;
   /** Timestamp this entry was last updated */
   updated: number;
-}
+};
 
 /**
  * Remembers the time of the last played video and resumes playback from that time.  

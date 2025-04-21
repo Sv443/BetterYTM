@@ -4,7 +4,8 @@ import { FeatureConfig } from "./types.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
 
-export interface SiteEventsMap {
+/** Map of all site events and their arguments */
+export type SiteEventsMap = {
   //#region misc:
   /** Emitted whenever the feature config is changed - initialization is not counted */
   configChanged: (newConfig: FeatureConfig) => void;
@@ -48,7 +49,7 @@ export interface SiteEventsMap {
   //#region features:
   /** Emitted whenever a channel was added, edited or removed from the auto-like list */
   autoLikeChannelsUpdated: () => void;
-}
+};
 
 /** Array of all site events */
 export const allSiteEvents = [
