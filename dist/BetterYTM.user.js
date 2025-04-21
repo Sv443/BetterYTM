@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6abc4749/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8a0f452a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "6abc4749",
+    buildNumber: "8a0f452a",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2222,7 +2222,7 @@ async function initArrowKeySkip() {
         var _a, _b, _c, _d, _e, _f;
         if (!getFeature("arrowKeySupport"))
             return;
-        if (["ArrowUp", "ArrowDown"].includes(evt.code))
+        if (["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
             return handleVolumeKeyPress(evt);
         if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
             return;
@@ -2247,8 +2247,10 @@ function handleVolumeKeyPress(evt) {
     var _a;
     evt.preventDefault();
     evt.stopImmediatePropagation();
-    if (!sliderEl || !getVideoElement())
-        return warn("Couldn't find video or volume slider element, so the keypress is ignored");
+    if (!getVideoElement())
+        return warn("Couldn't find video element, so the keypress is ignored");
+    if (!sliderEl)
+        return warn("Couldn't find volume slider element, so the keypress is ignored");
     const step = Number(sliderEl.step);
     const newVol = UserUtils.clamp(Number(sliderEl.value)
         + (evt.code === "ArrowUp" ? 1 : -1)
@@ -5172,16 +5174,26 @@ async function initLikeDislikeHotkeys() {
             return;
         if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
             return;
-        if (keyPressed(e, getFeature("likeHotkey"))) {
-            const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-            const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
-            likeBtnEl === null || likeBtnEl === void 0 ? void 0 : likeBtnEl.click();
-        }
-        else if (keyPressed(e, getFeature("dislikeHotkey"))) {
-            const dislikeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-            const dislikeBtnEl = dislikeRendererEl === null || dislikeRendererEl === void 0 ? void 0 : dislikeRendererEl.querySelector("#button-shape-dislike button");
-            dislikeBtnEl === null || dislikeBtnEl === void 0 ? void 0 : dislikeBtnEl.click();
-        }
+        const [likeBtn, dislikeBtn] = (() => {
+            switch (getDomain()) {
+                case "ytm": {
+                    const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
+                    const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
+                    const dislikeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
+                    const dislikeBtnEl = dislikeRendererEl === null || dislikeRendererEl === void 0 ? void 0 : dislikeRendererEl.querySelector("#button-shape-dislike button");
+                    return [likeBtnEl !== null && likeBtnEl !== void 0 ? likeBtnEl : undefined, dislikeBtnEl !== null && dislikeBtnEl !== void 0 ? dislikeBtnEl : undefined];
+                }
+                case "yt": {
+                    const likeBtnEl = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model like-button-view-model button");
+                    const dislikeBtnEl = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model dislike-button-view-model button");
+                    return [likeBtnEl !== null && likeBtnEl !== void 0 ? likeBtnEl : undefined, dislikeBtnEl !== null && dislikeBtnEl !== void 0 ? dislikeBtnEl : undefined];
+                }
+            }
+        })();
+        if (keyPressed(e, getFeature("likeHotkey")))
+            likeBtn === null || likeBtn === void 0 ? void 0 : likeBtn.click();
+        else if (keyPressed(e, getFeature("dislikeHotkey")))
+            dislikeBtn === null || dislikeBtn === void 0 ? void 0 : dislikeBtn.click();
     });
 }//#region Dark Reader
 /** Disables Dark Reader if it is present */
