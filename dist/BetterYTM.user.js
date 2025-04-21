@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@18b3af38/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6abc4749/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "18b3af38",
+    buildNumber: "6abc4749",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1720,206 +1720,6 @@ async function closeToast() {
         toastEl.remove();
         await UserUtils.pauseFor(100);
     }));
-}//#region beforeunload popup
-let discardBeforeUnload = false;
-/** Disables the popup before leaving the site */
-function enableDiscardBeforeUnload() {
-    discardBeforeUnload = true;
-    info("Disabled popup before leaving the site");
-}
-/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
-async function initBeforeUnloadHook() {
-    try {
-        UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
-    }
-    catch (err) {
-        error("Error in beforeunload hook:", err);
-    }
-}
-//#region auto close toasts
-/** Closes toasts after a set amount of time */
-async function initAutoCloseToasts() {
-    const animTimeout = 300;
-    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
-        all: true,
-        continuous: true,
-        listener: async (toastContElems) => {
-            try {
-                for (const toastContElem of toastContElems) {
-                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
-                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
-                        continue;
-                    if (toastElem.classList.contains("bytm-closing"))
-                        continue;
-                    toastElem.classList.add("bytm-closing");
-                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
-                    await UserUtils.pauseFor(closeTimeout);
-                    toastElem.classList.remove("paper-toast-open");
-                    toastElem.addEventListener("transitionend", () => {
-                        toastElem.classList.remove("bytm-closing");
-                        toastElem.style.display = "none";
-                        clearNode(toastElem);
-                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
-                    }, { once: true });
-                }
-            }
-            catch (err) {
-                error("Error in automatic toast closing:", err);
-            }
-        },
-    });
-    log("Initialized automatic toast closing");
-}
-//#region auto scroll to active
-let initialAutoScrollToActiveSong = true;
-let prevVidMaxTime = Infinity;
-let prevTime = -1;
-/** Initializes the autoScrollToActiveSong feature */
-async function initAutoScrollToActiveSong() {
-    setInterval(() => {
-        var _a, _b, _c, _d;
-        prevTime = (_b = (_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.currentTime) !== null && _b !== void 0 ? _b : -1;
-        prevVidMaxTime = (_d = (_c = getVideoElement()) === null || _c === void 0 ? void 0 : _c.duration) !== null && _d !== void 0 ? _d : Infinity;
-    }, 50);
-    siteEvents.on("watchIdChanged", (_, oldId) => {
-        if (!oldId)
-            return;
-        const isManualChange = prevTime < prevVidMaxTime - 1;
-        if (["videoChangeManual", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && isManualChange)
-            scrollToCurrentSongInQueue();
-        else if (["videoChangeAuto", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && !isManualChange)
-            scrollToCurrentSongInQueue();
-    });
-    if (getFeature("autoScrollToActiveSongMode") !== "never" && initialAutoScrollToActiveSong) {
-        initialAutoScrollToActiveSong = false;
-        scrollToCurrentSongInQueue();
-    }
-}
-/**
- * Remembers the time of the last played video and resumes playback from that time.
- * **Needs to be called *before* DOM is ready!**
- */
-async function initRememberSongTime() {
-    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
-        return;
-    const storedDataRaw = await GM.getValue("bytm-rem-songs");
-    if (!storedDataRaw)
-        await GM.setValue("bytm-rem-songs", "[]");
-    let remVids;
-    try {
-        remVids = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-    }
-    catch (err) {
-        error("Error parsing stored video time data, defaulting to empty cache:", err);
-        await GM.setValue("bytm-rem-songs", "[]");
-        remVids = [];
-    }
-    if (remVids.some(e => "watchID" in e)) {
-        remVids = remVids.filter(e => "id" in e);
-        await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
-        log(`Removed ${remVids.length} ${UserUtils.autoPlural("entry", remVids)} with an outdated format from the video time cache`);
-    }
-    log(`Initialized video time restoring with ${remVids.length} initial ${UserUtils.autoPlural("entry", remVids)}:`, remVids);
-    await remTimeRestoreTime();
-    try {
-        if (!UserUtils.isDomLoaded())
-            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
-        else
-            remTimeStartUpdateLoop();
-    }
-    catch (err) {
-        error("Error in video time remembering update loop:", err);
-    }
-}
-/** Tries to restore the time of the currently playing video */
-async function remTimeRestoreTime() {
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
-    if (location.pathname.startsWith("/watch")) {
-        const videoID = new URL(location.href).searchParams.get("v");
-        if (!videoID)
-            return;
-        if (initialParams.has("t"))
-            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
-        const entry = remVids.find(entry => entry.id === videoID);
-        if (entry) {
-            if (Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
-                await remTimeDeleteEntry(entry.id);
-                return;
-            }
-            else if (isNaN(Number(entry.time)) || entry.time < 0)
-                return warn("Invalid time in remembered song time entry:", entry);
-            else {
-                let vidElem;
-                const doRestoreTime = async () => {
-                    var _a;
-                    if (!vidElem)
-                        vidElem = await waitVideoElementReady();
-                    const vidRestoreTime = entry.time - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
-                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                    await remTimeDeleteEntry(entry.id);
-                    info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-                };
-                if (!UserUtils.isDomLoaded())
-                    document.addEventListener("DOMContentLoaded", doRestoreTime);
-                else
-                    doRestoreTime();
-            }
-        }
-    }
-}
-let lastSongTime = -1;
-let remVidCheckTimeout;
-/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
-async function remTimeStartUpdateLoop() {
-    var _a, _b, _c;
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
-    if (location.pathname.startsWith("/watch")) {
-        const id = getWatchId();
-        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-        if (id && songTime !== lastSongTime) {
-            lastSongTime = songTime;
-            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-            // don't immediately update to reduce race conditions and only update if the video is playing
-            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
-                const entry = {
-                    id,
-                    time: songTime,
-                    updated: Date.now(),
-                };
-                await remTimeUpsertEntry(entry);
-            }
-            // if the song is rewound to the beginning, update the entry accordingly
-            else if (!paused) {
-                const entry = remVids.find(entry => entry.id === id);
-                if (entry && songTime <= entry.time)
-                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { time: songTime, updated: Date.now() }));
-            }
-        }
-    }
-    const expiredEntries = remVids.filter(entry => Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000);
-    for (const entry of expiredEntries)
-        await remTimeDeleteEntry(entry.id);
-    // for no overlapping calls and better error handling:
-    if (remVidCheckTimeout)
-        clearTimeout(remVidCheckTimeout);
-    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
-}
-/** Updates an existing or inserts a new entry to be remembered */
-async function remTimeUpsertEntry(data) {
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
-    const foundIdx = remVids.findIndex(entry => entry.id === data.id);
-    if (foundIdx >= 0)
-        remVids[foundIdx] = data;
-    else
-        remVids.push(data);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
-}
-/** Deletes an entry in the "remember cache" */
-async function remTimeDeleteEntry(videoID) {
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"))
-        .filter(entry => entry.id !== videoID);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }const interactionKeys = ["Enter", " ", "Space"];
 /**
  * Adds generic, accessible interaction listeners to the passed element.
@@ -2413,11 +2213,17 @@ function getChannelIdFromPrompt(promptStr) {
     return id.length > 0 ? id : null;
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 //#region arrow key skip
+let sliderEl;
 async function initArrowKeySkip() {
+    addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+        listener: (el) => sliderEl = el,
+    });
     document.addEventListener("keydown", (evt) => {
         var _a, _b, _c, _d, _e, _f;
         if (!getFeature("arrowKeySupport"))
             return;
+        if (["ArrowUp", "ArrowDown"].includes(evt.code))
+            return handleVolumeKeyPress(evt);
         if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
             return;
         const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
@@ -2436,6 +2242,22 @@ async function initArrowKeySkip() {
             vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
     });
     log("Added arrow key press listener");
+}
+function handleVolumeKeyPress(evt) {
+    var _a;
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
+    if (!sliderEl || !getVideoElement())
+        return warn("Couldn't find video or volume slider element, so the keypress is ignored");
+    const step = Number(sliderEl.step);
+    const newVol = UserUtils.clamp(Number(sliderEl.value)
+        + (evt.code === "ArrowUp" ? 1 : -1)
+            * UserUtils.clamp(((_a = getFeature("arrowKeyVolumeStep")) !== null && _a !== void 0 ? _a : featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
+    if (newVol !== Number(sliderEl.value)) {
+        sliderEl.value = String(newVol);
+        sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
+        log(`Captured key '${evt.code}' - changed volume to ${newVol}%`);
+    }
 }
 //#region frame skip
 /** Initializes the feature that lets users skip by a frame with the period and comma keys while the video is paused */
@@ -2457,63 +2279,6 @@ async function initFrameSkip() {
         log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);
     });
     log("Added frame skip key press listener");
-}
-//#region site switch
-/** switch sites only if current video time is greater than this value */
-const videoTimeThreshold = 3;
-let siteSwitchEnabled = true;
-/** Initializes the site switch feature */
-async function initSiteSwitch(domain) {
-    document.addEventListener("keydown", (e) => {
-        var _a, _b;
-        if (!getFeature("switchBetweenSites"))
-            return;
-        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
-            return;
-        const hk = getFeature("switchSitesHotkey");
-        if (siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
-            switchSite(domain === "yt" ? "ytm" : "yt");
-    });
-    siteEvents.on("hotkeyInputActive", (state) => {
-        if (!getFeature("switchBetweenSites"))
-            return;
-        siteSwitchEnabled = !state;
-    });
-    log("Initialized site switch listener");
-}
-/** Switches to the other site (between YT and YTM) */
-async function switchSite(newDomain) {
-    try {
-        if (!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
-            return warn("Not on a supported page, so the site switch is ignored");
-        let subdomain;
-        if (newDomain === "ytm")
-            subdomain = "music";
-        else if (newDomain === "yt")
-            subdomain = "www";
-        if (!subdomain)
-            throw new Error(`Unrecognized domain '${newDomain}'`);
-        enableDiscardBeforeUnload();
-        const { pathname, search, hash } = new URL(location.href);
-        const vt = await getVideoTime(0);
-        log(`Found video time of ${vt} seconds`);
-        const cleanSearch = search.split("&")
-            .filter((param) => !param.match(/^\??(t|time_continue)=/))
-            .join("&");
-        const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
-            cleanSearch.includes("?")
-                ? `${cleanSearch.startsWith("?")
-                    ? cleanSearch
-                    : "?" + cleanSearch}&time_continue=${vt}`
-                : `?time_continue=${vt}`
-            : cleanSearch;
-        const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
-        info(`Switching to domain '${newDomain}' at ${newUrl}`);
-        location.assign(newUrl);
-    }
-    catch (err) {
-        error("Error while switching site:", err);
-    }
 }
 //#region num keys skip
 const numKeysIgnoreTagNames = [...inputIgnoreTagNames];
@@ -2930,6 +2695,206 @@ class PluginError extends CustomError {
     constructor(message, opts) {
         super("PluginError", message, opts);
     }
+}//#region beforeunload popup
+let discardBeforeUnload = false;
+/** Disables the popup before leaving the site */
+function enableDiscardBeforeUnload() {
+    discardBeforeUnload = true;
+    info("Disabled popup before leaving the site");
+}
+/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
+async function initBeforeUnloadHook() {
+    try {
+        UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
+    }
+    catch (err) {
+        error("Error in beforeunload hook:", err);
+    }
+}
+//#region auto close toasts
+/** Closes toasts after a set amount of time */
+async function initAutoCloseToasts() {
+    const animTimeout = 300;
+    addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
+        all: true,
+        continuous: true,
+        listener: async (toastContElems) => {
+            try {
+                for (const toastContElem of toastContElems) {
+                    const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
+                    if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
+                        continue;
+                    if (toastElem.classList.contains("bytm-closing"))
+                        continue;
+                    toastElem.classList.add("bytm-closing");
+                    const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
+                    await UserUtils.pauseFor(closeTimeout);
+                    toastElem.classList.remove("paper-toast-open");
+                    toastElem.addEventListener("transitionend", () => {
+                        toastElem.classList.remove("bytm-closing");
+                        toastElem.style.display = "none";
+                        clearNode(toastElem);
+                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+                    }, { once: true });
+                }
+            }
+            catch (err) {
+                error("Error in automatic toast closing:", err);
+            }
+        },
+    });
+    log("Initialized automatic toast closing");
+}
+//#region auto scroll to active
+let initialAutoScrollToActiveSong = true;
+let prevVidMaxTime = Infinity;
+let prevTime = -1;
+/** Initializes the autoScrollToActiveSong feature */
+async function initAutoScrollToActiveSong() {
+    setInterval(() => {
+        var _a, _b, _c, _d;
+        prevTime = (_b = (_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.currentTime) !== null && _b !== void 0 ? _b : -1;
+        prevVidMaxTime = (_d = (_c = getVideoElement()) === null || _c === void 0 ? void 0 : _c.duration) !== null && _d !== void 0 ? _d : Infinity;
+    }, 50);
+    siteEvents.on("watchIdChanged", (_, oldId) => {
+        if (!oldId)
+            return;
+        const isManualChange = prevTime < prevVidMaxTime - 1;
+        if (["videoChangeManual", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && isManualChange)
+            scrollToCurrentSongInQueue();
+        else if (["videoChangeAuto", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && !isManualChange)
+            scrollToCurrentSongInQueue();
+    });
+    if (getFeature("autoScrollToActiveSongMode") !== "never" && initialAutoScrollToActiveSong) {
+        initialAutoScrollToActiveSong = false;
+        scrollToCurrentSongInQueue();
+    }
+}
+/**
+ * Remembers the time of the last played video and resumes playback from that time.
+ * **Needs to be called *before* DOM is ready!**
+ */
+async function initRememberSongTime() {
+    if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
+        return;
+    const storedDataRaw = await GM.getValue("bytm-rem-songs");
+    if (!storedDataRaw)
+        await GM.setValue("bytm-rem-songs", "[]");
+    let remVids;
+    try {
+        remVids = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+    }
+    catch (err) {
+        error("Error parsing stored video time data, defaulting to empty cache:", err);
+        await GM.setValue("bytm-rem-songs", "[]");
+        remVids = [];
+    }
+    if (remVids.some(e => "watchID" in e)) {
+        remVids = remVids.filter(e => "id" in e);
+        await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+        log(`Removed ${remVids.length} ${UserUtils.autoPlural("entry", remVids)} with an outdated format from the video time cache`);
+    }
+    log(`Initialized video time restoring with ${remVids.length} initial ${UserUtils.autoPlural("entry", remVids)}:`, remVids);
+    await remTimeRestoreTime();
+    try {
+        if (!UserUtils.isDomLoaded())
+            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+        else
+            remTimeStartUpdateLoop();
+    }
+    catch (err) {
+        error("Error in video time remembering update loop:", err);
+    }
+}
+/** Tries to restore the time of the currently playing video */
+async function remTimeRestoreTime() {
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+    if (location.pathname.startsWith("/watch")) {
+        const videoID = new URL(location.href).searchParams.get("v");
+        if (!videoID)
+            return;
+        if (initialParams.has("t"))
+            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+        const entry = remVids.find(entry => entry.id === videoID);
+        if (entry) {
+            if (Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
+                await remTimeDeleteEntry(entry.id);
+                return;
+            }
+            else if (isNaN(Number(entry.time)) || entry.time < 0)
+                return warn("Invalid time in remembered song time entry:", entry);
+            else {
+                let vidElem;
+                const doRestoreTime = async () => {
+                    var _a;
+                    if (!vidElem)
+                        vidElem = await waitVideoElementReady();
+                    const vidRestoreTime = entry.time - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                    await remTimeDeleteEntry(entry.id);
+                    info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                };
+                if (!UserUtils.isDomLoaded())
+                    document.addEventListener("DOMContentLoaded", doRestoreTime);
+                else
+                    doRestoreTime();
+            }
+        }
+    }
+}
+let lastSongTime = -1;
+let remVidCheckTimeout;
+/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
+async function remTimeStartUpdateLoop() {
+    var _a, _b, _c;
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+    if (location.pathname.startsWith("/watch")) {
+        const id = getWatchId();
+        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+        if (id && songTime !== lastSongTime) {
+            lastSongTime = songTime;
+            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            // don't immediately update to reduce race conditions and only update if the video is playing
+            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
+                const entry = {
+                    id,
+                    time: songTime,
+                    updated: Date.now(),
+                };
+                await remTimeUpsertEntry(entry);
+            }
+            // if the song is rewound to the beginning, update the entry accordingly
+            else if (!paused) {
+                const entry = remVids.find(entry => entry.id === id);
+                if (entry && songTime <= entry.time)
+                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { time: songTime, updated: Date.now() }));
+            }
+        }
+    }
+    const expiredEntries = remVids.filter(entry => Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000);
+    for (const entry of expiredEntries)
+        await remTimeDeleteEntry(entry.id);
+    // for no overlapping calls and better error handling:
+    if (remVidCheckTimeout)
+        clearTimeout(remVidCheckTimeout);
+    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
+}
+/** Updates an existing or inserts a new entry to be remembered */
+async function remTimeUpsertEntry(data) {
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+    const foundIdx = remVids.findIndex(entry => entry.id === data.id);
+    if (foundIdx >= 0)
+        remVids[foundIdx] = data;
+    else
+        remVids.push(data);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+}
+/** Deletes an entry in the "remember cache" */
+async function remTimeDeleteEntry(videoID) {
+    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"))
+        .filter(entry => entry.id !== videoID);
+    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }//#region misc
 let domain;
 /**
@@ -5131,6 +5096,93 @@ async function initWatchPageFullSize() {
         error("Couldn't load stylesheet to make watch page full size");
     else
         log("Made watch page full size");
+}async function initHotkeys() {
+    const promises = [];
+    if (getFeature("likeDislikeHotkeys"))
+        promises.push(initLikeDislikeHotkeys());
+    if (getFeature("switchBetweenSites"))
+        promises.push(initSiteSwitch());
+    return await Promise.allSettled(promises);
+}
+function keyPressed(e, hk) {
+    return e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt;
+}
+//#region site switch
+/** switch sites only if current video time is greater than this value */
+const videoTimeThreshold = 3;
+let siteSwitchEnabled = true;
+/** Initializes the site switch feature */
+async function initSiteSwitch() {
+    const domain = getDomain();
+    document.addEventListener("keydown", (e) => {
+        var _a, _b;
+        if (!getFeature("switchBetweenSites"))
+            return;
+        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+            return;
+        if (siteSwitchEnabled && keyPressed(e, getFeature("switchSitesHotkey")))
+            switchSite(domain === "yt" ? "ytm" : "yt");
+    });
+    siteEvents.on("hotkeyInputActive", (state) => {
+        if (!getFeature("switchBetweenSites"))
+            return;
+        siteSwitchEnabled = !state;
+    });
+    log("Initialized site switch listener");
+}
+/** Switches to the other site (between YT and YTM) */
+async function switchSite(newDomain) {
+    try {
+        if (!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
+            return warn("Not on a supported page, so the site switch is ignored");
+        let subdomain;
+        if (newDomain === "ytm")
+            subdomain = "music";
+        else if (newDomain === "yt")
+            subdomain = "www";
+        if (!subdomain)
+            throw new Error(`Unrecognized domain '${newDomain}'`);
+        enableDiscardBeforeUnload();
+        const { pathname, search, hash } = new URL(location.href);
+        const vt = await getVideoTime(0);
+        log(`Found video time of ${vt} seconds`);
+        const cleanSearch = search.split("&")
+            .filter((param) => !param.match(/^\??(t|time_continue)=/))
+            .join("&");
+        const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+            cleanSearch.includes("?")
+                ? `${cleanSearch.startsWith("?")
+                    ? cleanSearch
+                    : "?" + cleanSearch}&time_continue=${vt}`
+                : `?time_continue=${vt}`
+            : cleanSearch;
+        const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+        info(`Switching to domain '${newDomain}' at ${newUrl}`);
+        location.assign(newUrl);
+    }
+    catch (err) {
+        error("Error while switching site:", err);
+    }
+}
+//#region like/dislike
+async function initLikeDislikeHotkeys() {
+    document.addEventListener("keydown", (e) => {
+        var _a, _b;
+        if (!getFeature("likeDislikeHotkeys"))
+            return;
+        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+            return;
+        if (keyPressed(e, getFeature("likeHotkey"))) {
+            const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
+            const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
+            likeBtnEl === null || likeBtnEl === void 0 ? void 0 : likeBtnEl.click();
+        }
+        else if (keyPressed(e, getFeature("dislikeHotkey"))) {
+            const dislikeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
+            const dislikeBtnEl = dislikeRendererEl === null || dislikeRendererEl === void 0 ? void 0 : dislikeRendererEl.querySelector("#button-shape-dislike button");
+            dislikeBtnEl === null || dislikeBtnEl === void 0 ? void 0 : dislikeBtnEl.click();
+        }
+    });
 }//#region Dark Reader
 /** Disables Dark Reader if it is present */
 async function disableDarkReader() {
@@ -6358,6 +6410,17 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
+    arrowKeyVolumeStep: {
+        type: "slider",
+        category: "input",
+        min: 1,
+        max: 25,
+        step: 1,
+        default: 2,
+        unit: "%",
+        reloadRequired: false,
+        enable: noop,
+    },
     frameSkip: {
         type: "toggle",
         category: "input",
@@ -6385,25 +6448,6 @@ const featInfo = {
         enable: noop,
         advanced: true,
         textAdornment: adornments.advanced,
-    },
-    switchBetweenSites: {
-        type: "toggle",
-        category: "input",
-        default: true,
-        reloadRequired: false,
-        enable: noop,
-    },
-    switchSitesHotkey: {
-        type: "hotkey",
-        category: "input",
-        default: {
-            code: "F9",
-            shift: false,
-            ctrl: false,
-            alt: false,
-        },
-        reloadRequired: false,
-        enable: noop,
     },
     anchorImprovements: {
         type: "toggle",
@@ -6466,6 +6510,57 @@ const featInfo = {
         type: "button",
         category: "input",
         click: () => getAutoLikeDialog().then(d => d.open()),
+    },
+    //#region cat:hotkeys
+    switchBetweenSites: {
+        type: "toggle",
+        category: "hotkeys",
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+    },
+    switchSitesHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        default: {
+            code: "F9",
+            shift: false,
+            ctrl: false,
+            alt: false,
+        },
+        reloadRequired: false,
+        enable: noop,
+    },
+    likeDislikeHotkeys: {
+        type: "toggle",
+        category: "hotkeys",
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+    },
+    likeHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        default: {
+            code: "KeyL",
+            shift: false,
+            ctrl: false,
+            alt: true,
+        },
+        reloadRequired: false,
+        enable: noop,
+    },
+    dislikeHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        default: {
+            code: "KeyL",
+            shift: false,
+            ctrl: true,
+            alt: true,
+        },
+        reloadRequired: false,
+        enable: noop,
     },
     //#region cat:lyrics
     geniusLyrics: {
@@ -6816,6 +6911,8 @@ const migrations = {
         "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
         "frameSkip", "frameSkipWhilePlaying",
         "frameSkipAmount", "watchPageFullSize",
+        "arrowKeyVolumeStep", "likeDislikeHotkeys",
+        "likeHotkey", "dislikeHotkey",
     ]), [
         { key: "lyricsCacheMaxSize", oldDefault: 2000 },
     ]),
@@ -8084,7 +8181,7 @@ async function onDomLoad() {
             if (feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
                 ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
             //#region (ytm+yt) input
-            ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
+            ftInit.push(["hotkeys", initHotkeys()]);
             if (feats.autoLikeChannels)
                 ftInit.push(["autoLikeChannels", initAutoLike()]);
             //#region (ytm+yt) integrations
