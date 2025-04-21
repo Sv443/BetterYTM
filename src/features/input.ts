@@ -27,7 +27,7 @@ export async function initArrowKeySkip() {
     if(!getFeature("arrowKeySupport"))
       return;
 
-    if(["ArrowUp", "ArrowDown"].includes(evt.code))
+    if(["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
       return handleVolumeKeyPress(evt);
 
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
@@ -64,8 +64,11 @@ function handleVolumeKeyPress(evt: KeyboardEvent) {
   evt.preventDefault();
   evt.stopImmediatePropagation();
 
-  if(!sliderEl || !getVideoElement())
-    return warn("Couldn't find video or volume slider element, so the keypress is ignored");
+  if(!getVideoElement())
+    return warn("Couldn't find video element, so the keypress is ignored");
+
+  if(!sliderEl)
+    return warn("Couldn't find volume slider element, so the keypress is ignored");
 
   const step = Number(sliderEl.step);
   const newVol = clamp(

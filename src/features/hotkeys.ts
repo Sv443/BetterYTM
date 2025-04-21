@@ -102,15 +102,26 @@ async function initLikeDislikeHotkeys() {
     if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
       return;
 
-    if(keyPressed(e, getFeature("likeHotkey"))) {
-      const likeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
-      const likeBtnEl = likeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-like button");
-      likeBtnEl?.click();
-    }
-    else if(keyPressed(e, getFeature("dislikeHotkey"))) {
-      const dislikeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
-      const dislikeBtnEl = dislikeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-dislike button");
-      dislikeBtnEl?.click();
-    }
+    const [likeBtn, dislikeBtn] = (() => {
+      switch(getDomain()) {
+      case "ytm": {
+        const likeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
+        const likeBtnEl = likeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-like button");
+        const dislikeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
+        const dislikeBtnEl = dislikeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-dislike button");
+        return [likeBtnEl ?? undefined, dislikeBtnEl ?? undefined];
+      }
+      case "yt": {
+        const likeBtnEl = document.querySelector<HTMLButtonElement>("ytd-watch-metadata segmented-like-dislike-button-view-model like-button-view-model button");
+        const dislikeBtnEl = document.querySelector<HTMLButtonElement>("ytd-watch-metadata segmented-like-dislike-button-view-model dislike-button-view-model button");
+        return [likeBtnEl ?? undefined, dislikeBtnEl ?? undefined];
+      }
+      }
+    })();
+
+    if(keyPressed(e, getFeature("likeHotkey")))
+      likeBtn?.click();
+    else if(keyPressed(e, getFeature("dislikeHotkey")))
+      dislikeBtn?.click();
   });
 }
