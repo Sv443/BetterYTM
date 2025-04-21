@@ -1,7 +1,6 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml } from "../utils/index.js";
-import type { AutoLikeData, Domain } from "../types.js";
-import { enableDiscardBeforeUnload } from "./behavior.js";
+import { error, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml } from "../utils/index.js";
+import type { AutoLikeData } from "../types.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
@@ -17,10 +16,19 @@ export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"
 
 //#region arrow key skip
 
+let sliderEl: HTMLInputElement | undefined;
+
 export async function initArrowKeySkip() {
+  addSelectorListener<HTMLInputElement>("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+    listener: (el) => sliderEl = el,
+  });
+
   document.addEventListener("keydown", (evt) => {
     if(!getFeature("arrowKeySupport"))
       return;
+
+    if(["ArrowUp", "ArrowDown"].includes(evt.code))
+      return handleVolumeKeyPress(evt);
 
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
       return;
@@ -52,6 +60,30 @@ export async function initArrowKeySkip() {
   log("Added arrow key press listener");
 }
 
+function handleVolumeKeyPress(evt: KeyboardEvent) {
+  evt.preventDefault();
+  evt.stopImmediatePropagation();
+
+  if(!sliderEl || !getVideoElement())
+    return warn("Couldn't find video or volume slider element, so the keypress is ignored");
+
+  const step = Number(sliderEl.step);
+  const newVol = clamp(
+    Number(sliderEl.value)
+      + (evt.code === "ArrowUp" ? 1 : -1)
+      * clamp((getFeature("arrowKeyVolumeStep") ?? featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100),
+    0,
+    100,
+  );
+
+  if(newVol !== Number(sliderEl.value)) {
+    sliderEl.value = String(newVol);
+    sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
+
+    log(`Captured key '${evt.code}' - changed volume to ${newVol}%`);
+  }
+}
+
 //#region frame skip
 
 /** Initializes the feature that lets users skip by a frame with the period and comma keys while the video is paused */
@@ -80,76 +112,6 @@ export async function initFrameSkip() {
   });
 
   log("Added frame skip key press listener");
-}
-
-//#region site switch
-
-/** switch sites only if current video time is greater than this value */
-const videoTimeThreshold = 3;
-let siteSwitchEnabled = true;
-
-/** Initializes the site switch feature */
-export async function initSiteSwitch(domain: Domain) {
-  document.addEventListener("keydown", (e) => {
-    if(!getFeature("switchBetweenSites"))
-      return;
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
-      return;
-    const hk = getFeature("switchSitesHotkey");
-    if(siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
-      switchSite(domain === "yt" ? "ytm" : "yt");
-  });
-  siteEvents.on("hotkeyInputActive", (state) => {
-    if(!getFeature("switchBetweenSites"))
-      return;
-    siteSwitchEnabled = !state;
-  });
-  log("Initialized site switch listener");
-}
-
-/** Switches to the other site (between YT and YTM) */
-async function switchSite(newDomain: Domain) {
-  try {
-    if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
-      return warn("Not on a supported page, so the site switch is ignored");
-
-    let subdomain;
-    if(newDomain === "ytm")
-      subdomain = "music";
-    else if(newDomain === "yt")
-      subdomain = "www";
-
-    if(!subdomain)
-      throw new Error(`Unrecognized domain '${newDomain}'`);
-
-    enableDiscardBeforeUnload();
-
-    const { pathname, search, hash } = new URL(location.href);
-
-    const vt = await getVideoTime(0);
-
-    log(`Found video time of ${vt} seconds`);
-
-    const cleanSearch = search.split("&")
-      .filter((param) => !param.match(/^\??(t|time_continue)=/))
-      .join("&");
-
-    const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
-      cleanSearch.includes("?")
-        ? `${cleanSearch.startsWith("?")
-          ? cleanSearch
-          : "?" + cleanSearch
-        }&time_continue=${vt}`
-        : `?time_continue=${vt}`
-      : cleanSearch;
-    const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
-
-    info(`Switching to domain '${newDomain}' at ${newUrl}`);
-    location.assign(newUrl);
-  }
-  catch(err) {
-    error("Error while switching site:", err);
-  }
 }
 
 //#region num keys skip
