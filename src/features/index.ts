@@ -18,6 +18,7 @@ import { getPluginListDialog } from "../dialogs/pluginList.js";
 export * from "./layout.js";
 export * from "./behavior.js";
 export * from "./input.js";
+export * from "./hotkeys.js";
 export * from "./integrations.js";
 export * from "./lyrics.js";
 export * from "./lyricsCache.js";
@@ -513,6 +514,17 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
   },
+  arrowKeyVolumeStep: {
+    type: "slider",
+    category: "input",
+    min: 1,
+    max: 25,
+    step: 1,
+    default: 2,
+    unit: "%",
+    reloadRequired: false,
+    enable: noop,
+  },
   frameSkip: {
     type: "toggle",
     category: "input",
@@ -540,25 +552,6 @@ export const featInfo = {
     enable: noop,
     advanced: true,
     textAdornment: adornments.advanced,
-  },
-  switchBetweenSites: {
-    type: "toggle",
-    category: "input",
-    default: true,
-    reloadRequired: false,
-    enable: noop,
-  },
-  switchSitesHotkey: {
-    type: "hotkey",
-    category: "input",
-    default: {
-      code: "F9",
-      shift: false,
-      ctrl: false,
-      alt: false,
-    },
-    reloadRequired: false,
-    enable: noop,
   },
   anchorImprovements: {
     type: "toggle",
@@ -621,6 +614,59 @@ export const featInfo = {
     type: "button",
     category: "input",
     click: () => getAutoLikeDialog().then(d => d.open()),
+  },
+
+  //#region cat:hotkeys
+
+  switchBetweenSites: {
+    type: "toggle",
+    category: "hotkeys",
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  switchSitesHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    default: {
+      code: "F9",
+      shift: false,
+      ctrl: false,
+      alt: false,
+    },
+    reloadRequired: false,
+    enable: noop,
+  },
+  likeDislikeHotkeys: {
+    type: "toggle",
+    category: "hotkeys",
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  likeHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    default: {
+      code: "KeyL",
+      shift: false,
+      ctrl: false,
+      alt: true,
+    },
+    reloadRequired: false,
+    enable: noop,
+  },
+  dislikeHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    default: {
+      code: "KeyL",
+      shift: false,
+      ctrl: true,
+      alt: true,
+    },
+    reloadRequired: false,
+    enable: noop,
   },
 
   //#region cat:lyrics

@@ -304,16 +304,11 @@
   "feature_desc_rememberSongTimeMinPlayTime": "歌曲需要播放多少秒才能记住其时间",
   "feature_desc_autoScrollToActiveSongMode": "是否以及何时滚动到队列中当前播放的歌曲",
 
-  "feature_desc_arrowKeySupport": "使用箭头键在当前播放的歌曲中前进和后退",
-  "feature_helptext_arrowKeySupport": "通常，您只能使用 \"H\" 和 \"L\" 键以固定的 10 秒间隔前进和后退。此功能允许您也使用箭头键。\n要更改要跳过的秒数，请使用下面的选项。",
   "feature_desc_arrowKeySkipBy": "使用箭头键跳过多少秒",
   "feature_desc_frameSkip": "使用逗号和句号键在视频或歌曲暂停时前进和后退",
   "feature_desc_frameSkipWhilePlaying": "使用逗号和句号键在视频或歌曲播放时前进和后退",
   "feature_desc_frameSkipAmount": "在视频或歌曲暂停时使用逗号和句号键前进和后退",
   "feature_helptext_frameSkipAmount": "该功能也可在 YT 上使用，并跳过约 0.0417 秒的固定值。如果需要，您可以在此处设置不同的值。",
-  "feature_desc_switchBetweenSites": "在视频 / 歌曲上添加一个热键，以在 YT 和 YTM 网站之间切换",
-  "feature_helptext_switchBetweenSites": "按下此热键将在 YT 或 YTM 上切换到另一个站点，同时保持在同一视频 / 歌曲上。",
-  "feature_desc_switchSitesHotkey": "需要按下哪个热键才能切换网站？",
   "feature_desc_anchorImprovements": "在页面上添加和改进链接，以便更容易在新标签页中打开",
   "feature_helptext_anchorImprovements": "页面上的一些元素只能使用鼠标左键单击，这意味着您无法通过中键单击或使用 shift + 右键单击的上下文菜单在新标签页中打开它们。此功能添加了很多链接或扩大了现有的链接，以使单击更容易。",
   "feature_desc_autoLikeChannels": "自动喜欢某些频道的所有歌曲和视频",
@@ -325,7 +320,11 @@
   "feature_desc_autoLikeOpenMgmtDialog": "打开对话框以管理自动喜欢的频道",
   "feature_btn_autoLikeOpenMgmtDialog": "打开对话框",
   "feature_btn_autoLikeOpenMgmtDialog_running": "正在打开...",
-
+  
+  "feature_desc_switchBetweenSites": "在视频 / 歌曲上添加一个热键，以在 YT 和 YTM 网站之间切换",
+  "feature_helptext_switchBetweenSites": "按下此热键将在 YT 或 YTM 上切换到另一个站点，同时保持在同一视频 / 歌曲上。",
+  "feature_desc_switchSitesHotkey": "需要按下哪个热键才能切换网站？",
+  
   "feature_desc_geniusLyrics": "在当前播放的歌曲的媒体控件中添加一个按钮，以在 genius.com 上打开其歌词",
   "feature_desc_errorOnLyricsNotFound": "当找不到当前播放歌曲的歌词页面时显示一个错误",
   "feature_desc_geniUrlBase": "geniURL 实例的基本 URL，请参阅 https://github.com/Sv443/geniURL",

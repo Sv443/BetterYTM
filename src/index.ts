@@ -26,8 +26,10 @@ import {
   initAutoScrollToActiveSong,
   // input category:
   initArrowKeySkip, initFrameSkip,
-  initSiteSwitch, addAnchorImprovements,
-  initNumKeysSkip, initAutoLike,
+  addAnchorImprovements, initNumKeysSkip,
+  initAutoLike,
+  // hotkeys category:
+  initHotkeys,
   // lyrics category:
   addPlayerBarLyricsBtn, initLyricsCache,
   // integrations category:
@@ -284,7 +286,7 @@ async function onDomLoad() {
 
       //#region (ytm+yt) input
 
-      ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
+      ftInit.push(["hotkeys", initHotkeys()]);
 
       if(feats.autoLikeChannels)
         ftInit.push(["autoLikeChannels", initAutoLike()]);

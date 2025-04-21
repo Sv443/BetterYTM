@@ -400,6 +400,7 @@ export type FeatureCategory =
   | "songLists"
   | "behavior"
   | "input"
+  | "hotkeys"
   | "lyrics"
   | "integrations"
   | "plugins"
@@ -588,20 +589,18 @@ export interface FeatureConfig {
   autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
 
   //#region input
-  /** Arrow keys skip forwards and backwards */
+  /** Arrow keys to skip forwards and backwards and change volume */
   arrowKeySupport: boolean;
-  /** By how many seconds to skip when pressing the arrow keys */
+  /** By how many seconds to skip when pressing the left/right arrow keys */
   arrowKeySkipBy: number;
+  /** By how much to change the volume when pressing the up/down arrow keys */
+  arrowKeyVolumeStep: number;
   /** Use . and , keys to skip by a frame while the video is paused */
   frameSkip: boolean;
   /** Allow frame skipping while the song is playing */
   frameSkipWhilePlaying: boolean;
   /** Amount of seconds to skip when pressing the . and , keys */
   frameSkipAmount: number;
-  /** Add a hotkey to switch between the YT and YTM sites on a video / song */
-  switchBetweenSites: boolean;
-  /** The hotkey that needs to be pressed to initiate the site switch */
-  switchSitesHotkey: HotkeyObj;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
   /** Whether to auto-like all played videos of configured channels */
@@ -617,6 +616,18 @@ export interface FeatureConfig {
   autoLikeShowToast: boolean;
   /** Opens the auto-like channels management dialog */
   autoLikeOpenMgmtDialog: undefined;
+
+  //#region hotkeys
+  /** Add a hotkey to switch between the YT and YTM sites on a video / song */
+  switchBetweenSites: boolean;
+  /** The hotkey that needs to be pressed to initiate the site switch */
+  switchSitesHotkey: HotkeyObj;
+  /** Add hotkeys for liking and disliking the current video / song */
+  likeDislikeHotkeys: boolean;
+  /** The hotkey that needs to be pressed to like the current video / song */
+  likeHotkey: HotkeyObj;
+  /** The hotkey that needs to be pressed to dislike the current video / song */
+  dislikeHotkey: HotkeyObj;
 
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

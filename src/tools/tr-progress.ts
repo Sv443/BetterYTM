@@ -11,10 +11,18 @@ const { exit } = process;
 const rootDir = resolve(fileURLToPath(import.meta.url), "../../../");
 const trDir = join(rootDir, "assets/translations/");
 
+/** Translation metadata object */
+type TrMeta = {
+  base: string | undefined;
+  langName: string;
+  langNameEnglish: string;
+  countryName: string;
+  authors: string[];
+};
+
+/** Translation file object, containing translations and the meta object */
 type TrFile = TrObject & {
-  meta: {
-    base: string | undefined;
-  };
+  meta: TrMeta;
 }
 
 async function run() {
@@ -22,8 +30,10 @@ async function run() {
 
   //#region parse
 
-  const translations = {} as Record<TrLocale, TrObject>;
+  /** Map of locale key to translation file object. Contains everything including the `meta` object. */
   const trFiles = {} as Record<TrLocale, TrFile>;
+  /** Map of locale key to translation object. Doesn't contain the `meta` object. */
+  const translations = {} as Record<TrLocale, TrObject>;
 
   for(const locale of Object.keys(locales) as TrLocale[]) {
     const trFile = join(trDir, `${locale}.json`);
@@ -88,6 +98,7 @@ async function run() {
   const missingKeys = [] as string[];
 
   for(const [locale] of Object.entries({ "en-US": enUS, ...restLocs })) {
+    const loc = locale as TrLocale;
     const lines = [] as string[];
     // TODO:FIXME: recurse over nested objects to extract keys & turn into dot notation
     // for(const [k] of Object.entries(enUS)) {

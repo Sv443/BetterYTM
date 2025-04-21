@@ -304,16 +304,11 @@
   "feature_desc_rememberSongTimeMinPlayTime": "Cantidad mínima de segundos que una canción debe reproducirse para recordar su tiempo",
   "feature_desc_autoScrollToActiveSongMode": "¿Cuándo y si desplazarse automáticamente a la canción que se está reproduciendo actualmente?",
 
-  "feature_desc_arrowKeySupport": "Use las teclas de flecha para saltar hacia adelante y hacia atrás en la canción que se está reproduciendo actualmente",
-  "feature_helptext_arrowKeySupport": "Normalmente solo puede saltar hacia adelante y hacia atrás en un intervalo fijo de 10 segundos con las teclas \"H\" y \"L\". Esta función le permite usar las teclas de flecha también.\nPara cambiar la cantidad de segundos para saltar, use la opción a continuación.",
   "feature_desc_arrowKeySkipBy": "Por cuántos segundos saltar al usar las teclas de flecha",
   "feature_desc_frameSkip": "Utilice las teclas de punto y coma para avanzar o retroceder un cuadro cuando el video o la canción estén en pausa.",
   "feature_desc_frameSkipWhilePlaying": "Utilice las teclas de punto y coma para avanzar o retroceder un cuadro mientras el video o la canción se están reproduciendo.",
   "feature_desc_frameSkipAmount": "Cuántos segundos saltar al usar las teclas de punto y coma",
   "feature_helptext_frameSkipAmount": "Este ajuste también está disponible en YT y salta un valor fijo de aproximadamente 0.0417 segundos. Si es necesario, puede establecer otro valor aquí.",
-  "feature_desc_switchBetweenSites": "Agregue una tecla de acceso rápido para cambiar entre los sitios YT y YTM en una canción",
-  "feature_helptext_switchBetweenSites": "Al presionar esta tecla de acceso rápido, cambiará al otro sitio si está en YouTube o YouTube Music mientras se mantiene en el mismo video / canción.",
-  "feature_desc_switchSitesHotkey": "¿Qué tecla de acceso rápido debe presionarse para cambiar de sitio?",
   "feature_desc_anchorImprovements": "Agregue e improvise enlaces en toda la página para que las cosas se puedan abrir en una nueva pestaña más fácilmente",
   "feature_helptext_anchorImprovements": "Algunos elementos en la página solo se pueden hacer clic con el botón izquierdo del mouse, lo que significa que no se pueden abrir en una nueva pestaña haciendo clic con el botón central o mediante el menú contextual con shift + clic derecho. Esta función agrega enlaces a muchos de ellos o los agranda para facilitar el clic.",
   "feature_desc_autoLikeChannels": "Dar me gusta automáticamente a todas las canciones y videos de ciertos canales",
@@ -325,6 +320,10 @@
   "feature_desc_autoLikeOpenMgmtDialog": "Abrir el diálogo para administrar los canales con me gusta automático",
   "feature_btn_autoLikeOpenMgmtDialog": "Abrir diálogo",
   "feature_btn_autoLikeOpenMgmtDialog_running": "Abriendo...",
+  
+  "feature_desc_switchBetweenSites": "Agregue una tecla de acceso rápido para cambiar entre los sitios YT y YTM en una canción",
+  "feature_helptext_switchBetweenSites": "Al presionar esta tecla de acceso rápido, cambiará al otro sitio si está en YouTube o YouTube Music mientras se mantiene en el mismo video / canción.",
+  "feature_desc_switchSitesHotkey": "¿Qué tecla de acceso rápido debe presionarse para cambiar de sitio?",
 
   "feature_desc_geniusLyrics": "Agregue un botón a los controles multimedia de la canción que se está reproduciendo actualmente para abrir sus letras en genius.com",
   "feature_desc_errorOnLyricsNotFound": "Mostrar un error cuando no se pudo encontrar la página de letras para la canción que se está reproduciendo actualmente",

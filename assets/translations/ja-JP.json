@@ -304,16 +304,11 @@
   "feature_desc_rememberSongTimeMinPlayTime": "曲の時間を記憶するために再生する必要のある最小秒数",
   "feature_desc_autoScrollToActiveSongMode": "現在再生中の曲にスクロールするかどうか、およびそのタイミング",
 
-  "feature_desc_arrowKeySupport": "現在再生中の曲で前後にスキップするには矢印キーを使用する",
-  "feature_helptext_arrowKeySupport": "通常、キー \"H\" と \"L\" を使用して 10 秒間隔で前後にスキップすることができます。この機能を使用すると、矢印キーも使用できます。\nスキップする秒数を変更するには、以下のオプションを使用してください。",
   "feature_desc_arrowKeySkipBy": "矢印キーを使用してスキップする秒数",
   "feature_desc_frameSkip": "ビデオ / 曲を一時停止しているときに、フレーム単位で前後にスキップする",
   "feature_desc_frameSkipWhilePlaying": "ビデオ / 曲を再生しているときに、フレーム単位で前後にスキップする",
   "feature_desc_frameSkipAmount": "\"ピリオド\"と\"カンマ\"キーで何秒スキップするか",
   "feature_helptext_frameSkipAmount": "この機能は YT でも利用可能で、約 0.0417 秒の固定値をスキップします。必要に応じて、ここで別の値を設定できます。",
-  "feature_desc_switchBetweenSites": "ビデオ / 曲の YT と YTM サイトを切り替えるホットキーを追加する",
-  "feature_helptext_switchBetweenSites": "このホットキーを押すと、同じビデオ / 曲のままで YouTube または YouTube Music のどちらかに切り替わります。",
-  "feature_desc_switchSitesHotkey": "サイトを切り替えるために押す必要があるホットキーはどれですか？",
   "feature_desc_anchorImprovements": "リンクを追加してページ全体でリンクを開くことができるようにする",
   "feature_helptext_anchorImprovements": "ページ上のいくつかの要素は左クリックのみでクリックできるため、中クリックやシフト + 右クリックを使用して新しいタブで開くことができません。この機能はそれらの要素にリンクを追加するか、既存のリンクを拡大してクリックしやすくします。",
   "feature_desc_autoLikeChannels": "特定のチャンネルのすべての曲とビデオを自動的に好きにする",
@@ -325,6 +320,10 @@
   "feature_desc_autoLikeOpenMgmtDialog": "自動的に好きなチャンネルを管理するダイアログを開く",
   "feature_btn_autoLikeOpenMgmtDialog": "ダイアログを開く",
   "feature_btn_autoLikeOpenMgmtDialog_running": "開いています...",
+  
+  "feature_desc_switchBetweenSites": "ビデオ / 曲の YT と YTM サイトを切り替えるホットキーを追加する",
+  "feature_helptext_switchBetweenSites": "このホットキーを押すと、同じビデオ / 曲のままで YouTube または YouTube Music のどちらかに切り替わります。",
+  "feature_desc_switchSitesHotkey": "サイトを切り替えるために押す必要があるホットキーはどれですか？",
 
   "feature_desc_geniusLyrics": "現在再生中の曲のメディアコントロールにボタンを追加して、genius.com で歌詞を開く",
   "feature_desc_errorOnLyricsNotFound": "現在再生中の曲の歌詞ページが見つからなかった場合にエラーを表示する",

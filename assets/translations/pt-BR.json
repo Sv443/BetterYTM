@@ -304,16 +304,11 @@
   "feature_desc_rememberSongTimeMinPlayTime": "Quantidade mínima de segundos que uma música precisa ser reproduzida para que seu tempo seja lembrado",
   "feature_desc_autoScrollToActiveSongMode": "Se e quando rolar para a música que está tocando atualmente na fila",
 
-  "feature_desc_arrowKeySupport": "Use as teclas de seta para pular para a próxima ou anterior música na fila",
-  "feature_helptext_arrowKeySupport": "Normalmente, você só pode pular para frente e para trás por um intervalo fixo de 10 segundos com as teclas \"H\" e \"L\". Este recurso permite que você use as teclas de seta também.\nPara alterar a quantidade de segundos a pular, use a opção abaixo.",
   "feature_desc_arrowKeySkipBy": "Por quantos segundos pular ao usar as teclas de seta",
   "feature_desc_frameSkip": "Use as teclas de ponto e vírgula para pular para frente e para trás por um quadro quando o vídeo ou música estiver pausado",
   "feature_desc_frameSkipWhilePlaying": "Use as teclas de ponto e vírgula para pular para frente e para trás por um quadro quando o vídeo ou música estiver tocando",
   "feature_desc_frameSkipAmount": "Quantos segundos devem ser pulados com as teclas \"ponto\" e \"vírgula\"",
   "feature_helptext_frameSkipAmount": "Este recurso também está disponível no YT e pula um valor fixo de cerca de 0,0417 segundos. Se necessário, você pode definir outro valor aqui.",
-  "feature_desc_switchBetweenSites": "Adicione um atalho para alternar entre os sites YT e YTM em um vídeo / música",
-  "feature_helptext_switchBetweenSites": "Pressionar este atalho alternará para o outro site se você estiver no YouTube ou YouTube Music, mantendo-se na mesma música / vídeo.",
-  "feature_desc_switchSitesHotkey": "Qual tecla de atalho precisa ser pressionada para alternar entre os sites?",
   "feature_desc_anchorImprovements": "Adicione e melhore os links em toda a página para que as coisas possam ser abertas em uma nova guia com mais facilidade",
   "feature_helptext_anchorImprovements": "Alguns elementos na página só podem ser clicados com o botão esquerdo do mouse, o que significa que você não pode abri-los em uma nova guia clicando com o botão do meio ou através do menu de contexto usando shift + clique com o botão direito. Este recurso adiciona links a muitos deles ou os aumenta para facilitar o clique.",
   "feature_desc_autoLikeChannels": "Curtir automaticamente todas as músicas e vídeos de certos canais",
@@ -325,6 +320,10 @@
   "feature_desc_autoLikeOpenMgmtDialog": "Abrir o diálogo para gerenciar os canais auto-curtidos",
   "feature_btn_autoLikeOpenMgmtDialog": "Abrir diálogo",
   "feature_btn_autoLikeOpenMgmtDialog_running": "Abrindo...",
+  
+  "feature_desc_switchBetweenSites": "Adicione um atalho para alternar entre os sites YT e YTM em um vídeo / música",
+  "feature_helptext_switchBetweenSites": "Pressionar este atalho alternará para o outro site se você estiver no YouTube ou YouTube Music, mantendo-se na mesma música / vídeo.",
+  "feature_desc_switchSitesHotkey": "Qual tecla de atalho precisa ser pressionada para alternar entre os sites?",
 
   "feature_desc_geniusLyrics": "Adicione um botão aos controles de mídia da música que está tocando atualmente para abrir suas letras em genius.com",
   "feature_desc_errorOnLyricsNotFound": "Mostrar um erro quando a página de letras para a música que está tocando atualmente não pôde ser encontrada",
