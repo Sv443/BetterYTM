@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ea75542e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@51c1ad4f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -86,7 +86,8 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function(UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var resources = {
+(function(UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var preloadAssetPattern = "^(css|icon|img)-";
+var resources = {
 	"css-above_queue_btns": "style/aboveQueueBtns.css",
 	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
 	"css-anchor_improvements": "style/anchorImprovements.css",
@@ -152,6 +153,7 @@ I welcome every contribution on GitHub!
 	"trans-zh-CN": "translations/zh-CN.json"
 };
 var resourcesJson = {
+	preloadAssetPattern: preloadAssetPattern,
 	resources: resources
 };var locales = {
 	"de-DE": {
@@ -333,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ea75542e",
+    buildNumber: "51c1ad4f",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -8040,8 +8042,7 @@ async function renderFooter() {
     footerCont.appendChild(leftButtonsCont);
     footerCont.appendChild(closeBtnElem);
     return footerCont;
-}// import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
-//#region cns. watermark
+}//#region cns. watermark
 {
     // console watermark with sexy gradient
     const [styleGradient, gradientContBg] = (() => {
@@ -8240,6 +8241,8 @@ async function onDomLoad() {
         ]);
         // ensure site adjusts itself to new CSS files
         UserUtils.getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
+        // preload icons
+        preloadResources();
         emitInterface("bytm:ready");
         info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
         try {
@@ -8259,6 +8262,20 @@ async function onDomLoad() {
         error("Feature error:", err);
         emitInterface("bytm:fatalError", "Error while initializing features");
     }
+}
+//#region preload icons
+/** Preloads all resources that should be preloaded */
+async function preloadResources() {
+    const preloadAssetRegex = new RegExp(resourcesJson.preloadAssetPattern);
+    const urlPromises = Object.keys(resourcesJson.resources)
+        .filter(k => preloadAssetRegex.test(k))
+        .map(k => getResourceUrl(k));
+    const urls = await Promise.all(urlPromises);
+    if (urls.length > 0)
+        info("Preloading", urls.length, "resources:", urls);
+    else
+        info("No resources to preload");
+    await UserUtils.preloadImages(urls);
 }
 //#region css
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
