@@ -444,6 +444,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getVideoElement()](#getvideoelement) - Returns the video element on the current page or null if there is none (on both YT and YTM)
   - [getVideoSelector()](#getvideoselector) - Returns the CSS selector for the video element (on both YT and YTM)
   - [getCurrentMediaType()](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
+  - [getLikeDislikeBtns()](#getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -1046,6 +1047,44 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   const mediaType = unsafeWindow.BYTM.getCurrentMediaType();
 >   console.log(`The current media type is: ${mediaType}`); // "video" or "song"
 > }
+> ```
+> </details>
+
+<br>
+
+> ### getLikeDislikeBtns()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.getLikeDislikeBtns(): {
+>   likeBtn?: HTMLButtonElement,
+>   dislikeBtn?: HTMLButtonElement,
+>   btnRenderer?: HTMLElement,
+>   likeState?: "LIKE" | "DISLIKE" | "INDIFFERENT",
+> }
+> ```
+>   
+> Description:  
+> Returns the like and dislike buttons on either domain, if available.  
+> The `btnRenderer` will be a parent element of both buttons.  
+> The `likeState` property indicates the current state of the like button. It defaults to `undefined` if the buttons are not available.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // get the like and dislike buttons:
+> const { likeBtn, dislikeBtn, btnRenderer, likeState } = unsafeWindow.BYTM.getLikeDislikeBtns();
+> if(likeBtn && dislikeBtn) {
+>   console.log("Like button:", likeBtn);
+>   console.log("Dislike button:", dislikeBtn);
+>   console.log("Like state:", likeState); // "LIKE" | "DISLIKE" | "INDIFFERENT"
+>   console.log("Button renderer:", btnRenderer);
+> 
+>   // call in response to a user interaction event to ensure the video/song is liked:
+>   if(likeState !== "LIKE")
+>     likeBtn.click();
+> }
+> else
+>   console.error("Like and/or dislike button not available");
 > ```
 > </details>
 

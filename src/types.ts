@@ -2,7 +2,7 @@ import type { NanoEmitter, Prettify } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
@@ -113,6 +113,8 @@ export type VideoVotesObj = {
 export type NumberLengthFormat = "short" | "long";
 
 export type ColorLightnessPref = "darker" | "normal" | "lighter";
+
+export type LikeDislikeState = "LIKE" | "DISLIKE" | "INDIFFERENT";
 
 //#region global
 
@@ -322,6 +324,8 @@ export type InterfaceFunctions = {
   getVideoSelector: typeof getVideoSelector;
   /** (On YTM only) returns the current media type (video or song) */
   getCurrentMediaType: typeof getCurrentMediaType;
+  /** Returns the like and dislike elements, as well as the current state of them as a string constant */
+  getLikeDislikeBtns: typeof getLikeDislikeBtns;
 
   // translations:
   /** 🔒 Sets the locale for all new translations */

@@ -2,7 +2,7 @@ import { addGlobalStyle, consumeStringGen, getUnsafeWindow, isDomLoaded, randomI
 import DOMPurify from "dompurify";
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
-import type { StyleResourceKey, TTPolicy } from "../types.js";
+import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
 import { showPrompt } from "../dialogs/prompt.js";
 
@@ -161,6 +161,52 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
       rej(err);
     }
   });
+}
+
+//#region like/dislike btns
+
+/**
+ * Returns the like/dislike button elements based on the current domain and the current like state ("LIKE" / "DISLIKE" / "INDIFFERENT").  
+ * The btnRenderer element is a parent of both buttons.
+ */
+export function getLikeDislikeBtns() {
+  let btnRenderer: HTMLElement | undefined;
+  let likeBtn: HTMLButtonElement | undefined;
+  let dislikeBtn: HTMLButtonElement |  undefined;
+
+  let likeState: LikeDislikeState | undefined;
+
+  switch(getDomain()) {
+  case "ytm": {
+    btnRenderer = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer") ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-like button") ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-dislike button") ?? undefined;
+
+    const likeStateRaw = btnRenderer?.getAttribute("like-status")?.toUpperCase();
+    likeState = ["LIKE", "DISLIKE", "INDIFFERENT"].includes(likeStateRaw ?? "") ? likeStateRaw as LikeDislikeState : "INDIFFERENT";
+    break;
+  }
+  case "yt": {
+    btnRenderer = document.querySelector<HTMLElement>("ytd-watch-metadata segmented-like-dislike-button-view-model") ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+
+    if(likeBtn?.getAttribute("aria-pressed") === "true")
+      likeState = "LIKE";
+    else if(dislikeBtn?.getAttribute("aria-pressed") === "true")
+      likeState = "DISLIKE";
+    else if(likeBtn || dislikeBtn)
+      likeState = "INDIFFERENT";
+    break;
+  }
+  }
+
+  return {
+    likeBtn,
+    dislikeBtn,
+    btnRenderer,
+    likeState,
+  };
 }
 
 //#region css utils

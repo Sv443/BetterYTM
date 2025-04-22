@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml } from "../utils/index.js";
+import { error, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml, getLikeDislikeBtns } from "../utils/index.js";
 import type { AutoLikeData } from "../types.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
@@ -206,14 +206,13 @@ export async function initAutoLike() {
           if(artistEls.length === 0)
             return error("Couldn't auto-like channel because the artist element couldn't be found");
 
-          const likeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
-          const likeBtnEl = likeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-like button");
+          const { likeBtn, likeState } = getLikeDislikeBtns();
 
-          if(!likeRendererEl || !likeBtnEl)
+          if(!likeBtn)
             return error("Couldn't auto-like channel because the like button couldn't be found");
 
-          if(likeRendererEl.getAttribute("like-status") !== "LIKE") {
-            likeBtnEl.click();
+          if(likeState !== "LIKE") {
+            likeBtn.click();
 
             getFeature("autoLikeShowToast") && showIconToast({
               message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),

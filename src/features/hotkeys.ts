@@ -2,7 +2,7 @@ import { getFeature } from "../config.js";
 import { inputIgnoreTagNames } from "./input.js";
 import { siteEvents } from "../siteEvents.js";
 import { enableDiscardBeforeUnload } from "./behavior.js";
-import { getVideoTime } from "../utils/dom.js";
+import { getLikeDislikeBtns, getVideoTime } from "../utils/dom.js";
 import { getDomain } from "../utils/misc.js";
 import { error, info, log, warn } from "../utils/logging.js";
 import type { Domain, HotkeyObj } from "../types.js";
@@ -102,22 +102,7 @@ async function initLikeDislikeHotkeys() {
     if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
       return;
 
-    const [likeBtn, dislikeBtn] = (() => {
-      switch(getDomain()) {
-      case "ytm": {
-        const likeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
-        const likeBtnEl = likeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-like button");
-        const dislikeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
-        const dislikeBtnEl = dislikeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-dislike button");
-        return [likeBtnEl ?? undefined, dislikeBtnEl ?? undefined];
-      }
-      case "yt": {
-        const likeBtnEl = document.querySelector<HTMLButtonElement>("ytd-watch-metadata segmented-like-dislike-button-view-model like-button-view-model button");
-        const dislikeBtnEl = document.querySelector<HTMLButtonElement>("ytd-watch-metadata segmented-like-dislike-button-view-model dislike-button-view-model button");
-        return [likeBtnEl ?? undefined, dislikeBtnEl ?? undefined];
-      }
-      }
-    })();
+    const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
 
     if(keyPressed(e, getFeature("likeHotkey")))
       likeBtn?.click();
