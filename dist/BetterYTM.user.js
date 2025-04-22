@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@db53b075/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4edb21d7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "db53b075",
+    buildNumber: "4edb21d7",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4431,14 +4431,14 @@ function checkToggleScrollIndicator() {
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
 async function addWatermark() {
-    const watermark = document.createElement("a");
-    watermark.role = "button";
-    watermark.id = "bytm-watermark";
-    watermark.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
-    watermark.textContent = scriptInfo.name;
-    watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
-    watermark.tabIndex = 0;
-    improveLogo();
+    const watermarkEl = document.createElement("a");
+    watermarkEl.role = "button";
+    watermarkEl.id = "bytm-watermark";
+    watermarkEl.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
+    watermarkEl.textContent = scriptInfo.name;
+    watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo.name);
+    watermarkEl.tabIndex = 0;
+    await improveLogo();
     const watermarkOpenMenu = (e) => {
         e.stopImmediatePropagation();
         if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
@@ -4446,9 +4446,9 @@ async function addWatermark() {
         if (!logoExchanged && (e.shiftKey || e.ctrlKey))
             exchangeLogo();
     };
-    onInteraction(watermark, (e) => watermarkOpenMenu(e));
-    addSelectorListener("navBar", "ytmusic-nav-bar #left-content", {
-        listener: (logoElem) => logoElem.insertAdjacentElement("afterend", watermark),
+    onInteraction(watermarkEl, (e) => watermarkOpenMenu(e));
+    addSelectorListener("navBar", "ytmusic-logo a", {
+        listener: (logoElem) => logoElem.appendChild(watermarkEl),
     });
     log("Added watermark element");
 }
@@ -4460,15 +4460,11 @@ async function improveLogo() {
         improveLogoCalled = true;
         const res = await UserUtils.fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
         const svg = await res.text();
-        addSelectorListener("navBar", "ytmusic-logo a", {
+        addSelectorListener("navBar", "ytmusic-logo > a", {
             listener: (logoElem) => {
-                var _a;
                 logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
                 setInnerHtml(logoElem, svg);
-                logoElem.querySelectorAll("ellipse").forEach((e) => {
-                    e.classList.add("bytm-mod-logo-ellipse");
-                });
-                (_a = logoElem.querySelector("path")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-mod-logo-path");
+                logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
                 log("Swapped logo to inline SVG");
             },
         });
@@ -4494,7 +4490,7 @@ function exchangeLogo() {
                 e.href = iconUrl;
             });
             setTimeout(() => {
-                logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
+                logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
             }, 1000);
         },
     });
@@ -8243,6 +8239,8 @@ async function onDomLoad() {
                 res(v);
             }))),
         ]);
+        // ensure site adjusts itself to new CSS files
+        UserUtils.getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
         emitInterface("bytm:ready");
         info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
         try {
