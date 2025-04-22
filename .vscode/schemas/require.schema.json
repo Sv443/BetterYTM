@@ -21,6 +21,11 @@
         "type": "string",
         "description": "Name of the global variable created in the package's UMD/global bundle.",
         "pattern": "^[$_a-zA-Z][$_a-zA-Z0-9]*$"
+      },
+      "link": {
+        "type": "string",
+        "description": "If the path to a UMD/global bundle is provided here, the file will be injected into the userscript source as a locally linked package instead of included via @require.",
+        "pattern": "^.+\\.(m|c)?js$"
       }
     },
     "additionalProperties": false
