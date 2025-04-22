@@ -81,9 +81,10 @@ const adornments = {
 const adornmentOrder = new Map<AdornmentFunc, number>();
 adornmentOrder.set(adornments.alert, 0);
 adornmentOrder.set(adornments.experimental, 1);
-adornmentOrder.set(adornments.globe, 2);
-adornmentOrder.set(adornments.reload, 3);
+adornmentOrder.set(adornments.ytmOnly, 2);
+adornmentOrder.set(adornments.globe, 3);
 adornmentOrder.set(adornments.advanced, 4);
+adornmentOrder.set(adornments.reload, 5);
 
 //#region select options
 

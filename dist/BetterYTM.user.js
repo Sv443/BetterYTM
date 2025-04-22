@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@09030db5/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@92e6a1aa/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "09030db5",
+    buildNumber: "92e6a1aa",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5990,9 +5990,10 @@ const adornments = {
 const adornmentOrder = new Map();
 adornmentOrder.set(adornments.alert, 0);
 adornmentOrder.set(adornments.experimental, 1);
-adornmentOrder.set(adornments.globe, 2);
-adornmentOrder.set(adornments.reload, 3);
+adornmentOrder.set(adornments.ytmOnly, 2);
+adornmentOrder.set(adornments.globe, 3);
 adornmentOrder.set(adornments.advanced, 4);
+adornmentOrder.set(adornments.reload, 5);
 /** Common options for config items of type "select" */
 const options = {
     siteSelection: () => [
