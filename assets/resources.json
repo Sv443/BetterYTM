@@ -1,5 +1,6 @@
 {
   "externalAssetPattern": "^(css|doc|font|icon|img|trans)-",
+  "preloadAssetPattern": "^(css|icon|img)-",
   "resources": {
     "css-above_queue_btns": "style/aboveQueueBtns.css",
     "css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",

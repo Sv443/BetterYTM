@@ -1,12 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["resources"],
+  "required": ["externalAssetPattern", "preloadAssetPattern", "resources"],
   "description": "Contains all resources (images, fonts, stylesheets, etc.) used by BYTM.",
   "properties": {
     "externalAssetPattern": {
       "type": "string",
       "description": "Pattern passed to `new RegExp()` that identifies an external asset that will be loaded via fetching from the CDN instead of a locally cached @resource.",
+      "format": "regex",
+      "pattern": "^.+$"
+    },
+    "preloadAssetPattern": {
+      "type": "string",
+      "description": "Pattern passed to `new RegExp()` that identifies an asset that should be preloaded.",
       "format": "regex",
       "pattern": "^.+$"
     },

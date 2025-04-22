@@ -1,4 +1,4 @@
-import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
@@ -40,7 +40,8 @@ import {
   // menu:
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
-// import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
+import resourcesJson from "../assets/resources.json" with { type: "json" };
+import type { ResourceKey } from "./types.js";
 
 //#region cns. watermark
 
@@ -318,6 +319,9 @@ async function onDomLoad() {
     // ensure site adjusts itself to new CSS files
     getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
 
+    // preload icons
+    preloadResources();
+
     emitInterface("bytm:ready");
     info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
@@ -339,6 +343,22 @@ async function onDomLoad() {
     error("Feature error:", err);
     emitInterface("bytm:fatalError", "Error while initializing features");
   }
+}
+
+//#region preload icons
+
+/** Preloads all resources that should be preloaded */
+async function preloadResources() {
+  const preloadAssetRegex = new RegExp(resourcesJson.preloadAssetPattern);
+  const urlPromises = Object.keys(resourcesJson.resources)
+    .filter(k => preloadAssetRegex.test(k))
+    .map(k => getResourceUrl(k as ResourceKey));
+  const urls = await Promise.all(urlPromises);
+  if(urls.length > 0)
+    info("Preloading", urls.length, "resources:", urls);
+  else
+    info("No resources to preload");
+  await preloadImages(urls);
 }
 
 //#region css
