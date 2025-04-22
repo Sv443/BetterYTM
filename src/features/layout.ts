@@ -1,4 +1,4 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
@@ -13,7 +13,7 @@ import "./layout.css";
 
 //#region cfg menu btns
 
-let logoExchanged = false, improveLogoCalled = false;
+let logoExchanged = false, improveLogoCalled = false, bytmLogoUrl: string | undefined;
 
 /** Adds a watermark beneath the logo */
 export async function addWatermark() {
@@ -26,6 +26,8 @@ export async function addWatermark() {
   watermarkEl.tabIndex = 0;
 
   await improveLogo();
+  bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+  preloadImages([bytmLogoUrl]);
 
   const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
     e.stopImmediatePropagation();
@@ -74,23 +76,19 @@ export async function improveLogo() {
 function exchangeLogo() {
   addSelectorListener("navBar", ".bytm-mod-logo", {
     listener: async (logoElem) => {
-      if(logoElem.classList.contains("bytm-logo-exchanged"))
+      if(logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl)
         return;
 
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const iconUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
-
       const newLogo = document.createElement("img");
       newLogo.classList.add("bytm-mod-logo-img");
-      newLogo.src = iconUrl;
+      newLogo.src = bytmLogoUrl;
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
-      document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => {
-        e.href = iconUrl;
-      });
+      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => e.href = bytmLogoUrl!);
 
       setTimeout(() => {
         logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
