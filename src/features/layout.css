@@ -65,6 +65,10 @@ html[dark] {
   animation: bytm-flash-border 0.4s ease 1;
 }
 
+.bytm-generic-btn.ytmusic-player-bar svg path {
+  fill: var(--iron-icon-fill-color, #fff);
+}
+
 @keyframes bytm-flash-border {
   0% {
     border: 1px solid initial;
