@@ -17,15 +17,15 @@ let logoExchanged = false, improveLogoCalled = false;
 
 /** Adds a watermark beneath the logo */
 export async function addWatermark() {
-  const watermark = document.createElement("a");
-  watermark.role = "button";
-  watermark.id = "bytm-watermark";
-  watermark.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
-  watermark.textContent = scriptInfo.name;
-  watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
-  watermark.tabIndex = 0;
+  const watermarkEl = document.createElement("a");
+  watermarkEl.role = "button";
+  watermarkEl.id = "bytm-watermark";
+  watermarkEl.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
+  watermarkEl.textContent = scriptInfo.name;
+  watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo.name);
+  watermarkEl.tabIndex = 0;
 
-  improveLogo();
+  await improveLogo();
 
   const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
     e.stopImmediatePropagation();
@@ -36,10 +36,10 @@ export async function addWatermark() {
       exchangeLogo();
   };
 
-  onInteraction(watermark, (e) => watermarkOpenMenu(e));
+  onInteraction(watermarkEl, (e) => watermarkOpenMenu(e));
 
-  addSelectorListener("navBar", "ytmusic-nav-bar #left-content", {
-    listener: (logoElem) => logoElem.insertAdjacentElement("afterend", watermark),
+  addSelectorListener("navBar", "ytmusic-logo a", {
+    listener: (logoElem) => logoElem.appendChild(watermarkEl),
   });
 
   log("Added watermark element");
@@ -55,17 +55,12 @@ export async function improveLogo() {
     const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
     const svg = await res.text();
 
-    addSelectorListener("navBar", "ytmusic-logo a", {
+    addSelectorListener("navBar", "ytmusic-logo > a", {
       listener: (logoElem) => {
         logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
         setInnerHtml(logoElem, svg);
 
-        logoElem.querySelectorAll("ellipse").forEach((e) => {
-          e.classList.add("bytm-mod-logo-ellipse");
-        });
-
-        logoElem.querySelector("path")?.classList.add("bytm-mod-logo-path");
-
+        logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
         log("Swapped logo to inline SVG");
       },
     });
@@ -98,7 +93,7 @@ function exchangeLogo() {
       });
 
       setTimeout(() => {
-        logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
+        logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
       }, 1000);
     },
   });

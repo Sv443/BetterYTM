@@ -1,4 +1,4 @@
-import { compress, decompress, fetchAdvanced, isDomLoaded, pauseFor, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
@@ -314,6 +314,9 @@ async function onDomLoad() {
         )
       ),
     ]);
+
+    // ensure site adjusts itself to new CSS files
+    getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
 
     emitInterface("bytm:ready");
     info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
