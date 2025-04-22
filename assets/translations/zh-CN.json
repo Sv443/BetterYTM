@@ -93,6 +93,7 @@
   "advanced_mode": "高级模式",
   "advanced_mode_short": "高级",
   "experimental_feature": "实验性功能",
+  "advanced_feature": "高级模式功能",
   "feature_only_works_on_ytm": "仅在 YT Music 上有效",
 
   "open_current_lyrics": "打开当前歌曲的歌词 - shift-click 在新窗口中打开或 ctrl-click 打开手动搜索",

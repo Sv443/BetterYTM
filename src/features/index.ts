@@ -69,7 +69,7 @@ const combineAdornments = (
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
-  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
+  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
   globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
   alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),

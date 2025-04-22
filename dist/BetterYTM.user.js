@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@92e6a1aa/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8cc2412e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "92e6a1aa",
+    buildNumber: "8cc2412e",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5979,7 +5979,7 @@ const combineAdornments = (adornments) => new Promise(async (resolve) => {
 });
 /** Decoration elements that can be added next to the label */
 const adornments = {
-    advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
+    advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
     experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
     globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
     alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
