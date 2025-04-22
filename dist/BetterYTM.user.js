@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5b0b2eaa/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@09030db5/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -135,6 +135,7 @@ var resources = {
 	"icon-speed": "icons/speed.svg",
 	"icon-spinner": "icons/spinner.svg",
 	"icon-upload": "icons/upload.svg",
+	"icon-ytm": "icons/ytm.svg",
 	"img-close": "images/close.png",
 	"img-discord": "images/external/discord.png",
 	"img-github": "images/external/github.png",
@@ -335,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "5b0b2eaa",
+    buildNumber: "09030db5",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5983,6 +5984,7 @@ const adornments = {
     globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
     alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
     reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+    ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm"),
 };
 /** Order of adornment elements in the {@linkcode combineAdornments()} function */
 const adornmentOrder = new Map();
@@ -6038,6 +6040,7 @@ function renderNumberVal(val, maximumFractionDigits = 0) {
  * | `category: string`             | Category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
  * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`                                                     |
  * | `enable(value: unknown): void` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
+ * | `supportedSites: Domain[]`     | On which sites the feature is available - values can be `"yt"` or `"ytm"`                                                        |
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
  *
  *
@@ -6070,18 +6073,21 @@ const featInfo = {
     watermarkEnabled: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     removeShareTrackingParam: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm", "yt"],
         default: true,
         textAdornment: adornments.reload,
     },
     removeShareTrackingParamSites: {
         type: "select",
         category: "layout",
+        supportedSites: ["ytm", "yt"],
         options: options.siteSelection,
         default: "all",
         advanced: true,
@@ -6090,13 +6096,15 @@ const featInfo = {
     fixSpacing: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     thumbnailOverlayBehavior: {
         type: "select",
         category: "layout",
+        supportedSites: ["ytm"],
         options: () => [
             { value: "songsOnly", label: t("thumbnail_overlay_behavior_songs_only") },
             { value: "videosOnly", label: t("thumbnail_overlay_behavior_videos_only") },
@@ -6106,33 +6114,38 @@ const featInfo = {
         default: "songsOnly",
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     thumbnailOverlayToggleBtnShown: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     thumbnailOverlayIndicatorOpacity: {
         type: "slider",
         category: "layout",
+        supportedSites: ["ytm"],
         min: 5,
         max: 100,
         step: 5,
         default: 40,
         unit: "%",
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     thumbnailOverlayImageFit: {
         type: "select",
         category: "layout",
+        supportedSites: ["ytm"],
         options: () => [
             { value: "cover", label: t("thumbnail_overlay_image_fit_crop") },
             { value: "contain", label: t("thumbnail_overlay_image_fit_full") },
@@ -6140,51 +6153,58 @@ const featInfo = {
         ],
         default: "cover",
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     hideCursorOnIdle: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     hideCursorOnIdleDelay: {
         type: "slider",
         category: "layout",
+        supportedSites: ["ytm"],
         min: 0.5,
         max: 10,
         step: 0.25,
         default: 2,
         unit: "s",
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
     },
     fixHdrIssues: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     showVotes: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     watchPageFullSize: {
         type: "toggle",
         category: "layout",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     // archived idea for future version (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes):
     // showVoteRatio: {
     //   type: "select",
     //   category: "layout",
+    //   supportedSites: ["ytm"],
     //   options: () => [
     //     { value: "disabled", label: t("vote_ratio_disabled") },
     //     { value: "greenRed", label: t("vote_ratio_green_red") },
@@ -6197,62 +6217,69 @@ const featInfo = {
     volumeSliderLabel: {
         type: "toggle",
         category: "volume",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     volumeSliderSize: {
         type: "number",
         category: "volume",
+        supportedSites: ["ytm"],
         min: 50,
         max: 500,
         step: 5,
         default: 150,
         unit: "px",
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     volumeSliderStep: {
         type: "slider",
         category: "volume",
+        supportedSites: ["ytm"],
         min: 1,
         max: 25,
         default: 2,
         unit: "%",
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     volumeSliderScrollStep: {
         type: "slider",
         category: "volume",
+        supportedSites: ["ytm"],
         min: 1,
         max: 25,
         default: 4,
         unit: "%",
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     volumeSharedBetweenTabs: {
         type: "toggle",
         category: "volume",
+        supportedSites: ["ytm"],
         default: false,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     setInitialTabVolume: {
         type: "toggle",
         category: "volume",
+        supportedSites: ["ytm"],
         default: false,
         textAdornment: () => getFeature("volumeSharedBetweenTabs")
-            ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
-            : adornments.reload(),
+            ? combineAdornments([adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+            : combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     initialTabVolumeLevel: {
         type: "slider",
         category: "volume",
+        supportedSites: ["ytm"],
         min: 0,
         max: 100,
         step: 1,
         default: 100,
         unit: "%",
         textAdornment: () => getFeature("volumeSharedBetweenTabs")
-            ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
-            : adornments.reload(),
+            ? combineAdornments([adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+            : combineAdornments([adornments.ytmOnly, adornments.reload]),
         reloadRequired: false,
         enable: noop,
     },
@@ -6260,55 +6287,63 @@ const featInfo = {
     lyricsQueueButton: {
         type: "toggle",
         category: "songLists",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     deleteFromQueueButton: {
         type: "toggle",
         category: "songLists",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     listButtonsPlacement: {
         type: "select",
         category: "songLists",
+        supportedSites: ["ytm"],
         options: () => [
             { value: "queueOnly", label: t("list_button_placement_queue_only") },
             { value: "everywhere", label: t("list_button_placement_everywhere") },
         ],
         default: "everywhere",
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     scrollToActiveSongBtn: {
         type: "toggle",
         category: "songLists",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     clearQueueBtn: {
         type: "toggle",
         category: "songLists",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     aboveQueueBtnsSticky: {
         type: "toggle",
         category: "songLists",
+        supportedSites: ["ytm"],
         default: true,
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     //#region cat:behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
+        supportedSites: ["ytm", "yt"],
         default: false,
         textAdornment: adornments.reload,
     },
     closeToastsTimeout: {
         type: "number",
         category: "behavior",
+        supportedSites: ["ytm", "yt"],
         min: 0,
         max: 30,
         step: 0.5,
@@ -6320,6 +6355,7 @@ const featInfo = {
     rememberSongTime: {
         type: "toggle",
         category: "behavior",
+        supportedSites: ["ytm", "yt"],
         default: true,
         helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
         textAdornment: adornments.reload,
@@ -6327,6 +6363,7 @@ const featInfo = {
     rememberSongTimeSites: {
         type: "select",
         category: "behavior",
+        supportedSites: ["ytm", "yt"],
         options: options.siteSelection,
         default: "all",
         textAdornment: adornments.reload,
@@ -6334,6 +6371,7 @@ const featInfo = {
     rememberSongTimeDuration: {
         type: "number",
         category: "behavior",
+        supportedSites: ["ytm", "yt"],
         min: 1,
         max: 60 * 60 * 24 * 7,
         step: 1,
@@ -6347,6 +6385,7 @@ const featInfo = {
     rememberSongTimeReduction: {
         type: "number",
         category: "behavior",
+        supportedSites: ["ytm", "yt"],
         min: 0,
         max: 30,
         step: 0.05,
@@ -6360,6 +6399,7 @@ const featInfo = {
     rememberSongTimeMinPlayTime: {
         type: "slider",
         category: "behavior",
+        supportedSites: ["ytm", "yt"],
         min: 3,
         max: 30,
         step: 0.5,
@@ -6373,6 +6413,7 @@ const featInfo = {
     autoScrollToActiveSongMode: {
         type: "select",
         category: "behavior",
+        supportedSites: ["ytm"],
         options: () => [
             { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
             { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
@@ -6383,18 +6424,22 @@ const featInfo = {
         default: "videoChangeManual",
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     //#region cat:input
     arrowKeySupport: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm"],
         default: true,
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     arrowKeySkipBy: {
         type: "slider",
         category: "input",
+        supportedSites: ["ytm"],
         min: 0.5,
         max: 30,
         step: 0.5,
@@ -6402,10 +6447,12 @@ const featInfo = {
         unit: "s",
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     arrowKeyVolumeStep: {
         type: "slider",
         category: "input",
+        supportedSites: ["ytm"],
         min: 1,
         max: 25,
         step: 1,
@@ -6413,26 +6460,31 @@ const featInfo = {
         unit: "%",
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     frameSkip: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm"],
         default: true,
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     frameSkipWhilePlaying: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm"],
         default: false,
         reloadRequired: false,
         enable: noop,
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     frameSkipAmount: {
         type: "number",
         category: "input",
+        supportedSites: ["ytm"],
         min: 0,
         max: 1,
         step: 0.0001,
@@ -6440,30 +6492,35 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     anchorImprovements: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     numKeysSkipToTime: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm"],
         default: true,
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     autoLikeChannels: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm", "yt"],
         default: true,
         textAdornment: adornments.reload,
     },
     autoLikeChannelToggleBtn: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm", "yt"],
         default: true,
         reloadRequired: false,
         enable: noop,
@@ -6480,6 +6537,7 @@ const featInfo = {
     autoLikeTimeout: {
         type: "slider",
         category: "input",
+        supportedSites: ["ytm", "yt"],
         min: 3,
         max: 30,
         step: 0.5,
@@ -6493,6 +6551,7 @@ const featInfo = {
     autoLikeShowToast: {
         type: "toggle",
         category: "input",
+        supportedSites: ["ytm", "yt"],
         default: true,
         reloadRequired: false,
         advanced: true,
@@ -6502,12 +6561,14 @@ const featInfo = {
     autoLikeOpenMgmtDialog: {
         type: "button",
         category: "input",
+        supportedSites: ["ytm", "yt"],
         click: () => getAutoLikeDialog().then(d => d.open()),
     },
     //#region cat:hotkeys
     switchBetweenSites: {
         type: "toggle",
         category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
         default: true,
         reloadRequired: false,
         enable: noop,
@@ -6515,6 +6576,7 @@ const featInfo = {
     switchSitesHotkey: {
         type: "hotkey",
         category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
         default: {
             code: "F9",
             shift: false,
@@ -6527,6 +6589,7 @@ const featInfo = {
     likeDislikeHotkeys: {
         type: "toggle",
         category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
         default: true,
         reloadRequired: false,
         enable: noop,
@@ -6534,6 +6597,7 @@ const featInfo = {
     likeHotkey: {
         type: "hotkey",
         category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
         default: {
             code: "KeyL",
             shift: false,
@@ -6546,6 +6610,7 @@ const featInfo = {
     dislikeHotkey: {
         type: "hotkey",
         category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
         default: {
             code: "KeyL",
             shift: false,
@@ -6559,40 +6624,46 @@ const featInfo = {
     geniusLyrics: {
         type: "toggle",
         category: "lyrics",
+        supportedSites: ["ytm"],
         default: true,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     errorOnLyricsNotFound: {
         type: "toggle",
         category: "lyrics",
+        supportedSites: ["ytm"],
         default: false,
         reloadRequired: false,
         enable: noop,
+        textAdornment: adornments.ytmOnly,
     },
     geniUrlBase: {
         type: "text",
         category: "lyrics",
+        supportedSites: ["ytm"],
         default: "https://api.sv443.net/geniurl",
         normalize: (val) => val.trim().replace(/\/+$/, ""),
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
     },
     geniUrlToken: {
         type: "text",
-        valueHidden: true,
         category: "lyrics",
+        supportedSites: ["ytm"],
+        valueHidden: true,
         default: "",
         normalize: (val) => val.trim(),
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
     },
     lyricsCacheMaxSize: {
         type: "slider",
         category: "lyrics",
+        supportedSites: ["ytm"],
         default: 5000,
         min: 1000,
         max: 50000,
@@ -6600,26 +6671,28 @@ const featInfo = {
         unit: (val) => ` ${tp("unit_entries", val)}`,
         renderValue: renderNumberVal,
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
     },
     lyricsCacheTTL: {
         type: "slider",
         category: "lyrics",
+        supportedSites: ["ytm"],
         default: 21,
         min: 1,
         max: 100,
         step: 1,
         unit: (val) => " " + tp("unit_days", val),
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
     },
     clearLyricsCache: {
         type: "button",
         category: "lyrics",
+        supportedSites: ["ytm"],
         async click() {
             const entries = getLyricsCache().length;
             const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
@@ -6629,7 +6702,7 @@ const featInfo = {
             }
         },
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     // advancedLyricsFilter: {
     //   type: "toggle",
@@ -6645,6 +6718,7 @@ const featInfo = {
     disableDarkReaderSites: {
         type: "select",
         category: "integrations",
+        supportedSites: ["ytm", "yt"],
         options: options.siteSelectionOrNone,
         default: "all",
         advanced: true,
@@ -6653,33 +6727,38 @@ const featInfo = {
     sponsorBlockIntegration: {
         type: "toggle",
         category: "integrations",
+        supportedSites: ["ytm"],
         default: true,
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     themeSongIntegration: {
         type: "toggle",
         category: "integrations",
+        supportedSites: ["ytm"],
         default: false,
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     themeSongLightness: {
         type: "select",
         category: "integrations",
+        supportedSites: ["ytm"],
         options: options.colorLightness,
         default: "darker",
-        textAdornment: adornments.reload,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     //#region cat:plugins
     openPluginList: {
         type: "button",
         category: "plugins",
+        supportedSites: ["ytm", "yt"],
         default: undefined,
         click: () => getPluginListDialog().then(d => d.open()),
     },
     initTimeout: {
         type: "number",
         category: "plugins",
+        supportedSites: ["ytm", "yt"],
         min: 3,
         max: 30,
         default: 8,
@@ -6692,6 +6771,7 @@ const featInfo = {
     locale: {
         type: "select",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         options: options.locale,
         default: getPreferredLocale(),
         textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
@@ -6699,6 +6779,7 @@ const featInfo = {
     localeFallback: {
         type: "toggle",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         default: true,
         advanced: true,
         textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -6706,17 +6787,20 @@ const featInfo = {
     versionCheck: {
         type: "toggle",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         default: true,
         textAdornment: adornments.reload,
     },
     checkVersionNow: {
         type: "button",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         click: () => doVersionCheck(true),
     },
     numbersFormat: {
         type: "select",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         options: () => [
             { value: "long", label: `${formatNumber(12345678, "long")} (${t("votes_format_long")})` },
             { value: "short", label: `${formatNumber(12345678, "short")} (${t("votes_format_short")})` },
@@ -6728,6 +6812,7 @@ const featInfo = {
     toastDuration: {
         type: "slider",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         min: 0,
         max: 15,
         default: 4,
@@ -6745,6 +6830,7 @@ const featInfo = {
     showToastOnGenericError: {
         type: "toggle",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         default: true,
         advanced: true,
         textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -6752,12 +6838,14 @@ const featInfo = {
     resetConfig: {
         type: "button",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         click: promptResetConfig,
         textAdornment: adornments.reload,
     },
     resetEverything: {
         type: "button",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         click: async () => {
             if (await showPrompt({
                 type: "confirm",
@@ -6773,6 +6861,7 @@ const featInfo = {
     logLevel: {
         type: "select",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         options: () => [
             { value: LogLevel.Debug, label: t("log_level_debug") },
             { value: LogLevel.Info, label: t("log_level_info") },
@@ -6784,6 +6873,7 @@ const featInfo = {
     advancedMode: {
         type: "toggle",
         category: "general",
+        supportedSites: ["ytm", "yt"],
         default: false,
         textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
         change: (_key, prevValue, newValue) => prevValue !== newValue &&
