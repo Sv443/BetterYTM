@@ -93,6 +93,7 @@
   "advanced_mode": "Advanced mode",
   "advanced_mode_short": "Advanced",
   "experimental_feature": "Experimental feature",
+  "feature_only_works_on_ytm": "Only works on YT Music",
 
   "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
   "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",

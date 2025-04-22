@@ -93,6 +93,7 @@
   "advanced_mode": "Erweiterte Einstellungen",
   "advanced_mode_short": "Erweit.",
   "experimental_feature": "Experimentelle Funktion",
+  "feature_only_works_on_ytm": "Funktioniert nur auf YT Music",
 
   "open_current_lyrics": "Songtext des aktuellen Songs öffnen - Shift-Klick, um in einem neuen Fenster zu öffnen oder Strg-Klick, um manuell zu suchen",
   "open_lyrics": "Songtext in einem neuen Tab öffnen - Strg-Klick, um manuell zu suchen",

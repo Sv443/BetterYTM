@@ -476,6 +476,8 @@ hr {
   --bytm-warning-col: #e5a63b;
   --bytm-error-col: #fa5b5b;
   --bytm-reload-col: #77e064;
+  --bytm-ytm-only-circle-col: #f13440;
+  --bytm-ytm-only-note-col: #f3dcdd;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
@@ -587,6 +589,14 @@ hr {
 
 .bytm-reload-icon svg path {
   fill: var(--bytm-reload-col, #fff);
+}
+
+.bytm-ytm-only-icon svg path.circle {
+  fill: var(--bytm-ytm-only-circle-col, #fff);
+}
+
+.bytm-ytm-only-icon svg path.note {
+  fill: var(--bytm-ytm-only-note-col, #fff);
 }
 
 /* #region welcome dialog */

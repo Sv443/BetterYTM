@@ -93,6 +93,7 @@
   "advanced_mode": "Modo avanzado",
   "advanced_mode_short": "Avanzado",
   "experimental_feature": "Función experimental",
+  "feature_only_works_on_ytm": "Solo funciona en YT Music",
 
   "open_current_lyrics": "Abrir la letra de la canción actual en una nueva pestaña - shift-click para abrir en una nueva ventana o ctrl-click para abrir la búsqueda manual",
   "open_lyrics": "Abrir la letra de esta canción en una nueva pestaña - ctrl-click para abrir la búsqueda manual",
