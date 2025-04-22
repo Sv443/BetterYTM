@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4edb21d7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ea75542e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "4edb21d7",
+    buildNumber: "ea75542e",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4428,7 +4428,7 @@ function checkToggleScrollIndicator() {
         }
     }
 }//#region cfg menu btns
-let logoExchanged = false, improveLogoCalled = false;
+let logoExchanged = false, improveLogoCalled = false, bytmLogoUrl;
 /** Adds a watermark beneath the logo */
 async function addWatermark() {
     const watermarkEl = document.createElement("a");
@@ -4439,6 +4439,8 @@ async function addWatermark() {
     watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo.name);
     watermarkEl.tabIndex = 0;
     await improveLogo();
+    bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    UserUtils.preloadImages([bytmLogoUrl]);
     const watermarkOpenMenu = (e) => {
         e.stopImmediatePropagation();
         if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
@@ -4477,18 +4479,15 @@ async function improveLogo() {
 function exchangeLogo() {
     addSelectorListener("navBar", ".bytm-mod-logo", {
         listener: async (logoElem) => {
-            if (logoElem.classList.contains("bytm-logo-exchanged"))
+            if (logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl)
                 return;
             logoExchanged = true;
             logoElem.classList.add("bytm-logo-exchanged");
-            const iconUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
             const newLogo = document.createElement("img");
             newLogo.classList.add("bytm-mod-logo-img");
-            newLogo.src = iconUrl;
+            newLogo.src = bytmLogoUrl;
             logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
-            document.head.querySelectorAll("link[rel=\"icon\"]").forEach((e) => {
-                e.href = iconUrl;
-            });
+            bytmLogoUrl && document.head.querySelectorAll("link[rel=\"icon\"]").forEach((e) => e.href = bytmLogoUrl);
             setTimeout(() => {
                 logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
             }, 1000);
