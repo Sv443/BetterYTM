@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8a0f452a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@db53b075/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -333,7 +333,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "8a0f452a",
+    buildNumber: "db53b075",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2355,12 +2355,11 @@ async function initAutoLike() {
                         return;
                     if (artistEls.length === 0)
                         return error("Couldn't auto-like channel because the artist element couldn't be found");
-                    const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-                    const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
-                    if (!likeRendererEl || !likeBtnEl)
+                    const { likeBtn, likeState } = getLikeDislikeBtns();
+                    if (!likeBtn)
                         return error("Couldn't auto-like channel because the like button couldn't be found");
-                    if (likeRendererEl.getAttribute("like-status") !== "LIKE") {
-                        likeBtnEl.click();
+                    if (likeState !== "LIKE") {
+                        likeBtn.click();
                         getFeature("autoLikeShowToast") && showIconToast({
                             message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
                             subtitle: t("auto_like_click_to_configure"),
@@ -5174,22 +5173,7 @@ async function initLikeDislikeHotkeys() {
             return;
         if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
             return;
-        const [likeBtn, dislikeBtn] = (() => {
-            switch (getDomain()) {
-                case "ytm": {
-                    const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-                    const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
-                    const dislikeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-                    const dislikeBtnEl = dislikeRendererEl === null || dislikeRendererEl === void 0 ? void 0 : dislikeRendererEl.querySelector("#button-shape-dislike button");
-                    return [likeBtnEl !== null && likeBtnEl !== void 0 ? likeBtnEl : undefined, dislikeBtnEl !== null && dislikeBtnEl !== void 0 ? dislikeBtnEl : undefined];
-                }
-                case "yt": {
-                    const likeBtnEl = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model like-button-view-model button");
-                    const dislikeBtnEl = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model dislike-button-view-model button");
-                    return [likeBtnEl !== null && likeBtnEl !== void 0 ? likeBtnEl : undefined, dislikeBtnEl !== null && dislikeBtnEl !== void 0 ? dislikeBtnEl : undefined];
-                }
-            }
-        })();
+        const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
         if (keyPressed(e, getFeature("likeHotkey")))
             likeBtn === null || likeBtn === void 0 ? void 0 : likeBtn.click();
         else if (keyPressed(e, getFeature("dislikeHotkey")))
@@ -7072,6 +7056,7 @@ const globalFuncs = purifyObj({
     getVideoElement,
     getVideoSelector,
     getCurrentMediaType,
+    getLikeDislikeBtns,
     // translations:
     /*🔒*/ setLocale: setLocaleInterface,
     getLocale,
@@ -7154,41 +7139,48 @@ function emitInterface(type, ...detail) {
 const registeredPlugins = new Map();
 /** Map of plugin ID to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map();
+let pluginsInitialized = false;
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 function initPlugins() {
-    // TODO: check perms and ask user for initial activation
-    const registerPlugin = (def) => {
-        var _a, _b;
-        try {
-            const plKey = getPluginKey(def);
-            if (registeredPlugins.has(plKey))
-                throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
-            const validationErrors = validatePluginDef(def);
-            if (validationErrors)
-                throw new PluginError(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
-            const events = new NanoEmitter({ publicEmit: true });
-            const token = randomId(32, 36, true);
-            registeredPlugins.set(plKey, {
-                def: def,
-                events,
-            });
-            registeredPluginTokens.set(plKey, token);
-            info(`Successfully registered plugin '${plKey}'`);
-            setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 1);
-            return {
-                info: getPluginInfo(token, def),
-                events,
-                token,
-            };
-        }
-        catch (err) {
-            error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
-            throw err;
-        }
-    };
     emitInterface("bytm:registerPlugin", (def) => registerPlugin(def));
-    if (registeredPlugins.size > 0)
-        log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+    getUnsafeWindow().addEventListener("bytm:ready", () => {
+        pluginsInitialized = true;
+        if (registeredPlugins.size > 0)
+            log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+    }, { once: true });
+}
+/** Registers a plugin on the BYTM interface. */
+function registerPlugin(def) {
+    var _a, _b;
+    // TODO: check perms and ask user for initial activation
+    try {
+        if (pluginsInitialized)
+            throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
+        const plKey = getPluginKey(def);
+        if (registeredPlugins.has(plKey))
+            throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
+        const validationErrors = validatePluginDef(def);
+        if (validationErrors)
+            throw new PluginError(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
+        const events = new NanoEmitter({ publicEmit: true });
+        const token = randomId(16, 36, true, true);
+        registeredPlugins.set(plKey, {
+            def: def,
+            events,
+        });
+        registeredPluginTokens.set(plKey, token);
+        info(`Successfully registered plugin '${plKey}'`);
+        setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 1);
+        return {
+            info: getPluginInfo(token, def),
+            events,
+            token,
+        };
+    }
+    catch (err) {
+        error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
+        throw err;
+    }
 }
 /** Returns the registered plugins as an array of tuples with the items `[id: string, item: PluginItem]` */
 function getRegisteredPlugins() {
@@ -7636,6 +7628,46 @@ function waitVideoElementReady() {
             rej(err);
         }
     });
+}
+//#region like/dislike btns
+/**
+ * Returns the like/dislike button elements based on the current domain and the current like state ("LIKE" / "DISLIKE" / "INDIFFERENT").
+ * The btnRenderer element is a parent of both buttons.
+ */
+function getLikeDislikeBtns() {
+    var _a, _b, _c, _d, _e, _f, _g;
+    let btnRenderer;
+    let likeBtn;
+    let dislikeBtn;
+    let likeState;
+    switch (getDomain()) {
+        case "ytm": {
+            btnRenderer = (_a = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer")) !== null && _a !== void 0 ? _a : undefined;
+            likeBtn = (_b = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("#button-shape-like button")) !== null && _b !== void 0 ? _b : undefined;
+            dislikeBtn = (_c = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("#button-shape-dislike button")) !== null && _c !== void 0 ? _c : undefined;
+            const likeStateRaw = (_d = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.getAttribute("like-status")) === null || _d === void 0 ? void 0 : _d.toUpperCase();
+            likeState = ["LIKE", "DISLIKE", "INDIFFERENT"].includes(likeStateRaw !== null && likeStateRaw !== void 0 ? likeStateRaw : "") ? likeStateRaw : "INDIFFERENT";
+            break;
+        }
+        case "yt": {
+            btnRenderer = (_e = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model")) !== null && _e !== void 0 ? _e : undefined;
+            likeBtn = (_f = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("like-button-view-model button")) !== null && _f !== void 0 ? _f : undefined;
+            dislikeBtn = (_g = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("dislike-button-view-model button")) !== null && _g !== void 0 ? _g : undefined;
+            if ((likeBtn === null || likeBtn === void 0 ? void 0 : likeBtn.getAttribute("aria-pressed")) === "true")
+                likeState = "LIKE";
+            else if ((dislikeBtn === null || dislikeBtn === void 0 ? void 0 : dislikeBtn.getAttribute("aria-pressed")) === "true")
+                likeState = "DISLIKE";
+            else if (likeBtn || dislikeBtn)
+                likeState = "INDIFFERENT";
+            break;
+        }
+    }
+    return {
+        likeBtn,
+        dislikeBtn,
+        btnRenderer,
+        likeState,
+    };
 }
 //#region css utils
 /**
