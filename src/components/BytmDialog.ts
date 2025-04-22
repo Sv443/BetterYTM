@@ -1,5 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { isDomLoaded, NanoEmitter } from "@sv443-network/userutils";
+import type { EventsMap } from "nanoevents";
 import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
@@ -37,7 +38,7 @@ export type BytmDialogOptions = {
   renderFooter?: () => HTMLElement | Promise<HTMLElement>;
 };
 
-export type BytmDialogEvents = {
+export interface BytmDialogEvents extends EventsMap {
   /** Emitted just **after** the dialog is closed */
   close: () => void;
   /** Emitted just **after** the dialog is opened */
@@ -48,7 +49,7 @@ export type BytmDialogEvents = {
   clear: () => void;
   /** Emitted just **after** the dialog is destroyed and **before** all listeners are removed */
   destroy: () => void;
-};
+}
 
 /** Whether the dialog system has been initialized */
 let dialogsInitialized = false;

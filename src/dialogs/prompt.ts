@@ -1,7 +1,6 @@
-import type { Emitter } from "nanoevents";
 import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
-import { BytmDialog, type BytmDialogEvents } from "../components/BytmDialog.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { addSelectorListener } from "../observers.js";
 import "./prompt.css";
 
@@ -37,10 +36,6 @@ type BaseRenderProps = {
 export type PromptDialogResolveVal = boolean | string | null;
 
 export type ShowPromptProps = Partial<PromptDialogRenderProps> & Required<Pick<PromptDialogRenderProps, "message">>;
-
-export type PromptDialogEmitter = Emitter<BytmDialogEvents & {
-  resolve: (result: PromptDialogResolveVal) => void;
-}>;
 
 //#region PromptDialog
 
