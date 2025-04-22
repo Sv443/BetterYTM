@@ -145,6 +145,7 @@ function renderNumberVal(val: string, maximumFractionDigits = 0) {
  * | `category: string`             | Category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
  * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`                                                     |
  * | `enable(value: unknown): void` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
+ * | `supportedSites: Domain[]`     | On which sites the feature is available - values can be `"yt"` or `"ytm"`                                                        |
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
  * 
  * 
@@ -177,18 +178,21 @@ export const featInfo = {
   watermarkEnabled: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm", "yt"],
     default: true,
     textAdornment: adornments.reload,
   },
   removeShareTrackingParamSites: {
     type: "select",
     category: "layout",
+    supportedSites: ["ytm", "yt"],
     options: options.siteSelection,
     default: "all",
     advanced: true,
@@ -197,6 +201,7 @@ export const featInfo = {
   fixSpacing: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -204,6 +209,7 @@ export const featInfo = {
   thumbnailOverlayBehavior: {
     type: "select",
     category: "layout",
+    supportedSites: ["ytm"],
     options: () => [
       { value: "songsOnly", label: t("thumbnail_overlay_behavior_songs_only") },
       { value: "videosOnly", label: t("thumbnail_overlay_behavior_videos_only") },
@@ -217,18 +223,21 @@ export const featInfo = {
   thumbnailOverlayToggleBtnShown: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   thumbnailOverlayShowIndicator: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   thumbnailOverlayIndicatorOpacity: {
     type: "slider",
     category: "layout",
+    supportedSites: ["ytm"],
     min: 5,
     max: 100,
     step: 5,
@@ -240,6 +249,7 @@ export const featInfo = {
   thumbnailOverlayImageFit: {
     type: "select",
     category: "layout",
+    supportedSites: ["ytm"],
     options: () => [
       { value: "cover", label: t("thumbnail_overlay_image_fit_crop") },
       { value: "contain", label: t("thumbnail_overlay_image_fit_full") },
@@ -252,6 +262,7 @@ export const featInfo = {
   hideCursorOnIdle: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -259,6 +270,7 @@ export const featInfo = {
   hideCursorOnIdleDelay: {
     type: "slider",
     category: "layout",
+    supportedSites: ["ytm"],
     min: 0.5,
     max: 10,
     step: 0.25,
@@ -272,6 +284,7 @@ export const featInfo = {
   fixHdrIssues: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -279,12 +292,14 @@ export const featInfo = {
   showVotes: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   watchPageFullSize: {
     type: "toggle",
     category: "layout",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
@@ -292,6 +307,7 @@ export const featInfo = {
   // showVoteRatio: {
   //   type: "select",
   //   category: "layout",
+  //   supportedSites: ["ytm"],
   //   options: () => [
   //     { value: "disabled", label: t("vote_ratio_disabled") },
   //     { value: "greenRed", label: t("vote_ratio_green_red") },
@@ -305,12 +321,14 @@ export const featInfo = {
   volumeSliderLabel: {
     type: "toggle",
     category: "volume",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   volumeSliderSize: {
     type: "number",
     category: "volume",
+    supportedSites: ["ytm"],
     min: 50,
     max: 500,
     step: 5,
@@ -321,6 +339,7 @@ export const featInfo = {
   volumeSliderStep: {
     type: "slider",
     category: "volume",
+    supportedSites: ["ytm"],
     min: 1,
     max: 25,
     default: 2,
@@ -330,6 +349,7 @@ export const featInfo = {
   volumeSliderScrollStep: {
     type: "slider",
     category: "volume",
+    supportedSites: ["ytm"],
     min: 1,
     max: 25,
     default: 4,
@@ -339,12 +359,14 @@ export const featInfo = {
   volumeSharedBetweenTabs: {
     type: "toggle",
     category: "volume",
+    supportedSites: ["ytm"],
     default: false,
     textAdornment: adornments.reload,
   },
   setInitialTabVolume: {
     type: "toggle",
     category: "volume",
+    supportedSites: ["ytm"],
     default: false,
     textAdornment: () => getFeature("volumeSharedBetweenTabs")
       ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
@@ -353,6 +375,7 @@ export const featInfo = {
   initialTabVolumeLevel: {
     type: "slider",
     category: "volume",
+    supportedSites: ["ytm"],
     min: 0,
     max: 100,
     step: 1,
@@ -369,18 +392,21 @@ export const featInfo = {
   lyricsQueueButton: {
     type: "toggle",
     category: "songLists",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   deleteFromQueueButton: {
     type: "toggle",
     category: "songLists",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   listButtonsPlacement: {
     type: "select",
     category: "songLists",
+    supportedSites: ["ytm"],
     options: () => [
       { value: "queueOnly", label: t("list_button_placement_queue_only") },
       { value: "everywhere", label: t("list_button_placement_everywhere") },
@@ -392,18 +418,21 @@ export const featInfo = {
   scrollToActiveSongBtn: {
     type: "toggle",
     category: "songLists",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   clearQueueBtn: {
     type: "toggle",
     category: "songLists",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   aboveQueueBtnsSticky: {
     type: "toggle",
     category: "songLists",
+    supportedSites: ["ytm"],
     default: true,
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -413,12 +442,14 @@ export const featInfo = {
   disableBeforeUnloadPopup: {
     type: "toggle",
     category: "behavior",
+    supportedSites: ["ytm", "yt"],
     default: false,
     textAdornment: adornments.reload,
   },
   closeToastsTimeout: {
     type: "number",
     category: "behavior",
+    supportedSites: ["ytm", "yt"],
     min: 0,
     max: 30,
     step: 0.5,
@@ -430,6 +461,7 @@ export const featInfo = {
   rememberSongTime: {
     type: "toggle",
     category: "behavior",
+    supportedSites: ["ytm", "yt"],
     default: true,
     helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
     textAdornment: adornments.reload,
@@ -437,6 +469,7 @@ export const featInfo = {
   rememberSongTimeSites: {
     type: "select",
     category: "behavior",
+    supportedSites: ["ytm", "yt"],
     options: options.siteSelection,
     default: "all",
     textAdornment: adornments.reload,
@@ -444,6 +477,7 @@ export const featInfo = {
   rememberSongTimeDuration: {
     type: "number",
     category: "behavior",
+    supportedSites: ["ytm", "yt"],
     min: 1,
     max: 60 * 60 * 24 * 7,
     step: 1,
@@ -457,6 +491,7 @@ export const featInfo = {
   rememberSongTimeReduction: {
     type: "number",
     category: "behavior",
+    supportedSites: ["ytm", "yt"],
     min: 0,
     max: 30,
     step: 0.05,
@@ -470,6 +505,7 @@ export const featInfo = {
   rememberSongTimeMinPlayTime: {
     type: "slider",
     category: "behavior",
+    supportedSites: ["ytm", "yt"],
     min: 3,
     max: 30,
     step: 0.5,
@@ -483,6 +519,7 @@ export const featInfo = {
   autoScrollToActiveSongMode: {
     type: "select",
     category: "behavior",
+    supportedSites: ["ytm"],
     options: () => [
       { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
       { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
@@ -499,6 +536,7 @@ export const featInfo = {
   arrowKeySupport: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm"],
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -506,6 +544,7 @@ export const featInfo = {
   arrowKeySkipBy: {
     type: "slider",
     category: "input",
+    supportedSites: ["ytm"],
     min: 0.5,
     max: 30,
     step: 0.5,
@@ -517,6 +556,7 @@ export const featInfo = {
   arrowKeyVolumeStep: {
     type: "slider",
     category: "input",
+    supportedSites: ["ytm"],
     min: 1,
     max: 25,
     step: 1,
@@ -528,6 +568,7 @@ export const featInfo = {
   frameSkip: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -535,6 +576,7 @@ export const featInfo = {
   frameSkipWhilePlaying: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     default: false,
     reloadRequired: false,
     enable: noop,
@@ -544,6 +586,7 @@ export const featInfo = {
   frameSkipAmount: {
     type: "number",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     min: 0,
     max: 1,
     step: 0.0001,
@@ -556,12 +599,14 @@ export const featInfo = {
   anchorImprovements: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   numKeysSkipToTime: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm"],
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -569,12 +614,14 @@ export const featInfo = {
   autoLikeChannels: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     default: true,
     textAdornment: adornments.reload,
   },
   autoLikeChannelToggleBtn: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -591,6 +638,7 @@ export const featInfo = {
   autoLikeTimeout: {
     type: "slider",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     min: 3,
     max: 30,
     step: 0.5,
@@ -604,6 +652,7 @@ export const featInfo = {
   autoLikeShowToast: {
     type: "toggle",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
     advanced: true,
@@ -613,6 +662,7 @@ export const featInfo = {
   autoLikeOpenMgmtDialog: {
     type: "button",
     category: "input",
+    supportedSites: ["ytm", "yt"],
     click: () => getAutoLikeDialog().then(d => d.open()),
   },
 
@@ -621,6 +671,7 @@ export const featInfo = {
   switchBetweenSites: {
     type: "toggle",
     category: "hotkeys",
+    supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -628,6 +679,7 @@ export const featInfo = {
   switchSitesHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    supportedSites: ["ytm", "yt"],
     default: {
       code: "F9",
       shift: false,
@@ -640,6 +692,7 @@ export const featInfo = {
   likeDislikeHotkeys: {
     type: "toggle",
     category: "hotkeys",
+    supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -647,6 +700,7 @@ export const featInfo = {
   likeHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    supportedSites: ["ytm", "yt"],
     default: {
       code: "KeyL",
       shift: false,
@@ -659,6 +713,7 @@ export const featInfo = {
   dislikeHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    supportedSites: ["ytm", "yt"],
     default: {
       code: "KeyL",
       shift: false,
@@ -673,12 +728,14 @@ export const featInfo = {
   geniusLyrics: {
     type: "toggle",
     category: "lyrics",
+    supportedSites: ["ytm"],
     default: true,
     textAdornment: adornments.reload,
   },
   errorOnLyricsNotFound: {
     type: "toggle",
     category: "lyrics",
+    supportedSites: ["ytm"],
     default: false,
     reloadRequired: false,
     enable: noop,
@@ -686,6 +743,7 @@ export const featInfo = {
   geniUrlBase: {
     type: "text",
     category: "lyrics",
+    supportedSites: ["ytm"],
     default: "https://api.sv443.net/geniurl",
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
@@ -695,8 +753,9 @@ export const featInfo = {
   },
   geniUrlToken: {
     type: "text",
-    valueHidden: true,
     category: "lyrics",
+    supportedSites: ["ytm"],
+    valueHidden: true,
     default: "",
     normalize: (val: string) => val.trim(),
     advanced: true,
@@ -707,6 +766,7 @@ export const featInfo = {
   lyricsCacheMaxSize: {
     type: "slider",
     category: "lyrics",
+    supportedSites: ["ytm"],
     default: 5000,
     min: 1000,
     max: 50_000,
@@ -721,6 +781,7 @@ export const featInfo = {
   lyricsCacheTTL: {
     type: "slider",
     category: "lyrics",
+    supportedSites: ["ytm"],
     default: 21,
     min: 1,
     max: 100,
@@ -734,6 +795,7 @@ export const featInfo = {
   clearLyricsCache: {
     type: "button",
     category: "lyrics",
+    supportedSites: ["ytm"],
     async click() {
       const entries = getLyricsCache().length;
       const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
@@ -760,6 +822,7 @@ export const featInfo = {
   disableDarkReaderSites: {
     type: "select",
     category: "integrations",
+    supportedSites: ["ytm", "yt"],
     options: options.siteSelectionOrNone,
     default: "all",
     advanced: true,
@@ -768,6 +831,7 @@ export const featInfo = {
   sponsorBlockIntegration: {
     type: "toggle",
     category: "integrations",
+    supportedSites: ["ytm"],
     default: true,
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -775,12 +839,14 @@ export const featInfo = {
   themeSongIntegration: {
     type: "toggle",
     category: "integrations",
+    supportedSites: ["ytm"],
     default: false,
     textAdornment: adornments.reload,
   },
   themeSongLightness: {
     type: "select",
     category: "integrations",
+    supportedSites: ["ytm"],
     options: options.colorLightness,
     default: "darker",
     textAdornment: adornments.reload,
@@ -790,12 +856,14 @@ export const featInfo = {
   openPluginList: {
     type: "button",
     category: "plugins",
+    supportedSites: ["ytm", "yt"],
     default: undefined,
     click: () => getPluginListDialog().then(d => d.open()),
   },
   initTimeout: {
     type: "number",
     category: "plugins",
+    supportedSites: ["ytm", "yt"],
     min: 3,
     max: 30,
     default: 8,
@@ -809,6 +877,7 @@ export const featInfo = {
   locale: {
     type: "select",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     options: options.locale,
     default: getPreferredLocale(),
     textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
@@ -816,6 +885,7 @@ export const featInfo = {
   localeFallback: {
     type: "toggle",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     default: true,
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -823,17 +893,20 @@ export const featInfo = {
   versionCheck: {
     type: "toggle",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     default: true,
     textAdornment: adornments.reload,
   },
   checkVersionNow: {
     type: "button",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     click: () => doVersionCheck(true),
   },
   numbersFormat: {
     type: "select",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     options: () => [
       { value: "long", label: `${formatNumber(12_345_678, "long")} (${t("votes_format_long")})` },
       { value: "short", label: `${formatNumber(12_345_678, "short")} (${t("votes_format_short")})` },
@@ -845,6 +918,7 @@ export const featInfo = {
   toastDuration: {
     type: "slider",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     min: 0,
     max: 15,
     default: 4,
@@ -862,6 +936,7 @@ export const featInfo = {
   showToastOnGenericError: {
     type: "toggle",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     default: true,
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
@@ -869,12 +944,14 @@ export const featInfo = {
   resetConfig: {
     type: "button",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     click: promptResetConfig,
     textAdornment: adornments.reload,
   },
   resetEverything: {
     type: "button",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     click: async () => {
       if(await showPrompt({
         type: "confirm",
@@ -890,6 +967,7 @@ export const featInfo = {
   logLevel: {
     type: "select",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     options: () => [
       { value: LogLevel.Debug, label: t("log_level_debug") },
       { value: LogLevel.Info, label: t("log_level_info") },
@@ -901,6 +979,7 @@ export const featInfo = {
   advancedMode: {
     type: "toggle",
     category: "general",
+    supportedSites: ["ytm", "yt"],
     default: false,
     textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
     change: (_key, prevValue, newValue) =>

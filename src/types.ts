@@ -487,7 +487,10 @@ type FeatureFuncProps = (
 export type FeatureInfo = Record<
   keyof FeatureConfig,
   {
+    /** Feature category */
     category: FeatureCategory;
+    /** On which sites the feature is available */
+    supportedSites: Domain[];
     /**
      * HTML string that will be the help text for this feature  
      * Specifying a function is useful for pluralizing or inserting values into the translation at runtime
