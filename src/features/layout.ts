@@ -465,8 +465,11 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
-/** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
+/** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
+
+/** Set of video IDs that have already been applied to the thumbnail overlay */
+const previousVideoIDs = new Set<string>();
 
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
@@ -527,9 +530,13 @@ export async function initThumbnailOverlay() {
       }
     };
 
-    const applyThumbUrl = async (watchId: string) => {
+    const applyThumbUrl = async (videoID: string) => {
       try {
-        const thumbUrl = await getBestThumbnailUrl(watchId);
+        if(previousVideoIDs.has(videoID))
+          return;
+        previousVideoIDs.add(videoID);
+
+        const thumbUrl = await getBestThumbnailUrl(videoID);
         if(thumbUrl) {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
@@ -544,18 +551,18 @@ export async function initThumbnailOverlay() {
 
           log("Applied thumbnail URL to overlay:", thumbUrl);
         }
-        else error("Couldn't get thumbnail URL for watch ID", watchId);
+        else error("Couldn't get thumbnail URL for watch ID", videoID);
       }
       catch(err) {
         error("Couldn't apply thumbnail URL to overlay due to an error:", err);
       }
     };
 
-    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
+    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID) => {
       unsubWatchIdChanged();
       addSelectorListener("body", "#bytm-thumbnail-overlay", {
         listener: () => {
-          applyThumbUrl(watchId);
+          applyThumbUrl(videoID);
           updateOverlayVisibility();
         },
       });
@@ -593,9 +600,9 @@ export async function initThumbnailOverlay() {
         indicatorElem && playerEl.appendChild(indicatorElem);
 
 
-        siteEvents.on("watchIdChanged", async (watchId) => {
+        siteEvents.on("watchIdChanged", async (videoID) => {
           invertOverlay = false;
-          applyThumbUrl(watchId);
+          applyThumbUrl(videoID);
           updateOverlayVisibility();
         });
 
@@ -756,17 +763,17 @@ export async function initShowVotes() {
         if(getFeature("showVotes")) {
           addVoteNumbers(voteCont, voteObj);
 
-          siteEvents.on("watchIdChanged", async (watchId) => {
+          siteEvents.on("watchIdChanged", async (videoID) => {
             const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
             const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
 
             if(!labelLikes || !labelDislikes)
               return error("Couldn't find vote label elements while updating like and dislike counts");
 
-            if(labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
+            if(labelLikes.dataset.watchId === videoID && labelDislikes.dataset.watchId === videoID)
               return log("Vote labels already updated for this video");
 
-            const voteObj = await fetchVideoVotes(watchId);
+            const voteObj = await fetchVideoVotes(videoID);
             if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
               return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
