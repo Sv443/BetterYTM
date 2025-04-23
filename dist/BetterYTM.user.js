@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@982c8a77/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@23ef6824/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -59,6 +59,7 @@
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
+// @grant             GM.listValues
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
@@ -69,7 +70,6 @@
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.4
 // @grant             GM.registerMenuCommand
-// @grant             GM.listValues
 
 // ==/UserScript==
 /*
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "982c8a77",
+    buildNumber: "23ef6824",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2882,7 +2882,7 @@ async function remTimeStartUpdateLoop() {
     // for no overlapping calls and better error handling:
     if (remVidCheckTimeout)
         clearTimeout(remVidCheckTimeout);
-    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
+    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 500);
 }
 /** Updates an existing or inserts a new entry to be remembered */
 async function remTimeUpsertEntry(data) {
@@ -6863,6 +6863,8 @@ const featInfo = {
                 message: t("reset_everything_confirm"),
             })) {
                 await getStoreSerializer().resetStoresData();
+                const gmKeys = await GM.listValues();
+                await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
                 await reloadTab();
             }
         },
