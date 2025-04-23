@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@277b2898/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5ae0fbf5/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "277b2898",
+    buildNumber: "5ae0fbf5",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4627,10 +4627,28 @@ async function addAnchorImprovements() {
                 log(`Added anchors around ${itemsAmt} sidebar ${UserUtils.autoPlural("item", itemsAmt)}`);
             },
         });
-        addSelectorListener("sideBarMini", "ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
-            listener: (miniSidebarCont) => {
-                const itemsAmt = addSidebarAnchors(miniSidebarCont);
-                log(`Added anchors around ${itemsAmt} mini sidebar ${UserUtils.autoPlural("item", itemsAmt)}`);
+        addSelectorListener("body", "ytmusic-nav-bar", {
+            listener(navBar) {
+                let miniSidebarCont = document.querySelector("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+                const mut = new MutationObserver(() => setTimeout(() => {
+                    if (navBar.hasAttribute("guide-collapsed") && !navBar.classList.contains("bytm-mini-sidebar-anchors-added")) {
+                        miniSidebarCont = document.querySelector("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+                        if (!miniSidebarCont)
+                            return error("Couldn't find mini sidebar element while adding anchors");
+                        improveMiniSidebarAnchors();
+                    }
+                }, 50));
+                const improveMiniSidebarAnchors = () => {
+                    const itemsAmt = addSidebarAnchors(miniSidebarCont);
+                    navBar.classList.add("bytm-mini-sidebar-anchors-added");
+                    log(`Added anchors around ${itemsAmt} mini sidebar ${UserUtils.autoPlural("item", itemsAmt)}`);
+                    mut.disconnect();
+                };
+                if (miniSidebarCont)
+                    improveMiniSidebarAnchors();
+                mut.observe(navBar, {
+                    attributes: true,
+                });
             },
         });
     }
@@ -4777,8 +4795,10 @@ async function initAboveQueueBtns() {
     });
 }
 //#region thumb.overlay
-/** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
+/** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
+/** Set of video IDs that have already been applied to the thumbnail overlay */
+const previousVideoIDs = new Set();
 async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
     if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
@@ -4827,9 +4847,12 @@ async function initThumbnailOverlay() {
                 });
             }
         };
-        const applyThumbUrl = async (watchId) => {
+        const applyThumbUrl = async (videoID) => {
             try {
-                const thumbUrl = await getBestThumbnailUrl(watchId);
+                if (previousVideoIDs.has(videoID))
+                    return;
+                previousVideoIDs.add(videoID);
+                const thumbUrl = await getBestThumbnailUrl(videoID);
                 if (thumbUrl) {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
@@ -4842,17 +4865,17 @@ async function initThumbnailOverlay() {
                     log("Applied thumbnail URL to overlay:", thumbUrl);
                 }
                 else
-                    error("Couldn't get thumbnail URL for watch ID", watchId);
+                    error("Couldn't get thumbnail URL for watch ID", videoID);
             }
             catch (err) {
                 error("Couldn't apply thumbnail URL to overlay due to an error:", err);
             }
         };
-        const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
+        const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID) => {
             unsubWatchIdChanged();
             addSelectorListener("body", "#bytm-thumbnail-overlay", {
                 listener: () => {
-                    applyThumbUrl(watchId);
+                    applyThumbUrl(videoID);
                     updateOverlayVisibility();
                 },
             });
@@ -4885,9 +4908,9 @@ async function initThumbnailOverlay() {
                 overlayElem.appendChild(thumbImgElem);
                 playerEl.appendChild(overlayElem);
                 indicatorElem && playerEl.appendChild(indicatorElem);
-                siteEvents.on("watchIdChanged", async (watchId) => {
+                siteEvents.on("watchIdChanged", async (videoID) => {
                     invertOverlay = false;
-                    applyThumbUrl(watchId);
+                    applyThumbUrl(videoID);
                     updateOverlayVisibility();
                 });
                 const params = new URL(location.href).searchParams;
@@ -5020,15 +5043,15 @@ async function initShowVotes() {
                     return error("Couldn't fetch votes from the Return YouTube Dislike API");
                 if (getFeature("showVotes")) {
                     addVoteNumbers(voteCont, voteObj);
-                    siteEvents.on("watchIdChanged", async (watchId) => {
+                    siteEvents.on("watchIdChanged", async (videoID) => {
                         var _a, _b;
                         const labelLikes = document.querySelector("ytmusic-like-button-renderer .bytm-vote-label.likes");
                         const labelDislikes = document.querySelector("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
                         if (!labelLikes || !labelDislikes)
                             return error("Couldn't find vote label elements while updating like and dislike counts");
-                        if (labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
+                        if (labelLikes.dataset.watchId === videoID && labelDislikes.dataset.watchId === videoID)
                             return log("Vote labels already updated for this video");
-                        const voteObj = await fetchVideoVotes(watchId);
+                        const voteObj = await fetchVideoVotes(videoID);
                         if (!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
                             return error("Couldn't fetch votes from the Return YouTube Dislike API");
                         const likesLabelText = tp("vote_label_likes", voteObj.likes, formatNumber(voteObj.likes, "long"));
@@ -7589,6 +7612,7 @@ const defaultObserverOptions = {
     disableOnNoListeners: false,
     enableOnAddListener: false,
     defaultDebounce: 150,
+    defaultDebounceType: "immediate",
 };
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 const globservers = {};
@@ -7662,17 +7686,9 @@ function initObservers() {
                 // -> the sidebar on the left side of the page
                 //    enabled by "body"
                 const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
-                globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, childList: true, subtree: true }));
                 globservers.body.addListener(sidebarSelector, {
                     listener: () => globservers.sideBar.enable(),
-                });
-                //#region sideBarMini
-                // -> the minimized sidebar on the left side of the page
-                //    enabled by "body"
-                const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
-                globservers.sideBarMini = new UserUtils.SelectorObserver(sideBarMiniSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-                globservers.body.addListener(sideBarMiniSelector, {
-                    listener: () => globservers.sideBarMini.enable(),
                 });
                 //#region sidePanel
                 // -> the side panel on the right side of the /watch page
