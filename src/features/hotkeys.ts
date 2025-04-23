@@ -151,8 +151,6 @@ async function initSkipToRemTimeHotkey() {
 
 //#region proxy hotkeys
 
-//TODO:FIXME: proxy hotkeys are triggered when input is active
-
 type HotkeyProxyGroup = {
   /** The feature key that contains the hotkey object */
   hkFeatKey: FeatKeysOfType<HotkeyObj>;

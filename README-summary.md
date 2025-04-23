@@ -18,18 +18,19 @@ All of these can be toggled and configured in the configuration menu.
 - Layout & User Experience:
   - Show the approximate amount of likes and dislikes on songs (powered by returnyoutubedislike.com)
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
+  - Set a custom size and step resolution for the volume slider and show a percentage label next to it
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
   - Quickly scroll to the currently active song in the queue by clicking a button
-  - Set a custom size and step resolution for the volume slider and show a percentage label next to it
   - Remember the time of the last played song to resume playback after reloading or reopening the tab
   - Improve clickability of song titles and thumbnails when wanting to open them in a new tab
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
+  - Shrink the dead space on the /watch page
 - Input & Interaction:
-  - Auto-like songs and videos of your favorite creators on both YouTube and YouTube Music
-  - Use arrow keys to skip forward or backward by a configurable amount of time
+  - Auto-like songs and videos of your favorite creators on both YT and YT Music
+  - Use arrow keys to skip forward or backward and control volume
   - Press number keys to skip to a percentage of the currently playing song
-  - Press a hotkey on a video/song to switch between YouTube and YouTube Music, while keeping the video time
+  - Custom hotkeys that allow you to switch between YT and YTM, like or dislike, open the lyrics, and more
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
 ... and these are just the notable features, there are many more smaller features, improvements and fixes!
@@ -56,7 +57,7 @@ Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), 
 If you want to install the latest (potentially unstable) development build, [look for the latest pull request](https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen) and click the install button there.  
 Please make sure to manually remove and reinstall the userscript once the next release is out to avoid any issues.
 
-<br><br><br>
+<br><br>
 
 ## Integrations:
 BetterYTM integrates with other extensions and tools to adjust their behavior and provide a smoother experience:
@@ -142,9 +143,10 @@ Icons:
 
 ### Disclaimers:
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
-- I do not own any third party icons, I just re-host them [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for better stability and availability.
-- I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the site the script runs on.
-- I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new/choose)
+- I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
+- I do not intend to ever collect any data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
+  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching).
+- This script comes as-is, so I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the code or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
 
 <br><br><br><br>
 
