@@ -99,6 +99,8 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
 async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
   const labelContElem = document.createElement("div");
   labelContElem.classList.add("bytm-vol-slider-label");
+  labelContElem.style.display = "none";
+  labelContElem.setAttribute("aria-hidden", "true");
 
   const volShared = getFeature("volumeSharedBetweenTabs");
   if(volShared) {
@@ -163,10 +165,18 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   // show label if hovering over slider or slider is focused
   const sliderHoverObserver = new MutationObserver(() => {
-    if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+    if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
+      labelContElem.style.display = "initial";
+      labelContElem.setAttribute("aria-hidden", "false");
       labelContElem.classList.add("bytm-visible");
-    else if(labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+    }
+    else if(labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
+      labelContElem.addEventListener("transitionend", () => {
+        labelContElem.style.display = "none";
+        labelContElem.setAttribute("aria-hidden", "true");
+      }, { once: true });
       labelContElem.classList.remove("bytm-visible");
+    }
 
     if(Number(sliderElem.value) !== lastSliderVal) {
       lastSliderVal = Number(sliderElem.value);
