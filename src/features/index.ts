@@ -83,8 +83,8 @@ adornmentOrder.set(adornments.alert, 0);
 adornmentOrder.set(adornments.experimental, 1);
 adornmentOrder.set(adornments.ytmOnly, 2);
 adornmentOrder.set(adornments.globe, 3);
-adornmentOrder.set(adornments.advanced, 4);
-adornmentOrder.set(adornments.reload, 5);
+adornmentOrder.set(adornments.reload, 4);
+adornmentOrder.set(adornments.advanced, 5);
 
 //#region select options
 
@@ -95,17 +95,17 @@ type SelectOption<TValue = number | string> = {
 
 /** Common options for config items of type "select" */
 const options = {
-  siteSelection: (): SelectOption<SiteSelection>[] => [
+  siteSelection: () => [
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
-  ],
-  siteSelectionOrNone: (): SelectOption<SiteSelectionOrNone>[] => [
+  ] satisfies SelectOption<SiteSelection>[],
+  siteSelectionOrNone: () => [
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
     { value: "none", label: t("site_selection_none") },
-  ],
+  ] satisfies SelectOption<SiteSelectionOrNone>[],
   locale: () => Object.entries(langMapping)
     .reduce((a, [locale, { name }]) => {
       return [...a, {
@@ -114,25 +114,12 @@ const options = {
       }];
     }, [] as SelectOption[])
     .sort((a, b) => a.label.localeCompare(b.label)),
-  colorLightness: (): SelectOption<ColorLightnessPref>[] => [
+  colorLightness: () => [
     { value: "darker", label: t("color_lightness_darker") },
     { value: "normal", label: t("color_lightness_normal") },
     { value: "lighter", label: t("color_lightness_lighter") },
-  ],
+  ] satisfies SelectOption<ColorLightnessPref>[],
 } as const;
-
-//#region renderers
-
-/** Renders a long number with a thousands separator */
-function renderNumberVal(val: string, maximumFractionDigits = 0) {
-  return Number(val).toLocaleString(
-    getLocale().replace(/_/g, "-"),
-    {
-      style: "decimal",
-      maximumFractionDigits,
-    }
-  );
-}
 
 //#region # features
 
@@ -870,9 +857,9 @@ export const featInfo = {
     default: "https://api.sv443.net/geniurl",
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     reloadRequired: false,
     enable: noop,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
   },
   geniUrlToken: {
     type: "text",
@@ -882,9 +869,9 @@ export const featInfo = {
     default: "",
     normalize: (val: string) => val.trim(),
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     reloadRequired: false,
     enable: noop,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
   },
   lyricsCacheMaxSize: {
     type: "slider",
@@ -895,11 +882,11 @@ export const featInfo = {
     max: 25_000,
     step: 500,
     unit: (val: number) => ` ${tp("unit_entries", val)}`,
-    renderValue: renderNumberVal,
+    renderValue: (val: string) => formatNumber(Number(val), "long"),
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     reloadRequired: false,
     enable: noop,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
   },
   lyricsCacheTTL: {
     type: "slider",
@@ -909,11 +896,11 @@ export const featInfo = {
     min: 1,
     max: 100,
     step: 1,
-    unit: (val: number) => " " + tp("unit_days", val),
+    unit: (val: number) => ` ${tp("unit_days", val)}`,
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     reloadRequired: false,
     enable: noop,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
   },
   clearLyricsCache: {
     type: "button",
@@ -1106,9 +1093,7 @@ export const featInfo = {
     category: "general",
     supportedSites: ["ytm", "yt"],
     default: false,
+    change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
     textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
-    change: (_key, prevValue, newValue) =>
-      prevValue !== newValue &&
-        emitSiteEvent("recreateCfgMenu"),
   },
 } as const satisfies FeatureInfo;
