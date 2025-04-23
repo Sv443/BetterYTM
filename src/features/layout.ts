@@ -468,8 +468,8 @@ export async function initAboveQueueBtns() {
 /** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
 
-/** Set of video IDs that have already been applied to the thumbnail overlay */
-const previousVideoIDs = new Set<string>();
+/** List of video IDs that have already been applied to the thumbnail overlay */
+const previousVideoIDs: string[] = [];
 
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
@@ -532,9 +532,9 @@ export async function initThumbnailOverlay() {
 
     const applyThumbUrl = async (videoID: string) => {
       try {
-        if(previousVideoIDs.has(videoID))
+        if(previousVideoIDs.find(id => id === videoID))
           return;
-        previousVideoIDs.add(videoID);
+        previousVideoIDs.push(videoID);
 
         const thumbUrl = await getBestThumbnailUrl(videoID);
         if(thumbUrl) {
@@ -562,6 +562,9 @@ export async function initThumbnailOverlay() {
       unsubWatchIdChanged();
       addSelectorListener("body", "#bytm-thumbnail-overlay", {
         listener: () => {
+          const prevVidIdx = previousVideoIDs.findIndex(id => id === videoID);
+          if(prevVidIdx > -1)
+            previousVideoIDs.splice(prevVidIdx, 1);
           applyThumbUrl(videoID);
           updateOverlayVisibility();
         },
