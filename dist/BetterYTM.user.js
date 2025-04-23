@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e6258aa7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3cc14352/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e6258aa7",
+    buildNumber: "3cc14352",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2362,7 +2362,7 @@ async function initAutoLike() {
                     const { likeBtn, likeState } = getLikeDislikeBtns();
                     if (!likeBtn)
                         return error("Couldn't auto-like channel because the like button couldn't be found");
-                    if (likeState !== "LIKE") {
+                    if (!likeState || likeState === "INDIFFERENT") {
                         likeBtn.click();
                         getFeature("autoLikeShowToast") && showIconToast({
                             message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),

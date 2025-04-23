@@ -211,7 +211,7 @@ export async function initAutoLike() {
           if(!likeBtn)
             return error("Couldn't auto-like channel because the like button couldn't be found");
 
-          if(likeState !== "LIKE") {
+          if(!likeState || likeState === "INDIFFERENT") {
             likeBtn.click();
 
             getFeature("autoLikeShowToast") && showIconToast({
