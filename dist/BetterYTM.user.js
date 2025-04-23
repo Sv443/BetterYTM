@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f7a02f21/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@85d8f880/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -65,10 +65,10 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.3.0/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.4
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.5
 // @grant             GM.registerMenuCommand
 
 // ==/UserScript==
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "f7a02f21",
+    buildNumber: "85d8f880",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1043,54 +1043,54 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^9.3.0",
+	"@sv443-network/userutils": "^9.4.1",
 	"compare-versions": "^6.1.1",
-	dompurify: "^3.2.4",
+	dompurify: "^3.2.5",
 	marked: "^12.0.2",
 	tslib: "^2.8.1"
 };
 var devDependencies = {
 	"@chromatic-com/storybook": "^1.9.0",
-	"@eslint/eslintrc": "^3.3.0",
-	"@eslint/js": "^9.22.0",
+	"@eslint/eslintrc": "^3.3.1",
+	"@eslint/js": "^9.25.1",
 	"@rollup/plugin-json": "^6.1.0",
 	"@rollup/plugin-node-resolve": "^15.3.1",
 	"@rollup/plugin-terser": "^0.4.4",
 	"@rollup/plugin-typescript": "^11.1.6",
-	"@storybook/addon-essentials": "^8.6.4",
-	"@storybook/addon-interactions": "^8.6.4",
-	"@storybook/addon-links": "^8.6.4",
-	"@storybook/blocks": "^8.6.4",
-	"@storybook/html": "^8.6.4",
-	"@storybook/html-vite": "^8.6.4",
-	"@storybook/test": "^8.6.4",
+	"@storybook/addon-essentials": "^8.6.12",
+	"@storybook/addon-interactions": "^8.6.12",
+	"@storybook/addon-links": "^8.6.12",
+	"@storybook/blocks": "^8.6.12",
+	"@storybook/html": "^8.6.12",
+	"@storybook/html-vite": "^8.6.12",
+	"@storybook/test": "^8.6.12",
 	"@types/cors": "^2.8.17",
 	"@types/express": "^4.17.21",
 	"@types/greasemonkey": "^4.0.7",
-	"@types/node": "^20.17.24",
-	"@typescript-eslint/eslint-plugin": "^8.26.1",
-	"@typescript-eslint/parser": "^8.26.1",
-	"@typescript-eslint/utils": "^8.26.1",
+	"@types/node": "^20.17.30",
+	"@typescript-eslint/eslint-plugin": "^8.31.0",
+	"@typescript-eslint/parser": "^8.31.0",
+	"@typescript-eslint/utils": "^8.31.0",
 	concurrently: "^9.1.2",
 	cors: "^2.8.5",
-	dotenv: "^16.4.7",
-	eslint: "^9.22.0",
-	"eslint-plugin-storybook": "^0.11.4",
+	dotenv: "^16.5.0",
+	eslint: "^9.25.1",
+	"eslint-plugin-storybook": "^0.11.6",
 	express: "^4.21.2",
 	globals: "^15.15.0",
 	kleur: "^4.1.5",
-	knip: "^5.45.0",
+	knip: "^5.50.5",
 	nanoevents: "^9.1.0",
-	nodemon: "^3.1.9",
+	nodemon: "^3.1.10",
 	"open-cli": "^8.0.0",
-	pnpm: "^10.6.2",
-	rollup: "^4.35.0",
+	pnpm: "^10.9.0",
+	rollup: "^4.40.0",
 	"rollup-plugin-execute": "^1.1.1",
 	"rollup-plugin-import-css": "^3.5.8",
-	storybook: "^8.6.4",
+	storybook: "^8.6.12",
 	"storybook-dark-mode": "^4.0.2",
 	tsx: "^4.19.3",
-	typescript: "^5.8.2"
+	typescript: "^5.8.3"
 };
 var browserslist = [
 	"last 1 version",
@@ -4802,6 +4802,7 @@ async function initAboveQueueBtns() {
     });
 }
 //#region thumb.overlay
+// TODO:FIXME: re-grab video ID on thumbnail overlay toggle to ensure eventual consistency
 /** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
 /** List of video IDs that have already been applied to the thumbnail overlay */

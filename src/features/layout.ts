@@ -465,6 +465,8 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
+// TODO:FIXME: re-grab video ID on thumbnail overlay toggle to ensure eventual consistency
+
 /** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
 
