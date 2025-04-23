@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@23ef6824/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@277b2898/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "23ef6824",
+    buildNumber: "277b2898",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -533,7 +533,6 @@ const initializedLocales = new Set();
 let activeLocale = "en-US";
 UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
 UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
-UserUtils.tr.setFallbackLanguage("en-US");
 /** Initializes the translations */
 async function initTranslations(locale) {
     if (initializedLocales.has(locale))
@@ -542,8 +541,10 @@ async function initTranslations(locale) {
     try {
         const transFile = await fetchLocaleJson(locale);
         let fallbackTrans = {};
-        if (getFeature("localeFallback"))
+        if (getFeature("localeFallback")) {
+            UserUtils.tr.setFallbackLanguage("en-US");
             fallbackTrans = await fetchLocaleJson("en-US");
+        }
         // merge with base translations if specified
         const baseTransFile = typeof (transFile === null || transFile === void 0 ? void 0 : transFile.meta) === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
             ? await fetchLocaleJson(transFile.base)
@@ -5097,13 +5098,13 @@ async function initWatchPageFullSize() {
         log("Made watch page full size");
 }async function initHotkeys() {
     const promises = [];
-    if (getFeature("likeDislikeHotkeys"))
-        promises.push(initLikeDislikeHotkeys());
-    if (getFeature("switchBetweenSites"))
-        promises.push(initSiteSwitch());
+    promises.push(initLikeDislikeHotkeys());
+    promises.push(initLyricsHotkey());
+    promises.push(initSiteSwitch());
+    promises.push(initProxyHotkeys());
     return await Promise.allSettled(promises);
 }
-function keyPressed(e, hk) {
+function hotkeyMatches(e, hk) {
     return e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt;
 }
 //#region site switch
@@ -5119,7 +5120,7 @@ async function initSiteSwitch() {
             return;
         if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
             return;
-        if (siteSwitchEnabled && keyPressed(e, getFeature("switchSitesHotkey")))
+        if (siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
             switchSite(domain === "yt" ? "ytm" : "yt");
     });
     siteEvents.on("hotkeyInputActive", (state) => {
@@ -5172,10 +5173,97 @@ async function initLikeDislikeHotkeys() {
         if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
             return;
         const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
-        if (keyPressed(e, getFeature("likeHotkey")))
+        if (hotkeyMatches(e, getFeature("likeHotkey")))
             likeBtn === null || likeBtn === void 0 ? void 0 : likeBtn.click();
-        else if (keyPressed(e, getFeature("dislikeHotkey")))
+        else if (hotkeyMatches(e, getFeature("dislikeHotkey")))
             dislikeBtn === null || dislikeBtn === void 0 ? void 0 : dislikeBtn.click();
+    });
+}
+//#region lyrics
+async function initLyricsHotkey() {
+    document.addEventListener("keydown", (e) => {
+        var _a, _b;
+        if (!getFeature("currentLyricsHotkeyEnabled"))
+            return;
+        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+            return;
+        if (hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
+            lyricsBtn === null || lyricsBtn === void 0 ? void 0 : lyricsBtn.click();
+        }
+    }, { capture: true });
+}
+let lastProxyHk = 0;
+/** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
+async function initProxyHotkeys() {
+    const dispatchProxyKey = (hkProps) => {
+        document.body.dispatchEvent(new KeyboardEvent("keydown", Object.assign(Object.assign({}, hkProps), { bubbles: true, cancelable: false, view: UserUtils.getUnsafeWindow() })));
+        log("Dispatched proxy hotkey:", hkProps);
+    };
+    /** All proxy hotkey groups, identified by the feature key that toggles them off or on */
+    const proxyHotkeys = {
+        rebindNextAndPrevious: [
+            {
+                hkFeatKey: "nextHotkey",
+                preventKey: "KeyJ",
+                onPress: () => dispatchProxyKey({
+                    code: "KeyJ",
+                    key: "j",
+                    keyCode: 74,
+                    which: 74,
+                }),
+            },
+            {
+                hkFeatKey: "previousHotkey",
+                preventKey: "KeyK",
+                onPress: () => dispatchProxyKey({
+                    code: "KeyK",
+                    key: "k",
+                    keyCode: 75,
+                    which: 75,
+                }),
+            },
+        ],
+        rebindPlayPause: [
+            {
+                hkFeatKey: "playPauseHotkey",
+                preventKey: "Space",
+                onPress: () => dispatchProxyKey({
+                    code: "Space",
+                    key: " ",
+                    keyCode: 32,
+                    which: 32,
+                }),
+            },
+        ]
+    };
+    document.addEventListener("keydown", (e) => {
+        for (const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
+            if (getFeature(featKey) !== true)
+                continue;
+            for (let _a of proxyGroup) {
+                const { hkFeatKey, onPress } = _a, rest = __rest(_a, ["hkFeatKey", "onPress"]);
+                // prevent hotkeys from triggering each other:
+                if (Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms)
+                    continue;
+                const nowTs = Date.now();
+                if ("preventKey" in rest && e.code === rest.preventKey) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+                if (hotkeyMatches(e, getFeature(hkFeatKey))) {
+                    lastProxyHk = nowTs;
+                    !e.defaultPrevented && e.preventDefault();
+                    e.bubbles && e.stopImmediatePropagation();
+                    onPress(e);
+                }
+            }
+        }
+    }, {
+        // ensure precedence over YTM's own listeners:
+        capture: true,
     });
 }//#region Dark Reader
 /** Disables Dark Reader if it is present */
@@ -6631,6 +6719,89 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
+    currentLyricsHotkeyEnabled: {
+        type: "toggle",
+        category: "hotkeys",
+        supportedSites: ["ytm"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
+    currentLyricsHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        supportedSites: ["ytm"],
+        default: {
+            code: "KeyO",
+            shift: false,
+            ctrl: false,
+            alt: false,
+        },
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
+    rebindNextAndPrevious: {
+        type: "toggle",
+        category: "hotkeys",
+        supportedSites: ["ytm"],
+        default: false,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
+    nextHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        supportedSites: ["ytm"],
+        default: {
+            code: "KeyN",
+            shift: false,
+            ctrl: false,
+            alt: false,
+        },
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
+    previousHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        supportedSites: ["ytm"],
+        default: {
+            code: "KeyP",
+            shift: false,
+            ctrl: false,
+            alt: false,
+        },
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
+    rebindPlayPause: {
+        type: "toggle",
+        category: "hotkeys",
+        supportedSites: ["ytm"],
+        default: false,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
+    playPauseHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        supportedSites: ["ytm"],
+        default: {
+            code: "Pause",
+            shift: false,
+            ctrl: false,
+            alt: false,
+        },
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
     //#region cat:lyrics
     geniusLyrics: {
         type: "toggle",
@@ -6677,7 +6848,7 @@ const featInfo = {
         supportedSites: ["ytm"],
         default: 5000,
         min: 1000,
-        max: 50000,
+        max: 25000,
         step: 500,
         unit: (val) => ` ${tp("unit_entries", val)}`,
         renderValue: renderNumberVal,
@@ -7003,15 +7174,23 @@ const migrations = {
         ]);
     },
     // 9 -> 10 (v2.3.0)
-    10: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
-        "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
-        "frameSkip", "frameSkipWhilePlaying",
-        "frameSkipAmount", "watchPageFullSize",
-        "arrowKeyVolumeStep", "likeDislikeHotkeys",
-        "likeHotkey", "dislikeHotkey",
-    ]), [
-        { key: "lyricsCacheMaxSize", oldDefault: 2000 },
-    ]),
+    10: (oldData) => {
+        const migData = useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
+            "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
+            "frameSkip", "frameSkipWhilePlaying",
+            "frameSkipAmount", "watchPageFullSize",
+            "arrowKeyVolumeStep", "likeDislikeHotkeys",
+            "likeHotkey", "dislikeHotkey",
+            "currentLyricsHotkeyEnabled", "currentLyricsHotkey",
+            "rebindNextAndPrevious", "nextHotkey",
+            "previousHotkey", "rebindPlayPause",
+            "playPauseHotkey",
+        ]), [
+            { key: "lyricsCacheMaxSize", oldDefault: 2000 },
+        ]);
+        migData.lyricsCacheMaxSize = UserUtils.clamp(migData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
+        return migData;
+    },
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData, resetKeys) {
@@ -7243,11 +7422,13 @@ let pluginsInitialized = false;
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 function initPlugins() {
     emitInterface("bytm:registerPlugin", (def) => registerPlugin(def));
-    getUnsafeWindow().addEventListener("bytm:ready", () => {
+    window.addEventListener("bytm:ready", () => {
         pluginsInitialized = true;
         if (registeredPlugins.size > 0)
             log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
-    }, { once: true });
+    }, {
+        once: true,
+    });
 }
 /** Registers a plugin on the BYTM interface. */
 function registerPlugin(def) {
@@ -8182,7 +8363,6 @@ function preInit() {
         ];
         if (unsupportedHandlers.includes((_b = (_a = GM === null || GM === void 0 ? void 0 : GM.info) === null || _a === void 0 ? void 0 : _a.scriptHandler) !== null && _b !== void 0 ? _b : "_"))
             return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
-        log("Session ID:", getSessionId());
         initInterface();
         setLogLevel(defaultLogLevel);
         if (getDomain() === "ytm")
@@ -8200,6 +8380,7 @@ async function init() {
         const domain = getDomain();
         const features = await initConfig();
         setLogLevel(features.logLevel);
+        info("Session ID:", getSessionId());
         await initLyricsCache();
         const initLoc = (_a = features.locale) !== null && _a !== void 0 ? _a : "en-US";
         const locPromises = [];
