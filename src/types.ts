@@ -645,14 +645,20 @@ export interface FeatureConfig {
   likeHotkey: HotkeyObj;
   /** The hotkey that needs to be pressed to dislike the current video/song */
   dislikeHotkey: HotkeyObj;
+  /** Add a hotkey to open the current song's lyrics in a new tab */
+  currentLyricsHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to open the current song's lyrics in a new tab */
+  currentLyricsHotkey: HotkeyObj;
   /** Whether to rebind the next [J] and previous [K] keys */
   rebindNextAndPrevious: boolean;
-  /** Whether to only allow the new hotkeys to skip to the next or previous video/song */
-  forceReboundNextAndPrevious: boolean;
   /** The hotkey that needs to be pressed to skip to the next video/song */
   nextHotkey: HotkeyObj;
   /** The hotkey that needs to be pressed to skip to the previous video/song */
   previousHotkey: HotkeyObj;
+  /** Whether to rebind the play/pause hotkey */
+  rebindPlayPause: boolean;
+  /** The hotkey that needs to be pressed to play/pause the current video/song */
+  playPauseHotkey: HotkeyObj;
 
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

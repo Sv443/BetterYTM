@@ -144,8 +144,10 @@ export const migrations: DataMigrationsDict = {
         "frameSkipAmount", "watchPageFullSize",
         "arrowKeyVolumeStep", "likeDislikeHotkeys",
         "likeHotkey", "dislikeHotkey",
-        "rebindNextAndPrevious", "forceReboundNextAndPrevious",
-        "nextHotkey", "previousHotkey",
+        "currentLyricsHotkeyEnabled", "currentLyricsHotkey",
+        "rebindNextAndPrevious", "nextHotkey",
+        "previousHotkey", "rebindPlayPause",
+        "playPauseHotkey",
       ]), [
         { key: "lyricsCacheMaxSize", oldDefault: 2000 },
       ],

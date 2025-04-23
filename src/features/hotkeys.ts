@@ -12,6 +12,7 @@ export async function initHotkeys() {
   const promises: Promise<void>[] = [];
 
   promises.push(initLikeDislikeHotkeys());
+  promises.push(initLyricsHotkey());
   promises.push(initSiteSwitch());
   promises.push(initProxyHotkeys());
 
@@ -110,13 +111,32 @@ async function initLikeDislikeHotkeys() {
   });
 }
 
-//#region rebound hotkeys
+//#region lyrics
+
+async function initLyricsHotkey() {
+  document.addEventListener("keydown", (e) => {
+    if(!getFeature("currentLyricsHotkeyEnabled"))
+      return;
+    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+      return;
+
+    if(hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
+      lyricsBtn?.click();
+    }
+  }, { capture: true });
+}
+
+//#region proxy hotkeys
 
 type HotkeyProxyGroup = {
   /** The feature key that contains the hotkey object */
   hkFeatKey: FeatKeysOfType<HotkeyObj>;
-  /** Called when the hotkey was pressed, regardless of the individual hotkey feature's enabled state */
-  onBeforePress?: (e: KeyboardEvent) => void | Promise<void>;
+  /** Which key should have its default action and propagation prevented */
+  preventKey?: string;
   /** Called when the hotkey was pressed and the feature is toggled on */
   onPress: (e: KeyboardEvent) => void | Promise<void>;
 };
@@ -127,64 +147,72 @@ let lastProxyHk = 0;
 
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
-  const suppressForceRebind = (e: KeyboardEvent) => {
-    if(["KeyJ", "KeyK"].includes(e.code) && getFeature("forceReboundNextAndPrevious")) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-    }
+  const dispatchProxyKey = (hkProps: Pick<KeyboardEventInit, "code" | "key" | "keyCode" | "which" | "shiftKey" | "ctrlKey" | "altKey" | "metaKey">) => {
+    document.body.dispatchEvent(new KeyboardEvent("keydown", {
+      ...hkProps,
+      bubbles: true,
+      cancelable: false,
+      view: getUnsafeWindow(),
+    }));
+    log("Dispatched proxy hotkey:", hkProps);
   };
 
   /** All proxy hotkey groups, identified by the feature key that toggles them off or on */
   const proxyHotkeys: ProxyHotkeys = {
-    "rebindNextAndPrevious": [
+    rebindNextAndPrevious: [
       {
         hkFeatKey: "nextHotkey",
-        onBeforePress: suppressForceRebind,
-        onPress() {
-          document.body.dispatchEvent(new KeyboardEvent("keydown", {
-            code: "KeyJ",
-            key: "j",
-            keyCode: 74,
-            which: 74,
-            bubbles: true,
-            cancelable: false,
-            view: getUnsafeWindow(),
-          }));
-        },
+        preventKey: "KeyJ",
+        onPress: () => dispatchProxyKey({
+          code: "KeyJ",
+          key: "j",
+          keyCode: 74,
+          which: 74,
+        }),
       },
       {
         hkFeatKey: "previousHotkey",
-        onBeforePress: suppressForceRebind,
-        onPress() {
-          document.body.dispatchEvent(new KeyboardEvent("keydown", {
-            code: "KeyK",
-            key: "k",
-            keyCode: 75,
-            which: 75,
-            bubbles: true,
-            cancelable: false,
-            view: getUnsafeWindow(),
-          }));
-        },
+        preventKey: "KeyK",
+        onPress: () => dispatchProxyKey({
+          code: "KeyK",
+          key: "k",
+          keyCode: 75,
+          which: 75,
+        }),
       },
     ],
+    rebindPlayPause: [
+      {
+        hkFeatKey: "playPauseHotkey",
+        preventKey: "Space",
+        onPress: () => dispatchProxyKey({
+          code: "Space",
+          key: " ",
+          keyCode: 32,
+          which: 32,
+        }),
+      },
+    ]
   } as const;
 
   document.addEventListener("keydown", (e) => {
-    for(const [featKey, group] of Object.entries(proxyHotkeys)) {
-      if(!getFeature(featKey as "_"))
+    for(const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
+      if(getFeature(featKey as "_") !== true)
         continue;
 
-      for(const { hkFeatKey, onPress, ...rest } of group) {
+      for(const { hkFeatKey, onPress, ...rest } of proxyGroup) {
         // prevent hotkeys from triggering each other:
         if(Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms)
-          return;
-        lastProxyHk = Date.now();
+          continue;
+        const nowTs = Date.now();
 
-        if("onBeforePress" in rest)
-          rest.onBeforePress?.(e);
+        if("preventKey" in rest && e.code === rest.preventKey) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
 
         if(hotkeyMatches(e, getFeature(hkFeatKey))) {
+          lastProxyHk = nowTs;
           !e.defaultPrevented && e.preventDefault();
           e.bubbles && e.stopImmediatePropagation();
           onPress(e);
