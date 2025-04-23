@@ -294,8 +294,6 @@
 
   "feature_desc_disableBeforeUnloadPopup": "防止在播放歌曲时尝试离开网站时出现的确认弹出窗口",
   "feature_helptext_disableBeforeUnloadPopup": "当尝试在正在播放的歌曲中几秒钟后离开网站时，将出现一个弹出窗口，询问您是否要离开网站。它可能会说类似于 \"您有未保存的数据\" 或 \"此网站正在询问您是否要关闭它\"。\n此功能完全禁用了该弹出窗口。",
-  "feature_desc_closeToastsTimeout": "多少秒后关闭永久通知 - 0 仅手动关闭（默认行为）",
-  "feature_helptext_closeToastsTimeout": "出现在左下角的大多数弹出窗口将在 3 秒后自动关闭，但有一些例外，例如喜欢一首歌时。\n此功能允许您设置永久弹出窗口关闭的时间。\n其他类型的弹出窗口不受影响。\n将此设置为 0 以使用默认行为，即不关闭永久通知。",
   "feature_desc_rememberSongTime": "记住重新加载或恢复标签时的最后一首歌的时间",
   "feature_helptext_rememberSongTime-1": "有时在重新加载页面或意外关闭后恢复它时，您希望在相同的位置继续听歌。此功能允许您这样做。\n为了记录歌曲的时间，您需要播放它 %1 秒，然后它的时间将被记住，并在短时间内可以恢复。",
   "feature_helptext_rememberSongTime-n": "有时在重新加载页面或意外关闭后恢复它时，您希望在相同的位置继续听歌。此功能允许您这样做。\n为了记录歌曲的时间，您需要播放它 %1 秒，然后它的时间将被记住，并在短时间内可以恢复。",

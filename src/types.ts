@@ -588,7 +588,9 @@ export interface FeatureConfig {
   //#region behavior
   /** Whether to completely disable the popup that sometimes appears before leaving the site */
   disableBeforeUnloadPopup: boolean;
-  /** After how many milliseconds to close permanent toasts */
+  /** Whether to automatically close permanent toasts */
+  autoCloseToasts: boolean;
+  /** After how many seconds to close permanent toasts */
   closeToastsTimeout: number;
   /** Remember the last song's time when reloading or restoring the tab */
   rememberSongTime: boolean;

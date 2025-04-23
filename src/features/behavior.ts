@@ -43,6 +43,9 @@ export async function initAutoCloseToasts() {
     continuous: true,
     listener: async (toastContElems) => {
       try {
+        if(!getFeature("autoCloseToasts"))
+          return;
+
         for(const toastContElem of toastContElems) {
           const toastElem = toastContElem.querySelector<HTMLElement>("tp-yt-paper-toast#toast");
           if(!toastElem || !toastElem.hasAttribute("allow-click-through"))

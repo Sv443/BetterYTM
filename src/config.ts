@@ -129,15 +129,19 @@ export const migrations: DataMigrationsDict = {
       oldData.locale = "ja-JP";
     if(oldData.locale as string === "en-GB")
       oldData.locale = "en-GB";
-    return useDefaultConfig(oldData, [
-      "resetEverything",
-      // TODO(V2.2):
-      // "autoLikePlayerBarToggleBtn",
-    ]);
+
+    return useDefaultConfig(oldData, ["resetEverything"]);
   },
   // 9 -> 10 (v2.3.0)
   10: (oldData: FeatureConfig) => {
-    const migData = useNewDefaultIfUnchanged(
+    oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
+
+    oldData.lyricsCacheMaxSize = clamp(oldData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
+
+    oldData.autoCloseToasts = oldData.closeToastsTimeout > 0;
+    oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
+
+    return useNewDefaultIfUnchanged(
       useDefaultConfig(oldData, [
         "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
         "frameSkip", "frameSkipWhilePlaying",
@@ -153,8 +157,6 @@ export const migrations: DataMigrationsDict = {
         { key: "lyricsCacheMaxSize", oldDefault: 2000 },
       ],
     );
-    migData.lyricsCacheMaxSize = clamp(migData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
-    return migData;
   },
 } as const satisfies DataMigrationsDict;
 

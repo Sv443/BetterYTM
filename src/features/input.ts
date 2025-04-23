@@ -203,13 +203,13 @@ export async function initAutoLike() {
           if(!likeChan || !likeChan.enabled)
             return;
 
-          if(artistEls.length === 0)
-            return error("Couldn't auto-like channel because the artist element couldn't be found");
+          if(artistEls.length === 0 || channelIds.length === 0)
+            return error("Couldn't auto-like because the artist element couldn't be found");
 
           const { likeBtn, likeState } = getLikeDislikeBtns();
 
           if(!likeBtn)
-            return error("Couldn't auto-like channel because the like button couldn't be found");
+            return error("Couldn't auto-like because the like button couldn't be found");
 
           if(!likeState || likeState === "INDIFFERENT") {
             likeBtn.click();
@@ -221,8 +221,10 @@ export async function initAutoLike() {
               onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
             }).catch(e => error("Error while showing auto-like toast:", e));
 
-            log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+            info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
           }
+          else
+            info("Skipping auto-like, because the like state is currently set to", likeState);
         };
         timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
         siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
