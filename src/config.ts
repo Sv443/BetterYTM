@@ -145,6 +145,7 @@ export const migrations: DataMigrationsDict = {
         "arrowKeyVolumeStep", "likeDislikeHotkeys",
         "likeHotkey", "dislikeHotkey",
         "currentLyricsHotkeyEnabled", "currentLyricsHotkey",
+        "skipToRemTimeHotkeyEnabled", "skipToRemTimeHotkey",
         "rebindNextAndPrevious", "nextHotkey",
         "previousHotkey", "rebindPlayPause",
         "playPauseHotkey",

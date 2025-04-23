@@ -756,6 +756,27 @@ export const featInfo = {
     enable: noop,
     textAdornment: adornments.ytmOnly,
   },
+  skipToRemTimeHotkeyEnabled: {
+    type: "toggle",
+    category: "hotkeys",
+    supportedSites: ["ytm", "yt"],
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  skipToRemTimeHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    supportedSites: ["ytm", "yt"],
+    default: {
+      code: "KeyR",
+      shift: false,
+      ctrl: false,
+      alt: true,
+    },
+    reloadRequired: false,
+    enable: noop,
+  },
   rebindNextAndPrevious: {
     type: "toggle",
     category: "hotkeys",

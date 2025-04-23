@@ -2,7 +2,7 @@ import { getUnsafeWindow } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
 import { inputIgnoreTagNames } from "./input.js";
 import { siteEvents } from "../siteEvents.js";
-import { enableDiscardBeforeUnload } from "./behavior.js";
+import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "./behavior.js";
 import { getLikeDislikeBtns, getVideoTime } from "../utils/dom.js";
 import { getDomain } from "../utils/misc.js";
 import { error, info, log, warn } from "../utils/logging.js";
@@ -15,6 +15,7 @@ export async function initHotkeys() {
   promises.push(initLyricsHotkey());
   promises.push(initSiteSwitch());
   promises.push(initProxyHotkeys());
+  promises.push(initSkipToRemTimeHotkey());
 
   return await Promise.allSettled(promises);
 }
@@ -130,7 +131,27 @@ async function initLyricsHotkey() {
   }, { capture: true });
 }
 
+//#region skip to remembered
+
+async function initSkipToRemTimeHotkey() {
+  document.addEventListener("keydown", async (e) => {
+    if(!getFeature("skipToRemTimeHotkeyEnabled"))
+      return;
+    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+      return;
+
+    if(hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      await remTimeTryRestoreTime(true);
+    }
+  });
+}
+
 //#region proxy hotkeys
+
+//TODO:FIXME: proxy hotkeys are triggered when input is active
 
 type HotkeyProxyGroup = {
   /** The feature key that contains the hotkey object */
@@ -196,6 +217,9 @@ async function initProxyHotkeys() {
   } as const;
 
   document.addEventListener("keydown", (e) => {
+    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+      return;
+
     for(const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
       if(getFeature(featKey as "_") !== true)
         continue;

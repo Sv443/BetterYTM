@@ -649,6 +649,10 @@ export interface FeatureConfig {
   currentLyricsHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to open the current song's lyrics in a new tab */
   currentLyricsHotkey: HotkeyObj;
+  /** Add a hotkey to skip to the last remembered time of the current video/song */
+  skipToRemTimeHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to skip to the last remembered time of the current video/song */
+  skipToRemTimeHotkey: HotkeyObj;
   /** Whether to rebind the next [J] and previous [K] keys */
   rebindNextAndPrevious: boolean;
   /** The hotkey that needs to be pressed to skip to the next video/song */
