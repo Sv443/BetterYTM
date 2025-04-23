@@ -147,7 +147,7 @@ export async function initRememberSongTime() {
 
   log(`Initialized video time restoring with ${remVids.length} initial ${autoPlural("entry", remVids)}:`, remVids);
 
-  await remTimeRestoreTime();
+  await remTimeTryRestoreTime();
 
   try {
     if(!isDomLoaded())
@@ -161,7 +161,7 @@ export async function initRememberSongTime() {
 }
 
 /** Tries to restore the time of the currently playing video */
-async function remTimeRestoreTime() {
+export async function remTimeTryRestoreTime(force = false) {
   const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
 
   if(location.pathname.startsWith("/watch")) {
@@ -169,7 +169,7 @@ async function remTimeRestoreTime() {
     if(!videoID)
       return;
 
-    if(initialParams.has("t"))
+    if(initialParams.has("t") && !force)
       return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
 
     const entry = remVids.find(entry => entry.id === videoID);
@@ -213,7 +213,6 @@ async function remTimeStartUpdateLoop() {
 
     if(id && songTime !== lastSongTime) {
       lastSongTime = songTime;
-
       const paused = getVideoElement()?.paused ?? false;
 
       // don't immediately update to reduce race conditions and only update if the video is playing
@@ -246,9 +245,13 @@ async function remTimeStartUpdateLoop() {
 }
 
 /** Updates an existing or inserts a new entry to be remembered */
-async function remTimeUpsertEntry(data: RemVidObj) {
+async function remTimeUpsertEntry(data: RemVidObj, force = false) {
   const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
   const foundIdx = remVids.findIndex(entry => entry.id === data.id);
+
+  // only upsert when no previous entry exists or its time is lower than the provided data
+  if(foundIdx > -1 && !force && data.time <= remVids[foundIdx].time)
+    return;
 
   if(foundIdx >= 0)
     remVids[foundIdx] = data;
