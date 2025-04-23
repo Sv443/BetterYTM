@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8cc2412e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@982c8a77/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "8cc2412e",
+    buildNumber: "982c8a77",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5829,6 +5829,8 @@ function initScrollStep(volSliderCont, sliderElem) {
 async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
     const labelContElem = document.createElement("div");
     labelContElem.classList.add("bytm-vol-slider-label");
+    labelContElem.style.display = "none";
+    labelContElem.setAttribute("aria-hidden", "true");
     const volShared = getFeature("volumeSharedBetweenTabs");
     if (volShared) {
         const linkIconHtml = await resourceAsString("icon-link");
@@ -5873,10 +5875,18 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
     let lastSliderVal = Number(sliderElem.value);
     // show label if hovering over slider or slider is focused
     const sliderHoverObserver = new MutationObserver(() => {
-        if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+        if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
+            labelContElem.style.display = "initial";
+            labelContElem.setAttribute("aria-hidden", "false");
             labelContElem.classList.add("bytm-visible");
-        else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+        }
+        else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
+            labelContElem.addEventListener("transitionend", () => {
+                labelContElem.style.display = "none";
+                labelContElem.setAttribute("aria-hidden", "true");
+            }, { once: true });
             labelContElem.classList.remove("bytm-visible");
+        }
         if (Number(sliderElem.value) !== lastSliderVal) {
             lastSliderVal = Number(sliderElem.value);
             updateLabel();
