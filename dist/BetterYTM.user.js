@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5ae0fbf5/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@abddb376/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "5ae0fbf5",
+    buildNumber: "abddb376",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2800,7 +2800,7 @@ async function initRememberSongTime() {
         log(`Removed ${remVids.length} ${UserUtils.autoPlural("entry", remVids)} with an outdated format from the video time cache`);
     }
     log(`Initialized video time restoring with ${remVids.length} initial ${UserUtils.autoPlural("entry", remVids)}:`, remVids);
-    await remTimeRestoreTime();
+    await remTimeTryRestoreTime();
     try {
         if (!UserUtils.isDomLoaded())
             document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
@@ -2812,13 +2812,13 @@ async function initRememberSongTime() {
     }
 }
 /** Tries to restore the time of the currently playing video */
-async function remTimeRestoreTime() {
+async function remTimeTryRestoreTime(force = false) {
     const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
     if (location.pathname.startsWith("/watch")) {
         const videoID = new URL(location.href).searchParams.get("v");
         if (!videoID)
             return;
-        if (initialParams.has("t"))
+        if (initialParams.has("t") && !force)
             return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
         const entry = remVids.find(entry => entry.id === videoID);
         if (entry) {
@@ -2886,9 +2886,12 @@ async function remTimeStartUpdateLoop() {
     remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 500);
 }
 /** Updates an existing or inserts a new entry to be remembered */
-async function remTimeUpsertEntry(data) {
+async function remTimeUpsertEntry(data, force = false) {
     const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
     const foundIdx = remVids.findIndex(entry => entry.id === data.id);
+    // only upsert when no previous entry exists or its time is lower than the provided data
+    if (foundIdx > -1 && !force && data.time <= remVids[foundIdx].time)
+        return;
     if (foundIdx >= 0)
         remVids[foundIdx] = data;
     else
@@ -4797,8 +4800,8 @@ async function initAboveQueueBtns() {
 //#region thumb.overlay
 /** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
-/** Set of video IDs that have already been applied to the thumbnail overlay */
-const previousVideoIDs = new Set();
+/** List of video IDs that have already been applied to the thumbnail overlay */
+const previousVideoIDs = [];
 async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
     if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
@@ -4849,9 +4852,9 @@ async function initThumbnailOverlay() {
         };
         const applyThumbUrl = async (videoID) => {
             try {
-                if (previousVideoIDs.has(videoID))
+                if (previousVideoIDs.find(id => id === videoID))
                     return;
-                previousVideoIDs.add(videoID);
+                previousVideoIDs.push(videoID);
                 const thumbUrl = await getBestThumbnailUrl(videoID);
                 if (thumbUrl) {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
@@ -4875,6 +4878,9 @@ async function initThumbnailOverlay() {
             unsubWatchIdChanged();
             addSelectorListener("body", "#bytm-thumbnail-overlay", {
                 listener: () => {
+                    const prevVidIdx = previousVideoIDs.findIndex(id => id === videoID);
+                    if (prevVidIdx > -1)
+                        previousVideoIDs.splice(prevVidIdx, 1);
                     applyThumbUrl(videoID);
                     updateOverlayVisibility();
                 },
@@ -5125,6 +5131,7 @@ async function initWatchPageFullSize() {
     promises.push(initLyricsHotkey());
     promises.push(initSiteSwitch());
     promises.push(initProxyHotkeys());
+    promises.push(initSkipToRemTimeHotkey());
     return await Promise.allSettled(promises);
 }
 function hotkeyMatches(e, hk) {
@@ -5218,6 +5225,21 @@ async function initLyricsHotkey() {
         }
     }, { capture: true });
 }
+//#region skip to remembered
+async function initSkipToRemTimeHotkey() {
+    document.addEventListener("keydown", async (e) => {
+        var _a, _b;
+        if (!getFeature("skipToRemTimeHotkeyEnabled"))
+            return;
+        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+            return;
+        if (hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            await remTimeTryRestoreTime(true);
+        }
+    });
+}
 let lastProxyHk = 0;
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
@@ -5263,11 +5285,14 @@ async function initProxyHotkeys() {
         ]
     };
     document.addEventListener("keydown", (e) => {
+        var _a, _b;
+        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+            return;
         for (const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
             if (getFeature(featKey) !== true)
                 continue;
-            for (let _a of proxyGroup) {
-                const { hkFeatKey, onPress } = _a, rest = __rest(_a, ["hkFeatKey", "onPress"]);
+            for (let _c of proxyGroup) {
+                const { hkFeatKey, onPress } = _c, rest = __rest(_c, ["hkFeatKey", "onPress"]);
                 // prevent hotkeys from triggering each other:
                 if (Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms)
                     continue;
@@ -6765,6 +6790,27 @@ const featInfo = {
         enable: noop,
         textAdornment: adornments.ytmOnly,
     },
+    skipToRemTimeHotkeyEnabled: {
+        type: "toggle",
+        category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+    },
+    skipToRemTimeHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
+        default: {
+            code: "KeyR",
+            shift: false,
+            ctrl: false,
+            alt: true,
+        },
+        reloadRequired: false,
+        enable: noop,
+    },
     rebindNextAndPrevious: {
         type: "toggle",
         category: "hotkeys",
@@ -7205,6 +7251,7 @@ const migrations = {
             "arrowKeyVolumeStep", "likeDislikeHotkeys",
             "likeHotkey", "dislikeHotkey",
             "currentLyricsHotkeyEnabled", "currentLyricsHotkey",
+            "skipToRemTimeHotkeyEnabled", "skipToRemTimeHotkey",
             "rebindNextAndPrevious", "nextHotkey",
             "previousHotkey", "rebindPlayPause",
             "playPauseHotkey",
