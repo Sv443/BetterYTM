@@ -15,7 +15,7 @@
 </div>
 <br>
 
-### Features:
+### Features
 All of these can be toggled and configured in the configuration menu.
 - Layout & User Experience:
   - Show the approximate amount of likes and dislikes on songs (powered by returnyoutubedislike.com)
@@ -48,7 +48,7 @@ If you disabled the watermark, you can still open it by clicking your avatar in 
 
 <br><br><br>
 
-## Installation:
+## Installation
 Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
 1. **Install a userscript manager browser extension - I really recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)).**  
   <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
@@ -63,7 +63,7 @@ Please make sure to manually remove and reinstall the userscript once the next r
 
 <br><br>
 
-## Integrations:
+## Integrations
 BetterYTM integrates with other extensions and tools to adjust its or their behavior and provide a smoother experience:
 - [Dark Reader](https://darkreader.org/)
 - [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube)
@@ -75,7 +75,7 @@ To find out more about these integrations, [click here](./src/dev/integrations.m
 
 <br><br>
 
-## Plugins:
+## Plugins
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
   
 <!-- <{{PLUGINS}}> -->
@@ -93,7 +93,7 @@ Currently there are no available plugins, but you can [submit an issue using the
 
 <br><br>
 
-## Support:
+## Support
 If you have any questions, issues, or feature requests, please [open an issue here.](https://github.com/Sv443/BetterYTM/issues/new/choose)  
 You can also join my Discord server and ask your questions there or just hang out with other community members and me:  
   
@@ -101,7 +101,7 @@ You can also join my Discord server and ask your questions there or just hang ou
 
 <br><br>
 
-## Privacy:
+## Privacy
 BetterYTM does not collect any data about you that isn't strictly necessary for its features to work.  
 Your userscript manager extension's storage API is used to store all settings and data locally on your device.  
 Open its settings to see and manage this data or remove the userscript to automatically delete all data.  
@@ -117,7 +117,7 @@ Find more info about the privacy of these services here:
 
 <br><br>
 
-### Development:
+### Development
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
@@ -128,7 +128,7 @@ This project is based on my extensive template for making a userscript with Type
 
 <br><br>
 
-### Attributions:
+### Attributions
 This userscript depends on these projects:
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
 - [compare-versions](https://npmjs.org/package/compare-versions)
@@ -140,13 +140,13 @@ This userscript depends on these projects:
   
 For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
   
-#### Icon attributions:  
+#### Icon attributions
 - Most icons are from [Material Icons](https://fonts.google.com/icons)
 - For external icon attributions, see [`assets/images/external/README.md`](assets/images/external/README.md)
 
 <br><br>
 
-### Disclaimers:
+### Disclaimers
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
 - I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
 - I do not intend to ever collect any data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
