@@ -63,7 +63,7 @@ async function run() {
         localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(val).trim()}"`);
       else {
         if(prepTranslate)
-          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n  // (original translation: "${k}": "${escapeJsonVal(enUS_obj[k]).trim()}")\n  "${k}": "",`);
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n  "${k}": "",\n  "${k}": "${escapeJsonVal(enUS_obj[k]).trim()}",`);
         else
           localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
       }
