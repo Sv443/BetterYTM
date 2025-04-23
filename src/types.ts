@@ -116,6 +116,13 @@ export type ColorLightnessPref = "darker" | "normal" | "lighter";
 
 export type LikeDislikeState = "LIKE" | "DISLIKE" | "INDIFFERENT";
 
+//#region utility
+
+/** Returns a union of all keys of {@linkcode T} whose values are of type {@linkcode U} */
+export type KeysOfType<T, U> = {
+  [K in keyof T]: T[K] extends U ? K : never
+}[keyof T];
+
 //#region global
 
 /** All properties of the `unsafeWindow.BYTM` object (also called "plugin interface") */
@@ -394,8 +401,11 @@ export type InterfaceFunctions = {
 
 //#region feature defs
 
-/** Feature identifier */
+/** Feature identifier key */
 export type FeatureKey = keyof FeatureConfig;
+
+/** Union of all feature identifier keys, where the value is of the specified type {@linkcode TType} */
+export type FeatKeysOfType<TType> = KeysOfType<FeatureConfig, TType>;
 
 /** Feature category identifier */
 export type FeatureCategory =
@@ -625,16 +635,24 @@ export interface FeatureConfig {
   autoLikeOpenMgmtDialog: undefined;
 
   //#region hotkeys
-  /** Add a hotkey to switch between the YT and YTM sites on a video / song */
+  /** Add a hotkey to switch between the YT and YTM sites on a video/song */
   switchBetweenSites: boolean;
   /** The hotkey that needs to be pressed to initiate the site switch */
   switchSitesHotkey: HotkeyObj;
-  /** Add hotkeys for liking and disliking the current video / song */
+  /** Add hotkeys for liking and disliking the current video/song */
   likeDislikeHotkeys: boolean;
-  /** The hotkey that needs to be pressed to like the current video / song */
+  /** The hotkey that needs to be pressed to like the current video/song */
   likeHotkey: HotkeyObj;
-  /** The hotkey that needs to be pressed to dislike the current video / song */
+  /** The hotkey that needs to be pressed to dislike the current video/song */
   dislikeHotkey: HotkeyObj;
+  /** Whether to rebind the next [J] and previous [K] keys */
+  rebindNextAndPrevious: boolean;
+  /** Whether to only allow the new hotkeys to skip to the next or previous video/song */
+  forceReboundNextAndPrevious: boolean;
+  /** The hotkey that needs to be pressed to skip to the next video/song */
+  nextHotkey: HotkeyObj;
+  /** The hotkey that needs to be pressed to skip to the previous video/song */
+  previousHotkey: HotkeyObj;
 
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

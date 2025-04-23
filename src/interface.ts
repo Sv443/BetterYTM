@@ -250,11 +250,13 @@ let pluginsInitialized = false;
 export function initPlugins() {
   emitInterface("bytm:registerPlugin", (def: PluginDef) => registerPlugin(def));
 
-  getUnsafeWindow().addEventListener("bytm:ready", () => {
+  window.addEventListener("bytm:ready", () => {
     pluginsInitialized = true;
     if(registeredPlugins.size > 0)
       log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
-  }, { once: true });
+  }, {
+    once: true,
+  });
 }
 
 /** Registers a plugin on the BYTM interface. */

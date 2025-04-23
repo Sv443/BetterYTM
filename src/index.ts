@@ -93,7 +93,6 @@ function preInit() {
     if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
       return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
 
-    log("Session ID:", getSessionId());
     initInterface();
     setLogLevel(defaultLogLevel);
 
@@ -115,6 +114,8 @@ async function init() {
 
     const features = await initConfig();
     setLogLevel(features.logLevel);
+
+    info("Session ID:", getSessionId());
 
     await initLyricsCache();
 

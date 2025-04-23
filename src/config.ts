@@ -136,17 +136,23 @@ export const migrations: DataMigrationsDict = {
     ]);
   },
   // 9 -> 10 (v2.3.0)
-  10: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
-    useDefaultConfig(oldData, [
-      "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
-      "frameSkip", "frameSkipWhilePlaying",
-      "frameSkipAmount", "watchPageFullSize",
-      "arrowKeyVolumeStep", "likeDislikeHotkeys",
-      "likeHotkey", "dislikeHotkey",
-    ]), [
-      { key: "lyricsCacheMaxSize", oldDefault: 2000 },
-    ],
-  ),
+  10: (oldData: FeatureConfig) => {
+    const migData = useNewDefaultIfUnchanged(
+      useDefaultConfig(oldData, [
+        "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
+        "frameSkip", "frameSkipWhilePlaying",
+        "frameSkipAmount", "watchPageFullSize",
+        "arrowKeyVolumeStep", "likeDislikeHotkeys",
+        "likeHotkey", "dislikeHotkey",
+        "rebindNextAndPrevious", "forceReboundNextAndPrevious",
+        "nextHotkey", "previousHotkey",
+      ]), [
+        { key: "lyricsCacheMaxSize", oldDefault: 2000 },
+      ],
+    );
+    migData.lyricsCacheMaxSize = clamp(migData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
+    return migData;
+  },
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -242,8 +248,8 @@ export function getFeatures(): FeatureConfig {
 }
 
 /** Returns the value of the feature with the given key from the in-memory cache, as a copy */
-export function getFeature<TKey extends FeatureKey>(key: TKey): FeatureConfig[TKey] {
-  return configStore.getData()[key];
+export function getFeature<TKey extends FeatureKey>(key: TKey | "_"): FeatureConfig[TKey] {
+  return configStore.getData()[key as TKey];
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
