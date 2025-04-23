@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@17d4523b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3ca82167/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "17d4523b",
+    buildNumber: "3ca82167",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6148,8 +6148,8 @@ adornmentOrder.set(adornments.alert, 0);
 adornmentOrder.set(adornments.experimental, 1);
 adornmentOrder.set(adornments.ytmOnly, 2);
 adornmentOrder.set(adornments.globe, 3);
-adornmentOrder.set(adornments.advanced, 4);
-adornmentOrder.set(adornments.reload, 5);
+adornmentOrder.set(adornments.reload, 4);
+adornmentOrder.set(adornments.advanced, 5);
 /** Common options for config items of type "select" */
 const options = {
     siteSelection: () => [
@@ -6177,14 +6177,6 @@ const options = {
         { value: "lighter", label: t("color_lightness_lighter") },
     ],
 };
-//#region renderers
-/** Renders a long number with a thousands separator */
-function renderNumberVal(val, maximumFractionDigits = 0) {
-    return Number(val).toLocaleString(getLocale().replace(/_/g, "-"), {
-        style: "decimal",
-        maximumFractionDigits,
-    });
-}
 //#region # features
 /**
  * Contains all possible features with their default values and other configuration.
@@ -6913,9 +6905,9 @@ const featInfo = {
         default: "https://api.sv443.net/geniurl",
         normalize: (val) => val.trim().replace(/\/+$/, ""),
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     geniUrlToken: {
         type: "text",
@@ -6925,9 +6917,9 @@ const featInfo = {
         default: "",
         normalize: (val) => val.trim(),
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     lyricsCacheMaxSize: {
         type: "slider",
@@ -6938,11 +6930,11 @@ const featInfo = {
         max: 25000,
         step: 500,
         unit: (val) => ` ${tp("unit_entries", val)}`,
-        renderValue: renderNumberVal,
+        renderValue: (val) => formatNumber(Number(val), "long"),
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     lyricsCacheTTL: {
         type: "slider",
@@ -6952,11 +6944,11 @@ const featInfo = {
         min: 1,
         max: 100,
         step: 1,
-        unit: (val) => " " + tp("unit_days", val),
+        unit: (val) => ` ${tp("unit_days", val)}`,
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     clearLyricsCache: {
         type: "button",
@@ -7146,9 +7138,8 @@ const featInfo = {
         category: "general",
         supportedSites: ["ytm", "yt"],
         default: false,
+        change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
         textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
-        change: (_key, prevValue, newValue) => prevValue !== newValue &&
-            emitSiteEvent("recreateCfgMenu"),
     },
 };/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 10;
