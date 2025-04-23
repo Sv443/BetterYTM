@@ -65,7 +65,6 @@ const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOut
 /** Extra `@grant` directives added when `mode` is `development` */
 const devGrants = [
   "GM.registerMenuCommand",
-  "GM.listValues"
 ] as const;
 
 const repo = "Sv443/BetterYTM" as const;
@@ -238,6 +237,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
+// @grant             GM.listValues
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest

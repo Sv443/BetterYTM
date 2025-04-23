@@ -969,6 +969,8 @@ export const featInfo = {
         message: t("reset_everything_confirm"),
       })) {
         await getStoreSerializer().resetStoresData();
+        const gmKeys = await GM.listValues();
+        await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
         await reloadTab();
       }
     },
