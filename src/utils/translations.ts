@@ -20,8 +20,6 @@ let activeLocale: TrLocale = "en-US";
 tr.addTransform(tr.transforms.percent);
 tr.addTransform(tr.transforms.templateLiteral);
 
-tr.setFallbackLanguage("en-US" satisfies TrLocale);
-
 /** Initializes the translations */
 export async function initTranslations(locale: TrLocale) {
   if(initializedLocales.has(locale))
@@ -34,8 +32,10 @@ export async function initTranslations(locale: TrLocale) {
 
     let fallbackTrans: Partial<typeof tr_enUS> = {};
 
-    if(getFeature("localeFallback"))
+    if(getFeature("localeFallback")) {
+      tr.setFallbackLanguage("en-US" satisfies TrLocale);
       fallbackTrans = await fetchLocaleJson("en-US");
+    }
 
     // merge with base translations if specified
     const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
