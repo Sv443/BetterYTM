@@ -267,10 +267,31 @@ export async function addAnchorImprovements() {
       },
     });
 
-    addSelectorListener("sideBarMini", "ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
-      listener: (miniSidebarCont) => {
-        const itemsAmt = addSidebarAnchors(miniSidebarCont);
-        log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+    addSelectorListener("body", "ytmusic-nav-bar", {
+      listener(navBar) {
+        let miniSidebarCont = document.querySelector<HTMLElement>("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+
+        const mut = new MutationObserver(() => setTimeout(() => {
+          if(navBar.hasAttribute("guide-collapsed") && !navBar.classList.contains("bytm-mini-sidebar-anchors-added")) {
+            miniSidebarCont = document.querySelector<HTMLElement>("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+            if(!miniSidebarCont)
+              return error("Couldn't find mini sidebar element while adding anchors");
+            improveMiniSidebarAnchors();
+          }
+        }, 50));
+
+        const improveMiniSidebarAnchors = () => {
+          const itemsAmt = addSidebarAnchors(miniSidebarCont!);
+          navBar.classList.add("bytm-mini-sidebar-anchors-added");
+          log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+          mut.disconnect();
+        };
+        if(miniSidebarCont)
+          improveMiniSidebarAnchors();
+
+        mut.observe(navBar, {
+          attributes: true,
+        });
       },
     });
   }

@@ -26,6 +26,7 @@
       - From `faster` to `fastest`
       - From `slower` to `slowest`
     - BREAKING: `hasKey()` and `hasKeyFor()` now return a Promise, since they might need to load the given locale
+    - BREAKING: removed `sideBarMini` observer instance
     - `getCurrentMediaType()` now always returns `"video"` on YT instead of throwing an error
 
 </details> -->
