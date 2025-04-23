@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3cc14352/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f7a02f21/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3cc14352",
+    buildNumber: "f7a02f21",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2357,11 +2357,11 @@ async function initAutoLike() {
                     const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
                     if (!likeChan || !likeChan.enabled)
                         return;
-                    if (artistEls.length === 0)
-                        return error("Couldn't auto-like channel because the artist element couldn't be found");
+                    if (artistEls.length === 0 || channelIds.length === 0)
+                        return error("Couldn't auto-like because the artist element couldn't be found");
                     const { likeBtn, likeState } = getLikeDislikeBtns();
                     if (!likeBtn)
-                        return error("Couldn't auto-like channel because the like button couldn't be found");
+                        return error("Couldn't auto-like because the like button couldn't be found");
                     if (!likeState || likeState === "INDIFFERENT") {
                         likeBtn.click();
                         getFeature("autoLikeShowToast") && showIconToast({
@@ -2370,8 +2370,10 @@ async function initAutoLike() {
                             icon: "icon-auto_like",
                             onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
                         }).catch(e => error("Error while showing auto-like toast:", e));
-                        log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+                        info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
                     }
+                    else
+                        info("Skipping auto-like, because the like state is currently set to", likeState);
                 };
                 timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
                 siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
@@ -2725,6 +2727,8 @@ async function initAutoCloseToasts() {
         continuous: true,
         listener: async (toastContElems) => {
             try {
+                if (!getFeature("autoCloseToasts"))
+                    return;
                 for (const toastContElem of toastContElems) {
                     const toastElem = toastContElem.querySelector("tp-yt-paper-toast#toast");
                     if (!toastElem || !toastElem.hasAttribute("allow-click-through"))
@@ -6487,12 +6491,20 @@ const featInfo = {
         default: false,
         textAdornment: adornments.reload,
     },
-    closeToastsTimeout: {
-        type: "number",
+    autoCloseToasts: {
+        type: "toggle",
         category: "behavior",
         supportedSites: ["ytm", "yt"],
-        min: 0,
-        max: 30,
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+    },
+    closeToastsTimeout: {
+        type: "slider",
+        category: "behavior",
+        supportedSites: ["ytm", "yt"],
+        min: 0.5,
+        max: 20,
         step: 0.5,
         default: 3,
         unit: "s",
@@ -7236,15 +7248,15 @@ const migrations = {
             oldData.locale = "ja-JP";
         if (oldData.locale === "en-GB")
             oldData.locale = "en-GB";
-        return useDefaultConfig(oldData, [
-            "resetEverything",
-            // TODO(V2.2):
-            // "autoLikePlayerBarToggleBtn",
-        ]);
+        return useDefaultConfig(oldData, ["resetEverything"]);
     },
     // 9 -> 10 (v2.3.0)
     10: (oldData) => {
-        const migData = useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
+        oldData.closeToastsTimeout = UserUtils.clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
+        oldData.lyricsCacheMaxSize = UserUtils.clamp(oldData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
+        oldData.autoCloseToasts = oldData.closeToastsTimeout > 0;
+        oldData.closeToastsTimeout = UserUtils.clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
+        return useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
             "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
             "frameSkip", "frameSkipWhilePlaying",
             "frameSkipAmount", "watchPageFullSize",
@@ -7258,8 +7270,6 @@ const migrations = {
         ]), [
             { key: "lyricsCacheMaxSize", oldDefault: 2000 },
         ]);
-        migData.lyricsCacheMaxSize = UserUtils.clamp(migData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
-        return migData;
     },
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
