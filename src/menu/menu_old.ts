@@ -966,6 +966,12 @@ export async function openCfgMenu() {
     menuBg.style.display = "block";
 
     checkToggleScrollIndicator();
+
+    const kbdElems = menuBg.querySelectorAll<HTMLElement>("kbd");
+    for(const kbdElem of kbdElems) {
+      kbdElem.classList.add("bytm-kbd");
+      kbdElem.addEventListener("selectstart", (e) => e.preventDefault());
+    }
   }
   catch(err) {
     error("Error while opening config menu:", err);
