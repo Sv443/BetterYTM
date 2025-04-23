@@ -2070,13 +2070,13 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 .bytm-yt-cfg-menu-option-item {
   width: 100%;
-  color: #fff;
+  color: var(--yt-spec-text-primary, #fff);
   font-size: 14px;
 }
 
 .bytm-yt-cfg-menu-option-item:hover {
   /* Support for "Enhancer for YouTube" extension's custom themes */
-  color: var(--main-color, #fff) !important;
+  color: var(--main-color, var(--yt-spec-text-primary, #fff)) !important;
 }
 
 /* #region watermark */
