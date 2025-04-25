@@ -7,6 +7,7 @@ import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
+import type { isIgnoredInputElement } from "./features/input.js";
 import type { showPrompt } from "./dialogs/prompt.js";
 import type { BytmDialog } from "./components/BytmDialog.js";
 import type { ExImDialog } from "./components/ExImDialog.js";
@@ -333,6 +334,8 @@ export type InterfaceFunctions = {
   getCurrentMediaType: typeof getCurrentMediaType;
   /** Returns the like and dislike elements, as well as the current state of them as a string constant */
   getLikeDislikeBtns: typeof getLikeDislikeBtns;
+  /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored */
+  isIgnoredInputElement: typeof isIgnoredInputElement;
 
   // translations:
   /** 🔒 Sets the locale for all new translations */

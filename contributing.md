@@ -445,6 +445,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getVideoSelector()](#getvideoselector) - Returns the CSS selector for the video element (on both YT and YTM)
   - [getCurrentMediaType()](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
   - [getLikeDislikeBtns()](#getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
+  - [isIgnoredInputElement()](#isignoredinputelement) - Checks if the given element (or `document.activeElement`) is an input element that should prevent all other keypresses from being processed
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -1085,6 +1086,42 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > }
 > else
 >   console.error("Like and/or dislike button not available");
+> ```
+> </details>
+
+<br>
+
+> ### isIgnoredInputElement()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.isIgnoredInputElement(element: HTMLElement | null = document.activeElement): boolean
+> ```
+>   
+> Description:  
+> Returns true, if the given element (`document.activeElement` by default) is an input element, so that all other keypress event listeners are ignored.  
+> This is very useful for global keypress listeners (like ones on the `document.body`), which would trigger on every keypress, even if the user is interacting with an input element, like when typing in the search bar or a comment.  
+> Determining the element is a bit more sophisticated and tailored to the YT and YTM pages, so some elements might not be supported yet. In this case, please open an issue to get it added.  
+>   
+> Arguments:
+> - `element` - The element to check. If not provided, the currently focused element (`document.activeElement`) is used.  
+>   If the element is `null` (like when no argument is given and no element is focused), the function will always return `false`.
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // add a global keypress listener to the document body:
+> document.body.addEventListener("keydown", (event) => {
+>   // check if the currently focused element is an input element:
+>   if(unsafeWindow.BYTM.isIgnoredInputElement())
+>     return console.warn("User is currently interacting with an input element, ignoring keypress event");
+> 
+>   console.log("The user is not typing in an input element");
+>   doStuff();
+> });
+> 
+> // or check a specific element:
+> const myElement = document.querySelector("#myElement");
+> console.log(unsafeWindow.BYTM.isIgnoredInputElement(myElement)); // true or false
 > ```
 > </details>
 

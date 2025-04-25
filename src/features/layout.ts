@@ -534,6 +534,8 @@ export async function initThumbnailOverlay() {
 
     const applyThumbUrl = async (videoID: string) => {
       try {
+        if(previousVideoIDs.length > 2)
+          previousVideoIDs.splice(0, previousVideoIDs.length - 2);
         if(previousVideoIDs.find(id => id === videoID))
           return;
         previousVideoIDs.push(videoID);
@@ -560,13 +562,15 @@ export async function initThumbnailOverlay() {
       }
     };
 
-    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID) => {
+    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID, oldVideoID) => {
       unsubWatchIdChanged();
       addSelectorListener("body", "#bytm-thumbnail-overlay", {
         listener: () => {
-          const prevVidIdx = previousVideoIDs.findIndex(id => id === videoID);
-          if(prevVidIdx > -1)
-            previousVideoIDs.splice(prevVidIdx, 1);
+          const curVidIdx = previousVideoIDs.findIndex(id => id === videoID);
+          const prevVidIdx = previousVideoIDs.findIndex(id => id === oldVideoID);
+          curVidIdx > -1 && previousVideoIDs.splice(curVidIdx, 1);
+          prevVidIdx > -1 && previousVideoIDs.splice(prevVidIdx, 1);
+
           applyThumbUrl(videoID);
           updateOverlayVisibility();
         },

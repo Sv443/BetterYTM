@@ -12,7 +12,24 @@ import { createLongBtn } from "../components/longButton.js";
 import { createRipple } from "../components/ripple.js";
 import "./input.css";
 
-export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+//#region utils
+
+const ignoreTagNamesInput: string[] = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+const ignoreIdsInput: string[] = [
+  "contenteditable-root", // comment field on YT
+  "volume-slider", // volume slider on YTM
+];
+const ignoreClassNamesInput: string[] = [];
+
+/** Returns true, if the given element (document.activeElement by default) is an input element that should make BYTM ignore keypresses */
+export function isIgnoredInputElement(el = document.activeElement as HTMLElement | null) {
+  if(!el)
+    return false;
+
+  return ignoreTagNamesInput.includes(el.tagName.toUpperCase())
+    || ignoreClassNamesInput.some((cls) => el.classList.contains(cls))
+    || ignoreIdsInput.includes(el.id);
+}
 
 //#region arrow key skip
 
@@ -35,11 +52,8 @@ export async function initArrowKeySkip() {
 
     const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
 
-    // discard the event when a (text) input is currently active, like when editing a playlist
-    if(
-      (inputIgnoreTagNames.includes(document.activeElement?.tagName ?? "") || ["volume-slider"].includes(document.activeElement?.id ?? ""))
-      && !allowedClasses.some((cls) => document.activeElement?.classList.contains(cls))
-    )
+    // discard the event when a (text) input is currently active, like when editing a playlist or writing a comment
+    if(isIgnoredInputElement() && !allowedClasses.some((cls) => document.activeElement?.classList.contains(cls)))
       return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
 
     evt.preventDefault();
@@ -119,8 +133,6 @@ export async function initFrameSkip() {
 
 //#region num keys skip
 
-const numKeysIgnoreTagNames = [...inputIgnoreTagNames];
-
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
@@ -129,7 +141,7 @@ export async function initNumKeysSkip() {
     if(!e.key.trim().match(/^[0-9]$/))
       return;
     // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-    const ignoreElement = numKeysIgnoreTagNames.includes(document.activeElement?.tagName ?? "");
+    const ignoreElement = isIgnoredInputElement();
     if((document.activeElement !== document.body && ignoreElement) || ignoreElement)
       return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
 
