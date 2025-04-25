@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3ca82167/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@214924d1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3ca82167",
+    buildNumber: "214924d1",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2215,7 +2215,21 @@ function getChannelIdFromPrompt(promptStr) {
     const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
     const id = ((isId === null || isId === void 0 ? void 0 : isId[0]) || (isUrl === null || isUrl === void 0 ? void 0 : isUrl[1]) || "").trim();
     return id.length > 0 ? id : null;
-}const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+}//#region utils
+const ignoreTagNamesInput = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+const ignoreIdsInput = [
+    "contenteditable-root", // comment field on YT
+    "volume-slider", // volume slider on YTM
+];
+const ignoreClassNamesInput = [];
+/** Returns true, if the given element (document.activeElement by default) is an input element that should make BYTM ignore keypresses */
+function isIgnoredInputElement(el = document.activeElement) {
+    if (!el)
+        return false;
+    return ignoreTagNamesInput.includes(el.tagName.toUpperCase())
+        || ignoreClassNamesInput.some((cls) => el.classList.contains(cls))
+        || ignoreIdsInput.includes(el.id);
+}
 //#region arrow key skip
 let sliderEl;
 async function initArrowKeySkip() {
@@ -2223,7 +2237,7 @@ async function initArrowKeySkip() {
         listener: (el) => sliderEl = el,
     });
     document.addEventListener("keydown", (evt) => {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b;
         if (!getFeature("arrowKeySupport"))
             return;
         if (["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
@@ -2231,13 +2245,12 @@ async function initArrowKeySkip() {
         if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
             return;
         const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
-        // discard the event when a (text) input is currently active, like when editing a playlist
-        if ((inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "") || ["volume-slider"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.id) !== null && _d !== void 0 ? _d : ""))
-            && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
-            return info(`Captured valid key to skip forward or backward but the current active element is <${(_e = document.activeElement) === null || _e === void 0 ? void 0 : _e.tagName.toLowerCase()}>, so the keypress is ignored`);
+        // discard the event when a (text) input is currently active, like when editing a playlist or writing a comment
+        if (isIgnoredInputElement() && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
+            return info(`Captured valid key to skip forward or backward but the current active element is <${(_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName.toLowerCase()}>, so the keypress is ignored`);
         evt.preventDefault();
         evt.stopImmediatePropagation();
-        let skipBy = (_f = getFeature("arrowKeySkipBy")) !== null && _f !== void 0 ? _f : featInfo.arrowKeySkipBy.default;
+        let skipBy = (_b = getFeature("arrowKeySkipBy")) !== null && _b !== void 0 ? _b : featInfo.arrowKeySkipBy.default;
         if (evt.code === "ArrowLeft")
             skipBy *= -1;
         log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
@@ -2287,17 +2300,15 @@ async function initFrameSkip() {
     log("Added frame skip key press listener");
 }
 //#region num keys skip
-const numKeysIgnoreTagNames = [...inputIgnoreTagNames];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 async function initNumKeysSkip() {
     document.addEventListener("keydown", (e) => {
-        var _a, _b;
         if (!getFeature("numKeysSkipToTime"))
             return;
         if (!e.key.trim().match(/^[0-9]$/))
             return;
         // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-        const ignoreElement = numKeysIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "");
+        const ignoreElement = isIgnoredInputElement();
         if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
             return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
         const vidElem = getVideoElement();
@@ -3147,7 +3158,7 @@ async function getResourceUrl(name, uncached = false) {
             }
         }
         warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
-        // @ts-ignore
+        // @ts-expect-error
         url = await GM.getResourceUrl(name, false);
     }
     return url;
@@ -3426,7 +3437,7 @@ async function renderBody$2() {
     const helpTextElem = document.createElement("div");
     helpTextElem.id = "bytm-feat-help-dialog-text";
     helpTextElem.tabIndex = 0;
-    // @ts-ignore
+    // @ts-expect-error
     const helpText = (_b = (_a = featInfo[curFeatKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
     helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${curFeatKey}`);
     contElem.appendChild(featDescElem);
@@ -3872,10 +3883,10 @@ async function mountCfgMenu() {
                 const changedKeys = initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object"
                     && featConf[k] !== initConfig$1[k]) : [];
                 const requiresReload = 
-                // @ts-ignore
+                // @ts-expect-error
                 changedKeys.some((k) => { var _a; return ((_a = featInfo[k]) === null || _a === void 0 ? void 0 : _a.reloadRequired) !== false; });
                 await setFeatures(featConf);
-                // @ts-ignore
+                // @ts-expect-error
                 (_b = (_a = featInfo[key]) === null || _a === void 0 ? void 0 : _a.change) === null || _b === void 0 ? void 0 : _b.call(_a, key, initialVal, newVal);
                 if (requiresReload) {
                     reloadFooterEl.classList.remove("hidden");
@@ -3935,7 +3946,7 @@ async function mountCfgMenu() {
         const fmtVal = (v, key) => {
             var _a;
             try {
-                // @ts-ignore
+                // @ts-expect-error
                 const renderValue = typeof ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.renderValue) === "function" ? featInfo[key].renderValue : undefined;
                 const retVal = (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
                 return renderValue ? renderValue(retVal) : retVal;
@@ -3999,9 +4010,9 @@ async function mountCfgMenu() {
                         setInnerHtml(adornmentElem, adornContent);
                     }
                     let helpElem;
-                    // @ts-ignore
+                    // @ts-expect-error
                     const hasHelpTextFunc = typeof ((_b = featInfo[featKey]) === null || _b === void 0 ? void 0 : _b.helpText) === "function";
-                    // @ts-ignore
+                    // @ts-expect-error
                     const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
                     if (await hasKey(`feature_helptext_${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
                         const helpElemImgHtml = await resourceAsString("icon-help");
@@ -4862,6 +4873,8 @@ async function initThumbnailOverlay() {
         };
         const applyThumbUrl = async (videoID) => {
             try {
+                if (previousVideoIDs.length > 2)
+                    previousVideoIDs.splice(0, previousVideoIDs.length - 2);
                 if (previousVideoIDs.find(id => id === videoID))
                     return;
                 previousVideoIDs.push(videoID);
@@ -4873,8 +4886,10 @@ async function initThumbnailOverlay() {
                         return;
                     if (toggleBtnElem)
                         toggleBtnElem.href = thumbUrl;
-                    if (thumbImgElem)
+                    if (thumbImgElem) {
                         thumbImgElem.src = thumbUrl;
+                        thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "full" : "crop";
+                    }
                     log("Applied thumbnail URL to overlay:", thumbUrl);
                 }
                 else
@@ -4884,13 +4899,14 @@ async function initThumbnailOverlay() {
                 error("Couldn't apply thumbnail URL to overlay due to an error:", err);
             }
         };
-        const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID) => {
+        const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID, oldVideoID) => {
             unsubWatchIdChanged();
             addSelectorListener("body", "#bytm-thumbnail-overlay", {
                 listener: () => {
-                    const prevVidIdx = previousVideoIDs.findIndex(id => id === videoID);
-                    if (prevVidIdx > -1)
-                        previousVideoIDs.splice(prevVidIdx, 1);
+                    const curVidIdx = previousVideoIDs.findIndex(id => id === videoID);
+                    const prevVidIdx = previousVideoIDs.findIndex(id => id === oldVideoID);
+                    curVidIdx > -1 && previousVideoIDs.splice(curVidIdx, 1);
+                    prevVidIdx > -1 && previousVideoIDs.splice(prevVidIdx, 1);
                     applyThumbUrl(videoID);
                     updateOverlayVisibility();
                 },
@@ -4920,7 +4936,6 @@ async function initThumbnailOverlay() {
                 thumbImgElem.id = "bytm-thumbnail-overlay-img";
                 thumbImgElem.role = "presentation";
                 thumbImgElem.ariaHidden = "true";
-                thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
                 overlayElem.appendChild(thumbImgElem);
                 playerEl.appendChild(overlayElem);
                 indicatorElem && playerEl.appendChild(indicatorElem);
@@ -5135,10 +5150,12 @@ async function initWatchPageFullSize() {
         error("Couldn't load stylesheet to make watch page full size");
     else
         log("Made watch page full size");
-}async function initHotkeys() {
+}//#region init
+async function initHotkeys() {
     const promises = [];
+    if (getDomain() === "ytm")
+        promises.push(initLyricsHotkey());
     promises.push(initLikeDislikeHotkeys());
-    promises.push(initLyricsHotkey());
     promises.push(initSiteSwitch());
     promises.push(initProxyHotkeys());
     promises.push(initSkipToRemTimeHotkey());
@@ -5155,10 +5172,9 @@ let siteSwitchEnabled = true;
 async function initSiteSwitch() {
     const domain = getDomain();
     document.addEventListener("keydown", (e) => {
-        var _a, _b;
         if (!getFeature("switchBetweenSites"))
             return;
-        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+        if (isIgnoredInputElement())
             return;
         if (siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
             switchSite(domain === "yt" ? "ytm" : "yt");
@@ -5207,10 +5223,9 @@ async function switchSite(newDomain) {
 //#region like/dislike
 async function initLikeDislikeHotkeys() {
     document.addEventListener("keydown", (e) => {
-        var _a, _b;
         if (!getFeature("likeDislikeHotkeys"))
             return;
-        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+        if (isIgnoredInputElement())
             return;
         const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
         if (hotkeyMatches(e, getFeature("likeHotkey")))
@@ -5222,10 +5237,9 @@ async function initLikeDislikeHotkeys() {
 //#region lyrics
 async function initLyricsHotkey() {
     document.addEventListener("keydown", (e) => {
-        var _a, _b;
         if (!getFeature("currentLyricsHotkeyEnabled"))
             return;
-        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+        if (isIgnoredInputElement())
             return;
         if (hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
             e.preventDefault();
@@ -5238,10 +5252,9 @@ async function initLyricsHotkey() {
 //#region skip to remembered
 async function initSkipToRemTimeHotkey() {
     document.addEventListener("keydown", async (e) => {
-        var _a, _b;
         if (!getFeature("skipToRemTimeHotkeyEnabled"))
             return;
-        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+        if (isIgnoredInputElement())
             return;
         if (hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
             e.preventDefault();
@@ -5263,6 +5276,7 @@ async function initProxyHotkeys() {
             {
                 hkFeatKey: "nextHotkey",
                 preventKey: "KeyJ",
+                domains: ["ytm"],
                 onPress: () => dispatchProxyKey({
                     code: "KeyJ",
                     key: "j",
@@ -5273,6 +5287,7 @@ async function initProxyHotkeys() {
             {
                 hkFeatKey: "previousHotkey",
                 preventKey: "KeyK",
+                domains: ["ytm"],
                 onPress: () => dispatchProxyKey({
                     code: "KeyK",
                     key: "k",
@@ -5285,6 +5300,7 @@ async function initProxyHotkeys() {
             {
                 hkFeatKey: "playPauseHotkey",
                 preventKey: "Space",
+                domains: ["ytm"],
                 onPress: () => dispatchProxyKey({
                     code: "Space",
                     key: " ",
@@ -5295,16 +5311,17 @@ async function initProxyHotkeys() {
         ]
     };
     document.addEventListener("keydown", (e) => {
-        var _a, _b;
-        if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
+        if (isIgnoredInputElement())
             return;
         for (const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
             if (getFeature(featKey) !== true)
                 continue;
-            for (let _c of proxyGroup) {
-                const { hkFeatKey, onPress } = _c, rest = __rest(_c, ["hkFeatKey", "onPress"]);
+            for (let _a of proxyGroup) {
+                const { hkFeatKey, onPress, domains } = _a, rest = __rest(_a, ["hkFeatKey", "onPress", "domains"]);
+                if (!domains.includes(getDomain()))
+                    continue;
                 // prevent hotkeys from triggering each other:
-                if (Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms)
+                if (Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
                     continue;
                 const nowTs = Date.now();
                 if ("preventKey" in rest && e.code === rest.preventKey) {
@@ -6291,19 +6308,6 @@ const featInfo = {
         advanced: true,
         textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
-    thumbnailOverlayImageFit: {
-        type: "select",
-        category: "layout",
-        supportedSites: ["ytm"],
-        options: () => [
-            { value: "cover", label: t("thumbnail_overlay_image_fit_crop") },
-            { value: "contain", label: t("thumbnail_overlay_image_fit_full") },
-            { value: "fill", label: t("thumbnail_overlay_image_fit_stretch") },
-        ],
-        default: "cover",
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
-    },
     hideCursorOnIdle: {
         type: "toggle",
         category: "layout",
@@ -7144,11 +7148,11 @@ const featInfo = {
 };/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 10;
 const defaultData = UserUtils.purifyObj(Object.keys(featInfo)
-    // @ts-ignore
+    // @ts-expect-error
     .filter((ftKey) => { var _a; return ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[ftKey]) === null || _a === void 0 ? void 0 : _a.default) !== undefined; })
     .reduce((acc, key) => {
     var _a;
-    // @ts-ignore
+    // @ts-expect-error
     acc[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
     return acc;
 }, {}));
@@ -7253,6 +7257,8 @@ const migrations = {
         oldData.lyricsCacheMaxSize = UserUtils.clamp(oldData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
         oldData.autoCloseToasts = oldData.closeToastsTimeout > 0;
         oldData.closeToastsTimeout = UserUtils.clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
+        if ("thumbnailOverlayImageFit" in oldData)
+            delete oldData.thumbnailOverlayImageFit;
         return useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
             "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
             "frameSkip", "frameSkipWhilePlaying",
@@ -7273,7 +7279,7 @@ const migrations = {
 function useDefaultConfig(baseData, resetKeys) {
     var _a;
     const newData = Object.assign(Object.assign({}, defaultData), (baseData !== null && baseData !== void 0 ? baseData : {}));
-    for (const key of resetKeys) // @ts-ignore
+    for (const key of resetKeys) // @ts-expect-error
         newData[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default; // typescript funny moments
     return newData;
 }
@@ -7286,7 +7292,7 @@ function useNewDefaultIfUnchanged(oldData, defaults) {
     var _a;
     const newData = Object.assign({}, oldData);
     for (const { key, oldDefault } of defaults) {
-        // @ts-ignore
+        // @ts-expect-error
         const defaultVal = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
         if (newData[key] === oldDefault)
             newData[key] = defaultVal; // we love TS
@@ -7413,6 +7419,7 @@ const globalFuncs = purifyObj({
     getVideoSelector,
     getCurrentMediaType,
     getLikeDislikeBtns,
+    isIgnoredInputElement,
     // translations:
     /*🔒*/ setLocale: setLocaleInterface,
     getLocale,
@@ -7482,7 +7489,7 @@ function emitInterface(type, ...detail) {
     var _a;
     try {
         getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: (_a = detail === null || detail === void 0 ? void 0 : detail[0]) !== null && _a !== void 0 ? _a : undefined }));
-        //@ts-ignore
+        //@ts-expect-error
         emitOnPlugins(type, undefined, ...detail);
         log(`Emitted interface event '${type}'${detail.length > 0 && (detail === null || detail === void 0 ? void 0 : detail[0]) ? " with data:" : ""}`, ...detail);
     }
@@ -7629,7 +7636,7 @@ function getFeaturesInterface(token) {
     const features = getFeatures();
     for (const ftKey of Object.keys(features)) {
         const info = featInfo[ftKey];
-        if (info && info.valueHidden) // @ts-ignore
+        if (info && info.valueHidden) // @ts-expect-error
             features[ftKey] = undefined;
     }
     return features;
