@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@214924d1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6aa53ac0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "214924d1",
+    buildNumber: "6aa53ac0",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -683,7 +683,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             if (dialogContainer)
                 dialogContainer.appendChild(bgElem);
             else
-                document.addEventListener("DOMContentLoaded", () => dialogContainer === null || dialogContainer === void 0 ? void 0 : dialogContainer.appendChild(bgElem));
+                document.addEventListener("DOMContentLoaded", () => dialogContainer === null || dialogContainer === void 0 ? void 0 : dialogContainer.appendChild(bgElem), { once: true });
         }
         catch (e) {
             return error("Failed to render dialog content:", e);
@@ -797,7 +797,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             document.body.appendChild(bytmDialogCont);
         };
         if (!UserUtils.isDomLoaded())
-            document.addEventListener("DOMContentLoaded", createContainer);
+            document.addEventListener("DOMContentLoaded", createContainer, { once: true });
         else
             createContainer();
     }
@@ -2818,7 +2818,7 @@ async function initRememberSongTime() {
     await remTimeTryRestoreTime();
     try {
         if (!UserUtils.isDomLoaded())
-            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop, { once: true });
         else
             remTimeStartUpdateLoop();
     }
@@ -2826,41 +2826,55 @@ async function initRememberSongTime() {
         error("Error in video time remembering update loop:", err);
     }
 }
-/** Tries to restore the time of the currently playing video */
-async function remTimeTryRestoreTime(force = false) {
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
-    if (location.pathname.startsWith("/watch")) {
-        const videoID = new URL(location.href).searchParams.get("v");
-        if (!videoID)
-            return;
-        if (initialParams.has("t") && !force)
-            return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
-        const entry = remVids.find(entry => entry.id === videoID);
-        if (entry) {
-            if (Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
-                await remTimeDeleteEntry(entry.id);
-                return;
+/** Tries to restore the time of the currently playing video. Resolves to a boolean. Only rejects on caught error */
+function remTimeTryRestoreTime(force = false) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+            if (location.pathname.startsWith("/watch")) {
+                const videoID = new URL(location.href).searchParams.get("v");
+                if (!videoID)
+                    return resolve(false);
+                if (initialParams.has("t") && !force) {
+                    info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+                    return resolve(false);
+                }
+                const entry = remVids.find(entry => entry.id === videoID);
+                if (entry) {
+                    if (Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
+                        await remTimeDeleteEntry(entry.id);
+                        return resolve(false);
+                    }
+                    else if (isNaN(Number(entry.time)) || entry.time < 0) {
+                        warn("Invalid time in remembered song time entry:", entry);
+                        return resolve(false);
+                    }
+                    else {
+                        let vidElem;
+                        const doRestoreTime = async () => {
+                            var _a;
+                            if (!vidElem)
+                                vidElem = await waitVideoElementReady();
+                            const vidRestoreTime = entry.time - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                            vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                            await remTimeDeleteEntry(entry.id);
+                            info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                            return resolve(true);
+                        };
+                        if (!UserUtils.isDomLoaded())
+                            document.addEventListener("DOMContentLoaded", doRestoreTime, { once: true });
+                        else
+                            doRestoreTime();
+                    }
+                }
             }
-            else if (isNaN(Number(entry.time)) || entry.time < 0)
-                return warn("Invalid time in remembered song time entry:", entry);
-            else {
-                let vidElem;
-                const doRestoreTime = async () => {
-                    var _a;
-                    if (!vidElem)
-                        vidElem = await waitVideoElementReady();
-                    const vidRestoreTime = entry.time - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
-                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                    await remTimeDeleteEntry(entry.id);
-                    info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-                };
-                if (!UserUtils.isDomLoaded())
-                    document.addEventListener("DOMContentLoaded", doRestoreTime);
-                else
-                    doRestoreTime();
-            }
+            return resolve(false);
         }
-    }
+        catch (err) {
+            error("Uncaught error when trying to restore video time:", err);
+            return reject(err);
+        }
+    });
 }
 let lastSongTime = -1;
 let remVidCheckTimeout;
@@ -3511,7 +3525,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     const inputElem = document.createElement("button");
     inputElem.role = "button";
     inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
-    inputElem.dataset.state = "inactive";
+    inputElem.dataset.state = infoElem.dataset.state = "inactive";
     inputElem.innerText = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
     const resetElem = document.createElement("span");
@@ -3528,7 +3542,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         otherHotkeyInputActive = false;
         const curHk = currentHotkey !== null && currentHotkey !== void 0 ? currentHotkey : initialValue;
         inputElem.innerText = (_a = curHk === null || curHk === void 0 ? void 0 : curHk.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
-        inputElem.dataset.state = "inactive";
+        inputElem.dataset.state = infoElem.dataset.state = "inactive";
         inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
         setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
     };
@@ -3538,7 +3552,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         emitSiteEvent("hotkeyInputActive", true);
         otherHotkeyInputActive = true;
         inputElem.innerText = "< ... >";
-        inputElem.dataset.state = "active";
+        inputElem.dataset.state = infoElem.dataset.state = "active";
         inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
     };
     const resetClicked = (e) => {
@@ -3570,7 +3584,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
             alt: e.altKey,
         };
         inputElem.innerText = hotkey.code;
-        inputElem.dataset.state = "inactive";
+        inputElem.dataset.state = infoElem.dataset.state = "inactive";
         setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
         inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
         onChange(hotkey);
@@ -3606,7 +3620,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         else
             resetElem.classList.add("bytm-hidden");
         inputElem.innerText = hotkey.code;
-        inputElem.dataset.state = "inactive";
+        inputElem.dataset.state = infoElem.dataset.state = "inactive";
         setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
     });
     siteEvents.on("cfgMenuClosed", deactivate);
