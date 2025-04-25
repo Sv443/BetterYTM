@@ -116,7 +116,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       if(dialogContainer)
         dialogContainer.appendChild(bgElem);
       else
-        document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem));
+        document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
     }
     catch(e) {
       return error("Failed to render dialog content:", e);
@@ -263,7 +263,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     };
 
     if(!isDomLoaded())
-      document.addEventListener("DOMContentLoaded", createContainer);
+      document.addEventListener("DOMContentLoaded", createContainer, { once: true });
     else
       createContainer();
   }

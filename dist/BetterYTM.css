@@ -1247,6 +1247,10 @@ body.bytm-dom-ytm
   white-space: nowrap;
 }
 
+.bytm-hotkey-info[data-state="active"] {
+  display: none;
+}
+
 :root {
   --bytm-menu-bg-highlight: #252525;
 }

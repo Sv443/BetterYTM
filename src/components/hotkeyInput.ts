@@ -31,7 +31,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
   const inputElem = document.createElement("button");
   inputElem.role = "button";
   inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
-  inputElem.dataset.state = "inactive";
+  inputElem.dataset.state = infoElem.dataset.state = "inactive";
   inputElem.innerText = initialValue?.code ?? t("hotkey_input_click_to_change");
   inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
 
@@ -49,7 +49,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     otherHotkeyInputActive = false;
     const curHk = currentHotkey ?? initialValue;
     inputElem.innerText = curHk?.code ?? t("hotkey_input_click_to_change");
-    inputElem.dataset.state = "inactive";
+    inputElem.dataset.state = infoElem.dataset.state = "inactive";
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
     setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
   };
@@ -60,7 +60,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     emitSiteEvent("hotkeyInputActive", true);
     otherHotkeyInputActive = true;
     inputElem.innerText = "< ... >";
-    inputElem.dataset.state = "active";
+    inputElem.dataset.state = infoElem.dataset.state = "active";
     inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
   };
 
@@ -100,7 +100,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     } satisfies HotkeyObj;
 
     inputElem.innerText = hotkey.code;
-    inputElem.dataset.state = "inactive";
+    inputElem.dataset.state = infoElem.dataset.state = "inactive";
     setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
     inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
 
@@ -144,7 +144,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
       resetElem.classList.add("bytm-hidden");
 
     inputElem.innerText = hotkey.code;
-    inputElem.dataset.state = "inactive";
+    inputElem.dataset.state = infoElem.dataset.state = "inactive";
     setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
   });
 
