@@ -154,7 +154,7 @@ export async function initRememberSongTime() {
 
   try {
     if(!isDomLoaded())
-      document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+      document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop, { once: true });
     else
       remTimeStartUpdateLoop();
   }
@@ -163,44 +163,58 @@ export async function initRememberSongTime() {
   }
 }
 
-/** Tries to restore the time of the currently playing video */
-export async function remTimeTryRestoreTime(force = false) {
-  const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
+/** Tries to restore the time of the currently playing video. Resolves to a boolean. Only rejects on caught error */
+export function remTimeTryRestoreTime(force = false) {
+  return new Promise<boolean>(async (resolve, reject) => {
+    try {
+      const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
 
-  if(location.pathname.startsWith("/watch")) {
-    const videoID = new URL(location.href).searchParams.get("v");
-    if(!videoID)
-      return;
+      if(location.pathname.startsWith("/watch")) {
+        const videoID = new URL(location.href).searchParams.get("v");
+        if(!videoID)
+          return resolve(false);
 
-    if(initialParams.has("t") && !force)
-      return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+        if(initialParams.has("t") && !force) {
+          info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+          return resolve(false);
+        }
 
-    const entry = remVids.find(entry => entry.id === videoID);
-    if(entry) {
-      if(Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
-        await remTimeDeleteEntry(entry.id);
-        return;
+        const entry = remVids.find(entry => entry.id === videoID);
+        if(entry) {
+          if(Date.now() - entry.updated > getFeature("rememberSongTimeDuration") * 1000) {
+            await remTimeDeleteEntry(entry.id);
+            return resolve(false);
+          }
+          else if(isNaN(Number(entry.time)) || entry.time < 0) {
+            warn("Invalid time in remembered song time entry:", entry);
+            return resolve(false);
+          }
+          else {
+            let vidElem: HTMLVideoElement;
+            const doRestoreTime = async () => {
+              if(!vidElem)
+                vidElem = await waitVideoElementReady();
+              const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction") ?? 0);
+              vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+              await remTimeDeleteEntry(entry.id);
+              info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+              return resolve(true);
+            };
+
+            if(!isDomLoaded())
+              document.addEventListener("DOMContentLoaded", doRestoreTime, { once: true });
+            else
+              doRestoreTime();
+          }
+        }
       }
-      else if(isNaN(Number(entry.time)) || entry.time < 0)
-        return warn("Invalid time in remembered song time entry:", entry);
-      else {
-        let vidElem: HTMLVideoElement;
-        const doRestoreTime = async () => {
-          if(!vidElem)
-            vidElem = await waitVideoElementReady();
-          const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction") ?? 0);
-          vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-          await remTimeDeleteEntry(entry.id);
-          info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-        };
-
-        if(!isDomLoaded())
-          document.addEventListener("DOMContentLoaded", doRestoreTime);
-        else
-          doRestoreTime();
-      }
+      return resolve(false);
     }
-  }
+    catch(err) {
+      error("Uncaught error when trying to restore video time:", err);
+      return reject(err);
+    }
+  });
 }
 
 let lastSongTime = -1;
