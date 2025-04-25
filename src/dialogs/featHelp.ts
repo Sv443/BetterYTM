@@ -64,7 +64,7 @@ async function renderBody() {
   const helpTextElem = document.createElement("div");
   helpTextElem.id = "bytm-feat-help-dialog-text";
   helpTextElem.tabIndex = 0;
-  // @ts-ignore
+  // @ts-expect-error
   const helpText: string | undefined = featInfo[curFeatKey!]?.helpText?.();
   helpTextElem.textContent = helpText ?? t(`feature_helptext_${curFeatKey}`);
 

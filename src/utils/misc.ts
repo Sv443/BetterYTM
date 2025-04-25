@@ -307,7 +307,7 @@ export async function getResourceUrl(name: ResourceKey | "_", uncached = false) 
     }
 
     warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
-    // @ts-ignore
+    // @ts-expect-error
     url = await GM.getResourceUrl(name, false);
   }
 

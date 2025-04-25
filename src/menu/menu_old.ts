@@ -301,12 +301,12 @@ async function mountCfgMenu() {
           && featConf[k as FeatureKey] !== initConfig![k as FeatureKey]
         ) : [];
         const requiresReload =
-          // @ts-ignore
+          // @ts-expect-error
           changedKeys.some((k) => featInfo[k as keyof typeof featInfo]?.reloadRequired !== false);
 
         await setFeatures(featConf);
 
-        // @ts-ignore
+        // @ts-expect-error
         featInfo[key]?.change?.(key, initialVal, newVal);
 
         if(requiresReload) {
@@ -376,7 +376,7 @@ async function mountCfgMenu() {
      */
     const fmtVal = (v: unknown, key: FeatureKey) => {
       try {
-        // @ts-ignore
+        // @ts-expect-error
         const renderValue = typeof featInfo?.[key]?.renderValue === "function" ? featInfo[key].renderValue : undefined;
         const retVal = (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
         return renderValue ? renderValue(retVal) : retVal;
@@ -458,9 +458,9 @@ async function mountCfgMenu() {
 
           let helpElem: undefined | HTMLDivElement;
 
-          // @ts-ignore
+          // @ts-expect-error
           const hasHelpTextFunc = typeof featInfo[featKey as keyof typeof featInfo]?.helpText === "function";
-          // @ts-ignore
+          // @ts-expect-error
           const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
 
           if(await hasKey(`feature_helptext_${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {

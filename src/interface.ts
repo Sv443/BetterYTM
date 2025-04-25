@@ -228,7 +228,7 @@ export function emitInterface<
 ) {
   try {
     getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
-    //@ts-ignore
+    //@ts-expect-error
     emitOnPlugins(type, undefined, ...detail);
     log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
   }
@@ -457,7 +457,7 @@ export function getFeaturesInterface(token: string | undefined) {
   const features = getFeatures();
   for(const ftKey of Object.keys(features)) {
     const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
-    if(info && info.valueHidden) // @ts-ignore
+    if(info && info.valueHidden) // @ts-expect-error
       features[ftKey as keyof typeof features] = undefined;
   }
   return features as FeatureConfig;

@@ -8,6 +8,8 @@ import { error, info, log, warn } from "../utils/logging.js";
 import type { Domain, FeatKeysOfType, HotkeyObj } from "../types.js";
 import { isIgnoredInputElement } from "./input.js";
 
+//#region init
+
 export async function initHotkeys() {
   const promises: Promise<void>[] = [];
 
