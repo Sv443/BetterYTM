@@ -264,7 +264,6 @@
   "feature_helptext_thumbnailOverlayToggleBtnShown": "このボタンを押すと、サムネイルのオンとオフを手動で切り替えることができます\n新しいビデオや曲の再生が始まると、デフォルトの状態に戻ります。シフトを押しながらクリックするか、マウスの中ボタンを押すと、最高画質のサムネイルが新しいタブで開きます。",
   "feature_desc_thumbnailOverlayShowIndicator": "サムネイルがアクティブな間、サムネイルの右下隅にインジケータを表示する",
   "feature_desc_thumbnailOverlayIndicatorOpacity": "サムネイルインジケータの不透明度",
-  "feature_desc_thumbnailOverlayImageFit": "サムネイル画像をビデオ要素に合わせる方法",
   "feature_desc_hideCursorOnIdle": "ビデオの上で数秒間アクティビティがないとカーソルを非表示にする",
   "feature_desc_hideCursorOnIdleDelay": "カーソルを非表示にするまでのアイドル時間（秒）",
   "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",

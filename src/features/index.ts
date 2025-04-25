@@ -236,19 +236,6 @@ export const featInfo = {
     advanced: true,
     textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
   },
-  thumbnailOverlayImageFit: {
-    type: "select",
-    category: "layout",
-    supportedSites: ["ytm"],
-    options: () => [
-      { value: "cover", label: t("thumbnail_overlay_image_fit_crop") },
-      { value: "contain", label: t("thumbnail_overlay_image_fit_full") },
-      { value: "fill", label: t("thumbnail_overlay_image_fit_stretch") },
-    ],
-    default: "cover",
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
-  },
   hideCursorOnIdle: {
     type: "toggle",
     category: "layout",

@@ -13,10 +13,10 @@ export const formatVersion = 10;
 
 export const defaultData = purifyObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
-    // @ts-ignore
+    // @ts-expect-error
     .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
     .reduce<Partial<FeatureConfig>>((acc, key) => {
-      // @ts-ignore
+      // @ts-expect-error
       acc[key] = featInfo?.[key]?.default as unknown as undefined;
       return acc;
     }, {}) as FeatureConfig
@@ -141,6 +141,9 @@ export const migrations: DataMigrationsDict = {
     oldData.autoCloseToasts = oldData.closeToastsTimeout > 0;
     oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
 
+    if("thumbnailOverlayImageFit" in oldData)
+      delete oldData.thumbnailOverlayImageFit;
+
     return useNewDefaultIfUnchanged(
       useDefaultConfig(oldData, [
         "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
@@ -163,7 +166,7 @@ export const migrations: DataMigrationsDict = {
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
   const newData = { ...defaultData, ...(baseData ?? {}) };
-  for(const key of resetKeys) // @ts-ignore
+  for(const key of resetKeys) // @ts-expect-error
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
   return newData;
 }
@@ -179,7 +182,7 @@ function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 ) {
   const newData = { ...oldData };
   for(const { key, oldDefault } of defaults) {
-    // @ts-ignore
+    // @ts-expect-error
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)
       newData[key] = defaultVal as never; // we love TS

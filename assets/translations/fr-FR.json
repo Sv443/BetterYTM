@@ -264,7 +264,6 @@
   "feature_helptext_thumbnailOverlayToggleBtnShown": "Ce bouton vous permettra d'activer ou de désactiver manuellement la vignette. Cela n'est pas affecté si la superposition est définie sur \"jamais affichée\".\nUne fois qu'une nouvelle vidéo ou chanson commence à jouer, l'état par défaut sera restauré.\nMaintenez la touche Maj enfoncée tout en cliquant ou appuyez sur le bouton du milieu de la souris pour ouvrir la vignette de la plus haute qualité dans un nouvel onglet.",
   "feature_desc_thumbnailOverlayShowIndicator": "Afficher un indicateur dans le coin inférieur droit de la vignette lorsqu'elle est active?",
   "feature_desc_thumbnailOverlayIndicatorOpacity": "Opacité de l'indicateur de vignette",
-  "feature_desc_thumbnailOverlayImageFit": "Comment ajuster l'image de la vignette sur l'élément vidéo",
   "feature_desc_hideCursorOnIdle": "Masquer le curseur après quelques secondes d'inactivité sur la vidéo",
   "feature_desc_hideCursorOnIdleDelay": "Combien de secondes d'inactivité avant que le curseur ne soit masqué?",
   "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",

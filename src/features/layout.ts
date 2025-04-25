@@ -550,8 +550,10 @@ export async function initThumbnailOverlay() {
 
           if(toggleBtnElem)
             toggleBtnElem.href = thumbUrl;
-          if(thumbImgElem)
+          if(thumbImgElem) {
             thumbImgElem.src = thumbUrl;
+            thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "full" : "crop";
+          }
 
           log("Applied thumbnail URL to overlay:", thumbUrl);
         }
@@ -602,7 +604,6 @@ export async function initThumbnailOverlay() {
         thumbImgElem.id = "bytm-thumbnail-overlay-img";
         thumbImgElem.role = "presentation";
         thumbImgElem.ariaHidden = "true";
-        thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
 
         overlayElem.appendChild(thumbImgElem);
         playerEl.appendChild(overlayElem);

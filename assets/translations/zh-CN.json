@@ -264,7 +264,6 @@
   "feature_helptext_thumbnailOverlayToggleBtnShown": "这个按钮允许你手动开关缩略图。一旦开始播放新的视频或歌曲，就会恢复默认状态。点击时按住 shift 或按下鼠标中键，可在新标签页中打开最高质量的缩略图。",
   "feature_desc_thumbnailOverlayShowIndicator": "在缩略图上显示一个指示器，表示它是活动的吗？",
   "feature_desc_thumbnailOverlayIndicatorOpacity": "缩略图指示器的不透明度",
-  "feature_desc_thumbnailOverlayImageFit": "如何将缩略图图像适配到视频元素上",
   "feature_desc_hideCursorOnIdle": "在视频上几秒钟不活动后隐藏光标",
   "feature_desc_hideCursorOnIdleDelay": "在几秒钟的不活动后隐藏光标？",
   "feature_desc_fixHdrIssues": "在 HDR 兼容的 GPU 和显示器上防止一些渲染问题",

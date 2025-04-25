@@ -545,8 +545,6 @@ export interface FeatureConfig {
   thumbnailOverlayShowIndicator: boolean;
   /** The opacity of the thumbnail overlay indicator element */
   thumbnailOverlayIndicatorOpacity: number;
-  /** How to fit the thumbnail overlay image */
-  thumbnailOverlayImageFit: "cover" | "contain" | "fill";
   /** Hide the cursor when it's idling on the video element for a while */
   hideCursorOnIdle: boolean;
   /** Delay in seconds after which the cursor should be hidden */
