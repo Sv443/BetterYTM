@@ -1,18 +1,20 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
-import { inputIgnoreTagNames } from "./input.js";
 import { siteEvents } from "../siteEvents.js";
 import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "./behavior.js";
 import { getLikeDislikeBtns, getVideoTime } from "../utils/dom.js";
 import { getDomain } from "../utils/misc.js";
 import { error, info, log, warn } from "../utils/logging.js";
 import type { Domain, FeatKeysOfType, HotkeyObj } from "../types.js";
+import { isIgnoredInputElement } from "./input.js";
 
 export async function initHotkeys() {
   const promises: Promise<void>[] = [];
 
+  if(getDomain() === "ytm")
+    promises.push(initLyricsHotkey());
+
   promises.push(initLikeDislikeHotkeys());
-  promises.push(initLyricsHotkey());
   promises.push(initSiteSwitch());
   promises.push(initProxyHotkeys());
   promises.push(initSkipToRemTimeHotkey());
@@ -36,7 +38,7 @@ export async function initSiteSwitch() {
   document.addEventListener("keydown", (e) => {
     if(!getFeature("switchBetweenSites"))
       return;
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+    if(isIgnoredInputElement())
       return;
     if(siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
       switchSite(domain === "yt" ? "ytm" : "yt");
@@ -100,7 +102,7 @@ async function initLikeDislikeHotkeys() {
   document.addEventListener("keydown", (e) => {
     if(!getFeature("likeDislikeHotkeys"))
       return;
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+    if(isIgnoredInputElement())
       return;
 
     const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
@@ -118,7 +120,7 @@ async function initLyricsHotkey() {
   document.addEventListener("keydown", (e) => {
     if(!getFeature("currentLyricsHotkeyEnabled"))
       return;
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+    if(isIgnoredInputElement())
       return;
 
     if(hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
@@ -137,7 +139,7 @@ async function initSkipToRemTimeHotkey() {
   document.addEventListener("keydown", async (e) => {
     if(!getFeature("skipToRemTimeHotkeyEnabled"))
       return;
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+    if(isIgnoredInputElement())
       return;
 
     if(hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
@@ -156,6 +158,8 @@ type HotkeyProxyGroup = {
   hkFeatKey: FeatKeysOfType<HotkeyObj>;
   /** Which key should have its default action and propagation prevented */
   preventKey?: string;
+  /** Which domains this hotkey should be active on */
+  domains: Domain[];
   /** Called when the hotkey was pressed and the feature is toggled on */
   onPress: (e: KeyboardEvent) => void | Promise<void>;
 };
@@ -182,6 +186,7 @@ async function initProxyHotkeys() {
       {
         hkFeatKey: "nextHotkey",
         preventKey: "KeyJ",
+        domains: ["ytm"],
         onPress: () => dispatchProxyKey({
           code: "KeyJ",
           key: "j",
@@ -192,6 +197,7 @@ async function initProxyHotkeys() {
       {
         hkFeatKey: "previousHotkey",
         preventKey: "KeyK",
+        domains: ["ytm"],
         onPress: () => dispatchProxyKey({
           code: "KeyK",
           key: "k",
@@ -204,6 +210,7 @@ async function initProxyHotkeys() {
       {
         hkFeatKey: "playPauseHotkey",
         preventKey: "Space",
+        domains: ["ytm"],
         onPress: () => dispatchProxyKey({
           code: "Space",
           key: " ",
@@ -215,16 +222,19 @@ async function initProxyHotkeys() {
   } as const;
 
   document.addEventListener("keydown", (e) => {
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+    if(isIgnoredInputElement())
       return;
 
     for(const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
       if(getFeature(featKey as "_") !== true)
         continue;
 
-      for(const { hkFeatKey, onPress, ...rest } of proxyGroup) {
+      for(const { hkFeatKey, onPress, domains, ...rest } of proxyGroup) {
+        if(!domains.includes(getDomain()))
+          continue;
+
         // prevent hotkeys from triggering each other:
-        if(Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms)
+        if(Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
           continue;
         const nowTs = Date.now();
 
