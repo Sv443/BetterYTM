@@ -774,7 +774,7 @@ export const featInfo = {
     supportedSites: ["ytm"],
     default: {
       code: "KeyN",
-      shift: false,
+      shift: true,
       ctrl: false,
       alt: false,
     },
@@ -788,7 +788,7 @@ export const featInfo = {
     supportedSites: ["ytm"],
     default: {
       code: "KeyP",
-      shift: false,
+      shift: true,
       ctrl: false,
       alt: false,
     },
