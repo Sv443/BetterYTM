@@ -155,20 +155,21 @@ async function initSkipToRemTimeHotkey() {
 
 //#region proxy hotkeys
 
-type HotkeyProxyGroup = {
-  /** The feature key that contains the hotkey object */
-  hkFeatKey: FeatKeysOfType<HotkeyObj>;
-  /** Which key should have its default action and propagation prevented */
-  preventKey?: string;
-  /** Which domains this hotkey should be active on */
-  domains: Domain[];
-  /** Called when the hotkey was pressed and the feature is toggled on */
-  onPress: (e: KeyboardEvent) => void | Promise<void>;
-};
+type ProxyHotkeys = Partial<Record<
+  FeatKeysOfType<boolean>,
+  Array<{
+    /** The feature key that contains the hotkey object */
+    hkFeatKey: FeatKeysOfType<HotkeyObj>;
+    /** Which key should have its default action and propagation prevented */
+    preventKey?: string;
+    /** Which domains this hotkey should be active on */
+    domains: Domain[];
+    /** Called when the hotkey was pressed and the feature is toggled on */
+    onPress: (e: KeyboardEvent) => void | Promise<void>;
+  }>
+>>;
 
-type ProxyHotkeys = Partial<Record<FeatKeysOfType<boolean>, HotkeyProxyGroup[]>>;
-
-let lastProxyHk = 0;
+let lastProxyHkTime = 0;
 
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
@@ -235,10 +236,10 @@ async function initProxyHotkeys() {
         if(!domains.includes(getDomain()))
           continue;
 
-        // prevent hotkeys from triggering each other:
-        if(Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
-          continue;
         const nowTs = Date.now();
+        // prevent hotkeys from triggering each other:
+        if(nowTs - lastProxyHkTime < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
+          continue;
 
         if("preventKey" in rest && e.code === rest.preventKey) {
           e.preventDefault();
@@ -246,7 +247,7 @@ async function initProxyHotkeys() {
         }
 
         if(hotkeyMatches(e, getFeature(hkFeatKey))) {
-          lastProxyHk = nowTs;
+          lastProxyHkTime = nowTs;
           !e.defaultPrevented && e.preventDefault();
           e.bubbles && e.stopImmediatePropagation();
           onPress(e);

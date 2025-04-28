@@ -865,12 +865,13 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const { UserUtils } = unsafeWindow.BYTM;
+> const { BYTM: { UserUtils, ...BYTM } } = unsafeWindow;
 > 
 > try {
+>   // race the video time with a timeout of 5 seconds:
 >   const videoTime: number | undefined | null = await Promise.race([
 >     // get the video time with 3 decimal digits:
->     unsafeWindow.BYTM.getVideoTime(3),
+>     BYTM.getVideoTime(3),
 >     // resolve with undefined if the video time couldn't be determined after 5 seconds:
 >     UserUtils.pauseFor(5000),
 >   ]);
@@ -960,21 +961,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 >   
 > Description:  
-> Waits for the video element to be queryable in the DOM.  
-> The Promise could potentially take a while, since it will only resolve if the `/watch` page is loaded and the video element is queryable and has the media buffered and ready.  
+> Waits for the DOM to be ready and the video element to be queryable.  
+> The Promise could potentially take a while, since it will only resolve if the `/watch` page is open and the video element is queryable and has the media buffered and ready.  
 > If the video element already exists, the Promise will resolve immediately.  
-> This function has to be called after the `bytm:observersReady` event has been dispatched.  
 >   
 > If the user lingers on a page that doesn't have a video element, the Promise will only resolve after they navigate to the `/watch` page.  
-> To curb this, you can listen to the site event `bytm:siteEvent:pathChanged` to know when the user navigates to a page where the video element is available, or use a timeout (see [`getVideoTime()`](#getvideotime) for an example)
+> To curb this, you can listen to the site event `bytm:siteEvent:pathChanged` to know when the user navigates to a page where the video element is available, or use a timeout and `Promise.race()` to abort the call (see [`getVideoTime()`](#getvideotime) for an example)
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.addEventListener("bytm:observersReady", async () => {
->   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
->   console.log("The video element:", videoElement);
-> });
+> const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
+> console.log("DOM loaded and video element found:", videoElement);
 > ```
 > </details>
 

@@ -1,4 +1,4 @@
-import { addGlobalStyle, consumeStringGen, getUnsafeWindow, isDomLoaded, randomId, type StringGen, type Stringifiable } from "@sv443-network/userutils";
+import { addGlobalStyle, consumeStringGen, getUnsafeWindow, isDomLoaded, randomId, type StringGen, type Stringifiable, onDomLoad } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
@@ -27,7 +27,7 @@ let vidElemReady = false;
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).  
  * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.  
- * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+ * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work).
  * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
  */
 export function getVideoTime(precision = 2) {
@@ -133,13 +133,16 @@ function ytForceShowVideoTime() {
 //#region vid ready
 
 /**
- * Waits for the video element to be in its readyState 4 / canplay state and returns it.  
+ * Waits for the DOM to be loaded and the video element to be in its readyState 4 or until the "canplay" event is emitted and then returns it.  
  * Could take a very long time to resolve if the `/watch` page isn't open.  
  * Resolves immediately if the video element is already ready.
  */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   return new Promise(async (res, rej) => {
     try {
+      if(!isDomLoaded())
+        await onDomLoad();
+
       const vidEl = getVideoElement();
       if(vidEl && (vidEl?.readyState ?? 0) > 0)
         return res(vidEl);
