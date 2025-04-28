@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6aa53ac0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@98e2f66f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -336,7 +336,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "6aa53ac0",
+    buildNumber: "98e2f66f",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3692,6 +3692,7 @@ async function mountCfgMenu() {
         if (isCfgMenuMounted)
             return;
         isCfgMenuMounted = true;
+        const startTs = Date.now();
         BytmDialog.initDialogs();
         initLocale = getFeature("locale");
         initConfig$1 = getFeatures();
@@ -4366,7 +4367,7 @@ async function mountCfgMenu() {
         backgroundElem.appendChild(menuContainer);
         ((_d = document.querySelector("#bytm-dialog-container")) !== null && _d !== void 0 ? _d : document.body).appendChild(backgroundElem);
         window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
-        log("Added menu element");
+        log(`Mounted config menu element in ${Date.now() - startTs}ms`);
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
@@ -4885,13 +4886,16 @@ async function initThumbnailOverlay() {
                 });
             }
         };
-        const applyThumbUrl = async (videoID) => {
+        const applyThumbUrl = async (videoID, force = false) => {
             try {
                 if (previousVideoIDs.length > 2)
                     previousVideoIDs.splice(0, previousVideoIDs.length - 2);
-                if (previousVideoIDs.find(id => id === videoID))
-                    return;
-                previousVideoIDs.push(videoID);
+                if (!force) {
+                    if (previousVideoIDs.find(id => id === videoID))
+                        return;
+                    else
+                        previousVideoIDs.push(videoID);
+                }
                 const thumbUrl = await getBestThumbnailUrl(videoID);
                 if (thumbUrl) {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
@@ -4901,8 +4905,10 @@ async function initThumbnailOverlay() {
                     if (toggleBtnElem)
                         toggleBtnElem.href = thumbUrl;
                     if (thumbImgElem) {
+                        thumbImgElem.dataset.videoId = videoID;
                         thumbImgElem.src = thumbUrl;
-                        thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "full" : "crop";
+                        // crop horizontal bezels on songs:
+                        thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "contain" : "cover";
                     }
                     log("Applied thumbnail URL to overlay:", thumbUrl);
                 }
@@ -4974,6 +4980,9 @@ async function initThumbnailOverlay() {
                         if (e.shiftKey)
                             return openInTab(toggleBtnElem.href, false);
                         invertOverlay = !invertOverlay;
+                        const params = new URL(location.href).searchParams;
+                        if (thumbImgElem.dataset.videoId !== params.get("v"))
+                            applyThumbUrl(params.get("v"), true);
                         updateOverlayVisibility();
                     });
                     setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
@@ -5277,7 +5286,7 @@ async function initSkipToRemTimeHotkey() {
         }
     });
 }
-let lastProxyHk = 0;
+let lastProxyHkTime = 0;
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
     const dispatchProxyKey = (hkProps) => {
@@ -5334,16 +5343,16 @@ async function initProxyHotkeys() {
                 const { hkFeatKey, onPress, domains } = _a, rest = __rest(_a, ["hkFeatKey", "onPress", "domains"]);
                 if (!domains.includes(getDomain()))
                     continue;
-                // prevent hotkeys from triggering each other:
-                if (Date.now() - lastProxyHk < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
-                    continue;
                 const nowTs = Date.now();
+                // prevent hotkeys from triggering each other:
+                if (nowTs - lastProxyHkTime < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
+                    continue;
                 if ("preventKey" in rest && e.code === rest.preventKey) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
                 }
                 if (hotkeyMatches(e, getFeature(hkFeatKey))) {
-                    lastProxyHk = nowTs;
+                    lastProxyHkTime = nowTs;
                     !e.defaultPrevented && e.preventDefault();
                     e.bubbles && e.stopImmediatePropagation();
                     onPress(e);
@@ -6854,7 +6863,7 @@ const featInfo = {
         supportedSites: ["ytm"],
         default: {
             code: "KeyN",
-            shift: false,
+            shift: true,
             ctrl: false,
             alt: false,
         },
@@ -6868,7 +6877,7 @@ const featInfo = {
         supportedSites: ["ytm"],
         default: {
             code: "KeyP",
-            shift: false,
+            shift: true,
             ctrl: false,
             alt: false,
         },
@@ -7892,7 +7901,7 @@ let vidElemReady = false;
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).
  * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.
- * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+ * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work).
  * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
  */
 function getVideoTime(precision = 2) {
@@ -7973,7 +7982,7 @@ function ytForceShowVideoTime() {
 }
 //#region vid ready
 /**
- * Waits for the video element to be in its readyState 4 / canplay state and returns it.
+ * Waits for the DOM to be loaded and the video element to be in its readyState 4 or until the "canplay" event is emitted and then returns it.
  * Could take a very long time to resolve if the `/watch` page isn't open.
  * Resolves immediately if the video element is already ready.
  */
@@ -7981,6 +7990,8 @@ function waitVideoElementReady() {
     return new Promise(async (res, rej) => {
         var _a;
         try {
+            if (!UserUtils.isDomLoaded())
+                await UserUtils.onDomLoad();
             const vidEl = getVideoElement();
             if (vidEl && ((_a = vidEl === null || vidEl === void 0 ? void 0 : vidEl.readyState) !== null && _a !== void 0 ? _a : 0) > 0)
                 return res(vidEl);
