@@ -532,13 +532,17 @@ export async function initThumbnailOverlay() {
       }
     };
 
-    const applyThumbUrl = async (videoID: string) => {
+    const applyThumbUrl = async (videoID: string, force = false) => {
       try {
         if(previousVideoIDs.length > 2)
           previousVideoIDs.splice(0, previousVideoIDs.length - 2);
-        if(previousVideoIDs.find(id => id === videoID))
-          return;
-        previousVideoIDs.push(videoID);
+
+        if(!force) {
+          if(previousVideoIDs.find(id => id === videoID))
+            return;
+          else
+            previousVideoIDs.push(videoID);
+        }
 
         const thumbUrl = await getBestThumbnailUrl(videoID);
         if(thumbUrl) {
@@ -551,8 +555,10 @@ export async function initThumbnailOverlay() {
           if(toggleBtnElem)
             toggleBtnElem.href = thumbUrl;
           if(thumbImgElem) {
+            thumbImgElem.dataset.videoID = videoID;
             thumbImgElem.src = thumbUrl;
-            thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "full" : "crop";
+            // crop horizontal bezels on songs:
+            thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "contain" : "cover";
           }
 
           log("Applied thumbnail URL to overlay:", thumbUrl);
@@ -634,6 +640,8 @@ export async function initThumbnailOverlay() {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
             invertOverlay = !invertOverlay;
+            if(thumbImgElem.dataset.videoID !== params.get("v"))
+              applyThumbUrl(params.get("v")!, true);
             updateOverlayVisibility();
           });
 
