@@ -35,6 +35,7 @@
 .bytm-dialog-body details summary {
   cursor: pointer;
   font-style: italic;
+  user-select: none;
 }
 
 .bytm-secondary-label {

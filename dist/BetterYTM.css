@@ -507,6 +507,7 @@ hr {
 .bytm-dialog-body details summary {
   cursor: pointer;
   font-style: italic;
+  user-select: none;
 }
 
 .bytm-secondary-label {
@@ -1607,11 +1608,12 @@ select.bytm-ftconf-input {
   display: inline-block;
 }
 
-.bytm-changelog-version-details summary {
+.bytm-changelog-version-details details summary {
   cursor: pointer;
+  user-select: none;
 }
 
-.bytm-changelog-version-details summary::marker {
+.bytm-changelog-version-details details summary::marker {
   font-size: 2rem;
 }
 

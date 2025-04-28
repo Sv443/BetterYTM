@@ -42,6 +42,8 @@ async function mountCfgMenu() {
       return;
     isCfgMenuMounted = true;
 
+    const startTs = Date.now();
+
     BytmDialog.initDialogs();
 
     initLocale = getFeature("locale");
@@ -876,7 +878,7 @@ async function mountCfgMenu() {
 
     window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250));
 
-    log("Added menu element");
+    log(`Mounted config menu element in ${Date.now() - startTs}ms`);
 
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
