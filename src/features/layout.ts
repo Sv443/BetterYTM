@@ -555,7 +555,7 @@ export async function initThumbnailOverlay() {
           if(toggleBtnElem)
             toggleBtnElem.href = thumbUrl;
           if(thumbImgElem) {
-            thumbImgElem.dataset.videoID = videoID;
+            thumbImgElem.dataset.videoId = videoID;
             thumbImgElem.src = thumbUrl;
             // crop horizontal bezels on songs:
             thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "contain" : "cover";
@@ -639,9 +639,13 @@ export async function initThumbnailOverlay() {
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
+
             invertOverlay = !invertOverlay;
-            if(thumbImgElem.dataset.videoID !== params.get("v"))
+
+            const params = new URL(location.href).searchParams;
+            if(thumbImgElem.dataset.videoId !== params.get("v"))
               applyThumbUrl(params.get("v")!, true);
+
             updateOverlayVisibility();
           });
 
