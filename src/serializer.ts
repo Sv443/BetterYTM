@@ -1,7 +1,7 @@
 import { DataStoreSerializer, type Stringifiable } from "@sv443-network/userutils";
 
 import { configStore } from "./config.js";
-import { autoLikeStore } from "./features/input.js";
+import { autoLikeStore } from "./features/autoLike.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { t } from "./utils/translations.js";
 import { error } from "./utils/logging.js";

@@ -15,6 +15,7 @@ import { getPluginListDialog } from "../dialogs/pluginList.js";
 
 //#region re-exports
 
+export * from "./autoLike.js";
 export * from "./layout.js";
 export * from "./behavior.js";
 export * from "./input.js";
@@ -616,16 +617,19 @@ export const featInfo = {
     enable: noop,
     textAdornment: adornments.ytmOnly,
   },
+
+  //#region cat:autoLike
+
   autoLikeChannels: {
     type: "toggle",
-    category: "input",
+    category: "autoLike",
     supportedSites: ["ytm", "yt"],
     default: true,
     textAdornment: adornments.reload,
   },
   autoLikeChannelToggleBtn: {
     type: "toggle",
-    category: "input",
+    category: "autoLike",
     supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
@@ -636,13 +640,13 @@ export const featInfo = {
   // TODO(v2.2):
   // autoLikePlayerBarToggleBtn: {
   //   type: "toggle",
-  //   category: "input",
+  //   category: "autoLike",
   //   default: false,
   //   textAdornment: adornments.reload,
   // },
   autoLikeTimeout: {
     type: "slider",
-    category: "input",
+    category: "autoLike",
     supportedSites: ["ytm", "yt"],
     min: 3,
     max: 30,
@@ -656,7 +660,7 @@ export const featInfo = {
   },
   autoLikeShowToast: {
     type: "toggle",
-    category: "input",
+    category: "autoLike",
     supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
@@ -666,7 +670,7 @@ export const featInfo = {
   },
   autoLikeOpenMgmtDialog: {
     type: "button",
-    category: "input",
+    category: "autoLike",
     supportedSites: ["ytm", "yt"],
     click: () => getAutoLikeDialog().then(d => d.open()),
   },
@@ -982,18 +986,6 @@ export const featInfo = {
     default: undefined,
     click: () => getPluginListDialog().then(d => d.open()),
   },
-  initTimeout: {
-    type: "number",
-    category: "plugins",
-    supportedSites: ["ytm", "yt"],
-    min: 3,
-    max: 30,
-    default: 8,
-    step: 0.1,
-    unit: "s",
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-  },
 
   //#region cat:general
   locale: {
@@ -1060,6 +1052,18 @@ export const featInfo = {
     category: "general",
     supportedSites: ["ytm", "yt"],
     default: true,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+  },
+  initTimeout: {
+    type: "number",
+    category: "plugins",
+    supportedSites: ["ytm", "yt"],
+    min: 3,
+    max: 30,
+    default: 8,
+    step: 0.1,
+    unit: "s",
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
   },

@@ -449,6 +449,7 @@ export type FeatureCategory =
   | "songLists"
   | "behavior"
   | "input"
+  | "autoLike"
   | "hotkeys"
   | "lyrics"
   | "integrations"
@@ -657,6 +658,8 @@ export interface FeatureConfig {
   frameSkipAmount: number;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
+
+  //#region auto-like
   /** Whether to auto-like all played videos of configured channels */
   autoLikeChannels: boolean;
   /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
@@ -732,8 +735,6 @@ export interface FeatureConfig {
   //#region plugins
   /** Button that opens the plugin list dialog */
   openPluginList: undefined;
-  /** Amount of seconds until the feature initialization times out */
-  initTimeout: number;
 
   //#region misc
   /** The locale to use for translations */
@@ -750,6 +751,8 @@ export interface FeatureConfig {
   toastDuration: number;
   /** Whether to show a toast on generic errors */
   showToastOnGenericError: boolean;
+  /** Amount of seconds until the feature initialization times out */
+  initTimeout: number;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Button to reset every DataStore instance to their default values */
