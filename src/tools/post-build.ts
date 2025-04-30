@@ -89,7 +89,7 @@ const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_
 /** Directives that are only added in dev mode */
 const devDirectives = mode !== "development"
   ? undefined
-  : devGrants.reduce((a, c) => `${a}// @grant             ${c}\n`, "");
+  : devGrants.map((g) => `// @grant             ${g}`).join("\n");
 
 //#region main
 
