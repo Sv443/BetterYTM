@@ -2,7 +2,8 @@ import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, preloadIma
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { sanitizeArtists } from "./lyrics.js";
+import { featInfo } from "./index.js";
+import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
 import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
 import { error, log, warn } from "../utils/logging.js";
@@ -550,13 +551,25 @@ export async function initThumbnailOverlay() {
             previousVideoIDs.push(videoID);
         }
 
-        const thumbUrl = await getBestThumbnailUrl(videoID);
-        if(thumbUrl) {
+        const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
+        if(
+          toggleBtnElem
+          && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
+          && (
+            (!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
+            && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))
+          )
+        )
+          return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
+
+        const actuallyApplyThumbUrl = (thumbUrl: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
-          if(toggleBtnElem)
-            toggleBtnElem.dataset.albumArtworkUrl = "";
+          if(toggleBtnElem) {
+            toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
+            toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
+          }
 
           if(toggleBtnElem?.href !== "" && toggleBtnElem?.href === thumbUrl && thumbImgElem?.src === thumbUrl)
             return;
@@ -571,8 +584,35 @@ export async function initThumbnailOverlay() {
           }
 
           log("Applied thumbnail URL to overlay:", thumbUrl);
-        }
-        else error("Couldn't get thumbnail URL for watch ID", videoID);
+        };
+
+        let bestNativeThumbUrl: string | undefined;
+        const ac = new AbortController();
+        getBestThumbnailUrl(videoID).then((url) =>
+          ac.signal.aborted ? undefined : (bestNativeThumbUrl = url) && actuallyApplyThumbUrl(url)
+        ).catch(() => void 0);
+
+        addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
+          all: true,
+          async listener(elems) {
+            const iTunesAlbum = elems.length >= 5
+              ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
+              : undefined;
+
+            const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
+            const iTunesUrl = (iTunesAlbum?.artworkUrl60 ?? iTunesAlbum?.artworkUrl100);
+            iTunesUrl && !ac.signal.aborted && ac.abort();
+
+            const thumbUrl = iTunesUrl
+              ?.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
+              ?? bestNativeThumbUrl ?? await getBestThumbnailUrl(videoID);
+
+            if(thumbUrl)
+              actuallyApplyThumbUrl(thumbUrl);
+            else
+              warn("Couldn't get thumbnail URL for album", iTunesAlbum?.collectionName, "by", iTunesAlbum?.artistName, "or video with ID", videoID);
+          },
+        });
       }
       catch(err) {
         error("Couldn't apply thumbnail URL to overlay due to an error:", err);
@@ -648,8 +688,6 @@ export async function initThumbnailOverlay() {
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
-            else if(e.ctrlKey)
-              return openITunesAlbumArtwork();
 
             invertOverlay = !invertOverlay;
 
@@ -698,65 +736,36 @@ export async function initThumbnailOverlay() {
   });
 }
 
-/** Opens the iTunes album artwork in a new tab */
-function openITunesAlbumArtwork() {
-  addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
-    all: true,
-    async listener(elems) {
-      const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
-      if(
-        toggleBtnElem
-        && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
-        && (
-          (!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
-          && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))
+/** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
+async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
+  const doFetchITunesAlbum = async (artist: string, album: string) => {
+    const albumObjs = await fetchITunesAlbumInfo(artist, album);
+    if(albumObjs && albumObjs.length > 0) {
+      const bestMatch = albumObjs.find((al) => (
+        (
+          al.artistName === artist
+        || al.artistName.toLowerCase() === artist.toLowerCase()
+        || al.artistName === artistsRaw
+        || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
         )
+      && (
+        al.collectionName === album
+        || al.collectionName.toLowerCase() === album.toLowerCase()
+        || al.collectionCensoredName === album
+        || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
       )
-        return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
+      ));
+      return [bestMatch, albumObjs[0]];
+    }
+    return [undefined, albumObjs[0]];
+  };
 
-      if(elems.length < 5)
-        return warn("Couldn't find artist and album name elements when trying to open iTunes album artwork:", elems);
+  const artist = sanitizeArtists(artistsRaw);
 
-      const artistsRaw = elems[0].innerText?.trim();
-      const artist = sanitizeArtists(artistsRaw);
-      const album = elems[2].innerText;
-
-      const albumObjs = await fetchITunesAlbumInfo(artist, album);
-      if(albumObjs && albumObjs.length > 0) {
-        const bestMatch = albumObjs.find((al) => (
-          (
-            al.artistName === artist
-            || al.artistName.toLowerCase() === artist.toLowerCase()
-            || al.artistName === artistsRaw
-            || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
-          )
-          && (
-            al.collectionName === album
-            || al.collectionName.toLowerCase() === album.toLowerCase()
-            || al.collectionCensoredName === album
-            || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
-          )
-        ));
-        const albumInfo = bestMatch ?? albumObjs[0];
-
-        const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? 1000;
-
-        const artworkUrlRaw = albumInfo.artworkUrl60 ?? albumInfo.artworkUrl100;
-        const artworkUrl = artworkUrlRaw
-          ? artworkUrlRaw.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
-          : undefined;
-
-        if(artworkUrl) {
-          openInTab(artworkUrl, false);
-          if(toggleBtnElem) {
-            toggleBtnElem.dataset.albumArtworkUrl = artworkUrl;
-            toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
-          }
-        }
-        return;
-      }
-    },
-  });
+  let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
+  if(!bestMatch)
+    [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
+  return bestMatch ?? fallback!;
 }
 
 //#region idle hide cursor

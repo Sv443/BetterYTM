@@ -15,3 +15,5 @@ BetterYTM integrates with other extensions and tools to provide a smoother exper
 - [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong)
   - BYTM adjusts the colors it uses throughout the YTM page to fit the theme configured in the ThemeSong extension.
   - There is a feature in the BYTM config menu that can be enabled for even better integration with ThemeSong.
+- [Apple Music / iTunes](https://music.apple.com/)
+  - BYTM fetches the highest resolution album artwork from Apple Music / iTunes for the thumbnail overlay feature.

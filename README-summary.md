@@ -61,11 +61,12 @@ Please make sure to manually remove and reinstall the userscript once the next r
 
 ## Integrations
 BetterYTM integrates with other extensions and tools to adjust their behavior and provide a smoother experience:
-- [Dark Reader](https://darkreader.org/)
-- [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube)
-- [Return YouTube Dislike](https://returnyoutubedislike.com/)
-- [SponsorBlock](https://sponsor.ajay.app/)
-- [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong)
+- [Dark Reader](https://darkreader.org/) (disabled fully or partially)
+- [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube) (BYTM respects the set theme)
+- [Return YouTube Dislike](https://returnyoutubedislike.com/) (shows approx. like and dislike counts)
+- [SponsorBlock](https://sponsor.ajay.app/) (compatibility adjustments)
+- [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) (BYTM respects the set theme)
+- [Apple Music](https://music.apple.com/) (album artworks for thumbnail overlay)
   
 To find out more about these integrations, [click here](./src/dev/integrations.md)
 

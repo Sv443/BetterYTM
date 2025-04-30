@@ -1,7 +1,7 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
-import { error, info } from "./logging.js";
+import { error, info, warn } from "./logging.js";
 
 /**
  * Constructs a URL from a base URL and a record of query parameters.  
@@ -115,12 +115,16 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
     const res = await fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
     const json = await res.json() as ITunesAPIResponse;
 
+    if(!res.ok) {
+      error("Couldn't fetch iTunes album info due to an error:", json);
+      return [];
+    }
     if(!("resultCount" in json) || !("results" in json)) {
       error("Couldn't parse iTunes album info due to an error:", json);
       return [];
     }
     if(json.resultCount === 0) {
-      error("No iTunes album info found for artist", artist, "and album", album);
+      warn("No iTunes album info found for artist", artist, "and album", album);
       return [];
     }
 
