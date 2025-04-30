@@ -268,9 +268,9 @@ export const featInfo = {
     default: 2,
     unit: "s",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     reloadRequired: false,
     enable: noop,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
   },
   fixHdrIssues: {
     type: "toggle",
@@ -372,11 +372,11 @@ export const featInfo = {
     step: 1,
     default: 100,
     unit: "%",
-    textAdornment: () => getFeature("volumeSharedBetweenTabs")
-      ? combineAdornments([adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
-      : combineAdornments([adornments.ytmOnly, adornments.reload]),
     reloadRequired: false,
     enable: noop,
+    textAdornment: () => getFeature("volumeSharedBetweenTabs")
+      ? combineAdornments([adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+      : adornments.ytmOnly(),
   },
 
   //#region cat:song lists

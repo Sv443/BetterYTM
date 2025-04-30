@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cac33fe0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e609d291/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "cac33fe0",
+    buildNumber: "e609d291",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6525,9 +6525,9 @@ const featInfo = {
         default: 2,
         unit: "s",
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
         reloadRequired: false,
         enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     fixHdrIssues: {
         type: "toggle",
@@ -6628,11 +6628,11 @@ const featInfo = {
         step: 1,
         default: 100,
         unit: "%",
-        textAdornment: () => getFeature("volumeSharedBetweenTabs")
-            ? combineAdornments([adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
-            : combineAdornments([adornments.ytmOnly, adornments.reload]),
         reloadRequired: false,
         enable: noop,
+        textAdornment: () => getFeature("volumeSharedBetweenTabs")
+            ? combineAdornments([adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
+            : adornments.ytmOnly(),
     },
     //#region cat:song lists
     lyricsQueueButton: {
