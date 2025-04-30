@@ -85,7 +85,7 @@ export function dbg(...args: unknown[]): void {
 
 //#region error dialog
 
-function getErrorDialog(errName: string, args: unknown[]) {
+export function getErrorDialog(errName: string, args: unknown[]) {
   return new MarkdownDialog({
     id: "generic-error",
     height: 400,

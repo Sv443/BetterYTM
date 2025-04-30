@@ -1,5 +1,5 @@
 import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
-import { formatNumber, getLocale, getPreferredLocale, getResourceUrl, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
+import { formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
@@ -744,7 +744,19 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     default: true,
     reloadRequired: false,
-    enable: noop,
+    enable: () => !getFeature("rememberSongTime") && showIconToast({
+      icon: "icon-error",
+      iconFill: "var(--bytm-error-col)",
+      message: t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
+      duration: 10,
+      onClick: () => getErrorDialog(
+        t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
+        [t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]
+      ).open(),
+    }),
+    textAdornment: () => !getFeature("rememberSongTime")
+      ? adornments.alert(t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'"))
+      : undefined,
   },
   skipToRemTimeHotkey: {
     type: "hotkey",
