@@ -1,5 +1,5 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
-import type { RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
+import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
 import { error, info } from "./logging.js";
 
@@ -106,5 +106,33 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
   catch(err) {
     error("Couldn't fetch video votes due to an error:", err);
     return undefined;
+  }
+}
+
+/** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
+export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {
+  try {
+    const res = await fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
+    const json = await res.json() as ITunesAPIResponse;
+
+    if(!("resultCount" in json) || !("results" in json)) {
+      error("Couldn't parse iTunes album info due to an error:", json);
+      return [];
+    }
+    if(json.resultCount === 0) {
+      error("No iTunes album info found for artist", artist, "and album", album);
+      return [];
+    }
+
+    return json.results.filter((result) => {
+      if(!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
+        return false;
+
+      return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+    });
+  }
+  catch(err) {
+    error("Couldn't fetch iTunes album info due to an error:", err);
+    return [];
   }
 }

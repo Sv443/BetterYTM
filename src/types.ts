@@ -1,8 +1,8 @@
-import type { NanoEmitter, Prettify } from "@sv443-network/userutils";
+import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
@@ -110,6 +110,36 @@ export type VideoVotesObj = {
   /** Timestamp of when the data was fetched */
   timestamp: number;
 };
+
+/** Response from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
+export type ITunesAPIResponse = {
+  resultCount: number;
+  results: ITunesAlbumObj[];
+};
+
+/** One album object returned by the iTunes API */
+export type ITunesAlbumObj = Prettify<{
+  wrapperType: LooseUnion<"collection">;
+  collectionType: LooseUnion<"Album">;
+  artistId: number;
+  collectionId: number;
+  artistName: string;
+  collectionName: string;
+  collectionCensoredName: string;
+  artistViewUrl: `https://music.apple.com/us/artist/${string}/${number}?uo=${number}`;
+  collectionViewUrl: `https://music.apple.com/us/album/${string}/${number}?uo=${number}`;
+  artworkUrl60: `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg`;
+  artworkUrl100: `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg`;
+  collectionPrice: number;
+  collectionExplicitness: LooseUnion<"explicit" | "notExplicit" | "cleaned">;
+  contentAdvisoryRating?: LooseUnion<"Explicit" | "Clean">;
+  trackCount: number;
+  copyright: string;
+  country: LooseUnion<"USA">;
+  currency: LooseUnion<"USD">;
+  releaseDate: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
+  primaryGenreName: string;
+}>;
 
 export type NumberLengthFormat = "short" | "long";
 
@@ -324,6 +354,8 @@ export type InterfaceFunctions = {
   getThumbnailUrl: typeof getThumbnailUrl;
   /** Returns the thumbnail URL with the best quality for the provided video ID */
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
+  /** Fetches the iTunes album info objects for the given artist and album names */
+  fetchITunesAlbumInfo: typeof fetchITunesAlbumInfo;
   /** Resolves the returned promise when the video element is queryable in the DOM */
   waitVideoElementReady: typeof waitVideoElementReady;
   /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found */
@@ -541,6 +573,8 @@ export interface FeatureConfig {
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */
   thumbnailOverlayToggleBtnShown: boolean;
+  /** The width and height of the image fetched from the iTunes API */
+  thumbnailOverlayITunesImgRes: number;
   /** Whether to show an indicator on the thumbnail overlay when it is active */
   thumbnailOverlayShowIndicator: boolean;
   /** The opacity of the thumbnail overlay indicator element */

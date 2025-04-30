@@ -440,6 +440,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
+  - [fetchITunesAlbumInfo()](#fetchitunesalbuminfo) - Fetches the Apple Music / iTunes album info objects for the specified artist and album name
   - [waitVideoElementReady()](#waitvideoelementready) - Waits for the video element to be queryable in the DOM - has to be called after `bytm:observersReady`
   - [getVideoElement()](#getvideoelement) - Returns the video element on the current page or null if there is none (on both YT and YTM)
   - [getVideoSelector()](#getvideoselector) - Returns the CSS selector for the video element (on both YT and YTM)
@@ -949,6 +950,61 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > catch(err) {
 >   console.error("Failed to get the best thumbnail URL:", err);
 > }
+> ```
+> </details>
+
+<br>
+
+> ### fetchITunesAlbumInfo()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]>
+> ```
+>   
+> Description:  
+> Fetches the album info objects for the specified artist and album name from the Apple Music / iTunes API.  
+> This can be used to get the album cover image URL and other information about the album.  
+> You may change the resolution of the album image URLs behind the properties `artworkUrl60` and `artworkUrl100` to your liking (see example).  
+>   
+> For the type of the returned object, see the type `ITunesAlbumObj` in the file [`src/types.ts`](./src/types.ts)  
+>   
+> Arguments:
+> - `artist` - The name of the primary artist - should be passed to [`sanitizeArtists()`](#sanitizeartists) first
+> - `album` - The name of the album
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // fetch the album info for the specified artist and album name:
+> const albumObjects = await unsafeWindow.BYTM.fetchITunesAlbumInfo(
+>   unsafeWindow.BYTM.sanitizeArtists("The Beatles"),
+>   "Abbey Road"
+> );
+> 
+> if(albumObjects.length > 0) {
+>   // try to find the best match:
+>   const bestMatch = albumObjs.find((al) => (
+>     (al.artistName === artist || al.artistName.toLowerCase() === artist.toLowerCase())
+>     && (
+>       al.collectionName === album
+>       || al.collectionName.toLowerCase() === album.toLowerCase()
+>       || al.collectionCensoredName === album
+>       || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
+>     )
+>   ));
+>   // default to the first result if no best match was found:
+>   const albumInfo = bestMatch ?? albumObjects[0]!;
+> 
+>   console.log("Album name:", albumObj.collectionName);
+>   console.log("Album artist:", albumObj.artistName);
+>   console.log("Album release date:", albumObj.releaseDate);
+> 
+>   // replace the 100x100 with 1800x1800 to get a much more high-res cover artwork URL:
+>   const artwork1800 = albumObj.artworkUrl100.replace("100x100", "1800x1800");
+>   console.log("Large cover artwork URL:", artwork1800);
+> }
+> else
+>   console.error("No album info found for the specified artist and album name");
 > ```
 > </details>
 
