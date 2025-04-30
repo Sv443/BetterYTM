@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ff594aa7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@02dc6234/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ff594aa7",
+    buildNumber: "02dc6234",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1066,10 +1066,10 @@ var devDependencies = {
 	"@types/cors": "^2.8.17",
 	"@types/express": "^4.17.21",
 	"@types/greasemonkey": "^4.0.7",
-	"@types/node": "^20.17.30",
-	"@typescript-eslint/eslint-plugin": "^8.31.0",
-	"@typescript-eslint/parser": "^8.31.0",
-	"@typescript-eslint/utils": "^8.31.0",
+	"@types/node": "^20.17.32",
+	"@typescript-eslint/eslint-plugin": "^8.31.1",
+	"@typescript-eslint/parser": "^8.31.1",
+	"@typescript-eslint/utils": "^8.31.1",
 	concurrently: "^9.1.2",
 	cors: "^2.8.5",
 	dotenv: "^16.5.0",
@@ -1078,17 +1078,16 @@ var devDependencies = {
 	express: "^4.21.2",
 	globals: "^15.15.0",
 	kleur: "^4.1.5",
-	knip: "^5.50.5",
+	knip: "^5.51.1",
 	nanoevents: "^9.1.0",
 	nodemon: "^3.1.10",
-	"open-cli": "^8.0.0",
-	pnpm: "^10.9.0",
-	rollup: "^4.40.0",
+	pnpm: "^10.10.0",
+	rollup: "^4.40.1",
 	"rollup-plugin-execute": "^1.1.1",
 	"rollup-plugin-import-css": "^3.5.8",
 	storybook: "^8.6.12",
 	"storybook-dark-mode": "^4.0.2",
-	tsx: "^4.19.3",
+	tsx: "^4.19.4",
 	typescript: "^5.8.3"
 };
 var browserslist = [
@@ -3684,6 +3683,113 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
 function splitVideoTitle(title) {
     const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
     return { artist, song: rest.join("-") };
+}/**
+ * Constructs a URL from a base URL and a record of query parameters.
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
+ * All values will be stringified using their `toString()` method and then URI-encoded.
+ * @returns Returns a string instead of a URL object
+ */
+function constructUrlString(baseUrl, params) {
+    return `${baseUrl}?${Object.entries(params)
+        .filter(([, v]) => v !== undefined)
+        .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
+        .join("&")}`;
+}
+/**
+ * Constructs a URL object from a base URL and a record of query parameters.
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
+ * All values will be stringified and then URI-encoded.
+ * @returns Returns a URL object instead of a string
+ */
+function constructUrl(base, params) {
+    return new URL(constructUrlString(base, params));
+}
+/**
+ * Sends a request with the specified parameters and returns the response as a Promise.
+ * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
+ */
+function sendRequest(details) {
+    return new Promise((resolve, reject) => {
+        GM.xmlHttpRequest(Object.assign(Object.assign({ timeout: 10000 }, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
+    });
+}
+/** Fetches a CSS file from the specified resource with a key starting with `css-` */
+async function fetchCss(key) {
+    try {
+        const css = await (await UserUtils.fetchAdvanced(await getResourceUrl(key))).text();
+        return css !== null && css !== void 0 ? css : undefined;
+    }
+    catch (err) {
+        error("Couldn't fetch CSS due to an error:", err);
+        return undefined;
+    }
+}
+/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
+const voteCache = new Map();
+/** Time-to-live for the vote cache in milliseconds */
+const voteCacheTTL = 1000 * 60 * 10;
+/**
+ * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
+ * @param videoID The video ID of the video
+ */
+async function fetchVideoVotes(videoID) {
+    try {
+        if (voteCache.has(videoID)) {
+            const cached = voteCache.get(videoID);
+            if (Date.now() - cached.timestamp < voteCacheTTL) {
+                info(`Returning cached video votes for video ID '${videoID}':`, cached);
+                return cached;
+            }
+            else
+                voteCache.delete(videoID);
+        }
+        const votesRaw = JSON.parse((await sendRequest({
+            method: "GET",
+            url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`,
+        })).response);
+        if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
+            error("Couldn't parse video votes due to an error:", votesRaw);
+            return undefined;
+        }
+        const votesObj = {
+            id: votesRaw.id,
+            likes: votesRaw.likes,
+            dislikes: votesRaw.dislikes,
+            rating: votesRaw.rating,
+            timestamp: Date.now(),
+        };
+        voteCache.set(votesObj.id, votesObj);
+        info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
+        return votesObj;
+    }
+    catch (err) {
+        error("Couldn't fetch video votes due to an error:", err);
+        return undefined;
+    }
+}
+/** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
+async function fetchITunesAlbumInfo(artist, album) {
+    try {
+        const res = await UserUtils.fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
+        const json = await res.json();
+        if (!("resultCount" in json) || !("results" in json)) {
+            error("Couldn't parse iTunes album info due to an error:", json);
+            return [];
+        }
+        if (json.resultCount === 0) {
+            error("No iTunes album info found for artist", artist, "and album", album);
+            return [];
+        }
+        return json.results.filter((result) => {
+            if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
+                return false;
+            return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+        });
+    }
+    catch (err) {
+        error("Couldn't fetch iTunes album info due to an error:", err);
+        return [];
+    }
 }let featHelpDialog = null;
 let curFeatKey = null;
 /** Creates or modifies the help dialog for a specific feature and returns it */
@@ -5181,7 +5287,7 @@ async function initThumbnailOverlay() {
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
                     if (toggleBtnElem)
                         toggleBtnElem.dataset.albumArtworkUrl = "";
-                    if ((toggleBtnElem === null || toggleBtnElem === void 0 ? void 0 : toggleBtnElem.href) === thumbUrl && (thumbImgElem === null || thumbImgElem === void 0 ? void 0 : thumbImgElem.src) === thumbUrl)
+                    if ((toggleBtnElem === null || toggleBtnElem === void 0 ? void 0 : toggleBtnElem.href) !== "" && (toggleBtnElem === null || toggleBtnElem === void 0 ? void 0 : toggleBtnElem.href) === thumbUrl && (thumbImgElem === null || thumbImgElem === void 0 ? void 0 : thumbImgElem.src) === thumbUrl)
                         return;
                     if (toggleBtnElem)
                         toggleBtnElem.href = thumbUrl;
@@ -5250,43 +5356,6 @@ async function initThumbnailOverlay() {
                     applyThumbUrl(params.get("v"));
                     updateOverlayVisibility();
                 }
-                const openITunesAlbumArtwork = () => addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a[href]", {
-                    all: true,
-                    async listener(linkElems) {
-                        var _a, _b, _c;
-                        const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
-                        if (toggleBtnElem && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http"))
-                            return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
-                        if (linkElems.length < 2)
-                            return error("Couldn't find artist and album name elements when trying to open iTunes album artwork");
-                        const artistsRaw = (_a = linkElems[0].innerText) === null || _a === void 0 ? void 0 : _a.trim();
-                        const artist = sanitizeArtists(artistsRaw);
-                        const album = linkElems[1].innerText;
-                        const albumObjs = await fetchITunesAlbumInfo(artist, album);
-                        if (albumObjs && albumObjs.length > 0) {
-                            const bestMatch = albumObjs.find((al) => ((al.artistName === artist
-                                || al.artistName.toLowerCase() === artist.toLowerCase()
-                                || al.artistName === artistsRaw
-                                || al.artistName.toLowerCase() === artistsRaw.toLowerCase())
-                                && (al.collectionName === album
-                                    || al.collectionName.toLowerCase() === album.toLowerCase()
-                                    || al.collectionCensoredName === album
-                                    || al.collectionCensoredName.toLowerCase() === album.toLowerCase())));
-                            const albumInfo = bestMatch !== null && bestMatch !== void 0 ? bestMatch : albumObjs[0];
-                            const imgRes = (_b = getFeature("thumbnailOverlayITunesImgRes")) !== null && _b !== void 0 ? _b : 1000;
-                            const artworkUrlRaw = (_c = albumInfo.artworkUrl60) !== null && _c !== void 0 ? _c : albumInfo.artworkUrl100;
-                            const artworkUrl = artworkUrlRaw
-                                ? artworkUrlRaw.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
-                                : undefined;
-                            if (artworkUrl) {
-                                openInTab(artworkUrl, false);
-                                if (toggleBtnElem)
-                                    toggleBtnElem.dataset.albumArtworkUrl = artworkUrl;
-                            }
-                            return;
-                        }
-                    },
-                });
                 // toggle button
                 if (toggleBtnShown) {
                     const toggleBtnElem = createRipple(document.createElement("a"));
@@ -5335,6 +5404,51 @@ async function initThumbnailOverlay() {
                     createElements();
             },
         });
+    });
+}
+/** Opens the iTunes album artwork in a new tab */
+function openITunesAlbumArtwork() {
+    addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
+        all: true,
+        async listener(elems) {
+            var _a, _b, _c;
+            const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
+            if (toggleBtnElem
+                && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
+                && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
+                    && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
+                return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
+            if (elems.length < 5)
+                return warn("Couldn't find artist and album name elements when trying to open iTunes album artwork:", elems);
+            const artistsRaw = (_a = elems[0].innerText) === null || _a === void 0 ? void 0 : _a.trim();
+            const artist = sanitizeArtists(artistsRaw);
+            const album = elems[2].innerText;
+            const albumObjs = await fetchITunesAlbumInfo(artist, album);
+            if (albumObjs && albumObjs.length > 0) {
+                const bestMatch = albumObjs.find((al) => ((al.artistName === artist
+                    || al.artistName.toLowerCase() === artist.toLowerCase()
+                    || al.artistName === artistsRaw
+                    || al.artistName.toLowerCase() === artistsRaw.toLowerCase())
+                    && (al.collectionName === album
+                        || al.collectionName.toLowerCase() === album.toLowerCase()
+                        || al.collectionCensoredName === album
+                        || al.collectionCensoredName.toLowerCase() === album.toLowerCase())));
+                const albumInfo = bestMatch !== null && bestMatch !== void 0 ? bestMatch : albumObjs[0];
+                const imgRes = (_b = getFeature("thumbnailOverlayITunesImgRes")) !== null && _b !== void 0 ? _b : 1000;
+                const artworkUrlRaw = (_c = albumInfo.artworkUrl60) !== null && _c !== void 0 ? _c : albumInfo.artworkUrl100;
+                const artworkUrl = artworkUrlRaw
+                    ? artworkUrlRaw.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
+                    : undefined;
+                if (artworkUrl) {
+                    openInTab(artworkUrl, false);
+                    if (toggleBtnElem) {
+                        toggleBtnElem.dataset.albumArtworkUrl = artworkUrl;
+                        toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
+                    }
+                }
+                return;
+            }
+        },
     });
 }
 //#region idle hide cursor
@@ -6359,7 +6473,7 @@ const featInfo = {
         type: "slider",
         category: "layout",
         supportedSites: ["ytm"],
-        default: 1200,
+        default: 2000,
         min: 100,
         max: 5000,
         step: 100,
@@ -8234,113 +8348,6 @@ function downloadFile(fileName, data, mimeType = "text/plain") {
     document.body.appendChild(a);
     a.click();
     setTimeout(() => a.remove(), 1);
-}/**
- * Constructs a URL from a base URL and a record of query parameters.
- * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
- * All values will be stringified using their `toString()` method and then URI-encoded.
- * @returns Returns a string instead of a URL object
- */
-function constructUrlString(baseUrl, params) {
-    return `${baseUrl}?${Object.entries(params)
-        .filter(([, v]) => v !== undefined)
-        .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
-        .join("&")}`;
-}
-/**
- * Constructs a URL object from a base URL and a record of query parameters.
- * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
- * All values will be stringified and then URI-encoded.
- * @returns Returns a URL object instead of a string
- */
-function constructUrl(base, params) {
-    return new URL(constructUrlString(base, params));
-}
-/**
- * Sends a request with the specified parameters and returns the response as a Promise.
- * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
- */
-function sendRequest(details) {
-    return new Promise((resolve, reject) => {
-        GM.xmlHttpRequest(Object.assign(Object.assign({ timeout: 10000 }, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
-    });
-}
-/** Fetches a CSS file from the specified resource with a key starting with `css-` */
-async function fetchCss(key) {
-    try {
-        const css = await (await UserUtils.fetchAdvanced(await getResourceUrl(key))).text();
-        return css !== null && css !== void 0 ? css : undefined;
-    }
-    catch (err) {
-        error("Couldn't fetch CSS due to an error:", err);
-        return undefined;
-    }
-}
-/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
-const voteCache = new Map();
-/** Time-to-live for the vote cache in milliseconds */
-const voteCacheTTL = 1000 * 60 * 10;
-/**
- * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
- * @param videoID The video ID of the video
- */
-async function fetchVideoVotes(videoID) {
-    try {
-        if (voteCache.has(videoID)) {
-            const cached = voteCache.get(videoID);
-            if (Date.now() - cached.timestamp < voteCacheTTL) {
-                info(`Returning cached video votes for video ID '${videoID}':`, cached);
-                return cached;
-            }
-            else
-                voteCache.delete(videoID);
-        }
-        const votesRaw = JSON.parse((await sendRequest({
-            method: "GET",
-            url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`,
-        })).response);
-        if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
-            error("Couldn't parse video votes due to an error:", votesRaw);
-            return undefined;
-        }
-        const votesObj = {
-            id: votesRaw.id,
-            likes: votesRaw.likes,
-            dislikes: votesRaw.dislikes,
-            rating: votesRaw.rating,
-            timestamp: Date.now(),
-        };
-        voteCache.set(votesObj.id, votesObj);
-        info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
-        return votesObj;
-    }
-    catch (err) {
-        error("Couldn't fetch video votes due to an error:", err);
-        return undefined;
-    }
-}
-/** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
-async function fetchITunesAlbumInfo(artist, album) {
-    try {
-        const res = await UserUtils.fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
-        const json = await res.json();
-        if (!("resultCount" in json) || !("results" in json)) {
-            error("Couldn't parse iTunes album info due to an error:", json);
-            return [];
-        }
-        if (json.resultCount === 0) {
-            error("No iTunes album info found for artist", artist, "and album", album);
-            return [];
-        }
-        return json.results.filter((result) => {
-            if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
-                return false;
-            return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
-        });
-    }
-    catch (err) {
-        error("Couldn't fetch iTunes album info due to an error:", err);
-        return [];
-    }
 }let welcomeDialog = null;
 /** Creates and/or returns the import dialog */
 async function getWelcomeDialog() {
