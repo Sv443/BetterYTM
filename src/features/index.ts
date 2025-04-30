@@ -221,7 +221,7 @@ export const featInfo = {
     type: "slider",
     category: "layout",
     supportedSites: ["ytm"],
-    default: 1200,
+    default: 2000,
     min: 100,
     max: 5000,
     step: 100,
