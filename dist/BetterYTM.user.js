@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e609d291/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@059c0308/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e609d291",
+    buildNumber: "059c0308",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2213,115 +2213,7 @@ function getChannelIdFromPrompt(promptStr) {
     const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
     const id = ((isId === null || isId === void 0 ? void 0 : isId[0]) || (isUrl === null || isUrl === void 0 ? void 0 : isUrl[1]) || "").trim();
     return id.length > 0 ? id : null;
-}//#region utils
-const ignoreTagNamesInput = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
-const ignoreIdsInput = [
-    "contenteditable-root", // comment field on YT
-    "volume-slider", // volume slider on YTM
-];
-const ignoreClassNamesInput = [];
-/** Returns true, if the given element (document.activeElement by default) is an input element that should make BYTM ignore keypresses */
-function isIgnoredInputElement(el = document.activeElement) {
-    if (!el)
-        return false;
-    return ignoreTagNamesInput.includes(el.tagName.toUpperCase())
-        || ignoreClassNamesInput.some((cls) => el.classList.contains(cls))
-        || ignoreIdsInput.includes(el.id);
-}
-//#region arrow key skip
-let sliderEl;
-async function initArrowKeySkip() {
-    addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-        listener: (el) => sliderEl = el,
-    });
-    document.addEventListener("keydown", (evt) => {
-        var _a, _b;
-        if (!getFeature("arrowKeySupport"))
-            return;
-        if (["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
-            return handleVolumeKeyPress(evt);
-        if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
-            return;
-        const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
-        // discard the event when a (text) input is currently active, like when editing a playlist or writing a comment
-        if (isIgnoredInputElement() && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
-            return info(`Captured valid key to skip forward or backward but the current active element is <${(_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName.toLowerCase()}>, so the keypress is ignored`);
-        evt.preventDefault();
-        evt.stopImmediatePropagation();
-        let skipBy = (_b = getFeature("arrowKeySkipBy")) !== null && _b !== void 0 ? _b : featInfo.arrowKeySkipBy.default;
-        if (evt.code === "ArrowLeft")
-            skipBy *= -1;
-        log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-        const vidElem = getVideoElement();
-        if (vidElem && vidElem.readyState > 0)
-            vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
-    });
-    log("Added arrow key press listener");
-}
-function handleVolumeKeyPress(evt) {
-    var _a;
-    evt.preventDefault();
-    evt.stopImmediatePropagation();
-    if (!getVideoElement())
-        return warn("Couldn't find video element, so the keypress is ignored");
-    if (!sliderEl)
-        return warn("Couldn't find volume slider element, so the keypress is ignored");
-    const step = Number(sliderEl.step);
-    const newVol = UserUtils.clamp(Number(sliderEl.value)
-        + (evt.code === "ArrowUp" ? 1 : -1)
-            * UserUtils.clamp(((_a = getFeature("arrowKeyVolumeStep")) !== null && _a !== void 0 ? _a : featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
-    if (newVol !== Number(sliderEl.value)) {
-        sliderEl.value = String(newVol);
-        sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
-        log(`Captured key '${evt.code}' - changed volume to ${newVol}%`);
-    }
-}
-//#region frame skip
-/** Initializes the feature that lets users skip by a frame with the period and comma keys while the video is paused */
-async function initFrameSkip() {
-    document.addEventListener("keydown", async (evt) => {
-        if (!getFeature("frameSkip"))
-            return;
-        if (!["Comma", "Period"].includes(evt.code))
-            return;
-        const vid = getVideoElement();
-        if (!vid || vid.readyState === 0)
-            return warn("Could not find video element or it hasn't loaded yet, so the keypress is ignored");
-        if (!getFeature("frameSkipWhilePlaying") && (vid.playbackRate === 0 || !vid.paused))
-            return;
-        evt.preventDefault();
-        evt.stopImmediatePropagation();
-        const newTime = vid.currentTime + getFeature("frameSkipAmount") * (evt.code === "Comma" ? -1 : 1);
-        vid.currentTime = UserUtils.clamp(newTime, 0, vid.duration);
-        log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);
-    });
-    log("Added frame skip key press listener");
-}
-//#region num keys skip
-/** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
-async function initNumKeysSkip() {
-    document.addEventListener("keydown", (e) => {
-        if (!getFeature("numKeysSkipToTime"))
-            return;
-        if (!e.key.trim().match(/^[0-9]$/))
-            return;
-        // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-        const ignoreElement = isIgnoredInputElement();
-        if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
-            return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
-        const vidElem = getVideoElement();
-        if (!vidElem || vidElem.readyState === 0)
-            return warn("Could not find video element, so the keypress is ignored");
-        const newVidTime = vidElem.duration / (10 / Number(e.key));
-        if (!isNaN(newVidTime)) {
-            log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
-            vidElem.currentTime = newVidTime;
-        }
-    });
-    log("Added number key press listener");
-}
-//#region auto-like vids
-let canCompress$1 = false;
+}let canCompress$1 = false;
 /** DataStore instance for all auto-liked channels */
 const autoLikeStore = new UserUtils.DataStore({
     id: "bytm-auto-like-channels",
@@ -5612,6 +5504,112 @@ async function initWatchPageFullSize() {
         error("Couldn't load stylesheet to make watch page full size");
     else
         log("Made watch page full size");
+}//#region utils
+const ignoreTagNamesInput = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+const ignoreIdsInput = [
+    "contenteditable-root", // comment field on YT
+    "volume-slider", // volume slider on YTM
+];
+const ignoreClassNamesInput = [];
+/** Returns true, if the given element (document.activeElement by default) is an input element that should make BYTM ignore keypresses */
+function isIgnoredInputElement(el = document.activeElement) {
+    if (!el)
+        return false;
+    return ignoreTagNamesInput.includes(el.tagName.toUpperCase())
+        || ignoreClassNamesInput.some((cls) => el.classList.contains(cls))
+        || ignoreIdsInput.includes(el.id);
+}
+//#region arrow key skip
+let sliderEl;
+async function initArrowKeySkip() {
+    addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+        listener: (el) => sliderEl = el,
+    });
+    document.addEventListener("keydown", (evt) => {
+        var _a, _b;
+        if (!getFeature("arrowKeySupport"))
+            return;
+        if (["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
+            return handleVolumeKeyPress(evt);
+        if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
+            return;
+        const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
+        // discard the event when a (text) input is currently active, like when editing a playlist or writing a comment
+        if (isIgnoredInputElement() && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
+            return info(`Captured valid key to skip forward or backward but the current active element is <${(_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName.toLowerCase()}>, so the keypress is ignored`);
+        evt.preventDefault();
+        evt.stopImmediatePropagation();
+        let skipBy = (_b = getFeature("arrowKeySkipBy")) !== null && _b !== void 0 ? _b : featInfo.arrowKeySkipBy.default;
+        if (evt.code === "ArrowLeft")
+            skipBy *= -1;
+        log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
+        const vidElem = getVideoElement();
+        if (vidElem && vidElem.readyState > 0)
+            vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
+    });
+    log("Added arrow key press listener");
+}
+function handleVolumeKeyPress(evt) {
+    var _a;
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
+    if (!getVideoElement())
+        return warn("Couldn't find video element, so the keypress is ignored");
+    if (!sliderEl)
+        return warn("Couldn't find volume slider element, so the keypress is ignored");
+    const step = Number(sliderEl.step);
+    const newVol = UserUtils.clamp(Number(sliderEl.value)
+        + (evt.code === "ArrowUp" ? 1 : -1)
+            * UserUtils.clamp(((_a = getFeature("arrowKeyVolumeStep")) !== null && _a !== void 0 ? _a : featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
+    if (newVol !== Number(sliderEl.value)) {
+        sliderEl.value = String(newVol);
+        sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
+        log(`Captured key '${evt.code}' - changed volume to ${newVol}%`);
+    }
+}
+//#region frame skip
+/** Initializes the feature that lets users skip by a frame with the period and comma keys while the video is paused */
+async function initFrameSkip() {
+    document.addEventListener("keydown", async (evt) => {
+        if (!getFeature("frameSkip"))
+            return;
+        if (!["Comma", "Period"].includes(evt.code))
+            return;
+        const vid = getVideoElement();
+        if (!vid || vid.readyState === 0)
+            return warn("Could not find video element or it hasn't loaded yet, so the keypress is ignored");
+        if (!getFeature("frameSkipWhilePlaying") && (vid.playbackRate === 0 || !vid.paused))
+            return;
+        evt.preventDefault();
+        evt.stopImmediatePropagation();
+        const newTime = vid.currentTime + getFeature("frameSkipAmount") * (evt.code === "Comma" ? -1 : 1);
+        vid.currentTime = UserUtils.clamp(newTime, 0, vid.duration);
+        log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);
+    });
+    log("Added frame skip key press listener");
+}
+//#region num keys skip
+/** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
+async function initNumKeysSkip() {
+    document.addEventListener("keydown", (e) => {
+        if (!getFeature("numKeysSkipToTime"))
+            return;
+        if (!e.key.trim().match(/^[0-9]$/))
+            return;
+        // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
+        const ignoreElement = isIgnoredInputElement();
+        if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
+            return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
+        const vidElem = getVideoElement();
+        if (!vidElem || vidElem.readyState === 0)
+            return warn("Could not find video element, so the keypress is ignored");
+        const newVidTime = vidElem.duration / (10 / Number(e.key));
+        if (!isNaN(newVidTime)) {
+            log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
+            vidElem.currentTime = newVidTime;
+        }
+    });
+    log("Added number key press listener");
 }//#region init
 async function initHotkeys() {
     const promises = [];
@@ -6869,16 +6867,17 @@ const featInfo = {
         enable: noop,
         textAdornment: adornments.ytmOnly,
     },
+    //#region cat:autoLike
     autoLikeChannels: {
         type: "toggle",
-        category: "input",
+        category: "autoLike",
         supportedSites: ["ytm", "yt"],
         default: true,
         textAdornment: adornments.reload,
     },
     autoLikeChannelToggleBtn: {
         type: "toggle",
-        category: "input",
+        category: "autoLike",
         supportedSites: ["ytm", "yt"],
         default: true,
         reloadRequired: false,
@@ -6889,13 +6888,13 @@ const featInfo = {
     // TODO(v2.2):
     // autoLikePlayerBarToggleBtn: {
     //   type: "toggle",
-    //   category: "input",
+    //   category: "autoLike",
     //   default: false,
     //   textAdornment: adornments.reload,
     // },
     autoLikeTimeout: {
         type: "slider",
-        category: "input",
+        category: "autoLike",
         supportedSites: ["ytm", "yt"],
         min: 3,
         max: 30,
@@ -6909,7 +6908,7 @@ const featInfo = {
     },
     autoLikeShowToast: {
         type: "toggle",
-        category: "input",
+        category: "autoLike",
         supportedSites: ["ytm", "yt"],
         default: true,
         reloadRequired: false,
@@ -6919,7 +6918,7 @@ const featInfo = {
     },
     autoLikeOpenMgmtDialog: {
         type: "button",
-        category: "input",
+        category: "autoLike",
         supportedSites: ["ytm", "yt"],
         click: () => getAutoLikeDialog().then(d => d.open()),
     },
@@ -7227,18 +7226,6 @@ const featInfo = {
         default: undefined,
         click: () => getPluginListDialog().then(d => d.open()),
     },
-    initTimeout: {
-        type: "number",
-        category: "plugins",
-        supportedSites: ["ytm", "yt"],
-        min: 3,
-        max: 30,
-        default: 8,
-        step: 0.1,
-        unit: "s",
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
     //#region cat:general
     locale: {
         type: "select",
@@ -7304,6 +7291,18 @@ const featInfo = {
         category: "general",
         supportedSites: ["ytm", "yt"],
         default: true,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    initTimeout: {
+        type: "number",
+        category: "plugins",
+        supportedSites: ["ytm", "yt"],
+        min: 3,
+        max: 30,
+        default: 8,
+        step: 0.1,
+        unit: "s",
         advanced: true,
         textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
     },
