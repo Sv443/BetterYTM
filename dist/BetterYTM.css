@@ -473,7 +473,7 @@ hr {
 /* #region general */
 :root {
   --bytm-locale-color: #5ea2ec;
-  --bytm-advanced-mode-color: #ceb663;
+  --bytm-advanced-mode-color: #ddc15d;
   --bytm-experimental-col: #cc83e5;
   --bytm-warning-col: #e5a63b;
   --bytm-error-col: #fa5b5b;
@@ -485,7 +485,7 @@ hr {
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1150px;
+  --bytm-dialog-width-max: 1200px;
   --bytm-dialog-height-max: 900px;
 }
 
