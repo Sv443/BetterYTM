@@ -2,7 +2,8 @@ import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, preloadIma
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString, scrollToCurrentSongInQueue } from "../utils/index.js";
+import { sanitizeArtists } from "./lyrics.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber, resourceAsString, scrollToCurrentSongInQueue, fetchITunesAlbumInfo } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -549,6 +550,9 @@ export async function initThumbnailOverlay() {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
+          if(toggleBtnElem)
+            toggleBtnElem.dataset.albumArtworkUrl = "";
+
           if(toggleBtnElem?.href === thumbUrl && thumbImgElem?.src === thumbUrl)
             return;
 
@@ -628,6 +632,54 @@ export async function initThumbnailOverlay() {
           updateOverlayVisibility();
         }
 
+        const openITunesAlbumArtwork = () => addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a[href]", {
+          all: true,
+          async listener(linkElems) {
+            const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
+            if(toggleBtnElem && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http"))
+              return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
+            if(linkElems.length < 2)
+              return error("Couldn't find artist and album name elements when trying to open iTunes album artwork");
+
+            const artistsRaw = linkElems[0].innerText?.trim();
+            const artist = sanitizeArtists(artistsRaw);
+            const album = linkElems[1].innerText;
+
+            const albumObjs = await fetchITunesAlbumInfo(artist, album);
+            if(albumObjs && albumObjs.length > 0) {
+              const bestMatch = albumObjs.find((al) => (
+                (
+                  al.artistName === artist
+                  || al.artistName.toLowerCase() === artist.toLowerCase()
+                  || al.artistName === artistsRaw
+                  || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
+                )
+                && (
+                  al.collectionName === album
+                  || al.collectionName.toLowerCase() === album.toLowerCase()
+                  || al.collectionCensoredName === album
+                  || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
+                )
+              ));
+              const albumInfo = bestMatch ?? albumObjs[0];
+
+              const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? 1000;
+
+              const artworkUrlRaw = albumInfo.artworkUrl60 ?? albumInfo.artworkUrl100;
+              const artworkUrl = artworkUrlRaw
+                ? artworkUrlRaw.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
+                : undefined;
+
+              if(artworkUrl) {
+                openInTab(artworkUrl, false);
+                if(toggleBtnElem)
+                  toggleBtnElem.dataset.albumArtworkUrl = artworkUrl;
+              }
+              return;
+            }
+          },
+        });
+
         // toggle button
         if(toggleBtnShown) {
           const toggleBtnElem = createRipple(document.createElement("a"));
@@ -639,6 +691,8 @@ export async function initThumbnailOverlay() {
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
+            else if(e.ctrlKey)
+              return openITunesAlbumArtwork();
 
             invertOverlay = !invertOverlay;
 

@@ -124,9 +124,12 @@ export function sanitizeSong(songName: string) {
   return sanitized.trim();
 }
 
-/** Removes the secondary artist (if it exists) from the passed artists string */
+/**
+ * Removes the secondary artists (if they exist) from the passed artists string.  
+ * Intelligently splits at commas and bullet (•) characters, and removes everything after the first ampersand (&) or feat.
+ */
 export function sanitizeArtists(artists: string) {
-  artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
+  artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
 
   if(artists.match(/&/))
     artists = artists.split(/\s*&\s*/gm)[0];

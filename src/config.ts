@@ -155,7 +155,7 @@ export const migrations: DataMigrationsDict = {
         "skipToRemTimeHotkeyEnabled", "skipToRemTimeHotkey",
         "rebindNextAndPrevious", "nextHotkey",
         "previousHotkey", "rebindPlayPause",
-        "playPauseHotkey",
+        "playPauseHotkey", "thumbnailOverlayITunesImgRes",
       ]), [
         { key: "lyricsCacheMaxSize", oldDefault: 2000 },
       ],
