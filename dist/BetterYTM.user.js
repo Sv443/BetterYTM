@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@02dc6234/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cac33fe0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "02dc6234",
+    buildNumber: "cac33fe0",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3772,12 +3772,16 @@ async function fetchITunesAlbumInfo(artist, album) {
     try {
         const res = await UserUtils.fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
         const json = await res.json();
+        if (!res.ok) {
+            error("Couldn't fetch iTunes album info due to an error:", json);
+            return [];
+        }
         if (!("resultCount" in json) || !("results" in json)) {
             error("Couldn't parse iTunes album info due to an error:", json);
             return [];
         }
         if (json.resultCount === 0) {
-            error("No iTunes album info found for artist", artist, "and album", album);
+            warn("No iTunes album info found for artist", artist, "and album", album);
             return [];
         }
         return json.results.filter((result) => {
@@ -5281,12 +5285,19 @@ async function initThumbnailOverlay() {
                     else
                         previousVideoIDs.push(videoID);
                 }
-                const thumbUrl = await getBestThumbnailUrl(videoID);
-                if (thumbUrl) {
+                const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
+                if (toggleBtnElem
+                    && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
+                    && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
+                        && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
+                    return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
+                const actuallyApplyThumbUrl = (thumbUrl) => {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
-                    if (toggleBtnElem)
-                        toggleBtnElem.dataset.albumArtworkUrl = "";
+                    if (toggleBtnElem) {
+                        toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
+                        toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
+                    }
                     if ((toggleBtnElem === null || toggleBtnElem === void 0 ? void 0 : toggleBtnElem.href) !== "" && (toggleBtnElem === null || toggleBtnElem === void 0 ? void 0 : toggleBtnElem.href) === thumbUrl && (thumbImgElem === null || thumbImgElem === void 0 ? void 0 : thumbImgElem.src) === thumbUrl)
                         return;
                     if (toggleBtnElem)
@@ -5298,9 +5309,27 @@ async function initThumbnailOverlay() {
                         thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "contain" : "cover";
                     }
                     log("Applied thumbnail URL to overlay:", thumbUrl);
-                }
-                else
-                    error("Couldn't get thumbnail URL for watch ID", videoID);
+                };
+                let bestNativeThumbUrl;
+                const ac = new AbortController();
+                getBestThumbnailUrl(videoID).then((url) => ac.signal.aborted ? undefined : (bestNativeThumbUrl = url) && actuallyApplyThumbUrl(url)).catch(() => void 0);
+                addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
+                    all: true,
+                    async listener(elems) {
+                        var _a, _b, _c, _d;
+                        const iTunesAlbum = elems.length >= 5
+                            ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
+                            : undefined;
+                        const imgRes = (_a = getFeature("thumbnailOverlayITunesImgRes")) !== null && _a !== void 0 ? _a : featInfo.thumbnailOverlayITunesImgRes.default;
+                        const iTunesUrl = ((_b = iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl60) !== null && _b !== void 0 ? _b : iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl100);
+                        iTunesUrl && !ac.signal.aborted && ac.abort();
+                        const thumbUrl = (_d = (_c = iTunesUrl === null || iTunesUrl === void 0 ? void 0 : iTunesUrl.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)) !== null && _c !== void 0 ? _c : bestNativeThumbUrl) !== null && _d !== void 0 ? _d : await getBestThumbnailUrl(videoID);
+                        if (thumbUrl)
+                            actuallyApplyThumbUrl(thumbUrl);
+                        else
+                            warn("Couldn't get thumbnail URL for album", iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.collectionName, "by", iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artistName, "or video with ID", videoID);
+                    },
+                });
             }
             catch (err) {
                 error("Couldn't apply thumbnail URL to overlay due to an error:", err);
@@ -5366,8 +5395,6 @@ async function initThumbnailOverlay() {
                     onInteraction(toggleBtnElem, (e) => {
                         if (e.shiftKey)
                             return openInTab(toggleBtnElem.href, false);
-                        else if (e.ctrlKey)
-                            return openITunesAlbumArtwork();
                         invertOverlay = !invertOverlay;
                         const params = new URL(location.href).searchParams;
                         if (thumbImgElem.dataset.videoId !== params.get("v"))
@@ -5406,50 +5433,28 @@ async function initThumbnailOverlay() {
         });
     });
 }
-/** Opens the iTunes album artwork in a new tab */
-function openITunesAlbumArtwork() {
-    addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
-        all: true,
-        async listener(elems) {
-            var _a, _b, _c;
-            const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
-            if (toggleBtnElem
-                && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
-                && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
-                    && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
-                return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
-            if (elems.length < 5)
-                return warn("Couldn't find artist and album name elements when trying to open iTunes album artwork:", elems);
-            const artistsRaw = (_a = elems[0].innerText) === null || _a === void 0 ? void 0 : _a.trim();
-            const artist = sanitizeArtists(artistsRaw);
-            const album = elems[2].innerText;
-            const albumObjs = await fetchITunesAlbumInfo(artist, album);
-            if (albumObjs && albumObjs.length > 0) {
-                const bestMatch = albumObjs.find((al) => ((al.artistName === artist
-                    || al.artistName.toLowerCase() === artist.toLowerCase()
-                    || al.artistName === artistsRaw
-                    || al.artistName.toLowerCase() === artistsRaw.toLowerCase())
-                    && (al.collectionName === album
-                        || al.collectionName.toLowerCase() === album.toLowerCase()
-                        || al.collectionCensoredName === album
-                        || al.collectionCensoredName.toLowerCase() === album.toLowerCase())));
-                const albumInfo = bestMatch !== null && bestMatch !== void 0 ? bestMatch : albumObjs[0];
-                const imgRes = (_b = getFeature("thumbnailOverlayITunesImgRes")) !== null && _b !== void 0 ? _b : 1000;
-                const artworkUrlRaw = (_c = albumInfo.artworkUrl60) !== null && _c !== void 0 ? _c : albumInfo.artworkUrl100;
-                const artworkUrl = artworkUrlRaw
-                    ? artworkUrlRaw.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
-                    : undefined;
-                if (artworkUrl) {
-                    openInTab(artworkUrl, false);
-                    if (toggleBtnElem) {
-                        toggleBtnElem.dataset.albumArtworkUrl = artworkUrl;
-                        toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
-                    }
-                }
-                return;
-            }
-        },
-    });
+/** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
+async function getBestITunesAlbumMatch(artistsRaw, albumRaw) {
+    const doFetchITunesAlbum = async (artist, album) => {
+        const albumObjs = await fetchITunesAlbumInfo(artist, album);
+        if (albumObjs && albumObjs.length > 0) {
+            const bestMatch = albumObjs.find((al) => ((al.artistName === artist
+                || al.artistName.toLowerCase() === artist.toLowerCase()
+                || al.artistName === artistsRaw
+                || al.artistName.toLowerCase() === artistsRaw.toLowerCase())
+                && (al.collectionName === album
+                    || al.collectionName.toLowerCase() === album.toLowerCase()
+                    || al.collectionCensoredName === album
+                    || al.collectionCensoredName.toLowerCase() === album.toLowerCase())));
+            return [bestMatch, albumObjs[0]];
+        }
+        return [undefined, albumObjs[0]];
+    };
+    const artist = sanitizeArtists(artistsRaw);
+    let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
+    if (!bestMatch)
+        [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
+    return bestMatch !== null && bestMatch !== void 0 ? bestMatch : fallback;
 }
 //#region idle hide cursor
 async function initHideCursorOnIdle() {
@@ -6473,15 +6478,14 @@ const featInfo = {
         type: "slider",
         category: "layout",
         supportedSites: ["ytm"],
-        default: 2000,
+        default: 1500,
         min: 100,
         max: 5000,
         step: 100,
         renderValue: (n) => `${n}x${n}`,
-        advanced: true,
         reloadRequired: false,
         enable: noop,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+        textAdornment: adornments.ytmOnly,
     },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
