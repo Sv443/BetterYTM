@@ -179,11 +179,11 @@ async function main() {
 
     await writeFile(buildStatsPath, JSON.stringify(newBuildStats, undefined, 2));
 
-    schedExit(0);
+    return schedExit(0);
   }
   catch(err) {
     console.error(k.red("Error while adding userscript header:\n"), err);
-    schedExit(1);
+    return schedExit(1);
   }
 };
 
@@ -453,7 +453,7 @@ async function getLinkedPkgs() {
     }
     catch(err) {
       console.error(`Couldn't read linked package at '${entry.link}':`, err);
-      schedExit(1);
+      return schedExit(1);
     }
   }
 
