@@ -985,13 +985,30 @@ body .bytm-ripple.slowest {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5px;
+  justify-content: space-between;
   padding: 0px 15px;
   margin-bottom: 10px;
 }
 
+.bytm-auto-like-channels-search-cont .left-side {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.bytm-auto-like-channels-search-cont .right-side {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: #bbb;
+}
+
 .bytm-auto-like-channels-searchbar {
-  min-width: calc(min(250px, 50%));
+  min-width: 250px;
 }
 
 .bytm-auto-like-channel-row-left-cont {

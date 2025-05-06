@@ -1,7 +1,9 @@
-import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
+import { fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/userutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
 import { error, info, warn } from "./logging.js";
+
+//#region misc
 
 /**
  * Constructs a URL from a base URL and a record of query parameters.  
@@ -32,7 +34,7 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
  * Sends a request with the specified parameters and returns the response as a Promise.  
  * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
  */
-export function sendRequest<T = any>(details: GM.Request<T>) {
+export function sendRequest<T = any>(details: Prettify<Omit<GM.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<GM.Response<T>> {
   return new Promise<GM.Response<T>>((resolve, reject) => {
     GM.xmlHttpRequest({
       timeout: 10_000,
@@ -45,6 +47,8 @@ export function sendRequest<T = any>(details: GM.Request<T>) {
   });
 }
 
+//#region css
+
 /** Fetches a CSS file from the specified resource with a key starting with `css-` */
 export async function fetchCss(key: StyleResourceKey) {
   try {
@@ -56,6 +60,8 @@ export async function fetchCss(key: StyleResourceKey) {
     return undefined;
   }
 }
+
+//#region RYD
 
 /** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
 const voteCache = new Map<string, VideoVotesObj>();
@@ -108,6 +114,8 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
     return undefined;
   }
 }
+
+//#region iTunes album info
 
 /** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
 export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {

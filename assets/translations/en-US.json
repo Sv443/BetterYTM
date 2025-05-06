@@ -161,6 +161,8 @@
 
   "auto_like_channels_dialog_title": "Auto-liked Channels",
   "auto_like_channels_dialog_desc": "Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.",
+  "auto_like_channels_entries_count-1": "Showing 1 entry.",
+  "auto_like_channels_entries_count-n": "Showing ${count} entries.",
   "auto_like": "Auto-like",
   "auto_like_button_tooltip_enabled": "Click to disable auto-liking. Shift-click to open the management dialog.",
   "auto_like_button_tooltip_disabled": "Click to enable auto-liking. Shift-click to open the management dialog.",

@@ -1,5 +1,5 @@
 import { compress, debounce } from "@sv443-network/userutils";
-import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
+import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "../utils/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { ExImDialog } from "../components/ExImDialog.js";
@@ -23,7 +23,7 @@ export async function getAutoLikeDialog() {
     autoLikeDialog = new BytmDialog({
       id: "auto-like-channels",
       width: 700,
-      height: 1000,
+      height: 1200,
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
@@ -122,6 +122,21 @@ async function renderBody() {
   searchCont.classList.add("bytm-auto-like-channels-search-cont");
   contElem.appendChild(searchCont);
 
+  const searchContLeftSideEl = document.createElement("div");
+  searchContLeftSideEl.classList.add("left-side");
+  searchCont.appendChild(searchContLeftSideEl);
+
+  const searchContRightSideEl = document.createElement("div");
+  searchContRightSideEl.classList.add("right-side");
+  searchCont.appendChild(searchContRightSideEl);
+
+  const updateCountElem = () => {
+    const count = autoLikeStore.getData().channels.length;
+    searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
+  };
+  siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
+  updateCountElem();
+
   const searchbarEl = document.createElement("input");
   searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
   searchbarEl.placeholder = t("search_placeholder");
@@ -141,7 +156,7 @@ async function renderBody() {
     }
   });
 
-  searchCont.appendChild(searchbarEl);
+  searchContLeftSideEl.appendChild(searchbarEl);
 
   const searchClearEl = document.createElement("button");
   searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
@@ -154,7 +169,7 @@ async function renderBody() {
     searchbarEl.dispatchEvent(new Event("input"));
   });
 
-  searchCont.appendChild(searchClearEl);
+  searchContLeftSideEl.appendChild(searchClearEl);
 
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";

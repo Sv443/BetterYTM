@@ -161,6 +161,8 @@
 
   "auto_like_channels_dialog_title": "Auto-gelikete Kanäle",
   "auto_like_channels_dialog_desc": "Hier kannst du sehen, welche Kanäle du zum Auto-Liken eingestellt hast und sie bearbeiten, aktivieren, deaktivieren und entfernen.\nDu kannst auch manuell Einträge erstellen, obwohl es einfacher ist, einfach die Kanalseite zu besuchen und dort auf den Button zu klicken.",
+  "auto_like_channels_entries_count-1": "Ein Eintrag.",
+  "auto_like_channels_entries_count-n": "${count} Einträge.",
   "auto_like": "Auto-Like",
   "auto_like_button_tooltip_enabled": "Klicke um Auto-Liken zu deaktivieren. Shift-Klick um den Management-Dialog zu öffnen.",
   "auto_like_button_tooltip_disabled": "Klicke um Auto-Liken zu aktivieren. Shift-Klick um den Management-Dialog zu öffnen.",
