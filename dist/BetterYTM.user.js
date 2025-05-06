@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@059c0308/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bc5f4bcc/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "059c0308",
+    buildNumber: "bc5f4bcc",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1950,7 +1950,7 @@ async function getAutoLikeDialog() {
         autoLikeDialog = new BytmDialog({
             id: "auto-like-channels",
             width: 700,
-            height: 1000,
+            height: 1200,
             closeBtnEnabled: true,
             closeOnBgClick: true,
             closeOnEscPress: true,
@@ -2034,6 +2034,18 @@ async function renderBody$4() {
     const searchCont = document.createElement("div");
     searchCont.classList.add("bytm-auto-like-channels-search-cont");
     contElem.appendChild(searchCont);
+    const searchContLeftSideEl = document.createElement("div");
+    searchContLeftSideEl.classList.add("left-side");
+    searchCont.appendChild(searchContLeftSideEl);
+    const searchContRightSideEl = document.createElement("div");
+    searchContRightSideEl.classList.add("right-side");
+    searchCont.appendChild(searchContRightSideEl);
+    const updateCountElem = () => {
+        const count = autoLikeStore.getData().channels.length;
+        searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
+    };
+    siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
+    updateCountElem();
     const searchbarEl = document.createElement("input");
     searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
     searchbarEl.placeholder = t("search_placeholder");
@@ -2052,7 +2064,7 @@ async function renderBody$4() {
             row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
         }
     });
-    searchCont.appendChild(searchbarEl);
+    searchContLeftSideEl.appendChild(searchbarEl);
     const searchClearEl = document.createElement("button");
     searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
     searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
@@ -2062,7 +2074,7 @@ async function renderBody$4() {
         searchbarEl.value = "";
         searchbarEl.dispatchEvent(new Event("input"));
     });
-    searchCont.appendChild(searchClearEl);
+    searchContLeftSideEl.appendChild(searchClearEl);
     const channelListCont = document.createElement("div");
     channelListCont.id = "bytm-auto-like-channels-list";
     const setChannelEnabled = UserUtils.debounce((id, enabled) => {
@@ -3575,7 +3587,8 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
 function splitVideoTitle(title) {
     const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
     return { artist, song: rest.join("-") };
-}/**
+}//#region misc
+/**
  * Constructs a URL from a base URL and a record of query parameters.
  * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
  * All values will be stringified using their `toString()` method and then URI-encoded.
@@ -3605,6 +3618,7 @@ function sendRequest(details) {
         GM.xmlHttpRequest(Object.assign(Object.assign({ timeout: 10000 }, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
     });
 }
+//#region css
 /** Fetches a CSS file from the specified resource with a key starting with `css-` */
 async function fetchCss(key) {
     try {
@@ -3616,6 +3630,7 @@ async function fetchCss(key) {
         return undefined;
     }
 }
+//#region RYD
 /** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
 const voteCache = new Map();
 /** Time-to-live for the vote cache in milliseconds */
@@ -3659,6 +3674,7 @@ async function fetchVideoVotes(videoID) {
         return undefined;
     }
 }
+//#region iTunes album info
 /** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
 async function fetchITunesAlbumInfo(artist, album) {
     try {
@@ -6958,9 +6974,9 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         default: {
             code: "KeyL",
-            shift: false,
+            shift: true,
             ctrl: false,
-            alt: true,
+            alt: false,
         },
         reloadRequired: false,
         enable: noop,
@@ -6970,10 +6986,10 @@ const featInfo = {
         category: "hotkeys",
         supportedSites: ["ytm", "yt"],
         default: {
-            code: "KeyL",
-            shift: false,
-            ctrl: true,
-            alt: true,
+            code: "KeyD",
+            shift: true,
+            ctrl: false,
+            alt: false,
         },
         reloadRequired: false,
         enable: noop,
