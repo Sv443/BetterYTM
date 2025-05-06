@@ -51,6 +51,7 @@ export async function getAutoLikeDialog() {
       }
     });
 
+    autoLikeDialog.on("open", () => document.querySelector<HTMLElement>(".bytm-auto-like-channels-searchbar")?.focus());
     autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
   }
 
@@ -114,7 +115,7 @@ async function renderBody() {
 
   const descriptionEl = document.createElement("p");
   descriptionEl.classList.add("bytm-auto-like-channels-desc");
-  descriptionEl.textContent = t("auto_like_channels_dialog_desc");
+  descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
   descriptionEl.tabIndex = 0;
   contElem.appendChild(descriptionEl);
 
@@ -127,6 +128,7 @@ async function renderBody() {
   searchCont.appendChild(searchContLeftSideEl);
 
   const searchContRightSideEl = document.createElement("div");
+  searchContRightSideEl.tabIndex = 0;
   searchContRightSideEl.classList.add("right-side");
   searchCont.appendChild(searchContRightSideEl);
 
@@ -139,7 +141,7 @@ async function renderBody() {
 
   const searchbarEl = document.createElement("input");
   searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
-  searchbarEl.placeholder = t("search_placeholder");
+  searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
   searchbarEl.type = searchbarEl.role = "search";
   searchbarEl.tabIndex = 0;
   searchbarEl.autofocus = true;
