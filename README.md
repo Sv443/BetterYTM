@@ -104,17 +104,15 @@ You can also join my Discord server and ask your questions there or just hang ou
 
 ## Privacy
 BetterYTM does not collect any data about you that isn't strictly necessary for its features to work.  
-Your userscript manager extension's storage API is used to store all settings and data locally on your device.  
-Open its settings to see and manage this data or remove the userscript to automatically delete all data.  
+Your userscript manager extension's storage API is used to store all settings and collected data locally on your device.  
+Open its settings to see and manage this data. Delete the userscript to automatically delete all associated data.  
   
 BetterYTM makes use of external services and APIs to provide some of its features, which may collect data about you.  
-In every case, only the bare minimum of data is sent to these services and only when necessary.  
-This data includes the version of the userscript, your IP address, and the ID, title and author of the video you're watching.  
+In every case, only the bare minimum of data is sent to these services and only when necessary for the function of the script.  
   
-Find more info about the privacy of these services here:
-- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md)
-- [SponsorBlock - Privacy Policy](https://gist.github.com/ajayyy/aa9f8ded2b573d4f73a3ffa0ef74f796#requests-sent-to-the-server-while-using-the-extension)
-- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en)
+- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
+- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
+- [Apple Music - Privacy Policy](https://www.apple.com/legal/privacy/data/en/apple-music/) (album and artist names, IP address)
 
 <br><br>
 
