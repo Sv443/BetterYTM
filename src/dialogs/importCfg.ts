@@ -90,7 +90,7 @@ async function renderFooter() {
           if(curFmtVer < formatVersion && curFmtVer < ver) {
             try {
               const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
-              newData = migRes instanceof Promise ? await migRes : migRes;
+              newData = await migRes;
               curFmtVer = ver;
             }
             catch(err) {

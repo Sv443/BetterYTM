@@ -368,7 +368,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       headerTitleWrapperEl.role = "heading";
       headerTitleWrapperEl.ariaLevel = "1";
 
-      headerTitleWrapperEl.appendChild(header instanceof Promise ? await header : header);
+      headerTitleWrapperEl.appendChild(await header);
       headerWrapperEl.appendChild(headerTitleWrapperEl);
     }
     else {
@@ -387,7 +387,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
       closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-      onInteraction(closeBtnEl, () => this.close());
+      onInteraction(closeBtnEl, this.close);
       headerWrapperEl.appendChild(closeBtnEl);
     }
 
@@ -400,9 +400,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBodyElem.classList.add("bytm-dialog-body");
     this.options.small && dialogBodyElem.classList.add("small");
 
-    const body = this.options.renderBody();
-
-    dialogBodyElem.appendChild(body instanceof Promise ? await body : body);
+    dialogBodyElem.appendChild(await this.options.renderBody());
     dialogWrapperEl.appendChild(dialogBodyElem);
 
     //#region footer
@@ -412,7 +410,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       footerWrapper.classList.add("bytm-dialog-footer-cont");
       this.options.small && footerWrapper.classList.add("small");
       dialogWrapperEl.appendChild(footerWrapper);
-      footerWrapper.appendChild(footer instanceof Promise ? await footer : footer);
+      footerWrapper.appendChild(await footer);
     }
 
     return dialogWrapperEl;

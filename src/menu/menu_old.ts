@@ -233,7 +233,7 @@ async function mountCfgMenu() {
               if(curFmtVer < formatVersion && curFmtVer < ver) {
                 try {
                   const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
-                  newData = migRes instanceof Promise ? await migRes : migRes;
+                  newData = await migRes;
                   curFmtVer = ver;
                 }
                 catch(err) {
@@ -450,7 +450,7 @@ async function mountCfgMenu() {
           let adornmentElem: undefined | HTMLElement;
 
           const adornContentAsync = ftInfo.textAdornment?.();
-          const adornContent = adornContentAsync instanceof Promise ? await adornContentAsync : adornContentAsync;
+          const adornContent = await adornContentAsync;
           if((typeof adornContentAsync === "string" || adornContentAsync instanceof Promise) && typeof adornContent !== "undefined") {
             adornmentElem = document.createElement("span");
             adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;

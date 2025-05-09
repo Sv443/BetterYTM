@@ -67,9 +67,7 @@ export async function showIconToast({
   if("iconSrc" in rest) {
     toastIcon = document.createElement("img");
     toastIcon.classList.add("bytm-toast-icon", "img");
-    (toastIcon as HTMLImageElement).src = rest.iconSrc instanceof Promise
-      ? await rest.iconSrc
-      : rest.iconSrc;
+    (toastIcon as HTMLImageElement).src = await rest.iconSrc;
   }
   else {
     toastIcon = document.createElement("div");

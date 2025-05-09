@@ -270,6 +270,7 @@ export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
 //#region resources
 
 /**
+ * TODO: remove GM.getResourceUrl, since all resources are now fetched from the CDN  
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
  * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache  
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
