@@ -107,9 +107,12 @@ async function addQueueButtons(
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
 
-  const lyricsIconUrl = await getResourceUrl("icon-lyrics");
-  const deleteIconUrl = await getResourceUrl("icon-delete");
-  const spinnerIconUrl = await getResourceUrl("icon-spinner");
+  const [lyricsIconUrl, deleteIconUrl, spinnerIconUrl] = await Promise.all(([
+    "icon-lyrics",
+    "icon-delete",
+    "icon-spinner",
+  ] as const)
+    .map((icon) => getResourceUrl(icon)));
 
   await preloadImages([lyricsIconUrl, deleteIconUrl, spinnerIconUrl]);
 
