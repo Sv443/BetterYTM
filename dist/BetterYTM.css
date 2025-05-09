@@ -479,7 +479,7 @@ hr {
   --bytm-error-col: #fa5b5b;
   --bytm-reload-col: #77e064;
   --bytm-ytm-only-circle-col: #f13440;
-  --bytm-ytm-only-note-col: #f3dcdd;
+  --bytm-ytm-only-note-col: #fff0e9;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
@@ -2211,6 +2211,16 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   height: 100%;
   border-radius: inherit;
   box-shadow: var(--ts-songimg-box-shadow, initial);
+  object-fit: contain;
+}
+
+#bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: cover;
+}
+
+ytmusic-player[player-ui-state="FULLSCREEN"]
+  #bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: contain;
 }
 
 #bytm-thumbnail-overlay-indicator {
