@@ -1152,9 +1152,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 >   
 > Description:  
-> Returns true, if the given element (`document.activeElement` by default) is an input element, so that all other keypress event listeners are ignored.  
-> This is very useful for global keypress listeners (like ones on the `document.body`), which would trigger on every keypress, even if the user is interacting with an input element, like when typing in the search bar or a comment.  
-> Determining the element is a bit more sophisticated and tailored to the YT and YTM pages, so some elements might not be supported yet. In this case, please open an issue to get it added.  
+> Returns true, if the given element (`document.activeElement` by default) is an input element, so that all other keypress event listeners need to be ignored.  
+> This is very useful for global keypress listeners (like ones on the `document.body`), which would trigger on every keypress, even if the user is interacting with an input element, like when typing in the search bar or the comment box.  
+> Determining whether the element is an input element is based on HTML IDs, classes and tag names, making it sophisticated and tailored to the YT and YTM pages, so some elements might not be supported by this function yet. In this case, please open an issue to get it added.  
 >   
 > Arguments:
 > - `element` - The element to check. If not provided, the currently focused element (`document.activeElement`) is used.  
