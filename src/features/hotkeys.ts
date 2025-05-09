@@ -1,12 +1,12 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
+import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "./behavior.js";
+import { isIgnoredInputElement } from "./input.js";
 import { getFeature } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
-import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "./behavior.js";
 import { getLikeDislikeBtns, getVideoTime } from "../utils/dom.js";
 import { getDomain } from "../utils/misc.js";
 import { error, info, log, warn } from "../utils/logging.js";
 import type { Domain, FeatKeysOfType, HotkeyObj } from "../types.js";
-import { isIgnoredInputElement } from "./input.js";
 
 //#region init
 

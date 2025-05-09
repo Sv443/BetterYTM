@@ -6,21 +6,23 @@ import { addSelectorListener } from "../observers.js";
 
 //#region utils
 
-const ignoreTagNamesInput: string[] = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
-const ignoreIdsInput: string[] = [
+const ignoreInputTagNames: string[] = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+const ignoreInputIds: string[] = [
   "contenteditable-root", // comment field on YT
   "volume-slider", // volume slider on YTM
 ];
-const ignoreClassNamesInput: string[] = [];
+const ignoreInputClassNames: string[] = [];
 
-/** Returns true, if the given element (document.activeElement by default) is an input element that should make BYTM ignore keypresses */
+/** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
 export function isIgnoredInputElement(el = document.activeElement as HTMLElement | null) {
   if(!el)
     return false;
 
-  return ignoreTagNamesInput.includes(el.tagName.toUpperCase())
-    || ignoreClassNamesInput.some((cls) => el.classList.contains(cls))
-    || ignoreIdsInput.includes(el.id);
+  return document.activeElement !== document.body && (
+    ignoreInputTagNames.includes(el.tagName.toUpperCase())
+    || ignoreInputClassNames.some((cls) => el.classList.contains(cls))
+    || ignoreInputIds.includes(el.id)
+  );
 }
 
 //#region arrow key skip
@@ -33,7 +35,7 @@ export async function initArrowKeySkip() {
   });
 
   document.addEventListener("keydown", (evt) => {
-    if(!getFeature("arrowKeySupport"))
+    if(!getFeature("arrowKeySupport") || isIgnoredInputElement())
       return;
 
     if(["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
@@ -98,10 +100,7 @@ function handleVolumeKeyPress(evt: KeyboardEvent) {
 /** Initializes the feature that lets users skip by a frame with the period and comma keys while the video is paused */
 export async function initFrameSkip() {
   document.addEventListener("keydown", async (evt) => {
-    if(!getFeature("frameSkip"))
-      return;
-
-    if(!["Comma", "Period"].includes(evt.code))
+    if(!getFeature("frameSkip") || isIgnoredInputElement() || !["Comma", "Period"].includes(evt.code))
       return;
 
     const vid = getVideoElement();
@@ -128,14 +127,10 @@ export async function initFrameSkip() {
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
-    if(!getFeature("numKeysSkipToTime"))
+    if(!getFeature("numKeysSkipToTime") || isIgnoredInputElement())
       return;
     if(!e.key.trim().match(/^[0-9]$/))
       return;
-    // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-    const ignoreElement = isIgnoredInputElement();
-    if((document.activeElement !== document.body && ignoreElement) || ignoreElement)
-      return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
 
     const vidElem = getVideoElement();
     if(!vidElem || vidElem.readyState === 0)

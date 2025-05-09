@@ -472,7 +472,7 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
-// TODO:FIXME: re-grab video ID on thumbnail overlay toggle to ensure eventual consistency
+// TODO:FIXME: rewrite this whole chonker cause it doesn't wanna behave at all
 
 /** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
@@ -579,8 +579,7 @@ export async function initThumbnailOverlay() {
           if(thumbImgElem) {
             thumbImgElem.dataset.videoId = videoID;
             thumbImgElem.src = thumbUrl;
-            // crop horizontal bezels on songs:
-            thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "contain" : "cover";
+            thumbImgElem.dataset.mediaType = getCurrentMediaType();
           }
 
           log("Applied thumbnail URL to overlay:", thumbUrl);
