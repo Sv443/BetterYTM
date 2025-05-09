@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bc5f4bcc/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1d2bc5a5/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "bc5f4bcc",
+    buildNumber: "1d2bc5a5",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1976,6 +1976,7 @@ async function getAutoLikeDialog() {
                 error("Couldn't refresh auto-like channels dialog:", err);
             }
         });
+        autoLikeDialog.on("open", () => { var _a; return (_a = document.querySelector(".bytm-auto-like-channels-searchbar")) === null || _a === void 0 ? void 0 : _a.focus(); });
         autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
     }
     if (!autoLikeExImDialog) {
@@ -2028,7 +2029,7 @@ async function renderBody$4() {
     const contElem = document.createElement("div");
     const descriptionEl = document.createElement("p");
     descriptionEl.classList.add("bytm-auto-like-channels-desc");
-    descriptionEl.textContent = t("auto_like_channels_dialog_desc");
+    descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
     descriptionEl.tabIndex = 0;
     contElem.appendChild(descriptionEl);
     const searchCont = document.createElement("div");
@@ -2038,6 +2039,7 @@ async function renderBody$4() {
     searchContLeftSideEl.classList.add("left-side");
     searchCont.appendChild(searchContLeftSideEl);
     const searchContRightSideEl = document.createElement("div");
+    searchContRightSideEl.tabIndex = 0;
     searchContRightSideEl.classList.add("right-side");
     searchCont.appendChild(searchContRightSideEl);
     const updateCountElem = () => {
@@ -2048,7 +2050,7 @@ async function renderBody$4() {
     updateCountElem();
     const searchbarEl = document.createElement("input");
     searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
-    searchbarEl.placeholder = t("search_placeholder");
+    searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
     searchbarEl.type = searchbarEl.role = "search";
     searchbarEl.tabIndex = 0;
     searchbarEl.autofocus = true;
@@ -5130,7 +5132,7 @@ async function initAboveQueueBtns() {
     });
 }
 //#region thumb.overlay
-// TODO:FIXME: re-grab video ID on thumbnail overlay toggle to ensure eventual consistency
+// TODO:FIXME: rewrite this whole chonker cause it doesn't wanna behave at all
 /** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
 /** List of video IDs that have already been applied to the thumbnail overlay */
@@ -5213,8 +5215,7 @@ async function initThumbnailOverlay() {
                     if (thumbImgElem) {
                         thumbImgElem.dataset.videoId = videoID;
                         thumbImgElem.src = thumbUrl;
-                        // crop horizontal bezels on songs:
-                        thumbImgElem.style.objectFit = getCurrentMediaType() === "video" ? "contain" : "cover";
+                        thumbImgElem.dataset.mediaType = getCurrentMediaType();
                     }
                     log("Applied thumbnail URL to overlay:", thumbUrl);
                 };
@@ -5521,19 +5522,19 @@ async function initWatchPageFullSize() {
     else
         log("Made watch page full size");
 }//#region utils
-const ignoreTagNamesInput = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
-const ignoreIdsInput = [
+const ignoreInputTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+const ignoreInputIds = [
     "contenteditable-root", // comment field on YT
     "volume-slider", // volume slider on YTM
 ];
-const ignoreClassNamesInput = [];
-/** Returns true, if the given element (document.activeElement by default) is an input element that should make BYTM ignore keypresses */
+const ignoreInputClassNames = [];
+/** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
 function isIgnoredInputElement(el = document.activeElement) {
     if (!el)
         return false;
-    return ignoreTagNamesInput.includes(el.tagName.toUpperCase())
-        || ignoreClassNamesInput.some((cls) => el.classList.contains(cls))
-        || ignoreIdsInput.includes(el.id);
+    return document.activeElement !== document.body && (ignoreInputTagNames.includes(el.tagName.toUpperCase())
+        || ignoreInputClassNames.some((cls) => el.classList.contains(cls))
+        || ignoreInputIds.includes(el.id));
 }
 //#region arrow key skip
 let sliderEl;
@@ -5543,7 +5544,7 @@ async function initArrowKeySkip() {
     });
     document.addEventListener("keydown", (evt) => {
         var _a, _b;
-        if (!getFeature("arrowKeySupport"))
+        if (!getFeature("arrowKeySupport") || isIgnoredInputElement())
             return;
         if (["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
             return handleVolumeKeyPress(evt);
@@ -5587,9 +5588,7 @@ function handleVolumeKeyPress(evt) {
 /** Initializes the feature that lets users skip by a frame with the period and comma keys while the video is paused */
 async function initFrameSkip() {
     document.addEventListener("keydown", async (evt) => {
-        if (!getFeature("frameSkip"))
-            return;
-        if (!["Comma", "Period"].includes(evt.code))
+        if (!getFeature("frameSkip") || isIgnoredInputElement() || !["Comma", "Period"].includes(evt.code))
             return;
         const vid = getVideoElement();
         if (!vid || vid.readyState === 0)
@@ -5608,14 +5607,10 @@ async function initFrameSkip() {
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 async function initNumKeysSkip() {
     document.addEventListener("keydown", (e) => {
-        if (!getFeature("numKeysSkipToTime"))
+        if (!getFeature("numKeysSkipToTime") || isIgnoredInputElement())
             return;
         if (!e.key.trim().match(/^[0-9]$/))
             return;
-        // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-        const ignoreElement = isIgnoredInputElement();
-        if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
-            return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
         const vidElem = getVideoElement();
         if (!vidElem || vidElem.readyState === 0)
             return warn("Could not find video element, so the keypress is ignored");
