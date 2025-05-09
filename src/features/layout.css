@@ -430,6 +430,16 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   height: 100%;
   border-radius: inherit;
   box-shadow: var(--ts-songimg-box-shadow, initial);
+  object-fit: contain;
+}
+
+#bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: cover;
+}
+
+ytmusic-player[player-ui-state="FULLSCREEN"]
+  #bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: contain;
 }
 
 #bytm-thumbnail-overlay-indicator {
