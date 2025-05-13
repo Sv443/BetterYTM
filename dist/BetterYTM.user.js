@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1d2bc5a5/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9631f3a0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,7 +335,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "1d2bc5a5",
+    buildNumber: "9631f3a0",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -887,7 +887,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
             headerTitleWrapperEl.role = "heading";
             headerTitleWrapperEl.ariaLevel = "1";
-            headerTitleWrapperEl.appendChild(header instanceof Promise ? await header : header);
+            headerTitleWrapperEl.appendChild(await header);
             headerWrapperEl.appendChild(headerTitleWrapperEl);
         }
         else {
@@ -905,7 +905,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             closeBtnEl.role = "button";
             closeBtnEl.tabIndex = 0;
             closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-            onInteraction(closeBtnEl, () => this.close());
+            onInteraction(closeBtnEl, this.close);
             headerWrapperEl.appendChild(closeBtnEl);
         }
         dialogWrapperEl.appendChild(headerWrapperEl);
@@ -914,8 +914,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
         dialogBodyElem.classList.add("bytm-dialog-body");
         this.options.small && dialogBodyElem.classList.add("small");
-        const body = this.options.renderBody();
-        dialogBodyElem.appendChild(body instanceof Promise ? await body : body);
+        dialogBodyElem.appendChild(await this.options.renderBody());
         dialogWrapperEl.appendChild(dialogBodyElem);
         //#region footer
         if (footer) {
@@ -923,7 +922,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             footerWrapper.classList.add("bytm-dialog-footer-cont");
             this.options.small && footerWrapper.classList.add("small");
             dialogWrapperEl.appendChild(footerWrapper);
-            footerWrapper.appendChild(footer instanceof Promise ? await footer : footer);
+            footerWrapper.appendChild(await footer);
         }
         return dialogWrapperEl;
     }
@@ -1630,9 +1629,7 @@ async function showIconToast(_a) {
     if ("iconSrc" in rest) {
         toastIcon = document.createElement("img");
         toastIcon.classList.add("bytm-toast-icon", "img");
-        toastIcon.src = rest.iconSrc instanceof Promise
-            ? await rest.iconSrc
-            : rest.iconSrc;
+        toastIcon.src = await rest.iconSrc;
     }
     else {
         toastIcon = document.createElement("div");
@@ -1935,9 +1932,7 @@ async function createCircularBtn(_a) {
     const imgElem = document.createElement("img");
     imgElem.classList.add("bytm-generic-btn-img");
     imgElem.src = "src" in rest
-        ? rest.src instanceof Promise
-            ? await rest.src
-            : rest.src
+        ? await rest.src
         : await getResourceUrl(rest.resourceName);
     btnElem.appendChild(imgElem);
     return ripple ? createRipple(btnElem) : btnElem;
@@ -3042,6 +3037,7 @@ function scrollToCurrentSongInQueue(evt) {
 }
 //#region resources
 /**
+ * TODO: remove GM.getResourceUrl, since all resources are now fetched from the CDN
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
  * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
@@ -4145,7 +4141,7 @@ async function mountCfgMenu() {
                             if (curFmtVer < formatVersion && curFmtVer < ver) {
                                 try {
                                     const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
-                                    newData = migRes instanceof Promise ? await migRes : migRes;
+                                    newData = await migRes;
                                     curFmtVer = ver;
                                 }
                                 catch (err) {
@@ -4316,7 +4312,7 @@ async function mountCfgMenu() {
                     textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
                     let adornmentElem;
                     const adornContentAsync = (_a = ftInfo.textAdornment) === null || _a === void 0 ? void 0 : _a.call(ftInfo);
-                    const adornContent = adornContentAsync instanceof Promise ? await adornContentAsync : adornContentAsync;
+                    const adornContent = await adornContentAsync;
                     if ((typeof adornContentAsync === "string" || adornContentAsync instanceof Promise) && typeof adornContent !== "undefined") {
                         adornmentElem = document.createElement("span");
                         adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
@@ -4673,6 +4669,30 @@ async function mountCfgMenu() {
         (_e = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _e === void 0 ? void 0 : _e.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
+        // ensure menu is inert if BytmDialog instances stacked on top of it:
+        /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
+        const stackedOpenDialogIds = [];
+        window.addEventListener("bytm:dialogOpened", (evt) => {
+            if (!isCfgMenuOpen || !("detail" in evt))
+                return;
+            const dlg = evt === null || evt === void 0 ? void 0 : evt.detail;
+            if (dlg && dlg instanceof BytmDialog) {
+                stackedOpenDialogIds.push(dlg.id);
+                menuContainer.setAttribute("aria-hidden", "true");
+                menuContainer.setAttribute("inert", "true");
+            }
+        });
+        window.addEventListener("bytm:dialogClosed", (evt) => {
+            var _a;
+            const idx = stackedOpenDialogIds.indexOf((_a = evt === null || evt === void 0 ? void 0 : evt.detail) === null || _a === void 0 ? void 0 : _a.id);
+            if (idx > -1)
+                stackedOpenDialogIds.splice(idx, 1);
+            if (stackedOpenDialogIds.length === 0) {
+                menuContainer.removeAttribute("aria-hidden");
+                menuContainer.removeAttribute("inert");
+            }
+        });
+        // remount if siteEvent recreateCfgMenu emitted:
         siteEvents.on("recreateCfgMenu", async () => {
             const bgElem = document.querySelector("#bytm-cfg-menu-bg");
             if (!bgElem)
@@ -4685,7 +4705,7 @@ async function mountCfgMenu() {
         });
     }
     catch (err) {
-        error("Error while rendering config menu:", err);
+        error("Error while creating and mounting config menu:", err);
         closeCfgMenu();
     }
 }
@@ -5936,9 +5956,12 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
 async function addQueueButtons(queueItem, containerParentSelector = ".song-info", listType = "currentQueue", classes = [], insertPosition = "child") {
     const queueBtnsCont = document.createElement("div");
     queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
-    const lyricsIconUrl = await getResourceUrl("icon-lyrics");
-    const deleteIconUrl = await getResourceUrl("icon-delete");
-    const spinnerIconUrl = await getResourceUrl("icon-spinner");
+    const [lyricsIconUrl, deleteIconUrl, spinnerIconUrl] = await Promise.all([
+        "icon-lyrics",
+        "icon-delete",
+        "icon-spinner",
+    ]
+        .map((icon) => getResourceUrl(icon)));
     await UserUtils.preloadImages([lyricsIconUrl, deleteIconUrl, spinnerIconUrl]);
     //#region lyrics btn
     let lyricsBtnElem;
@@ -6080,7 +6103,15 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                 await UserUtils.pauseFor(15);
                 delImgElem.src = deleteIconUrl;
                 delImgElem.classList.remove("bytm-spinner");
-                const removeFromQueueBtn = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+                const removeFromQueueOrPlaylistBtn = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+                const removeFromQueueBtnOptional = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)");
+                let removeFromQueueBtn;
+                // in regular queues, the 3rd item is "remove from queue"
+                // in playlists, the 3rd item is "remove from playlist", and the 4th item is "remove from queue"
+                if (removeFromQueueBtnOptional && (removeFromQueueBtnOptional === null || removeFromQueueBtnOptional === void 0 ? void 0 : removeFromQueueBtnOptional.previousElementSibling) === removeFromQueueOrPlaylistBtn)
+                    removeFromQueueBtn = removeFromQueueBtnOptional;
+                else if (removeFromQueueOrPlaylistBtn)
+                    removeFromQueueBtn = removeFromQueueOrPlaylistBtn;
                 removeFromQueueBtn === null || removeFromQueueBtn === void 0 ? void 0 : removeFromQueueBtn.click();
                 // queue items aren't removed automatically outside of the current queue
                 if (removeFromQueueBtn && listType === "genericList") {
