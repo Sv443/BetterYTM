@@ -290,7 +290,18 @@ async function addQueueButtons(
         delImgElem.src = deleteIconUrl;
         delImgElem.classList.remove("bytm-spinner");
 
-        const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+        const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+        const removeFromQueueBtnOptional = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)");
+
+        let removeFromQueueBtn: HTMLElement | undefined;
+
+        // in regular queues, the 3rd item is "remove from queue"
+        // in playlists, the 3rd item is "remove from playlist", and the 4th item is "remove from queue"
+        if(removeFromQueueBtnOptional && removeFromQueueBtnOptional?.previousElementSibling === removeFromQueueOrPlaylistBtn)
+          removeFromQueueBtn = removeFromQueueBtnOptional;
+        else if(removeFromQueueOrPlaylistBtn)
+          removeFromQueueBtn = removeFromQueueOrPlaylistBtn;
+
         removeFromQueueBtn?.click();
 
         // queue items aren't removed automatically outside of the current queue
