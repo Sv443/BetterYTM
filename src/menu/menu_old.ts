@@ -887,6 +887,32 @@ async function mountCfgMenu() {
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
 
+    // ensure menu is inert if BytmDialog instances stacked on top of it:
+
+    /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
+    const stackedOpenDialogIds: string[] = [];
+    window.addEventListener("bytm:dialogOpened", (evt) => {
+      if(!isCfgMenuOpen || !("detail" in evt))
+        return;
+      const dlg = (evt as CustomEvent<BytmDialog>)?.detail;
+      if(dlg && dlg instanceof BytmDialog) {
+        stackedOpenDialogIds.push(dlg.id);
+        menuContainer.setAttribute("aria-hidden", "true");
+        menuContainer.setAttribute("inert", "true");
+      }
+    });
+    window.addEventListener("bytm:dialogClosed", (evt) => {
+      const idx = stackedOpenDialogIds.indexOf((evt as CustomEvent<BytmDialog>)?.detail?.id);
+      if(idx > -1)
+        stackedOpenDialogIds.splice(idx, 1);
+      if(stackedOpenDialogIds.length === 0) {
+        menuContainer.removeAttribute("aria-hidden");
+        menuContainer.removeAttribute("inert");
+      }
+    });
+
+    // remount if siteEvent recreateCfgMenu emitted:
+
     siteEvents.on("recreateCfgMenu", async () => {
       const bgElem = document.querySelector("#bytm-cfg-menu-bg");
       if(!bgElem)
@@ -899,7 +925,7 @@ async function mountCfgMenu() {
     });
   }
   catch(err) {
-    error("Error while rendering config menu:", err);
+    error("Error while creating and mounting config menu:", err);
     closeCfgMenu();
   }
 }
