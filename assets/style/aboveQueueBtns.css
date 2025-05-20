@@ -15,7 +15,7 @@
   ytmusic-queue-header-renderer
   .ytmusic-queue-header-renderer
   yt-formatted-string:not(.ytmusic-chip-cloud-chip-renderer) {
-  text-shadow: 1px 1px 3px #000;
+  text-shadow: 1px 1px 2px #000;
 }
 
 #side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer.hidden {
