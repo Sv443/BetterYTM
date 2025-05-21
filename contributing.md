@@ -247,12 +247,12 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
   4. Make sure all files are committed before the built userscript is, so the next build will have the correct build number
   5. Run `pnpm build-prod` to build the userscript for all hosts
   6. Commit and push the built files
-  7. Create a new release on GitHub with a tag that follows the format of the previous releases, a copy of the relevant section in the changelog and an install button that points to the built userscript on GitHub (make sure it uses the version tag in its URL to ensure the correct version is installed)
+  7. Create a new release on GitHub with a tag that follows the *exact* format of the previous releases, a copy of the relevant section in the changelog and an install button that points to the built userscript on GitHub (make sure it uses the version tag in its URL to ensure the correct version is installed)
   8. Update the userscript on GreasyFork and OpenUserJS from the built files  
     GreasyFork also needs the relevant section of the changelog, but the internal and plugin changes should be trimmed out
   9. Send an announcement in the Discord server linking to the install pages and the changelog, with a summary of the most important changes
   10. Update the [BYTM plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) by setting the BYTM submodule to the *exact* commit matching the release and making sure everything else is compatible with the changes of the latest BYTM version
-  11. Create a release in the BYTM plugin template repository with the same tag as the BYTM release, following the format of the previous releases
+  11. Create a release in the BYTM plugin template repository, following the *exact* format of the previous releases
 
 
 <br><br><br>
