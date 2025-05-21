@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5d004df4/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@56c039a9/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -363,7 +363,7 @@ I welcome every contribution on GitHub!
       mode: "production",
       branch: "main",
       host: "github",
-      buildNumber: "5d004df4",
+      buildNumber: "56c039a9",
       assetSource: "jsdelivr",
       devServerPort: "8710",
   };
