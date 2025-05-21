@@ -1,16 +1,23 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
-import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants.js";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber } from "./utils/index.js";
+import { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } from "./constants.js";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
-import { getFeatures, setFeatures } from "./config.js";
-import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
+import { defaultData, getFeatures, setFeatures } from "./config.js";
+import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
 import { type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
-import { BytmDialog, ExImDialog, MarkdownDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import { showPrompt } from "./dialogs/prompt.js";
+import { BytmDialog } from "./components/BytmDialog.js";
+import { createHotkeyInput } from "./components/hotkeyInput.js";
+import { createToggleInput } from "./components/toggleInput.js";
+import { createCircularBtn } from "./components/circularButton.js";
+import { createRipple } from "./components/ripple.js";
+import { showIconToast, showToast } from "./components/toast.js";
+import { ExImDialog } from "./components/ExImDialog.js";
+import { MarkdownDialog } from "./components/MarkdownDialog.js";
 
-const { autoPlural, getUnsafeWindow, randomId, NanoEmitter } = UserUtils;
+const { autoPlural, getUnsafeWindow, purifyObj, randomId, NanoEmitter } = UserUtils;
 
 //#region interface globals
 
@@ -101,7 +108,7 @@ export const allInterfaceEvents = [
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
  */
-const globalFuncs: InterfaceFunctions = {
+const globalFuncs: InterfaceFunctions = purifyObj({
   // meta:
   /*🔒*/ getPluginInfo,
 
@@ -109,6 +116,7 @@ const globalFuncs: InterfaceFunctions = {
   getDomain,
   getResourceUrl,
   getSessionId,
+  reloadTab,
 
   // dom:
   setInnerHtml,
@@ -117,8 +125,13 @@ const globalFuncs: InterfaceFunctions = {
   getVideoTime,
   getThumbnailUrl,
   getBestThumbnailUrl,
+  fetchITunesAlbumInfo,
   waitVideoElementReady,
+  getVideoElement,
+  getVideoSelector,
   getCurrentMediaType,
+  getLikeDislikeBtns,
+  isIgnoredInputElement,
 
   // translations:
   /*🔒*/ setLocale: setLocaleInterface,
@@ -133,6 +146,7 @@ const globalFuncs: InterfaceFunctions = {
   // feature config:
   /*🔒*/ getFeatures: getFeaturesInterface,
   /*🔒*/ saveFeatures: saveFeaturesInterface,
+  getDefaultFeatures: () => JSON.parse(JSON.stringify(defaultData)),
 
   // lyrics:
   fetchLyricsUrlTop,
@@ -156,7 +170,7 @@ const globalFuncs: InterfaceFunctions = {
 
   // other:
   formatNumber,
-};
+});
 
 /** Initializes the BYTM interface */
 export function initInterface() {
@@ -166,7 +180,9 @@ export function initInterface() {
     branch,
     host,
     buildNumber,
+    initialParams,
     compressionFormat,
+    sessionStorageAvailable,
     ...scriptInfo,
     // functions
     ...globalFuncs,
@@ -198,7 +214,7 @@ export function setGlobalProp<
   const win = getUnsafeWindow();
 
   if(typeof win.BYTM !== "object")
-    win.BYTM = {} as BytmObject;
+    win.BYTM = purifyObj({}) as BytmObject;
 
   win.BYTM[key] = value;
 }
@@ -213,7 +229,7 @@ export function emitInterface<
 ) {
   try {
     getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
-    //@ts-ignore
+    //@ts-expect-error
     emitOnPlugins(type, undefined, ...detail);
     log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
   }
@@ -230,50 +246,60 @@ const registeredPlugins = new Map<string, PluginItem>();
 /** Map of plugin ID to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map<string, string>();
 
+let pluginsInitialized = false;
+
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
-  // TODO: check perms and ask user for initial activation
-
-  const registerPlugin = (def: PluginDef): PluginRegisterResult => {
-    try {
-      const plKey = getPluginKey(def);
-
-      if(registeredPlugins.has(plKey))
-        throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
-
-      const validationErrors = validatePluginDef(def);
-      if(validationErrors)
-        throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
-
-      const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
-      const token = randomId(32, 36, true);
-
-      registeredPlugins.set(plKey, {
-        def: def,
-        events,
-      });
-      registeredPluginTokens.set(plKey, token);
-
-      info(`Successfully registered plugin '${plKey}'`);
-      setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 1);
-
-      return {
-        info: getPluginInfo(token, def)!,
-        events,
-        token,
-      };
-    }
-    catch(err) {
-      error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
-      throw err;
-    }
-  };
-
   emitInterface("bytm:registerPlugin", (def: PluginDef) => registerPlugin(def));
 
-  if(registeredPlugins.size > 0)
-    log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+  window.addEventListener("bytm:ready", () => {
+    pluginsInitialized = true;
+    if(registeredPlugins.size > 0)
+      log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+  }, {
+    once: true,
+  });
 }
+
+/** Registers a plugin on the BYTM interface. */
+function registerPlugin(def: PluginDef): PluginRegisterResult {
+  // TODO: check perms and ask user for initial activation
+  try {
+    if(pluginsInitialized)
+      throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
+
+    const plKey = getPluginKey(def);
+
+    if(registeredPlugins.has(plKey))
+      throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
+
+    const validationErrors = validatePluginDef(def);
+    if(validationErrors)
+      throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
+
+    const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
+    const token = randomId(16, 36, true, true);
+
+    registeredPlugins.set(plKey, {
+      def: def,
+      events,
+    });
+    registeredPluginTokens.set(plKey, token);
+
+    info(`Successfully registered plugin '${plKey}'`);
+    setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 1);
+
+    return {
+      info: getPluginInfo(token, def)!,
+      events,
+      token,
+    };
+  }
+  catch(err) {
+    error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
+    throw err;
+  }
+};
 
 /** Returns the registered plugins as an array of tuples with the items `[id: string, item: PluginItem]` */
 export function getRegisteredPlugins() {
@@ -432,7 +458,7 @@ export function getFeaturesInterface(token: string | undefined) {
   const features = getFeatures();
   for(const ftKey of Object.keys(features)) {
     const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
-    if(info && info.valueHidden) // @ts-ignore
+    if(info && info.valueHidden) // @ts-expect-error
       features[ftKey as keyof typeof features] = undefined;
   }
   return features as FeatureConfig;

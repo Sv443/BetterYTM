@@ -1,19 +1,19 @@
-import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
+import { addGlobalStyle, consumeStringGen, getUnsafeWindow, isDomLoaded, randomId, type StringGen, type Stringifiable, onDomLoad } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
-import type { ResourceKey, TTPolicy } from "../types.js";
+import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
 import { showPrompt } from "../dialogs/prompt.js";
 
-/** Whether the DOM has finished loading and elements can be added or modified */
-export let domLoaded = false;
-document.addEventListener("DOMContentLoaded", () => domLoaded = true);
-
-//#region vid time & vol.
+//#region vid elem
 
 /** Returns the video element selector string based on the current domain */
-export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
+export function getVideoSelector() {
+  return getDomain() === "ytm"
+    ? "ytmusic-player video"
+    : "#player-container ytd-player video";
+}
 
 /** Returns the video element based on the current domain */
 export function getVideoElement() {
@@ -22,10 +22,12 @@ export function getVideoElement() {
 
 let vidElemReady = false;
 
+//#region vid time
+
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).  
  * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.  
- * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+ * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work).
  * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
  */
 export function getVideoTime(precision = 2) {
@@ -44,7 +46,7 @@ export function getVideoTime(precision = 2) {
     try {
       if(getDomain() === "ytm") {
         const vidElem = getVideoElement();
-        if(vidElem)
+        if(vidElem && vidElem.readyState > 0)
           return resolveWithVal(vidElem.currentTime);
 
         addSelectorListener<HTMLProgressElement>("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
@@ -54,7 +56,7 @@ export function getVideoTime(precision = 2) {
       }
       else if(getDomain() === "yt") {
         const vidElem = getVideoElement();
-        if(vidElem)
+        if(vidElem && vidElem.readyState > 0)
           return resolveWithVal(vidElem.currentTime);
 
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
@@ -128,16 +130,21 @@ function ytForceShowVideoTime() {
   return true;
 }
 
+//#region vid ready
+
 /**
- * Waits for the video element to be in its readyState 4 / canplay state and returns it.  
+ * Waits for the DOM to be loaded and the video element to be in its readyState 4 or until the "canplay" event is emitted and then returns it.  
  * Could take a very long time to resolve if the `/watch` page isn't open.  
  * Resolves immediately if the video element is already ready.
  */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   return new Promise(async (res, rej) => {
     try {
+      if(!isDomLoaded())
+        await onDomLoad();
+
       const vidEl = getVideoElement();
-      if(vidEl?.readyState === 4)
+      if(vidEl && (vidEl?.readyState ?? 0) > 0)
         return res(vidEl);
 
       if(!location.pathname.startsWith("/watch"))
@@ -159,6 +166,52 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   });
 }
 
+//#region like/dislike btns
+
+/**
+ * Returns the like/dislike button elements based on the current domain and the current like state ("LIKE" / "DISLIKE" / "INDIFFERENT").  
+ * The btnRenderer element is a parent of both buttons.
+ */
+export function getLikeDislikeBtns() {
+  let btnRenderer: HTMLElement | undefined;
+  let likeBtn: HTMLButtonElement | undefined;
+  let dislikeBtn: HTMLButtonElement |  undefined;
+
+  let likeState: LikeDislikeState | undefined;
+
+  switch(getDomain()) {
+  case "ytm": {
+    btnRenderer = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer") ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-like button") ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-dislike button") ?? undefined;
+
+    const likeStateRaw = btnRenderer?.getAttribute("like-status")?.toUpperCase();
+    likeState = ["LIKE", "DISLIKE", "INDIFFERENT"].includes(likeStateRaw ?? "") ? likeStateRaw as LikeDislikeState : "INDIFFERENT";
+    break;
+  }
+  case "yt": {
+    btnRenderer = document.querySelector<HTMLElement>("ytd-watch-metadata segmented-like-dislike-button-view-model") ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+
+    if(likeBtn?.getAttribute("aria-pressed") === "true")
+      likeState = "LIKE";
+    else if(dislikeBtn?.getAttribute("aria-pressed") === "true")
+      likeState = "DISLIKE";
+    else if(likeBtn || dislikeBtn)
+      likeState = "INDIFFERENT";
+    break;
+  }
+  }
+
+  return {
+    likeBtn,
+    dislikeBtn,
+    btnRenderer,
+    likeState,
+  };
+}
+
 //#region css utils
 
 /**
@@ -167,10 +220,10 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
  * @param ref A reference string to identify the style element - defaults to a random 5-character string
  * @param transform A function to transform the CSS before adding it to the DOM
  */
-export async function addStyle(css: string, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
-  if(!domLoaded)
+export async function addStyle(css: StringGen, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
+  if(!isDomLoaded())
     throw new Error("DOM has not finished loading yet");
-  const elem = addGlobalStyle(await transform(css));
+  const elem = addGlobalStyle(await transform(await consumeStringGen(css)));
   elem.id = `bytm-style-${ref ?? randomId(6, 36)}`;
   return elem;
 }
@@ -179,10 +232,10 @@ export async function addStyle(css: string, ref?: string, transform: (css: strin
  * Adds a global style element with the contents fetched from the specified resource starting with `css-`  
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
-export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
+export async function addStyleFromResource(key: StyleResourceKey, transform: (css: string) => Stringifiable = (c) => c) {
   const css = await fetchCss(key);
   if(css) {
-    await addStyle(transform(css), key.slice(4));
+    await addStyle(String(transform(css)), key.slice(4));
     return true;
   }
   return false;
@@ -215,12 +268,13 @@ export function clearNode(element: Element) {
 }
 
 /**
- * Returns an identifier for the currently playing media type on YTM (song or video).  
- * Only works on YTM and will throw on YT or if {@linkcode waitVideoElementReady} hasn't been awaited yet.
+ * Returns an identifier for the currently playing media type on YTM ("song" or "video").  
+ * Only works on YTM and will throw if {@linkcode waitVideoElementReady} hasn't been awaited yet.  
+ * On YT, it will always return "video".
  */
 export function getCurrentMediaType(): "video" | "song" {
   if(getDomain() === "yt")
-    throw new Error("currentMediaType() is only available on YTM!");
+    return "video";
   const songImgElem = document.querySelector("ytmusic-player #song-image");
   if(!songImgElem)
     throw new Error("Couldn't find the song image element. Use this function only after awaiting `waitVideoElementReady()`!");
@@ -260,8 +314,14 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
   }
 });
 
-/** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
-export function setInnerHtml(element: HTMLElement, html: string) {
+/**
+ * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
+ * If no HTML string is given, the element's innerHTML will be set to an empty string.
+ */
+export function setInnerHtml(element: HTMLElement, html?: Stringifiable | null) {
+  if(!html)
+    html = "";
+
   if(!ttPolicy && window?.trustedTypes?.createPolicy) {
     ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
       createHTML: (dirty: string) => DOMPurify.sanitize(dirty, {
@@ -270,8 +330,8 @@ export function setInnerHtml(element: HTMLElement, html: string) {
     });
   }
 
-  element.innerHTML = ttPolicy?.createHTML(html)
-    ?? DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: false });
+  element.innerHTML = ttPolicy?.createHTML(String(html))
+    ?? DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: false });
 }
 
 /** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
@@ -284,5 +344,5 @@ export function downloadFile(fileName: string, data: string | Blob, mimeType = "
   document.body.appendChild(a);
   a.click();
 
-  setTimeout(() => a.remove(), 50);
+  setTimeout(() => a.remove(), 1);
 }

@@ -1,6 +1,6 @@
-import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp } from "@sv443-network/userutils";
-import { disableBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, getVideoTime, info, log, t, type TrLocale } from "./utils/index.js";
+import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp, purifyObj } from "@sv443-network/userutils";
+import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
+import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -9,21 +9,25 @@ import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 9;
+export const formatVersion = 10;
 
-export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
-  // @ts-ignore
-  .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
-  .reduce<Partial<FeatureConfig>>((acc, key) => {
-    // @ts-ignore
-    acc[key] = featInfo?.[key]?.default as unknown as undefined;
-    return acc;
-  }, {}) as FeatureConfig;
+export const defaultData = purifyObj(
+  (Object.keys(featInfo) as (keyof typeof featInfo)[])
+    // @ts-expect-error
+    .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
+    .reduce<Partial<FeatureConfig>>((acc, key) => {
+      // @ts-expect-error
+      acc[key] = featInfo?.[key]?.default as unknown as undefined;
+      return acc;
+    }, {}) as FeatureConfig
+);
 
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {
   // 1 -> 2 (<=v1.0)
   2: (oldData: Record<string, unknown>) => {
+    if(typeof oldData !== "object" || oldData === null)
+      return defaultData;
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
     delete oldData.queueButtons;
     return {
@@ -84,7 +88,7 @@ export const migrations: DataMigrationsDict = {
       ]), [
         { key: "rememberSongTimeSites", oldDefault: "ytm" },
         { key: "volumeSliderScrollStep", oldDefault: 10 },
-      ]
+      ],
     );
     "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
     "advancedLyricsFilter" in newData && delete newData.advancedLyricsFilter;
@@ -103,7 +107,7 @@ export const migrations: DataMigrationsDict = {
         "errorOnLyricsNotFound", "openPluginList",
       ]), [
         { key: "toastDuration", oldDefault: 3 },
-      ]
+      ],
     );
     newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
     return newData;
@@ -125,18 +129,44 @@ export const migrations: DataMigrationsDict = {
       oldData.locale = "ja-JP";
     if(oldData.locale as string === "en-GB")
       oldData.locale = "en-GB";
-    return useDefaultConfig(oldData, [
-      "resetEverything",
-      // TODO(V2.2):
-      // "autoLikePlayerBarToggleBtn",
-    ]);
+
+    return useDefaultConfig(oldData, ["resetEverything"]);
+  },
+  // 9 -> 10 (v3.0)
+  10: (oldData: FeatureConfig) => {
+    oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
+
+    oldData.lyricsCacheMaxSize = clamp(oldData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
+
+    oldData.autoCloseToasts = oldData.closeToastsTimeout > 0;
+    oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
+
+    if("thumbnailOverlayImageFit" in oldData)
+      delete oldData.thumbnailOverlayImageFit;
+
+    return useNewDefaultIfUnchanged(
+      useDefaultConfig(oldData, [
+        "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
+        "frameSkip", "frameSkipWhilePlaying",
+        "frameSkipAmount", "watchPageFullSize",
+        "arrowKeyVolumeStep", "likeDislikeHotkeys",
+        "likeHotkey", "dislikeHotkey",
+        "currentLyricsHotkeyEnabled", "currentLyricsHotkey",
+        "skipToRemTimeHotkeyEnabled", "skipToRemTimeHotkey",
+        "rebindNextAndPrevious", "nextHotkey",
+        "previousHotkey", "rebindPlayPause",
+        "playPauseHotkey", "thumbnailOverlayITunesImgRes",
+      ]), [
+        { key: "lyricsCacheMaxSize", oldDefault: 2000 },
+      ],
+    );
   },
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
   const newData = { ...defaultData, ...(baseData ?? {}) };
-  for(const key of resetKeys) // @ts-ignore
+  for(const key of resetKeys) // @ts-expect-error
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
   return newData;
 }
@@ -152,7 +182,7 @@ function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 ) {
   const newData = { ...oldData };
   for(const { key, oldDefault } of defaults) {
-    // @ts-ignore
+    // @ts-expect-error
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)
       newData[key] = defaultVal as never; // we love TS
@@ -226,8 +256,8 @@ export function getFeatures(): FeatureConfig {
 }
 
 /** Returns the value of the feature with the given key from the in-memory cache, as a copy */
-export function getFeature<TKey extends FeatureKey>(key: TKey): FeatureConfig[TKey] {
-  return configStore.getData()[key];
+export function getFeature<TKey extends FeatureKey>(key: TKey | "_"): FeatureConfig[TKey] {
+  return configStore.getData()[key as TKey];
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
@@ -249,7 +279,7 @@ export function setDefaultFeatures() {
 export async function promptResetConfig() {
   if(await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
     closeCfgMenu();
-    disableBeforeUnload();
+    enableDiscardBeforeUnload();
     await setDefaultFeatures();
     if(location.pathname.startsWith("/watch")) {
       const videoTime = await getVideoTime(0);
@@ -260,7 +290,7 @@ export async function promptResetConfig() {
       location.replace(url.href);
     }
     else
-      location.reload();
+      await reloadTab();
   }
 }
 

@@ -1,14 +1,21 @@
 #side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer {
-  position: sticky;
   align-items: center;
   top: 0;
   z-index: 2;
   padding: 16px 8px;
   margin: unset;
-  background-color: var(--bytm-themed-bg);
+  background-color: var(--bytm-themed-bg-col);
   border-bottom: 1px solid var(--ytmusic-divider);
-  /* fallback for when the ThemeSong bg color is a gradient function instead of a color value */
-  backdrop-filter: blur(8px);
+  /* fallback for when the ThemeSong bg color is a gradient function instead of a color value (Apple Music and YT Music themes) */
+  backdrop-filter: blur(3.5px);
+}
+
+#side-panel
+  ytmusic-tab-renderer
+  ytmusic-queue-header-renderer
+  .ytmusic-queue-header-renderer
+  yt-formatted-string:not(.ytmusic-chip-cloud-chip-renderer) {
+  text-shadow: 1px 1px 2px #000;
 }
 
 #side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer.hidden {

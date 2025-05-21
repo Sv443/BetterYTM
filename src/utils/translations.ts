@@ -2,17 +2,23 @@ import { tr, Stringifiable, fetchAdvanced } from "@sv443-network/userutils";
 import { error, getResourceUrl, info } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
 import { getFeature } from "../config.js";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import langMapping from "../../assets/locales.json" with { type: "json" };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import tr_enUS from "../../assets/translations/en-US.json";
+import tr_enUS from "../../assets/translations/en-US.json" with { type: "json" };
+
+void [langMapping, tr_enUS];
 
 export type TrLocale = keyof typeof langMapping;
-export type TrKey = keyof (typeof tr_enUS["translations"]);
+export type TrKey = keyof typeof tr_enUS;
 type TFuncKey = TrKey | (string & {});
 
 /** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set<TrLocale>();
+
+/** The currently active locale */
+let activeLocale: TrLocale = "en-US";
+
+tr.addTransform(tr.transforms.percent);
+tr.addTransform(tr.transforms.templateLiteral);
 
 /** Initializes the translations */
 export async function initTranslations(locale: TrLocale) {
@@ -26,19 +32,25 @@ export async function initTranslations(locale: TrLocale) {
 
     let fallbackTrans: Partial<typeof tr_enUS> = {};
 
-    if(getFeature("localeFallback"))
+    if(getFeature("localeFallback")) {
+      tr.setFallbackLanguage("en-US" satisfies TrLocale);
       fallbackTrans = await fetchLocaleJson("en-US");
+    }
 
     // merge with base translations if specified
-    const baseTransFile = transFile.base ? await fetchLocaleJson(transFile.base) : undefined;
+    const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
+      ? await fetchLocaleJson(transFile.base as TrLocale)
+      : undefined;
 
-    const translations: typeof tr_enUS["translations"] = {
-      ...(fallbackTrans?.translations ?? {}),
-      ...(baseTransFile?.translations ?? {}),
-      ...transFile.translations,
+    const translations: typeof tr_enUS = {
+      ...(fallbackTrans ?? {}),
+      ...(baseTransFile ?? {}),
+      ...transFile,
     };
 
-    tr.addLanguage(locale, translations);
+    const { meta: { authors: _authors, ...meta }, ...trans } = translations;
+
+    tr.addTranslations(locale, { ...meta, ...trans });
 
     info(`Loaded translations for locale '${locale}'`);
   }
@@ -61,29 +73,31 @@ async function fetchLocaleJson(locale: TrLocale) {
 
 /** Sets the current language for translations */
 export function setLocale(locale: TrLocale) {
-  tr.setLanguage(locale);
+  activeLocale = locale;
   setGlobalProp("locale", locale);
   emitInterface("bytm:setLocale", { locale });
 }
 
 /** Returns the currently set language */
 export function getLocale() {
-  return tr.getLanguage() as TrLocale;
+  return activeLocale;
 }
 
 /** Returns whether the given translation key exists in the current locale */
-export function hasKey(key: TFuncKey) {
-  return hasKeyFor(getLocale(), key);
+export async function hasKey(key: TFuncKey) {
+  return await hasKeyFor(getLocale(), key);
 }
 
-/** Returns whether the given translation key exists in the given locale */
-export function hasKeyFor(locale: TrLocale, key: TFuncKey) {
+/** Returns whether the given translation key exists in the given locale - if it hasn't been initialized yet, initializes it first. */
+export async function hasKeyFor(locale: TrLocale, key: TFuncKey) {
+  if(!initializedLocales.has(locale))
+    await initTranslations(locale);
   return typeof tr.getTranslations(locale)?.[key] === "string";
 }
 
 /** Returns the translated string for the given key, after optionally inserting values */
 export function t(key: TFuncKey, ...values: Stringifiable[]) {
-  return tr(key, ...values);
+  return tl(activeLocale, key, ...values);
 }
 
 /**
@@ -97,7 +111,7 @@ export function tp(key: TFuncKey, num: number | unknown[] | NodeList, ...values:
 
 /** Returns the translated string for the given key in the specified locale, after optionally inserting values */
 export function tl(locale: TrLocale, key: TFuncKey, ...values: Stringifiable[]) {
-  return tr.forLang(locale, key, ...values);
+  return tr.for(locale, key, ...values);
 }
 
 /**

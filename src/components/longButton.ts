@@ -92,7 +92,7 @@ export async function createLongBtn({
   if("src" in rest)
     (imgElem as HTMLImageElement).src = rest.src;
   else
-    setInnerHtml(imgElem, await resourceAsString(rest.resourceName as "_") ?? "");
+    setInnerHtml(imgElem, await resourceAsString(rest.resourceName as "_"));
 
   const txtElem = document.createElement("span");
   txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");

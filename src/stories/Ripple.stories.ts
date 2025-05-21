@@ -1,6 +1,8 @@
 import type { StoryObj, Meta } from "@storybook/html";
 import { fn } from "@storybook/test";
-import { createCircularBtn, createLongBtn, createRipple } from "../components/index.js";
+import { createRipple } from "../components/ripple.js";
+import { createCircularBtn } from "../components/circularButton.js";
+import { createLongBtn } from "../components/longButton.js";
 import "../components/ripple.css";
 import "../features/layout.css";
 
@@ -16,7 +18,7 @@ const meta = {
     onClick: { action: "onClick" },
     padding: { control: "text" },
     fontSize: { control: "text" },
-    speed: { control: { type: "select" }, options: ["faster", "fast", "normal", "slow", "slower"] },
+    speed: { control: { type: "select" }, options: ["fastest", "fast", "normal", "slow", "slowest"] },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
@@ -32,7 +34,7 @@ type RippleProps = {
   onClick: (e: MouseEvent | KeyboardEvent) => void;
   padding: string;
   fontSize: string;
-  speed: "faster" | "fast" | "normal" | "slow" | "slower";
+  speed: "fastest" | "fast" | "normal" | "slow" | "slowest";
 };
 
 type Story = StoryObj<RippleProps>;

@@ -1,8 +1,9 @@
 import { clamp, debounce } from "@sv443-network/userutils";
+import { showIconToast } from "../components/toast.js";
+import { MarkdownDialog } from "../components/MarkdownDialog.js";
 import { scriptInfo } from "../constants.js";
 import { setGlobalProp } from "../interface.js";
 import { LogLevel } from "../types.js";
-import { MarkdownDialog, showIconToast } from "../components/index.js";
 import { t } from "./translations.js";
 import { getFeature } from "../config.js";
 import packageJson from "../../package.json" with { type: "json" };
@@ -58,20 +59,23 @@ export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
 }
 
-/** Logs all passed values to the console as an error, no matter the log level. */
-export function error(...args: unknown[]): void {
-  console.error(consPrefix, ...args);
-
-  if(getFeature("showToastOnGenericError")) {
-    const errName = args.find(a => a instanceof Error)?.name ?? t("error");
-    debounce(() => showIconToast({
+const showErrToast = debounce(
+  (errName: string, ...args: unknown[]) =>
+    showIconToast({
       message: t("generic_error_toast_encountered_error_type", errName),
       subtitle: t("generic_error_toast_click_for_details"),
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-    }))();
-  }
+    }),
+  1000,
+);
+
+/** Logs all passed values to the console as an error, no matter the log level. */
+export function error(...args: unknown[]): void {
+  console.error(consPrefix, ...args);
+
+  getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
 }
 
 /** Logs all passed values to the console with a debug-specific prefix */
@@ -81,7 +85,7 @@ export function dbg(...args: unknown[]): void {
 
 //#region error dialog
 
-function getErrorDialog(errName: string, args: unknown[]) {
+export function getErrorDialog(errName: string, args: unknown[]) {
   return new MarkdownDialog({
     id: "generic-error",
     height: 400,
@@ -99,22 +103,30 @@ function getErrorDialog(errName: string, args: unknown[]) {
     },
     body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+  
 ${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
   });
 }
 
-//#region rrror classes
+//#region error classes
 
-export class LyricsError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "LyricsError";
+export class CustomError extends Error {
+  public readonly time: number;
+  constructor(name: string, message: string, opts?: ErrorOptions) {
+    super(message, opts);
+    this.name = name;
+    this.time = Date.now();
   }
 }
 
-export class PluginError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "PluginError";
+export class LyricsError extends CustomError {
+  constructor(message: string, opts?: ErrorOptions) {
+    super("LyricsError", message, opts);
+  }
+}
+
+export class PluginError extends CustomError {
+  constructor(message: string, opts?: ErrorOptions) {
+    super("PluginError", message, opts);
   }
 }

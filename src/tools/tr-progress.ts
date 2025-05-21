@@ -4,15 +4,25 @@ import { fileURLToPath } from "node:url";
 import k from "kleur";
 import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
+import type { TrObject } from "@sv443-network/userutils";
 
 const { exit } = process;
 
 const rootDir = resolve(fileURLToPath(import.meta.url), "../../../");
 const trDir = join(rootDir, "assets/translations/");
 
-interface TrFile {
+/** Translation metadata object */
+type TrMeta = {
   base: string | undefined;
-  translations: Record<string, string>;
+  langName: string;
+  langNameEnglish: string;
+  countryName: string;
+  authors: string[];
+};
+
+/** Translation file object, containing translations and the meta object */
+type TrFile = TrObject & {
+  meta: TrMeta;
 }
 
 async function run() {
@@ -20,18 +30,23 @@ async function run() {
 
   //#region parse
 
-  const translations = {} as Record<TrLocale, Record<string, string>>;
+  /** Map of locale key to translation file object. Contains everything including the `meta` object. */
   const trFiles = {} as Record<TrLocale, TrFile>;
+  /** Map of locale key to translation object. Doesn't contain the `meta` object. */
+  const translations = {} as Record<TrLocale, TrObject>;
 
   for(const locale of Object.keys(locales) as TrLocale[]) {
     const trFile = join(trDir, `${locale}.json`);
     const tr = JSON.parse(await readFile(trFile, "utf-8")) as TrFile;
 
-    let baseTr = {} as Record<string, string>;
-    if(tr.base)
-      baseTr = (JSON.parse(await readFile(join(trDir, `${tr.base}.json`), "utf-8")) as TrFile).translations;
+    let baseTr = {} as TrFile;
+    if(tr.meta?.base)
+      baseTr = (JSON.parse(await readFile(join(trDir, `${tr.meta.base}.json`), "utf-8")) as TrFile);
 
-    translations[locale] = { ...baseTr, ...tr.translations };
+    const { meta: _baseMeta, ...baseTrRest } = baseTr;
+    const { meta: _trMeta, ...trRest } = tr;
+
+    translations[locale] = { ...baseTrRest, ...trRest };
     trFiles[locale] = tr;
   }
 
@@ -66,7 +81,7 @@ async function run() {
           : "‼️"
       );
 
-    const baseTr = trFiles[locale as TrLocale]?.base;
+    const baseTr = trFiles[locale as TrLocale]?.meta?.base;
 
     const keysCol = (
       locale === "en-US"
@@ -82,12 +97,14 @@ async function run() {
 
   const missingKeys = [] as string[];
 
-  for(const [locale, translations] of Object.entries({ "en-US": enUS, ...restLocs })) {
+  for(const [locale] of Object.entries({ "en-US": enUS, ...restLocs })) {
+    const loc = locale as TrLocale;
     const lines = [] as string[];
-    for(const [k] of Object.entries(enUS)) {
-      if(!translations[k])
-        lines.push(`| \`${k}\` | \`${enUS[k].replace(/\n/gm, "\\n")}\` |`);
-    }
+    // TODO:FIXME: recurse over nested objects to extract keys & turn into dot notation
+    // for(const [k] of Object.entries(enUS)) {
+    //   if(!translations[k])
+    //     lines.push(`| \`${k}\` | \`${enUS[k].replace(/\n/gm, "\\n")}\` |`);
+    // }
     if(lines.length > 0) {
       missingKeys.push(`
 <details><summary><code>${locale}</code> - ${lines.length} missing ${autoPlural("key", lines)} <i>(click to show)</i></summary><br>\n

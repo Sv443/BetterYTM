@@ -5,6 +5,14 @@
   --bytm-font-size-monospace: 1.4rem;
 }
 
+html:not([dark]) {
+  --bytm-themed-icon-col: #000;
+}
+
+html[dark] {
+  --bytm-themed-icon-col: #fff;
+}
+
 .bytm-disable-scroll {
   overflow: hidden !important;
 }
@@ -47,8 +55,6 @@
   border: 1px solid transparent;
   border-radius: calc(var(--bytm-generic-btn-height, 36px) / 2);
   background-color: transparent;
-
-  transition: background-color 0.2s ease;
 }
 
 .bytm-generic-btn:hover {
@@ -57,6 +63,10 @@
 
 .bytm-generic-btn:active {
   animation: bytm-flash-border 0.4s ease 1;
+}
+
+.bytm-generic-btn.ytmusic-player-bar svg path {
+  fill: var(--iron-icon-fill-color, #fff);
 }
 
 @keyframes bytm-flash-border {
@@ -119,6 +129,11 @@
   height: 24px;
 }
 
+.bytm-dom-yt .bytm-generic-btn-img path {
+  /* YT has both dark and light theme, YTM only dark */
+  fill: var(--bytm-themed-icon-col, #fff);
+}
+
 .bytm-spinner {
   animation: rotate 1.2s linear infinite;
 }
@@ -137,19 +152,29 @@
   cursor: pointer;
 }
 
-/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
-  transform-origin: 12px 12px;
-  animation: rotate 1s ease-in-out infinite;
-} */
+ytmusic-logo a.bytm-logo-exchanged svg {
+  overflow: visible;
+}
 
-ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
-  transform-origin: 12px 12px;
+ytmusic-logo a.bytm-logo-exchanged svg > g[clip-path] {
+  transform-origin: 13px 13px;
   animation: rotate 1s ease-in-out;
+  z-index: 3050;
+}
+
+ytmusic-logo a.bytm-logo-exchanged svg .bytm-mod-logo-remove {
+  animation: fade-out 1s ease-in-out;
+}
+
+ytmusic-logo a.bytm-logo-exchanged > #bytm-watermark {
+  transform-origin: -19px -14px;
+  animation: rotate 1s ease-in-out;
+  z-index: 3050;
 }
 
 ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   z-index: 1000;
   position: absolute;
   animation: rotate-fade-in 1s ease-in-out;
@@ -168,6 +193,18 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
@@ -217,6 +254,7 @@ button[disabled].bytm-busy {
 .bytm-cfg-menu-option {
   display: block;
   padding: 8px 0;
+  border-top: 1px solid var(--yt-spec-outline, rgba(255, 255, 255, 0.2));
 }
 
 .bytm-cfg-menu-option-item {
@@ -292,23 +330,23 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 .bytm-yt-cfg-menu-option-item {
   width: 100%;
-  color: #fff;
+  color: var(--yt-spec-text-primary, #fff);
   font-size: 14px;
 }
 
 .bytm-yt-cfg-menu-option-item:hover {
   /* Support for "Enhancer for YouTube" extension's custom themes */
-  color: var(--main-color, #fff) !important;
+  color: var(--main-color, var(--yt-spec-text-primary, #fff)) !important;
 }
 
 /* #region watermark */
 
 #bytm-watermark {
-  font-size: 10px;
+  font-size: 9px;
   display: inline-block;
   position: absolute;
-  left: 97px;
-  top: 45px;
+  left: 99px;
+  top: 46px;
   z-index: 10;
   color: #f1f1f1;
   text-decoration: none;
@@ -392,6 +430,16 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   height: 100%;
   border-radius: inherit;
   box-shadow: var(--ts-songimg-box-shadow, initial);
+  object-fit: contain;
+}
+
+#bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: cover;
+}
+
+ytmusic-player[player-ui-state="FULLSCREEN"]
+  #bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: contain;
 }
 
 #bytm-thumbnail-overlay-indicator {
@@ -451,6 +499,13 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   ytmusic-app-layout[player-ui-state="FULLSCREEN"]
   ytmusic-player-bar[slot="player-bar"]
   tp-yt-paper-icon-button
+  svg
+  path,
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  yt-icon-button
   svg
   path {
   fill: #fff;

@@ -1,20 +1,20 @@
 /* #region general */
 :root {
   --bytm-locale-color: #5ea2ec;
-  --bytm-advanced-mode-color: #ceb663;
+  --bytm-advanced-mode-color: #ddc15d;
   --bytm-experimental-col: #cc83e5;
   --bytm-warning-col: #e5a63b;
   --bytm-error-col: #fa5b5b;
   --bytm-reload-col: #77e064;
+  --bytm-ytm-only-circle-col: #f13440;
+  --bytm-ytm-only-note-col: #fff0e9;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1150px;
-  --bytm-menu-width-max: 1150px;
-  --bytm-dialog-height-max: 800px;
-  --bytm-menu-height-max: 800px;
+  --bytm-dialog-width-max: 1200px;
+  --bytm-dialog-height-max: 900px;
 }
 
 /* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
@@ -35,6 +35,7 @@
 .bytm-dialog-body details summary {
   cursor: pointer;
   font-style: italic;
+  user-select: none;
 }
 
 .bytm-secondary-label {
@@ -121,6 +122,14 @@
   fill: var(--bytm-reload-col, #fff);
 }
 
+.bytm-ytm-only-icon svg path.circle {
+  fill: var(--bytm-ytm-only-circle-col, #fff);
+}
+
+.bytm-ytm-only-icon svg path.note {
+  fill: var(--bytm-ytm-only-note-col, #fff);
+}
+
 /* #region welcome dialog */
 
 #bytm-welcome-menu-title-wrapper {
@@ -175,4 +184,5 @@
 #bytm-auto-like-channels-dialog-body {
   padding-left: 0;
   padding-right: 0;
+  padding-bottom: 0;
 }

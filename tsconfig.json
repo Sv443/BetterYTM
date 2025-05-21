@@ -5,8 +5,7 @@
     "target": "ES2017",
     "outDir": "dist/out",
     "lib": [
-      "ES5",
-      "ES6",
+      "ES2022",
       "DOM",
       "DOM.Iterable"
     ],
@@ -24,10 +23,6 @@
     "strict": true,
     "useDefineForClassFields": true,
     "noImplicitThis": false,
-  },
-  "ts-node": {
-    "esm": true,
-    "preferTsExts": true,
   },
   "include": [
     "src/**/*.ts",

@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Server } from "node:http";
 import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
 import k from "kleur";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
@@ -15,11 +16,14 @@ const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Whether to log requests to the console */
 const enableLogging = false;
 
-const autoExitRaw = argv.find(arg => arg.startsWith("--auto-exit-time="))?.split("=")[1];
+const autoExitRaw = Number(argv.find(arg => arg.startsWith("--auto-exit-time="))?.split("=")[1]);
 /** Time in milliseconds after which the process should automatically exit */
-const autoExitTime: number | undefined = !isNaN(Number(autoExitRaw)) ? Number(autoExitRaw) * 1000 : undefined;
+const autoExitTime: number | undefined = !isNaN(autoExitRaw) ? autoExitRaw * 1000 : undefined;
 
 const app = express();
+
+app.use(cors());
+
 let server: Server;
 
 enableLogging && app.use((_req, _res, next) => {

@@ -1,16 +1,19 @@
 import { compress, debounce } from "@sv443-network/userutils";
-import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
-import { BytmDialog, createCircularBtn, createToggleInput, showToast } from "../components/index.js";
+import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "../utils/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { compressionFormat } from "../constants.js";
 import type { AutoLikeData } from "../types.js";
-import "./autoLike.css";
 import { showPrompt } from "./prompt.js";
+import { BytmDialog } from "../components/BytmDialog.js";
+import { showToast } from "../components/toast.js";
+import { createToggleInput } from "../components/toggleInput.js";
+import { createCircularBtn } from "../components/circularButton.js";
+import "./autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
-let autoLikeImExDialog: ExImDialog | null = null;
+let autoLikeExImDialog: ExImDialog | null = null;
 
 /** Creates and/or returns the import dialog */
 export async function getAutoLikeDialog() {
@@ -20,7 +23,7 @@ export async function getAutoLikeDialog() {
     autoLikeDialog = new BytmDialog({
       id: "auto-like-channels",
       width: 700,
-      height: 1000,
+      height: 1200,
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
@@ -35,8 +38,8 @@ export async function getAutoLikeDialog() {
 
     siteEvents.on("autoLikeChannelsUpdated", async () => {
       try {
-        if(autoLikeImExDialog?.isOpen())
-          autoLikeImExDialog.unmount();
+        if(autoLikeExImDialog?.isOpen())
+          autoLikeExImDialog.unmount();
         if(autoLikeDialog?.isOpen()) {
           autoLikeDialog.unmount();
           await autoLikeDialog.open();
@@ -48,11 +51,12 @@ export async function getAutoLikeDialog() {
       }
     });
 
+    autoLikeDialog.on("open", () => document.querySelector<HTMLElement>(".bytm-auto-like-channels-searchbar")?.focus());
     autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
   }
 
-  if(!autoLikeImExDialog) {
-    autoLikeImExDialog = new ExImDialog({
+  if(!autoLikeExImDialog) {
+    autoLikeExImDialog = new ExImDialog({
       id: "auto-like-channels-export-import",
       width: 800,
       height: 600,
@@ -76,7 +80,7 @@ export async function getAutoLikeDialog() {
           emitSiteEvent("autoLikeChannelsUpdated");
 
           showToast({ message: t("import_success") });
-          autoLikeImExDialog?.unmount();
+          autoLikeExImDialog?.unmount();
         }
         catch(err) {
           error("Couldn't import auto-like channels data:", err);
@@ -111,7 +115,7 @@ async function renderBody() {
 
   const descriptionEl = document.createElement("p");
   descriptionEl.classList.add("bytm-auto-like-channels-desc");
-  descriptionEl.textContent = t("auto_like_channels_dialog_desc");
+  descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
   descriptionEl.tabIndex = 0;
   contElem.appendChild(descriptionEl);
 
@@ -119,9 +123,25 @@ async function renderBody() {
   searchCont.classList.add("bytm-auto-like-channels-search-cont");
   contElem.appendChild(searchCont);
 
+  const searchContLeftSideEl = document.createElement("div");
+  searchContLeftSideEl.classList.add("left-side");
+  searchCont.appendChild(searchContLeftSideEl);
+
+  const searchContRightSideEl = document.createElement("div");
+  searchContRightSideEl.tabIndex = 0;
+  searchContRightSideEl.classList.add("right-side");
+  searchCont.appendChild(searchContRightSideEl);
+
+  const updateCountElem = () => {
+    const count = autoLikeStore.getData().channels.length;
+    searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
+  };
+  siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
+  updateCountElem();
+
   const searchbarEl = document.createElement("input");
   searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
-  searchbarEl.placeholder = t("search_placeholder");
+  searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
   searchbarEl.type = searchbarEl.role = "search";
   searchbarEl.tabIndex = 0;
   searchbarEl.autofocus = true;
@@ -138,7 +158,7 @@ async function renderBody() {
     }
   });
 
-  searchCont.appendChild(searchbarEl);
+  searchContLeftSideEl.appendChild(searchbarEl);
 
   const searchClearEl = document.createElement("button");
   searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
@@ -151,7 +171,7 @@ async function renderBody() {
     searchbarEl.dispatchEvent(new Event("input"));
   });
 
-  searchCont.appendChild(searchClearEl);
+  searchContLeftSideEl.appendChild(searchClearEl);
 
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";
@@ -163,8 +183,7 @@ async function renderBody() {
           .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
       });
     },
-    250,
-    "rising"
+    250
   );
 
   const sortedChannels = autoLikeStore
@@ -239,7 +258,7 @@ async function renderBody() {
     const removeBtn = await createCircularBtn({
       resourceName: "icon-delete",
       title: t("remove_entry"),
-      async onClick() {
+      onClick() {
         autoLikeStore.setData({
           channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
         });
@@ -288,7 +307,7 @@ function renderFooter() {
 }
 
 async function openImportExportAutoLikeChannelsDialog() {
-  await autoLikeImExDialog?.open();
+  await autoLikeExImDialog?.open();
 }
 
 //#region add prompt

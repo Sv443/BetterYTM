@@ -1,42 +1,47 @@
-import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, domLoaded, getResourceUrl, setGlobalCssVars, warn } from "./utils/index.js";
-import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
+import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
+import { addStyle, addStyleFromResource, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
+import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { initSiteEvents } from "./siteEvents.js";
 import { emitInterface, initInterface, initPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
-import { getWelcomeDialog, showPrompt } from "./dialogs/index.js";
-import type { FeatureConfig } from "./types.js";
+import { downloadData, getStoreSerializer } from "./serializer.js";
+import { MarkdownDialog } from "./components/MarkdownDialog.js";
+import { getWelcomeDialog } from "./dialogs/welcome.js";
+import { showPrompt } from "./dialogs/prompt.js";
 import {
-  // layout
+  // layout category:
   addWatermark, initRemShareTrackParam,
   fixSpacing, initThumbnailOverlay,
   initHideCursorOnIdle, fixHdrIssues,
-  initShowVotes,
-  // volume
+  initShowVotes, initWatchPageFullSize,
+  // volume category:
   initVolumeFeatures,
-  // song lists
+  // song lists category:
   initQueueButtons, initAboveQueueBtns,
-  // behavior
-  initBeforeUnloadHook, disableBeforeUnload,
+  // behavior category:
+  initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
-  // input
-  initArrowKeySkip, initSiteSwitch,
+  initAutoScrollToActiveSong,
+  // input category:
+  initArrowKeySkip, initFrameSkip,
   addAnchorImprovements, initNumKeysSkip,
   initAutoLike,
-  // lyrics
+  // hotkeys category:
+  initHotkeys,
+  // lyrics category:
   addPlayerBarLyricsBtn, initLyricsCache,
-  // integrations
+  // integrations category:
   disableDarkReader, fixSponsorBlock,
   fixPlayerPageTheming, fixThemeSong,
-  // general
+  // general category:
   initVersionCheck,
-  // menu
+  // menu:
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
-import { downloadData, getStoreSerializer } from "./serializer.js";
-import { MarkdownDialog } from "./components/index.js";
+import resourcesJson from "../assets/resources.json" with { type: "json" };
+import type { ResourceKey } from "./types.js";
 
 //#region cns. watermark
 
@@ -86,9 +91,8 @@ function preInit() {
     ];
 
     if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
-      return alert(`BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+      return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
 
-    log("Session ID:", getSessionId());
     initInterface();
     setLogLevel(defaultLogLevel);
 
@@ -111,10 +115,17 @@ async function init() {
     const features = await initConfig();
     setLogLevel(features.logLevel);
 
+    info("Session ID:", getSessionId());
+
     await initLyricsCache();
 
-    await initTranslations(features.locale ?? "en-US");
-    setLocale(features.locale ?? "en-US");
+    const initLoc = features.locale ?? "en-US";
+    const locPromises: Promise<void>[] = [];
+    locPromises.push(initTranslations(initLoc));
+    // since en-US always has the complete set of keys, it needs to always be loaded:
+    initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
+    await Promise.allSettled(locPromises);
+    setLocale(initLoc);
 
     try {
       initPlugins();
@@ -125,12 +136,12 @@ async function init() {
     }
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
-      disableBeforeUnload();
+      enableDiscardBeforeUnload();
 
     if(features.rememberSongTime)
       initRememberSongTime();
 
-    if(!domLoaded)
+    if(!isDomLoaded())
       document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
     else
       onDomLoad();
@@ -152,17 +163,17 @@ async function onDomLoad() {
   document.body.classList.add(`bytm-dom-${domain}`);
 
   try {
-    initGlobalCssVars();
+    initGlobalCss();
     initObservers();
+    initSvgSpritesheet();
 
-    await Promise.allSettled([
+    Promise.allSettled([
       injectCssBundle(),
       initVersionCheck(),
     ]);
   }
   catch(err) {
-    error("Fatal error in feature pre-init:", err);
-    return;
+    error("Encountered error in feature pre-init:", err);
   }
 
   log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
@@ -198,6 +209,9 @@ async function onDomLoad() {
       if(feats.showVotes)
         ftInit.push(["showVotes", initShowVotes()]);
 
+      if(feats.watchPageFullSize)
+        ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
+
       //#region (ytm) volume
 
       ftInit.push(["volumeFeatures", initVolumeFeatures()]);
@@ -214,9 +228,13 @@ async function onDomLoad() {
       if(feats.closeToastsTimeout > 0)
         ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
+      ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
+
       //#region (ytm) input
 
       ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
+
+      ftInit.push(["frameSkip", initFrameSkip()]);
 
       if(feats.anchorImprovements)
         ftInit.push(["anchorImprovements", addAnchorImprovements()]);
@@ -244,7 +262,7 @@ async function onDomLoad() {
     //#region (ytm+yt) cfg menu
     try {
       if(domain === "ytm") {
-        addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+        addSelectorListener("popupContainer", "tp-yt-iron-dropdown #contentWrapper ytmusic-multi-page-menu-renderer #container", {
           listener: addConfigMenuOptionYTM,
         });
       }
@@ -270,7 +288,7 @@ async function onDomLoad() {
 
       //#region (ytm+yt) input
 
-      ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
+      ftInit.push(["hotkeys", initHotkeys()]);
 
       if(feats.autoLikeChannels)
         ftInit.push(["autoLikeChannels", initAutoLike()]);
@@ -299,6 +317,12 @@ async function onDomLoad() {
       ),
     ]);
 
+    // ensure site adjusts itself to new CSS files
+    getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
+
+    // preload icons
+    preloadResources();
+
     emitInterface("bytm:ready");
     info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
@@ -308,11 +332,34 @@ async function onDomLoad() {
     catch(e) {
       warn("Couldn't register dev menu commands:", e);
     }
+
+    try {
+      runDevTreatments();
+    }
+    catch(e) {
+      warn("Couldn't run dev treatments:", e);
+    }
   }
   catch(err) {
     error("Feature error:", err);
     emitInterface("bytm:fatalError", "Error while initializing features");
   }
+}
+
+//#region preload icons
+
+/** Preloads all resources that should be preloaded */
+async function preloadResources() {
+  const preloadAssetRegex = new RegExp(resourcesJson.preloadAssetPattern);
+  const urlPromises = Object.keys(resourcesJson.resources)
+    .filter(k => preloadAssetRegex.test(k))
+    .map(k => getResourceUrl(k as ResourceKey));
+  const urls = await Promise.all(urlPromises);
+  if(urls.length > 0)
+    info("Preloading", urls.length, "resources:", urls);
+  else
+    info("No resources to preload");
+  await preloadImages(urls);
 }
 
 //#region css
@@ -323,10 +370,10 @@ async function injectCssBundle() {
     error("Couldn't inject CSS bundle due to an error");
 }
 
-/** Initializes global CSS variables */
-function initGlobalCssVars() {
+/** Initializes global CSS values */
+function initGlobalCss() {
   try {
-    loadFonts();
+    initFonts();
 
     const applyVars = () => {
       setGlobalCssVars({
@@ -341,34 +388,46 @@ function initGlobalCssVars() {
     applyVars();
   }
   catch(err) {
-    error("Couldn't initialize global CSS variables:", err);
+    error("Couldn't initialize global CSS:", err);
   }
 }
 
-async function loadFonts() {
+async function initFonts() {
   const fonts = {
     "Cousine": {
       woff: await getResourceUrl("font-cousine_woff"),
       woff2: await getResourceUrl("font-cousine_woff2"),
-      ttf: await getResourceUrl("font-cousine_ttf"),
+      truetype: await getResourceUrl("font-cousine_ttf"),
     },
   };
 
   let css = "";
-  for(const [font, urls] of Object.entries(fonts))
+  for(const [fontName, urls] of Object.entries(fonts))
     css += `\
 @font-face {
-  font-family: "${font}";
-  src: url("${urls.woff2}") format("woff2"),
-    url("${urls.woff}") format("woff"),
-    url("${urls.ttf}") format("truetype");
+  font-family: "${fontName}";
+  src: ${
+  Object.entries(urls)
+    .map(([type, url]) => `url("${url}") format("${type}")`)
+    .join(", ")
+};
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
-`;
+}`;
 
   addStyle(css, "fonts");
+}
+
+//#region svg spritesheet
+
+/** Initializes the SVG spritesheet */
+async function initSvgSpritesheet() {
+  const svgUrl = await getResourceUrl("doc-svg_spritesheet");
+  const div = document.createElement("div");
+  div.style.display = "none";
+  setInnerHtmlUnsafe(div, await (await fetchAdvanced(svgUrl)).text());
+  document.body.appendChild(div);
 }
 
 //#region dev menu cmds
@@ -379,19 +438,10 @@ function registerDevCommands() {
     return;
 
   GM.registerMenuCommand("Reset config", async () => {
-    if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
+    if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
       await clearConfig();
-      disableBeforeUnload();
-      location.reload();
+      await reloadTab();
     }
-  }, "r");
-
-  GM.registerMenuCommand("Fix config values", async () => {
-    const oldFeats = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
-    await setFeatures(fixCfgKeys(oldFeats));
-    dbg("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
-    if(confirm("All missing or config values were set to their default values and extraneous ones were removed.\nDo you want to reload the page now?"))
-      location.reload();
   });
 
   GM.registerMenuCommand("List GM values in console with decompression", async () => {
@@ -414,7 +464,7 @@ function registerDevCommands() {
       const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
       dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
     }
-  }, "l");
+  });
 
   GM.registerMenuCommand("List GM values in console, without decompression", async () => {
     const keys = await GM.listValues();
@@ -438,7 +488,7 @@ function registerDevCommands() {
 
   GM.registerMenuCommand("Delete all GM values", async () => {
     const keys = await GM.listValues();
-    if(confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
+    if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
       dbg(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
         dbg("  No values found.");
@@ -447,10 +497,10 @@ function registerDevCommands() {
         dbg(`  Deleted ${key}`);
       }
     }
-  }, "d");
+  });
 
   GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-    const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation." });
+    const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
     if(!keys)
       return;
     for(const key of keys?.split(",") ?? []) {
@@ -461,17 +511,17 @@ function registerDevCommands() {
         dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
       }
     }
-  }, "n");
+  });
 
   GM.registerMenuCommand("Reset install timestamp", async () => {
     await GM.deleteValue("bytm-installed");
     dbg("Reset install time.");
-  }, "t");
+  });
 
   GM.registerMenuCommand("Reset version check timestamp", async () => {
     await GM.deleteValue("bytm-version-check");
     dbg("Reset version check time.");
-  }, "v");
+  });
 
   GM.registerMenuCommand("List active selector listeners in console", async () => {
     const lines = [] as string[];
@@ -488,10 +538,10 @@ function registerDevCommands() {
       });
     }
     dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
-  }, "s");
+  });
 
   GM.registerMenuCommand("Compress value", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output." });
+    const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
       dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
@@ -499,30 +549,25 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Decompress value", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output." });
+    const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
       dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
     }
   });
 
-  GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
-    const ser = await getStoreSerializer().serialize();
-    dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
-    alert("See console.");
-  });
+  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData(false));
 
   GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
+    const input = await showPrompt({ type: "prompt", message: "Paste the content of the export file to import:", confirmBtnText: "Import" });
     if(input && input.length > 0) {
       await getStoreSerializer().deserialize(input);
-      alert("Imported data. Reload the page to apply changes.");
+      if(await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
+        await reloadTab();
     }
   });
 
-  GM.registerMenuCommand("Throw specific Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-
-  GM.registerMenuCommand("Throw generic Error", () => error());
+  GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
 
   GM.registerMenuCommand("Example MarkdownDialog", async () => {
     const mdDlg = new MarkdownDialog({
@@ -540,9 +585,22 @@ function registerDevCommands() {
     await mdDlg.open();
   });
 
-  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData());
+  GM.registerMenuCommand("Toggle dev treatments", async () => {
+    const val = !await GM.getValue("bytm-dev-treatments", false);
+    await GM.setValue("bytm-dev-treatments", val);
+    if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
+      await reloadTab();
+  });
 
   log("Registered dev menu commands");
+}
+
+async function runDevTreatments() {
+  if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
+    return;
+
+  // const dlg = await getAllDataExImDialog();
+  // await dlg.open();
 }
 
 preInit();

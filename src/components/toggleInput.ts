@@ -2,7 +2,7 @@ import { randomId } from "@sv443-network/userutils";
 import { setInnerHtml, t } from "../utils/index.js";
 import "./toggleInput.css";
 
-export interface ToggleInputProps {
+export type ToggleInputProps = {
   /** Callback function that is called when the toggle is changed */
   onChange: (value: boolean) => void;
   /** Initial value of the toggle - defaults to false */
@@ -11,7 +11,7 @@ export interface ToggleInputProps {
   id?: string;
   /** Toggle label off or change position of the label relative to the toggle */
   labelPos?: "off" | "left" | "right";
-}
+};
 
 /** Creates a simple toggle element */
 export async function createToggleInput({
@@ -25,12 +25,14 @@ export async function createToggleInput({
   wrapperEl.role = "switch";
   wrapperEl.tabIndex = 0;
 
-  const labelEl = labelPos !== "off" && document.createElement("label");
+  const labelEl = labelPos !== "off" ? document.createElement("label") : undefined;
   if(labelEl) {
+    labelEl.id = `bytm-toggle-input-label-${id}`;
     labelEl.classList.add("bytm-toggle-input-label");
     labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
     if(id)
       labelEl.htmlFor = `bytm-toggle-input-${id}`;
+    wrapperEl.setAttribute("aria-labelledby", labelEl.id);
   }
 
   const toggleWrapperEl = document.createElement("div");
@@ -47,6 +49,7 @@ export async function createToggleInput({
 
   const toggleKnobEl = document.createElement("div");
   toggleKnobEl.classList.add("bytm-toggle-input-knob");
+  // TODO: this doesn't make the knob show up on Chromium
   setInnerHtml(toggleKnobEl, "&nbsp;");
 
   const toggleElClicked = (e: Event) => {

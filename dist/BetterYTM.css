@@ -1,182 +1,3 @@
-/* #region general */
-:root {
-  --bytm-locale-color: #5ea2ec;
-  --bytm-advanced-mode-color: #ceb663;
-  --bytm-experimental-col: #cc83e5;
-  --bytm-warning-col: #e5a63b;
-  --bytm-error-col: #fa5b5b;
-  --bytm-reload-col: #77e064;
-}
-
-/* TODO: after cfg menu migration, leave only dialog styles here */
-#bytm-cfg-dialog-bg,
-#bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1150px;
-  --bytm-menu-width-max: 1150px;
-  --bytm-dialog-height-max: 800px;
-  --bytm-menu-height-max: 800px;
-}
-
-/* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
-.bytm-dom-yt .bytm-dialog-bg,
-.bytm-dom-yt .bytm-menu-bg {
-  z-index: 10042;
-}
-
-.bytm-dom-yt .bytm-dialog,
-.bytm-dom-yt .bytm-menu {
-  z-index: 10069;
-}
-
-.bytm-dialog-body p {
-  overflow-wrap: break-word;
-}
-
-.bytm-dialog-body details summary {
-  cursor: pointer;
-  font-style: italic;
-}
-
-.bytm-secondary-label {
-  padding-left: 12px;
-  font-size: 1.3rem;
-}
-
-/* #region version notification */
-
-#bytm-version-notif-dialog-btns {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-#bytm-disable-update-check-wrapper {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  margin-top: 35px;
-}
-
-#bytm-disable-update-check-wrapper label {
-  padding-left: 12px;
-}
-
-#bytm-version-notif-changelog-cont {
-  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
-  overflow-y: auto;
-  margin: 10px 0px;
-}
-
-#bytm-version-notif-changelog-details {
-  margin-top: 15px;
-}
-
-.bytm-disable-update-check-toggle-label-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* #region cfg menu */
-
-.bytm-ftconf-adv-copy-btn {
-  margin: 0px 10px;
-}
-
-.bytm-adorn-icon {
-  display: inline-flex;
-  align-items: center;
-}
-
-.bytm-adorn-icon[title] {
-  cursor: help;
-}
-
-/* #region cfg menu adornments */
-
-.bytm-locale-icon svg path {
-  fill: var(--bytm-locale-color, #fff);
-}
-
-.bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #fff);
-}
-
-.bytm-experimental-icon svg path {
-  fill: var(--bytm-experimental-col, #fff);
-}
-
-.bytm-warning-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff);
-}
-
-.bytm-reload-icon svg path {
-  fill: var(--bytm-reload-col, #fff);
-}
-
-/* #region welcome dialog */
-
-#bytm-welcome-menu-title-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-welcome-menu-title-logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 20px;
-}
-
-#bytm-welcome-menu-content-wrapper {
-  overflow-y: auto;
-}
-
-#bytm-welcome-menu-locale-cont {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#bytm-welcome-menu-locale-img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
-}
-
-#bytm-welcome-menu-text-cont {
-  margin-top: 16px;
-}
-
-#bytm-welcome-menu-text {
-  font-size: 1.6rem;
-  line-height: 20px;
-}
-
-#bytm-welcome-menu-locale-select {
-  font-size: 1.6rem;
-}
-
-#bytm-welcome-menu-footer-cont {
-  display: flex;
-  justify-content: space-between;
-  border-radius: 0px 0px var(--bytm-menu-border-radius)
-    var(--bytm-menu-border-radius);
-}
-
-#bytm-auto-like-channels-dialog-body {
-  padding-left: 0;
-  padding-right: 0;
-}
-
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
@@ -192,7 +13,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 3005;
   background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -208,19 +29,19 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 6;
+  z-index: 3006;
   color: #fff;
   background-color: var(--bytm-dialog-bg);
 }
 
 .bytm-dialog.align-top {
   top: 0;
-  transform: translate(-50%, 40px);
+  transform: translate(-50%, 20px);
 }
 
 .bytm-dialog.align-bottom {
   top: 100%;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, calc(-100% - 20px));
 }
 
 .bytm-dialog-body {
@@ -291,7 +112,7 @@
   left: 0;
   font-size: 10px;
   font-weight: normal;
-  z-index: 7;
+  z-index: 3007;
 }
 
 #bytm-dialog-version .bytm-link {
@@ -402,7 +223,7 @@
   transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  z-index: 7;
+  z-index: 3007;
   background-color: var(--bytm-scroll-indicator-bg);
   border-radius: 50%;
   cursor: pointer;
@@ -529,18 +350,19 @@ select.bytm-ftconf-input {
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition:
-    padding 0.1s var(--bytm-kbd-easing),
+  transition: padding 0.1s var(--bytm-kbd-easing),
     margin-top 0.1s var(--bytm-kbd-easing),
     box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active {
+.bytm-markdown-container kbd:active,
+.bytm-kbd:active {
   padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection {
+.bytm-markdown-container kbd::selection,
+.bytm-kbd::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -648,108 +470,314 @@ hr {
   margin-right: 6px;
 }
 
-/* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
-
-/* use `body` prefix for more specificity: */
-body .bytm-ripple {
-  position: relative;
-  overflow: hidden;
-  width: var(--bytm-ripple-width, auto);
-  height: var(--bytm-ripple-height, auto);
+/* #region general */
+:root {
+  --bytm-locale-color: #5ea2ec;
+  --bytm-advanced-mode-color: #ddc15d;
+  --bytm-experimental-col: #cc83e5;
+  --bytm-warning-col: #e5a63b;
+  --bytm-error-col: #fa5b5b;
+  --bytm-reload-col: #77e064;
+  --bytm-ytm-only-circle-col: #f13440;
+  --bytm-ytm-only-note-col: #fff0e9;
 }
 
-body .bytm-ripple.faster {
-  --bytm-ripple-anim-duration: 0.15s;
+/* TODO: after cfg menu migration, leave only dialog styles here */
+#bytm-cfg-dialog-bg,
+#bytm-cfg-menu-bg {
+  --bytm-dialog-width-max: 1200px;
+  --bytm-dialog-height-max: 900px;
 }
 
-body .bytm-ripple.fast {
-  --bytm-ripple-anim-duration: 0.35s;
+/* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
+.bytm-dom-yt .bytm-dialog-bg,
+.bytm-dom-yt .bytm-menu-bg {
+  z-index: 10042;
 }
 
-body .bytm-ripple.slow {
-  --bytm-ripple-anim-duration: 0.75s;
+.bytm-dom-yt .bytm-dialog,
+.bytm-dom-yt .bytm-menu {
+  z-index: 10069;
 }
 
-body .bytm-ripple.slower {
-  --bytm-ripple-anim-duration: 1s;
+.bytm-dialog-body p {
+  overflow-wrap: break-word;
 }
 
-.bytm-ripple-area {
-  --bytm-ripple-min-size: 100px;
-  position: absolute;
-  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.175));
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  border-radius: 50%;
-  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.55s)
-    cubic-bezier(0.375, 0.33, 0.225, 0.93);
+.bytm-dialog-body details summary {
+  cursor: pointer;
+  font-style: italic;
+  user-select: none;
 }
 
-@keyframes bytm-scale-ripple {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 1;
-  }
-  100% {
-    /* Variable is added to .bytm-ripple by JS at runtime since there's no better way of getting the parent's width inside of here */
-    width: calc(
-      max(
-        var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
-        var(--bytm-ripple-min-size)
-      )
-    );
-    height: calc(
-      max(
-        var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
-        var(--bytm-ripple-min-size)
-      )
-    );
-    opacity: 0;
-  }
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
 }
 
-.bytm-exim-dialog-panes-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  height: 100%;
-  overflow: hidden;
-}
+/* #region version notification */
 
-.bytm-exim-dialog-pane {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 48%;
-}
-
-.bytm-exim-dialog-center-btn-cont {
-  display: flex;
-  justify-content: center;
-}
-
-.bytm-exim-dialog-pane textarea {
-  height: 120px;
-  resize: none;
-}
-
-.bytm-hotkey-wrapper {
+#bytm-version-notif-dialog-btns {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#bytm-disable-update-check-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 35px;
+}
+
+#bytm-disable-update-check-wrapper label {
+  padding-left: 12px;
+}
+
+#bytm-version-notif-changelog-cont {
+  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
+  overflow-y: auto;
+  margin: 10px 0px;
+}
+
+#bytm-version-notif-changelog-details {
+  margin-top: 15px;
+}
+
+.bytm-disable-update-check-toggle-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* #region cfg menu */
+
+.bytm-ftconf-adv-copy-btn {
+  margin: 0px 10px;
+}
+
+.bytm-adorn-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bytm-adorn-icon[title] {
+  cursor: help;
+}
+
+/* #region cfg menu adornments */
+
+.bytm-locale-icon svg path {
+  fill: var(--bytm-locale-color, #fff);
+}
+
+.bytm-advanced-mode-icon svg path {
+  fill: var(--bytm-advanced-mode-color, #fff);
+}
+
+.bytm-experimental-icon svg path {
+  fill: var(--bytm-experimental-col, #fff);
+}
+
+.bytm-warning-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-warning-icon svg path {
+  fill: var(--bytm-warning-col, #fff);
+}
+
+.bytm-reload-icon svg path {
+  fill: var(--bytm-reload-col, #fff);
+}
+
+.bytm-ytm-only-icon svg path.circle {
+  fill: var(--bytm-ytm-only-circle-col, #fff);
+}
+
+.bytm-ytm-only-icon svg path.note {
+  fill: var(--bytm-ytm-only-note-col, #fff);
+}
+
+/* #region welcome dialog */
+
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+#bytm-welcome-menu-content-wrapper {
+  overflow-y: auto;
+}
+
+#bytm-welcome-menu-locale-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#bytm-welcome-menu-locale-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+#bytm-welcome-menu-text-cont {
+  margin-top: 16px;
+}
+
+#bytm-welcome-menu-text {
+  font-size: 1.6rem;
+  line-height: 20px;
+}
+
+#bytm-welcome-menu-locale-select {
+  font-size: 1.6rem;
+}
+
+#bytm-welcome-menu-footer-cont {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0px 0px var(--bytm-menu-border-radius)
+    var(--bytm-menu-border-radius);
+}
+
+#bytm-auto-like-channels-dialog-body {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+}
+
+.bytm-toggle-input-wrapper {
+  --toggle-height: 20px;
+  --toggle-width: 40px;
+  --toggle-knob-offset: 4px;
+  --toggle-color-on: #3683d4;
+  --toggle-color-off: #666;
+  --toggle-knob-color: #f5f5f5;
+
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle-input-wrapper .bytm-toggle-input-label {
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 3px 12px;
+}
+
+/* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
+
+.bytm-toggle-input {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle-input input {
+  appearance: none;
+  display: inline-block;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: var(--toggle-knob-offset);
+  cursor: pointer;
+  background-color: var(--toggle-color-off);
+  transition:
+    justify-content 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.bytm-toggle-input input[data-toggled="true"] {
+  background-color: var(--toggle-color-on);
+}
+
+.bytm-toggle-input input .bytm-toggle-input-knob {
+  --toggle-knob-calc-width: calc(
+    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
+  );
+  --toggle-knob-calc-height: calc(
+    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
+  );
+  width: var(--toggle-knob-calc-width);
+  height: var(--toggle-knob-calc-height);
+  background-color: var(--toggle-knob-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: var(--toggle-knob-offset);
+  transition: left 0.2s ease;
+}
+
+.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
+  left: calc(
+    var(--toggle-width) - var(--toggle-knob-offset) -
+      var(--toggle-knob-calc-width)
+  );
+}
+
+#bytm-prompt-dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-prompt-dialog-header svg {
+  width: 24px;
+  height: 24px;
+}
+
+#bytm-prompt-dialog-upper-cont,
+#bytm-prompt-dialog-message {
+  font-size: 1.6rem;
+  white-space: pre-wrap;
+}
+
+.bytm-prompt-type-prompt #bytm-prompt-dialog-message {
+  margin-bottom: 15px;
+}
+
+#bytm-prompt-dialog-input {
+  font-size: 1.6rem;
+  width: 100%;
+}
+
+#bytm-prompt-dialog-button-wrapper {
+  display: flex;
+  flex-direction: row;
   justify-content: flex-end;
+  align-items: end;
 }
 
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
+#bytm-prompt-dialog-buttons-cont {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
 }
 
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
+#bytm-prompt-dialog-buttons-cont button {
+  cursor: pointer;
+}
+
+.bytm-prompt-dialog-button {
+  padding: 2px 6px;
+  font-size: 1.45rem;
 }
 
 :root {
@@ -843,77 +871,87 @@ body .bytm-ripple.slower {
   font-weight: 400;
 }
 
-.bytm-toggle-input-wrapper {
-  --toggle-height: 20px;
-  --toggle-width: 40px;
-  --toggle-knob-offset: 4px;
-  --toggle-color-on: #3683d4;
-  --toggle-color-off: #666;
-  --toggle-knob-color: #f5f5f5;
+/* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
 
-  display: flex;
-  align-items: center;
-}
-
-.bytm-toggle-input-wrapper .bytm-toggle-input-label {
-  cursor: pointer;
-  font-size: 1.5rem;
-  padding: 3px 12px;
-}
-
-/* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
-
-.bytm-toggle-input {
-  display: flex;
-  align-items: center;
-}
-
-.bytm-toggle-input input {
-  appearance: none;
-  display: inline-block;
-  width: var(--toggle-width);
-  height: var(--toggle-height);
+/* use `body` prefix for more specificity: */
+body .bytm-ripple {
   position: relative;
-  border-radius: 50px;
   overflow: hidden;
-  outline: none;
-  border: none;
-  margin: 0;
-  padding: var(--toggle-knob-offset);
-  cursor: pointer;
-  background-color: var(--toggle-color-off);
-  transition:
-    justify-content 0.2s ease,
-    background-color 0.2s ease;
+  width: var(--bytm-ripple-width, auto);
+  height: var(--bytm-ripple-height, auto);
 }
 
-.bytm-toggle-input input[data-toggled="true"] {
-  background-color: var(--toggle-color-on);
+body .bytm-ripple.fastest {
+  --bytm-ripple-anim-duration: 0.15s;
 }
 
-.bytm-toggle-input input .bytm-toggle-input-knob {
-  --toggle-knob-calc-width: calc(
-    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
+body .bytm-ripple.fast {
+  --bytm-ripple-anim-duration: 0.35s;
+}
+
+body .bytm-ripple.slow {
+  --bytm-ripple-anim-duration: 0.75s;
+}
+
+body .bytm-ripple.slowest {
+  --bytm-ripple-anim-duration: 1s;
+}
+
+.bytm-ripple-area {
+  --bytm-ripple-min-size: 100px;
+  /* --bytm-ripple-cont-width is added at runtime since there's no better way of getting the parent's width */
+  --bytm-ripple-expanded-size: calc(
+    max(
+      var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
+      var(--bytm-ripple-min-size)
+    )
   );
-  --toggle-knob-calc-height: calc(
-    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
-  );
-  width: var(--toggle-knob-calc-width);
-  height: var(--toggle-knob-calc-height);
-  background-color: var(--toggle-knob-color);
-  border-radius: 50%;
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: var(--toggle-knob-offset);
-  transition: left 0.2s ease;
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.125));
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.55s)
+    cubic-bezier(0.375, 0.33, 0.225, 0.93);
 }
 
-.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
-  left: calc(
-    var(--toggle-width) - var(--toggle-knob-offset) -
-      var(--toggle-knob-calc-width)
-  );
+@keyframes bytm-scale-ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: var(--bytm-ripple-expanded-size, 100%);
+    height: var(--bytm-ripple-expanded-size, 100%);
+    opacity: 0;
+  }
+}
+
+.bytm-exim-dialog-panes-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bytm-exim-dialog-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 48%;
+}
+
+.bytm-exim-dialog-center-btn-cont {
+  display: flex;
+  justify-content: center;
+}
+
+.bytm-exim-dialog-pane textarea {
+  height: 120px;
+  resize: none;
 }
 
 .bytm-auto-like-channels-footer-wrapper {
@@ -921,52 +959,165 @@ body .bytm-ripple.slower {
   justify-content: space-between;
 }
 
-#bytm-prompt-dialog-header {
+:root {
+  --bytm-auto-like-btn-color: #bf87f0;
+}
+
+#bytm-auto-like-channels-list {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  /* idk how else to get the scroll bar to show up correctly */
+  max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)) - 300px);
+}
+
+.bytm-auto-like-channels-desc {
+  padding: 0px 15px;
+  white-space: pre-wrap;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.bytm-auto-like-channels-search-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 15px;
+  margin-bottom: 10px;
+}
+
+.bytm-auto-like-channels-search-cont .left-side {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.bytm-auto-like-channels-search-cont .right-side {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: #bbb;
+}
+
+.bytm-auto-like-channels-searchbar {
+  min-width: 250px;
+}
+
+.bytm-auto-like-channel-row-left-cont {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-auto-like-channel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-auto-like-channel-row.hidden {
+  display: none;
+}
+
+.bytm-auto-like-channel-row:hover {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-auto-like-channel-row
+  .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
+  --toggle-height: 18px !important;
+  --toggle-width: 36px !important;
+}
+
+.bytm-auto-like-channel-row .bytm-generic-btn {
+  --bytm-generic-btn-width: 30px;
+  --bytm-generic-btn-height: 30px;
+}
+
+.bytm-auto-like-channel-name-label {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-#bytm-prompt-dialog-header svg {
-  width: 24px;
-  height: 24px;
+.bytm-auto-like-channel-id {
+  cursor: text;
+  font-family: var(--bytm-font-monospace);
+  font-size: 1.25rem;
+  color: #aaa;
+  margin-left: 10px;
 }
 
-#bytm-prompt-dialog-upper-cont,
-#bytm-prompt-dialog-message {
-  font-size: 1.6rem;
-  white-space: pre-wrap;
+/* add more specificity to override the default styles */
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn {
+  margin-right: 8px;
+  border: 1px solid var(--bytm-auto-like-btn-color);
+  box-sizing: border-box;
+  background-color: transparent;
+  transition: border-color 0.2s ease;
+  animation: none;
 }
 
-.bytm-prompt-type-prompt #bytm-prompt-dialog-message {
-  margin-bottom: 15px;
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin {
+  margin: 0 0 0 8px;
 }
 
-#bytm-prompt-dialog-input {
-  font-size: 1.6rem;
-  width: 100%;
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
+  margin: 0 8px 0 0;
 }
 
-#bytm-prompt-dialog-button-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: end;
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-#bytm-prompt-dialog-buttons-cont {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
+body.bytm-dom-ytm
+  ytmusic-subscribe-button-renderer
+  #button-shape-subscribe:hover
+  > button {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-#bytm-prompt-dialog-buttons-cont button {
-  cursor: pointer;
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-.bytm-prompt-dialog-button {
-  padding: 2px 6px;
-  font-size: 1.45rem;
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn svg path {
+  fill: var(--bytm-auto-like-btn-color);
+  transition: fill 0.2s ease;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active svg path,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled svg path {
+  fill: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
+  font-weight: 500;
+  color: var(--bytm-auto-like-btn-color);
+  transition: color 0.2s ease;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active
+  .bytm-generic-long-btn-txt,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
+  .bytm-generic-long-btn-txt {
+  color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
 
 #bytm-plugin-list-dialog-bg {
@@ -1097,6 +1248,27 @@ body .bytm-ripple.slower {
   cursor: help;
 }
 
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.bytm-hotkey-info[data-state="active"] {
+  display: none;
+}
+
 :root {
   --bytm-menu-bg-highlight: #252525;
 }
@@ -1115,7 +1287,7 @@ body .bytm-ripple.slower {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 3005;
   background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -1123,14 +1295,14 @@ body .bytm-ripple.slower {
   position: fixed;
   display: flex;
   flex-direction: column;
-  width: calc(min(100% - 60px, var(--bytm-menu-width-max)));
+  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
   border-radius: var(--bytm-menu-border-radius);
   height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-menu-height-max)));
+  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 6;
+  z-index: 3006;
   color: #fff;
   background-color: var(--bytm-menu-bg);
 }
@@ -1218,7 +1390,7 @@ body .bytm-ripple.slower {
   left: 0;
   font-size: 10px;
   font-weight: normal;
-  z-index: 7;
+  z-index: 3007;
 }
 
 #bytm-menu-subtitle-cont,
@@ -1252,9 +1424,7 @@ body .bytm-ripple.slower {
   border-radius: 50%;
   padding: 0px;
   transform: translateY(0px);
-  transition:
-    transform 0.15s ease-out,
-    padding 0.15s ease-out;
+  transition: transform 0.15s ease-out, padding 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .bytm-menu-img {
@@ -1273,9 +1443,7 @@ body .bytm-ripple.slower {
   color: var(--bytm-menu-subtitle-color) !important;
   white-space: pre;
   font-size: 1.1rem;
-  transition:
-    visibility 0.15s ease-out,
-    opacity 0.15s ease-out;
+  transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .extended-link {
@@ -1346,7 +1514,7 @@ body .bytm-ripple.slower {
   transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  z-index: 7;
+  z-index: 3007;
   background-color: var(--bytm-scroll-indicator-bg);
   border-radius: 50%;
   cursor: pointer;
@@ -1360,7 +1528,7 @@ body .bytm-ripple.slower {
   font-size: 20px;
   margin-top: 32px;
   margin-bottom: 8px;
-  padding: 0px 15px;
+  padding: 0px 20px;
 }
 
 .bytm-ftconf-category-header:first-of-type {
@@ -1409,15 +1577,28 @@ body .bytm-ripple.slower {
 
 .bytm-ftconf-input.bytm-hotkey-input {
   cursor: pointer;
-  min-width: 50px;
+  min-width: 60px;
 }
 
 .bytm-ftconf-input[type="number"] {
   width: 75px;
 }
 
+.bytm-ftconf-input[type="range"] {
+  width: 200px;
+}
+
+.bytm-ftconf-input[type="text"] {
+  width: 200px;
+}
+
 .bytm-ftconf-input[type="checkbox"] {
   margin-left: 5px;
+}
+
+select.bytm-ftconf-input {
+  min-width: 180px;
+  cursor: revert;
 }
 
 #bytm-export-menu-text,
@@ -1444,11 +1625,12 @@ body .bytm-ripple.slower {
   display: inline-block;
 }
 
-.bytm-changelog-version-details summary {
+.bytm-changelog-version-details details summary {
   cursor: pointer;
+  user-select: none;
 }
 
-.bytm-changelog-version-details summary::marker {
+.bytm-changelog-version-details details summary::marker {
   font-size: 2rem;
 }
 
@@ -1473,6 +1655,7 @@ body .bytm-ripple.slower {
 .bytm-kbd {
   --bytm-kbd-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
+  cursor: pointer;
   vertical-align: bottom;
   padding: 3px;
   font-family: var(--bytm-font-monospace);
@@ -1482,18 +1665,19 @@ body .bytm-ripple.slower {
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition:
-    padding 0.1s var(--bytm-kbd-easing),
+  transition: padding 0.1s var(--bytm-kbd-easing),
     margin-top 0.1s var(--bytm-kbd-easing),
     box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active {
+.bytm-markdown-container kbd:active,
+.bytm-kbd:active {
   padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection {
+.bytm-markdown-container kbd::selection,
+.bytm-kbd::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -1595,155 +1779,19 @@ hr {
   border: revert;
 }
 
-:root {
-  --bytm-auto-like-btn-color: #bf87f0;
-}
-
-#bytm-auto-like-channels-list {
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  /* idk how else to get the scroll bar to show up correctly */
-  max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)) - 300px);
-}
-
-.bytm-auto-like-channels-desc {
-  padding: 0px 15px;
-  white-space: pre-wrap;
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-}
-
-.bytm-auto-like-channels-search-cont {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  padding: 0px 15px;
-  margin-bottom: 10px;
-}
-
-.bytm-auto-like-channels-searchbar {
-  min-width: calc(min(250px, 50%));
-}
-
-.bytm-auto-like-channel-row-left-cont {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.bytm-auto-like-channel-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 15px;
-  transition: background-color 0.15s ease-out;
-}
-
-.bytm-auto-like-channel-row.hidden {
-  display: none;
-}
-
-.bytm-auto-like-channel-row:hover {
-  background-color: var(--bytm-menu-bg-highlight);
-}
-
-.bytm-auto-like-channel-row
-  .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
-  --toggle-height: 18px !important;
-  --toggle-width: 36px !important;
-}
-
-.bytm-auto-like-channel-row .bytm-generic-btn {
-  --bytm-generic-btn-width: 30px;
-  --bytm-generic-btn-height: 30px;
-}
-
-.bytm-auto-like-channel-name-label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.bytm-auto-like-channel-id {
-  cursor: text;
-  font-family: var(--bytm-font-monospace);
-  font-size: 1.25rem;
-  color: #aaa;
-  margin-left: 10px;
-}
-
-/* add more specificity to override the default styles */
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn {
-  margin-right: 8px;
-  border: 1px solid var(--bytm-auto-like-btn-color);
-  box-sizing: border-box;
-  background-color: transparent;
-  transition: border-color 0.2s ease;
-  animation: none;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin {
-  margin: 0 0 0 8px;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
-  margin: 0 8px 0 0;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-body.bytm-dom-ytm
-  ytmusic-subscribe-button-renderer
-  #button-shape-subscribe:hover
-  > button {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active,
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn svg path {
-  fill: var(--bytm-auto-like-btn-color);
-  transition: fill 0.2s ease;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active svg path,
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled svg path {
-  fill: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
-  font-weight: 500;
-  color: var(--bytm-auto-like-btn-color);
-  transition: color 0.2s ease;
-}
-
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active
-  .bytm-generic-long-btn-txt,
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
-  .bytm-generic-long-btn-txt {
-  color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
-}
-
 /* #region misc */
 
 :root {
   --bytm-font-monospace: "Cousine", "Consolas", monospace;
   --bytm-font-size-monospace: 1.4rem;
+}
+
+html:not([dark]) {
+  --bytm-themed-icon-col: #000;
+}
+
+html[dark] {
+  --bytm-themed-icon-col: #fff;
 }
 
 .bytm-disable-scroll {
@@ -1788,8 +1836,6 @@ body.bytm-dom-ytm
   border: 1px solid transparent;
   border-radius: calc(var(--bytm-generic-btn-height, 36px) / 2);
   background-color: transparent;
-
-  transition: background-color 0.2s ease;
 }
 
 .bytm-generic-btn:hover {
@@ -1798,6 +1844,10 @@ body.bytm-dom-ytm
 
 .bytm-generic-btn:active {
   animation: bytm-flash-border 0.4s ease 1;
+}
+
+.bytm-generic-btn.ytmusic-player-bar svg path {
+  fill: var(--iron-icon-fill-color, #fff);
 }
 
 @keyframes bytm-flash-border {
@@ -1860,6 +1910,11 @@ body.bytm-dom-ytm
   height: 24px;
 }
 
+.bytm-dom-yt .bytm-generic-btn-img path {
+  /* YT has both dark and light theme, YTM only dark */
+  fill: var(--bytm-themed-icon-col, #fff);
+}
+
 .bytm-spinner {
   animation: rotate 1.2s linear infinite;
 }
@@ -1878,19 +1933,29 @@ body.bytm-dom-ytm
   cursor: pointer;
 }
 
-/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
-  transform-origin: 12px 12px;
-  animation: rotate 1s ease-in-out infinite;
-} */
+ytmusic-logo a.bytm-logo-exchanged svg {
+  overflow: visible;
+}
 
-ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
-  transform-origin: 12px 12px;
+ytmusic-logo a.bytm-logo-exchanged svg > g[clip-path] {
+  transform-origin: 13px 13px;
   animation: rotate 1s ease-in-out;
+  z-index: 3050;
+}
+
+ytmusic-logo a.bytm-logo-exchanged svg .bytm-mod-logo-remove {
+  animation: fade-out 1s ease-in-out;
+}
+
+ytmusic-logo a.bytm-logo-exchanged > #bytm-watermark {
+  transform-origin: -19px -14px;
+  animation: rotate 1s ease-in-out;
+  z-index: 3050;
 }
 
 ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   z-index: 1000;
   position: absolute;
   animation: rotate-fade-in 1s ease-in-out;
@@ -1909,6 +1974,18 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
@@ -1958,6 +2035,7 @@ button[disabled].bytm-busy {
 .bytm-cfg-menu-option {
   display: block;
   padding: 8px 0;
+  border-top: 1px solid var(--yt-spec-outline, rgba(255, 255, 255, 0.2));
 }
 
 .bytm-cfg-menu-option-item {
@@ -2033,23 +2111,23 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 .bytm-yt-cfg-menu-option-item {
   width: 100%;
-  color: #fff;
+  color: var(--yt-spec-text-primary, #fff);
   font-size: 14px;
 }
 
 .bytm-yt-cfg-menu-option-item:hover {
   /* Support for "Enhancer for YouTube" extension's custom themes */
-  color: var(--main-color, #fff) !important;
+  color: var(--main-color, var(--yt-spec-text-primary, #fff)) !important;
 }
 
 /* #region watermark */
 
 #bytm-watermark {
-  font-size: 10px;
+  font-size: 9px;
   display: inline-block;
   position: absolute;
-  left: 97px;
-  top: 45px;
+  left: 99px;
+  top: 46px;
   z-index: 10;
   color: #f1f1f1;
   text-decoration: none;
@@ -2133,6 +2211,16 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   height: 100%;
   border-radius: inherit;
   box-shadow: var(--ts-songimg-box-shadow, initial);
+  object-fit: contain;
+}
+
+#bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: cover;
+}
+
+ytmusic-player[player-ui-state="FULLSCREEN"]
+  #bytm-thumbnail-overlay-img[data-media-type="song"] {
+  object-fit: contain;
 }
 
 #bytm-thumbnail-overlay-indicator {
@@ -2193,6 +2281,13 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   ytmusic-player-bar[slot="player-bar"]
   tp-yt-paper-icon-button
   svg
+  path,
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  yt-icon-button
+  svg
   path {
   fill: #fff;
 }
@@ -2206,7 +2301,7 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 }
 
 :root {
-  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
+  --bytm-themed-bg-col: var(--ts-playerpage-color, #030303);
 }
 
 #ts-visualizer-container #ThemeSong-Visualizer canvas {
@@ -2220,12 +2315,17 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   position: relative;
 }
 
+.bytm-queue-btn-container {
+  /* Scooch closer to the default YTM buttons */
+  transform: translateX(8px);
+}
+
 #side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
   background: rgba(255, 255, 255, 0.1);
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0) 0%,
-    var(--bytm-themed-bg) 15%
+    var(--bytm-themed-bg-col) 15%
   );
   display: none;
   position: absolute;
@@ -2295,6 +2395,26 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
   visibility: visible !important;
 }
 
+.ytmusic-player-queue .bytm-song-list-item-btn,
+ytmusic-player-queue-item
+  ytmusic-menu-renderer
+  #button-shape.ytmusic-menu-renderer
+  button {
+  background-color: var(
+    --bytm-themesong-bg-accent-col,
+    var(--ts-palette-darkmuted-hex, initial)
+  );
+  border: unset;
+}
+
+.ytmusic-player-queue .bytm-song-list-item-btn:hover,
+ytmusic-player-queue-item
+  ytmusic-menu-renderer
+  #button-shape.ytmusic-menu-renderer:hover
+  button {
+  box-shadow: inset 0 0 1000px rgba(255, 255, 255, 0.2);
+}
+
 /* #region volume slider */
 
 .bytm-vol-slider-cont {
@@ -2304,7 +2424,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
 .bytm-vol-slider-label {
   --bytm-slider-label-bg-col: var(
     --ytmusic-player-bar-background,
-    var(--bytm-themed-bg)
+    var(--bytm-themed-bg-col)
   );
   position: absolute;
   top: 50%;

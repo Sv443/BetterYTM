@@ -1,32 +1,36 @@
-import type { NanoEmitter, Stringifiable } from "@sv443-network/userutils";
+import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
-import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
+import type { isIgnoredInputElement } from "./features/input.js";
 import type { showPrompt } from "./dialogs/prompt.js";
-import type resources from "../assets/resources.json";
-import type locales from "../assets/locales.json";
+import type { BytmDialog } from "./components/BytmDialog.js";
+import type { ExImDialog } from "./components/ExImDialog.js";
+import type { createHotkeyInput } from "./components/hotkeyInput.js";
+import type { createToggleInput } from "./components/toggleInput.js";
+import type { createCircularBtn } from "./components/circularButton.js";
+import type { createRipple } from "./components/ripple.js";
+import type { showIconToast, showToast } from "./components/toast.js";
+import resources from "../assets/resources.json" with { type: "json" };
+import locales from "../assets/locales.json" with { type: "json" };
+
+void ["type imports only:", resources, locales];
 
 //#region other
-
-/**
- * Value that is either a string (or stringifiable value) or a sync or async function that returns a string (or a stringifiable value)  
- * Use `await consumeStringGen(strGen)` to get the actual string value from this type
- */
-export type StringGen = Stringifiable | (() => Stringifiable | Promise<Stringifiable>);
 
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{
   "config-mode": "development" | "production";
   "config-branch": "main" | "develop";
   "config-host": "greasyfork" | "github" | "openuserjs";
-  "config-assetSource": "local" | "github";
+  "config-assetSource": "local" | "github" | "jsdelivr";
   "config-suffix": string;
+  "config-gen-meta": "true" | "false";
 }>;
 
 // I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
@@ -45,7 +49,10 @@ export type SiteSelection = Domain | "all";
 export type SiteSelectionOrNone = SiteSelection | "none";
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
-export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog" | "css-bundle";
+export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}`;
+
+/** Key of a CSS resource in `assets/resources.json` */
+export type StyleResourceKey = ResourceKey & `css-${string}`;
 
 /** Describes a single hotkey */
 export type HotkeyObj = {
@@ -104,9 +111,48 @@ export type VideoVotesObj = {
   timestamp: number;
 };
 
+/** Response from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
+export type ITunesAPIResponse = {
+  resultCount: number;
+  results: ITunesAlbumObj[];
+};
+
+/** One album object returned by the iTunes API */
+export type ITunesAlbumObj = Prettify<{
+  wrapperType: LooseUnion<"collection">;
+  collectionType: LooseUnion<"Album">;
+  artistId: number;
+  collectionId: number;
+  artistName: string;
+  collectionName: string;
+  collectionCensoredName: string;
+  artistViewUrl: `https://music.apple.com/us/artist/${string}/${number}?uo=${number}`;
+  collectionViewUrl: `https://music.apple.com/us/album/${string}/${number}?uo=${number}`;
+  artworkUrl60: `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg`;
+  artworkUrl100: `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg`;
+  collectionPrice: number;
+  collectionExplicitness: LooseUnion<"explicit" | "notExplicit" | "cleaned">;
+  contentAdvisoryRating?: LooseUnion<"Explicit" | "Clean">;
+  trackCount: number;
+  copyright: string;
+  country: LooseUnion<"USA">;
+  currency: LooseUnion<"USD">;
+  releaseDate: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
+  primaryGenreName: string;
+}>;
+
 export type NumberLengthFormat = "short" | "long";
 
 export type ColorLightnessPref = "darker" | "normal" | "lighter";
+
+export type LikeDislikeState = "LIKE" | "DISLIKE" | "INDIFFERENT";
+
+//#region utility
+
+/** Returns a union of all keys of {@linkcode T} whose values are of type {@linkcode U} */
+export type KeysOfType<T, U> = {
+  [K in keyof T]: T[K] extends U ? K : never
+}[keyof T];
 
 //#region global
 
@@ -120,7 +166,7 @@ export type BytmObject =
   // information from the userscript header
   & typeof scriptInfo
   // certain variables from `src/constants.ts`
-  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "compressionFormat">
+  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "initialParams" | "compressionFormat" | "sessionStorageAvailable" | "scriptInfo">
   // global functions exposed through the interface in `src/interface.ts`
   & InterfaceFunctions
   // others
@@ -260,11 +306,14 @@ export type PluginEventMap =
   & InterfaceEventsMap;
 
 /** A plugin in either the queue or registered map */
-export type PluginItem = 
+export type PluginItem = Prettify<
   & {
     def: PluginDef;
   }
-  & Pick<PluginRegisterResult, "events">;
+  & Pick<PluginRegisterResult, "events">
+>;
+
+//#region plugin interface
 
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
@@ -285,6 +334,8 @@ export type InterfaceFunctions = {
   getResourceUrl: typeof getResourceUrl;
   /** Returns the unique session ID for the current tab */
   getSessionId: typeof getSessionId;
+  /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used */
+  reloadTab: typeof reloadTab;
 
   // dom:
   /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string */
@@ -303,10 +354,20 @@ export type InterfaceFunctions = {
   getThumbnailUrl: typeof getThumbnailUrl;
   /** Returns the thumbnail URL with the best quality for the provided video ID */
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
+  /** Fetches the iTunes album info objects for the given artist and album names */
+  fetchITunesAlbumInfo: typeof fetchITunesAlbumInfo;
   /** Resolves the returned promise when the video element is queryable in the DOM */
   waitVideoElementReady: typeof waitVideoElementReady;
+  /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found */
+  getVideoElement: typeof getVideoElement;
+  /** Returns the CSS selector to the video element for both YTM and YT */
+  getVideoSelector: typeof getVideoSelector;
   /** (On YTM only) returns the current media type (video or song) */
   getCurrentMediaType: typeof getCurrentMediaType;
+  /** Returns the like and dislike elements, as well as the current state of them as a string constant */
+  getLikeDislikeBtns: typeof getLikeDislikeBtns;
+  /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored */
+  isIgnoredInputElement: typeof isIgnoredInputElement;
 
   // translations:
   /** 🔒 Sets the locale for all new translations */
@@ -331,6 +392,8 @@ export type InterfaceFunctions = {
   getFeatures: typeof getFeaturesInterface;
   /** 🔒 Overwrites the feature configuration with the provided one */
   saveFeatures: typeof saveFeaturesInterface;
+  /** Returns the default feature configuration */
+  getDefaultFeatures: () => FeatureConfig;
 
   // lyrics:
   /** Sanitizes the provided artist string - this needs to be done before calling other lyrics related functions! */
@@ -373,8 +436,11 @@ export type InterfaceFunctions = {
 
 //#region feature defs
 
-/** Feature identifier */
+/** Feature identifier key */
 export type FeatureKey = keyof FeatureConfig;
+
+/** Union of all feature identifier keys, where the value is of the specified type {@linkcode TType} */
+export type FeatKeysOfType<TType> = KeysOfType<FeatureConfig, TType>;
 
 /** Feature category identifier */
 export type FeatureCategory =
@@ -383,6 +449,8 @@ export type FeatureCategory =
   | "songLists"
   | "behavior"
   | "input"
+  | "autoLike"
+  | "hotkeys"
   | "lyrics"
   | "integrations"
   | "plugins"
@@ -465,7 +533,10 @@ type FeatureFuncProps = (
 export type FeatureInfo = Record<
   keyof FeatureConfig,
   {
+    /** Feature category */
     category: FeatureCategory;
+    /** On which sites the feature is available */
+    supportedSites: Domain[];
     /**
      * HTML string that will be the help text for this feature  
      * Specifying a function is useful for pluralizing or inserting values into the translation at runtime
@@ -475,7 +546,7 @@ export type FeatureInfo = Record<
     valueHidden?: boolean;
     /** Transformation function called before the value is rendered in the config menu */
     renderValue?: (value: string) => string | Promise<string>;
-    /** HTML string that is appended to the end of a feature's text description */
+    /** HTML string that is prepended to the feature's text description */
     textAdornment?: () => (Promise<string | undefined> | string | undefined);
 
     /** Whether to only show this feature when advanced mode is activated (default false) */
@@ -503,12 +574,12 @@ export interface FeatureConfig {
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */
   thumbnailOverlayToggleBtnShown: boolean;
+  /** The width and height of the image fetched from the iTunes API */
+  thumbnailOverlayITunesImgRes: number;
   /** Whether to show an indicator on the thumbnail overlay when it is active */
   thumbnailOverlayShowIndicator: boolean;
   /** The opacity of the thumbnail overlay indicator element */
   thumbnailOverlayIndicatorOpacity: number;
-  /** How to fit the thumbnail overlay image */
-  thumbnailOverlayImageFit: "cover" | "contain" | "fill";
   /** Hide the cursor when it's idling on the video element for a while */
   hideCursorOnIdle: boolean;
   /** Delay in seconds after which the cursor should be hidden */
@@ -519,6 +590,8 @@ export interface FeatureConfig {
   showVotes: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
   numbersFormat: NumberLengthFormat;
+  /** Whether to remove all padding around the main content on the /watch page on YTM */
+  watchPageFullSize: boolean;
 
   //#region volume
   /** Add a percentage label to the volume slider */
@@ -551,7 +624,9 @@ export interface FeatureConfig {
   //#region behavior
   /** Whether to completely disable the popup that sometimes appears before leaving the site */
   disableBeforeUnloadPopup: boolean;
-  /** After how many milliseconds to close permanent toasts */
+  /** Whether to automatically close permanent toasts */
+  autoCloseToasts: boolean;
+  /** After how many seconds to close permanent toasts */
   closeToastsTimeout: number;
   /** Remember the last song's time when reloading or restoring the tab */
   rememberSongTime: boolean;
@@ -563,23 +638,33 @@ export interface FeatureConfig {
   rememberSongTimeReduction: number;
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
+  /** Whether the above queue button container should use sticky positioning */
+  aboveQueueBtnsSticky: boolean;
+  /** When to automatically scroll to the active song in the queue */
+  autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
 
   //#region input
-  /** Arrow keys skip forwards and backwards */
+  /** Arrow keys to skip forwards and backwards and change volume */
   arrowKeySupport: boolean;
-  /** By how many seconds to skip when pressing the arrow keys */
+  /** By how many seconds to skip when pressing the left/right arrow keys */
   arrowKeySkipBy: number;
-  /** Add a hotkey to switch between the YT and YTM sites on a video / song */
-  switchBetweenSites: boolean;
-  /** The hotkey that needs to be pressed to initiate the site switch */
-  switchSitesHotkey: HotkeyObj;
+  /** By how much to change the volume when pressing the up/down arrow keys */
+  arrowKeyVolumeStep: number;
+  /** Use . and , keys to skip by a frame while the video is paused */
+  frameSkip: boolean;
+  /** Allow frame skipping while the song is playing */
+  frameSkipWhilePlaying: boolean;
+  /** Amount of seconds to skip when pressing the . and , keys */
+  frameSkipAmount: number;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
+
+  //#region auto-like
   /** Whether to auto-like all played videos of configured channels */
   autoLikeChannels: boolean;
   /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
   autoLikeChannelToggleBtn: boolean;
-  // TODO(v2.2):
+  // TODO:
   // /** Whether to show a toggle button in the media controls to enable/disable auto-liking for those channel(s) */
   // autoLikePlayerBarToggleBtn: boolean;
   /** How long to wait after a video has started playing to auto-like it */
@@ -588,6 +673,36 @@ export interface FeatureConfig {
   autoLikeShowToast: boolean;
   /** Opens the auto-like channels management dialog */
   autoLikeOpenMgmtDialog: undefined;
+
+  //#region hotkeys
+  /** Add a hotkey to switch between the YT and YTM sites on a video/song */
+  switchBetweenSites: boolean;
+  /** The hotkey that needs to be pressed to initiate the site switch */
+  switchSitesHotkey: HotkeyObj;
+  /** Add hotkeys for liking and disliking the current video/song */
+  likeDislikeHotkeys: boolean;
+  /** The hotkey that needs to be pressed to like the current video/song */
+  likeHotkey: HotkeyObj;
+  /** The hotkey that needs to be pressed to dislike the current video/song */
+  dislikeHotkey: HotkeyObj;
+  /** Add a hotkey to open the current song's lyrics in a new tab */
+  currentLyricsHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to open the current song's lyrics in a new tab */
+  currentLyricsHotkey: HotkeyObj;
+  /** Add a hotkey to skip to the last remembered time of the current video/song */
+  skipToRemTimeHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to skip to the last remembered time of the current video/song */
+  skipToRemTimeHotkey: HotkeyObj;
+  /** Whether to rebind the next [J] and previous [K] keys */
+  rebindNextAndPrevious: boolean;
+  /** The hotkey that needs to be pressed to skip to the next video/song */
+  nextHotkey: HotkeyObj;
+  /** The hotkey that needs to be pressed to skip to the previous video/song */
+  previousHotkey: HotkeyObj;
+  /** Whether to rebind the play/pause hotkey */
+  rebindPlayPause: boolean;
+  /** The hotkey that needs to be pressed to play/pause the current video/song */
+  playPauseHotkey: HotkeyObj;
 
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
@@ -620,8 +735,6 @@ export interface FeatureConfig {
   //#region plugins
   /** Button that opens the plugin list dialog */
   openPluginList: undefined;
-  /** Amount of seconds until the feature initialization times out */
-  initTimeout: number;
 
   //#region misc
   /** The locale to use for translations */
@@ -638,6 +751,8 @@ export interface FeatureConfig {
   toastDuration: number;
   /** Whether to show a toast on generic errors */
   showToastOnGenericError: boolean;
+  /** Amount of seconds until the feature initialization times out */
+  initTimeout: number;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Button to reset every DataStore instance to their default values */

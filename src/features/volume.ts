@@ -3,8 +3,8 @@ import { getFeature } from "../config.js";
 import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
-import "./volume.css";
 import { addSelectorListener } from "../observers.js";
+import "./volume.css";
 
 //#region init vol features
 
@@ -36,8 +36,7 @@ export async function initVolumeFeatures() {
 
     // the following are only run once:
 
-    if(getFeature("setInitialTabVolume"))
-      setInitialTabVolume(sliderElem);
+    setInitialTabVolume(sliderElem);
 
     if(typeof getFeature("volumeSliderSize") === "number")
       setVolSliderSize();
@@ -58,11 +57,10 @@ export async function initVolumeFeatures() {
 
     addSelectorListener<HTMLInputElement>("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
       listener: (el) => listener("expand", el),
-      debounceEdge: "falling",
     });
   };
 
-  window.addEventListener("resize", debounce(onResize, 150, "falling"));
+  window.addEventListener("resize", debounce(onResize, 150));
   waitVideoElementReady().then(onResize);
   onResize();
 }
@@ -77,7 +75,7 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
       // cancels all the other events that would be fired
       e.stopImmediatePropagation();
 
-      const delta = Number((e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1);
+      const delta = Number((e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>)?.detail ?? 1);
       if(isNaN(delta))
         return warn("Invalid scroll delta:", delta);
 
@@ -101,6 +99,8 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
 async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
   const labelContElem = document.createElement("div");
   labelContElem.classList.add("bytm-vol-slider-label");
+  labelContElem.style.display = "none";
+  labelContElem.setAttribute("aria-hidden", "true");
 
   const volShared = getFeature("volumeSharedBetweenTabs");
   if(volShared) {
@@ -165,10 +165,18 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   // show label if hovering over slider or slider is focused
   const sliderHoverObserver = new MutationObserver(() => {
-    if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+    if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
+      labelContElem.style.display = "initial";
+      labelContElem.setAttribute("aria-hidden", "false");
       labelContElem.classList.add("bytm-visible");
-    else if(labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+    }
+    else if(labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
+      labelContElem.addEventListener("transitionend", () => {
+        labelContElem.style.display = "none";
+        labelContElem.setAttribute("aria-hidden", "true");
+      }, { once: true });
       labelContElem.classList.remove("bytm-visible");
+    }
 
     if(Number(sliderElem.value) !== lastSliderVal) {
       lastSliderVal = Number(sliderElem.value);
@@ -248,14 +256,26 @@ export async function volumeSharedBetweenTabsDisabled() {
 
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {
+  const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
+  GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
+
+  if((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
+    return;
+
   await waitVideoElementReady();
-  const initialVol = getFeature("initialTabVolumeLevel");
+
+  const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
+
+  if(isNaN(initialVol) || initialVol < 0 || initialVol > 100)
+    return;
+
   if(getFeature("volumeSharedBetweenTabs")) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
     if(getFeature("volumeSharedBetweenTabs"))
-      GM.setValue("bytm-shared-volume", String(initialVol));
+      GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
   }
   sliderElem.value = String(initialVol);
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-  log(`Set initial tab volume to ${initialVol}%`);
+
+  log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
 }

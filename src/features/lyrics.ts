@@ -1,5 +1,5 @@
 import { fetchAdvanced } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError } from "../utils/index.js";
+import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
 import { mode, scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
@@ -29,10 +29,6 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
 
   currentSongTitle = songTitleElem.title;
 
-  const spinnerIconUrl = await getResourceUrl("icon-spinner");
-  const lyricsIconUrl = await getResourceUrl("icon-lyrics");
-  const errorIconUrl = await getResourceUrl("icon-error");
-
   const onMutation = async (mutations: MutationRecord[]) => {
     for await(const mut of mutations) {
       const newTitle = (mut.target as HTMLElement).title;
@@ -46,16 +42,15 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
         lyricsBtn.style.cursor = "wait";
         lyricsBtn.style.pointerEvents = "none";
 
-        const imgElem = lyricsBtn.querySelector<HTMLImageElement>("img")!;
-        imgElem.src = spinnerIconUrl;
-        imgElem.classList.add("bytm-spinner");
+        setInnerHtml(lyricsBtn, await resourceAsString("icon-spinner"));
+        lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img", "bytm-spinner");
 
         currentSongTitle = newTitle;
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
 
-        imgElem.src = lyricsIconUrl;
-        imgElem.classList.remove("bytm-spinner");
+        setInnerHtml(lyricsBtn, await resourceAsString("icon-lyrics"));
+        lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
         if(!url) {
           let artist, song;
@@ -65,7 +60,8 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
           }
           const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
 
-          imgElem.src = errorIconUrl;
+          setInnerHtml(lyricsBtn, await resourceAsString("icon-error"));
+          lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
           lyricsBtn.ariaLabel = lyricsBtn.title = t("lyrics_not_found_click_open_search");
           lyricsBtn.style.cursor = "pointer";
@@ -128,9 +124,12 @@ export function sanitizeSong(songName: string) {
   return sanitized.trim();
 }
 
-/** Removes the secondary artist (if it exists) from the passed artists string */
+/**
+ * Removes the secondary artists (if they exist) from the passed artists string.  
+ * Intelligently splits at commas and bullet (•) characters, and removes everything after the first ampersand (&) or feat.
+ */
 export function sanitizeArtists(artists: string) {
-  artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
+  artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
 
   if(artists.match(/&/))
     artists = artists.split(/\s*&\s*/gm)[0];
@@ -318,10 +317,6 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
   linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
 
-  const imgElem = document.createElement("img");
-  imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = await getResourceUrl("icon-lyrics");
-
   onInteraction(linkElem, (e) => {
     const url = linkElem.href ?? geniusUrl;
     if(!url || e instanceof MouseEvent)
@@ -333,7 +328,8 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
     stopPropagation: false,
   });
 
-  linkElem.appendChild(imgElem);
+  setInnerHtml(linkElem, await resourceAsString("icon-lyrics"));
+  linkElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
   onInteraction(linkElem, async (e) => {
     if(e.ctrlKey || e.altKey) {

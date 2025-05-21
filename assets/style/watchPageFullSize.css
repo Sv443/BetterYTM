@@ -1,0 +1,7 @@
+ytmusic-player-page > .content {
+  padding: 16px !important;
+}
+
+ytmusic-player-page > .content #side-panel {
+  margin-left: 24px !important;
+}

@@ -1,9 +1,9 @@
 import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "../utils/index.js";
-import { BytmDialog } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { mode, scriptInfo } from "../constants.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
-import { getChangelogDialog } from "./index.js";
+import { getChangelogDialog } from "./changelog.js";
 import pkg from "../../package.json" with { type: "json" };
 import locales from "../../assets/locales.json" with { type: "json" };
 
@@ -17,7 +17,7 @@ export async function getWelcomeDialog() {
       width: 700,
       height: 500,
       closeBtnEnabled: true,
-      closeOnBgClick: true,
+      closeOnBgClick: false,
       closeOnEscPress: true,
       destroyOnClose: true,
       renderHeader,

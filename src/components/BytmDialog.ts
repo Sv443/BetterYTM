@@ -1,12 +1,13 @@
 // hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "@sv443-network/userutils";
-import { clearInner, domLoaded, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { isDomLoaded, NanoEmitter } from "@sv443-network/userutils";
+import type { EventsMap } from "nanoevents";
+import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
-import type { EventsMap } from "nanoevents";
+import "../dialogs/dialogs.css";
 
-export interface BytmDialogOptions {
+export type BytmDialogOptions = {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
   id: string;
   /** Target and max width of the dialog in pixels */
@@ -35,7 +36,7 @@ export interface BytmDialogOptions {
   renderHeader?: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the footer of the dialog - leave undefined for no footer */
   renderFooter?: () => HTMLElement | Promise<HTMLElement>;
-}
+};
 
 export interface BytmDialogEvents extends EventsMap {
   /** Emitted just **after** the dialog is closed */
@@ -48,7 +49,7 @@ export interface BytmDialogEvents extends EventsMap {
   clear: () => void;
   /** Emitted just **after** the dialog is destroyed and **before** all listeners are removed */
   destroy: () => void;
-};
+}
 
 /** Whether the dialog system has been initialized */
 let dialogsInitialized = false;
@@ -115,7 +116,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       if(dialogContainer)
         dialogContainer.appendChild(bgElem);
       else
-        document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem));
+        document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
     }
     catch(e) {
       return error("Failed to render dialog content:", e);
@@ -261,8 +262,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       document.body.appendChild(bytmDialogCont);
     };
 
-    if(!domLoaded)
-      document.addEventListener("DOMContentLoaded", createContainer);
+    if(!isDomLoaded())
+      document.addEventListener("DOMContentLoaded", createContainer, { once: true });
     else
       createContainer();
   }
@@ -367,7 +368,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       headerTitleWrapperEl.role = "heading";
       headerTitleWrapperEl.ariaLevel = "1";
 
-      headerTitleWrapperEl.appendChild(header instanceof Promise ? await header : header);
+      headerTitleWrapperEl.appendChild(await header);
       headerWrapperEl.appendChild(headerTitleWrapperEl);
     }
     else {
@@ -386,7 +387,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
       closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-      onInteraction(closeBtnEl, () => this.close());
+      onInteraction(closeBtnEl, this.close);
       headerWrapperEl.appendChild(closeBtnEl);
     }
 
@@ -399,9 +400,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBodyElem.classList.add("bytm-dialog-body");
     this.options.small && dialogBodyElem.classList.add("small");
 
-    const body = this.options.renderBody();
-
-    dialogBodyElem.appendChild(body instanceof Promise ? await body : body);
+    dialogBodyElem.appendChild(await this.options.renderBody());
     dialogWrapperEl.appendChild(dialogBodyElem);
 
     //#region footer
@@ -411,7 +410,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       footerWrapper.classList.add("bytm-dialog-footer-cont");
       this.options.small && footerWrapper.classList.add("small");
       dialogWrapperEl.appendChild(footerWrapper);
-      footerWrapper.appendChild(footer instanceof Promise ? await footer : footer);
+      footerWrapper.appendChild(await footer);
     }
 
     return dialogWrapperEl;

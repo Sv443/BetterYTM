@@ -1,26 +1,34 @@
+import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
 import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 import { t } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { copyToClipboard } from "../utils/dom.js";
-import { createLongBtn, createRipple, showToast } from "./index.js";
+import { createRipple } from "./ripple.js";
+import { createLongBtn } from "./longButton.js";
+import { showToast } from "./toast.js";
 import "./ExImDialog.css";
 
-type ExImDialogOpts =
-  & Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
+// TODO: overhaul:
+// - [ ] Use file down- and upload instead of textareas, including drag and drop functionality
+// - [ ] Still allow downloading the `exportDataSpecial`
+// - [ ] Checkboxes on both sides to configure which DataStore instances to import/export to/from
+
+export type ExImDialogOpts = Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
   & {
     /** Title of the dialog */
-    title: string | (() => (string | Promise<string>));
+    title: StringGen;
     /** Description when importing */
-    descImport: string | (() => (string | Promise<string>));
+    descImport: StringGen;
     /** Description when exporting */
-    descExport: string | (() => (string | Promise<string>));
+    descExport: StringGen;
     /** Function that gets called when the user imports data */
     onImport: (data: string) => void;
     /** The data to export (or a function that returns the data as string, sync or async) */
-    exportData: string | (() => (string | Promise<string>));
+    exportData: StringGen;
     /** Optional variant of the data, used for special cases like when shift-clicking the copy button */
-    exportDataSpecial?: string | (() => (string | Promise<string>));
-  };
+    exportDataSpecial?: StringGen;
+  }
+  & Partial<Pick<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">>;
 
 //#region class
 
@@ -48,9 +56,7 @@ export class ExImDialog extends BytmDialog {
     headerEl.role = "heading";
     headerEl.ariaLevel = "1";
     headerEl.tabIndex = 0;
-    headerEl.textContent = headerEl.ariaLabel = typeof opts.title === "function"
-      ? await opts.title()
-      : opts.title;
+    headerEl.textContent = headerEl.ariaLabel = await consumeStringGen(opts.title);
 
     return headerEl;
   }
@@ -71,9 +77,7 @@ export class ExImDialog extends BytmDialog {
       descEl.classList.add("bytm-exim-dialog-desc");
       descEl.role = "note";
       descEl.tabIndex = 0;
-      descEl.textContent = descEl.ariaLabel = typeof opts.descExport === "function"
-        ? await opts.descExport()
-        : opts.descExport;
+      descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descExport);
 
       const dataEl = document.createElement("textarea");
       dataEl.classList.add("bytm-exim-dialog-data");
@@ -81,7 +85,8 @@ export class ExImDialog extends BytmDialog {
       dataEl.tabIndex = 0;
       dataEl.value = t("click_to_reveal");
       onInteraction(dataEl, async () => {
-        dataEl.value = typeof opts.exportData === "function" ? await opts.exportData() : opts.exportData;
+        dataEl.value = await consumeStringGen(opts.exportData);
+        dataEl.setSelectionRange(0, dataEl.value.length);
       });
 
       const exportCenterBtnCont = document.createElement("div");
@@ -93,7 +98,7 @@ export class ExImDialog extends BytmDialog {
         resourceName: "icon-copy",
         async onClick({ shiftKey }) {
           const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-          copyToClipboard(typeof copyData === "function" ? await copyData() : copyData);
+          copyToClipboard(await consumeStringGen(copyData));
           await showToast({ message: t("copied_to_clipboard") });
         },
       }));
@@ -112,9 +117,7 @@ export class ExImDialog extends BytmDialog {
       descEl.classList.add("bytm-exim-dialog-desc");
       descEl.role = "note";
       descEl.tabIndex = 0;
-      descEl.textContent = descEl.ariaLabel = typeof opts.descImport === "function"
-        ? await opts.descImport()
-        : opts.descImport;
+      descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descImport);
 
       const dataEl = document.createElement("textarea");
       dataEl.classList.add("bytm-exim-dialog-data");

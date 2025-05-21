@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["externalAssetPattern", "preloadAssetPattern", "resources"],
+  "description": "Contains all resources (images, fonts, stylesheets, etc.) used by BYTM.",
+  "properties": {
+    "externalAssetPattern": {
+      "type": "string",
+      "description": "Pattern passed to `new RegExp()` that identifies an external asset that will be loaded via fetching from the CDN instead of a locally cached @resource.",
+      "format": "regex",
+      "pattern": "^.+$"
+    },
+    "preloadAssetPattern": {
+      "type": "string",
+      "description": "Pattern passed to `new RegExp()` that identifies an asset that should be preloaded.",
+      "format": "regex",
+      "pattern": "^.+$"
+    },
+    "resources": {
+      "type": "object",
+      "description": "Mapping of resource file identifiers and paths.",
+      "patternProperties": {
+        "^[a-zA-Z]([a-zA-Z0-9_]+)?-[a-zA-Z0-9-_]+$": {
+          "description": "Resource with a key in the format `prefix-resource_name` and a value that is either a path string or metadata object.",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "required": ["path"],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "Path or URL to the resource. If it starts with /, it's relative to the project root, else it's relative to the assets folder. Query strings and hashes are allowed. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER and $UID anywhere in the string."
+                },
+                "ref": {
+                  "type": "string",
+                  "description": "Git Ref (branch, tag, or commit SHA) to use when fetching the resource from the CDN. Uses the branch and build number from src/constants.ts if not set. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER and $UID anywhere in the string."
+                },
+                "integrity": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Whether to calculate a Subresource Integrity hash for the resource (works with URLs too)."
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

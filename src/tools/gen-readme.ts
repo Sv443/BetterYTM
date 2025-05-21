@@ -87,17 +87,22 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
 }
 
 async function genHeader() {
-  const langStr = [ ...Object.values(locales) ]
-    .sort((a, b) => a.nameEnglish.localeCompare(b.nameEnglish))
-    .reduce((acc, { nameEnglish, emoji }, i) => {
-      return `${acc}${i > 0 ? ", " : ""}${emoji}&nbsp;${nameEnglish}`;
+  const langStr = [ ...Object.entries(locales) ]
+    .sort(([, a], [, b]) => a.nameEnglish.localeCompare(b.nameEnglish))
+    .reduce((acc, [locale, { emoji, nameEnglish }], i) => {
+      const countryCode = locale.split("-")[1];
+      return `${acc}${i > 0 ? ", " : ""}<abbr title="${nameEnglish}">${emoji}&nbsp;${countryCode}</abbr>`;
     }, "");
 
   return `\
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>${pkgJson.userscriptName}</h1>
 
 ### ${pkgJson.description}
-${langStr}\
+
+<h4>Available in these languages: ${langStr}</h4>
+
+---
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
 `;
 }
 

@@ -1,33 +1,43 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber } from "../utils/index.js";
+import { featInfo } from "./index.js";
+import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
+import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
+import { error, log, warn } from "../utils/logging.js";
+import { t, tp } from "../utils/translations.js";
+import { onInteraction } from "../utils/input.js";
+import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
-import { createCircularBtn, createRipple } from "../components/index.js";
-import type { ResourceKey, VideoVotesObj } from "../types.js";
 import { showPrompt } from "../dialogs/prompt.js";
+import { createRipple } from "../components/ripple.js";
+import { createCircularBtn } from "../components/circularButton.js";
+import type { ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
 
 //#region cfg menu btns
 
-let logoExchanged = false, improveLogoCalled = false;
+let logoExchanged = false, improveLogoCalled = false, bytmLogoUrl: string | undefined;
 
 /** Adds a watermark beneath the logo */
 export async function addWatermark() {
-  const watermark = document.createElement("a");
-  watermark.role = "button";
-  watermark.id = "bytm-watermark";
-  watermark.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
-  watermark.textContent = scriptInfo.name;
-  watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
-  watermark.tabIndex = 0;
+  const watermarkEl = document.createElement("a");
+  watermarkEl.role = "button";
+  watermarkEl.id = "bytm-watermark";
+  watermarkEl.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
+  watermarkEl.textContent = scriptInfo.name;
+  watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo.name);
+  watermarkEl.tabIndex = 0;
 
-  improveLogo();
+  await improveLogo();
+  bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+  preloadImages([bytmLogoUrl]);
 
   const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
-    e.stopPropagation();
+    e.stopImmediatePropagation();
 
     if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
@@ -35,10 +45,10 @@ export async function addWatermark() {
       exchangeLogo();
   };
 
-  onInteraction(watermark, watermarkOpenMenu);
+  onInteraction(watermarkEl, (e) => watermarkOpenMenu(e));
 
-  addSelectorListener("navBar", "ytmusic-nav-bar #left-content", {
-    listener: (logoElem) => logoElem.insertAdjacentElement("afterend", watermark),
+  addSelectorListener("navBar", "ytmusic-logo a", {
+    listener: (logoElem) => logoElem.appendChild(watermarkEl),
   });
 
   log("Added watermark element");
@@ -54,17 +64,12 @@ export async function improveLogo() {
     const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
     const svg = await res.text();
 
-    addSelectorListener("navBar", "ytmusic-logo a", {
+    addSelectorListener("navBar", "ytmusic-logo > a", {
       listener: (logoElem) => {
         logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
         setInnerHtml(logoElem, svg);
 
-        logoElem.querySelectorAll("ellipse").forEach((e) => {
-          e.classList.add("bytm-mod-logo-ellipse");
-        });
-
-        logoElem.querySelector("path")?.classList.add("bytm-mod-logo-path");
-
+        logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
         log("Swapped logo to inline SVG");
       },
     });
@@ -78,30 +83,28 @@ export async function improveLogo() {
 function exchangeLogo() {
   addSelectorListener("navBar", ".bytm-mod-logo", {
     listener: async (logoElem) => {
-      if(logoElem.classList.contains("bytm-logo-exchanged"))
+      if(logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl)
         return;
 
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const iconUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
-
       const newLogo = document.createElement("img");
       newLogo.classList.add("bytm-mod-logo-img");
-      newLogo.src = iconUrl;
+      newLogo.src = bytmLogoUrl;
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
-      document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => {
-        e.href = iconUrl;
-      });
+      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => e.href = bytmLogoUrl!);
 
       setTimeout(() => {
-        logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
+        logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
       }, 1000);
     },
   });
 }
+
+//#region cfg menu options
 
 /** Called whenever the avatar popover menu exists on YTM to add a BYTM config menu button to the user menu popover */
 export async function addConfigMenuOptionYTM(container: HTMLElement) {
@@ -115,10 +118,8 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
 
   onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
-    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
+    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button button");
     settingsBtnElem?.click();
-
-    await pauseFor(20);
 
     if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
@@ -180,7 +181,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
     return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
 }
 
-//#region anchor impr.
+//#region anchor improvements
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
@@ -273,10 +274,31 @@ export async function addAnchorImprovements() {
       },
     });
 
-    addSelectorListener("sideBarMini", "ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
-      listener: (miniSidebarCont) => {
-        const itemsAmt = addSidebarAnchors(miniSidebarCont);
-        log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+    addSelectorListener("body", "ytmusic-nav-bar", {
+      listener(navBar) {
+        let miniSidebarCont = document.querySelector<HTMLElement>("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+
+        const mut = new MutationObserver(() => setTimeout(() => {
+          if(navBar.hasAttribute("guide-collapsed") && !navBar.classList.contains("bytm-mini-sidebar-anchors-added")) {
+            miniSidebarCont = document.querySelector<HTMLElement>("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+            if(!miniSidebarCont)
+              return error("Couldn't find mini sidebar element while adding anchors");
+            improveMiniSidebarAnchors();
+          }
+        }, 50));
+
+        const improveMiniSidebarAnchors = () => {
+          const itemsAmt = addSidebarAnchors(miniSidebarCont!);
+          navBar.classList.add("bytm-mini-sidebar-anchors-added");
+          log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+          mut.disconnect();
+        };
+        if(miniSidebarCont)
+          improveMiniSidebarAnchors();
+
+        mut.observe(navBar, {
+          attributes: true,
+        });
       },
     });
   }
@@ -311,7 +333,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
-//#region share track par.
+//#region share track param
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
@@ -370,6 +392,8 @@ export async function initAboveQueueBtns() {
 
   if(!await addStyleFromResource("css-above_queue_btns"))
     error("Couldn't add CSS for above queue buttons");
+  else if(getFeature("aboveQueueBtnsSticky"))
+    addStyleFromResource("css-above_queue_btns_sticky");
 
   const contBtns = [
     {
@@ -377,17 +401,7 @@ export async function initAboveQueueBtns() {
       id: "scroll-to-active",
       resourceName: "icon-skip_to",
       titleKey: "scroll_to_playing",
-      async interaction(evt: KeyboardEvent | MouseEvent) {
-        const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-        if(!activeItem)
-          return;
-
-        activeItem.scrollIntoView({
-          behavior: evt.shiftKey ? "instant" : "smooth",
-          block: evt.ctrlKey || evt.altKey ? "start" : "center",
-          inline: "center",
-        });
-      },
+      interaction: async (evt: KeyboardEvent | MouseEvent) => scrollToCurrentSongInQueue(evt),
     },
     {
       condition: clearQueueBtn,
@@ -458,8 +472,13 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
-/** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
+// TODO:FIXME: rewrite this whole chonker cause it doesn't wanna behave at all
+
+/** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
+
+/** List of video IDs that have already been applied to the thumbnail overlay */
+const previousVideoIDs: string[] = [];
 
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
@@ -476,7 +495,7 @@ export async function initThumbnailOverlay() {
 
     /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
     const updateOverlayVisibility = async () => {
-      if(!domLoaded)
+      if(!isDomLoaded())
         return;
 
       const behavior = getFeature("thumbnailOverlayBehavior");
@@ -507,10 +526,12 @@ export async function initThumbnailOverlay() {
       if(getFeature("thumbnailOverlayToggleBtnShown")) {
         addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
           async listener(toggleBtnElem) {
-            const toggleBtnImgElem = toggleBtnElem.querySelector<HTMLImageElement>("img");
+            const toggleBtnIconElem = toggleBtnElem.querySelector<HTMLImageElement>("svg");
 
-            if(toggleBtnImgElem)
-              toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
+            if(toggleBtnIconElem) {
+              setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled"));
+              toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+            }
             if(toggleBtnElem)
               toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
           },
@@ -518,35 +539,95 @@ export async function initThumbnailOverlay() {
       }
     };
 
-    const applyThumbUrl = async (watchId: string) => {
+    const applyThumbUrl = async (videoID: string, force = false) => {
       try {
-        const thumbUrl = await getBestThumbnailUrl(watchId);
-        if(thumbUrl) {
+        if(previousVideoIDs.length > 2)
+          previousVideoIDs.splice(0, previousVideoIDs.length - 2);
+
+        if(!force) {
+          if(previousVideoIDs.find(id => id === videoID))
+            return;
+          else
+            previousVideoIDs.push(videoID);
+        }
+
+        const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
+        if(
+          toggleBtnElem
+          && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
+          && (
+            (!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
+            && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))
+          )
+        )
+          return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
+
+        const actuallyApplyThumbUrl = (thumbUrl: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
-          if(toggleBtnElem?.href === thumbUrl && thumbImgElem?.src === thumbUrl)
+          if(toggleBtnElem) {
+            toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
+            toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
+          }
+
+          if(toggleBtnElem?.href !== "" && toggleBtnElem?.href === thumbUrl && thumbImgElem?.src === thumbUrl)
             return;
 
           if(toggleBtnElem)
             toggleBtnElem.href = thumbUrl;
-          if(thumbImgElem)
+          if(thumbImgElem) {
+            thumbImgElem.dataset.videoId = videoID;
             thumbImgElem.src = thumbUrl;
+            thumbImgElem.dataset.mediaType = getCurrentMediaType();
+          }
 
           log("Applied thumbnail URL to overlay:", thumbUrl);
-        }
-        else error("Couldn't get thumbnail URL for watch ID", watchId);
+        };
+
+        let bestNativeThumbUrl: string | undefined;
+        const ac = new AbortController();
+        getBestThumbnailUrl(videoID).then((url) =>
+          ac.signal.aborted ? undefined : (bestNativeThumbUrl = url) && actuallyApplyThumbUrl(url)
+        ).catch(() => void 0);
+
+        addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
+          all: true,
+          async listener(elems) {
+            const iTunesAlbum = elems.length >= 5
+              ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
+              : undefined;
+
+            const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
+            const iTunesUrl = (iTunesAlbum?.artworkUrl60 ?? iTunesAlbum?.artworkUrl100);
+            iTunesUrl && !ac.signal.aborted && ac.abort();
+
+            const thumbUrl = iTunesUrl
+              ?.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
+              ?? bestNativeThumbUrl ?? await getBestThumbnailUrl(videoID);
+
+            if(thumbUrl)
+              actuallyApplyThumbUrl(thumbUrl);
+            else
+              warn("Couldn't get thumbnail URL for album", iTunesAlbum?.collectionName, "by", iTunesAlbum?.artistName, "or video with ID", videoID);
+          },
+        });
       }
       catch(err) {
         error("Couldn't apply thumbnail URL to overlay due to an error:", err);
       }
     };
 
-    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
+    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID, oldVideoID) => {
       unsubWatchIdChanged();
       addSelectorListener("body", "#bytm-thumbnail-overlay", {
         listener: () => {
-          applyThumbUrl(watchId);
+          const curVidIdx = previousVideoIDs.findIndex(id => id === videoID);
+          const prevVidIdx = previousVideoIDs.findIndex(id => id === oldVideoID);
+          curVidIdx > -1 && previousVideoIDs.splice(curVidIdx, 1);
+          prevVidIdx > -1 && previousVideoIDs.splice(prevVidIdx, 1);
+
+          applyThumbUrl(videoID);
           updateOverlayVisibility();
         },
       });
@@ -577,16 +658,15 @@ export async function initThumbnailOverlay() {
         thumbImgElem.id = "bytm-thumbnail-overlay-img";
         thumbImgElem.role = "presentation";
         thumbImgElem.ariaHidden = "true";
-        thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
 
         overlayElem.appendChild(thumbImgElem);
         playerEl.appendChild(overlayElem);
         indicatorElem && playerEl.appendChild(indicatorElem);
 
 
-        siteEvents.on("watchIdChanged", async (watchId) => {
+        siteEvents.on("watchIdChanged", async (videoID) => {
           invertOverlay = false;
-          applyThumbUrl(watchId);
+          applyThumbUrl(videoID);
           updateOverlayVisibility();
         });
 
@@ -607,17 +687,22 @@ export async function initThumbnailOverlay() {
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
+
             invertOverlay = !invertOverlay;
+
+            const params = new URL(location.href).searchParams;
+            if(thumbImgElem.dataset.videoId !== params.get("v"))
+              applyThumbUrl(params.get("v")!, true);
+
             updateOverlayVisibility();
           });
 
-          const imgElem = document.createElement("img");
-          imgElem.classList.add("bytm-generic-btn-img");
-
-          toggleBtnElem.appendChild(imgElem);
+          setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
+          toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
           addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
-            listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
+            listener: (likeContainer) =>
+              likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
           });
         }
 
@@ -648,6 +733,38 @@ export async function initThumbnailOverlay() {
       },
     });
   });
+}
+
+/** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
+async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
+  const doFetchITunesAlbum = async (artist: string, album: string) => {
+    const albumObjs = await fetchITunesAlbumInfo(artist, album);
+    if(albumObjs && albumObjs.length > 0) {
+      const bestMatch = albumObjs.find((al) => (
+        (
+          al.artistName === artist
+        || al.artistName.toLowerCase() === artist.toLowerCase()
+        || al.artistName === artistsRaw
+        || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
+        )
+      && (
+        al.collectionName === album
+        || al.collectionName.toLowerCase() === album.toLowerCase()
+        || al.collectionCensoredName === album
+        || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
+      )
+      ));
+      return [bestMatch, albumObjs[0]];
+    }
+    return [undefined, albumObjs[0]];
+  };
+
+  const artist = sanitizeArtists(artistsRaw);
+
+  let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
+  if(!bestMatch)
+    [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
+  return bestMatch ?? fallback!;
 }
 
 //#region idle hide cursor
@@ -701,7 +818,7 @@ export async function initHideCursorOnIdle() {
       };
 
       vidContainer.addEventListener("mouseenter", onMove);
-      vidContainer.addEventListener("mousemove", debounce(onMove, 200, "rising"));
+      vidContainer.addEventListener("mousemove", debounce(onMove, 200));
       vidContainer.addEventListener("mouseleave", () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
         hideTransTimer && clearTimeout(hideTransTimer);
@@ -735,30 +852,30 @@ export async function initShowVotes() {
   addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
     async listener(voteCont: HTMLElement): Promise<void> {
       try {
-        const watchId = getWatchId();
-        if(!watchId) {
+        const videoID = getWatchId();
+        if(!videoID) {
           await siteEvents.once("watchIdChanged");
           return initShowVotes();
         }
 
-        const voteObj = await fetchVideoVotes(watchId);
+        const voteObj = await fetchVideoVotes(videoID);
         if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
           return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
         if(getFeature("showVotes")) {
           addVoteNumbers(voteCont, voteObj);
 
-          siteEvents.on("watchIdChanged", async (watchId) => {
+          siteEvents.on("watchIdChanged", async (videoID) => {
             const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
             const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
 
             if(!labelLikes || !labelDislikes)
               return error("Couldn't find vote label elements while updating like and dislike counts");
 
-            if(labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
+            if(labelLikes.dataset.watchId === videoID && labelDislikes.dataset.watchId === videoID)
               return log("Vote labels already updated for this video");
 
-            const voteObj = await fetchVideoVotes(watchId);
+            const voteObj = await fetchVideoVotes(videoID);
             if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
               return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
@@ -831,3 +948,13 @@ function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, disl
   if(dislikeBtn)
     dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
 };
+
+//#region watch page full size
+
+/** Makes the watch page full size */
+export async function initWatchPageFullSize() {
+  if(!await addStyleFromResource("css-watch_page_full_size"))
+    error("Couldn't load stylesheet to make watch page full size");
+  else
+    log("Made watch page full size");
+}

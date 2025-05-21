@@ -12,6 +12,25 @@
   },
   "editor.tabSize": 2,
 
+  "json.schemas": [
+    {
+      "fileMatch": ["**/locales.json"],
+      "url": ".vscode/schemas/locales.schema.json"
+    },
+    {
+      "fileMatch": ["**/require.json"],
+      "url": ".vscode/schemas/require.schema.json"
+    },
+    {
+      "fileMatch": ["**/resources.json"],
+      "url": ".vscode/schemas/resources.schema.json"
+    },
+    {
+      "fileMatch": ["**/translations/*-*.json"],
+      "url": ".vscode/schemas/translation.schema.json"
+    },
+  ],
+
   // requires extension: fabiospampinato.vscode-highlight
   "highlight.regexes": {
     "(TODO(\\((\\s|\\d|\\w|[,.-_+*&])+\\))?:?)": { // TODO: or TODO or TODO(xy): but not todo or todo:
@@ -19,10 +38,10 @@
       "color": "black",
       "overviewRulerColor": "#ed0",
     },
-    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&+#*'\"/:]+)*)": { //#region test: (abc):
-      "backgroundColor": "#5df",
+    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&@+#*'\"/:]+)*)": { //#region foo: (@bar):
+      "backgroundColor": "#35b5d0",
       "color": "#000",
-      "overviewRulerColor": "#5df",
+      "overviewRulerColor": "#35b5d0",
     },
     "((<!--\\s*)?</?\\{\\{[A-Z_-]+\\}\\}>(\\s*-->)?)": { // <!-- <{{FOO}}> --> and <!-- </{{FOO}}> --> or <{{BAR}}> and </{{BAR}}>
       "backgroundColor": "#9af",

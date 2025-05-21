@@ -1,12 +1,16 @@
-## BetterYTM - Contributing Guide
+# BetterYTM - Contributing Guide
 Thank you for your interest in contributing to BetterYTM!  
 This guide will help you get started with contributing to the project.  
-If you have any questions or need help, feel free to contact me, [see my homepage](https://sv443.net/) for contact info.  
+  
+It contains boatloads of information on internal workings, how to set up the project for local development, how to submit translations and how to develop a plugin that interfaces with BetterYTM.  
+Also, each folder of the project should contain a `README.md` file that further explains the contents of the folder and how to work with them in much more detail.  
+  
+If you have any questions or need help, feel free to contact me ([visit my homepage](https://sv443.net/) for contact info).  
 Or you can also [join my Discord server](https://dc.sv443.net) to get in touch or get help.  
 
 <br>
 
-### Table of contents:
+## Table of contents:
 - [Submitting translations](#submitting-translations)
   - [Adding translations for a new language](#adding-translations-for-a-new-language)
   - [Editing an existing translation](#editing-an-existing-translation)
@@ -19,150 +23,162 @@ Or you can also [join my Discord server](https://dc.sv443.net) to get in touch o
 - [Developing a plugin that interfaces with BetterYTM](#developing-a-plugin-that-interfaces-with-betterytm)
   - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
   - [Global functions and classes on the plugin interface](#global-functions-and-classes)
+  - [CSS selectors and variables for use in plugins](#css-selectors-and-variables-for-use-in-plugins)
 
 <br><br>
 
 <!-- #region translations -->
 
-### Submitting translations:
+## Submitting translations:
 Thank you so much for your interest in translating BetterYTM!  
 Before submitting a translation, please check on [this document](https://github.com/Sv443/BetterYTM/tree/develop/assets/translations) if the language you want to translate to has already been translated and how many strings are still missing.
 
 <br>
 
-#### Adding translations for a new language:
-> [!IMPORTANT]
-> 
+### Adding translations for a new language:
+> [!IMPORTANT]  
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**  
   
 To submit a translation, please follow these steps:
-1. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
-2. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
+1. Select the `develop` branch to translate for the latest version of BetterYTM.  
+  If you are setting up the project for local development, also make sure you have checked out the `develop` branch.
+2. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
+3. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
   You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
-  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
-3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
-  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
-4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
+  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...).
+4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
+5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites.  
   Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
-5. If you want to submit a pull request with the translated file:
-    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
-    2. Edit it to your translated version and keep the left side of the colon unchanged
-    3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
-    4. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
-    5. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request
-6. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
+6. If you want to submit a pull request with the translated file:
+    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `language-COUNTRY.json`
+    2. Edit it to your translated version and keep the left side of the colon unchanged.
+    3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered).
+    4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order.
+    5. Add your name to the respective `authors` properties in [`assets/locales.json`](./assets/locales.json) and the translation file.
+    6. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request.
+7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info.  
   Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)
 
 <br>
 
-#### Editing an existing translation:
-> [!IMPORTANT]
-> 
+### Editing an existing translation:
+> [!IMPORTANT]  
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
+
 To edit an existing translation, please follow these steps:
-1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
-  Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
+1. Set up the project for local development by following the instructions in [the local setup section.](#setting-up-the-project-for-local-development)  
+  **Make sure you fork the repository and clone your own fork instead of the original repository, and to create a branch with a short but descriptive name.**  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `pnpm run tr-format -p -o=language-COUNTRY, where `language-COUNTRY` is the part of the file name before the `.json` extension  
+3. Run the command `pnpm tr-format -p -o=language-COUNTRY`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
-5. Make sure there are no duplicate keys in the file
-6. Run the command `pnpm run tr-format -o=language-COUNTRY` to make sure the file is formatted correctly
-7. Test for syntax errors and update translation progress with the command `pnpm run tr-progress`
-8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice)
-9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [this section](#setting-up-the-project-for-local-development)
-10. Submit your pull request by [clicking here](https://github.com/Sv443/BetterYTM/compare/) and setting the `compare:` dropdown to your fork
-11. Check that the CI checks just above the comment box pass and then wait for the pull request to be reviewed and merged
+5. Make sure there are no duplicate keys in the file.
+6. Run the command `pnpm tr-format -o=language-COUNTRY` to make sure the file is formatted correctly.
+7. Test for syntax errors and update translation progress with the command `pnpm tr-progress`
+8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice).
+9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [the local setup section.](#setting-up-the-project-for-local-development)
+10. Submit your pull request by [clicking here](https://github.com/Sv443/BetterYTM/compare/) and setting the `compare:` dropdown to your fork and the `base:` dropdown to `develop`  
+  Make sure to describe your changes in the pull request and reference the issue you are fixing, if applicable.
+11. Check that the CI checks just above the comment box pass and then wait for the pull request to be reviewed and merged.
 
 <br><br><br>
 
 <!-- #region local dev -->
 
-### Setting up the project for local development:
-#### Requirements:
-1. Have current versions of Node.js, npm and Git installed
+## Setting up the project for local development:
+### Requirements:
+1. Have current versions of Node.js, npm and Git installed.
 2. Install pnpm by running `npm i -g pnpm`
-3. Clone this repository  
-  If you plan on contributing to the project, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead.  
-  Make sure to clone or fork from the `develop` branch since the `main` branch is only used for releases!
-4. Switch to the `develop` branch by running `git checkout -b develop` in the project root.  
+3. Clone this repository.  
+  If you plan on contributing to the project through Git, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead.
+  **Also make sure to create a new branch from the upstream's `develop` branch with a short but descriptive name, and specify it when submitting your pull request at the end.**
+5. Switch to the `develop` branch (or your own one) by running `git checkout -b develop` in the project root.  
+  **I will only accept pull requests that originate from and are set to target the `develop` branch**, since there is usually a newer version in progress on that branch compared to `main`  
   Skip this step if you are using your own forked repository.
-5. Open a terminal in the project root and run `pnpm i`
-6. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
-7. Now you can run `pnpm run dev` to build the userscript and host it on a development server or check out the other commands below
+6. Open a terminal in the project root and run `pnpm i` to install all dependencies.
+7. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
+8. Now you can run `pnpm dev` to build the userscript and host it on a development server or check out the other commands below.
 
 <br>
 
-#### These are the CLI commands available after setting up the project:
+### These are the CLI commands available after setting up the project:
 - **`pnpm i`**  
-  Run once to install dependencies
-- **`pnpm run dev`**  
+  Run once to install dependencies.
+- **`pnpm dev`**  
   This is the command you want to use to locally develop and test BetterYTM.  
-  It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)).  
-  Once it has finished building, a link will be printed to the console. Open it to install the userscript.  
+  It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager ([see extras](#extras)).  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
-- **`pnpm run build-prod`**  
+    
+  This command uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript. Note that this also means the server needs to keep running for the userscript to work. If it's not running, you will run into weird errors because none of the necessary assets are able to be fetched.  
+  Also, no meta file will be generated, since it's not needed for local development.  
+    
+  Once the build is finished, a link will be printed to the console. Open it to install the userscript.
+- **`pnpm dev-cdn`**  
+  Works exactly like `pnpm dev`, but uses the default CDN as the asset source.  
+  Practically, this means the server doesn't have to be constantly running.  
+  But this also means that changes to the assets won't be reflected in the userscript until committed, pushed and the script is rebuilt.  
+  Also, no meta file will be generated, since it's not needed for local development.  
+    
+  Once the build is finished, a link will be printed to the console. Open it to install the userscript.
+- **`pnpm build-prod`**  
   Builds the userscript for production for all hosts with their respective options already set.  
   Outputs the files using a suffix predefined in the `package.json` file.  
   Use this to build the userscript for distribution on all host/CDN platforms.
-- **`pnpm run build <arguments>`**  
+- **`pnpm build <arguments>`**  
   Builds the userscript with custom options  
   Arguments:  
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
   - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
   - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
-  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local` or `github` (default)
+  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
+  - `--config-gen-meta=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header. Can be either `true` (default) or `false`
     
   Shorthand commands:
-  - `pnpm run build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
-    Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
-  - `pnpm run build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
-    Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
-  - `pnpm run preview` - Same as `pnpm run build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
-- **`pnpm run lint`**  
+  - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
+    Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=jsdelivr`
+  - `pnpm build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
+    Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=jsdelivr`
+  - `pnpm preview` - Same as `pnpm build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
+- **`pnpm lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
-- **`pnpm run storybook`**  
+- **`pnpm storybook`**  
   Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
-- **`pnpm run gen-readme`**  
+- **`pnpm gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
-- **`pnpm run tr-changed <keys>`**  
+- **`pnpm tr-changed <keys>`**  
   Removes the provided keys (comma-separated) from all translation files but `en-US.json`  
-  This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm run tr-format -p`
-- **`pnpm run tr-progress`**  
+  This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm tr-format -p`
+- **`pnpm tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
   Will also be run automatically after every script build.
-- **`pnpm run tr-format <arguments>`**  
+- **`pnpm tr-format <arguments>`**  
   Reformats all translation files so they match that of the base file `en-US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr-FR,de-DE"` or `-o="pt-BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
-- **`pnpm run tr-prep`**  
-  Shorthand for `pnpm run tr-format --prep` (see above)
-- **`pnpm run --silent invisible "<command>"`**  
+  - `--keys="<keys>"` or `-k="<keys>"` - Ignores all keys except the ones specified (comma-separated)
+- **`pnpm tr-prep`**  
+  Shorthand for `pnpm tr-format --prep` (see above).
+- **`pnpm --silent invisible "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
-- **`pnpm run node-ts <path>`**  
-  Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
+- **`pnpm node-ts <path>`**  
+  Runs the TypeScript file at the given path using the regular node binary and [tsx.](https://tsx.is/)  
   Also enables source map support and disables experimental warnings.
-- **`pnpm run dep-cruise`**  
-  Runs dependency-cruiser to show problems with the dependency tree like circular, missing or orphaned dependencies.
-- **`pnpm run dep-graph`**  
-  Generates a dependency graph of the project, visually showing the dependencies between files and problems with the dependency tree.  
-  Requires the [Graphviz](https://www.graphviz.org/download/) binary `dot` to be in the system PATH.
 
-> [!NOTE]
-> 
+> [!NOTE]  
 > When you are using npm (as opposed to `pnpm`), read the following carefully:  
-> You will need to use a lone ` -- ` between the command name and the arguments, for example: `pnpm run tr-format -- -p -o="de-DE"`  
+> You will need to use a lone ` -- ` between the command name and the arguments, for example: `pnpm tr-format -- -p -o="de-DE"`  
 > This is so npm can tell the difference between arguments passed to it versus arguments passed to the script it is running.
 
 <br>
 
-#### Extras:
-- When using ViolentMonkey, after letting the command `pnpm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
+### Extras:
+- When using ViolentMonkey, after letting the command `pnpm dev` or `pnpm dev-cdn` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
   This makes it so the userscript automatically updates when the code changes.  
   Note: the tab needs to stay open on Firefox or the script will not update itself.
 - To link any local JS file (like a work-in-progress library) in the userscript, add a `"link": "/path/to/script.umd.js"` property to the respective library in [`assets/require.json`](./assets/require.json) (relative or absolute path)  
@@ -171,7 +187,7 @@ To edit an existing translation, please follow these steps:
 
 <br>
 
-#### Getting started working on the project:
+### Getting started working on the project:
 After setting the project up for local development ([see above](#setting-up-the-project-for-local-development)), you can start working on the project.  
 The main files you will be working with are:  
 - [`src/index.ts`](./src/index.ts) - The main entry point for the userscript and where all features are initialized
@@ -184,18 +200,24 @@ The main files you will be working with are:
 
 <br>
 
-#### Procedure for specific tasks:
+### Procedure for specific tasks:
+Here are some well explained procedures for common tasks.  
+If you need help with these, don't hesitate to reach out to me (see the top of this file).  
+  
 - Adding a new feature:
   1. Add your feature to the `FeatureConfig` type in [`src/types.ts`](./src/types.ts) (after choosing a fitting category for it)
   2. Add your feature and its properties to the `featInfo` object in [`src/features/index.ts`](./src/features/index.ts), under the correct category
   3. Create an async initialization function for your feature in the respective category's file inside the `src/features` folder
   4. Add the init function to the `onDomLoad` function in [`src/index.ts`](./src/index.ts), under the correct "domain guard condition" and category by following the format of the other features
 - Adding an asset (image, icon, stylesheet, translation file and misc. other files):
-  1. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
-  2. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
-    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.
-  3. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode.
-  4. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
+  1. Check out [`assets/README.md`](./assets/README.md) for information on all asset formats
+  2. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
+  3. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
+    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.  
+    The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
+  4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode and if the asset key matches the `externalAssetPattern` in the `assets/resources.json` file.
+  5. If the asset is an SVG icon, it will be included in the file `assets/spritesheet.svg` so it can be referenced without needing to be fetched every time it's used. This spritesheet needs to be committed before the build, find out why in the next step.
+  6. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
     This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
 - Adding a new site event:
   1. Add your event to the `SiteEventsMap` type in [`src/siteEvents.ts`](./src/siteEvents.ts)
@@ -211,7 +233,7 @@ The main files you will be working with are:
   3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
   4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
   5. Write some documentation for the component inside this file (`contributing.md`), under the [global functions and classes section](#global-functions-and-classes) by following the format of the other documented components.
-- Adding a locale (language & regional dialect):
+- Adding a locale (language & country code):
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.  
     You can find [a list of BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
@@ -223,19 +245,21 @@ The main files you will be working with are:
   2. Run `pnpm i` so the version is updated in the lockfile
   3. Update the `changelog.md` with the new version and an exhaustive list of changes that were made
   4. Make sure all files are committed before the built userscript is, so the next build will have the correct build number
-  5. Run `pnpm run build-prod` to build the userscript for all hosts
+  5. Run `pnpm build-prod` to build the userscript for all hosts
   6. Commit and push the built files
-  7. Create a new release on GitHub with a tag that follows the format of the previous releases, a copy of the relevant section in the changelog and an install button that points to the built userscript on GitHub (make sure it uses the version tag in its URL to ensure the correct version is installed)
+  7. Create a new release on GitHub with a tag that follows the *exact* format of the previous releases, a copy of the relevant section in the changelog and an install button that points to the built userscript on GitHub (make sure it uses the version tag in its URL to ensure the correct version is installed)
   8. Update the userscript on GreasyFork and OpenUserJS from the built files  
     GreasyFork also needs the relevant section of the changelog, but the internal and plugin changes should be trimmed out
   9. Send an announcement in the Discord server linking to the install pages and the changelog, with a summary of the most important changes
+  10. Update the [BYTM plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) by setting the BYTM submodule to the *exact* commit matching the release and making sure everything else is compatible with the changes of the latest BYTM version
+  11. Create a release in the BYTM plugin template repository, following the *exact* format of the previous releases
 
 
 <br><br><br>
 
 <!-- #region plugin interface -->
 
-### Developing a plugin that interfaces with BetterYTM:
+## Developing a plugin that interfaces with BetterYTM:
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other "plugin" userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
@@ -270,7 +294,7 @@ These are the ways to interact with BetterYTM; through constants, events and glo
   You can find all properties that are available and their types in the `declare global` block of [`src/types.ts`](src/types.ts)
 
 - Dynamic interaction is done through events that are dispatched on the `unsafeWindow` object.  
-  They all have the prefix `bytm:eventName` and are all dispatched with the `CustomEvent` interface, meaning their data can be read using the `detail` property.  
+  They all have the prefix `bytm:eventName` and are all dispatched with the [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) interface, meaning their data can be read using the `detail` property.  
   You can find all events that are available and their types in [`src/interface.ts`](src/interface.ts)  
     
   Additionally BetterYTM has an internal system called SiteEvents. They are dispatched using the format `bytm:siteEvent:eventName`  
@@ -295,7 +319,7 @@ If you need specific events to be added or modified, please [submit an issue.](h
 
 <details><summary><b>Static interaction Example <i>(click to expand)</i></b></summary>
 
-#### Example:
+### Example:
 ```ts
 const BYTM = unsafeWindow.BYTM;
 
@@ -310,7 +334,7 @@ console.log(`BetterYTM's version is '${BYTM.version} #${BYTM.buildNumber}'`);
 
 <details><summary><b>Dynamic interaction examples <i>(click to expand)</i></b></summary>
 
-#### Basic format:
+### Basic format:
 ```ts
 unsafeWindow.addEventListener("bytm:eventName", (event) => {
   // can have any type, but usually it's an object or undefined
@@ -328,7 +352,7 @@ unsafeWindow.addEventListener("bytm:siteEvent:eventName", (event) => {
 });
 ```
 
-#### Practical Example:
+### Practical Example:
 ```ts
 // listening to generic events:
 unsafeWindow.addEventListener("bytm:ready", () => {
@@ -362,29 +386,34 @@ unsafeWindow.addEventListener("bytm:siteEvent:queueChanged", (event) => {
 
 <br><br>
 
-### Shimming for TypeScript without errors & with autocomplete:
+## Shimming for TypeScript without errors & with autocomplete:
 In order for TypeScript to not throw errors while creating a plugin, you need to shim the types for BYTM.  
 To do this, create a .d.ts file (for example `bytm.d.ts`) and add the following code:
 ```ts
+import type { BytmObject, PluginDef, PluginRegisterResult } from "./bytm/src/types.js";
+
 declare global {
   interface Window {
-    BYTM: {
-      // add types here
-    };
+    BYTM: BytmObject;
+  }
+
+  // Enter BYTM's custom events you need in here so they are available on the `window` object and typed correctly.
+  // When adding new events, you can basically copy them from `type InterfaceEvents` in `src/interface.ts` after wrapping them in the `CustomEvent` type.
+  interface WindowEventMap {
+    "bytm:registerPlugin": CustomEvent<(def: PluginDef) => PluginRegisterResult>;
   }
 }
 ```
-You may specify all types that you need in this file.  
-To find which types BetterYTM exposes, check out the `declare global` block in [`src/types.ts`](src/types.ts)  
-You may also just copy it entirely, as long as all the imports also exist in your project.  
-An easy way to do this might be to include BetterYTM as a Git submodule, as long as you ***stick to only using type imports***
-
+What is shown above assumes you have the BetterYTM source code in a folder called `bytm`. An easy way to do this is through [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).  
+The [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) includes all of this setup already so you can either use it as a reference or create your plugin based on that template.  
+  
+You may instead also just copy all necessary types over from the BetterYTM source code. However, this is not recommended as it may lead to inconsistencies between the plugin and BetterYTM and can just be a painful amount of work. And this could also easily violate the [plugin sublicense](./license-for-plugins.txt), making your plugin ineligible for official recognition.
 
 <br><br>
 
 <!-- #region global interface functions -->
 
-### Global functions and classes:
+## Global functions and classes:
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
@@ -400,6 +429,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
+  - [reloadTab()](#reloadtab) - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
 - DOM:
   - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
@@ -410,8 +440,13 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
+  - [fetchITunesAlbumInfo()](#fetchitunesalbuminfo) - Fetches the Apple Music / iTunes album info objects for the specified artist and album name
   - [waitVideoElementReady()](#waitvideoelementready) - Waits for the video element to be queryable in the DOM - has to be called after `bytm:observersReady`
+  - [getVideoElement()](#getvideoelement) - Returns the video element on the current page or null if there is none (on both YT and YTM)
+  - [getVideoSelector()](#getvideoselector) - Returns the CSS selector for the video element (on both YT and YTM)
   - [getCurrentMediaType()](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
+  - [getLikeDislikeBtns()](#getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
+  - [isIgnoredInputElement()](#isignoredinputelement) - Checks if the given element (or `document.activeElement`) is an input element that should prevent all other keypresses from being processed
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -433,6 +468,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Feature config:
   - [getFeatures()](#getfeatures) 🔒 - Returns the current BYTM feature configuration object
   - [saveFeatures()](#savefeatures) 🔒 - Overwrites the current BYTM feature configuration object with the provided one
+  - [getDefaultFeatures()](#getdefaultfeatures) - Returns the default feature configuration object
 - Lyrics:
   - [fetchLyricsUrlTop()](#fetchlyricsurltop) - Fetches the URL to the lyrics page for the specified song
   - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
@@ -448,8 +484,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br><br>
 
-> #### registerPlugin()
-> Usage:
+> ### registerPlugin()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.registerPlugin(pluginDef: PluginDef): PluginRegisterResult
 > ```
@@ -501,7 +537,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   },
 >   // The intents (permissions) the plugin needs to be granted to be able to use certain functions.
 >   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then sum all of them together to get the final intents number.
->   // If you have BYTM as a dependency/submodule, you can import the enum and add the values like so: `PluginIntent.Foo | PluginIntent.Bar`
+>   // If you have BYTM as a dependency/submodule, you can import the enum and join the values like so: `PluginIntent.Foo | PluginIntent.Bar`
 >   intents: 18,              // required
 >   contributors: [           // (optional)
 >     {                                            // (optional)
@@ -563,8 +599,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getPluginInfo()
-> Usages:  
+> ### getPluginInfo()
+> Signatures:  
 > ```ts
 > unsafeWindow.BYTM.getPluginInfo(token: string | undefined, name: string, namespace: string): PluginInfo | undefined
 > unsafeWindow.BYTM.getPluginInfo(token: string | undefined, pluginDef: { plugin: { name: string, namespace: string } }): PluginInfo | undefined
@@ -600,8 +636,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getDomain()
-> Usage:
+> ### getDomain()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getDomain(): "yt" | "ytm"
 > ```
@@ -630,8 +666,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getResourceUrl()
-> Usage:  
+> ### getResourceUrl()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getResourceUrl(): Promise<string>
 > ```
@@ -659,8 +695,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getSessionId()
-> Usage:  
+> ### getSessionId()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getSessionId(): string | null
 > ```
@@ -687,10 +723,22 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### setInnerHtml()
-> Usage:  
+> ### reloadTab()
+> Signature:
 > ```ts
-> unsafeWindow.BYTM.setInnerHtml(element: HTMLElement, html: string): void
+> unsafeWindow.BYTM.reloadTab(): Promise<void>
+> ```
+>  
+> Description:  
+> Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority.  
+> The tab will be reloaded, whether the video element is queryable in the DOM or not, but without video time and volume restoration in the latter case.
+
+<br>
+
+> ### setInnerHtml()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.setInnerHtml(element: HTMLElement, html?: Stringifiable | null): void
 > ```
 >   
 > Description:  
@@ -700,7 +748,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Arguments:  
 > - `element` - The element to set the innerHTML property of
-> - `html` - The HTML string to sanitize and set as the innerHTML property
+> - `html` - The HTML string to sanitize and set as the innerHTML property - if set to `undefined` or `null`, the innerHTML will be cleared
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -714,8 +762,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### addSelectorListener()
-> Usage:  
+> ### addSelectorListener()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>): void
 > ```
@@ -726,7 +774,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > The instances are chained together in a way that the least specific observer is the parent of the more specific ones.  
 > This is done to limit the amount of checks that need to be run, especially on pages with a lot of dynamic content and if `continuous` listeners are used.  
-> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info and example code.  
+> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver) for more info and example code.  
 >   
 > ⚠️ Due to this chained architecture, the selector you pass can only start with an element that is a child of the observer's base element.  
 > If you provide a selector that starts higher up or directly on the base element, the listener will never be called.  
@@ -735,7 +783,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Arguments:  
 > - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which base element they observe in the file [`src/observers.ts`](src/observers.ts)
 > - `selector` - The CSS selector to observe for changes.
-> - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
+> - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver)
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -755,8 +803,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### onInteraction()
-> Usage:
+> ### onInteraction()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.onInteraction(
 >   element: HTMLElement,
@@ -797,8 +845,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getVideoTime()
-> Usage:  
+> ### getVideoTime()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getVideoTime(precision?: number): Promise<number | null>
 > ```
@@ -811,13 +859,28 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > In order for that edge case not to throw an error, the function would need to be called in response to a user interaction event (e.g. click) due to the strict automated interaction policy in browsers, otherwise an error can be thrown.  
 > Resolves with a number of seconds or `null` if the time couldn't be determined.  
 >   
+> ⚠️ If the video element isn't available yet (like when not on the `/watch` page), the Promise will only resolve once the user navigates to the video page.  
+> To solve this, you could use [`Promise.race()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race) in conjunction with [UserUtils' `pauseFor()` function](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#pausefor) to implement a timeout (see example).  
+> You can also use the site event `bytm:siteEvent:pathChanged` to listen for navigation changes to know at which point this function should resolve quickly.  
+>   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
+> const { BYTM: { UserUtils, ...BYTM } } = unsafeWindow;
+> 
 > try {
->   // get the video time with 3 decimal digits
->   const videoTime = await unsafeWindow.BYTM.getVideoTime(3);
->   console.log(`The video time is ${videoTime}s`);
+>   // race the video time with a timeout of 5 seconds:
+>   const videoTime: number | undefined | null = await Promise.race([
+>     // get the video time with 3 decimal digits:
+>     BYTM.getVideoTime(3),
+>     // resolve with undefined if the video time couldn't be determined after 5 seconds:
+>     UserUtils.pauseFor(5000),
+>   ]);
+> 
+>   if(typeof videoTime === "number")
+>     console.log(`The video time is ${videoTime}s`);
+>   else
+>     console.error("Couldn't get the video time");
 > }
 > catch(err) {
 >   console.error("Couldn't get the video time, probably due to automated interaction restrictions");
@@ -827,22 +890,24 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getThumbnailUrl()
-> Usage:
+> ### getThumbnailUrl()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getThumbnailUrl(
->   watchID: string,
+>   videoID: string,
 >   qualityOrIndex: "maxresdefault" | "sddefault" | "hqdefault" | "mqdefault" | "default" | 0 | 1 | 2 | 3
 > ): string
 > ```
 >   
 > Description:  
-> Returns the URL to the thumbnail of the video with the specified watch/video ID and quality (resolution).  
-> If an index number is passed, 0 will return a very low resolution thumbnail and 1-3 will return a very low resolution frame from the video (if available).  
+> Returns the URL to the thumbnail of the video with the specified video ID and quality (resolution).  
+> If an index number is passed, 0 will return a very low resolution thumbnail and 1-3 will return a very low resolution preview frame from the video (if available).  
+> For some videos, different qualities and indexes are not available. That is why using [`getBestThumbnailUrl()`](#getbestthumbnailurl) is recommended in most cases.  
 >   
 > Arguments:
-> - `watchID` - The watch/video ID of the video to get the thumbnail for
-> - `qualityOrIndex` - The quality or index of the thumbnail to get. Possible quality strings sorted by highest resolution first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`. If no quality is specified, `maxresdefault` (highest resolution) is used.
+> - `videoID` - The video ID of the video to get the thumbnail for
+> - `qualityOrIndex` - The quality or index of the thumbnail to get. If no quality is specified, `maxresdefault` (highest resolution) is used.  
+>   Quality values sorted by highest res first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`.
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -854,22 +919,25 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getBestThumbnailUrl()
-> Usage:
+> ### getBestThumbnailUrl()
+> Signature:
 > ```ts
-> unsafeWindow.BYTM.getBestThumbnailUrl(watchID: string): Promise<string | undefined>
+> unsafeWindow.BYTM.getBestThumbnailUrl(videoID: string): Promise<string | undefined>
 > ```
 >   
 > Description:  
-> Returns the URL to the best resolution thumbnail of the video with the specified watch/video ID.  
+> Returns the URL to the best resolution thumbnail of the video with the specified video ID.  
 > Will sequentially try to get the highest quality thumbnail available until one is found.  
-> Resolution priority list: `maxresdefault.jpg` > `sddefault.jpg` > `hqdefault.jpg` > `0.jpg`  
+> Resolution priority list: `maxresdefault` > `sddefault` > `hqdefault` > `0`  
 >   
-> If no thumbnail is found, the Promise will resolve with `undefined`  
+> This check is done by sending a HEAD request to each thumbnail URL and checking if the response status is 200.  
+> Other qualities are not checked since that would be overkill (sending 4 requests is already a lot).  
+>   
+> If no thumbnail is found after `0` is checked, the Promise will resolve with `undefined`  
 > May throw if an error occurs while fetching the thumbnails.  
 >   
 > Arguments:
-> - `watchID` - The watch/video ID of the video to get the thumbnail for
+> - `videoID` - The video ID of the video to get the thumbnail for
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -887,32 +955,135 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### waitVideoElementReady()
-> Usage:
+> ### fetchITunesAlbumInfo()
+> Signature:
 > ```ts
-> unsafeWindow.BYTM.waitVideoElementReady(): Promise<HTMLVideoElement>
+> unsafeWindow.BYTM.fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]>
 > ```
 >   
 > Description:  
-> Waits for the video element to be queryable in the DOM.  
-> The Promise could potentially take a while, since it will only resolve if the `/watch` page is loaded and the video element is queryable and has the media buffered and ready.  
-> If the video element already exists, the Promise will resolve immediately.  
-> This function has to be called after the `bytm:observersReady` event has been dispatched.  
+> Fetches the album info objects for the specified artist and album name from the Apple Music / iTunes API.  
+> This can be used to get the album cover image URL and other information about the album.  
+> You may change the resolution of the album image URLs behind the properties `artworkUrl60` and `artworkUrl100` to your liking (see example).  
 >   
+> For the type of the returned object, see the type `ITunesAlbumObj` in the file [`src/types.ts`](./src/types.ts)  
+>   
+> Arguments:
+> - `artist` - The name of the primary artist - should be passed to [`sanitizeArtists()`](#sanitizeartists) first
+> - `album` - The name of the album
+> 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.addEventListener("bytm:observersReady", async () => {
->   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
->   console.log("The video element:", videoElement);
-> });
+> // fetch the album info for the specified artist and album name:
+> const albumObjects = await unsafeWindow.BYTM.fetchITunesAlbumInfo(
+>   unsafeWindow.BYTM.sanitizeArtists("The Beatles"),
+>   "Abbey Road"
+> );
+> 
+> if(albumObjects.length > 0) {
+>   // try to find the best match:
+>   const bestMatch = albumObjs.find((al) => (
+>     (al.artistName === artist || al.artistName.toLowerCase() === artist.toLowerCase())
+>     && (
+>       al.collectionName === album
+>       || al.collectionName.toLowerCase() === album.toLowerCase()
+>       || al.collectionCensoredName === album
+>       || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
+>     )
+>   ));
+>   // default to the first result if no best match was found:
+>   const albumInfo = bestMatch ?? albumObjects[0]!;
+> 
+>   console.log("Album name:", albumObj.collectionName);
+>   console.log("Album artist:", albumObj.artistName);
+>   console.log("Album release date:", albumObj.releaseDate);
+> 
+>   // replace the 100x100 with 1800x1800 to get a much more high-res cover artwork URL:
+>   const artwork1800 = albumObj.artworkUrl100.replace("100x100", "1800x1800");
+>   console.log("Large cover artwork URL:", artwork1800);
+> }
+> else
+>   console.error("No album info found for the specified artist and album name");
 > ```
 > </details>
 
 <br>
 
-> #### getCurrentMediaType()
-> Usage:  
+> ### waitVideoElementReady()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.waitVideoElementReady(): Promise<HTMLVideoElement>
+> ```
+>   
+> Description:  
+> Waits for the DOM to be ready and the video element to be queryable.  
+> The Promise could potentially take a while, since it will only resolve if the `/watch` page is open and the video element is queryable and has the media buffered and ready.  
+> If the video element already exists, the Promise will resolve immediately.  
+>   
+> If the user lingers on a page that doesn't have a video element, the Promise will only resolve after they navigate to the `/watch` page.  
+> To curb this, you can listen to the site event `bytm:siteEvent:pathChanged` to know when the user navigates to a page where the video element is available, or use a timeout and `Promise.race()` to abort the call (see [`getVideoTime()`](#getvideotime) for an example)
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
+> console.log("DOM loaded and video element found:", videoElement);
+> ```
+> </details>
+
+<br>
+
+> ### getVideoElement()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.getVideoElement(): HTMLVideoElement | null
+> ```
+>   
+> Description:  
+> Returns the video element on the current page or `null` if there is none.  
+> Works on both YouTube and YouTube Music.  
+> Contrary to [`waitVideoElementReady()`](#waitvideoelementready), this function will not wait until the video element is queryable in the DOM.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // get the current video time and volume:
+> const videoElem = unsafeWindow.BYTM.getVideoElement();
+> if(videoElem.readyState && videoElem.readyState >= 2)
+>   console.log("Video time:", videoElem.currentTime, "Video volume:", videoElem.volume);
+> else
+>   console.error("The video element is not ready yet");
+> ```
+> </details>
+
+<br>
+
+> ### getVideoSelector()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.getVideoSelector(): string
+> ```
+>   
+> Description:  
+> Returns the CSS selector for the video element on the current page.  
+> Works on both YouTube and YouTube Music.  
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // add CSS to an element that exists within the video element on both YT and YTM:
+> const videoSelector = unsafeWindow.BYTM.getVideoSelector();
+> const css = `${videoSelector} #my-element { border: 2px solid red; }`;
+> const styleElem = unsafeWindow.BYTM.UserUtils.addGlobalStyle(css);
+> styleElem.id = "my-element-style";
+> ```
+> </details>
+
+<br>
+
+> ### getCurrentMediaType()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getCurrentMediaType(): "video" | "song"
 > ```
@@ -920,7 +1091,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the type of media that is currently playing (works on YTM only).  
 > It will return `"video"` for videos (manually uploaded to YT - plays an actual video) and `"song"` for songs (automatic YTM releases - only displays a static, square image).  
-> Throws an error if [`waitVideoElementReady()`](#waitvideoelementready) hasn't been awaited yet or the function is called on YT.  
+> Throws an error if [`waitVideoElementReady()`](#waitvideoelementready) hasn't been awaited yet.  
+> On YT, this function will always return `"video"`.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -935,8 +1107,82 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### setLocale()
-> Usage:  
+> ### getLikeDislikeBtns()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.getLikeDislikeBtns(): {
+>   likeBtn?: HTMLButtonElement,
+>   dislikeBtn?: HTMLButtonElement,
+>   btnRenderer?: HTMLElement,
+>   likeState?: "LIKE" | "DISLIKE" | "INDIFFERENT",
+> }
+> ```
+>   
+> Description:  
+> Returns the like and dislike buttons on either domain, if available.  
+> The `btnRenderer` will be a parent element of both buttons.  
+> The `likeState` property indicates the current state of the like button. It defaults to `undefined` if the buttons are not available.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // get the like and dislike buttons:
+> const { likeBtn, dislikeBtn, btnRenderer, likeState } = unsafeWindow.BYTM.getLikeDislikeBtns();
+> if(likeBtn && dislikeBtn) {
+>   console.log("Like button:", likeBtn);
+>   console.log("Dislike button:", dislikeBtn);
+>   console.log("Like state:", likeState); // "LIKE" | "DISLIKE" | "INDIFFERENT"
+>   console.log("Button renderer:", btnRenderer);
+> 
+>   // call in response to a user interaction event to ensure the video/song is liked:
+>   if(likeState !== "LIKE")
+>     likeBtn.click();
+> }
+> else
+>   console.error("Like and/or dislike button not available");
+> ```
+> </details>
+
+<br>
+
+> ### isIgnoredInputElement()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.isIgnoredInputElement(element: HTMLElement | null = document.activeElement): boolean
+> ```
+>   
+> Description:  
+> Returns true, if the given element (`document.activeElement` by default) is an input element, so that all other keypress event listeners need to be ignored.  
+> This is very useful for global keypress listeners (like ones on the `document.body`), which would trigger on every keypress, even if the user is interacting with an input element, like when typing in the search bar or the comment box.  
+> Determining whether the element is an input element is based on HTML IDs, classes and tag names, making it sophisticated and tailored to the YT and YTM pages, so some elements might not be supported by this function yet. In this case, please open an issue to get it added.  
+>   
+> Arguments:
+> - `element` - The element to check. If not provided, the currently focused element (`document.activeElement`) is used.  
+>   If the element is `null` (like when no argument is given and no element is focused), the function will always return `false`.
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // add a global keypress listener to the document body:
+> document.body.addEventListener("keydown", (event) => {
+>   // check if the currently focused element is an input element:
+>   if(unsafeWindow.BYTM.isIgnoredInputElement())
+>     return console.warn("User is currently interacting with an input element, ignoring keypress event");
+> 
+>   console.log("The user is not typing in an input element");
+>   doStuff();
+> });
+> 
+> // or check a specific element:
+> const myElement = document.querySelector("#myElement");
+> console.log(unsafeWindow.BYTM.isIgnoredInputElement(myElement)); // true or false
+> ```
+> </details>
+
+<br>
+
+> ### setLocale()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.setLocale(token: string | undefined, locale: string): void
 > ```
@@ -947,7 +1193,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
-> - `locale` - The locale to set. Refer to the file [`assets/locales.json`](assets/locales.json) for a list of available locales.
+> - `locale` - The locale to set. Refer to the keys of the object in [`assets/locales.json`](assets/locales.json) for a list of available locales.
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -958,14 +1204,15 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getLocale()
-> Usage:  
+> ### getLocale()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getLocale(): string
 > ```
 >   
 > Description:  
 > Returns the currently set locale.  
+> Can be any key of the object in [`assets/locales.json`](assets/locales.json).  
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -980,10 +1227,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### hasKey()
-> Usage:  
+> ### hasKey()
+> Signature:  
 > ```ts
-> unsafeWindow.BYTM.hasKey(key: string): boolean
+> unsafeWindow.BYTM.hasKey(key: string): Promise<boolean>
 > ```
 >   
 > Description:  
@@ -995,38 +1242,39 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.hasKey("lyrics_rate_limited"); // true
-> unsafeWindow.BYTM.hasKey("some_key_that_doesnt_exist"); // false
+> await unsafeWindow.BYTM.hasKey("lyrics_rate_limited"); // true
+> await unsafeWindow.BYTM.hasKey("some_key_that_doesnt_exist"); // false
 > ```
 > </details>
 
 <br>
 
-> #### hasKeyFor()
-> Usage:  
+> ### hasKeyFor()
+> Signature:  
 > ```ts
-> unsafeWindow.BYTM.hasKeyFor(locale: string, key: string): boolean
+> unsafeWindow.BYTM.hasKeyFor(locale: string, key: string): Promise<boolean>
 > ```
 >   
 > Description:  
 > Returns true if the specified translation key exists in the specified locale.  
+> If the locale isn't loaded yet, it will be loaded before resolving the promise.  
 >   
 > Arguments:  
-> - `locale` - The locale to check for the translation key in.
+> - `locale` - The locale to check for the translation key in - refer to the keys of the object in [`assets/locales.json`](assets/locales.json).
 > - `key` - The key of the translation to check for.
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.hasKeyFor("en-GB", "lyrics_rate_limited"); // true
-> unsafeWindow.BYTM.hasKeyFor("en-GB", "some_key_that_doesnt_exist"); // false
+> await unsafeWindow.BYTM.hasKeyFor("en-GB", "lyrics_rate_limited"); // true
+> await unsafeWindow.BYTM.hasKeyFor("en-GB", "some_key_that_doesnt_exist"); // false
 > ```
 > </details>
 
 <br>
 
-> #### t()
-> Usage:  
+> ### t()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.t(key: TFuncKey, ...values: Stringifiable[]): string
 > ```
@@ -1050,8 +1298,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### tp()
-> Usage:  
+> ### tp()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.tp(key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]): string
 > ```
@@ -1090,8 +1338,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### tl()
-> Usage:  
+> ### tl()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.tl(locale: string, key: TFuncKey, ...values: Stringifiable[]): string
 > ```  
@@ -1099,19 +1347,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the translation for the provided translation key and locale.  
 > Useful to get the translation for a specific locale without changing the currently set locale.  
-> To see a list of possible translation values, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > Arguments:  
-> - `locale` - The locale to get the translation for.
-> - `translationKey` - The key of the translation to get.
+> - `locale` - The locale to get the translation for - refer to the keys of the object in [`assets/locales.json`](assets/locales.json).
+> - `translationKey` - The key of the translation to get - find all translation keys in [`assets/translations/en-US.json`](assets/translations/en-US.json).
 > - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
 > 
 > For an example, see [`t()`](#t) which behaves in the same way, but uses the currently set locale instead of a specified one.
 
 <br>
 
-> #### tlp()
-> Usage:  
+> ### tlp()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.tlp(locale: string, key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]): string
 > ```  
@@ -1119,11 +1366,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the translation for the provided translation key, including pluralization identifier and locale.  
 > Useful to get the translation for a specific locale without changing the currently set locale.  
-> To see a list of possible translation values, check the file [`assets/translations/en-US.json`](assets/translations/en-US.json)  
 >   
 > Arguments:  
-> - `locale` - The locale to get the translation for.
-> - `key` - The key of the translation to get.
+> - `locale` - The locale to get the translation for - refer to the keys of the object in [`assets/locales.json`](assets/locales.json).
+> - `key` - The key of the translation to get - find all translation keys in [`assets/translations/en-US.json`](assets/translations/en-US.json).
 > - `num` - The number of items to determine the pluralization identifier from. Can also be an array or NodeList.
 > - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
 >   
@@ -1131,17 +1377,20 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### getFeatures()
-> Usage:  
+> ### getFeatures()
+> Signature:  
 > ```ts
-> unsafeWindow.BYTM.getFeatures(token: string | undefined): FeatureConfig
+> unsafeWindow.BYTM.getFeatures(token: string | undefined): FeatureConfig | undefined
 > ```
 >   
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
 > If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
-> In the future, an intent could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
+> In the future, a plugin intent (see [`registerPlugin()`](#registerplugin)) could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
+>   
+> Arguments:
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return undefined).
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1153,8 +1402,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### saveFeatures()
-> Usage:  
+> ### saveFeatures()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.saveFeatures(token: string | undefined, config: FeatureConfig): Promise<void>
 > ```
@@ -1162,6 +1411,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Overwrites the current feature configuration object with the provided one.  
 > The object in memory is updated synchronously, while the one in GM storage is updated asynchronously once the Promise resolves.  
+>   
+> ⚠️ No validation is done on the provided object, so make sure it has all the required properties or you're gonna break stuff.  
+> A good way to ensure that is to spread your modifications over the result of a call to [`getFeatures()`](#getfeatures) or [`getDefaultFeatures()`](#getdefaultfeatures)  
 >   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
@@ -1177,8 +1429,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 >   const promise = unsafeWindow.BYTM.saveFeatures(myToken, newConfig);
 >   // new config is now saved in memory, but not yet in GM storage
->   // so this already returns the updated config:
->   console.log(unsafeWindow.BYTM.getFeatures());
+>   // so this will already return the updated config:
+>   console.log(unsafeWindow.BYTM.getFeatures(myToken));
 > 
 >   await promise;
 >   // now the data is saved persistently in GM storage and the page can
@@ -1191,8 +1443,21 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### fetchLyricsUrlTop()
-> Usage:
+> ### getDefaultFeatures()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.getDefaultFeatures(): FeatureConfig
+> ```
+>   
+> Description:  
+> Returns the default feature configuration object as a copy.  
+> This object is used as a fallback if the user's configuration is missing properties or when the user first installs BYTM.  
+> Since all hidden properties have not been populated with the user's sensitive data, this function will return the full object.
+
+<br>
+
+> ### fetchLyricsUrlTop()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.fetchLyricsUrlTop(artist: string, song: string): Promise<string | undefined>
 > ```
@@ -1212,23 +1477,25 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> async function getLyricsUrl() {
->   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrlTop("Michael Jackson", "Thriller");
+> async function getLyricsUrl(artists: string, song: string) {
+>   const artistsSan = unsafeWindow.BYTM.sanitizeArtists(artists);
+>   const songSan = unsafeWindow.BYTM.sanitizeSong(song);
+>   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrlTop(artistsSan, songSan);
 > 
 >   if(lyricsUrl)
->     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
+>     console.log(`The lyrics URL for '${artist} - ${song}' is:`, lyricsUrl);
 >   else
->     console.log("Couldn't find the lyrics URL for this song");
+>     console.log("Couldn't find the lyrics URL");
 > }
 > 
-> getLyricsUrl();
+> await getLyricsUrl("Michael Jackson", "Thriller");
 > ```
 > </details>
 
 <br>
 
-> #### getLyricsCacheEntry()
-> Usage:
+> ### getLyricsCacheEntry()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.getLyricsCacheEntry(artists: string, song: string): LyricsCacheEntry | undefined
 > ```
@@ -1247,30 +1514,32 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> function tryToGetLyricsUrl() {
->   const lyricsEntry = unsafeWindow.BYTM.getLyricsCacheEntry("Michael Jackson", "Thriller");
+> function tryToGetLyricsUrl(artists: string, song: string) {
+>   const artistsSan = unsafeWindow.BYTM.sanitizeArtists(artists);
+>   const songSan = unsafeWindow.BYTM.sanitizeSong(song);
+>   const cacheEntry = await unsafeWindow.BYTM.getLyricsCacheEntry(artistsSan, songSan);
 > 
->   if(lyricsEntry)
->     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsEntry.url}'`);
+>   if(cacheEntry)
+>     console.log(`The lyrics URL for '${artist} - ${song}' is:`, cacheEntry.url);
 >   else
->     console.log("Couldn't find the lyrics URL for this song in cache");
+>     console.log("Couldn't find the lyrics URL in the cache");
 > }
 > 
-> tryToGetLyricsUrl();
+> await tryToGetLyricsUrl("Michael Jackson", "Thriller");
 > ```
 > </details>
 
 <br>
 
-> #### sanitizeArtists()
-> Usage:
+> ### sanitizeArtists()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.sanitizeArtists(artists: string): string
 > ```
 >   
 > Description:  
 > Sanitizes the specified artist string to be used in fetching a lyrics URL.  
-> This tries to strip out special characters and co-artist names, separated by a comma or ampersand.  
+> This tries to strip out special characters and co-artist names, separated by a comma, bullet or ampersand.  
 > Returns (hopefully) a single artist name with leading and trailing whitespaces trimmed.  
 >   
 > Arguments:  
@@ -1280,23 +1549,23 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > // usually artist strings will only have one of these characters but this is just an example
-> const sanitizedArtists = unsafeWindow.BYTM.sanitizeArtists(" Michael Jackson    • Paul McCartney & Freddy Mercury, Frank Sinatra");
+> const sanitizedArtists = unsafeWindow.BYTM.sanitizeArtists("   Michael Jackson    • Paul McCartney & Freddy Mercury, Frank Sinatra   ");
 > console.log(sanitizedArtists); // "Michael Jackson"
 > ```
 > </details>
 
 <br>
 
-> #### sanitizeSong()
-> Usage:
+> ### sanitizeSong()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.sanitizeSong(songName: string): string
 > ```
 >   
 > Description:  
 > Sanitizes the specified song title string to be used in fetching a lyrics URL.  
-> This tries to strip out special characters and everything inside regular and square parentheses like `(Foo Remix)`.  
-> Returns (hopefully) a song title with leading and trailing whitespaces trimmed.  
+> This tries to strip out special characters and everything inside regular and square parentheses like `(Foo Remix)` or `[Bar Cover]`.  
+> Also trims all leading and trailing whitespaces.  
 >   
 > Arguments:  
 > - `songName` - The string of the song title to sanitize.
@@ -1304,15 +1573,15 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const sanitizedSong = unsafeWindow.BYTM.sanitizeSong(" Thriller (Freddy Mercury Cover) [Tommy Cash Remix]");
+> const sanitizedSong = unsafeWindow.BYTM.sanitizeSong("   Thriller (Tommy Cash Remix) [Freddy Mercury Cover]   ");
 > console.log(sanitizedSong); // "Thriller"
 > ```
 > </details>
 
 <br>
 
-> #### getAutoLikeData()
-> Usage:  
+> ### getAutoLikeData()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.getAutoLikeData(token: string | undefined): AutoLikeData
 > ```
@@ -1341,8 +1610,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### saveAutoLikeData()
-> Usage:  
+> ### saveAutoLikeData()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.saveAutoLikeData(token: string | undefined, data: AutoLikeData): Promise<void>
 > ```
@@ -1379,8 +1648,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### fetchVideoVotes()
-> Usage:
+> ### fetchVideoVotes()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.fetchVideoVotes(videoId: string): Promise<VideoVotesObj | undefined>
 > ```
@@ -1412,8 +1681,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### BytmDialog
-> Usage:  
+> ### BytmDialog
+> Signature:  
 > ```ts
 > new unsafeWindow.BYTM.BytmDialog(options: BytmDialogOptions): BytmDialog
 > ```
@@ -1542,8 +1811,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### ExImDialog
-> Usage:
+> ### ExImDialog
+> Signature:
 > ```ts
 > new unsafeWindow.BYTM.ExImDialog(options: ExImDialogOptions): ExImDialog
 > ```
@@ -1636,8 +1905,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### MarkdownDialog
-> Usage:
+> ### MarkdownDialog
+> Signature:
 > ```ts
 > new unsafeWindow.BYTM.MarkdownDialog(options: MarkdownDialogOptions): MarkdownDialog
 > ```
@@ -1689,8 +1958,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### createHotkeyInput()
-> Usage:  
+> ### createHotkeyInput()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.createHotkeyInput(inputProps: {
 >   initialValue?: HotkeyObj,
@@ -1718,8 +1987,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### createToggleInput()
-> Usage:  
+> ### createToggleInput()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.createToggleInput(toggleProps: {
 >   onChange: (value: boolean) => void,
@@ -1753,8 +2022,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### createCircularBtn()
-> Usage:
+> ### createCircularBtn()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.createCircularBtn(props: CircularBtnProps): Promise<HTMLElement>
 > ```
@@ -1787,8 +2056,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### createLongBtn()
-> Usage:  
+> ### createLongBtn()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.createLongBtn(props: LongBtnProps): Promise<HTMLElement>
 > ```
@@ -1855,10 +2124,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### createRipple()
-> Usages:  
+> ### createRipple()
+> Signatures:  
 > ```ts
+> // if an element is provided, the ripple effect will be applied to it:
 > unsafeWindow.BYTM.createRipple<TElement>(rippleElement: TElement, props?: RippleProps): TElement
+> // if no element is provided, an empty div will be created with the ripple effect:
 > unsafeWindow.BYTM.createRipple(rippleElement?: undefined, props?: RippleProps): HTMLDivElement
 > ```
 >   
@@ -1867,8 +2138,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > External CSS overrides can be used to change the color, size, speed values and opacity.  
 > The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
 >   
-> Properties:  
-> - `speed?: string` - The speed of the ripple effect. Can be "faster", "fast", "normal", "slow" or "slower" (defaults to "normal")
+> `RippleProps` properties:  
+> - `speed?: string` - The speed of the ripple effect. Can be "fastest", "fast", "normal", "slow" or "slowest" (defaults to "normal")
+> - `additionalProps?: TElement | HTMLDivElement` - Additional properties to apply to the created or passed ripple element
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1876,13 +2148,16 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > const myBoringButton = document.querySelector("#my-boring-button");
 > if(myBoringButton)
 >   unsafeWindow.BYTM.createRipple(myBoringButton, { speed: "slowest" }); // it's as easy as this
+> 
+> // or create an empty div with the ripple effect:
+> const myRippleDiv = unsafeWindow.BYTM.createRipple({ speed: "fast" });
 > ```
 > </details>
 
 <br>
 
-> #### showToast()
-> Usages:  
+> ### showToast()
+> Signatures:  
 > ```ts
 > unsafeWindow.BYTM.showToast(props: ToastProps): Promise<void>;
 > unsafeWindow.BYTM.showToast(message: string): Promise<void>;
@@ -1917,8 +2192,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### showIconToast()
-> Usage:  
+> ### showIconToast()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.showIconToast(props: IconToastProps): Promise<void>
 > ```
@@ -1959,8 +2234,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### showPrompt()
-> Usage:  
+> ### showPrompt()
+> Signature:  
 > ```ts
 > unsafeWindow.BYTM.showPrompt(props: ShowPromptProps): Promise<boolean>
 > ```
@@ -2028,8 +2303,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### formatNumber()
-> Usage:
+> ### formatNumber()
+> Signature:
 > ```ts
 > unsafeWindow.BYTM.formatNumber(num: number, notation?: "short" | "long"): string
 > ```
@@ -2056,8 +2331,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### NanoEmitter
-> Usage:  
+> ### NanoEmitter
+> Signature:  
 > ```ts
 > new unsafeWindow.BYTM.NanoEmitter<TEventMap>(settings: NanoEmitterSettings): NanoEmitter
 > ```
@@ -2123,5 +2398,34 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 > </details>
 
+<br><br>
+
+## CSS selectors and variables for use in plugins:
+Just like the JS functions and variables, BetterYTM also provides a set of CSS selectors and variables that can be used to assist when styling elements in a plugin.  
+  
+These are the available selectors:  
+
+| Selector | Description |
+| :-- | :-- |
+| `.bytm-dom-yt` | Applied to the &lt;body&gt;, only when on YT |
+| `.bytm-dom-ytm` | Applied to the &lt;body&gt;, only when on YT Music |
+| `.bytm-no-select` | Prevents text selection on the element and all its children |
+| `.bytm-generic-btn` | Needs to be applied to a button's wrapper element to give it the generic BetterYTM button appearance |
+| `.bytm-generic-btn-img` | Needs to be given to the button's svg icon or img element so it gets styled correctly |
+| `#bytm-dialog-container` | This is the container that holds all BytmDialog elements |
+
+<br>
+
+And these are the available CSS variables:  
+
+| Variable | Type | Description |
+| :-- | :-- | :-- |
+| `--bytm-font-monospace` | `fonts` | Monospace font(s) used for code blocks and similar elements |
+| `--bytm-themed-icon-col` | `hex_color` | Default color for icons that respects the page theme (on YT) |
+| `--bytm-themed-bg-col` | `hex_color` | Default background color that prefers the theme set by the ThemeSong extension (on YTM only) |
+| `--bytm-global-inner-width` | `px` | Inner width of the viewport |
+| `--bytm-global-inner-height` | `px` | Inner height of the viewport |
+| `--bytm-global-outer-width` | `px` | Outer width of the viewport |
+| `--bytm-global-outer-height` | `px` | Outer height of the viewport |
 
 <br><br><br><br><br><br>

@@ -2,136 +2,103 @@ import { access, readFile, writeFile, constants as fsconst } from "node:fs/promi
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
-import k from "kleur";
-import "dotenv/config";
-import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
-import locales from "../../assets/locales.json" with { type: "json" };
-import pkg from "../../package.json" with { type: "json" };
-import type { RollupArgs } from "../types.js";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
+import k from "kleur";
+import "dotenv/config";
+import type { RollupArgs } from "../types.js";
+import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
+import localesJson from "../../assets/locales.json" with { type: "json" };
+import resourcesJson from "../../assets/resources.json" with { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
 
 const { argv, env, exit, stdout } = process;
+
+//#region types
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
 
+/** Resolves a CLI argument defined in {@linkcode RollupArgs} in the file `rollup.config.mjs` */
+type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
+
 /** An entry in the file `assets/require.json` */
 type RequireObj = RequireObjPkg | RequireObjUrl;
+
+/** Static URL-based package entry */
 type RequireObjUrl = {
   url: string;
 };
+
+/** npm-based package entry */
 type RequireObjPkg = {
   pkgName: keyof (typeof pkg)["dependencies"] | keyof (typeof pkg)["devDependencies"];
   baseUrl?: string;
   path?: string;
 };
 
+/** Build script stats, persisted in the file at {@linkcode buildStatsPath} */
 type BuildStats = {
   sizeKiB: number;
   mode: string;
   timestamp: number;
 };
 
+//#region vars
+
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
 const buildUid = randomId(12, 36);
 
-type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
-
 const mode = getCliArg<CliArg<"config-mode">>("mode", "development");
 const branch = getCliArg<CliArg<"config-branch">>("branch", (mode === "production" ? "main" : "develop"));
 const host = getCliArg<CliArg<"config-host">>("host", "github");
-const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "github");
+const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "jsdelivr");
 const suffix = getCliArg<CliArg<"config-suffix">>("suffix", "");
+const genMeta = getCliArg<CliArg<"config-gen-meta">>("meta", "true") === "true";
 
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
-const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}`;
+/** Local URL of the userscript file when served by the dev server */
+const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}` as const;
+/** Extra `@grant` directives added when `mode` is `development` */
+const devGrants = [
+  "GM.registerMenuCommand",
+] as const;
 
-const repo = "Sv443/BetterYTM";
-const userscriptDistFile = `BetterYTM${suffix}.user.js`;
-const distFolderPath = `./${rollupCfgOutputDir}/`;
-const assetFolderPath = "./assets/";
-// const hostScriptUrl = (() => {
-//   switch(host) {
-//   case "greasyfork":
-//     return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js";
-//   case "openuserjs":
-//     return "https://openuserjs.org/install/Sv443/BetterYTM.user.js";
-//   case "github":
-//   default:
-//     return `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
-//   }
-// })();
+const repo = "Sv443/BetterYTM" as const;
+const userscriptDistFile = `BetterYTM${suffix}.user.js` as const;
+const userscriptMetaFile = `BetterYTM${suffix}.meta.js` as const;
+const distFolderPath = `./${rollupCfgOutputDir}/` as const;
+const assetFolderPath = "./assets/" as const;
+const buildStatsPath = ".build.json" as const;
+
+const hostScriptUrl = (() => {
+  switch(host) {
+  case "greasyfork": return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js" as const;
+  case "openuserjs": return "https://openuserjs.org/src/scripts/Sv443/BetterYTM.user.js" as const;
+  default:           return `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptDistFile}` as const;
+  }
+})();
+const hostMetaUrl = `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptMetaFile}` as const;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
 
 /** Directives that are only added in dev mode */
-const devDirectives = mode === "development" ? `\
-// @grant             GM.registerMenuCommand
-// @grant             GM.listValues\
-` : undefined;
+const devDirectives = mode !== "development"
+  ? undefined
+  : devGrants.map((g) => `// @grant             ${g}`).join("\n");
 
-(async () => {
+//#region main
+
+/** Main function that transforms the code built by rollup into the final userscript */
+async function main() {
   const buildNbr = await getLastCommitSha();
 
-  const resourcesDirectives = await getResourceDirectives(buildNbr);
-  const requireDirectives = await getRequireDirectives();
-  const localizedDescriptions = getLocalizedDescriptions();
-
-  const header = `\
-// ==UserScript==
-// @name              ${pkg.userscriptName}
-// @namespace         ${pkg.homepage}
-// @version           ${pkg.version}
-// @description       ${pkg.description}\
-${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
-// @homepageURL       ${pkg.homepage}#readme
-// @supportURL        ${pkg.bugs.url}
-// @license           ${pkg.license}
-// @author            ${pkg.author.name}
-// @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
-// @match             https://music.youtube.com/*
-// @match             https://www.youtube.com/*
-// @run-at            document-start
-// @connect           api.sv443.net
-// @connect           github.com
-// @connect           raw.githubusercontent.com
-// @connect           youtube.com
-// @connect           returnyoutubedislikeapi.com
-// @grant             GM.getValue
-// @grant             GM.setValue
-// @grant             GM.deleteValue
-// @grant             GM.getResourceUrl
-// @grant             GM.setClipboard
-// @grant             GM.xmlHttpRequest
-// @grant             GM.openInTab
-// @grant             unsafeWindow
-// @noframes\
-${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
-${requireDirectives ? "\n" + requireDirectives : ""}\
-${devDirectives ? "\n" + devDirectives : ""}
-// ==/UserScript==
-/*
-▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
-█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
-█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
-█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
-
-        Made with ❤️ by Sv443
-I welcome every contribution on GitHub!
-  https://github.com/Sv443/BetterYTM
-*/
-
-/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this 🖕 */
-`;
-
   try {
+    const [header, subHeader] = await getHeaders(buildNbr);
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
@@ -144,32 +111,36 @@ I welcome every contribution on GitHub!
         BRANCH: branch,
         HOST: host,
         BUILD_NUMBER: buildNbr,
+        ASSET_SOURCE: assetSource,
+        DEV_SERVER_PORT: devServerPort,
       },
     );
 
     if(mode === "production")
-      userscript = remSourcemapComments(userscript);
+      userscript = removeSourcemapComments(userscript);
     else
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
     // insert userscript header and final newline
-    const finalUserscript = `${header}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
+    const finalUserscript = `${header}${subHeader}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 
+    // write userscript
     await writeFile(scriptPath, finalUserscript);
+    // write meta file
+    genMeta && await writeFile(join(rootPath, distFolderPath, userscriptMetaFile), header);
+
     ringBell && stdout.write("\u0007");
 
     const envText = (mode === "production" ? k.magenta : k.blue)(mode);
     const sizeKiB = Number((Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2));
 
     let buildStats: Partial<BuildStats>[] = [];
-    if(await exists(".build.json")) {
+    if(await exists(buildStatsPath)) {
       try {
-        const buildJsonParsed = JSON.parse(String(await readFile(".build.json")));
+        const buildJsonParsed = JSON.parse(String(await readFile(buildStatsPath)));
         buildStats = (Array.isArray(buildJsonParsed) ? buildJsonParsed : []) as Partial<BuildStats>[];
       }
-      catch {
-        void 0;
-      }
+      catch {}
     }
 
     const prevBuildStats = buildStats.find((v) => v.mode === mode);
@@ -179,11 +150,13 @@ I welcome every contribution on GitHub!
       const sizeDiff = sizeKiB - prevBuildStats.sizeKiB;
       const sizeDiffTrunc = parseFloat(sizeDiff.toFixed(2));
       if(sizeDiffTrunc !== 0) {
-        const sizeDiffCol = (sizeDiff > 0 ? k.yellow : k.green)().bold;
+        const sizeCol = (sizeDiff > 0 ? k.yellow : k.green)().bold;
         const sizeDiffNum = `${(sizeDiff > 0 ? "+" : (sizeDiff !== 0 ? "-" : ""))}${Math.abs(sizeDiffTrunc)}`;
-        sizeIndicator = ` ${k.gray("(")}${sizeDiffCol(sizeDiffNum)}${k.gray(")")}`;
+        sizeIndicator = ` ${k.gray("(")}${sizeCol(sizeDiffNum)}${k.gray(")")}`;
       }
     }
+
+    await createSvgSpritesheet();
 
     console.info([
       "",
@@ -204,15 +177,17 @@ I welcome every contribution on GitHub!
       ...(buildStats.filter((v) => v.mode !== mode)),
     ];
 
-    await writeFile(".build.json", JSON.stringify(newBuildStats, undefined, 2));
+    await writeFile(buildStatsPath, JSON.stringify(newBuildStats, undefined, 2));
 
-    schedExit(0);
+    return schedExit(0);
   }
   catch(err) {
     console.error(k.red("Error while adding userscript header:\n"), err);
-    schedExit(1);
+    return schedExit(1);
   }
-})();
+};
+
+//#region string replacements
 
 /** Replaces tokens in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with their respective value */
 function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
@@ -222,40 +197,80 @@ function insertValues(userscript: string, replacements: Record<string, Stringifi
 }
 
 /** Removes sourcemapping comments */
-function remSourcemapComments(input: string) {
-  return input
+function removeSourcemapComments(userscript: string) {
+  return userscript
     .replace(/\/\/\s?#\s?sourceMappingURL\s?=\s?.+$/gm, "");
 }
 
-/**
- * Used as a kind of "build number", though note it is always behind by at least one commit,
- * as the act of putting this number in the userscript and committing it changes the hash again, indefinitely
- */
-function getLastCommitSha() {
-  return new Promise<string>((res, rej) => {
-    exec("git rev-parse --short HEAD", (err, stdout, stderr) => {
-      if(err) {
-        console.error(k.red("Error while checking for last Git commit. Do you have Git installed?\n"), stderr);
-        return rej(err);
-      }
-      return res(String(stdout).replace(/\r?\n/gm, "").trim());
-    });
-  });
+//#region headers
+
+/** Returns the header and subheader for the userscript */
+async function getHeaders(buildNbr: string) {
+  const resourcesDirectives = await getResourceDirectives(buildNbr);
+  const requireDirectives = await getRequireDirectives();
+  const localizedDescriptions = getLocalizedDescriptions();
+
+  const header = `\
+// ==UserScript==
+// @name              ${pkg.userscriptName}
+// @namespace         ${pkg.homepage}
+// @version           ${pkg.version}
+// @description       ${pkg.description}
+// @homepageURL       ${pkg.homepage}#readme
+// @supportURL        ${pkg.bugs.url}
+// @license           ${pkg.license}
+// @author            ${pkg.author.name}
+// @copyright         ${pkg.author.name} (${pkg.author.url})
+// @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start\
+${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
+// @connect           api.sv443.net
+// @connect           github.com
+// @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
+// @noframes
+// @updateURL         ${hostMetaUrl}
+// @downloadURL       ${hostScriptUrl}
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.listValues
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
+// @grant             unsafeWindow\
+${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
+${requireDirectives ? "\n" + requireDirectives : ""}\
+${devDirectives ? "\n" + devDirectives : ""}
+// ==/UserScript==
+/*
+▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+*/
+` as const;
+
+  const subHeader = `
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+` as const;
+  return [header, subHeader];
 }
 
-async function exists(path: string) {
-  try {
-    await access(path, fsconst.R_OK | fsconst.W_OK);
-    return true;
-  }
-  catch {
-    return false;
-  }
-}
+//#region @resource
 
 /** Resolves the value of an entry in resources.json */
-function resolveVal(value: string, buildNbr: string) {
-  if(!value.includes("$"))
+function resolveResourceVal(value: string, buildNbr: string) {
+  if(!(/\$[A-Z]+/.test(value)))
     return value;
 
   const replacements = [
@@ -264,7 +279,7 @@ function resolveVal(value: string, buildNbr: string) {
     ["\\$HOST", host],
     ["\\$BUILD_NUMBER", buildNbr],
     ["\\$UID", buildUid],
-  ];
+  ] as const;
 
   return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), value);
 };
@@ -272,27 +287,50 @@ function resolveVal(value: string, buildNbr: string) {
 /** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
 async function getResourceDirectives(ref: string) {
   try {
-    const directives: string[] = [];
-    const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
-    const resources = JSON.parse(resourcesFile) as Record<string, string> | Record<string, { path: string; buildNbr: string }>;
+    const directives: string[] = [],
+      resourcesRaw = JSON.parse(String(await readFile(join(assetFolderPath, "resources.json")))),
+      resources = "resources" in resourcesRaw
+        ? resourcesRaw.resources as Record<string, string> | Record<string, { path: string; buildNbr: string }>
+        : undefined,
+      resourcesHashed = {} as Record<string, Record<"path" | "ref", string> & Partial<Record<"hash", string>>>;
 
-    const resourcesHashed = {} as Record<string, Record<"path" | "ref", string> & Partial<Record<"hash", string>>>;
+    if(!resources)
+      throw new Error("No resources found in 'assets/resources.json'");
 
+    const extAssetPattern = new RegExp(resourcesJson.externalAssetPattern);
     for(const [name, val] of Object.entries(resources)) {
+      // skip over all external assets
+      if(extAssetPattern.test(name))
+        continue;
+
       const pathVal = typeof val === "object" ? val.path : val;
-      const hash = assetSource !== "local" && !pathVal.match(/^https?:\/\//)
+      const hash = (
+        assetSource !== "local"
+        && (typeof val === "object" && "integrity" in val ? val.integrity !== false : true)
+        && !pathVal.match(/^https?:\/\//)
+      )
         ? await getFileHashSha256(pathVal.replace(/\?.+/g, ""))
         : undefined;
       resourcesHashed[name] = typeof val === "object"
-        ? { path: resolveVal(val.path, ref), ref: resolveVal(val.ref, ref), hash }
-        : { path: getResourceUrl(resolveVal(val, ref), ref), ref, hash };
+        ? { path: resolveResourceVal(val.path, ref), ref: resolveResourceVal(val.ref, ref), hash }
+        : { path: getResourceUrl(resolveResourceVal(val, ref), ref), ref, hash };
     }
 
     const addResourceHashed = async (name: string, path: string, ref: string) => {
       try {
-        if(assetSource === "local" || path.match(/^https?:\/\//)) {
+        // don't add external assets
+        if(extAssetPattern.test(name))
+          return;
+        if(assetSource === "local") {
           resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: undefined };
           return;
+        }
+        else if(validUrl(path)) {
+          // stream file from URL, hash it, add it to resourcesHashed
+          const res = await fetch(path);
+          if(!res.ok || !res.body)
+            return;
+          resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getStreamHashSha256(res.body) };
         }
         resourcesHashed[name] = { path: getResourceUrl(path, ref), ref, hash: await getFileHashSha256(path) };
       }
@@ -303,7 +341,7 @@ async function getResourceDirectives(ref: string) {
 
     await addResourceHashed("css-bundle", "/dist/BetterYTM.css", ref);
 
-    for(const [locale] of Object.entries(locales))
+    for(const [locale] of Object.entries(localesJson))
       await addResourceHashed(`trans-${locale}`, `translations/${locale}.json`, ref);
 
     let longestName = 0;
@@ -328,6 +366,39 @@ async function getResourceDirectives(ref: string) {
   }
 }
 
+//#region @resource SVG spritesheet
+
+/** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
+async function createSvgSpritesheet() {
+  try {
+    const sprites: string[] = [];
+
+    for(const [name, val] of Object.entries(resourcesJson.resources)) {
+      if(!/^icon-/.test(name))
+        continue;
+
+      const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
+      const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
+
+      sprites.push(`<symbol id="bytm-svg-${name}">\n    ${iconSvg}\n  </symbol>`);
+    }
+
+    const spritesheet = `\
+<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" style="display: none;" inert="true">
+  ${sprites.join("\n  ")}
+</svg>`;
+
+    await writeFile(resolveResourcePath("spritesheet.svg"), spritesheet);
+  }
+  catch(err) {
+    console.error(k.red("Error while creating SVG spritesheet:"), err);
+    return schedExit(1);
+  }
+}
+
+//#region @require
+
+/** Returns the `@require` directive block for each defined package in `assets/require.json`, using the version numbers from `package.json` if found */
 async function getRequireDirectives() {
   const directives: string[] = [];
   const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
@@ -343,6 +414,7 @@ async function getRequireDirectives() {
   return directives.length > 0 ? directives.join("\n") : undefined;
 }
 
+/** Returns the `@require` directive for a given package entry */
 function getRequireEntry(entry: RequireObjPkg) {
   const baseUrl = entry.baseUrl ?? "https://cdn.jsdelivr.net/npm/";
 
@@ -360,11 +432,41 @@ function getRequireEntry(entry: RequireObjPkg) {
   return `// @require           ${baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
 }
 
+//#region @require (local link)
+
+/** Returns all packages set as locally linked (similar to [`npm link`](https://docs.npmjs.com/cli/v9/commands/npm-link)) in `assets/require.json` */
+async function getLinkedPkgs() {
+  const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
+  const require = (JSON.parse(requireFile) as RequireObj[]);
+
+  let retStr = "";
+
+  for(const entry of require) {
+    if(!("link" in entry) || typeof entry.link !== "string" || !("pkgName" in entry))
+      continue;
+
+    try {
+      const scriptCont = String(await readFile(resolve(entry.link)));
+      const trimmedScript = scriptCont
+        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, "");
+      retStr += `\n// <link ${entry.pkgName}>\n${trimmedScript}\n// </link ${entry.pkgName}>\n\n`;
+    }
+    catch(err) {
+      console.error(`Couldn't read linked package at '${entry.link}':`, err);
+      return schedExit(1);
+    }
+  }
+
+  return retStr;
+}
+
+//#region @description:localized
+
 /** Returns the @description directive block for each defined locale in `assets/locales.json` */
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
-    for(const [locale, { userscriptDesc, ...rest }] of Object.entries(locales)) {
+    for(const [locale, { userscriptDesc, ...rest }] of Object.entries(localesJson)) {
       let loc = locale;
       if(loc.length < 5)
         loc += " ".repeat(5 - loc.length);
@@ -386,6 +488,8 @@ function getLocalizedDescriptions() {
   }
 }
 
+//#region @resource
+
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
  * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
@@ -395,9 +499,15 @@ function getResourceUrl(path: string, ghRef?: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
+  assetPath += path;
+  const finalPath = `${ghRef ?? `v${pkg.version}`}${assetPath}`;
   return assetSource === "local"
-    ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUid}`
-    : `https://raw.githubusercontent.com/${repo}/${ghRef ?? `v${pkg.version}`}${assetPath}${path}`;
+    ? `http://localhost:${devServerPort}${assetPath}?b=${buildUid}`
+    : (
+      assetSource === "github"
+        ? `https://raw.githubusercontent.com/${repo}/${finalPath}`
+        : `https://cdn.jsdelivr.net/gh/${repo}@${finalPath}`
+    );
 }
 
 /**
@@ -410,6 +520,8 @@ function resolveResourcePath(path: string): string {
   return `assets/${path}`;
 }
 
+//#region utils/process
+
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
 function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
@@ -421,46 +533,40 @@ function getCliArg<TReturn extends string = string>(name: string, defaultVal?: T
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
 }
 
-async function getLinkedPkgs() {
-  const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
-  const require = (JSON.parse(requireFile) as RequireObj[]);
-
-  let retStr = "";
-
-  for(const entry of require) {
-    if(!("link" in entry) || typeof entry.link !== "string" || !("pkgName" in entry))
-      continue;
-
-    try {
-      const scriptCont = String(await readFile(resolve(entry.link)));
-      const trimmedScript = scriptCont
-        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, "");
-      retStr += `\n// <link ${entry.pkgName}>\n${trimmedScript}\n// </link ${entry.pkgName}>\n\n`;
-    }
-    catch(err) {
-      console.error(`Couldn't read linked package at '${entry.link}':`, err);
-      schedExit(1);
-    }
-  }
-
-  return retStr;
-}
-
 /** Schedules an exit after I/O events finish */
 function schedExit(code: number) {
   setImmediate(() => exit(code));
 }
 
-/** Generates a random ID of the given {@linkcode length} and {@linkcode radix} */
-function randomId(length = 16, radix = 16, randomCase = true) {
-  const arr = Array.from(
-    { length },
-    () => Math.floor(Math.random() * radix).toString(radix)
-  );
-  randomCase && arr.forEach((v, i) => {
-    arr[i] = v[Math.random() > 0.5 ? "toUpperCase" : "toLowerCase"]();
+//#region utils/git
+
+/**
+ * Used as a kind of "build number", though note it is always behind by at least one commit,
+ * as the act of putting this number in the userscript and committing it changes the hash again, indefinitely
+ */
+function getLastCommitSha() {
+  return new Promise<string>((res, rej) => {
+    exec("git rev-parse --short HEAD", (err, stdout, stderr) => {
+      if(err) {
+        console.error(k.red("\nError while checking for latest Git commit.\nPlease ensure you have Git installed and set up properly.\n"), stderr);
+        return rej(err);
+      }
+      return res(String(stdout).replace(/\r?\n/gm, "").trim());
+    });
   });
-  return arr.join("");
+}
+
+//#region utils/fs
+
+/** Checks if the given path exists and is readable and writable by the process */
+async function exists(path: string) {
+  try {
+    await access(path, fsconst.R_OK | fsconst.W_OK);
+    return true;
+  }
+  catch {
+    return false;
+  }
 }
 
 /**
@@ -478,3 +584,40 @@ function getFileHashSha256(path: string): Promise<string> {
     stream.on("error", rej);
   });
 }
+
+/** Calculates the SHA-256 hash of a ReadableStream, like the `body` prop of a `fetch()` call */
+function getStreamHashSha256(rStream: ReadableStream): Promise<string> {
+  return new Promise((res, rej) => {
+    const hash = createHash("sha256");
+    rStream.pipeTo(new WritableStream({
+      write(chunk) {
+        hash.update(chunk);
+      },
+    })).then(() => res(hash.digest("base64"))).catch(rej);
+  });
+}
+
+//#region utils/misc
+
+/** Generates a random ID of the given {@linkcode length} and {@linkcode radix} */
+function randomId(length = 16, radix = 16, randomCase = true) {
+  let arr = Array.from(
+    { length },
+    () => Math.floor(Math.random() * radix).toString(radix)
+  );
+  if(randomCase)
+    arr = arr.map((v) => v[Math.random() > 0.5 ? "toUpperCase" : "toLowerCase"]());
+  return arr.join("");
+}
+
+/** Checks if the given string is a valid URL with a protocol that starts with `http` */
+function validUrl(url: string) {
+  try {
+    return new URL(url).protocol.startsWith("http");
+  }
+  catch {
+    return false;
+  }
+}
+
+main();

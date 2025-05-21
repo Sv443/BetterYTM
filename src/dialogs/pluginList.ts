@@ -1,4 +1,4 @@
-import { BytmDialog } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { getRegisteredPlugins } from "../interface.js";
 import { getLocale, t } from "../utils/translations.js";
 import { setInnerHtml } from "../utils/dom.js";
@@ -149,7 +149,7 @@ async function renderBody() {
       const intentEl = document.createElement("div");
       intentEl.classList.add("bytm-plugin-list-row-intent-item");
       intentEl.tabIndex = 0;
-      intentEl.textContent = PluginIntent[intent];
+      intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
       intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
       rightEl.appendChild(intentEl);
     }

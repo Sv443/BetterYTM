@@ -1,7 +1,6 @@
-import type { Emitter } from "nanoevents";
-import type { Stringifiable } from "@sv443-network/userutils";
+import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
-import { BytmDialog, type BytmDialogEvents } from "../components/index.js";
+import { BytmDialog } from "../components/BytmDialog.js";
 import { addSelectorListener } from "../observers.js";
 import "./prompt.css";
 
@@ -23,7 +22,7 @@ type AlertRenderProps = BaseRenderProps & {
 
 type PromptRenderProps = BaseRenderProps & {
   type: "prompt";
-  defaultValue?: string;
+  defaultValue?: StringGen;
 };
 
 type BaseRenderProps = {
@@ -38,10 +37,6 @@ export type PromptDialogResolveVal = boolean | string | null;
 
 export type ShowPromptProps = Partial<PromptDialogRenderProps> & Required<Pick<PromptDialogRenderProps, "message">>;
 
-export type PromptDialogEmitter = Emitter<BytmDialogEvents & {
-  resolve: (result: PromptDialogResolveVal) => void;
-}>;
-
 //#region PromptDialog
 
 let promptDialog: PromptDialog | null = null;
@@ -54,7 +49,7 @@ class PromptDialog extends BytmDialog {
       height: 400,
       destroyOnClose: true,
       closeBtnEnabled: true,
-      closeOnBgClick: props.type === "alert",
+      closeOnBgClick: props.type !== "prompt",
       closeOnEscPress: true,
       small: true,
       renderHeader: () => this.renderHeader(props),
@@ -72,9 +67,7 @@ class PromptDialog extends BytmDialog {
   protected async renderHeader({ type }: PromptDialogRenderProps) {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-prompt-dialog-header";
-    const iconSvg = await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt");
-    if(iconSvg)
-      setInnerHtml(headerEl, iconSvg);
+    setInnerHtml(headerEl, await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt"));
 
     return headerEl;
   }
@@ -101,7 +94,9 @@ class PromptDialog extends BytmDialog {
       inputElem.type = "text";
       inputElem.autocomplete = "off";
       inputElem.spellcheck = false;
-      inputElem.value = "defaultValue" in rest ? rest.defaultValue ?? "" : "";
+      inputElem.value = "defaultValue" in rest && rest.defaultValue
+        ? await consumeStringGen(rest.defaultValue)
+        : "";
 
       const inputEnterListener = (e: KeyboardEvent) => {
         if(e.key === "Enter") {
@@ -199,7 +194,7 @@ class PromptDialog extends BytmDialog {
 
 /** Shows a `confirm()`-like prompt dialog with the specified message and resolves true if the user confirms it or false if they deny or cancel it */
 export function showPrompt(props: ConfirmRenderProps): Promise<boolean>;
-/** Shows an `alert()`-like prompt dialog with the specified message and always resolves true once the user dismisses it */
+/** Shows an `alert()`-like prompt dialog with the specified message and always resolves true once the user dismisses it - for this type, only the close button will exist */
 export function showPrompt(props: AlertRenderProps): Promise<true>;
 /** Shows a `prompt()`-like dialog with the specified message and default value and resolves the entered value if the user confirms it or null if they cancel it */
 export function showPrompt(props: PromptRenderProps): Promise<string | null>;

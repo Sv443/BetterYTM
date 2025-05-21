@@ -60,9 +60,7 @@ export async function createCircularBtn({
   const imgElem = document.createElement("img");
   imgElem.classList.add("bytm-generic-btn-img");
   imgElem.src = "src" in rest
-    ? rest.src instanceof Promise
-      ? await rest.src
-      : rest.src
+    ? await rest.src
     : await getResourceUrl(rest.resourceName);
 
   btnElem.appendChild(imgElem);

@@ -3,11 +3,15 @@ import k from "kleur";
 import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 
-const prepTranslate = process.argv.find((v) => v.match(/--prep(are)?/) || v.toLowerCase() === "-p");
+const prepTranslateRaw = process.argv.find((v) => v.match(/--prep(are)?/) || v.toLowerCase() === "-p");
+const prepTranslate = prepTranslateRaw && prepTranslateRaw.length > 0;
 
 const onlyLocalesRaw = process.argv.find((v) => v.startsWith("--only") || v.toLowerCase().startsWith("-o"));
 const onlyLocales = onlyLocalesRaw?.split("=")[1]?.replace(/"/g, "")
   ?.replace(/\s/g, "")?.split(",") as TrLocale[] | undefined;
+
+const onlyKeysRaw = process.argv.find((v) => v.startsWith("--keys") || v.toLowerCase().startsWith("-k"));
+const onlyKeys = onlyKeysRaw?.split("=")[1]?.replace(/"/g, "").split(",").map(k => k.trim()) as string[] | undefined;
 
 const includeBased = Boolean(process.argv.find((v) => v.match(/--include-based/) || v.toLowerCase() === "-b"));
 
@@ -30,20 +34,46 @@ async function run() {
     let localeFile = enUS;
     const localeObj = JSON.parse(await readFile(`./assets/translations/${locale}.json`, "utf-8"));
 
-    if(!includeBased && localeObj.base)
+    if(!includeBased && localeObj.meta.base)
       continue;
 
-    for(const k of Object.keys(enUS_obj.translations)) {
-      const val = localeObj?.translations?.[k];
+    const undefKeys: string[] = [];
+
+    for(const k of Object.keys(enUS_obj)) {
+      if(localeObj[k] === undefined)
+        undefKeys.push(k);
+
+      // special treatment for the meta block
+      if(k === "meta") {
+        localeFile = localeFile.replace(/"meta":\s+{[^}]+\s{2}},?/m, `"meta": ${JSON.stringify(localeObj.meta, null, 2).replace(/\n/gm, "\n  ")},`);
+        continue;
+      }
+
+      // if --keys or -k is present, only update the keys specified:
+      if(onlyKeys && !onlyKeys.includes(k)) {
+        if(localeObj[k] === undefined)
+          continue;
+        // reset to the value in the current language's file:
+        localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(localeObj[k]).trim()}"`);
+        continue;
+      }
+
+      const val = localeObj?.[k];
       if(val)
         localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(val).trim()}"`);
       else {
         if(prepTranslate)
-          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n    "${k}": "",\n    "${k}": "${escapeJsonVal(enUS_obj.translations[k]).trim()}",`);
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n  "${k}": "",\n  "${k}": "${escapeJsonVal(enUS_obj[k]).trim()}",`);
         else
           localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
       }
     }
+
+    // if onlyKeys is set, remove all lines with keys that are in undefKeys, *excluding* the ones in onlyKeys
+    if(onlyKeys)
+      for(const k of undefKeys)
+        if(!onlyKeys.includes(k))
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
 
     // remove last trailing comma if present
 
@@ -63,9 +93,9 @@ async function run() {
     }
 
     // reinsert base if present in locale file
-
-    if(localeObj.base)
-      localeFile = localeFile.replace(/\s*\{\s*/, `{\n  "base": "${localeObj.base}",\n  `);
+    // TODO:FIXME:
+    // if(localeObj.meta.base)
+    //   localeFile = localeFile.replace(/\s*\{\s*/, `{\n  "base": "${localeObj.meta.base}",\n  `);
 
     // add EOL newline if not present
     if(!localeFile.endsWith("\n"))

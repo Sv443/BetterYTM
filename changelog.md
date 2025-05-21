@@ -1,6 +1,73 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
+<!-- #region 3.0.0 -->
+## 3.0.0
+- **Added features:**
+  - 🎵 Automatically scroll to the active song in the queue on page load or video change
+  - 🎵 Make the player container use all available space on /watch
+  - New configurable hotkeys:
+    - 🎵 Skip forwards/backwards by a frame (<kbd>.</kbd> / <kbd>,</kbd>)
+    - Like/dislike video/song (<kbd>Shift</kbd><kbd>L</kbd> / <kbd>Shift</kbd><kbd>D</kbd>)
+    - 🎵 Open lyrics of current song (<kbd>O</kbd>)
+    - Skip to last remembered video/song time (<kbd>Alt</kbd><kbd>R</kbd>)
+    - Reconfigurable skip to beginning & previous/next video/song (<kbd>Shift</kbd><kbd>N</kbd> / <kbd>Shift</kbd><kbd>P</kbd>, disabled by default)
+    - Reconfigurable play/pause (<kbd>Pause</kbd>, disabled by default)
+- **Changes and improvements:**
+  - Restore song/video volume after BYTM reloads the tab with the common `reloadTab()` function
+  - Added an adornment icon to identify which features work only on YTM, versus on both sites
+  - 🎵 Thumbnail overlay improvements:
+    - Overlay now prefers to use a high res album artwork from Apple Music if the current song is in an album
+    - Fixed image not being updated while in fullscreen
+  - 🎵 Made above-queue button container's sticky positioning toggleable with a feature
+  - Made the resolution of the browser-preferred locale more reliable
+  - Implemented a more powerful translation system
+  - Removed the thumbnail overlay fitting option in favor of automatically switching based on the media type
+- **Fixes:**
+  - Sped up installation time by loading all resources except stylesheets via regular `fetch()` and the external CDN instead of using `@resource` directives
+  - Bumped z-index of dialog elements to display them correctly after a recent page update
+  - Fixed white font color for BYTM config option on YT in light theme
+  - 🎵 Fixed volume label not being fully hidden along with the slider
+  - Config menu will now be correctly set as inert when a BytmDialog is opened over top
+  - 🎵 Fixed \"remove from queue\" button sometimes deleting playlist entries instead of queue items
+
+<details><summary>Click to expand internal and plugin changes</summary>
+
+- **Plugin Changes:**
+  - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for full documentation
+  - API changes:
+    - ⚠️ **BREAKING:** Renamed `createRipple()`'s `speed` prop values:
+      - From `faster` to `fastest`
+      - From `slower` to `slowest`
+    - ⚠️ **BREAKING:** Made `hasKey()` and `hasKeyFor()` return a Promise to load the given locale if it's not found
+    - ⚠️ 🎵 **BREAKING:** Removed `sideBarMini` observer instance
+    - Made `getCurrentMediaType()` return `\"video\"` on YT instead of throwing an error
+    - Added property `additionalProps` to the `RippleProps` argument in `createRipple()`, to assign extra props to the created or passed ripple element
+  - New API functions:
+    - Added `reloadTab()` as a better way to reload the page by keeping the same video time and volume and disabling BYTM features like initial tab volume
+    - Added `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
+    - Added `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
+    - Added `getDefaultFeatures()` (callable without registering the plugin) to return the default / fallback feature configuration object
+    - Added `getLikeDislikeBtns()` to return the like and dislike buttons on both domains, including the like/dislike state
+    - Added `isIgnoredInputElement()` to check if the given or currently focused element is an input element, upon which all other keypress event listeners should be ignored
+    - Added `fetchITunesAlbumInfo()` to fetch album info objects from the Apple Music / iTunes API, given an artist and album name
+  - New API constants:
+    - Added `initialParams` ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)), the search params at the initial point of loading BYTM
+    - Added `sessionStorageAvailable` (boolean), whether the browser supports [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+- **Internal Changes:**
+  - Improved asset caching by using JSDelivr instead of GitHub as a CDN
+  - Fixed problems with the translation system by implementing [UserUtils v9's new system](https://github.com/Sv443-Network/UserUtils/blob/v9.4.1/docs.md#translation)
+  - Added JSON schemas for all JSON files in `assets`
+
+</details>
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/121" rel="noopener noreferrer">See pull request for more info</a>
+</div>
+
+<div class="split"></div>
+<br>
+
 <!-- #region 2.2.0 -->
 ## 2.2.0
 - **Changes:**
@@ -22,7 +89,7 @@
     - `en-UK` -> `en-GB`
     - `ja-JA` -> `ja-JP`
   - Enabled Subresource Integrity (SRI) hashes for external resources to increase security
-- **Plugin Changes:**  
+- **Plugin Changes:**
   - Migration guide:
     - Since locale codes now have the format `xx-YY` and two were renamed, all plugins must implement those changes
 
@@ -92,7 +159,7 @@
   - Added Storybook for easier and faster development of components
   - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
   - Migrated to pnpm for faster compilation times
-  - Moved `NanoEmitter` class over to the [UserUtils library](https://github.com/Sv443-Network/UserUtils#nanoemitter) (it is still re-exported by the plugin interface as before)
+  - Moved `NanoEmitter` class over to the [UserUtils library](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#nanoemitter) (it is still re-exported by the plugin interface as before)
   - Made `getThumbnailUrl()` and `getBestThumbnailUrl()` use the domain `youtube.com` to prevent cross-origin issues
   - Added custom error instances `LyricsError` and `PluginError` for better error handling using `instanceof`
   - Changed the feature identifier key for `showVotesFormat` to `numbersFormat` as it is now generic and available to plugins through the `formatNumber()` function
@@ -140,7 +207,7 @@
       - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
     - Now the event `bytm:siteEvent:fullscreenToggled` is only emitted once per fullscreen change
     - Renamed event `bytm:initPlugins` to `bytm:registerPlugin` to be more consistent
-    - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [the UserUtils docs](https://github.com/Sv443-Network/UserUtils#nanoemitter))  
+    - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [the UserUtils docs](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#nanoemitter))  
       In practice this changes nothing, but it benefits from plugins having access to the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 
 </details>
@@ -178,7 +245,7 @@
 
 - **Internal Changes:**
   - Improved script performance
-    - Implemented new [SelectorObserver](https://github.com/Sv443-Network/UserUtils#selectorobserver) instances to improve overall performance by quite a lot
+    - Implemented new [SelectorObserver](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver) instances to improve overall performance by quite a lot
       - Implemented rising-edge debounce for SelectorObserver instances to massively improve responsiveness
     - Added a cache to save lyrics in. Up to 1000 of the most listened to songs are saved throughout sessions for 30 days to save time and reduce server load.
   - Implemented new class BytmDialog for less duplicate code, better maintainability, the ability to make more menus easier and for them to have better accessibility
@@ -186,7 +253,7 @@
   - Expanded plugin interface
     - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#registerplugin))  
       All plugins that are not registered will have restricted access to the BetterYTM API (subject to change in the future).
-    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443-Network/UserUtils#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`getThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getthumbnailurl), [`getBestThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getbestthumbnailurl) [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
+    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`getThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getthumbnailurl), [`getBestThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getbestthumbnailurl) [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
   - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs potentially change
 

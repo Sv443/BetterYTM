@@ -27,7 +27,6 @@ export type YTMObserverName =
   | "navBar"                 // the navigation / title bar at the top of the page
   | "mainPanel"              // the main content panel - includes things like the video element
   | "sideBar"                // the sidebar on the left side of the page
-  | "sideBarMini"            // the minimized sidebar on the left side of the page
   | "sidePanel"              // the side panel on the right side of the /watch page
   | "playerBar"              // media controls bar at the bottom of the page
   | "playerBarInfo"          // song title, artist, album, etc. inside the player bar
@@ -51,7 +50,7 @@ const defaultObserverOptions: SelectorObserverOptions = {
   disableOnNoListeners: false,
   enableOnAddListener: false,
   defaultDebounce: 150,
-  defaultDebounceEdge: "rising",
+  defaultDebounceType: "immediate",
 };
 
 /** Global SelectorObserver instances usable throughout the script for improved performance */
@@ -105,7 +104,6 @@ export function initObservers() {
     //    enabled immediately
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
-      defaultDebounceEdge: "falling",
       defaultDebounce: 150,
       subtree: false,
     });
@@ -118,7 +116,6 @@ export function initObservers() {
     const bytmDialogContainerSelector = "#bytm-dialog-container";
     globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
       ...defaultObserverOptions,
-      defaultDebounceEdge: "falling",
       defaultDebounce: 100,
       subtree: true,
     });
@@ -175,24 +172,13 @@ export function initObservers() {
       const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
       globservers.sideBar = new SelectorObserver(sidebarSelector, {
         ...defaultObserverOptions,
+        attributes: true,
+        childList: true,
         subtree: true,
       });
 
       globservers.body.addListener(sidebarSelector, {
         listener: () => globservers.sideBar.enable(),
-      });
-
-      //#region sideBarMini
-      // -> the minimized sidebar on the left side of the page
-      //    enabled by "body"
-      const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
-      globservers.sideBarMini = new SelectorObserver(sideBarMiniSelector, {
-        ...defaultObserverOptions,
-        subtree: true,
-      });
-
-      globservers.body.addListener(sideBarMiniSelector, {
-        listener: () => globservers.sideBarMini.enable(),
       });
 
       //#region sidePanel
