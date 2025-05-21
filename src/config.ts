@@ -132,7 +132,7 @@ export const migrations: DataMigrationsDict = {
 
     return useDefaultConfig(oldData, ["resetEverything"]);
   },
-  // 9 -> 10 (v2.3.0)
+  // 9 -> 10 (v3.0)
   10: (oldData: FeatureConfig) => {
     oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
 

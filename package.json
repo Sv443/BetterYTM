@@ -1,7 +1,7 @@
 {
   "name": "betterytm",
   "userscriptName": "BetterYTM",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "main": "./src/index.ts",

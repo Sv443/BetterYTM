@@ -8,7 +8,7 @@ import { createLongBtn } from "./longButton.js";
 import { showToast } from "./toast.js";
 import "./ExImDialog.css";
 
-// TODO: v2.3.0 overhaul:
+// TODO: overhaul:
 // - [ ] Use file down- and upload instead of textareas, including drag and drop functionality
 // - [ ] Still allow downloading the `exportDataSpecial`
 // - [ ] Checkboxes on both sides to configure which DataStore instances to import/export to/from
