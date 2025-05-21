@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           2.2.0
+// @version           3.0.0
 // @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cc0bcfb2/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5d004df4/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -363,7 +363,7 @@ I welcome every contribution on GitHub!
       mode: "production",
       branch: "main",
       host: "github",
-      buildNumber: "cc0bcfb2",
+      buildNumber: "5d004df4",
       assetSource: "jsdelivr",
       devServerPort: "8710",
   };
@@ -1019,7 +1019,7 @@ I welcome every contribution on GitHub!
 
   var name = "betterytm";
   var userscriptName = "BetterYTM";
-  var version = "2.2.0";
+  var version = "3.0.0";
   var description = "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™";
   var homepage = "https://github.com/Sv443/BetterYTM";
   var main = "./src/index.ts";
@@ -7603,7 +7603,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
               oldData.locale = "en-GB";
           return useDefaultConfig(oldData, ["resetEverything"]);
       },
-      // 9 -> 10 (v2.3.0)
+      // 9 -> 10 (v3.0)
       10: (oldData) => {
           oldData.closeToastsTimeout = UserUtils.clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
           oldData.lyricsCacheMaxSize = UserUtils.clamp(oldData.lyricsCacheMaxSize, featInfo.lyricsCacheMaxSize.min, featInfo.lyricsCacheMaxSize.max);
