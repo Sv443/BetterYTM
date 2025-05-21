@@ -87,8 +87,10 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
 }
 
 async function genHeader() {
-  const langStr = [ ...Object.entries(locales) ]
-    .sort(([, a], [, b]) => a.nameEnglish.localeCompare(b.nameEnglish))
+  const trimCode = (code: string) => code.split("-")[1].toUpperCase();
+  const langStr = [...Object.entries(locales)]
+    .filter(([c]) => !c.startsWith("en"))
+    .sort(([a], [b]) => trimCode(a).localeCompare(trimCode(b)))
     .reduce((acc, [locale, { emoji, nameEnglish }], i) => {
       const countryCode = locale.split("-")[1];
       return `${acc}${i > 0 ? ", " : ""}<abbr title="${nameEnglish}">${emoji}&nbsp;${countryCode}</abbr>`;
@@ -99,7 +101,7 @@ async function genHeader() {
 
 ### ${pkgJson.description}
 
-<h4>Available in these languages: ${langStr}</h4>
+<h4>With translations for: ${langStr}</h4>
 
 ---
 #### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\

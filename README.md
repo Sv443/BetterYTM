@@ -5,7 +5,7 @@
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 
-<h4>Available in these languages: <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="English (Great Britain)">🇬🇧&nbsp;GB</abbr>, <abbr title="English (United States)">🇺🇸&nbsp;US</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr>, <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr></h4>
+<h4>With translations for: <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr></h4>
 
 ---
 #### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
