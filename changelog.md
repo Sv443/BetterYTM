@@ -1,35 +1,65 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
-<!-- #region 2.3.0 -->
-## 2.3.0 - TODO:
-<!-- - **Changes:**
-  - The above-queue-button container's sticky positioning can now be turned off with a new advanced feature toggle in the config menu
-  - Made finding the preferred locale based on the browser's language settings much more reliable
-  - Heavily reduced amount of `@resource` directives to improve installation and updating time
-  - Resources are now loaded via JSDelivr's CDN for longer cache times and faster loading
+<!-- #region 3.0.0 -->
+## 3.0.0
+- **Added features:**
+  - 🎵 Automatically scroll to the active song in the queue on page load or video change
+  - 🎵 Make the player container use all available space on /watch
+  - New configurable hotkeys:
+    - 🎵 Skip forwards/backwards by a frame (<kbd>.</kbd> / <kbd>,</kbd>)
+    - Like/dislike video/song (<kbd>Shift</kbd><kbd>L</kbd> / <kbd>Shift</kbd><kbd>D</kbd>)
+    - 🎵 Open lyrics of current song (<kbd>O</kbd>)
+    - Skip to last remembered video/song time (<kbd>Alt</kbd><kbd>R</kbd>)
+    - Reconfigurable skip to beginning & previous/next video/song (<kbd>Shift</kbd><kbd>N</kbd> / <kbd>Shift</kbd><kbd>P</kbd>, disabled by default)
+    - Reconfigurable play/pause (<kbd>Pause</kbd>, disabled by default)
+- **Changes and improvements:**
+  - Restore song/video volume after BYTM reloads the tab with the common `reloadTab()` function
+  - Added an adornment icon to identify which features work only on YTM, versus on both sites
+  - 🎵 Thumbnail overlay improvements:
+    - Overlay now prefers to use a high res album artwork from Apple Music if the current song is in an album
+    - Fixed image not being updated while in fullscreen
+  - 🎵 Made above-queue button container's sticky positioning toggleable with a feature
+  - Made the resolution of the browser-preferred locale more reliable
+  - Implemented a more powerful translation system
+  - Removed the thumbnail overlay fitting option in favor of automatically switching based on the media type
+- **Fixes:**
+  - Sped up installation time by loading all resources except stylesheets via regular `fetch()` and the external CDN instead of using `@resource` directives
+  - Bumped z-index of dialog elements to display them correctly after a recent page update
+  - Fixed white font color for BYTM config option on YT in light theme
+  - 🎵 Fixed volume label not being fully hidden along with the slider
+  - Config menu will now be correctly set as inert when a BytmDialog is opened over top
+  - 🎵 Fixed \"remove from queue\" button sometimes deleting playlist entries instead of queue items
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Plugin Changes:**
-  - Additions to the BYTM API (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md) for full documentation):
-    - Functions:
-      - `reloadTab()` as a better way to reload the page by keeping the same video time and volume and disabling BYTM features like initial tab volume
-      - `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
-      - `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
-      - `getDefaultFeatures()` to return the default / fallback feature configuration object
-    - Constants:
-      - `initialParams` ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)), the search params at the initial point of loading BYTM
-      - `sessionStorageAvailable` (boolean), whether the browser supports [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
-  - Changes to the BYTM API:
-    - BREAKING: Renamed `createRipple()`'s `speed` prop values:
+  - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for full documentation
+  - API changes:
+    - ⚠️ **BREAKING:** Renamed `createRipple()`'s `speed` prop values:
       - From `faster` to `fastest`
       - From `slower` to `slowest`
-    - BREAKING: `hasKey()` and `hasKeyFor()` now return a Promise, since they might need to load the given locale
-    - BREAKING: removed `sideBarMini` observer instance
-    - `getCurrentMediaType()` now always returns `"video"` on YT instead of throwing an error
+    - ⚠️ **BREAKING:** Made `hasKey()` and `hasKeyFor()` return a Promise to load the given locale if it's not found
+    - ⚠️ 🎵 **BREAKING:** Removed `sideBarMini` observer instance
+    - Made `getCurrentMediaType()` return `\"video\"` on YT instead of throwing an error
+    - Added property `additionalProps` to the `RippleProps` argument in `createRipple()`, to assign extra props to the created or passed ripple element
+  - New API functions:
+    - Added `reloadTab()` as a better way to reload the page by keeping the same video time and volume and disabling BYTM features like initial tab volume
+    - Added `getVideoElement()` to get the video element (if available) on the current page, on both YT and YTM
+    - Added `getVideoSelector()` to get the CSS selector for the video element on the current page, on both YT and YTM
+    - Added `getDefaultFeatures()` (callable without registering the plugin) to return the default / fallback feature configuration object
+    - Added `getLikeDislikeBtns()` to return the like and dislike buttons on both domains, including the like/dislike state
+    - Added `isIgnoredInputElement()` to check if the given or currently focused element is an input element, upon which all other keypress event listeners should be ignored
+    - Added `fetchITunesAlbumInfo()` to fetch album info objects from the Apple Music / iTunes API, given an artist and album name
+  - New API constants:
+    - Added `initialParams` ([URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)), the search params at the initial point of loading BYTM
+    - Added `sessionStorageAvailable` (boolean), whether the browser supports [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)
+- **Internal Changes:**
+  - Improved asset caching by using JSDelivr instead of GitHub as a CDN
+  - Fixed problems with the translation system by implementing [UserUtils v9's new system](https://github.com/Sv443-Network/UserUtils/blob/v9.4.1/docs.md#translation)
+  - Added JSON schemas for all JSON files in `assets`
 
-</details> -->
+</details>
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/121" rel="noopener noreferrer">See pull request for more info</a>
