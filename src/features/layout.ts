@@ -743,16 +743,15 @@ async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
       const bestMatch = albumObjs.find((al) => (
         (
           al.artistName === artist
-        || al.artistName.toLowerCase() === artist.toLowerCase()
-        || al.artistName === artistsRaw
-        || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
+          || al.artistName.toLowerCase() === artist.toLowerCase()
+          || al.artistName === artistsRaw
+          || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
+        ) && (
+          al.collectionName === album
+          || al.collectionName.toLowerCase() === album.toLowerCase()
+          || al.collectionCensoredName === album
+          || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
         )
-      && (
-        al.collectionName === album
-        || al.collectionName.toLowerCase() === album.toLowerCase()
-        || al.collectionCensoredName === album
-        || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
-      )
       ));
       return [bestMatch, albumObjs[0]];
     }
@@ -764,7 +763,7 @@ async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
   let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
   if(!bestMatch)
     [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
-  return bestMatch ?? fallback!;
+  return bestMatch ?? fallback;
 }
 
 //#region idle hide cursor
