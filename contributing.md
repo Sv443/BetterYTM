@@ -746,6 +746,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > This is done for compatibility with the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) and to prevent XSS attacks.  
 > Uses the library [DOMPurify](https://github.com/cure53/DOMPurify) on default settings to sanitize the HTML.  
 >   
+> If the browser does not support the Trusted Types API, a regular `.innerHTML` assignment will be done.  
+>   
 > Arguments:  
 > - `element` - The element to set the innerHTML property of
 > - `html` - The HTML string to sanitize and set as the innerHTML property - if set to `undefined` or `null`, the innerHTML will be cleared
@@ -765,11 +767,17 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### addSelectorListener()
 > Signature:  
 > ```ts
-> unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>): void
+> unsafeWindow.BYTM.addSelectorListener<
+>   TElem extends Element
+> >(
+>   observerName: ObserverName,
+>   selector: string,
+>   options: SelectorListenerOptions<TElem>
+> ): void
 > ```
 >   
 > Description:  
-> Adds a listener to the specified SelectorObserver instance that gets called when the element/s behind the passed selector is/are found.  
+> Adds a listener to the specified [SelectorObserver](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver) instance that gets called when the element/s behind the passed selector is/are found.  
 > They are immediately checked for and then checked again whenever the part of the DOM tree changes (elements get added or removed) that is observed by that specific SelectorObserver.  
 >   
 > The instances are chained together in a way that the least specific observer is the parent of the more specific ones.  

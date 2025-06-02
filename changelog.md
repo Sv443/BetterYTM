@@ -1,6 +1,28 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
+<!-- #region TODO: 3.1.0 -->
+
+## 3.1.0 - TODO
+- **Added features:**
+  - 🎵 Change which service is preferred for the thumbnail overlay (YT thumbnail / iTunes album artwork)
+- **Changes and improvements:**
+- **Fixes:**
+
+<details><summary>Click to expand internal and plugin changes</summary>
+
+- **Plugin Changes:**
+- **Internal Changes:**
+
+</details>
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>
+</div>
+
+<div class="split"></div>
+<br>
+
 <!-- #region 3.0.0 -->
 ## 3.0.0
 - **Added features:**
