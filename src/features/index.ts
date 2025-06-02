@@ -250,6 +250,15 @@ export const featInfo = {
     advanced: true,
     textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
   },
+  thumbnailOverlayPreferITunes: {
+    type: "toggle",
+    category: "layout",
+    supportedSites: ["ytm"],
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+    textAdornment: adornments.ytmOnly,
+  },
   hideCursorOnIdle: {
     type: "toggle",
     category: "layout",

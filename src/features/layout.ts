@@ -594,7 +594,7 @@ export async function initThumbnailOverlay() {
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
           all: true,
           async listener(elems) {
-            const iTunesAlbum = elems.length >= 5
+            const iTunesAlbum = elems.length >= 5 && getFeature("thumbnailOverlayPreferITunes")
               ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
               : undefined;
 
