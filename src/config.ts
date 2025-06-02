@@ -9,7 +9,7 @@ import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 10;
+export const formatVersion = 11;
 
 export const defaultData = purifyObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
@@ -36,11 +36,13 @@ export const migrations: DataMigrationsDict = {
       lyricsQueueButton: queueBtnsEnabled,
     };
   },
+
   // 2 -> 3 (v1.0)
   3: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
     "removeShareTrackingParam", "numKeysSkipToTime",
     "fixSpacing", "scrollToActiveSongBtn", "logLevel",
   ]),
+
   // 3 -> 4 (v1.1)
   4: (oldData: FeatureConfig) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
@@ -59,6 +61,7 @@ export const migrations: DataMigrationsDict = {
       listButtonsPlacement: "queueOnly",
     };
   },
+
   // 4 -> 5 (v2.0)
   5: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
     "localeFallback", "geniUrlBase", "geniUrlToken",
@@ -74,6 +77,7 @@ export const migrations: DataMigrationsDict = {
     "fixHdrIssues", "clearQueueBtn",
     "closeToastsTimeout", "disableDarkReaderSites",
   ]),
+
   // 5 -> 6 (v2.1)
   6: (oldData: FeatureConfig) => {
     const newData = useNewDefaultIfUnchanged(
@@ -95,9 +99,6 @@ export const migrations: DataMigrationsDict = {
     return newData;
   },
 
-  // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
-  // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
-
   // 6 -> 7 (v2.1-dev)
   7: (oldData: FeatureConfig) => {
     const newData = useNewDefaultIfUnchanged(
@@ -112,6 +113,7 @@ export const migrations: DataMigrationsDict = {
     newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
     return newData;
   },
+
   // 7 -> 8 (v2.1)
   8: (oldData: FeatureConfig) => {
     if("showVotesFormat" in oldData) {
@@ -122,6 +124,7 @@ export const migrations: DataMigrationsDict = {
       "autoLikeChannels"
     ]);
   },
+
   // 8 -> 9 (v2.2)
   9: (oldData: FeatureConfig) => {
     oldData.locale = oldData.locale.replace("_", "-") as TrLocale;
@@ -132,6 +135,7 @@ export const migrations: DataMigrationsDict = {
 
     return useDefaultConfig(oldData, ["resetEverything"]);
   },
+
   // 9 -> 10 (v3.0)
   10: (oldData: FeatureConfig) => {
     oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
@@ -161,6 +165,11 @@ export const migrations: DataMigrationsDict = {
       ],
     );
   },
+
+  // 10 -> 11 (v3.1)
+  11: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+    "thumbnailOverlayPreferITunes",
+  ]),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
