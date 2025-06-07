@@ -580,6 +580,8 @@ export interface FeatureConfig {
   thumbnailOverlayShowIndicator: boolean;
   /** The opacity of the thumbnail overlay indicator element */
   thumbnailOverlayIndicatorOpacity: number;
+  /** Whether to prefer fetching iTunes album covers over YT thumbnails */
+  thumbnailOverlayPreferITunes: boolean;
   /** Hide the cursor when it's idling on the video element for a while */
   hideCursorOnIdle: boolean;
   /** Delay in seconds after which the cursor should be hidden */
