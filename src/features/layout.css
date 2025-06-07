@@ -430,6 +430,10 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   border-radius: var(--ts-songimg-border-radius, initial);
 }
 
+ytmusic-player[player-ui-state="FULLSCREEN"] #bytm-thumbnail-overlay {
+  border-radius: 0;
+}
+
 #bytm-thumbnail-overlay-img {
   position: relative;
   width: 100%;
