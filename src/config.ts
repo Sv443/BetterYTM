@@ -167,9 +167,14 @@ export const migrations: DataMigrationsDict = {
   },
 
   // 10 -> 11 (v3.1)
-  11: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "thumbnailOverlayPreferITunes",
-  ]),
+  11: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
+    useDefaultConfig(oldData, [
+      "thumbnailOverlayPreferITunes",
+    ]),
+    [
+      { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
+    ],
+  ),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
