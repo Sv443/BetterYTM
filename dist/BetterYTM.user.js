@@ -1,3 +1,90 @@
+// ==UserScript==
+// @name              BetterYTM
+// @namespace         https://github.com/Sv443/BetterYTM
+// @version           3.0.0
+// @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @homepageURL       https://github.com/Sv443/BetterYTM#readme
+// @supportURL        https://github.com/Sv443/BetterYTM/issues
+// @license           AGPL-3.0-only
+// @author            Sv443
+// @copyright         Sv443 (https://github.com/Sv443)
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@98fd9998/assets/images/logo/logo_dev_48.png
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start
+// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-LI Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-LU Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en    Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-CA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-AU Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-IE Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-NZ Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-ZA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es    Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es-MX Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr    Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CA Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-BE Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CH Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-LU Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi    YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi-NP YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:ja    YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt    Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt-PT Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh    YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @connect           api.sv443.net
+// @connect           github.com
+// @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
+// @noframes
+// @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
+// @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.listValues
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
+// @grant             unsafeWindow
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.1/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
+// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.5
+// @grant             GM.registerMenuCommand
+// ==/UserScript==
+/*
+▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+*/
+
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+
 (function(UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var preloadAssetPattern = "^(icon|img)-";
 var resources = {
 	"css-above_queue_btns": "style/aboveQueueBtns.css",
@@ -245,12 +332,12 @@ var PluginIntent;
     PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
 })(PluginIntent || (PluginIntent = {}));// these strings will have their values replaced by the post-build script:
 const rawConsts = {
-    mode: "#{{MODE}}",
-    branch: "#{{BRANCH}}",
-    host: "#{{HOST}}",
-    buildNumber: "#{{BUILD_NUMBER}}",
-    assetSource: "#{{ASSET_SOURCE}}",
-    devServerPort: "#{{DEV_SERVER_PORT}}",
+    mode: "development",
+    branch: "develop",
+    host: "github",
+    buildNumber: "98fd9998",
+    assetSource: "jsdelivr",
+    devServerPort: "8710",
 };
 const getConst = (constKey, defaultVal) => {
     const val = rawConsts[constKey];
@@ -6430,14 +6517,15 @@ const featInfo = {
         type: "slider",
         category: "layout",
         supportedSites: ["ytm"],
-        default: 1500,
+        default: 2000,
         min: 100,
         max: 5000,
         step: 100,
         renderValue: (n) => `${n}x${n}`,
+        advanced: true,
         reloadRequired: false,
         enable: noop,
-        textAdornment: adornments.ytmOnly,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.ytmOnly]),
     },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
@@ -7442,8 +7530,10 @@ const migrations = {
         ]);
     },
     // 10 -> 11 (v3.1)
-    11: (oldData) => useDefaultConfig(oldData, [
+    11: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "thumbnailOverlayPreferITunes",
+    ]), [
+        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
     ]),
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -8934,4 +9024,4 @@ async function runDevTreatments() {
     // const dlg = await getAllDataExImDialog();
     // await dlg.open();
 }
-preInit();})(UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=BetterYTM.user.js.map
+preInit();})(UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
