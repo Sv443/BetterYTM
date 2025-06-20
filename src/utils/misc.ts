@@ -267,6 +267,16 @@ export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
   });
 }
 
+/** Returns the value unmodified if between min and max, otherwise returns the value wrapped around from max to min, however many times it takes for it to be in range */
+export function overflowValue(value: number, min: number, max: number) {
+  if(value >= min && value <= max)
+    return value;
+
+  const range = max - min + 1;
+  const wrappedValue = ((value - min) % range + range) % range + min;
+  return wrappedValue;
+}
+
 //#region resources
 
 /**

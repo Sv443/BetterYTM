@@ -4,7 +4,7 @@ import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
 import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
-import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowValue, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
 import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
@@ -472,10 +472,14 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
-// TODO:FIXME: rewrite this whole chonker cause it doesn't wanna behave at all
+enum OvlState {
+  Off = 0,
+  YT = 1,
+  AM = 2,
+}
 
-/** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
-let invertOverlay = false;
+/** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
+let overlayState = OvlState.Off;
 
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
@@ -491,7 +495,7 @@ export async function initThumbnailOverlay() {
       return error("Couldn't find video player element while adding thumbnail overlay");
 
     /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
-    const updateOverlayVisibility = async () => {
+    const updateOverlayVisibility = async (isManual = false) => {
       if(!isDomLoaded())
         return;
 
@@ -505,7 +509,10 @@ export async function initThumbnailOverlay() {
       else if(behavior === "songsOnly" && !isVideo)
         showOverlay = true;
 
-      showOverlay = invertOverlay ? !showOverlay : showOverlay;
+      if(!isManual && showOverlay && overlayState === OvlState.Off)
+        overlayState = OvlState.AM; // TODO: set to value from getFeature("foo")
+
+      showOverlay = overlayState === OvlState.Off ? !showOverlay : showOverlay;
 
       const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
       const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
@@ -526,7 +533,11 @@ export async function initThumbnailOverlay() {
             const toggleBtnIconElem = toggleBtnElem.querySelector<HTMLImageElement>("svg");
 
             if(toggleBtnIconElem) {
-              setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled"));
+              setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${
+                showOverlay
+                  ? `_filled${overlayState === OvlState.YT ? "_yt" : overlayState === OvlState.AM ? "_am" : ""}`
+                  : ""
+              }` as "icon-image" | "icon-image_filled"));
               toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
             }
             if(toggleBtnElem)
@@ -549,10 +560,12 @@ export async function initThumbnailOverlay() {
         )
           return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
 
-        const actuallyApplyThumbUrl = (thumbUrl: string) => {
+        const actuallyApplyThumbUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
+          const thumbUrl = (overlayState === OvlState.AM ? amThumbUrl : ytThumbUrl) ?? ytThumbUrl;
+          
           if(toggleBtnElem) {
             toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
             toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
@@ -582,6 +595,7 @@ export async function initThumbnailOverlay() {
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
           all: true,
           async listener(elems) {
+            // TODO:FIXME: 2nd artist name gets used instead of album name when there's more than 1 artist
             const iTunesAlbum = elems.length >= 5 && getFeature("thumbnailOverlayPreferITunes")
               ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
               : undefined;
@@ -595,7 +609,7 @@ export async function initThumbnailOverlay() {
               ?? bestNativeThumbUrl ?? await getBestThumbnailUrl(videoID);
 
             if(thumbUrl)
-              actuallyApplyThumbUrl(thumbUrl);
+              actuallyApplyThumbUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
             else
               warn("Couldn't get thumbnail URL for album", iTunesAlbum?.collectionName, "by", iTunesAlbum?.artistName, "or video with ID", videoID);
           },
@@ -647,7 +661,7 @@ export async function initThumbnailOverlay() {
 
 
         siteEvents.on("watchIdChanged", async (videoID) => {
-          invertOverlay = false;
+          overlayState = OvlState.Off;
           applyThumbUrl(videoID);
           updateOverlayVisibility();
         });
@@ -665,18 +679,17 @@ export async function initThumbnailOverlay() {
           toggleBtnElem.role = "button";
           toggleBtnElem.tabIndex = 0;
           toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+          toggleBtnElem.dataset.state = OvlState[overlayState];
 
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
 
-            invertOverlay = !invertOverlay;
+            overlayState = overflowValue(overlayState + 1, 0, Object.keys(OvlState).length / 2 - 1);
+            toggleBtnElem.dataset.state = OvlState[overlayState];
 
-            const params = new URL(location.href).searchParams;
-            if(thumbImgElem.dataset.videoId !== params.get("v"))
-              applyThumbUrl(params.get("v")!);
-
-            updateOverlayVisibility();
+            applyThumbUrl(new URL(location.href).searchParams.get("v")!);
+            updateOverlayVisibility(true);
           });
 
           setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
