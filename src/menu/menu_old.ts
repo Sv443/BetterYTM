@@ -392,13 +392,21 @@ async function mountCfgMenu() {
     for(const category in featureCfgWithCategories) {
       const featObj = featureCfgWithCategories[category as FeatureCategory];
 
+      const categoryCont = document.createElement("div");
+      categoryCont.id = `bytm-ftconf-category-${category}`;
+      categoryCont.classList.add("bytm-ftconf-category");
+      categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
+      categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
+      categoryCont.tabIndex = 0;
+
       const catHeaderElem = document.createElement("h3");
+      catHeaderElem.id = `bytm-ftconf-category-${category}-header`;
       catHeaderElem.classList.add("bytm-ftconf-category-header");
       catHeaderElem.role = "heading";
       catHeaderElem.ariaLevel = "2";
       catHeaderElem.tabIndex = 0;
       catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
-      featuresCont.appendChild(catHeaderElem);
+      categoryCont.appendChild(catHeaderElem);
 
       for(const featKey in featObj) {
         const ftInfo = featInfo[featKey as FeatureKey] as FeatureInfo[keyof typeof featureCfg];
@@ -491,7 +499,7 @@ async function mountCfgMenu() {
           helpElem && featLeftSideElem.appendChild(helpElem);
 
           ftConfElem.appendChild(featLeftSideElem);
-        }
+        } // end left side element
 
         {
           let inputType: string | undefined = "text";
@@ -752,11 +760,13 @@ async function mountCfgMenu() {
           }
 
           ftConfElem.appendChild(ctrlElem);
-        }
+        } // end right side element
 
-        featuresCont.appendChild(ftConfElem);
+        categoryCont.appendChild(ftConfElem);
       }
-    }
+
+      featuresCont.appendChild(categoryCont);
+    } // end for(const category in featureCfgWithCategories)
 
     //#region reset inputs on external change
     siteEvents.on("rebuildCfgMenu", (newConfig) => {
