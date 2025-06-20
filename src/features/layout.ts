@@ -477,9 +477,6 @@ export async function initAboveQueueBtns() {
 /** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
 
-/** List of video IDs that have already been applied to the thumbnail overlay */
-const previousVideoIDs: string[] = [];
-
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
   if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
@@ -539,18 +536,8 @@ export async function initThumbnailOverlay() {
       }
     };
 
-    const applyThumbUrl = async (videoID: string, force = false) => {
+    const applyThumbUrl = async (videoID: string) => {
       try {
-        if(previousVideoIDs.length > 2)
-          previousVideoIDs.splice(0, previousVideoIDs.length - 2);
-
-        if(!force) {
-          if(previousVideoIDs.find(id => id === videoID))
-            return;
-          else
-            previousVideoIDs.push(videoID);
-        }
-
         const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
         if(
           toggleBtnElem
@@ -587,9 +574,10 @@ export async function initThumbnailOverlay() {
 
         let bestNativeThumbUrl: string | undefined;
         const ac = new AbortController();
-        getBestThumbnailUrl(videoID).then((url) =>
-          ac.signal.aborted ? undefined : (bestNativeThumbUrl = url) && actuallyApplyThumbUrl(url)
-        ).catch(() => void 0);
+        getBestThumbnailUrl(videoID).then((url) => {
+          if(ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
+            actuallyApplyThumbUrl(url!);
+        }).catch(() => void 0);
 
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
           all: true,
@@ -618,15 +606,9 @@ export async function initThumbnailOverlay() {
       }
     };
 
-    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID, oldVideoID) => {
-      unsubWatchIdChanged();
+    siteEvents.once("watchIdChanged", (videoID) => {
       addSelectorListener("body", "#bytm-thumbnail-overlay", {
         listener: () => {
-          const curVidIdx = previousVideoIDs.findIndex(id => id === videoID);
-          const prevVidIdx = previousVideoIDs.findIndex(id => id === oldVideoID);
-          curVidIdx > -1 && previousVideoIDs.splice(curVidIdx, 1);
-          prevVidIdx > -1 && previousVideoIDs.splice(prevVidIdx, 1);
-
           applyThumbUrl(videoID);
           updateOverlayVisibility();
         },
@@ -692,7 +674,7 @@ export async function initThumbnailOverlay() {
 
             const params = new URL(location.href).searchParams;
             if(thumbImgElem.dataset.videoId !== params.get("v"))
-              applyThumbUrl(params.get("v")!, true);
+              applyThumbUrl(params.get("v")!);
 
             updateOverlayVisibility();
           });
