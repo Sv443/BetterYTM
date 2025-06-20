@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cd46104e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@34be29b7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "cd46104e",
+    buildNumber: "34be29b7",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5316,13 +5316,13 @@ async function initThumbnailOverlay() {
                 indicatorElem && playerEl.appendChild(indicatorElem);
                 siteEvents.on("watchIdChanged", async (videoID) => {
                     overlayState = OvlState.Off;
-                    updateOverlayVisibility();
                     applyThumbUrl(videoID);
+                    updateOverlayVisibility();
                 });
                 const params = new URL(location.href).searchParams;
                 if (params.has("v")) {
-                    updateOverlayVisibility();
                     applyThumbUrl(params.get("v"));
+                    updateOverlayVisibility();
                 }
                 // toggle button
                 if (toggleBtnShown) {
@@ -5335,7 +5335,8 @@ async function initThumbnailOverlay() {
                     onInteraction(toggleBtnElem, (e) => {
                         if (e.shiftKey)
                             return openInTab(toggleBtnElem.href, false);
-                        overlayState = overflowValue(overlayState + 1, 0, Object.keys(OvlState).length / 2 - 1);
+                        const ovlMax = Object.keys(OvlState).length / 2 - 1;
+                        overlayState = overflowValue(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
                         toggleBtnElem.dataset.state = OvlState[overlayState];
                         applyThumbUrl(new URL(location.href).searchParams.get("v"));
                         updateOverlayVisibility(true);
