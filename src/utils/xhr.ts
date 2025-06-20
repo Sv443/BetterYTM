@@ -121,14 +121,16 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
 export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {
   try {
     const res = await fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
-    const json = await res.json() as ITunesAPIResponse;
 
     if(!res.ok) {
-      error("Couldn't fetch iTunes album info due to an error:", json);
+      warn("Couldn't fetch iTunes album info due to a request error:", res);
       return [];
     }
+
+    const json = await res.json().catch(warn) as ITunesAPIResponse;
+
     if(!("resultCount" in json) || !("results" in json)) {
-      error("Couldn't parse iTunes album info due to an error:", json);
+      warn("Couldn't parse iTunes album info due to an error:", json);
       return [];
     }
     if(json.resultCount === 0) {
