@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a7de1190/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cd46104e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "a7de1190",
+    buildNumber: "cd46104e",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5192,7 +5192,7 @@ async function initThumbnailOverlay() {
             else if (behavior === "songsOnly" && !isVideo)
                 showOverlay = true;
             if (!isManual && showOverlay && overlayState === OvlState.Off)
-                overlayState = OvlState.AM; // TODO: set to value from getFeature("foo")
+                overlayState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
             showOverlay = overlayState === OvlState.Off ? !showOverlay : showOverlay;
             const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
             const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
@@ -5217,7 +5217,7 @@ async function initThumbnailOverlay() {
                             (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
                         }
                         if (toggleBtnElem)
-                            toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+                            toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${OvlState[overlayState]}`);
                     },
                 });
             }
@@ -5261,7 +5261,7 @@ async function initThumbnailOverlay() {
                     async listener(elems) {
                         var _a, _b, _c, _d;
                         // TODO:FIXME: 2nd artist name gets used instead of album name when there's more than 1 artist
-                        const iTunesAlbum = elems.length >= 5 && getFeature("thumbnailOverlayPreferITunes")
+                        const iTunesAlbum = elems.length >= 5
                             ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
                             : undefined;
                         const imgRes = (_a = getFeature("thumbnailOverlayITunesImgRes")) !== null && _a !== void 0 ? _a : featInfo.thumbnailOverlayITunesImgRes.default;
@@ -5316,13 +5316,13 @@ async function initThumbnailOverlay() {
                 indicatorElem && playerEl.appendChild(indicatorElem);
                 siteEvents.on("watchIdChanged", async (videoID) => {
                     overlayState = OvlState.Off;
-                    applyThumbUrl(videoID);
                     updateOverlayVisibility();
+                    applyThumbUrl(videoID);
                 });
                 const params = new URL(location.href).searchParams;
                 if (params.has("v")) {
-                    applyThumbUrl(params.get("v"));
                     updateOverlayVisibility();
+                    applyThumbUrl(params.get("v"));
                 }
                 // toggle button
                 if (toggleBtnShown) {
@@ -6427,6 +6427,10 @@ const options = {
         { value: "normal", label: t("color_lightness_normal") },
         { value: "lighter", label: t("color_lightness_lighter") },
     ],
+    thumbOverlaySources: () => [
+        { value: "am", label: t("thumbnail_overlay_source_am") },
+        { value: "yt", label: t("thumbnail_overlay_source_yt") },
+    ],
 };
 //#region # features
 /**
@@ -6556,14 +6560,16 @@ const featInfo = {
         advanced: true,
         textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
-    thumbnailOverlayPreferITunes: {
-        type: "toggle",
+    thumbnailOverlayPreferredSource: {
+        type: "select",
         category: "layout",
         supportedSites: ["ytm"],
-        default: true,
+        default: "am",
+        options: options.thumbOverlaySources,
         reloadRequired: false,
         enable: noop,
-        textAdornment: adornments.ytmOnly,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     hideCursorOnIdle: {
         type: "toggle",
@@ -7541,7 +7547,7 @@ const migrations = {
     },
     // 10 -> 11 (v3.1)
     11: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
-        "thumbnailOverlayPreferITunes",
+        "thumbnailOverlayPreferredSource",
     ]), [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
     ]),
