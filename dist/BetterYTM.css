@@ -1297,8 +1297,8 @@ body.bytm-dom-ytm
   height: auto;
   max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 20px;
+  transform: translate(-50%, 0%);
   z-index: 3006;
   color: #fff;
   background-color: var(--bytm-menu-bg);
@@ -1519,6 +1519,10 @@ body.bytm-dom-ytm
 
 .bytm-hidden {
   visibility: hidden !important;
+}
+
+.bytm-ftconf-category.hidden {
+  display: none;
 }
 
 .bytm-ftconf-category-header {

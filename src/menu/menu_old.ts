@@ -389,12 +389,28 @@ async function mountCfgMenu() {
       }
     };
 
+    //#DEBUG
+    document.addEventListener("keydown", (e) => {
+      if(mode === "development" && e.code === "F8" && (e.shiftKey || e.ctrlKey)) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const catElem = featuresCont.querySelector(".bytm-ftconf-category:not(.hidden)");
+        catElem?.classList.add("hidden");
+        const sibling = !e.ctrlKey ? catElem?.nextElementSibling : catElem?.previousElementSibling;
+        const wrapChild = [...document.querySelectorAll<HTMLElement>("#bytm-menu-opts .bytm-ftconf-category")].at(e.ctrlKey ? -1 : 0);
+        (sibling && sibling.classList.contains("bytm-ftconf-category") ? sibling : wrapChild)?.classList.remove("hidden");
+      }
+    });
+
+    let firstCategory = true;
     for(const category in featureCfgWithCategories) {
       const featObj = featureCfgWithCategories[category as FeatureCategory];
 
       const categoryCont = document.createElement("div");
       categoryCont.id = `bytm-ftconf-category-${category}`;
       categoryCont.classList.add("bytm-ftconf-category");
+      !firstCategory && categoryCont.classList.add("hidden");
       categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
       categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
       categoryCont.tabIndex = 0;
@@ -766,6 +782,7 @@ async function mountCfgMenu() {
       }
 
       featuresCont.appendChild(categoryCont);
+      firstCategory = false;
     } // end for(const category in featureCfgWithCategories)
 
     //#region reset inputs on external change
