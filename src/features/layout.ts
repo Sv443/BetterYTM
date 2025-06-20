@@ -4,7 +4,7 @@ import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
 import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
-import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowValue, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
 import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
@@ -724,7 +724,7 @@ export async function initThumbnailOverlay() {
               return openInTab(toggleBtnElem.href, false);
 
             const ovlMax = Object.keys(OvlState).length / 2 - 1;
-            overlayState = overflowValue(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
+            overlayState = overflowVal(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
 
             if(getCurrentMediaType() === "video" && overlayState === OvlState.AM)
               overlayState = OvlState.Off;

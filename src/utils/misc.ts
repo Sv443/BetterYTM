@@ -267,8 +267,21 @@ export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
   });
 }
 
-/** Returns the value unmodified if between min and max, otherwise returns the value wrapped around from max to min, however many times it takes for it to be in range */
-export function overflowValue(value: number, min: number, max: number) {
+/** Makes the {@linkcode value} over- & underflow so it is always between {@linkcode min} and {@linkcode max}, if it's outside the range */
+export function overflowVal(value: number, min: number, max: number): number;
+/** Makes the {@linkcode value} over- & underflow so it is always between `0` and {@linkcode max}, if it's outside the range */
+export function overflowVal(value: number, max: number): number;
+/** Makes the {@linkcode value} over- & underflow so it is always in a certain range */
+export function overflowVal(value: number, minOrMax: number, max?: number): number {
+  const min = typeof max === "number" ? minOrMax : 0;
+  max = typeof max === "number" ? max : minOrMax;
+
+  if(min > max)
+    throw new RangeError("Parameter \"min\" can't be bigger than \"max\"");
+
+  if(isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max))
+    return NaN;
+
   if(value >= min && value <= max)
     return value;
 
@@ -280,49 +293,42 @@ export function overflowValue(value: number, min: number, max: number) {
 //#region resources
 
 /**
- * TODO: remove GM.getResourceUrl, since all resources are now fetched from the CDN  
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
  * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache  
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
  * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
-export async function getResourceUrl(name: ResourceKey | "_", uncached = false) {
-  let url = !uncached && await GM.getResourceUrl(name);
+export async function getResourceUrl(name: ResourceKey | "_") {
+  const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
 
-  if(!url || url.length === 0) {
-    const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
+  if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+    const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
+    const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber;
 
-    if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-      const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
-      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber;
-
-      if(pathName) {
-        return pathName.startsWith("http")
-          ? pathName
-          : (() => {
-            let path = pathName;
-            if(path.startsWith("/"))
-              path = path.slice(1);
-            else
-              path = `assets/${path}`;
-            switch(assetSource) {
-            case "jsdelivr":
-              return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
-            case "github":
-              return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
-            case "local":
-              return `http://localhost:${devServerPort}/${path}`;
-            }
-          })();
-      }
+    if(pathName) {
+      return pathName.startsWith("http")
+        ? pathName
+        : (() => {
+          let path = pathName;
+          if(path.startsWith("/"))
+            path = path.slice(1);
+          else
+            path = `assets/${path}`;
+          switch(assetSource) {
+          case "jsdelivr":
+            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
+          case "github":
+            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
+          case "local":
+            return `http://localhost:${devServerPort}/${path}`;
+          }
+        })();
     }
-
-    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
-    // @ts-expect-error
-    url = await GM.getResourceUrl(name, false);
   }
 
-  return url;
+  warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
+  // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
+  return await GM.getResourceUrl(name, false);
 }
 
 /**
