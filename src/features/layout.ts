@@ -662,14 +662,14 @@ export async function initThumbnailOverlay() {
 
         siteEvents.on("watchIdChanged", async (videoID) => {
           overlayState = OvlState.Off;
-          updateOverlayVisibility();
           applyThumbUrl(videoID);
+          updateOverlayVisibility();
         });
 
         const params = new URL(location.href).searchParams;
         if(params.has("v")) {
-          updateOverlayVisibility();
           applyThumbUrl(params.get("v")!);
+          updateOverlayVisibility();
         }
 
         // toggle button
@@ -685,7 +685,8 @@ export async function initThumbnailOverlay() {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
 
-            overlayState = overflowValue(overlayState + 1, 0, Object.keys(OvlState).length / 2 - 1);
+            const ovlMax = Object.keys(OvlState).length / 2 - 1;
+            overlayState = overflowValue(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
             toggleBtnElem.dataset.state = OvlState[overlayState];
 
             applyThumbUrl(new URL(location.href).searchParams.get("v")!);
