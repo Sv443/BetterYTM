@@ -171,7 +171,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
 
   cfgOptWrapperElem.appendChild(cfgOptElem);
 
-  onInteraction(cfgOptWrapperElem, openCfgMenu);
+  onInteraction(cfgOptWrapperElem, () => openCfgMenu());
 
   const firstChild = container?.firstElementChild;
 

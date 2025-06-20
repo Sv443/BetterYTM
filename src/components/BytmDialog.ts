@@ -387,7 +387,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
       closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-      onInteraction(closeBtnEl, this.close);
+      onInteraction(closeBtnEl, (e) => this.close(e));
       headerWrapperEl.appendChild(closeBtnEl);
     }
 

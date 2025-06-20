@@ -161,7 +161,7 @@ async function mountCfgMenu() {
     closeElem.tabIndex = 0;
     closeElem.src = await getResourceUrl("img-close");
     closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-    onInteraction(closeElem, closeCfgMenu);
+    onInteraction(closeElem, (e) => closeCfgMenu(e));
 
     titleCont.appendChild(titleElem);
     titleCont.appendChild(linksCont);
@@ -586,7 +586,7 @@ async function mountCfgMenu() {
               }
             };
 
-            onInteraction(advCopyHiddenBtn, copyHiddenInteraction);
+            onInteraction(advCopyHiddenBtn, (e) => copyHiddenInteraction(e));
 
             advCopyHiddenCont = document.createElement("span");
 
