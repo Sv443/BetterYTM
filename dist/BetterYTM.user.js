@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@98fd9998/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3b2c3a0d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -123,6 +123,8 @@ var resources = {
 	"icon-globe_small": "icons/globe_small.svg",
 	"icon-globe": "icons/globe.svg",
 	"icon-help": "icons/help.svg",
+	"icon-image_filled_am": "icons/image_filled_am.svg",
+	"icon-image_filled_yt": "icons/image_filled_yt.svg",
 	"icon-image_filled": "icons/image_filled.svg",
 	"icon-image": "icons/image.svg",
 	"icon-link": "icons/link.svg",
@@ -143,8 +145,8 @@ var resources = {
 	"img-logo": "images/logo/logo_48.png",
 	"img-openuserjs": "images/external/openuserjs.png",
 	"trans-de-DE": "translations/de-DE.json",
-	"trans-en-US": "translations/en-US.json",
 	"trans-en-GB": "translations/en-GB.json",
+	"trans-en-US": "translations/en-US.json",
 	"trans-es-ES": "translations/es-ES.json",
 	"trans-fr-FR": "translations/fr-FR.json",
 	"trans-hi-IN": "translations/hi-IN.json",
@@ -335,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "98fd9998",
+    buildNumber: "3b2c3a0d",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
