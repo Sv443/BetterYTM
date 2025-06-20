@@ -169,7 +169,7 @@ export const migrations: DataMigrationsDict = {
   // 10 -> 11 (v3.1)
   11: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
     useDefaultConfig(oldData, [
-      "thumbnailOverlayPreferITunes",
+      "thumbnailOverlayPreferredSource",
     ]),
     [
       { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
