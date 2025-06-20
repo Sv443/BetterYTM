@@ -263,6 +263,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 ` as const;
+
   return [header, subHeader];
 }
 
