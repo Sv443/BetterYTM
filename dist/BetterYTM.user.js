@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@34be29b7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e6b76a9b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "34be29b7",
+    buildNumber: "e6b76a9b",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5184,26 +5184,28 @@ async function initThumbnailOverlay() {
         const updateOverlayVisibility = async (isManual = false) => {
             if (!UserUtils.isDomLoaded())
                 return;
-            const behavior = getFeature("thumbnailOverlayBehavior");
-            let showOverlay = behavior === "always";
             const isVideo = getCurrentMediaType() === "video";
-            if (behavior === "videosOnly" && isVideo)
-                showOverlay = true;
-            else if (behavior === "songsOnly" && !isVideo)
-                showOverlay = true;
-            if (!isManual && showOverlay && overlayState === OvlState.Off)
-                overlayState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
-            showOverlay = overlayState === OvlState.Off ? !showOverlay : showOverlay;
+            const defaultBehavior = getFeature("thumbnailOverlayBehavior");
+            const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
+            if (!isManual && overlayState !== prefState)
+                overlayState = prefState;
+            else if (!isManual && overlayState === OvlState.Off)
+                overlayState = (defaultBehavior === "videosOnly" && isVideo) || (defaultBehavior === "songsOnly" && !isVideo) || (defaultBehavior === "always")
+                    ? prefState
+                    : OvlState.Off;
+            if (getCurrentMediaType() === "video" && overlayState === OvlState.AM)
+                overlayState = OvlState.YT;
             const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
             const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
             const indicatorElem = document.querySelector("#bytm-thumbnail-overlay-indicator");
+            const ovlShown = overlayState !== OvlState.Off;
             if (overlayElem)
-                overlayElem.style.display = showOverlay ? "block" : "none";
+                overlayElem.style.display = ovlShown ? "block" : "none";
             if (thumbElem)
-                thumbElem.ariaHidden = String(!showOverlay);
+                thumbElem.ariaHidden = String(!ovlShown);
             if (indicatorElem) {
-                indicatorElem.style.display = showOverlay ? "block" : "none";
-                indicatorElem.ariaHidden = String(!showOverlay);
+                indicatorElem.style.display = ovlShown ? "block" : "none";
+                indicatorElem.ariaHidden = String(!ovlShown);
             }
             if (getFeature("thumbnailOverlayToggleBtnShown")) {
                 addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
@@ -5211,9 +5213,14 @@ async function initThumbnailOverlay() {
                         var _a;
                         const toggleBtnIconElem = toggleBtnElem.querySelector("svg");
                         if (toggleBtnIconElem) {
-                            setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay
-                                ? `_filled${overlayState === OvlState.YT ? "_yt" : overlayState === OvlState.AM ? "_am" : ""}`
-                                : ""}`));
+                            let key = `icon-image${overlayState === OvlState.YT
+                                ? "_filled_yt"
+                                : overlayState === OvlState.AM
+                                    ? "_filled_am"
+                                    : ""}`;
+                            if (getCurrentMediaType() === "video" && overlayState !== OvlState.Off)
+                                key = "icon-image_filled";
+                            setInnerHtml(toggleBtnElem, await resourceAsString(key));
                             (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
                         }
                         if (toggleBtnElem)
@@ -5257,12 +5264,34 @@ async function initThumbnailOverlay() {
                         actuallyApplyThumbUrl(url);
                 }).catch(() => void 0);
                 addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
-                    all: true,
-                    async listener(elems) {
+                    async listener() {
                         var _a, _b, _c, _d;
-                        // TODO:FIXME: 2nd artist name gets used instead of album name when there's more than 1 artist
-                        const iTunesAlbum = elems.length >= 5
-                            ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
+                        const [primaryArtist, albumName] = (() => {
+                            // format: "<a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Extra Info</span>"
+                            var _a, _b;
+                            const parent = document.querySelector(".content-info-wrapper .subtitle yt-formatted-string");
+                            if (!parent)
+                                return [undefined, undefined];
+                            const children = [...parent.querySelectorAll("a, span")];
+                            const splitList = children.reduce((acc, el) => {
+                                if (el.tagName === "SPAN" && el.innerText.includes("•"))
+                                    acc.push([]);
+                                acc[acc.length - 1].push(el);
+                                return acc;
+                            }, [[]]);
+                            if (splitList.length < 2)
+                                return [undefined, undefined];
+                            const firstArtistLink = splitList[0].find((el) => el.tagName === "A");
+                            const firstArtistName = splitList[0].find((el) => !el.innerText.match(/^\s*•\s*$/));
+                            const primaryArtist = (_a = (firstArtistLink !== null && firstArtistLink !== void 0 ? firstArtistLink : firstArtistName)) === null || _a === void 0 ? void 0 : _a.innerText;
+                            const albumName = (_b = (splitList[1].find((el) => el.tagName === "A")
+                                || splitList[1].find((el) => el.tagName === "SPAN"))) === null || _b === void 0 ? void 0 : _b.innerText;
+                            return [primaryArtist, albumName];
+                        })();
+                        if (primaryArtist && albumName)
+                            log("Resolved primary artist and album names:", primaryArtist, "-", albumName);
+                        const iTunesAlbum = primaryArtist && albumName
+                            ? await getBestITunesAlbumMatch(primaryArtist, albumName)
                             : undefined;
                         const imgRes = (_a = getFeature("thumbnailOverlayITunesImgRes")) !== null && _a !== void 0 ? _a : featInfo.thumbnailOverlayITunesImgRes.default;
                         const iTunesUrl = ((_b = iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl60) !== null && _b !== void 0 ? _b : iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl100);
@@ -5337,6 +5366,8 @@ async function initThumbnailOverlay() {
                             return openInTab(toggleBtnElem.href, false);
                         const ovlMax = Object.keys(OvlState).length / 2 - 1;
                         overlayState = overflowValue(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
+                        if (getCurrentMediaType() === "video" && overlayState === OvlState.AM)
+                            overlayState = OvlState.Off;
                         toggleBtnElem.dataset.state = OvlState[overlayState];
                         applyThumbUrl(new URL(location.href).searchParams.get("v"));
                         updateOverlayVisibility(true);
