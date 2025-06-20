@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e6b76a9b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0b5eeb64/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e6b76a9b",
+    buildNumber: "0b5eeb64",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3037,8 +3037,14 @@ function scrollToCurrentSongInQueue(evt) {
         }
     });
 }
-/** Returns the value unmodified if between min and max, otherwise returns the value wrapped around from max to min, however many times it takes for it to be in range */
-function overflowValue(value, min, max) {
+/** Makes the {@linkcode value} over- & underflow so it is always in a certain range */
+function overflowVal(value, minOrMax, max) {
+    const min = typeof max === "number" ? minOrMax : 0;
+    max = typeof max === "number" ? max : minOrMax;
+    if (min > max)
+        throw new RangeError("Parameter \"min\" can't be bigger than \"max\"");
+    if (isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max))
+        return NaN;
     if (value >= min && value <= max)
         return value;
     const range = max - min + 1;
@@ -3047,45 +3053,40 @@ function overflowValue(value, min, max) {
 }
 //#region resources
 /**
- * TODO: remove GM.getResourceUrl, since all resources are now fetched from the CDN
  * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
  * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
  * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
-async function getResourceUrl(name, uncached = false) {
+async function getResourceUrl(name) {
     var _a;
-    let url = !uncached && await GM.getResourceUrl(name);
-    if (!url || url.length === 0) {
-        const resObjOrStr = (_a = resourcesJson.resources) === null || _a === void 0 ? void 0 : _a[name];
-        if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-            const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.path : resObjOrStr;
-            const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.ref : buildNumber;
-            if (pathName) {
-                return pathName.startsWith("http")
-                    ? pathName
-                    : (() => {
-                        let path = pathName;
-                        if (path.startsWith("/"))
-                            path = path.slice(1);
-                        else
-                            path = `assets/${path}`;
-                        switch (assetSource) {
-                            case "jsdelivr":
-                                return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
-                            case "github":
-                                return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
-                            case "local":
-                                return `http://localhost:${devServerPort}/${path}`;
-                        }
-                    })();
-            }
+    const resObjOrStr = (_a = resourcesJson.resources) === null || _a === void 0 ? void 0 : _a[name];
+    if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+        const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.path : resObjOrStr;
+        const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.ref : buildNumber;
+        if (pathName) {
+            return pathName.startsWith("http")
+                ? pathName
+                : (() => {
+                    let path = pathName;
+                    if (path.startsWith("/"))
+                        path = path.slice(1);
+                    else
+                        path = `assets/${path}`;
+                    switch (assetSource) {
+                        case "jsdelivr":
+                            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
+                        case "github":
+                            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
+                        case "local":
+                            return `http://localhost:${devServerPort}/${path}`;
+                    }
+                })();
         }
-        warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
-        // @ts-expect-error
-        url = await GM.getResourceUrl(name, false);
     }
-    return url;
+    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
+    // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
+    return await GM.getResourceUrl(name, false);
 }
 /**
  * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
@@ -4278,13 +4279,20 @@ async function mountCfgMenu() {
         };
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
+            const categoryCont = document.createElement("div");
+            categoryCont.id = `bytm-ftconf-category-${category}`;
+            categoryCont.classList.add("bytm-ftconf-category");
+            categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
+            categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
+            categoryCont.tabIndex = 0;
             const catHeaderElem = document.createElement("h3");
+            catHeaderElem.id = `bytm-ftconf-category-${category}-header`;
             catHeaderElem.classList.add("bytm-ftconf-category-header");
             catHeaderElem.role = "heading";
             catHeaderElem.ariaLevel = "2";
             catHeaderElem.tabIndex = 0;
             catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
-            featuresCont.appendChild(catHeaderElem);
+            categoryCont.appendChild(catHeaderElem);
             for (const featKey in featObj) {
                 const ftInfo = featInfo[featKey];
                 if (!ftInfo || ("hidden" in ftInfo && ftInfo.hidden === true))
@@ -4357,7 +4365,7 @@ async function mountCfgMenu() {
                     featLeftSideElem.appendChild(textElem);
                     helpElem && featLeftSideElem.appendChild(helpElem);
                     ftConfElem.appendChild(featLeftSideElem);
-                }
+                } // end left side element
                 {
                     let inputType = "text";
                     let inputTag = "input";
@@ -4575,10 +4583,11 @@ async function mountCfgMenu() {
                         ctrlElem.appendChild(customInputEl);
                     }
                     ftConfElem.appendChild(ctrlElem);
-                }
-                featuresCont.appendChild(ftConfElem);
+                } // end right side element
+                categoryCont.appendChild(ftConfElem);
             }
-        }
+            featuresCont.appendChild(categoryCont);
+        } // end for(const category in featureCfgWithCategories)
         //#region reset inputs on external change
         siteEvents.on("rebuildCfgMenu", (newConfig) => {
             for (const ftKey in featInfo) {
@@ -5365,7 +5374,7 @@ async function initThumbnailOverlay() {
                         if (e.shiftKey)
                             return openInTab(toggleBtnElem.href, false);
                         const ovlMax = Object.keys(OvlState).length / 2 - 1;
-                        overlayState = overflowValue(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
+                        overlayState = overflowVal(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
                         if (getCurrentMediaType() === "video" && overlayState === OvlState.AM)
                             overlayState = OvlState.Off;
                         toggleBtnElem.dataset.state = OvlState[overlayState];
