@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           2.2.0
+// @version           3.0.0
 // @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
