@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3b2c3a0d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a7de1190/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3b2c3a0d",
+    buildNumber: "a7de1190",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3037,6 +3037,14 @@ function scrollToCurrentSongInQueue(evt) {
         }
     });
 }
+/** Returns the value unmodified if between min and max, otherwise returns the value wrapped around from max to min, however many times it takes for it to be in range */
+function overflowValue(value, min, max) {
+    if (value >= min && value <= max)
+        return value;
+    const range = max - min + 1;
+    const wrappedValue = ((value - min) % range + range) % range + min;
+    return wrappedValue;
+}
 //#region resources
 /**
  * TODO: remove GM.getResourceUrl, since all resources are now fetched from the CDN
@@ -5154,11 +5162,14 @@ async function initAboveQueueBtns() {
     });
 }
 //#region thumb.overlay
-// TODO:FIXME: rewrite this whole chonker cause it doesn't wanna behave at all
-/** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
-let invertOverlay = false;
-/** List of video IDs that have already been applied to the thumbnail overlay */
-const previousVideoIDs = [];
+var OvlState;
+(function (OvlState) {
+    OvlState[OvlState["Off"] = 0] = "Off";
+    OvlState[OvlState["YT"] = 1] = "YT";
+    OvlState[OvlState["AM"] = 2] = "AM";
+})(OvlState || (OvlState = {}));
+/** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
+let overlayState = OvlState.Off;
 async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
     if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
@@ -5170,7 +5181,7 @@ async function initThumbnailOverlay() {
         if (!playerEl)
             return error("Couldn't find video player element while adding thumbnail overlay");
         /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
-        const updateOverlayVisibility = async () => {
+        const updateOverlayVisibility = async (isManual = false) => {
             if (!UserUtils.isDomLoaded())
                 return;
             const behavior = getFeature("thumbnailOverlayBehavior");
@@ -5180,7 +5191,9 @@ async function initThumbnailOverlay() {
                 showOverlay = true;
             else if (behavior === "songsOnly" && !isVideo)
                 showOverlay = true;
-            showOverlay = invertOverlay ? !showOverlay : showOverlay;
+            if (!isManual && showOverlay && overlayState === OvlState.Off)
+                overlayState = OvlState.AM; // TODO: set to value from getFeature("foo")
+            showOverlay = overlayState === OvlState.Off ? !showOverlay : showOverlay;
             const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
             const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
             const indicatorElem = document.querySelector("#bytm-thumbnail-overlay-indicator");
@@ -5198,7 +5211,9 @@ async function initThumbnailOverlay() {
                         var _a;
                         const toggleBtnIconElem = toggleBtnElem.querySelector("svg");
                         if (toggleBtnIconElem) {
-                            setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay ? "_filled" : ""}`));
+                            setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay
+                                ? `_filled${overlayState === OvlState.YT ? "_yt" : overlayState === OvlState.AM ? "_am" : ""}`
+                                : ""}`));
                             (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
                         }
                         if (toggleBtnElem)
@@ -5207,25 +5222,19 @@ async function initThumbnailOverlay() {
                 });
             }
         };
-        const applyThumbUrl = async (videoID, force = false) => {
+        const applyThumbUrl = async (videoID) => {
             try {
-                if (previousVideoIDs.length > 2)
-                    previousVideoIDs.splice(0, previousVideoIDs.length - 2);
-                if (!force) {
-                    if (previousVideoIDs.find(id => id === videoID))
-                        return;
-                    else
-                        previousVideoIDs.push(videoID);
-                }
                 const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                 if (toggleBtnElem
                     && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
                     && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
                         && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
                     return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
-                const actuallyApplyThumbUrl = (thumbUrl) => {
+                const actuallyApplyThumbUrl = (ytThumbUrl, amThumbUrl) => {
+                    var _a;
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
+                    const thumbUrl = (_a = (overlayState === OvlState.AM ? amThumbUrl : ytThumbUrl)) !== null && _a !== void 0 ? _a : ytThumbUrl;
                     if (toggleBtnElem) {
                         toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
                         toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
@@ -5243,11 +5252,15 @@ async function initThumbnailOverlay() {
                 };
                 let bestNativeThumbUrl;
                 const ac = new AbortController();
-                getBestThumbnailUrl(videoID).then((url) => ac.signal.aborted ? undefined : (bestNativeThumbUrl = url) && actuallyApplyThumbUrl(url)).catch(() => void 0);
+                getBestThumbnailUrl(videoID).then((url) => {
+                    if (ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
+                        actuallyApplyThumbUrl(url);
+                }).catch(() => void 0);
                 addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
                     all: true,
                     async listener(elems) {
                         var _a, _b, _c, _d;
+                        // TODO:FIXME: 2nd artist name gets used instead of album name when there's more than 1 artist
                         const iTunesAlbum = elems.length >= 5 && getFeature("thumbnailOverlayPreferITunes")
                             ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
                             : undefined;
@@ -5256,7 +5269,7 @@ async function initThumbnailOverlay() {
                         iTunesUrl && !ac.signal.aborted && ac.abort();
                         const thumbUrl = (_d = (_c = iTunesUrl === null || iTunesUrl === void 0 ? void 0 : iTunesUrl.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)) !== null && _c !== void 0 ? _c : bestNativeThumbUrl) !== null && _d !== void 0 ? _d : await getBestThumbnailUrl(videoID);
                         if (thumbUrl)
-                            actuallyApplyThumbUrl(thumbUrl);
+                            actuallyApplyThumbUrl(bestNativeThumbUrl !== null && bestNativeThumbUrl !== void 0 ? bestNativeThumbUrl : thumbUrl, thumbUrl);
                         else
                             warn("Couldn't get thumbnail URL for album", iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.collectionName, "by", iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artistName, "or video with ID", videoID);
                     },
@@ -5266,14 +5279,9 @@ async function initThumbnailOverlay() {
                 error("Couldn't apply thumbnail URL to overlay due to an error:", err);
             }
         };
-        const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID, oldVideoID) => {
-            unsubWatchIdChanged();
+        siteEvents.once("watchIdChanged", (videoID) => {
             addSelectorListener("body", "#bytm-thumbnail-overlay", {
                 listener: () => {
-                    const curVidIdx = previousVideoIDs.findIndex(id => id === videoID);
-                    const prevVidIdx = previousVideoIDs.findIndex(id => id === oldVideoID);
-                    curVidIdx > -1 && previousVideoIDs.splice(curVidIdx, 1);
-                    prevVidIdx > -1 && previousVideoIDs.splice(prevVidIdx, 1);
                     applyThumbUrl(videoID);
                     updateOverlayVisibility();
                 },
@@ -5307,7 +5315,7 @@ async function initThumbnailOverlay() {
                 playerEl.appendChild(overlayElem);
                 indicatorElem && playerEl.appendChild(indicatorElem);
                 siteEvents.on("watchIdChanged", async (videoID) => {
-                    invertOverlay = false;
+                    overlayState = OvlState.Off;
                     applyThumbUrl(videoID);
                     updateOverlayVisibility();
                 });
@@ -5323,14 +5331,14 @@ async function initThumbnailOverlay() {
                     toggleBtnElem.role = "button";
                     toggleBtnElem.tabIndex = 0;
                     toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+                    toggleBtnElem.dataset.state = OvlState[overlayState];
                     onInteraction(toggleBtnElem, (e) => {
                         if (e.shiftKey)
                             return openInTab(toggleBtnElem.href, false);
-                        invertOverlay = !invertOverlay;
-                        const params = new URL(location.href).searchParams;
-                        if (thumbImgElem.dataset.videoId !== params.get("v"))
-                            applyThumbUrl(params.get("v"), true);
-                        updateOverlayVisibility();
+                        overlayState = overflowValue(overlayState + 1, 0, Object.keys(OvlState).length / 2 - 1);
+                        toggleBtnElem.dataset.state = OvlState[overlayState];
+                        applyThumbUrl(new URL(location.href).searchParams.get("v"));
+                        updateOverlayVisibility(true);
                     });
                     setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
                     (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
