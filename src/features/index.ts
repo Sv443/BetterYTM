@@ -3,7 +3,7 @@ import { formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourc
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
-import { FeatureInfo, LogLevel, type ColorLightnessPref, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
+import { FeatureInfo, LogLevel, type ColorLightnessPref, type FeatureConfig, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { showIconToast } from "../components/toast.js";
@@ -120,6 +120,10 @@ const options = {
     { value: "normal", label: t("color_lightness_normal") },
     { value: "lighter", label: t("color_lightness_lighter") },
   ] satisfies SelectOption<ColorLightnessPref>[],
+  thumbOverlaySources: () => [
+    { value: "am", label: t("thumbnail_overlay_source_am") },
+    { value: "yt", label: t("thumbnail_overlay_source_yt") },
+  ] satisfies SelectOption<FeatureConfig["thumbnailOverlayPreferredSource"]>[],
 } as const;
 
 //#region # features
@@ -251,14 +255,16 @@ export const featInfo = {
     advanced: true,
     textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
   },
-  thumbnailOverlayPreferITunes: {
-    type: "toggle",
+  thumbnailOverlayPreferredSource: {
+    type: "select",
     category: "layout",
     supportedSites: ["ytm"],
-    default: true,
+    default: "am",
+    options: options.thumbOverlaySources,
     reloadRequired: false,
     enable: noop,
-    textAdornment: adornments.ytmOnly,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
   },
   hideCursorOnIdle: {
     type: "toggle",

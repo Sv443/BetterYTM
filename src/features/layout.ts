@@ -510,7 +510,7 @@ export async function initThumbnailOverlay() {
         showOverlay = true;
 
       if(!isManual && showOverlay && overlayState === OvlState.Off)
-        overlayState = OvlState.AM; // TODO: set to value from getFeature("foo")
+        overlayState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
 
       showOverlay = overlayState === OvlState.Off ? !showOverlay : showOverlay;
 
@@ -541,7 +541,7 @@ export async function initThumbnailOverlay() {
               toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
             }
             if(toggleBtnElem)
-              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${OvlState[overlayState]}`);
           },
         });
       }
@@ -596,7 +596,7 @@ export async function initThumbnailOverlay() {
           all: true,
           async listener(elems) {
             // TODO:FIXME: 2nd artist name gets used instead of album name when there's more than 1 artist
-            const iTunesAlbum = elems.length >= 5 && getFeature("thumbnailOverlayPreferITunes")
+            const iTunesAlbum = elems.length >= 5
               ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
               : undefined;
 
@@ -604,9 +604,9 @@ export async function initThumbnailOverlay() {
             const iTunesUrl = (iTunesAlbum?.artworkUrl60 ?? iTunesAlbum?.artworkUrl100);
             iTunesUrl && !ac.signal.aborted && ac.abort();
 
-            const thumbUrl = iTunesUrl
-              ?.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
-              ?? bestNativeThumbUrl ?? await getBestThumbnailUrl(videoID);
+            const thumbUrl = iTunesUrl?.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
+              ?? bestNativeThumbUrl
+              ?? await getBestThumbnailUrl(videoID);
 
             if(thumbUrl)
               actuallyApplyThumbUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
@@ -662,14 +662,14 @@ export async function initThumbnailOverlay() {
 
         siteEvents.on("watchIdChanged", async (videoID) => {
           overlayState = OvlState.Off;
-          applyThumbUrl(videoID);
           updateOverlayVisibility();
+          applyThumbUrl(videoID);
         });
 
         const params = new URL(location.href).searchParams;
         if(params.has("v")) {
-          applyThumbUrl(params.get("v")!);
           updateOverlayVisibility();
+          applyThumbUrl(params.get("v")!);
         }
 
         // toggle button
