@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0b5eeb64/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1783ec79/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "0b5eeb64",
+    buildNumber: "1783ec79",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -907,7 +907,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             closeBtnEl.role = "button";
             closeBtnEl.tabIndex = 0;
             closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-            onInteraction(closeBtnEl, this.close);
+            onInteraction(closeBtnEl, (e) => this.close(e));
             headerWrapperEl.appendChild(closeBtnEl);
         }
         dialogWrapperEl.appendChild(headerWrapperEl);
@@ -1487,6 +1487,7 @@ class PromptDialog extends BytmDialog {
             confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
             confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
             confirmBtn.tabIndex = 0;
+            confirmBtn.autofocus = true;
             confirmBtn.addEventListener("click", () => {
                 var _a, _b, _c;
                 this.emitResolve(type === "confirm" ? true : (_c = (_b = (_a = (document.querySelector("#bytm-prompt-dialog-input"))) === null || _a === void 0 ? void 0 : _a.value) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : null);
@@ -1499,6 +1500,8 @@ class PromptDialog extends BytmDialog {
         closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
         closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
         closeBtn.tabIndex = 0;
+        if (type === "alert")
+            closeBtn.autofocus = true;
         closeBtn.addEventListener("click", () => {
             const resVals = {
                 alert: true,
@@ -1923,7 +1926,7 @@ async function createCircularBtn(_a) {
     }
     else if ("onClick" in rest && rest.onClick) {
         btnElem = document.createElement("div");
-        rest.onClick && onInteraction(btnElem, rest.onClick);
+        rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
     }
     else
         throw new TypeError("Either 'href' or 'onClick' must be provided");
@@ -2174,8 +2177,8 @@ function renderFooter$1() {
     importExportBtnElem.textContent = t("export_import");
     importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
     wrapperEl.appendChild(importExportBtnElem);
-    onInteraction(addNewBtnElem, addAutoLikeEntryPrompts);
-    onInteraction(importExportBtnElem, openImportExportAutoLikeChannelsDialog);
+    onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
+    onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
     return wrapperEl;
 }
 async function openImportExportAutoLikeChannelsDialog() {
@@ -3861,7 +3864,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         inputElem.dataset.state = infoElem.dataset.state = "active";
         inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
     };
-    const resetClicked = (e) => {
+    onInteraction(resetElem, (e) => {
         e.preventDefault();
         e.stopImmediatePropagation();
         onChange(initialValue);
@@ -3871,8 +3874,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
         resetElem.classList.add("bytm-hidden");
         inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
-    };
-    onInteraction(resetElem, resetClicked);
+    });
     if (initialValue)
         setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
     let lastKeyDown;
@@ -4093,7 +4095,7 @@ async function mountCfgMenu() {
         closeElem.tabIndex = 0;
         closeElem.src = await getResourceUrl("img-close");
         closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        onInteraction(closeElem, closeCfgMenu);
+        onInteraction(closeElem, (e) => closeCfgMenu(e));
         titleCont.appendChild(titleElem);
         titleCont.appendChild(linksCont);
         titleLogoHeaderCont.appendChild(titleCont);
@@ -4277,11 +4279,26 @@ async function mountCfgMenu() {
                 return String(v).trim();
             }
         };
+        //#DEBUG
+        document.addEventListener("keydown", (e) => {
+            var _a;
+            if (mode === "development" && e.code === "F8" && (e.shiftKey || e.ctrlKey)) {
+                e.preventDefault();
+                e.stopPropagation();
+                const catElem = featuresCont.querySelector(".bytm-ftconf-category:not(.hidden)");
+                catElem === null || catElem === void 0 ? void 0 : catElem.classList.add("hidden");
+                const sibling = !e.ctrlKey ? catElem === null || catElem === void 0 ? void 0 : catElem.nextElementSibling : catElem === null || catElem === void 0 ? void 0 : catElem.previousElementSibling;
+                const wrapChild = [...document.querySelectorAll("#bytm-menu-opts .bytm-ftconf-category")].at(e.ctrlKey ? -1 : 0);
+                (_a = (sibling && sibling.classList.contains("bytm-ftconf-category") ? sibling : wrapChild)) === null || _a === void 0 ? void 0 : _a.classList.remove("hidden");
+            }
+        });
+        let firstCategory = true;
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
             const categoryCont = document.createElement("div");
             categoryCont.id = `bytm-ftconf-category-${category}`;
             categoryCont.classList.add("bytm-ftconf-category");
+            !firstCategory && categoryCont.classList.add("hidden");
             categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
             categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
             categoryCont.tabIndex = 0;
@@ -4425,7 +4442,7 @@ async function mountCfgMenu() {
                                 }, 3000);
                             }
                         };
-                        onInteraction(advCopyHiddenBtn, copyHiddenInteraction);
+                        onInteraction(advCopyHiddenBtn, (e) => copyHiddenInteraction(e));
                         advCopyHiddenCont = document.createElement("span");
                         advCopyHiddenCont.appendChild(advCopyHintElem);
                         advCopyHiddenCont.appendChild(advCopyHiddenBtn);
@@ -4587,6 +4604,7 @@ async function mountCfgMenu() {
                 categoryCont.appendChild(ftConfElem);
             }
             featuresCont.appendChild(categoryCont);
+            firstCategory = false;
         } // end for(const category in featureCfgWithCategories)
         //#region reset inputs on external change
         siteEvents.on("rebuildCfgMenu", (newConfig) => {
@@ -4923,7 +4941,7 @@ async function addConfigMenuOptionYT(container) {
     cfgOptElem.appendChild(cfgOptImgElem);
     cfgOptElem.appendChild(cfgOptItemElem);
     cfgOptWrapperElem.appendChild(cfgOptElem);
-    onInteraction(cfgOptWrapperElem, openCfgMenu);
+    onInteraction(cfgOptWrapperElem, () => openCfgMenu());
     const firstChild = container === null || container === void 0 ? void 0 : container.firstElementChild;
     if (firstChild)
         container.insertBefore(cfgOptWrapperElem, firstChild);
@@ -5196,12 +5214,12 @@ async function initThumbnailOverlay() {
             const isVideo = getCurrentMediaType() === "video";
             const defaultBehavior = getFeature("thumbnailOverlayBehavior");
             const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
-            if (!isManual && overlayState !== prefState)
-                overlayState = prefState;
-            else if (!isManual && overlayState === OvlState.Off)
+            if (!isManual && overlayState === OvlState.Off)
                 overlayState = (defaultBehavior === "videosOnly" && isVideo) || (defaultBehavior === "songsOnly" && !isVideo) || (defaultBehavior === "always")
                     ? prefState
                     : OvlState.Off;
+            else if (!isManual && overlayState !== prefState)
+                overlayState = prefState;
             if (getCurrentMediaType() === "video" && overlayState === OvlState.AM)
                 overlayState = OvlState.YT;
             const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
@@ -5283,8 +5301,10 @@ async function initThumbnailOverlay() {
                                 return [undefined, undefined];
                             const children = [...parent.querySelectorAll("a, span")];
                             const splitList = children.reduce((acc, el) => {
-                                if (el.tagName === "SPAN" && el.innerText.includes("•"))
+                                if (el.tagName === "SPAN" && el.innerText.includes("•")) {
                                     acc.push([]);
+                                    return acc;
+                                }
                                 acc[acc.length - 1].push(el);
                                 return acc;
                             }, [[]]);
@@ -5292,10 +5312,10 @@ async function initThumbnailOverlay() {
                                 return [undefined, undefined];
                             const firstArtistLink = splitList[0].find((el) => el.tagName === "A");
                             const firstArtistName = splitList[0].find((el) => !el.innerText.match(/^\s*•\s*$/));
-                            const primaryArtist = (_a = (firstArtistLink !== null && firstArtistLink !== void 0 ? firstArtistLink : firstArtistName)) === null || _a === void 0 ? void 0 : _a.innerText;
-                            const albumName = (_b = (splitList[1].find((el) => el.tagName === "A")
-                                || splitList[1].find((el) => el.tagName === "SPAN"))) === null || _b === void 0 ? void 0 : _b.innerText;
-                            return [primaryArtist, albumName];
+                            return [
+                                (_a = (firstArtistLink !== null && firstArtistLink !== void 0 ? firstArtistLink : firstArtistName)) === null || _a === void 0 ? void 0 : _a.innerText,
+                                (_b = splitList[1].find((el) => el.tagName === "A")) === null || _b === void 0 ? void 0 : _b.innerText,
+                            ];
                         })();
                         if (primaryArtist && albumName)
                             log("Resolved primary artist and album names:", primaryArtist, "-", albumName);
@@ -7630,9 +7650,31 @@ const configStore = new UserUtils.DataStore({
 async function initConfig() {
     canCompress = await compressionSupported();
     const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
+    let oldDataHash;
+    try {
+        const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
+        const oldDataObj = JSON.parse(oldData);
+        // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
+        if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
+            oldDataHash = await UserUtils.computeHash(JSON.stringify(oldDataObj), "sha256");
+    }
+    catch (_a) {
+    }
     // remove extraneous keys
     let data = fixCfgKeys(await configStore.loadData());
     await configStore.setData(data);
+    // show prompt if config data was migrated
+    if (oldDataHash && oldDataHash !== await UserUtils.computeHash(JSON.stringify(data), "sha256")) {
+        if (await showPrompt({
+            type: "confirm",
+            message: t("config_data_changed_prompt_open_menu"),
+            confirmBtnText: t("open"),
+            confirmBtnTooltip: t("open_menu_tooltip"),
+            denyBtnText: t("prompt_close"),
+            denyBtnTooltip: t("click_to_close_tooltip"),
+        }))
+            window.addEventListener("bytm:ready", () => openCfgMenu(), { once: true });
+    }
     log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
     if (isNaN(oldFmtVer))
         info("  !- Config data was initialized with default values");
