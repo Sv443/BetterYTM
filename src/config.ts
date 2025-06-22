@@ -223,8 +223,10 @@ export async function initConfig() {
   let oldDataHash: string | undefined;
   try {
     const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
-    const oldDataObj = JSON.stringify(JSON.parse(oldData as string)); // ensure formatting is consistent
-    oldDataHash = await computeHash(oldDataObj, "sha256");
+    const oldDataObj = JSON.parse(oldData as string);
+    // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
+    if(oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
+      oldDataHash = await computeHash(JSON.stringify(oldDataObj), "sha256");
   }
   catch { void 0; }
 
@@ -232,7 +234,7 @@ export async function initConfig() {
   let data = fixCfgKeys(await configStore.loadData());
   await configStore.setData(data);
 
-  // show prompt if config data has changed via migrations or reset
+  // show prompt if config data was migrated
   if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
     if(await showPrompt({
       type: "confirm",
