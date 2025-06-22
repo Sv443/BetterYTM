@@ -55,6 +55,8 @@
   "lang_changed_prompt_reload": "Die Sprache wurde geändert.\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?",
   "search_placeholder": "Suchen...",
   "search_clear": "Suche löschen",
+  "open": "Öffnen",
+  "config_data_changed_prompt_open_menu": "Die Konfiguration wurde automatisch aktualisiert.\nMöchtest du das Konfigurationsmenü öffnen?",
 
   "reset": "Zurücksetzen",
   "close": "Schließen",

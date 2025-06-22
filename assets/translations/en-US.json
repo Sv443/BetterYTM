@@ -55,6 +55,8 @@
   "lang_changed_prompt_reload": "The language was changed.\nDo you want to reload the page now to apply changes?",
   "search_placeholder": "Search...",
   "search_clear": "Clear search",
+  "open": "Open",
+  "config_data_changed_prompt_open_menu": "The configuration has been updated automatically.\nDo you want to open the configuration menu?",
 
   "reset": "Reset",
   "close": "Close",

@@ -1,10 +1,10 @@
-import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp, purifyObj } from "@sv443-network/userutils";
+import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp, purifyObj, computeHash } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
 import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
-import { closeCfgMenu } from "./menu/menu_old.js";
+import { closeCfgMenu, openCfgMenu } from "./menu/menu_old.js";
 import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
@@ -220,9 +220,30 @@ export async function initConfig() {
   canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
 
+  let oldDataHash: string | undefined;
+  try {
+    const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
+    const oldDataObj = JSON.stringify(JSON.parse(oldData as string)); // ensure formatting is consistent
+    oldDataHash = await computeHash(oldDataObj, "sha256");
+  }
+  catch { void 0; }
+
   // remove extraneous keys
   let data = fixCfgKeys(await configStore.loadData());
   await configStore.setData(data);
+
+  // show prompt if config data has changed via migrations or reset
+  if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
+    if(await showPrompt({
+      type: "confirm",
+      message: t("config_data_changed_prompt_open_menu"),
+      confirmBtnText: t("open"),
+      confirmBtnTooltip: t("open_menu_tooltip"),
+      denyBtnText: t("prompt_close"),
+      denyBtnTooltip: t("click_to_close_tooltip"),
+    }))
+      window.addEventListener("bytm:ready", () => openCfgMenu(), { once: true });
+  }
 
   log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))

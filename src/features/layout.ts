@@ -503,12 +503,12 @@ export async function initThumbnailOverlay() {
       const defaultBehavior = getFeature("thumbnailOverlayBehavior");
 
       const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
-      if(!isManual && overlayState !== prefState)
-        overlayState = prefState;
-      else if(!isManual && overlayState === OvlState.Off)
+      if(!isManual && overlayState === OvlState.Off)
         overlayState = (defaultBehavior === "videosOnly" && isVideo) || (defaultBehavior === "songsOnly" && !isVideo) || (defaultBehavior === "always")
           ? prefState
           : OvlState.Off;
+      else if(!isManual && overlayState !== prefState)
+        overlayState = prefState;
 
       if(getCurrentMediaType() === "video" && overlayState === OvlState.AM)
         overlayState = OvlState.YT;
@@ -610,8 +610,10 @@ export async function initThumbnailOverlay() {
 
               const children = [...parent.querySelectorAll<HTMLElement>("a, span")];
               const splitList = children.reduce((acc, el) => {
-                if(el.tagName === "SPAN" && el.innerText.includes("•"))
+                if(el.tagName === "SPAN" && el.innerText.includes("•")) {
                   acc.push([]);
+                  return acc;
+                }
                 acc[acc.length - 1].push(el);
                 return acc;
               }, [[]] as HTMLElement[][]);
@@ -621,14 +623,11 @@ export async function initThumbnailOverlay() {
 
               const firstArtistLink = splitList[0].find((el) => el.tagName === "A");
               const firstArtistName = splitList[0].find((el) => !el.innerText.match(/^\s*•\s*$/));
-              const primaryArtist = (firstArtistLink ?? firstArtistName)?.innerText;
 
-              const albumName = (
-                splitList[1].find((el) => el.tagName === "A")
-                || splitList[1].find((el) => el.tagName === "SPAN")
-              )?.innerText;
-
-              return [primaryArtist, albumName];
+              return [
+                (firstArtistLink ?? firstArtistName)?.innerText,
+                splitList[1].find((el) => el.tagName === "A")?.innerText,
+              ];
             })();
 
             if(primaryArtist && albumName)
