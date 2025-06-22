@@ -831,11 +831,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - `callback` - The function to call when the element is interacted with
 > - `listenerOptions` - Optional event listener options (same as the third argument of `addEventListener`, shared between the keyboard and mouse event listeners)
 >   
+> - ⚠️ When using this function to call a class method, make sure to wrap the callback function in an arrow function (or `this.myMethod.bind(this)` call) to preserve the `this` context.
+>   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > const myButton = document.querySelector("button#myButton");
 > 
+> // functional example:
 > unsafeWindow.BYTM.onInteraction(myButton, (event) => {
 >   if(event instanceof MouseEvent)
 >     console.log("The button was clicked");
@@ -848,6 +851,35 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   // you can pass `capture` to listen in the capture phase (helpful for triggering before other listeners),
 >   // or an AbortController's `signal` to be able to abort the listener
 > });
+> 
+> // object-oriented example:
+> class MyListener {
+>   // called when the button is interacted with
+>   private interact(event: MouseEvent | KeyboardEvent): void {
+>     // since this method uses `this`, the callback needs to be provided correctly to not lose the context
+>     try {
+>       this.buttonElement.click();
+>     }
+>     catch {
+>       this.listener(event);
+>     }
+>   }
+> 
+>   public doStuff(): void {
+>     // - either wrap in an arrow function to preserve the `this` context:
+>     // unsafeWindow.BYTM.onInteraction(myButton, (event) => this.interact(event));
+> 
+>     // - or use `this.interact.bind(this)` to preserve it:
+>     // unsafeWindow.BYTM.onInteraction(myButton, this.interact.bind(this));
+> 
+>     // ⚠️ this is wrong, because the `this` context is not captured when the method is passed down via reference:
+>     unsafeWindow.BYTM.onInteraction(myButton, this.interact);
+>   }
+> }
+> 
+> const listener = new MyListener();
+> 
+> listener.doStuff();
 > ```
 > </details>
 
