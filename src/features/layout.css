@@ -31,6 +31,12 @@ html[dark] {
   white-space: normal;
 }
 
+.subtitle yt-formatted-string a,
+.subtitle yt-formatted-string span:last-of-type {
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+
 /* #region generic (circular) button */
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;

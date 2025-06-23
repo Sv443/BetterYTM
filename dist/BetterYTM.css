@@ -698,9 +698,7 @@ hr {
   padding: var(--toggle-knob-offset);
   cursor: pointer;
   background-color: var(--toggle-color-off);
-  transition:
-    justify-content 0.2s ease,
-    background-color 0.2s ease;
+  transition: justify-content 0.2s ease, background-color 0.2s ease;
 }
 
 .bytm-toggle-input input[data-toggled="true"] {
@@ -803,8 +801,7 @@ hr {
   color: var(--bytm-toast-text-color);
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 
-  transition:
-    opacity var(--bytm-toast-transition-time) ease,
+  transition: opacity var(--bytm-toast-transition-time) ease,
     transform var(--bytm-toast-transition-time) ease;
 }
 
@@ -1810,6 +1807,12 @@ html[dark] {
   overflow: hidden;
   text-wrap: auto;
   white-space: normal;
+}
+
+.subtitle yt-formatted-string a,
+.subtitle yt-formatted-string span:last-of-type {
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 /* #region generic (circular) button */
