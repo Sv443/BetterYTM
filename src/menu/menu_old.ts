@@ -911,7 +911,6 @@ async function mountCfgMenu() {
     });
 
     //#region scroll indicator
-    // FIXME:
     const scrollIndicator = document.createElement("img");
     scrollIndicator.id = "bytm-menu-scroll-indicator";
     scrollIndicator.src = await getResourceUrl("icon-arrow_down");
