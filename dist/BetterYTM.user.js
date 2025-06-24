@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9c24c03d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@de88436e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "9c24c03d",
+    buildNumber: "de88436e",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3613,7 +3613,7 @@ function splitVideoTitle(title) {
 function constructUrlString(baseUrl, params) {
     return `${baseUrl}?${Object.entries(params)
         .filter(([, v]) => v !== undefined)
-        .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
+        .map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`)
         .join("&")}`;
 }
 /**
@@ -3694,7 +3694,12 @@ async function fetchVideoVotes(videoID) {
 /** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
 async function fetchITunesAlbumInfo(artist, album) {
     try {
-        const res = await UserUtils.fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
+        const res = await UserUtils.fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
+            country: "us",
+            limit: 5,
+            entity: "album",
+            term: `${artist} ${album}`,
+        }));
         if (!res.ok) {
             warn("Couldn't fetch iTunes album info due to a request error:", res);
             return [];
@@ -4216,7 +4221,7 @@ async function mountCfgMenu() {
         sidenavCont.tabIndex = 0;
         sidenavCont.ariaLabel = t("cfg_menu_sidenav_label");
         bodyCont.appendChild(sidenavCont);
-        const createSidenavHeader = (headerId, selected = false) => {
+        const createSidenavHeader = (headerId, selected = false, isExtraInfoHeader = false) => {
             try {
                 const headerElem = document.createElement("h2");
                 headerElem.id = `bytm-menu-nav-header-${headerId}`;
@@ -4227,7 +4232,7 @@ async function mountCfgMenu() {
                 headerElem.tabIndex = 0;
                 headerElem.ariaLevel = "2";
                 headerElem.textContent = t(`feature_category_${headerId}`);
-                headerElem.setAttribute("aria-label", t(`feature_category_${headerId}`));
+                headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
                 onInteraction(headerElem, () => {
                     const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
                     if (selectedHeader) {
@@ -4702,6 +4707,7 @@ async function mountCfgMenu() {
             info("Rebuilt config menu");
         });
         //#region scroll indicator
+        // FIXME:
         const scrollIndicator = document.createElement("img");
         scrollIndicator.id = "bytm-menu-scroll-indicator";
         scrollIndicator.src = await getResourceUrl("icon-arrow_down");
@@ -6693,8 +6699,6 @@ const featInfo = {
         step: 0.5,
         unit: "s",
         reloadRequired: false,
-        advanced: true,
-        textAdornment: adornments.advanced,
         enable: noop,
         change: () => showIconToast({
             message: t("example_toast"),
@@ -6764,7 +6768,6 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         default: false,
         change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
-        textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
     },
     //#region cat:layout
     watermarkEnabled: {
@@ -6829,10 +6832,9 @@ const featInfo = {
         max: 5000,
         step: 100,
         renderValue: (n) => `${n}x${n}`,
-        advanced: true,
         reloadRequired: false,
         enable: noop,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.ytmOnly]),
+        textAdornment: adornments.ytmOnly,
     },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
@@ -6861,8 +6863,7 @@ const featInfo = {
         options: options.thumbOverlaySources,
         reloadRequired: false,
         enable: noop,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+        textAdornment: adornments.ytmOnly,
     },
     hideCursorOnIdle: {
         type: "toggle",
@@ -7094,8 +7095,6 @@ const featInfo = {
         step: 1,
         default: 60,
         unit: "s",
-        advanced: true,
-        textAdornment: adornments.advanced,
         reloadRequired: false,
         enable: noop,
     },
@@ -7108,8 +7107,6 @@ const featInfo = {
         step: 0.05,
         default: 0.2,
         unit: "s",
-        advanced: true,
-        textAdornment: adornments.advanced,
         reloadRequired: false,
         enable: noop,
     },
@@ -7122,8 +7119,6 @@ const featInfo = {
         step: 0.5,
         default: 10,
         unit: "s",
-        advanced: true,
-        textAdornment: adornments.advanced,
         reloadRequired: false,
         enable: noop,
     },
@@ -7235,6 +7230,12 @@ const featInfo = {
         default: true,
         textAdornment: adornments.reload,
     },
+    autoLikeOpenMgmtDialog: {
+        type: "button",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        click: () => getAutoLikeDialog().then(d => d.open()),
+    },
     autoLikeChannelToggleBtn: {
         type: "toggle",
         category: "autoLike",
@@ -7261,10 +7262,8 @@ const featInfo = {
         step: 0.5,
         default: 5,
         unit: "s",
-        advanced: true,
         reloadRequired: false,
         enable: noop,
-        textAdornment: adornments.advanced,
     },
     autoLikeShowToast: {
         type: "toggle",
@@ -7272,15 +7271,7 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         default: true,
         reloadRequired: false,
-        advanced: true,
         enable: noop,
-        textAdornment: adornments.advanced,
-    },
-    autoLikeOpenMgmtDialog: {
-        type: "button",
-        category: "autoLike",
-        supportedSites: ["ytm", "yt"],
-        click: () => getAutoLikeDialog().then(d => d.open()),
     },
     //#region cat:hotkeys
     switchBetweenSites: {
@@ -7594,16 +7585,14 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         options: options.siteSelectionOrNone,
         default: "all",
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        textAdornment: adornments.reload,
     },
     sponsorBlockIntegration: {
         type: "toggle",
         category: "integrations",
         supportedSites: ["ytm"],
         default: true,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     themeSongIntegration: {
         type: "toggle",
