@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7f0bc90b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c1431e99/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "7f0bc90b",
+    buildNumber: "c1431e99",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3749,6 +3749,7 @@ async function getFeatHelpDialog({ featKey, }) {
 }
 async function renderHeader$2() {
     const headerEl = document.createElement("div");
+    headerEl.id = "bytm-feat-help-dialog-header";
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
@@ -4711,7 +4712,6 @@ async function mountCfgMenu() {
             info("Rebuilt config menu");
         });
         //#region scroll indicator
-        // FIXME:
         const scrollIndicator = document.createElement("img");
         scrollIndicator.id = "bytm-menu-scroll-indicator";
         scrollIndicator.src = await getResourceUrl("icon-arrow_down");
