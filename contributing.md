@@ -2179,8 +2179,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
 >   
 > `RippleProps` properties:  
-> - `speed?: string` - The speed of the ripple effect. Can be "fastest", "fast", "normal", "slow" or "slowest" (defaults to "normal")
-> - `additionalProps?: TElement | HTMLDivElement` - Additional properties to apply to the created or passed ripple element
+> - `speed?: string` - The speed of the ripple effect. Can be "fastest", "fast", "normal", "slow" or "slowest" (defaults to "normal").
+> - `triggerEvent?: "mousedown" | "mouseup" | string` - The event that should trigger the ripple effect (defaults to "mousedown").
+> - `additionalProps?: TElement | HTMLDivElement` - Additional properties to apply to the created or passed ripple element.
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 

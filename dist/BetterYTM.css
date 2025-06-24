@@ -864,6 +864,7 @@ hr {
 
 /* use `body` prefix for more specificity: */
 body .bytm-ripple {
+  --bytm-ripple-easing-function: cubic-bezier(0.3, 0.45, 0.2, 0.8);
   position: relative;
   overflow: hidden;
   width: var(--bytm-ripple-width, auto);
@@ -871,15 +872,15 @@ body .bytm-ripple {
 }
 
 body .bytm-ripple.fastest {
-  --bytm-ripple-anim-duration: 0.15s;
+  --bytm-ripple-anim-duration: 0.2s;
 }
 
 body .bytm-ripple.fast {
-  --bytm-ripple-anim-duration: 0.35s;
+  --bytm-ripple-anim-duration: 0.4s;
 }
 
 body .bytm-ripple.slow {
-  --bytm-ripple-anim-duration: 0.75s;
+  --bytm-ripple-anim-duration: 0.8s;
 }
 
 body .bytm-ripple.slowest {
@@ -896,12 +897,12 @@ body .bytm-ripple.slowest {
     )
   );
   position: absolute;
-  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.125));
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.13));
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
-  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.55s)
-    cubic-bezier(0.375, 0.33, 0.225, 0.93);
+  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.6s)
+    var(--bytm-ripple-easing-function, ease-out);
 }
 
 @keyframes bytm-scale-ripple {
@@ -1319,6 +1320,15 @@ body.bytm-dom-ytm
   border-right: 2px solid var(--bytm-menu-separator-color);
 }
 
+.bytm-menu-sidenav-section {
+  --bytm-menu-nav-header-margin: 6px;
+  padding: var(--bytm-menu-nav-header-margin) 0px;
+}
+
+.bytm-menu-sidenav-section:not(:last-of-type) {
+  margin-bottom: 12px;
+}
+
 #bytm-cfg-menu-sidenav-top-section {
   overflow-x: hidden;
   overflow-y: auto;
@@ -1329,13 +1339,19 @@ body.bytm-dom-ytm
 }
 
 .bytm-menu-sidenav-header {
-  --bytm-ripple-color: rgba(255, 255, 255, 0.1);
+  --bytm-menu-nav-header-horizontal-padding: 24px;
+  --bytm-menu-nav-header-vertical-padding: 10px;
 
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 10px 12px;
+  padding: var(--bytm-menu-nav-header-vertical-padding)
+    calc(
+      var(--bytm-menu-nav-header-horizontal-padding) -
+        var(--bytm-menu-nav-header-margin)
+    );
+  margin-left: var(--bytm-menu-nav-header-margin);
   cursor: pointer;
   font-size: 1.6rem;
   font-weight: 500;
@@ -1345,15 +1361,38 @@ body.bytm-dom-ytm
   max-width: 300px;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  border-radius: 5rem 0 0 5rem;
 }
 
 .bytm-menu-sidenav-header.selected {
+  --bytm-menu-nav-header-highlight-border-width: 2px;
   background-color: var(--bytm-menu-bg-highlight);
+  border: var(--bytm-menu-nav-header-highlight-border-width) solid
+    var(--bytm-menu-separator-color);
+  border-style: solid none solid solid;
+  padding: calc(
+      var(--bytm-menu-nav-header-vertical-padding) -
+        var(--bytm-menu-nav-header-highlight-border-width)
+    )
+    var(--bytm-menu-nav-header-horizontal-padding);
+  padding-left: calc(
+    var(--bytm-menu-nav-header-horizontal-padding) -
+      var(--bytm-menu-nav-header-highlight-border-width) -
+      var(--bytm-menu-nav-header-margin)
+  );
 }
 
-.bytm-menu-sidenav-section .bytm-menu-sidenav-header:not(:last-of-type),
+/* .bytm-menu-sidenav-section .bytm-menu-sidenav-header:not(:last-of-type),
 #bytm-cfg-menu-sidenav-top-section .bytm-menu-sidenav-header:last-of-type {
   border-bottom: 2px solid var(--bytm-menu-separator-color);
+} */
+
+#bytm-cfg-menu-sidenav-top-section {
+  border-bottom: 2px solid var(--bytm-menu-separator-color);
+}
+
+#bytm-cfg-menu-sidenav-bottom-section {
+  border-top: 2px solid var(--bytm-menu-separator-color);
 }
 
 .bytm-menu-body {
@@ -1552,7 +1591,7 @@ body.bytm-dom-ytm
 #bytm-menu-scroll-indicator {
   --bytm-scroll-indicator-padding: 5px;
   position: sticky;
-  bottom: -15px;
+  bottom: 0px;
   left: 50%;
   margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
   padding: var(--bytm-scroll-indicator-padding);

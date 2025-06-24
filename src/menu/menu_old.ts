@@ -28,7 +28,7 @@ let isCfgMenuMounted = false;
 export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
-const scrollIndicatorOffsetThreshold = 50;
+const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
 /** Locale at the point of initializing the config menu */
 let initLocale: TrLocale | undefined;
@@ -349,10 +349,14 @@ async function mountCfgMenu() {
             catElem.removeAttribute("inert");
           }
 
+          checkToggleScrollIndicator();
+
           emitSiteEvent("configHeaderSelected", headerId);
         });
 
-        return createRipple(headerElem);
+        return createRipple(headerElem, {
+          triggerEvent: "mouseup",
+        });
       }
       catch(err) {
         error(`Error while creating sidenav header for category '${headerId}':`, err);
