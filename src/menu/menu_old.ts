@@ -315,7 +315,7 @@ async function mountCfgMenu() {
 
     bodyCont.appendChild(sidenavCont);
 
-    const createSidenavHeader = (headerId: LooseUnion<FeatureCategory>, selected = false) => {
+    const createSidenavHeader = (headerId: LooseUnion<FeatureCategory>, selected = false, isExtraInfoHeader = false) => {
       try {
         const headerElem = document.createElement("h2");
         headerElem.id = `bytm-menu-nav-header-${headerId}`;
@@ -326,7 +326,7 @@ async function mountCfgMenu() {
         headerElem.tabIndex = 0;
         headerElem.ariaLevel = "2";
         headerElem.textContent = t(`feature_category_${headerId}`);
-        headerElem.setAttribute("aria-label", t(`feature_category_${headerId}`));
+        headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
 
         onInteraction(headerElem, () => {
           const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
@@ -907,6 +907,7 @@ async function mountCfgMenu() {
     });
 
     //#region scroll indicator
+    // FIXME:
     const scrollIndicator = document.createElement("img");
     scrollIndicator.id = "bytm-menu-scroll-indicator";
     scrollIndicator.src = await getResourceUrl("icon-arrow_down");

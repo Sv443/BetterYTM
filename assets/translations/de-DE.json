@@ -96,7 +96,7 @@
   "advanced_mode_short": "Erweit.",
   "experimental_feature": "Experimentelle Funktion",
   "advanced_feature": "Erweiterte Einstellung",
-  "feature_only_works_on_ytm": "Funktioniert nur auf YT Music",
+  "feature_only_works_on_ytm": "Nur auf YT Music verfügbar",
 
   "open_current_lyrics": "Songtext des aktuellen Songs öffnen - Shift-Klick, um in einem neuen Fenster zu öffnen oder Strg-Klick, um manuell zu suchen",
   "open_lyrics": "Songtext in einem neuen Tab öffnen - Strg-Klick, um manuell zu suchen",
@@ -257,6 +257,12 @@
   "plugin_validation_error_invalid_property-1": "Eigenschaft '%1' mit Wert '%2' ist ungültig. Beispielwert: %3",
   "plugin_validation_error_invalid_property-n": "Eigenschaft '%1' mit Wert '%2' ist ungültig. Beispielwerte: %3",
 
+  "cfg_menu_sidenav_label": "Navigation des Konfigurationsmenüs",
+  "cfg_menu_sidenav_top_section_label": "Einstellungs-Kategorien",
+  "cfg_menu_sidenav_bottom_section_label": "Kategorien für zusätzliche Informationen",
+  "cfg_menu_feature_category_header_tooltip": "Klicke um die Konfigurationseinstellungen für die Kategorie \"%1\" anzuzeigen",
+  "cfg_menu_feature_category_info_header_tooltip": "Klicke um Informationen der Kategorie \"%1\" anzuzeigen",
+
   "feature_category_general": "Allgemein",
   "feature_category_layout": "Layout",
   "feature_category_volume": "Lautstärke",
@@ -268,6 +274,9 @@
   "feature_category_lyrics": "Songtexte",
   "feature_category_integrations": "Integrationen",
   "feature_category_plugins": "Plugins",
+
+  "feature_category_about": "Über %1",
+  "feature_category_changelog": "Änderungsprotokoll",
 
   "feature_desc_watermarkEnabled": "Zeige ein Wasserzeichen unter dem Seitenlogo, das dieses Einstellungsmenü öffnet",
   "feature_helptext_watermarkEnabled": "Wenn dies deaktiviert ist, kannst du das Einstellungsmenü immer noch öffnen, indem du die Option im Menü anklickst, das sich öffnet, wenn du auf dein Profilbild in der oberen rechten Ecke klickst.\nEs wird jedoch schwieriger sein, das Easter Egg zu finden ;)",

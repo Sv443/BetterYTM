@@ -15,7 +15,7 @@ export function constructUrlString(baseUrl: string, params: Record<string, Strin
   return `${baseUrl}?${
     Object.entries(params)
       .filter(([, v]) => v !== undefined)
-      .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
+      .map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`)
       .join("&")
   }`;
 }
@@ -120,7 +120,12 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
 /** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
 export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {
   try {
-    const res = await fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
+    const res = await fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
+      country: "us",
+      limit: 5,
+      entity: "album",
+      term: `${artist} ${album}`,
+    }));
 
     if(!res.ok) {
       warn("Couldn't fetch iTunes album info due to a request error:", res);

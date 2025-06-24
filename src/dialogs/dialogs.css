@@ -13,8 +13,8 @@
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1300px;
-  --bytm-dialog-target-height: 800px;
+  --bytm-dialog-width-max: 1200px;
+  --bytm-dialog-target-height: 700px;
 }
 
 /* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
