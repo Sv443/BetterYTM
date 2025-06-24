@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@446a10e7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9c24c03d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "446a10e7",
+    buildNumber: "9c24c03d",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4220,7 +4220,7 @@ async function mountCfgMenu() {
             try {
                 const headerElem = document.createElement("h2");
                 headerElem.id = `bytm-menu-nav-header-${headerId}`;
-                headerElem.classList.add("bytm-menu-sidenav-header");
+                headerElem.classList.add("bytm-menu-sidenav-header", "bytm-no-select");
                 selected && headerElem.classList.add("selected");
                 headerElem.role = "radio";
                 headerElem.ariaChecked = String(selected);
@@ -4249,7 +4249,7 @@ async function mountCfgMenu() {
                     }
                     emitSiteEvent("configHeaderSelected", headerId);
                 });
-                return headerElem;
+                return createRipple(headerElem);
             }
             catch (err) {
                 error(`Error while creating sidenav header for category '${headerId}':`, err);
@@ -5682,13 +5682,16 @@ async function initWatchPageFullSize() {
         error("Couldn't load stylesheet to make watch page full size");
     else
         log("Made watch page full size");
-}//#region utils
+}//#region ignored input elements
 const ignoreInputTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 const ignoreInputIds = [
     "contenteditable-root", // comment field on YT
     "volume-slider", // volume slider on YTM
+    "bytm-cfg-menu-sidenav", // cfg menu sidenav
 ];
-const ignoreInputClassNames = [];
+const ignoreInputClassNames = [
+    "bytm-menu-sidenav-section", // cfg menu sidenav section
+];
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
 function isIgnoredInputElement(el = document.activeElement) {
     if (!el)
@@ -6708,7 +6711,7 @@ const featInfo = {
     },
     initTimeout: {
         type: "number",
-        category: "plugins",
+        category: "general",
         supportedSites: ["ytm", "yt"],
         min: 3,
         max: 30,
