@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@de88436e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7f0bc90b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "de88436e",
+    buildNumber: "7f0bc90b",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1762,12 +1762,13 @@ function onInteraction(elem, listener, listenerOptions) {
  * @returns The passed element or the newly created element with the ripple effect.
  */
 function createRipple(rippleElement, properties) {
+    var _a;
     const props = Object.assign({ speed: "normal" }, properties);
     const rippleEl = rippleElement !== null && rippleElement !== void 0 ? rippleElement : document.createElement("div");
     "additionalProps" in props && Object.assign(rippleEl, props.additionalProps);
     rippleEl.classList.add("bytm-ripple", props.speed);
     const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
-    rippleEl.addEventListener("mousedown", (e) => {
+    rippleEl.addEventListener((_a = props === null || props === void 0 ? void 0 : props.triggerEvent) !== null && _a !== void 0 ? _a : "mousedown", (e) => {
         updateRippleWidth();
         const x = e.clientX - rippleEl.getBoundingClientRect().left;
         const y = e.clientY - rippleEl.getBoundingClientRect().top;
@@ -3991,7 +3992,7 @@ function hotkeyToString(hotkey) {
 let isCfgMenuMounted = false;
 let isCfgMenuOpen = false;
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
-const scrollIndicatorOffsetThreshold = 50;
+const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
 /** Locale at the point of initializing the config menu */
 let initLocale;
@@ -4252,9 +4253,12 @@ async function mountCfgMenu() {
                         catElem.removeAttribute("aria-hidden");
                         catElem.removeAttribute("inert");
                     }
+                    checkToggleScrollIndicator();
                     emitSiteEvent("configHeaderSelected", headerId);
                 });
-                return createRipple(headerElem);
+                return createRipple(headerElem, {
+                    triggerEvent: "mouseup",
+                });
             }
             catch (err) {
                 error(`Error while creating sidenav header for category '${headerId}':`, err);
