@@ -695,6 +695,14 @@ export interface FeatureConfig {
   skipToRemTimeHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to skip to the last remembered time of the current video/song */
   skipToRemTimeHotkey: HotkeyObj;
+  /** Add a hotkey to focus the search bar on both pages */
+  focusSearchBarHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to focus the search bar */
+  focusSearchBarHotkey: HotkeyObj;
+  /** Add a hotkey to clear the search bar on both pages */
+  clearSearchBarHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to clear the search bar */
+  clearSearchBarHotkey: HotkeyObj;
   /** Whether to rebind the next [J] and previous [K] keys */
   rebindNextAndPrevious: boolean;
   /** The hotkey that needs to be pressed to skip to the next video/song */

@@ -170,6 +170,8 @@ export const migrations: DataMigrationsDict = {
   11: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
     useDefaultConfig(oldData, [
       "thumbnailOverlayPreferredSource",
+      "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
+      "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
     ]),
     [
       { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },

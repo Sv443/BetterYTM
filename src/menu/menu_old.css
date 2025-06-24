@@ -253,9 +253,9 @@
   visibility: hidden !important;
 }
 
-/* .bytm-ftconf-category.hidden {
+.bytm-ftconf-category.hidden {
   display: none;
-} */
+}
 
 .bytm-ftconf-category-header {
   font-size: 20px;
