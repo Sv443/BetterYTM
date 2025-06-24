@@ -257,6 +257,11 @@
   "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
   "plugin_validation_error_invalid_property-n": "Property '%1' with value '%2' is invalid. Example values: %3",
 
+  "cfg_menu_sidenav_label": "Configuration menu navigation",
+  "cfg_menu_sidenav_top_section_label": "Configuration Settings Categories",
+  "cfg_menu_sidenav_bottom_section_label": "Extra Information Categories",
+
+  "feature_category_general": "General",
   "feature_category_layout": "Layout",
   "feature_category_volume": "Volume",
   "feature_category_songLists": "Song Lists",
@@ -267,7 +272,9 @@
   "feature_category_lyrics": "Lyrics",
   "feature_category_integrations": "Integrations",
   "feature_category_plugins": "Plugins",
-  "feature_category_general": "General",
+
+  "feature_category_about": "About",
+  "feature_category_changelog": "Changelog",
 
   "feature_desc_watermarkEnabled": "Show a watermark under the site logo that opens this config menu",
   "feature_helptext_watermarkEnabled": "If this is disabled, you can still open the config menu by clicking the option in the menu that opens when you click your profile picture in the top right corner.\nHowever it will be harder to find the easter egg ;)",

@@ -238,6 +238,7 @@
   "plugin_validation_error_invalid_property-1": "La propiedad '%1' con el valor '%2' no es válida. Valor de ejemplo: %3",
   "plugin_validation_error_invalid_property-n": "La propiedad '%1' con el valor '%2' no es válida. Valores de ejemplo: %3",
 
+  "feature_category_general": "General",
   "feature_category_layout": "Diseño",
   "feature_category_volume": "Volumen",
   "feature_category_songLists": "Listas de canciones",
@@ -246,7 +247,6 @@
   "feature_category_lyrics": "Letras",
   "feature_category_integrations": "Integraciones",
   "feature_category_plugins": "Plugins",
-  "feature_category_general": "General",
 
   "feature_desc_watermarkEnabled": "Mostrar una marca de agua debajo del logotipo del sitio que abre este menú de configuración",
   "feature_helptext_watermarkEnabled": "Si esto está deshabilitado, aún puede abrir el menú de configuración haciendo clic en la opción en el menú que se abre cuando hace clic en su imagen de perfil en la esquina superior derecha.\nSin embargo, será más difícil encontrar el huevo de pascua ;)",

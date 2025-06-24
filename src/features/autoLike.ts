@@ -89,8 +89,8 @@ export async function initAutoLike() {
           else
             info("Skipping auto-like, because the like state is currently set to", likeState);
         };
-        timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
-        siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
+        timeout = setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs);
+        siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs));
       });
 
       const recreateBtn = (headerCont: HTMLElement, chanId: string) => {

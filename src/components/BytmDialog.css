@@ -233,17 +233,6 @@
   visibility: hidden !important;
 }
 
-.bytm-ftconf-category-header {
-  font-size: 20px;
-  margin-top: 32px;
-  margin-bottom: 8px;
-  padding: 0px 20px;
-}
-
-.bytm-ftconf-category-header:first-of-type {
-  margin-top: 0;
-}
-
 .bytm-dialog .bytm-ftitem {
   display: flex;
   flex-direction: row;

@@ -1,6 +1,6 @@
-import { NanoEmitter } from "@sv443-network/userutils";
+import { NanoEmitter, type LooseUnion } from "@sv443-network/userutils";
 import { error, getDomain, info } from "./utils/index.js";
-import { FeatureConfig } from "./types.js";
+import { FeatureConfig, type FeatureCategory } from "./types.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
 
@@ -9,6 +9,8 @@ export type SiteEventsMap = {
   //#region misc:
   /** Emitted whenever the feature config is changed - initialization is not counted */
   configChanged: (newConfig: FeatureConfig) => void;
+  /** Emitted whenever a config header is selected in the config menu. Gets passed its ID which is either a feature category or extra information section ID. */
+  configHeaderSelected: (name: LooseUnion<FeatureCategory>) => void;
   /** Emitted whenever a config option is changed - contains the old and new value */
   configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
   /** Emitted whenever the config menu should be rebuilt, like when a config was imported */

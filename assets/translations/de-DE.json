@@ -257,6 +257,7 @@
   "plugin_validation_error_invalid_property-1": "Eigenschaft '%1' mit Wert '%2' ist ungültig. Beispielwert: %3",
   "plugin_validation_error_invalid_property-n": "Eigenschaft '%1' mit Wert '%2' ist ungültig. Beispielwerte: %3",
 
+  "feature_category_general": "Allgemein",
   "feature_category_layout": "Layout",
   "feature_category_volume": "Lautstärke",
   "feature_category_songLists": "Songlisten",
@@ -267,7 +268,6 @@
   "feature_category_lyrics": "Songtexte",
   "feature_category_integrations": "Integrationen",
   "feature_category_plugins": "Plugins",
-  "feature_category_general": "Allgemeines",
 
   "feature_desc_watermarkEnabled": "Zeige ein Wasserzeichen unter dem Seitenlogo, das dieses Einstellungsmenü öffnet",
   "feature_helptext_watermarkEnabled": "Wenn dies deaktiviert ist, kannst du das Einstellungsmenü immer noch öffnen, indem du die Option im Menü anklickst, das sich öffnet, wenn du auf dein Profilbild in der oberen rechten Ecke klickst.\nEs wird jedoch schwieriger sein, das Easter Egg zu finden ;)",

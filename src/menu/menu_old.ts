@@ -1,8 +1,12 @@
-import { compress, debounce, isScrollable, openDialogs, randRange, type Stringifiable } from "@sv443-network/userutils";
+import { compress, debounce, isScrollable, openDialogs, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo } from "../features/index.js";
-import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml, type TrLocale, tl, reloadTab, hasKeyFor } from "../utils/index.js";
+import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
+import { onInteraction } from "../utils/input.js";
+import { error, info, log, warn } from "../utils/logging.js";
+import { arrayWithSeparators, compressionSupported, getDomain, getResourceUrl, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
+import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, tp, type TrKey, type TrLocale } from "../utils/translations.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -93,7 +97,7 @@ async function mountCfgMenu() {
 
     titleLogoHeaderCont.appendChild(titleLogoElem);
 
-    const titleElem = document.createElement("h2");
+    const titleElem = document.createElement("h1");
     titleElem.classList.add("bytm-menu-title");
 
     const titleTextElem = document.createElement("div");
@@ -281,6 +285,115 @@ async function mountCfgMenu() {
     footerCont.appendChild(buttonsCont);
 
 
+    //#region main body
+
+    const bodyCont = document.createElement("div");
+    bodyCont.id = "bytm-cfg-menu-main-body";
+
+    //#region load cfg & resolve categories
+
+    const featureCfg = getFeatures();
+    const featureCfgWithCategories = Object.entries(featInfo)
+      .reduce(
+        (acc, [key, { category }]) => {
+          if(!acc[category])
+            acc[category] = {} as Record<FeatureKey, unknown>;
+          acc[category][key as FeatureKey] = featureCfg[key as FeatureKey];
+          return acc;
+        },
+        {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
+      );
+
+    //#region sidenav
+
+    const sidenavCont = document.createElement("nav");
+    sidenavCont.classList.add("bytm-menu-sidenav");
+    sidenavCont.id = "bytm-cfg-menu-sidenav";
+    sidenavCont.tabIndex = 0;
+    sidenavCont.ariaLabel = t("cfg_menu_sidenav_label");
+
+    bodyCont.appendChild(sidenavCont);
+
+    const createSidenavHeader = (headerId: LooseUnion<FeatureCategory>, selected = false) => {
+      try {
+        const headerElem = document.createElement("h2");
+        headerElem.id = `bytm-menu-nav-header-${headerId}`;
+        headerElem.classList.add("bytm-menu-sidenav-header");
+        selected && headerElem.classList.add("selected");
+        headerElem.role = "radio";
+        headerElem.ariaChecked = String(selected);
+        headerElem.tabIndex = 0;
+        headerElem.ariaLevel = "2";
+        headerElem.textContent = t(`feature_category_${headerId}`);
+        headerElem.setAttribute("aria-label", t(`feature_category_${headerId}`));
+
+        onInteraction(headerElem, () => {
+          const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
+          if(selectedHeader) {
+            selectedHeader.classList.remove("selected");
+            selectedHeader.ariaChecked = "false";
+          }
+          headerElem.classList.add("selected");
+          headerElem.ariaChecked = "true";
+
+          const catElem = featuresCont.querySelector(`#bytm-ftconf-category-${headerId}`);
+          if(catElem) {
+            document.querySelectorAll<HTMLElement>("#bytm-menu-opts .bytm-ftconf-category").forEach((el) => {
+              el.classList.add("hidden");
+              el.setAttribute("aria-hidden", "true");
+              el.setAttribute("inert", "true");
+            });
+            catElem.classList.remove("hidden");
+            catElem.removeAttribute("aria-hidden");
+            catElem.removeAttribute("inert");
+          }
+
+          emitSiteEvent("configHeaderSelected", headerId);
+        });
+
+        return headerElem;
+      }
+      catch(err) {
+        error(`Error while creating sidenav header for category '${headerId}':`, err);
+      }
+    };
+
+    // top section:
+    const sidenavTopSectionCont = document.createElement("section");
+    sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section");
+    sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
+    sidenavTopSectionCont.role = "radiogroup";
+    sidenavTopSectionCont.tabIndex = 0;
+    sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo.name });
+
+    // settings category headers:
+    let firstCatHeader = true;
+    for(const category of Object.keys(featureCfgWithCategories) as FeatureCategory[]) {
+      const headerElem = createSidenavHeader(category, firstCatHeader);
+      headerElem && sidenavTopSectionCont.appendChild(headerElem);
+      firstCatHeader = false;
+    }
+
+    sidenavCont.appendChild(sidenavTopSectionCont);
+
+    // bottom section:
+    const sidenavBtmSectionCont = document.createElement("section");
+    sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section");
+    sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
+    sidenavBtmSectionCont.role = "radiogroup";
+    sidenavBtmSectionCont.tabIndex = 0;
+    sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo.name });
+
+    // extra info headers:
+    const extraInfoCategoryIDs = ["about", "changelog"] as const;
+
+    for(const id of extraInfoCategoryIDs) {
+      const headerElem = createSidenavHeader(id, firstCatHeader);
+      headerElem && sidenavBtmSectionCont.appendChild(headerElem);
+    }
+
+    sidenavCont.appendChild(sidenavBtmSectionCont);
+
     //#region feature list
     const featuresCont = document.createElement("div");
     featuresCont.id = "bytm-menu-opts";
@@ -313,7 +426,7 @@ async function mountCfgMenu() {
 
         if(requiresReload) {
           reloadFooterEl.classList.remove("hidden");
-          reloadFooterEl.setAttribute("aria-hidden", "false");
+          reloadFooterEl.removeAttribute("aria-hidden");
         }
         else {
           reloadFooterEl.classList.add("hidden");
@@ -357,18 +470,6 @@ async function mountCfgMenu() {
     /** Call whenever the feature config is changed */
     const confChanged = debounce(onCfgChange, 333);
 
-    const featureCfg = getFeatures();
-    const featureCfgWithCategories = Object.entries(featInfo)
-      .reduce(
-        (acc, [key, { category }]) => {
-          if(!acc[category])
-            acc[category] = {} as Record<FeatureKey, unknown>;
-          acc[category][key as FeatureKey] = featureCfg[key as FeatureKey];
-          return acc;
-        },
-      {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
-      );
-
     /**
      * Formats the value `v` based on the provided `key` using the `featInfo` object.  
      * If a custom `renderValue` function is defined for the `key`, it will be used to format the value.  
@@ -389,20 +490,6 @@ async function mountCfgMenu() {
       }
     };
 
-    //#DEBUG
-    document.addEventListener("keydown", (e) => {
-      if(mode === "development" && e.code === "F8" && (e.shiftKey || e.ctrlKey)) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const catElem = featuresCont.querySelector(".bytm-ftconf-category:not(.hidden)");
-        catElem?.classList.add("hidden");
-        const sibling = !e.ctrlKey ? catElem?.nextElementSibling : catElem?.previousElementSibling;
-        const wrapChild = [...document.querySelectorAll<HTMLElement>("#bytm-menu-opts .bytm-ftconf-category")].at(e.ctrlKey ? -1 : 0);
-        (sibling && sibling.classList.contains("bytm-ftconf-category") ? sibling : wrapChild)?.classList.remove("hidden");
-      }
-    });
-
     let firstCategory = true;
     for(const category in featureCfgWithCategories) {
       const featObj = featureCfgWithCategories[category as FeatureCategory];
@@ -410,19 +497,18 @@ async function mountCfgMenu() {
       const categoryCont = document.createElement("div");
       categoryCont.id = `bytm-ftconf-category-${category}`;
       categoryCont.classList.add("bytm-ftconf-category");
-      !firstCategory && categoryCont.classList.add("hidden");
       categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
       categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
       categoryCont.tabIndex = 0;
-
-      const catHeaderElem = document.createElement("h3");
-      catHeaderElem.id = `bytm-ftconf-category-${category}-header`;
-      catHeaderElem.classList.add("bytm-ftconf-category-header");
-      catHeaderElem.role = "heading";
-      catHeaderElem.ariaLevel = "2";
-      catHeaderElem.tabIndex = 0;
-      catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
-      categoryCont.appendChild(catHeaderElem);
+      if(firstCategory) {
+        categoryCont.removeAttribute("inert");
+        categoryCont.removeAttribute("aria-hidden");
+      }
+      else {
+        categoryCont.classList.add("hidden");
+        categoryCont.setAttribute("inert", "true");
+        categoryCont.setAttribute("aria-hidden", "true");
+      }
 
       for(const featKey in featObj) {
         const ftInfo = featInfo[featKey as FeatureKey] as FeatureInfo[keyof typeof featureCfg];
@@ -854,10 +940,12 @@ async function mountCfgMenu() {
     bottomAnchor.id = "bytm-menu-bottom-anchor";
     featuresCont.appendChild(bottomAnchor);
 
+    bodyCont.appendChild(featuresCont);
+
 
     //#region finalize
     menuContainer.appendChild(headerElem);
-    menuContainer.appendChild(featuresCont);
+    menuContainer.appendChild(bodyCont);
 
     const subtitleElemCont = document.createElement("div");
     subtitleElemCont.id = "bytm-menu-subtitle-cont";

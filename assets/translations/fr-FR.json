@@ -238,6 +238,7 @@
   "plugin_validation_error_invalid_property-1": "La propriété '%1' avec la valeur '%2' est invalide. Exemple de valeur: %3",
   "plugin_validation_error_invalid_property-n": "La propriété '%1' avec la valeur '%2' est invalide. Exemples de valeurs: %3",
 
+  "feature_category_general": "Général",
   "feature_category_layout": "Disposition",
   "feature_category_volume": "Volume",
   "feature_category_songLists": "Listes de chansons",
@@ -246,7 +247,6 @@
   "feature_category_lyrics": "Paroles",
   "feature_category_integrations": "Intégrations",
   "feature_category_plugins": "Plugins",
-  "feature_category_general": "Général",
 
   "feature_desc_watermarkEnabled": "Afficher un filigrane sous le logo du site qui ouvre ce menu de configuration",
   "feature_helptext_watermarkEnabled": "Si cela est désactivé, vous pouvez toujours ouvrir le menu de configuration en cliquant sur l'option dans le menu qui s'ouvre lorsque vous cliquez sur votre photo de profil dans le coin supérieur droit.\nCependant, il sera plus difficile de trouver l'easter egg ;)",

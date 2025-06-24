@@ -444,6 +444,7 @@ export type FeatKeysOfType<TType> = KeysOfType<FeatureConfig, TType>;
 
 /** Feature category identifier */
 export type FeatureCategory =
+  | "general"
   | "layout"
   | "volume"
   | "songLists"
@@ -453,8 +454,7 @@ export type FeatureCategory =
   | "hotkeys"
   | "lyrics"
   | "integrations"
-  | "plugins"
-  | "general";
+  | "plugins";
 
 type SelectOption = {
   value: string | number;
@@ -559,6 +559,30 @@ export type FeatureInfo = Record<
 
 /** Feature configuration object, as saved in memory and persistent storage */
 export interface FeatureConfig {
+  //#region general
+  /** The locale to use for translations */
+  locale: TrLocale;
+  /** Whether to default to US-English if the translation for the set locale is missing */
+  localeFallback: boolean;
+  /** Whether to check for updates to the script */
+  versionCheck: boolean;
+  /** Button to check for updates */
+  checkVersionNow: undefined;
+  /** The console log level - 0 = Debug, 1 = Info */
+  logLevel: LogLevel;
+  /** Amount of seconds to show BYTM's toasts for */
+  toastDuration: number;
+  /** Whether to show a toast on generic errors */
+  showToastOnGenericError: boolean;
+  /** Amount of seconds until the feature initialization times out */
+  initTimeout: number;
+  /** Button that resets the config to the default state */
+  resetConfig: undefined;
+  /** Button to reset every DataStore instance to their default values */
+  resetEverything: undefined;
+  /** Whether to show advanced settings in the config menu */
+  advancedMode: boolean;
+
   //#region layout
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
@@ -745,28 +769,4 @@ export interface FeatureConfig {
   //#region plugins
   /** Button that opens the plugin list dialog */
   openPluginList: undefined;
-
-  //#region misc
-  /** The locale to use for translations */
-  locale: TrLocale;
-  /** Whether to default to US-English if the translation for the set locale is missing */
-  localeFallback: boolean;
-  /** Whether to check for updates to the script */
-  versionCheck: boolean;
-  /** Button to check for updates */
-  checkVersionNow: undefined;
-  /** The console log level - 0 = Debug, 1 = Info */
-  logLevel: LogLevel;
-  /** Amount of seconds to show BYTM's toasts for */
-  toastDuration: number;
-  /** Whether to show a toast on generic errors */
-  showToastOnGenericError: boolean;
-  /** Amount of seconds until the feature initialization times out */
-  initTimeout: number;
-  /** Button that resets the config to the default state */
-  resetConfig: undefined;
-  /** Button to reset every DataStore instance to their default values */
-  resetEverything: undefined;
-  /** Whether to show advanced settings in the config menu */
-  advancedMode: boolean;
 }

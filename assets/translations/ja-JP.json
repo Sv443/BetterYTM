@@ -238,6 +238,7 @@
   "plugin_validation_error_invalid_property-1": "プロパティ '%1' の値 '%2' が無効です。例： %3",
   "plugin_validation_error_invalid_property-n": "プロパティ '%1' の値 '%2' が無効です。例： %3",
 
+  "feature_category_general": "一般的な",
   "feature_category_layout": "レイアウト",
   "feature_category_volume": "音量",
   "feature_category_songLists": "曲リスト",
@@ -246,7 +247,6 @@
   "feature_category_lyrics": "歌詞",
   "feature_category_integrations": "統合",
   "feature_category_plugins": "プラグイン",
-  "feature_category_general": "一般的な",
 
   "feature_desc_watermarkEnabled": "この構成メニューを開くサイトロゴの下に透かしを表示する",
   "feature_helptext_watermarkEnabled": "これが無効になっている場合、プロフィール画像をクリックして右上隅にあるメニューを開くと、構成メニューを開くことができます。\nただし、イースターエッグを見つけるのは難しくなります ;)",

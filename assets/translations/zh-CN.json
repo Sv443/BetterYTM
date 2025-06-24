@@ -238,6 +238,7 @@
   "plugin_validation_error_invalid_property-1": "属性 '%1' 的值 '%2' 无效。示例值：%3",
   "plugin_validation_error_invalid_property-n": "属性 '%1' 的值 '%2' 无效。示例值：%3",
 
+  "feature_category_general": "一般的",
   "feature_category_layout": "布局",
   "feature_category_volume": "音量",
   "feature_category_songLists": "歌曲列表",
@@ -246,7 +247,6 @@
   "feature_category_lyrics": "歌词",
   "feature_category_integrations": "集成",
   "feature_category_plugins": "插件",
-  "feature_category_general": "一般的",
 
   "feature_desc_watermarkEnabled": "在网站标志下方显示一个水印，以打开此配置菜单",
   "feature_helptext_watermarkEnabled": "如果禁用此功能，您仍然可以通过单击右上角的个人资料图片打开配置菜单中的选项。\n但是，要找到彩蛋将会更难 ;)",

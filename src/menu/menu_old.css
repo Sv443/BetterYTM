@@ -26,11 +26,11 @@
   flex-direction: column;
   width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
   border-radius: var(--bytm-menu-border-radius);
-  height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
+  min-height: calc(min(100% - 40px, var(--bytm-dialog-target-height)));
+  max-height: calc(min(100% - 40px, var(--bytm-dialog-target-height)));
   left: 50%;
-  top: 20px;
-  transform: translate(-50%, 0%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 3006;
   color: #fff;
   background-color: var(--bytm-menu-bg);
@@ -41,6 +41,54 @@
   transform: translate(-50%, 40px);
 }
 
+#bytm-cfg-menu-main-body {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  height: calc(100% - 32px);
+  overflow: hidden;
+}
+
+#bytm-cfg-menu-sidenav {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 150px;
+  background-color: var(--bytm-menu-bg);
+  border-right: 2px solid var(--bytm-menu-separator-color);
+}
+
+#bytm-cfg-menu-sidenav-top-section {
+  overflow-y: auto;
+}
+
+#bytm-cfg-menu-sidenav-bottom-section {
+  border-top: 2px solid var(--bytm-menu-separator-color);
+}
+
+.bytm-menu-sidenav-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: #fff;
+  background-color: var(--bytm-menu-bg);
+}
+
+.bytm-menu-sidenav-header.selected {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-menu-sidenav-section .bytm-menu-sidenav-header:not(:last-of-type),
+#bytm-cfg-menu-sidenav-top-section .bytm-menu-sidenav-header:last-of-type {
+  border-bottom: 2px solid var(--bytm-menu-separator-color);
+}
+
 .bytm-menu-body {
   padding: 15px;
 }
@@ -48,6 +96,7 @@
 #bytm-menu-opts {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   position: relative;
   padding: 15px 0px;
   overflow-y: auto;
@@ -57,7 +106,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
   padding: 15px;
   background-color: var(--bytm-menu-bg);
   border: 2px solid var(--bytm-menu-separator-color);
@@ -105,6 +153,8 @@
 
 #bytm-cfg-menu {
   --bytm-menu-subtitle-color: #c6d2db;
+
+  height: calc(100vh - 40px);
 }
 
 #bytm-menu-subtitle-cont {
@@ -204,7 +254,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 6px;
   padding: 15px;
   background: var(--bytm-menu-bg);
   background: linear-gradient(
@@ -257,24 +306,13 @@
   display: none;
 }
 
-.bytm-ftconf-category-header {
-  font-size: 20px;
-  margin-top: 32px;
-  margin-bottom: 8px;
-  padding: 0px 20px;
-}
-
-.bytm-ftconf-category-header:first-of-type {
-  margin-top: 0;
-}
-
 .bytm-ftitem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   font-size: 1.4rem;
-  padding: 8px 20px;
+  padding: 8px 16px;
   transition: background-color 0.15s ease-out;
 }
 

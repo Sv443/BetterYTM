@@ -238,6 +238,7 @@
   "plugin_validation_error_invalid_property-1": "गुण '%1' जिसके पास '%2' प्रकार है अमान्य है। उदाहरण मान: %3",
   "plugin_validation_error_invalid_property-n": "गुण '%1' जिसके पास '%2' प्रकार है अमान्य है। उदाहरण मान: %3",
 
+  "feature_category_general": "सामान्य",
   "feature_category_layout": "लेआउट",
   "feature_category_volume": "वॉल्यूम",
   "feature_category_songLists": "गीत सूचियाँ",
@@ -246,7 +247,6 @@
   "feature_category_lyrics": "बोल",
   "feature_category_integrations": "एकीकरण",
   "feature_category_plugins": "प्लगइन्स",
-  "feature_category_general": "सामान्य",
 
   "feature_desc_watermarkEnabled": "एक वॉटरमार्क दिखाएं जो इस कॉन्फ़िग मेनू को खोलता है",
   "feature_helptext_watermarkEnabled": "यदि यह अक्षम है, तो आप फिर से कॉन्फ़िग मेनू खोल सकते हैं जब आप अपनी प्रोफ़ाइल चित्र पर क्लिक करते हैं जो कि आपके ब्राउज़र के दाएं कोने में होता है।\nहालांकि इसे ईस्टर एग को ढूंढना मुश्किल हो जाएगा ;)",

@@ -168,6 +168,132 @@ const options = {
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 export const featInfo = {
+  //#region cat:general
+  locale: {
+    type: "select",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    options: options.locale,
+    default: getPreferredLocale(),
+    textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
+  },
+  localeFallback: {
+    type: "toggle",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    default: true,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+  },
+  versionCheck: {
+    type: "toggle",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    default: true,
+    textAdornment: adornments.reload,
+  },
+  checkVersionNow: {
+    type: "button",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    click: () => doVersionCheck(true),
+  },
+  numbersFormat: {
+    type: "select",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    options: () => [
+      { value: "long", label: `${formatNumber(12_345_678, "long")} (${t("votes_format_long")})` },
+      { value: "short", label: `${formatNumber(12_345_678, "short")} (${t("votes_format_short")})` },
+    ],
+    default: "short",
+    reloadRequired: false,
+    enable: noop,
+  },
+  toastDuration: {
+    type: "slider",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    min: 0,
+    max: 15,
+    default: 4,
+    step: 0.5,
+    unit: "s",
+    reloadRequired: false,
+    advanced: true,
+    textAdornment: adornments.advanced,
+    enable: noop,
+    change: () => showIconToast({
+      message: t("example_toast"),
+      iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+    }),
+  },
+  showToastOnGenericError: {
+    type: "toggle",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    default: true,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+  },
+  initTimeout: {
+    type: "number",
+    category: "plugins",
+    supportedSites: ["ytm", "yt"],
+    min: 3,
+    max: 30,
+    default: 8,
+    step: 0.1,
+    unit: "s",
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+  },
+  resetConfig: {
+    type: "button",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    click: promptResetConfig,
+    textAdornment: adornments.reload,
+  },
+  resetEverything: {
+    type: "button",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    click: async () => {
+      if(await showPrompt({
+        type: "confirm",
+        message: t("reset_everything_confirm"),
+      })) {
+        await getStoreSerializer().resetStoresData();
+        const gmKeys = await GM.listValues();
+        await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
+        await reloadTab();
+      }
+    },
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+  },
+  logLevel: {
+    type: "select",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    options: () => [
+      { value: LogLevel.Debug, label: t("log_level_debug") },
+      { value: LogLevel.Info, label: t("log_level_info") },
+    ],
+    default: LogLevel.Info,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+  },
+  advancedMode: {
+    type: "toggle",
+    category: "general",
+    supportedSites: ["ytm", "yt"],
+    default: false,
+    change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
+    textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
+  },
+
   //#region cat:layout
   watermarkEnabled: {
     type: "toggle",
@@ -1043,131 +1169,5 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     default: undefined,
     click: () => getPluginListDialog().then(d => d.open()),
-  },
-
-  //#region cat:general
-  locale: {
-    type: "select",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    options: options.locale,
-    default: getPreferredLocale(),
-    textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
-  },
-  localeFallback: {
-    type: "toggle",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    default: true,
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-  },
-  versionCheck: {
-    type: "toggle",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    default: true,
-    textAdornment: adornments.reload,
-  },
-  checkVersionNow: {
-    type: "button",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    click: () => doVersionCheck(true),
-  },
-  numbersFormat: {
-    type: "select",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    options: () => [
-      { value: "long", label: `${formatNumber(12_345_678, "long")} (${t("votes_format_long")})` },
-      { value: "short", label: `${formatNumber(12_345_678, "short")} (${t("votes_format_short")})` },
-    ],
-    default: "short",
-    reloadRequired: false,
-    enable: noop,
-  },
-  toastDuration: {
-    type: "slider",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    min: 0,
-    max: 15,
-    default: 4,
-    step: 0.5,
-    unit: "s",
-    reloadRequired: false,
-    advanced: true,
-    textAdornment: adornments.advanced,
-    enable: noop,
-    change: () => showIconToast({
-      message: t("example_toast"),
-      iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
-    }),
-  },
-  showToastOnGenericError: {
-    type: "toggle",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    default: true,
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-  },
-  initTimeout: {
-    type: "number",
-    category: "plugins",
-    supportedSites: ["ytm", "yt"],
-    min: 3,
-    max: 30,
-    default: 8,
-    step: 0.1,
-    unit: "s",
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-  },
-  resetConfig: {
-    type: "button",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    click: promptResetConfig,
-    textAdornment: adornments.reload,
-  },
-  resetEverything: {
-    type: "button",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    click: async () => {
-      if(await showPrompt({
-        type: "confirm",
-        message: t("reset_everything_confirm"),
-      })) {
-        await getStoreSerializer().resetStoresData();
-        const gmKeys = await GM.listValues();
-        await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
-        await reloadTab();
-      }
-    },
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-  },
-  logLevel: {
-    type: "select",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    options: () => [
-      { value: LogLevel.Debug, label: t("log_level_debug") },
-      { value: LogLevel.Info, label: t("log_level_info") },
-    ],
-    default: LogLevel.Info,
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-  },
-  advancedMode: {
-    type: "toggle",
-    category: "general",
-    supportedSites: ["ytm", "yt"],
-    default: false,
-    change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
-    textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
   },
 } as const satisfies FeatureInfo;
