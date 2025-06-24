@@ -38,6 +38,7 @@ export async function getFeatHelpDialog({
 
 async function renderHeader() {
   const headerEl = document.createElement("div");
+  headerEl.id = "bytm-feat-help-dialog-header";
   setInnerHtml(headerEl, await resourceAsString("icon-help"));
 
   return headerEl;

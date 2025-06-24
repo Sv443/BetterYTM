@@ -591,6 +591,14 @@ hr {
   fill: var(--bytm-ytm-only-note-col, #fff);
 }
 
+/* #region feature help dialog */
+
+#bytm-feat-help-dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 /* #region welcome dialog */
 
 #bytm-welcome-menu-title-wrapper {
