@@ -475,7 +475,7 @@ hr {
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
   --bytm-dialog-width-max: 1300px;
-  --bytm-dialog-target-height: 700px;
+  --bytm-dialog-target-height: 800px;
 }
 
 /* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
@@ -1329,13 +1329,16 @@ body.bytm-dom-ytm
 }
 
 .bytm-menu-sidenav-header {
+  --bytm-ripple-color: rgba(255, 255, 255, 0.1);
+
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 10px 15px;
+  padding: 10px 12px;
   cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  font-weight: 500;
   color: #fff;
   background-color: var(--bytm-menu-bg);
 }

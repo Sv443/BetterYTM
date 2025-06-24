@@ -69,13 +69,16 @@
 }
 
 .bytm-menu-sidenav-header {
+  --bytm-ripple-color: rgba(255, 255, 255, 0.1);
+
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 10px 15px;
+  padding: 10px 12px;
   cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  font-weight: 500;
   color: #fff;
   background-color: var(--bytm-menu-bg);
 }

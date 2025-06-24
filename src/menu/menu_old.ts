@@ -16,6 +16,7 @@ import { BytmDialog, setCurrentDialogId } from "../components/BytmDialog.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { createHotkeyInput } from "../components/hotkeyInput.js";
 import { createToggleInput } from "../components/toggleInput.js";
+import { createRipple } from "../components/ripple.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import pkg from "../../package.json" with { type: "json" };
 import localeMapping from "../../assets/locales.json" with { type: "json" };
@@ -318,7 +319,7 @@ async function mountCfgMenu() {
       try {
         const headerElem = document.createElement("h2");
         headerElem.id = `bytm-menu-nav-header-${headerId}`;
-        headerElem.classList.add("bytm-menu-sidenav-header");
+        headerElem.classList.add("bytm-menu-sidenav-header", "bytm-no-select");
         selected && headerElem.classList.add("selected");
         headerElem.role = "radio";
         headerElem.ariaChecked = String(selected);
@@ -351,7 +352,7 @@ async function mountCfgMenu() {
           emitSiteEvent("configHeaderSelected", headerId);
         });
 
-        return headerElem;
+        return createRipple(headerElem);
       }
       catch(err) {
         error(`Error while creating sidenav header for category '${headerId}':`, err);

@@ -238,7 +238,7 @@ export const featInfo = {
   },
   initTimeout: {
     type: "number",
-    category: "plugins",
+    category: "general",
     supportedSites: ["ytm", "yt"],
     min: 3,
     max: 30,
