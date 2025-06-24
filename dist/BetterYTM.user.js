@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ce5525ee/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@446a10e7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ce5525ee",
+    buildNumber: "446a10e7",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -590,34 +590,38 @@ async function hasKeyFor(locale, key) {
         await initTranslations(locale);
     return typeof ((_a = UserUtils.tr.getTranslations(locale)) === null || _a === void 0 ? void 0 : _a[key]) === "string";
 }
-/** Returns the translated string for the given key, after optionally inserting values */
-function t(key, ...values) {
-    return tl(activeLocale, key, ...values);
+/** Returns the translated string for the given key, after optionally inserting arguments */
+function t(key, ...args) {
+    return tl(activeLocale, key, ...args);
 }
 /**
  * Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}
- * Also inserts the passed {@linkcode values} into the translation at the markers `%1`, `%2`, etc.
+ * Also inserts the passed {@linkcode args} into the translation at the markers `%1`, `%2`, etc.
  * Tries to fall back to the non-pluralized syntax if no translation was found
  */
-function tp(key, num, ...values) {
-    return tlp(getLocale(), key, num, ...values);
+function tp(key, num, ...args) {
+    return tlp(getLocale(), key, num, ...args);
 }
-/** Returns the translated string for the given key in the specified locale, after optionally inserting values */
-function tl(locale, key, ...values) {
-    return UserUtils.tr.for(locale, key, ...values);
+/** Returns the translated string for the given key in the specified locale, after optionally inserting arguments */
+function tl(locale, key, ...args) {
+    if (locale === "en-US")
+        hasKeyFor(locale, key).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+    return UserUtils.tr.for(locale, key, ...args);
 }
 /**
  * Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}
- * Also inserts the passed {@linkcode values} into the translation at the markers `%1`, `%2`, etc.
+ * Also inserts the passed {@linkcode args} into the translation at the markers `%1`, `%2`, etc.
  * Tries to fall back to the non-pluralized syntax if no translation was found
  */
-function tlp(locale, key, num, ...values) {
+function tlp(locale, key, num, ...args) {
     if (typeof num !== "number")
         num = num.length;
-    const plNum = num === 1 ? "1" : "n";
-    const trans = tl(locale, `${key}-${plNum}`, ...values);
+    const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
+    if (locale === "en-US")
+        hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+    const trans = tl(locale, tlKey, ...args);
     if (trans === key)
-        return t(key, ...values);
+        return t(key, ...args);
     return trans;
 }// hoist the class declaration because either rollup or babel is being a hoe
 /** Whether the dialog system has been initialized */
@@ -2290,8 +2294,8 @@ async function initAutoLike() {
                     else
                         info("Skipping auto-like, because the like state is currently set to", likeState);
                 };
-                timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
-                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
+                timeout = setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs);
+                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs));
             });
             const recreateBtn = (headerCont, chanId) => {
                 var _a, _b, _c, _d, _e, _f;
@@ -4040,7 +4044,7 @@ async function mountCfgMenu() {
         if (logoSrc)
             titleLogoElem.src = logoSrc;
         titleLogoHeaderCont.appendChild(titleLogoElem);
-        const titleElem = document.createElement("h2");
+        const titleElem = document.createElement("h1");
         titleElem.classList.add("bytm-menu-title");
         const titleTextElem = document.createElement("div");
         titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
@@ -4193,6 +4197,93 @@ async function mountCfgMenu() {
         buttonsCont.appendChild(exportImportBtn);
         footerCont.appendChild(reloadFooterCont);
         footerCont.appendChild(buttonsCont);
+        //#region main body
+        const bodyCont = document.createElement("div");
+        bodyCont.id = "bytm-cfg-menu-main-body";
+        //#region load cfg & resolve categories
+        const featureCfg = getFeatures();
+        const featureCfgWithCategories = Object.entries(featInfo)
+            .reduce((acc, [key, { category }]) => {
+            if (!acc[category])
+                acc[category] = {};
+            acc[category][key] = featureCfg[key];
+            return acc;
+        }, {});
+        //#region sidenav
+        const sidenavCont = document.createElement("nav");
+        sidenavCont.classList.add("bytm-menu-sidenav");
+        sidenavCont.id = "bytm-cfg-menu-sidenav";
+        sidenavCont.tabIndex = 0;
+        sidenavCont.ariaLabel = t("cfg_menu_sidenav_label");
+        bodyCont.appendChild(sidenavCont);
+        const createSidenavHeader = (headerId, selected = false) => {
+            try {
+                const headerElem = document.createElement("h2");
+                headerElem.id = `bytm-menu-nav-header-${headerId}`;
+                headerElem.classList.add("bytm-menu-sidenav-header");
+                selected && headerElem.classList.add("selected");
+                headerElem.role = "radio";
+                headerElem.ariaChecked = String(selected);
+                headerElem.tabIndex = 0;
+                headerElem.ariaLevel = "2";
+                headerElem.textContent = t(`feature_category_${headerId}`);
+                headerElem.setAttribute("aria-label", t(`feature_category_${headerId}`));
+                onInteraction(headerElem, () => {
+                    const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
+                    if (selectedHeader) {
+                        selectedHeader.classList.remove("selected");
+                        selectedHeader.ariaChecked = "false";
+                    }
+                    headerElem.classList.add("selected");
+                    headerElem.ariaChecked = "true";
+                    const catElem = featuresCont.querySelector(`#bytm-ftconf-category-${headerId}`);
+                    if (catElem) {
+                        document.querySelectorAll("#bytm-menu-opts .bytm-ftconf-category").forEach((el) => {
+                            el.classList.add("hidden");
+                            el.setAttribute("aria-hidden", "true");
+                            el.setAttribute("inert", "true");
+                        });
+                        catElem.classList.remove("hidden");
+                        catElem.removeAttribute("aria-hidden");
+                        catElem.removeAttribute("inert");
+                    }
+                    emitSiteEvent("configHeaderSelected", headerId);
+                });
+                return headerElem;
+            }
+            catch (err) {
+                error(`Error while creating sidenav header for category '${headerId}':`, err);
+            }
+        };
+        // top section:
+        const sidenavTopSectionCont = document.createElement("section");
+        sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section");
+        sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
+        sidenavTopSectionCont.role = "radiogroup";
+        sidenavTopSectionCont.tabIndex = 0;
+        sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo.name });
+        // settings category headers:
+        let firstCatHeader = true;
+        for (const category of Object.keys(featureCfgWithCategories)) {
+            const headerElem = createSidenavHeader(category, firstCatHeader);
+            headerElem && sidenavTopSectionCont.appendChild(headerElem);
+            firstCatHeader = false;
+        }
+        sidenavCont.appendChild(sidenavTopSectionCont);
+        // bottom section:
+        const sidenavBtmSectionCont = document.createElement("section");
+        sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section");
+        sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
+        sidenavBtmSectionCont.role = "radiogroup";
+        sidenavBtmSectionCont.tabIndex = 0;
+        sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo.name });
+        // extra info headers:
+        const extraInfoCategoryIDs = ["about", "changelog"];
+        for (const id of extraInfoCategoryIDs) {
+            const headerElem = createSidenavHeader(id, firstCatHeader);
+            headerElem && sidenavBtmSectionCont.appendChild(headerElem);
+        }
+        sidenavCont.appendChild(sidenavBtmSectionCont);
         //#region feature list
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
@@ -4213,7 +4304,7 @@ async function mountCfgMenu() {
                 (_b = (_a = featInfo[key]) === null || _a === void 0 ? void 0 : _a.change) === null || _b === void 0 ? void 0 : _b.call(_a, key, initialVal, newVal);
                 if (requiresReload) {
                     reloadFooterEl.classList.remove("hidden");
-                    reloadFooterEl.setAttribute("aria-hidden", "false");
+                    reloadFooterEl.removeAttribute("aria-hidden");
                 }
                 else {
                     reloadFooterEl.classList.add("hidden");
@@ -4251,14 +4342,6 @@ async function mountCfgMenu() {
         };
         /** Call whenever the feature config is changed */
         const confChanged = UserUtils.debounce(onCfgChange, 333);
-        const featureCfg = getFeatures();
-        const featureCfgWithCategories = Object.entries(featInfo)
-            .reduce((acc, [key, { category }]) => {
-            if (!acc[category])
-                acc[category] = {};
-            acc[category][key] = featureCfg[key];
-            return acc;
-        }, {});
         /**
          * Formats the value `v` based on the provided `key` using the `featInfo` object.
          * If a custom `renderValue` function is defined for the `key`, it will be used to format the value.
@@ -4279,37 +4362,24 @@ async function mountCfgMenu() {
                 return String(v).trim();
             }
         };
-        //#DEBUG
-        document.addEventListener("keydown", (e) => {
-            var _a;
-            if (mode === "development" && e.code === "F8" && (e.shiftKey || e.ctrlKey)) {
-                e.preventDefault();
-                e.stopPropagation();
-                const catElem = featuresCont.querySelector(".bytm-ftconf-category:not(.hidden)");
-                catElem === null || catElem === void 0 ? void 0 : catElem.classList.add("hidden");
-                const sibling = !e.ctrlKey ? catElem === null || catElem === void 0 ? void 0 : catElem.nextElementSibling : catElem === null || catElem === void 0 ? void 0 : catElem.previousElementSibling;
-                const wrapChild = [...document.querySelectorAll("#bytm-menu-opts .bytm-ftconf-category")].at(e.ctrlKey ? -1 : 0);
-                (_a = (sibling && sibling.classList.contains("bytm-ftconf-category") ? sibling : wrapChild)) === null || _a === void 0 ? void 0 : _a.classList.remove("hidden");
-            }
-        });
         let firstCategory = true;
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
             const categoryCont = document.createElement("div");
             categoryCont.id = `bytm-ftconf-category-${category}`;
             categoryCont.classList.add("bytm-ftconf-category");
-            !firstCategory && categoryCont.classList.add("hidden");
             categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
             categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
             categoryCont.tabIndex = 0;
-            const catHeaderElem = document.createElement("h3");
-            catHeaderElem.id = `bytm-ftconf-category-${category}-header`;
-            catHeaderElem.classList.add("bytm-ftconf-category-header");
-            catHeaderElem.role = "heading";
-            catHeaderElem.ariaLevel = "2";
-            catHeaderElem.tabIndex = 0;
-            catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
-            categoryCont.appendChild(catHeaderElem);
+            if (firstCategory) {
+                categoryCont.removeAttribute("inert");
+                categoryCont.removeAttribute("aria-hidden");
+            }
+            else {
+                categoryCont.classList.add("hidden");
+                categoryCont.setAttribute("inert", "true");
+                categoryCont.setAttribute("aria-hidden", "true");
+            }
             for (const featKey in featObj) {
                 const ftInfo = featInfo[featKey];
                 if (!ftInfo || ("hidden" in ftInfo && ftInfo.hidden === true))
@@ -4660,9 +4730,10 @@ async function mountCfgMenu() {
         const bottomAnchor = document.createElement("div");
         bottomAnchor.id = "bytm-menu-bottom-anchor";
         featuresCont.appendChild(bottomAnchor);
+        bodyCont.appendChild(featuresCont);
         //#region finalize
         menuContainer.appendChild(headerElem);
-        menuContainer.appendChild(featuresCont);
+        menuContainer.appendChild(bodyCont);
         const subtitleElemCont = document.createElement("div");
         subtitleElemCont.id = "bytm-menu-subtitle-cont";
         subtitleElemCont.classList.add("bytm-ellipsis");
@@ -5720,6 +5791,7 @@ async function initHotkeys() {
     promises.push(initSiteSwitch());
     promises.push(initProxyHotkeys());
     promises.push(initSkipToRemTimeHotkey());
+    promises.push(initSearchBarHotkeys());
     return await Promise.allSettled(promises);
 }
 function hotkeyMatches(e, hk) {
@@ -5739,7 +5811,7 @@ async function initSiteSwitch() {
             return;
         if (siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
             switchSite(domain === "yt" ? "ytm" : "yt");
-    });
+    }, { capture: true });
     siteEvents.on("hotkeyInputActive", (state) => {
         if (!getFeature("switchBetweenSites"))
             return;
@@ -5793,7 +5865,7 @@ async function initLikeDislikeHotkeys() {
             likeBtn === null || likeBtn === void 0 ? void 0 : likeBtn.click();
         else if (hotkeyMatches(e, getFeature("dislikeHotkey")))
             dislikeBtn === null || dislikeBtn === void 0 ? void 0 : dislikeBtn.click();
-    });
+    }, { capture: true });
 }
 //#region lyrics
 async function initLyricsHotkey() {
@@ -5822,6 +5894,38 @@ async function initSkipToRemTimeHotkey() {
             e.stopImmediatePropagation();
             await remTimeTryRestoreTime(true);
         }
+    }, { capture: true });
+}
+//#region search bar
+async function initSearchBarHotkeys() {
+    const getSearchBarInput = () => document.querySelector(getDomain() === "ytm"
+        ? "ytmusic-search-box input"
+        : "yt-searchbox input");
+    const checkFocusHotkey = (e) => {
+        var _a;
+        if (isIgnoredInputElement() || !getFeature("focusSearchBarHotkeyEnabled"))
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        (_a = getSearchBarInput()) === null || _a === void 0 ? void 0 : _a.focus();
+        log("Focused on the search bar");
+    };
+    const checkClearHotkey = (e) => {
+        if (!getFeature("clearSearchBarHotkeyEnabled"))
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const inputEl = getSearchBarInput();
+        if (inputEl) {
+            inputEl.value = "";
+            inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+    };
+    document.addEventListener("keydown", (e) => {
+        hotkeyMatches(e, getFeature("focusSearchBarHotkey")) && checkFocusHotkey(e);
+        hotkeyMatches(e, getFeature("clearSearchBarHotkey")) && checkClearHotkey(e);
+    }, {
+        capture: true, // ensure precedence over YTM's own listeners
     });
 }
 let lastProxyHkTime = 0;
@@ -6534,6 +6638,131 @@ const options = {
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 const featInfo = {
+    //#region cat:general
+    locale: {
+        type: "select",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        options: options.locale,
+        default: getPreferredLocale(),
+        textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
+    },
+    localeFallback: {
+        type: "toggle",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    versionCheck: {
+        type: "toggle",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        textAdornment: adornments.reload,
+    },
+    checkVersionNow: {
+        type: "button",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        click: () => doVersionCheck(true),
+    },
+    numbersFormat: {
+        type: "select",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        options: () => [
+            { value: "long", label: `${formatNumber(12345678, "long")} (${t("votes_format_long")})` },
+            { value: "short", label: `${formatNumber(12345678, "short")} (${t("votes_format_short")})` },
+        ],
+        default: "short",
+        reloadRequired: false,
+        enable: noop,
+    },
+    toastDuration: {
+        type: "slider",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        min: 0,
+        max: 15,
+        default: 4,
+        step: 0.5,
+        unit: "s",
+        reloadRequired: false,
+        advanced: true,
+        textAdornment: adornments.advanced,
+        enable: noop,
+        change: () => showIconToast({
+            message: t("example_toast"),
+            iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+        }),
+    },
+    showToastOnGenericError: {
+        type: "toggle",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    initTimeout: {
+        type: "number",
+        category: "plugins",
+        supportedSites: ["ytm", "yt"],
+        min: 3,
+        max: 30,
+        default: 8,
+        step: 0.1,
+        unit: "s",
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    resetConfig: {
+        type: "button",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        click: promptResetConfig,
+        textAdornment: adornments.reload,
+    },
+    resetEverything: {
+        type: "button",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        click: async () => {
+            if (await showPrompt({
+                type: "confirm",
+                message: t("reset_everything_confirm"),
+            })) {
+                await getStoreSerializer().resetStoresData();
+                const gmKeys = await GM.listValues();
+                await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
+                await reloadTab();
+            }
+        },
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    logLevel: {
+        type: "select",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        options: () => [
+            { value: LogLevel.Debug, label: t("log_level_debug") },
+            { value: LogLevel.Info, label: t("log_level_info") },
+        ],
+        default: LogLevel.Info,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    advancedMode: {
+        type: "toggle",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        default: false,
+        change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
+        textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
+    },
     //#region cat:layout
     watermarkEnabled: {
         type: "toggle",
@@ -7159,6 +7388,48 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
+    focusSearchBarHotkeyEnabled: {
+        type: "toggle",
+        category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+    },
+    focusSearchBarHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
+        default: {
+            code: "KeyF",
+            shift: true,
+            ctrl: false,
+            alt: false,
+        },
+        reloadRequired: false,
+        enable: noop,
+    },
+    clearSearchBarHotkeyEnabled: {
+        type: "toggle",
+        category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+    },
+    clearSearchBarHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        supportedSites: ["ytm", "yt"],
+        default: {
+            code: "Delete",
+            shift: true,
+            ctrl: false,
+            alt: false,
+        },
+        reloadRequired: false,
+        enable: noop,
+    },
     rebindNextAndPrevious: {
         type: "toggle",
         category: "hotkeys",
@@ -7354,131 +7625,6 @@ const featInfo = {
         default: undefined,
         click: () => getPluginListDialog().then(d => d.open()),
     },
-    //#region cat:general
-    locale: {
-        type: "select",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        options: options.locale,
-        default: getPreferredLocale(),
-        textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
-    },
-    localeFallback: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    versionCheck: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        textAdornment: adornments.reload,
-    },
-    checkVersionNow: {
-        type: "button",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        click: () => doVersionCheck(true),
-    },
-    numbersFormat: {
-        type: "select",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        options: () => [
-            { value: "long", label: `${formatNumber(12345678, "long")} (${t("votes_format_long")})` },
-            { value: "short", label: `${formatNumber(12345678, "short")} (${t("votes_format_short")})` },
-        ],
-        default: "short",
-        reloadRequired: false,
-        enable: noop,
-    },
-    toastDuration: {
-        type: "slider",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        min: 0,
-        max: 15,
-        default: 4,
-        step: 0.5,
-        unit: "s",
-        reloadRequired: false,
-        advanced: true,
-        textAdornment: adornments.advanced,
-        enable: noop,
-        change: () => showIconToast({
-            message: t("example_toast"),
-            iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
-        }),
-    },
-    showToastOnGenericError: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    initTimeout: {
-        type: "number",
-        category: "plugins",
-        supportedSites: ["ytm", "yt"],
-        min: 3,
-        max: 30,
-        default: 8,
-        step: 0.1,
-        unit: "s",
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    resetConfig: {
-        type: "button",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        click: promptResetConfig,
-        textAdornment: adornments.reload,
-    },
-    resetEverything: {
-        type: "button",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        click: async () => {
-            if (await showPrompt({
-                type: "confirm",
-                message: t("reset_everything_confirm"),
-            })) {
-                await getStoreSerializer().resetStoresData();
-                const gmKeys = await GM.listValues();
-                await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
-                await reloadTab();
-            }
-        },
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    logLevel: {
-        type: "select",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        options: () => [
-            { value: LogLevel.Debug, label: t("log_level_debug") },
-            { value: LogLevel.Info, label: t("log_level_info") },
-        ],
-        default: LogLevel.Info,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    advancedMode: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: false,
-        change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
-        textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
-    },
 };/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 11;
 const defaultData = UserUtils.purifyObj(Object.keys(featInfo)
@@ -7609,6 +7755,8 @@ const migrations = {
     // 10 -> 11 (v3.1)
     11: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "thumbnailOverlayPreferredSource",
+        "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
+        "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
     ]), [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
     ]),
