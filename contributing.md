@@ -147,7 +147,7 @@ To edit an existing translation, please follow these steps:
   Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
 - **`pnpm gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
-- **`pnpm tr-changed <keys>`**  
+- **`pnpm tr-changed "<keys>"`**  
   Removes the provided keys (comma-separated) from all translation files but `en-US.json`  
   This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm tr-format -p`
 - **`pnpm tr-progress`**  

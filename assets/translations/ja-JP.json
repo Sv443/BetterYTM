@@ -272,8 +272,6 @@
   "feature_desc_volumeSliderLabel": "音量スライダーの横にパーセンテージラベルを追加する",
   "feature_desc_volumeSliderSize": "音量スライダーの幅（ピクセル単位）",
   "feature_desc_volumeSliderStep": "音量スライダーの感度（音量を一度にどれだけのパーセントで変更できるか）",
-  "feature_desc_volumeSliderScrollStep": "音量スライダーをスクロールする感度（パーセント単位） - 上記の感度値から最も近い感度値にスナップします",
-  "feature_helptext_volumeSliderScrollStep": "マウスホイールで音量スライダーをスクロールするときに音量を変更するパーセント",
   "feature_desc_volumeSharedBetweenTabs": "音量レベルをタブ間で共有する",
   "feature_helptext_volumeSharedBetweenTabs": "1 つのタブで音量を変更すると、この機能が有効になっている他のすべてのタブで音量レベルが同じ値に設定されます。\nこの値は、無効になるまで記憶され、セッション間で復元されます。",
   "feature_desc_setInitialTabVolume": "サイトを開いたときに音量レベルを特定の値に設定する",

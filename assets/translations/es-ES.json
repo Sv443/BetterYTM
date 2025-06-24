@@ -272,8 +272,6 @@
   "feature_desc_volumeSliderLabel": "Agregue una etiqueta de porcentaje junto al control deslizante de volumen",
   "feature_desc_volumeSliderSize": "El ancho del control deslizante de volumen en píxeles",
   "feature_desc_volumeSliderStep": "Sensibilidad del control deslizante de volumen (en qué porcentaje se puede cambiar el volumen a la vez)",
-  "feature_desc_volumeSliderScrollStep": "Sensibilidad del control deslizante de volumen al desplazarse con la rueda del mouse en porcentaje - se ajusta al valor de sensibilidad más cercano desde arriba",
-  "feature_helptext_volumeSliderScrollStep": "Por cuánto porcentaje debe cambiarse el volumen al desplazar el control deslizante de volumen con la rueda del mouse.\nEsto debe ser un múltiplo de la sensibilidad del control deslizante de volumen, de lo contrario habrá pequeños saltos irregulares en el volumen al desplazarse.",
   "feature_desc_volumeSharedBetweenTabs": "¿Debería el volumen establecido ser compartido entre pestañas y recordado entre sesiones?",
   "feature_helptext_volumeSharedBetweenTabs": "Si cambia el volumen en una pestaña, el nivel de volumen se establecerá en el mismo valor en todas las demás pestañas que tengan esta función habilitada.\nEste valor se recordará y restaurará en las sesiones, hasta que se desactive.",
   "feature_desc_setInitialTabVolume": "Establece el nivel de volumen en un valor específico una vez al abrir el sitio",

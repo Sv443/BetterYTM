@@ -272,8 +272,6 @@
   "feature_desc_volumeSliderLabel": "Adicionar um rótulo de porcentagem ao lado do controle de volume",
   "feature_desc_volumeSliderSize": "A largura do controle deslizante de volume em pixels",
   "feature_desc_volumeSliderStep": "Sensibilidade do controle deslizante de volume (por quantos porcento o volume pode ser alterado de cada vez)",
-  "feature_desc_volumeSliderScrollStep": "Sensibilidade da roda do mouse para o controle deslizante de volume em porcentagem - ajusta para o valor de sensibilidade mais próximo de cima",
-  "feature_helptext_volumeSliderScrollStep": "Por quantos porcento o volume deve ser alterado ao rolar o controle deslizante de volume com a roda do mouse.\nIsso deve ser um múltiplo da sensibilidade do controle deslizante de volume, caso contrário, haverá pequenos saltos irregulares no volume ao rolar.",
   "feature_desc_volumeSharedBetweenTabs": "Deve o volume ser compartilhado entre guias e lembrado entre sessões?",
   "feature_helptext_volumeSharedBetweenTabs": "Se você alterar o volume em uma guia, o nível de volume será definido para o mesmo valor em todas as outras guias que têm este recurso ativado.\nEste valor será lembrado e restaurado entre sessões, até ser desativado.",
   "feature_desc_setInitialTabVolume": "Definir o nível de volume para um valor específico ao abrir o site",

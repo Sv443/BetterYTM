@@ -47,6 +47,8 @@ export type SiteEventsMap = {
   pathChanged: (newPath: string, oldPath: string | null) => void;
   /** Emitted whenever the player enters or exits fullscreen mode */
   fullscreenToggled: (isFullscreen: boolean) => void;
+  /** Call to force the volume slider label to update. Set `round` to false to allow setting values outside `volumeSliderStep`. */
+  updateVolumeSliderLabel: () => void;
 
   //#region features:
   /** Emitted whenever a channel was added, edited or removed from the auto-like list */
@@ -68,6 +70,7 @@ export const allSiteEvents = [
   "watchIdChanged",
   "pathChanged",
   "fullscreenToggled",
+  "updateVolumeSliderLabel",
   "autoLikeChannelsUpdated",
 ] as const;
 

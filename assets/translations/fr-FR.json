@@ -272,8 +272,6 @@
   "feature_desc_volumeSliderLabel": "Ajouter une étiquette de pourcentage à côté du curseur de volume",
   "feature_desc_volumeSliderSize": "La largeur du curseur de volume en pixels",
   "feature_desc_volumeSliderStep": "Sensibilité du curseur de volume (de combien de pour cent le volume peut être modifié à la fois)",
-  "feature_desc_volumeSliderScrollStep": "Sensibilité de la molette de la souris pour le curseur de volume en pour cent - se fixe à la valeur de sensibilité la plus proche par le haut",
-  "feature_helptext_volumeSliderScrollStep": "De combien de pour cent le volume doit être modifié lors du défilement du curseur de volume avec la molette de la souris.\nCela doit être un multiple de la sensibilité du curseur de volume, sinon il y aura de petits sauts irréguliers dans le volume lors du défilement.",
   "feature_desc_volumeSharedBetweenTabs": "Le niveau de volume est partagé entre les onglets et mémorisé entre les sessions",
   "feature_helptext_volumeSharedBetweenTabs": "Si vous modifiez le volume dans un onglet, le niveau de volume sera défini à la même valeur dans tous les autres onglets qui ont cette fonctionnalité activée.\nCette valeur sera mémorisée et restaurée entre les sessions, jusqu'à ce qu'elle soit désactivée.",
   "feature_desc_setInitialTabVolume": "Définir le niveau de volume sur une valeur spécifique une fois lors de l'ouverture du site",

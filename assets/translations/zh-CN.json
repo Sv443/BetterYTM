@@ -272,8 +272,6 @@
   "feature_desc_volumeSliderLabel": "在音量滑块旁边添加百分比标签",
   "feature_desc_volumeSliderSize": "音量滑块的宽度（像素）",
   "feature_desc_volumeSliderStep": "音量滑块灵敏度（音量每次可以改变多少百分比）",
-  "feature_desc_volumeSliderScrollStep": "音量滑块滚动步长",
-  "feature_helptext_volumeSliderScrollStep": "当使用鼠标滚轮滚动音量滑块时，音量应该改变多少百分比。\n这应该是音量滑块灵敏度的倍数，否则在滚动音量时会出现小的不规则跳跃。",
   "feature_desc_volumeSharedBetweenTabs": "音量级别在标签页之间共享",
   "feature_helptext_volumeSharedBetweenTabs": "如果您在一个标签页中更改了音量，则所有其他启用此功能的标签页中的音量级别将设置为相同的值。\n此值将在会话之间记住并恢复，直到禁用。",
   "feature_desc_setInitialTabVolume": "打开网站时将音量级别设置为特定值",
