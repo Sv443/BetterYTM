@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c1431e99/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f8194566/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "c1431e99",
+    buildNumber: "f8194566",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6338,17 +6338,40 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
 async function initVolumeFeatures() {
     let listenerOnce = false;
     // sliderElem is not technically an input element but behaves pretty much the same
-    const listener = async (type, sliderElem) => {
+    const onSliderElExists = async (type, sliderElem) => {
         const volSliderCont = document.createElement("div");
         volSliderCont.classList.add("bytm-vol-slider-cont");
+        sliderElem.setAttribute("step", "1");
         if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
             initScrollStep(volSliderCont, sliderElem);
         UserUtils.addParent(sliderElem, volSliderCont);
         if (getFeature("volumeSliderLabel"))
             await addVolumeSliderLabel(type, sliderElem, volSliderCont);
-        setVolSliderStep(sliderElem);
-        if (getFeature("volumeSharedBetweenTabs"))
-            sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
+        const updateSliderVal = (step) => {
+            if (step && step > 0) {
+                const roundedValue = Math.round(Number(sliderElem.value) / step) * step;
+                if (roundedValue !== Number(sliderElem.value)) {
+                    sliderElem.value = sliderElem.dataset.scrollVal = String(roundedValue);
+                    sliderElem.setAttribute("aria-valuenow", String(roundedValue));
+                    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+                    siteEvents.emit("updateVolumeSliderLabel");
+                }
+            }
+        };
+        sliderElem.addEventListener("mousedown", () => {
+            sliderElem.dataset.dragging = "true";
+        });
+        sliderElem.addEventListener("mouseup", () => {
+            delete sliderElem.dataset.dragging;
+            if (getFeature("volumeSharedBetweenTabs"))
+                sharedVolumeChanged(Number(sliderElem.value));
+            updateSliderVal(getFeature("volumeSliderStep"));
+        });
+        sliderElem.addEventListener("scrollend", () => {
+            if (getFeature("volumeSharedBetweenTabs"))
+                sharedVolumeChanged(Number(sliderElem.value));
+            updateSliderVal(getFeature("volumeSliderScrollStep"));
+        });
         if (listenerOnce)
             return;
         listenerOnce = true;
@@ -6360,7 +6383,7 @@ async function initVolumeFeatures() {
             checkSharedVolume();
     };
     addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-        listener: (el) => listener("normal", el),
+        listener: (el) => onSliderElExists("normal", el),
     });
     let sizeSmOnce = false;
     const onResize = () => {
@@ -6368,7 +6391,7 @@ async function initVolumeFeatures() {
             return;
         sizeSmOnce = true;
         addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
-            listener: (el) => listener("expand", el),
+            listener: (el) => onSliderElExists("expand", el),
         });
     };
     window.addEventListener("resize", UserUtils.debounce(onResize, 150));
@@ -6420,7 +6443,15 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
             labelContElem.appendChild(linkIconElem);
         }
     }
-    const getLabel = (value) => `${value}%`;
+    const getLabel = (value) => {
+        var _a, _b;
+        if (sliderElem.dataset.dragging === "true") {
+            const roundedValue = Math.round(Number(value) / ((_a = getFeature("volumeSliderStep")) !== null && _a !== void 0 ? _a : 1)) * ((_b = getFeature("volumeSliderStep")) !== null && _b !== void 0 ? _b : 1);
+            return `${roundedValue}%`;
+        }
+        else
+            return `${value}%`;
+    };
     const labelElem = document.createElement("div");
     labelElem.classList.add("label");
     labelElem.textContent = getLabel(sliderElem.value);
@@ -6438,12 +6469,15 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
         sliderElem.setAttribute("aria-valuetext", labelFull);
+        if (!isNaN(Number(sliderElem.dataset.scrollVal)) && Number(sliderElem.dataset.scrollVal) % getFeature("volumeSliderStep") !== 0)
+            sliderElem.dataset.scrollVal = "";
         const labelElem2 = document.querySelectorAll(".bytm-vol-slider-label div.label");
         for (const el of labelElem2)
             el.textContent = getLabel(sliderElem.value);
     };
-    sliderElem.addEventListener("change", updateLabel);
-    siteEvents.on("configChanged", updateLabel);
+    sliderElem.addEventListener("change", () => updateLabel());
+    siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
+    siteEvents.on("configChanged", () => updateLabel());
     addSelectorListener("playerBarRightControls", type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont", {
         listener: (volumeCont) => volumeCont.appendChild(labelContElem),
     });
@@ -6479,11 +6513,6 @@ function setVolSliderSize() {
         return error("Invalid volume slider size:", size);
     setGlobalCssVar("vol-slider-size", `${size}px`);
     addStyleFromResource("css-vol_slider_size");
-}
-//#region volume slider step
-/** Sets the `step` attribute of the volume slider */
-function setVolSliderStep(sliderElem) {
-    sliderElem.setAttribute("step", String(getFeature("volumeSliderStep")));
 }
 //#region shared volume
 /** Saves the shared volume level to persistent storage */
