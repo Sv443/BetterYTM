@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0992cf3c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e2486b53/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "0992cf3c",
+    buildNumber: "e2486b53",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4967,7 +4967,15 @@ function exchangeLogo() {
             newLogo.classList.add("bytm-mod-logo-img");
             newLogo.src = bytmLogoUrl;
             logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
-            bytmLogoUrl && document.head.querySelectorAll("link[rel=\"icon\"]").forEach((e) => e.href = bytmLogoUrl);
+            bytmLogoUrl && document.head.querySelectorAll("link[rel=\"icon\"]").forEach((e, i) => {
+                if (i !== 0) {
+                    e.remove();
+                    return;
+                }
+                e.sizes = "48x48";
+                e.type = "image/png";
+                e.href = bytmLogoUrl;
+            });
             setTimeout(() => {
                 logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
             }, 1000);
@@ -5302,9 +5310,7 @@ async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
     if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
         return;
-    await albumArtStore.loadData();
     deleteExpiredAlbumArtCacheEntries();
-    setInterval(() => deleteExpiredAlbumArtCacheEntries(), 1000 * 60 * 5);
     // so the script init doesn't keep waiting until a /watch page is loaded
     waitVideoElementReady().then(() => {
         const playerSelector = "ytmusic-player#player";
@@ -5369,10 +5375,9 @@ async function initThumbnailOverlay() {
                         && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
                     return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
                 const actuallyApplyThumbUrl = (ytThumbUrl, amThumbUrl) => {
-                    var _a;
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
-                    const thumbUrl = (_a = (overlayState === OvlState.AM ? amThumbUrl : ytThumbUrl)) !== null && _a !== void 0 ? _a : ytThumbUrl;
+                    const thumbUrl = overlayState === OvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
                     if (toggleBtnElem) {
                         toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
                         toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
@@ -5428,9 +5433,9 @@ async function initThumbnailOverlay() {
                             ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
                             : undefined;
                         const imgRes = (_a = getFeature("thumbnailOverlayITunesImgRes")) !== null && _a !== void 0 ? _a : featInfo.thumbnailOverlayITunesImgRes.default;
-                        const iTunesUrl = ((_b = iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl60) !== null && _b !== void 0 ? _b : iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl100);
+                        const iTunesUrl = ((_b = iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl100) !== null && _b !== void 0 ? _b : iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl60);
                         iTunesUrl && !ac.signal.aborted && ac.abort();
-                        const thumbUrl = (_d = (_c = iTunesUrl === null || iTunesUrl === void 0 ? void 0 : iTunesUrl.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)) !== null && _c !== void 0 ? _c : bestNativeThumbUrl) !== null && _d !== void 0 ? _d : await getBestThumbnailUrl(videoID);
+                        const thumbUrl = (_d = (_c = iTunesUrl === null || iTunesUrl === void 0 ? void 0 : iTunesUrl.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)) !== null && _c !== void 0 ? _c : bestNativeThumbUrl) !== null && _d !== void 0 ? _d : await getBestThumbnailUrl(videoID);
                         if (thumbUrl)
                             actuallyApplyThumbUrl(bestNativeThumbUrl !== null && bestNativeThumbUrl !== void 0 ? bestNativeThumbUrl : thumbUrl, thumbUrl);
                         else
@@ -7998,7 +8003,7 @@ async function promptResetConfig() {
 async function clearConfig() {
     await configStore.deleteData();
     info("Deleted config from persistent storage");
-}const { autoPlural, getUnsafeWindow, purifyObj, randomId, NanoEmitter } = UserUtils__namespace;
+}const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
@@ -8133,7 +8138,7 @@ function registerPlugin(def) {
         if (validationErrors)
             throw new PluginError(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
         const events = new NanoEmitter({ publicEmit: true });
-        const token = randomId(16, 36, true, true);
+        const token = crypto.randomUUID();
         registeredPlugins.set(plKey, {
             def: def,
             events,
