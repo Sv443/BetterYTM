@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f8194566/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0992cf3c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "f8194566",
+    buildNumber: "0992cf3c",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2535,7 +2535,8 @@ function setLogLevel(level) {
 /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
 function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
-    if (typeof args.at(-1) === "number")
+    const lastArg = args.at(-1);
+    if (typeof lastArg === "number" && lastArg >= 0 && lastArg <= (Object.keys(LogLevel).length / 2) - 1)
         return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
     return LogLevel.Debug;
 }
@@ -3507,7 +3508,7 @@ async function fetchLyricsUrls(artist, song) {
             utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
             q: `${artist} ${song}`,
         });
-        log("Requesting lyrics from geniURL:", fetchUrl);
+        log("Requesting lyrics from geniURL:", String(fetchUrl));
         const token = getFeature("geniUrlToken");
         const fetchRes = await UserUtils.fetchAdvanced(fetchUrl, Object.assign({}, (token ? {
             headers: {
@@ -3702,7 +3703,7 @@ async function fetchITunesAlbumInfo(artist, album) {
             term: `${artist} ${album}`,
         }));
         if (!res.ok) {
-            warn("Couldn't fetch iTunes album info due to a request error:", res);
+            warn("Couldn't fetch iTunes album info for", artist, "-", album, "due to a request error:", res);
             return [];
         }
         const json = await res.json().catch(warn);
@@ -3711,7 +3712,7 @@ async function fetchITunesAlbumInfo(artist, album) {
             return [];
         }
         if (json.resultCount === 0) {
-            warn("No iTunes album info found for artist", artist, "and album", album);
+            warn("The iTunes API found no album info for", artist, "-", album);
             return [];
         }
         return json.results.filter((result) => {
@@ -5269,7 +5270,26 @@ async function initAboveQueueBtns() {
         },
     });
 }
-//#region thumb.overlay
+const albumArtStore = new UserUtils.DataStore({
+    id: "album-art-cache",
+    formatVersion: 1,
+    defaultData: {
+        entries: [],
+    },
+    encodeData: async (data) => await compressionSupported() ? await UserUtils.compress(data, compressionFormat, "string") : data,
+    decodeData: async (data) => await compressionSupported() ? await UserUtils.decompress(data, compressionFormat, "string") : data,
+});
+async function deleteExpiredAlbumArtCacheEntries() {
+    await albumArtStore.loadData();
+    const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
+    const expiredEntries = albumArtStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+    if (expiredEntries.length > 0) {
+        log(`Deleting ${expiredEntries.length} expired album art cache entries`);
+        albumArtStore.setData({
+            entries: albumArtStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
+        });
+    }
+}
 var OvlState;
 (function (OvlState) {
     OvlState[OvlState["Off"] = 0] = "Off";
@@ -5282,6 +5302,9 @@ async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
     if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
         return;
+    await albumArtStore.loadData();
+    deleteExpiredAlbumArtCacheEntries();
+    setInterval(() => deleteExpiredAlbumArtCacheEntries(), 1000 * 60 * 5);
     // so the script init doesn't keep waiting until a /watch page is loaded
     waitVideoElementReady().then(() => {
         const playerSelector = "ytmusic-player#player";
@@ -5375,7 +5398,8 @@ async function initThumbnailOverlay() {
                     async listener() {
                         var _a, _b, _c, _d;
                         const [primaryArtist, albumName] = (() => {
-                            // format: "<a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Extra Info</span>"
+                            // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
+                            // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
                             var _a, _b;
                             const parent = document.querySelector(".content-info-wrapper .subtitle yt-formatted-string");
                             if (!parent)
@@ -5399,9 +5423,9 @@ async function initThumbnailOverlay() {
                             ];
                         })();
                         if (primaryArtist && albumName)
-                            log("Resolved primary artist and album names:", primaryArtist, "-", albumName);
+                            log(`Resolved primary artist and album name: '${primaryArtist} - ${albumName}'`);
                         const iTunesAlbum = primaryArtist && albumName
-                            ? await getBestITunesAlbumMatch(primaryArtist, albumName)
+                            ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
                             : undefined;
                         const imgRes = (_a = getFeature("thumbnailOverlayITunesImgRes")) !== null && _a !== void 0 ? _a : featInfo.thumbnailOverlayITunesImgRes.default;
                         const iTunesUrl = ((_b = iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl60) !== null && _b !== void 0 ? _b : iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl100);
@@ -5410,7 +5434,7 @@ async function initThumbnailOverlay() {
                         if (thumbUrl)
                             actuallyApplyThumbUrl(bestNativeThumbUrl !== null && bestNativeThumbUrl !== void 0 ? bestNativeThumbUrl : thumbUrl, thumbUrl);
                         else
-                            warn("Couldn't get thumbnail URL for album", iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.collectionName, "by", iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artistName, "or video with ID", videoID);
+                            warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
                     },
                 });
             }
@@ -5418,14 +5442,6 @@ async function initThumbnailOverlay() {
                 error("Couldn't apply thumbnail URL to overlay due to an error:", err);
             }
         };
-        siteEvents.once("watchIdChanged", (videoID) => {
-            addSelectorListener("body", "#bytm-thumbnail-overlay", {
-                listener: () => {
-                    applyThumbUrl(videoID);
-                    updateOverlayVisibility();
-                },
-            });
-        });
         const createElements = async () => {
             var _a;
             try {
@@ -5453,10 +5469,12 @@ async function initThumbnailOverlay() {
                 overlayElem.appendChild(thumbImgElem);
                 playerEl.appendChild(overlayElem);
                 indicatorElem && playerEl.appendChild(indicatorElem);
-                siteEvents.on("watchIdChanged", async (videoID) => {
+                siteEvents.on("watchIdChanged", async (videoId) => {
                     overlayState = OvlState.Off;
-                    applyThumbUrl(videoID);
-                    updateOverlayVisibility();
+                    return await Promise.allSettled([
+                        applyThumbUrl(videoId),
+                        updateOverlayVisibility(),
+                    ]);
                 });
                 const params = new URL(location.href).searchParams;
                 if (params.has("v")) {
@@ -5515,17 +5533,25 @@ async function initThumbnailOverlay() {
     });
 }
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
-async function getBestITunesAlbumMatch(artistsRaw, albumRaw) {
+async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
+    const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
+    if (cacheEntry) {
+        log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
+        return {
+            artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60"),
+            artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100"),
+        };
+    }
     const doFetchITunesAlbum = async (artist, album) => {
         const albumObjs = await fetchITunesAlbumInfo(artist, album);
         if (albumObjs && albumObjs.length > 0) {
-            const bestMatch = albumObjs.find((al) => ((al.artistName === artist
-                || al.artistName.toLowerCase() === artist.toLowerCase()
-                || al.artistName === artistsRaw
-                || al.artistName.toLowerCase() === artistsRaw.toLowerCase()) && (al.collectionName === album
-                || al.collectionName.toLowerCase() === album.toLowerCase()
-                || al.collectionCensoredName === album
-                || al.collectionCensoredName.toLowerCase() === album.toLowerCase())));
+            const bestMatch = albumObjs.find((al) => ((sanitizeArtists(al.artistName) === artist
+                || sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
+                || sanitizeArtists(al.artistName) === artistsRaw
+                || sanitizeArtists(al.artistName).toLowerCase() === artistsRaw.toLowerCase()) && (sanitizeSong(al.collectionName) === sanitizeSong(album)
+                || sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
+                || sanitizeSong(al.collectionCensoredName) === sanitizeSong(album)
+                || sanitizeSong(al.collectionCensoredName).toLowerCase() === sanitizeSong(album).toLowerCase())));
             return [bestMatch, albumObjs[0]];
         }
         return [undefined, albumObjs[0]];
@@ -5534,7 +5560,20 @@ async function getBestITunesAlbumMatch(artistsRaw, albumRaw) {
     let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
     if (!bestMatch)
         [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
-    return bestMatch !== null && bestMatch !== void 0 ? bestMatch : fallback;
+    const match = bestMatch !== null && bestMatch !== void 0 ? bestMatch : fallback;
+    if (match) {
+        const entries = albumArtStore.getData().entries;
+        if (!entries.find((e) => e.videoId === videoId)) {
+            entries.push({
+                videoId,
+                url: match.artworkUrl100,
+                created: Date.now(),
+            });
+            log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
+            await albumArtStore.setData({ entries });
+        }
+    }
+    return match;
 }
 //#region idle hide cursor
 async function initHideCursorOnIdle() {
@@ -6869,6 +6908,36 @@ const featInfo = {
         enable: noop,
         textAdornment: adornments.ytmOnly,
     },
+    thumbnailOverlayAlbumArtCacheMaxSize: {
+        type: "slider",
+        category: "layout",
+        supportedSites: ["ytm"],
+        default: 2000,
+        min: 500,
+        max: 10000,
+        step: 250,
+        unit: (val) => ` ${tp("unit_entries", val)}`,
+        renderValue: (val) => formatNumber(Number(val), "long"),
+        reloadRequired: false,
+        advanced: true,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.ytmOnly]),
+    },
+    thumbnailOverlayAlbumArtCacheTTL: {
+        type: "slider",
+        category: "layout",
+        supportedSites: ["ytm"],
+        default: 30,
+        min: 5,
+        max: 100,
+        step: 1,
+        unit: (val) => ` ${tp("unit_days", val)}`,
+        renderValue: (val) => formatNumber(Number(val), "long"),
+        reloadRequired: false,
+        advanced: true,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.ytmOnly]),
+    },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
         category: "layout",
@@ -7576,11 +7645,12 @@ const featInfo = {
         type: "slider",
         category: "lyrics",
         supportedSites: ["ytm"],
-        default: 21,
-        min: 1,
+        default: 30,
+        min: 5,
         max: 100,
         step: 1,
         unit: (val) => ` ${tp("unit_days", val)}`,
+        renderValue: (val) => formatNumber(Number(val), "long"),
         advanced: true,
         reloadRequired: false,
         enable: noop,
@@ -7780,6 +7850,7 @@ const migrations = {
     // 10 -> 11 (v3.1)
     11: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "thumbnailOverlayPreferredSource",
+        "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
         "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
         "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
     ]), [
