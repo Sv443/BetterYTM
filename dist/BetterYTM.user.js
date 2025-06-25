@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e2486b53/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@fc8af082/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e2486b53",
+    buildNumber: "fc8af082",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4291,7 +4291,7 @@ async function mountCfgMenu() {
         // extra info headers:
         const extraInfoCategoryIDs = ["about", "changelog"];
         for (const id of extraInfoCategoryIDs) {
-            const headerElem = createSidenavHeader(id, firstCatHeader);
+            const headerElem = createSidenavHeader(id, firstCatHeader, true);
             headerElem && sidenavBtmSectionCont.appendChild(headerElem);
         }
         sidenavCont.appendChild(sidenavBtmSectionCont);
@@ -4406,7 +4406,7 @@ async function mountCfgMenu() {
                 {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
-                    if (getFeature("advancedMode")) {
+                    if (mode === "development") {
                         const defVal = fmtVal(ftDefault, featKey);
                         const extraTxts = [
                             `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
@@ -4416,7 +4416,7 @@ async function mountCfgMenu() {
                         "step" in ftInfo && extraTxts.push(`step: ${ftInfo.step}`);
                         const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
                         const adv = ftInfo.advanced ? " (advanced feature)" : "";
-                        ftConfElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
+                        ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
                     }
                     if (!await hasKeyFor("en-US", `feature_desc_${featKey}`)) {
                         error(`Missing en-US translation with key "feature_desc_${featKey}" for feature description, skipping this config menu feature...`);
