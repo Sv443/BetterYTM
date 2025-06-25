@@ -42,8 +42,8 @@ export const devServerPort = Number(getConst("devServerPort", 8710));
 
 /** URL to the changelog file */
 export const changelogUrl = assetSource === "local"
-  ? `http://localhost:${devServerPort}/changelog.md`
-  : `https://raw.githubusercontent.com/${repo}/${buildNumber??branch}/changelog.md`;
+  ? `http://localhost:${devServerPort}/changelog.md?build=${buildNumber}`
+  : `https://raw.githubusercontent.com/${repo}/main/changelog.md?build=${buildNumber}`;
 
 /** The URL search parameters at the earliest possible time */
 export const initialParams = new URL(location.href).searchParams;
