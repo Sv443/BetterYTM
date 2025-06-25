@@ -393,7 +393,7 @@ async function mountCfgMenu() {
     const extraInfoCategoryIDs = ["about", "changelog"] as const;
 
     for(const id of extraInfoCategoryIDs) {
-      const headerElem = createSidenavHeader(id, firstCatHeader);
+      const headerElem = createSidenavHeader(id, firstCatHeader, true);
       headerElem && sidenavBtmSectionCont.appendChild(headerElem);
     }
 

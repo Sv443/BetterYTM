@@ -261,7 +261,7 @@
   "cfg_menu_sidenav_top_section_label": "Configuration Settings Categories",
   "cfg_menu_sidenav_bottom_section_label": "Extra Information Categories",
   "cfg_menu_feature_category_header_tooltip": "Click to view the configuration options for the category \"%1\"",
-  "cfg_menu_feature_category_info_header_tooltip": "Click to view the \"%1\" section",
+  "cfg_menu_feature_category_info_header_tooltip": "Click to view the information in the \"%1\" section",
 
   "feature_category_general": "General",
   "feature_category_layout": "Layout",
