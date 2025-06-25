@@ -170,6 +170,7 @@ export const migrations: DataMigrationsDict = {
   11: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
     useDefaultConfig(oldData, [
       "thumbnailOverlayPreferredSource",
+      "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
       "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
       "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
     ]),

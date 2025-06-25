@@ -225,7 +225,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       q: `${artist} ${song}`,
     });
 
-    log("Requesting lyrics from geniURL:", fetchUrl);
+    log("Requesting lyrics from geniURL:", String(fetchUrl));
 
     const token = getFeature("geniUrlToken");
     const fetchRes = await fetchAdvanced(fetchUrl, {

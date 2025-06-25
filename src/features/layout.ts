@@ -1,21 +1,21 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { addParent, autoPlural, compress, DataStore, debounce, decompress, fetchAdvanced, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
 import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
-import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { compressionSupported, formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
 import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
-import { mode, scriptInfo } from "../constants.js";
+import { compressionFormat, mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { createRipple } from "../components/ripple.js";
 import { createCircularBtn } from "../components/circularButton.js";
-import type { ResourceKey, VideoVotesObj } from "../types.js";
+import type { ITunesAlbumObj, ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
 
 //#region cfg menu btns
@@ -472,6 +472,40 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
+type AlbumArtCacheEntry = {
+  videoId: string;
+  url: string;
+  created: number;
+};
+
+type AlbumArtCache = {
+  entries: AlbumArtCacheEntry[];
+};
+
+const albumArtStore = new DataStore<AlbumArtCache>({
+  id: "album-art-cache",
+  formatVersion: 1,
+  defaultData: {
+    entries: [],
+  },
+  encodeData: async (data) => await compressionSupported() ? await compress(data, compressionFormat, "string") : data,
+  decodeData: async (data) => await compressionSupported() ? await decompress(data, compressionFormat, "string") : data,
+});
+
+async function deleteExpiredAlbumArtCacheEntries() {
+  await albumArtStore.loadData();
+
+  const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
+
+  const expiredEntries = albumArtStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+  if(expiredEntries.length > 0) {
+    log(`Deleting ${expiredEntries.length} expired album art cache entries`);
+    albumArtStore.setData({
+      entries: albumArtStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
+    });
+  }
+}
+
 enum OvlState {
   Off = 0,
   YT = 1,
@@ -485,6 +519,11 @@ export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
   if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
     return;
+
+  await albumArtStore.loadData();
+
+  deleteExpiredAlbumArtCacheEntries();
+  setInterval(() => deleteExpiredAlbumArtCacheEntries(), 1000 * 60 * 5);
 
   // so the script init doesn't keep waiting until a /watch page is loaded
   waitVideoElementReady().then(() => {
@@ -602,7 +641,8 @@ export async function initThumbnailOverlay() {
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
           async listener() {
             const [primaryArtist, albumName] = (() => {
-              // format: "<a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Extra Info</span>"
+              // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
+              // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
 
               const parent = document.querySelector<HTMLElement>(".content-info-wrapper .subtitle yt-formatted-string");
               if(!parent)
@@ -631,10 +671,10 @@ export async function initThumbnailOverlay() {
             })();
 
             if(primaryArtist && albumName)
-              log("Resolved primary artist and album names:", primaryArtist, "-", albumName);
+              log(`Resolved primary artist and album name: '${primaryArtist} - ${albumName}'`);
 
             const iTunesAlbum = primaryArtist && albumName
-              ? await getBestITunesAlbumMatch(primaryArtist, albumName)
+              ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
               : undefined;
 
             const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
@@ -648,7 +688,7 @@ export async function initThumbnailOverlay() {
             if(thumbUrl)
               actuallyApplyThumbUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
             else
-              warn("Couldn't get thumbnail URL for album", iTunesAlbum?.collectionName, "by", iTunesAlbum?.artistName, "or video with ID", videoID);
+              warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
           },
         });
       }
@@ -656,15 +696,6 @@ export async function initThumbnailOverlay() {
         error("Couldn't apply thumbnail URL to overlay due to an error:", err);
       }
     };
-
-    siteEvents.once("watchIdChanged", (videoID) => {
-      addSelectorListener("body", "#bytm-thumbnail-overlay", {
-        listener: () => {
-          applyThumbUrl(videoID);
-          updateOverlayVisibility();
-        },
-      });
-    });
 
     const createElements = async () => {
       try {
@@ -697,10 +728,12 @@ export async function initThumbnailOverlay() {
         indicatorElem && playerEl.appendChild(indicatorElem);
 
 
-        siteEvents.on("watchIdChanged", async (videoID) => {
+        siteEvents.on("watchIdChanged", async (videoId) => {
           overlayState = OvlState.Off;
-          applyThumbUrl(videoID);
-          updateOverlayVisibility();
+          return await Promise.allSettled([
+            applyThumbUrl(videoId),
+            updateOverlayVisibility(),
+          ]);
         });
 
         const params = new URL(location.href).searchParams;
@@ -773,21 +806,31 @@ export async function initThumbnailOverlay() {
 }
 
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
-async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
+async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albumRaw: string) {
+  const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
+
+  if(cacheEntry) {
+    log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
+    return {
+      artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60") as ITunesAlbumObj["artworkUrl60"],
+      artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100") as ITunesAlbumObj["artworkUrl100"],
+    } satisfies Partial<ITunesAlbumObj> & Required<Pick<ITunesAlbumObj, "artworkUrl60" | "artworkUrl100">>;
+  }
+
   const doFetchITunesAlbum = async (artist: string, album: string) => {
     const albumObjs = await fetchITunesAlbumInfo(artist, album);
     if(albumObjs && albumObjs.length > 0) {
       const bestMatch = albumObjs.find((al) => (
         (
-          al.artistName === artist
-          || al.artistName.toLowerCase() === artist.toLowerCase()
-          || al.artistName === artistsRaw
-          || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
+          sanitizeArtists(al.artistName) === artist
+          || sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
+          || sanitizeArtists(al.artistName) === artistsRaw
+          || sanitizeArtists(al.artistName).toLowerCase() === artistsRaw.toLowerCase()
         ) && (
-          al.collectionName === album
-          || al.collectionName.toLowerCase() === album.toLowerCase()
-          || al.collectionCensoredName === album
-          || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
+          sanitizeSong(al.collectionName) === sanitizeSong(album)
+          || sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
+          || sanitizeSong(al.collectionCensoredName) === sanitizeSong(album)
+          || sanitizeSong(al.collectionCensoredName).toLowerCase() === sanitizeSong(album).toLowerCase()
         )
       ));
       return [bestMatch, albumObjs[0]];
@@ -800,7 +843,23 @@ async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
   let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
   if(!bestMatch)
     [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
-  return bestMatch ?? fallback;
+
+  const match = bestMatch ?? fallback;
+
+  if(match) {
+    const entries = albumArtStore.getData().entries;
+    if(!entries.find((e) => e.videoId === videoId)) {
+      entries.push({
+        videoId,
+        url: match.artworkUrl100,
+        created: Date.now(),
+      });
+      log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
+      await albumArtStore.setData({ entries });
+    }
+  }
+
+  return match;
 }
 
 //#region idle hide cursor

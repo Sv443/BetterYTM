@@ -600,6 +600,10 @@ export interface FeatureConfig {
   thumbnailOverlayToggleBtnShown: boolean;
   /** The width and height of the image fetched from the iTunes API */
   thumbnailOverlayITunesImgRes: number;
+  /** For how long to cache the album art images fetched from the iTunes API */
+  thumbnailOverlayAlbumArtCacheTTL: number;
+  /** Maximum number of entries in the album art cache */
+  thumbnailOverlayAlbumArtCacheMaxSize: number;
   /** Whether to show an indicator on the thumbnail overlay when it is active */
   thumbnailOverlayShowIndicator: boolean;
   /** The opacity of the thumbnail overlay indicator element */
