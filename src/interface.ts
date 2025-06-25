@@ -17,7 +17,7 @@ import { showIconToast, showToast } from "./components/toast.js";
 import { ExImDialog } from "./components/ExImDialog.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 
-const { autoPlural, getUnsafeWindow, purifyObj, randomId, NanoEmitter } = UserUtils;
+const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils;
 
 //#region interface globals
 
@@ -278,7 +278,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
       throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
     const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
-    const token = randomId(16, 36, true, true);
+    const token = crypto.randomUUID();
 
     registeredPlugins.set(plKey, {
       def: def,

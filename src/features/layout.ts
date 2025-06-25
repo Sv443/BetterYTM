@@ -95,7 +95,15 @@ function exchangeLogo() {
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
-      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => e.href = bytmLogoUrl!);
+      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e, i) => {
+        if(i !== 0) {
+          e.remove();
+          return;
+        }
+        e.sizes = "48x48";
+        e.type = "image/png";
+        e.href = bytmLogoUrl!;
+      });
 
       setTimeout(() => {
         logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
