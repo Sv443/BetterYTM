@@ -537,7 +537,7 @@ async function mountCfgMenu() {
         {
           const featLeftSideElem = document.createElement("div");
           featLeftSideElem.classList.add("bytm-ftitem-leftside");
-          if(getFeature("advancedMode")) {
+          if(mode === "development") {
             const defVal = fmtVal(ftDefault, featKey as FeatureKey);
             const extraTxts = [
               `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
@@ -549,7 +549,7 @@ async function mountCfgMenu() {
             const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
             const adv = ftInfo.advanced ? " (advanced feature)" : "";
 
-            ftConfElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
+            ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
           }
 
           if(!await hasKeyFor("en-US", `feature_desc_${featKey}`)) {
