@@ -128,7 +128,7 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
     }));
 
     if(!res.ok) {
-      warn("Couldn't fetch iTunes album info due to a request error:", res);
+      warn("Couldn't fetch iTunes album info for", artist, "-", album, "due to a request error:", res);
       return [];
     }
 
@@ -139,7 +139,7 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
       return [];
     }
     if(json.resultCount === 0) {
-      warn("No iTunes album info found for artist", artist, "and album", album);
+      warn("The iTunes API found no album info for", artist, "-", album);
       return [];
     }
 

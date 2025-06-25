@@ -27,7 +27,8 @@ export function setLogLevel(level: LogLevel) {
 /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
 function getLogLevel(args: unknown[]): number {
   const minLogLvl = 0, maxLogLvl = 1;
-  if(typeof args.at(-1) === "number")
+  const lastArg = args.at(-1);
+  if(typeof lastArg === "number" && lastArg >= 0 && lastArg <= (Object.keys(LogLevel).length / 2) - 1)
     return clamp(
       args.splice(args.length - 1)[0] as number,
       minLogLvl,
