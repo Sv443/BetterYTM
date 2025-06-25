@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@fc8af082/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8297d6df/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "fc8af082",
+    buildNumber: "8297d6df",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4237,6 +4237,14 @@ async function mountCfgMenu() {
                 headerElem.textContent = t(`feature_category_${headerId}`);
                 headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
                 onInteraction(headerElem, () => {
+                    // @ts-expect-error
+                    if (isExtraInfoHeader && !(globalThis === null || globalThis === void 0 ? void 0 : globalThis[`DEBUG_extraInfoHeader_${headerId}`])) {
+                        showPrompt({
+                            type: "alert",
+                            message: "Work in progress!",
+                        }) // @ts-expect-error
+                            .then(() => globalThis[`DEBUG_extraInfoHeader_${headerId}`] = true);
+                    }
                     const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
                     if (selectedHeader) {
                         selectedHeader.classList.remove("selected");
@@ -5306,6 +5314,7 @@ var OvlState;
 })(OvlState || (OvlState = {}));
 /** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
 let overlayState = OvlState.Off;
+// FIXME: if toggled to YT, the AM URL is applied instead
 async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
     if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
