@@ -528,10 +528,7 @@ export async function initThumbnailOverlay() {
   if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
     return;
 
-  await albumArtStore.loadData();
-
   deleteExpiredAlbumArtCacheEntries();
-  setInterval(() => deleteExpiredAlbumArtCacheEntries(), 1000 * 60 * 5);
 
   // so the script init doesn't keep waiting until a /watch page is loaded
   waitVideoElementReady().then(() => {
@@ -618,7 +615,7 @@ export async function initThumbnailOverlay() {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
-          const thumbUrl = (overlayState === OvlState.AM ? amThumbUrl : ytThumbUrl) ?? ytThumbUrl;
+          const thumbUrl = overlayState === OvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
           
           if(toggleBtnElem) {
             toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
@@ -686,10 +683,10 @@ export async function initThumbnailOverlay() {
               : undefined;
 
             const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
-            const iTunesUrl = (iTunesAlbum?.artworkUrl60 ?? iTunesAlbum?.artworkUrl100);
+            const iTunesUrl = (iTunesAlbum?.artworkUrl100 ?? iTunesAlbum?.artworkUrl60);
             iTunesUrl && !ac.signal.aborted && ac.abort();
 
-            const thumbUrl = iTunesUrl?.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
+            const thumbUrl = iTunesUrl?.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)
               ?? bestNativeThumbUrl
               ?? await getBestThumbnailUrl(videoID);
 
