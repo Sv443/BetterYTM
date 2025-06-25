@@ -1,7 +1,7 @@
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-menu-bg-highlight-darker: rgba(10, 10, 10, 0.6);
   --bytm-dialog-separator-color: #797979;
   --bytm-dialog-border-radius: 10px;
 }
@@ -224,7 +224,7 @@
   width: 32px;
   height: 32px;
   z-index: 3007;
-  background-color: var(--bytm-scroll-indicator-bg);
+  background-color: var(--bytm-menu-bg-highlight-darker);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -1269,11 +1269,11 @@ body.bytm-dom-ytm
 
 :root {
   --bytm-menu-bg-highlight: #252525;
+  --bytm-menu-bg-highlight-darker: rgba(10, 10, 10, 0.6);
 }
 
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 10px;
 }
@@ -1342,10 +1342,6 @@ body.bytm-dom-ytm
   overflow-y: auto;
 }
 
-#bytm-cfg-menu-sidenav-bottom-section {
-  border-top: 2px solid var(--bytm-menu-separator-color);
-}
-
 .bytm-menu-sidenav-header {
   --bytm-menu-nav-header-horizontal-padding: 24px;
   --bytm-menu-nav-header-vertical-padding: 10px;
@@ -1370,11 +1366,20 @@ body.bytm-dom-ytm
   overflow-x: hidden;
   text-overflow: ellipsis;
   border-radius: 5rem 0 0 5rem;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-menu-sidenav-header:hover {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-menu-sidenav-header:active {
+  background-color: var(--bytm-menu-bg-highlight-darker);
 }
 
 .bytm-menu-sidenav-header.selected {
   --bytm-menu-nav-header-highlight-border-width: 2px;
-  background-color: var(--bytm-menu-bg-highlight);
+  background-color: var(--bytm-menu-bg-highlight-darker);
   border: var(--bytm-menu-nav-header-highlight-border-width) solid
     var(--bytm-menu-separator-color);
   border-style: solid none solid solid;
@@ -1395,13 +1400,13 @@ body.bytm-dom-ytm
   border-bottom: 2px solid var(--bytm-menu-separator-color);
 } */
 
-#bytm-cfg-menu-sidenav-top-section {
+/* #bytm-cfg-menu-sidenav-top-section {
   border-bottom: 2px solid var(--bytm-menu-separator-color);
 }
 
 #bytm-cfg-menu-sidenav-bottom-section {
   border-top: 2px solid var(--bytm-menu-separator-color);
-}
+} */
 
 .bytm-menu-body {
   padding: 15px;
@@ -1607,7 +1612,7 @@ body.bytm-dom-ytm
   width: 32px;
   height: 32px;
   z-index: 3007;
-  background-color: var(--bytm-scroll-indicator-bg);
+  background-color: var(--bytm-menu-bg-highlight-darker);
   border-radius: 50%;
   cursor: pointer;
 }

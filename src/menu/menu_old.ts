@@ -329,6 +329,15 @@ async function mountCfgMenu() {
         headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
 
         onInteraction(headerElem, () => {
+          // @ts-expect-error
+          if(isExtraInfoHeader && !globalThis?.[`DEBUG_extraInfoHeader_${headerId}`]) {
+            showPrompt({
+              type: "alert",
+              message: "Work in progress!",
+            }) // @ts-expect-error
+              .then(() => globalThis[`DEBUG_extraInfoHeader_${headerId}`] = true);
+          }
+
           const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
           if(selectedHeader) {
             selectedHeader.classList.remove("selected");

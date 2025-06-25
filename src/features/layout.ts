@@ -523,6 +523,7 @@ enum OvlState {
 /** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
 let overlayState = OvlState.Off;
 
+// FIXME: if toggled to YT, the AM URL is applied instead
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
   if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)

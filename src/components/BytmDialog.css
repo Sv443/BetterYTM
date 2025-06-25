@@ -1,7 +1,7 @@
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-menu-bg-highlight-darker: rgba(10, 10, 10, 0.6);
   --bytm-dialog-separator-color: #797979;
   --bytm-dialog-border-radius: 10px;
 }
@@ -224,7 +224,7 @@
   width: 32px;
   height: 32px;
   z-index: 3007;
-  background-color: var(--bytm-scroll-indicator-bg);
+  background-color: var(--bytm-menu-bg-highlight-darker);
   border-radius: 50%;
   cursor: pointer;
 }
