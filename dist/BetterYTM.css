@@ -1395,18 +1395,31 @@ body.bytm-dom-ytm
   );
 }
 
-/* .bytm-menu-sidenav-section .bytm-menu-sidenav-header:not(:last-of-type),
-#bytm-cfg-menu-sidenav-top-section .bytm-menu-sidenav-header:last-of-type {
-  border-bottom: 2px solid var(--bytm-menu-separator-color);
-} */
-
-/* #bytm-cfg-menu-sidenav-top-section {
-  border-bottom: 2px solid var(--bytm-menu-separator-color);
+.bytm-ftconf-extra-info-category {
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 1.4rem;
 }
 
-#bytm-cfg-menu-sidenav-bottom-section {
-  border-top: 2px solid var(--bytm-menu-separator-color);
-} */
+#bytm-ftconf-category-changelog details summary {
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+#bytm-ftconf-category-changelog details:not(:last-of-type) summary {
+  margin-bottom: 6px;
+}
+
+#bytm-ftconf-category-changelog h2 {
+  margin: 0;
+}
+
+#bytm-cfg-menu-changelog-md-cont {
+  overflow-y: hidden;
+}
 
 .bytm-menu-body {
   padding: 15px;
@@ -1492,7 +1505,7 @@ body.bytm-dom-ytm
 }
 
 #bytm-menu-subtitle-cont,
-#bytm-menu-version-anchor {
+#bytm-menu-version-number {
   color: var(--bytm-menu-subtitle-color) !important;
 }
 

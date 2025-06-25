@@ -9,7 +9,6 @@
   },
   "config_menu_option": "Configuration de %1",
   "config_menu_title": "%1 - Configuration",
-  "changelog_menu_title": "%1 - Historique des modifications",
   "export_menu_title": "%1 - Exporter la configuration",
   "import_menu_title": "%1 - Importer la configuration",
   "open_menu_tooltip": "Ouvrir le menu de configuration de %1",

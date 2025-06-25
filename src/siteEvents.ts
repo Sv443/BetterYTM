@@ -15,6 +15,8 @@ export type SiteEventsMap = {
   configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
   /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
   rebuildCfgMenu: (newConfig: FeatureConfig) => void;
+  /** Emitted whenever the config menu is mounted in the DOM */
+  cfgMenuMounted: () => void;
   /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
   recreateCfgMenu: () => void;
   /** Emitted whenever the config menu is closed */

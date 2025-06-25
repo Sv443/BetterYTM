@@ -5,13 +5,12 @@ import { featInfo } from "../features/index.js";
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
 import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
-import { arrayWithSeparators, compressionSupported, getDomain, getResourceUrl, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
+import { arrayWithSeparators, compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, tp, type TrKey, type TrLocale } from "../utils/translations.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getFeatHelpDialog } from "../dialogs/featHelp.js";
-import { getChangelogDialog } from "../dialogs/changelog.js";
 import { BytmDialog, setCurrentDialogId } from "../components/BytmDialog.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { createHotkeyInput } from "../components/hotkeyInput.js";
@@ -329,15 +328,6 @@ async function mountCfgMenu() {
         headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
 
         onInteraction(headerElem, () => {
-          // @ts-expect-error
-          if(isExtraInfoHeader && !globalThis?.[`DEBUG_extraInfoHeader_${headerId}`]) {
-            showPrompt({
-              type: "alert",
-              message: "Work in progress!",
-            }) // @ts-expect-error
-              .then(() => globalThis[`DEBUG_extraInfoHeader_${headerId}`] = true);
-          }
-
           const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
           if(selectedHeader) {
             selectedHeader.classList.remove("selected");
@@ -504,16 +494,21 @@ async function mountCfgMenu() {
       }
     };
 
+    const createCategoryContainer = (category: string) => {
+      const categoryCont = document.createElement("div");
+      categoryCont.id = `bytm-ftconf-category-${category}`;
+      categoryCont.classList.add("bytm-ftconf-category");
+      categoryCont.tabIndex = 0;
+      categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
+      categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
+      return categoryCont;
+    };
+
     let firstCategory = true;
     for(const category in featureCfgWithCategories) {
       const featObj = featureCfgWithCategories[category as FeatureCategory];
 
-      const categoryCont = document.createElement("div");
-      categoryCont.id = `bytm-ftconf-category-${category}`;
-      categoryCont.classList.add("bytm-ftconf-category");
-      categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
-      categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
-      categoryCont.tabIndex = 0;
+      const categoryCont = createCategoryContainer(category);
       if(firstCategory) {
         categoryCont.removeAttribute("inert");
         categoryCont.removeAttribute("aria-hidden");
@@ -885,6 +880,42 @@ async function mountCfgMenu() {
       firstCategory = false;
     } // end for(const category in featureCfgWithCategories)
 
+    const extraInfoCategoryElements = {
+      about: async () => {
+        // TODO:
+        const placeholder = document.createElement("div");
+        placeholder.innerText = `${scriptInfo.name} v${scriptInfo.version} (#${buildNumber})\n[WIP]`;
+        return [placeholder] as HTMLElement[];
+      },
+      changelog: async () => {
+        const mdContElem = document.createElement("div");
+        mdContElem.id = "bytm-cfg-menu-changelog-md-cont";
+        mdContElem.classList.add("bytm-markdown-container");
+        setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
+
+        siteEvents.on("cfgMenuMounted", () => {
+          const detailsElems = mdContElem.querySelectorAll("details");
+          detailsElems.forEach((el) => {
+            el.addEventListener("toggle", () => checkToggleScrollIndicator());
+          });
+        });
+
+        return [mdContElem] as HTMLElement[];
+      },
+    } as const satisfies Record<typeof extraInfoCategoryIDs[number], () => Promise<HTMLElement[]>>;
+
+    for(const category of extraInfoCategoryIDs) {
+      const categoryCont = createCategoryContainer(category);
+      categoryCont.classList.add("bytm-ftconf-extra-info-category", "hidden");
+      categoryCont.setAttribute("inert", "true");
+      categoryCont.setAttribute("aria-hidden", "true");
+
+      const infoElems = await extraInfoCategoryElements[category as typeof extraInfoCategoryIDs[number]]();
+      infoElems.forEach((el) => categoryCont.appendChild(el));
+
+      featuresCont.appendChild(categoryCont);
+    }
+
     //#region reset inputs on external change
     siteEvents.on("rebuildCfgMenu", (newConfig) => {
       for(const ftKey in featInfo) {
@@ -966,22 +997,11 @@ async function mountCfgMenu() {
     subtitleElemCont.classList.add("bytm-ellipsis");
 
     const versionEl = document.createElement("a");
-    versionEl.id = "bytm-menu-version-anchor";
-    versionEl.classList.add("bytm-link", "bytm-ellipsis");
-    versionEl.role = "button";
+    versionEl.id = "bytm-menu-version-number";
+    versionEl.classList.add("bytm-ellipsis");
     versionEl.tabIndex = 0;
     versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
     versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
-    onInteraction(versionEl, async (e: MouseEvent | KeyboardEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const dlg = await getChangelogDialog();
-      dlg.on("close", () => openCfgMenu());
-      await dlg.mount();
-      closeCfgMenu(undefined, false);
-      await dlg.open();
-    });
 
     subtitleElemCont.appendChild(versionEl);
     titleElem.appendChild(subtitleElemCont);
@@ -1008,6 +1028,8 @@ async function mountCfgMenu() {
     window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250));
 
     log(`Mounted config menu element in ${Date.now() - startTs}ms`);
+
+    emitSiteEvent("cfgMenuMounted");
 
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;

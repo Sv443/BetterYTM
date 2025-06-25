@@ -1,23 +1,38 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
-<!-- #region TODO: 3.1.0 -->
-
-## 3.1.0 - TODO
-- **Added features:**
-  - 🎵 Change which service is preferred for the thumbnail overlay (YT thumbnail / iTunes album artwork)
+<!-- #region 3.1.0 -->
+## 3.1.0
+- **New features:**
+  - New configurable hotkeys:
+    - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>)
+    - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>)
+  - [🚧 WIP] 🎵 Show the track number in playlists
+  - 🟡 Improve config menu UX with a sidenav
+    - Remove advanced mode flag from a lot of features since there's much more space now
 - **Changes and improvements:**
+  - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies
+    - Fixed album artwork being fetched with wrong parameters
+    - Allow manually toggling between thumbnail providers
+    - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached
+  - 🎵 Decoupled volume slider step and scroll step
 - **Fixes:**
+  - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering
+  - 🎵 Fixed SyntaxError when no AM album artwork found
+  - Fixed Error when clicking on a BytmDialog's exit button
+  - [🚧 WIP] 🎵 Fixed list buttons not disappearing with the native buttons in song lists
+  - [🚧 WIP] 🎵 Fixed anchor improvements feature on the search page
+  - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension
 
-<details><summary>Click to expand internal and plugin changes</summary>
+<!-- <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Plugin Changes:**
 - **Internal Changes:**
 
-</details>
+</details> -->
 
 <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>
+  <a href="https://github.com/Sv443/BetterYTM/pull/148" rel="noopener noreferrer">See pull request for more info</a>
 </div>
 
 <div class="split"></div>
