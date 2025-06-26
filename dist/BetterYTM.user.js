@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3465baf/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b22f08a1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "b3465baf",
+    buildNumber: "b22f08a1",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1125,7 +1125,7 @@ var pnpm = {
 		"esbuild"
 	]
 };
-var pkg = {
+var packageJson = {
 	name: name,
 	userscriptName: userscriptName,
 	version: version,
@@ -1317,7 +1317,7 @@ async function getVersionNotifDialog({ latestTag, }) {
             destroyOnClose: true,
             small: true,
             renderHeader: renderHeader$4,
-            renderBody: () => renderBody$4({ latestTag, changelogHtml }),
+            renderBody: () => renderBody$5({ latestTag, changelogHtml }),
         });
     }
     return verNotifDialog;
@@ -1330,7 +1330,7 @@ async function renderHeader$4() {
     return logoEl;
 }
 let disableUpdateCheck = false;
-async function renderBody$4({ latestTag, changelogHtml, }) {
+async function renderBody$5({ latestTag, changelogHtml, }) {
     disableUpdateCheck = false;
     const wrapperEl = document.createElement("div");
     const pEl = document.createElement("p");
@@ -1403,7 +1403,7 @@ async function renderBody$4({ latestTag, changelogHtml, }) {
     btnUpdate.tabIndex = 0;
     btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host]);
     onInteraction(btnUpdate, () => {
-        window.open(pkg.updates[host]);
+        window.open(packageJson.updates[host]);
         verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
     });
     const btnClose = document.createElement("button");
@@ -1967,7 +1967,7 @@ async function getAutoLikeDialog() {
             small: true,
             verticalAlign: "top",
             renderHeader: renderHeader$3,
-            renderBody: renderBody$3,
+            renderBody: renderBody$4,
             renderFooter: renderFooter$1,
         });
         siteEvents.on("autoLikeChannelsUpdated", async () => {
@@ -2033,7 +2033,7 @@ async function renderHeader$3() {
     return headerEl;
 }
 //#region body
-async function renderBody$3() {
+async function renderBody$4() {
     const contElem = document.createElement("div");
     const descriptionEl = document.createElement("p");
     descriptionEl.classList.add("bytm-auto-like-channels-desc");
@@ -2600,7 +2600,7 @@ function getErrorDialog(errName, args) {
         body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
   
-${t("generic_error_dialog_open_console_note", consPrefix, pkg.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
     });
 }
 //#region error classes
@@ -3181,6 +3181,8 @@ const getSerializerStores = () => [
     configStore,
     autoLikeStore,
 ];
+/** Array of IDs of all stores included in the DataStoreSerializer instance */
+const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
 /** Returns the serializer for all data stores */
 function getStoreSerializer() {
     if (!serializer)
@@ -3196,7 +3198,7 @@ async function downloadData(useEncoding = true) {
     const pad = (val, len = 2) => String(val).padStart(len, "0");
     const d = new Date();
     const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
-    const fileName = `BetterYTM ${pkg.version} data export ${dateStr}.json`;
+    const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
     downloadFile(fileName, data, "application/json");
 }let pluginListDialog = null;
@@ -3212,7 +3214,7 @@ async function getPluginListDialog() {
         destroyOnClose: true,
         small: true,
         renderHeader: renderHeader$2,
-        renderBody: renderBody$2,
+        renderBody: renderBody$3,
     });
 }
 async function renderHeader$2() {
@@ -3225,7 +3227,7 @@ async function renderHeader$2() {
     titleElem.textContent = t("plugin_list_title");
     return titleElem;
 }
-async function renderBody$2() {
+async function renderBody$3() {
     var _a;
     const listContainerEl = document.createElement("div");
     listContainerEl.id = "bytm-plugin-list-container";
@@ -3234,7 +3236,7 @@ async function renderBody$2() {
         const noPluginsEl = document.createElement("div");
         noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
         noPluginsEl.tabIndex = 0;
-        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${pkg.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
         noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
         listContainerEl.appendChild(noPluginsEl);
         return listContainerEl;
@@ -3743,7 +3745,7 @@ async function getFeatHelpDialog({ featKey, }) {
             closeOnEscPress: true,
             small: true,
             renderHeader: renderHeader$1,
-            renderBody: renderBody$1,
+            renderBody: renderBody$2,
         });
         // make config menu inert while help dialog is open
         featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
@@ -3757,7 +3759,7 @@ async function renderHeader$1() {
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
-async function renderBody$1() {
+async function renderBody$2() {
     var _a, _b;
     const contElem = document.createElement("div");
     const localeObj = locales === null || locales === void 0 ? void 0 : locales[getLocale()];
@@ -3955,7 +3957,7 @@ let initConfig$1;
 let hiddenCopiedTxtTimeout;
 /**
  * Adds an element to open the BetterYTM menu
- * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
+ * TODO: replace with new menu using BytmDialog - see https://github.com/Sv443/BetterYTM/issues/23
  */
 async function mountCfgMenu() {
     var _a, _b, _c, _d, _e;
@@ -4043,8 +4045,8 @@ async function mountCfgMenu() {
         };
         const links = [
             ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
-            ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
-            ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
+            ["greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
+            ["openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
         ];
         const hostLink = links.find(([name]) => name === host);
         const otherLinks = links.filter(([name]) => name !== host);
@@ -4246,6 +4248,12 @@ async function mountCfgMenu() {
             headerElem && sidenavBtmSectionCont.appendChild(headerElem);
         }
         sidenavCont.appendChild(sidenavBtmSectionCont);
+        const extraInfoCatSelectedUnsub = siteEvents.on("configHeaderSelected", () => {
+            extraInfoCatSelectedUnsub();
+            document.querySelectorAll("#bytm-ftconf-category-about a, #bytm-ftconf-category-changelog a").forEach((linkEl) => {
+                linkEl.target = "_blank";
+            });
+        });
         //#region feature list
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
@@ -4324,6 +4332,7 @@ async function mountCfgMenu() {
                 return String(v).trim();
             }
         };
+        //#region category conts & feat ctrls
         const createCategoryContainer = (category) => {
             const categoryCont = document.createElement("div");
             categoryCont.id = `bytm-ftconf-category-${category}`;
@@ -4419,6 +4428,7 @@ async function mountCfgMenu() {
                     helpElem && featLeftSideElem.appendChild(helpElem);
                     ftConfElem.appendChild(featLeftSideElem);
                 } // end left side element
+                //#region input elements
                 {
                     let inputType = "text";
                     let inputTag = "input";
@@ -4467,9 +4477,10 @@ async function mountCfgMenu() {
                         advCopyHiddenBtn.textContent = t("copy_hidden");
                         advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
                         const copyHiddenInteraction = (e) => {
+                            var _a;
                             e.preventDefault();
                             e.stopPropagation();
-                            copyToClipboard(getFeatures()[featKey]);
+                            copyToClipboard((_a = getFeatures()[featKey]) !== null && _a !== void 0 ? _a : "");
                             advCopyHintElem.style.display = "inline";
                             if (typeof hiddenCopiedTxtTimeout === "undefined") {
                                 hiddenCopiedTxtTimeout = setTimeout(() => {
@@ -4642,6 +4653,7 @@ async function mountCfgMenu() {
             featuresCont.appendChild(categoryCont);
             firstCategory = false;
         } // end for(const category in featureCfgWithCategories)
+        //#region extra info categories
         const extraInfoCategoryElements = {
             about: async () => {
                 // TODO:
@@ -8746,7 +8758,7 @@ async function getWelcomeDialog() {
             closeOnEscPress: true,
             destroyOnClose: true,
             renderHeader,
-            renderBody,
+            renderBody: renderBody$1,
             renderFooter,
         });
         welcomeDialog.on("render", retranslateWelcomeMenu);
@@ -8770,7 +8782,7 @@ async function renderHeader() {
     titleWrapperElem.appendChild(titleElem);
     return titleWrapperElem;
 }
-async function renderBody() {
+async function renderBody$1() {
     const contentWrapper = document.createElement("div");
     contentWrapper.id = "bytm-welcome-menu-content-wrapper";
     // locale switcher
@@ -8866,9 +8878,9 @@ function retranslateWelcomeMenu() {
         },
         "#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
         "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo.name)),
-        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
-        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url))),
-        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url))),
+        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
+        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(packageJson.funding.url))),
+        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(packageJson.bugs.url))),
     };
     for (const [selector, fn] of Object.entries(changes)) {
         const el = document.querySelector(selector);
@@ -8901,6 +8913,156 @@ async function renderFooter() {
     footerCont.appendChild(leftButtonsCont);
     footerCont.appendChild(closeBtnElem);
     return footerCont;
+}let allDataExImDialog;
+/** Creates and/or returns the AllDataExIm dialog */
+async function getAllDataExImDialog() {
+    if (!allDataExImDialog) {
+        const eximOpts = {
+            id: "all-data-exim",
+            width: 800,
+            height: 1000,
+            closeBtnEnabled: true,
+            closeOnBgClick: true,
+            closeOnEscPress: true,
+            destroyOnClose: true,
+            removeListenersOnDestroy: false,
+            small: true,
+            verticalAlign: "top",
+            title: () => t("all_data_exim_title"),
+            descExport: () => t("all_data_exim_export_desc"),
+            descImport: () => t("all_data_exim_import_desc"),
+            exportData: async () => await getStoreSerializer().serialize(),
+            onImport,
+        };
+        allDataExImDialog = new ExImDialog(Object.assign(Object.assign({}, eximOpts), { renderBody: async () => await renderBody(eximOpts) }));
+    }
+    return allDataExImDialog;
+}
+/** Creates and/or returns the AutoLikeExIm dialog */
+async function onImport(data) {
+    try {
+        const serializer = getStoreSerializer();
+        await serializer.deserialize(data);
+        showToast(t("import_success"));
+    }
+    catch (err) {
+        error(err);
+        showToast(t("import_error"));
+    }
+}
+async function renderBody(opts) {
+    const panesCont = document.createElement("div");
+    panesCont.classList.add("bytm-all-data-exim-dialog-panes-cont");
+    //#region export
+    const exportPane = document.createElement("div");
+    exportPane.classList.add("bytm-all-data-exim-dialog-pane", "export");
+    {
+        const descEl = document.createElement("p");
+        descEl.classList.add("bytm-all-data-exim-dialog-desc");
+        descEl.role = "note";
+        descEl.tabIndex = 0;
+        descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descExport);
+        const exportPartsCont = document.createElement("div");
+        exportPartsCont.classList.add("bytm-all-data-exim-dialog-export-parts-cont");
+        const dataEl = document.createElement("textarea");
+        dataEl.classList.add("bytm-all-data-exim-dialog-data");
+        dataEl.readOnly = true;
+        dataEl.tabIndex = 0;
+        dataEl.value = t("click_to_reveal");
+        for (const id of getSerializerStoresIds()) {
+            const rowEl = document.createElement("div");
+            rowEl.classList.add("bytm-all-data-exim-dialog-export-part-row");
+            rowEl.title = t(`data_stores.disable.${id}`);
+            const chkEl = document.createElement("input");
+            chkEl.type = "checkbox";
+            chkEl.id = `bytm-all-data-exim-dialog-export-part-${id}`;
+            chkEl.dataset.storeId = id;
+            chkEl.checked = true;
+            chkEl.title = t(`data_stores.disable.${id}`);
+            chkEl.addEventListener("change", async () => {
+                const kwd = chkEl.checked ? "disable" : "enable";
+                rowEl.title = t(`data_stores.${kwd}.${id}`);
+                chkEl.title = t(`data_stores.${kwd}.${id}`);
+                lblEl.textContent = t(`data_stores.${kwd}.${id}`);
+                if (dataEl.classList.contains("revealed"))
+                    dataEl.value = filter(await UserUtils.consumeStringGen(opts.exportData));
+            });
+            const lblEl = document.createElement("label");
+            lblEl.htmlFor = chkEl.id;
+            lblEl.textContent = t(`data_stores.disable.${id}`);
+            rowEl.append(chkEl, lblEl);
+            exportPartsCont.appendChild(rowEl);
+        }
+        /** Filters out all data stores that are not checked */
+        const filter = (data) => {
+            const exportIds = [];
+            for (const chkEl of exportPartsCont.querySelectorAll("input[type=checkbox]"))
+                chkEl.checked && chkEl.dataset.storeId && exportIds.push(chkEl.dataset.storeId);
+            return JSON.stringify(JSON.parse(data)
+                .filter(({ id }) => exportIds.includes(id)), undefined, 2);
+        };
+        onInteraction(dataEl, async () => {
+            dataEl.classList.add("revealed");
+            dataEl.value = filter(await UserUtils.consumeStringGen(opts.exportData));
+            dataEl.setSelectionRange(0, dataEl.value.length);
+        });
+        const exportCenterBtnCont = document.createElement("div");
+        exportCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
+        const cpBtn = createRipple(await createLongBtn({
+            title: t("copy_to_clipboard"),
+            text: t("copy"),
+            resourceName: "icon-copy",
+            async onClick({ shiftKey }) {
+                const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
+                copyToClipboard(filter(await UserUtils.consumeStringGen(copyData)));
+                await showToast({ message: t("copied_to_clipboard") });
+            },
+        }));
+        const dlBtn = createRipple(await createLongBtn({
+            title: t("download_file"),
+            text: t("download"),
+            resourceName: "icon-arrow_down",
+            async onClick({ shiftKey }) {
+                const dlData = filter(await UserUtils.consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
+                copyToClipboard(dlData);
+                const pad = (num, len = 2) => String(num).padStart(len, "0");
+                const d = new Date();
+                const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
+                const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
+                downloadFile(fileName, dlData, "application/json");
+                await showToast({ message: t("downloaded_file_hint") });
+            },
+        }));
+        exportCenterBtnCont.append(cpBtn, dlBtn);
+        exportPane.append(descEl, dataEl, exportPartsCont, exportCenterBtnCont);
+    }
+    //#region import
+    const importPane = document.createElement("div");
+    importPane.classList.add("bytm-all-data-exim-dialog-pane", "import");
+    {
+        // TODO: file upload field
+        // TODO: select which stores to import
+        const descEl = document.createElement("p");
+        descEl.classList.add("bytm-all-data-exim-dialog-desc");
+        descEl.role = "note";
+        descEl.tabIndex = 0;
+        descEl.textContent = descEl.ariaLabel = await UserUtils.consumeStringGen(opts.descImport);
+        const dataEl = document.createElement("textarea");
+        dataEl.classList.add("bytm-all-data-exim-dialog-data");
+        dataEl.tabIndex = 0;
+        const importCenterBtnCont = document.createElement("div");
+        importCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
+        const importBtn = createRipple(await createLongBtn({
+            title: t("start_import_tooltip"),
+            text: t("import"),
+            resourceName: "icon-upload",
+            onClick: () => opts.onImport(dataEl.value),
+        }));
+        importCenterBtnCont.appendChild(importBtn);
+        importPane.append(descEl, dataEl, importCenterBtnCont);
+    }
+    panesCont.append(exportPane, importPane);
+    return panesCont;
 }//#region cns. watermark
 {
     // console watermark with sexy gradient
@@ -9005,6 +9167,7 @@ async function onDomLoad() {
         error("Encountered error in feature pre-init:", err);
     }
     log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
+    mountCfgMenu();
     try {
         //#region welcome dlg
         if (typeof await GM.getValue("bytm-installed") !== "string") {
@@ -9338,7 +9501,7 @@ function registerDevCommands() {
 async function runDevTreatments() {
     if (mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
         return;
-    // const dlg = await getAllDataExImDialog();
-    // await dlg.open();
+    const dlg = await getAllDataExImDialog();
+    await dlg.open();
 }
 preInit();})(UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
