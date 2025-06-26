@@ -37,7 +37,7 @@ Before submitting a translation, please check on [this document](https://github.
 
 ### Adding translations for a new language:
 > [!IMPORTANT]  
-> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**  
+> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**  
   
 To submit a translation, please follow these steps:
 1. Select the `develop` branch to translate for the latest version of BetterYTM.  
@@ -46,8 +46,8 @@ To submit a translation, please follow these steps:
 3. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
   You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
   The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...).
-4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
-  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
+4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.  
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o="xx-YY"` (see [this section](#editing-an-existing-translation) for more info).
 5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites.  
   Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 6. If you want to submit a pull request with the translated file:
@@ -64,17 +64,17 @@ To submit a translation, please follow these steps:
 
 ### Editing an existing translation:
 > [!IMPORTANT]  
-> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
+> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**
 
 To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following the instructions in [the local setup section.](#setting-up-the-project-for-local-development)  
   **Make sure you fork the repository and clone your own fork instead of the original repository, and to create a branch with a short but descriptive name.**  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `pnpm tr-format -p -o=language-COUNTRY`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
+3. Run the command `pnpm tr-format -p -o="language-COUNTRY"`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
-4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
+4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.
 5. Make sure there are no duplicate keys in the file.
-6. Run the command `pnpm tr-format -o=language-COUNTRY` to make sure the file is formatted correctly.
+6. Run the command `pnpm tr-format -o="language-COUNTRY"` to make sure the file is formatted correctly.
 7. Test for syntax errors and update translation progress with the command `pnpm tr-progress`
 8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice).
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [the local setup section.](#setting-up-the-project-for-local-development)
@@ -514,10 +514,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   plugin: { // required
 >     // The name and namespace should combine to be unique across all plugins
 >     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier
->     name: "My cool plugin",                         // required
->     namespace: "https://www.github.com/MyUsername", // required
->     version: "4.2.0",                               // required
->     iconUrl: "https://picsum.photos/128/128",       // required
+>     name: "My cool plugin",                     // required
+>     namespace: "https://github.com/MyUsername", // required
+>     version: "4.2.0",                           // required
+>     iconUrl: "https://picsum.photos/128/128",   // required
 >     description: { // required
 >       "en-US": "This plugin does cool stuff",      // required
 >       "de-DE": "Dieses Plugin macht coole Sachen", // (all other locales are optional)
@@ -535,11 +535,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >       openuserjs: "...",                                            // (optional)
 >     },
 >   },
->   // The intents (permissions) the plugin needs to be granted to be able to use certain functions.
+>   // The intents (requested permissions) the plugin needs to be granted by BetterYTM and the user to be able to use certain functions.
 >   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then sum all of them together to get the final intents number.
 >   // If you have BYTM as a dependency/submodule, you can import the enum and join the values like so: `PluginIntent.Foo | PluginIntent.Bar`
->   intents: 18,              // required
->   contributors: [           // (optional)
+>   // Set to 0 to indicate no permissions need to be granted.
+>   intents: PluginIntent.ReadFeatureConfig | PluginIntent.CreateModalDialogs, // required
+>   contributors: [ // (optional)
 >     {                                            // (optional)
 >       name: "MyUsername",                        // required
 >       homepage: "https://github.com/MyUsername", // (optional)
@@ -565,10 +566,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   try {
 >     // register the plugin
 >     const { token, events } = registerPlugin(pluginDef);
+> 
+>     // store the private token for later use in authenticated function calls
+>     authToken = token;
+> 
 >     // listen for the pluginRegistered event
 >     events.on("pluginRegistered", (info) => {
->       // store the private token for later use in authenticated function calls
->       authToken = token;
 >       console.log(`${info.name} (version ${info.version}) is registered`);
 > 
 >       onRegistered();
