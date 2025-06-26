@@ -37,10 +37,10 @@ let initConfig: FeatureConfig | undefined;
 let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /**
- * Adds an element to open the BetterYTM menu
- * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
+ * Adds an element to open the BetterYTM menu  
+ * TODO: replace with new menu using BytmDialog - see https://github.com/Sv443/BetterYTM/issues/23
  */
-async function mountCfgMenu() {
+export async function mountCfgMenu() {
   try {
     if(isCfgMenuMounted)
       return;
@@ -398,6 +398,14 @@ async function mountCfgMenu() {
 
     sidenavCont.appendChild(sidenavBtmSectionCont);
 
+    const extraInfoCatSelectedUnsub = siteEvents.on("configHeaderSelected", () => {
+      extraInfoCatSelectedUnsub();
+
+      document.querySelectorAll<HTMLAnchorElement>("#bytm-ftconf-category-about a, #bytm-ftconf-category-changelog a").forEach((linkEl) => {
+        linkEl.target = "_blank";
+      });
+    });
+
     //#region feature list
     const featuresCont = document.createElement("div");
     featuresCont.id = "bytm-menu-opts";
@@ -493,6 +501,8 @@ async function mountCfgMenu() {
         return String(v).trim();
       }
     };
+
+    //#region category conts & feat ctrls
 
     const createCategoryContainer = (category: string) => {
       const categoryCont = document.createElement("div");
@@ -612,6 +622,7 @@ async function mountCfgMenu() {
           ftConfElem.appendChild(featLeftSideElem);
         } // end left side element
 
+        //#region input elements
         {
           let inputType: string | undefined = "text";
           let inputTag: string | undefined = "input";
@@ -670,7 +681,7 @@ async function mountCfgMenu() {
               e.preventDefault();
               e.stopPropagation();
 
-              copyToClipboard(getFeatures()[featKey as keyof FeatureConfig] as Stringifiable);
+              copyToClipboard(getFeatures()[featKey as keyof FeatureConfig] as Stringifiable ?? "");
 
               advCopyHintElem.style.display = "inline";
               if(typeof hiddenCopiedTxtTimeout === "undefined") {
@@ -879,6 +890,8 @@ async function mountCfgMenu() {
       featuresCont.appendChild(categoryCont);
       firstCategory = false;
     } // end for(const category in featureCfgWithCategories)
+
+    //#region extra info categories
 
     const extraInfoCategoryElements = {
       about: async () => {

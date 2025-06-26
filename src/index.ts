@@ -9,7 +9,9 @@ import { initObservers, addSelectorListener, globservers } from "./observers.js"
 import { downloadData, getStoreSerializer } from "./serializer.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
+import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
 import { showPrompt } from "./dialogs/prompt.js";
+import { mountCfgMenu } from "./menu/menu_old.js";
 import {
   // layout category:
   addWatermark, initRemShareTrackParam,
@@ -177,6 +179,8 @@ async function onDomLoad() {
   }
 
   log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
+
+  mountCfgMenu();
 
   try {
     //#region welcome dlg
@@ -599,8 +603,8 @@ async function runDevTreatments() {
   if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
     return;
 
-  // const dlg = await getAllDataExImDialog();
-  // await dlg.open();
+  const dlg = await getAllDataExImDialog();
+  await dlg.open();
 }
 
 preInit();
