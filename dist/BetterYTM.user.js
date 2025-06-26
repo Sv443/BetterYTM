@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8297d6df/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3465baf/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -131,7 +131,7 @@ var resources = {
 	"icon-lyrics": "icons/lyrics.svg",
 	"icon-prompt": "icons/help.svg",
 	"icon-reload": "icons/refresh.svg",
-	"icon-restore_time": "icons/restore_time.svg",
+	"icon-history": "icons/history.svg",
 	"icon-skip_to": "icons/skip_to.svg",
 	"icon-speed": "icons/speed.svg",
 	"icon-spinner": "icons/spinner.svg",
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "8297d6df",
+    buildNumber: "b3465baf",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -360,7 +360,9 @@ const assetSource = getConst("assetSource", "jsdelivr");
 /** The port of the dev server */
 const devServerPort = Number(getConst("devServerPort", 8710));
 /** URL to the changelog file */
-const changelogUrl = `https://raw.githubusercontent.com/${repo}/${buildNumber !== null && buildNumber !== void 0 ? buildNumber : branch}/changelog.md`;
+const changelogUrl = assetSource === "local"
+    ? `http://localhost:${devServerPort}/changelog.md?build=${buildNumber}`
+    : `https://raw.githubusercontent.com/${repo}/main/changelog.md?build=${buildNumber}`;
 /** The URL search parameters at the earliest possible time */
 const initialParams = new URL(location.href).searchParams;
 /** Names of platforms by key of {@linkcode host} */
@@ -750,6 +752,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         emitInterface(`bytm:dialogOpened:${this.id}`, this);
         return dialogBg;
     }
+    //#FIXME: if opened on top of config menu, after closing a BytmDialog, the body scroll lock is erroneously removed
     /** Closes the dialog - prevents default action and immediate propagation of the passed event */
     close(e) {
         var _a;
@@ -1313,13 +1316,13 @@ async function getVersionNotifDialog({ latestTag, }) {
             closeOnEscPress: true,
             destroyOnClose: true,
             small: true,
-            renderHeader: renderHeader$5,
-            renderBody: () => renderBody$5({ latestTag, changelogHtml }),
+            renderHeader: renderHeader$4,
+            renderBody: () => renderBody$4({ latestTag, changelogHtml }),
         });
     }
     return verNotifDialog;
 }
-async function renderHeader$5() {
+async function renderHeader$4() {
     const logoEl = document.createElement("img");
     logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
     logoEl.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
@@ -1327,7 +1330,7 @@ async function renderHeader$5() {
     return logoEl;
 }
 let disableUpdateCheck = false;
-async function renderBody$5({ latestTag, changelogHtml, }) {
+async function renderBody$4({ latestTag, changelogHtml, }) {
     disableUpdateCheck = false;
     const wrapperEl = document.createElement("div");
     const pEl = document.createElement("p");
@@ -1963,8 +1966,8 @@ async function getAutoLikeDialog() {
             removeListenersOnDestroy: false,
             small: true,
             verticalAlign: "top",
-            renderHeader: renderHeader$4,
-            renderBody: renderBody$4,
+            renderHeader: renderHeader$3,
+            renderBody: renderBody$3,
             renderFooter: renderFooter$1,
         });
         siteEvents.on("autoLikeChannelsUpdated", async () => {
@@ -2020,7 +2023,7 @@ async function getAutoLikeDialog() {
     return autoLikeDialog;
 }
 //#region header
-async function renderHeader$4() {
+async function renderHeader$3() {
     const headerEl = document.createElement("h2");
     headerEl.classList.add("bytm-dialog-title");
     headerEl.role = "heading";
@@ -2030,7 +2033,7 @@ async function renderHeader$4() {
     return headerEl;
 }
 //#region body
-async function renderBody$4() {
+async function renderBody$3() {
     const contElem = document.createElement("div");
     const descriptionEl = document.createElement("p");
     descriptionEl.classList.add("bytm-auto-like-channels-desc");
@@ -3208,11 +3211,11 @@ async function getPluginListDialog() {
         closeOnEscPress: true,
         destroyOnClose: true,
         small: true,
-        renderHeader: renderHeader$3,
-        renderBody: renderBody$3,
+        renderHeader: renderHeader$2,
+        renderBody: renderBody$2,
     });
 }
-async function renderHeader$3() {
+async function renderHeader$2() {
     const titleElem = document.createElement("h2");
     titleElem.id = "bytm-plugin-list-title";
     titleElem.classList.add("bytm-dialog-title");
@@ -3222,7 +3225,7 @@ async function renderHeader$3() {
     titleElem.textContent = t("plugin_list_title");
     return titleElem;
 }
-async function renderBody$3() {
+async function renderBody$2() {
     var _a;
     const listContainerEl = document.createElement("div");
     listContainerEl.id = "bytm-plugin-list-container";
@@ -3739,8 +3742,8 @@ async function getFeatHelpDialog({ featKey, }) {
             closeOnBgClick: true,
             closeOnEscPress: true,
             small: true,
-            renderHeader: renderHeader$2,
-            renderBody: renderBody$2,
+            renderHeader: renderHeader$1,
+            renderBody: renderBody$1,
         });
         // make config menu inert while help dialog is open
         featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
@@ -3748,13 +3751,13 @@ async function getFeatHelpDialog({ featKey, }) {
     }
     return featHelpDialog;
 }
-async function renderHeader$2() {
+async function renderHeader$1() {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-feat-help-dialog-header";
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
-async function renderBody$2() {
+async function renderBody$1() {
     var _a, _b;
     const contElem = document.createElement("div");
     const localeObj = locales === null || locales === void 0 ? void 0 : locales[getLocale()];
@@ -3777,58 +3780,6 @@ async function renderBody$2() {
     helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${curFeatKey}`);
     contElem.appendChild(featDescElem);
     contElem.appendChild(helpTextElem);
-    return contElem;
-}let changelogDialog = null;
-/** Creates and/or returns the changelog dialog */
-async function getChangelogDialog() {
-    if (!changelogDialog) {
-        changelogDialog = new BytmDialog({
-            id: "changelog",
-            width: 1000,
-            height: 800,
-            closeBtnEnabled: true,
-            closeOnBgClick: true,
-            closeOnEscPress: true,
-            small: true,
-            verticalAlign: "top",
-            renderHeader: renderHeader$1,
-            renderBody: renderBody$1,
-        });
-        changelogDialog.on("render", () => {
-            const mdContElem = document.querySelector("#bytm-changelog-dialog-text");
-            if (!mdContElem)
-                return;
-            const anchors = mdContElem.querySelectorAll("a");
-            for (const anchor of anchors) {
-                anchor.ariaLabel = anchor.title = anchor.href;
-                anchor.target = "_blank";
-            }
-            const firstDetails = mdContElem.querySelector("details");
-            if (firstDetails)
-                firstDetails.open = true;
-            const kbdElems = mdContElem.querySelectorAll("kbd");
-            for (const kbdElem of kbdElems)
-                kbdElem.addEventListener("selectstart", (e) => e.preventDefault());
-        });
-    }
-    return changelogDialog;
-}
-async function renderHeader$1() {
-    const headerEl = document.createElement("h2");
-    headerEl.classList.add("bytm-dialog-title");
-    headerEl.role = "heading";
-    headerEl.ariaLevel = "1";
-    headerEl.tabIndex = 0;
-    headerEl.textContent = headerEl.ariaLabel = t("changelog_menu_title", scriptInfo.name);
-    return headerEl;
-}
-async function renderBody$1() {
-    const contElem = document.createElement("div");
-    const mdContElem = document.createElement("div");
-    mdContElem.id = "bytm-changelog-dialog-text";
-    mdContElem.classList.add("bytm-markdown-container");
-    setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
-    contElem.appendChild(mdContElem);
     return contElem;
 }let otherHotkeyInputActive = false;
 const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
@@ -4234,17 +4185,9 @@ async function mountCfgMenu() {
                 headerElem.ariaChecked = String(selected);
                 headerElem.tabIndex = 0;
                 headerElem.ariaLevel = "2";
-                headerElem.textContent = t(`feature_category_${headerId}`);
+                headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo.name);
                 headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
                 onInteraction(headerElem, () => {
-                    // @ts-expect-error
-                    if (isExtraInfoHeader && !(globalThis === null || globalThis === void 0 ? void 0 : globalThis[`DEBUG_extraInfoHeader_${headerId}`])) {
-                        showPrompt({
-                            type: "alert",
-                            message: "Work in progress!",
-                        }) // @ts-expect-error
-                            .then(() => globalThis[`DEBUG_extraInfoHeader_${headerId}`] = true);
-                    }
                     const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
                     if (selectedHeader) {
                         selectedHeader.classList.remove("selected");
@@ -4381,15 +4324,19 @@ async function mountCfgMenu() {
                 return String(v).trim();
             }
         };
-        let firstCategory = true;
-        for (const category in featureCfgWithCategories) {
-            const featObj = featureCfgWithCategories[category];
+        const createCategoryContainer = (category) => {
             const categoryCont = document.createElement("div");
             categoryCont.id = `bytm-ftconf-category-${category}`;
             categoryCont.classList.add("bytm-ftconf-category");
+            categoryCont.tabIndex = 0;
             categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
             categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
-            categoryCont.tabIndex = 0;
+            return categoryCont;
+        };
+        let firstCategory = true;
+        for (const category in featureCfgWithCategories) {
+            const featObj = featureCfgWithCategories[category];
+            const categoryCont = createCategoryContainer(category);
             if (firstCategory) {
                 categoryCont.removeAttribute("inert");
                 categoryCont.removeAttribute("aria-hidden");
@@ -4695,6 +4642,36 @@ async function mountCfgMenu() {
             featuresCont.appendChild(categoryCont);
             firstCategory = false;
         } // end for(const category in featureCfgWithCategories)
+        const extraInfoCategoryElements = {
+            about: async () => {
+                // TODO:
+                const placeholder = document.createElement("div");
+                placeholder.innerText = `${scriptInfo.name} v${scriptInfo.version} (#${buildNumber})\n[WIP]`;
+                return [placeholder];
+            },
+            changelog: async () => {
+                const mdContElem = document.createElement("div");
+                mdContElem.id = "bytm-cfg-menu-changelog-md-cont";
+                mdContElem.classList.add("bytm-markdown-container");
+                setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
+                siteEvents.on("cfgMenuMounted", () => {
+                    const detailsElems = mdContElem.querySelectorAll("details");
+                    detailsElems.forEach((el) => {
+                        el.addEventListener("toggle", () => checkToggleScrollIndicator());
+                    });
+                });
+                return [mdContElem];
+            },
+        };
+        for (const category of extraInfoCategoryIDs) {
+            const categoryCont = createCategoryContainer(category);
+            categoryCont.classList.add("bytm-ftconf-extra-info-category", "hidden");
+            categoryCont.setAttribute("inert", "true");
+            categoryCont.setAttribute("aria-hidden", "true");
+            const infoElems = await extraInfoCategoryElements[category]();
+            infoElems.forEach((el) => categoryCont.appendChild(el));
+            featuresCont.appendChild(categoryCont);
+        }
         //#region reset inputs on external change
         siteEvents.on("rebuildCfgMenu", (newConfig) => {
             for (const ftKey in featInfo) {
@@ -4757,21 +4734,11 @@ async function mountCfgMenu() {
         subtitleElemCont.id = "bytm-menu-subtitle-cont";
         subtitleElemCont.classList.add("bytm-ellipsis");
         const versionEl = document.createElement("a");
-        versionEl.id = "bytm-menu-version-anchor";
-        versionEl.classList.add("bytm-link", "bytm-ellipsis");
-        versionEl.role = "button";
+        versionEl.id = "bytm-menu-version-number";
+        versionEl.classList.add("bytm-ellipsis");
         versionEl.tabIndex = 0;
         versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
         versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
-        onInteraction(versionEl, async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const dlg = await getChangelogDialog();
-            dlg.on("close", () => openCfgMenu());
-            await dlg.mount();
-            closeCfgMenu(undefined, false);
-            await dlg.open();
-        });
         subtitleElemCont.appendChild(versionEl);
         titleElem.appendChild(subtitleElemCont);
         const modeItems = [];
@@ -4790,6 +4757,7 @@ async function mountCfgMenu() {
         ((_d = document.querySelector("#bytm-dialog-container")) !== null && _d !== void 0 ? _d : document.body).appendChild(backgroundElem);
         window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
         log(`Mounted config menu element in ${Date.now() - startTs}ms`);
+        emitSiteEvent("cfgMenuMounted");
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
@@ -5306,14 +5274,14 @@ async function deleteExpiredAlbumArtCacheEntries() {
         });
     }
 }
-var OvlState;
-(function (OvlState) {
-    OvlState[OvlState["Off"] = 0] = "Off";
-    OvlState[OvlState["YT"] = 1] = "YT";
-    OvlState[OvlState["AM"] = 2] = "AM";
-})(OvlState || (OvlState = {}));
+var ThumbOvlState;
+(function (ThumbOvlState) {
+    ThumbOvlState[ThumbOvlState["Off"] = 0] = "Off";
+    ThumbOvlState[ThumbOvlState["YT"] = 1] = "YT";
+    ThumbOvlState[ThumbOvlState["AM"] = 2] = "AM";
+})(ThumbOvlState || (ThumbOvlState = {}));
 /** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
-let overlayState = OvlState.Off;
+let overlayState = ThumbOvlState.Off;
 // FIXME: if toggled to YT, the AM URL is applied instead
 async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
@@ -5332,19 +5300,19 @@ async function initThumbnailOverlay() {
                 return;
             const isVideo = getCurrentMediaType() === "video";
             const defaultBehavior = getFeature("thumbnailOverlayBehavior");
-            const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
-            if (!isManual && overlayState === OvlState.Off)
+            const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? ThumbOvlState.AM : ThumbOvlState.YT;
+            if (!isManual && overlayState === ThumbOvlState.Off)
                 overlayState = (defaultBehavior === "videosOnly" && isVideo) || (defaultBehavior === "songsOnly" && !isVideo) || (defaultBehavior === "always")
                     ? prefState
-                    : OvlState.Off;
+                    : ThumbOvlState.Off;
             else if (!isManual && overlayState !== prefState)
                 overlayState = prefState;
-            if (getCurrentMediaType() === "video" && overlayState === OvlState.AM)
-                overlayState = OvlState.YT;
+            if (getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+                overlayState = ThumbOvlState.YT;
             const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
             const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
             const indicatorElem = document.querySelector("#bytm-thumbnail-overlay-indicator");
-            const ovlShown = overlayState !== OvlState.Off;
+            const ovlShown = overlayState !== ThumbOvlState.Off;
             if (overlayElem)
                 overlayElem.style.display = ovlShown ? "block" : "none";
             if (thumbElem)
@@ -5359,18 +5327,18 @@ async function initThumbnailOverlay() {
                         var _a;
                         const toggleBtnIconElem = toggleBtnElem.querySelector("svg");
                         if (toggleBtnIconElem) {
-                            let key = `icon-image${overlayState === OvlState.YT
+                            let key = `icon-image${overlayState === ThumbOvlState.YT
                                 ? "_filled_yt"
-                                : overlayState === OvlState.AM
+                                : overlayState === ThumbOvlState.AM
                                     ? "_filled_am"
                                     : ""}`;
-                            if (getCurrentMediaType() === "video" && overlayState !== OvlState.Off)
+                            if (getCurrentMediaType() === "video" && overlayState !== ThumbOvlState.Off)
                                 key = "icon-image_filled";
                             setInnerHtml(toggleBtnElem, await resourceAsString(key));
                             (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
                         }
                         if (toggleBtnElem)
-                            toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${OvlState[overlayState]}`);
+                            toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
                     },
                 });
             }
@@ -5386,7 +5354,7 @@ async function initThumbnailOverlay() {
                 const actuallyApplyThumbUrl = (ytThumbUrl, amThumbUrl) => {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
-                    const thumbUrl = overlayState === OvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
+                    const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
                     if (toggleBtnElem) {
                         toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
                         toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
@@ -5484,7 +5452,7 @@ async function initThumbnailOverlay() {
                 playerEl.appendChild(overlayElem);
                 indicatorElem && playerEl.appendChild(indicatorElem);
                 siteEvents.on("watchIdChanged", async (videoId) => {
-                    overlayState = OvlState.Off;
+                    overlayState = ThumbOvlState.Off;
                     return await Promise.allSettled([
                         applyThumbUrl(videoId),
                         updateOverlayVisibility(),
@@ -5502,15 +5470,15 @@ async function initThumbnailOverlay() {
                     toggleBtnElem.role = "button";
                     toggleBtnElem.tabIndex = 0;
                     toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
-                    toggleBtnElem.dataset.state = OvlState[overlayState];
+                    toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
                     onInteraction(toggleBtnElem, (e) => {
                         if (e.shiftKey)
                             return openInTab(toggleBtnElem.href, false);
-                        const ovlMax = Object.keys(OvlState).length / 2 - 1;
+                        const ovlMax = Object.keys(ThumbOvlState).length / 2 - 1;
                         overlayState = overflowVal(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
-                        if (getCurrentMediaType() === "video" && overlayState === OvlState.AM)
-                            overlayState = OvlState.Off;
-                        toggleBtnElem.dataset.state = OvlState[overlayState];
+                        if (getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+                            overlayState = ThumbOvlState.Off;
+                        toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
                         applyThumbUrl(new URL(location.href).searchParams.get("v"));
                         updateOverlayVisibility(true);
                     });
@@ -5548,13 +5516,15 @@ async function initThumbnailOverlay() {
 }
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
-    const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
-    if (cacheEntry) {
-        log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
-        return {
-            artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60"),
-            artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100"),
-        };
+    if (overlayState === ThumbOvlState.AM) {
+        const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
+        if (cacheEntry) {
+            log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
+            return {
+                artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60"),
+                artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100"),
+            };
+        }
     }
     const doFetchITunesAlbum = async (artist, album) => {
         const albumObjs = await fetchITunesAlbumInfo(artist, album);
@@ -8919,15 +8889,6 @@ async function renderFooter() {
         welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
         openCfgMenu();
     });
-    const openChangelogElem = document.createElement("button");
-    openChangelogElem.id = "bytm-welcome-menu-open-changelog";
-    openChangelogElem.classList.add("bytm-btn");
-    openChangelogElem.addEventListener("click", async () => {
-        const dlg = await getChangelogDialog();
-        await dlg.mount();
-        welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
-        await dlg.open();
-    });
     const closeBtnElem = document.createElement("button");
     closeBtnElem.id = "bytm-welcome-menu-footer-close";
     closeBtnElem.classList.add("bytm-btn");
@@ -8937,7 +8898,6 @@ async function renderFooter() {
     const leftButtonsCont = document.createElement("div");
     leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
     leftButtonsCont.appendChild(openCfgElem);
-    leftButtonsCont.appendChild(openChangelogElem);
     footerCont.appendChild(leftButtonsCont);
     footerCont.appendChild(closeBtnElem);
     return footerCont;
