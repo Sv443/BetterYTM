@@ -274,7 +274,7 @@
   "feature_category_integrations": "Integrations",
   "feature_category_plugins": "Plugins",
 
-  "feature_category_about": "About",
+  "feature_category_about": "About %1",
   "feature_category_changelog": "Changelog",
 
   "feature_desc_watermarkEnabled": "Show a watermark under the site logo that opens this config menu",

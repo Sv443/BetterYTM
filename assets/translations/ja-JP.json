@@ -272,7 +272,7 @@
   "feature_category_integrations": "統合",
   "feature_category_plugins": "プラグイン",
 
-  "feature_category_about": "情報",
+  "feature_category_about": "%1 について",
   "feature_category_changelog": "変更履歴",
 
   "feature_desc_watermarkEnabled": "この構成メニューを開くサイトロゴの下に透かしを表示する",

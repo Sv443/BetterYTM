@@ -272,7 +272,7 @@
   "feature_category_integrations": "Integraciones",
   "feature_category_plugins": "Plugins",
 
-  "feature_category_about": "Acerca de",
+  "feature_category_about": "Acerca de %1",
   "feature_category_changelog": "Registro de cambios",
 
   "feature_desc_watermarkEnabled": "Mostrar una marca de agua debajo del logotipo del sitio que abre este menú de configuración",

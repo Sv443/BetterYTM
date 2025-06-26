@@ -274,7 +274,7 @@
   "feature_category_integrations": "Intégrations",
   "feature_category_plugins": "Plugins",
 
-  "feature_category_about": "À propos",
+  "feature_category_about": "À propos %1",
   "feature_category_changelog": "Historique des modifications",
 
   "feature_desc_watermarkEnabled": "Afficher un filigrane sous le logo du site qui ouvre ce menu de configuration",
