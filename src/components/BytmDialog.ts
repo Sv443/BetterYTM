@@ -196,6 +196,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     return dialogBg;
   }
 
+  //#FIXME: if opened on top of config menu, after closing a BytmDialog, the body scroll lock is erroneously removed
+
   /** Closes the dialog - prevents default action and immediate propagation of the passed event */
   public close(e?: MouseEvent | KeyboardEvent) {
     e?.preventDefault();

@@ -324,7 +324,7 @@ async function mountCfgMenu() {
         headerElem.ariaChecked = String(selected);
         headerElem.tabIndex = 0;
         headerElem.ariaLevel = "2";
-        headerElem.textContent = t(`feature_category_${headerId}`);
+        headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo.name);
         headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
 
         onInteraction(headerElem, () => {

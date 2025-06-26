@@ -457,6 +457,7 @@ select.bytm-ftconf-input {
 
 .bytm-changelog-version-details summary h2 {
   display: inline-block;
+  font-size: 1.9rem;
 }
 
 .bytm-changelog-version-details details summary {

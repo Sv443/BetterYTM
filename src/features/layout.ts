@@ -514,14 +514,14 @@ async function deleteExpiredAlbumArtCacheEntries() {
   }
 }
 
-enum OvlState {
+export enum ThumbOvlState {
   Off = 0,
   YT = 1,
   AM = 2,
 }
 
 /** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
-let overlayState = OvlState.Off;
+let overlayState = ThumbOvlState.Off;
 
 // FIXME: if toggled to YT, the AM URL is applied instead
 export async function initThumbnailOverlay() {
@@ -547,22 +547,22 @@ export async function initThumbnailOverlay() {
       const isVideo = getCurrentMediaType() === "video";
       const defaultBehavior = getFeature("thumbnailOverlayBehavior");
 
-      const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? OvlState.AM : OvlState.YT;
-      if(!isManual && overlayState === OvlState.Off)
+      const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? ThumbOvlState.AM : ThumbOvlState.YT;
+      if(!isManual && overlayState === ThumbOvlState.Off)
         overlayState = (defaultBehavior === "videosOnly" && isVideo) || (defaultBehavior === "songsOnly" && !isVideo) || (defaultBehavior === "always")
           ? prefState
-          : OvlState.Off;
+          : ThumbOvlState.Off;
       else if(!isManual && overlayState !== prefState)
         overlayState = prefState;
 
-      if(getCurrentMediaType() === "video" && overlayState === OvlState.AM)
-        overlayState = OvlState.YT;
+      if(getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+        overlayState = ThumbOvlState.YT;
 
       const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
       const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
       const indicatorElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-indicator");
 
-      const ovlShown = overlayState !== OvlState.Off;
+      const ovlShown = overlayState !== ThumbOvlState.Off;
 
       if(overlayElem)
         overlayElem.style.display = ovlShown ? "block" : "none";
@@ -580,20 +580,20 @@ export async function initThumbnailOverlay() {
 
             if(toggleBtnIconElem) {
               let key = `icon-image${
-                overlayState === OvlState.YT
+                overlayState === ThumbOvlState.YT
                   ? "_filled_yt"
-                  : overlayState === OvlState.AM
+                  : overlayState === ThumbOvlState.AM
                     ? "_filled_am"
                     : ""
               }` as "_";
-              if(getCurrentMediaType() === "video" && overlayState !== OvlState.Off)
+              if(getCurrentMediaType() === "video" && overlayState !== ThumbOvlState.Off)
                 key = "icon-image_filled" as "_";
 
               setInnerHtml(toggleBtnElem, await resourceAsString(key));
               toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
             }
             if(toggleBtnElem)
-              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${OvlState[overlayState]}`);
+              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
           },
         });
       }
@@ -616,7 +616,7 @@ export async function initThumbnailOverlay() {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
-          const thumbUrl = overlayState === OvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
+          const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
           
           if(toggleBtnElem) {
             toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
@@ -735,7 +735,7 @@ export async function initThumbnailOverlay() {
 
 
         siteEvents.on("watchIdChanged", async (videoId) => {
-          overlayState = OvlState.Off;
+          overlayState = ThumbOvlState.Off;
           return await Promise.allSettled([
             applyThumbUrl(videoId),
             updateOverlayVisibility(),
@@ -755,19 +755,19 @@ export async function initThumbnailOverlay() {
           toggleBtnElem.role = "button";
           toggleBtnElem.tabIndex = 0;
           toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
-          toggleBtnElem.dataset.state = OvlState[overlayState];
+          toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
 
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
 
-            const ovlMax = Object.keys(OvlState).length / 2 - 1;
+            const ovlMax = Object.keys(ThumbOvlState).length / 2 - 1;
             overlayState = overflowVal(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
 
-            if(getCurrentMediaType() === "video" && overlayState === OvlState.AM)
-              overlayState = OvlState.Off;
+            if(getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+              overlayState = ThumbOvlState.Off;
 
-            toggleBtnElem.dataset.state = OvlState[overlayState];
+            toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
 
             applyThumbUrl(new URL(location.href).searchParams.get("v")!);
             updateOverlayVisibility(true);
@@ -813,14 +813,16 @@ export async function initThumbnailOverlay() {
 
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albumRaw: string) {
-  const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
+  if(overlayState === ThumbOvlState.AM) {
+    const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
 
-  if(cacheEntry) {
-    log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
-    return {
-      artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60") as ITunesAlbumObj["artworkUrl60"],
-      artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100") as ITunesAlbumObj["artworkUrl100"],
-    } satisfies Partial<ITunesAlbumObj> & Required<Pick<ITunesAlbumObj, "artworkUrl60" | "artworkUrl100">>;
+    if(cacheEntry) {
+      log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
+      return {
+        artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60") as ITunesAlbumObj["artworkUrl60"],
+        artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100") as ITunesAlbumObj["artworkUrl100"],
+      } satisfies Partial<ITunesAlbumObj> & Required<Pick<ITunesAlbumObj, "artworkUrl60" | "artworkUrl100">>;
+    }
   }
 
   const doFetchITunesAlbum = async (artist: string, album: string) => {
