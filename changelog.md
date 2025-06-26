@@ -8,8 +8,8 @@
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>)
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>)
   - [🚧 WIP] 🎵 Show the track number in playlists
-  - 🟡 Improve config menu UX with a sidenav
-    - Remove advanced mode flag from a lot of features since there's much more space now
+  - 🟡 Improved config menu UX with a sidenav
+    - Removed advanced mode flag from a lot of features since there's much more space now
 - **Changes and improvements:**
   - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies
     - Fixed album artwork being fetched with wrong parameters
@@ -23,13 +23,29 @@
   - [🚧 WIP] 🎵 Fixed list buttons not disappearing with the native buttons in song lists
   - [🚧 WIP] 🎵 Fixed anchor improvements feature on the search page
   - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension
+  - [🚧 WIP] Fixed page scroll bar reappearing after BytmDialog opened over top of the config menu is closed
+  - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this)
 
-<!-- <details><summary>Click to expand internal and plugin changes</summary>
+<details><summary>Click to expand plugin and internal changes</summary>
 
 - **Plugin Changes:**
+  - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for full documentation
+  - Added new events:
+    `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not necessarily opened).
+    `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
+    `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
+  - Auth token is now in the format of a UUID instead of a 16-character, 36-radix string.
 - **Internal Changes:**
+  - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
+  - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
+  - Moved the `general` feature category to the top of the config menu.
+  - Wrapped feature config elements in a new container element with the ID `bytm-ftconf-category-${categoryName}` to allow for the sidenav to disable all but one at a time.
+  - Added ability to render custom info categories in the config menu. Their navigation header will be aligned to the bottom, and they can contain arbitrary elements. They use the same general formatting as the new feature category containers, just with their own `categoryName`.
+  - Added CSS var `--bytm-menu-bg-highlight-darker`.
+  - Renamed CSS var `--bytm-dialog-height-max` to `--bytm-dialog-target-height`, but only for the config menu. All BytmDialogs will still use `--bytm-dialog-height-max`.
+  - Improved number argument resolution of the functions in `src/utils/logging.ts` (if the last argument is a number and exceeds the range of the enum `LogLevel`, it will not be interpreted as a log level anymore, but as a number to be logged).
 
-</details> -->
+</details>
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/148" rel="noopener noreferrer">See pull request for more info</a>
@@ -68,7 +84,7 @@
   - Config menu will now be correctly set as inert when a BytmDialog is opened over top
   - 🎵 Fixed \"remove from queue\" button sometimes deleting playlist entries instead of queue items
 
-<details><summary>Click to expand internal and plugin changes</summary>
+<details><summary>Click to expand plugin and internal changes</summary>
 
 - **Plugin Changes:**
   - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for full documentation

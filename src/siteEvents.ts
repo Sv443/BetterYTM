@@ -60,6 +60,7 @@ export type SiteEventsMap = {
 /** Array of all site events */
 export const allSiteEvents = [
   "configChanged",
+  "configHeaderSelected",
   "configOptionChanged",
   "rebuildCfgMenu",
   "recreateCfgMenu",
