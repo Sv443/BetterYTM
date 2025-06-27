@@ -7,7 +7,7 @@ import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
 import { arrayWithSeparators, compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, tp, type TrKey, type TrLocale } from "../utils/translations.js";
-import { emitSiteEvent, siteEvents } from "../siteEvents.js";
+import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getFeatHelpDialog } from "../dialogs/featHelp.js";
@@ -1042,7 +1042,7 @@ export async function mountCfgMenu() {
 
     log(`Mounted config menu element in ${Date.now() - startTs}ms`);
 
-    emitSiteEvent("cfgMenuMounted");
+    forceEmitSiteEvent("cfgMenuMounted");
 
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;

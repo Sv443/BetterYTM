@@ -1,6 +1,6 @@
 import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp, purifyObj, computeHash } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
+import { compressionSupported, error, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -8,9 +8,14 @@ import { closeCfgMenu, openCfgMenu } from "./menu/menu_old.js";
 import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
+//#region format version
+
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 11;
 
+//#region default data
+
+/** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 export const defaultData = purifyObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
     // @ts-expect-error
@@ -21,6 +26,8 @@ export const defaultData = purifyObj(
       return acc;
     }, {}) as FeatureConfig
 );
+
+//#region migrations
 
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {
@@ -169,16 +176,19 @@ export const migrations: DataMigrationsDict = {
   // 10 -> 11 (v3.1)
   11: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
     useDefaultConfig(oldData, [
-      "thumbnailOverlayPreferredSource",
+      "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
       "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
       "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
       "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
     ]),
     [
       { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
+      { key: "initTimeout", oldDefault: 8 },
     ],
   ),
 } as const satisfies DataMigrationsDict;
+
+//#region migration helpers
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
@@ -207,6 +217,8 @@ function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
   return newData as TConfig;
 }
 
+//#region store
+
 let canCompress = true;
 
 export const configStore = new DataStore({
@@ -217,6 +229,8 @@ export const configStore = new DataStore({
   encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
   decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
 });
+
+//#region init
 
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
@@ -269,6 +283,8 @@ export async function initConfig() {
   return { ...data };
 }
 
+//#region fix keys
+
 /**
  * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.  
  * Returns a copy of the originally passed object if nothing needs to be fixed.
@@ -289,6 +305,8 @@ export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   }
   return newCfg as FeatureConfig;
 }
+
+//#region feature getters/setters
 
 /** Returns the current feature config from the in-memory cache as a copy */
 export function getFeatures(): FeatureConfig {
@@ -316,21 +334,15 @@ export function setDefaultFeatures() {
   return res;
 }
 
+//#region reset config stuff
+
+/** Shows a confirmation prompt to reset the config */
 export async function promptResetConfig() {
   if(await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
     closeCfgMenu();
     enableDiscardBeforeUnload();
     await setDefaultFeatures();
-    if(location.pathname.startsWith("/watch")) {
-      const videoTime = await getVideoTime(0);
-      const url = new URL(location.href);
-      url.searchParams.delete("t");
-      if(videoTime)
-        url.searchParams.set("time_continue", String(videoTime));
-      location.replace(url.href);
-    }
-    else
-      await reloadTab();
+    await reloadTab();
   }
 }
 

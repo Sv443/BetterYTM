@@ -1,12 +1,12 @@
-import { addParent, autoPlural, compress, DataStore, debounce, decompress, fetchAdvanced, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { addParent, autoPlural, compress, DataStore, debounce, decompress, fetchAdvanced, isDomLoaded, preloadImages, type SelectorListenerOptions } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
-import { siteEvents } from "../siteEvents.js";
+import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
 import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
 import { compressionSupported, formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
-import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
-import { error, log, warn } from "../utils/logging.js";
+import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, transplantElement, waitVideoElementReady } from "../utils/dom.js";
+import { dbg, error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
@@ -1039,6 +1039,8 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
 
   log("Added vote number labels to like and dislike buttons");
+
+  forceEmitSiteEvent("voteLabelsAdded");
 }
 
 /** Updates or inserts the labels on the native like and dislike buttons */
@@ -1051,6 +1053,61 @@ function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, disl
   if(dislikeBtn)
     dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
 };
+
+//#region swap like&dislike btns
+
+/** Swaps the like and dislike buttons on the watch page */
+export async function initSwapLikeDislikeBtns(i = 0) {
+  dbg(">>1");
+  if(i > 30)
+    return error("Couldn't swap like and dislike buttons after ~3 seconds - giving up");
+
+  if(!getFeature("swapLikeDislikeButtons") || getDomain() === "yt")
+    return;
+
+  if(i === 0 && getFeature("showVotes"))
+    await siteEvents.once("voteLabelsAdded");
+
+  dbg(">>2");
+
+  const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
+  const options = {
+    all: true,
+    debounce: 50,
+    listener: (elements) => {
+      dbg(">>4");
+      const els = [...elements];
+
+      const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
+      const likeBtn = els.find((el) => el.id === "button-shape-like");
+
+      if(!dislikeBtn || !likeBtn)
+        return error("Couldn't find like or dislike button while swapping like and dislike buttons");
+
+      dbg(">>5");
+      if(getFeature("showVotes") && elements.length === 4) {
+        const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
+        const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
+
+        if(!dislikeLabel || !likeLabel)
+          return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
+
+        transplantElement(dislikeBtn, likeLabel);
+        transplantElement(dislikeLabel, dislikeBtn);
+      }
+      else if(!getFeature("showVotes") && elements.length === 2)
+        transplantElement(dislikeBtn, likeBtn);
+      else
+        setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
+    },
+  } satisfies SelectorListenerOptions;
+
+  dbg(">>3");
+
+  addSelectorListener("playerBarMiddleButtons", selector, options);
+
+  log("Swapped like and dislike buttons");
+}
 
 //#region watch page full size
 

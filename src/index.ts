@@ -17,7 +17,8 @@ import {
   addWatermark, initRemShareTrackParam,
   fixSpacing, initThumbnailOverlay,
   initHideCursorOnIdle, fixHdrIssues,
-  initShowVotes, initWatchPageFullSize,
+  initShowVotes, initSwapLikeDislikeBtns,
+  initWatchPageFullSize,
   // volume category:
   initVolumeFeatures,
   // song lists category:
@@ -213,6 +214,9 @@ async function onDomLoad() {
       if(feats.showVotes)
         ftInit.push(["showVotes", initShowVotes()]);
 
+      if(feats.swapLikeDislikeButtons)
+        ftInit.push(["swapLikeDislikeBtns", initSwapLikeDislikeBtns()]);
+
       if(feats.watchPageFullSize)
         ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
 
@@ -306,14 +310,17 @@ async function onDomLoad() {
     emitInterface("bytm:featureInitStarted");
 
     const initStartTs = Date.now();
+    const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000;
+    const initializedFeats: string[] = [];
 
     // wait for feature init or timeout (in case an init function is hung up on a promise)
     await Promise.race([
-      pauseFor(feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000),
+      pauseFor(initTimeout),
       Promise.allSettled(
         ftInit.map(([name, prom]) =>
           new Promise(async (res) => {
             const v = await prom;
+            initializedFeats.push(name);
             emitInterface("bytm:featureInitialized", name);
             res(v);
           })
@@ -328,7 +335,13 @@ async function onDomLoad() {
     preloadResources();
 
     emitInterface("bytm:ready");
-    info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+    info(`Done initializing ${initializedFeats.length} / ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+
+    if(initializedFeats.length < ftInit.length) {
+      error(`Only ${initializedFeats.length} out of ${ftInit.length} features initialized within the limit of ${initTimeout}ms. Faulty features:${
+        ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
+      }`);
+    }
 
     try {
       registerDevCommands();
