@@ -10,7 +10,13 @@ export type MultiNanoEmitterOptions<TEvtMap extends EventsMap> = {
  * {@linkcode NanoEmitter} wrapper that allows listening for whether one or all events have been emitted.
  */
 export class MultiNanoEmitter<TEvtMap extends EventsMap = DefaultEvents> extends NanoEmitter<TEvtMap> {
-  public onMulti<TKey extends keyof TEvtMap>(events: (TKey | "_")[], options: MultiNanoEmitterOptions<TEvtMap>, cb: (args: [event: TKey | "_", args: Parameters<TEvtMap[TKey]>]) => void): [event: TKey | "_", unsub: () => void][] {
+  public onMulti<
+    TKey extends keyof TEvtMap,
+  >(
+    events: (TKey | "_")[],
+    options: MultiNanoEmitterOptions<TEvtMap>,
+    cb: (args: [event: TKey | "_", args: Parameters<TEvtMap[TKey]>]) => void,
+  ): [event: TKey | "_", unsub: () => void][] {
     const capturedEvents = new Set<string | TKey>();
 
     const unsubscribes: [event: TKey | "_", unsub: () => void][] = [];
@@ -40,7 +46,13 @@ export class MultiNanoEmitter<TEvtMap extends EventsMap = DefaultEvents> extends
     return unsubscribes;
   }
 
-  public onceMulti<TKey extends keyof TEvtMap>(events: (TKey | "_")[], options: MultiNanoEmitterOptions<TEvtMap>, cb?: (args: [event: TKey | "_", args: Parameters<TEvtMap[TKey]>]) => void): Promise<[event: TKey | "_", args: Parameters<TEvtMap[TKey]>]> {
+  public onceMulti<
+    TKey extends keyof TEvtMap,
+  >(
+    events: (TKey | "_")[],
+    options: MultiNanoEmitterOptions<TEvtMap>,
+    cb?: (args: [event: TKey | "_", args: Parameters<TEvtMap[TKey]>]) => void,
+  ): Promise<[event: TKey | "_", args: Parameters<TEvtMap[TKey]>]> {
     const capturedEvents = new Set<string | TKey>();
     return new Promise((resolve) => {
       for(const event of events) {

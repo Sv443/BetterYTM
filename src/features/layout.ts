@@ -347,6 +347,8 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 export async function initRemShareTrackParam() {
   const removeSiParam = (inputElem: HTMLInputElement) => {
     try {
+      if(getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all")
+        return;
       if(!inputElem.value.match(/(&|\?)si=/i))
         return;
 

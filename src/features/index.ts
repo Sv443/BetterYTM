@@ -1,12 +1,12 @@
-import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
-import { formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
+import { consumeStringGen, UUError, type StringGen } from "@sv443-network/userutils";
+import { error, formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, LogLevel, type ColorLightnessPref, type FeatureConfig, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import { showIconToast } from "../components/toast.js";
+import { closeToast, showIconToast } from "../components/toast.js";
 import { mode } from "../constants.js";
 import { getStoreSerializer } from "../serializer.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
@@ -31,6 +31,13 @@ export * from "./volume.js";
 
 /** No-operation function used when `reloadRequired` is set to `false` to explicitly indicate that no `enable` function is needed */
 const noop = () => void 0;
+
+class ExampleError extends UUError {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.name = "ExampleError";
+  }
+}
 
 //#region adornments
 
@@ -218,13 +225,16 @@ export const featInfo = {
     max: 15,
     default: 4,
     step: 0.5,
-    unit: "s",
+    unit: (val) => val === 0 ? "" : "s",
+    renderValue: (val) => Number(val) === 0 ? t("toggled_off") : val,
     reloadRequired: false,
     enable: noop,
-    change: () => showIconToast({
-      message: t("example_toast"),
-      iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
-    }),
+    change: (_k, _iV, newVal) => newVal === 0
+      ? closeToast()
+      : showIconToast({
+        message: t("example_toast"),
+        iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+      }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0),
   },
   showToastOnGenericError: {
     type: "toggle",
@@ -232,7 +242,10 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     default: true,
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    reloadRequired: false,
+    enable: noop,
+    textAdornment: adornments.advanced,
+    change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
   },
   initTimeout: {
     type: "number",
@@ -313,7 +326,9 @@ export const featInfo = {
     options: options.siteSelection,
     default: "all",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    reloadRequired: false,
+    enable: noop,
+    textAdornment: adornments.advanced,
   },
   fixSpacing: {
     type: "toggle",
@@ -579,7 +594,9 @@ export const featInfo = {
     ],
     default: "everywhere",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
+    reloadRequired: false,
+    enable: noop,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
   },
   scrollToActiveSongBtn: {
     type: "toggle",

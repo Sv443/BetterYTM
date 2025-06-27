@@ -291,7 +291,7 @@ async function onDomLoad() {
 
       //#region (ytm+yt) layout
 
-      if(feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
+      if(feats.removeShareTrackingParamSites)
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
 
       //#region (ytm+yt) input

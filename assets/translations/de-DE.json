@@ -425,7 +425,7 @@
   "feature_btn_checkVersionNow_running": "Wird geprüft...",
   "feature_desc_logLevel": "Wie viele Informationen sollen in der Konsole geloggt werden?",
   "feature_helptext_logLevel": "Das Ändern dieses Wertes ist wirklich nur für Debugging-Zwecke notwendig, wenn du ein Problem hast.\nSolltest du eines haben, kannst du den Log-Level hier erhöhen, die JavaScript-Konsole deines Browsers (normalerweise mit Strg + Shift + K) öffnen und Screenshots dieses Logs in einem GitHub-Issue hinzufügen.",
-  "feature_desc_toastDuration": "Für wie viele Sekunden Toast-Benachrichtigungen angezeigt werden sollen - 0, um sie vollständig zu deaktivieren",
+  "feature_desc_toastDuration": "Für wie viele Sekunden Toast-Benachrichtigungen angezeigt werden sollen - 0 um sie zu deaktivieren",
   "feature_desc_showToastOnGenericError": "Zeige eine Benachrichtigung, wenn ein Fehler auftritt?",
   "feature_helptext_showToastOnGenericError": "Sollte ein Fehler im Skript auftreten, der Teile davon daran hindert, korrekt zu funktionieren, wird eine Benachrichtigung angezeigt, um dich darüber zu informieren.\nWenn du ein Problem häufig hast, kopiere bitte den Fehler aus der JavaScript-Konsole (normalerweise im F12-Menü) und öffne bitte ein Issue auf GitHub.",
   "feature_desc_resetConfig": "Setze alle Einstellungen auf ihre Standardwerte zurück",
