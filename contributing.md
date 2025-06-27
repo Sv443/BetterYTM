@@ -299,7 +299,10 @@ These are the ways to interact with BetterYTM; through constants, events and glo
     
   Additionally BetterYTM has an internal system called SiteEvents. They are dispatched using the format `bytm:siteEvent:eventName`  
   You may find all SiteEvents that are available and their types in [`src/siteEvents.ts`](src/siteEvents.ts)  
-  Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/siteEvents.ts`](src/siteEvents.ts)
+  Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/siteEvents.ts`](src/siteEvents.ts).  
+    
+  The interface also exposes some methods to register listeners, which offer much greater flexibility than the regular `addEventListener` method.  
+  Find them in the [global functions and classes section below.](#global-functions-and-classes)
 
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
@@ -447,6 +450,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getCurrentMediaType()](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
   - [getLikeDislikeBtns()](#getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
   - [isIgnoredInputElement()](#isignoredinputelement) - Checks if the given element (or `document.activeElement`) is an input element that should prevent all other keypresses from being processed
+- Site Events:
+  - [onSiteEvent()](#onsiteevent) - Adds a site event listener
+  - [onceSiteEvent()](#oncesiteevent) - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
+  - [onMultiSiteEvents()](#onmultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function
+  - [onceMultiSiteEvents()](#oncemultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -480,6 +488,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [fetchVideoVotes()](#fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
+  - [MultiNanoEmitter](#multinanoemitter) - Subclass of NanoEmitter that allows you to listen to multiple events at once
   - [formatNumber](#formatnumber) - Formats a number with the configured locale and passed or configured format
 
 <br><br>
@@ -1724,6 +1733,55 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
+> ### onSiteEvent()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onSiteEvent<K extends keyof TEventMap>(event: K, listener: TEventMap[K]): () => void
+> ```
+> 
+> Description:  
+> Registers a listener for the specified site event.  
+> The listener will be called with the event data when the event is emitted, and may be called multiple times.  
+> Returns a function that can be called to unsubscribe from the event.  
+>   
+> See the type `SiteEventsMap` in the file [`src/siteEvents.ts`](src/siteEvents.ts) for a list of available events and their data.
+
+<br>
+
+> ### onceSiteEvent()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onceSiteEvent<K extends keyof TEventMap>(event: K, listener: TEventMap[K]): () => void
+> ```
+> 
+> Description:  
+> Registers a listener for the specified site event that will only be called once.  
+> Returns a function that can be called to unsubscribe from the event.  
+>   
+> See the type `SiteEventsMap` in the file [`src/siteEvents.ts`](src/siteEvents.ts) for a list of available events and their data.
+
+<br>
+
+> ### onMultiSiteEvents()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onMultiSiteEvents(events: Array<string>, options: MultiNanoEmitterOptions, cb: TEventMap[TKey]): Array<[event: string, unsub: () => void]>
+> ```
+> 
+> Please refer to [the method `onMulti()` of the `MultiNanoEmitter` class](#multinanoemitter) for more information on this function.
+
+<br>
+
+> ### onceMultiSiteEvents()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onceMultiSiteEvents(events: Array<string>, options: MultiNanoEmitterOptions, cb?: (args: [event: string, args: Parameters<TEvtMap[TKey]>]): Promise<[event: string, Parameters<TEvtMap[TKey]>]>
+> ```
+> 
+> Please refer to [the method `onceMulti()` of the `MultiNanoEmitter` class](#multinanoemitter) for more information on this function.
+
+<br>
+
 > ### BytmDialog
 > Signature:  
 > ```ts
@@ -2439,6 +2497,72 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > }
 > 
 > run();
+> ```
+> </details>
+
+<br><br>
+
+> ### MultiNanoEmitter
+> Signature:
+> ```ts
+> new unsafeWindow.BYTM.MultiNanoEmitter<TEventMap>(settings: NanoEmitterSettings): MultiNanoEmitter
+> ```
+>   
+> A subclass of [NanoEmitter](#nanoemitter) that can be used to create an event emitter whose listeners only trigger when one of, all, or a given subset of the events are emitted.  
+> Everything in this class is the same as in [NanoEmitter](#nanoemitter), except for the new methods below.
+>   
+> Methods:
+> - `onMulti(events: Array<string>, options: MultiNanoEmitterOptions, cb: TEventMap[TKey]): Array<[event: string, unsub: () => void]>`  
+>   Registers a callback for the given events.  
+>   `options` defines when the callback should be called, as well as allows passing an AbortSignal to cancel the listener at any time.  
+>   The function returns an array of tuples, each containing the event name and a function to unsubscribe from that specific event. Note that unsubscribing events that are required to trigger the callback might mean it will never be called.
+> - `onceMulti(events: Array<string>, options: MultiNanoEmitterOptions, cb?: (args: [event: string, args: Parameters<TEvtMap[TKey]>]): Promise<[event: string, Parameters<TEvtMap[TKey]>]>`  
+>   Registers a callback for the given events that gets called only once. Alternatively, the returned Promise also resolves with the parameters that would have been passed to the callback at the same time.  
+>   Differently to the regular `once()` method, this one returns a tuple of the event name that triggered the callback and the parameters that would have been passed to the callback.  
+>   The `options` parameter is the same as in `onMulti()`.
+> 
+> ### MultiNanoEmitterOptions
+> 
+> | Property | Description |
+> | :-- | :-- |
+> | `waitFor?: "all" \| "any" \| (keyof TEvtMap \| "_")[]` | Whether to wait for all events or any event to be emitted, or a specific subset of events. |
+> | `signal?: AbortSignal` | If provided, calling `abort()` on the signal will cancel each listener it was passed to and prevent them from being called. |
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> interface MyEvents {
+>   foo: (val: number) => void;
+>   bar: (val: number) => void;
+> }
+> 
+> const emitter = new unsafeWindow.BYTM.MultiNanoEmitter<MyEvents>({
+>   publicEmit: true, // allow calling emit() from outside this class instance
+> });
+> 
+> const ac = new AbortController();
+> 
+> const unsubs = emitter.onMulti(["foo", "bar"], { waitFor: "any", signal: ac.signal }, ([event, args]) => {
+>   // event is either "foo" or "bar"
+>   console.log(`The event "${event}" was emitted with args:`, args);
+> });
+> 
+> function unsubFrom(name: keyof MyEvents) {
+>   // unsubscribe from the passed event name, if it exists
+>   const unsubFns = unsubs.filter(([evt]) => evt === name);
+>   for(const [, unsubFn] of unsubFns)
+>     unsubFn();
+> }
+> 
+> function unsubAll() {
+>   // unsubscribe from all events ac.signal was passed to
+>   ac.abort();
+> }
+> 
+> 
+> // randomly emits "foo" or "bar" after a short delay
+> const randVal = unsafeWindow.BYTM.UserUtils.randRange(1);
+> setTimeout(() => emitter.emit(randVal === 1 ? "foo" : "bar", randVal), 1000);
 > ```
 > </details>
 

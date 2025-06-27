@@ -1,5 +1,6 @@
-import { NanoEmitter, type LooseUnion } from "@sv443-network/userutils";
-import { error, getDomain, info } from "./utils/index.js";
+import { type LooseUnion } from "@sv443-network/userutils";
+import { error, getDomain, info, warn } from "./utils/index.js";
+import { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
 import { FeatureConfig, type FeatureCategory } from "./types.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
@@ -55,6 +56,8 @@ export type SiteEventsMap = {
   //#region features:
   /** Emitted whenever a channel was added, edited or removed from the auto-like list */
   autoLikeChannelsUpdated: () => void;
+  /** Emitted after the Return YouTube Dislike vote labels were added to the DOM */
+  voteLabelsAdded: () => void;
 };
 
 /** Array of all site events */
@@ -75,10 +78,11 @@ export const allSiteEvents = [
   "fullscreenToggled",
   "updateVolumeSliderLabel",
   "autoLikeChannelsUpdated",
+  "voteLabelsAdded",
 ] as const;
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
-export const siteEvents = new NanoEmitter<SiteEventsMap>({
+export const siteEvents = new MultiNanoEmitter<SiteEventsMap>({
   publicEmit: true,
 });
 
@@ -218,16 +222,35 @@ export async function initSiteEvents() {
 let bytmReady = false;
 window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
 
+// FIXME: not a big fan of delaying events until `bytm:ready`, but changing it requires refactoring a lot of ugly code
+
 /** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
     if(!bytmReady) {
+      const startTs = Date.now();
       window.addEventListener("bytm:ready", () => {
         bytmReady = true;
-        emitSiteEvent(key, ...args);
+        forceEmitSiteEvent(key, ...args);
+        if(Date.now() - startTs > 500)
+          warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
       }, { once: true });
       return;
     }
+    else
+      forceEmitSiteEvent(key, ...args);
+  }
+  catch(err) {
+    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+  }
+}
+
+/**
+ * Forcefully emits a site event with the given key and arguments, even if `bytm:ready` has not been emitted yet.  
+ * Temporary workaround for `bytm:ready` event queueing issues in {@linkcode emitSiteEvent()}.
+ */
+export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
+  try {
     siteEvents.emit(key, ...args);
     emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
   }

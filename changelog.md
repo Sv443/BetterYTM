@@ -29,13 +29,21 @@
 <details><summary>Click to expand plugin and internal changes</summary>
 
 - **Plugin Changes:**
-  - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for full documentation
+  - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md) for full documentation
   - Added new events:
-    `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not necessarily opened).
-    `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
-    `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
+    - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
+    - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
+    - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
+    - `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
+  - Added new functions to the interface with the siteEvents system:
+    - `onSiteEvent()` - Adds a site event listener
+    - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
+    - `onMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function
+    - `onceMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once
   - Auth token is now in the format of a UUID instead of a 16-character, 36-radix string.
 - **Internal Changes:**
+  - Added [`NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) wrapper class `MultiNanoEmitter` that allows listening to when one, all, or a given subset of events have been emitted before executing a callback. It shares the same methods as the base `NanoEmitter`, but has the new methods `onMulti()` and `onceMulti()` for listening to multiple events. This new class is exposed on the plugin interface.
+  - Made `siteEvents` system use a `MultiNanoEmitter` instance instead of a `NanoEmitter` instance, so it can now also be used to listen to multiple events at once.
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - Moved the `general` feature category to the top of the config menu.

@@ -3,7 +3,8 @@ import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
-import type { SiteEventsMap } from "./siteEvents.js";
+import type { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
+import type { siteEvents, SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
@@ -368,6 +369,16 @@ export type InterfaceFunctions = {
   getLikeDislikeBtns: typeof getLikeDislikeBtns;
   /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored */
   isIgnoredInputElement: typeof isIgnoredInputElement;
+  
+  // site events:
+  /** Adds a site event listener */
+  onSiteEvent: typeof siteEvents.on,
+  /** Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern */
+  onceSiteEvent: typeof siteEvents.once,
+  /** Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function */
+  onMultiSiteEvents: typeof siteEvents.onMulti,
+  /** Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once */
+  onceMultiSiteEvents: typeof siteEvents.onceMulti,
 
   // translations:
   /** 🔒 Sets the locale for all new translations */
@@ -432,6 +443,8 @@ export type InterfaceFunctions = {
   // other:
   /** Formats a number to a string using the configured locale and configured or passed number notation */
   formatNumber: typeof formatNumber;
+  /** NanoEmitter wrapper that allows listening for whether one, all, or a given subset of events have been emitted */
+  MultiNanoEmitter: typeof MultiNanoEmitter;
 };
 
 //#region feature defs
@@ -618,6 +631,8 @@ export interface FeatureConfig {
   fixHdrIssues: boolean;
   /** Whether to show the like/dislike ratio on the currently playing song */
   showVotes: boolean;
+  /** Whether to swap the like and dislike buttons in the media controls */
+  swapLikeDislikeButtons: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
   numbersFormat: NumberLengthFormat;
   /** Whether to remove all padding around the main content on the /watch page on YTM */
