@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b22f08a1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4c84ba76/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "b22f08a1",
+    buildNumber: "4c84ba76",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -396,7 +396,67 @@ const scriptInfo = UserUtils.purifyObj({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-});let canCompress$2 = true;
+});/**
+ * {@linkcode NanoEmitter} wrapper that allows listening for whether one or all events have been emitted.
+ */
+class MultiNanoEmitter extends UserUtils.NanoEmitter {
+    onMulti(events, options, cb) {
+        var _a;
+        const capturedEvents = new Set();
+        const unsubscribes = [];
+        for (const event of events) {
+            // eslint-disable-next-line prefer-const
+            let unsub;
+            const unsubProxy = () => {
+                if (!unsub)
+                    return;
+                unsub();
+                this.eventUnsubscribes = this.eventUnsubscribes.filter(u => u !== unsub);
+            };
+            unsub = this.events.on(event, ((...args) => {
+                var _a;
+                capturedEvents.add(event);
+                return this.evalMultiListenerCondition(events, capturedEvents, (_a = options.waitFor) !== null && _a !== void 0 ? _a : "all", () => cb([event, args]));
+            }));
+            (_a = options.signal) === null || _a === void 0 ? void 0 : _a.addEventListener("abort", () => unsubProxy());
+            this.eventUnsubscribes.push(unsub);
+            unsubscribes.push([event, unsubProxy]);
+        }
+        return unsubscribes;
+    }
+    onceMulti(events, options, cb) {
+        const capturedEvents = new Set();
+        return new Promise((resolve) => {
+            var _a;
+            for (const event of events) {
+                // eslint-disable-next-line prefer-const
+                let unsub;
+                const onceProxy = ((...args) => {
+                    var _a;
+                    capturedEvents.add(event);
+                    this.evalMultiListenerCondition(events, capturedEvents, (_a = options.waitFor) !== null && _a !== void 0 ? _a : "all", () => {
+                        cb === null || cb === void 0 ? void 0 : cb([event, args]);
+                        unsub === null || unsub === void 0 ? void 0 : unsub();
+                        resolve([event, args]);
+                    });
+                });
+                unsub = this.events.on(event, onceProxy);
+                (_a = options.signal) === null || _a === void 0 ? void 0 : _a.addEventListener("abort", () => unsub());
+                this.eventUnsubscribes.push(unsub);
+            }
+        });
+    }
+    evalMultiListenerCondition(events, capturedEvents, waitFor, cb) {
+        if (waitFor === "all" && [...capturedEvents].every(event => events.includes(event)))
+            return cb();
+        else if (waitFor === "any" && capturedEvents.size > 0)
+            return cb();
+        else if (Array.isArray(waitFor) && waitFor.length > 0) {
+            if (waitFor.every(event => capturedEvents.has(event)))
+                return cb();
+        }
+    }
+}let canCompress$2 = true;
 const lyricsCacheMgr = new UserUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
@@ -1148,7 +1208,7 @@ var packageJson = {
 	nodemonConfig: nodemonConfig,
 	pnpm: pnpm
 };/** EventEmitter instance that is used to detect various changes to the site and userscript */
-const siteEvents = new UserUtils.NanoEmitter({
+const siteEvents = new MultiNanoEmitter({
     publicEmit: true,
 });
 let observers = [];
@@ -1264,16 +1324,33 @@ async function initSiteEvents() {
 }
 let bytmReady = false;
 window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
+// FIXME: not a big fan of delaying events until `bytm:ready`, but changing it requires refactoring a lot of ugly code
 /** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
 function emitSiteEvent(key, ...args) {
     try {
         if (!bytmReady) {
+            const startTs = Date.now();
             window.addEventListener("bytm:ready", () => {
                 bytmReady = true;
-                emitSiteEvent(key, ...args);
+                forceEmitSiteEvent(key, ...args);
+                if (Date.now() - startTs > 500)
+                    warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
             }, { once: true });
             return;
         }
+        else
+            forceEmitSiteEvent(key, ...args);
+    }
+    catch (err) {
+        error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+    }
+}
+/**
+ * Forcefully emits a site event with the given key and arguments, even if `bytm:ready` has not been emitted yet.
+ * Temporary workaround for `bytm:ready` event queueing issues in {@linkcode emitSiteEvent()}.
+ */
+function forceEmitSiteEvent(key, ...args) {
+    try {
         siteEvents.emit(key, ...args);
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
@@ -4769,7 +4846,7 @@ async function mountCfgMenu() {
         ((_d = document.querySelector("#bytm-dialog-container")) !== null && _d !== void 0 ? _d : document.body).appendChild(backgroundElem);
         window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
         log(`Mounted config menu element in ${Date.now() - startTs}ms`);
-        emitSiteEvent("cfgMenuMounted");
+        forceEmitSiteEvent("cfgMenuMounted");
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
@@ -5710,6 +5787,7 @@ function addVoteNumbers(voteCont, voteObj) {
     dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
     upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
     log("Added vote number labels to like and dislike buttons");
+    forceEmitSiteEvent("voteLabelsAdded");
 }
 /** Updates or inserts the labels on the native like and dislike buttons */
 function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
@@ -5719,6 +5797,47 @@ function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
         likeBtn.title = likeBtn.ariaLabel = likesLabelText;
     if (dislikeBtn)
         dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
+}
+//#region swap like&dislike btns
+/** Swaps the like and dislike buttons on the watch page */
+async function initSwapLikeDislikeBtns(i = 0) {
+    dbg(">>1");
+    if (i > 30)
+        return error("Couldn't swap like and dislike buttons after ~3 seconds - giving up");
+    if (!getFeature("swapLikeDislikeButtons") || getDomain() === "yt")
+        return;
+    if (i === 0 && getFeature("showVotes"))
+        await siteEvents.once("voteLabelsAdded");
+    dbg(">>2");
+    const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
+    const options = {
+        all: true,
+        debounce: 50,
+        listener: (elements) => {
+            dbg(">>4");
+            const els = [...elements];
+            const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
+            const likeBtn = els.find((el) => el.id === "button-shape-like");
+            if (!dislikeBtn || !likeBtn)
+                return error("Couldn't find like or dislike button while swapping like and dislike buttons");
+            dbg(">>5");
+            if (getFeature("showVotes") && elements.length === 4) {
+                const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
+                const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
+                if (!dislikeLabel || !likeLabel)
+                    return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
+                transplantElement(dislikeBtn, likeLabel);
+                transplantElement(dislikeLabel, dislikeBtn);
+            }
+            else if (!getFeature("showVotes") && elements.length === 2)
+                transplantElement(dislikeBtn, likeBtn);
+            else
+                setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
+        },
+    };
+    dbg(">>3");
+    addSelectorListener("playerBarMiddleButtons", selector, options);
+    log("Swapped like and dislike buttons");
 }
 //#region watch page full size
 /** Makes the watch page full size */
@@ -6786,8 +6905,8 @@ const featInfo = {
         category: "general",
         supportedSites: ["ytm", "yt"],
         min: 3,
-        max: 30,
-        default: 8,
+        max: 15,
+        default: 5,
         step: 0.1,
         unit: "s",
         advanced: true,
@@ -6999,6 +7118,13 @@ const featInfo = {
         category: "layout",
         supportedSites: ["ytm"],
         default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
+    swapLikeDislikeButtons: {
+        type: "toggle",
+        category: "layout",
+        supportedSites: ["ytm", "yt"],
+        default: false,
         textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     watchPageFullSize: {
@@ -7716,8 +7842,11 @@ const featInfo = {
         default: undefined,
         click: () => getPluginListDialog().then(d => d.open()),
     },
-};/** If this number is incremented, the features object data will be migrated to the new format */
+};//#region format version
+/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 11;
+//#region default data
+/** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 const defaultData = UserUtils.purifyObj(Object.keys(featInfo)
     // @ts-expect-error
     .filter((ftKey) => { var _a; return ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[ftKey]) === null || _a === void 0 ? void 0 : _a.default) !== undefined; })
@@ -7727,6 +7856,7 @@ const defaultData = UserUtils.purifyObj(Object.keys(featInfo)
     acc[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
     return acc;
 }, {}));
+//#region migrations
 /** Config data format migration dictionary */
 const migrations = {
     // 1 -> 2 (<=v1.0)
@@ -7845,14 +7975,16 @@ const migrations = {
     },
     // 10 -> 11 (v3.1)
     11: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
-        "thumbnailOverlayPreferredSource",
+        "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
         "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
         "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
         "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
     ]), [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
+        { key: "initTimeout", oldDefault: 8 },
     ]),
 };
+//#region migration helpers
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData, resetKeys) {
     var _a;
@@ -7877,6 +8009,7 @@ function useNewDefaultIfUnchanged(oldData, defaults) {
     }
     return newData;
 }
+//#region store
 let canCompress = true;
 const configStore = new UserUtils.DataStore({
     id: "bytm-config",
@@ -7886,6 +8019,7 @@ const configStore = new UserUtils.DataStore({
     encodeData: (data) => canCompress ? UserUtils.compress(data, compressionFormat, "string") : data,
     decodeData: (data) => canCompress ? UserUtils.decompress(data, compressionFormat, "string") : data,
 });
+//#region init
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 async function initConfig() {
     canCompress = await compressionSupported();
@@ -7931,6 +8065,7 @@ async function initConfig() {
     emitInterface("bytm:configReady");
     return Object.assign({}, data);
 }
+//#region fix keys
 /**
  * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.
  * Returns a copy of the originally passed object if nothing needs to be fixed.
@@ -7951,6 +8086,7 @@ function fixCfgKeys(cfg) {
     }
     return newCfg;
 }
+//#region feature getters/setters
 /** Returns the current feature config from the in-memory cache as a copy */
 function getFeatures() {
     return configStore.getData();
@@ -7973,21 +8109,14 @@ function setDefaultFeatures() {
     info("Reset feature config to its default values");
     return res;
 }
+//#region reset config stuff
+/** Shows a confirmation prompt to reset the config */
 async function promptResetConfig() {
     if (await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
         closeCfgMenu();
         enableDiscardBeforeUnload();
         await setDefaultFeatures();
-        if (location.pathname.startsWith("/watch")) {
-            const videoTime = await getVideoTime(0);
-            const url = new URL(location.href);
-            url.searchParams.delete("t");
-            if (videoTime)
-                url.searchParams.set("time_continue", String(videoTime));
-            location.replace(url.href);
-        }
-        else
-            await reloadTab();
+        await reloadTab();
     }
 }
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
@@ -8021,6 +8150,11 @@ const globalFuncs = purifyObj({
     getCurrentMediaType,
     getLikeDislikeBtns,
     isIgnoredInputElement,
+    // site events:
+    onSiteEvent: siteEvents.on,
+    onceSiteEvent: siteEvents.once,
+    onMultiSiteEvents: siteEvents.onMulti,
+    onceMultiSiteEvents: siteEvents.onceMulti,
     // translations:
     /*🔒*/ setLocale: setLocaleInterface,
     getLocale,
@@ -8053,6 +8187,7 @@ const globalFuncs = purifyObj({
     showPrompt,
     // other:
     formatNumber,
+    MultiNanoEmitter,
 });
 /** Initializes the BYTM interface */
 function initInterface() {
@@ -8745,6 +8880,17 @@ function downloadFile(fileName, data, mimeType = "text/plain") {
     document.body.appendChild(a);
     a.click();
     setTimeout(() => a.remove(), 1);
+}
+/**
+ * Moves the given {@linkcode element} to the {@linkcode target} element with the specified {@linkcode position} (after the target element, as a sibling by default).
+ * Doesn't mess with any attached event listeners or other properties of the element.
+ * @returns Returns the moved element
+ */
+function transplantElement(element, target, position = "afterend") {
+    const inserted = target.insertAdjacentElement(position, element);
+    if (!inserted)
+        throw new Error(`Failed to transplant element at position "${position}"`);
+    return element;
 }let welcomeDialog = null;
 /** Creates and/or returns the import dialog */
 async function getWelcomeDialog() {
@@ -9190,6 +9336,8 @@ async function onDomLoad() {
                 ftInit.push(["fixHdrIssues", fixHdrIssues()]);
             if (feats.showVotes)
                 ftInit.push(["showVotes", initShowVotes()]);
+            if (feats.swapLikeDislikeButtons)
+                ftInit.push(["swapLikeDislikeBtns", initSwapLikeDislikeBtns()]);
             if (feats.watchPageFullSize)
                 ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
             //#region (ytm) volume
@@ -9252,11 +9400,14 @@ async function onDomLoad() {
         }
         emitInterface("bytm:featureInitStarted");
         const initStartTs = Date.now();
+        const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8000;
+        const initializedFeats = [];
         // wait for feature init or timeout (in case an init function is hung up on a promise)
         await Promise.race([
-            UserUtils.pauseFor(feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8000),
+            UserUtils.pauseFor(initTimeout),
             Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
                 const v = await prom;
+                initializedFeats.push(name);
                 emitInterface("bytm:featureInitialized", name);
                 res(v);
             }))),
@@ -9266,7 +9417,10 @@ async function onDomLoad() {
         // preload icons
         preloadResources();
         emitInterface("bytm:ready");
-        info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+        info(`Done initializing ${initializedFeats.length} / ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+        if (initializedFeats.length < ftInit.length) {
+            error(`Only ${initializedFeats.length} out of ${ftInit.length} features initialized within the limit of ${initTimeout}ms. Faulty features:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
+        }
         try {
             registerDevCommands();
         }
