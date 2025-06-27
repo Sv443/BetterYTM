@@ -463,8 +463,8 @@ export type FeatureCategory =
   | "songLists"
   | "behavior"
   | "input"
-  | "autoLike"
   | "hotkeys"
+  | "autoLike"
   | "lyrics"
   | "integrations"
   | "plugins";

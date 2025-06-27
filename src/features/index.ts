@@ -786,59 +786,6 @@ export const featInfo = {
     textAdornment: adornments.ytmOnly,
   },
 
-  //#region cat:autoLike
-
-  autoLikeChannels: {
-    type: "toggle",
-    category: "autoLike",
-    supportedSites: ["ytm", "yt"],
-    default: true,
-    textAdornment: adornments.reload,
-  },
-  autoLikeOpenMgmtDialog: {
-    type: "button",
-    category: "autoLike",
-    supportedSites: ["ytm", "yt"],
-    click: () => getAutoLikeDialog().then(d => d.open()),
-  },
-  autoLikeChannelToggleBtn: {
-    type: "toggle",
-    category: "autoLike",
-    supportedSites: ["ytm", "yt"],
-    default: true,
-    reloadRequired: false,
-    enable: noop,
-    advanced: true,
-    textAdornment: adornments.advanced,
-  },
-  // TODO(v2.2):
-  // autoLikePlayerBarToggleBtn: {
-  //   type: "toggle",
-  //   category: "autoLike",
-  //   default: false,
-  //   textAdornment: adornments.reload,
-  // },
-  autoLikeTimeout: {
-    type: "slider",
-    category: "autoLike",
-    supportedSites: ["ytm", "yt"],
-    min: 3,
-    max: 30,
-    step: 0.5,
-    default: 5,
-    unit: "s",
-    reloadRequired: false,
-    enable: noop,
-  },
-  autoLikeShowToast: {
-    type: "toggle",
-    category: "autoLike",
-    supportedSites: ["ytm", "yt"],
-    default: true,
-    reloadRequired: false,
-    enable: noop,
-  },
-
   //#region cat:hotkeys
 
   switchBetweenSites: {
@@ -1053,6 +1000,59 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
     textAdornment: adornments.ytmOnly,
+  },
+
+  //#region cat:autoLike
+
+  autoLikeChannels: {
+    type: "toggle",
+    category: "autoLike",
+    supportedSites: ["ytm", "yt"],
+    default: true,
+    textAdornment: adornments.reload,
+  },
+  autoLikeOpenMgmtDialog: {
+    type: "button",
+    category: "autoLike",
+    supportedSites: ["ytm", "yt"],
+    click: () => getAutoLikeDialog().then(d => d.open()),
+  },
+  autoLikeChannelToggleBtn: {
+    type: "toggle",
+    category: "autoLike",
+    supportedSites: ["ytm", "yt"],
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+    advanced: true,
+    textAdornment: adornments.advanced,
+  },
+  // TODO(v2.2):
+  // autoLikePlayerBarToggleBtn: {
+  //   type: "toggle",
+  //   category: "autoLike",
+  //   default: false,
+  //   textAdornment: adornments.reload,
+  // },
+  autoLikeTimeout: {
+    type: "slider",
+    category: "autoLike",
+    supportedSites: ["ytm", "yt"],
+    min: 3,
+    max: 30,
+    step: 0.5,
+    default: 5,
+    unit: "s",
+    reloadRequired: false,
+    enable: noop,
+  },
+  autoLikeShowToast: {
+    type: "toggle",
+    category: "autoLike",
+    supportedSites: ["ytm", "yt"],
+    default: true,
+    reloadRequired: false,
+    enable: noop,
   },
 
   //#region cat:lyrics
