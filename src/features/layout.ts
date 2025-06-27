@@ -6,7 +6,7 @@ import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
 import { compressionSupported, formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, transplantElement, waitVideoElementReady } from "../utils/dom.js";
-import { dbg, error, log, warn } from "../utils/logging.js";
+import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
@@ -1060,7 +1060,6 @@ function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, disl
 
 /** Swaps the like and dislike buttons on the watch page */
 export async function initSwapLikeDislikeBtns(i = 0) {
-  dbg(">>1");
   if(i > 30)
     return error("Couldn't swap like and dislike buttons after ~3 seconds - giving up");
 
@@ -1070,14 +1069,11 @@ export async function initSwapLikeDislikeBtns(i = 0) {
   if(i === 0 && getFeature("showVotes"))
     await siteEvents.once("voteLabelsAdded");
 
-  dbg(">>2");
-
   const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
   const options = {
     all: true,
     debounce: 50,
     listener: (elements) => {
-      dbg(">>4");
       const els = [...elements];
 
       const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
@@ -1086,7 +1082,6 @@ export async function initSwapLikeDislikeBtns(i = 0) {
       if(!dislikeBtn || !likeBtn)
         return error("Couldn't find like or dislike button while swapping like and dislike buttons");
 
-      dbg(">>5");
       if(getFeature("showVotes") && elements.length === 4) {
         const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
         const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
@@ -1103,8 +1098,6 @@ export async function initSwapLikeDislikeBtns(i = 0) {
         setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
     },
   } satisfies SelectorListenerOptions;
-
-  dbg(">>3");
 
   addSelectorListener("playerBarMiddleButtons", selector, options);
 
