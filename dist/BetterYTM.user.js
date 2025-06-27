@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4c84ba76/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1ff88468/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -337,7 +337,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "4c84ba76",
+    buildNumber: "1ff88468",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5234,6 +5234,8 @@ function improveSidebarAnchors(sidebarItems) {
 async function initRemShareTrackParam() {
     const removeSiParam = (inputElem) => {
         try {
+            if (getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all")
+                return;
             if (!inputElem.value.match(/(&|\?)si=/i))
                 return;
             const url = new URL(inputElem.value);
@@ -6722,6 +6724,12 @@ async function setInitialTabVolume(sliderElem) {
 }//#region misc
 /** No-operation function used when `reloadRequired` is set to `false` to explicitly indicate that no `enable` function is needed */
 const noop = () => void 0;
+class ExampleError extends UserUtils.UUError {
+    constructor(message, options) {
+        super(message, options);
+        this.name = "ExampleError";
+    }
+}
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className, title, resource, extraAttributes) => {
     var _a;
@@ -6884,13 +6892,16 @@ const featInfo = {
         max: 15,
         default: 4,
         step: 0.5,
-        unit: "s",
+        unit: (val) => val === 0 ? "" : "s",
+        renderValue: (val) => Number(val) === 0 ? t("toggled_off") : val,
         reloadRequired: false,
         enable: noop,
-        change: () => showIconToast({
-            message: t("example_toast"),
-            iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
-        }),
+        change: (_k, _iV, newVal) => newVal === 0
+            ? closeToast()
+            : showIconToast({
+                message: t("example_toast"),
+                iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+            }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0),
     },
     showToastOnGenericError: {
         type: "toggle",
@@ -6898,7 +6909,10 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         default: true,
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.advanced,
+        change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
     },
     initTimeout: {
         type: "number",
@@ -6978,7 +6992,9 @@ const featInfo = {
         options: options.siteSelection,
         default: "all",
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.advanced,
     },
     fixSpacing: {
         type: "toggle",
@@ -7242,7 +7258,9 @@ const featInfo = {
         ],
         default: "everywhere",
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
     },
     scrollToActiveSongBtn: {
         type: "toggle",
@@ -7445,57 +7463,6 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
         textAdornment: adornments.ytmOnly,
-    },
-    //#region cat:autoLike
-    autoLikeChannels: {
-        type: "toggle",
-        category: "autoLike",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        textAdornment: adornments.reload,
-    },
-    autoLikeOpenMgmtDialog: {
-        type: "button",
-        category: "autoLike",
-        supportedSites: ["ytm", "yt"],
-        click: () => getAutoLikeDialog().then(d => d.open()),
-    },
-    autoLikeChannelToggleBtn: {
-        type: "toggle",
-        category: "autoLike",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        reloadRequired: false,
-        enable: noop,
-        advanced: true,
-        textAdornment: adornments.advanced,
-    },
-    // TODO(v2.2):
-    // autoLikePlayerBarToggleBtn: {
-    //   type: "toggle",
-    //   category: "autoLike",
-    //   default: false,
-    //   textAdornment: adornments.reload,
-    // },
-    autoLikeTimeout: {
-        type: "slider",
-        category: "autoLike",
-        supportedSites: ["ytm", "yt"],
-        min: 3,
-        max: 30,
-        step: 0.5,
-        default: 5,
-        unit: "s",
-        reloadRequired: false,
-        enable: noop,
-    },
-    autoLikeShowToast: {
-        type: "toggle",
-        category: "autoLike",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        reloadRequired: false,
-        enable: noop,
     },
     //#region cat:hotkeys
     switchBetweenSites: {
@@ -7707,6 +7674,57 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
         textAdornment: adornments.ytmOnly,
+    },
+    //#region cat:autoLike
+    autoLikeChannels: {
+        type: "toggle",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        textAdornment: adornments.reload,
+    },
+    autoLikeOpenMgmtDialog: {
+        type: "button",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        click: () => getAutoLikeDialog().then(d => d.open()),
+    },
+    autoLikeChannelToggleBtn: {
+        type: "toggle",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+        advanced: true,
+        textAdornment: adornments.advanced,
+    },
+    // TODO(v2.2):
+    // autoLikePlayerBarToggleBtn: {
+    //   type: "toggle",
+    //   category: "autoLike",
+    //   default: false,
+    //   textAdornment: adornments.reload,
+    // },
+    autoLikeTimeout: {
+        type: "slider",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        min: 3,
+        max: 30,
+        step: 0.5,
+        default: 5,
+        unit: "s",
+        reloadRequired: false,
+        enable: noop,
+    },
+    autoLikeShowToast: {
+        type: "toggle",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
     },
     //#region cat:lyrics
     geniusLyrics: {
@@ -9388,7 +9406,7 @@ async function onDomLoad() {
             //#region general
             ftInit.push(["initSiteEvents", initSiteEvents()]);
             //#region (ytm+yt) layout
-            if (feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
+            if (feats.removeShareTrackingParamSites)
                 ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
             //#region (ytm+yt) input
             ftInit.push(["hotkeys", initHotkeys()]);
