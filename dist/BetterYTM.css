@@ -475,7 +475,7 @@ hr {
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
   --bytm-dialog-width-max: 1200px;
-  --bytm-dialog-target-height: 700px;
+  --bytm-dialog-target-height: 750px;
 }
 
 /* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
@@ -1268,8 +1268,8 @@ body.bytm-dom-ytm
 }
 
 :root {
-  --bytm-menu-bg-highlight: #252525;
-  --bytm-menu-bg-highlight-darker: rgba(10, 10, 10, 0.6);
+  --bytm-menu-bg-highlight: #181818;
+  --bytm-menu-bg-highlight-2: #252525;
 }
 
 .bytm-menu-bg {
@@ -1320,6 +1320,9 @@ body.bytm-dom-ytm
 }
 
 #bytm-cfg-menu-sidenav {
+  --bytm-menu-nav-header-margin: 6px;
+  --bytm-menu-nav-border-width: 0.15rem;
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1329,17 +1332,34 @@ body.bytm-dom-ytm
 }
 
 .bytm-menu-sidenav-section {
-  --bytm-menu-nav-header-margin: 6px;
-  padding: var(--bytm-menu-nav-header-margin) 0px;
-}
-
-.bytm-menu-sidenav-section:not(:last-of-type) {
-  margin-bottom: 12px;
+  margin: var(--bytm-menu-nav-header-margin) 0px;
 }
 
 #bytm-cfg-menu-sidenav-top-section {
+  /* border-bottom: 2px solid var(--bytm-menu-separator-color); */
+  margin-top: 0;
+  padding: var(--bytm-menu-nav-header-margin) 0px;
+  border-bottom: var(--bytm-menu-nav-border-width) solid
+    var(--bytm-menu-separator-color);
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+#bytm-cfg-menu-sidenav-bottom-section {
+  margin-bottom: 0;
+  padding: var(--bytm-menu-nav-header-margin) 0px;
+  border-top: var(--bytm-menu-nav-border-width) solid
+    var(--bytm-menu-separator-color);
+}
+
+#bytm-cfg-menu-sidenav .bytm-hr {
+  margin: calc(var(--bytm-menu-nav-header-margin, 6px) * 1.5) auto;
+  padding: 0px;
+  border: none;
+  border-top: var(--bytm-menu-nav-border-width) solid
+    var(--bytm-menu-separator-color);
+  width: 90%;
+  align-self: center;
 }
 
 .bytm-menu-sidenav-header {
@@ -1370,16 +1390,15 @@ body.bytm-dom-ytm
 }
 
 .bytm-menu-sidenav-header:hover {
-  background-color: var(--bytm-menu-bg-highlight);
-}
-
-.bytm-menu-sidenav-header:active {
-  background-color: var(--bytm-menu-bg-highlight-darker);
+  background-color: var(--bytm-menu-bg-highlight-2);
 }
 
 .bytm-menu-sidenav-header.selected {
-  --bytm-menu-nav-header-highlight-border-width: 2px;
-  background-color: var(--bytm-menu-bg-highlight-darker);
+  --bytm-menu-nav-header-highlight-border-width: var(
+    --bytm-menu-nav-border-width,
+    0.15rem
+  );
+  background-color: var(--bytm-menu-bg-highlight-2);
   border: var(--bytm-menu-nav-header-highlight-border-width) solid
     var(--bytm-menu-separator-color);
   border-style: solid none solid solid;
@@ -1393,6 +1412,10 @@ body.bytm-dom-ytm
       var(--bytm-menu-nav-header-highlight-border-width) -
       var(--bytm-menu-nav-header-margin)
   );
+}
+
+#bytm-cfg-menu-sidenav .bytm-menu-sidenav-header:active {
+  background-color: var(--bytm-menu-bg-highlight);
 }
 
 .bytm-ftconf-extra-info-category {
@@ -1625,7 +1648,7 @@ body.bytm-dom-ytm
   width: 32px;
   height: 32px;
   z-index: 3007;
-  background-color: var(--bytm-menu-bg-highlight-darker);
+  background-color: var(--bytm-menu-bg-highlight-2);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -1649,7 +1672,7 @@ body.bytm-dom-ytm
 }
 
 .bytm-ftitem:hover {
-  background-color: var(--bytm-menu-bg-highlight);
+  background-color: var(--bytm-menu-bg-highlight-2);
 }
 
 .bytm-ftitem-leftside {

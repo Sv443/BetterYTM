@@ -1,7 +1,7 @@
 import { compress, debounce, isScrollable, openDialogs, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
-import { featInfo } from "../features/index.js";
+import { featInfo, groupedCategories } from "../features/index.js";
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
 import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
@@ -373,6 +373,17 @@ export async function mountCfgMenu() {
     // settings category headers:
     let firstCatHeader = true;
     for(const category of Object.keys(featureCfgWithCategories) as FeatureCategory[]) {
+      const catGroupIdx = groupedCategories.findIndex((group) => group.includes(category as FeatureCategory));
+      const catIdx = catGroupIdx >= 0
+        ? groupedCategories[catGroupIdx]!.findIndex((cat) => cat === category as FeatureCategory)
+        : undefined;
+
+      if(catGroupIdx > 0 && catIdx === 0) {
+        const hrElem = document.createElement("hr");
+        hrElem.classList.add("bytm-hr");
+        sidenavTopSectionCont.appendChild(hrElem);
+      }
+
       const headerElem = createSidenavHeader(category, firstCatHeader);
       headerElem && sidenavTopSectionCont.appendChild(headerElem);
       firstCatHeader = false;
