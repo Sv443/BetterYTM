@@ -870,9 +870,12 @@ hr {
 
 /* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
 
-/* use `body` prefix for more specificity: */
+/* use prefix for more specificity: */
 body .bytm-ripple {
-  --bytm-ripple-easing-function: cubic-bezier(0.3, 0.45, 0.2, 0.8);
+  --bytm-ripple-easing-function: var(
+    --bytm-ripple-custom-easing,
+    cubic-bezier(0.3, 0.45, 0.2, 0.8)
+  );
   position: relative;
   overflow: hidden;
   width: var(--bytm-ripple-width, auto);
@@ -1479,9 +1482,50 @@ body.bytm-dom-ytm
 }
 
 .bytm-cfg-menu-logo {
+  --bytm-menu-logo-animation-timing-function: cubic-bezier(0.3, 0.35, 0.45, 1);
   width: 32px;
   height: 32px;
   margin-right: 10px;
+  cursor: pointer;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-timing-function: var(--bytm-menu-logo-animation-timing-function);
+}
+
+.bytm-cfg-menu-logo.bounce {
+  animation: shrink-bounce-shake 0.4s;
+}
+
+.bytm-cfg-menu-logo.somersault {
+  animation: shrink-bounce-somersault 0.4s;
+}
+
+/** Shrink, bounce up, shake left and right, then bounce back and grow to original size */
+@keyframes shrink-bounce-shake {
+  0% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: scale(0.8) translateY(-10px) rotate(-35deg);
+  }
+  100% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+  }
+}
+
+/** Shrink, bounce up, somersault, then grow back to original size */
+@keyframes shrink-bounce-somersault {
+  0% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: scale(0.8) translateY(-10px) rotate(-180deg);
+  }
+  100% {
+    transform: scale(1) translateY(0px) rotate(-360deg);
+  }
 }
 
 .bytm-menu-titlecont {
@@ -1502,40 +1546,16 @@ body.bytm-dom-ytm
   font-size: 22px;
 }
 
-#bytm-cfg-menu-bg .bytm-menu-title {
-  transform: translate(0px, -6px);
-}
-
 #bytm-cfg-menu {
   --bytm-menu-subtitle-color: #c6d2db;
 
   height: calc(100vh - 40px);
 }
 
-#bytm-menu-subtitle-cont {
-  width: 100%;
-  display: flex;
-  gap: 6px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: end;
-  position: absolute;
-  bottom: -12px;
-  left: 0;
-  font-size: 10px;
-  font-weight: normal;
-  z-index: 3007;
-}
-
-#bytm-menu-subtitle-cont,
-#bytm-menu-version-number {
-  color: var(--bytm-menu-subtitle-color) !important;
-}
-
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;
-  margin-left: 32px;
+  margin-left: 48px;
 }
 
 .bytm-menu-link {
@@ -1623,6 +1643,28 @@ body.bytm-dom-ytm
     var(--bytm-menu-border-radius);
 }
 
+#bytm-menu-footer-left-side-cont {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#bytm-menu-mode-display-cont {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-menu-mode-display {
+  cursor: help;
+  width: 24px;
+  height: 24px;
+}
+
+#bytm-menu-mode-display-advanced svg path {
+  fill: var(--bytm-advanced-mode-color);
+}
+
 .bytm-menu-footer-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }
@@ -1648,9 +1690,14 @@ body.bytm-dom-ytm
   width: 32px;
   height: 32px;
   z-index: 3007;
-  background-color: var(--bytm-menu-bg-highlight-2);
+  background-color: rgba(15, 15, 15, 0.75);
   border-radius: 50%;
   cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+#bytm-menu-scroll-indicator:active {
+  background-color: rgba(15, 15, 15, 0.95);
 }
 
 .bytm-hidden {

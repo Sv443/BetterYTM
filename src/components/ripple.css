@@ -1,8 +1,11 @@
 /* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
 
-/* use `body` prefix for more specificity: */
+/* use prefix for more specificity: */
 body .bytm-ripple {
-  --bytm-ripple-easing-function: cubic-bezier(0.3, 0.45, 0.2, 0.8);
+  --bytm-ripple-easing-function: var(
+    --bytm-ripple-custom-easing,
+    cubic-bezier(0.3, 0.45, 0.2, 0.8)
+  );
   position: relative;
   overflow: hidden;
   width: var(--bytm-ripple-width, auto);
