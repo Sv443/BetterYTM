@@ -1,7 +1,7 @@
 import { fetchAdvanced } from "@sv443-network/userutils";
 import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
-import { mode, scriptInfo } from "../constants.js";
+import { scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
 import { addLyricsCacheEntryBest, getLyricsCacheEntry } from "./lyricsCache.js";
 import type { LyricsCacheEntry } from "../types.js";
@@ -221,7 +221,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
       disableFuzzy: null,
-      utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
+      source: scriptInfo.name,
       q: `${artist} ${song}`,
     });
 

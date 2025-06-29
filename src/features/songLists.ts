@@ -1,5 +1,5 @@
 import { autoPlural, pauseFor, preloadImages } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t } from "../utils/index.js";
+import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement } from "../utils/index.js";
 import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
@@ -15,7 +15,8 @@ import "./songLists.css";
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
-  const addCurrentQueueBtns = (
+  /** Tries to add queue buttons to the current song queue items on the /watch page. */
+  const tryAddCurrentQueueBtns = (
     evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
   ) => {
     let amt = 0;
@@ -31,8 +32,8 @@ export async function initQueueButtons() {
 
   // current queue
 
-  siteEvents.on("queueChanged", addCurrentQueueBtns);
-  siteEvents.on("autoplayQueueChanged", addCurrentQueueBtns);
+  siteEvents.on("queueChanged", tryAddCurrentQueueBtns);
+  siteEvents.on("autoplayQueueChanged", tryAddCurrentQueueBtns);
 
   const queueItems = document.querySelectorAll<HTMLElement>("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
   if(queueItems.length > 0) {
@@ -40,8 +41,8 @@ export async function initQueueButtons() {
     log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
   }
 
-  // generic lists
-  const addGenericListQueueBtns = (listElem: HTMLElement) => {
+  /** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
+  const tryAddGenericListQueueBtns = (listElem: HTMLElement) => {
     const queueItems = listElem.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer");
     if(queueItems.length === 0)
       return;
@@ -66,25 +67,47 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-s
 ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
 `;
 
-  if(getFeature("listButtonsPlacement") === "everywhere") {
-    const checkAddGenericBtns = (songLists: NodeListOf<HTMLElement>) => {
-      for(const list of songLists)
-        addGenericListQueueBtns(list);
-    };
+  const doSongListsChecks = (songLists: NodeListOf<HTMLElement>) => {
+    for(const list of songLists) {
+      tryAddGenericListQueueBtns(list);
+      checkSwapLikeDislikeBtns(list);
+    }
+  };
 
+  if(getFeature("listButtonsPlacement") === "everywhere") {
     addSelectorListener("body", listSelector, {
       all: true,
       continuous: true,
       debounce: 150,
-      listener: checkAddGenericBtns,
+      listener: doSongListsChecks,
     });
 
     siteEvents.on("pathChanged", () => {
       const songLists = document.querySelectorAll<HTMLElement>(listSelector);
       if(songLists.length > 0)
-        checkAddGenericBtns(songLists);
+        doSongListsChecks(songLists);
     });
   }
+}
+
+/** Checks if the like and dislike buttons exist in the given song list and swaps them if the feature is enabled. */
+function checkSwapLikeDislikeBtns(songList: HTMLElement) {
+  if(!getFeature("swapLikeDislikeButtons"))
+    return;
+
+  songList.querySelectorAll<HTMLElement>("ytmusic-like-button-renderer #button-shape-dislike")
+    .forEach((dislikeBtn) => {
+      const parent = dislikeBtn.parentElement;
+      if(!parent || parent.classList.contains("bytm-swapped-like-dislike"))
+        return;
+
+      const likeBtn = parent.querySelector<HTMLElement>("#button-shape-like");
+
+      if(likeBtn) {
+        parent.classList.add("bytm-swapped-like-dislike");
+        transplantElement(dislikeBtn, likeBtn);
+      }
+    });
 }
 
 //#region add queue btns
