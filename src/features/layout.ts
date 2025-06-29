@@ -601,6 +601,7 @@ export async function initThumbnailOverlay() {
       }
     };
 
+    /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
     const applyThumbUrl = async (videoID: string) => {
       try {
         const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
@@ -614,7 +615,8 @@ export async function initThumbnailOverlay() {
         )
           return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
 
-        const actuallyApplyThumbUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
+        /** Call to pass the YT and AM artwork URLs to the DOM elements */
+        const setOverlayUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
@@ -643,7 +645,7 @@ export async function initThumbnailOverlay() {
         const ac = new AbortController();
         getBestThumbnailUrl(videoID).then((url) => {
           if(ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
-            actuallyApplyThumbUrl(url!);
+            setOverlayUrl(url!);
         }).catch(() => void 0);
 
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
@@ -678,9 +680,6 @@ export async function initThumbnailOverlay() {
               ];
             })();
 
-            if(primaryArtist && albumName)
-              log(`Resolved primary artist and album name: '${primaryArtist} - ${albumName}'`);
-
             const iTunesAlbum = primaryArtist && albumName
               ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
               : undefined;
@@ -693,8 +692,10 @@ export async function initThumbnailOverlay() {
               ?? bestNativeThumbUrl
               ?? await getBestThumbnailUrl(videoID);
 
-            if(thumbUrl)
-              actuallyApplyThumbUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
+            if(thumbUrl) {
+              log(`Successfully resolved artwork for '${primaryArtist} - ${albumName}'`);
+              setOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
+            }
             else
               warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
           },
@@ -1066,42 +1067,45 @@ export async function initSwapLikeDislikeBtns(i = 0) {
   if(!getFeature("swapLikeDislikeButtons") || getDomain() === "yt")
     return;
 
-  if(i === 0 && getFeature("showVotes"))
-    await siteEvents.once("voteLabelsAdded");
+  // don't pause script exec
+  (async () => {
+    if(i === 0 && getFeature("showVotes"))
+      await siteEvents.once("voteLabelsAdded");
 
-  const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
-  const options = {
-    all: true,
-    debounce: 50,
-    listener: (elements) => {
-      const els = [...elements];
+    const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
+    const options = {
+      all: true,
+      debounce: 50,
+      listener: (elements) => {
+        const els = [...elements];
 
-      const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
-      const likeBtn = els.find((el) => el.id === "button-shape-like");
+        const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
+        const likeBtn = els.find((el) => el.id === "button-shape-like");
 
-      if(!dislikeBtn || !likeBtn)
-        return error("Couldn't find like or dislike button while swapping like and dislike buttons");
+        if(!dislikeBtn || !likeBtn)
+          return error("Couldn't find like or dislike button while swapping like and dislike buttons");
 
-      if(getFeature("showVotes") && elements.length === 4) {
-        const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
-        const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
+        if(getFeature("showVotes") && elements.length === 4) {
+          const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
+          const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
 
-        if(!dislikeLabel || !likeLabel)
-          return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
+          if(!dislikeLabel || !likeLabel)
+            return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
 
-        transplantElement(dislikeBtn, likeLabel);
-        transplantElement(dislikeLabel, dislikeBtn);
-      }
-      else if(!getFeature("showVotes") && elements.length === 2)
-        transplantElement(dislikeBtn, likeBtn);
-      else
-        setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
-    },
-  } satisfies SelectorListenerOptions;
+          transplantElement(dislikeBtn, likeLabel);
+          transplantElement(dislikeLabel, dislikeBtn);
+        }
+        else if(!getFeature("showVotes") && elements.length === 2)
+          transplantElement(dislikeBtn, likeBtn);
+        else
+          setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
+      },
+    } satisfies SelectorListenerOptions;
 
-  addSelectorListener("playerBarMiddleButtons", selector, options);
+    addSelectorListener("playerBarMiddleButtons", selector, options);
 
-  log("Swapped like and dislike buttons");
+    log("Swapped like and dislike buttons");
+  })();
 }
 
 //#region watch page full size
