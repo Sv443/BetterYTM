@@ -927,12 +927,6 @@ export async function mountCfgMenu() {
 
     const extraInfoCategoryElements = {
       about: async () => {
-        // TODO:
-        // const placeholder = document.createElement("div");
-        // placeholder.innerText = `${scriptInfo.name} v${scriptInfo.version} (#${buildNumber})\n[WIP]`;
-        // placeholder.title = placeholder.ariaLabel = t("version_tooltip", scriptInfo.version, buildNumber);
-        // return [placeholder] as HTMLElement[];
-
         const aboutTextCont = document.createElement("p");
         aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
         aboutTextCont.classList.add("bytm-markdown-container");
@@ -1071,6 +1065,18 @@ export async function mountCfgMenu() {
 
         const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM.info.scriptHandler ?? "(your userscript manager extension)" });
 
+        const modeDispWrapperEl = document.createElement("div");
+        modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
+        modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
+        modeDispWrapperEl.addEventListener("mouseenter", () => {
+          modeDispWrapperEl.classList.add("expand");
+        });
+        modeDispWrapperEl.addEventListener("mouseleave", () => {
+          modeDispWrapperEl.addEventListener("transitionend", () => {
+            modeDispWrapperEl.classList.remove("expand");
+          }, { once: true });
+        });
+
         if(isSvg) {
           const modeDisplayWrapperEl = document.createElement("span");
           modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
@@ -1085,7 +1091,7 @@ export async function mountCfgMenu() {
             continue;
           }
           setInnerHtml(modeDisplayWrapperEl, svgContent);
-          modeDisplayCont.appendChild(modeDisplayWrapperEl);
+          modeDispWrapperEl.appendChild(modeDisplayWrapperEl);
         }
         else {
           const modeDisplayEl = document.createElement("img");
@@ -1095,10 +1101,15 @@ export async function mountCfgMenu() {
           modeDisplayEl.role = "img";
           modeDisplayEl.title = modeDisplayEl.ariaLabel = modeDisplayEl.alt = modeElTooltip;
           modeDisplayEl.src = await getResourceUrl(resourceKey);
-          modeDisplayCont.appendChild(modeDisplayEl);
+          modeDispWrapperEl.appendChild(modeDisplayEl);
         }
 
-        log("Mode disp elem cont", id, modeDisplayCont);
+        const labelEl = document.createElement("span");
+        labelEl.classList.add("bytm-menu-mode-display-label");
+        labelEl.textContent = t(trKey);
+        modeDispWrapperEl.appendChild(labelEl);
+
+        modeDisplayCont.appendChild(modeDispWrapperEl);
       }
 
       leftSideFooterCont.insertAdjacentElement("afterbegin", modeDisplayCont);

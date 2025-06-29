@@ -4,12 +4,14 @@
 <!-- #region 3.1.0 -->
 ## 3.1.0
 - **New features:**
+  - 🟡 Improved config menu UX with a sidenav:
+    - Removed advanced mode flag from a lot of features since there's much more space now.
+    - Removed the subtitle elements. Instead, icons will be rendered in the footer, below the sidenav.
+    - Reordered categories and features to be grouped more logically.
   - New configurable hotkeys:
-    - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>)
-    - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>)
-  - [🚧 WIP] 🎵 Show the track number in playlists
-  - 🟡 Improved config menu UX with a sidenav
-    - Removed advanced mode flag from a lot of features since there's much more space now
+    - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
+    - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
+  - [🚧 WIP] 🎵 Show the track number in playlists.
 - **Changes and improvements:**
   - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies
     - Fixed album artwork being fetched with wrong parameters
@@ -36,10 +38,10 @@
     - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
     - `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
   - Added new functions to the interface with the siteEvents system:
-    - `onSiteEvent()` - Adds a site event listener
-    - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
-    - `onMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function
-    - `onceMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once
+    - `onSiteEvent()` - Adds a site event listener.
+    - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
+    - `onMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function.
+    - `onceMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once.
   - Auth token is now in the format of a UUID instead of a 16-character, 36-radix string.
 - **Internal Changes:**
   - Added [`NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) wrapper class `MultiNanoEmitter` that allows listening to when one, all, or a given subset of events have been emitted before executing a callback. It shares the same methods as the base `NanoEmitter`, but has the new methods `onMulti()` and `onceMulti()` for listening to multiple events. This new class is exposed on the plugin interface.
@@ -48,8 +50,9 @@
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - Moved the `general` feature category to the top of the config menu.
   - Wrapped feature config elements in a new container element with the ID `bytm-ftconf-category-${categoryName}` to allow for the sidenav to disable all but one at a time.
-  - Added ability to render custom info categories in the config menu. Their navigation header will be aligned to the bottom, and they can contain arbitrary elements. They use the same general formatting as the new feature category containers, just with their own `categoryName`.
-  - Added CSS var `--bytm-menu-bg-highlight-darker`.
+  - Updated UserUtils to v9.4.3 to fix two bugs related to the template literal placeholder format. This now allows specifying a single placeholder multiple times per translation string.
+  - Added ability to render custom info categories in the config menu. Their navigation headers will be aligned to the bottom, and they render arbitrary elements. They use the same general formatting as the new feature category containers, just with their own `categoryName` (currently just `"about"` and `"changelog"`).
+  - Added CSS var `--bytm-menu-bg-highlight-2` (hex, opacity 1) as a secondary level of highlight to `--bytm-menu-bg-highlight`.
   - Renamed CSS var `--bytm-dialog-height-max` to `--bytm-dialog-target-height`, but only for the config menu. All BytmDialogs will still use `--bytm-dialog-height-max`.
   - Improved number argument resolution of the functions in `src/utils/logging.ts` (if the last argument is a number and exceeds the range of the enum `LogLevel`, it will not be interpreted as a log level anymore, but as a number to be logged).
 

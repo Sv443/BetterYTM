@@ -388,13 +388,39 @@
 }
 
 .bytm-menu-mode-display {
-  cursor: help;
   width: 24px;
   height: 24px;
 }
 
 #bytm-menu-mode-display-advanced svg path {
   fill: var(--bytm-advanced-mode-color);
+}
+
+.bytm-menu-mode-display-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  gap: 6px;
+  cursor: help;
+  font-size: 1.4rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  clip-path: polygon(-1px 0, 25px 0, 25px 100%, -1px 100%);
+  transition: clip-path 0.15s ease-out;
+}
+
+.bytm-menu-mode-display-wrapper:hover {
+  clip-path: polygon(-1px 0, 100% 0, 100% 100%, -1px 100%);
+}
+
+.bytm-menu-mode-display-wrapper.expand {
+  width: auto;
+}
+
+.bytm-menu-mode-display-label {
+  padding-right: 4px;
 }
 
 .bytm-menu-footer-buttons-cont button:not(:last-of-type) {
