@@ -3,7 +3,7 @@ import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab,
 import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
-import { getLyricsCacheEntry } from "./lyricsCache.js";
+import { getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.js";
 import { addSelectorListener } from "../observers.js";
 import { createRipple } from "../components/ripple.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -204,7 +204,7 @@ async function addQueueButtons(
         : getLyricsCacheEntry(artistsSan, songSan);
 
       if(cachedLyricsEntry)
-        lyricsUrl = cachedLyricsEntry.url;
+        lyricsUrl = resolveLyricsUrl(cachedLyricsEntry.path);
       else if(!queueItem.hasAttribute("data-bytm-loading")) {
         const imgEl = lyricsBtnElem?.querySelector<HTMLImageElement | HTMLElement>("img, svg");
 
@@ -223,7 +223,10 @@ async function addQueueButtons(
           }
         }
 
-        lyricsUrl = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.url ?? await fetchLyricsUrlTop(artistsSan, songSan);
+        const cachedPath = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.path;
+        lyricsUrl = cachedPath
+          ? resolveLyricsUrl(cachedPath)
+          : await fetchLyricsUrlTop(artistsSan, songSan);
 
         if(lyricsUrl) {
           emitInterface("bytm:lyricsLoaded", {

@@ -3,7 +3,7 @@ import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInt
 import { emitInterface } from "../interface.js";
 import { scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
-import { addLyricsCacheEntryBest, getLyricsCacheEntry } from "./lyricsCache.js";
+import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.js";
 import type { LyricsCacheEntry } from "../types.js";
 import { addSelectorListener } from "../observers.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -199,7 +199,8 @@ export async function getCurrentLyricsUrl() {
 /** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
 export async function fetchLyricsUrlTop(artist: string, song: string): Promise<string | undefined> {
   try {
-    return (await fetchLyricsUrls(artist, song))?.[0]?.url;
+    const path = (await fetchLyricsUrls(artist, song))?.[0]?.path;
+    return path ? resolveLyricsUrl(path) : undefined;
   }
   catch(err) {
     getFeature("errorOnLyricsNotFound") && error("Couldn't get lyrics URL due to error:", err);
@@ -215,7 +216,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
   try {
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {
-      info(`Found lyrics URL in cache: ${cacheEntry.url}`);
+      info(`Found lyrics path in cache: ${cacheEntry.path}`);
       return [cacheEntry];
     }
 
@@ -255,6 +256,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     const allResults = result.all as {
       url: string;
+      path: string;
       meta: {
         title: string;
         fullTitle: string;
@@ -271,23 +273,23 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }
 
     const allResultsSan = allResults
-      .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
-      .map(({ meta, url }) => ({
+      .filter(({ meta, path }) => (meta.title || meta.fullTitle) && meta.artists && path)
+      .map(({ meta, path }) => ({
         meta: {
           ...meta,
           title: sanitizeSong(String(meta.title ?? meta.fullTitle)),
           artists: sanitizeArtists(String(meta.artists)),
         },
-        url,
+        path,
       }));
 
     const topRes = allResultsSan[0];
-    topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
+    topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.path);
 
     return allResultsSan.map(r => ({
       artist: r.meta.primaryArtist.name,
       song: r.meta.title,
-      url: r.url,
+      path: r.path,
     }));
   }
   catch(err) {

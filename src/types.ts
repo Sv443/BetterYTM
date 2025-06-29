@@ -66,7 +66,7 @@ export type HotkeyObj = {
 export type LyricsCacheEntry = {
   artist: string;
   song: string;
-  url: string;
+  path: string;
   viewed: number;
   added: number;
 };
