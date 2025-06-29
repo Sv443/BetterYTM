@@ -13,7 +13,7 @@
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1200px;
+  --bytm-dialog-width-max: 1250px;
   --bytm-dialog-target-height: 750px;
 }
 

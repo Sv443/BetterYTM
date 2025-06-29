@@ -1,11 +1,11 @@
-import { compress, debounce, isScrollable, openDialogs, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
+import { compress, debounce, isScrollable, openDialogs, purifyObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, groupedCategories } from "../features/index.js";
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
 import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
-import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
+import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "../utils/translations.js";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
@@ -928,10 +928,29 @@ export async function mountCfgMenu() {
     const extraInfoCategoryElements = {
       about: async () => {
         // TODO:
-        const placeholder = document.createElement("div");
-        placeholder.innerText = `${scriptInfo.name} v${scriptInfo.version} (#${buildNumber})\n[WIP]`;
-        placeholder.title = placeholder.ariaLabel = t("version_tooltip", scriptInfo.version, buildNumber);
-        return [placeholder] as HTMLElement[];
+        // const placeholder = document.createElement("div");
+        // placeholder.innerText = `${scriptInfo.name} v${scriptInfo.version} (#${buildNumber})\n[WIP]`;
+        // placeholder.title = placeholder.ariaLabel = t("version_tooltip", scriptInfo.version, buildNumber);
+        // return [placeholder] as HTMLElement[];
+
+        const aboutTextCont = document.createElement("p");
+        aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
+        aboutTextCont.classList.add("bytm-markdown-container");
+        const aboutTrParams = purifyObj({
+          scriptName: scriptInfo.name,
+          scriptVersion: pkg.version,
+          buildNumber,
+          authorName: pkg.author.name,
+          authorLink: pkg.author.url,
+          githubLink: scriptInfo.namespace,
+          greasyforkLink: pkg.hosts.greasyfork,
+          openuserjsLink: pkg.hosts.openuserjs,
+          fundingLink: pkg.funding.url,
+          discordLink: "https://dc.sv443.net/",
+        });
+        log("About text params:", aboutTrParams);
+        setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
+        return [aboutTextCont] as HTMLElement[];
       },
       changelog: async () => {
         const mdContElem = document.createElement("div");

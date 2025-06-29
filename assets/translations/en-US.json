@@ -259,6 +259,8 @@
   "cfg_menu_feature_category_header_tooltip": "Click to view the configuration options for the category \"%1\"",
   "cfg_menu_feature_category_info_header_tooltip": "Click to view the information in the \"%1\" section",
 
+  "about_bytm_content_markdown": "### ${scriptName}  \nv${scriptVersion} (#${buildNumber})  \n\n${scriptName} is a userscript that enhances the YouTube Music experience by adding many features and improvements.  \nIt is developed by [${authorName}](${authorLink}) and is available via [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  \nIf you like this script, [please consider donating](${fundingLink}) to help fund its development.  \n[Join the Discord server](${discordLink}) to discuss issues, suggest features or just chat with other users.",
+
   "feature_category_general": "General",
   "feature_category_layout": "Layout",
   "feature_category_volume": "Volume",

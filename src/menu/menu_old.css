@@ -67,9 +67,9 @@
 }
 
 #bytm-cfg-menu-sidenav-top-section {
-  /* border-bottom: 2px solid var(--bytm-menu-separator-color); */
   margin-top: 0;
-  padding: var(--bytm-menu-nav-header-margin) 0px;
+  padding-top: var(--bytm-menu-nav-header-margin);
+  padding-bottom: calc(var(--bytm-menu-nav-header-margin) * 1.5);
   border-bottom: var(--bytm-menu-nav-border-width) solid
     var(--bytm-menu-separator-color);
   overflow-x: hidden;
@@ -94,8 +94,8 @@
 }
 
 .bytm-menu-sidenav-header {
-  --bytm-menu-nav-header-horizontal-padding: 24px;
-  --bytm-menu-nav-header-vertical-padding: 10px;
+  --bytm-menu-nav-header-horizontal-padding: 20px;
+  --bytm-menu-nav-header-vertical-padding: 8px;
 
   display: flex;
   flex-direction: row;
@@ -147,6 +147,10 @@
 
 #bytm-cfg-menu-sidenav .bytm-menu-sidenav-header:active {
   background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-menu-sidenav-section .bytm-menu-sidenav-header:not(:last-of-type) {
+  margin-bottom: 6px;
 }
 
 .bytm-ftconf-extra-info-category {
