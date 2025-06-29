@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1ff88468/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9f2c0619/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -65,7 +65,7 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.1/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.3/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.5
@@ -110,6 +110,7 @@ var resources = {
 	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
 	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
 	"icon-advanced_mode": "icons/plus_circle_small.svg",
+	"icon-advanced_mode_large": "icons/plus_circle.svg",
 	"icon-alert": "icons/alert.svg",
 	"icon-arrow_down": "icons/arrow_down.svg",
 	"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
@@ -337,7 +338,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "1ff88468",
+    buildNumber: "9f2c0619",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -462,9 +463,23 @@ const lyricsCacheMgr = new UserUtils.DataStore({
     defaultData: {
         cache: [],
     },
-    formatVersion: 1,
+    formatVersion: 2,
     encodeData: (data) => canCompress$2 ? UserUtils.compress(data, compressionFormat, "string") : data,
     decodeData: (data) => canCompress$2 ? UserUtils.decompress(data, compressionFormat, "string") : data,
+    migrations: {
+        // 1 -> 2 (v3.1.0) - debulkify cache entry objects
+        2: (oldData) => {
+            oldData.cache = oldData.cache.map(entry => ({
+                artist: entry.artist,
+                song: entry.song,
+                // @ts-expect-error
+                path: "path" in entry ? entry.path : (new URL(String("url" in entry ? entry.url : entry.path)).pathname),
+                added: Math.floor(entry.added / 1000),
+                viewed: Math.floor(entry.viewed / 1000),
+            }));
+            return oldData;
+        },
+    }
 });
 async function initLyricsCache() {
     canCompress$2 = await compressionSupported();
@@ -473,15 +488,22 @@ async function initLyricsCache() {
     emitInterface("bytm:lyricsCacheReady");
     return data;
 }
+/** Returns the full URL to the lyrics page on genius.com for the given path */
+function resolveLyricsUrl(path) {
+    const url = new URL("https://genius.com");
+    url.pathname = path.startsWith("/") ? path : `/${path}`;
+    return String(url);
+}
 /**
  * Returns the cache entry for the passed artist and song, or undefined if it doesn't exist yet
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
  * @param refreshEntry If true, the timestamp of the entry will be set to the current time
  */
 function getLyricsCacheEntry(artist, song, refreshEntry = true) {
+    var _a;
     const { cache } = lyricsCacheMgr.getData();
     const entry = cache.find(e => e.artist === artist && e.song === song);
-    if (entry && Date.now() - (entry === null || entry === void 0 ? void 0 : entry.added) > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
+    if (entry && Date.now() - ((_a = entry === null || entry === void 0 ? void 0 : entry.added) !== null && _a !== void 0 ? _a : 0) * 1000 > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
         deleteLyricsCacheEntry(artist, song);
         return undefined;
     }
@@ -496,7 +518,7 @@ function updateLyricsCacheEntry(artist, song) {
     const idx = cache.findIndex(e => e.artist === artist && e.song === song);
     if (idx !== -1) {
         const newEntry = cache.splice(idx, 1)[0];
-        newEntry.viewed = Date.now();
+        newEntry.viewed = Math.floor(Date.now() / 1000);
         lyricsCacheMgr.setData({ cache: [newEntry, ...cache] });
     }
 }
@@ -522,14 +544,14 @@ function getLyricsCache() {
  * Adds the provided "best" (non-penalized) entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
  */
-function addLyricsCacheEntryBest(artist, song, url) {
+function addLyricsCacheEntryBest(artist, song, path) {
     // refresh entry if it exists and don't overwrite / duplicate it
     const cachedEntry = getLyricsCacheEntry(artist, song, true);
     if (cachedEntry)
         return;
     const { cache } = lyricsCacheMgr.getData();
     const entry = {
-        artist, song, url, viewed: Date.now(), added: Date.now(),
+        artist, song, path, viewed: Math.floor(Date.now() / 1000), added: Math.floor(Date.now() / 1000),
     };
     cache.push(entry);
     cache.sort((a, b) => b.viewed - a.viewed);
@@ -1110,7 +1132,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^9.4.1",
+	"@sv443-network/userutils": "^9.4.3",
 	"compare-versions": "^6.1.1",
 	dompurify: "^3.2.5",
 	marked: "^12.0.2",
@@ -2966,16 +2988,6 @@ async function compressionSupported() {
         return isCompressionSupported = false;
     }
 }
-/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
-function arrayWithSeparators(array, separator = ", ", lastSeparator) {
-    const arr = [...array];
-    if (arr.length === 0)
-        return "";
-    else if (arr.length <= 2)
-        return arr.join(lastSeparator);
-    else
-        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
-}
 /** Returns the watch ID of the current video or null if not on a video page */
 function getWatchId() {
     const { searchParams, pathname } = new URL(location.href);
@@ -3566,7 +3578,8 @@ async function getCurrentLyricsUrl() {
 async function fetchLyricsUrlTop(artist, song) {
     var _a, _b;
     try {
-        return (_b = (_a = (await fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.url;
+        const path = (_b = (_a = (await fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.path;
+        return path ? resolveLyricsUrl(path) : undefined;
     }
     catch (err) {
         getFeature("errorOnLyricsNotFound") && error("Couldn't get lyrics URL due to error:", err);
@@ -3582,12 +3595,12 @@ async function fetchLyricsUrls(artist, song) {
     try {
         const cacheEntry = getLyricsCacheEntry(artist, song);
         if (cacheEntry) {
-            info(`Found lyrics URL in cache: ${cacheEntry.url}`);
+            info(`Found lyrics path in cache: ${cacheEntry.path}`);
             return [cacheEntry];
         }
         const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
             disableFuzzy: null,
-            utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
+            source: scriptInfo.name,
             q: `${artist} ${song}`,
         });
         log("Requesting lyrics from geniURL:", String(fetchUrl));
@@ -3617,20 +3630,20 @@ async function fetchLyricsUrls(artist, song) {
             return undefined;
         }
         const allResultsSan = allResults
-            .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
-            .map(({ meta, url }) => {
+            .filter(({ meta, path }) => (meta.title || meta.fullTitle) && meta.artists && path)
+            .map(({ meta, path }) => {
             var _a;
             return ({
                 meta: Object.assign(Object.assign({}, meta), { title: sanitizeSong(String((_a = meta.title) !== null && _a !== void 0 ? _a : meta.fullTitle)), artists: sanitizeArtists(String(meta.artists)) }),
-                url,
+                path,
             });
         });
         const topRes = allResultsSan[0];
-        topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
+        topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.path);
         return allResultsSan.map(r => ({
             artist: r.meta.primaryArtist.name,
             song: r.meta.title,
-            url: r.url,
+            path: r.path,
         }));
     }
     catch (err) {
@@ -4037,7 +4050,7 @@ let hiddenCopiedTxtTimeout;
  * TODO: replace with new menu using BytmDialog - see https://github.com/Sv443/BetterYTM/issues/23
  */
 async function mountCfgMenu() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     try {
         if (isCfgMenuMounted)
             return;
@@ -4079,8 +4092,27 @@ async function mountCfgMenu() {
         const titleLogoElem = document.createElement("img");
         const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
         titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
+        titleLogoElem.tabIndex = 0;
+        titleLogoElem.role = "button";
         if (logoSrc)
             titleLogoElem.src = logoSrc;
+        onInteraction(titleLogoElem, (e) => {
+            var _a, _b;
+            e.preventDefault();
+            e.stopPropagation();
+            const clicks = Number((_b = (_a = titleLogoElem.dataset) === null || _a === void 0 ? void 0 : _a.clicks) !== null && _b !== void 0 ? _b : "0");
+            if (clicks === 2) {
+                titleLogoElem.classList.add("somersault");
+                titleLogoElem.dataset.clicks = "0";
+            }
+            else {
+                titleLogoElem.classList.add("bounce");
+                titleLogoElem.dataset.clicks = String(clicks + 1);
+            }
+            titleLogoElem.addEventListener("animationend", () => {
+                titleLogoElem.classList.remove("bounce", "somersault");
+            }, { once: true });
+        });
         titleLogoHeaderCont.appendChild(titleLogoElem);
         const titleElem = document.createElement("h1");
         titleElem.classList.add("bytm-menu-title");
@@ -4146,7 +4178,8 @@ async function mountCfgMenu() {
         //#region footer
         const footerCont = document.createElement("div");
         footerCont.classList.add("bytm-menu-footer-cont");
-        const reloadFooterCont = document.createElement("div");
+        const leftSideFooterCont = document.createElement("div");
+        leftSideFooterCont.id = "bytm-menu-footer-left-side-cont";
         const reloadFooterEl = document.createElement("div");
         reloadFooterEl.id = "bytm-menu-footer-reload-hint";
         reloadFooterEl.classList.add("bytm-menu-footer", "hidden");
@@ -4164,7 +4197,7 @@ async function mountCfgMenu() {
             reloadTab();
         });
         reloadFooterEl.appendChild(reloadTxtEl);
-        reloadFooterCont.appendChild(reloadFooterEl);
+        leftSideFooterCont.appendChild(reloadFooterEl);
         /** For copying plain when shift-clicking the copy button or when compression is not supported */
         const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
         const exImDlg = new ExImDialog({
@@ -4233,7 +4266,7 @@ async function mountCfgMenu() {
         const buttonsCont = document.createElement("div");
         buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
         buttonsCont.appendChild(exportImportBtn);
-        footerCont.appendChild(reloadFooterCont);
+        footerCont.appendChild(leftSideFooterCont);
         footerCont.appendChild(buttonsCont);
         //#region main body
         const bodyCont = document.createElement("div");
@@ -4306,6 +4339,15 @@ async function mountCfgMenu() {
         // settings category headers:
         let firstCatHeader = true;
         for (const category of Object.keys(featureCfgWithCategories)) {
+            const catGroupIdx = groupedCategories.findIndex((group) => group.includes(category));
+            const catIdx = catGroupIdx >= 0
+                ? groupedCategories[catGroupIdx].findIndex((cat) => cat === category)
+                : undefined;
+            if (catGroupIdx > 0 && catIdx === 0) {
+                const hrElem = document.createElement("hr");
+                hrElem.classList.add("bytm-hr");
+                sidenavTopSectionCont.appendChild(hrElem);
+            }
             const headerElem = createSidenavHeader(category, firstCatHeader);
             headerElem && sidenavTopSectionCont.appendChild(headerElem);
             firstCatHeader = false;
@@ -4325,11 +4367,12 @@ async function mountCfgMenu() {
             headerElem && sidenavBtmSectionCont.appendChild(headerElem);
         }
         sidenavCont.appendChild(sidenavBtmSectionCont);
-        const extraInfoCatSelectedUnsub = siteEvents.on("configHeaderSelected", () => {
-            extraInfoCatSelectedUnsub();
+        siteEvents.once("cfgMenuMounted", () => {
+            var _a;
             document.querySelectorAll("#bytm-ftconf-category-about a, #bytm-ftconf-category-changelog a").forEach((linkEl) => {
                 linkEl.target = "_blank";
             });
+            (_a = document.querySelector("#bytm-ftconf-category-changelog details")) === null || _a === void 0 ? void 0 : _a.setAttribute("open", "true");
         });
         //#region feature list
         const featuresCont = document.createElement("div");
@@ -4734,9 +4777,28 @@ async function mountCfgMenu() {
         const extraInfoCategoryElements = {
             about: async () => {
                 // TODO:
-                const placeholder = document.createElement("div");
-                placeholder.innerText = `${scriptInfo.name} v${scriptInfo.version} (#${buildNumber})\n[WIP]`;
-                return [placeholder];
+                // const placeholder = document.createElement("div");
+                // placeholder.innerText = `${scriptInfo.name} v${scriptInfo.version} (#${buildNumber})\n[WIP]`;
+                // placeholder.title = placeholder.ariaLabel = t("version_tooltip", scriptInfo.version, buildNumber);
+                // return [placeholder] as HTMLElement[];
+                const aboutTextCont = document.createElement("p");
+                aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
+                aboutTextCont.classList.add("bytm-markdown-container");
+                const aboutTrParams = UserUtils.purifyObj({
+                    scriptName: scriptInfo.name,
+                    scriptVersion: packageJson.version,
+                    buildNumber,
+                    authorName: packageJson.author.name,
+                    authorLink: packageJson.author.url,
+                    githubLink: scriptInfo.namespace,
+                    greasyforkLink: packageJson.hosts.greasyfork,
+                    openuserjsLink: packageJson.hosts.openuserjs,
+                    fundingLink: packageJson.funding.url,
+                    discordLink: "https://dc.sv443.net/",
+                });
+                log("About text params:", aboutTrParams);
+                setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
+                return [aboutTextCont];
             },
             changelog: async () => {
                 const mdContElem = document.createElement("div");
@@ -4819,38 +4881,54 @@ async function mountCfgMenu() {
         //#region finalize
         menuContainer.appendChild(headerElem);
         menuContainer.appendChild(bodyCont);
-        const subtitleElemCont = document.createElement("div");
-        subtitleElemCont.id = "bytm-menu-subtitle-cont";
-        subtitleElemCont.classList.add("bytm-ellipsis");
-        const versionEl = document.createElement("a");
-        versionEl.id = "bytm-menu-version-number";
-        versionEl.classList.add("bytm-ellipsis");
-        versionEl.tabIndex = 0;
-        versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
-        versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
-        subtitleElemCont.appendChild(versionEl);
-        titleElem.appendChild(subtitleElemCont);
         const modeItems = [];
-        mode === "development" && modeItems.push("dev_mode");
-        getFeature("advancedMode") && modeItems.push("advanced_mode");
+        mode === "development" && modeItems.push(["dev", "dev_mode", "img-logo_dev"]);
+        getFeature("advancedMode") && modeItems.push(["advanced", "advanced_mode", "icon-advanced_mode_large"]);
         if (modeItems.length > 0) {
-            const modeDisplayEl = document.createElement("span");
-            modeDisplayEl.id = "bytm-menu-mode-display";
-            modeDisplayEl.classList.add("bytm-ellipsis");
-            modeDisplayEl.textContent = `[${t("active_mode_display", arrayWithSeparators(modeItems.map(v => t(`${v}_short`)), ", ", " & "))}]`;
-            modeDisplayEl.ariaLabel = modeDisplayEl.title = tp("active_mode_tooltip", modeItems, arrayWithSeparators(modeItems.map(t), ", ", " & "));
-            subtitleElemCont.appendChild(modeDisplayEl);
+            const modeDisplayCont = document.createElement("div");
+            modeDisplayCont.id = "bytm-menu-mode-display-cont";
+            for (const [id, trKey, resourceKey] of modeItems) {
+                const isSvg = resourceKey.startsWith("icon-");
+                const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: (_d = GM.info.scriptHandler) !== null && _d !== void 0 ? _d : "(your userscript manager extension)" });
+                if (isSvg) {
+                    const modeDisplayWrapperEl = document.createElement("span");
+                    modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
+                    modeDisplayWrapperEl.classList.add("bytm-menu-mode-display");
+                    modeDisplayWrapperEl.tabIndex = 0;
+                    modeDisplayWrapperEl.role = "img";
+                    modeDisplayWrapperEl.title = modeDisplayWrapperEl.ariaLabel = modeElTooltip;
+                    const svgContent = await resourceAsString(resourceKey);
+                    if (!svgContent) {
+                        error(`Couldn't create mode display element for mode '${id}' because the resource '${resourceKey}' couldn't be loaded.`);
+                        continue;
+                    }
+                    setInnerHtml(modeDisplayWrapperEl, svgContent);
+                    modeDisplayCont.appendChild(modeDisplayWrapperEl);
+                }
+                else {
+                    const modeDisplayEl = document.createElement("img");
+                    modeDisplayEl.id = `bytm-menu-mode-display-${id}`;
+                    modeDisplayEl.classList.add("bytm-menu-mode-display");
+                    modeDisplayEl.tabIndex = 0;
+                    modeDisplayEl.role = "img";
+                    modeDisplayEl.title = modeDisplayEl.ariaLabel = modeDisplayEl.alt = modeElTooltip;
+                    modeDisplayEl.src = await getResourceUrl(resourceKey);
+                    modeDisplayCont.appendChild(modeDisplayEl);
+                }
+                log("Mode disp elem cont", id, modeDisplayCont);
+            }
+            leftSideFooterCont.insertAdjacentElement("afterbegin", modeDisplayCont);
         }
         menuContainer.appendChild(footerCont);
         backgroundElem.appendChild(menuContainer);
-        ((_d = document.querySelector("#bytm-dialog-container")) !== null && _d !== void 0 ? _d : document.body).appendChild(backgroundElem);
+        ((_e = document.querySelector("#bytm-dialog-container")) !== null && _e !== void 0 ? _e : document.body).appendChild(backgroundElem);
         window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
         log(`Mounted config menu element in ${Date.now() - startTs}ms`);
         forceEmitSiteEvent("cfgMenuMounted");
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
-        (_e = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _e === void 0 ? void 0 : _e.removeAttribute("inert");
+        (_f = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _f === void 0 ? void 0 : _f.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         // ensure menu is inert if BytmDialog instances stacked on top of it:
@@ -5434,6 +5512,7 @@ async function initThumbnailOverlay() {
                 });
             }
         };
+        /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
         const applyThumbUrl = async (videoID) => {
             try {
                 const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
@@ -5442,7 +5521,8 @@ async function initThumbnailOverlay() {
                     && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
                         && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
                     return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
-                const actuallyApplyThumbUrl = (ytThumbUrl, amThumbUrl) => {
+                /** Call to pass the YT and AM artwork URLs to the DOM elements */
+                const setOverlayUrl = (ytThumbUrl, amThumbUrl) => {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
                     const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
@@ -5465,7 +5545,7 @@ async function initThumbnailOverlay() {
                 const ac = new AbortController();
                 getBestThumbnailUrl(videoID).then((url) => {
                     if (ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
-                        actuallyApplyThumbUrl(url);
+                        setOverlayUrl(url);
                 }).catch(() => void 0);
                 addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
                     async listener() {
@@ -5495,8 +5575,6 @@ async function initThumbnailOverlay() {
                                 (_b = splitList[1].find((el) => el.tagName === "A")) === null || _b === void 0 ? void 0 : _b.innerText,
                             ];
                         })();
-                        if (primaryArtist && albumName)
-                            log(`Resolved primary artist and album name: '${primaryArtist} - ${albumName}'`);
                         const iTunesAlbum = primaryArtist && albumName
                             ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
                             : undefined;
@@ -5504,8 +5582,10 @@ async function initThumbnailOverlay() {
                         const iTunesUrl = ((_b = iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl100) !== null && _b !== void 0 ? _b : iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl60);
                         iTunesUrl && !ac.signal.aborted && ac.abort();
                         const thumbUrl = (_d = (_c = iTunesUrl === null || iTunesUrl === void 0 ? void 0 : iTunesUrl.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)) !== null && _c !== void 0 ? _c : bestNativeThumbUrl) !== null && _d !== void 0 ? _d : await getBestThumbnailUrl(videoID);
-                        if (thumbUrl)
-                            actuallyApplyThumbUrl(bestNativeThumbUrl !== null && bestNativeThumbUrl !== void 0 ? bestNativeThumbUrl : thumbUrl, thumbUrl);
+                        if (thumbUrl) {
+                            log(`Successfully resolved artwork for '${primaryArtist} - ${albumName}'`);
+                            setOverlayUrl(bestNativeThumbUrl !== null && bestNativeThumbUrl !== void 0 ? bestNativeThumbUrl : thumbUrl, thumbUrl);
+                        }
                         else
                             warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
                     },
@@ -5803,43 +5883,41 @@ function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
 //#region swap like&dislike btns
 /** Swaps the like and dislike buttons on the watch page */
 async function initSwapLikeDislikeBtns(i = 0) {
-    dbg(">>1");
     if (i > 30)
         return error("Couldn't swap like and dislike buttons after ~3 seconds - giving up");
     if (!getFeature("swapLikeDislikeButtons") || getDomain() === "yt")
         return;
-    if (i === 0 && getFeature("showVotes"))
-        await siteEvents.once("voteLabelsAdded");
-    dbg(">>2");
-    const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
-    const options = {
-        all: true,
-        debounce: 50,
-        listener: (elements) => {
-            dbg(">>4");
-            const els = [...elements];
-            const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
-            const likeBtn = els.find((el) => el.id === "button-shape-like");
-            if (!dislikeBtn || !likeBtn)
-                return error("Couldn't find like or dislike button while swapping like and dislike buttons");
-            dbg(">>5");
-            if (getFeature("showVotes") && elements.length === 4) {
-                const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
-                const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
-                if (!dislikeLabel || !likeLabel)
-                    return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
-                transplantElement(dislikeBtn, likeLabel);
-                transplantElement(dislikeLabel, dislikeBtn);
-            }
-            else if (!getFeature("showVotes") && elements.length === 2)
-                transplantElement(dislikeBtn, likeBtn);
-            else
-                setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
-        },
-    };
-    dbg(">>3");
-    addSelectorListener("playerBarMiddleButtons", selector, options);
-    log("Swapped like and dislike buttons");
+    // don't pause script exec
+    (async () => {
+        if (i === 0 && getFeature("showVotes"))
+            await siteEvents.once("voteLabelsAdded");
+        const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
+        const options = {
+            all: true,
+            debounce: 50,
+            listener: (elements) => {
+                const els = [...elements];
+                const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
+                const likeBtn = els.find((el) => el.id === "button-shape-like");
+                if (!dislikeBtn || !likeBtn)
+                    return error("Couldn't find like or dislike button while swapping like and dislike buttons");
+                if (getFeature("showVotes") && elements.length === 4) {
+                    const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
+                    const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
+                    if (!dislikeLabel || !likeLabel)
+                        return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
+                    transplantElement(dislikeBtn, likeLabel);
+                    transplantElement(dislikeLabel, dislikeBtn);
+                }
+                else if (!getFeature("showVotes") && elements.length === 2)
+                    transplantElement(dislikeBtn, likeBtn);
+                else
+                    setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
+            },
+        };
+        addSelectorListener("playerBarMiddleButtons", selector, options);
+        log("Swapped like and dislike buttons");
+    })();
 }
 //#region watch page full size
 /** Makes the watch page full size */
@@ -6228,7 +6306,8 @@ async function fixThemeSong() {
 }//#region init queue btns
 /** Initializes the queue buttons */
 async function initQueueButtons() {
-    const addCurrentQueueBtns = (evt) => {
+    /** Tries to add queue buttons to the current song queue items on the /watch page. */
+    const tryAddCurrentQueueBtns = (evt) => {
         let amt = 0;
         for (const queueItm of evt.childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
@@ -6240,15 +6319,15 @@ async function initQueueButtons() {
             log(`Added buttons to ${amt} new queue ${UserUtils.autoPlural("item", amt)}`);
     };
     // current queue
-    siteEvents.on("queueChanged", addCurrentQueueBtns);
-    siteEvents.on("autoplayQueueChanged", addCurrentQueueBtns);
+    siteEvents.on("queueChanged", tryAddCurrentQueueBtns);
+    siteEvents.on("autoplayQueueChanged", tryAddCurrentQueueBtns);
     const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
     if (queueItems.length > 0) {
         queueItems.forEach(itm => addQueueButtons(itm, undefined, "currentQueue"));
         log(`Added buttons to ${queueItems.length} existing "current song queue" ${UserUtils.autoPlural("item", queueItems)}`);
     }
-    // generic lists
-    const addGenericListQueueBtns = (listElem) => {
+    /** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
+    const tryAddGenericListQueueBtns = (listElem) => {
         const queueItems = listElem.querySelectorAll("ytmusic-responsive-list-item-renderer");
         if (queueItems.length === 0)
             return;
@@ -6269,23 +6348,41 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-sh
 ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
 ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
 `;
+    const doSongListsChecks = (songLists) => {
+        for (const list of songLists) {
+            tryAddGenericListQueueBtns(list);
+            checkSwapLikeDislikeBtns(list);
+        }
+    };
     if (getFeature("listButtonsPlacement") === "everywhere") {
-        const checkAddGenericBtns = (songLists) => {
-            for (const list of songLists)
-                addGenericListQueueBtns(list);
-        };
         addSelectorListener("body", listSelector, {
             all: true,
             continuous: true,
             debounce: 150,
-            listener: checkAddGenericBtns,
+            listener: doSongListsChecks,
         });
         siteEvents.on("pathChanged", () => {
             const songLists = document.querySelectorAll(listSelector);
             if (songLists.length > 0)
-                checkAddGenericBtns(songLists);
+                doSongListsChecks(songLists);
         });
     }
+}
+/** Checks if the like and dislike buttons exist in the given song list and swaps them if the feature is enabled. */
+function checkSwapLikeDislikeBtns(songList) {
+    if (!getFeature("swapLikeDislikeButtons"))
+        return;
+    songList.querySelectorAll("ytmusic-like-button-renderer #button-shape-dislike")
+        .forEach((dislikeBtn) => {
+        const parent = dislikeBtn.parentElement;
+        if (!parent || parent.classList.contains("bytm-swapped-like-dislike"))
+            return;
+        const likeBtn = parent.querySelector("#button-shape-like");
+        if (likeBtn) {
+            parent.classList.add("bytm-swapped-like-dislike");
+            transplantElement(dislikeBtn, likeBtn);
+        }
+    });
 }
 //#region add queue btns
 /**
@@ -6318,7 +6415,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
         lyricsBtnElem.role = "link";
         lyricsBtnElem.tabIndex = 0;
         onInteraction(lyricsBtnElem, async (e) => {
-            var _a, _b;
+            var _a;
             e.preventDefault();
             e.stopImmediatePropagation();
             let song, artist;
@@ -6357,7 +6454,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                 ? getLyricsCacheEntry(splitTitle.artist, splitTitle.song)
                 : getLyricsCacheEntry(artistsSan, songSan);
             if (cachedLyricsEntry)
-                lyricsUrl = cachedLyricsEntry.url;
+                lyricsUrl = resolveLyricsUrl(cachedLyricsEntry.path);
             else if (!queueItem.hasAttribute("data-bytm-loading")) {
                 const imgEl = lyricsBtnElem === null || lyricsBtnElem === void 0 ? void 0 : lyricsBtnElem.querySelector("img, svg");
                 if (!cachedLyricsEntry) {
@@ -6373,7 +6470,10 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                         }
                     }
                 }
-                lyricsUrl = (_b = cachedLyricsEntry === null || cachedLyricsEntry === void 0 ? void 0 : cachedLyricsEntry.url) !== null && _b !== void 0 ? _b : await fetchLyricsUrlTop(artistsSan, songSan);
+                const cachedPath = cachedLyricsEntry === null || cachedLyricsEntry === void 0 ? void 0 : cachedLyricsEntry.path;
+                lyricsUrl = cachedPath
+                    ? resolveLyricsUrl(cachedPath)
+                    : await fetchLyricsUrlTop(artistsSan, songSan);
                 if (lyricsUrl) {
                     emitInterface("bytm:lyricsLoaded", {
                         type: "queue",
@@ -6802,6 +6902,12 @@ const options = {
     ],
 };
 //#region # features
+/** List of categories that are related to each other and can be grouped together in the config menu */
+const groupedCategories = [
+    ["layout", "lyrics", "songLists", "volume"],
+    ["behavior", "autoLike", "input", "hotkeys"],
+    ["general", "integrations", "plugins"],
+];
 /**
  * Contains all possible features with their default values and other configuration.
  *
@@ -6842,134 +6948,6 @@ const options = {
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 const featInfo = {
-    //#region cat:general
-    locale: {
-        type: "select",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        options: options.locale,
-        default: getPreferredLocale(),
-        textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
-    },
-    localeFallback: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    versionCheck: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        textAdornment: adornments.reload,
-    },
-    checkVersionNow: {
-        type: "button",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        click: () => doVersionCheck(true),
-    },
-    numbersFormat: {
-        type: "select",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        options: () => [
-            { value: "long", label: `${formatNumber(12345678, "long")} (${t("votes_format_long")})` },
-            { value: "short", label: `${formatNumber(12345678, "short")} (${t("votes_format_short")})` },
-        ],
-        default: "short",
-        reloadRequired: false,
-        enable: noop,
-    },
-    toastDuration: {
-        type: "slider",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        min: 0,
-        max: 15,
-        default: 4,
-        step: 0.5,
-        unit: (val) => val === 0 ? "" : "s",
-        renderValue: (val) => Number(val) === 0 ? t("toggled_off") : val,
-        reloadRequired: false,
-        enable: noop,
-        change: (_k, _iV, newVal) => newVal === 0
-            ? closeToast()
-            : showIconToast({
-                message: t("example_toast"),
-                iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
-            }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0),
-    },
-    showToastOnGenericError: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        advanced: true,
-        reloadRequired: false,
-        enable: noop,
-        textAdornment: adornments.advanced,
-        change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
-    },
-    initTimeout: {
-        type: "number",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        min: 3,
-        max: 15,
-        default: 5,
-        step: 0.1,
-        unit: "s",
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    resetConfig: {
-        type: "button",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        click: promptResetConfig,
-        textAdornment: adornments.reload,
-    },
-    resetEverything: {
-        type: "button",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        click: async () => {
-            if (await showPrompt({
-                type: "confirm",
-                message: t("reset_everything_confirm"),
-            })) {
-                await getStoreSerializer().resetStoresData();
-                const gmKeys = await GM.listValues();
-                await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
-                await reloadTab();
-            }
-        },
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    logLevel: {
-        type: "select",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        options: () => [
-            { value: LogLevel.Debug, label: t("log_level_debug") },
-            { value: LogLevel.Info, label: t("log_level_info") },
-        ],
-        default: LogLevel.Info,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
-    },
-    advancedMode: {
-        type: "toggle",
-        category: "general",
-        supportedSites: ["ytm", "yt"],
-        default: false,
-        change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
-    },
     //#region cat:layout
     watermarkEnabled: {
         type: "toggle",
@@ -7163,6 +7141,152 @@ const featInfo = {
     //   default: "disabled",
     //   textAdornment: adornments.reload,
     // },
+    //#region cat:lyrics
+    geniusLyrics: {
+        type: "toggle",
+        category: "lyrics",
+        supportedSites: ["ytm"],
+        default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
+    errorOnLyricsNotFound: {
+        type: "toggle",
+        category: "lyrics",
+        supportedSites: ["ytm"],
+        default: false,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.ytmOnly,
+    },
+    geniUrlBase: {
+        type: "text",
+        category: "lyrics",
+        supportedSites: ["ytm"],
+        default: "https://api.sv443.net/geniurl",
+        normalize: (val) => val.trim().replace(/\/+$/, ""),
+        advanced: true,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+    },
+    geniUrlToken: {
+        type: "text",
+        category: "lyrics",
+        supportedSites: ["ytm"],
+        valueHidden: true,
+        default: "",
+        normalize: (val) => val.trim(),
+        advanced: true,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+    },
+    lyricsCacheMaxSize: {
+        type: "slider",
+        category: "lyrics",
+        supportedSites: ["ytm"],
+        default: 5000,
+        min: 1000,
+        max: 25000,
+        step: 500,
+        unit: (val) => ` ${tp("unit_entries", val)}`,
+        renderValue: (val) => formatNumber(Number(val), "long"),
+        advanced: true,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+    },
+    lyricsCacheTTL: {
+        type: "slider",
+        category: "lyrics",
+        supportedSites: ["ytm"],
+        default: 30,
+        min: 5,
+        max: 100,
+        step: 1,
+        unit: (val) => ` ${tp("unit_days", val)}`,
+        renderValue: (val) => formatNumber(Number(val), "long"),
+        advanced: true,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+    },
+    clearLyricsCache: {
+        type: "button",
+        category: "lyrics",
+        supportedSites: ["ytm"],
+        async click() {
+            const entries = getLyricsCache().length;
+            const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
+            if (await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
+                await clearLyricsCache();
+                await showPrompt({ type: "alert", message: t("lyrics_clear_cache_success") });
+            }
+        },
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+    },
+    // advancedLyricsFilter: {
+    //   type: "toggle",
+    //   category: "lyrics",
+    //   default: false,
+    //   change: () => setTimeout(async () => await showPrompt({ type: "confirm", message: t("lyrics_cache_changed_clear_confirm") }) && clearLyricsCache(), 200),
+    //   advanced: true,
+    //   textAdornment: adornments.experimental,
+    //   reloadRequired: false,
+    //   enable: noop,
+    // },
+    //#region cat:song lists
+    lyricsQueueButton: {
+        type: "toggle",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
+    deleteFromQueueButton: {
+        type: "toggle",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
+    listButtonsPlacement: {
+        type: "select",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        options: () => [
+            { value: "queueOnly", label: t("list_button_placement_queue_only") },
+            { value: "everywhere", label: t("list_button_placement_everywhere") },
+        ],
+        default: "everywhere",
+        advanced: true,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+    },
+    scrollToActiveSongBtn: {
+        type: "toggle",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
+    clearQueueBtn: {
+        type: "toggle",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
+    aboveQueueBtnsSticky: {
+        type: "toggle",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        default: true,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
+    },
     //#region cat:volume
     volumeSliderLabel: {
         type: "toggle",
@@ -7232,57 +7356,6 @@ const featInfo = {
         textAdornment: () => getFeature("volumeSharedBetweenTabs")
             ? combineAdornments([adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload])
             : adornments.ytmOnly(),
-    },
-    //#region cat:song lists
-    lyricsQueueButton: {
-        type: "toggle",
-        category: "songLists",
-        supportedSites: ["ytm"],
-        default: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
-    },
-    deleteFromQueueButton: {
-        type: "toggle",
-        category: "songLists",
-        supportedSites: ["ytm"],
-        default: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
-    },
-    listButtonsPlacement: {
-        type: "select",
-        category: "songLists",
-        supportedSites: ["ytm"],
-        options: () => [
-            { value: "queueOnly", label: t("list_button_placement_queue_only") },
-            { value: "everywhere", label: t("list_button_placement_everywhere") },
-        ],
-        default: "everywhere",
-        advanced: true,
-        reloadRequired: false,
-        enable: noop,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
-    },
-    scrollToActiveSongBtn: {
-        type: "toggle",
-        category: "songLists",
-        supportedSites: ["ytm"],
-        default: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
-    },
-    clearQueueBtn: {
-        type: "toggle",
-        category: "songLists",
-        supportedSites: ["ytm"],
-        default: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
-    },
-    aboveQueueBtnsSticky: {
-        type: "toggle",
-        category: "songLists",
-        supportedSites: ["ytm"],
-        default: true,
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
     },
     //#region cat:behavior
     disableBeforeUnloadPopup: {
@@ -7379,6 +7452,57 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
         textAdornment: adornments.ytmOnly,
+    },
+    //#region cat:autoLike
+    autoLikeChannels: {
+        type: "toggle",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        textAdornment: adornments.reload,
+    },
+    autoLikeOpenMgmtDialog: {
+        type: "button",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        click: () => getAutoLikeDialog().then(d => d.open()),
+    },
+    autoLikeChannelToggleBtn: {
+        type: "toggle",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+        advanced: true,
+        textAdornment: adornments.advanced,
+    },
+    // TODO(v2.2):
+    // autoLikePlayerBarToggleBtn: {
+    //   type: "toggle",
+    //   category: "autoLike",
+    //   default: false,
+    //   textAdornment: adornments.reload,
+    // },
+    autoLikeTimeout: {
+        type: "slider",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        min: 3,
+        max: 30,
+        step: 0.5,
+        default: 5,
+        unit: "s",
+        reloadRequired: false,
+        enable: noop,
+    },
+    autoLikeShowToast: {
+        type: "toggle",
+        category: "autoLike",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        reloadRequired: false,
+        enable: noop,
     },
     //#region cat:input
     arrowKeySupport: {
@@ -7675,152 +7799,134 @@ const featInfo = {
         enable: noop,
         textAdornment: adornments.ytmOnly,
     },
-    //#region cat:autoLike
-    autoLikeChannels: {
+    //#region cat:general
+    locale: {
+        type: "select",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        options: options.locale,
+        default: getPreferredLocale(),
+        textAdornment: () => combineAdornments([adornments.globe, adornments.reload]),
+    },
+    localeFallback: {
         type: "toggle",
-        category: "autoLike",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    versionCheck: {
+        type: "toggle",
+        category: "general",
         supportedSites: ["ytm", "yt"],
         default: true,
         textAdornment: adornments.reload,
     },
-    autoLikeOpenMgmtDialog: {
+    checkVersionNow: {
         type: "button",
-        category: "autoLike",
+        category: "general",
         supportedSites: ["ytm", "yt"],
-        click: () => getAutoLikeDialog().then(d => d.open()),
+        click: () => doVersionCheck(true),
     },
-    autoLikeChannelToggleBtn: {
-        type: "toggle",
-        category: "autoLike",
+    numbersFormat: {
+        type: "select",
+        category: "general",
         supportedSites: ["ytm", "yt"],
-        default: true,
+        options: () => [
+            { value: "long", label: `${formatNumber(12345678, "long")} (${t("votes_format_long")})` },
+            { value: "short", label: `${formatNumber(12345678, "short")} (${t("votes_format_short")})` },
+        ],
+        default: "short",
         reloadRequired: false,
         enable: noop,
-        advanced: true,
-        textAdornment: adornments.advanced,
     },
-    // TODO(v2.2):
-    // autoLikePlayerBarToggleBtn: {
-    //   type: "toggle",
-    //   category: "autoLike",
-    //   default: false,
-    //   textAdornment: adornments.reload,
-    // },
-    autoLikeTimeout: {
+    toastDuration: {
         type: "slider",
-        category: "autoLike",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        min: 0,
+        max: 15,
+        default: 4,
+        step: 0.5,
+        unit: (val) => val === 0 ? "" : "s",
+        renderValue: (val) => Number(val) === 0 ? t("toggled_off") : val,
+        reloadRequired: false,
+        enable: noop,
+        change: (_k, _iV, newVal) => newVal === 0
+            ? closeToast()
+            : showIconToast({
+                message: t("example_toast"),
+                iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+            }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0),
+    },
+    showToastOnGenericError: {
+        type: "toggle",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        default: true,
+        advanced: true,
+        reloadRequired: false,
+        enable: noop,
+        textAdornment: adornments.advanced,
+        change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
+    },
+    initTimeout: {
+        type: "number",
+        category: "general",
         supportedSites: ["ytm", "yt"],
         min: 3,
-        max: 30,
-        step: 0.5,
+        max: 15,
         default: 5,
+        step: 0.1,
         unit: "s",
-        reloadRequired: false,
-        enable: noop,
-    },
-    autoLikeShowToast: {
-        type: "toggle",
-        category: "autoLike",
-        supportedSites: ["ytm", "yt"],
-        default: true,
-        reloadRequired: false,
-        enable: noop,
-    },
-    //#region cat:lyrics
-    geniusLyrics: {
-        type: "toggle",
-        category: "lyrics",
-        supportedSites: ["ytm"],
-        default: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
-    },
-    errorOnLyricsNotFound: {
-        type: "toggle",
-        category: "lyrics",
-        supportedSites: ["ytm"],
-        default: false,
-        reloadRequired: false,
-        enable: noop,
-        textAdornment: adornments.ytmOnly,
-    },
-    geniUrlBase: {
-        type: "text",
-        category: "lyrics",
-        supportedSites: ["ytm"],
-        default: "https://api.sv443.net/geniurl",
-        normalize: (val) => val.trim().replace(/\/+$/, ""),
         advanced: true,
-        reloadRequired: false,
-        enable: noop,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
     },
-    geniUrlToken: {
-        type: "text",
-        category: "lyrics",
-        supportedSites: ["ytm"],
-        valueHidden: true,
-        default: "",
-        normalize: (val) => val.trim(),
-        advanced: true,
-        reloadRequired: false,
-        enable: noop,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
-    },
-    lyricsCacheMaxSize: {
-        type: "slider",
-        category: "lyrics",
-        supportedSites: ["ytm"],
-        default: 5000,
-        min: 1000,
-        max: 25000,
-        step: 500,
-        unit: (val) => ` ${tp("unit_entries", val)}`,
-        renderValue: (val) => formatNumber(Number(val), "long"),
-        advanced: true,
-        reloadRequired: false,
-        enable: noop,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
-    },
-    lyricsCacheTTL: {
-        type: "slider",
-        category: "lyrics",
-        supportedSites: ["ytm"],
-        default: 30,
-        min: 5,
-        max: 100,
-        step: 1,
-        unit: (val) => ` ${tp("unit_days", val)}`,
-        renderValue: (val) => formatNumber(Number(val), "long"),
-        advanced: true,
-        reloadRequired: false,
-        enable: noop,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
-    },
-    clearLyricsCache: {
+    resetConfig: {
         type: "button",
-        category: "lyrics",
-        supportedSites: ["ytm"],
-        async click() {
-            const entries = getLyricsCache().length;
-            const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
-            if (await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
-                await clearLyricsCache();
-                await showPrompt({ type: "alert", message: t("lyrics_clear_cache_success") });
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        click: promptResetConfig,
+        textAdornment: adornments.reload,
+    },
+    resetEverything: {
+        type: "button",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        click: async () => {
+            if (await showPrompt({
+                type: "confirm",
+                message: t("reset_everything_confirm"),
+            })) {
+                await getStoreSerializer().resetStoresData();
+                const gmKeys = await GM.listValues();
+                await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
+                await reloadTab();
             }
         },
         advanced: true,
-        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced]),
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
     },
-    // advancedLyricsFilter: {
-    //   type: "toggle",
-    //   category: "lyrics",
-    //   default: false,
-    //   change: () => setTimeout(async () => await showPrompt({ type: "confirm", message: t("lyrics_cache_changed_clear_confirm") }) && clearLyricsCache(), 200),
-    //   advanced: true,
-    //   textAdornment: adornments.experimental,
-    //   reloadRequired: false,
-    //   enable: noop,
-    // },
+    logLevel: {
+        type: "select",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        options: () => [
+            { value: LogLevel.Debug, label: t("log_level_debug") },
+            { value: LogLevel.Info, label: t("log_level_info") },
+        ],
+        default: LogLevel.Info,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reload]),
+    },
+    advancedMode: {
+        type: "toggle",
+        category: "general",
+        supportedSites: ["ytm", "yt"],
+        default: false,
+        change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
+    },
     //#region cat:integrations
     disableDarkReaderSites: {
         type: "select",
