@@ -52,7 +52,7 @@ async function renderBody() {
     return listContainerEl;
   }
 
-  for(const [, { def: { plugin, intents } }] of registeredPlugins) {
+  for(const [, { def: { plugin, intents: intentsRaw } }] of registeredPlugins) {
     const rowEl = document.createElement("div");
     rowEl.classList.add("bytm-plugin-list-row");
 
@@ -131,11 +131,12 @@ async function renderBody() {
     rightEl.classList.add("bytm-plugin-list-row-right");
     rowEl.appendChild(rightEl);
 
+    const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
     const intentsAmount = Object.keys(PluginIntent).length / 2;
-    const intentsArr = typeof intents === "number" && intents > 0 ? (() => {
+    const intentsArr = typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
       const arr = [];
       for(let i = 0; i < intentsAmount; i++)
-        if(intents & (2 ** i)) arr.push(2 ** i);
+        if(intentsBitSet & (2 ** i)) arr.push(2 ** i);
       return arr;
     })() : [];
 

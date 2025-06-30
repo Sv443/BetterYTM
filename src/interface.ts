@@ -5,9 +5,9 @@ import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVide
 import { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
 import { addSelectorListener } from "./observers.js";
 import { defaultData, getFeatures, setFeatures } from "./config.js";
-import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
-import { allSiteEvents, siteEvents, type SiteEventsMap } from "./siteEvents.js";
-import { type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
+import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
+import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMap } from "./siteEvents.js";
+import { PluginIntent, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { BytmDialog } from "./components/BytmDialog.js";
 import { createHotkeyInput } from "./components/hotkeyInput.js";
@@ -112,6 +112,7 @@ export const allInterfaceEvents = [
 const globalFuncs: InterfaceFunctions = purifyObj({
   // meta:
   /*🔒*/ getPluginInfo,
+  /*🔒*/ getLibraryHook,
 
   // bytm-specific:
   getDomain,
@@ -411,6 +412,51 @@ export function getPluginInfo(...args: [token: string | undefined, pluginDefOrNa
   );
 }
 
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(pluginName: string, namespace: string, perms: PluginIntent | PluginIntent[]): boolean
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(pluginDef: PluginDefResolvable, perms: PluginIntent | PluginIntent[]): boolean
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(pluginId: string, perms: PluginIntent | PluginIntent[]): boolean
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvable | string, namespaceOrPerms: string | PluginIntent | PluginIntent[], perms?: PluginIntent | PluginIntent[]]): boolean {
+  const plugin = typeof args[0] === "string" && typeof args[1] === "string"
+    ? getPlugin(args[0], args[1])
+    : getPlugin(args[0] as PluginDefResolvable);
+
+  if(!plugin)
+    return false;
+
+  const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? args[2] : args[1] as PluginIntent[]) ?? [];
+  if(!Array.isArray(perms))
+    throw new TypeError("The second argument must be an array of PluginIntent values");
+
+  const pluginIntents = defToIntentsBitSet(plugin.def);
+
+  return UserUtils.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => UserUtils.bitSetHas(pluginIntents, perm));
+}
+
+function defToIntentsBitSet(def: PluginDef): number {
+  if(Array.isArray(def.intents))
+    return def.intents.reduce((acc, intent) => acc | intent, 0);
+  else if(typeof def.intents === "number")
+    return def.intents;
+  else
+    return 0;
+}
+
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 function validatePluginDef(pluginDef: Partial<PluginDef>) {
   const errors = [] as string[];
@@ -450,23 +496,25 @@ export function resolveToken(token: string | undefined): string | undefined {
  */
 export function setLocaleInterface(token: string | undefined, locale: TrLocale) {
   const pluginId = resolveToken(token);
-  if(pluginId === undefined)
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteTranslations))
     return;
   setLocale(locale);
   emitInterface("bytm:setLocale", { pluginId, locale });
 }
 
 /**
- * Returns the current feature config, with sensitive values replaced by `undefined`  
+ * Returns the current feature config, with sensitive values replaced by `undefined`, unless the `SeeHiddenConfigValues` intent is granted.  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function getFeaturesInterface(token: string | undefined) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.ReadFeatureConfig))
     return undefined;
+  const hiddenAccess = pluginHasPerms(pluginId, PluginIntent.SeeHiddenConfigValues);
   const features = getFeatures();
   for(const ftKey of Object.keys(features)) {
     const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
-    if(info && info.valueHidden) // @ts-expect-error
+    if(info && info.valueHidden && !hiddenAccess) // @ts-expect-error
       features[ftKey as keyof typeof features] = undefined;
   }
   return features as FeatureConfig;
@@ -477,7 +525,8 @@ export function getFeaturesInterface(token: string | undefined) {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function saveFeaturesInterface(token: string | undefined, features: FeatureConfig) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteFeatureConfig))
     return;
   setFeatures(features);
 }
@@ -487,7 +536,8 @@ export function saveFeaturesInterface(token: string | undefined, features: Featu
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function getAutoLikeDataInterface(token: string | undefined) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.ReadAutoLikeData))
     return;
   return autoLikeStore.getData();
 }
@@ -497,7 +547,28 @@ export function getAutoLikeDataInterface(token: string | undefined) {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function saveAutoLikeDataInterface(token: string | undefined, data: AutoLikeData) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteAutoLikeData))
     return;
   return autoLikeStore.setData(data);
+}
+
+//#region library hook
+
+/** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
+function getLibraryHook(token: string | undefined) {
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.InternalAccess))
+    return undefined;
+
+  return {
+    emitInterface,
+    emitSiteEvent,
+    siteEvents,
+    addSelectorListener,
+    showPrompt,
+    setGlobalProp,
+    enableDiscardBeforeUnload,
+    disableDiscardBeforeUnload,
+  };
 }

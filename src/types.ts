@@ -222,6 +222,10 @@ export enum PluginIntent {
   ReadAutoLikeData = 64,
   /** Plugin can write to auto-like data */
   WriteAutoLikeData = 128,
+  /** Plugin has access to deeply internal functions and instances */
+  InternalAccess = 256,
+  /** Grants all other intents */
+  FullAccess = 512,
 }
 
 /** Result of a plugin registration */
@@ -284,7 +288,7 @@ export type PluginDef = {
     };
   };
   /** Intents (permissions) BYTM has to grant the plugin for it to work - use bitwise OR to combine multiple intents */
-  intents?: number;
+  intents?: number | PluginIntent[];
   /** Info about the plugin contributors */
   contributors?: Array<{
     /** Name of this contributor */

@@ -428,6 +428,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
+  - [getLibraryHook()](#getlibraryhook) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
 - BYTM-specific:
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
@@ -545,10 +546,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     },
 >   },
 >   // The intents (requested permissions) the plugin needs to be granted by BetterYTM and the user to be able to use certain functions.
->   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then sum all of them together to get the final intents number.
+>   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then bitwise-OR all of them together to get the final intents number.
 >   // If you have BYTM as a dependency/submodule, you can import the enum and join the values like so: `PluginIntent.Foo | PluginIntent.Bar`
 >   // Set to 0 to indicate no permissions need to be granted.
->   intents: PluginIntent.ReadFeatureConfig | PluginIntent.CreateModalDialogs, // required
+>   intents: PluginIntent.ReadFeatureConfig | PluginIntent.CreateModalDialogs, // (optional, defaults to 0)
 >   contributors: [ // (optional)
 >     {                                            // (optional)
 >       name: "MyUsername",                        // required
@@ -645,6 +646,35 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > });
 > ```
 > </details>
+
+<br>
+
+> ### getLibraryHook()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.getLibraryHook(token: string | undefined): LibraryHookObj | undefined
+> ```
+>   
+> Description:  
+> This function returns an object with functions and instances useful for core libraries or deeper-reaching plugins.  
+> One such example is the [BYTMUtils library](https://github.com/Sv443/BYTMUtils), which contains many core functions and components BetterYTM depends on.  
+>   
+> ⚠️ Requires the intent `InternalAccess` to be granted, else always returns `undefined`.  
+>   
+> Arguments:  
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will throw an error)
+>   
+> The object returned by this function is a `LibraryHookObj` type, which contains the following properties:
+> | Property | Type | Description |
+> | :-- | :-- | :-- |
+> | `emitInterface` | Function | Emits a generic, global interface event |
+> | `emitSiteEvent` | Function | Emits an event using the siteEvents system |
+> | `siteEvents` | [MultiNanoEmitter](#multinanoemitter) | Event emitting instance of the siteEvents system |
+> | `addSelectorListener` | Function | Adds a listener checking for DOM changes using BYTM's own SelectorObserver instances |
+> | `showPrompt` | Function | Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt` |
+> | `setGlobalProp` | Function | Sets a global property on the `unsafeWindow.BYTM` object |
+> | `enableDiscardBeforeUnload` | Function | Enables discarding of the "beforeunload" window event (disables "unsaved data" popup) |
+> | `disableDiscardBeforeUnload` | Function | Disables discarding of the "beforeunload" window event (reenables "unsaved data" popup) |
 
 <br>
 
@@ -1243,6 +1273,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Sets the locale for BetterYTM's translations.  
 > The new locale is used for all translations *after* this function is called.  
 >   
+> ⚠️ Requires the intent `WriteTranslations` to be granted, else always returns `undefined`.  
+>   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
 > - `locale` - The locale to set. Refer to the keys of the object in [`assets/locales.json`](assets/locales.json) for a list of available locales.
@@ -1438,8 +1470,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
-> If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
+> If features are set to be hidden using `valueHidden: true`, their value will be `undefined` in the returned object, unless the plugin was granted the `SeeHiddenConfigValues` intent.  
 > In the future, a plugin intent (see [`registerPlugin()`](#registerplugin)) could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
+>   
+> ⚠️ Requires the intent `ReadFeatureConfig` to be granted, else always returns `undefined`.  
+> If the intent `SeeHiddenConfigValues` is granted, hidden values will not be replaced with `undefined`. Only use this intent if there really is no conceivable other way of doing what you want to do.  
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return undefined).
@@ -1466,6 +1501,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > ⚠️ No validation is done on the provided object, so make sure it has all the required properties or you're gonna break stuff.  
 > A good way to ensure that is to spread your modifications over the result of a call to [`getFeatures()`](#getfeatures) or [`getDefaultFeatures()`](#getdefaultfeatures)  
+>   
+> ⚠️ Requires the intent `WriteFeatureConfig` to be granted, else always returns `undefined`.  
 >   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
@@ -1640,7 +1677,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Returns the current auto-like data object synchronously from memory.  
-> To see the structure of the object, check out the type `AutoLikeData` in the file [`src/types.ts`](src/types.ts)
+> To see the structure of the object, check out the type `AutoLikeData` in the file [`src/types.ts`](src/types.ts)  
+>   
+> ⚠️ Requires the intent `ReadAutoLikeData` to be granted, else always returns `undefined`.  
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
@@ -1670,6 +1709,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Saves the provided auto-like data object synchronously to memory and asynchronously to GM storage.  
+>   
+> ⚠️ Requires the intent `WriteAutoLikeData` to be granted, else always returns `undefined`.  
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
