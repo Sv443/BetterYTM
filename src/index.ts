@@ -23,6 +23,7 @@ import {
   initVolumeFeatures,
   // song lists category:
   initQueueButtons, initAboveQueueBtns,
+  addTrackNumbers,
   // behavior category:
   initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
@@ -230,6 +231,9 @@ async function onDomLoad() {
         ftInit.push(["queueButtons", initQueueButtons()]);
 
       ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
+
+      if(feats.songListTrackNumbersEnabled)
+        ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 
       //#region (ytm) behavior
 

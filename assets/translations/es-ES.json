@@ -87,7 +87,9 @@
   "generic_error_dialog_message": "Se encontró un error.",
   "generic_error_dialog_open_console_note": "Si este error sigue ocurriendo, abra la consola de JavaScript (generalmente con Ctrl + Shift + K) y adjunte una captura de pantalla del **mensaje de error completo** que comienza con %1 a un nuevo [problema de GitHub.](%2)",
   "dev_mode": "Modo de desarrollador",
+  "active_mode_tooltip_dev_mode": "El modo de desarrollador está activo. Ahora tiene acceso a comandos de desarrollador, disponibles a través del menú ${scriptHandler}.",
   "advanced_mode": "Modo avanzado",
+  "active_mode_tooltip_advanced_mode": "El modo avanzado está activo. Muchas funciones normalmente ocultas ahora son visibles y se pueden configurar.",
   "experimental_feature": "Función experimental",
   "advanced_feature": "Función de modo avanzado",
   "feature_only_works_on_ytm": "Solo funciona en YT Music",
@@ -127,6 +129,7 @@
   "welcome_text_line_5": "¿Encontraste un error o quieres sugerir una función? Por favor %1abre un problema en GitHub%2",
 
   "list_button_placement_queue_only": "Solo en la cola",
+  "list_button_placement_generic_lists": "Solo en listas de canciones genéricas",
   "list_button_placement_everywhere": "En todas las listas de canciones",
 
   "site_selection_both_sites": "Ambos sitios",
@@ -229,6 +232,7 @@
   "plugin_link_type_bug": "Informar de un error",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
+
   "plugin_intent_name_ReadFeatureConfig": "Leer configuración de funciones",
   "plugin_intent_description_ReadFeatureConfig": "Este plugin puede leer la configuración de la función",
   "plugin_intent_name_WriteFeatureConfig": "Escribir configuración de funciones",
@@ -249,6 +253,7 @@
   "plugin_validation_error_no_property": "No hay ninguna propiedad '%1' con el tipo '%2'",
   "plugin_validation_error_invalid_property-1": "La propiedad '%1' con el valor '%2' no es válida. Valor de ejemplo: %3",
   "plugin_validation_error_invalid_property-n": "La propiedad '%1' con el valor '%2' no es válida. Valores de ejemplo: %3",
+
   "cfg_menu_sidenav_label": "Menú de configuración de navegación",
   "cfg_menu_sidenav_top_section_label": "Categorías de configuración",
   "cfg_menu_sidenav_bottom_section_label": "Categorías de información extra",
@@ -296,6 +301,8 @@
   "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
   "feature_desc_showVotes": "Mostrar la cantidad de me gusta y no me gusta en la canción que se está reproduciendo actualmente",
   "feature_helptext_showVotes": "Esta función está alimentada por Return YouTube Dislike y mostrará la cantidad aproximada de me gusta y no me gusta en la canción que se está reproduciendo actualmente.",
+  "feature_desc_swapLikeDislikeButtons": "Intercambiar los botones de me gusta y no me gusta en los controles multimedia",
+  "feature_helptext_swapLikeDislikeButtons": "En YouTube, el botón de me gusta está en el lado izquierdo. En YouTube Music está al revés. Habilitar esta función hace que las dos páginas sean consistentes al intercambiarlas en YouTube Music.",
   "feature_desc_numbersFormat": "¿Cómo deberían formatearse los números?",
   "feature_desc_watchPageFullSize": "Hacer que el contenido principal de la página /watch use todo el espacio disponible",
 
@@ -317,6 +324,8 @@
   "feature_desc_scrollToActiveSongBtn": "Agregue un botón para desplazarse hasta la canción que se está reproduciendo actualmente",
   "feature_desc_clearQueueBtn": "Agregue un botón para borrar rápidamente la cola de reproducción o la lista de reproducción actual",
   "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
+  "feature_desc_songListTrackNumbersEnabled": "Habilitar números de pista en las listas de canciones",
+  "feature_desc_songListTrackNumbers": "¿Dónde deberían mostrarse los números de pista?",
 
   "feature_desc_disableBeforeUnloadPopup": "Evite la ventana emergente de confirmación que aparece al intentar salir del sitio mientras se reproduce una canción",
   "feature_helptext_disableBeforeUnloadPopup": "Cuando intenta salir del sitio mientras está reproduciendo una canción que lleva unos segundos, aparecerá una ventana emergente que le pedirá que confirme que desea salir del sitio. Podría decir algo así como \"tiene datos no guardados\" o \"este sitio está preguntando si desea cerrarlo\".\nEsta función deshabilita completamente esa ventana emergente.",

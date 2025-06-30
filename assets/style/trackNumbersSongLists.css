@@ -1,0 +1,30 @@
+ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
+  ytmusic-playlist-shelf-renderer
+  #contents,
+ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
+  ytmusic-shelf-renderer
+  #contents {
+  counter-reset: section;
+}
+
+ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
+  ytmusic-playlist-shelf-renderer
+  ytmusic-responsive-list-item-renderer::before,
+ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
+  ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"]
+  ytmusic-shelf-renderer
+  ytmusic-responsive-list-item-renderer::before,
+ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
+  ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"]
+  ytmusic-shelf-renderer
+  ytmusic-responsive-list-item-renderer::before {
+  counter-increment: section;
+  content: counter(section, decimal-leading-zero);
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+  margin-right: var(
+    --ytmusic-responsive-list-item-thumbnail-margin-right,
+    24px
+  );
+}

@@ -87,7 +87,9 @@
   "generic_error_dialog_message": "Une erreur est survenue.",
   "generic_error_dialog_open_console_note": "Si cette erreur se produit à nouveau, veuillez ouvrir la console JavaScript (généralement avec Ctrl + Maj + K) et joindre une capture d'écran du message d'erreur **entier** qui commence par %1 à un nouveau [problème GitHub.](%2)",
   "dev_mode": "Mode développeur",
+  "active_mode_tooltip_dev_mode": "Le mode développeur est actif. Vous avez maintenant accès aux commandes de développement, disponibles via le menu ${scriptHandler}.",
   "advanced_mode": "Mode avancé",
+  "active_mode_tooltip_advanced_mode": "Le mode avancé est actif. De nombreuses fonctionnalités normalement cachées sont désormais visibles et peuvent être configurées.",
   "experimental_feature": "Fonctionnalité expérimentale",
   "advanced_feature": "Fonctionnalité avancée",
   "feature_only_works_on_ytm": "Ne fonctionne que sur YT Music",
@@ -127,6 +129,7 @@
   "welcome_text_line_5": "Vous avez trouvé un bug ou souhaitez suggérer une fonctionnalité? Veuillez %1ouvrir un problème sur GitHub%2",
 
   "list_button_placement_queue_only": "Seulement dans la file d'attente",
+  "list_button_placement_generic_lists": "Dans les listes de chansons génériques uniquement",
   "list_button_placement_everywhere": "Dans chaque liste de chansons",
 
   "site_selection_both_sites": "Les deux sites",
@@ -158,10 +161,8 @@
 
   "auto_like_channels_dialog_title": "Chaînes auto-aimées",
   "auto_like_channels_dialog_desc": "Ici, vous pouvez voir les chaînes que vous avez configurées pour aimer automatiquement et vous pouvez les modifier, les activer, les désactiver et les supprimer.\nVous pouvez également créer manuellement des entrées, bien qu'il soit plus simple de simplement visiter la page de la chaîne et de cliquer sur le bouton qui s'y trouve.",
-
   "auto_like_channels_entries_count-1": "Affichage de 1 entrée.",
   "auto_like_channels_entries_count-n": "Affichage de ${count} entrées.",
-
   "auto_like": "Auto-aimer",
   "auto_like_button_tooltip_enabled": "Cliquez pour désactiver l'auto-aimer. Cliquez sur Maj pour ouvrir le dialogue de gestion.",
   "auto_like_button_tooltip_disabled": "Cliquez pour activer l'auto-aimer. Cliquez sur Maj pour ouvrir le dialogue de gestion.",
@@ -231,6 +232,7 @@
   "plugin_link_type_bug": "Signaler un bug",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
+
   "plugin_intent_name_ReadFeatureConfig": "Lire la configuration de la fonctionnalité",
   "plugin_intent_description_ReadFeatureConfig": "Ce plugin peut lire la configuration de la fonctionnalité",
   "plugin_intent_name_WriteFeatureConfig": "Écrire la configuration de la fonctionnalité",
@@ -251,6 +253,7 @@
   "plugin_validation_error_no_property": "Aucune propriété '%1' avec le type '%2'",
   "plugin_validation_error_invalid_property-1": "La propriété '%1' avec la valeur '%2' est invalide. Exemple de valeur: %3",
   "plugin_validation_error_invalid_property-n": "La propriété '%1' avec la valeur '%2' est invalide. Exemples de valeurs: %3",
+
   "cfg_menu_sidenav_label": "Menu de configuration",
   "cfg_menu_sidenav_top_section_label": "Catégories de paramètres de configuration",
   "cfg_menu_sidenav_bottom_section_label": "Catégories d'informations supplémentaires",
@@ -298,6 +301,8 @@
   "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",
   "feature_desc_showVotes": "Afficher le nombre de j'aime et de je n'aime pas sur la chanson en cours de lecture",
   "feature_helptext_showVotes": "Cette fonctionnalité est alimentée par Return YouTube Dislike et affichera le nombre approximatif de j'aime et de je n'aime pas sur la chanson en cours de lecture.",
+  "feature_desc_swapLikeDislikeButtons": "Échanger la position des boutons j'aime et je n'aime pas dans les contrôles multimédias",
+  "feature_helptext_swapLikeDislikeButtons": "Sur YouTube, le bouton j'aime est du côté gauche. Sur YTM, c'est l'inverse. En activant cette fonctionnalité, les deux pages seront cohérentes en les échangeant sur YTM.",
   "feature_desc_numbersFormat": "Comment les nombres doivent-ils être formatés?",
   "feature_desc_watchPageFullSize": "Rendre le contenu principal de la page /watch utiliser tout l'espace disponible",
 
@@ -319,6 +324,8 @@
   "feature_desc_scrollToActiveSongBtn": "Ajouter un bouton au-dessus de la file d'attente pour faire défiler jusqu'à la chanson en cours de lecture",
   "feature_desc_clearQueueBtn": "Ajouter un bouton au-dessus de la file d'attente ou de la liste de lecture en cours pour la vider rapidement",
   "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
+  "feature_desc_songListTrackNumbersEnabled": "Ajouter des numéros de piste aux listes de chansons",
+  "feature_desc_songListTrackNumbers": "Dans les listes de chansons, les numéros de piste peuvent être affichés à côté du titre de la chanson ou dans une colonne séparée.",
 
   "feature_desc_disableBeforeUnloadPopup": "Empêcher la fenêtre contextuelle de confirmation qui apparaît lors de la tentative de quitter le site pendant qu'une chanson est en cours de lecture",
   "feature_helptext_disableBeforeUnloadPopup": "Lorsque vous essayez de quitter le site alors que vous êtes quelques secondes dans une chanson qui est en cours de lecture, une fenêtre contextuelle apparaîtra pour vous demander de confirmer que vous voulez quitter le site. Elle pourrait dire quelque chose comme \"vous avez des données non enregistrées\" ou \"ce site demande si vous voulez le fermer\".\nCette fonctionnalité désactive complètement cette fenêtre contextuelle.",

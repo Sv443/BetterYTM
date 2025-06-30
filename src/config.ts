@@ -180,6 +180,7 @@ export const migrations: DataMigrationsDict = {
       "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
       "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
       "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
+      "songListTrackNumbersEnabled", "songListTrackNumbers",
     ]),
     [
       { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },

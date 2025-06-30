@@ -129,6 +129,7 @@
   "welcome_text_line_5": "Hast du einen Fehler gefunden oder möchtest ein Feature vorschlagen? Bitte %1öffne ein Issue auf GitHub%2",
 
   "list_button_placement_queue_only": "Nur Wiedergabeliste",
+  "list_button_placement_generic_lists": "Nur generische Songlisten",
   "list_button_placement_everywhere": "In jeder Songliste",
 
   "site_selection_both_sites": "Beide Seiten",
@@ -323,6 +324,8 @@
   "feature_desc_scrollToActiveSongBtn": "Füge einen Knopf über der Wiedergabeliste hinzu, um zum aktuell spielenden Song zu scrollen",
   "feature_desc_clearQueueBtn": "Füge einen Knopf über der Wiedergabeliste hinzu, um sie schnell zu leeren",
   "feature_desc_aboveQueueBtnsSticky": "Positioniere das Element, in dem die Knöpfe über der Wiedergabeliste sind, immer am oberen Rand",
+  "feature_desc_songListTrackNumbersEnabled": "Füge Tracknummern zu Songlisten hinzu",
+  "feature_desc_songListTrackNumbers": "Wo sollen die Tracknummern angezeigt werden?",
 
   "feature_desc_disableBeforeUnloadPopup": "Verhindere das Erscheinen des Bestätigungs-Popup beim Verlassen der Seite, während ein Song läuft",
   "feature_helptext_disableBeforeUnloadPopup": "Wenn du versuchst, die Seite zu verlassen, während ein Song läuft, erscheint ein Popup, das dich fragt, ob du die Seite wirklich verlassen möchtest. Es könnte etwas in der Art von \"Du hast ungespeicherte Daten\" oder \"Diese Seite fragt, ob du sie schließen möchtest\" sein.\nDiese Funktion deaktiviert dieses Popup vollständig.",

@@ -129,6 +129,7 @@
   "welcome_text_line_5": "Found a bug or want to suggest a feature? Please %1open an issue on GitHub%2",
 
   "list_button_placement_queue_only": "Currently playing queue only",
+  "list_button_placement_generic_lists": "In generic song lists only",
   "list_button_placement_everywhere": "In every song list",
 
   "site_selection_both_sites": "Both sites",
@@ -325,6 +326,8 @@
   "feature_desc_scrollToActiveSongBtn": "Add a button above the queue to scroll to the currently playing song",
   "feature_desc_clearQueueBtn": "Add a button above the currently playing queue or playlist to quickly clear it",
   "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
+  "feature_desc_songListTrackNumbersEnabled": "Add track numbers to song lists",
+  "feature_desc_songListTrackNumbers": "Where should the track numbers be shown?",
 
   "feature_desc_disableBeforeUnloadPopup": "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
   "feature_helptext_disableBeforeUnloadPopup": "When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of \"you have unsaved data\" or \"this site is asking if you want to close it\".\nThis feature disables that popup entirely.",

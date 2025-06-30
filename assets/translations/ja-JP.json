@@ -87,7 +87,9 @@
   "generic_error_dialog_message": "エラーが発生しました。",
   "generic_error_dialog_open_console_note": "このエラーが続く場合は、JavaScript コンソールを開いてください（通常は Ctrl + Shift + K）、「%1」で始まるエラーメッセージのスクリーンショットを新しい [GitHub 課題](%2) に添付してください。",
   "dev_mode": "開発者モード",
+  "active_mode_tooltip_dev_mode": "開発者モードが有効です。${scriptHandler} メニューから開発者コマンドにアクセスできます。",
   "advanced_mode": "詳細モード",
+  "active_mode_tooltip_advanced_mode": "詳細モードが有効です。通常は非表示の多くの機能が表示され、構成できます。",
   "experimental_feature": "実験的な機能",
   "advanced_feature": "高度な機能",
   "feature_only_works_on_ytm": "YouTube Music のみ",
@@ -127,6 +129,7 @@
   "welcome_text_line_5": "バグを見つけた、または機能を提案したいですか？%1GitHubで課題を開いてください。%2",
 
   "list_button_placement_queue_only": "キュー内のみ",
+  "list_button_placement_generic_lists": "曲リスト内のみ",
   "list_button_placement_everywhere": "すべての曲リスト",
 
   "site_selection_both_sites": "すべてのサイト",
@@ -160,7 +163,6 @@
   "auto_like_channels_dialog_desc": "ここでは、自動的に好きなチャンネルを設定しているかどうかを確認し、編集、有効化、無効化、削除することができます。\n手動でエントリを作成することもできますが、チャンネルページを訪れてそこでボタンをクリックする方が簡単です。",
   "auto_like_channels_entries_count-1": "1 エントリを表示しています。",
   "auto_like_channels_entries_count-n": "${count} エントリを表示しています。",
-
   "auto_like": "自動的に好き",
   "auto_like_button_tooltip_enabled": "クリックして自動的に好きにするのを無効にします。シフトクリックで管理ダイアログを開きます。",
   "auto_like_button_tooltip_disabled": "クリックして自動的に好きにするのを有効にします。シフトクリックで管理ダイアログを開きます。",
@@ -216,6 +218,7 @@
   "auto_scroll_to_active_song_mode_video_change_all": "すべてのビデオの変更時",
   "auto_scroll_to_active_song_mode_video_change_manual": "手動でビデオを変更するときのみ",
   "auto_scroll_to_active_song_mode_video_change_auto": "次のビデオへの移行時のみ",
+
   "thumbnail_overlay_source_am": "Apple Music / iTunes",
   "thumbnail_overlay_source_yt": "YouTube",
 
@@ -229,6 +232,7 @@
   "plugin_link_type_bug": "バグを報告",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
+
   "plugin_intent_name_ReadFeatureConfig": "機能構成の読み取り",
   "plugin_intent_description_ReadFeatureConfig": "このプラグインは機能構成を読み取ることができます",
   "plugin_intent_name_WriteFeatureConfig": "機能設定を書き込みます",
@@ -249,6 +253,7 @@
   "plugin_validation_error_no_property": "タイプ '%2' のプロパティ '%1' がありません",
   "plugin_validation_error_invalid_property-1": "プロパティ '%1' の値 '%2' が無効です。例： %3",
   "plugin_validation_error_invalid_property-n": "プロパティ '%1' の値 '%2' が無効です。例： %3",
+
   "cfg_menu_sidenav_label": "設定メニューのナビゲーション",
   "cfg_menu_sidenav_top_section_label": "設定カテゴリ",
   "cfg_menu_sidenav_bottom_section_label": "追加情報カテゴリ",
@@ -296,6 +301,8 @@
   "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
   "feature_desc_showVotes": "現在再生中の曲のいいねと嫌いの数を表示する",
   "feature_helptext_showVotes": "この機能は Return YouTube Dislike によって提供され、現在再生中の曲のいいねと嫌いの数をおおよその数で表示します。",
+  "feature_desc_swapLikeDislikeButtons": "メディアコントロール内の「いいね！」と「嫌い」ボタンの位置を入れ替える",
+  "feature_helptext_swapLikeDislikeButtons": "YouTube では「いいね！」ボタンが左側にありますが、YouTube Music ではその逆です。この機能を有効にすると、YTM 上でボタンの位置を入れ替えて、両方のページを一貫性のあるものにします。",
   "feature_desc_numbersFormat": "数字のフォーマット方法",
   "feature_desc_watchPageFullSize": "/watch ページのメインコンテンツを利用可能なすべてのスペースで使用する",
 
@@ -316,7 +323,9 @@
   "feature_helptext_listButtonsPlacement": "サイトにはアルバムページ、プレイリスト、現在再生中のキューなど、さまざまな曲リストがあります。\nこのオプションを使用すると、リストボタンを表示する場所を選択できます。",
   "feature_desc_scrollToActiveSongBtn": "現在再生中の曲にスクロールするボタンをキューの上に追加する",
   "feature_desc_clearQueueBtn": "現在再生中のキューまたはプレイリストの上にボタンを追加して、すばやくクリアする",
-  "feature_desc_aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
+  "feature_desc_aboveQueueBtnsSticky": "キューの上にあるボタンをリストの上部に固定する",
+  "feature_desc_songListTrackNumbersEnabled": "曲リストにトラック番号を追加する",
+  "feature_desc_songListTrackNumbers": "トラック番号を表示する場所はどこですか？",
 
   "feature_desc_disableBeforeUnloadPopup": "曲が再生されている間にサイトを離れようとすると表示される確認ポップアップを防止する",
   "feature_helptext_disableBeforeUnloadPopup": "曲が再生されている間にサイトを離れようとすると、数秒後にポップアップが表示され、サイトを離れるかどうかを確認するように求められます。それは「保存されていないデータがあります」とか「このサイトを閉じるかどうかを尋ねています」とかのようなことが書かれているかもしれません。\nこの機能はそのポップアップを完全に無効にします。",

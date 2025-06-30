@@ -1,0 +1,12 @@
+ytmusic-player-page ytmusic-player-queue {
+  counter-reset: section;
+}
+
+ytmusic-player-page ytmusic-player-queue-item::before {
+  counter-increment: section;
+  content: counter(section, decimal-leading-zero);
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 12px;
+}

@@ -1,5 +1,5 @@
 import { autoPlural, pauseFor, preloadImages } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement } from "../utils/index.js";
+import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement } from "../utils/index.js";
 import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
@@ -11,6 +11,13 @@ import { getFeature } from "../config.js";
 import type { LyricsCacheEntry } from "../types.js";
 import "./songLists.css";
 
+const songListSelector = `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
+`;
+
 //#region init queue btns
 
 /** Initializes the queue buttons */
@@ -19,6 +26,9 @@ export async function initQueueButtons() {
   const tryAddCurrentQueueBtns = (
     evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
   ) => {
+    if(getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
+      return;
+
     let amt = 0;
     for(const queueItm of evt.childNodes as NodeListOf<HTMLElement>) {
       if(!queueItm.classList.contains("bytm-has-queue-btns")) {
@@ -60,34 +70,26 @@ export async function initQueueButtons() {
       log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
   };
 
-  const listSelector = `\
-ytmusic-playlist-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
-`;
-
   const doSongListsChecks = (songLists: NodeListOf<HTMLElement>) => {
     for(const list of songLists) {
-      tryAddGenericListQueueBtns(list);
-      checkSwapLikeDislikeBtns(list);
+      if(getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists")
+        tryAddGenericListQueueBtns(list);
+      if(getFeature("swapLikeDislikeButtons"))
+        checkSwapLikeDislikeBtns(list);
     }
   };
 
-  if(getFeature("listButtonsPlacement") === "everywhere") {
-    addSelectorListener("body", listSelector, {
-      all: true,
-      continuous: true,
-      debounce: 150,
-      listener: doSongListsChecks,
-    });
+  addSelectorListener("body", songListSelector, {
+    all: true,
+    debounce: 150,
+    listener: doSongListsChecks,
+  });
 
-    siteEvents.on("pathChanged", () => {
-      const songLists = document.querySelectorAll<HTMLElement>(listSelector);
-      if(songLists.length > 0)
-        doSongListsChecks(songLists);
-    });
-  }
+  siteEvents.on("pathChanged", () => {
+    const songLists = document.querySelectorAll<HTMLElement>(songListSelector);
+    if(songLists.length > 0)
+      doSongListsChecks(songLists);
+  });
 }
 
 /** Checks if the like and dislike buttons exist in the given song list and swaps them if the feature is enabled. */
@@ -368,4 +370,24 @@ async function addQueueButtons(
     parentEl?.after(queueBtnsCont);
 
   queueItem.classList.add("bytm-has-queue-btns");
+}
+
+//#region track numbers
+
+/** Adds track numbers to each item in every song list */
+export async function addTrackNumbers() {
+  const promises: Promise<void | unknown>[] = [];
+
+  try {
+    const where = getFeature("songListTrackNumbers");
+    if(where === "genericLists" || where === "everywhere")
+      promises.push(addStyleFromResource("css-track_numbers_song_lists"));
+    if(where === "currentQueue" || where === "everywhere")
+      promises.push(addStyleFromResource("css-track_numbers_current_queue"));
+  }
+  catch(err) {
+    error("Couldn't add track numbers style:", err);
+  }
+
+  return await Promise.allSettled(promises);
 }

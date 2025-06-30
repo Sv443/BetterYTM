@@ -133,6 +133,11 @@ const options = {
     { value: "am", label: t("thumbnail_overlay_source_am") },
     { value: "yt", label: t("thumbnail_overlay_source_yt") },
   ] satisfies SelectOption<FeatureConfig["thumbnailOverlayPreferredSource"]>[],
+  songListType: () => [
+    { value: "currentQueue", label: t("list_button_placement_queue_only") },
+    { value: "genericLists", label: t("list_button_placement_generic_lists") },
+    { value: "everywhere", label: t("list_button_placement_everywhere") },
+  ] satisfies SelectOption<FeatureConfig["songListTrackNumbers"]>[],
 } as const;
 
 //#region # features
@@ -526,10 +531,7 @@ export const featInfo = {
     type: "select",
     category: "songLists",
     supportedSites: ["ytm"],
-    options: () => [
-      { value: "queueOnly", label: t("list_button_placement_queue_only") },
-      { value: "everywhere", label: t("list_button_placement_everywhere") },
-    ],
+    options: options.songListType,
     default: "everywhere",
     advanced: true,
     reloadRequired: false,
@@ -557,6 +559,21 @@ export const featInfo = {
     default: true,
     advanced: true,
     textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
+  },
+  songListTrackNumbersEnabled: {
+    type: "toggle",
+    category: "songLists",
+    supportedSites: ["ytm"],
+    default: true,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+  },
+  songListTrackNumbers: {
+    type: "select",
+    category: "songLists",
+    supportedSites: ["ytm"],
+    options: options.songListType,
+    default: "genericLists",
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
   },
 
   //#region cat:lyrics

@@ -44,6 +44,15 @@
     "name": "Sv443",
     "url": "https://github.com/Sv443"
   },
+  "contributors": [
+    {
+      "name": "indierodo",
+      "url": "https://github.com/indierodo",
+      "contributions": [
+        "Track numbers feature"
+      ]
+    }
+  ],
   "license": "AGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/Sv443/BetterYTM/issues"

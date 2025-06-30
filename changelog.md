@@ -11,7 +11,7 @@
   - New configurable hotkeys:
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
-  - [🚧 WIP] 🎵 Show the track number in playlists.
+  - 🎵 Show a track number in the currently playing queue and playlists.
 - **Changes and improvements:**
   - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies
     - Fixed album artwork being fetched with wrong parameters
@@ -46,6 +46,7 @@
 - **Internal Changes:**
   - Added [`NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) wrapper class `MultiNanoEmitter` that allows listening to when one, all, or a given subset of events have been emitted before executing a callback. It shares the same methods as the base `NanoEmitter`, but has the new methods `onMulti()` and `onceMulti()` for listening to multiple events. This new class is exposed on the plugin interface.
   - Made `siteEvents` system use a `MultiNanoEmitter` instance instead of a `NanoEmitter` instance, so it can now also be used to listen to multiple events at once.
+  - Made plugin-specific `events` (returned by `registerPlugin()`) use a `MultiNanoEmitter` instance too.
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - Moved the `general` feature category to the top of the config menu.
