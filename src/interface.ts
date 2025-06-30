@@ -1,6 +1,6 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
-import { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } from "./constants.js";
+import * as constants from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
 import { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
 import { addSelectorListener } from "./observers.js";
@@ -18,6 +18,7 @@ import { showIconToast, showToast } from "./components/toast.js";
 import { ExImDialog } from "./components/ExImDialog.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 
+const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
 const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils;
 
 //#region interface globals
@@ -565,6 +566,7 @@ export function getLibraryHook(token: string | undefined) {
     return undefined;
 
   return {
+    constants,
     emitInterface,
     emitSiteEvent,
     siteEvents,

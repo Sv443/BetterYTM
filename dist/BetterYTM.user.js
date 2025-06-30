@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9641f1e9/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4bdfe784/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -344,7 +344,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "9641f1e9",
+    buildNumber: "4bdfe784",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -355,23 +355,23 @@ const getConst = (constKey, defaultVal) => {
 /** Path to the GitHub repo */
 const repo = "Sv443/BetterYTM";
 /** The mode in which the script was built (production or development) */
-const mode = getConst("mode", "production");
+const mode$1 = getConst("mode", "production");
 /** The branch to use in various URLs that point to the GitHub repo */
-const branch = getConst("branch", "main");
+const branch$1 = getConst("branch", "main");
 /** Which host the userscript was installed from */
-const host = getConst("host", "github");
+const host$1 = getConst("host", "github");
 /** The build number of the userscript */
-const buildNumber = getConst("buildNumber", "!BUILD_ERROR!");
+const buildNumber$1 = getConst("buildNumber", "!BUILD_ERROR!");
 /** The source of the assets - github, jsdelivr or local */
 const assetSource = getConst("assetSource", "jsdelivr");
 /** The port of the dev server */
 const devServerPort = Number(getConst("devServerPort", 8710));
 /** URL to the changelog file */
 const changelogUrl = assetSource === "local"
-    ? `http://localhost:${devServerPort}/changelog.md?build=${buildNumber}`
-    : `https://raw.githubusercontent.com/${repo}/main/changelog.md?build=${buildNumber}`;
+    ? `http://localhost:${devServerPort}/changelog.md?build=${buildNumber$1}`
+    : `https://raw.githubusercontent.com/${repo}/main/changelog.md?build=${buildNumber$1}`;
 /** The URL search parameters at the earliest possible time */
-const initialParams = new URL(location.href).searchParams;
+const initialParams$1 = new URL(location.href).searchParams;
 /** Names of platforms by key of {@linkcode host} */
 const platformNames = UserUtils.purifyObj({
     github: "GitHub",
@@ -379,9 +379,9 @@ const platformNames = UserUtils.purifyObj({
     openuserjs: "OpenUserJS",
 });
 /** Default compression format used throughout BYTM */
-const compressionFormat = "deflate-raw";
+const compressionFormat$1 = "deflate-raw";
 /** Whether sessionStorage is available and working */
-const sessionStorageAvailable = typeof (sessionStorage === null || sessionStorage === void 0 ? void 0 : sessionStorage.setItem) === "function"
+const sessionStorageAvailable$1 = typeof (sessionStorage === null || sessionStorage === void 0 ? void 0 : sessionStorage.setItem) === "function"
     && (() => {
         try {
             const key = `_bytm_test_${UserUtils.randomId(6, 36, false, true)}`;
@@ -397,13 +397,13 @@ const sessionStorageAvailable = typeof (sessionStorage === null || sessionStorag
  * Fallback and initial value of how much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-const defaultLogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
+const defaultLogLevel = mode$1 === "production" ? LogLevel.Info : LogLevel.Debug;
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-const scriptInfo = UserUtils.purifyObj({
+const scriptInfo$1 = UserUtils.purifyObj({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-});/**
+});var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});/**
  * {@linkcode NanoEmitter} wrapper that allows listening for whether one or all events have been emitted.
  */
 class MultiNanoEmitter extends UserUtils.NanoEmitter {
@@ -470,8 +470,8 @@ const lyricsCacheMgr = new UserUtils.DataStore({
         cache: [],
     },
     formatVersion: 2,
-    encodeData: (data) => canCompress$2 ? UserUtils.compress(data, compressionFormat, "string") : data,
-    decodeData: (data) => canCompress$2 ? UserUtils.decompress(data, compressionFormat, "string") : data,
+    encodeData: (data) => canCompress$2 ? UserUtils.compress(data, compressionFormat$1, "string") : data,
+    decodeData: (data) => canCompress$2 ? UserUtils.decompress(data, compressionFormat$1, "string") : data,
     migrations: {
         // 1 -> 2 (v3.1.0) - debulkify cache entry objects
         2: (oldData) => {
@@ -1455,7 +1455,7 @@ async function getVersionNotifDialog({ latestTag, }) {
 async function renderHeader$4() {
     const logoEl = document.createElement("img");
     logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
-    logoEl.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    logoEl.src = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
     logoEl.alt = "BetterYTM logo";
     return logoEl;
 }
@@ -1464,7 +1464,7 @@ async function renderBody$5({ latestTag, changelogHtml, }) {
     disableUpdateCheck = false;
     const wrapperEl = document.createElement("div");
     const pEl = document.createElement("p");
-    pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host]);
+    pEl.textContent = t("new_version_available", scriptInfo$1.name, scriptInfo$1.version, latestTag, platformNames[host$1]);
     wrapperEl.appendChild(pEl);
     const changelogDetailsEl = document.createElement("details");
     changelogDetailsEl.id = "bytm-version-notif-changelog-details";
@@ -1531,9 +1531,9 @@ async function renderBody$5({ latestTag, changelogHtml, }) {
     const btnUpdate = document.createElement("button");
     btnUpdate.classList.add("bytm-btn");
     btnUpdate.tabIndex = 0;
-    btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host]);
+    btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host$1]);
     onInteraction(btnUpdate, () => {
-        window.open(packageJson.updates[host]);
+        window.open(packageJson.updates[host$1]);
         verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
     });
     const btnClose = document.createElement("button");
@@ -1748,8 +1748,8 @@ async function doVersionCheck(notifyNoNewVerFound = false) {
     const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
     if (!latestTag)
         return await noNewVerFound();
-    info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
-    if (compareVersions.compare(scriptInfo.version, latestTag, "<")) {
+    info("Version check - current version:", scriptInfo$1.version, "- latest version:", latestTag, LogLevel.Info);
+    if (compareVersions.compare(scriptInfo$1.version, latestTag, "<")) {
         const dialog = await getVersionNotifDialog({ latestTag });
         await dialog.open();
         return;
@@ -2124,7 +2124,7 @@ async function getAutoLikeDialog() {
             height: 600,
             // try to compress the data if possible
             exportData: async () => await compressionSupported()
-                ? await UserUtils.compress(JSON.stringify(autoLikeStore.getData()), compressionFormat, "string")
+                ? await UserUtils.compress(JSON.stringify(autoLikeStore.getData()), compressionFormat$1, "string")
                 : JSON.stringify(autoLikeStore.getData()),
             // copy plain when shift-clicking the copy button
             exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
@@ -2373,8 +2373,8 @@ const autoLikeStore = new UserUtils.DataStore({
     defaultData: {
         channels: [],
     },
-    encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
-    decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
+    encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat$1, "string") : data,
+    decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat$1, "string") : data,
     migrations: {
         // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
         2: (oldData) => ({
@@ -2656,8 +2656,8 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
 }//#region logging fns
 let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${scriptInfo.name}]`;
-const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
+const consPrefix = `[${scriptInfo$1.name}]`;
+const consPrefixDbg = `[${scriptInfo$1.name}/#DEBUG]`;
 /** Sets the current log level. 0 = Debug, 1 = Info */
 function setLogLevel(level) {
     curLogLevel = level;
@@ -2883,7 +2883,7 @@ function remTimeTryRestoreTime(force = false) {
                 const videoID = new URL(location.href).searchParams.get("v");
                 if (!videoID)
                     return resolve(false);
-                if (initialParams.has("t") && !force) {
+                if (initialParams$1.has("t") && !force) {
                     info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
                     return resolve(false);
                 }
@@ -2999,7 +2999,7 @@ function getDomain() {
 /** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
 function getSessionId() {
     try {
-        if (!sessionStorageAvailable)
+        if (!sessionStorageAvailable$1)
             throw new Error("Session storage unavailable");
         let sesId = window.sessionStorage.getItem("_bytm-session-id");
         if (!sesId)
@@ -3017,7 +3017,7 @@ async function compressionSupported() {
     if (typeof isCompressionSupported === "boolean")
         return isCompressionSupported;
     try {
-        await UserUtils.compress(".", compressionFormat, "string");
+        await UserUtils.compress(".", compressionFormat$1, "string");
         return isCompressionSupported = true;
     }
     catch (_a) {
@@ -3106,7 +3106,7 @@ async function tryToDecompressAndParse(input) {
     }
     catch (_a) {
         try {
-            parsed = JSON.parse(await UserUtils.decompress(val, compressionFormat, "string"));
+            parsed = JSON.parse(await UserUtils.decompress(val, compressionFormat$1, "string"));
         }
         catch (err) {
             error("Couldn't decompress and parse data due to an error:", err);
@@ -3200,7 +3200,7 @@ async function getResourceUrl(name) {
     const resObjOrStr = (_a = resourcesJson.resources) === null || _a === void 0 ? void 0 : _a[name];
     if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
         const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.path : resObjOrStr;
-        const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.ref : buildNumber;
+        const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.ref : buildNumber$1;
         if (pathName) {
             return pathName.startsWith("http")
                 ? pathName
@@ -3637,7 +3637,7 @@ async function fetchLyricsUrls(artist, song) {
         }
         const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
             disableFuzzy: null,
-            source: scriptInfo.name,
+            source: scriptInfo$1.name,
             q: `${artist} ${song}`,
         });
         log("Requesting lyrics from geniURL:", String(fetchUrl));
@@ -4127,7 +4127,7 @@ async function mountCfgMenu() {
         titleCont.role = "heading";
         titleCont.ariaLevel = "1";
         const titleLogoElem = document.createElement("img");
-        const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
+        const logoSrc = await getResourceUrl(`img-logo${mode$1 === "development" ? "_dev" : ""}`);
         titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
         titleLogoElem.tabIndex = 0;
         titleLogoElem.role = "button";
@@ -4154,7 +4154,7 @@ async function mountCfgMenu() {
         const titleElem = document.createElement("h1");
         titleElem.classList.add("bytm-menu-title");
         const titleTextElem = document.createElement("div");
-        titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
+        titleTextElem.textContent = t("config_menu_title", scriptInfo$1.name);
         titleElem.appendChild(titleTextElem);
         const linksCont = document.createElement("div");
         linksCont.id = "bytm-menu-linkscont";
@@ -4190,12 +4190,12 @@ async function mountCfgMenu() {
             linksCont.appendChild(anchorElem);
         };
         const links = [
-            ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
-            ["greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
-            ["openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
+            ["github", await getResourceUrl("img-github"), scriptInfo$1.namespace, t("open_github", scriptInfo$1.name), "github"],
+            ["greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork"],
+            ["openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs"],
         ];
-        const hostLink = links.find(([name]) => name === host);
-        const otherLinks = links.filter(([name]) => name !== host);
+        const hostLink = links.find(([name]) => name === host$1);
+        const otherLinks = links.filter(([name]) => name !== host$1);
         const reorderedLinks = hostLink ? [hostLink, ...otherLinks] : links;
         for (const [, ...args] of reorderedLinks)
             addLink(...args);
@@ -4243,7 +4243,7 @@ async function mountCfgMenu() {
             height: 600,
             // try to compress the data if possible
             exportData: async () => await compressionSupported()
-                ? await UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
+                ? await UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat$1, "string")
                 : exportDataSpecial(),
             exportDataSpecial,
             async onImport(data) {
@@ -4334,7 +4334,7 @@ async function mountCfgMenu() {
                 headerElem.ariaChecked = String(selected);
                 headerElem.tabIndex = 0;
                 headerElem.ariaLevel = "2";
-                headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo.name);
+                headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo$1.name);
                 headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
                 onInteraction(headerElem, () => {
                     const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
@@ -4372,7 +4372,7 @@ async function mountCfgMenu() {
         sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
         sidenavTopSectionCont.role = "radiogroup";
         sidenavTopSectionCont.tabIndex = 0;
-        sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo.name });
+        sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo$1.name });
         // settings category headers:
         let firstCatHeader = true;
         for (const category of Object.keys(featureCfgWithCategories)) {
@@ -4396,7 +4396,7 @@ async function mountCfgMenu() {
         sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
         sidenavBtmSectionCont.role = "radiogroup";
         sidenavBtmSectionCont.tabIndex = 0;
-        sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo.name });
+        sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo$1.name });
         // extra info headers:
         const extraInfoCategoryIDs = ["about", "changelog"];
         for (const id of extraInfoCategoryIDs) {
@@ -4527,7 +4527,7 @@ async function mountCfgMenu() {
                 {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
-                    if (mode === "development") {
+                    if (mode$1 === "development") {
                         const defVal = fmtVal(ftDefault, featKey);
                         const extraTxts = [
                             `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
@@ -4622,7 +4622,7 @@ async function mountCfgMenu() {
                     // to prevent dev mode title from propagating:
                     ctrlElem.title = "";
                     let advCopyHiddenCont;
-                    if ((getFeature("advancedMode") || mode === "development") && ftInfo.valueHidden) {
+                    if ((getFeature("advancedMode") || mode$1 === "development") && ftInfo.valueHidden) {
                         const advCopyHintElem = document.createElement("span");
                         advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
                         advCopyHintElem.textContent = t("copied");
@@ -4817,12 +4817,12 @@ async function mountCfgMenu() {
                 aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
                 aboutTextCont.classList.add("bytm-markdown-container");
                 const aboutTrParams = UserUtils.purifyObj({
-                    scriptName: scriptInfo.name,
+                    scriptName: scriptInfo$1.name,
                     scriptVersion: packageJson.version,
-                    buildNumber,
+                    buildNumber: buildNumber$1,
                     authorName: packageJson.author.name,
                     authorLink: packageJson.author.url,
-                    githubLink: scriptInfo.namespace,
+                    githubLink: scriptInfo$1.namespace,
                     greasyforkLink: packageJson.hosts.greasyfork,
                     openuserjsLink: packageJson.hosts.openuserjs,
                     fundingLink: packageJson.funding.url,
@@ -4914,7 +4914,7 @@ async function mountCfgMenu() {
         menuContainer.appendChild(headerElem);
         menuContainer.appendChild(bodyCont);
         const modeItems = [];
-        mode === "development" && modeItems.push(["dev", "dev_mode", "img-logo_dev"]);
+        mode$1 === "development" && modeItems.push(["dev", "dev_mode", "img-logo_dev"]);
         getFeature("advancedMode") && modeItems.push(["advanced", "advanced_mode", "icon-advanced_mode_large"]);
         if (modeItems.length > 0) {
             const modeDisplayCont = document.createElement("div");
@@ -5105,11 +5105,11 @@ async function addWatermark() {
     watermarkEl.role = "button";
     watermarkEl.id = "bytm-watermark";
     watermarkEl.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
-    watermarkEl.textContent = scriptInfo.name;
-    watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo.name);
+    watermarkEl.textContent = scriptInfo$1.name;
+    watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo$1.name);
     watermarkEl.tabIndex = 0;
     await improveLogo();
-    bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    bytmLogoUrl = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
     UserUtils.preloadImages([bytmLogoUrl]);
     const watermarkOpenMenu = (e) => {
         e.stopImmediatePropagation();
@@ -5181,7 +5181,7 @@ async function addConfigMenuOptionYTM(container) {
     cfgOptItemElem.classList.add("bytm-cfg-menu-option-item");
     cfgOptItemElem.role = "button";
     cfgOptItemElem.tabIndex = 0;
-    cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
+    cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo$1.name);
     onInteraction(cfgOptItemElem, async (e) => {
         const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button button");
         settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
@@ -5192,10 +5192,10 @@ async function addConfigMenuOptionYTM(container) {
     });
     const cfgOptIconElem = document.createElement("img");
     cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
-    cfgOptIconElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    cfgOptIconElem.src = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
     const cfgOptTextElem = document.createElement("div");
     cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
-    cfgOptTextElem.textContent = t("config_menu_option", scriptInfo.name);
+    cfgOptTextElem.textContent = t("config_menu_option", scriptInfo$1.name);
     cfgOptItemElem.appendChild(cfgOptIconElem);
     cfgOptItemElem.appendChild(cfgOptTextElem);
     cfgOptElem.appendChild(cfgOptItemElem);
@@ -5209,15 +5209,15 @@ async function addConfigMenuOptionYT(container) {
     cfgOptWrapperElem.classList.add("bytm-yt-cfg-menu-option", "darkreader-ignore");
     cfgOptWrapperElem.role = "button";
     cfgOptWrapperElem.tabIndex = 0;
-    cfgOptWrapperElem.ariaLabel = cfgOptWrapperElem.title = t("open_menu_tooltip", scriptInfo.name);
+    cfgOptWrapperElem.ariaLabel = cfgOptWrapperElem.title = t("open_menu_tooltip", scriptInfo$1.name);
     const cfgOptElem = document.createElement("div");
     cfgOptElem.classList.add("bytm-yt-cfg-menu-option-inner");
     const cfgOptImgElem = document.createElement("img");
     cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
-    cfgOptImgElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    cfgOptImgElem.src = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
     const cfgOptItemElem = document.createElement("div");
     cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
-    cfgOptItemElem.textContent = scriptInfo.name;
+    cfgOptItemElem.textContent = scriptInfo$1.name;
     cfgOptElem.appendChild(cfgOptImgElem);
     cfgOptElem.appendChild(cfgOptItemElem);
     cfgOptWrapperElem.appendChild(cfgOptElem);
@@ -5566,8 +5566,8 @@ const albumArtStore = new UserUtils.DataStore({
     defaultData: {
         entries: [],
     },
-    encodeData: async (data) => await compressionSupported() ? await UserUtils.compress(data, compressionFormat, "string") : data,
-    decodeData: async (data) => await compressionSupported() ? await UserUtils.decompress(data, compressionFormat, "string") : data,
+    encodeData: async (data) => await compressionSupported() ? await UserUtils.compress(data, compressionFormat$1, "string") : data,
+    decodeData: async (data) => await compressionSupported() ? await UserUtils.decompress(data, compressionFormat$1, "string") : data,
 });
 async function deleteExpiredAlbumArtCacheEntries() {
     await albumArtStore.loadData();
@@ -7045,7 +7045,7 @@ const options = {
         .reduce((a, [locale, { name, emoji }]) => {
         return [...a, {
                 value: locale,
-                label: `${emoji} ${name}${mode === "development" ? ` [${locale}]` : ""}`,
+                label: `${emoji} ${name}${mode$1 === "development" ? ` [${locale}]` : ""}`,
             }];
     }, [])
         .sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
@@ -7169,7 +7169,7 @@ const featInfo = {
             ? closeToast()
             : showIconToast({
                 message: t("example_toast"),
-                iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+                iconSrc: getResourceUrl(`img-logo${mode$1 === "development" ? "_dev" : ""}`),
             }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0),
     },
     showToastOnGenericError: {
@@ -8316,8 +8316,8 @@ const configStore = new UserUtils.DataStore({
     formatVersion,
     defaultData,
     migrations,
-    encodeData: (data) => canCompress ? UserUtils.compress(data, compressionFormat, "string") : data,
-    decodeData: (data) => canCompress ? UserUtils.decompress(data, compressionFormat, "string") : data,
+    encodeData: (data) => canCompress ? UserUtils.compress(data, compressionFormat$1, "string") : data,
+    decodeData: (data) => canCompress ? UserUtils.decompress(data, compressionFormat$1, "string") : data,
 });
 //#region init
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
@@ -8423,7 +8423,8 @@ async function promptResetConfig() {
 async function clearConfig() {
     await configStore.deleteData();
     info("Deleted config from persistent storage");
-}const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils__namespace;
+}const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
+const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
@@ -8754,6 +8755,7 @@ function getLibraryHook(token) {
     if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.InternalAccess))
         return undefined;
     return {
+        constants,
         emitInterface,
         emitSiteEvent,
         siteEvents,
@@ -9287,7 +9289,7 @@ async function renderHeader() {
     const titleLogoElem = document.createElement("img");
     titleLogoElem.id = "bytm-welcome-menu-title-logo";
     titleLogoElem.classList.add("bytm-no-select");
-    titleLogoElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    titleLogoElem.src = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
     const titleElem = document.createElement("h2");
     titleElem.id = "bytm-welcome-menu-title";
     titleElem.classList.add("bytm-dialog-title");
@@ -9378,7 +9380,7 @@ function retranslateWelcomeMenu() {
         return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
     };
     const changes = {
-        "#bytm-welcome-menu-title": (e) => e.textContent = e.ariaLabel = t("welcome_menu_title", scriptInfo.name),
+        "#bytm-welcome-menu-title": (e) => e.textContent = e.ariaLabel = t("welcome_menu_title", scriptInfo$1.name),
         "#bytm-welcome-menu-title-close": (e) => e.ariaLabel = e.title = t("close_menu_tooltip"),
         "#bytm-welcome-menu-open-cfg": (e) => {
             e.textContent = e.ariaLabel = t("config_menu");
@@ -9393,8 +9395,8 @@ function retranslateWelcomeMenu() {
             e.ariaLabel = e.title = t("close_menu_tooltip");
         },
         "#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
-        "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo.name)),
-        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
+        "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo$1.name)),
+        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
         "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(packageJson.funding.url))),
         "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(packageJson.bugs.url))),
     };
@@ -9583,7 +9585,7 @@ async function renderBody(opts) {
 {
     // console watermark with sexy gradient
     const [styleGradient, gradientContBg] = (() => {
-        switch (mode) {
+        switch (mode$1) {
             case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"];
             case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(38, 160, 172) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
         }
@@ -9600,9 +9602,9 @@ async function renderBody(opts) {
 ─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript
 ─ The Cousine font: https://fonts.google.com/specimen/Cousine`;
     console.log(`\
-%c${scriptInfo.name}%cv${scriptInfo.version}%c • ${scriptInfo.namespace}%c
+%c${scriptInfo$1.name}%cv${scriptInfo$1.version}%c • ${scriptInfo$1.namespace}%c
 
-Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
+Build #${buildNumber$1}${mode$1 === "development" ? " (dev mode)" : ""}
 
 %c${poweredBy}`, `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`, `${styleCommon} background-color: ${gradientContBg}; padding-left: 8px; padding-right: 8px;`, "color: #fff; font-size: 1.2rem;", "padding: initial; font-size: 0.9rem;", "padding: initial; font-size: 1rem;");
 }
@@ -9689,7 +9691,7 @@ async function onDomLoad() {
         if (typeof await GM.getValue("bytm-installed") !== "string") {
             // open welcome menu with language selector
             const dlg = await getWelcomeDialog();
-            dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
+            dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo$1.version })));
             info("Showing welcome menu");
             await dlg.open();
         }
@@ -9884,7 +9886,7 @@ async function initSvgSpritesheet() {
 //#region dev menu cmds
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
-    if (mode !== "development")
+    if (mode$1 !== "development")
         return;
     GM.registerMenuCommand("Reset config", async () => {
         if (await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
@@ -9902,7 +9904,7 @@ function registerDevCommands() {
         for (const key of keys) {
             const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
             const val = await GM.getValue(key, undefined);
-            values[key] = typeof val !== "undefined" && isEncoded ? await UserUtils.decompress(val, compressionFormat, "string") : val;
+            values[key] = typeof val !== "undefined" && isEncoded ? await UserUtils.decompress(val, compressionFormat$1, "string") : val;
             longestKey = Math.max(longestKey, key.length);
         }
         for (const [key, finalVal] of Object.entries(values)) {
@@ -9981,14 +9983,14 @@ function registerDevCommands() {
     GM.registerMenuCommand("Compress value", async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
         if (input && input.length > 0) {
-            const compressed = await UserUtils.compress(input, compressionFormat);
+            const compressed = await UserUtils.compress(input, compressionFormat$1);
             dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
         }
     });
     GM.registerMenuCommand("Decompress value", async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
         if (input && input.length > 0) {
-            const decompressed = await UserUtils.decompress(input, compressionFormat);
+            const decompressed = await UserUtils.decompress(input, compressionFormat$1);
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     });
@@ -10025,7 +10027,7 @@ function registerDevCommands() {
     log("Registered dev menu commands");
 }
 async function runDevTreatments() {
-    if (mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
+    if (mode$1 !== "development" || !await GM.getValue("bytm-dev-treatments", false))
         return;
     const dlg = await getAllDataExImDialog();
     await dlg.open();

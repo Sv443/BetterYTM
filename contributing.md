@@ -667,6 +667,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The object returned by this function is a `LibraryHookObj` type, which contains the following properties:
 > | Property | Type | Description |
 > | :-- | :-- | :-- |
+> | `constants` | Object | Contains all exports from the `src/constants.ts` file |
 > | `emitInterface` | Function | Emits a generic, global interface event |
 > | `emitSiteEvent` | Function | Emits an event using the siteEvents system |
 > | `siteEvents` | [MultiNanoEmitter](#multinanoemitter) | Event emitting instance of the siteEvents system |
