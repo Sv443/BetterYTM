@@ -1,3 +1,4 @@
+import { bitSetHas } from "@sv443-network/userutils";
 import { BytmDialog } from "../components/BytmDialog.js";
 import { getRegisteredPlugins } from "../interface.js";
 import { getLocale, t } from "../utils/translations.js";
@@ -133,12 +134,14 @@ async function renderBody() {
 
     const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
     const intentsAmount = Object.keys(PluginIntent).length / 2;
-    const intentsArr = typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
-      const arr = [];
-      for(let i = 0; i < intentsAmount; i++)
-        if(intentsBitSet & (2 ** i)) arr.push(2 ** i);
-      return arr;
-    })() : [];
+    const intentsArr = bitSetHas(intentsBitSet, PluginIntent.FullAccess)
+      ? [PluginIntent.FullAccess]
+      : (typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
+        const arr = [];
+        for(let i = 0; i < intentsAmount; i++)
+          if(intentsBitSet & (2 ** i)) arr.push(2 ** i);
+        return arr;
+      })() : []);
 
     const permissionsHeaderEl = document.createElement("div");
     permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
