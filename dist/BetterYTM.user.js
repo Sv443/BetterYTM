@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3a4816aa/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@244ee7f2/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -340,7 +340,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3a4816aa",
+    buildNumber: "244ee7f2",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5319,6 +5319,63 @@ async function addAnchorImprovements() {
     catch (err) {
         error("Couldn't add anchors to sidebar items due to an error:", err);
     }
+    //#region current song list
+    try {
+        const checkCurrentList = () => {
+            addSelectorListener("sidePanel", "ytmusic-player-queue #contents, ytmusic-player-queue #automix-contents", {
+                all: true,
+                listener(songLists) {
+                    songLists.forEach((songListEl) => {
+                        const items = songListEl.querySelectorAll("ytmusic-player-queue-item");
+                        if (!items.length)
+                            return;
+                        const itemsAmt = improveSongListClickArea(items);
+                        log(`Improved clickable area of ${itemsAmt} current song list ${UserUtils.autoPlural("item", itemsAmt)}`);
+                    });
+                },
+            });
+        };
+        siteEvents.on("queueChanged", () => checkCurrentList());
+        siteEvents.on("autoplayQueueChanged", () => checkCurrentList());
+        const genericSongListListener = (songLists) => {
+            songLists.forEach((songListEl) => {
+                const items = songListEl.querySelectorAll("ytmusic-responsive-list-item-renderer, .card-content-container");
+                if (!items.length)
+                    return;
+                const itemsAmt = improveSongListClickArea(items);
+                log(`Improved clickable area of ${itemsAmt} song list ${UserUtils.autoPlural("item", itemsAmt)}`);
+            });
+        };
+        const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
+            if (path.includes("/search")) {
+                pathChangedUnsub();
+                addSelectorListener("searchPage", `\
+ytmusic-shelf-renderer #contents,
+ytmusic-card-shelf-renderer .card-container`, {
+                    continuous: true,
+                    all: true,
+                    debounce: 250,
+                    listener: genericSongListListener,
+                });
+            }
+        });
+        addSelectorListener("browseResponse", `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
+            continuous: true,
+            all: true,
+            debounce: 250,
+            listener: genericSongListListener,
+        });
+    }
+    catch (err) {
+        error("Couldn't add anchors to song list items due to an error:", err);
+    }
 }
 const sidebarPaths = [
     "/",
@@ -5343,6 +5400,39 @@ function improveSidebarAnchors(sidebarItems) {
         });
         UserUtils.addParent(item, anchorElem);
     });
+}
+function improveSongListClickArea(items) {
+    let itemsAmt = 0;
+    items.forEach((item) => {
+        if (item.classList.contains("bytm-click-area-improved"))
+            return;
+        item.classList.add("bytm-click-area-improved");
+        item.addEventListener("click", (e) => {
+            var _a;
+            const tgt = e.target;
+            if (!tgt)
+                return;
+            const conditions = [
+                (el) => el.tagName.toLowerCase() === "yt-formatted-string",
+                (el) => el.classList.contains("yt-formatted-string"),
+                (el) => el.tagName.toLowerCase() === "ytmusic-player-queue-item",
+                (el) => el.classList.contains("ytmusic-player-queue-item"),
+                (el) => el.tagName.toLowerCase() === "ytmusic-responsive-list-item-renderer",
+                (el) => el.classList.contains("ytmusic-responsive-list-item-renderer"),
+                (el) => el.classList.contains("ytmusic-card-shelf-renderer"),
+            ];
+            const antiConditions = [
+                (el) => el.tagName.toLowerCase() === "a",
+                (el) => { var _a; return (_a = el.getAttribute("href")) === null || _a === void 0 ? void 0 : _a.length; },
+                (el) => el.classList.contains("bytm-anchor"),
+            ];
+            console.log(">>>", tgt);
+            if (conditions.some((c) => c(tgt)) && !antiConditions.some((c) => c(tgt)))
+                (_a = item.querySelector("ytmusic-play-button-renderer")) === null || _a === void 0 ? void 0 : _a.click();
+        });
+        itemsAmt++;
+    });
+    return itemsAmt;
 }
 //#region share track param
 /** Removes the ?si tracking parameter from share URLs */
@@ -6344,7 +6434,10 @@ async function fixThemeSong() {
 ytmusic-playlist-shelf-renderer #contents,
 ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
 ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
 `;
 //#region init queue btns
 /** Initializes the queue buttons */
@@ -8660,6 +8753,14 @@ function initObservers() {
                 globservers.body.addListener(browseResponseSelector, {
                     listener: () => globservers.browseResponse.enable(),
                 });
+                //#region searchPage
+                // -> the search page
+                //    enabled by "body"
+                const searchPageSelector = "ytmusic-search-page";
+                globservers.searchPage = new UserUtils.SelectorObserver(searchPageSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(searchPageSelector, {
+                    listener: () => globservers.searchPage.enable(),
+                });
                 //#region navBar
                 // -> the navigation / title bar at the top of the page
                 //    enabled by "body"
@@ -8791,6 +8892,8 @@ function initObservers() {
         //#region finalize
         globserversReady = true;
         emitInterface("bytm:observersReady");
+        //#DEBUG:
+        UserUtils.getUnsafeWindow().BYTM.globservers = globservers;
     }
     catch (err) {
         error("Failed to initialize observers:", err);
