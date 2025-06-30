@@ -173,8 +173,9 @@ export type BytmObject =
   // others
   & {
     NanoEmitter: NanoEmitter;
-    BytmDialog: typeof BytmDialog;
-    ExImDialog: typeof ExImDialog;
+    MultiNanoEmitter: MultiNanoEmitter;
+    BytmDialog: BytmDialog;
+    ExImDialog: ExImDialog;
     // the entire UserUtils library
     UserUtils: typeof import("@sv443-network/userutils");
     // the entire compare-versions library
@@ -227,8 +228,8 @@ export enum PluginIntent {
 export type PluginRegisterResult = {
   /** Public info about the registered plugin */
   info: PluginInfo;
-  /** NanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
-  events: NanoEmitter<PluginEventMap>;
+  /** MultiNanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
+  events: MultiNanoEmitter<PluginEventMap>;
   /** Authentication token for the plugin to use in certain restricted function calls */
   token: string;
 }
@@ -443,8 +444,6 @@ export type InterfaceFunctions = {
   // other:
   /** Formats a number to a string using the configured locale and configured or passed number notation */
   formatNumber: typeof formatNumber;
-  /** NanoEmitter wrapper that allows listening for whether one, all, or a given subset of events have been emitted */
-  MultiNanoEmitter: typeof MultiNanoEmitter;
 };
 
 //#region feature defs
@@ -638,6 +637,42 @@ export interface FeatureConfig {
   /** Whether to remove all padding around the main content on the /watch page on YTM */
   watchPageFullSize: boolean;
 
+  //#region songLists
+  /** Add a button to each song in the queue to quickly open its lyrics page */
+  lyricsQueueButton: boolean;
+  /** Add a button to each song in the queue to quickly remove it */
+  deleteFromQueueButton: boolean;
+  /** Where to place the buttons in the queue */
+  listButtonsPlacement: "currentQueue" | "genericLists" | "everywhere";
+  /** Add a button above the queue to scroll to the currently playing song */
+  scrollToActiveSongBtn: boolean;
+  /** Add a button above the queue to clear it */
+  clearQueueBtn: boolean;
+  /** Whether the above queue button container should use sticky positioning */
+  aboveQueueBtnsSticky: boolean;
+  /** Add track numbers to each song list item */
+  songListTrackNumbersEnabled: boolean;
+  /** Where to add track numbers */
+  songListTrackNumbers: "currentQueue" | "genericLists" | "everywhere";
+
+  //#region lyrics
+  /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
+  geniusLyrics: boolean;
+  /** Whether to show an error when no lyrics were found */
+  errorOnLyricsNotFound: boolean;
+  /** Base URL to use for GeniURL */
+  geniUrlBase: string;
+  /** Token to use for GeniURL */
+  geniUrlToken: string;
+  /** Max size of lyrics cache */
+  lyricsCacheMaxSize: number;
+  /** Max TTL of lyrics cache entries, in ms */
+  lyricsCacheTTL: number;
+  /** Button to clear lyrics cache */
+  clearLyricsCache: undefined;
+  // /** Whether to use advanced filtering when searching for lyrics (exact, exact-ish) */
+  // advancedLyricsFilter: boolean;
+
   //#region volume
   /** Add a percentage label to the volume slider */
   volumeSliderLabel: boolean;
@@ -653,18 +688,6 @@ export interface FeatureConfig {
   setInitialTabVolume: boolean;
   /** The initial volume level to set for each new session */
   initialTabVolumeLevel: number;
-
-  //#region song lists
-  /** Add a button to each song in the queue to quickly open its lyrics page */
-  lyricsQueueButton: boolean;
-  /** Add a button to each song in the queue to quickly remove it */
-  deleteFromQueueButton: boolean;
-  /** Where to place the buttons in the queue */
-  listButtonsPlacement: "queueOnly" | "everywhere";
-  /** Add a button above the queue to scroll to the currently playing song */
-  scrollToActiveSongBtn: boolean;
-  /** Add a button above the queue to clear it */
-  clearQueueBtn: boolean;
 
   //#region behavior
   /** Whether to completely disable the popup that sometimes appears before leaving the site */
@@ -683,10 +706,23 @@ export interface FeatureConfig {
   rememberSongTimeReduction: number;
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
-  /** Whether the above queue button container should use sticky positioning */
-  aboveQueueBtnsSticky: boolean;
   /** When to automatically scroll to the active song in the queue */
   autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
+
+  //#region autoLike
+  /** Whether to auto-like all played videos of configured channels */
+  autoLikeChannels: boolean;
+  /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
+  autoLikeChannelToggleBtn: boolean;
+  // TODO:
+  // /** Whether to show a toggle button in the media controls to enable/disable auto-liking for those channel(s) */
+  // autoLikePlayerBarToggleBtn: boolean;
+  /** How long to wait after a video has started playing to auto-like it */
+  autoLikeTimeout: number;
+  /** Whether to show a toast when a video is auto-liked */
+  autoLikeShowToast: boolean;
+  /** Opens the auto-like channels management dialog */
+  autoLikeOpenMgmtDialog: undefined;
 
   //#region input
   /** Arrow keys to skip forwards and backwards and change volume */
@@ -703,21 +739,6 @@ export interface FeatureConfig {
   frameSkipAmount: number;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
-
-  //#region auto-like
-  /** Whether to auto-like all played videos of configured channels */
-  autoLikeChannels: boolean;
-  /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
-  autoLikeChannelToggleBtn: boolean;
-  // TODO:
-  // /** Whether to show a toggle button in the media controls to enable/disable auto-liking for those channel(s) */
-  // autoLikePlayerBarToggleBtn: boolean;
-  /** How long to wait after a video has started playing to auto-like it */
-  autoLikeTimeout: number;
-  /** Whether to show a toast when a video is auto-liked */
-  autoLikeShowToast: boolean;
-  /** Opens the auto-like channels management dialog */
-  autoLikeOpenMgmtDialog: undefined;
 
   //#region hotkeys
   /** Add a hotkey to switch between the YT and YTM sites on a video/song */
@@ -756,24 +777,6 @@ export interface FeatureConfig {
   rebindPlayPause: boolean;
   /** The hotkey that needs to be pressed to play/pause the current video/song */
   playPauseHotkey: HotkeyObj;
-
-  //#region lyrics
-  /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
-  geniusLyrics: boolean;
-  /** Whether to show an error when no lyrics were found */
-  errorOnLyricsNotFound: boolean;
-  /** Base URL to use for GeniURL */
-  geniUrlBase: string;
-  /** Token to use for GeniURL */
-  geniUrlToken: string;
-  /** Max size of lyrics cache */
-  lyricsCacheMaxSize: number;
-  /** Max TTL of lyrics cache entries, in ms */
-  lyricsCacheTTL: number;
-  /** Button to clear lyrics cache */
-  clearLyricsCache: undefined;
-  // /** Whether to use advanced filtering when searching for lyrics (exact, exact-ish) */
-  // advancedLyricsFilter: boolean;
 
   //#region integrations
   /** On which sites to disable Dark Reader - does nothing if the extension is not installed */

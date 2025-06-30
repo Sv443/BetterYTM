@@ -511,7 +511,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > The returned properties include:  
 > - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
-> - `events` - A [NanoEmitter](#nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
+> - `events` - A [MultiNanoEmitter](#multinanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
 >   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin
 > 
@@ -1818,7 +1818,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <br>
 > 
 > Methods:  
-> The methods from the [`NanoEmitter`](#nanoemitter) class are also available here.  
+> The methods from the [`MultiNanoEmitter`](#multinanoemitter) class are also available here.  
 > These are the additional methods that are exclusive to the `BytmDialog` class:  
 > - `open(e?: MouseEvent | KeyboardEvent): Promise<void>`  
 >   Opens the dialog - also mounts it if it hasn't been mounted yet.  
@@ -2027,7 +2027,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | `body: string \| (() => string \| Promise<string>)` | Markdown content to render in the dialog. Can be a string or a sync or async function that returns a string. |
 >   
 > Methods:  
-> The methods from the [`NanoEmitter`](#nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
+> The methods from the [`MultiNanoEmitter`](#multinanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
 > - `static parseMd(md: string): Promise<string>`  
 >   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.
 > - `protected renderBody(): Promise<void>`  

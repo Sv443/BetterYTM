@@ -177,7 +177,6 @@ const globalFuncs: InterfaceFunctions = purifyObj({
 
   // other:
   formatNumber,
-  MultiNanoEmitter,
 });
 
 /** Initializes the BYTM interface */
@@ -196,6 +195,7 @@ export function initInterface() {
     ...globalFuncs,
     // classes
     NanoEmitter,
+    MultiNanoEmitter,
     BytmDialog,
     ExImDialog,
     MarkdownDialog,
@@ -285,7 +285,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     if(validationErrors)
       throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
-    const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
+    const events = new MultiNanoEmitter<PluginEventMap>({ publicEmit: true });
     const token = crypto.randomUUID();
 
     registeredPlugins.set(plKey, {
