@@ -559,7 +559,7 @@ export function saveAutoLikeDataInterface(token: string | undefined, data: AutoL
 //#region library hook
 
 /** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
-function getLibraryHook(token: string | undefined) {
+export function getLibraryHook(token: string | undefined) {
   const pluginId = resolveToken(token);
   if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.InternalAccess))
     return undefined;
