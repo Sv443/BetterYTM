@@ -13,8 +13,8 @@
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1200px;
-  --bytm-dialog-height-max: 900px;
+  --bytm-dialog-width-max: 1250px;
+  --bytm-dialog-target-height: 750px;
 }
 
 /* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
@@ -128,6 +128,14 @@
 
 .bytm-ytm-only-icon svg path.note {
   fill: var(--bytm-ytm-only-note-col, #fff);
+}
+
+/* #region feature help dialog */
+
+#bytm-feat-help-dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 /* #region welcome dialog */

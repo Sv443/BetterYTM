@@ -64,7 +64,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
   };
 
-  const resetClicked = (e: MouseEvent | KeyboardEvent) => {
+  onInteraction(resetElem, (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopImmediatePropagation();
 
@@ -75,9 +75,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue!));
     resetElem.classList.add("bytm-hidden");
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
-  };
-
-  onInteraction(resetElem, resetClicked);
+  });
 
   if(initialValue)
     setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));

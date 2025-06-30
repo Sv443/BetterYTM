@@ -21,9 +21,23 @@ const lyricsCacheMgr = new DataStore<LyricsCache>({
   defaultData: {
     cache: [],
   },
-  formatVersion: 1,
+  formatVersion: 2,
   encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
   decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
+  migrations: {
+    // 1 -> 2 (v3.1.0) - debulkify cache entry objects
+    2: (oldData: LyricsCache): LyricsCache => {
+      oldData.cache = oldData.cache.map(entry => ({
+        artist: entry.artist,
+        song: entry.song,
+        // @ts-expect-error
+        path: "path" in entry ? entry.path : (new URL(String("url" in entry ? entry.url : entry.path)).pathname),
+        added: Math.floor(entry.added / 1000),
+        viewed: Math.floor(entry.viewed / 1000),
+      }));
+      return oldData;
+    },
+  }
 });
 
 export async function initLyricsCache() {
@@ -34,6 +48,13 @@ export async function initLyricsCache() {
   return data;
 }
 
+/** Returns the full URL to the lyrics page on genius.com for the given path */
+export function resolveLyricsUrl(path: string) {
+  const url = new URL("https://genius.com");
+  url.pathname = path.startsWith("/") ? path : `/${path}`;
+  return String(url);
+}
+
 /**
  * Returns the cache entry for the passed artist and song, or undefined if it doesn't exist yet  
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
@@ -42,7 +63,7 @@ export async function initLyricsCache() {
 export function getLyricsCacheEntry(artist: string, song: string, refreshEntry = true) {
   const { cache } = lyricsCacheMgr.getData();
   const entry = cache.find(e => e.artist === artist && e.song === song);
-  if(entry && Date.now() - entry?.added > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
+  if(entry && Date.now() - (entry?.added ?? 0) * 1000 > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
     deleteLyricsCacheEntry(artist, song);
     return undefined;
   }
@@ -59,7 +80,7 @@ function updateLyricsCacheEntry(artist: string, song: string) {
   const idx = cache.findIndex(e => e.artist === artist && e.song === song);
   if(idx !== -1) {
     const newEntry = cache.splice(idx, 1)[0]!;
-    newEntry.viewed = Date.now();
+    newEntry.viewed = Math.floor(Date.now() / 1000);
     lyricsCacheMgr.setData({ cache: [ newEntry, ...cache ] });
   }
 }
@@ -95,7 +116,7 @@ export function getLyricsCache() {
  * Adds the provided "best" (non-penalized) entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage  
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
  */
-export function addLyricsCacheEntryBest(artist: string, song: string, url: string) {
+export function addLyricsCacheEntryBest(artist: string, song: string, path: string) {
   // refresh entry if it exists and don't overwrite / duplicate it
   const cachedEntry = getLyricsCacheEntry(artist, song, true);
   if(cachedEntry)
@@ -103,7 +124,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, url: strin
 
   const { cache } = lyricsCacheMgr.getData();
   const entry = {
-    artist, song, url, viewed: Date.now(), added: Date.now(),
+    artist, song, path, viewed: Math.floor(Date.now() / 1000), added: Math.floor(Date.now() / 1000),
   } satisfies LyricsCacheEntry;
 
   cache.push(entry);
@@ -125,7 +146,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, url: strin
  * ⚠️ `artist` and `song` need to be sanitized first!
  * @param penaltyFr Fraction of the max bounds {@linkcode maxViewedPenalty} and {@linkcode maxAddedPenalty} to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the max penalty)
  */
-export function addLyricsCacheEntryPenalized(artist: string, song: string, url: string, penaltyFr = 0) {
+export function addLyricsCacheEntryPenalized(artist: string, song: string, path: string, penaltyFr = 0) {
   // refresh entry if it exists and don't overwrite / duplicate it
   const cachedEntry = getLyricsCacheEntry(artist, song, true);
   if(cachedEntry)
@@ -141,9 +162,9 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
   const entry = {
     artist,
     song,
-    url,
-    viewed: Date.now() - viewedPenalty,
-    added: Date.now() - addedPenalty,
+    path,
+    viewed: Math.floor((Date.now() - viewedPenalty) / 1000),
+    added: Math.floor((Date.now() - addedPenalty) / 1000),
   } satisfies LyricsCacheEntry;
 
   cache.push(entry);

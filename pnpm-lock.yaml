@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sv443-network/userutils':
-        specifier: ^9.4.1
-        version: 9.4.1
+        specifier: ^9.4.3
+        version: 9.4.3
       compare-versions:
         specifier: ^6.1.1
         version: 6.1.1
@@ -862,8 +862,8 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
-  '@sv443-network/userutils@9.4.1':
-    resolution: {integrity: sha512-NbKiw2/soWiBIouO6bq8T7vCO1gd1esgTHDMe3c2eE6Y5dSu+LXtq3jSeAAbdujXO3qkKTL1eZmObgiex+MuKw==}
+  '@sv443-network/userutils@9.4.3':
+    resolution: {integrity: sha512-PtguHkaDIBQ+XJCUssX5yitYo0KiUmntv4fqNN8t9uUztNMb/Px8CMZqbWySXZvUnisEXOEzRgh84Voxd4K8JA==}
     engines: {npm: please-use-pnpm, pnpm: '>=9', yarn: please-use-pnpm}
 
   '@testing-library/dom@10.4.0':
@@ -2911,7 +2911,7 @@ snapshots:
     dependencies:
       storybook: 8.6.12(prettier@3.3.2)
 
-  '@sv443-network/userutils@9.4.1':
+  '@sv443-network/userutils@9.4.3':
     dependencies:
       nanoevents: 9.1.0
 

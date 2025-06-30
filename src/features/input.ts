@@ -4,14 +4,19 @@ import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 
-//#region utils
+//#region ignored input elements
 
 const ignoreInputTagNames: string[] = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+
 const ignoreInputIds: string[] = [
   "contenteditable-root", // comment field on YT
   "volume-slider", // volume slider on YTM
+  "bytm-cfg-menu-sidenav", // cfg menu sidenav
 ];
-const ignoreInputClassNames: string[] = [];
+
+const ignoreInputClassNames: string[] = [
+  "bytm-menu-sidenav-section", // cfg menu sidenav section
+];
 
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
 export function isIgnoredInputElement(el = document.activeElement as HTMLElement | null) {

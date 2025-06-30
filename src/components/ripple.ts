@@ -1,8 +1,11 @@
+import type { LooseUnion } from "@sv443-network/userutils";
 import "./ripple.css";
 
 type RippleProps<TElem extends HTMLElement> = {
   /** How fast should the animation be - defaults to "normal" */
   speed?: "fastest" | "fast" | "normal" | "slow" | "slowest";
+  /** The event that should trigger the ripple effect - defaults to "mousedown" */
+  triggerEvent?: LooseUnion<"mousedown" | "mouseup">;
   /** Additional props to assign to the created or passed ripple element */
   additionalProps?: TElem;
 };
@@ -37,7 +40,7 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
 
   const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
 
-  rippleEl.addEventListener("mousedown", (e) => {
+  rippleEl.addEventListener(props?.triggerEvent ?? "mousedown", (e) => {
     updateRippleWidth();
 
     const x = (e as MouseEvent).clientX - rippleEl.getBoundingClientRect().left;

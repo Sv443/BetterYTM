@@ -300,8 +300,8 @@ function renderFooter() {
   importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
   wrapperEl.appendChild(importExportBtnElem);
 
-  onInteraction(addNewBtnElem, addAutoLikeEntryPrompts);
-  onInteraction(importExportBtnElem, openImportExportAutoLikeChannelsDialog);
+  onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
+  onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
 
   return wrapperEl;
 }

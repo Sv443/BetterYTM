@@ -1,10 +1,10 @@
 :root {
-  --bytm-menu-bg-highlight: #252525;
+  --bytm-menu-bg-highlight: #181818;
+  --bytm-menu-bg-highlight-2: #252525;
 }
 
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 10px;
 }
@@ -26,8 +26,8 @@
   flex-direction: column;
   width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
   border-radius: var(--bytm-menu-border-radius);
-  height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
+  min-height: calc(min(100% - 40px, var(--bytm-dialog-target-height)));
+  max-height: calc(min(100% - 40px, var(--bytm-dialog-target-height)));
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -41,6 +41,144 @@
   transform: translate(-50%, 40px);
 }
 
+#bytm-cfg-menu-main-body {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  height: calc(100% - 32px);
+  overflow: hidden;
+}
+
+#bytm-cfg-menu-sidenav {
+  --bytm-menu-nav-header-margin: 6px;
+  --bytm-menu-nav-border-width: 0.15rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bytm-menu-bg);
+  border-right: 2px solid var(--bytm-menu-separator-color);
+}
+
+.bytm-menu-sidenav-section {
+  margin: var(--bytm-menu-nav-header-margin) 0px;
+}
+
+#bytm-cfg-menu-sidenav-top-section {
+  margin-top: 0;
+  padding-top: var(--bytm-menu-nav-header-margin);
+  padding-bottom: calc(var(--bytm-menu-nav-header-margin) * 1.5);
+  border-bottom: var(--bytm-menu-nav-border-width) solid
+    var(--bytm-menu-separator-color);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#bytm-cfg-menu-sidenav-bottom-section {
+  margin-bottom: 0;
+  padding: var(--bytm-menu-nav-header-margin) 0px;
+  border-top: var(--bytm-menu-nav-border-width) solid
+    var(--bytm-menu-separator-color);
+}
+
+#bytm-cfg-menu-sidenav .bytm-hr {
+  margin: calc(var(--bytm-menu-nav-header-margin, 6px) * 1.5) auto;
+  padding: 0px;
+  border: none;
+  border-top: var(--bytm-menu-nav-border-width) solid
+    var(--bytm-menu-separator-color);
+  width: 90%;
+  align-self: center;
+}
+
+.bytm-menu-sidenav-header {
+  --bytm-menu-nav-header-horizontal-padding: 20px;
+  --bytm-menu-nav-header-vertical-padding: 8px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: var(--bytm-menu-nav-header-vertical-padding)
+    calc(
+      var(--bytm-menu-nav-header-horizontal-padding) -
+        var(--bytm-menu-nav-header-margin)
+    );
+  margin-left: var(--bytm-menu-nav-header-margin);
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: var(--bytm-menu-bg);
+  min-width: 150px;
+  max-width: 300px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  border-radius: 5rem 0 0 5rem;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-menu-sidenav-header:hover {
+  background-color: var(--bytm-menu-bg-highlight-2);
+}
+
+.bytm-menu-sidenav-header.selected {
+  --bytm-menu-nav-header-highlight-border-width: var(
+    --bytm-menu-nav-border-width,
+    0.15rem
+  );
+  background-color: var(--bytm-menu-bg-highlight-2);
+  border: var(--bytm-menu-nav-header-highlight-border-width) solid
+    var(--bytm-menu-separator-color);
+  border-style: solid none solid solid;
+  padding: calc(
+      var(--bytm-menu-nav-header-vertical-padding) -
+        var(--bytm-menu-nav-header-highlight-border-width)
+    )
+    var(--bytm-menu-nav-header-horizontal-padding);
+  padding-left: calc(
+    var(--bytm-menu-nav-header-horizontal-padding) -
+      var(--bytm-menu-nav-header-highlight-border-width) -
+      var(--bytm-menu-nav-header-margin)
+  );
+}
+
+#bytm-cfg-menu-sidenav .bytm-menu-sidenav-header:active {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-menu-sidenav-section .bytm-menu-sidenav-header:not(:last-of-type) {
+  margin-bottom: 6px;
+}
+
+.bytm-ftconf-extra-info-category {
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 1.4rem;
+}
+
+#bytm-ftconf-category-changelog details summary {
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+#bytm-ftconf-category-changelog details:not(:last-of-type) summary {
+  margin-bottom: 6px;
+}
+
+#bytm-ftconf-category-changelog h2 {
+  margin: 0;
+}
+
+#bytm-cfg-menu-changelog-md-cont {
+  overflow-y: hidden;
+}
+
 .bytm-menu-body {
   padding: 15px;
 }
@@ -48,8 +186,9 @@
 #bytm-menu-opts {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   position: relative;
-  padding: 15px 0px;
+  padding: 10px 0px;
   overflow-y: auto;
 }
 
@@ -57,7 +196,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
   padding: 15px;
   background-color: var(--bytm-menu-bg);
   border: 2px solid var(--bytm-menu-separator-color);
@@ -76,9 +214,50 @@
 }
 
 .bytm-cfg-menu-logo {
+  --bytm-menu-logo-animation-timing-function: cubic-bezier(0.3, 0.35, 0.45, 1);
   width: 32px;
   height: 32px;
   margin-right: 10px;
+  cursor: pointer;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-timing-function: var(--bytm-menu-logo-animation-timing-function);
+}
+
+.bytm-cfg-menu-logo.bounce {
+  animation: shrink-bounce-shake 0.4s;
+}
+
+.bytm-cfg-menu-logo.somersault {
+  animation: shrink-bounce-somersault 0.4s;
+}
+
+/** Shrink, bounce up, shake left and right, then bounce back and grow to original size */
+@keyframes shrink-bounce-shake {
+  0% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: scale(0.8) translateY(-10px) rotate(-35deg);
+  }
+  100% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+  }
+}
+
+/** Shrink, bounce up, somersault, then grow back to original size */
+@keyframes shrink-bounce-somersault {
+  0% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: scale(0.8) translateY(-10px) rotate(-180deg);
+  }
+  100% {
+    transform: scale(1) translateY(0px) rotate(-360deg);
+  }
 }
 
 .bytm-menu-titlecont {
@@ -99,38 +278,16 @@
   font-size: 22px;
 }
 
-#bytm-cfg-menu-bg .bytm-menu-title {
-  transform: translate(0px, -6px);
-}
-
 #bytm-cfg-menu {
   --bytm-menu-subtitle-color: #c6d2db;
-}
 
-#bytm-menu-subtitle-cont {
-  width: 100%;
-  display: flex;
-  gap: 6px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: end;
-  position: absolute;
-  bottom: -12px;
-  left: 0;
-  font-size: 10px;
-  font-weight: normal;
-  z-index: 3007;
-}
-
-#bytm-menu-subtitle-cont,
-#bytm-menu-version-anchor {
-  color: var(--bytm-menu-subtitle-color) !important;
+  height: calc(100vh - 40px);
 }
 
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;
-  margin-left: 32px;
+  margin-left: 48px;
 }
 
 .bytm-menu-link {
@@ -204,7 +361,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 6px;
   padding: 15px;
   background: var(--bytm-menu-bg);
   background: linear-gradient(
@@ -217,6 +373,54 @@
   border-style: solid none none none !important;
   border-radius: 0px 0px var(--bytm-menu-border-radius)
     var(--bytm-menu-border-radius);
+}
+
+#bytm-menu-footer-left-side-cont {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#bytm-menu-mode-display-cont {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-menu-mode-display {
+  width: 24px;
+  height: 24px;
+}
+
+#bytm-menu-mode-display-advanced svg path {
+  fill: var(--bytm-advanced-mode-color);
+}
+
+.bytm-menu-mode-display-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  gap: 6px;
+  cursor: help;
+  font-size: 1.4rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  clip-path: polygon(-1px 0, 25px 0, 25px 100%, -1px 100%);
+  transition: clip-path 0.15s ease-out;
+}
+
+.bytm-menu-mode-display-wrapper:hover {
+  clip-path: polygon(-1px 0, 100% 0, 100% 100%, -1px 100%);
+}
+
+.bytm-menu-mode-display-wrapper.expand {
+  width: auto;
+}
+
+.bytm-menu-mode-display-label {
+  padding-right: 4px;
 }
 
 .bytm-menu-footer-buttons-cont button:not(:last-of-type) {
@@ -236,7 +440,7 @@
 #bytm-menu-scroll-indicator {
   --bytm-scroll-indicator-padding: 5px;
   position: sticky;
-  bottom: -15px;
+  bottom: 0px;
   left: 50%;
   margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
   padding: var(--bytm-scroll-indicator-padding);
@@ -244,24 +448,22 @@
   width: 32px;
   height: 32px;
   z-index: 3007;
-  background-color: var(--bytm-scroll-indicator-bg);
+  background-color: rgba(15, 15, 15, 0.75);
   border-radius: 50%;
   cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+#bytm-menu-scroll-indicator:active {
+  background-color: rgba(15, 15, 15, 0.95);
 }
 
 .bytm-hidden {
   visibility: hidden !important;
 }
 
-.bytm-ftconf-category-header {
-  font-size: 20px;
-  margin-top: 32px;
-  margin-bottom: 8px;
-  padding: 0px 20px;
-}
-
-.bytm-ftconf-category-header:first-of-type {
-  margin-top: 0;
+.bytm-ftconf-category.hidden {
+  display: none;
 }
 
 .bytm-ftitem {
@@ -270,12 +472,12 @@
   justify-content: space-between;
   align-items: center;
   font-size: 1.4rem;
-  padding: 8px 20px;
+  padding: 8px 16px;
   transition: background-color 0.15s ease-out;
 }
 
 .bytm-ftitem:hover {
-  background-color: var(--bytm-menu-bg-highlight);
+  background-color: var(--bytm-menu-bg-highlight-2);
 }
 
 .bytm-ftitem-leftside {
@@ -352,6 +554,7 @@ select.bytm-ftconf-input {
 
 .bytm-changelog-version-details summary h2 {
   display: inline-block;
+  font-size: 1.9rem;
 }
 
 .bytm-changelog-version-details details summary {

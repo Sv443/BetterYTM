@@ -3,7 +3,6 @@ import { BytmDialog } from "../components/BytmDialog.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { mode, scriptInfo } from "../constants.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
-import { getChangelogDialog } from "./changelog.js";
 import pkg from "../../package.json" with { type: "json" };
 import locales from "../../assets/locales.json" with { type: "json" };
 
@@ -201,16 +200,6 @@ async function renderFooter() {
     openCfgMenu();
   });
 
-  const openChangelogElem = document.createElement("button");
-  openChangelogElem.id = "bytm-welcome-menu-open-changelog";
-  openChangelogElem.classList.add("bytm-btn");
-  openChangelogElem.addEventListener("click", async () => {
-    const dlg = await getChangelogDialog();
-    await dlg.mount();
-    welcomeDialog?.close();
-    await dlg.open();
-  });
-
   const closeBtnElem = document.createElement("button");
   closeBtnElem.id = "bytm-welcome-menu-footer-close";
   closeBtnElem.classList.add("bytm-btn");
@@ -222,7 +211,6 @@ async function renderFooter() {
   leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
 
   leftButtonsCont.appendChild(openCfgElem);
-  leftButtonsCont.appendChild(openChangelogElem);
 
   footerCont.appendChild(leftButtonsCont);
   footerCont.appendChild(closeBtnElem);

@@ -9,17 +9,21 @@ import { initObservers, addSelectorListener, globservers } from "./observers.js"
 import { downloadData, getStoreSerializer } from "./serializer.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
+import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
 import { showPrompt } from "./dialogs/prompt.js";
+import { mountCfgMenu } from "./menu/menu_old.js";
 import {
   // layout category:
   addWatermark, initRemShareTrackParam,
   fixSpacing, initThumbnailOverlay,
   initHideCursorOnIdle, fixHdrIssues,
-  initShowVotes, initWatchPageFullSize,
+  initShowVotes, initSwapLikeDislikeBtns,
+  initWatchPageFullSize,
   // volume category:
   initVolumeFeatures,
   // song lists category:
   initQueueButtons, initAboveQueueBtns,
+  addTrackNumbers,
   // behavior category:
   initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
@@ -178,6 +182,8 @@ async function onDomLoad() {
 
   log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
 
+  mountCfgMenu();
+
   try {
     //#region welcome dlg
 
@@ -209,6 +215,9 @@ async function onDomLoad() {
       if(feats.showVotes)
         ftInit.push(["showVotes", initShowVotes()]);
 
+      if(feats.swapLikeDislikeButtons)
+        ftInit.push(["swapLikeDislikeBtns", initSwapLikeDislikeBtns()]);
+
       if(feats.watchPageFullSize)
         ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
 
@@ -222,6 +231,9 @@ async function onDomLoad() {
         ftInit.push(["queueButtons", initQueueButtons()]);
 
       ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
+
+      if(feats.songListTrackNumbersEnabled)
+        ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 
       //#region (ytm) behavior
 
@@ -283,7 +295,7 @@ async function onDomLoad() {
 
       //#region (ytm+yt) layout
 
-      if(feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
+      if(feats.removeShareTrackingParamSites)
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
 
       //#region (ytm+yt) input
@@ -302,14 +314,17 @@ async function onDomLoad() {
     emitInterface("bytm:featureInitStarted");
 
     const initStartTs = Date.now();
+    const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000;
+    const initializedFeats: string[] = [];
 
     // wait for feature init or timeout (in case an init function is hung up on a promise)
     await Promise.race([
-      pauseFor(feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000),
+      pauseFor(initTimeout),
       Promise.allSettled(
         ftInit.map(([name, prom]) =>
           new Promise(async (res) => {
             const v = await prom;
+            initializedFeats.push(name);
             emitInterface("bytm:featureInitialized", name);
             res(v);
           })
@@ -324,7 +339,13 @@ async function onDomLoad() {
     preloadResources();
 
     emitInterface("bytm:ready");
-    info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+    info(`Done initializing ${initializedFeats.length} / ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+
+    if(initializedFeats.length < ftInit.length) {
+      error(`Only ${initializedFeats.length} out of ${ftInit.length} features initialized within the limit of ${initTimeout}ms. Faulty features:${
+        ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
+      }`);
+    }
 
     try {
       registerDevCommands();
@@ -599,8 +620,8 @@ async function runDevTreatments() {
   if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
     return;
 
-  // const dlg = await getAllDataExImDialog();
-  // await dlg.open();
+  const dlg = await getAllDataExImDialog();
+  await dlg.open();
 }
 
 preInit();

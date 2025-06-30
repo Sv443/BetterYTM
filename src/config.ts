@@ -1,16 +1,21 @@
-import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp, purifyObj } from "@sv443-network/userutils";
+import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp, purifyObj, computeHash } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, getVideoTime, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
+import { compressionSupported, error, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
-import { closeCfgMenu } from "./menu/menu_old.js";
+import { closeCfgMenu, openCfgMenu } from "./menu/menu_old.js";
 import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
-/** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 10;
+//#region format version
 
+/** If this number is incremented, the features object data will be migrated to the new format */
+export const formatVersion = 11;
+
+//#region default data
+
+/** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 export const defaultData = purifyObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
     // @ts-expect-error
@@ -21,6 +26,8 @@ export const defaultData = purifyObj(
       return acc;
     }, {}) as FeatureConfig
 );
+
+//#region migrations
 
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {
@@ -36,11 +43,13 @@ export const migrations: DataMigrationsDict = {
       lyricsQueueButton: queueBtnsEnabled,
     };
   },
+
   // 2 -> 3 (v1.0)
   3: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
     "removeShareTrackingParam", "numKeysSkipToTime",
     "fixSpacing", "scrollToActiveSongBtn", "logLevel",
   ]),
+
   // 3 -> 4 (v1.1)
   4: (oldData: FeatureConfig) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
@@ -59,6 +68,7 @@ export const migrations: DataMigrationsDict = {
       listButtonsPlacement: "queueOnly",
     };
   },
+
   // 4 -> 5 (v2.0)
   5: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
     "localeFallback", "geniUrlBase", "geniUrlToken",
@@ -74,6 +84,7 @@ export const migrations: DataMigrationsDict = {
     "fixHdrIssues", "clearQueueBtn",
     "closeToastsTimeout", "disableDarkReaderSites",
   ]),
+
   // 5 -> 6 (v2.1)
   6: (oldData: FeatureConfig) => {
     const newData = useNewDefaultIfUnchanged(
@@ -95,9 +106,6 @@ export const migrations: DataMigrationsDict = {
     return newData;
   },
 
-  // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
-  // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
-
   // 6 -> 7 (v2.1-dev)
   7: (oldData: FeatureConfig) => {
     const newData = useNewDefaultIfUnchanged(
@@ -112,6 +120,7 @@ export const migrations: DataMigrationsDict = {
     newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
     return newData;
   },
+
   // 7 -> 8 (v2.1)
   8: (oldData: FeatureConfig) => {
     if("showVotesFormat" in oldData) {
@@ -122,6 +131,7 @@ export const migrations: DataMigrationsDict = {
       "autoLikeChannels"
     ]);
   },
+
   // 8 -> 9 (v2.2)
   9: (oldData: FeatureConfig) => {
     oldData.locale = oldData.locale.replace("_", "-") as TrLocale;
@@ -132,6 +142,7 @@ export const migrations: DataMigrationsDict = {
 
     return useDefaultConfig(oldData, ["resetEverything"]);
   },
+
   // 9 -> 10 (v3.0)
   10: (oldData: FeatureConfig) => {
     oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
@@ -161,7 +172,24 @@ export const migrations: DataMigrationsDict = {
       ],
     );
   },
+
+  // 10 -> 11 (v3.1)
+  11: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
+    useDefaultConfig(oldData, [
+      "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
+      "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
+      "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
+      "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
+      "songListTrackNumbersEnabled", "songListTrackNumbers",
+    ]),
+    [
+      { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
+      { key: "initTimeout", oldDefault: 8 },
+    ],
+  ),
 } as const satisfies DataMigrationsDict;
+
+//#region migration helpers
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
@@ -190,6 +218,8 @@ function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
   return newData as TConfig;
 }
 
+//#region store
+
 let canCompress = true;
 
 export const configStore = new DataStore({
@@ -201,14 +231,39 @@ export const configStore = new DataStore({
   decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
 });
 
+//#region init
+
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
   canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
 
+  let oldDataHash: string | undefined;
+  try {
+    const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
+    const oldDataObj = JSON.parse(oldData as string);
+    // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
+    if(oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
+      oldDataHash = await computeHash(JSON.stringify(oldDataObj), "sha256");
+  }
+  catch { void 0; }
+
   // remove extraneous keys
   let data = fixCfgKeys(await configStore.loadData());
   await configStore.setData(data);
+
+  // show prompt if config data was migrated
+  if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
+    if(await showPrompt({
+      type: "confirm",
+      message: t("config_data_changed_prompt_open_menu"),
+      confirmBtnText: t("open"),
+      confirmBtnTooltip: t("open_menu_tooltip"),
+      denyBtnText: t("prompt_close"),
+      denyBtnTooltip: t("click_to_close_tooltip"),
+    }))
+      window.addEventListener("bytm:ready", () => openCfgMenu(), { once: true });
+  }
 
   log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
@@ -228,6 +283,8 @@ export async function initConfig() {
 
   return { ...data };
 }
+
+//#region fix keys
 
 /**
  * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.  
@@ -249,6 +306,8 @@ export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   }
   return newCfg as FeatureConfig;
 }
+
+//#region feature getters/setters
 
 /** Returns the current feature config from the in-memory cache as a copy */
 export function getFeatures(): FeatureConfig {
@@ -276,21 +335,15 @@ export function setDefaultFeatures() {
   return res;
 }
 
+//#region reset config stuff
+
+/** Shows a confirmation prompt to reset the config */
 export async function promptResetConfig() {
   if(await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
     closeCfgMenu();
     enableDiscardBeforeUnload();
     await setDefaultFeatures();
-    if(location.pathname.startsWith("/watch")) {
-      const videoTime = await getVideoTime(0);
-      const url = new URL(location.href);
-      url.searchParams.delete("t");
-      if(videoTime)
-        url.searchParams.set("time_continue", String(videoTime));
-      location.replace(url.href);
-    }
-    else
-      await reloadTab();
+    await reloadTab();
   }
 }
 

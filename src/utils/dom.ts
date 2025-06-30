@@ -346,3 +346,17 @@ export function downloadFile(fileName: string, data: string | Blob, mimeType = "
 
   setTimeout(() => a.remove(), 1);
 }
+
+/**
+ * Moves the given {@linkcode element} to the {@linkcode target} element with the specified {@linkcode position} (after the target element, as a sibling by default).  
+ * Doesn't mess with any attached event listeners or other properties of the element.  
+ * @returns Returns the moved element
+ */
+export function transplantElement<TElem extends Element = HTMLElement>(element: TElem, target: Element, position: InsertPosition = "afterend"): TElem {
+  const inserted = target.insertAdjacentElement(position, element);
+
+  if(!inserted)
+    throw new Error(`Failed to transplant element at position "${position}"`);
+
+  return element;
+}

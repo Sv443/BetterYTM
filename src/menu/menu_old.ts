@@ -1,18 +1,22 @@
-import { compress, debounce, isScrollable, openDialogs, randRange, type Stringifiable } from "@sv443-network/userutils";
+import { compress, debounce, isScrollable, openDialogs, purifyObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
-import { featInfo } from "../features/index.js";
-import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml, type TrLocale, tl, reloadTab, hasKeyFor } from "../utils/index.js";
-import { emitSiteEvent, siteEvents } from "../siteEvents.js";
+import { featInfo, groupedCategories } from "../features/index.js";
+import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
+import { onInteraction } from "../utils/input.js";
+import { error, info, log, warn } from "../utils/logging.js";
+import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
+import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "../utils/translations.js";
+import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getFeatHelpDialog } from "../dialogs/featHelp.js";
-import { getChangelogDialog } from "../dialogs/changelog.js";
 import { BytmDialog, setCurrentDialogId } from "../components/BytmDialog.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { createHotkeyInput } from "../components/hotkeyInput.js";
 import { createToggleInput } from "../components/toggleInput.js";
-import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
+import { createRipple } from "../components/ripple.js";
+import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo, ResourceKey } from "../types.js";
 import pkg from "../../package.json" with { type: "json" };
 import localeMapping from "../../assets/locales.json" with { type: "json" };
 import "./menu_old.css";
@@ -23,7 +27,7 @@ let isCfgMenuMounted = false;
 export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
-const scrollIndicatorOffsetThreshold = 50;
+const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
 /** Locale at the point of initializing the config menu */
 let initLocale: TrLocale | undefined;
@@ -33,10 +37,10 @@ let initConfig: FeatureConfig | undefined;
 let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /**
- * Adds an element to open the BetterYTM menu
- * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
+ * Adds an element to open the BetterYTM menu  
+ * TODO: replace with new menu using BytmDialog - see https://github.com/Sv443/BetterYTM/issues/23
  */
-async function mountCfgMenu() {
+export async function mountCfgMenu() {
   try {
     if(isCfgMenuMounted)
       return;
@@ -88,12 +92,31 @@ async function mountCfgMenu() {
     const titleLogoElem = document.createElement("img");
     const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
     titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
+    titleLogoElem.tabIndex = 0;
+    titleLogoElem.role = "button";
     if(logoSrc)
       titleLogoElem.src = logoSrc;
+    onInteraction(titleLogoElem, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const clicks = Number(titleLogoElem.dataset?.clicks ?? "0");
+      if(clicks === 2) {
+        titleLogoElem.classList.add("somersault");
+        titleLogoElem.dataset.clicks = "0";
+      }
+      else {
+        titleLogoElem.classList.add("bounce");
+        titleLogoElem.dataset.clicks = String(clicks + 1);
+      }
+      titleLogoElem.addEventListener("animationend", () => {
+        titleLogoElem.classList.remove("bounce", "somersault");
+      }, { once: true });
+    });
 
     titleLogoHeaderCont.appendChild(titleLogoElem);
 
-    const titleElem = document.createElement("h2");
+    const titleElem = document.createElement("h1");
     titleElem.classList.add("bytm-menu-title");
 
     const titleTextElem = document.createElement("div");
@@ -161,7 +184,7 @@ async function mountCfgMenu() {
     closeElem.tabIndex = 0;
     closeElem.src = await getResourceUrl("img-close");
     closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-    onInteraction(closeElem, closeCfgMenu);
+    onInteraction(closeElem, (e) => closeCfgMenu(e));
 
     titleCont.appendChild(titleElem);
     titleCont.appendChild(linksCont);
@@ -175,7 +198,8 @@ async function mountCfgMenu() {
     const footerCont = document.createElement("div");
     footerCont.classList.add("bytm-menu-footer-cont");
 
-    const reloadFooterCont = document.createElement("div");
+    const leftSideFooterCont = document.createElement("div");
+    leftSideFooterCont.id = "bytm-menu-footer-left-side-cont";
 
     const reloadFooterEl = document.createElement("div");
     reloadFooterEl.id = "bytm-menu-footer-reload-hint";
@@ -196,7 +220,7 @@ async function mountCfgMenu() {
     });
 
     reloadFooterEl.appendChild(reloadTxtEl);
-    reloadFooterCont.appendChild(reloadFooterEl);
+    leftSideFooterCont.appendChild(reloadFooterEl);
 
     /** For copying plain when shift-clicking the copy button or when compression is not supported */
     const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
@@ -277,9 +301,142 @@ async function mountCfgMenu() {
 
     buttonsCont.appendChild(exportImportBtn);
 
-    footerCont.appendChild(reloadFooterCont);
+    footerCont.appendChild(leftSideFooterCont);
     footerCont.appendChild(buttonsCont);
 
+
+    //#region main body
+
+    const bodyCont = document.createElement("div");
+    bodyCont.id = "bytm-cfg-menu-main-body";
+
+    //#region load cfg & resolve categories
+
+    const featureCfg = getFeatures();
+    const featureCfgWithCategories = Object.entries(featInfo)
+      .reduce(
+        (acc, [key, { category }]) => {
+          if(!acc[category])
+            acc[category] = {} as Record<FeatureKey, unknown>;
+          acc[category][key as FeatureKey] = featureCfg[key as FeatureKey];
+          return acc;
+        },
+        {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
+      );
+
+    //#region sidenav
+
+    const sidenavCont = document.createElement("nav");
+    sidenavCont.classList.add("bytm-menu-sidenav");
+    sidenavCont.id = "bytm-cfg-menu-sidenav";
+    sidenavCont.tabIndex = 0;
+    sidenavCont.ariaLabel = t("cfg_menu_sidenav_label");
+
+    bodyCont.appendChild(sidenavCont);
+
+    const createSidenavHeader = (headerId: LooseUnion<FeatureCategory>, selected = false, isExtraInfoHeader = false) => {
+      try {
+        const headerElem = document.createElement("h2");
+        headerElem.id = `bytm-menu-nav-header-${headerId}`;
+        headerElem.classList.add("bytm-menu-sidenav-header", "bytm-no-select");
+        selected && headerElem.classList.add("selected");
+        headerElem.role = "radio";
+        headerElem.ariaChecked = String(selected);
+        headerElem.tabIndex = 0;
+        headerElem.ariaLevel = "2";
+        headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo.name);
+        headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
+
+        onInteraction(headerElem, () => {
+          const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
+          if(selectedHeader) {
+            selectedHeader.classList.remove("selected");
+            selectedHeader.ariaChecked = "false";
+          }
+          headerElem.classList.add("selected");
+          headerElem.ariaChecked = "true";
+
+          const catElem = featuresCont.querySelector(`#bytm-ftconf-category-${headerId}`);
+          if(catElem) {
+            document.querySelectorAll<HTMLElement>("#bytm-menu-opts .bytm-ftconf-category").forEach((el) => {
+              el.classList.add("hidden");
+              el.setAttribute("aria-hidden", "true");
+              el.setAttribute("inert", "true");
+            });
+            catElem.classList.remove("hidden");
+            catElem.removeAttribute("aria-hidden");
+            catElem.removeAttribute("inert");
+          }
+
+          checkToggleScrollIndicator();
+
+          emitSiteEvent("configHeaderSelected", headerId);
+        });
+
+        return createRipple(headerElem, {
+          triggerEvent: "mouseup",
+        });
+      }
+      catch(err) {
+        error(`Error while creating sidenav header for category '${headerId}':`, err);
+      }
+    };
+
+    // top section:
+    const sidenavTopSectionCont = document.createElement("section");
+    sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section");
+    sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
+    sidenavTopSectionCont.role = "radiogroup";
+    sidenavTopSectionCont.tabIndex = 0;
+    sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo.name });
+
+    // settings category headers:
+    let firstCatHeader = true;
+    for(const category of Object.keys(featureCfgWithCategories) as FeatureCategory[]) {
+      const catGroupIdx = groupedCategories.findIndex((group) => group.includes(category as FeatureCategory));
+      const catIdx = catGroupIdx >= 0
+        ? groupedCategories[catGroupIdx]!.findIndex((cat) => cat === category as FeatureCategory)
+        : undefined;
+
+      if(catGroupIdx > 0 && catIdx === 0) {
+        const hrElem = document.createElement("hr");
+        hrElem.classList.add("bytm-hr");
+        sidenavTopSectionCont.appendChild(hrElem);
+      }
+
+      const headerElem = createSidenavHeader(category, firstCatHeader);
+      headerElem && sidenavTopSectionCont.appendChild(headerElem);
+      firstCatHeader = false;
+    }
+
+    sidenavCont.appendChild(sidenavTopSectionCont);
+
+    // bottom section:
+    const sidenavBtmSectionCont = document.createElement("section");
+    sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section");
+    sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
+    sidenavBtmSectionCont.role = "radiogroup";
+    sidenavBtmSectionCont.tabIndex = 0;
+    sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo.name });
+
+    // extra info headers:
+    const extraInfoCategoryIDs = ["about", "changelog"] as const;
+
+    for(const id of extraInfoCategoryIDs) {
+      const headerElem = createSidenavHeader(id, firstCatHeader, true);
+      headerElem && sidenavBtmSectionCont.appendChild(headerElem);
+    }
+
+    sidenavCont.appendChild(sidenavBtmSectionCont);
+
+    siteEvents.once("cfgMenuMounted", () => {
+      document.querySelectorAll<HTMLAnchorElement>("#bytm-ftconf-category-about a, #bytm-ftconf-category-changelog a").forEach((linkEl) => {
+        linkEl.target = "_blank";
+      });
+
+      document.querySelector("#bytm-ftconf-category-changelog details")
+        ?.setAttribute("open", "true");
+    });
 
     //#region feature list
     const featuresCont = document.createElement("div");
@@ -313,7 +470,7 @@ async function mountCfgMenu() {
 
         if(requiresReload) {
           reloadFooterEl.classList.remove("hidden");
-          reloadFooterEl.setAttribute("aria-hidden", "false");
+          reloadFooterEl.removeAttribute("aria-hidden");
         }
         else {
           reloadFooterEl.classList.add("hidden");
@@ -357,18 +514,6 @@ async function mountCfgMenu() {
     /** Call whenever the feature config is changed */
     const confChanged = debounce(onCfgChange, 333);
 
-    const featureCfg = getFeatures();
-    const featureCfgWithCategories = Object.entries(featInfo)
-      .reduce(
-        (acc, [key, { category }]) => {
-          if(!acc[category])
-            acc[category] = {} as Record<FeatureKey, unknown>;
-          acc[category][key as FeatureKey] = featureCfg[key as FeatureKey];
-          return acc;
-        },
-      {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
-      );
-
     /**
      * Formats the value `v` based on the provided `key` using the `featInfo` object.  
      * If a custom `renderValue` function is defined for the `key`, it will be used to format the value.  
@@ -389,16 +534,32 @@ async function mountCfgMenu() {
       }
     };
 
+    //#region category conts & feat ctrls
+
+    const createCategoryContainer = (category: string) => {
+      const categoryCont = document.createElement("div");
+      categoryCont.id = `bytm-ftconf-category-${category}`;
+      categoryCont.classList.add("bytm-ftconf-category");
+      categoryCont.tabIndex = 0;
+      categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
+      categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
+      return categoryCont;
+    };
+
+    let firstCategory = true;
     for(const category in featureCfgWithCategories) {
       const featObj = featureCfgWithCategories[category as FeatureCategory];
 
-      const catHeaderElem = document.createElement("h3");
-      catHeaderElem.classList.add("bytm-ftconf-category-header");
-      catHeaderElem.role = "heading";
-      catHeaderElem.ariaLevel = "2";
-      catHeaderElem.tabIndex = 0;
-      catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
-      featuresCont.appendChild(catHeaderElem);
+      const categoryCont = createCategoryContainer(category);
+      if(firstCategory) {
+        categoryCont.removeAttribute("inert");
+        categoryCont.removeAttribute("aria-hidden");
+      }
+      else {
+        categoryCont.classList.add("hidden");
+        categoryCont.setAttribute("inert", "true");
+        categoryCont.setAttribute("aria-hidden", "true");
+      }
 
       for(const featKey in featObj) {
         const ftInfo = featInfo[featKey as FeatureKey] as FeatureInfo[keyof typeof featureCfg];
@@ -422,7 +583,7 @@ async function mountCfgMenu() {
         {
           const featLeftSideElem = document.createElement("div");
           featLeftSideElem.classList.add("bytm-ftitem-leftside");
-          if(getFeature("advancedMode")) {
+          if(mode === "development") {
             const defVal = fmtVal(ftDefault, featKey as FeatureKey);
             const extraTxts = [
               `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
@@ -434,7 +595,7 @@ async function mountCfgMenu() {
             const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
             const adv = ftInfo.advanced ? " (advanced feature)" : "";
 
-            ftConfElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
+            ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
           }
 
           if(!await hasKeyFor("en-US", `feature_desc_${featKey}`)) {
@@ -491,8 +652,9 @@ async function mountCfgMenu() {
           helpElem && featLeftSideElem.appendChild(helpElem);
 
           ftConfElem.appendChild(featLeftSideElem);
-        }
+        } // end left side element
 
+        //#region input elements
         {
           let inputType: string | undefined = "text";
           let inputTag: string | undefined = "input";
@@ -551,7 +713,7 @@ async function mountCfgMenu() {
               e.preventDefault();
               e.stopPropagation();
 
-              copyToClipboard(getFeatures()[featKey as keyof FeatureConfig] as Stringifiable);
+              copyToClipboard(getFeatures()[featKey as keyof FeatureConfig] as Stringifiable ?? "");
 
               advCopyHintElem.style.display = "inline";
               if(typeof hiddenCopiedTxtTimeout === "undefined") {
@@ -562,7 +724,7 @@ async function mountCfgMenu() {
               }
             };
 
-            onInteraction(advCopyHiddenBtn, copyHiddenInteraction);
+            onInteraction(advCopyHiddenBtn, (e) => copyHiddenInteraction(e));
 
             advCopyHiddenCont = document.createElement("span");
 
@@ -752,10 +914,65 @@ async function mountCfgMenu() {
           }
 
           ftConfElem.appendChild(ctrlElem);
-        }
+        } // end right side element
 
-        featuresCont.appendChild(ftConfElem);
+        categoryCont.appendChild(ftConfElem);
       }
+
+      featuresCont.appendChild(categoryCont);
+      firstCategory = false;
+    } // end for(const category in featureCfgWithCategories)
+
+    //#region extra info categories
+
+    const extraInfoCategoryElements = {
+      about: async () => {
+        const aboutTextCont = document.createElement("p");
+        aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
+        aboutTextCont.classList.add("bytm-markdown-container");
+        const aboutTrParams = purifyObj({
+          scriptName: scriptInfo.name,
+          scriptVersion: pkg.version,
+          buildNumber,
+          authorName: pkg.author.name,
+          authorLink: pkg.author.url,
+          githubLink: scriptInfo.namespace,
+          greasyforkLink: pkg.hosts.greasyfork,
+          openuserjsLink: pkg.hosts.openuserjs,
+          fundingLink: pkg.funding.url,
+          discordLink: "https://dc.sv443.net/",
+        });
+        log("About text params:", aboutTrParams);
+        setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
+        return [aboutTextCont] as HTMLElement[];
+      },
+      changelog: async () => {
+        const mdContElem = document.createElement("div");
+        mdContElem.id = "bytm-cfg-menu-changelog-md-cont";
+        mdContElem.classList.add("bytm-markdown-container");
+        setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
+
+        siteEvents.on("cfgMenuMounted", () => {
+          const detailsElems = mdContElem.querySelectorAll("details");
+          detailsElems.forEach((el) => {
+            el.addEventListener("toggle", () => checkToggleScrollIndicator());
+          });
+        });
+
+        return [mdContElem] as HTMLElement[];
+      },
+    } as const satisfies Record<typeof extraInfoCategoryIDs[number], () => Promise<HTMLElement[]>>;
+
+    for(const category of extraInfoCategoryIDs) {
+      const categoryCont = createCategoryContainer(category);
+      categoryCont.classList.add("bytm-ftconf-extra-info-category", "hidden");
+      categoryCont.setAttribute("inert", "true");
+      categoryCont.setAttribute("aria-hidden", "true");
+
+      const infoElems = await extraInfoCategoryElements[category as typeof extraInfoCategoryIDs[number]]();
+      infoElems.forEach((el) => categoryCont.appendChild(el));
+
+      featuresCont.appendChild(categoryCont);
     }
 
     //#region reset inputs on external change
@@ -827,48 +1044,75 @@ async function mountCfgMenu() {
     bottomAnchor.id = "bytm-menu-bottom-anchor";
     featuresCont.appendChild(bottomAnchor);
 
+    bodyCont.appendChild(featuresCont);
+
 
     //#region finalize
     menuContainer.appendChild(headerElem);
-    menuContainer.appendChild(featuresCont);
+    menuContainer.appendChild(bodyCont);
 
-    const subtitleElemCont = document.createElement("div");
-    subtitleElemCont.id = "bytm-menu-subtitle-cont";
-    subtitleElemCont.classList.add("bytm-ellipsis");
+    const modeItems = [] as [id: string, trKey: TrKey, resourceKey: ResourceKey & `${"icon" | "img"}-${string}`][];
 
-    const versionEl = document.createElement("a");
-    versionEl.id = "bytm-menu-version-anchor";
-    versionEl.classList.add("bytm-link", "bytm-ellipsis");
-    versionEl.role = "button";
-    versionEl.tabIndex = 0;
-    versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
-    versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
-    onInteraction(versionEl, async (e: MouseEvent | KeyboardEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const dlg = await getChangelogDialog();
-      dlg.on("close", () => openCfgMenu());
-      await dlg.mount();
-      closeCfgMenu(undefined, false);
-      await dlg.open();
-    });
-
-    subtitleElemCont.appendChild(versionEl);
-    titleElem.appendChild(subtitleElemCont);
-
-    const modeItems = [] as TrKey[];
-    mode === "development" && modeItems.push("dev_mode");
-    getFeature("advancedMode") && modeItems.push("advanced_mode");
+    mode === "development" && modeItems.push(["dev", "dev_mode", "img-logo_dev"]);
+    getFeature("advancedMode") && modeItems.push(["advanced", "advanced_mode", "icon-advanced_mode_large"]);
 
     if(modeItems.length > 0) {
-      const modeDisplayEl = document.createElement("span");
-      modeDisplayEl.id = "bytm-menu-mode-display";
-      modeDisplayEl.classList.add("bytm-ellipsis");
-      modeDisplayEl.textContent = `[${t("active_mode_display", arrayWithSeparators(modeItems.map(v => t(`${v}_short`)), ", ", " & "))}]`;
-      modeDisplayEl.ariaLabel = modeDisplayEl.title = tp("active_mode_tooltip", modeItems, arrayWithSeparators(modeItems.map(t), ", ", " & "));
+      const modeDisplayCont = document.createElement("div");
+      modeDisplayCont.id = "bytm-menu-mode-display-cont";
 
-      subtitleElemCont.appendChild(modeDisplayEl);
+      for(const [id, trKey, resourceKey] of modeItems) {
+        const isSvg = resourceKey.startsWith("icon-");
+
+        const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM.info.scriptHandler ?? "(your userscript manager extension)" });
+
+        const modeDispWrapperEl = document.createElement("div");
+        modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
+        modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
+        modeDispWrapperEl.addEventListener("mouseenter", () => {
+          modeDispWrapperEl.classList.add("expand");
+        });
+        modeDispWrapperEl.addEventListener("mouseleave", () => {
+          modeDispWrapperEl.addEventListener("transitionend", () => {
+            modeDispWrapperEl.classList.remove("expand");
+          }, { once: true });
+        });
+
+        if(isSvg) {
+          const modeDisplayWrapperEl = document.createElement("span");
+          modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
+          modeDisplayWrapperEl.classList.add("bytm-menu-mode-display");
+          modeDisplayWrapperEl.tabIndex = 0;
+          modeDisplayWrapperEl.role = "img";
+          modeDisplayWrapperEl.title = modeDisplayWrapperEl.ariaLabel = modeElTooltip;
+
+          const svgContent = await resourceAsString(resourceKey);
+          if(!svgContent) {
+            error(`Couldn't create mode display element for mode '${id}' because the resource '${resourceKey}' couldn't be loaded.`);
+            continue;
+          }
+          setInnerHtml(modeDisplayWrapperEl, svgContent);
+          modeDispWrapperEl.appendChild(modeDisplayWrapperEl);
+        }
+        else {
+          const modeDisplayEl = document.createElement("img");
+          modeDisplayEl.id = `bytm-menu-mode-display-${id}`;
+          modeDisplayEl.classList.add("bytm-menu-mode-display");
+          modeDisplayEl.tabIndex = 0;
+          modeDisplayEl.role = "img";
+          modeDisplayEl.title = modeDisplayEl.ariaLabel = modeDisplayEl.alt = modeElTooltip;
+          modeDisplayEl.src = await getResourceUrl(resourceKey);
+          modeDispWrapperEl.appendChild(modeDisplayEl);
+        }
+
+        const labelEl = document.createElement("span");
+        labelEl.classList.add("bytm-menu-mode-display-label");
+        labelEl.textContent = t(trKey);
+        modeDispWrapperEl.appendChild(labelEl);
+
+        modeDisplayCont.appendChild(modeDispWrapperEl);
+      }
+
+      leftSideFooterCont.insertAdjacentElement("afterbegin", modeDisplayCont);
     }
 
     menuContainer.appendChild(footerCont);
@@ -879,6 +1123,8 @@ async function mountCfgMenu() {
     window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250));
 
     log(`Mounted config menu element in ${Date.now() - startTs}ms`);
+
+    forceEmitSiteEvent("cfgMenuMounted");
 
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;

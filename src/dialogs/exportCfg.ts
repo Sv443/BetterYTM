@@ -84,7 +84,7 @@ async function renderBody() {
     textAreaElem.setAttribute("revealed", "true");
   };
 
-  onInteraction(textAreaElem, textAreaInteraction);
+  onInteraction(textAreaElem, (e) => textAreaInteraction(e));
 
   siteEvents.on("configChanged", async (data) => {
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
