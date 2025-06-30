@@ -13,20 +13,21 @@
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - 🎵 Show a track number in the currently playing queue and playlists.
 - **Changes and improvements:**
-  - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies
-    - Fixed album artwork being fetched with wrong parameters
-    - Allow manually toggling between thumbnail providers
-    - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached
-  - 🎵 Decoupled volume slider step and scroll step
+  - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies.
+    - Fixed album artwork being fetched with wrong parameters.
+    - Allow manually toggling between thumbnail providers.
+    - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
+  - 🎵 Decoupled volume slider step and scroll step.
+  - 🎵 The "improve links" feature now also applies to all types of song list items. Clicking them anywhere will now play the song. Clicking and dragging still works.
 - **Fixes:**
-  - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering
-  - 🎵 Fixed SyntaxError when no AM album artwork found
-  - Fixed Error when clicking on a BytmDialog's exit button
-  - [🚧 WIP] 🎵 Fixed list buttons not disappearing with the native buttons in song lists
-  - [🚧 WIP] 🎵 Fixed anchor improvements feature on the search page
-  - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension
-  - [🚧 WIP] Fixed page scroll bar reappearing after BytmDialog opened over top of the config menu is closed
-  - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this)
+  - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering.
+  - 🎵 Fixed SyntaxError when no AM album artwork found.
+  - Fixed Error when clicking on a BytmDialog's exit button.
+  - [🚧 WIP] 🎵 Fixed list buttons not disappearing with the native buttons in song lists.
+  - [🚧 WIP] 🎵 Fixed anchor improvements feature on the search page.
+  - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension.
+  - [🚧 WIP] Fixed page scroll bar reappearing after BytmDialog opened over top of the config menu is closed.
+  - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this).
 
 <details><summary>Click to expand plugin and internal changes</summary>
 
@@ -43,6 +44,7 @@
     - `onMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function.
     - `onceMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once.
   - Auth token is now in the format of a UUID instead of a 16-character, 36-radix string.
+  - Added SelectorObserver instance `searchPage`, as the root observer for the YTM search page.
 - **Internal Changes:**
   - Added [`NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) wrapper class `MultiNanoEmitter` that allows listening to when one, all, or a given subset of events have been emitted before executing a callback. It shares the same methods as the base `NanoEmitter`, but has the new methods `onMulti()` and `onceMulti()` for listening to multiple events. This new class is exposed on the plugin interface next to the `NanoEmitter` class.
   - Made `siteEvents` system use a `MultiNanoEmitter` instance instead of a `NanoEmitter` instance, so it can now also be used to listen to multiple events at once.

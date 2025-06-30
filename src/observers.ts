@@ -1,4 +1,4 @@
-import { SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import { getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import { emitInterface } from "./interface.js";
 import { error, getDomain } from "./utils/index.js";
 import type { Domain } from "./types.js";
@@ -24,6 +24,7 @@ export type SharedObserverName =
 // YTM only
 export type YTMObserverName =
   | "browseResponse"         // the /channel/UC... page
+  | "searchPage"             // the search page
   | "navBar"                 // the navigation / title bar at the top of the page
   | "mainPanel"              // the main content panel - includes things like the video element
   | "sideBar"                // the sidebar on the left side of the page
@@ -138,6 +139,19 @@ export function initObservers() {
 
       globservers.body.addListener(browseResponseSelector, {
         listener: () => globservers.browseResponse.enable(),
+      });
+
+      //#region searchPage
+      // -> the search page
+      //    enabled by "body"
+      const searchPageSelector = "ytmusic-search-page";
+      globservers.searchPage = new SelectorObserver(searchPageSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(searchPageSelector, {
+        listener: () => globservers.searchPage.enable(),
       });
 
       //#region navBar
@@ -352,6 +366,9 @@ export function initObservers() {
 
     globserversReady = true;
     emitInterface("bytm:observersReady");
+
+    //#DEBUG:
+    getUnsafeWindow().BYTM.globservers = globservers;
   }
   catch(err) {
     error("Failed to initialize observers:", err);

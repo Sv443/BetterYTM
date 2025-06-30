@@ -313,6 +313,71 @@ export async function addAnchorImprovements() {
   catch(err) {
     error("Couldn't add anchors to sidebar items due to an error:", err);
   }
+
+  //#region current song list
+
+  try {
+    const checkCurrentList = () => {
+      addSelectorListener("sidePanel", "ytmusic-player-queue #contents, ytmusic-player-queue #automix-contents", {
+        all: true,
+        listener(songLists) {
+          songLists.forEach((songListEl) => {
+            const items = songListEl.querySelectorAll<HTMLElement>("ytmusic-player-queue-item");
+            if(!items.length)
+              return;
+
+            const itemsAmt = improveSongListClickArea(items);
+            log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural("item", itemsAmt)}`);
+          });
+        },
+      });
+    };
+
+    siteEvents.on("queueChanged", () => checkCurrentList());
+    siteEvents.on("autoplayQueueChanged", () => checkCurrentList());
+
+    const genericSongListListener = (songLists: NodeListOf<HTMLElement>) => {
+      songLists.forEach((songListEl) => {
+        const items = songListEl.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer, .card-content-container");
+        if(!items.length)
+          return;
+
+        const itemsAmt = improveSongListClickArea(items);
+        log(`Improved clickable area of ${itemsAmt} song list ${autoPlural("item", itemsAmt)}`);
+      });
+    };
+
+    const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
+      if(path.includes("/search")) {
+        pathChangedUnsub();
+        addSelectorListener("searchPage", `\
+ytmusic-shelf-renderer #contents,
+ytmusic-card-shelf-renderer .card-container`, {
+          continuous: true,
+          all: true,
+          debounce: 250,
+          listener: genericSongListListener,
+        });
+      }
+    });
+
+    addSelectorListener("browseResponse", `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
+      continuous: true,
+      all: true,
+      debounce: 250,
+      listener: genericSongListListener,
+    });
+  }
+  catch(err) {
+    error("Couldn't add anchors to song list items due to an error:", err);
+  }
 }
 
 const sidebarPaths = [
@@ -339,6 +404,47 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 
     addParent(item, anchorElem);
   });
+}
+
+function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
+  let itemsAmt = 0;
+
+  items.forEach((item) => {
+    if(item.classList.contains("bytm-click-area-improved"))
+      return;
+    item.classList.add("bytm-click-area-improved");
+
+    item.addEventListener("click", (e) => {
+      const tgt = e.target as HTMLElement | null;
+      if(!tgt)
+        return;
+
+      const conditions = [
+        (el: HTMLElement) => el.tagName.toLowerCase() === "yt-formatted-string",
+        (el: HTMLElement) => el.classList.contains("yt-formatted-string"),
+        (el: HTMLElement) => el.tagName.toLowerCase() === "ytmusic-player-queue-item",
+        (el: HTMLElement) => el.classList.contains("ytmusic-player-queue-item"),
+        (el: HTMLElement) => el.tagName.toLowerCase() === "ytmusic-responsive-list-item-renderer",
+        (el: HTMLElement) => el.classList.contains("ytmusic-responsive-list-item-renderer"),
+        (el: HTMLElement) => el.classList.contains("ytmusic-card-shelf-renderer"),
+      ];
+
+      const antiConditions = [
+        (el: HTMLElement) => el.tagName.toLowerCase() === "a",
+        (el: HTMLElement) => el.getAttribute("href")?.length,
+        (el: HTMLElement) => el.classList.contains("bytm-anchor"),
+      ];
+
+      console.log(">>>", tgt);
+
+      if(conditions.some((c) => c(tgt)) && !antiConditions.some((c) => c(tgt)))
+        item.querySelector<HTMLElement>("ytmusic-play-button-renderer")?.click();
+    });
+
+    itemsAmt++;
+  });
+
+  return itemsAmt;
 }
 
 //#region share track param
