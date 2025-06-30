@@ -7,6 +7,6 @@ ytmusic-player-page ytmusic-player-queue-item::before {
   content: counter(section, decimal-leading-zero);
   font-size: 1.5em;
   font-weight: bold;
-  color: #fff;
+  color: #ededed;
   margin-right: 12px;
 }
