@@ -249,6 +249,10 @@
   "plugin_intent_description_ReadAutoLikeData": "This plugin can read auto-like data",
   "plugin_intent_name_WriteAutoLikeData": "Write Auto-Like Data",
   "plugin_intent_description_WriteAutoLikeData": "This plugin can write to auto-like data",
+  "plugin_intent_name_InternalAccess": "Internal Access",
+  "plugin_intent_description_InternalAccess": "This plugin has deeper access to the internal functions",
+  "plugin_intent_name_FullAccess": "Full Access",
+  "plugin_intent_description_FullAccess": "This plugin has unrestricted access",
 
   "plugin_validation_error_no_property": "No property '%1' with type '%2'",
   "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
