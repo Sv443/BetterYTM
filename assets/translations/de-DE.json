@@ -301,7 +301,7 @@
   "feature_desc_fixHdrIssues": "Verhindere einige Rendering-Probleme bei der Verwendung einer HDR-kompatiblen Grafikkarte und Monitor",
   "feature_desc_showVotes": "Zeige die Anzahl der Likes und Dislikes auf dem aktuell spielenden Song",
   "feature_helptext_showVotes": "Dieses Feature ist dank Return YouTube Dislike möglich. Es zeigt die ungefähre Anzahl von Likes und Dislikes auf dem aktuell spielenden Song an.",
-  "feature_desc_swapLikeDislikeButtons": "Tausche die Position der Like- und Dislike-Buttons in der Mediensteuerung",
+  "feature_desc_swapLikeDislikeButtons": "Tausche die Position der Like- und Dislike-Buttons",
   "feature_helptext_swapLikeDislikeButtons": "Auf YouTube befindet sich der Like-Button auf der linken Seite, auf YTM ist es genau anders herum. Wenn du diese Funktion aktivierst, werden die beiden Seiten konsistent, indem sie auf YTM getauscht werden.",
   "feature_desc_numbersFormat": "Wie sollen Zahlen formatiert werden?",
   "feature_desc_watchPageFullSize": "Vergrößere den Hauptinhalt auf der /watch-Seite, um den gesamt verfügbaren Platz zu nutzen",

@@ -301,7 +301,7 @@
   "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
   "feature_desc_showVotes": "Mostrar la cantidad de me gusta y no me gusta en la canción que se está reproduciendo actualmente",
   "feature_helptext_showVotes": "Esta función está alimentada por Return YouTube Dislike y mostrará la cantidad aproximada de me gusta y no me gusta en la canción que se está reproduciendo actualmente.",
-  "feature_desc_swapLikeDislikeButtons": "Intercambiar los botones de me gusta y no me gusta en los controles multimedia",
+  "feature_desc_swapLikeDislikeButtons": "Intercambiar la posición de los botones de me gusta y no me gusta",
   "feature_helptext_swapLikeDislikeButtons": "En YouTube, el botón de me gusta está en el lado izquierdo. En YouTube Music está al revés. Habilitar esta función hace que las dos páginas sean consistentes al intercambiarlas en YouTube Music.",
   "feature_desc_numbersFormat": "¿Cómo deberían formatearse los números?",
   "feature_desc_watchPageFullSize": "Hacer que el contenido principal de la página /watch use todo el espacio disponible",

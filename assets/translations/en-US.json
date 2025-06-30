@@ -303,7 +303,7 @@
   "feature_desc_fixHdrIssues": "Prevent some rendering issues when using an HDR-compatible GPU and monitor",
   "feature_desc_showVotes": "Show the amount of likes and dislikes on the currently playing song",
   "feature_helptext_showVotes": "This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.",
-  "feature_desc_swapLikeDislikeButtons": "Swap the position of the like and dislike buttons in the media controls",
+  "feature_desc_swapLikeDislikeButtons": "Swap the position of the like and dislike buttons",
   "feature_helptext_swapLikeDislikeButtons": "On YT, the like button is on the left side. On YTM it's the other way around. Enabling this feature makes the two pages consistent by swapping them around on YTM.",
   "feature_desc_numbersFormat": "How should numbers be formatted?",
   "feature_desc_watchPageFullSize": "Make the main content on the /watch page use all available space",

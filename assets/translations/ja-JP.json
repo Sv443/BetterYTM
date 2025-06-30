@@ -301,7 +301,7 @@
   "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
   "feature_desc_showVotes": "現在再生中の曲のいいねと嫌いの数を表示する",
   "feature_helptext_showVotes": "この機能は Return YouTube Dislike によって提供され、現在再生中の曲のいいねと嫌いの数をおおよその数で表示します。",
-  "feature_desc_swapLikeDislikeButtons": "メディアコントロール内の「いいね！」と「嫌い」ボタンの位置を入れ替える",
+  "feature_desc_swapLikeDislikeButtons": "「いいね！」と「嫌い」ボタンの位置を入れ替える",
   "feature_helptext_swapLikeDislikeButtons": "YouTube では「いいね！」ボタンが左側にありますが、YouTube Music ではその逆です。この機能を有効にすると、YTM 上でボタンの位置を入れ替えて、両方のページを一貫性のあるものにします。",
   "feature_desc_numbersFormat": "数字のフォーマット方法",
   "feature_desc_watchPageFullSize": "/watch ページのメインコンテンツを利用可能なすべてのスペースで使用する",

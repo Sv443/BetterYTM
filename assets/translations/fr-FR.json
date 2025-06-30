@@ -301,7 +301,7 @@
   "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",
   "feature_desc_showVotes": "Afficher le nombre de j'aime et de je n'aime pas sur la chanson en cours de lecture",
   "feature_helptext_showVotes": "Cette fonctionnalité est alimentée par Return YouTube Dislike et affichera le nombre approximatif de j'aime et de je n'aime pas sur la chanson en cours de lecture.",
-  "feature_desc_swapLikeDislikeButtons": "Échanger la position des boutons j'aime et je n'aime pas dans les contrôles multimédias",
+  "feature_desc_swapLikeDislikeButtons": "Échanger la position des boutons j'aime et je n'aime pas",
   "feature_helptext_swapLikeDislikeButtons": "Sur YouTube, le bouton j'aime est du côté gauche. Sur YTM, c'est l'inverse. En activant cette fonctionnalité, les deux pages seront cohérentes en les échangeant sur YTM.",
   "feature_desc_numbersFormat": "Comment les nombres doivent-ils être formatés?",
   "feature_desc_watchPageFullSize": "Rendre le contenu principal de la page /watch utiliser tout l'espace disponible",

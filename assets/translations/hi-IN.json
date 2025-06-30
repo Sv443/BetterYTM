@@ -298,7 +298,7 @@
   "feature_desc_fixHdrIssues": "एचडीआर-संगत जीपीयू और मॉनिटर का उपयोग करते समय कुछ रेंडरिंग समस्याओं को रोकें",
   "feature_desc_showVotes": "वर्तमान गाने पर लाइक और नापसंद की संख्या दिखाएं",
   "feature_helptext_showVotes": "यह सुविधा Return YouTube Dislike द्वारा संचालित है और वर्तमान गाने पर लाइक और नापसंद की लगभग संख्या दिखाएगी।",
-  "feature_desc_swapLikeDislikeButtons": "मीडिया नियंत्रण में लाइक और नापसंद बटन की स्थिति बदलें",
+  "feature_desc_swapLikeDislikeButtons": "लाइक और नापसंद बटन की स्थिति बदलें",
   "feature_helptext_swapLikeDislikeButtons": "YT पर, लाइक बटन बाईं ओर होता है। YTM पर यह इसके विपरीत है। इस सुविधा को सक्षम करने से दो पृष्ठों को सुसंगत बनाया जाएगा और YTM पर उन्हें बदल दिया जाएगा।",
   "feature_desc_numbersFormat": "संख्याएँ कैसे स्वरूपित की जाएं?",
   "feature_desc_watchPageFullSize": "/वॉच पृष्ठ पर मुख्य सामग्री को सभी उपलब्ध स्थान का उपयोग करने दें",
