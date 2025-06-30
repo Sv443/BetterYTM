@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@244ee7f2/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8164b0a3/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -335,12 +335,16 @@ var PluginIntent;
     PluginIntent[PluginIntent["ReadAutoLikeData"] = 64] = "ReadAutoLikeData";
     /** Plugin can write to auto-like data */
     PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
+    /** Plugin has access to deeply internal functions and instances */
+    PluginIntent[PluginIntent["InternalAccess"] = 256] = "InternalAccess";
+    /** Grants all other intents */
+    PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
 })(PluginIntent || (PluginIntent = {}));// these strings will have their values replaced by the post-build script:
 const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "244ee7f2",
+    buildNumber: "8164b0a3",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2759,6 +2763,11 @@ function enableDiscardBeforeUnload() {
     discardBeforeUnload = true;
     info("Disabled popup before leaving the site");
 }
+/** (Re-)enables the popup before leaving the site */
+function disableDiscardBeforeUnload() {
+    discardBeforeUnload = false;
+    info("Enabled popup before leaving the site");
+}
 /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
 async function initBeforeUnloadHook() {
     try {
@@ -3357,7 +3366,7 @@ async function renderBody$3() {
         listContainerEl.appendChild(noPluginsEl);
         return listContainerEl;
     }
-    for (const [, { def: { plugin, intents } }] of registeredPlugins) {
+    for (const [, { def: { plugin, intents: intentsRaw } }] of registeredPlugins) {
         const rowEl = document.createElement("div");
         rowEl.classList.add("bytm-plugin-list-row");
         const leftEl = document.createElement("div");
@@ -3422,11 +3431,12 @@ async function renderBody$3() {
         const rightEl = document.createElement("div");
         rightEl.classList.add("bytm-plugin-list-row-right");
         rowEl.appendChild(rightEl);
+        const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
         const intentsAmount = Object.keys(PluginIntent).length / 2;
-        const intentsArr = typeof intents === "number" && intents > 0 ? (() => {
+        const intentsArr = typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
             const arr = [];
             for (let i = 0; i < intentsAmount; i++)
-                if (intents & (2 ** i))
+                if (intentsBitSet & (2 ** i))
                     arr.push(2 ** i);
             return arr;
         })() : [];
@@ -8421,6 +8431,7 @@ async function clearConfig() {
 const globalFuncs = purifyObj({
     // meta:
     /*🔒*/ getPluginInfo,
+    /*🔒*/ getLibraryHook,
     // bytm-specific:
     getDomain,
     getResourceUrl,
@@ -8602,6 +8613,17 @@ function emitOnPlugins(event, predicate = true, ...data) {
             events.emit(event, ...data);
 }
 /**
+ * @private FOR INTERNAL USE ONLY!
+ * Returns the internal plugin def and events objects, or undefined if it doesn't exist.
+ */
+function getPlugin(...args) {
+    return typeof args[0] === "string" && typeof args[1] === "undefined"
+        ? registeredPlugins.get(args[0])
+        : args.length === 2
+            ? registeredPlugins.get(`${args[1]}/${args[0]}`)
+            : registeredPlugins.get(getPluginKey(args[0]));
+}
+/**
  * Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered.
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  * @public Intended for general use in plugins.
@@ -8615,6 +8637,31 @@ function getPluginInfo(...args) {
         : args.length === 2
             ? `${args[2]}/${args[1]}`
             : getPluginKey(args[1]))) === null || _a === void 0 ? void 0 : _a.def);
+}
+/**
+ * @private FOR INTERNAL USE ONLY!
+ * Whether the given plugin has the given granted intents.
+ */
+function pluginHasPerms(...args) {
+    var _a;
+    const plugin = typeof args[0] === "string" && typeof args[1] === "string"
+        ? getPlugin(args[0], args[1])
+        : getPlugin(args[0]);
+    if (!plugin)
+        return false;
+    const perms = (_a = (typeof args[0] === "string" && typeof args[1] === "string" ? args[2] : args[1])) !== null && _a !== void 0 ? _a : [];
+    if (!Array.isArray(perms))
+        throw new TypeError("The second argument must be an array of PluginIntent values");
+    const pluginIntents = defToIntentsBitSet(plugin.def);
+    return UserUtils__namespace.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => UserUtils__namespace.bitSetHas(pluginIntents, perm));
+}
+function defToIntentsBitSet(def) {
+    if (Array.isArray(def.intents))
+        return def.intents.reduce((acc, intent) => acc | intent, 0);
+    else if (typeof def.intents === "number")
+        return def.intents;
+    else
+        return 0;
 }
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 function validatePluginDef(pluginDef) {
@@ -8647,22 +8694,24 @@ function resolveToken(token) {
  */
 function setLocaleInterface(token, locale) {
     const pluginId = resolveToken(token);
-    if (pluginId === undefined)
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteTranslations))
         return;
     setLocale(locale);
     emitInterface("bytm:setLocale", { pluginId, locale });
 }
 /**
- * Returns the current feature config, with sensitive values replaced by `undefined`
+ * Returns the current feature config, with sensitive values replaced by `undefined`, unless the `SeeHiddenConfigValues` intent is granted.
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 function getFeaturesInterface(token) {
-    if (resolveToken(token) === undefined)
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.ReadFeatureConfig))
         return undefined;
+    const hiddenAccess = pluginHasPerms(pluginId, PluginIntent.SeeHiddenConfigValues);
     const features = getFeatures();
     for (const ftKey of Object.keys(features)) {
         const info = featInfo[ftKey];
-        if (info && info.valueHidden) // @ts-expect-error
+        if (info && info.valueHidden && !hiddenAccess) // @ts-expect-error
             features[ftKey] = undefined;
     }
     return features;
@@ -8672,7 +8721,8 @@ function getFeaturesInterface(token) {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 function saveFeaturesInterface(token, features) {
-    if (resolveToken(token) === undefined)
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteFeatureConfig))
         return;
     setFeatures(features);
 }
@@ -8681,7 +8731,8 @@ function saveFeaturesInterface(token, features) {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 function getAutoLikeDataInterface(token) {
-    if (resolveToken(token) === undefined)
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.ReadAutoLikeData))
         return;
     return autoLikeStore.getData();
 }
@@ -8690,9 +8741,27 @@ function getAutoLikeDataInterface(token) {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 function saveAutoLikeDataInterface(token, data) {
-    if (resolveToken(token) === undefined)
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteAutoLikeData))
         return;
     return autoLikeStore.setData(data);
+}
+//#region library hook
+/** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
+function getLibraryHook(token) {
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.InternalAccess))
+        return undefined;
+    return {
+        emitInterface,
+        emitSiteEvent,
+        siteEvents,
+        addSelectorListener,
+        showPrompt,
+        setGlobalProp,
+        enableDiscardBeforeUnload,
+        disableDiscardBeforeUnload,
+    };
 }//#region globals
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
