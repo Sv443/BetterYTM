@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8164b0a3/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9641f1e9/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -344,7 +344,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "8164b0a3",
+    buildNumber: "9641f1e9",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -8649,7 +8649,8 @@ function pluginHasPerms(...args) {
         : getPlugin(args[0]);
     if (!plugin)
         return false;
-    const perms = (_a = (typeof args[0] === "string" && typeof args[1] === "string" ? args[2] : args[1])) !== null && _a !== void 0 ? _a : [];
+    const asArray = (value) => Array.isArray(value) ? value : [value];
+    const perms = (_a = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2]) : asArray(args[1]))) !== null && _a !== void 0 ? _a : [];
     if (!Array.isArray(perms))
         throw new TypeError("The second argument must be an array of PluginIntent values");
     const pluginIntents = defToIntentsBitSet(plugin.def);

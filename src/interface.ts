@@ -439,7 +439,10 @@ export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvabl
   if(!plugin)
     return false;
 
-  const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? args[2] : args[1] as PluginIntent[]) ?? [];
+  const asArray = (value: PluginIntent | PluginIntent[]) =>
+    Array.isArray(value) ? value : [value];
+
+  const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2] as PluginIntent) : asArray(args[1] as PluginIntent) as PluginIntent[]) ?? [];
   if(!Array.isArray(perms))
     throw new TypeError("The second argument must be an array of PluginIntent values");
 
