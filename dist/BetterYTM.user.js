@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0ad97ab3/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@edbad464/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -98,6 +98,8 @@ var resources = {
 	"css-fix_sponsorblock": "style/fixSponsorBlock.css",
 	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
 	"css-show_votes": "style/showVotes.css",
+	"css-track_numbers_current_queue": "style/trackNumbersCurrentQueue.css",
+	"css-track_numbers_song_lists": "style/trackNumbersSongLists.css",
 	"css-vol_slider_size": "style/volSliderSize.css",
 	"css-watch_page_full_size": "style/watchPageFullSize.css",
 	"doc-license": {
@@ -338,7 +340,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "0ad97ab3",
+    buildNumber: "edbad464",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -708,6 +710,7 @@ function tlp(locale, key, num, ...args) {
         return t(key, ...args);
     return trans;
 }// hoist the class declaration because either rollup or babel is being a hoe
+//#region vars
 /** Whether the dialog system has been initialized */
 let dialogsInitialized = false;
 /** Container element for all BytmDialog elements */
@@ -719,8 +722,10 @@ let currentDialogId = null;
 const openDialogs = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 const setCurrentDialogId = (id) => currentDialogId = id;
+//#region class
 /** Creates and manages a modal dialog element */
-class BytmDialog extends UserUtils.NanoEmitter {
+class BytmDialog extends MultiNanoEmitter {
+    //#region constructor
     constructor(options) {
         super();
         Object.defineProperty(this, "options", {
@@ -751,7 +756,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: true, removeListenersOnDestroy: true, smallHeader: false, verticalAlign: "center" }, options);
         this.id = options.id;
     }
-    //#region public
+    //#region pb:mount
     /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
     async mount() {
         if (this.dialogMounted)
@@ -781,6 +786,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         this.events.emit("render");
         return bgElem;
     }
+    //#region pb:unmount
     /** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
     unmount() {
         var _a;
@@ -796,11 +802,18 @@ class BytmDialog extends UserUtils.NanoEmitter {
         }
         this.events.emit("clear");
     }
+    //#region pb:remount
     /** Clears the DOM of the dialog and then renders it again */
     async remount() {
         this.unmount();
         await this.mount();
     }
+    //#region pb:isMounted
+    /** Returns true if the dialog is currently mounted */
+    isMounted() {
+        return this.dialogMounted;
+    }
+    //#region pb:open
     /**
      * Opens the dialog - also mounts it if it hasn't been mounted yet
      * Prevents default action and immediate propagation of the passed event
@@ -834,6 +847,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         emitInterface(`bytm:dialogOpened:${this.id}`, this);
         return dialogBg;
     }
+    //#region pb:close
     //#FIXME: if opened on top of config menu, after closing a BytmDialog, the body scroll lock is erroneously removed
     /** Closes the dialog - prevents default action and immediate propagation of the passed event */
     close(e) {
@@ -861,21 +875,19 @@ class BytmDialog extends UserUtils.NanoEmitter {
             this.unmount();
         this.removeBgInert();
     }
+    //#region pb:isOpen
     /** Returns true if the dialog is currently open */
     isOpen() {
         return this.dialogOpen;
     }
-    /** Returns true if the dialog is currently mounted */
-    isMounted() {
-        return this.dialogMounted;
-    }
+    //#region pb:destroy
     /** Clears the DOM of the dialog and removes all event listeners */
     destroy() {
         this.unmount();
         this.events.emit("destroy");
         this.options.removeListenersOnDestroy && this.unsubscribeAll();
     }
-    //#region static
+    //#region st:initDialogs
     /** Initializes the dialog system */
     static initDialogs() {
         if (dialogsInitialized)
@@ -891,15 +903,17 @@ class BytmDialog extends UserUtils.NanoEmitter {
         else
             createContainer();
     }
+    //#region st:getCurrentDialogId
     /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
     static getCurrentDialogId() {
         return currentDialogId;
     }
+    //#region st:getOpenDialogs
     /** Returns the IDs of all currently open dialogs, top-most first */
     static getOpenDialogs() {
         return openDialogs;
     }
-    //#region protected
+    //#region pr:removeBgInert
     /** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
     removeBgInert() {
         var _a, _b, _c;
@@ -919,6 +933,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
         dialogBg === null || dialogBg === void 0 ? void 0 : dialogBg.setAttribute("inert", "true");
     }
+    //#region pr:setBgInert
     /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
     setBgInert() {
         var _a, _b, _c;
@@ -938,6 +953,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
         dialogBg === null || dialogBg === void 0 ? void 0 : dialogBg.removeAttribute("inert");
     }
+    //#region pr:attachListeners
     /** Called on every {@linkcode mount()} to attach all generic event listeners */
     attachListeners(bgElem) {
         if (this.options.closeOnBgClick) {
@@ -954,6 +970,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
             });
         }
     }
+    //#region pr:getDialogContent
     /** Returns the dialog content element and all its children */
     async getDialogContent() {
         var _a, _b, _c, _d;
@@ -1113,6 +1130,15 @@ var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
 };
+var contributors = [
+	{
+		name: "indierodo",
+		url: "https://github.com/indierodo",
+		contributions: [
+			"Track numbers feature"
+		]
+	}
+];
 var license = "AGPL-3.0-only";
 var bugs = {
 	url: "https://github.com/Sv443/BetterYTM/issues"
@@ -1219,6 +1245,7 @@ var packageJson = {
 	engines: engines,
 	repository: repository,
 	author: author,
+	contributors: contributors,
 	license: license,
 	bugs: bugs,
 	funding: funding,
@@ -6313,11 +6340,19 @@ async function fixThemeSong() {
     catch (err) {
         error("Failed to set ThemeSong integration color lightness:", err);
     }
-}//#region init queue btns
+}const songListSelector = `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
+`;
+//#region init queue btns
 /** Initializes the queue buttons */
 async function initQueueButtons() {
     /** Tries to add queue buttons to the current song queue items on the /watch page. */
     const tryAddCurrentQueueBtns = (evt) => {
+        if (getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
+            return;
         let amt = 0;
         for (const queueItm of evt.childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
@@ -6352,31 +6387,24 @@ async function initQueueButtons() {
         addedBtnsCount > 0 &&
             log(`Added buttons to ${addedBtnsCount} new "generic song list" ${UserUtils.autoPlural("item", addedBtnsCount)} in list`, listElem);
     };
-    const listSelector = `\
-ytmusic-playlist-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
-`;
     const doSongListsChecks = (songLists) => {
         for (const list of songLists) {
-            tryAddGenericListQueueBtns(list);
-            checkSwapLikeDislikeBtns(list);
+            if (getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists")
+                tryAddGenericListQueueBtns(list);
+            if (getFeature("swapLikeDislikeButtons"))
+                checkSwapLikeDislikeBtns(list);
         }
     };
-    if (getFeature("listButtonsPlacement") === "everywhere") {
-        addSelectorListener("body", listSelector, {
-            all: true,
-            continuous: true,
-            debounce: 150,
-            listener: doSongListsChecks,
-        });
-        siteEvents.on("pathChanged", () => {
-            const songLists = document.querySelectorAll(listSelector);
-            if (songLists.length > 0)
-                doSongListsChecks(songLists);
-        });
-    }
+    addSelectorListener("body", songListSelector, {
+        all: true,
+        debounce: 150,
+        listener: doSongListsChecks,
+    });
+    siteEvents.on("pathChanged", () => {
+        const songLists = document.querySelectorAll(songListSelector);
+        if (songLists.length > 0)
+            doSongListsChecks(songLists);
+    });
 }
 /** Checks if the like and dislike buttons exist in the given song list and swaps them if the feature is enabled. */
 function checkSwapLikeDislikeBtns(songList) {
@@ -6599,6 +6627,22 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
     else if (insertPosition === "afterParent")
         parentEl === null || parentEl === void 0 ? void 0 : parentEl.after(queueBtnsCont);
     queueItem.classList.add("bytm-has-queue-btns");
+}
+//#region track numbers
+/** Adds track numbers to each item in every song list */
+async function addTrackNumbers() {
+    const promises = [];
+    try {
+        const where = getFeature("songListTrackNumbers");
+        if (where === "genericLists" || where === "everywhere")
+            promises.push(addStyleFromResource("css-track_numbers_song_lists"));
+        if (where === "currentQueue" || where === "everywhere")
+            promises.push(addStyleFromResource("css-track_numbers_current_queue"));
+    }
+    catch (err) {
+        error("Couldn't add track numbers style:", err);
+    }
+    return await Promise.allSettled(promises);
 }//#region init vol features
 /** Initializes all volume-related features */
 async function initVolumeFeatures() {
@@ -6910,6 +6954,11 @@ const options = {
     thumbOverlaySources: () => [
         { value: "am", label: t("thumbnail_overlay_source_am") },
         { value: "yt", label: t("thumbnail_overlay_source_yt") },
+    ],
+    songListType: () => [
+        { value: "currentQueue", label: t("list_button_placement_queue_only") },
+        { value: "genericLists", label: t("list_button_placement_generic_lists") },
+        { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
 };
 //#region # features
@@ -7299,10 +7348,7 @@ const featInfo = {
         type: "select",
         category: "songLists",
         supportedSites: ["ytm"],
-        options: () => [
-            { value: "queueOnly", label: t("list_button_placement_queue_only") },
-            { value: "everywhere", label: t("list_button_placement_everywhere") },
-        ],
+        options: options.songListType,
         default: "everywhere",
         advanced: true,
         reloadRequired: false,
@@ -7330,6 +7376,21 @@ const featInfo = {
         default: true,
         advanced: true,
         textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.advanced, adornments.reload]),
+    },
+    songListTrackNumbersEnabled: {
+        type: "toggle",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
+    songListTrackNumbers: {
+        type: "select",
+        category: "songLists",
+        supportedSites: ["ytm"],
+        options: options.songListType,
+        default: "genericLists",
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
     },
     //#region cat:lyrics
     geniusLyrics: {
@@ -8114,6 +8175,7 @@ const migrations = {
         "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
         "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
         "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
+        "songListTrackNumbersEnabled", "songListTrackNumbers",
     ]), [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
         { key: "initTimeout", oldDefault: 8 },
@@ -8322,7 +8384,6 @@ const globalFuncs = purifyObj({
     showPrompt,
     // other:
     formatNumber,
-    MultiNanoEmitter,
 });
 /** Initializes the BYTM interface */
 function initInterface() {
@@ -8337,6 +8398,7 @@ function initInterface() {
         sessionStorageAvailable }, scriptInfo), globalFuncs), { 
         // classes
         NanoEmitter,
+        MultiNanoEmitter,
         BytmDialog,
         ExImDialog,
         MarkdownDialog,
@@ -8398,7 +8460,7 @@ function registerPlugin(def) {
         const validationErrors = validatePluginDef(def);
         if (validationErrors)
             throw new PluginError(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
-        const events = new NanoEmitter({ publicEmit: true });
+        const events = new MultiNanoEmitter({ publicEmit: true });
         const token = crypto.randomUUID();
         registeredPlugins.set(plKey, {
             def: def,
@@ -9481,6 +9543,8 @@ async function onDomLoad() {
             if (feats.lyricsQueueButton || feats.deleteFromQueueButton)
                 ftInit.push(["queueButtons", initQueueButtons()]);
             ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
+            if (feats.songListTrackNumbersEnabled)
+                ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
             //#region (ytm) behavior
             if (feats.closeToastsTimeout > 0)
                 ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
