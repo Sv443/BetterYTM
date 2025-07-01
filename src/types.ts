@@ -3,8 +3,9 @@ import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
-import type { SiteEventsMap } from "./siteEvents.js";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
+import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getLibraryHook, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { isIgnoredInputElement } from "./features/input.js";
@@ -65,7 +66,7 @@ export type HotkeyObj = {
 export type LyricsCacheEntry = {
   artist: string;
   song: string;
-  url: string;
+  path: string;
   viewed: number;
   added: number;
 };
@@ -172,8 +173,9 @@ export type BytmObject =
   // others
   & {
     NanoEmitter: NanoEmitter;
-    BytmDialog: typeof BytmDialog;
-    ExImDialog: typeof ExImDialog;
+    MultiNanoEmitter: MultiNanoEmitter;
+    BytmDialog: BytmDialog;
+    ExImDialog: ExImDialog;
     // the entire UserUtils library
     UserUtils: typeof import("@sv443-network/userutils");
     // the entire compare-versions library
@@ -220,14 +222,18 @@ export enum PluginIntent {
   ReadAutoLikeData = 64,
   /** Plugin can write to auto-like data */
   WriteAutoLikeData = 128,
+  /** Plugin has access to deeply internal functions and instances */
+  InternalAccess = 256,
+  /** Grants all other intents */
+  FullAccess = 512,
 }
 
 /** Result of a plugin registration */
 export type PluginRegisterResult = {
   /** Public info about the registered plugin */
   info: PluginInfo;
-  /** NanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
-  events: NanoEmitter<PluginEventMap>;
+  /** MultiNanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
+  events: MultiNanoEmitter<PluginEventMap>;
   /** Authentication token for the plugin to use in certain restricted function calls */
   token: string;
 }
@@ -282,7 +288,7 @@ export type PluginDef = {
     };
   };
   /** Intents (permissions) BYTM has to grant the plugin for it to work - use bitwise OR to combine multiple intents */
-  intents?: number;
+  intents?: number | PluginIntent[];
   /** Info about the plugin contributors */
   contributors?: Array<{
     /** Name of this contributor */
@@ -298,11 +304,13 @@ export type PluginDef = {
 export type PluginEventMap =
   // These are emitted on each plugin individually, with individual data:
   & {
-    /** Emitted when the plugin is fully registered on BYTM's side and can use authenticated API calls */
+    /** Emitted when a plugin is registered on BYTM's side and can make use of authenticated API calls */
     pluginRegistered: (info: PluginInfo) => void;
+    /** Emitted when `bytm:ready` is emitted on the window, as an easier to work with alternative */
+    bytmReady: () => void;
   }
   // These are emitted on every plugin simultaneously, with the same or similar data:
-  & SiteEventsMap
+  & SiteEventsMapPrefixed
   & InterfaceEventsMap;
 
 /** A plugin in either the queue or registered map */
@@ -320,6 +328,8 @@ export type InterfaceFunctions = {
   // meta:
   /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it */
   getPluginInfo: typeof getPluginInfo;
+  /** 🔒 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins */
+  getLibraryHook: typeof getLibraryHook;
 
   // bytm-specific:
   /** Returns the current domain as a constant string representation */
@@ -368,6 +378,16 @@ export type InterfaceFunctions = {
   getLikeDislikeBtns: typeof getLikeDislikeBtns;
   /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored */
   isIgnoredInputElement: typeof isIgnoredInputElement;
+  
+  // site events:
+  /** Adds a site event listener */
+  onSiteEvent: typeof siteEvents.on,
+  /** Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern */
+  onceSiteEvent: typeof siteEvents.once,
+  /** Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function */
+  onMultiSiteEvents: typeof siteEvents.onMulti,
+  /** Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once */
+  onceMultiSiteEvents: typeof siteEvents.onceMulti,
 
   // translations:
   /** 🔒 Sets the locale for all new translations */
@@ -444,17 +464,17 @@ export type FeatKeysOfType<TType> = KeysOfType<FeatureConfig, TType>;
 
 /** Feature category identifier */
 export type FeatureCategory =
+  | "general"
   | "layout"
   | "volume"
   | "songLists"
   | "behavior"
   | "input"
-  | "autoLike"
   | "hotkeys"
+  | "autoLike"
   | "lyrics"
   | "integrations"
-  | "plugins"
-  | "general";
+  | "plugins";
 
 type SelectOption = {
   value: string | number;
@@ -559,184 +579,7 @@ export type FeatureInfo = Record<
 
 /** Feature configuration object, as saved in memory and persistent storage */
 export interface FeatureConfig {
-  //#region layout
-  /** Show a BetterYTM watermark under the YTM logo */
-  watermarkEnabled: boolean;
-  /** Remove the "si" tracking parameter from links in the share menu? */
-  removeShareTrackingParam: boolean;
-  /** On which sites to remove the "si" tracking parameter from links in the share menu */
-  removeShareTrackingParamSites: SiteSelection;
-  /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
-  numKeysSkipToTime: boolean;
-  /** Fix spacing issues in the layout */
-  fixSpacing: boolean;
-  /** Where to show a thumbnail overlay over the video element and whether to show it at all */
-  thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
-  /** Whether to show a button to toggle the thumbnail overlay in the media controls */
-  thumbnailOverlayToggleBtnShown: boolean;
-  /** The width and height of the image fetched from the iTunes API */
-  thumbnailOverlayITunesImgRes: number;
-  /** Whether to show an indicator on the thumbnail overlay when it is active */
-  thumbnailOverlayShowIndicator: boolean;
-  /** The opacity of the thumbnail overlay indicator element */
-  thumbnailOverlayIndicatorOpacity: number;
-  /** Hide the cursor when it's idling on the video element for a while */
-  hideCursorOnIdle: boolean;
-  /** Delay in seconds after which the cursor should be hidden */
-  hideCursorOnIdleDelay: number;
-  /** Whether to fix various issues in the layout when HDR is supported and active */
-  fixHdrIssues: boolean;
-  /** Whether to show the like/dislike ratio on the currently playing song */
-  showVotes: boolean;
-  /** Which format to use for the like/dislike ratio on the currently playing song */
-  numbersFormat: NumberLengthFormat;
-  /** Whether to remove all padding around the main content on the /watch page on YTM */
-  watchPageFullSize: boolean;
-
-  //#region volume
-  /** Add a percentage label to the volume slider */
-  volumeSliderLabel: boolean;
-  /** The width of the volume slider in pixels */
-  volumeSliderSize: number;
-  /** Volume slider sensitivity - the smaller this number, the finer the volume control */
-  volumeSliderStep: number;
-  /** Volume slider scroll wheel sensitivity */
-  volumeSliderScrollStep: number;
-  /** Whether the volume should be locked to the same level across all tabs (changing in one changes in all others too) */
-  volumeSharedBetweenTabs: boolean;
-  /** Whether to set an initial volume level for each new session */
-  setInitialTabVolume: boolean;
-  /** The initial volume level to set for each new session */
-  initialTabVolumeLevel: number;
-
-  //#region song lists
-  /** Add a button to each song in the queue to quickly open its lyrics page */
-  lyricsQueueButton: boolean;
-  /** Add a button to each song in the queue to quickly remove it */
-  deleteFromQueueButton: boolean;
-  /** Where to place the buttons in the queue */
-  listButtonsPlacement: "queueOnly" | "everywhere";
-  /** Add a button above the queue to scroll to the currently playing song */
-  scrollToActiveSongBtn: boolean;
-  /** Add a button above the queue to clear it */
-  clearQueueBtn: boolean;
-
-  //#region behavior
-  /** Whether to completely disable the popup that sometimes appears before leaving the site */
-  disableBeforeUnloadPopup: boolean;
-  /** Whether to automatically close permanent toasts */
-  autoCloseToasts: boolean;
-  /** After how many seconds to close permanent toasts */
-  closeToastsTimeout: number;
-  /** Remember the last song's time when reloading or restoring the tab */
-  rememberSongTime: boolean;
-  /** Where to remember the song time */
-  rememberSongTimeSites: SiteSelection;
-  /** Time in seconds to remember the song time for */
-  rememberSongTimeDuration: number;
-  /** Time in seconds to subtract from the remembered song time */
-  rememberSongTimeReduction: number;
-  /** Minimum time in seconds the song needs to be played before it is remembered */
-  rememberSongTimeMinPlayTime: number;
-  /** Whether the above queue button container should use sticky positioning */
-  aboveQueueBtnsSticky: boolean;
-  /** When to automatically scroll to the active song in the queue */
-  autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
-
-  //#region input
-  /** Arrow keys to skip forwards and backwards and change volume */
-  arrowKeySupport: boolean;
-  /** By how many seconds to skip when pressing the left/right arrow keys */
-  arrowKeySkipBy: number;
-  /** By how much to change the volume when pressing the up/down arrow keys */
-  arrowKeyVolumeStep: number;
-  /** Use . and , keys to skip by a frame while the video is paused */
-  frameSkip: boolean;
-  /** Allow frame skipping while the song is playing */
-  frameSkipWhilePlaying: boolean;
-  /** Amount of seconds to skip when pressing the . and , keys */
-  frameSkipAmount: number;
-  /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
-  anchorImprovements: boolean;
-
-  //#region auto-like
-  /** Whether to auto-like all played videos of configured channels */
-  autoLikeChannels: boolean;
-  /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
-  autoLikeChannelToggleBtn: boolean;
-  // TODO:
-  // /** Whether to show a toggle button in the media controls to enable/disable auto-liking for those channel(s) */
-  // autoLikePlayerBarToggleBtn: boolean;
-  /** How long to wait after a video has started playing to auto-like it */
-  autoLikeTimeout: number;
-  /** Whether to show a toast when a video is auto-liked */
-  autoLikeShowToast: boolean;
-  /** Opens the auto-like channels management dialog */
-  autoLikeOpenMgmtDialog: undefined;
-
-  //#region hotkeys
-  /** Add a hotkey to switch between the YT and YTM sites on a video/song */
-  switchBetweenSites: boolean;
-  /** The hotkey that needs to be pressed to initiate the site switch */
-  switchSitesHotkey: HotkeyObj;
-  /** Add hotkeys for liking and disliking the current video/song */
-  likeDislikeHotkeys: boolean;
-  /** The hotkey that needs to be pressed to like the current video/song */
-  likeHotkey: HotkeyObj;
-  /** The hotkey that needs to be pressed to dislike the current video/song */
-  dislikeHotkey: HotkeyObj;
-  /** Add a hotkey to open the current song's lyrics in a new tab */
-  currentLyricsHotkeyEnabled: boolean;
-  /** The hotkey that needs to be pressed to open the current song's lyrics in a new tab */
-  currentLyricsHotkey: HotkeyObj;
-  /** Add a hotkey to skip to the last remembered time of the current video/song */
-  skipToRemTimeHotkeyEnabled: boolean;
-  /** The hotkey that needs to be pressed to skip to the last remembered time of the current video/song */
-  skipToRemTimeHotkey: HotkeyObj;
-  /** Whether to rebind the next [J] and previous [K] keys */
-  rebindNextAndPrevious: boolean;
-  /** The hotkey that needs to be pressed to skip to the next video/song */
-  nextHotkey: HotkeyObj;
-  /** The hotkey that needs to be pressed to skip to the previous video/song */
-  previousHotkey: HotkeyObj;
-  /** Whether to rebind the play/pause hotkey */
-  rebindPlayPause: boolean;
-  /** The hotkey that needs to be pressed to play/pause the current video/song */
-  playPauseHotkey: HotkeyObj;
-
-  //#region lyrics
-  /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
-  geniusLyrics: boolean;
-  /** Whether to show an error when no lyrics were found */
-  errorOnLyricsNotFound: boolean;
-  /** Base URL to use for GeniURL */
-  geniUrlBase: string;
-  /** Token to use for GeniURL */
-  geniUrlToken: string;
-  /** Max size of lyrics cache */
-  lyricsCacheMaxSize: number;
-  /** Max TTL of lyrics cache entries, in ms */
-  lyricsCacheTTL: number;
-  /** Button to clear lyrics cache */
-  clearLyricsCache: undefined;
-  // /** Whether to use advanced filtering when searching for lyrics (exact, exact-ish) */
-  // advancedLyricsFilter: boolean;
-
-  //#region integrations
-  /** On which sites to disable Dark Reader - does nothing if the extension is not installed */
-  disableDarkReaderSites: SiteSelectionOrNone;
-  /** Whether to fix the styling of some elements from the SponsorBlock extension - does nothing if the extension is not installed */
-  sponsorBlockIntegration: boolean;
-  /** Whether to adjust styles so they look better when using the ThemeSong extension */
-  themeSongIntegration: boolean;
-  /** Lightness of the color used when ThemeSong is enabled */
-  themeSongLightness: ColorLightnessPref;
-
-  //#region plugins
-  /** Button that opens the plugin list dialog */
-  openPluginList: undefined;
-
-  //#region misc
+  //#region general
   /** The locale to use for translations */
   locale: TrLocale;
   /** Whether to default to US-English if the translation for the set locale is missing */
@@ -759,4 +602,201 @@ export interface FeatureConfig {
   resetEverything: undefined;
   /** Whether to show advanced settings in the config menu */
   advancedMode: boolean;
+
+  //#region layout
+  /** Show a BetterYTM watermark under the YTM logo */
+  watermarkEnabled: boolean;
+  /** Remove the "si" tracking parameter from links in the share menu? */
+  removeShareTrackingParam: boolean;
+  /** On which sites to remove the "si" tracking parameter from links in the share menu */
+  removeShareTrackingParamSites: SiteSelection;
+  /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
+  numKeysSkipToTime: boolean;
+  /** Fix spacing issues in the layout */
+  fixSpacing: boolean;
+  /** Where to show a thumbnail overlay over the video element and whether to show it at all */
+  thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
+  /** Whether to show a button to toggle the thumbnail overlay in the media controls */
+  thumbnailOverlayToggleBtnShown: boolean;
+  /** The width and height of the image fetched from the iTunes API */
+  thumbnailOverlayITunesImgRes: number;
+  /** For how long to cache the album art images fetched from the iTunes API */
+  thumbnailOverlayAlbumArtCacheTTL: number;
+  /** Maximum number of entries in the album art cache */
+  thumbnailOverlayAlbumArtCacheMaxSize: number;
+  /** Whether to show an indicator on the thumbnail overlay when it is active */
+  thumbnailOverlayShowIndicator: boolean;
+  /** The opacity of the thumbnail overlay indicator element */
+  thumbnailOverlayIndicatorOpacity: number;
+  /** Whether to prefer fetching iTunes album covers over YT thumbnails */
+  thumbnailOverlayPreferredSource: "yt" | "am";
+  /** Hide the cursor when it's idling on the video element for a while */
+  hideCursorOnIdle: boolean;
+  /** Delay in seconds after which the cursor should be hidden */
+  hideCursorOnIdleDelay: number;
+  /** Whether to fix various issues in the layout when HDR is supported and active */
+  fixHdrIssues: boolean;
+  /** Whether to show the like/dislike ratio on the currently playing song */
+  showVotes: boolean;
+  /** Whether to swap the like and dislike buttons in the media controls */
+  swapLikeDislikeButtons: boolean;
+  /** Which format to use for the like/dislike ratio on the currently playing song */
+  numbersFormat: NumberLengthFormat;
+  /** Whether to remove all padding around the main content on the /watch page on YTM */
+  watchPageFullSize: boolean;
+
+  //#region songLists
+  /** Add a button to each song in the queue to quickly open its lyrics page */
+  lyricsQueueButton: boolean;
+  /** Add a button to each song in the queue to quickly remove it */
+  deleteFromQueueButton: boolean;
+  /** Where to place the buttons in the queue */
+  listButtonsPlacement: "currentQueue" | "genericLists" | "everywhere";
+  /** Add a button above the queue to scroll to the currently playing song */
+  scrollToActiveSongBtn: boolean;
+  /** Add a button above the queue to clear it */
+  clearQueueBtn: boolean;
+  /** Whether the above queue button container should use sticky positioning */
+  aboveQueueBtnsSticky: boolean;
+  /** Add track numbers to each song list item */
+  songListTrackNumbersEnabled: boolean;
+  /** Where to add track numbers */
+  songListTrackNumbers: "currentQueue" | "genericLists" | "everywhere";
+
+  //#region lyrics
+  /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
+  geniusLyrics: boolean;
+  /** Whether to show an error when no lyrics were found */
+  errorOnLyricsNotFound: boolean;
+  /** Base URL to use for GeniURL */
+  geniUrlBase: string;
+  /** Token to use for GeniURL */
+  geniUrlToken: string;
+  /** Max size of lyrics cache */
+  lyricsCacheMaxSize: number;
+  /** Max TTL of lyrics cache entries, in ms */
+  lyricsCacheTTL: number;
+  /** Button to clear lyrics cache */
+  clearLyricsCache: undefined;
+  // /** Whether to use advanced filtering when searching for lyrics (exact, exact-ish) */
+  // advancedLyricsFilter: boolean;
+
+  //#region volume
+  /** Add a percentage label to the volume slider */
+  volumeSliderLabel: boolean;
+  /** The width of the volume slider in pixels */
+  volumeSliderSize: number;
+  /** Volume slider sensitivity - the smaller this number, the finer the volume control */
+  volumeSliderStep: number;
+  /** Volume slider scroll wheel sensitivity */
+  volumeSliderScrollStep: number;
+  /** Whether the volume should be locked to the same level across all tabs (changing in one changes in all others too) */
+  volumeSharedBetweenTabs: boolean;
+  /** Whether to set an initial volume level for each new session */
+  setInitialTabVolume: boolean;
+  /** The initial volume level to set for each new session */
+  initialTabVolumeLevel: number;
+
+  //#region behavior
+  /** Whether to completely disable the popup that sometimes appears before leaving the site */
+  disableBeforeUnloadPopup: boolean;
+  /** Whether to automatically close permanent toasts */
+  autoCloseToasts: boolean;
+  /** After how many seconds to close permanent toasts */
+  closeToastsTimeout: number;
+  /** Remember the last song's time when reloading or restoring the tab */
+  rememberSongTime: boolean;
+  /** Where to remember the song time */
+  rememberSongTimeSites: SiteSelection;
+  /** Time in seconds to remember the song time for */
+  rememberSongTimeDuration: number;
+  /** Time in seconds to subtract from the remembered song time */
+  rememberSongTimeReduction: number;
+  /** Minimum time in seconds the song needs to be played before it is remembered */
+  rememberSongTimeMinPlayTime: number;
+  /** When to automatically scroll to the active song in the queue */
+  autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
+
+  //#region autoLike
+  /** Whether to auto-like all played videos of configured channels */
+  autoLikeChannels: boolean;
+  /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
+  autoLikeChannelToggleBtn: boolean;
+  // TODO:
+  // /** Whether to show a toggle button in the media controls to enable/disable auto-liking for those channel(s) */
+  // autoLikePlayerBarToggleBtn: boolean;
+  /** How long to wait after a video has started playing to auto-like it */
+  autoLikeTimeout: number;
+  /** Whether to show a toast when a video is auto-liked */
+  autoLikeShowToast: boolean;
+  /** Opens the auto-like channels management dialog */
+  autoLikeOpenMgmtDialog: undefined;
+
+  //#region input
+  /** Arrow keys to skip forwards and backwards and change volume */
+  arrowKeySupport: boolean;
+  /** By how many seconds to skip when pressing the left/right arrow keys */
+  arrowKeySkipBy: number;
+  /** By how much to change the volume when pressing the up/down arrow keys */
+  arrowKeyVolumeStep: number;
+  /** Use . and , keys to skip by a frame while the video is paused */
+  frameSkip: boolean;
+  /** Allow frame skipping while the song is playing */
+  frameSkipWhilePlaying: boolean;
+  /** Amount of seconds to skip when pressing the . and , keys */
+  frameSkipAmount: number;
+  /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
+  anchorImprovements: boolean;
+
+  //#region hotkeys
+  /** Add a hotkey to switch between the YT and YTM sites on a video/song */
+  switchBetweenSites: boolean;
+  /** The hotkey that needs to be pressed to initiate the site switch */
+  switchSitesHotkey: HotkeyObj;
+  /** Add hotkeys for liking and disliking the current video/song */
+  likeDislikeHotkeys: boolean;
+  /** The hotkey that needs to be pressed to like the current video/song */
+  likeHotkey: HotkeyObj;
+  /** The hotkey that needs to be pressed to dislike the current video/song */
+  dislikeHotkey: HotkeyObj;
+  /** Add a hotkey to open the current song's lyrics in a new tab */
+  currentLyricsHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to open the current song's lyrics in a new tab */
+  currentLyricsHotkey: HotkeyObj;
+  /** Add a hotkey to skip to the last remembered time of the current video/song */
+  skipToRemTimeHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to skip to the last remembered time of the current video/song */
+  skipToRemTimeHotkey: HotkeyObj;
+  /** Add a hotkey to focus the search bar on both pages */
+  focusSearchBarHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to focus the search bar */
+  focusSearchBarHotkey: HotkeyObj;
+  /** Add a hotkey to clear the search bar on both pages */
+  clearSearchBarHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to clear the search bar */
+  clearSearchBarHotkey: HotkeyObj;
+  /** Whether to rebind the next [J] and previous [K] keys */
+  rebindNextAndPrevious: boolean;
+  /** The hotkey that needs to be pressed to skip to the next video/song */
+  nextHotkey: HotkeyObj;
+  /** The hotkey that needs to be pressed to skip to the previous video/song */
+  previousHotkey: HotkeyObj;
+  /** Whether to rebind the play/pause hotkey */
+  rebindPlayPause: boolean;
+  /** The hotkey that needs to be pressed to play/pause the current video/song */
+  playPauseHotkey: HotkeyObj;
+
+  //#region integrations
+  /** On which sites to disable Dark Reader - does nothing if the extension is not installed */
+  disableDarkReaderSites: SiteSelectionOrNone;
+  /** Whether to fix the styling of some elements from the SponsorBlock extension - does nothing if the extension is not installed */
+  sponsorBlockIntegration: boolean;
+  /** Whether to adjust styles so they look better when using the ThemeSong extension */
+  themeSongIntegration: boolean;
+  /** Lightness of the color used when ThemeSong is enabled */
+  themeSongLightness: ColorLightnessPref;
+
+  //#region plugins
+  /** Button that opens the plugin list dialog */
+  openPluginList: undefined;
 }

@@ -54,13 +54,13 @@
       "overviewRulerColor": "#ff0",
     },
     "(IMPORTANT:)": { // IMPORTANT:
-      "backgroundColor": "#a22",
+      "backgroundColor": "#a24",
       "color": "#fff",
     },
     "(FIXME:)": { // FIXME:
-      "backgroundColor": "#a22",
-      "color": "#fff",
-      "overviewRulerColor": "#752020",
+      "backgroundColor": "#f43",
+      "color": "#000",
+      "overviewRulerColor": "#f43",
     },
   },
 }

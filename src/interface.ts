@@ -1,12 +1,13 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
-import { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } from "./constants.js";
+import * as constants from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
+import { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
 import { addSelectorListener } from "./observers.js";
 import { defaultData, getFeatures, setFeatures } from "./config.js";
-import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
-import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
-import { type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
+import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
+import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMap } from "./siteEvents.js";
+import { PluginIntent, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { BytmDialog } from "./components/BytmDialog.js";
 import { createHotkeyInput } from "./components/hotkeyInput.js";
@@ -17,7 +18,8 @@ import { showIconToast, showToast } from "./components/toast.js";
 import { ExImDialog } from "./components/ExImDialog.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 
-const { autoPlural, getUnsafeWindow, purifyObj, randomId, NanoEmitter } = UserUtils;
+const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
+const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils;
 
 //#region interface globals
 
@@ -37,6 +39,8 @@ export type InterfaceEvents = {
   "bytm:lyricsCacheReady": undefined;
   /** Emitted whenever the locale is changed - if a plugin changed the locale, the plugin ID is provided as well */
   "bytm:setLocale": { locale: TrLocale, pluginId?: string };
+  /** When this is emitted, plugins may register themselves at a much earlier stage, before things like the feature config are even loaded */
+  "bytm:preInitPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
   /** When this is emitted, this is your call to register your plugin using the function passed as the sole argument */
   "bytm:registerPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
   /**
@@ -111,6 +115,7 @@ export const allInterfaceEvents = [
 const globalFuncs: InterfaceFunctions = purifyObj({
   // meta:
   /*🔒*/ getPluginInfo,
+  /*🔒*/ getLibraryHook,
 
   // bytm-specific:
   getDomain,
@@ -132,6 +137,12 @@ const globalFuncs: InterfaceFunctions = purifyObj({
   getCurrentMediaType,
   getLikeDislikeBtns,
   isIgnoredInputElement,
+
+  // site events:
+  onSiteEvent: siteEvents.on,
+  onceSiteEvent: siteEvents.once,
+  onMultiSiteEvents: siteEvents.onMulti,
+  onceMultiSiteEvents: siteEvents.onceMulti,
 
   // translations:
   /*🔒*/ setLocale: setLocaleInterface,
@@ -188,6 +199,7 @@ export function initInterface() {
     ...globalFuncs,
     // classes
     NanoEmitter,
+    MultiNanoEmitter,
     BytmDialog,
     ExImDialog,
     MarkdownDialog,
@@ -248,6 +260,11 @@ const registeredPluginTokens = new Map<string, string>();
 
 let pluginsInitialized = false;
 
+/** Pre-init for eager plugins that need to be initialized as soon as physically possible */
+export function preInitPlugins() {
+  emitInterface("bytm:preInitPlugin", (def: PluginDef) => registerPlugin(def));
+}
+
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
   emitInterface("bytm:registerPlugin", (def: PluginDef) => registerPlugin(def));
@@ -256,9 +273,7 @@ export function initPlugins() {
     pluginsInitialized = true;
     if(registeredPlugins.size > 0)
       log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
-  }, {
-    once: true,
-  });
+  }, { once: true });
 }
 
 /** Registers a plugin on the BYTM interface. */
@@ -277,8 +292,8 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     if(validationErrors)
       throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
-    const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
-    const token = randomId(16, 36, true, true);
+    const events = new MultiNanoEmitter<PluginEventMap>({ publicEmit: true });
+    const token = crypto.randomUUID();
 
     registeredPlugins.set(plKey, {
       def: def,
@@ -287,7 +302,12 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     registeredPluginTokens.set(plKey, token);
 
     info(`Successfully registered plugin '${plKey}'`);
-    setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 1);
+
+    emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
+
+    window.addEventListener("bytm:ready", () => {
+      emitOnPlugins("bytmReady");
+    });
 
     return {
       info: getPluginInfo(token, def)!,
@@ -403,6 +423,54 @@ export function getPluginInfo(...args: [token: string | undefined, pluginDefOrNa
   );
 }
 
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(pluginName: string, namespace: string, perms: PluginIntent | PluginIntent[]): boolean
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(pluginDef: PluginDefResolvable, perms: PluginIntent | PluginIntent[]): boolean
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(pluginId: string, perms: PluginIntent | PluginIntent[]): boolean
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Whether the given plugin has the given granted intents.
+ */
+export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvable | string, namespaceOrPerms: string | PluginIntent | PluginIntent[], perms?: PluginIntent | PluginIntent[]]): boolean {
+  const plugin = typeof args[0] === "string" && typeof args[1] === "string"
+    ? getPlugin(args[0], args[1])
+    : getPlugin(args[0] as PluginDefResolvable);
+
+  if(!plugin)
+    return false;
+
+  const asArray = (value: PluginIntent | PluginIntent[]) =>
+    Array.isArray(value) ? value : [value];
+
+  const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2] as PluginIntent) : asArray(args[1] as PluginIntent) as PluginIntent[]) ?? [];
+  if(!Array.isArray(perms))
+    throw new TypeError("The second argument must be an array of PluginIntent values");
+
+  const pluginIntents = defToIntentsBitSet(plugin.def);
+
+  return UserUtils.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => UserUtils.bitSetHas(pluginIntents, perm));
+}
+
+function defToIntentsBitSet(def: PluginDef): number {
+  if(Array.isArray(def.intents))
+    return def.intents.reduce((acc, intent) => acc | intent, 0);
+  else if(typeof def.intents === "number")
+    return def.intents;
+  else
+    return 0;
+}
+
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 function validatePluginDef(pluginDef: Partial<PluginDef>) {
   const errors = [] as string[];
@@ -442,23 +510,25 @@ export function resolveToken(token: string | undefined): string | undefined {
  */
 export function setLocaleInterface(token: string | undefined, locale: TrLocale) {
   const pluginId = resolveToken(token);
-  if(pluginId === undefined)
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteTranslations))
     return;
   setLocale(locale);
   emitInterface("bytm:setLocale", { pluginId, locale });
 }
 
 /**
- * Returns the current feature config, with sensitive values replaced by `undefined`  
+ * Returns the current feature config, with sensitive values replaced by `undefined`, unless the `SeeHiddenConfigValues` intent is granted.  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function getFeaturesInterface(token: string | undefined) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.ReadFeatureConfig))
     return undefined;
+  const hiddenAccess = pluginHasPerms(pluginId, PluginIntent.SeeHiddenConfigValues);
   const features = getFeatures();
   for(const ftKey of Object.keys(features)) {
     const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
-    if(info && info.valueHidden) // @ts-expect-error
+    if(info && info.valueHidden && !hiddenAccess) // @ts-expect-error
       features[ftKey as keyof typeof features] = undefined;
   }
   return features as FeatureConfig;
@@ -469,7 +539,8 @@ export function getFeaturesInterface(token: string | undefined) {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function saveFeaturesInterface(token: string | undefined, features: FeatureConfig) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteFeatureConfig))
     return;
   setFeatures(features);
 }
@@ -479,7 +550,8 @@ export function saveFeaturesInterface(token: string | undefined, features: Featu
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function getAutoLikeDataInterface(token: string | undefined) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.ReadAutoLikeData))
     return;
   return autoLikeStore.getData();
 }
@@ -489,7 +561,29 @@ export function getAutoLikeDataInterface(token: string | undefined) {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 export function saveAutoLikeDataInterface(token: string | undefined, data: AutoLikeData) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteAutoLikeData))
     return;
   return autoLikeStore.setData(data);
+}
+
+//#region library hook
+
+/** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
+export function getLibraryHook(token: string | undefined) {
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.InternalAccess))
+    return undefined;
+
+  return {
+    constants,
+    emitInterface,
+    emitSiteEvent,
+    siteEvents,
+    addSelectorListener,
+    showPrompt,
+    setGlobalProp,
+    enableDiscardBeforeUnload,
+    disableDiscardBeforeUnload,
+  };
 }

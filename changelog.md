@@ -1,23 +1,81 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
-<!-- #region TODO: 3.1.0 -->
-
-## 3.1.0 - TODO
-- **Added features:**
-  - 🎵 Change which service is preferred for the thumbnail overlay (YT thumbnail / iTunes album artwork)
+<!-- #region 3.1.0 -->
+## 3.1.0
+- **New features:**
+  - 🟡 Improved config menu UX with a sidenav:
+    - Removed advanced mode flag from a lot of features since there's much more space now.
+    - Removed the subtitle elements. Instead, icons will be rendered in the footer, below the sidenav.
+    - Reordered categories and features to be grouped more logically.
+  - New configurable hotkeys:
+    - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
+    - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
+  - 🎵 Show a track number in the currently playing queue and playlists.
 - **Changes and improvements:**
+  - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies.
+    - Fixed album artwork being fetched with wrong parameters.
+    - Allow manually toggling between thumbnail providers.
+    - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
+  - 🎵 Decoupled volume slider step and scroll step.
+  - 🎵 The "improve links" feature now also applies to all types of song list items. Clicking them anywhere will now play the song. Clicking and dragging still works.
 - **Fixes:**
+  - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering.
+  - 🎵 Fixed SyntaxError when no AM album artwork found.
+  - Fixed Error when clicking on a BytmDialog's exit button.
+  - [🚧 WIP] 🎵 Fixed list buttons not disappearing with the native buttons in song lists.
+  - [🚧 WIP] 🎵 Fixed anchor improvements feature on the search page.
+  - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension.
+  - [🚧 WIP] Fixed page scroll bar reappearing after BytmDialog opened over top of the config menu is closed.
+  - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this).
 
-<details><summary>Click to expand internal and plugin changes</summary>
+<details><summary>Click to expand plugin and internal changes</summary>
 
 - **Plugin Changes:**
+  - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md) for full documentation
+  - **BREAKING:** Plugins will no longer be able to call authenticated functions without the required intents.  
+    Intents are now required to be set in the plugin definition object, though for now they will still all be granted and don't need to be explicitly allowed by the user once after installing yet.  
+    These are the intents that are now required for the respective functions:
+    - `setLocale()` - `WriteTranslations`
+    - `getFeatures()` - `ReadFeatureConfig`
+    - `saveFeatures()` - `WriteFeatureConfig`
+    - `getAutoLikeData()` - `ReadAutoLikeData`
+    - `saveAutoLikeData()` - `WriteAutoLikeData`
+    - `getLibraryHook()` - `InternalAccess`
+  - The `PluginDef` object's `intents` property can now be either an array of `PluginIntent` values or a single number that is the bitwise OR of the intents.
+  - Added function 🔒 `getLibraryHook()` (requires intent `InternalAccess`), that returns some internal function and object references that can be used by core libraries and deeper reaching plugins.
+  - Added new intents `InternalAccess` (currently only used by `getLibraryHook()`) and `FullAccess` (grants all other intents).
+  - Added new functions to the interface that allow for better interaction with the siteEvents system:
+    - `onSiteEvent()` - Adds a site event listener.
+    - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
+    - `onMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function.
+    - `onceMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once.
+  - Added new events:
+    - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
+    - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
+    - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
+    - `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
+  - Auth tokens are now in the format of a UUIDv4 instead of a 16-character, 36-radix string.
+  - Added SelectorObserver instance `searchPage`, as the root observer for the YTM search page.
 - **Internal Changes:**
+  - Added [`NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) wrapper class `MultiNanoEmitter` that allows listening to when one, all, or a given subset of events have been emitted before executing a callback. It shares the same methods as the base `NanoEmitter`, but has the new methods `onMulti()` and `onceMulti()` for listening to multiple events. This new class is exposed on the plugin interface next to the `NanoEmitter` class.
+  - Made `siteEvents` system use a `MultiNanoEmitter` instance instead of a `NanoEmitter` instance, so it can now also be used to listen to multiple events at once.
+  - Made plugin-specific `events` (returned by `registerPlugin()`) use a `MultiNanoEmitter` instance too.
+  - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
+  - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
+  - Moved the `general` feature category to the top of the config menu.
+  - Wrapped feature config elements in a new container element with the ID `bytm-ftconf-category-${categoryName}` to allow for the sidenav to disable all but one at a time.
+  - Updated UserUtils to v9.4.3 to fix two bugs related to the template literal placeholder format. This now allows specifying a single placeholder multiple times per translation string.
+  - Added ability to render custom info categories in the config menu. Their navigation headers will be aligned to the bottom, and they render arbitrary elements. They use the same general formatting as the new feature category containers, just with their own `categoryName` (currently just `"about"` and `"changelog"`).
+  - Added intent checking function `pluginHasPerms()` to `interface.ts`, which will now check for `FullAccess` or the given intents before allowing authenticated functions to be called.
+  - Added CSS var `--bytm-menu-bg-highlight-2` (hex, opacity 1) as a secondary level of highlight to `--bytm-menu-bg-highlight`.
+  - Renamed CSS var `--bytm-dialog-height-max` to `--bytm-dialog-target-height`, but only for the config menu. All BytmDialogs will still use `--bytm-dialog-height-max`.
+  - Improved number argument resolution of the functions in `src/utils/logging.ts` (if the last argument is a number and exceeds the range of the enum `LogLevel`, it will not be interpreted as a log level anymore, but as a number to be logged).
 
 </details>
 
 <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>
+  <a href="https://github.com/Sv443/BetterYTM/pull/148" rel="noopener noreferrer">See pull request for more info</a>
 </div>
 
 <div class="split"></div>
@@ -53,7 +111,7 @@
   - Config menu will now be correctly set as inert when a BytmDialog is opened over top
   - 🎵 Fixed \"remove from queue\" button sometimes deleting playlist entries instead of queue items
 
-<details><summary>Click to expand internal and plugin changes</summary>
+<details><summary>Click to expand plugin and internal changes</summary>
 
 - **Plugin Changes:**
   - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for full documentation

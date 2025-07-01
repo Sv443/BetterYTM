@@ -1,6 +1,7 @@
-import { NanoEmitter } from "@sv443-network/userutils";
-import { error, getDomain, info } from "./utils/index.js";
-import { FeatureConfig } from "./types.js";
+import { type LooseUnion } from "@sv443-network/userutils";
+import { error, getDomain, info, warn } from "./utils/index.js";
+import { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
+import { FeatureConfig, type FeatureCategory } from "./types.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
 
@@ -9,10 +10,14 @@ export type SiteEventsMap = {
   //#region misc:
   /** Emitted whenever the feature config is changed - initialization is not counted */
   configChanged: (newConfig: FeatureConfig) => void;
+  /** Emitted whenever a config header is selected in the config menu. Gets passed its ID which is either a feature category or extra information section ID. */
+  configHeaderSelected: (name: LooseUnion<FeatureCategory>) => void;
   /** Emitted whenever a config option is changed - contains the old and new value */
   configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
   /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
   rebuildCfgMenu: (newConfig: FeatureConfig) => void;
+  /** Emitted whenever the config menu is mounted in the DOM */
+  cfgMenuMounted: () => void;
   /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
   recreateCfgMenu: () => void;
   /** Emitted whenever the config menu is closed */
@@ -45,15 +50,25 @@ export type SiteEventsMap = {
   pathChanged: (newPath: string, oldPath: string | null) => void;
   /** Emitted whenever the player enters or exits fullscreen mode */
   fullscreenToggled: (isFullscreen: boolean) => void;
+  /** Call to force the volume slider label to update. Set `round` to false to allow setting values outside `volumeSliderStep`. */
+  updateVolumeSliderLabel: () => void;
 
   //#region features:
   /** Emitted whenever a channel was added, edited or removed from the auto-like list */
   autoLikeChannelsUpdated: () => void;
+  /** Emitted after the Return YouTube Dislike vote labels were added to the DOM */
+  voteLabelsAdded: () => void;
+};
+
+/** Same as {@link SiteEventsMap} but with the prefix `bytm:siteEvent:` added to each key. */
+export type SiteEventsMapPrefixed = {
+  [K in keyof SiteEventsMap as `bytm:siteEvent:${K}`]: SiteEventsMap[K];
 };
 
 /** Array of all site events */
 export const allSiteEvents = [
   "configChanged",
+  "configHeaderSelected",
   "configOptionChanged",
   "rebuildCfgMenu",
   "recreateCfgMenu",
@@ -66,11 +81,13 @@ export const allSiteEvents = [
   "watchIdChanged",
   "pathChanged",
   "fullscreenToggled",
+  "updateVolumeSliderLabel",
   "autoLikeChannelsUpdated",
+  "voteLabelsAdded",
 ] as const;
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
-export const siteEvents = new NanoEmitter<SiteEventsMap>({
+export const siteEvents = new MultiNanoEmitter<SiteEventsMap>({
   publicEmit: true,
 });
 
@@ -210,16 +227,35 @@ export async function initSiteEvents() {
 let bytmReady = false;
 window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
 
+// FIXME: not a big fan of delaying events until `bytm:ready`, but changing it requires refactoring a lot of ugly code
+
 /** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
     if(!bytmReady) {
+      const startTs = Date.now();
       window.addEventListener("bytm:ready", () => {
         bytmReady = true;
-        emitSiteEvent(key, ...args);
+        forceEmitSiteEvent(key, ...args);
+        if(Date.now() - startTs > 500)
+          warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
       }, { once: true });
       return;
     }
+    else
+      forceEmitSiteEvent(key, ...args);
+  }
+  catch(err) {
+    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+  }
+}
+
+/**
+ * Forcefully emits a site event with the given key and arguments, even if `bytm:ready` has not been emitted yet.  
+ * Temporary workaround for `bytm:ready` event queueing issues in {@linkcode emitSiteEvent()}.
+ */
+export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
+  try {
     siteEvents.emit(key, ...args);
     emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
   }

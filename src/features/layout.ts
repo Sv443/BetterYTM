@@ -1,21 +1,21 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { addParent, autoPlural, compress, DataStore, debounce, decompress, fetchAdvanced, isDomLoaded, preloadImages, type SelectorListenerOptions } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
-import { siteEvents } from "../siteEvents.js";
+import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
 import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
-import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
-import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
+import { compressionSupported, formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, transplantElement, waitVideoElementReady } from "../utils/dom.js";
 import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
-import { mode, scriptInfo } from "../constants.js";
+import { compressionFormat, mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { createRipple } from "../components/ripple.js";
 import { createCircularBtn } from "../components/circularButton.js";
-import type { ResourceKey, VideoVotesObj } from "../types.js";
+import type { ITunesAlbumObj, ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
 
 //#region cfg menu btns
@@ -95,7 +95,15 @@ function exchangeLogo() {
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
-      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => e.href = bytmLogoUrl!);
+      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e, i) => {
+        if(i !== 0) {
+          e.remove();
+          return;
+        }
+        e.sizes = "48x48";
+        e.type = "image/png";
+        e.href = bytmLogoUrl!;
+      });
 
       setTimeout(() => {
         logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
@@ -171,7 +179,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
 
   cfgOptWrapperElem.appendChild(cfgOptElem);
 
-  onInteraction(cfgOptWrapperElem, openCfgMenu);
+  onInteraction(cfgOptWrapperElem, () => openCfgMenu());
 
   const firstChild = container?.firstElementChild;
 
@@ -305,6 +313,71 @@ export async function addAnchorImprovements() {
   catch(err) {
     error("Couldn't add anchors to sidebar items due to an error:", err);
   }
+
+  //#region current song list
+
+  try {
+    const checkCurrentList = () => {
+      addSelectorListener("sidePanel", "ytmusic-player-queue #contents, ytmusic-player-queue #automix-contents", {
+        all: true,
+        listener(songLists) {
+          songLists.forEach((songListEl) => {
+            const items = songListEl.querySelectorAll<HTMLElement>("ytmusic-player-queue-item");
+            if(!items.length)
+              return;
+
+            const itemsAmt = improveSongListClickArea(items);
+            log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural("item", itemsAmt)}`);
+          });
+        },
+      });
+    };
+
+    siteEvents.on("queueChanged", () => checkCurrentList());
+    siteEvents.on("autoplayQueueChanged", () => checkCurrentList());
+
+    const genericSongListListener = (songLists: NodeListOf<HTMLElement>) => {
+      songLists.forEach((songListEl) => {
+        const items = songListEl.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer, .card-content-container");
+        if(!items.length)
+          return;
+
+        const itemsAmt = improveSongListClickArea(items);
+        log(`Improved clickable area of ${itemsAmt} song list ${autoPlural("item", itemsAmt)}`);
+      });
+    };
+
+    const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
+      if(path.includes("/search")) {
+        pathChangedUnsub();
+        addSelectorListener("searchPage", `\
+ytmusic-shelf-renderer #contents,
+ytmusic-card-shelf-renderer .card-container`, {
+          continuous: true,
+          all: true,
+          debounce: 250,
+          listener: genericSongListListener,
+        });
+      }
+    });
+
+    addSelectorListener("browseResponse", `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
+      continuous: true,
+      all: true,
+      debounce: 250,
+      listener: genericSongListListener,
+    });
+  }
+  catch(err) {
+    error("Couldn't add anchors to song list items due to an error:", err);
+  }
 }
 
 const sidebarPaths = [
@@ -333,12 +406,55 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
+function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
+  let itemsAmt = 0;
+
+  items.forEach((item) => {
+    if(item.classList.contains("bytm-click-area-improved"))
+      return;
+    item.classList.add("bytm-click-area-improved");
+
+    item.addEventListener("click", (e) => {
+      const tgt = e.target as HTMLElement | null;
+      if(!tgt)
+        return;
+
+      const conditions = [
+        (el: HTMLElement) => el.tagName.toLowerCase() === "yt-formatted-string",
+        (el: HTMLElement) => el.classList.contains("yt-formatted-string"),
+        (el: HTMLElement) => el.tagName.toLowerCase() === "ytmusic-player-queue-item",
+        (el: HTMLElement) => el.classList.contains("ytmusic-player-queue-item"),
+        (el: HTMLElement) => el.tagName.toLowerCase() === "ytmusic-responsive-list-item-renderer",
+        (el: HTMLElement) => el.classList.contains("ytmusic-responsive-list-item-renderer"),
+        (el: HTMLElement) => el.classList.contains("ytmusic-card-shelf-renderer"),
+      ];
+
+      const antiConditions = [
+        (el: HTMLElement) => el.tagName.toLowerCase() === "a",
+        (el: HTMLElement) => el.getAttribute("href")?.length,
+        (el: HTMLElement) => el.classList.contains("bytm-anchor"),
+      ];
+
+      console.log(">>>", tgt);
+
+      if(conditions.some((c) => c(tgt)) && !antiConditions.some((c) => c(tgt)))
+        item.querySelector<HTMLElement>("ytmusic-play-button-renderer")?.click();
+    });
+
+    itemsAmt++;
+  });
+
+  return itemsAmt;
+}
+
 //#region share track param
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
   const removeSiParam = (inputElem: HTMLInputElement) => {
     try {
+      if(getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all")
+        return;
       if(!inputElem.value.match(/(&|\?)si=/i))
         return;
 
@@ -472,18 +588,56 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
-// TODO:FIXME: rewrite this whole chonker cause it doesn't wanna behave at all
+type AlbumArtCacheEntry = {
+  videoId: string;
+  url: string;
+  created: number;
+};
 
-/** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
-let invertOverlay = false;
+type AlbumArtCache = {
+  entries: AlbumArtCacheEntry[];
+};
 
-/** List of video IDs that have already been applied to the thumbnail overlay */
-const previousVideoIDs: string[] = [];
+const albumArtStore = new DataStore<AlbumArtCache>({
+  id: "album-art-cache",
+  formatVersion: 1,
+  defaultData: {
+    entries: [],
+  },
+  encodeData: async (data) => await compressionSupported() ? await compress(data, compressionFormat, "string") : data,
+  decodeData: async (data) => await compressionSupported() ? await decompress(data, compressionFormat, "string") : data,
+});
 
+async function deleteExpiredAlbumArtCacheEntries() {
+  await albumArtStore.loadData();
+
+  const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
+
+  const expiredEntries = albumArtStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+  if(expiredEntries.length > 0) {
+    log(`Deleting ${expiredEntries.length} expired album art cache entries`);
+    albumArtStore.setData({
+      entries: albumArtStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
+    });
+  }
+}
+
+export enum ThumbOvlState {
+  Off = 0,
+  YT = 1,
+  AM = 2,
+}
+
+/** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
+let overlayState = ThumbOvlState.Off;
+
+// FIXME: if toggled to YT, the AM URL is applied instead
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
   if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
     return;
+
+  deleteExpiredAlbumArtCacheEntries();
 
   // so the script init doesn't keep waiting until a /watch page is loaded
   waitVideoElementReady().then(() => {
@@ -494,33 +648,37 @@ export async function initThumbnailOverlay() {
       return error("Couldn't find video player element while adding thumbnail overlay");
 
     /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
-    const updateOverlayVisibility = async () => {
+    const updateOverlayVisibility = async (isManual = false) => {
       if(!isDomLoaded())
         return;
 
-      const behavior = getFeature("thumbnailOverlayBehavior");
-
-      let showOverlay = behavior === "always";
       const isVideo = getCurrentMediaType() === "video";
+      const defaultBehavior = getFeature("thumbnailOverlayBehavior");
 
-      if(behavior === "videosOnly" && isVideo)
-        showOverlay = true;
-      else if(behavior === "songsOnly" && !isVideo)
-        showOverlay = true;
+      const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? ThumbOvlState.AM : ThumbOvlState.YT;
+      if(!isManual && overlayState === ThumbOvlState.Off)
+        overlayState = (defaultBehavior === "videosOnly" && isVideo) || (defaultBehavior === "songsOnly" && !isVideo) || (defaultBehavior === "always")
+          ? prefState
+          : ThumbOvlState.Off;
+      else if(!isManual && overlayState !== prefState)
+        overlayState = prefState;
 
-      showOverlay = invertOverlay ? !showOverlay : showOverlay;
+      if(getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+        overlayState = ThumbOvlState.YT;
 
       const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
       const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
       const indicatorElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-indicator");
 
+      const ovlShown = overlayState !== ThumbOvlState.Off;
+
       if(overlayElem)
-        overlayElem.style.display = showOverlay ? "block" : "none";
+        overlayElem.style.display = ovlShown ? "block" : "none";
       if(thumbElem)
-        thumbElem.ariaHidden = String(!showOverlay);
+        thumbElem.ariaHidden = String(!ovlShown);
       if(indicatorElem) {
-        indicatorElem.style.display = showOverlay ? "block" : "none";
-        indicatorElem.ariaHidden = String(!showOverlay);
+        indicatorElem.style.display = ovlShown ? "block" : "none";
+        indicatorElem.ariaHidden = String(!ovlShown);
       }
 
       if(getFeature("thumbnailOverlayToggleBtnShown")) {
@@ -529,28 +687,29 @@ export async function initThumbnailOverlay() {
             const toggleBtnIconElem = toggleBtnElem.querySelector<HTMLImageElement>("svg");
 
             if(toggleBtnIconElem) {
-              setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled"));
+              let key = `icon-image${
+                overlayState === ThumbOvlState.YT
+                  ? "_filled_yt"
+                  : overlayState === ThumbOvlState.AM
+                    ? "_filled_am"
+                    : ""
+              }` as "_";
+              if(getCurrentMediaType() === "video" && overlayState !== ThumbOvlState.Off)
+                key = "icon-image_filled" as "_";
+
+              setInnerHtml(toggleBtnElem, await resourceAsString(key));
               toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
             }
             if(toggleBtnElem)
-              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
           },
         });
       }
     };
 
-    const applyThumbUrl = async (videoID: string, force = false) => {
+    /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
+    const applyThumbUrl = async (videoID: string) => {
       try {
-        if(previousVideoIDs.length > 2)
-          previousVideoIDs.splice(0, previousVideoIDs.length - 2);
-
-        if(!force) {
-          if(previousVideoIDs.find(id => id === videoID))
-            return;
-          else
-            previousVideoIDs.push(videoID);
-        }
-
         const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
         if(
           toggleBtnElem
@@ -562,10 +721,13 @@ export async function initThumbnailOverlay() {
         )
           return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
 
-        const actuallyApplyThumbUrl = (thumbUrl: string) => {
+        /** Call to pass the YT and AM artwork URLs to the DOM elements */
+        const setOverlayUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
+          const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
+          
           if(toggleBtnElem) {
             toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
             toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
@@ -587,29 +749,61 @@ export async function initThumbnailOverlay() {
 
         let bestNativeThumbUrl: string | undefined;
         const ac = new AbortController();
-        getBestThumbnailUrl(videoID).then((url) =>
-          ac.signal.aborted ? undefined : (bestNativeThumbUrl = url) && actuallyApplyThumbUrl(url)
-        ).catch(() => void 0);
+        getBestThumbnailUrl(videoID).then((url) => {
+          if(ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
+            setOverlayUrl(url!);
+        }).catch(() => void 0);
 
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
-          all: true,
-          async listener(elems) {
-            const iTunesAlbum = elems.length >= 5
-              ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
+          async listener() {
+            const [primaryArtist, albumName] = (() => {
+              // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
+              // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
+
+              const parent = document.querySelector<HTMLElement>(".content-info-wrapper .subtitle yt-formatted-string");
+              if(!parent)
+                return [undefined, undefined];
+
+              const children = [...parent.querySelectorAll<HTMLElement>("a, span")];
+              const splitList = children.reduce((acc, el) => {
+                if(el.tagName === "SPAN" && el.innerText.includes("•")) {
+                  acc.push([]);
+                  return acc;
+                }
+                acc[acc.length - 1].push(el);
+                return acc;
+              }, [[]] as HTMLElement[][]);
+
+              if(splitList.length < 2)
+                return [undefined, undefined];
+
+              const firstArtistLink = splitList[0].find((el) => el.tagName === "A");
+              const firstArtistName = splitList[0].find((el) => !el.innerText.match(/^\s*•\s*$/));
+
+              return [
+                (firstArtistLink ?? firstArtistName)?.innerText,
+                splitList[1].find((el) => el.tagName === "A")?.innerText,
+              ];
+            })();
+
+            const iTunesAlbum = primaryArtist && albumName
+              ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
               : undefined;
 
             const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
-            const iTunesUrl = (iTunesAlbum?.artworkUrl60 ?? iTunesAlbum?.artworkUrl100);
+            const iTunesUrl = (iTunesAlbum?.artworkUrl100 ?? iTunesAlbum?.artworkUrl60);
             iTunesUrl && !ac.signal.aborted && ac.abort();
 
-            const thumbUrl = iTunesUrl
-              ?.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
-              ?? bestNativeThumbUrl ?? await getBestThumbnailUrl(videoID);
+            const thumbUrl = iTunesUrl?.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)
+              ?? bestNativeThumbUrl
+              ?? await getBestThumbnailUrl(videoID);
 
-            if(thumbUrl)
-              actuallyApplyThumbUrl(thumbUrl);
+            if(thumbUrl) {
+              log(`Successfully resolved artwork for '${primaryArtist} - ${albumName}'`);
+              setOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
+            }
             else
-              warn("Couldn't get thumbnail URL for album", iTunesAlbum?.collectionName, "by", iTunesAlbum?.artistName, "or video with ID", videoID);
+              warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
           },
         });
       }
@@ -617,21 +811,6 @@ export async function initThumbnailOverlay() {
         error("Couldn't apply thumbnail URL to overlay due to an error:", err);
       }
     };
-
-    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID, oldVideoID) => {
-      unsubWatchIdChanged();
-      addSelectorListener("body", "#bytm-thumbnail-overlay", {
-        listener: () => {
-          const curVidIdx = previousVideoIDs.findIndex(id => id === videoID);
-          const prevVidIdx = previousVideoIDs.findIndex(id => id === oldVideoID);
-          curVidIdx > -1 && previousVideoIDs.splice(curVidIdx, 1);
-          prevVidIdx > -1 && previousVideoIDs.splice(prevVidIdx, 1);
-
-          applyThumbUrl(videoID);
-          updateOverlayVisibility();
-        },
-      });
-    });
 
     const createElements = async () => {
       try {
@@ -664,10 +843,12 @@ export async function initThumbnailOverlay() {
         indicatorElem && playerEl.appendChild(indicatorElem);
 
 
-        siteEvents.on("watchIdChanged", async (videoID) => {
-          invertOverlay = false;
-          applyThumbUrl(videoID);
-          updateOverlayVisibility();
+        siteEvents.on("watchIdChanged", async (videoId) => {
+          overlayState = ThumbOvlState.Off;
+          return await Promise.allSettled([
+            applyThumbUrl(videoId),
+            updateOverlayVisibility(),
+          ]);
         });
 
         const params = new URL(location.href).searchParams;
@@ -683,18 +864,22 @@ export async function initThumbnailOverlay() {
           toggleBtnElem.role = "button";
           toggleBtnElem.tabIndex = 0;
           toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+          toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
 
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
 
-            invertOverlay = !invertOverlay;
+            const ovlMax = Object.keys(ThumbOvlState).length / 2 - 1;
+            overlayState = overflowVal(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
 
-            const params = new URL(location.href).searchParams;
-            if(thumbImgElem.dataset.videoId !== params.get("v"))
-              applyThumbUrl(params.get("v")!, true);
+            if(getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+              overlayState = ThumbOvlState.Off;
 
-            updateOverlayVisibility();
+            toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
+
+            applyThumbUrl(new URL(location.href).searchParams.get("v")!);
+            updateOverlayVisibility(true);
           });
 
           setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
@@ -736,21 +921,33 @@ export async function initThumbnailOverlay() {
 }
 
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
-async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
+async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albumRaw: string) {
+  if(overlayState === ThumbOvlState.AM) {
+    const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
+
+    if(cacheEntry) {
+      log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
+      return {
+        artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60") as ITunesAlbumObj["artworkUrl60"],
+        artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100") as ITunesAlbumObj["artworkUrl100"],
+      } satisfies Partial<ITunesAlbumObj> & Required<Pick<ITunesAlbumObj, "artworkUrl60" | "artworkUrl100">>;
+    }
+  }
+
   const doFetchITunesAlbum = async (artist: string, album: string) => {
     const albumObjs = await fetchITunesAlbumInfo(artist, album);
     if(albumObjs && albumObjs.length > 0) {
       const bestMatch = albumObjs.find((al) => (
         (
-          al.artistName === artist
-          || al.artistName.toLowerCase() === artist.toLowerCase()
-          || al.artistName === artistsRaw
-          || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
+          sanitizeArtists(al.artistName) === artist
+          || sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
+          || sanitizeArtists(al.artistName) === artistsRaw
+          || sanitizeArtists(al.artistName).toLowerCase() === artistsRaw.toLowerCase()
         ) && (
-          al.collectionName === album
-          || al.collectionName.toLowerCase() === album.toLowerCase()
-          || al.collectionCensoredName === album
-          || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
+          sanitizeSong(al.collectionName) === sanitizeSong(album)
+          || sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
+          || sanitizeSong(al.collectionCensoredName) === sanitizeSong(album)
+          || sanitizeSong(al.collectionCensoredName).toLowerCase() === sanitizeSong(album).toLowerCase()
         )
       ));
       return [bestMatch, albumObjs[0]];
@@ -763,7 +960,23 @@ async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
   let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
   if(!bestMatch)
     [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
-  return bestMatch ?? fallback;
+
+  const match = bestMatch ?? fallback;
+
+  if(match) {
+    const entries = albumArtStore.getData().entries;
+    if(!entries.find((e) => e.videoId === videoId)) {
+      entries.push({
+        videoId,
+        url: match.artworkUrl100,
+        created: Date.now(),
+      });
+      log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
+      await albumArtStore.setData({ entries });
+    }
+  }
+
+  return match;
 }
 
 //#region idle hide cursor
@@ -935,6 +1148,8 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
 
   log("Added vote number labels to like and dislike buttons");
+
+  forceEmitSiteEvent("voteLabelsAdded");
 }
 
 /** Updates or inserts the labels on the native like and dislike buttons */
@@ -947,6 +1162,57 @@ function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, disl
   if(dislikeBtn)
     dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
 };
+
+//#region swap like&dislike btns
+
+/** Swaps the like and dislike buttons on the watch page */
+export async function initSwapLikeDislikeBtns(i = 0) {
+  if(i > 30)
+    return error("Couldn't swap like and dislike buttons after ~3 seconds - giving up");
+
+  if(!getFeature("swapLikeDislikeButtons") || getDomain() === "yt")
+    return;
+
+  // don't pause script exec
+  (async () => {
+    if(i === 0 && getFeature("showVotes"))
+      await siteEvents.once("voteLabelsAdded");
+
+    const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
+    const options = {
+      all: true,
+      debounce: 50,
+      listener: (elements) => {
+        const els = [...elements];
+
+        const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
+        const likeBtn = els.find((el) => el.id === "button-shape-like");
+
+        if(!dislikeBtn || !likeBtn)
+          return error("Couldn't find like or dislike button while swapping like and dislike buttons");
+
+        if(getFeature("showVotes") && elements.length === 4) {
+          const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
+          const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
+
+          if(!dislikeLabel || !likeLabel)
+            return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
+
+          transplantElement(dislikeBtn, likeLabel);
+          transplantElement(dislikeLabel, dislikeBtn);
+        }
+        else if(!getFeature("showVotes") && elements.length === 2)
+          transplantElement(dislikeBtn, likeBtn);
+        else
+          setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
+      },
+    } satisfies SelectorListenerOptions;
+
+    addSelectorListener("playerBarMiddleButtons", selector, options);
+
+    log("Swapped like and dislike buttons");
+  })();
+}
 
 //#region watch page full size
 

@@ -20,6 +20,7 @@ export async function initHotkeys() {
   promises.push(initSiteSwitch());
   promises.push(initProxyHotkeys());
   promises.push(initSkipToRemTimeHotkey());
+  promises.push(initSearchBarHotkeys());
 
   return await Promise.allSettled(promises);
 }
@@ -44,7 +45,7 @@ export async function initSiteSwitch() {
       return;
     if(siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
       switchSite(domain === "yt" ? "ytm" : "yt");
-  });
+  }, { capture: true });
   siteEvents.on("hotkeyInputActive", (state) => {
     if(!getFeature("switchBetweenSites"))
       return;
@@ -113,7 +114,7 @@ async function initLikeDislikeHotkeys() {
       likeBtn?.click();
     else if(hotkeyMatches(e, getFeature("dislikeHotkey")))
       dislikeBtn?.click();
-  });
+  }, { capture: true });
 }
 
 //#region lyrics
@@ -150,6 +151,49 @@ async function initSkipToRemTimeHotkey() {
 
       await remTimeTryRestoreTime(true);
     }
+  }, { capture: true });
+}
+
+//#region search bar
+
+async function initSearchBarHotkeys() {
+  const getSearchBarInput = () => document.querySelector<HTMLInputElement>(
+    getDomain() === "ytm"
+      ? "ytmusic-search-box input"
+      : "yt-searchbox input"
+  );
+
+  const checkFocusHotkey = (e: KeyboardEvent) => {
+    if(isIgnoredInputElement() || !getFeature("focusSearchBarHotkeyEnabled"))
+      return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    getSearchBarInput()?.focus();
+
+    log("Focused on the search bar");
+  };
+
+  const checkClearHotkey = (e: KeyboardEvent) => {
+    if(!getFeature("clearSearchBarHotkeyEnabled"))
+      return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const inputEl = getSearchBarInput();
+    if(inputEl) {
+      inputEl.value = "";
+      inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+  };
+
+  document.addEventListener("keydown", (e) => {
+    hotkeyMatches(e, getFeature("focusSearchBarHotkey")) && checkFocusHotkey(e);
+    hotkeyMatches(e, getFeature("clearSearchBarHotkey")) && checkClearHotkey(e);
+  }, {
+    capture: true, // ensure precedence over YTM's own listeners
   });
 }
 

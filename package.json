@@ -44,6 +44,15 @@
     "name": "Sv443",
     "url": "https://github.com/Sv443"
   },
+  "contributors": [
+    {
+      "name": "indierodo",
+      "url": "https://github.com/indierodo",
+      "contributions": [
+        "Track numbers feature"
+      ]
+    }
+  ],
   "license": "AGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/Sv443/BetterYTM/issues"
@@ -63,7 +72,7 @@
     "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
   },
   "dependencies": {
-    "@sv443-network/userutils": "^9.4.1",
+    "@sv443-network/userutils": "^9.4.3",
     "compare-versions": "^6.1.1",
     "dompurify": "^3.2.5",
     "marked": "^12.0.2",

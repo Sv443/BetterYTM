@@ -37,7 +37,7 @@ Before submitting a translation, please check on [this document](https://github.
 
 ### Adding translations for a new language:
 > [!IMPORTANT]  
-> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**  
+> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**  
   
 To submit a translation, please follow these steps:
 1. Select the `develop` branch to translate for the latest version of BetterYTM.  
@@ -46,8 +46,8 @@ To submit a translation, please follow these steps:
 3. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
   You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
   The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...).
-4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
-  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o=language-COUNTRY` (see [this section](#editing-an-existing-translation) for more info).
+4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.  
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o="xx-YY"` (see [this section](#editing-an-existing-translation) for more info).
 5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites.  
   Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 6. If you want to submit a pull request with the translated file:
@@ -64,17 +64,17 @@ To submit a translation, please follow these steps:
 
 ### Editing an existing translation:
 > [!IMPORTANT]  
-> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
+> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**
 
 To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following the instructions in [the local setup section.](#setting-up-the-project-for-local-development)  
   **Make sure you fork the repository and clone your own fork instead of the original repository, and to create a branch with a short but descriptive name.**  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `pnpm tr-format -p -o=language-COUNTRY`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
+3. Run the command `pnpm tr-format -p -o="language-COUNTRY"`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
-4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
+4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.
 5. Make sure there are no duplicate keys in the file.
-6. Run the command `pnpm tr-format -o=language-COUNTRY` to make sure the file is formatted correctly.
+6. Run the command `pnpm tr-format -o="language-COUNTRY"` to make sure the file is formatted correctly.
 7. Test for syntax errors and update translation progress with the command `pnpm tr-progress`
 8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice).
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [the local setup section.](#setting-up-the-project-for-local-development)
@@ -147,7 +147,7 @@ To edit an existing translation, please follow these steps:
   Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
 - **`pnpm gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
-- **`pnpm tr-changed <keys>`**  
+- **`pnpm tr-changed "<keys>"`**  
   Removes the provided keys (comma-separated) from all translation files but `en-US.json`  
   This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm tr-format -p`
 - **`pnpm tr-progress`**  
@@ -299,7 +299,10 @@ These are the ways to interact with BetterYTM; through constants, events and glo
     
   Additionally BetterYTM has an internal system called SiteEvents. They are dispatched using the format `bytm:siteEvent:eventName`  
   You may find all SiteEvents that are available and their types in [`src/siteEvents.ts`](src/siteEvents.ts)  
-  Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/siteEvents.ts`](src/siteEvents.ts)
+  Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/siteEvents.ts`](src/siteEvents.ts).  
+    
+  The interface also exposes some methods to register listeners, which offer much greater flexibility than the regular `addEventListener` method.  
+  Find them in the [global functions and classes section below.](#global-functions-and-classes)
 
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
@@ -425,6 +428,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
+  - [getLibraryHook()](#getlibraryhook) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
 - BYTM-specific:
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
@@ -447,6 +451,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getCurrentMediaType()](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
   - [getLikeDislikeBtns()](#getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
   - [isIgnoredInputElement()](#isignoredinputelement) - Checks if the given element (or `document.activeElement`) is an input element that should prevent all other keypresses from being processed
+- Site Events:
+  - [onSiteEvent()](#onsiteevent) - Adds a site event listener
+  - [onceSiteEvent()](#oncesiteevent) - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
+  - [onMultiSiteEvents()](#onmultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function
+  - [onceMultiSiteEvents()](#oncemultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -480,6 +489,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [fetchVideoVotes()](#fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
+  - [MultiNanoEmitter](#multinanoemitter) - Subclass of NanoEmitter that allows you to listen to multiple events at once
   - [formatNumber](#formatnumber) - Formats a number with the configured locale and passed or configured format
 
 <br><br>
@@ -502,7 +512,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > The returned properties include:  
 > - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
-> - `events` - A [NanoEmitter](#nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
+> - `events` - A [MultiNanoEmitter](#multinanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
 >   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin
 > 
@@ -514,10 +524,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   plugin: { // required
 >     // The name and namespace should combine to be unique across all plugins
 >     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier
->     name: "My cool plugin",                         // required
->     namespace: "https://www.github.com/MyUsername", // required
->     version: "4.2.0",                               // required
->     iconUrl: "https://picsum.photos/128/128",       // required
+>     name: "My cool plugin",                     // required
+>     namespace: "https://github.com/MyUsername", // required
+>     version: "4.2.0",                           // required
+>     iconUrl: "https://picsum.photos/128/128",   // required
 >     description: { // required
 >       "en-US": "This plugin does cool stuff",      // required
 >       "de-DE": "Dieses Plugin macht coole Sachen", // (all other locales are optional)
@@ -535,11 +545,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >       openuserjs: "...",                                            // (optional)
 >     },
 >   },
->   // The intents (permissions) the plugin needs to be granted to be able to use certain functions.
->   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then sum all of them together to get the final intents number.
+>   // The intents (requested permissions) the plugin needs to be granted by BetterYTM and the user to be able to use certain functions.
+>   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then bitwise-OR all of them together to get the final intents number.
 >   // If you have BYTM as a dependency/submodule, you can import the enum and join the values like so: `PluginIntent.Foo | PluginIntent.Bar`
->   intents: 18,              // required
->   contributors: [           // (optional)
+>   // Set to 0 to indicate no permissions need to be granted.
+>   intents: PluginIntent.ReadFeatureConfig | PluginIntent.CreateModalDialogs, // (optional, defaults to 0)
+>   contributors: [ // (optional)
 >     {                                            // (optional)
 >       name: "MyUsername",                        // required
 >       homepage: "https://github.com/MyUsername", // (optional)
@@ -565,10 +576,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   try {
 >     // register the plugin
 >     const { token, events } = registerPlugin(pluginDef);
+> 
+>     // store the private token for later use in authenticated function calls
+>     authToken = token;
+> 
 >     // listen for the pluginRegistered event
 >     events.on("pluginRegistered", (info) => {
->       // store the private token for later use in authenticated function calls
->       authToken = token;
 >       console.log(`${info.name} (version ${info.version}) is registered`);
 > 
 >       onRegistered();
@@ -633,6 +646,36 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > });
 > ```
 > </details>
+
+<br>
+
+> ### getLibraryHook()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.getLibraryHook(token: string | undefined): LibraryHookObj | undefined
+> ```
+>   
+> Description:  
+> This function returns an object with functions and instances useful for core libraries or deeper-reaching plugins.  
+> One such example is the [BYTMUtils library](https://github.com/Sv443/BYTMUtils), which contains many core functions and components BetterYTM depends on.  
+>   
+> ⚠️ Requires the intent `InternalAccess` to be granted, else always returns `undefined`.  
+>   
+> Arguments:  
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will throw an error)
+>   
+> The object returned by this function is a `LibraryHookObj` type, which contains the following properties:
+> | Property | Type | Description |
+> | :-- | :-- | :-- |
+> | `constants` | Object | Contains all exports from the `src/constants.ts` file |
+> | `emitInterface` | Function | Emits a generic, global interface event |
+> | `emitSiteEvent` | Function | Emits an event using the siteEvents system |
+> | `siteEvents` | [MultiNanoEmitter](#multinanoemitter) | Event emitting instance of the siteEvents system |
+> | `addSelectorListener` | Function | Adds a listener checking for DOM changes using BYTM's own SelectorObserver instances |
+> | `showPrompt` | Function | Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt` |
+> | `setGlobalProp` | Function | Sets a global property on the `unsafeWindow.BYTM` object |
+> | `enableDiscardBeforeUnload` | Function | Enables discarding of the "beforeunload" window event (disables "unsaved data" popup) |
+> | `disableDiscardBeforeUnload` | Function | Disables discarding of the "beforeunload" window event (reenables "unsaved data" popup) |
 
 <br>
 
@@ -831,11 +874,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - `callback` - The function to call when the element is interacted with
 > - `listenerOptions` - Optional event listener options (same as the third argument of `addEventListener`, shared between the keyboard and mouse event listeners)
 >   
+> - ⚠️ When using this function to call a class method, make sure to wrap the callback function in an arrow function (or `this.myMethod.bind(this)` call) to preserve the `this` context.
+>   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > const myButton = document.querySelector("button#myButton");
 > 
+> // functional example:
 > unsafeWindow.BYTM.onInteraction(myButton, (event) => {
 >   if(event instanceof MouseEvent)
 >     console.log("The button was clicked");
@@ -848,6 +894,35 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   // you can pass `capture` to listen in the capture phase (helpful for triggering before other listeners),
 >   // or an AbortController's `signal` to be able to abort the listener
 > });
+> 
+> // object-oriented example:
+> class MyListener {
+>   // called when the button is interacted with
+>   private interact(event: MouseEvent | KeyboardEvent): void {
+>     // since this method uses `this`, the callback needs to be provided correctly to not lose the context
+>     try {
+>       this.buttonElement.click();
+>     }
+>     catch {
+>       this.listener(event);
+>     }
+>   }
+> 
+>   public doStuff(): void {
+>     // - either wrap in an arrow function to preserve the `this` context:
+>     // unsafeWindow.BYTM.onInteraction(myButton, (event) => this.interact(event));
+> 
+>     // - or use `this.interact.bind(this)` to preserve it:
+>     // unsafeWindow.BYTM.onInteraction(myButton, this.interact.bind(this));
+> 
+>     // ⚠️ this is wrong, because the `this` context is not captured when the method is passed down via reference:
+>     unsafeWindow.BYTM.onInteraction(myButton, this.interact);
+>   }
+> }
+> 
+> const listener = new MyListener();
+> 
+> listener.doStuff();
 > ```
 > </details>
 
@@ -1199,6 +1274,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Sets the locale for BetterYTM's translations.  
 > The new locale is used for all translations *after* this function is called.  
 >   
+> ⚠️ Requires the intent `WriteTranslations` to be granted, else always returns `undefined`.  
+>   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
 > - `locale` - The locale to set. Refer to the keys of the object in [`assets/locales.json`](assets/locales.json) for a list of available locales.
@@ -1394,8 +1471,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
-> If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
+> If features are set to be hidden using `valueHidden: true`, their value will be `undefined` in the returned object, unless the plugin was granted the `SeeHiddenConfigValues` intent.  
 > In the future, a plugin intent (see [`registerPlugin()`](#registerplugin)) could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
+>   
+> ⚠️ Requires the intent `ReadFeatureConfig` to be granted, else always returns `undefined`.  
+> If the intent `SeeHiddenConfigValues` is granted, hidden values will not be replaced with `undefined`. Only use this intent if there really is no conceivable other way of doing what you want to do.  
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return undefined).
@@ -1422,6 +1502,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > ⚠️ No validation is done on the provided object, so make sure it has all the required properties or you're gonna break stuff.  
 > A good way to ensure that is to spread your modifications over the result of a call to [`getFeatures()`](#getfeatures) or [`getDefaultFeatures()`](#getdefaultfeatures)  
+>   
+> ⚠️ Requires the intent `WriteFeatureConfig` to be granted, else always returns `undefined`.  
 >   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
@@ -1596,7 +1678,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Returns the current auto-like data object synchronously from memory.  
-> To see the structure of the object, check out the type `AutoLikeData` in the file [`src/types.ts`](src/types.ts)
+> To see the structure of the object, check out the type `AutoLikeData` in the file [`src/types.ts`](src/types.ts)  
+>   
+> ⚠️ Requires the intent `ReadAutoLikeData` to be granted, else always returns `undefined`.  
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
@@ -1626,6 +1710,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Description:  
 > Saves the provided auto-like data object synchronously to memory and asynchronously to GM storage.  
+>   
+> ⚠️ Requires the intent `WriteAutoLikeData` to be granted, else always returns `undefined`.  
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
@@ -1689,6 +1775,55 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
+> ### onSiteEvent()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onSiteEvent<K extends keyof TEventMap>(event: K, listener: TEventMap[K]): () => void
+> ```
+> 
+> Description:  
+> Registers a listener for the specified site event.  
+> The listener will be called with the event data when the event is emitted, and may be called multiple times.  
+> Returns a function that can be called to unsubscribe from the event.  
+>   
+> See the type `SiteEventsMap` in the file [`src/siteEvents.ts`](src/siteEvents.ts) for a list of available events and their data.
+
+<br>
+
+> ### onceSiteEvent()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onceSiteEvent<K extends keyof TEventMap>(event: K, listener: TEventMap[K]): () => void
+> ```
+> 
+> Description:  
+> Registers a listener for the specified site event that will only be called once.  
+> Returns a function that can be called to unsubscribe from the event.  
+>   
+> See the type `SiteEventsMap` in the file [`src/siteEvents.ts`](src/siteEvents.ts) for a list of available events and their data.
+
+<br>
+
+> ### onMultiSiteEvents()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onMultiSiteEvents(events: Array<string>, options: MultiNanoEmitterOptions, cb: TEventMap[TKey]): Array<[event: string, unsub: () => void]>
+> ```
+> 
+> Please refer to [the method `onMulti()` of the `MultiNanoEmitter` class](#multinanoemitter) for more information on this function.
+
+<br>
+
+> ### onceMultiSiteEvents()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.onceMultiSiteEvents(events: Array<string>, options: MultiNanoEmitterOptions, cb?: (args: [event: string, args: Parameters<TEvtMap[TKey]>]): Promise<[event: string, Parameters<TEvtMap[TKey]>]>
+> ```
+> 
+> Please refer to [the method `onceMulti()` of the `MultiNanoEmitter` class](#multinanoemitter) for more information on this function.
+
+<br>
+
 > ### BytmDialog
 > Signature:  
 > ```ts
@@ -1725,7 +1860,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <br>
 > 
 > Methods:  
-> The methods from the [`NanoEmitter`](#nanoemitter) class are also available here.  
+> The methods from the [`MultiNanoEmitter`](#multinanoemitter) class are also available here.  
 > These are the additional methods that are exclusive to the `BytmDialog` class:  
 > - `open(e?: MouseEvent | KeyboardEvent): Promise<void>`  
 >   Opens the dialog - also mounts it if it hasn't been mounted yet.  
@@ -1934,7 +2069,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | `body: string \| (() => string \| Promise<string>)` | Markdown content to render in the dialog. Can be a string or a sync or async function that returns a string. |
 >   
 > Methods:  
-> The methods from the [`NanoEmitter`](#nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
+> The methods from the [`MultiNanoEmitter`](#multinanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
 > - `static parseMd(md: string): Promise<string>`  
 >   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.
 > - `protected renderBody(): Promise<void>`  
@@ -2147,8 +2282,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
 >   
 > `RippleProps` properties:  
-> - `speed?: string` - The speed of the ripple effect. Can be "fastest", "fast", "normal", "slow" or "slowest" (defaults to "normal")
-> - `additionalProps?: TElement | HTMLDivElement` - Additional properties to apply to the created or passed ripple element
+> - `speed?: string` - The speed of the ripple effect. Can be "fastest", "fast", "normal", "slow" or "slowest" (defaults to "normal").
+> - `triggerEvent?: "mousedown" | "mouseup" | string` - The event that should trigger the ripple effect (defaults to "mousedown").
+> - `additionalProps?: TElement | HTMLDivElement` - Additional properties to apply to the created or passed ripple element.
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -2403,6 +2539,72 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > }
 > 
 > run();
+> ```
+> </details>
+
+<br><br>
+
+> ### MultiNanoEmitter
+> Signature:
+> ```ts
+> new unsafeWindow.BYTM.MultiNanoEmitter<TEventMap>(settings: NanoEmitterSettings): MultiNanoEmitter
+> ```
+>   
+> A subclass of [NanoEmitter](#nanoemitter) that can be used to create an event emitter whose listeners only trigger when one of, all, or a given subset of the events are emitted.  
+> Everything in this class is the same as in [NanoEmitter](#nanoemitter), except for the new methods below.
+>   
+> Methods:
+> - `onMulti(events: Array<string>, options: MultiNanoEmitterOptions, cb: TEventMap[TKey]): Array<[event: string, unsub: () => void]>`  
+>   Registers a callback for the given events.  
+>   `options` defines when the callback should be called, as well as allows passing an AbortSignal to cancel the listener at any time.  
+>   The function returns an array of tuples, each containing the event name and a function to unsubscribe from that specific event. Note that unsubscribing events that are required to trigger the callback might mean it will never be called.
+> - `onceMulti(events: Array<string>, options: MultiNanoEmitterOptions, cb?: (args: [event: string, args: Parameters<TEvtMap[TKey]>]): Promise<[event: string, Parameters<TEvtMap[TKey]>]>`  
+>   Registers a callback for the given events that gets called only once. Alternatively, the returned Promise also resolves with the parameters that would have been passed to the callback at the same time.  
+>   Differently to the regular `once()` method, this one returns a tuple of the event name that triggered the callback and the parameters that would have been passed to the callback.  
+>   The `options` parameter is the same as in `onMulti()`.
+> 
+> ### MultiNanoEmitterOptions
+> 
+> | Property | Description |
+> | :-- | :-- |
+> | `waitFor?: "all" \| "any" \| (keyof TEvtMap \| "_")[]` | Whether to wait for all events or any event to be emitted, or a specific subset of events. |
+> | `signal?: AbortSignal` | If provided, calling `abort()` on the signal will cancel each listener it was passed to and prevent them from being called. |
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> interface MyEvents {
+>   foo: (val: number) => void;
+>   bar: (val: number) => void;
+> }
+> 
+> const emitter = new unsafeWindow.BYTM.MultiNanoEmitter<MyEvents>({
+>   publicEmit: true, // allow calling emit() from outside this class instance
+> });
+> 
+> const ac = new AbortController();
+> 
+> const unsubs = emitter.onMulti(["foo", "bar"], { waitFor: "any", signal: ac.signal }, ([event, args]) => {
+>   // event is either "foo" or "bar"
+>   console.log(`The event "${event}" was emitted with args:`, args);
+> });
+> 
+> function unsubFrom(name: keyof MyEvents) {
+>   // unsubscribe from the passed event name, if it exists
+>   const unsubFns = unsubs.filter(([evt]) => evt === name);
+>   for(const [, unsubFn] of unsubFns)
+>     unsubFn();
+> }
+> 
+> function unsubAll() {
+>   // unsubscribe from all events ac.signal was passed to
+>   ac.abort();
+> }
+> 
+> 
+> // randomly emits "foo" or "bar" after a short delay
+> const randVal = unsafeWindow.BYTM.UserUtils.randRange(1);
+> setTimeout(() => emitter.emit(randVal === 1 ? "foo" : "bar", randVal), 1000);
 > ```
 > </details>
 

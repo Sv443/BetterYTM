@@ -130,6 +130,7 @@ class PromptDialog extends BytmDialog {
       confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
       confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
+      confirmBtn.autofocus = true;
       confirmBtn.addEventListener("click", () => {
         this.emitResolve(type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
         promptDialog?.close();
@@ -142,6 +143,8 @@ class PromptDialog extends BytmDialog {
     closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
     closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
     closeBtn.tabIndex = 0;
+    if(type === "alert")
+      closeBtn.autofocus = true;
     closeBtn.addEventListener("click", () => {
       const resVals: Record<PromptType, boolean | null> = {
         alert: true,

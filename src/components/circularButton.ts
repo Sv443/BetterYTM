@@ -47,7 +47,7 @@ export async function createCircularBtn({
   }
   else if("onClick" in rest && rest.onClick) {
     btnElem = document.createElement("div");
-    rest.onClick && onInteraction(btnElem, rest.onClick);
+    rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
   }
   else
     throw new TypeError("Either 'href' or 'onClick' must be provided");
