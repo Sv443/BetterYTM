@@ -4,7 +4,7 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
 import type { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
-import type { siteEvents, SiteEventsMap } from "./siteEvents.js";
+import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getLibraryHook, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
@@ -304,11 +304,13 @@ export type PluginDef = {
 export type PluginEventMap =
   // These are emitted on each plugin individually, with individual data:
   & {
-    /** Emitted when the plugin is fully registered on BYTM's side and can use authenticated API calls */
+    /** Emitted when a plugin is registered on BYTM's side and can make use of authenticated API calls */
     pluginRegistered: (info: PluginInfo) => void;
+    /** Emitted when `bytm:ready` is emitted on the window, as an easier to work with alternative */
+    bytmReady: () => void;
   }
   // These are emitted on every plugin simultaneously, with the same or similar data:
-  & SiteEventsMap
+  & SiteEventsMapPrefixed
   & InterfaceEventsMap;
 
 /** A plugin in either the queue or registered map */

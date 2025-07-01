@@ -60,6 +60,11 @@ export type SiteEventsMap = {
   voteLabelsAdded: () => void;
 };
 
+/** Same as {@link SiteEventsMap} but with the prefix `bytm:siteEvent:` added to each key. */
+export type SiteEventsMapPrefixed = {
+  [K in keyof SiteEventsMap as `bytm:siteEvent:${K}`]: SiteEventsMap[K];
+};
+
 /** Array of all site events */
 export const allSiteEvents = [
   "configChanged",

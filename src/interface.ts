@@ -39,6 +39,8 @@ export type InterfaceEvents = {
   "bytm:lyricsCacheReady": undefined;
   /** Emitted whenever the locale is changed - if a plugin changed the locale, the plugin ID is provided as well */
   "bytm:setLocale": { locale: TrLocale, pluginId?: string };
+  /** When this is emitted, plugins may register themselves at a much earlier stage, before things like the feature config are even loaded */
+  "bytm:preInitPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
   /** When this is emitted, this is your call to register your plugin using the function passed as the sole argument */
   "bytm:registerPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
   /**
@@ -258,6 +260,11 @@ const registeredPluginTokens = new Map<string, string>();
 
 let pluginsInitialized = false;
 
+/** Pre-init for eager plugins that need to be initialized as soon as physically possible */
+export function preInitPlugins() {
+  emitInterface("bytm:preInitPlugin", (def: PluginDef) => registerPlugin(def));
+}
+
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
   emitInterface("bytm:registerPlugin", (def: PluginDef) => registerPlugin(def));
@@ -266,9 +273,7 @@ export function initPlugins() {
     pluginsInitialized = true;
     if(registeredPlugins.size > 0)
       log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
-  }, {
-    once: true,
-  });
+  }, { once: true });
 }
 
 /** Registers a plugin on the BYTM interface. */
@@ -297,7 +302,12 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     registeredPluginTokens.set(plKey, token);
 
     info(`Successfully registered plugin '${plKey}'`);
-    setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 1);
+
+    emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
+
+    window.addEventListener("bytm:ready", () => {
+      emitOnPlugins("bytmReady");
+    });
 
     return {
       info: getPluginInfo(token, def)!,

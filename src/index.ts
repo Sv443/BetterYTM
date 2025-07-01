@@ -4,7 +4,7 @@ import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { initSiteEvents } from "./siteEvents.js";
-import { emitInterface, initInterface, initPlugins } from "./interface.js";
+import { emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
 import { downloadData, getStoreSerializer } from "./serializer.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
@@ -97,8 +97,10 @@ function preInit() {
     if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
       return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
 
-    initInterface();
     setLogLevel(defaultLogLevel);
+
+    initInterface();
+    preInitPlugins();
 
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
@@ -146,7 +148,7 @@ async function init() {
       initRememberSongTime();
 
     if(!isDomLoaded())
-      document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
+      document.addEventListener("DOMContentLoaded", () => onDomLoad(), { once: true });
     else
       onDomLoad();
   }
