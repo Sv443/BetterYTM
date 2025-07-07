@@ -32,26 +32,29 @@ export async function addWatermark() {
   watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo.name);
   watermarkEl.tabIndex = 0;
 
-  await improveLogo();
-  bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
-  preloadImages([bytmLogoUrl]);
+  (async () => {
+    await improveLogo();
+    bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    preloadImages([bytmLogoUrl]);
 
-  const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
-    e.stopImmediatePropagation();
+    const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
+      e.stopImmediatePropagation();
 
-    if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
-      openCfgMenu();
-    if(!logoExchanged && (e.shiftKey || e.ctrlKey))
-      exchangeLogo();
-  };
+      if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
+        openCfgMenu();
+      if(!logoExchanged && (e.shiftKey || e.ctrlKey))
+        exchangeLogo();
+    };
 
-  onInteraction(watermarkEl, (e) => watermarkOpenMenu(e));
+    // TODO: space and enter dont work fsr
+    onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
 
-  addSelectorListener("navBar", "ytmusic-logo a", {
-    listener: (logoElem) => logoElem.appendChild(watermarkEl),
-  });
+    addSelectorListener("navBar", "ytmusic-logo a", {
+      listener: (logoElem) => logoElem.appendChild(watermarkEl),
+    });
 
-  log("Added watermark element");
+    log("Added watermark element");
+  })();
 }
 
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
@@ -419,25 +422,25 @@ function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
       if(!tgt)
         return;
 
+      type CondFns = ((el: HTMLElement) => boolean)[];
+
       const conditions = [
-        (el: HTMLElement) => el.tagName.toLowerCase() === "yt-formatted-string",
-        (el: HTMLElement) => el.classList.contains("yt-formatted-string"),
-        (el: HTMLElement) => el.tagName.toLowerCase() === "ytmusic-player-queue-item",
-        (el: HTMLElement) => el.classList.contains("ytmusic-player-queue-item"),
-        (el: HTMLElement) => el.tagName.toLowerCase() === "ytmusic-responsive-list-item-renderer",
-        (el: HTMLElement) => el.classList.contains("ytmusic-responsive-list-item-renderer"),
-        (el: HTMLElement) => el.classList.contains("ytmusic-card-shelf-renderer"),
-      ];
+        (el) => el.tagName.toLowerCase() === "yt-formatted-string",
+        (el) => el.classList.contains("yt-formatted-string"),
+        (el) => el.tagName.toLowerCase() === "ytmusic-player-queue-item",
+        (el) => el.classList.contains("ytmusic-player-queue-item"),
+        (el) => el.tagName.toLowerCase() === "ytmusic-responsive-list-item-renderer",
+        (el) => el.classList.contains("ytmusic-responsive-list-item-renderer"),
+        (el) => el.classList.contains("ytmusic-card-shelf-renderer"),
+      ] satisfies CondFns;
 
       const antiConditions = [
-        (el: HTMLElement) => el.tagName.toLowerCase() === "a",
-        (el: HTMLElement) => el.getAttribute("href")?.length,
-        (el: HTMLElement) => el.classList.contains("bytm-anchor"),
-      ];
+        (el) => el.tagName.toLowerCase() === "a",
+        (el) => Boolean(el.getAttribute("href")?.length),
+        (el) => el.classList.contains("bytm-anchor"),
+      ] satisfies CondFns;
 
-      console.log(">>>", tgt);
-
-      if(conditions.some((c) => c(tgt)) && !antiConditions.some((c) => c(tgt)))
+      if(conditions.some((cnd) => cnd(tgt)) && antiConditions.every((acnd) => !acnd(tgt)))
         item.querySelector<HTMLElement>("ytmusic-play-button-renderer")?.click();
     });
 
