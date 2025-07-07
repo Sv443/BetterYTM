@@ -23,8 +23,11 @@ import "./menu_old.css";
 
 //#region create menu
 
-let isCfgMenuMounted = false;
-export let isCfgMenuOpen = false;
+/** Whether the config menu has finished mounting and can be opened with {@linkcode openCfgMenu()} */
+export let hasMenuFinishedMounting = false;
+/** Whether the config menu is currently mounting. Subsequent calls to {@linkcode mountCfgMenu()} will wait until the menu has finished mounting. */
+export let isMenuMounting = false;
+export let isMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
@@ -42,9 +45,9 @@ let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
  */
 export async function mountCfgMenu() {
   try {
-    if(isCfgMenuMounted)
+    if(isMenuMounting || hasMenuFinishedMounting)
       return;
-    isCfgMenuMounted = true;
+    isMenuMounting = true;
 
     const startTs = Date.now();
 
@@ -63,11 +66,11 @@ export async function mountCfgMenu() {
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
     backgroundElem.addEventListener("click", (e) => {
-      if(isCfgMenuOpen && (e.target as HTMLElement)?.id === "bytm-cfg-menu-bg")
+      if(isMenuOpen && (e.target as HTMLElement)?.id === "bytm-cfg-menu-bg")
         closeCfgMenu(e);
     });
     document.body.addEventListener("keydown", (e) => {
-      if(isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
+      if(isMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
         closeCfgMenu(e);
     });
 
@@ -1068,14 +1071,33 @@ export async function mountCfgMenu() {
         const modeDispWrapperEl = document.createElement("div");
         modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
         modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
-        modeDispWrapperEl.addEventListener("mouseenter", () => {
+
+        let transitionEnded = false;
+
+        const enterDisp = () => {
+          transitionEnded = false;
           modeDispWrapperEl.classList.add("expand");
-        });
-        modeDispWrapperEl.addEventListener("mouseleave", () => {
+        };
+        modeDispWrapperEl.addEventListener("mouseenter", enterDisp);
+        modeDisplayCont.addEventListener("focusin", enterDisp);
+
+        const leaveDisp = () => {
           modeDispWrapperEl.addEventListener("transitionend", () => {
+            transitionEnded = true;
+          }, { once: true, capture: true });
+        };
+        modeDispWrapperEl.addEventListener("mouseleave", leaveDisp);
+
+        const leaveCont = () => {
+          if(transitionEnded)
             modeDispWrapperEl.classList.remove("expand");
-          }, { once: true });
-        });
+          else
+            modeDispWrapperEl.addEventListener("transitionend", () => {
+              modeDispWrapperEl.classList.remove("expand");
+            }, { once: true, capture: true });
+        };
+        modeDisplayCont.addEventListener("mouseleave", leaveCont);
+        modeDisplayCont.addEventListener("focusout", leaveCont);
 
         if(isSvg) {
           const modeDisplayWrapperEl = document.createElement("span");
@@ -1125,9 +1147,11 @@ export async function mountCfgMenu() {
     log(`Mounted config menu element in ${Date.now() - startTs}ms`);
 
     forceEmitSiteEvent("cfgMenuMounted");
+    isMenuMounting = false;
+    hasMenuFinishedMounting = true;
 
     // ensure stuff is reset if menu was opened before being added
-    isCfgMenuOpen = false;
+    isMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
@@ -1138,7 +1162,7 @@ export async function mountCfgMenu() {
     /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
     const stackedOpenDialogIds: string[] = [];
     window.addEventListener("bytm:dialogOpened", (evt) => {
-      if(!isCfgMenuOpen || !("detail" in evt))
+      if(!isMenuOpen || !("detail" in evt))
         return;
       const dlg = (evt as CustomEvent<BytmDialog>)?.detail;
       if(dlg && dlg instanceof BytmDialog) {
@@ -1165,7 +1189,7 @@ export async function mountCfgMenu() {
         return;
       closeCfgMenu();
       bgElem.remove();
-      isCfgMenuMounted = isCfgMenuOpen = false;
+      isMenuMounting = hasMenuFinishedMounting = isMenuOpen = false;
       await mountCfgMenu();
       await openCfgMenu();
     });
@@ -1180,9 +1204,9 @@ export async function mountCfgMenu() {
 
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = true) {
-  if(!isCfgMenuOpen)
+  if(!isMenuOpen)
     return;
-  isCfgMenuOpen = false;
+  isMenuOpen = false;
 
   evt?.bubbles && evt.stopPropagation();
 
@@ -1213,11 +1237,17 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 /** Opens the config menu if it is closed */
 export async function openCfgMenu() {
   try {
-    if(!isCfgMenuMounted)
-      await mountCfgMenu();
-    if(isCfgMenuOpen)
+    if(isMenuOpen)
       return;
-    isCfgMenuOpen = true;
+
+    if(!hasMenuFinishedMounting) {
+      if(isMenuMounting)
+        return void siteEvents.once("cfgMenuMounted", () => openCfgMenu());
+      else
+        await mountCfgMenu();
+    }
+
+    isMenuOpen = true;
 
     document.body.classList.add("bytm-disable-scroll");
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
