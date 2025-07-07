@@ -71,6 +71,7 @@
   - Added CSS var `--bytm-menu-bg-highlight-2` (hex, opacity 1) as a secondary level of highlight to `--bytm-menu-bg-highlight`.
   - Renamed CSS var `--bytm-dialog-height-max` to `--bytm-dialog-target-height`, but only for the config menu. All BytmDialogs will still use `--bytm-dialog-height-max`.
   - Improved number argument resolution of the functions in `src/utils/logging.ts` (if the last argument is a number and exceeds the range of the enum `LogLevel`, it will not be interpreted as a log level anymore, but as a number to be logged).
+  - Added dev menu option to print an initialization timing report to the console for debugging performance issues.
 
 </details>
 

@@ -1,4 +1,4 @@
-import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
@@ -45,7 +45,7 @@ import {
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
 import resourcesJson from "../assets/resources.json" with { type: "json" };
-import type { ResourceKey } from "./types.js";
+import type { FeatureKey, ResourceKey } from "./types.js";
 
 //#region cns. watermark
 
@@ -53,8 +53,8 @@ import type { ResourceKey } from "./types.js";
   // console watermark with sexy gradient
   const [styleGradient, gradientContBg] = (() => {
     switch(mode) {
-    case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"];
-    case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(38, 160, 172) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
+    case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"] as const;
+    case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(38, 160, 172) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"] as const;
     }
   })();
   const styleCommon = "color: #fff; font-size: 1.3rem;";
@@ -85,11 +85,39 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
   );
 }
 
+//#region init timings
+
+type InitTimings = {
+  [key: string]: unknown;
+  start: number;
+  preInitEnd?: number;
+  domLoaded?: number;
+  featureDurations?: Record<LooseUnion<FeatureKey>, number>;
+  ready?: number;
+  postInitEnd?: number;
+  durations?: Record<LooseUnion<keyof InitTimings & FeatureKey>, number>;
+};
+
+const initTimings: InitTimings = {
+  start: 0,
+};
+
+function measureDuration(name: LooseUnion<keyof InitTimings & FeatureKey>): () => void {
+  const start = Date.now();
+  return () => {
+    if(typeof initTimings.durations !== "object")
+      initTimings.durations = {} as InitTimings["durations"];
+    initTimings.durations![name] = Date.now() - start;
+  };
+}
+
 //#region preInit
 
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
   try {
+    initTimings.start = Date.now();
+
     const unsupportedHandlers = [
       "FireMonkey",
     ];
@@ -105,6 +133,7 @@ function preInit() {
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
+    initTimings.preInitEnd = Date.now() - initTimings.start;
     init();
   }
   catch(err) {
@@ -118,12 +147,16 @@ async function init() {
   try {
     const domain = getDomain();
 
+    const endCfgDur = measureDuration("config");
     const features = await initConfig();
+    endCfgDur();
     setLogLevel(features.logLevel);
 
     info("Session ID:", getSessionId());
 
+    const endLyrCacheDur = measureDuration("lyricsCache");
     await initLyricsCache();
+    endLyrCacheDur();
 
     const initLoc = features.locale ?? "en-US";
     const locPromises: Promise<void>[] = [];
@@ -161,6 +194,8 @@ async function init() {
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
+  initTimings.domLoaded = Date.now() - initTimings.start;
+
   const domain = getDomain();
   const feats = getFeatures();
   const ftInit = [] as [string, Promise<void | unknown>][];
@@ -169,14 +204,17 @@ async function onDomLoad() {
   document.body.classList.add(`bytm-dom-${domain}`);
 
   try {
-    initGlobalCss();
-    initObservers();
-    initSvgSpritesheet();
+    setTimeout(() => {
+      const endInitGlobalDur = measureDuration("initGlobal_decoupled");
+      initGlobalCss();
+      initObservers();
+      initSvgSpritesheet();
 
-    Promise.allSettled([
-      injectCssBundle(),
-      initVersionCheck(),
-    ]);
+      Promise.allSettled([
+        injectCssBundle(),
+        initVersionCheck(),
+      ]).then(() => endInitGlobalDur());
+    }, 0);
   }
   catch(err) {
     error("Encountered error in feature pre-init:", err);
@@ -319,6 +357,8 @@ async function onDomLoad() {
     const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000;
     const initializedFeats: string[] = [];
 
+    const endFeatInitDur = measureDuration("features");
+
     // wait for feature init or timeout (in case an init function is hung up on a promise)
     await Promise.race([
       pauseFor(initTimeout),
@@ -326,6 +366,10 @@ async function onDomLoad() {
         ftInit.map(([name, prom]) =>
           new Promise(async (res) => {
             const v = await prom;
+            initTimings.featureDurations = {
+              ...(initTimings.featureDurations ?? {}),
+              [name]: Date.now() - initStartTs,
+            } as InitTimings["featureDurations"];
             initializedFeats.push(name);
             emitInterface("bytm:featureInitialized", name);
             res(v);
@@ -334,12 +378,15 @@ async function onDomLoad() {
       ),
     ]);
 
+    endFeatInitDur();
+
     // ensure site adjusts itself to new CSS files
     getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
 
     // preload icons
     preloadResources();
 
+    initTimings.ready = Date.now() - initTimings.start;
     emitInterface("bytm:ready");
     info(`Done initializing ${initializedFeats.length} / ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
@@ -366,6 +413,9 @@ async function onDomLoad() {
   catch(err) {
     error("Feature error:", err);
     emitInterface("bytm:fatalError", "Error while initializing features");
+  }
+  finally {
+    initTimings.postInitEnd = Date.now() - initTimings.start;
   }
 }
 
@@ -606,6 +656,10 @@ function registerDevCommands() {
     });
 
     await mdDlg.open();
+  });
+
+  GM.registerMenuCommand("Print init timings to console", () => {
+    info("Init timings:\n", initTimings);
   });
 
   GM.registerMenuCommand("Toggle dev treatments", async () => {
