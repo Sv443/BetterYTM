@@ -45,7 +45,7 @@ export const migrations: DataMigrationsDict = {
   },
 
   // 2 -> 3 (v1.0)
-  3: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+  3: (oldData: FeatureConfig) => useNewDefaults(oldData, [
     "removeShareTrackingParam", "numKeysSkipToTime",
     "fixSpacing", "scrollToActiveSongBtn", "logLevel",
   ]),
@@ -54,7 +54,7 @@ export const migrations: DataMigrationsDict = {
   4: (oldData: FeatureConfig) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
-      ...useDefaultConfig(oldData, [
+      ...useNewDefaults(oldData, [
         "rememberSongTime", "rememberSongTimeSites",
         "volumeSliderScrollStep", "locale", "versionCheck",
       ]),
@@ -70,7 +70,7 @@ export const migrations: DataMigrationsDict = {
   },
 
   // 4 -> 5 (v2.0)
-  5: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+  5: (oldData: FeatureConfig) => useNewDefaults(oldData, [
     "localeFallback", "geniUrlBase", "geniUrlToken",
     "lyricsCacheMaxSize", "lyricsCacheTTL",
     "clearLyricsCache", "advancedMode",
@@ -87,8 +87,8 @@ export const migrations: DataMigrationsDict = {
 
   // 5 -> 6 (v2.1)
   6: (oldData: FeatureConfig) => {
-    const newData = useNewDefaultIfUnchanged(
-      useDefaultConfig(oldData, [
+    const newData = useNewDefaultsIfUnchanged(
+      useNewDefaults(oldData, [
         "autoLikeChannels", "autoLikeChannelToggleBtn",
         "autoLikeTimeout", "autoLikeShowToast",
         "autoLikeOpenMgmtDialog", "showVotes",
@@ -108,8 +108,8 @@ export const migrations: DataMigrationsDict = {
 
   // 6 -> 7 (v2.1-dev)
   7: (oldData: FeatureConfig) => {
-    const newData = useNewDefaultIfUnchanged(
-      useDefaultConfig(oldData, [
+    const newData = useNewDefaultsIfUnchanged(
+      useNewDefaults(oldData, [
         "showToastOnGenericError", "sponsorBlockIntegration",
         "themeSongIntegration", "themeSongLightness",
         "errorOnLyricsNotFound", "openPluginList",
@@ -127,7 +127,7 @@ export const migrations: DataMigrationsDict = {
       oldData.numbersFormat = oldData.showVotesFormat as NumberLengthFormat;
       delete oldData.showVotesFormat;
     }
-    return useDefaultConfig(oldData, [
+    return useNewDefaults(oldData, [
       "autoLikeChannels"
     ]);
   },
@@ -140,7 +140,7 @@ export const migrations: DataMigrationsDict = {
     if(oldData.locale as string === "en-GB")
       oldData.locale = "en-GB";
 
-    return useDefaultConfig(oldData, ["resetEverything"]);
+    return useNewDefaults(oldData, ["resetEverything"]);
   },
 
   // 9 -> 10 (v3.0)
@@ -155,8 +155,8 @@ export const migrations: DataMigrationsDict = {
     if("thumbnailOverlayImageFit" in oldData)
       delete oldData.thumbnailOverlayImageFit;
 
-    return useNewDefaultIfUnchanged(
-      useDefaultConfig(oldData, [
+    return useNewDefaultsIfUnchanged(
+      useNewDefaults(oldData, [
         "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
         "frameSkip", "frameSkipWhilePlaying",
         "frameSkipAmount", "watchPageFullSize",
@@ -174,25 +174,32 @@ export const migrations: DataMigrationsDict = {
   },
 
   // 10 -> 11 (v3.1)
-  11: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
-    useDefaultConfig(oldData, [
-      "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
-      "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
-      "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
-      "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
-      "songListTrackNumbersEnabled", "songListTrackNumbers",
-    ]),
-    [
-      { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
-      { key: "initTimeout", oldDefault: 8 },
-    ],
-  ),
+  11: (oldData: FeatureConfig) => {
+    const newCfg = useNewDefaultsIfUnchanged(
+      useNewDefaults(oldData, [
+        "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
+        "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
+        "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
+        "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
+        "songListTrackNumbersEnabled", "songListTrackNumbers",
+      ]),
+      [
+        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
+        { key: "initTimeout", oldDefault: 8 },
+      ],
+    );
+
+    if(newCfg.initTimeout > featInfo.initTimeout.max)
+      newCfg.initTimeout = featInfo.initTimeout.max;
+
+    return newCfg;
+  },
 } as const satisfies DataMigrationsDict;
 
 //#region migration helpers
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
-function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
+function useNewDefaults(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
   const newData = { ...defaultData, ...(baseData ?? {}) };
   for(const key of resetKeys) // @ts-expect-error
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
@@ -204,7 +211,7 @@ function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKey
  * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be reset to the new default value.  
  * Returns a copy of the object.
  */
-function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
+function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
   oldData: TConfig,
   defaults: Array<{ key: FeatureKey, oldDefault: unknown }>,
 ) {
