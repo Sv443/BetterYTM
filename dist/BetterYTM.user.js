@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@77bc7bdd/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@377238e5/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -344,7 +344,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "77bc7bdd",
+    buildNumber: "377238e5",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3433,13 +3433,15 @@ async function renderBody$3() {
         rowEl.appendChild(rightEl);
         const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
         const intentsAmount = Object.keys(PluginIntent).length / 2;
-        const intentsArr = typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
-            const arr = [];
-            for (let i = 0; i < intentsAmount; i++)
-                if (intentsBitSet & (2 ** i))
-                    arr.push(2 ** i);
-            return arr;
-        })() : [];
+        const intentsArr = UserUtils.bitSetHas(intentsBitSet, PluginIntent.FullAccess)
+            ? [PluginIntent.FullAccess]
+            : (typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
+                const arr = [];
+                for (let i = 0; i < intentsAmount; i++)
+                    if (intentsBitSet & (2 ** i))
+                        arr.push(2 ** i);
+                return arr;
+            })() : []);
         const permissionsHeaderEl = document.createElement("div");
         permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
         permissionsHeaderEl.tabIndex = 0;
@@ -4071,8 +4073,11 @@ function hotkeyToString(hotkey) {
     str += hotkey.code;
     return str;
 }//#region create menu
-let isCfgMenuMounted = false;
-let isCfgMenuOpen = false;
+/** Whether the config menu has finished mounting and can be opened with {@linkcode openCfgMenu()} */
+let hasMenuFinishedMounting = false;
+/** Whether the config menu is currently mounting. Subsequent calls to {@linkcode mountCfgMenu()} will wait until the menu has finished mounting. */
+let isMenuMounting = false;
+let isMenuOpen = false;
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
@@ -4089,9 +4094,9 @@ let hiddenCopiedTxtTimeout;
 async function mountCfgMenu() {
     var _a, _b, _c, _d, _e, _f;
     try {
-        if (isCfgMenuMounted)
+        if (isMenuMounting || hasMenuFinishedMounting)
             return;
-        isCfgMenuMounted = true;
+        isMenuMounting = true;
         const startTs = Date.now();
         BytmDialog.initDialogs();
         initLocale = getFeature("locale");
@@ -4106,11 +4111,11 @@ async function mountCfgMenu() {
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
             var _a;
-            if (isCfgMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-cfg-menu-bg")
+            if (isMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-cfg-menu-bg")
                 closeCfgMenu(e);
         });
         document.body.addEventListener("keydown", (e) => {
-            if (isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
+            if (isMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
                 closeCfgMenu(e);
         });
         const menuContainer = document.createElement("div");
@@ -4925,14 +4930,29 @@ async function mountCfgMenu() {
                 const modeDispWrapperEl = document.createElement("div");
                 modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
                 modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
-                modeDispWrapperEl.addEventListener("mouseenter", () => {
+                let transitionEnded = false;
+                const enterDisp = () => {
+                    transitionEnded = false;
                     modeDispWrapperEl.classList.add("expand");
-                });
-                modeDispWrapperEl.addEventListener("mouseleave", () => {
+                };
+                modeDispWrapperEl.addEventListener("mouseenter", enterDisp);
+                modeDisplayCont.addEventListener("focusin", enterDisp);
+                const leaveDisp = () => {
                     modeDispWrapperEl.addEventListener("transitionend", () => {
+                        transitionEnded = true;
+                    }, { once: true, capture: true });
+                };
+                modeDispWrapperEl.addEventListener("mouseleave", leaveDisp);
+                const leaveCont = () => {
+                    if (transitionEnded)
                         modeDispWrapperEl.classList.remove("expand");
-                    }, { once: true });
-                });
+                    else
+                        modeDispWrapperEl.addEventListener("transitionend", () => {
+                            modeDispWrapperEl.classList.remove("expand");
+                        }, { once: true, capture: true });
+                };
+                modeDisplayCont.addEventListener("mouseleave", leaveCont);
+                modeDisplayCont.addEventListener("focusout", leaveCont);
                 if (isSvg) {
                     const modeDisplayWrapperEl = document.createElement("span");
                     modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
@@ -4972,8 +4992,10 @@ async function mountCfgMenu() {
         window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
         log(`Mounted config menu element in ${Date.now() - startTs}ms`);
         forceEmitSiteEvent("cfgMenuMounted");
+        isMenuMounting = false;
+        hasMenuFinishedMounting = true;
         // ensure stuff is reset if menu was opened before being added
-        isCfgMenuOpen = false;
+        isMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
         (_f = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _f === void 0 ? void 0 : _f.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
@@ -4982,7 +5004,7 @@ async function mountCfgMenu() {
         /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
         const stackedOpenDialogIds = [];
         window.addEventListener("bytm:dialogOpened", (evt) => {
-            if (!isCfgMenuOpen || !("detail" in evt))
+            if (!isMenuOpen || !("detail" in evt))
                 return;
             const dlg = evt === null || evt === void 0 ? void 0 : evt.detail;
             if (dlg && dlg instanceof BytmDialog) {
@@ -5008,7 +5030,7 @@ async function mountCfgMenu() {
                 return;
             closeCfgMenu();
             bgElem.remove();
-            isCfgMenuMounted = isCfgMenuOpen = false;
+            isMenuMounting = hasMenuFinishedMounting = isMenuOpen = false;
             await mountCfgMenu();
             await openCfgMenu();
         });
@@ -5022,9 +5044,9 @@ async function mountCfgMenu() {
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 function closeCfgMenu(evt, enableScroll = true) {
     var _a, _b, _c;
-    if (!isCfgMenuOpen)
+    if (!isMenuOpen)
         return;
-    isCfgMenuOpen = false;
+    isMenuOpen = false;
     (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
     if (enableScroll) {
         document.body.classList.remove("bytm-disable-scroll");
@@ -5047,11 +5069,15 @@ function closeCfgMenu(evt, enableScroll = true) {
 async function openCfgMenu() {
     var _a;
     try {
-        if (!isCfgMenuMounted)
-            await mountCfgMenu();
-        if (isCfgMenuOpen)
+        if (isMenuOpen)
             return;
-        isCfgMenuOpen = true;
+        if (!hasMenuFinishedMounting) {
+            if (isMenuMounting)
+                return void siteEvents.once("cfgMenuMounted", () => openCfgMenu());
+            else
+                await mountCfgMenu();
+        }
+        isMenuOpen = true;
         document.body.classList.add("bytm-disable-scroll");
         (_a = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-cfg-menu-bg");
@@ -5108,21 +5134,24 @@ async function addWatermark() {
     watermarkEl.textContent = scriptInfo$1.name;
     watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo$1.name);
     watermarkEl.tabIndex = 0;
-    await improveLogo();
-    bytmLogoUrl = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
-    UserUtils.preloadImages([bytmLogoUrl]);
-    const watermarkOpenMenu = (e) => {
-        e.stopImmediatePropagation();
-        if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
-            openCfgMenu();
-        if (!logoExchanged && (e.shiftKey || e.ctrlKey))
-            exchangeLogo();
-    };
-    onInteraction(watermarkEl, (e) => watermarkOpenMenu(e));
-    addSelectorListener("navBar", "ytmusic-logo a", {
-        listener: (logoElem) => logoElem.appendChild(watermarkEl),
-    });
-    log("Added watermark element");
+    (async () => {
+        await improveLogo();
+        bytmLogoUrl = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
+        UserUtils.preloadImages([bytmLogoUrl]);
+        const watermarkOpenMenu = (e) => {
+            e.stopImmediatePropagation();
+            if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
+                openCfgMenu();
+            if (!logoExchanged && (e.shiftKey || e.ctrlKey))
+                exchangeLogo();
+        };
+        // TODO: space and enter dont work fsr
+        onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
+        addSelectorListener("navBar", "ytmusic-logo a", {
+            listener: (logoElem) => logoElem.appendChild(watermarkEl),
+        });
+        log("Added watermark element");
+    })();
 }
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
 async function improveLogo() {
@@ -5433,11 +5462,10 @@ function improveSongListClickArea(items) {
             ];
             const antiConditions = [
                 (el) => el.tagName.toLowerCase() === "a",
-                (el) => { var _a; return (_a = el.getAttribute("href")) === null || _a === void 0 ? void 0 : _a.length; },
+                (el) => { var _a; return Boolean((_a = el.getAttribute("href")) === null || _a === void 0 ? void 0 : _a.length); },
                 (el) => el.classList.contains("bytm-anchor"),
             ];
-            console.log(">>>", tgt);
-            if (conditions.some((c) => c(tgt)) && !antiConditions.some((c) => c(tgt)))
+            if (conditions.some((cnd) => cnd(tgt)) && antiConditions.every((acnd) => !acnd(tgt)))
                 (_a = item.querySelector("ytmusic-play-button-renderer")) === null || _a === void 0 ? void 0 : _a.click();
         });
         itemsAmt++;
@@ -7187,8 +7215,8 @@ const featInfo = {
         type: "number",
         category: "general",
         supportedSites: ["ytm", "yt"],
-        min: 3,
-        max: 15,
+        min: mode$1 === "development" ? 0.1 : 3,
+        max: 10,
         default: 5,
         step: 0.1,
         unit: "s",
@@ -8167,7 +8195,7 @@ const migrations = {
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
     },
     // 2 -> 3 (v1.0)
-    3: (oldData) => useDefaultConfig(oldData, [
+    3: (oldData) => useNewDefaults(oldData, [
         "removeShareTrackingParam", "numKeysSkipToTime",
         "fixSpacing", "scrollToActiveSongBtn", "logLevel",
     ]),
@@ -8175,7 +8203,7 @@ const migrations = {
     4: (oldData) => {
         var _a, _b, _c, _d;
         const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
-        return Object.assign(Object.assign({}, useDefaultConfig(oldData, [
+        return Object.assign(Object.assign({}, useNewDefaults(oldData, [
             "rememberSongTime", "rememberSongTimeSites",
             "volumeSliderScrollStep", "locale", "versionCheck",
         ])), { arrowKeySkipBy: 10, switchSitesHotkey: {
@@ -8186,7 +8214,7 @@ const migrations = {
             }, listButtonsPlacement: "queueOnly" });
     },
     // 4 -> 5 (v2.0)
-    5: (oldData) => useDefaultConfig(oldData, [
+    5: (oldData) => useNewDefaults(oldData, [
         "localeFallback", "geniUrlBase", "geniUrlToken",
         "lyricsCacheMaxSize", "lyricsCacheTTL",
         "clearLyricsCache", "advancedMode",
@@ -8202,7 +8230,7 @@ const migrations = {
     ]),
     // 5 -> 6 (v2.1)
     6: (oldData) => {
-        const newData = useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
+        const newData = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
             "autoLikeChannels", "autoLikeChannelToggleBtn",
             "autoLikeTimeout", "autoLikeShowToast",
             "autoLikeOpenMgmtDialog", "showVotes",
@@ -8220,7 +8248,7 @@ const migrations = {
     },
     // 6 -> 7 (v2.1-dev)
     7: (oldData) => {
-        const newData = useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
+        const newData = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
             "showToastOnGenericError", "sponsorBlockIntegration",
             "themeSongIntegration", "themeSongLightness",
             "errorOnLyricsNotFound", "openPluginList",
@@ -8236,7 +8264,7 @@ const migrations = {
             oldData.numbersFormat = oldData.showVotesFormat;
             delete oldData.showVotesFormat;
         }
-        return useDefaultConfig(oldData, [
+        return useNewDefaults(oldData, [
             "autoLikeChannels"
         ]);
     },
@@ -8247,7 +8275,7 @@ const migrations = {
             oldData.locale = "ja-JP";
         if (oldData.locale === "en-GB")
             oldData.locale = "en-GB";
-        return useDefaultConfig(oldData, ["resetEverything"]);
+        return useNewDefaults(oldData, ["resetEverything"]);
     },
     // 9 -> 10 (v3.0)
     10: (oldData) => {
@@ -8257,7 +8285,7 @@ const migrations = {
         oldData.closeToastsTimeout = UserUtils.clamp(oldData.closeToastsTimeout, featInfo.closeToastsTimeout.min, featInfo.closeToastsTimeout.max);
         if ("thumbnailOverlayImageFit" in oldData)
             delete oldData.thumbnailOverlayImageFit;
-        return useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
+        return useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
             "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
             "frameSkip", "frameSkipWhilePlaying",
             "frameSkipAmount", "watchPageFullSize",
@@ -8273,20 +8301,25 @@ const migrations = {
         ]);
     },
     // 10 -> 11 (v3.1)
-    11: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
-        "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
-        "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
-        "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
-        "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
-        "songListTrackNumbersEnabled", "songListTrackNumbers",
-    ]), [
-        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
-        { key: "initTimeout", oldDefault: 8 },
-    ]),
+    11: (oldData) => {
+        const newCfg = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
+            "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
+            "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
+            "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
+            "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
+            "songListTrackNumbersEnabled", "songListTrackNumbers",
+        ]), [
+            { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
+            { key: "initTimeout", oldDefault: 8 },
+        ]);
+        if (newCfg.initTimeout > featInfo.initTimeout.max)
+            newCfg.initTimeout = featInfo.initTimeout.max;
+        return newCfg;
+    },
 };
 //#region migration helpers
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
-function useDefaultConfig(baseData, resetKeys) {
+function useNewDefaults(baseData, resetKeys) {
     var _a;
     const newData = Object.assign(Object.assign({}, defaultData), (baseData !== null && baseData !== void 0 ? baseData : {}));
     for (const key of resetKeys) // @ts-expect-error
@@ -8298,7 +8331,7 @@ function useDefaultConfig(baseData, resetKeys) {
  * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be reset to the new default value.
  * Returns a copy of the object.
  */
-function useNewDefaultIfUnchanged(oldData, defaults) {
+function useNewDefaultsIfUnchanged(oldData, defaults) {
     var _a;
     const newData = Object.assign({}, oldData);
     for (const { key, oldDefault } of defaults) {
@@ -8541,6 +8574,10 @@ const registeredPlugins = new Map();
 /** Map of plugin ID to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map();
 let pluginsInitialized = false;
+/** Pre-init for eager plugins that need to be initialized as soon as physically possible */
+function preInitPlugins() {
+    emitInterface("bytm:preInitPlugin", (def) => registerPlugin(def));
+}
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 function initPlugins() {
     emitInterface("bytm:registerPlugin", (def) => registerPlugin(def));
@@ -8548,9 +8585,7 @@ function initPlugins() {
         pluginsInitialized = true;
         if (registeredPlugins.size > 0)
             log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
-    }, {
-        once: true,
-    });
+    }, { once: true });
 }
 /** Registers a plugin on the BYTM interface. */
 function registerPlugin(def) {
@@ -8573,7 +8608,10 @@ function registerPlugin(def) {
         });
         registeredPluginTokens.set(plKey, token);
         info(`Successfully registered plugin '${plKey}'`);
-        setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 1);
+        emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def));
+        window.addEventListener("bytm:ready", () => {
+            emitOnPlugins("bytmReady");
+        });
         return {
             info: getPluginInfo(token, def),
             events,
@@ -9608,20 +9646,34 @@ Build #${buildNumber$1}${mode$1 === "development" ? " (dev mode)" : ""}
 
 %c${poweredBy}`, `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`, `${styleCommon} background-color: ${gradientContBg}; padding-left: 8px; padding-right: 8px;`, "color: #fff; font-size: 1.2rem;", "padding: initial; font-size: 0.9rem;", "padding: initial; font-size: 1rem;");
 }
+const initTimings = {
+    start: 0,
+};
+function measureDuration(name) {
+    const start = Date.now();
+    return () => {
+        if (typeof initTimings.durations !== "object")
+            initTimings.durations = {};
+        initTimings.durations[name] = Date.now() - start;
+    };
+}
 //#region preInit
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
     var _a, _b;
     try {
+        initTimings.start = Date.now();
         const unsupportedHandlers = [
             "FireMonkey",
         ];
         if (unsupportedHandlers.includes((_b = (_a = GM === null || GM === void 0 ? void 0 : GM.info) === null || _a === void 0 ? void 0 : _a.scriptHandler) !== null && _b !== void 0 ? _b : "_"))
             return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
-        initInterface();
         setLogLevel(defaultLogLevel);
+        initInterface();
+        preInitPlugins();
         if (getDomain() === "ytm")
             initBeforeUnloadHook();
+        initTimings.preInitEnd = Date.now() - initTimings.start;
         init();
     }
     catch (err) {
@@ -9633,10 +9685,14 @@ async function init() {
     var _a;
     try {
         const domain = getDomain();
+        const endCfgDur = measureDuration("config");
         const features = await initConfig();
+        endCfgDur();
         setLogLevel(features.logLevel);
         info("Session ID:", getSessionId());
+        const endLyrCacheDur = measureDuration("lyricsCache");
         await initLyricsCache();
+        endLyrCacheDur();
         const initLoc = (_a = features.locale) !== null && _a !== void 0 ? _a : "en-US";
         const locPromises = [];
         locPromises.push(initTranslations(initLoc));
@@ -9656,7 +9712,7 @@ async function init() {
         if (features.rememberSongTime)
             initRememberSongTime();
         if (!UserUtils.isDomLoaded())
-            document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
+            document.addEventListener("DOMContentLoaded", () => onDomLoad(), { once: true });
         else
             onDomLoad();
     }
@@ -9667,19 +9723,23 @@ async function init() {
 //#region onDomLoad
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
+    initTimings.domLoaded = Date.now() - initTimings.start;
     const domain = getDomain();
     const feats = getFeatures();
     const ftInit = [];
     // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
     document.body.classList.add(`bytm-dom-${domain}`);
     try {
-        initGlobalCss();
-        initObservers();
-        initSvgSpritesheet();
-        Promise.allSettled([
-            injectCssBundle(),
-            initVersionCheck(),
-        ]);
+        setTimeout(() => {
+            const endInitGlobalDur = measureDuration("initGlobal_decoupled");
+            initGlobalCss();
+            initObservers();
+            initSvgSpritesheet();
+            Promise.allSettled([
+                injectCssBundle(),
+                initVersionCheck(),
+            ]).then(() => endInitGlobalDur());
+        }, 0);
     }
     catch (err) {
         error("Encountered error in feature pre-init:", err);
@@ -9776,20 +9836,25 @@ async function onDomLoad() {
         const initStartTs = Date.now();
         const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8000;
         const initializedFeats = [];
+        const endFeatInitDur = measureDuration("features");
         // wait for feature init or timeout (in case an init function is hung up on a promise)
         await Promise.race([
             UserUtils.pauseFor(initTimeout),
             Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
+                var _a;
                 const v = await prom;
+                initTimings.featureDurations = Object.assign(Object.assign({}, ((_a = initTimings.featureDurations) !== null && _a !== void 0 ? _a : {})), { [name]: Date.now() - initStartTs });
                 initializedFeats.push(name);
                 emitInterface("bytm:featureInitialized", name);
                 res(v);
             }))),
         ]);
+        endFeatInitDur();
         // ensure site adjusts itself to new CSS files
         UserUtils.getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
         // preload icons
         preloadResources();
+        initTimings.ready = Date.now() - initTimings.start;
         emitInterface("bytm:ready");
         info(`Done initializing ${initializedFeats.length} / ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
         if (initializedFeats.length < ftInit.length) {
@@ -9811,6 +9876,9 @@ async function onDomLoad() {
     catch (err) {
         error("Feature error:", err);
         emitInterface("bytm:fatalError", "Error while initializing features");
+    }
+    finally {
+        initTimings.postInitEnd = Date.now() - initTimings.start;
     }
 }
 //#region preload icons
@@ -10017,6 +10085,9 @@ function registerDevCommands() {
             body: "## This is a test dialog\n```ts\nconsole.log(\"Hello, world!\");\n```\n\n- List item 1\n- List item 2\n- List item 3",
         });
         await mdDlg.open();
+    });
+    GM.registerMenuCommand("Print init timings to console", () => {
+        info("Init timings:\n", initTimings);
     });
     GM.registerMenuCommand("Toggle dev treatments", async () => {
         const val = !await GM.getValue("bytm-dev-treatments", false);
