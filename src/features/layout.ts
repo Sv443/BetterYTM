@@ -330,7 +330,7 @@ export async function addAnchorImprovements() {
               return;
 
             const itemsAmt = improveSongListClickArea(items);
-            log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural("item", itemsAmt)}`);
+            itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural("item", itemsAmt)}`);
           });
         },
       });
@@ -346,7 +346,7 @@ export async function addAnchorImprovements() {
           return;
 
         const itemsAmt = improveSongListClickArea(items);
-        log(`Improved clickable area of ${itemsAmt} song list ${autoPlural("item", itemsAmt)}`);
+        itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} song list ${autoPlural("item", itemsAmt)}`);
       });
     };
 

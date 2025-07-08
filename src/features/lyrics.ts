@@ -338,7 +338,12 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
+      // const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
+      const search = await showPrompt({
+        type: "prompt",
+        message: t("open_lyrics_search_prompt"),
+        defaultValue: currentSongTitle,
+      });
       if(search && search.length > 0)
         openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
     }

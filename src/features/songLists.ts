@@ -162,6 +162,11 @@ async function addQueueButtons(
       e.preventDefault();
       e.stopImmediatePropagation();
 
+      const thumbSrc = queueItem.querySelector<HTMLImageElement>("yt-img-shadow img")?.src;
+      const isVideo = thumbSrc ? thumbSrc.includes("ytimg.com/vi/") : true;
+
+      // TODO: if isVideo, use just the song title, not the artist name
+
       let song: string | null | undefined,
         artist: string | null | undefined;
 
@@ -194,6 +199,12 @@ async function addQueueButtons(
       }
       else
         return error("Invalid list type:", listType);
+
+      // hate doing it like this but there's nothing else in the DOM indicating what format the title is in
+      if(song && isVideo && song.includes("-")) {
+        artist = song.split("-")[0]?.trim();
+        song = song.split("-").slice(1).join("-").trim();
+      }
 
       if(!song || !artist)
         return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
@@ -379,18 +390,20 @@ async function addQueueButtons(
 
 /** Adds track numbers to each item in every song list */
 export async function addTrackNumbers() {
-  const promises: Promise<void | unknown>[] = [];
+  (async () => {
+    const promises: Promise<void | unknown>[] = [];
 
-  try {
-    const where = getFeature("songListTrackNumbers");
-    if(where === "genericLists" || where === "everywhere")
-      promises.push(addStyleFromResource("css-track_numbers_song_lists"));
-    if(where === "currentQueue" || where === "everywhere")
-      promises.push(addStyleFromResource("css-track_numbers_current_queue"));
-  }
-  catch(err) {
-    error("Couldn't add track numbers style:", err);
-  }
+    try {
+      const where = getFeature("songListTrackNumbers");
+      if(where === "genericLists" || where === "everywhere")
+        promises.push(addStyleFromResource("css-track_numbers_song_lists"));
+      if(where === "currentQueue" || where === "everywhere")
+        promises.push(addStyleFromResource("css-track_numbers_current_queue"));
+    }
+    catch(err) {
+      error("Couldn't add track numbers style:", err);
+    }
 
-  return await Promise.allSettled(promises);
+    await Promise.allSettled(promises);
+  })();
 }
