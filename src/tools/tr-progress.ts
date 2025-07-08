@@ -6,7 +6,7 @@ import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 import type { TrObject } from "@sv443-network/userutils";
 
-const { exit } = process;
+const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 
 const rootDir = resolve(fileURLToPath(import.meta.url), "../../../");
 const trDir = join(rootDir, "assets/translations/");

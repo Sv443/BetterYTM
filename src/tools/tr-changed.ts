@@ -3,7 +3,7 @@ import k from "kleur";
 import locales from "../../assets/locales.json" with { type: "json" };
 import { resolve } from "node:path";
 
-const { exit } = process;
+const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 
 const allLocales = Object.keys(locales) as (keyof typeof locales)[];
 

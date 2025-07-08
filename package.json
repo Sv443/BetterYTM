@@ -118,7 +118,8 @@
     "storybook": "^8.6.12",
     "storybook-dark-mode": "^4.0.2",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.36.0"
   },
   "browserslist": [
     "last 1 version",

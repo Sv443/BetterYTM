@@ -7,7 +7,8 @@ import k from "kleur";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
 
-const { argv, env, exit, stdout } = process;
+const { argv, env, stdout } = process;
+const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 
 const envPort = Number(env.DEV_SERVER_PORT);
 

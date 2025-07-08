@@ -139,10 +139,10 @@ const globalFuncs: InterfaceFunctions = purifyObj({
   isIgnoredInputElement,
 
   // site events:
-  onSiteEvent: siteEvents.on,
-  onceSiteEvent: siteEvents.once,
-  onMultiSiteEvents: siteEvents.onMulti,
-  onceMultiSiteEvents: siteEvents.onceMulti,
+  onSiteEvent: siteEvents.on.bind(siteEvents),
+  onceSiteEvent: siteEvents.once.bind(siteEvents),
+  onMultiSiteEvents: siteEvents.onMulti.bind(siteEvents),
+  onceMultiSiteEvents: siteEvents.onceMulti.bind(siteEvents),
 
   // translations:
   /*🔒*/ setLocale: setLocaleInterface,

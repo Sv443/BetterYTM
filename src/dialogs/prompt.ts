@@ -57,7 +57,7 @@ class PromptDialog extends BytmDialog {
       renderFooter: () => this.renderFooter(props),
     });
 
-    this.on("render", this.focusOnRender);
+    this.on("render", () => this.focusOnRender());
   }
 
   protected emitResolve(val: PromptDialogResolveVal) {
@@ -92,6 +92,7 @@ class PromptDialog extends BytmDialog {
       const inputElem = document.createElement("input");
       inputElem.id = "bytm-prompt-dialog-input";
       inputElem.type = "text";
+      inputElem.autofocus = true;
       inputElem.autocomplete = "off";
       inputElem.spellcheck = false;
       inputElem.value = "defaultValue" in rest && rest.defaultValue
@@ -130,7 +131,8 @@ class PromptDialog extends BytmDialog {
       confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
       confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
-      confirmBtn.autofocus = true;
+      if(type === "confirm")
+        confirmBtn.autofocus = true;
       confirmBtn.addEventListener("click", () => {
         this.emitResolve(type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
         promptDialog?.close();

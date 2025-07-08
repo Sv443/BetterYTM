@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import tseslint from "typescript-eslint";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import storybookEslint from "eslint-plugin-storybook";
 import globals from "globals";
@@ -28,12 +29,24 @@ const config = [
       "**/test.ts",
       ".storybook/**/*",
       "**/*.stories.ts",
+      "**/*.mjs",
+      "**/*.js",
     ],
-  }, ...compat.extends(
+  },
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  ...compat.extends(
     "eslint:recommended",
     "plugin:storybook/recommended",
     "plugin:@typescript-eslint/recommended",
-  ), {
+  ),
+  {
     plugins: {
       "@typescript-eslint": typescriptEslint,
       "storybook": storybookEslint,
@@ -80,6 +93,9 @@ const config = [
         allowTernary: true,
         allowTaggedTemplates: true,
       }],
+      "@typescript-eslint/unbound-method": ["error", {
+        ignoreStatic: true,
+      }],
       "comma-dangle": ["error", "only-multiline"],
       "no-misleading-character-class": "off",
     },
@@ -108,4 +124,4 @@ const config = [
   },
 ];
 
-export default config;
+export default tseslint.config(config);

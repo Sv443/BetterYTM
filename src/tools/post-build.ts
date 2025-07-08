@@ -12,7 +12,8 @@ import localesJson from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
 
-const { argv, env, exit, stdout } = process;
+const { argv, env, stdout } = process;
+const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 
 //#region types
 
