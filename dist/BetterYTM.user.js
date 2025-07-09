@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@377238e5/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8096c520/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -344,7 +344,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "377238e5",
+    buildNumber: "8096c520",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1208,7 +1208,8 @@ var devDependencies = {
 	storybook: "^8.6.12",
 	"storybook-dark-mode": "^4.0.2",
 	tsx: "^4.19.4",
-	typescript: "^5.8.3"
+	typescript: "^5.8.3",
+	"typescript-eslint": "^8.36.0"
 };
 var browserslist = [
 	"last 1 version",
@@ -1562,7 +1563,7 @@ class PromptDialog extends BytmDialog {
             renderBody: () => this.renderBody(props),
             renderFooter: () => this.renderFooter(props),
         });
-        this.on("render", this.focusOnRender);
+        this.on("render", () => this.focusOnRender());
     }
     emitResolve(val) {
         this.events.emit("resolve", val);
@@ -1591,6 +1592,7 @@ class PromptDialog extends BytmDialog {
             const inputElem = document.createElement("input");
             inputElem.id = "bytm-prompt-dialog-input";
             inputElem.type = "text";
+            inputElem.autofocus = true;
             inputElem.autocomplete = "off";
             inputElem.spellcheck = false;
             inputElem.value = "defaultValue" in rest && rest.defaultValue
@@ -1624,7 +1626,8 @@ class PromptDialog extends BytmDialog {
             confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
             confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
             confirmBtn.tabIndex = 0;
-            confirmBtn.autofocus = true;
+            if (type === "confirm")
+                confirmBtn.autofocus = true;
             confirmBtn.addEventListener("click", () => {
                 var _a, _b, _c;
                 this.emitResolve(type === "confirm" ? true : (_c = (_b = (_a = (document.querySelector("#bytm-prompt-dialog-input"))) === null || _a === void 0 ? void 0 : _a.value) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : null);
@@ -3725,7 +3728,12 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
         if (e.ctrlKey || e.altKey) {
             e.preventDefault();
             e.stopImmediatePropagation();
-            const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
+            // const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
+            const search = await showPrompt({
+                type: "prompt",
+                message: t("open_lyrics_search_prompt"),
+                defaultValue: currentSongTitle,
+            });
             if (search && search.length > 0)
                 openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
         }
@@ -5369,7 +5377,7 @@ async function addAnchorImprovements() {
                         if (!items.length)
                             return;
                         const itemsAmt = improveSongListClickArea(items);
-                        log(`Improved clickable area of ${itemsAmt} current song list ${UserUtils.autoPlural("item", itemsAmt)}`);
+                        itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} current song list ${UserUtils.autoPlural("item", itemsAmt)}`);
                     });
                 },
             });
@@ -5382,7 +5390,7 @@ async function addAnchorImprovements() {
                 if (!items.length)
                     return;
                 const itemsAmt = improveSongListClickArea(items);
-                log(`Improved clickable area of ${itemsAmt} song list ${UserUtils.autoPlural("item", itemsAmt)}`);
+                itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} song list ${UserUtils.autoPlural("item", itemsAmt)}`);
             });
         };
         const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
@@ -6584,9 +6592,12 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
         lyricsBtnElem.role = "link";
         lyricsBtnElem.tabIndex = 0;
         onInteraction(lyricsBtnElem, async (e) => {
-            var _a;
+            var _a, _b, _c;
             e.preventDefault();
             e.stopImmediatePropagation();
+            const thumbSrc = (_a = queueItem.querySelector("yt-img-shadow img")) === null || _a === void 0 ? void 0 : _a.src;
+            const isVideo = thumbSrc ? thumbSrc.includes("ytimg.com/vi/") : true;
+            // TODO: if isVideo, use just the song title, not the artist name
             let song, artist;
             if (listType === "currentQueue") {
                 const songInfo = queueItem.querySelector(".song-info");
@@ -6613,6 +6624,11 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
             }
             else
                 return error("Invalid list type:", listType);
+            // hate doing it like this but there's nothing else in the DOM indicating what format the title is in
+            if (song && isVideo && song.includes("-")) {
+                artist = (_b = song.split("-")[0]) === null || _b === void 0 ? void 0 : _b.trim();
+                song = song.split("-").slice(1).join("-").trim();
+            }
             if (!song || !artist)
                 return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
             let lyricsUrl;
@@ -6635,7 +6651,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                         }
                         else if (lyricsBtnElem) {
                             setInnerHtml(lyricsBtnElem, await resourceAsString("icon-spinner"));
-                            (_a = lyricsBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img", "bytm-spinner");
+                            (_c = lyricsBtnElem.querySelector("svg")) === null || _c === void 0 ? void 0 : _c.classList.add("bytm-generic-btn-img", "bytm-spinner");
                         }
                     }
                 }
@@ -6762,18 +6778,20 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
 //#region track numbers
 /** Adds track numbers to each item in every song list */
 async function addTrackNumbers() {
-    const promises = [];
-    try {
-        const where = getFeature("songListTrackNumbers");
-        if (where === "genericLists" || where === "everywhere")
-            promises.push(addStyleFromResource("css-track_numbers_song_lists"));
-        if (where === "currentQueue" || where === "everywhere")
-            promises.push(addStyleFromResource("css-track_numbers_current_queue"));
-    }
-    catch (err) {
-        error("Couldn't add track numbers style:", err);
-    }
-    return await Promise.allSettled(promises);
+    (async () => {
+        const promises = [];
+        try {
+            const where = getFeature("songListTrackNumbers");
+            if (where === "genericLists" || where === "everywhere")
+                promises.push(addStyleFromResource("css-track_numbers_song_lists"));
+            if (where === "currentQueue" || where === "everywhere")
+                promises.push(addStyleFromResource("css-track_numbers_current_queue"));
+        }
+        catch (err) {
+            error("Couldn't add track numbers style:", err);
+        }
+        await Promise.allSettled(promises);
+    })();
 }//#region init vol features
 /** Initializes all volume-related features */
 async function initVolumeFeatures() {
@@ -8486,10 +8504,10 @@ const globalFuncs = purifyObj({
     getLikeDislikeBtns,
     isIgnoredInputElement,
     // site events:
-    onSiteEvent: siteEvents.on,
-    onceSiteEvent: siteEvents.once,
-    onMultiSiteEvents: siteEvents.onMulti,
-    onceMultiSiteEvents: siteEvents.onceMulti,
+    onSiteEvent: siteEvents.on.bind(siteEvents),
+    onceSiteEvent: siteEvents.once.bind(siteEvents),
+    onMultiSiteEvents: siteEvents.onMulti.bind(siteEvents),
+    onceMultiSiteEvents: siteEvents.onceMulti.bind(siteEvents),
     // translations:
     /*🔒*/ setLocale: setLocaleInterface,
     getLocale,
