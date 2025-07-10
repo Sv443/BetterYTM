@@ -49,7 +49,6 @@
     - `onSiteEvent()` - Adds a site event listener.
     - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
     - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.
-    - `onceMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once.
   - Added new events:
     - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
     - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).

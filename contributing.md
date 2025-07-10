@@ -457,7 +457,6 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [onSiteEvent()](#onsiteevent) - Adds a site event listener
   - [onceSiteEvent()](#oncesiteevent) - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
   - [onMultiSiteEvents()](#onmultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function
-  - [onceMultiSiteEvents()](#oncemultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
