@@ -309,6 +309,8 @@ These are the ways to interact with BetterYTM; through constants, events and glo
   [**Find a summary with examples below.**](#global-functions-and-classes)  
 
 - Additionally, the following namespaces expose entire libraries for you that BetterYTM has already loaded in:
+  - `unsafeWindow.BYTM.CoreUtils` contains all exported members from the [CoreUtils library.](https://github.com/Sv443-Network/CoreUtils)  
+    It will soon be the main dependency of UserUtils, and contains some more utility functions and updated features from UserUtils.
   - `unsafeWindow.BYTM.UserUtils` contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)  
     This library can register listeners for when CSS selectors exist, intercept events, manage persistent user configurations, allow you to modify the DOM more easily and more.
   - `unsafeWindow.BYTM.compareVersions` has all functions from the [compare-versions library.](https://npmjs.com/package/compare-versions)  
@@ -489,7 +491,6 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [fetchVideoVotes()](#fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
-  - [MultiNanoEmitter](#multinanoemitter) - Subclass of NanoEmitter that allows you to listen to multiple events at once
   - [formatNumber](#formatnumber) - Formats a number with the configured locale and passed or configured format
 
 <br><br>
@@ -512,7 +513,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > The returned properties include:  
 > - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
-> - `events` - A [MultiNanoEmitter](#multinanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
+> - `events` - A [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
 >   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin
 > 
@@ -670,7 +671,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | `constants` | Object | Contains all exports from the `src/constants.ts` file |
 > | `emitInterface` | Function | Emits a generic, global interface event |
 > | `emitSiteEvent` | Function | Emits an event using the siteEvents system |
-> | `siteEvents` | [MultiNanoEmitter](#multinanoemitter) | Event emitting instance of the siteEvents system |
+> | `siteEvents` | [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) | Event emitting instance of the siteEvents system |
 > | `addSelectorListener` | Function | Adds a listener checking for DOM changes using BYTM's own SelectorObserver instances |
 > | `showPrompt` | Function | Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt` |
 > | `setGlobalProp` | Function | Sets a global property on the `unsafeWindow.BYTM` object |
@@ -1807,20 +1808,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### onMultiSiteEvents()
 > Signature:  
 > ```ts
-> unsafeWindow.BYTM.onMultiSiteEvents(events: Array<string>, options: MultiNanoEmitterOptions, cb: TEventMap[TKey]): Array<[event: string, unsub: () => void]>
+> unsafeWindow.BYTM.onMultiSiteEvents(options: NanoEmitterOnMultiOptions<TEvtMap> | Array<NanoEmitterOnMultiOptions<TEvtMap>>): () => void
 > ```
 > 
-> Please refer to [the method `onMulti()` of the `MultiNanoEmitter` class](#multinanoemitter) for more information on this function.
-
-<br>
-
-> ### onceMultiSiteEvents()
-> Signature:  
-> ```ts
-> unsafeWindow.BYTM.onceMultiSiteEvents(events: Array<string>, options: MultiNanoEmitterOptions, cb?: (args: [event: string, args: Parameters<TEvtMap[TKey]>]): Promise<[event: string, Parameters<TEvtMap[TKey]>]>
-> ```
-> 
-> Please refer to [the method `onceMulti()` of the `MultiNanoEmitter` class](#multinanoemitter) for more information on this function.
+> Description:  
+> Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.  
+> Returns a function that can be called to unsubscribe all listeners created by this call.  
+>   
+> Please refer to [the method `onMulti()` of CoreUtils' `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) for more information on this function.
 
 <br>
 
@@ -1860,7 +1855,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <br>
 > 
 > Methods:  
-> The methods from the [`MultiNanoEmitter`](#multinanoemitter) class are also available here.  
+> The methods from the [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) class are also available here.  
 > These are the additional methods that are exclusive to the `BytmDialog` class:  
 > - `open(e?: MouseEvent | KeyboardEvent): Promise<void>`  
 >   Opens the dialog - also mounts it if it hasn't been mounted yet.  
@@ -2069,7 +2064,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | `body: string \| (() => string \| Promise<string>)` | Markdown content to render in the dialog. Can be a string or a sync or async function that returns a string. |
 >   
 > Methods:  
-> The methods from the [`MultiNanoEmitter`](#multinanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
+> The methods from the [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
 > - `static parseMd(md: string): Promise<string>`  
 >   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.
 > - `protected renderBody(): Promise<void>`  
@@ -2539,72 +2534,6 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > }
 > 
 > run();
-> ```
-> </details>
-
-<br><br>
-
-> ### MultiNanoEmitter
-> Signature:
-> ```ts
-> new unsafeWindow.BYTM.MultiNanoEmitter<TEventMap>(settings: NanoEmitterSettings): MultiNanoEmitter
-> ```
->   
-> A subclass of [NanoEmitter](#nanoemitter) that can be used to create an event emitter whose listeners only trigger when one of, all, or a given subset of the events are emitted.  
-> Everything in this class is the same as in [NanoEmitter](#nanoemitter), except for the new methods below.
->   
-> Methods:
-> - `onMulti(events: Array<string>, options: MultiNanoEmitterOptions, cb: TEventMap[TKey]): Array<[event: string, unsub: () => void]>`  
->   Registers a callback for the given events.  
->   `options` defines when the callback should be called, as well as allows passing an AbortSignal to cancel the listener at any time.  
->   The function returns an array of tuples, each containing the event name and a function to unsubscribe from that specific event. Note that unsubscribing events that are required to trigger the callback might mean it will never be called.
-> - `onceMulti(events: Array<string>, options: MultiNanoEmitterOptions, cb?: (args: [event: string, args: Parameters<TEvtMap[TKey]>]): Promise<[event: string, Parameters<TEvtMap[TKey]>]>`  
->   Registers a callback for the given events that gets called only once. Alternatively, the returned Promise also resolves with the parameters that would have been passed to the callback at the same time.  
->   Differently to the regular `once()` method, this one returns a tuple of the event name that triggered the callback and the parameters that would have been passed to the callback.  
->   The `options` parameter is the same as in `onMulti()`.
-> 
-> ### MultiNanoEmitterOptions
-> 
-> | Property | Description |
-> | :-- | :-- |
-> | `waitFor?: "all" \| "any" \| (keyof TEvtMap \| "_")[]` | Whether to wait for all events or any event to be emitted, or a specific subset of events. |
-> | `signal?: AbortSignal` | If provided, calling `abort()` on the signal will cancel each listener it was passed to and prevent them from being called. |
-> 
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
-> 
-> ```ts
-> interface MyEvents {
->   foo: (val: number) => void;
->   bar: (val: number) => void;
-> }
-> 
-> const emitter = new unsafeWindow.BYTM.MultiNanoEmitter<MyEvents>({
->   publicEmit: true, // allow calling emit() from outside this class instance
-> });
-> 
-> const ac = new AbortController();
-> 
-> const unsubs = emitter.onMulti(["foo", "bar"], { waitFor: "any", signal: ac.signal }, ([event, args]) => {
->   // event is either "foo" or "bar"
->   console.log(`The event "${event}" was emitted with args:`, args);
-> });
-> 
-> function unsubFrom(name: keyof MyEvents) {
->   // unsubscribe from the passed event name, if it exists
->   const unsubFns = unsubs.filter(([evt]) => evt === name);
->   for(const [, unsubFn] of unsubFns)
->     unsubFn();
-> }
-> 
-> function unsubAll() {
->   // unsubscribe from all events ac.signal was passed to
->   ac.abort();
-> }
-> 
-> 
-> // randomly emits "foo" or "bar" after a short delay
-> const randVal = unsafeWindow.BYTM.UserUtils.randRange(1);
-> setTimeout(() => emitter.emit(randVal === 1 ? "foo" : "bar", randVal), 1000);
 > ```
 > </details>
 

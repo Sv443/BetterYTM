@@ -601,7 +601,7 @@ type AlbumArtCache = {
   entries: AlbumArtCacheEntry[];
 };
 
-const albumArtStore = new DataStore<AlbumArtCache>({
+const albumArtCacheStore = new DataStore<AlbumArtCache>({
   id: "album-art-cache",
   formatVersion: 1,
   defaultData: {
@@ -612,15 +612,15 @@ const albumArtStore = new DataStore<AlbumArtCache>({
 });
 
 async function deleteExpiredAlbumArtCacheEntries() {
-  await albumArtStore.loadData();
+  await albumArtCacheStore.loadData();
 
   const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
 
-  const expiredEntries = albumArtStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+  const expiredEntries = albumArtCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
   if(expiredEntries.length > 0) {
     log(`Deleting ${expiredEntries.length} expired album art cache entries`);
-    albumArtStore.setData({
-      entries: albumArtStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
+    albumArtCacheStore.setData({
+      entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
     });
   }
 }
@@ -926,7 +926,7 @@ export async function initThumbnailOverlay() {
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albumRaw: string) {
   if(overlayState === ThumbOvlState.AM) {
-    const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
+    const cacheEntry = albumArtCacheStore.getData().entries.find((e) => e.videoId === videoId);
 
     if(cacheEntry) {
       log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
@@ -967,7 +967,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
   const match = bestMatch ?? fallback;
 
   if(match) {
-    const entries = albumArtStore.getData().entries;
+    const entries = albumArtCacheStore.getData().entries;
     if(!entries.find((e) => e.videoId === videoId)) {
       entries.push({
         videoId,
@@ -975,7 +975,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
         created: Date.now(),
       });
       log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
-      await albumArtStore.setData({ entries });
+      await albumArtCacheStore.setData({ entries });
     }
   }
 

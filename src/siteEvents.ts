@@ -1,6 +1,6 @@
+import { NanoEmitter } from "@sv443-network/coreutils";
 import { type LooseUnion } from "@sv443-network/userutils";
 import { error, getDomain, info, warn } from "./utils/index.js";
-import { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
 import { FeatureConfig, type FeatureCategory } from "./types.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
@@ -87,7 +87,7 @@ export const allSiteEvents = [
 ] as const;
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
-export const siteEvents = new MultiNanoEmitter<SiteEventsMap>({
+export const siteEvents = new NanoEmitter<SiteEventsMap>({
   publicEmit: true,
 });
 

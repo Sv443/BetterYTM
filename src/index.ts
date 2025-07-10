@@ -62,6 +62,7 @@ import type { FeatureKey, ResourceKey } from "./types.js";
   const poweredBy = `Powered by:
 ─ Lots of ambition and dedication
 ─ My song metadata API: https://api.sv443.net/geniurl
+─ My core utility library: https://github.com/Sv443-Network/CoreUtils
 ─ My userscript utility library: https://github.com/Sv443-Network/UserUtils
 ─ This library for semver comparison: https://github.com/omichelsen/compare-versions
 ─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify

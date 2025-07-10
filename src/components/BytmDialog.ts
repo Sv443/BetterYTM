@@ -1,8 +1,7 @@
-// hoist the class declaration because either rollup or babel is being a hoe
+import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
 import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
-import { MultiNanoEmitter } from "../utils/MultiNanoEmitter.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -71,7 +70,7 @@ export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
 //#region class
 
 /** Creates and manages a modal dialog element */
-export class BytmDialog extends MultiNanoEmitter<BytmDialogEvents> {
+export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
   public readonly options;
   public readonly id;
 

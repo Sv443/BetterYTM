@@ -16,7 +16,7 @@ const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
 
 let canCompress = true;
 
-const lyricsCacheMgr = new DataStore<LyricsCache>({
+const lyricsCacheStore = new DataStore<LyricsCache>({
   id: "bytm-lyrics-cache",
   defaultData: {
     cache: [],
@@ -42,7 +42,7 @@ const lyricsCacheMgr = new DataStore<LyricsCache>({
 
 export async function initLyricsCache() {
   canCompress = await compressionSupported();
-  const data = await lyricsCacheMgr.loadData();
+  const data = await lyricsCacheStore.loadData();
   log(`Initialized lyrics cache with ${data.cache.length} entries:`, data);
   emitInterface("bytm:lyricsCacheReady");
   return data;
@@ -61,7 +61,7 @@ export function resolveLyricsUrl(path: string) {
  * @param refreshEntry If true, the timestamp of the entry will be set to the current time
  */
 export function getLyricsCacheEntry(artist: string, song: string, refreshEntry = true) {
-  const { cache } = lyricsCacheMgr.getData();
+  const { cache } = lyricsCacheStore.getData();
   const entry = cache.find(e => e.artist === artist && e.song === song);
   if(entry && Date.now() - (entry?.added ?? 0) * 1000 > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
     deleteLyricsCacheEntry(artist, song);
@@ -76,40 +76,40 @@ export function getLyricsCacheEntry(artist: string, song: string, refreshEntry =
 
 /** Updates the "last viewed" timestamp of the cache entry for the passed artist and song */
 function updateLyricsCacheEntry(artist: string, song: string) {
-  const { cache } = lyricsCacheMgr.getData();
+  const { cache } = lyricsCacheStore.getData();
   const idx = cache.findIndex(e => e.artist === artist && e.song === song);
   if(idx !== -1) {
     const newEntry = cache.splice(idx, 1)[0]!;
     newEntry.viewed = Math.floor(Date.now() / 1000);
-    lyricsCacheMgr.setData({ cache: [ newEntry, ...cache ] });
+    lyricsCacheStore.setData({ cache: [ newEntry, ...cache ] });
   }
 }
 
 /** Deletes the cache entry for the passed artist and song */
 function deleteLyricsCacheEntry(artist: string, song: string) {
-  const { cache } = lyricsCacheMgr.getData();
+  const { cache } = lyricsCacheStore.getData();
   const idx = cache.findIndex(e => e.artist === artist && e.song === song);
   if(idx !== -1) {
     cache.splice(idx, 1);
-    lyricsCacheMgr.setData({ cache });
+    lyricsCacheStore.setData({ cache });
   }
 }
 
 /** Clears the lyrics cache locally and deletes it from persistent storage - the window should be reloaded right after! */
 export async function deleteLyricsCache() {
-  await lyricsCacheMgr.deleteData();
+  await lyricsCacheStore.deleteData();
   emitInterface("bytm:lyricsCacheCleared");
 }
 
 /** Clears the lyrics cache locally and clears it in persistent storage */
 export function clearLyricsCache() {
   emitInterface("bytm:lyricsCacheCleared");
-  return lyricsCacheMgr.setData({ cache: [] });
+  return lyricsCacheStore.setData({ cache: [] });
 }
 
 /** Returns the full lyrics cache array */
 export function getLyricsCache() {
-  return lyricsCacheMgr.getData().cache;
+  return lyricsCacheStore.getData().cache;
 }
 
 /**
@@ -122,7 +122,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, path: stri
   if(cachedEntry)
     return;
 
-  const { cache } = lyricsCacheMgr.getData();
+  const { cache } = lyricsCacheStore.getData();
   const entry = {
     artist, song, path, viewed: Math.floor(Date.now() / 1000), added: Math.floor(Date.now() / 1000),
   } satisfies LyricsCacheEntry;
@@ -136,7 +136,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, path: stri
   log("Added lyrics cache entry for best result:", entry);
 
   emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
-  return lyricsCacheMgr.setData({ cache });
+  return lyricsCacheStore.setData({ cache });
 }
 
 /**
@@ -152,7 +152,7 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, path:
   if(cachedEntry)
     return;
 
-  const { cache } = lyricsCacheMgr.getData();
+  const { cache } = lyricsCacheStore.getData();
 
   penaltyFr = clamp(penaltyFr, 0, 1);
 
@@ -176,5 +176,5 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, path:
   log(`Added penalized cache entry (with a penalty fraction of ${penaltyFr}):\n`, entry);
 
   emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
-  return lyricsCacheMgr.setData({ cache });
+  return lyricsCacheStore.setData({ cache });
 }

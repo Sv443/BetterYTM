@@ -1,9 +1,9 @@
-import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/userutils";
+import type { NanoEmitter } from "@sv443-network/coreutils";
+import type { LooseUnion, Prettify } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
-import type { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
 import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getLibraryHook, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
@@ -173,9 +173,10 @@ export type BytmObject =
   // others
   & {
     NanoEmitter: NanoEmitter;
-    MultiNanoEmitter: MultiNanoEmitter;
     BytmDialog: BytmDialog;
     ExImDialog: ExImDialog;
+    // the entire CoreUtils library
+    CoreUtils: typeof import("@sv443-network/coreutils");
     // the entire UserUtils library
     UserUtils: typeof import("@sv443-network/userutils");
     // the entire compare-versions library
@@ -232,8 +233,8 @@ export enum PluginIntent {
 export type PluginRegisterResult = {
   /** Public info about the registered plugin */
   info: PluginInfo;
-  /** MultiNanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
-  events: MultiNanoEmitter<PluginEventMap>;
+  /** NanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
+  events: NanoEmitter<PluginEventMap>;
   /** Authentication token for the plugin to use in certain restricted function calls */
   token: string;
 }
@@ -384,10 +385,8 @@ export type InterfaceFunctions = {
   onSiteEvent: typeof siteEvents.on,
   /** Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern */
   onceSiteEvent: typeof siteEvents.once,
-  /** Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function */
+  /** Adds a listener for multiple site events at once, with configurable behavior */
   onMultiSiteEvents: typeof siteEvents.onMulti,
-  /** Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once */
-  onceMultiSiteEvents: typeof siteEvents.onceMulti,
 
   // translations:
   /** 🔒 Sets the locale for all new translations */

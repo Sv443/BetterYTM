@@ -1,8 +1,8 @@
+import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import * as constants from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
-import { MultiNanoEmitter } from "./utils/MultiNanoEmitter.js";
 import { addSelectorListener } from "./observers.js";
 import { defaultData, getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
@@ -19,7 +19,8 @@ import { ExImDialog } from "./components/ExImDialog.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
 
 const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
-const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils;
+const { NanoEmitter } = CoreUtils;
+const { autoPlural, getUnsafeWindow, purifyObj } = UserUtils;
 
 //#region interface globals
 
@@ -142,7 +143,6 @@ const globalFuncs: InterfaceFunctions = purifyObj({
   onSiteEvent: siteEvents.on.bind(siteEvents),
   onceSiteEvent: siteEvents.once.bind(siteEvents),
   onMultiSiteEvents: siteEvents.onMulti.bind(siteEvents),
-  onceMultiSiteEvents: siteEvents.onceMulti.bind(siteEvents),
 
   // translations:
   /*🔒*/ setLocale: setLocaleInterface,
@@ -199,11 +199,11 @@ export function initInterface() {
     ...globalFuncs,
     // classes
     NanoEmitter,
-    MultiNanoEmitter,
     BytmDialog,
     ExImDialog,
     MarkdownDialog,
     // libraries
+    CoreUtils,
     UserUtils,
     compareVersions,
   };
@@ -292,7 +292,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     if(validationErrors)
       throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
-    const events = new MultiNanoEmitter<PluginEventMap>({ publicEmit: true });
+    const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
     const token = crypto.randomUUID();
 
     registeredPlugins.set(plKey, {
