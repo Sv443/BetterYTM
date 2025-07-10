@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8096c520/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6868c8e1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -65,6 +65,7 @@
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@2.0.0/dist/CoreUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.3/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
@@ -85,7 +86,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function(UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var preloadAssetPattern = "^(icon|img)-";
+(function(UserUtils,DOMPurify,marked,CoreUtils,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var CoreUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(CoreUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var preloadAssetPattern = "^(icon|img)-";
 var resources = {
 	"css-above_queue_btns": "style/aboveQueueBtns.css",
 	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
@@ -344,7 +345,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "8096c520",
+    buildNumber: "6868c8e1",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -403,68 +404,8 @@ const scriptInfo$1 = UserUtils.purifyObj({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-});var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});/**
- * {@linkcode NanoEmitter} wrapper that allows listening for whether one or all events have been emitted.
- */
-class MultiNanoEmitter extends UserUtils.NanoEmitter {
-    onMulti(events, options, cb) {
-        var _a;
-        const capturedEvents = new Set();
-        const unsubscribes = [];
-        for (const event of events) {
-            // eslint-disable-next-line prefer-const
-            let unsub;
-            const unsubProxy = () => {
-                if (!unsub)
-                    return;
-                unsub();
-                this.eventUnsubscribes = this.eventUnsubscribes.filter(u => u !== unsub);
-            };
-            unsub = this.events.on(event, ((...args) => {
-                var _a;
-                capturedEvents.add(event);
-                return this.evalMultiListenerCondition(events, capturedEvents, (_a = options.waitFor) !== null && _a !== void 0 ? _a : "all", () => cb([event, args]));
-            }));
-            (_a = options.signal) === null || _a === void 0 ? void 0 : _a.addEventListener("abort", () => unsubProxy());
-            this.eventUnsubscribes.push(unsub);
-            unsubscribes.push([event, unsubProxy]);
-        }
-        return unsubscribes;
-    }
-    onceMulti(events, options, cb) {
-        const capturedEvents = new Set();
-        return new Promise((resolve) => {
-            var _a;
-            for (const event of events) {
-                // eslint-disable-next-line prefer-const
-                let unsub;
-                const onceProxy = ((...args) => {
-                    var _a;
-                    capturedEvents.add(event);
-                    this.evalMultiListenerCondition(events, capturedEvents, (_a = options.waitFor) !== null && _a !== void 0 ? _a : "all", () => {
-                        cb === null || cb === void 0 ? void 0 : cb([event, args]);
-                        unsub === null || unsub === void 0 ? void 0 : unsub();
-                        resolve([event, args]);
-                    });
-                });
-                unsub = this.events.on(event, onceProxy);
-                (_a = options.signal) === null || _a === void 0 ? void 0 : _a.addEventListener("abort", () => unsub());
-                this.eventUnsubscribes.push(unsub);
-            }
-        });
-    }
-    evalMultiListenerCondition(events, capturedEvents, waitFor, cb) {
-        if (waitFor === "all" && [...capturedEvents].every(event => events.includes(event)))
-            return cb();
-        else if (waitFor === "any" && capturedEvents.size > 0)
-            return cb();
-        else if (Array.isArray(waitFor) && waitFor.length > 0) {
-            if (waitFor.every(event => capturedEvents.has(event)))
-                return cb();
-        }
-    }
-}let canCompress$2 = true;
-const lyricsCacheMgr = new UserUtils.DataStore({
+});var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});let canCompress$2 = true;
+const lyricsCacheStore = new UserUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
         cache: [],
@@ -489,7 +430,7 @@ const lyricsCacheMgr = new UserUtils.DataStore({
 });
 async function initLyricsCache() {
     canCompress$2 = await compressionSupported();
-    const data = await lyricsCacheMgr.loadData();
+    const data = await lyricsCacheStore.loadData();
     log(`Initialized lyrics cache with ${data.cache.length} entries:`, data);
     emitInterface("bytm:lyricsCacheReady");
     return data;
@@ -507,7 +448,7 @@ function resolveLyricsUrl(path) {
  */
 function getLyricsCacheEntry(artist, song, refreshEntry = true) {
     var _a;
-    const { cache } = lyricsCacheMgr.getData();
+    const { cache } = lyricsCacheStore.getData();
     const entry = cache.find(e => e.artist === artist && e.song === song);
     if (entry && Date.now() - ((_a = entry === null || entry === void 0 ? void 0 : entry.added) !== null && _a !== void 0 ? _a : 0) * 1000 > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
         deleteLyricsCacheEntry(artist, song);
@@ -520,31 +461,31 @@ function getLyricsCacheEntry(artist, song, refreshEntry = true) {
 }
 /** Updates the "last viewed" timestamp of the cache entry for the passed artist and song */
 function updateLyricsCacheEntry(artist, song) {
-    const { cache } = lyricsCacheMgr.getData();
+    const { cache } = lyricsCacheStore.getData();
     const idx = cache.findIndex(e => e.artist === artist && e.song === song);
     if (idx !== -1) {
         const newEntry = cache.splice(idx, 1)[0];
         newEntry.viewed = Math.floor(Date.now() / 1000);
-        lyricsCacheMgr.setData({ cache: [newEntry, ...cache] });
+        lyricsCacheStore.setData({ cache: [newEntry, ...cache] });
     }
 }
 /** Deletes the cache entry for the passed artist and song */
 function deleteLyricsCacheEntry(artist, song) {
-    const { cache } = lyricsCacheMgr.getData();
+    const { cache } = lyricsCacheStore.getData();
     const idx = cache.findIndex(e => e.artist === artist && e.song === song);
     if (idx !== -1) {
         cache.splice(idx, 1);
-        lyricsCacheMgr.setData({ cache });
+        lyricsCacheStore.setData({ cache });
     }
 }
 /** Clears the lyrics cache locally and clears it in persistent storage */
 function clearLyricsCache() {
     emitInterface("bytm:lyricsCacheCleared");
-    return lyricsCacheMgr.setData({ cache: [] });
+    return lyricsCacheStore.setData({ cache: [] });
 }
 /** Returns the full lyrics cache array */
 function getLyricsCache() {
-    return lyricsCacheMgr.getData().cache;
+    return lyricsCacheStore.getData().cache;
 }
 /**
  * Adds the provided "best" (non-penalized) entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
@@ -555,7 +496,7 @@ function addLyricsCacheEntryBest(artist, song, path) {
     const cachedEntry = getLyricsCacheEntry(artist, song, true);
     if (cachedEntry)
         return;
-    const { cache } = lyricsCacheMgr.getData();
+    const { cache } = lyricsCacheStore.getData();
     const entry = {
         artist, song, path, viewed: Math.floor(Date.now() / 1000), added: Math.floor(Date.now() / 1000),
     };
@@ -565,7 +506,7 @@ function addLyricsCacheEntryBest(artist, song, path) {
     cache.splice(getFeature("lyricsCacheMaxSize"));
     log("Added lyrics cache entry for best result:", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
-    return lyricsCacheMgr.setData({ cache });
+    return lyricsCacheStore.setData({ cache });
 }/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -713,8 +654,7 @@ function tlp(locale, key, num, ...args) {
     if (trans === key)
         return t(key, ...args);
     return trans;
-}// hoist the class declaration because either rollup or babel is being a hoe
-//#region vars
+}//#region vars
 /** Whether the dialog system has been initialized */
 let dialogsInitialized = false;
 /** Container element for all BytmDialog elements */
@@ -728,7 +668,7 @@ const openDialogs = [];
 const setCurrentDialogId = (id) => currentDialogId = id;
 //#region class
 /** Creates and manages a modal dialog element */
-class BytmDialog extends MultiNanoEmitter {
+class BytmDialog extends CoreUtils.NanoEmitter {
     //#region constructor
     constructor(options) {
         super();
@@ -1162,6 +1102,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
+	"@sv443-network/coreutils": "^2.0.0",
 	"@sv443-network/userutils": "^9.4.3",
 	"compare-versions": "^6.1.1",
 	dompurify: "^3.2.5",
@@ -1262,7 +1203,7 @@ var packageJson = {
 	nodemonConfig: nodemonConfig,
 	pnpm: pnpm
 };/** EventEmitter instance that is used to detect various changes to the site and userscript */
-const siteEvents = new MultiNanoEmitter({
+const siteEvents = new CoreUtils.NanoEmitter({
     publicEmit: true,
 });
 let observers = [];
@@ -5596,7 +5537,7 @@ async function initAboveQueueBtns() {
         },
     });
 }
-const albumArtStore = new UserUtils.DataStore({
+const albumArtCacheStore = new UserUtils.DataStore({
     id: "album-art-cache",
     formatVersion: 1,
     defaultData: {
@@ -5606,13 +5547,13 @@ const albumArtStore = new UserUtils.DataStore({
     decodeData: async (data) => await compressionSupported() ? await UserUtils.decompress(data, compressionFormat$1, "string") : data,
 });
 async function deleteExpiredAlbumArtCacheEntries() {
-    await albumArtStore.loadData();
+    await albumArtCacheStore.loadData();
     const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
-    const expiredEntries = albumArtStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+    const expiredEntries = albumArtCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
     if (expiredEntries.length > 0) {
         log(`Deleting ${expiredEntries.length} expired album art cache entries`);
-        albumArtStore.setData({
-            entries: albumArtStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
+        albumArtCacheStore.setData({
+            entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
         });
     }
 }
@@ -5861,7 +5802,7 @@ async function initThumbnailOverlay() {
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
     if (overlayState === ThumbOvlState.AM) {
-        const cacheEntry = albumArtStore.getData().entries.find((e) => e.videoId === videoId);
+        const cacheEntry = albumArtCacheStore.getData().entries.find((e) => e.videoId === videoId);
         if (cacheEntry) {
             log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
             return {
@@ -5890,7 +5831,7 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
         [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
     const match = bestMatch !== null && bestMatch !== void 0 ? bestMatch : fallback;
     if (match) {
-        const entries = albumArtStore.getData().entries;
+        const entries = albumArtCacheStore.getData().entries;
         if (!entries.find((e) => e.videoId === videoId)) {
             entries.push({
                 videoId,
@@ -5898,7 +5839,7 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
                 created: Date.now(),
             });
             log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
-            await albumArtStore.setData({ entries });
+            await albumArtCacheStore.setData({ entries });
         }
     }
     return match;
@@ -8475,7 +8416,8 @@ async function clearConfig() {
     await configStore.deleteData();
     info("Deleted config from persistent storage");
 }const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
-const { autoPlural, getUnsafeWindow, purifyObj, NanoEmitter } = UserUtils__namespace;
+const { NanoEmitter } = CoreUtils__namespace;
+const { autoPlural, getUnsafeWindow, purifyObj } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
@@ -8507,7 +8449,6 @@ const globalFuncs = purifyObj({
     onSiteEvent: siteEvents.on.bind(siteEvents),
     onceSiteEvent: siteEvents.once.bind(siteEvents),
     onMultiSiteEvents: siteEvents.onMulti.bind(siteEvents),
-    onceMultiSiteEvents: siteEvents.onceMulti.bind(siteEvents),
     // translations:
     /*🔒*/ setLocale: setLocaleInterface,
     getLocale,
@@ -8554,11 +8495,11 @@ function initInterface() {
         sessionStorageAvailable }, scriptInfo), globalFuncs), { 
         // classes
         NanoEmitter,
-        MultiNanoEmitter,
         BytmDialog,
         ExImDialog,
         MarkdownDialog,
         // libraries
+        CoreUtils: CoreUtils__namespace,
         UserUtils: UserUtils__namespace,
         compareVersions: compareVersions__namespace });
     for (const [key, value] of Object.entries(props))
@@ -8618,7 +8559,7 @@ function registerPlugin(def) {
         const validationErrors = validatePluginDef(def);
         if (validationErrors)
             throw new PluginError(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
-        const events = new MultiNanoEmitter({ publicEmit: true });
+        const events = new NanoEmitter({ publicEmit: true });
         const token = crypto.randomUUID();
         registeredPlugins.set(plKey, {
             def: def,
@@ -9650,6 +9591,7 @@ async function renderBody(opts) {
     const poweredBy = `Powered by:
 ─ Lots of ambition and dedication
 ─ My song metadata API: https://api.sv443.net/geniurl
+─ My core utility library: https://github.com/Sv443-Network/CoreUtils
 ─ My userscript utility library: https://github.com/Sv443-Network/UserUtils
 ─ This library for semver comparison: https://github.com/omichelsen/compare-versions
 ─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify
@@ -10121,4 +10063,4 @@ async function runDevTreatments() {
     const dlg = await getAllDataExImDialog();
     await dlg.open();
 }
-preInit();})(UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(UserUtils,DOMPurify,marked,CoreUtils,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
