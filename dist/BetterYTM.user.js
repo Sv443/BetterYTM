@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6868c8e1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@24e8cb64/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -345,7 +345,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "6868c8e1",
+    buildNumber: "24e8cb64",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1219,7 +1219,7 @@ async function initSiteEvents() {
             const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
                     info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    emitSiteEvent("queueChanged", target);
+                    forceEmitSiteEvent("queueChanged", target);
                 }
             });
             // only observe added or removed elements
@@ -1233,7 +1233,7 @@ async function initSiteEvents() {
             const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
                     info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    emitSiteEvent("autoplayQueueChanged", target);
+                    forceEmitSiteEvent("autoplayQueueChanged", target);
                 }
             });
             addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
