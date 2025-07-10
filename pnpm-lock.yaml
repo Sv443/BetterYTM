@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@sv443-network/coreutils':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@sv443-network/userutils':
         specifier: ^9.4.3
         version: 9.4.3
@@ -870,6 +873,9 @@ packages:
     resolution: {integrity: sha512-6VjZg8HJ2Op7+KV7ihJpYrDnFtd9D1jrQnUS8LckcpuBXrIEbaut5+34ObY8ssQnSqkk2GwIZBBBQYQBCVvkOw==}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
+  '@sv443-network/coreutils@2.0.0':
+    resolution: {integrity: sha512-2fr1Y1Gd5OuyeYt+VL8VpYkQYU0me1GGJ0OXGRJPHfrTz5+r5oudRpMG0SdotSvx/4cbQV3w355C6ZwiBkW5pA==}
 
   '@sv443-network/userutils@9.4.3':
     resolution: {integrity: sha512-PtguHkaDIBQ+XJCUssX5yitYo0KiUmntv4fqNN8t9uUztNMb/Px8CMZqbWySXZvUnisEXOEzRgh84Voxd4K8JA==}
@@ -2998,6 +3004,10 @@ snapshots:
   '@storybook/theming@8.6.12(storybook@8.6.12(prettier@3.3.2))':
     dependencies:
       storybook: 8.6.12(prettier@3.3.2)
+
+  '@sv443-network/coreutils@2.0.0':
+    dependencies:
+      nanoevents: 9.1.0
 
   '@sv443-network/userutils@9.4.3':
     dependencies:

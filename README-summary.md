@@ -126,6 +126,7 @@ This project is based on my extensive template for making a userscript with Type
 
 ### Attributions
 This userscript depends on these projects:
+- [@sv443-network/coreutils](https://github.com/Sv443-Network/CoreUtils)
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
 - [compare-versions](https://npmjs.org/package/compare-versions)
 - [Cousine font](https://fonts.google.com/specimen/Cousine)

@@ -48,7 +48,7 @@
   - Added new functions to the interface that allow for better interaction with the siteEvents system:
     - `onSiteEvent()` - Adds a site event listener.
     - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
-    - `onMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function.
+    - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.
     - `onceMultiSiteEvents()` - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function that is only called once.
   - Added new events:
     - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
@@ -58,9 +58,9 @@
   - Auth tokens are now in the format of a UUIDv4 instead of a 16-character, 36-radix string.
   - Added SelectorObserver instance `searchPage`, as the root observer for the YTM search page.
 - **Internal Changes:**
-  - Added [`NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) wrapper class `MultiNanoEmitter` that allows listening to when one, all, or a given subset of events have been emitted before executing a callback. It shares the same methods as the base `NanoEmitter`, but has the new methods `onMulti()` and `onceMulti()` for listening to multiple events. This new class is exposed on the plugin interface next to the `NanoEmitter` class.
-  - Made `siteEvents` system use a `MultiNanoEmitter` instance instead of a `NanoEmitter` instance, so it can now also be used to listen to multiple events at once.
-  - Made plugin-specific `events` (returned by `registerPlugin()`) use a `MultiNanoEmitter` instance too.
+  - Added [`@sv443-network/coreutils`](https://github.com/Sv443-Network/CoreUtils) as a new core library, accessible on the BYTM API via `BYTM.CoreUtils`.
+  - Made `siteEvents` system use CoreUtils' improved `NanoEmitter`, so it can now also be used to listen to multiple events using `.onMulti()`.
+  - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - Moved the `general` feature category to the top of the config menu.
