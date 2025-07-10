@@ -112,7 +112,7 @@ export async function initSiteEvents() {
       const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
         if(addedNodes.length > 0 || removedNodes.length > 0) {
           info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-          emitSiteEvent("queueChanged", target as HTMLElement);
+          forceEmitSiteEvent("queueChanged", target as HTMLElement);
         }
       });
 
@@ -128,7 +128,7 @@ export async function initSiteEvents() {
       const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
         if(addedNodes.length > 0 || removedNodes.length > 0) {
           info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-          emitSiteEvent("autoplayQueueChanged", target as HTMLElement);
+          forceEmitSiteEvent("autoplayQueueChanged", target as HTMLElement);
         }
       });
 
