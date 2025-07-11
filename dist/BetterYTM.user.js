@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@24e8cb64/assets/images/logo/logo_dev_48.png
+// @icon              http://localhost:8710/assets/images/logo/logo_dev_48.png?b=owTPSamxGTQ3
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -345,8 +345,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "24e8cb64",
-    assetSource: "jsdelivr",
+    buildNumber: "3dbbcaa4",
+    assetSource: "local",
     devServerPort: "8710",
 };
 const getConst = (constKey, defaultVal) => {
@@ -2619,7 +2619,7 @@ function getLogLevel(args) {
 }
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 function log(...args) {
     if (curLogLevel <= getLogLevel(args))
@@ -2627,7 +2627,7 @@ function log(...args) {
 }
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 function info(...args) {
     if (curLogLevel <= getLogLevel(args))
@@ -2924,6 +2924,31 @@ async function remTimeDeleteEntry(videoID) {
     const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"))
         .filter(entry => entry.id !== videoID);
     await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+}
+//#region dismiss "are you still there"
+/** Initializes the "Are you still there?" popup dismissing feature */
+async function initStillThere() {
+    addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
+        listener(youThereCont) {
+            const obs = new MutationObserver(() => {
+                if (!getFeature("yesImStillThere"))
+                    return;
+                const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
+                if (!dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
+                    return;
+                const btn = youThereCont.querySelector(".actions button");
+                if (!btn)
+                    return warn("Could not find the \"Yes\" button in the \"Are you still there?\" popup");
+                btn.click();
+                info("Automatically dismissed the \"Are you still here?\" dialog", LogLevel.Info);
+            });
+            obs.observe(youThereCont, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+            });
+        },
+    });
 }//#region misc
 let domain;
 /**
@@ -7743,6 +7768,13 @@ const featInfo = {
         enable: noop,
         textAdornment: adornments.ytmOnly,
     },
+    yesImStillThere: {
+        category: "behavior",
+        type: "toggle",
+        supportedSites: ["ytm"],
+        default: true,
+        textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+    },
     //#region cat:autoLike
     autoLikeChannels: {
         type: "toggle",
@@ -8267,6 +8299,7 @@ const migrations = {
             "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
             "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
             "songListTrackNumbersEnabled", "songListTrackNumbers",
+            "yesImStillThere",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
             { key: "initTimeout", oldDefault: 8 },
@@ -9704,7 +9737,7 @@ async function onDomLoad() {
     catch (err) {
         error("Encountered error in feature pre-init:", err);
     }
-    log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
+    info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
     mountCfgMenu();
     try {
         //#region welcome dlg
@@ -9744,6 +9777,7 @@ async function onDomLoad() {
             if (feats.closeToastsTimeout > 0)
                 ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
             ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
+            ftInit.push(["yesImStillThere", initStillThere()]);
             //#region (ytm) input
             ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
             ftInit.push(["frameSkip", initFrameSkip()]);
@@ -9816,9 +9850,9 @@ async function onDomLoad() {
         preloadResources();
         initTimings.ready = Date.now() - initTimings.start;
         emitInterface("bytm:ready");
-        info(`Done initializing ${initializedFeats.length} / ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+        info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
         if (initializedFeats.length < ftInit.length) {
-            error(`Only ${initializedFeats.length} out of ${ftInit.length} features initialized within the limit of ${initTimeout}ms. Faulty features:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
+            error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
         }
         try {
             registerDevCommands();
