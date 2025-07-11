@@ -360,7 +360,7 @@ unsafeWindow.addEventListener("bytm:siteEvent:eventName", (event) => {
 ### Practical Example:
 ```ts
 // listening to generic events:
-unsafeWindow.addEventListener("bytm:ready", () => {
+unsafeWindow.addEventListener("bytm:allReady", () => {
   console.log("The DOM is loaded and all BetterYTM features have been initialized");
 });
 

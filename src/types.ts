@@ -309,6 +309,8 @@ export type PluginEventMap =
     pluginRegistered: (info: PluginInfo) => void;
     /** Emitted when `bytm:ready` is emitted on the window, as an easier to work with alternative */
     bytmReady: () => void;
+    /** Emitted when all features have been initialized and the interface is fully ready to use */
+    bytmAllReady: () => void;
   }
   // These are emitted on every plugin simultaneously, with the same or similar data:
   & SiteEventsMapPrefixed

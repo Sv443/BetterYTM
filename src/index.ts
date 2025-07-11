@@ -362,26 +362,35 @@ async function onDomLoad() {
 
     const endFeatInitDur = measureDuration("features");
 
-    // wait for feature init or timeout (in case an init function is hung up on a promise)
-    await Promise.race([
-      pauseFor(initTimeout),
-      Promise.allSettled(
-        ftInit.map(([name, prom]) =>
-          new Promise(async (res) => {
-            const v = await prom;
-            initTimings.featureDurations = {
-              ...(initTimings.featureDurations ?? {}),
-              [name]: Date.now() - initStartTs,
-            } as InitTimings["featureDurations"];
-            initializedFeats.push(name);
-            emitInterface("bytm:featureInitialized", name);
-            res(v);
-          })
-        )
-      ),
-    ]);
-
-    endFeatInitDur();
+    (() =>
+      Promise.race([
+        pauseFor(initTimeout),
+        Promise.allSettled(
+          ftInit.map(([name, prom]) =>
+            new Promise(async (res) => {
+              const v = await prom;
+              initTimings.featureDurations = {
+                ...(initTimings.featureDurations ?? {}),
+                [name]: Date.now() - initStartTs,
+              } as InitTimings["featureDurations"];
+              initializedFeats.push(name);
+              emitInterface("bytm:featureInitialized", name);
+              res(v);
+            })
+          )
+        ),
+      ]).then(() => {
+        endFeatInitDur();
+        emitInterface("bytm:allReady");
+        if(initializedFeats.length < ftInit.length) {
+          error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${
+            ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
+          }`);
+        }
+        else
+          info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+      })
+    )();
 
     // ensure site adjusts itself to new CSS files
     getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
@@ -391,13 +400,6 @@ async function onDomLoad() {
 
     initTimings.ready = Date.now() - initTimings.start;
     emitInterface("bytm:ready");
-    info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
-
-    if(initializedFeats.length < ftInit.length) {
-      error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${
-        ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
-      }`);
-    }
 
     try {
       registerDevCommands();

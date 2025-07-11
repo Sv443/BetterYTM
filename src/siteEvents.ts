@@ -191,7 +191,7 @@ export async function initSiteEvents() {
       }
     }
 
-    window.addEventListener("bytm:ready", () => {
+    window.addEventListener("bytm:allReady", () => {
       runIntervalChecks();
       setInterval(runIntervalChecks, 100);
 

@@ -270,7 +270,7 @@ export async function initConfig() {
       denyBtnText: t("prompt_close"),
       denyBtnTooltip: t("click_to_close_tooltip"),
     }))
-      window.addEventListener("bytm:ready", () => openCfgMenu(), { once: true });
+      window.addEventListener("bytm:allReady", () => openCfgMenu(), { once: true });
   }
 
   log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);

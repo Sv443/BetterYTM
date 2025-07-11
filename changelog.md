@@ -50,6 +50,9 @@
     - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
     - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.
   - Added new events:
+    - `bytm:allReady` (no arguments) - emitted when all features have been initialized and the interface is fully ready to use.  
+      This triggers much later than `bytm:ready`, which is emitted when the DOM is loaded and all features are *starting* to initialize.  
+      For the fastest response times, use `bytm:featureInitialized` for every feature your code depends on.
     - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
     - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
     - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
@@ -69,7 +72,7 @@
   - Added intent checking function `pluginHasPerms()` to `interface.ts`, which will now check for `FullAccess` or the given intents before allowing authenticated functions to be called.
   - Added CSS var `--bytm-menu-bg-highlight-2` (hex, opacity 1) as a secondary level of highlight to `--bytm-menu-bg-highlight`.
   - Renamed CSS var `--bytm-dialog-height-max` to `--bytm-dialog-target-height`, but only for the config menu. All BytmDialogs will still use `--bytm-dialog-height-max`.
-  - Improved number argument resolution of the functions in `src/utils/logging.ts` (if the last argument is a number and exceeds the range of the enum `LogLevel`, it will not be interpreted as a log level anymore, but as a number to be logged).
+  - Improved number argument resolution of the functions in `src/utils/logging.ts` (if the last argument is a number that exceeds the range of the enum `LogLevel`, it will not be interpreted as a log level anymore, but as a number to be logged).
   - Added dev menu option to print an initialization timing report to the console for debugging performance issues.
 
 </details>

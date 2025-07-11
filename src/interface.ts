@@ -57,8 +57,12 @@ export type InterfaceEvents = {
   "bytm:featureInitStarted": undefined;
   /** Emitted when a feature has been initialized. The data is the feature's key as seen in `onDomLoad()` of `src/index.ts` */
   "bytm:featureInitialized": string;
-  /** Emitted when BYTM has finished initializing all features or has reached the init timeout and has entered an idle state. */
+
+
+  /** Emitted when BYTM has finished general initialization. */
   "bytm:ready": undefined;
+  /** Emitted when all features have been initialized. */
+  "bytm:allReady": undefined;
 
   //#region additional events
   // (not sorted)
@@ -94,8 +98,10 @@ export type InterfaceEvents = {
 /** Array of all events emittable on the interface (excluding plugin-specific, private events) */
 export const allInterfaceEvents = [
   "bytm:registerPlugin",
+  "bytm:featureInitStarted",
+  "bytm:featureInitialized",
   "bytm:ready",
-  "bytm:featureInitfeatureInitStarted",
+  "bytm:allReady",
   "bytm:fatalError",
   "bytm:observersReady",
   "bytm:configReady",
@@ -307,6 +313,9 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
 
     window.addEventListener("bytm:ready", () => {
       emitOnPlugins("bytmReady");
+    });
+    window.addEventListener("bytm:allReady", () => {
+      emitOnPlugins("bytmAllReady");
     });
 
     return {
