@@ -229,7 +229,7 @@ export async function mountCfgMenu() {
     const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
 
     const exImDlg = new ExImDialog({
-      id: "bytm-config-export-import",
+      id: "config-export-import",
       width: 800,
       height: 600,
       // try to compress the data if possible
