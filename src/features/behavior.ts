@@ -289,31 +289,41 @@ async function remTimeDeleteEntry(videoID: string) {
 
 /** Initializes the "Are you still there?" popup dismissing feature */
 export async function initStillThere() {
+  let firstRun = true;
   addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
     listener(youThereCont) {
-      const obs = new MutationObserver(() => {
-        if(!getFeature("yesImStillThere"))
-          return;
+      const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
 
-        const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
+      if(!dialogCont)
+        return warn("Could not find the dialog container to dismiss the \"Are you still there?\" popup");
 
-        if(!dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
+      const check = () => {
+        if(!getFeature("yesImStillThere") || !dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
           return;
 
         const btn = youThereCont.querySelector<HTMLButtonElement>(".actions button");
 
         if(!btn)
-          return warn("Could not find the \"Yes\" button in the \"Are you still there?\" popup");
+          return warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
 
         btn.click();
         info("Automatically dismissed the \"Are you still here?\" dialog", LogLevel.Info);
-      });
+      };
 
-      obs.observe(youThereCont, {
+      if(firstRun) {
+        firstRun = false;
+        check();
+      }
+
+      const obs = new MutationObserver(check);
+
+      obs.observe(dialogCont, {
         childList: true,
         subtree: true,
         attributes: true,
       });
+
+      getFeature("yesImStillThere") && log("Initialized automatic dismissal of the \"Are you still there?\" popup");
     },
   });
 }
