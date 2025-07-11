@@ -347,8 +347,6 @@
   "feature_desc_frameSkipWhilePlaying": "Utiliser les touches virgule et point pour avancer et reculer d'une image lorsque la vidéo ou la chanson est en cours de lecture",
   "feature_desc_frameSkipAmount": "De combien de secondes sauter avec les touches \"point\" et \"virgule\"",
   "feature_helptext_frameSkipAmount": "Cette fonctionnalité est également disponible sur YT et saute une valeur fixe d'environ 0,0417 secondes. Si nécessaire, vous pouvez définir une autre valeur ici.",
-  "feature_desc_anchorImprovements": "Ajouter et améliorer les liens sur toute la page pour que les choses puissent être ouvertes dans un nouvel onglet plus facilement",
-  "feature_helptext_anchorImprovements": "Certains éléments de la page ne sont cliquables qu'avec le bouton gauche de la souris, ce qui signifie que vous ne pouvez pas les ouvrir dans un nouvel onglet en cliquant au milieu ou via le menu contextuel en utilisant Maj + clic droit. Cette fonctionnalité ajoute des liens à beaucoup d'entre eux ou les agrandit pour faciliter le clic.",
   "feature_desc_autoLikeChannels": "Aimer automatiquement toutes les chansons et vidéos de certaines chaînes",
   "feature_helpText_autoLikeChannels": "Une fois activée, vous pouvez activer cette fonctionnalité pour certaines chaînes en ouvrant leur page et en cliquant sur le bouton bascule. Ensuite, toute chanson que vous jouez de cette chaîne sera aimée automatiquement.\nUtilisez l'option ci-dessous pour ouvrir une boîte de dialogue pour gérer les chaînes.",
   "feature_desc_autoLikeChannelToggleBtn": "Ajouter un bouton à chaque page de chaîne pour activer ou désactiver l'auto-aimer",

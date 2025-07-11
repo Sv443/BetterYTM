@@ -347,8 +347,6 @@
   "feature_desc_frameSkipWhilePlaying": "Erlaube das Spulen um einen Frame auch während der Song oder das Video noch läuft",
   "feature_desc_frameSkipAmount": "Wie viele Sekunden mit den Tasten \"Punkt\" und \"Komma\" übersprungen werden sollen",
   "feature_helptext_frameSkipAmount": "Dieses Feature ist auch auf YT verfügbar und überspringt einen festen Wert von etwa 0.0417 Sekunden. Wenn nötig, kannst du hier einen anderen Wert festlegen.",
-  "feature_desc_anchorImprovements": "Links auf der Seite erstellen und verbessern, damit Dinge einfacher in einem neuen Tab geöffnet werden können",
-  "feature_helptext_anchorImprovements": "Einige Elemente auf der Seite sind nur mit der linken Maustaste klickbar, was bedeutet, dass du sie nicht in einem neuen Tab öffnen kannst, indem du darauf mit der mittleren Maustaste klickst oder durch das Kontextmenü mit Shift + Rechtsklick. Diese Funktion fügt Links zu vielen von ihnen hinzu oder vergrößert vorhandene, um das Klicken zu erleichtern.",
   "feature_desc_autoLikeChannels": "Automatisch alle Songs und Videos bestimmter Kanäle liken",
   "feature_helpText_autoLikeChannels": "Sobald eingeschaltet, kannst du diese Funktion für bestimmte Kanäle aktivieren, indem du ihre Kanalseite öffnest und den Knopf klickst. Danach wird jeder Song, den du von diesem Kanal spielst, automatisch geliked.\nBenutze die Option unten, um einen Dialog zu öffnen, um die Kanäle zu verwalten.",
   "feature_desc_autoLikeChannelToggleBtn": "Füge einen Knopf zu jeder Kanalseite hinzu, um Auto-Liken zu aktivieren oder deaktivieren",

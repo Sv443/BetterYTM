@@ -347,8 +347,6 @@
   "feature_desc_frameSkipWhilePlaying": "ビデオ / 曲を再生しているときに、フレーム単位で前後にスキップする",
   "feature_desc_frameSkipAmount": "\"ピリオド\"と\"カンマ\"キーで何秒スキップするか",
   "feature_helptext_frameSkipAmount": "この機能は YT でも利用可能で、約 0.0417 秒の固定値をスキップします。必要に応じて、ここで別の値を設定できます。",
-  "feature_desc_anchorImprovements": "リンクを追加してページ全体でリンクを開くことができるようにする",
-  "feature_helptext_anchorImprovements": "ページ上のいくつかの要素は左クリックのみでクリックできるため、中クリックやシフト + 右クリックを使用して新しいタブで開くことができません。この機能はそれらの要素にリンクを追加するか、既存のリンクを拡大してクリックしやすくします。",
   "feature_desc_autoLikeChannels": "特定のチャンネルのすべての曲とビデオを自動的に好きにする",
   "feature_helpText_autoLikeChannels": "一度有効にすると、そのチャンネルのページを開いてトグルボタンをクリックすることで、そのチャンネルのすべての曲を自動的に好きにすることができます。\nチャンネルを管理するダイアログを開くためのオプションを使用してください。",
   "feature_desc_autoLikeChannelToggleBtn": "各チャンネルページにトグルボタンを追加して、自動的に好きにするかどうかを切り替える",

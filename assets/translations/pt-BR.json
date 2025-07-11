@@ -299,8 +299,6 @@
   "feature_desc_frameSkipWhilePlaying": "Use as teclas de ponto e vírgula para pular para frente e para trás por um quadro quando o vídeo ou música estiver tocando",
   "feature_desc_frameSkipAmount": "Quantos segundos devem ser pulados com as teclas \"ponto\" e \"vírgula\"",
   "feature_helptext_frameSkipAmount": "Este recurso também está disponível no YT e pula um valor fixo de cerca de 0,0417 segundos. Se necessário, você pode definir outro valor aqui.",
-  "feature_desc_anchorImprovements": "Adicione e melhore os links em toda a página para que as coisas possam ser abertas em uma nova guia com mais facilidade",
-  "feature_helptext_anchorImprovements": "Alguns elementos na página só podem ser clicados com o botão esquerdo do mouse, o que significa que você não pode abri-los em uma nova guia clicando com o botão do meio ou através do menu de contexto usando shift + clique com o botão direito. Este recurso adiciona links a muitos deles ou os aumenta para facilitar o clique.",
   "feature_desc_autoLikeChannels": "Curtir automaticamente todas as músicas e vídeos de certos canais",
   "feature_helpText_autoLikeChannels": "Depois de ativado, você pode ativar esse recurso para determinados canais abrindo sua página e clicando no botão de alternância. Depois, qualquer música que você tocar desse canal será curtida automaticamente.\nUse a opção abaixo para abrir um diálogo para gerenciar os canais.",
   "feature_desc_autoLikeChannelToggleBtn": "Adicionar um botão a cada página do canal para ativar ou desativar o auto-curtir",

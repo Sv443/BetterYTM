@@ -347,8 +347,6 @@
   "feature_desc_frameSkipWhilePlaying": "Utilice las teclas de punto y coma para avanzar o retroceder un cuadro mientras el video o la canción se están reproduciendo.",
   "feature_desc_frameSkipAmount": "Cuántos segundos saltar al usar las teclas de punto y coma",
   "feature_helptext_frameSkipAmount": "Este ajuste también está disponible en YT y salta un valor fijo de aproximadamente 0.0417 segundos. Si es necesario, puede establecer otro valor aquí.",
-  "feature_desc_anchorImprovements": "Agregue e improvise enlaces en toda la página para que las cosas se puedan abrir en una nueva pestaña más fácilmente",
-  "feature_helptext_anchorImprovements": "Algunos elementos en la página solo se pueden hacer clic con el botón izquierdo del mouse, lo que significa que no se pueden abrir en una nueva pestaña haciendo clic con el botón central o mediante el menú contextual con shift + clic derecho. Esta función agrega enlaces a muchos de ellos o los agranda para facilitar el clic.",
   "feature_desc_autoLikeChannels": "Dar me gusta automáticamente a todas las canciones y videos de ciertos canales",
   "feature_helpText_autoLikeChannels": "Una vez habilitado, puede habilitar esta función para ciertos canales abriendo su página y haciendo clic en el botón de alternar. Después, cualquier canción que reproduzca de ese canal se dará me gusta automáticamente.\nUtilice la opción a continuación para abrir un diálogo para administrar los canales.",
   "feature_desc_autoLikeChannelToggleBtn": "Agregue un botón a cada página de canal para habilitar o deshabilitar el me gusta automático",

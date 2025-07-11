@@ -299,8 +299,6 @@
   "feature_desc_frameSkipWhilePlaying": "使用逗号和句号键在视频或歌曲播放时前进和后退",
   "feature_desc_frameSkipAmount": "在视频或歌曲暂停时使用逗号和句号键前进和后退",
   "feature_helptext_frameSkipAmount": "该功能也可在 YT 上使用，并跳过约 0.0417 秒的固定值。如果需要，您可以在此处设置不同的值。",
-  "feature_desc_anchorImprovements": "在页面上添加和改进链接，以便更容易在新标签页中打开",
-  "feature_helptext_anchorImprovements": "页面上的一些元素只能使用鼠标左键单击，这意味着您无法通过中键单击或使用 shift + 右键单击的上下文菜单在新标签页中打开它们。此功能添加了很多链接或扩大了现有的链接，以使单击更容易。",
   "feature_desc_autoLikeChannels": "自动喜欢某些频道的所有歌曲和视频",
   "feature_helpText_autoLikeChannels": "启用后，您可以通过打开其页面并单击切换按钮来为某些频道启用此功能。之后，您播放的该频道的任何歌曲都将自动喜欢。\n使用下面的选项打开对话框以管理频道。",
   "feature_desc_autoLikeChannelToggleBtn": "在每个频道页面上添加一个按钮，以启用或禁用自动喜欢",
