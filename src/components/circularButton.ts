@@ -1,4 +1,4 @@
-import { getResourceUrl, onInteraction } from "../utils/index.js";
+import { getResourceUrl, onInteraction, resourceAsString, setInnerHtml } from "../utils/index.js";
 import { createRipple } from "./ripple.js";
 import type { ResourceKey } from "../types.js";
 
@@ -57,13 +57,19 @@ export async function createCircularBtn({
   btnElem.tabIndex = 0;
   btnElem.role = "button";
 
-  const imgElem = document.createElement("img");
-  imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = "src" in rest
-    ? await rest.src
-    : await getResourceUrl(rest.resourceName);
+  if("src" in rest || ("resourceName" in rest && !rest.resourceName.startsWith("icon-"))) {
+    const imgElem = document.createElement("img");
+    imgElem.classList.add("bytm-generic-btn-img");
+    imgElem.src = "src" in rest
+      ? await rest.src
+      : await getResourceUrl(rest.resourceName);
 
-  btnElem.appendChild(imgElem);
+    btnElem.appendChild(imgElem);
+  }
+  else if("resourceName" in rest && rest.resourceName.startsWith("icon-")) {
+    setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
+    btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+  }
 
   return ripple ? createRipple(btnElem) : btnElem;
 }

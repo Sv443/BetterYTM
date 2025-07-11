@@ -2361,6 +2361,8 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 #bytm-above-queue-btn-wrapper {
+  /* ThemeSong icon color support */
+  --iron-icon-fill-color: var(--ts-secondary-icon-color, #fff);
   white-space: nowrap;
 }
 

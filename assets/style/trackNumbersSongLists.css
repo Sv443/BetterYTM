@@ -29,7 +29,7 @@ ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
   counter-increment: section;
   content: counter(section, decimal-leading-zero);
   font-size: 1.5em;
-  font-weight: bold;
+  font-weight: 500;
   color: #ededed;
   margin-right: var(
     --ytmusic-responsive-list-item-thumbnail-margin-right,
