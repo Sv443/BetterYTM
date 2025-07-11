@@ -715,6 +715,8 @@ export interface FeatureConfig {
   rememberSongTimeMinPlayTime: number;
   /** When to automatically scroll to the active song in the queue */
   autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
+  /** Whether to automatically click the "Yes" button on the "Are you still there?" popup */
+  yesImStillThere: boolean;
 
   //#region autoLike
   /** Whether to auto-like all played videos of configured channels */

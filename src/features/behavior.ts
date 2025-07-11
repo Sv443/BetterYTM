@@ -284,3 +284,36 @@ async function remTimeDeleteEntry(videoID: string) {
     .filter(entry => entry.id !== videoID);
   await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }
+
+//#region dismiss "are you still there"
+
+/** Initializes the "Are you still there?" popup dismissing feature */
+export async function initStillThere() {
+  addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
+    listener(youThereCont) {
+      const obs = new MutationObserver(() => {
+        if(!getFeature("yesImStillThere"))
+          return;
+
+        const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
+
+        if(!dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
+          return;
+
+        const btn = youThereCont.querySelector<HTMLButtonElement>(".actions button");
+
+        if(!btn)
+          return warn("Could not find the \"Yes\" button in the \"Are you still there?\" popup");
+
+        btn.click();
+        info("Automatically dismissed the \"Are you still here?\" dialog", LogLevel.Info);
+      });
+
+      obs.observe(youThereCont, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+      });
+    },
+  });
+}

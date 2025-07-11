@@ -182,6 +182,7 @@ export const migrations: DataMigrationsDict = {
         "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
         "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
         "songListTrackNumbersEnabled", "songListTrackNumbers",
+        "yesImStillThere",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },

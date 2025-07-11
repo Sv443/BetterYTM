@@ -27,7 +27,7 @@ import {
   // behavior category:
   initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
-  initAutoScrollToActiveSong,
+  initAutoScrollToActiveSong, initStillThere,
   // input category:
   initArrowKeySkip, initFrameSkip,
   addAnchorImprovements, initNumKeysSkip,
@@ -45,7 +45,7 @@ import {
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
 import resourcesJson from "../assets/resources.json" with { type: "json" };
-import type { FeatureKey, ResourceKey } from "./types.js";
+import { LogLevel, type FeatureKey, type ResourceKey } from "./types.js";
 
 //#region cns. watermark
 
@@ -221,7 +221,7 @@ async function onDomLoad() {
     error("Encountered error in feature pre-init:", err);
   }
 
-  log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
+  info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
 
   mountCfgMenu();
 
@@ -282,6 +282,8 @@ async function onDomLoad() {
         ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
       ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
+
+      ftInit.push(["yesImStillThere", initStillThere()]);
 
       //#region (ytm) input
 
@@ -389,10 +391,10 @@ async function onDomLoad() {
 
     initTimings.ready = Date.now() - initTimings.start;
     emitInterface("bytm:ready");
-    info(`Done initializing ${initializedFeats.length} / ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+    info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
 
     if(initializedFeats.length < ftInit.length) {
-      error(`Only ${initializedFeats.length} out of ${ftInit.length} features initialized within the limit of ${initTimeout}ms. Faulty features:${
+      error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${
         ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
       }`);
     }

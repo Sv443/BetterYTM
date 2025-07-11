@@ -839,6 +839,13 @@ export const featInfo = {
     enable: noop,
     textAdornment: adornments.ytmOnly,
   },
+  yesImStillThere: {
+    category: "behavior",
+    type: "toggle",
+    supportedSites: ["ytm"],
+    default: true,
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+  },
 
   //#region cat:autoLike
   autoLikeChannels: {
