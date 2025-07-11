@@ -38,17 +38,23 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
 
   const linkedPkgs = requireJson.filter((pkg) => typeof pkg.link === "string");
 
+  /** @type {import("@rollup/plugin-node-resolve").RollupNodeResolveOptions} */
+  const pluginNodeOptions = {
+    extensions: [".ts", ".mts", ".json"],
+  };
+
+  /** @type {import("@rollup/plugin-typescript").RollupTypescriptPluginOptions} */
+  const pluginTypeScriptOptions = {
+    typescript,
+    sourceMap: mode === "development",
+  };
+
   /** @type {import("rollup").RollupOptions} */
   const config = {
     input: "src/index.ts",
     plugins: [
-      pluginNodeResolve({
-        extensions: [".ts", ".mts", ".json"],
-      }),
-      pluginTypeScript({
-        typescript,
-        sourceMap: mode === "development",
-      }),
+      pluginNodeResolve(pluginNodeOptions),
+      pluginTypeScript(pluginTypeScriptOptions),
       pluginJson(),
       pluginCss({
         output: "BetterYTM.css",
@@ -58,11 +64,15 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
         ...(mode === "development" ? ["pnpm run --silent invisible \"pnpm run tr-progress\""] : []),
       ]),
     ],
+    treeshake: {
+      propertyReadSideEffects: false,
+      tryCatchDeoptimization: false,
+    },
     output: {
       file: `${outputDir}/${getOutputFileName(suffix)}`,
       format: "iife",
       sourcemap: mode === "development",
-      compact: mode === "development",
+      compact: true,
       globals: linkedPkgs.length > 0 ? Object.fromEntries(Object.entries(globalPkgs)) : globalPkgs,
     },
     onwarn(warning) {
