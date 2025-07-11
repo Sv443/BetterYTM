@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@63ee4cb8/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@59b6ee37/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -345,7 +345,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "63ee4cb8",
+    buildNumber: "59b6ee37",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -8505,6 +8505,9 @@ const globalFuncs = purifyObj({
     // lyrics:
     fetchLyricsUrlTop,
     getLyricsCacheEntry,
+    // TODO:
+    // getLyricsCache: getLyricsCacheInterface,
+    // saveLyricsCache: saveLyricsCacheInterface,
     sanitizeArtists,
     sanitizeSong,
     // auto-like:
@@ -8525,7 +8528,7 @@ const globalFuncs = purifyObj({
 /** Initializes the BYTM interface */
 function initInterface() {
     const props = Object.assign(Object.assign(Object.assign({ 
-        // meta / constants
+        // constants
         mode,
         branch,
         host,
@@ -8535,9 +8538,14 @@ function initInterface() {
         sessionStorageAvailable }, scriptInfo), globalFuncs), { 
         // classes
         NanoEmitter,
+        // dialogs legacy (TODO: remove in v4)
         BytmDialog,
         ExImDialog,
         MarkdownDialog,
+        // dialogs
+        getBytmDialog,
+        getExImDialog,
+        getMarkdownDialog,
         // libraries
         CoreUtils: CoreUtils__namespace,
         UserUtils: UserUtils__namespace,
@@ -8787,6 +8795,27 @@ function saveAutoLikeDataInterface(token, data) {
     if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteAutoLikeData))
         return;
     return autoLikeStore.setData(data);
+}
+/** Returns the BytmDialog class, used to create BetterYTM's absolutely stunning and iconic and sexy and cool modal dialogs. */
+function getBytmDialog(token) {
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+        return;
+    return BytmDialog;
+}
+/** Returns the ExImDialog class, used to create dialogs for importing and exporting serializable data. */
+function getExImDialog(token) {
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+        return;
+    return ExImDialog;
+}
+/** Returns the MarkdownDialog class, used to create dialogs with custom rendered markdown content. */
+function getMarkdownDialog(token) {
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+        return;
+    return MarkdownDialog;
 }
 //#region library hook
 /** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
@@ -9635,7 +9664,7 @@ async function renderBody(opts) {
 ─ Lots of ambition and dedication
 ─ My song metadata API: https://api.sv443.net/geniurl
 ─ My core utility library: https://github.com/Sv443-Network/CoreUtils
-─ My userscript utility library: https://github.com/Sv443-Network/UserUtils
+─ My DOM utility library: https://github.com/Sv443-Network/UserUtils
 ─ This library for semver comparison: https://github.com/omichelsen/compare-versions
 ─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify
 ─ This markdown parser library: https://github.com/markedjs/marked
@@ -9651,6 +9680,7 @@ Build #${buildNumber$1}${mode$1 === "development" ? " (dev mode)" : ""}
 }
 const initTimings = {
     start: 0,
+    durations: {},
 };
 function measureDuration(name) {
     const start = Date.now();
@@ -9840,7 +9870,7 @@ async function onDomLoad() {
         const initStartTs = Date.now();
         const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8000;
         const initializedFeats = [];
-        const endFeatInitDur = measureDuration("features");
+        const endFeatInitDur = measureDuration("featuresAllReady_decoupled");
         (() => Promise.race([
             UserUtils.pauseFor(initTimeout),
             Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
