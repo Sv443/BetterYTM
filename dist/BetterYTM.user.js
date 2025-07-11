@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@15819a67/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@63ee4cb8/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -345,7 +345,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "15819a67",
+    buildNumber: "63ee4cb8",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1286,7 +1286,7 @@ async function initSiteEvents() {
                     window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
             }
         }
-        window.addEventListener("bytm:ready", () => {
+        window.addEventListener("bytm:allReady", () => {
             runIntervalChecks();
             setInterval(runIntervalChecks, 100);
             if (getDomain() === "ytm") {
@@ -2928,25 +2928,32 @@ async function remTimeDeleteEntry(videoID) {
 //#region dismiss "are you still there"
 /** Initializes the "Are you still there?" popup dismissing feature */
 async function initStillThere() {
+    let firstRun = true;
     addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
         listener(youThereCont) {
-            const obs = new MutationObserver(() => {
-                if (!getFeature("yesImStillThere"))
-                    return;
-                const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
-                if (!dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
+            const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
+            if (!dialogCont)
+                return warn("Could not find the dialog container to dismiss the \"Are you still there?\" popup");
+            const check = () => {
+                if (!getFeature("yesImStillThere") || !dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
                     return;
                 const btn = youThereCont.querySelector(".actions button");
                 if (!btn)
-                    return warn("Could not find the \"Yes\" button in the \"Are you still there?\" popup");
+                    return warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
                 btn.click();
                 info("Automatically dismissed the \"Are you still here?\" dialog", LogLevel.Info);
-            });
-            obs.observe(youThereCont, {
+            };
+            if (firstRun) {
+                firstRun = false;
+                check();
+            }
+            const obs = new MutationObserver(check);
+            obs.observe(dialogCont, {
                 childList: true,
                 subtree: true,
                 attributes: true,
             });
+            getFeature("yesImStillThere") && log("Initialized automatic dismissal of the \"Are you still there?\" popup");
         },
     });
 }//#region misc
@@ -8372,7 +8379,7 @@ async function initConfig() {
             denyBtnText: t("prompt_close"),
             denyBtnTooltip: t("click_to_close_tooltip"),
         }))
-            window.addEventListener("bytm:ready", () => openCfgMenu(), { once: true });
+            window.addEventListener("bytm:allReady", () => openCfgMenu(), { once: true });
     }
     log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
     if (isNaN(oldFmtVer))
@@ -8603,6 +8610,9 @@ function registerPlugin(def) {
         emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def));
         window.addEventListener("bytm:ready", () => {
             emitOnPlugins("bytmReady");
+        });
+        window.addEventListener("bytm:allReady", () => {
+            emitOnPlugins("bytmAllReady");
         });
         return {
             info: getPluginInfo(token, def),
@@ -9831,8 +9841,7 @@ async function onDomLoad() {
         const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8000;
         const initializedFeats = [];
         const endFeatInitDur = measureDuration("features");
-        // wait for feature init or timeout (in case an init function is hung up on a promise)
-        await Promise.race([
+        (() => Promise.race([
             UserUtils.pauseFor(initTimeout),
             Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
                 var _a;
@@ -9842,18 +9851,21 @@ async function onDomLoad() {
                 emitInterface("bytm:featureInitialized", name);
                 res(v);
             }))),
-        ]);
-        endFeatInitDur();
+        ]).then(() => {
+            endFeatInitDur();
+            emitInterface("bytm:allReady");
+            if (initializedFeats.length < ftInit.length) {
+                error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
+            }
+            else
+                info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+        }))();
         // ensure site adjusts itself to new CSS files
         UserUtils.getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
         // preload icons
         preloadResources();
         initTimings.ready = Date.now() - initTimings.start;
         emitInterface("bytm:ready");
-        info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
-        if (initializedFeats.length < ftInit.length) {
-            error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
-        }
         try {
             registerDevCommands();
         }
