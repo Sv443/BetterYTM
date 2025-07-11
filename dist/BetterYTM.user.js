@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0c19efd1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a7837618/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -345,7 +345,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "0c19efd1",
+    buildNumber: "a7837618",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1219,7 +1219,7 @@ async function initSiteEvents() {
             const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
                     info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    forceEmitSiteEvent("queueChanged", target);
+                    emitSiteEvent("queueChanged", target);
                 }
             });
             // only observe added or removed elements
@@ -1233,7 +1233,7 @@ async function initSiteEvents() {
             const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
                     info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    forceEmitSiteEvent("autoplayQueueChanged", target);
+                    emitSiteEvent("autoplayQueueChanged", target);
                 }
             });
             addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
@@ -1997,6 +1997,7 @@ class ExImDialog extends BytmDialog {
  * Provide either `resourceName` or `src` to specify the icon inside the button.
  */
 async function createCircularBtn(_a) {
+    var _b;
     var { title, ripple = true } = _a, rest = __rest(_a, ["title", "ripple"]);
     let btnElem;
     if ("href" in rest && rest.href) {
@@ -2016,12 +2017,18 @@ async function createCircularBtn(_a) {
     btnElem.ariaLabel = btnElem.title = title;
     btnElem.tabIndex = 0;
     btnElem.role = "button";
-    const imgElem = document.createElement("img");
-    imgElem.classList.add("bytm-generic-btn-img");
-    imgElem.src = "src" in rest
-        ? await rest.src
-        : await getResourceUrl(rest.resourceName);
-    btnElem.appendChild(imgElem);
+    if ("src" in rest || ("resourceName" in rest && !rest.resourceName.startsWith("icon-"))) {
+        const imgElem = document.createElement("img");
+        imgElem.classList.add("bytm-generic-btn-img");
+        imgElem.src = "src" in rest
+            ? await rest.src
+            : await getResourceUrl(rest.resourceName);
+        btnElem.appendChild(imgElem);
+    }
+    else if ("resourceName" in rest && rest.resourceName.startsWith("icon-")) {
+        setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
+        (_b = btnElem.querySelector("svg")) === null || _b === void 0 ? void 0 : _b.classList.add("bytm-generic-btn-img");
+    }
     return ripple ? createRipple(btnElem) : btnElem;
 }let autoLikeDialog = null;
 let autoLikeExImDialog = null;
@@ -2749,8 +2756,10 @@ async function initAutoCloseToasts() {
                     toastElem.addEventListener("transitionend", () => {
                         toastElem.classList.remove("bytm-closing");
                         toastElem.style.display = "none";
-                        clearNode(toastElem);
-                        log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+                        if (toastElem.parentNode) {
+                            clearNode(toastElem);
+                            log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+                        }
                     }, { once: true });
                 }
             }
@@ -2930,8 +2939,10 @@ async function remTimeDeleteEntry(videoID) {
     await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
 }
 //#region dismiss "are you still there"
+let curSongTitle;
 /** Initializes the "Are you still there?" popup dismissing feature */
 async function initStillThere() {
+    siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
     let firstRun = true;
     addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
         listener(youThereCont) {
@@ -2945,7 +2956,7 @@ async function initStillThere() {
                 if (!btn)
                     return warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
                 btn.click();
-                info("Automatically dismissed the \"Are you still here?\" dialog", LogLevel.Info);
+                info("Automatically dismissed the \"Are you still here?\" dialog on the song", curSongTitle, LogLevel.Info);
             };
             if (firstRun) {
                 firstRun = false;
@@ -4228,7 +4239,7 @@ async function mountCfgMenu() {
         /** For copying plain when shift-clicking the copy button or when compression is not supported */
         const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
         const exImDlg = new ExImDialog({
-            id: "bytm-config-export-import",
+            id: "config-export-import",
             width: 800,
             height: 600,
             // try to compress the data if possible
