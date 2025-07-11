@@ -64,8 +64,10 @@ export async function initAutoCloseToasts() {
             toastElem.classList.remove("bytm-closing");
             toastElem.style.display = "none";
 
-            clearNode(toastElem);
-            log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+            if(toastElem.parentNode) {
+              clearNode(toastElem);
+              log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+            }
           }, { once: true });
         }
       }
@@ -287,8 +289,12 @@ async function remTimeDeleteEntry(videoID: string) {
 
 //#region dismiss "are you still there"
 
+let curSongTitle: string | undefined;
+
 /** Initializes the "Are you still there?" popup dismissing feature */
 export async function initStillThere() {
+  siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
+
   let firstRun = true;
   addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
     listener(youThereCont) {
@@ -307,7 +313,7 @@ export async function initStillThere() {
           return warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
 
         btn.click();
-        info("Automatically dismissed the \"Are you still here?\" dialog", LogLevel.Info);
+        info("Automatically dismissed the \"Are you still here?\" dialog on the song", curSongTitle, LogLevel.Info);
       };
 
       if(firstRun) {
