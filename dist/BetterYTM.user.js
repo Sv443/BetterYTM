@@ -8,7 +8,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@59b6ee37/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0c19efd1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -345,7 +345,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "59b6ee37",
+    buildNumber: "0c19efd1",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2650,6 +2650,10 @@ function error(...args) {
     console.error(consPrefix, ...args);
     getFeature("showToastOnGenericError") && showErrToast((_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error"), ...args);
 }
+/** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
+function errorNoToast(...args) {
+    console.error(consPrefix, ...args);
+}
 /** Logs all passed values to the console with a debug-specific prefix */
 function dbg(...args) {
     console.log(consPrefixDbg, ...args);
@@ -4814,7 +4818,6 @@ async function mountCfgMenu() {
                     fundingLink: packageJson.funding.url,
                     discordLink: "https://dc.sv443.net/",
                 });
-                log("About text params:", aboutTrParams);
                 setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
                 return [aboutTextCont];
             },
@@ -5500,74 +5503,76 @@ async function fixSpacing() {
 }
 //#region ab.queue btns
 async function initAboveQueueBtns() {
-    const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
-    if (!await addStyleFromResource("css-above_queue_btns"))
-        error("Couldn't add CSS for above queue buttons");
-    else if (getFeature("aboveQueueBtnsSticky"))
-        addStyleFromResource("css-above_queue_btns_sticky");
-    const contBtns = [
-        {
-            condition: scrollToActiveSongBtn,
-            id: "scroll-to-active",
-            resourceName: "icon-skip_to",
-            titleKey: "scroll_to_playing",
-            interaction: async (evt) => scrollToCurrentSongInQueue(evt),
-        },
-        {
-            condition: clearQueueBtn,
-            id: "clear-queue",
-            resourceName: "icon-clear_list",
-            titleKey: "clear_list",
-            async interaction(evt) {
-                try {
-                    if (evt.shiftKey || await showPrompt({ type: "confirm", message: t("clear_list_confirm") })) {
-                        const url = new URL(location.href);
-                        url.searchParams.delete("list");
-                        url.searchParams.set("time_continue", String(await getVideoTime(0)));
-                        location.assign(url);
+    setTimeout(async () => {
+        const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
+        if (!await addStyleFromResource("css-above_queue_btns"))
+            error("Couldn't add CSS for above queue buttons");
+        else if (getFeature("aboveQueueBtnsSticky"))
+            addStyleFromResource("css-above_queue_btns_sticky");
+        const contBtns = [
+            {
+                condition: scrollToActiveSongBtn,
+                id: "scroll-to-active",
+                resourceName: "icon-skip_to",
+                titleKey: "scroll_to_playing",
+                interaction: async (evt) => scrollToCurrentSongInQueue(evt),
+            },
+            {
+                condition: clearQueueBtn,
+                id: "clear-queue",
+                resourceName: "icon-clear_list",
+                titleKey: "clear_list",
+                async interaction(evt) {
+                    try {
+                        if (evt.shiftKey || await showPrompt({ type: "confirm", message: t("clear_list_confirm") })) {
+                            const url = new URL(location.href);
+                            url.searchParams.delete("list");
+                            url.searchParams.set("time_continue", String(await getVideoTime(0)));
+                            location.assign(url);
+                        }
                     }
+                    catch (err) {
+                        error("Couldn't clear queue due to an error:", err);
+                    }
+                },
+            },
+        ];
+        if (!contBtns.some(b => Boolean(b.condition)))
+            return;
+        addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
+            async listener(rightBtnsEl) {
+                try {
+                    const aboveQueueBtnCont = document.createElement("div");
+                    aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
+                    UserUtils.addParent(rightBtnsEl, aboveQueueBtnCont);
+                    const headerEl = rightBtnsEl.closest("ytmusic-queue-header-renderer");
+                    if (!headerEl)
+                        return error("Couldn't find queue header element while adding above queue buttons");
+                    siteEvents.on("fullscreenToggled", (isFullscreen) => {
+                        headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
+                    });
+                    const wrapperElem = document.createElement("div");
+                    wrapperElem.id = "bytm-above-queue-btn-wrapper";
+                    for (const item of contBtns) {
+                        if (Boolean(item.condition) === false)
+                            continue;
+                        const btnElem = await createCircularBtn({
+                            resourceName: item.resourceName,
+                            onClick: item.interaction,
+                            title: t(item.titleKey),
+                        });
+                        btnElem.id = `bytm-${item.id}-btn`;
+                        btnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-above-queue-btn");
+                        wrapperElem.appendChild(btnElem);
+                    }
+                    rightBtnsEl.insertAdjacentElement("beforebegin", wrapperElem);
                 }
                 catch (err) {
-                    error("Couldn't clear queue due to an error:", err);
+                    error("Couldn't add above queue buttons due to an error:", err);
                 }
             },
-        },
-    ];
-    if (!contBtns.some(b => Boolean(b.condition)))
-        return;
-    addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
-        async listener(rightBtnsEl) {
-            try {
-                const aboveQueueBtnCont = document.createElement("div");
-                aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
-                UserUtils.addParent(rightBtnsEl, aboveQueueBtnCont);
-                const headerEl = rightBtnsEl.closest("ytmusic-queue-header-renderer");
-                if (!headerEl)
-                    return error("Couldn't find queue header element while adding above queue buttons");
-                siteEvents.on("fullscreenToggled", (isFullscreen) => {
-                    headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
-                });
-                const wrapperElem = document.createElement("div");
-                wrapperElem.id = "bytm-above-queue-btn-wrapper";
-                for (const item of contBtns) {
-                    if (Boolean(item.condition) === false)
-                        continue;
-                    const btnElem = await createCircularBtn({
-                        resourceName: item.resourceName,
-                        onClick: item.interaction,
-                        title: t(item.titleKey),
-                    });
-                    btnElem.id = `bytm-${item.id}-btn`;
-                    btnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-above-queue-btn");
-                    wrapperElem.appendChild(btnElem);
-                }
-                rightBtnsEl.insertAdjacentElement("beforebegin", wrapperElem);
-            }
-            catch (err) {
-                error("Couldn't add above queue buttons due to an error:", err);
-            }
-        },
-    });
+        });
+    }, 1);
 }
 const albumArtCacheStore = new UserUtils.DataStore({
     id: "album-art-cache",
@@ -9885,7 +9890,7 @@ async function onDomLoad() {
             endFeatInitDur();
             emitInterface("bytm:allReady");
             if (initializedFeats.length < ftInit.length) {
-                error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
+                errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
             }
             else
                 info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
