@@ -12,6 +12,7 @@ import type { isIgnoredInputElement } from "./features/input.js";
 import type { showPrompt } from "./dialogs/prompt.js";
 import type { BytmDialog } from "./components/BytmDialog.js";
 import type { ExImDialog } from "./components/ExImDialog.js";
+import type { MarkdownDialog } from "./components/MarkdownDialog.js";
 import type { createHotkeyInput } from "./components/hotkeyInput.js";
 import type { createToggleInput } from "./components/toggleInput.js";
 import type { createCircularBtn } from "./components/circularButton.js";
@@ -170,11 +171,26 @@ export type BytmObject =
   & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "initialParams" | "compressionFormat" | "sessionStorageAvailable" | "scriptInfo">
   // global functions exposed through the interface in `src/interface.ts`
   & InterfaceFunctions
-  // others
+  // classes
   & {
-    NanoEmitter: NanoEmitter;
-    BytmDialog: BytmDialog;
-    ExImDialog: ExImDialog;
+    // utility
+    NanoEmitter: typeof NanoEmitter;
+
+    // dialogs legacy (TODO: remove in v4)
+    /** @deprecated Please use the authenticated function {@linkcode getBytmDialog} instead. Direct access will only work until BYTM v4.0.0 */
+    BytmDialog: typeof BytmDialog,
+    /** @deprecated Please use the authenticated function {@linkcode getExImDialog} instead. Direct access will only work until BYTM v4.0.0 */
+    ExImDialog: typeof ExImDialog,
+    /** @deprecated Please use the authenticated function {@linkcode getMarkdownDialog} instead. Direct access will only work until BYTM v4.0.0 */
+    MarkdownDialog: typeof MarkdownDialog,
+
+    // dialogs
+    getBytmDialog: () => typeof BytmDialog;
+    getExImDialog: () => typeof ExImDialog;
+    getMarkdownDialog: () => typeof MarkdownDialog;
+  }
+  // libraries
+  & {
     // the entire CoreUtils library
     CoreUtils: typeof import("@sv443-network/coreutils");
     // the entire UserUtils library

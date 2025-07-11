@@ -31,34 +31,51 @@
 
 <details><summary>Click to expand plugin and internal changes</summary>
 
-- **Plugin Changes:**
-  - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md) for full documentation
-  - **BREAKING:** Plugins will no longer be able to call authenticated functions without the required intents.  
-    Intents are now required to be set in the plugin definition object, though for now they will still all be granted and don't need to be explicitly allowed by the user once after installing yet.  
-    These are the intents that are now required for the respective functions:
-    - `setLocale()` - `WriteTranslations`
-    - `getFeatures()` - `ReadFeatureConfig`
-    - `saveFeatures()` - `WriteFeatureConfig`
-    - `getAutoLikeData()` - `ReadAutoLikeData`
-    - `saveAutoLikeData()` - `WriteAutoLikeData`
-    - `getLibraryHook()` - `InternalAccess`
-  - The `PluginDef` object's `intents` property can now be either an array of `PluginIntent` values or a single number that is the bitwise OR of the intents.
-  - Added function 🔒 `getLibraryHook()` (requires intent `InternalAccess`), that returns some internal function and object references that can be used by core libraries and deeper reaching plugins.
-  - Added new intents `InternalAccess` (currently only used by `getLibraryHook()`) and `FullAccess` (grants all other intents).
-  - Added new functions to the interface that allow for better interaction with the siteEvents system:
-    - `onSiteEvent()` - Adds a site event listener.
-    - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
-    - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.
-  - Added new events:
-    - `bytm:allReady` (no arguments) - emitted when all features have been initialized and the interface is fully ready to use.  
-      This triggers much later than `bytm:ready`, which is emitted when the DOM is loaded and all features are *starting* to initialize.  
-      For the fastest response times, use `bytm:featureInitialized` for every feature your code depends on.
-    - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
-    - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
-    - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
-    - `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
-  - Auth tokens are now in the format of a UUIDv4 instead of a 16-character, 36-radix string.
-  - Added SelectorObserver instance `searchPage`, as the root observer for the YTM search page.
+- **Plugin Changes:**  
+  *(also refer to [version 3.1.0's API docs](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md))*
+  - **Migration guide:**
+    - ⚠️ **BREAKING:** Since BYTM now *requires* plugin intents to be set, make sure to add all intents required by the authenticated functions your plugin calls to the `PluginDef` object's `intents` property (which can now also be an array instead of just a bitwise-or'ed number). Read below for a list of functions and their required intents.
+    - If you use the `BytmDialog`, `ExImDialog` or `MarkdownDialog` classes directly, switch to the new authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()`. Direct access will continue to work until version 4.0.0, but to future-proof your plugin, switch to the new functions as soon as possible.
+    - If you were using `bytm:ready` to reliably wait until *all* features are initialized, switch to `bytm:allReady` instead.  
+      The `bytm:ready` event is still emitted, but it is now only guaranteed to be emitted when the DOM is loaded and all features have *started* to initialize.
+    - All `NanoEmitter` subclasses and the interface-exposed `NanoEmitter` class reference now use [`@sv443-network/coreutils`' new `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter), which grants you access to the powerful `onMulti()` method to listen to multiple events at once, with configurable behavior.
+    - The `intents` prop can now be an array of `PluginIntent` enum members.
+  - **API Changes:**
+    - ⚠️ **BREAKING:** Plugins will no longer be able to call authenticated functions without the required intents.  
+      Intents are now required to be set in the plugin definition object, though for now they will still all be granted and don't need to be explicitly allowed by the user once after installing yet.  
+      These are the intents that are now required for the respective functions:
+      - `getFeatures()` - `ReadFeatureConfig` (1) and optionally `SeeHiddenConfigValues` (4)
+      - `saveFeatures()` - `WriteFeatureConfig` (2)
+      - `setLocale()` - `WriteTranslations` (16)
+      - `getBytmDialog()` - `CreateModalDialogs` (32)
+      - `getExImDialog()` - `CreateModalDialogs` (32)
+      - `getMarkdownDialog()` - `CreateModalDialogs` (32)
+      - `getAutoLikeData()` - `ReadAutoLikeData` (64)
+      - `saveAutoLikeData()` - `WriteAutoLikeData` (128)
+      - `getLibraryHook()` - `InternalAccess` (256)
+    - The dialog classes `BytmDialog`, `ExImDialog` and `MarkdownDialog` should now be gotten using the new authenticated `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()` functions, respectively.  
+    Using the direct access will work until version 4.0.0, but it is recommended you switch to the new functions as soon as possible.
+    - The `PluginDef` object's `intents` property can now be either an array of `PluginIntent` values or a single number that is the bitwise OR of the intents.
+    - Auth tokens are now in the format of a UUIDv4 instead of a 16-character, 36-radix string.
+  - **API Additions:**
+    - Added new intents `InternalAccess` (256) (currently only used by `getLibraryHook()`) and `FullAccess` (512) (grants all intents).
+    - Added new functions to the interface that allow for better interaction with the siteEvents system:
+      - `onSiteEvent()` - Adds a site event listener.
+      - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
+      - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.
+      - 🔒 `getBytmDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `BytmDialog` class, which can be used to create new generic dialog instances.
+      - 🔒 `getExImDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `ExImDialog` class, to export and import serializable data.
+      - 🔒 `getMarkdownDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `MarkdownDialog` class, to render a markdown string in a modal dialog.
+      - 🔒 `getLibraryHook()` (requires intent `InternalAccess` (256)) - returns some internal function and object references that can be used by core libraries and deeper reaching plugins.
+    - Added new events:
+      - `bytm:allReady` (no arguments) - emitted when all features have been initialized and the interface is fully ready to use.  
+        This triggers much later than `bytm:ready`, which is emitted when the DOM is loaded and all features are *starting* to initialize.  
+        For the fastest response times, use `bytm:featureInitialized` for every feature your code depends on.
+      - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
+      - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
+      - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
+      - `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
+    - Added SelectorObserver instance `searchPage`, as the root observer for the YTM search page.
 - **Internal Changes:**
   - Added [`@sv443-network/coreutils`](https://github.com/Sv443-Network/CoreUtils) as a new core library, accessible on the BYTM API via `BYTM.CoreUtils`.
   - Made `siteEvents` system use CoreUtils' improved `NanoEmitter`, so it can now also be used to listen to multiple events using `.onMulti()`.

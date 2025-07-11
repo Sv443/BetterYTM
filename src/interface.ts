@@ -168,6 +168,9 @@ const globalFuncs: InterfaceFunctions = purifyObj({
   // lyrics:
   fetchLyricsUrlTop,
   getLyricsCacheEntry,
+  // TODO:
+  // getLyricsCache: getLyricsCacheInterface,
+  // saveLyricsCache: saveLyricsCacheInterface,
   sanitizeArtists,
   sanitizeSong,
 
@@ -192,7 +195,7 @@ const globalFuncs: InterfaceFunctions = purifyObj({
 /** Initializes the BYTM interface */
 export function initInterface() {
   const props = {
-    // meta / constants
+    // constants
     mode,
     branch,
     host,
@@ -200,14 +203,26 @@ export function initInterface() {
     initialParams,
     compressionFormat,
     sessionStorageAvailable,
+
+    // meta
     ...scriptInfo,
+
     // functions
     ...globalFuncs,
+
     // classes
     NanoEmitter,
+
+    // dialogs legacy (TODO: remove in v4)
     BytmDialog,
     ExImDialog,
     MarkdownDialog,
+
+    // dialogs
+    getBytmDialog,
+    getExImDialog,
+    getMarkdownDialog,
+
     // libraries
     CoreUtils,
     UserUtils,
@@ -574,6 +589,30 @@ export function saveAutoLikeDataInterface(token: string | undefined, data: AutoL
   if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.WriteAutoLikeData))
     return;
   return autoLikeStore.setData(data);
+}
+
+/** Returns the BytmDialog class, used to create BetterYTM's absolutely stunning and iconic and sexy and cool modal dialogs. */
+export function getBytmDialog(token: string | undefined) {
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+    return;
+  return BytmDialog;
+}
+
+/** Returns the ExImDialog class, used to create dialogs for importing and exporting serializable data. */
+export function getExImDialog(token: string | undefined) {
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+    return;
+  return ExImDialog;
+}
+
+/** Returns the MarkdownDialog class, used to create dialogs with custom rendered markdown content. */
+export function getMarkdownDialog(token: string | undefined) {
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+    return;
+  return MarkdownDialog;
 }
 
 //#region library hook

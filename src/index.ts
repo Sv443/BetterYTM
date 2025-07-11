@@ -63,7 +63,7 @@ import { LogLevel, type FeatureKey, type ResourceKey } from "./types.js";
 ─ Lots of ambition and dedication
 ─ My song metadata API: https://api.sv443.net/geniurl
 ─ My core utility library: https://github.com/Sv443-Network/CoreUtils
-─ My userscript utility library: https://github.com/Sv443-Network/UserUtils
+─ My DOM utility library: https://github.com/Sv443-Network/UserUtils
 ─ This library for semver comparison: https://github.com/omichelsen/compare-versions
 ─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify
 ─ This markdown parser library: https://github.com/markedjs/marked
@@ -101,6 +101,7 @@ type InitTimings = {
 
 const initTimings: InitTimings = {
   start: 0,
+  durations: {} as InitTimings["durations"],
 };
 
 function measureDuration(name: LooseUnion<keyof InitTimings & FeatureKey>): () => void {
@@ -360,7 +361,7 @@ async function onDomLoad() {
     const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000;
     const initializedFeats: string[] = [];
 
-    const endFeatInitDur = measureDuration("features");
+    const endFeatInitDur = measureDuration("featuresAllReady_decoupled");
 
     (() =>
       Promise.race([
