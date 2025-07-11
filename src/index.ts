@@ -1,5 +1,5 @@
 import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, errorNoToast, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -384,7 +384,7 @@ async function onDomLoad() {
         endFeatInitDur();
         emitInterface("bytm:allReady");
         if(initializedFeats.length < ftInit.length) {
-          error(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These are the faulty ones:${
+          errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${
             ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
           }`);
         }

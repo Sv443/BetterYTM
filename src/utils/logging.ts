@@ -79,6 +79,11 @@ export function error(...args: unknown[]): void {
   getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
 }
 
+/** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
+export function errorNoToast(...args: unknown[]): void {
+  console.error(consPrefix, ...args);
+}
+
 /** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {
   console.log(consPrefixDbg, ...args);

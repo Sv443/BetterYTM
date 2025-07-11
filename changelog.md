@@ -13,7 +13,8 @@
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - 🎵 Show a track number in the currently playing queue and playlists.
 - **Changes and improvements:**
-  - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix massive inconsistencies.
+  - Improved script initialization performance.
+  - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix inconsistencies.
     - Fixed album artwork being fetched with wrong parameters.
     - Allow manually toggling between thumbnail providers.
     - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
@@ -80,6 +81,7 @@
   - Added [`@sv443-network/coreutils`](https://github.com/Sv443-Network/CoreUtils) as a new core library, accessible on the BYTM API via `BYTM.CoreUtils`.
   - Made `siteEvents` system use CoreUtils' improved `NanoEmitter`, so it can now also be used to listen to multiple events using `.onMulti()`.
   - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
+  - Improved script performance by refactoring the feature initialization process. As an effect of this, `bytm:ready` will now emit earlier and the new event `bytm:allReady` will emit much later, once all features have been initialized or the configured timeout has been reached.
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - Moved the `general` feature category to the top of the config menu.

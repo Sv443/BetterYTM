@@ -945,7 +945,6 @@ export async function mountCfgMenu() {
           fundingLink: pkg.funding.url,
           discordLink: "https://dc.sv443.net/",
         });
-        log("About text params:", aboutTrParams);
         setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
         return [aboutTextCont] as HTMLElement[];
       },
