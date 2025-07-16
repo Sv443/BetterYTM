@@ -7,7 +7,7 @@
       "Sv443"
     ],
     "antifeatures": {
-      "tracking": "Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren."
+      "tracking": "Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren."
     }
   },
   "config_menu_option": "%1 Einstellungen",

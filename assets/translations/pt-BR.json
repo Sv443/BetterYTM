@@ -7,7 +7,7 @@
       "Sv443"
     ],
     "antifeatures": {
-      "tracking": "Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve."
+      "tracking": "Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações."
     }
   },
   "config_menu_option": "Configuração do %1",
