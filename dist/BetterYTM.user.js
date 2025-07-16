@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c40a5834/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3a61bc57/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -54,15 +54,15 @@
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
 // @noframes
-// @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to.
-// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren.
-// @antifeature:en-US tracking Some of the services used will temporarily log your IP address and the songs you listen to.
-// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas.
-// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez.
-// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी।
-// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと再生する曲を一時的に記録します。
-// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve.
-// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。
+// @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:en-US tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
+// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
 // @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
 // @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
 // @grant             GM.getValue
@@ -354,7 +354,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "c40a5834",
+    buildNumber: "3a61bc57",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
