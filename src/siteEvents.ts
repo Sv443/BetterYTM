@@ -104,7 +104,7 @@ let lastPathname: string | null = null;
 let lastFullscreen: boolean;
 
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
-export async function initSiteEvents() {
+export function initSiteEvents() {
   try {
     if(getDomain() === "ytm") {
       //#region queue
@@ -175,23 +175,22 @@ export async function initSiteEvents() {
         }
       });
 
-      if(getDomain() === "ytm") {
-        const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
-          listener: (el) => {
-            playerFullscreenObs.observe(el, {
-              attributeFilter: ["player-ui-state"],
-            });
-          },
-        });
+      const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
+        listener: (el) => {
+          playerFullscreenObs.observe(el, {
+            attributeFilter: ["player-ui-state"],
+          });
+        },
+      });
 
-        if(globserversReady)
-          registerFullScreenObs();
-        else
-          window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
-      }
+      if(globserversReady)
+        registerFullScreenObs();
+      else
+        window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
     }
 
-    window.addEventListener("bytm:allReady", () => {
+    // TODO: investigate whether to use ready or allReady
+    window.addEventListener("bytm:ready", () => {
       runIntervalChecks();
       setInterval(runIntervalChecks, 100);
 

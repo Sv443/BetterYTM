@@ -222,6 +222,8 @@ async function onDomLoad() {
     error("Encountered error in feature pre-init:", err);
   }
 
+  initSiteEvents();
+
   info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
 
   mountCfgMenu();
@@ -333,10 +335,6 @@ async function onDomLoad() {
     }
 
     if(["ytm", "yt"].includes(domain)) {
-      //#region general
-
-      ftInit.push(["initSiteEvents", initSiteEvents()]);
-
       //#region (ytm+yt) layout
 
       if(feats.removeShareTrackingParamSites)
@@ -393,7 +391,7 @@ async function onDomLoad() {
       })
     )();
 
-    // ensure site adjusts itself to new CSS files
+    // ensure site adjusts itself to new global CSS
     getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
 
     // preload icons
