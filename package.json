@@ -4,6 +4,7 @@
   "version": "3.0.0",
   "description": "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
   "homepage": "https://github.com/Sv443/BetterYTM",
+  "namespace": "https://github.com/Sv443/BetterYTM",
   "main": "./src/index.ts",
   "type": "module",
   "scripts": {

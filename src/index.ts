@@ -4,7 +4,7 @@ import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { initSiteEvents } from "./siteEvents.js";
-import { emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
+import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
 import { downloadData, getStoreSerializer } from "./serializer.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
@@ -672,6 +672,13 @@ function registerDevCommands() {
     if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
       await reloadTab();
   });
+
+  GM.registerMenuCommand("Get developer plugin token", () =>
+    showPrompt({
+      type: "alert",
+      message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+    })
+  );
 
   log("Registered dev menu commands");
 }

@@ -216,7 +216,7 @@ async function getHeaders(buildNbr: string) {
   const header = `\
 // ==UserScript==
 // @name              ${pkg.userscriptName}
-// @namespace         ${pkg.homepage}
+// @namespace         ${pkg.namespace}
 // @version           ${pkg.version}
 // @homepageURL       ${pkg.homepage}#readme
 // @supportURL        ${pkg.bugs.url}

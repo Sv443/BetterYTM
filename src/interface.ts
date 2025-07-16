@@ -6,7 +6,7 @@ import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVide
 import { addSelectorListener } from "./observers.js";
 import { defaultData, getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
-import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMap } from "./siteEvents.js";
+import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "./siteEvents.js";
 import { PluginIntent, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { BytmDialog } from "./components/BytmDialog.js";
@@ -17,6 +17,7 @@ import { createRipple } from "./components/ripple.js";
 import { showIconToast, showToast } from "./components/toast.js";
 import { ExImDialog } from "./components/ExImDialog.js";
 import { MarkdownDialog } from "./components/MarkdownDialog.js";
+import pkgJson from "../package.json" with { type: "json" };
 
 const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
 const { NanoEmitter } = CoreUtils;
@@ -257,11 +258,11 @@ export function emitInterface<
   TEvt extends keyof InterfaceEvents,
   TDetail extends InterfaceEvents[TEvt],
 >(
-  type: TEvt | `bytm:siteEvent:${keyof SiteEventsMap}`,
+  type: TEvt | keyof SiteEventsMapPrefixed,
   ...detail: (TDetail extends undefined ? [undefined?] : [TDetail])
 ) {
   try {
-    getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
+    unsafeWindow.dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
     //@ts-expect-error
     emitOnPlugins(type, undefined, ...detail);
     log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
@@ -283,17 +284,22 @@ let pluginsInitialized = false;
 
 /** Pre-init for eager plugins that need to be initialized as soon as physically possible */
 export function preInitPlugins() {
-  emitInterface("bytm:preInitPlugin", (def: PluginDef) => registerPlugin(def));
+  emitInterface("bytm:preInitPlugin", registerPlugin);
 }
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
-  emitInterface("bytm:registerPlugin", (def: PluginDef) => registerPlugin(def));
+  emitInterface("bytm:registerPlugin", registerPlugin);
+
+  if(mode === "development")
+    registerDevPlugin();
 
   window.addEventListener("bytm:ready", () => {
     pluginsInitialized = true;
     if(registeredPlugins.size > 0)
       log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+    else
+      log("No plugins registered");
   }, { once: true });
 }
 
@@ -324,7 +330,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
 
     info(`Successfully registered plugin '${plKey}'`);
 
-    emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
+    setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
 
     window.addEventListener("bytm:ready", () => {
       emitOnPlugins("bytmReady");
@@ -344,6 +350,36 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     throw err;
   }
 };
+
+/** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
+export let devPluginToken: string | undefined;
+
+/** Registers a plugin that only exists in development mode to test the plugin system */
+function registerDevPlugin() {
+  try {
+    const { token } = registerPlugin({
+      plugin: {
+        name: "BetterYTM Dev Plugin",
+        namespace: pkgJson.namespace,
+        version: pkgJson.version,
+        description: {
+          "en-US": "Internal plugin that only exists in development mode to test the plugin system.",
+        },
+        homepage: {
+          source: pkgJson.homepage,
+          bug: pkgJson.bugs.url,
+        },
+        iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
+      },
+      intents: PluginIntent.FullAccess,
+    });
+
+    devPluginToken = token;
+  }
+  catch(err) {
+    error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
+  }
+}
 
 /** Returns the registered plugins as an array of tuples with the items `[id: string, item: PluginItem]` */
 export function getRegisteredPlugins() {
