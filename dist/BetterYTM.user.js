@@ -2,16 +2,16 @@
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
 // @version           3.0.0
-// @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a7837618/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c40a5834/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
+// @description       Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
@@ -54,6 +54,15 @@
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
 // @noframes
+// @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren.
+// @antifeature:en-US tracking Some of the services used will temporarily log your IP address and the songs you listen to.
+// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas.
+// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez.
+// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी।
+// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと再生する曲を一時的に記録します。
+// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve.
+// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。
 // @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
 // @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
 // @grant             GM.getValue
@@ -345,7 +354,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "a7837618",
+    buildNumber: "c40a5834",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -382,7 +391,7 @@ const platformNames = UserUtils.purifyObj({
 /** Default compression format used throughout BYTM */
 const compressionFormat$1 = "deflate-raw";
 /** Whether sessionStorage is available and working */
-const sessionStorageAvailable$1 = typeof (sessionStorage === null || sessionStorage === void 0 ? void 0 : sessionStorage.setItem) === "function"
+const sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function"
     && (() => {
         try {
             const key = `_bytm_test_${UserUtils.randomId(6, 36, false, true)}`;
@@ -390,7 +399,7 @@ const sessionStorageAvailable$1 = typeof (sessionStorage === null || sessionStor
             sessionStorage.removeItem(key);
             return true;
         }
-        catch (_a) {
+        catch {
             return false;
         }
     })();
@@ -447,10 +456,9 @@ function resolveLyricsUrl(path) {
  * @param refreshEntry If true, the timestamp of the entry will be set to the current time
  */
 function getLyricsCacheEntry(artist, song, refreshEntry = true) {
-    var _a;
     const { cache } = lyricsCacheStore.getData();
     const entry = cache.find(e => e.artist === artist && e.song === song);
-    if (entry && Date.now() - ((_a = entry === null || entry === void 0 ? void 0 : entry.added) !== null && _a !== void 0 ? _a : 0) * 1000 > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
+    if (entry && Date.now() - (entry?.added ?? 0) * 1000 > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
         deleteLyricsCacheEntry(artist, song);
         return undefined;
     }
@@ -507,59 +515,7 @@ function addLyricsCacheEntryBest(artist, song, path) {
     log("Added lyrics cache entry for best result:", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
     return lyricsCacheStore.setData({ cache });
-}/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
-
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}
-
-function __values(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-}
-
-typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-    var e = new Error(message);
-    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};/** Contains the identifiers of all initialized and loaded translation locales */
+}/** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set();
 /** The currently active locale */
 let activeLocale = "en-US";
@@ -578,12 +534,16 @@ async function initTranslations(locale) {
             fallbackTrans = await fetchLocaleJson("en-US");
         }
         // merge with base translations if specified
-        const baseTransFile = typeof (transFile === null || transFile === void 0 ? void 0 : transFile.meta) === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
+        const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
             ? await fetchLocaleJson(transFile.base)
             : undefined;
-        const translations = Object.assign(Object.assign(Object.assign({}, (fallbackTrans !== null && fallbackTrans !== void 0 ? fallbackTrans : {})), (baseTransFile !== null && baseTransFile !== void 0 ? baseTransFile : {})), transFile);
-        const _a = translations.meta, { authors: _authors } = _a, meta = __rest(_a, ["authors"]), trans = __rest(translations, ["meta"]);
-        UserUtils.tr.addTranslations(locale, Object.assign(Object.assign({}, meta), trans));
+        const translations = {
+            ...(fallbackTrans ?? {}),
+            ...(baseTransFile ?? {}),
+            ...transFile,
+        };
+        const { meta: { authors: _authors, ...meta }, ...trans } = translations;
+        UserUtils.tr.addTranslations(locale, { ...meta, ...trans });
         info(`Loaded translations for locale '${locale}'`);
     }
     catch (err) {
@@ -616,10 +576,9 @@ async function hasKey(key) {
 }
 /** Returns whether the given translation key exists in the given locale - if it hasn't been initialized yet, initializes it first. */
 async function hasKeyFor(locale, key) {
-    var _a;
     if (!initializedLocales.has(locale))
         await initTranslations(locale);
-    return typeof ((_a = UserUtils.tr.getTranslations(locale)) === null || _a === void 0 ? void 0 : _a[key]) === "string";
+    return typeof UserUtils.tr.getTranslations(locale)?.[key] === "string";
 }
 /** Returns the translated string for the given key, after optionally inserting arguments */
 function t(key, ...args) {
@@ -697,7 +656,17 @@ class BytmDialog extends CoreUtils.NanoEmitter {
             value: false
         });
         BytmDialog.initDialogs();
-        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: true, removeListenersOnDestroy: true, smallHeader: false, verticalAlign: "center" }, options);
+        this.options = {
+            closeOnBgClick: true,
+            closeOnEscPress: true,
+            closeBtnEnabled: true,
+            destroyOnClose: false,
+            unmountOnClose: true,
+            removeListenersOnDestroy: true,
+            smallHeader: false,
+            verticalAlign: "center",
+            ...options,
+        };
         this.id = options.id;
     }
     //#region pb:mount
@@ -721,7 +690,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
             if (dialogContainer)
                 dialogContainer.appendChild(bgElem);
             else
-                document.addEventListener("DOMContentLoaded", () => dialogContainer === null || dialogContainer === void 0 ? void 0 : dialogContainer.appendChild(bgElem), { once: true });
+                document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
         }
         catch (e) {
             return error("Failed to render dialog content:", e);
@@ -733,7 +702,6 @@ class BytmDialog extends CoreUtils.NanoEmitter {
     //#region pb:unmount
     /** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
     unmount() {
-        var _a;
         this.close();
         this.dialogMounted = false;
         const clearSelectors = [
@@ -741,8 +709,8 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         ];
         for (const sel of clearSelectors) {
             const elem = document.querySelector(sel);
-            (elem === null || elem === void 0 ? void 0 : elem.hasChildNodes()) && clearInner(elem);
-            (_a = document.querySelector(sel)) === null || _a === void 0 ? void 0 : _a.remove();
+            elem?.hasChildNodes() && clearInner(elem);
+            document.querySelector(sel)?.remove();
         }
         this.events.emit("clear");
     }
@@ -763,15 +731,14 @@ class BytmDialog extends CoreUtils.NanoEmitter {
      * Prevents default action and immediate propagation of the passed event
      */
     async open(e) {
-        var _a;
-        e === null || e === void 0 ? void 0 : e.preventDefault();
-        e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
+        e?.preventDefault();
+        e?.stopImmediatePropagation();
         if (this.isOpen())
             return;
         this.dialogOpen = true;
         if (openDialogs.includes(this.id)) {
             openDialogs.splice(openDialogs.indexOf(this.id), 1);
-            currentDialogId = (_a = openDialogs[0]) !== null && _a !== void 0 ? _a : null;
+            currentDialogId = openDialogs[0] ?? null;
             this.removeBgInert();
             this.close();
             throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
@@ -795,9 +762,8 @@ class BytmDialog extends CoreUtils.NanoEmitter {
     //#FIXME: if opened on top of config menu, after closing a BytmDialog, the body scroll lock is erroneously removed
     /** Closes the dialog - prevents default action and immediate propagation of the passed event */
     close(e) {
-        var _a;
-        e === null || e === void 0 ? void 0 : e.preventDefault();
-        e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
+        e?.preventDefault();
+        e?.stopImmediatePropagation();
         if (!this.isOpen())
             return;
         this.dialogOpen = false;
@@ -807,7 +773,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         dialogBg.style.visibility = "hidden";
         dialogBg.style.display = "none";
         openDialogs.splice(openDialogs.indexOf(this.id), 1);
-        currentDialogId = (_a = openDialogs[0]) !== null && _a !== void 0 ? _a : null;
+        currentDialogId = openDialogs[0] ?? null;
         this.removeBgInert();
         this.events.emit("close");
         emitInterface("bytm:dialogClosed", this);
@@ -860,50 +826,47 @@ class BytmDialog extends CoreUtils.NanoEmitter {
     //#region pr:removeBgInert
     /** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
     removeBgInert() {
-        var _a, _b, _c;
         // make sure the new top-most dialog is not inert
         if (currentDialogId) {
             // special treatment for the old config menu, as always
             if (currentDialogId === "cfg-menu")
-                (_a = document.querySelector("#bytm-cfg-menu-bg")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
+                document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
             else
-                (_b = document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)) === null || _b === void 0 ? void 0 : _b.removeAttribute("inert");
+                document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
         }
         // remove the scroll lock and inert attribute on the body if no dialogs are open
         if (openDialogs.length === 0) {
             document.body.classList.remove("bytm-disable-scroll");
-            (_c = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _c === void 0 ? void 0 : _c.removeAttribute("inert");
+            document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
         }
         const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-        dialogBg === null || dialogBg === void 0 ? void 0 : dialogBg.setAttribute("inert", "true");
+        dialogBg?.setAttribute("inert", "true");
     }
     //#region pr:setBgInert
     /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
     setBgInert() {
-        var _a, _b, _c;
         // make sure all other dialogs are inert
         for (const dialogId of openDialogs) {
             if (dialogId !== this.id) {
                 // special treatment for the old config menu, as always
                 if (dialogId === "cfg-menu")
-                    (_a = document.querySelector("#bytm-cfg-menu-bg")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+                    document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
                 else
-                    (_b = document.querySelector(`#bytm-${dialogId}-dialog-bg`)) === null || _b === void 0 ? void 0 : _b.setAttribute("inert", "true");
+                    document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
             }
         }
         // make sure body is inert and scroll is locked
         document.body.classList.add("bytm-disable-scroll");
-        (_c = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _c === void 0 ? void 0 : _c.setAttribute("inert", "true");
+        document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
         const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-        dialogBg === null || dialogBg === void 0 ? void 0 : dialogBg.removeAttribute("inert");
+        dialogBg?.removeAttribute("inert");
     }
     //#region pr:attachListeners
     /** Called on every {@linkcode mount()} to attach all generic event listeners */
     attachListeners(bgElem) {
         if (this.options.closeOnBgClick) {
             bgElem.addEventListener("click", (e) => {
-                var _a;
-                if (this.isOpen() && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === `bytm-${this.id}-dialog-bg`)
+                if (this.isOpen() && e.target?.id === `bytm-${this.id}-dialog-bg`)
                     this.close(e);
             });
         }
@@ -917,9 +880,8 @@ class BytmDialog extends CoreUtils.NanoEmitter {
     //#region pr:getDialogContent
     /** Returns the dialog content element and all its children */
     async getDialogContent() {
-        var _a, _b, _c, _d;
-        const header = (_b = (_a = this.options).renderHeader) === null || _b === void 0 ? void 0 : _b.call(_a);
-        const footer = (_d = (_c = this.options).renderFooter) === null || _d === void 0 ? void 0 : _d.call(_c);
+        const header = this.options.renderHeader?.();
+        const footer = this.options.renderFooter?.();
         const dialogWrapperEl = document.createElement("div");
         dialogWrapperEl.id = `bytm-${this.id}-dialog`;
         dialogWrapperEl.classList.add("bytm-dialog");
@@ -1029,70 +991,19 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
     wrapperEl.appendChild(toggleWrapperEl);
     labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
     return wrapperEl;
-}var name = "betterytm";
-var userscriptName = "BetterYTM";
-var version = "3.0.0";
-var description = "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™";
+}var version = "3.0.0";
 var homepage = "https://github.com/Sv443/BetterYTM";
-var main = "./src/index.ts";
-var type = "module";
-var scripts = {
-	dev: "concurrently \"nodemon --exec pnpm build-local-base --config-assetSource=local\" \"pnpm serve\"",
-	"dev-cdn": "concurrently \"nodemon --exec pnpm build-local-base\" \"pnpm serve\"",
-	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
-	"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs",
-	"build-prod-gh": "pnpm build-prod-base --config-host github",
-	"build-prod-gf": "pnpm build-prod-base --config-host greasyfork --config-suffix _gf",
-	"build-prod-oujs": "pnpm build-prod-base --config-host openuserjs --config-suffix _oujs",
-	"post-build": "pnpm node-ts ./src/tools/post-build.ts",
-	"build-local-base": "pnpm build-dev --config-gen-meta=false",
-	"build-prod-base": "rollup -c --config-mode production --config-branch main",
-	preview: "pnpm build-prod-gh --config-assetSource=local && pnpm serve --auto-exit-time=6",
-	serve: "pnpm node-ts ./src/tools/serve.ts",
-	lint: "eslint . && tsc --noEmit",
-	"tr-changed": "pnpm node-ts ./src/tools/tr-changed.ts",
-	"tr-progress": "pnpm node-ts ./src/tools/tr-progress.ts",
-	"tr-format": "pnpm node-ts ./src/tools/tr-format.ts",
-	"tr-prep": "pnpm tr-format -p",
-	"gen-readme": "pnpm node-ts ./src/tools/gen-readme.ts",
-	"node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
-	invisible: "node --enable-source-maps src/tools/run-invisible.mjs",
-	test: "pnpm node-ts ./test.ts",
-	knip: "knip",
-	storybook: "storybook dev -p 6006",
-	"build-storybook": "storybook build"
-};
-var engines = {
-	node: ">=20",
-	pnpm: ">=9"
-};
-var repository = {
-	type: "git",
-	url: "git+https://github.com/Sv443/BetterYTM.git"
-};
 var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
 };
-var contributors = [
-	{
-		name: "indierodo",
-		url: "https://github.com/indierodo",
-		contributions: [
-			"Track numbers feature"
-		]
-	}
-];
-var license = "AGPL-3.0-only";
 var bugs = {
 	url: "https://github.com/Sv443/BetterYTM/issues"
 };
 var funding = {
-	type: "github",
 	url: "https://github.com/sponsors/Sv443"
 };
 var hosts = {
-	github: "https://github.com/Sv443/BetterYTM",
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
@@ -1101,108 +1012,14 @@ var updates = {
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
-var dependencies = {
-	"@sv443-network/coreutils": "^2.0.0",
-	"@sv443-network/userutils": "^9.4.3",
-	"compare-versions": "^6.1.1",
-	dompurify: "^3.2.5",
-	marked: "^12.0.2",
-	tslib: "^2.8.1"
-};
-var devDependencies = {
-	"@chromatic-com/storybook": "^1.9.0",
-	"@eslint/eslintrc": "^3.3.1",
-	"@eslint/js": "^9.25.1",
-	"@rollup/plugin-json": "^6.1.0",
-	"@rollup/plugin-node-resolve": "^15.3.1",
-	"@rollup/plugin-terser": "^0.4.4",
-	"@rollup/plugin-typescript": "^11.1.6",
-	"@storybook/addon-essentials": "^8.6.12",
-	"@storybook/addon-interactions": "^8.6.12",
-	"@storybook/addon-links": "^8.6.12",
-	"@storybook/blocks": "^8.6.12",
-	"@storybook/html": "^8.6.12",
-	"@storybook/html-vite": "^8.6.12",
-	"@storybook/test": "^8.6.12",
-	"@types/cors": "^2.8.17",
-	"@types/express": "^4.17.21",
-	"@types/greasemonkey": "^4.0.7",
-	"@types/node": "^20.17.32",
-	"@typescript-eslint/eslint-plugin": "^8.31.1",
-	"@typescript-eslint/parser": "^8.31.1",
-	"@typescript-eslint/utils": "^8.31.1",
-	concurrently: "^9.1.2",
-	cors: "^2.8.5",
-	dotenv: "^16.5.0",
-	eslint: "^9.25.1",
-	"eslint-plugin-storybook": "^0.11.6",
-	express: "^4.21.2",
-	globals: "^15.15.0",
-	kleur: "^4.1.5",
-	knip: "^5.51.1",
-	nanoevents: "^9.1.0",
-	nodemon: "^3.1.10",
-	pnpm: "^10.10.0",
-	rollup: "^4.40.1",
-	"rollup-plugin-execute": "^1.1.1",
-	"rollup-plugin-import-css": "^3.5.8",
-	storybook: "^8.6.12",
-	"storybook-dark-mode": "^4.0.2",
-	tsx: "^4.19.4",
-	typescript: "^5.8.3",
-	"typescript-eslint": "^8.36.0"
-};
-var browserslist = [
-	"last 1 version",
-	"> 1%",
-	"not dead"
-];
-var nodemonConfig = {
-	watch: [
-		"src/**",
-		"assets/**",
-		"rollup.config.mjs",
-		".env",
-		"changelog.md",
-		"package.json"
-	],
-	ext: "ts,mts,js,jsx,mjs,json,html,css,svg,png",
-	ignore: [
-		"dist/*",
-		"dev/*",
-		"*/stories/*",
-		"assets/**/spritesheet.svg"
-	]
-};
-var pnpm = {
-	onlyBuiltDependencies: [
-		"esbuild"
-	]
-};
 var packageJson = {
-	name: name,
-	userscriptName: userscriptName,
 	version: version,
-	description: description,
 	homepage: homepage,
-	main: main,
-	type: type,
-	scripts: scripts,
-	engines: engines,
-	repository: repository,
 	author: author,
-	contributors: contributors,
-	license: license,
 	bugs: bugs,
 	funding: funding,
 	hosts: hosts,
-	updates: updates,
-	dependencies: dependencies,
-	devDependencies: devDependencies,
-	browserslist: browserslist,
-	nodemonConfig: nodemonConfig,
-	pnpm: pnpm
-};/** EventEmitter instance that is used to detect various changes to the site and userscript */
+	updates: updates};/** EventEmitter instance that is used to detect various changes to the site and userscript */
 const siteEvents = new CoreUtils.NanoEmitter({
     publicEmit: true,
 });
@@ -1211,7 +1028,7 @@ let lastVidId = null;
 let lastPathname = null;
 let lastFullscreen;
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
-async function initSiteEvents() {
+function initSiteEvents() {
     try {
         if (getDomain() === "ytm") {
             //#region queue
@@ -1265,36 +1082,33 @@ async function initSiteEvents() {
             ]);
             //#region player
             const playerFullscreenObs = new MutationObserver(([{ target }]) => {
-                var _a;
-                const isFullscreen = ((_a = target.getAttribute("player-ui-state")) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "FULLSCREEN";
+                const isFullscreen = target.getAttribute("player-ui-state")?.toUpperCase() === "FULLSCREEN";
                 if (lastFullscreen !== isFullscreen || typeof lastFullscreen === "undefined") {
                     emitSiteEvent("fullscreenToggled", isFullscreen);
                     lastFullscreen = isFullscreen;
                 }
             });
-            if (getDomain() === "ytm") {
-                const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
-                    listener: (el) => {
-                        playerFullscreenObs.observe(el, {
-                            attributeFilter: ["player-ui-state"],
-                        });
-                    },
-                });
-                if (globserversReady)
-                    registerFullScreenObs();
-                else
-                    window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
-            }
+            const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
+                listener: (el) => {
+                    playerFullscreenObs.observe(el, {
+                        attributeFilter: ["player-ui-state"],
+                    });
+                },
+            });
+            if (globserversReady)
+                registerFullScreenObs();
+            else
+                window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
         }
-        window.addEventListener("bytm:allReady", () => {
+        // TODO: investigate whether to use ready or allReady
+        window.addEventListener("bytm:ready", () => {
             runIntervalChecks();
             setInterval(runIntervalChecks, 100);
             if (getDomain() === "ytm") {
                 addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
                     listener(el) {
                         const urlRefObs = new MutationObserver(([{ target }]) => {
-                            var _a;
-                            if (!target || !((_a = target === null || target === void 0 ? void 0 : target.href) === null || _a === void 0 ? void 0 : _a.includes("/watch")))
+                            if (!target || !target?.href?.includes("/watch"))
                                 return;
                             const videoID = new URL(target.href).searchParams.get("v");
                             checkVideoIdChange(videoID);
@@ -1356,7 +1170,7 @@ function forceEmitSiteEvent(key, ...args) {
 //#region other
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
 function checkVideoIdChange(newID) {
-    const newVidID = newID !== null && newID !== void 0 ? newID : new URL(location.href).searchParams.get("v");
+    const newVidID = newID ?? new URL(location.href).searchParams.get("v");
     if (newVidID && newVidID !== lastVidId) {
         info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newVidID}"`);
         emitSiteEvent("watchIdChanged", newVidID, lastVidId);
@@ -1458,7 +1272,7 @@ async function renderBody$5({ latestTag, changelogHtml, }) {
     disableUpdCheckEl.appendChild(disableToggleEl);
     disableUpdCheckEl.appendChild(labelWrapperEl);
     wrapperEl.appendChild(disableUpdCheckEl);
-    verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.on("close", async () => {
+    verNotifDialog?.on("close", async () => {
         const config = getFeatures();
         const recreateCfgMenu = config.versionCheck === disableUpdateCheck;
         if (config.versionCheck && disableUpdateCheck)
@@ -1476,13 +1290,13 @@ async function renderBody$5({ latestTag, changelogHtml, }) {
     btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host$1]);
     onInteraction(btnUpdate, () => {
         window.open(packageJson.updates[host$1]);
-        verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
+        verNotifDialog?.close();
     });
     const btnClose = document.createElement("button");
     btnClose.classList.add("bytm-btn");
     btnClose.tabIndex = 0;
     btnClose.textContent = t("close_and_ignore_for_24h");
-    onInteraction(btnClose, () => verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close());
+    onInteraction(btnClose, () => verNotifDialog?.close());
     btnWrapper.appendChild(btnUpdate);
     btnWrapper.appendChild(btnClose);
     wrapperEl.appendChild(btnWrapper);
@@ -1515,8 +1329,7 @@ class PromptDialog extends BytmDialog {
         setInnerHtml(headerEl, await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt"));
         return headerEl;
     }
-    async renderBody(_a) {
-        var { type, message } = _a, rest = __rest(_a, ["type", "message"]);
+    async renderBody({ type, message, ...rest }) {
         const contElem = document.createElement("div");
         contElem.classList.add(`bytm-prompt-type-${type}`);
         const upperContElem = document.createElement("div");
@@ -1540,21 +1353,19 @@ class PromptDialog extends BytmDialog {
                 ? await UserUtils.consumeStringGen(rest.defaultValue)
                 : "";
             const inputEnterListener = (e) => {
-                var _a, _b;
                 if (e.key === "Enter") {
                     inputElem.removeEventListener("keydown", inputEnterListener);
-                    this.emitResolve((_b = (_a = inputElem === null || inputElem === void 0 ? void 0 : inputElem.value) === null || _a === void 0 ? void 0 : _a.trim()) !== null && _b !== void 0 ? _b : null);
-                    promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
+                    this.emitResolve(inputElem?.value?.trim() ?? null);
+                    promptDialog?.close();
                 }
             };
             inputElem.addEventListener("keydown", inputEnterListener);
-            promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.once("close", () => inputElem.removeEventListener("keydown", inputEnterListener));
+            promptDialog?.once("close", () => inputElem.removeEventListener("keydown", inputEnterListener));
             upperContElem.appendChild(inputElem);
         }
         return contElem;
     }
-    async renderFooter(_a) {
-        var { type } = _a, rest = __rest(_a, ["type"]);
+    async renderFooter({ type, ...rest }) {
         const buttonsWrapper = document.createElement("div");
         buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
         const buttonsCont = document.createElement("div");
@@ -1570,9 +1381,8 @@ class PromptDialog extends BytmDialog {
             if (type === "confirm")
                 confirmBtn.autofocus = true;
             confirmBtn.addEventListener("click", () => {
-                var _a, _b, _c;
-                this.emitResolve(type === "confirm" ? true : (_c = (_b = (_a = (document.querySelector("#bytm-prompt-dialog-input"))) === null || _a === void 0 ? void 0 : _a.value) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : null);
-                promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
+                this.emitResolve(type === "confirm" ? true : (document.querySelector("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
+                promptDialog?.close();
             }, { once: true });
         }
         const closeBtn = document.createElement("button");
@@ -1590,7 +1400,7 @@ class PromptDialog extends BytmDialog {
                 prompt: null,
             };
             this.emitResolve(resVals[type]);
-            promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
+            promptDialog?.close();
         }, { once: true });
         confirmBtn && getOS() !== "mac" && buttonsCont.appendChild(confirmBtn);
         buttonsCont.appendChild(closeBtn);
@@ -1602,7 +1412,7 @@ class PromptDialog extends BytmDialog {
     async consumePromptStringGen(curPromptType, stringGen, fallback) {
         if (typeof stringGen === "function")
             return await stringGen(curPromptType);
-        return String(stringGen !== null && stringGen !== void 0 ? stringGen : fallback);
+        return String(stringGen ?? fallback);
     }
     /** Called on render to focus on the confirm or cancel button or text input, depending on prompt type */
     focusOnRender() {
@@ -1611,12 +1421,11 @@ class PromptDialog extends BytmDialog {
             return inputElem.focus();
         let captureEnterKey = true;
         document.addEventListener("keydown", (e) => {
-            var _a;
             if (e.key === "Enter" && captureEnterKey) {
                 const confBtn = document.querySelector("#bytm-prompt-dialog-confirm");
                 const closeBtn = document.querySelector("#bytm-prompt-dialog-close");
                 if (confBtn || closeBtn) {
-                    (_a = confBtn === null || confBtn === void 0 ? void 0 : confBtn.click()) !== null && _a !== void 0 ? _a : closeBtn === null || closeBtn === void 0 ? void 0 : closeBtn.click();
+                    confBtn?.click() ?? closeBtn?.click();
                     captureEnterKey = false;
                 }
             }
@@ -1624,20 +1433,19 @@ class PromptDialog extends BytmDialog {
     }
 }
 /** Custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions */
-function showPrompt(_a) {
-    var { type } = _a, rest = __rest(_a, ["type"]);
+function showPrompt({ type, ...rest }) {
     return new Promise((resolve) => {
         if (BytmDialog.getOpenDialogs().includes("prompt-dialog"))
-            promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
-        promptDialog = new PromptDialog(Object.assign({ type }, rest));
+            promptDialog?.close();
+        promptDialog = new PromptDialog({ type, ...rest });
         promptDialog.once("render", () => {
             addSelectorListener("bytmDialogContainer", `#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`, {
                 listener: (btn) => btn.focus(),
             });
         });
         // make config menu inert while prompt dialog is open
-        promptDialog.once("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
-        promptDialog.once("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
+        promptDialog.once("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
+        promptDialog.once("close", () => document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert"));
         let resolveVal;
         const tryResolve = () => resolve(typeof resolveVal !== "undefined" ? resolveVal : false);
         let closeUnsub; // eslint-disable-line prefer-const
@@ -1647,7 +1455,7 @@ function showPrompt(_a) {
                 return;
             resolveVal = val;
             tryResolve();
-            closeUnsub === null || closeUnsub === void 0 ? void 0 : closeUnsub();
+            closeUnsub?.();
         });
         closeUnsub = promptDialog.on("close", () => {
             closeUnsub();
@@ -1681,7 +1489,6 @@ async function initVersionCheck() {
  * If {@linkcode notifyNoNewVerFound} is set to true, a dialog is also shown if no updates were found.
  */
 async function doVersionCheck(notifyNoNewVerFound = false) {
-    var _a;
     await GM.setValue("bytm-version-check", Date.now());
     const res = await sendRequest({
         method: "GET",
@@ -1689,7 +1496,7 @@ async function doVersionCheck(notifyNoNewVerFound = false) {
     });
     // TODO: small dialog for "no update found" message?
     const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({ type: "alert", message: t("no_new_version_found") }) : undefined;
-    const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
+    const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
     if (!latestTag)
         return await noNewVerFound();
     info("Version check - current version:", scriptInfo$1.version, "- latest version:", latestTag, LogLevel.Info);
@@ -1703,8 +1510,7 @@ async function doVersionCheck(notifyNoNewVerFound = false) {
 const maxToastDuration = 30000;
 let timeout;
 /** Shows a toast message with an icon */
-async function showIconToast(_a) {
-    var { duration, position = "tr", iconPos = "left" } = _a, rest = __rest(_a, ["duration", "position", "iconPos"]);
+async function showIconToast({ duration, position = "tr", iconPos = "left", ...rest }) {
     if (typeof duration !== "number" || isNaN(duration))
         duration = getFeature("toastDuration") * 1000;
     if (duration <= 0)
@@ -1758,7 +1564,7 @@ async function showToast(arg) {
             duration: getFeature("toastDuration") * 1000,
         }
         : arg;
-    const { duration: durationMs = getFeature("toastDuration") * 1000, onClick, position = "tr" } = props, rest = __rest(props, ["duration", "onClick", "position"]);
+    const { duration: durationMs = getFeature("toastDuration") * 1000, onClick, position = "tr", ...rest } = props;
     if (durationMs <= 0)
         return info("Toast duration is <= 0, so it won't be shown");
     if (document.querySelector("#bytm-toast"))
@@ -1771,7 +1577,7 @@ async function showToast(arg) {
     toastElem.ariaLive = "polite";
     toastElem.ariaAtomic = "true";
     toastElem.addEventListener("click", async (e) => {
-        onClick === null || onClick === void 0 ? void 0 : onClick(e);
+        onClick?.(e);
         await closeToast();
     }, { once: true });
     if ("message" in rest)
@@ -1812,7 +1618,7 @@ async function closeToast() {
  * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
  */
 function onInteraction(elem, listener, listenerOptions) {
-    const _a = listenerOptions !== null && listenerOptions !== void 0 ? listenerOptions : {}, { preventDefault = true, stopPropagation = true } = _a, listenerOpts = __rest(_a, ["preventDefault", "stopPropagation"]);
+    const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
     const proxListener = (e) => {
         if (e instanceof KeyboardEvent) {
             if (interactionKeys.includes(e.key)) {
@@ -1827,8 +1633,8 @@ function onInteraction(elem, listener, listenerOptions) {
             stopPropagation && e.stopPropagation();
         }
         // clean up the other listener that isn't automatically removed if `once` is set
-        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
-        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
+        listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
+        listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
         listener(e);
     };
     elem.addEventListener("click", proxListener, listenerOpts);
@@ -1839,13 +1645,15 @@ function onInteraction(elem, listener, listenerOptions) {
  * @returns The passed element or the newly created element with the ripple effect.
  */
 function createRipple(rippleElement, properties) {
-    var _a;
-    const props = Object.assign({ speed: "normal" }, properties);
-    const rippleEl = rippleElement !== null && rippleElement !== void 0 ? rippleElement : document.createElement("div");
+    const props = {
+        speed: "normal",
+        ...properties,
+    };
+    const rippleEl = rippleElement ?? document.createElement("div");
     "additionalProps" in props && Object.assign(rippleEl, props.additionalProps);
     rippleEl.classList.add("bytm-ripple", props.speed);
     const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
-    rippleEl.addEventListener((_a = props === null || props === void 0 ? void 0 : props.triggerEvent) !== null && _a !== void 0 ? _a : "mousedown", (e) => {
+    rippleEl.addEventListener(props?.triggerEvent ?? "mousedown", (e) => {
         updateRippleWidth();
         const x = e.clientX - rippleEl.getBoundingClientRect().left;
         const y = e.clientY - rippleEl.getBoundingClientRect().top;
@@ -1868,8 +1676,7 @@ function createRipple(rippleElement, properties) {
  * If `onClick` or `onToggle` is provided, the button will be a div element.
  * Provide either `resourceName` or `src` to specify the icon inside the button.
  */
-async function createLongBtn(_a) {
-    var { title, text, iconPosition, ripple } = _a, rest = __rest(_a, ["title", "text", "iconPosition", "ripple"]);
+async function createLongBtn({ title, text, iconPosition, ripple, ...rest }) {
     if (["href", "onClick", "onToggle"].every((key) => !(key in rest)))
         throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
     let btnElem;
@@ -1888,10 +1695,9 @@ async function createLongBtn(_a) {
             btnElem.classList.add("toggled");
     }
     onInteraction(btnElem, (evt) => {
-        var _a;
         if ("onClick" in rest)
             rest.onClick(evt);
-        if ("toggle" in rest && rest.toggle && ((_a = rest.togglePredicate) !== null && _a !== void 0 ? _a : (() => true))(evt))
+        if ("toggle" in rest && rest.toggle && (rest.togglePredicate ?? (() => true))(evt))
             rest.onToggle(btnElem.classList.toggle("toggled"), evt);
     });
     btnElem.classList.add("bytm-generic-btn", "long");
@@ -1899,7 +1705,7 @@ async function createLongBtn(_a) {
     btnElem.tabIndex = 0;
     btnElem.role = "button";
     const imgElem = document.createElement("src" in rest ? "img" : "div");
-    imgElem.classList.add("bytm-generic-btn-img", iconPosition !== null && iconPosition !== void 0 ? iconPosition : "left");
+    imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
     if ("src" in rest)
         imgElem.src = rest.src;
     else
@@ -1915,7 +1721,17 @@ async function createLongBtn(_a) {
 /** Generic dialog for exporting and importing any string of data */
 class ExImDialog extends BytmDialog {
     constructor(options) {
-        super(Object.assign({ renderHeader: () => ExImDialog.renderHeader(options), renderBody: () => ExImDialog.renderBody(options), renderFooter: undefined, closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, unmountOnClose: true, small: true }, options));
+        super({
+            renderHeader: () => ExImDialog.renderHeader(options),
+            renderBody: () => ExImDialog.renderBody(options),
+            renderFooter: undefined,
+            closeOnBgClick: true,
+            closeOnEscPress: true,
+            closeBtnEnabled: true,
+            unmountOnClose: true,
+            small: true,
+            ...options,
+        });
     }
     //#region header
     static async renderHeader(opts) {
@@ -1996,9 +1812,7 @@ class ExImDialog extends BytmDialog {
  * If `onClick` is provided, the button will be a div element.
  * Provide either `resourceName` or `src` to specify the icon inside the button.
  */
-async function createCircularBtn(_a) {
-    var _b;
-    var { title, ripple = true } = _a, rest = __rest(_a, ["title", "ripple"]);
+async function createCircularBtn({ title, ripple = true, ...rest }) {
     let btnElem;
     if ("href" in rest && rest.href) {
         btnElem = document.createElement("a");
@@ -2027,7 +1841,7 @@ async function createCircularBtn(_a) {
     }
     else if ("resourceName" in rest && rest.resourceName.startsWith("icon-")) {
         setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
-        (_b = btnElem.querySelector("svg")) === null || _b === void 0 ? void 0 : _b.classList.add("bytm-generic-btn-img");
+        btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
     }
     return ripple ? createRipple(btnElem) : btnElem;
 }let autoLikeDialog = null;
@@ -2053,9 +1867,9 @@ async function getAutoLikeDialog() {
         });
         siteEvents.on("autoLikeChannelsUpdated", async () => {
             try {
-                if (autoLikeExImDialog === null || autoLikeExImDialog === void 0 ? void 0 : autoLikeExImDialog.isOpen())
+                if (autoLikeExImDialog?.isOpen())
                     autoLikeExImDialog.unmount();
-                if (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.isOpen()) {
+                if (autoLikeDialog?.isOpen()) {
                     autoLikeDialog.unmount();
                     await autoLikeDialog.open();
                     log("Auto-like channels updated, refreshed dialog");
@@ -2065,7 +1879,7 @@ async function getAutoLikeDialog() {
                 error("Couldn't refresh auto-like channels dialog:", err);
             }
         });
-        autoLikeDialog.on("open", () => { var _a; return (_a = document.querySelector(".bytm-auto-like-channels-searchbar")) === null || _a === void 0 ? void 0 : _a.focus(); });
+        autoLikeDialog.on("open", () => document.querySelector(".bytm-auto-like-channels-searchbar")?.focus());
         autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
     }
     if (!autoLikeExImDialog) {
@@ -2090,7 +1904,7 @@ async function getAutoLikeDialog() {
                     await autoLikeStore.setData(parsed);
                     emitSiteEvent("autoLikeChannelsUpdated");
                     showToast({ message: t("import_success") });
-                    autoLikeExImDialog === null || autoLikeExImDialog === void 0 ? void 0 : autoLikeExImDialog.unmount();
+                    autoLikeExImDialog?.unmount();
                 }
                 catch (err) {
                     error("Couldn't import auto-like channels data:", err);
@@ -2146,12 +1960,11 @@ async function renderBody$4() {
     searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
     searchbarEl.spellcheck = false;
     searchbarEl.addEventListener("input", () => {
-        var _a, _b, _c, _d, _e, _f;
         const searchVal = searchbarEl.value.trim().toLowerCase();
         const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
         for (const row of rows) {
-            const name = (_c = (_b = (_a = row.querySelector(".bytm-auto-like-channel-name")) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.trim().toLowerCase().replace(/\s/g, "")) !== null && _c !== void 0 ? _c : "";
-            const id = (_f = (_e = (_d = row.querySelector(".bytm-auto-like-channel-id")) === null || _d === void 0 ? void 0 : _d.textContent) === null || _e === void 0 ? void 0 : _e.trim()) !== null && _f !== void 0 ? _f : "";
+            const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
+            const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
             row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
         }
     });
@@ -2171,7 +1984,7 @@ async function renderBody$4() {
     const setChannelEnabled = UserUtils.debounce((id, enabled) => {
         autoLikeStore.setData({
             channels: autoLikeStore.getData().channels
-                .map((ch) => ch.id === id ? Object.assign(Object.assign({}, ch), { enabled }) : ch),
+                .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
         });
     }, 250);
     const sortedChannels = autoLikeStore
@@ -2214,18 +2027,17 @@ async function renderBody$4() {
             resourceName: "icon-edit",
             title: t("edit_entry"),
             async onClick() {
-                var _a, _b, _c;
-                const newNamePr = (_a = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_name_prompt"), defaultValue: chanName }))) === null || _a === void 0 ? void 0 : _a.trim();
+                const newNamePr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_name_prompt"), defaultValue: chanName }))?.trim();
                 if (!newNamePr || newNamePr.length === 0)
                     return;
                 const newName = newNamePr.length > 0 ? newNamePr : chanName;
-                const newIdPr = (_b = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_id_prompt"), defaultValue: chanId }))) === null || _b === void 0 ? void 0 : _b.trim();
+                const newIdPr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_id_prompt"), defaultValue: chanId }))?.trim();
                 if (!newIdPr || newIdPr.length === 0)
                     return;
-                const newId = newIdPr.length > 0 ? (_c = getChannelIdFromPrompt(newIdPr)) !== null && _c !== void 0 ? _c : chanId : chanId;
+                const newId = newIdPr.length > 0 ? getChannelIdFromPrompt(newIdPr) ?? chanId : chanId;
                 await autoLikeStore.setData({
                     channels: autoLikeStore.getData().channels
-                        .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { name: newName, id: newId }) : ch),
+                        .map((ch) => ch.id === chanId ? { ...ch, name: newName, id: newId } : ch),
                 });
                 emitSiteEvent("autoLikeChannelsUpdated");
             },
@@ -2271,16 +2083,15 @@ function renderFooter$1() {
     return wrapperEl;
 }
 async function openImportExportAutoLikeChannelsDialog() {
-    await (autoLikeExImDialog === null || autoLikeExImDialog === void 0 ? void 0 : autoLikeExImDialog.open());
+    await autoLikeExImDialog?.open();
 }
 //#region add prompt
 async function addAutoLikeEntryPrompts() {
-    var _a, _b, _c;
     await autoLikeStore.loadData();
-    const idPrompt = (_a = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_id_prompt") }))) === null || _a === void 0 ? void 0 : _a.trim();
+    const idPrompt = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_id_prompt") }))?.trim();
     if (!idPrompt)
         return;
-    const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (isValidChannelId(idPrompt) ? idPrompt : null);
+    const id = parseChannelIdFromUrl(idPrompt) ?? (isValidChannelId(idPrompt) ? idPrompt : null);
     if (!id || id.length <= 0)
         return await showPrompt({ type: "alert", message: t("add_auto_like_channel_invalid_id") });
     let overwriteName = false;
@@ -2290,13 +2101,13 @@ async function addAutoLikeEntryPrompts() {
             return;
         overwriteName = true;
     }
-    const name = (_c = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_name_prompt"), defaultValue: hasChannelEntry === null || hasChannelEntry === void 0 ? void 0 : hasChannelEntry.name }))) === null || _c === void 0 ? void 0 : _c.trim();
+    const name = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_name_prompt"), defaultValue: hasChannelEntry?.name }))?.trim();
     if (!name || name.length === 0)
         return;
     await autoLikeStore.setData(overwriteName
         ? {
             channels: autoLikeStore.getData().channels
-                .map((ch) => ch.id === id ? Object.assign(Object.assign({}, ch), { name }) : ch),
+                .map((ch) => ch.id === id ? { ...ch, name } : ch),
         }
         : {
             channels: [
@@ -2305,16 +2116,16 @@ async function addAutoLikeEntryPrompts() {
             ],
         });
     emitSiteEvent("autoLikeChannelsUpdated");
-    const unsub = autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.on("clear", async () => {
-        unsub === null || unsub === void 0 ? void 0 : unsub();
-        await (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.open());
+    const unsub = autoLikeDialog?.on("clear", async () => {
+        unsub?.();
+        await autoLikeDialog?.open();
     });
-    autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.unmount();
+    autoLikeDialog?.unmount();
 }
 function getChannelIdFromPrompt(promptStr) {
     const isId = promptStr.match(/^@?.+$/);
     const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
-    const id = ((isId === null || isId === void 0 ? void 0 : isId[0]) || (isUrl === null || isUrl === void 0 ? void 0 : isUrl[1]) || "").trim();
+    const id = (isId?.[0] || isUrl?.[1] || "").trim();
     return id.length > 0 ? id : null;
 }let canCompress$1 = false;
 /** DataStore instance for all auto-liked channels */
@@ -2329,9 +2140,12 @@ const autoLikeStore = new UserUtils.DataStore({
     migrations: {
         // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
         2: (oldData) => ({
-            channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: isValidChannelId(ch.id.trim())
+            channels: oldData.channels.map((ch) => ({
+                ...ch,
+                id: isValidChannelId(ch.id.trim())
                     ? ch.id.trim()
-                    : `@${ch.id.trim()}` }))),
+                    : `@${ch.id.trim()}`,
+            })),
         }),
     },
 });
@@ -2352,8 +2166,7 @@ async function initAutoLike() {
         if (getDomain() === "ytm") {
             let timeout;
             siteEvents.on("songTitleChanged", () => {
-                var _a;
-                const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
+                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
                 timeout && clearTimeout(timeout);
                 const ytmTryAutoLike = () => {
                     const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
@@ -2383,7 +2196,6 @@ async function initAutoLike() {
                 siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs));
             });
             const recreateBtn = (headerCont, chanId) => {
-                var _a, _b, _c, _d, _e, _f;
                 const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title");
                 if (!titleCont)
                     return;
@@ -2391,18 +2203,18 @@ async function initAutoLike() {
                     if (!document.querySelector(".bytm-auto-like-toggle-btn"))
                         recreateBtn(headerCont, chanId);
                 }, 250);
-                const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                const chanName = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
                 log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
                 const buttonsCont = headerCont.querySelector(".buttons");
                 if (buttonsCont) {
                     const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
-                    const chanName = (_d = (_c = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
+                    const chanName = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent ?? null;
                     lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
                 }
                 else {
                     // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
                     const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
-                    const chanName = (_f = (_e = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _e === void 0 ? void 0 : _e.textContent) !== null && _f !== void 0 ? _f : null;
+                    const chanName = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")?.textContent ?? null;
                     shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName).then(checkBtn);
                 }
             };
@@ -2423,16 +2235,14 @@ async function initAutoLike() {
             addStyleFromResource("css-auto_like");
             let timeout;
             siteEvents.on("watchIdChanged", () => {
-                var _a;
-                const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
+                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
                 timeout && clearTimeout(timeout);
                 if (!location.pathname.startsWith("/watch"))
                     return;
                 const ytTryAutoLike = () => {
                     addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
                         listener(chanElem) {
-                            var _a, _b;
-                            const chanElemId = (_b = (_a = chanElem.href.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split("/")[0]) !== null && _b !== void 0 ? _b : null;
+                            const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
                             const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
                             if (!likeChan || !likeChan.enabled)
                                 return;
@@ -2463,7 +2273,6 @@ async function initAutoLike() {
                         return error("Couldn't extract channel ID from URL");
                     document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
                     const recreateBtn = (headerCont) => {
-                        var _a, _b;
                         const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
                         if (!titleCont)
                             return;
@@ -2471,7 +2280,7 @@ async function initAutoLike() {
                             if (!document.querySelector(".bytm-auto-like-toggle-btn"))
                                 recreateBtn(headerCont);
                         }, 350);
-                        const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                        const chanName = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
                         log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
                         const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
                         if (buttonsCont) {
@@ -2497,50 +2306,47 @@ async function initAutoLike() {
 //#SECTION toggle btn
 /** Adds a toggle button to enable or disable auto-liking videos from a channel */
 async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
-    var _a;
     const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
     log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
     siteEvents.on("autoLikeChannelsUpdated", () => {
-        var _a, _b;
         const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
         if (!buttonEl)
             return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
-        const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+        const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
         if (enabled)
             buttonEl.classList.add("toggled");
         else
             buttonEl.classList.remove("toggled");
     });
     const buttonEl = await createLongBtn({
-        resourceName: `icon-auto_like${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : ""}`,
+        resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : ""}`,
         text: t("auto_like"),
-        title: t(`auto_like_button_tooltip${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : "_disabled"}`),
+        title: t(`auto_like_button_tooltip${chan?.enabled ? "_enabled" : "_disabled"}`),
         toggle: true,
-        toggleInitialState: (_a = chan === null || chan === void 0 ? void 0 : chan.enabled) !== null && _a !== void 0 ? _a : false,
+        toggleInitialState: chan?.enabled ?? false,
         togglePredicate(e) {
             e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
             return !e.shiftKey;
         },
         async onToggle(toggled) {
-            var _a;
             try {
                 await autoLikeStore.loadData();
                 buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
-                const chanId = sanitizeChannelId((_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId);
+                const chanId = sanitizeChannelId(buttonEl.dataset.channelId ?? channelId);
                 const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
                 imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`));
                 if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
                     await autoLikeStore.setData({
                         channels: [
                             ...autoLikeStore.getData().channels,
-                            { id: chanId, name: channelName !== null && channelName !== void 0 ? channelName : "", enabled: toggled },
+                            { id: chanId, name: channelName ?? "", enabled: toggled },
                         ],
                     });
                 }
                 else {
                     await autoLikeStore.setData({
                         channels: autoLikeStore.getData().channels
-                            .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { enabled: toggled }) : ch),
+                            .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
                     });
                 }
                 emitSiteEvent("autoLikeChannelsUpdated");
@@ -2557,15 +2363,14 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
             }
         }
     });
-    buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses !== null && extraClasses !== void 0 ? extraClasses : [])]);
+    buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses ?? [])]);
     buttonEl.dataset.channelId = channelId;
     siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
     siteEvents.on("autoLikeChannelsUpdated", async () => {
-        var _a, _b;
         const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
         if (!buttonEl)
             return;
-        const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+        const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
         if (enabled)
             buttonEl.classList.add("toggled");
         else
@@ -2575,7 +2380,11 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
     });
 }class MarkdownDialog extends BytmDialog {
     constructor(options) {
-        super(Object.assign(Object.assign({}, options), { id: `md-${options.id}`, renderBody: () => this.renderBody() }));
+        super({
+            ...options,
+            id: `md-${options.id}`,
+            renderBody: () => this.renderBody(),
+        });
         Object.defineProperty(this, "opts", {
             enumerable: true,
             configurable: true,
@@ -2653,9 +2462,8 @@ const showErrToast = UserUtils.debounce((errName, ...args) => showIconToast({
 }), 1000);
 /** Logs all passed values to the console as an error, no matter the log level. */
 function error(...args) {
-    var _a, _b;
     console.error(consPrefix, ...args);
-    getFeature("showToastOnGenericError") && showErrToast((_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error"), ...args);
+    getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
 }
 /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
 function errorNoToast(...args) {
@@ -2777,9 +2585,8 @@ let prevTime = -1;
 /** Initializes the autoScrollToActiveSong feature */
 async function initAutoScrollToActiveSong() {
     setInterval(() => {
-        var _a, _b, _c, _d;
-        prevTime = (_b = (_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.currentTime) !== null && _b !== void 0 ? _b : -1;
-        prevVidMaxTime = (_d = (_c = getVideoElement()) === null || _c === void 0 ? void 0 : _c.duration) !== null && _d !== void 0 ? _d : Infinity;
+        prevTime = getVideoElement()?.currentTime ?? -1;
+        prevVidMaxTime = getVideoElement()?.duration ?? Infinity;
     }, 50);
     siteEvents.on("watchIdChanged", (_, oldId) => {
         if (!oldId)
@@ -2807,7 +2614,7 @@ async function initRememberSongTime() {
         await GM.setValue("bytm-rem-songs", "[]");
     let remVids;
     try {
-        remVids = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        remVids = JSON.parse(String(storedDataRaw ?? "[]"));
     }
     catch (err) {
         error("Error parsing stored video time data, defaulting to empty cache:", err);
@@ -2857,10 +2664,9 @@ function remTimeTryRestoreTime(force = false) {
                     else {
                         let vidElem;
                         const doRestoreTime = async () => {
-                            var _a;
                             if (!vidElem)
                                 vidElem = await waitVideoElementReady();
-                            const vidRestoreTime = entry.time - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
+                            const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction") ?? 0);
                             vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
                             await remTimeDeleteEntry(entry.id);
                             info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
@@ -2885,14 +2691,13 @@ let lastSongTime = -1;
 let remVidCheckTimeout;
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
 async function remTimeStartUpdateLoop() {
-    var _a, _b, _c;
     const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
     if (location.pathname.startsWith("/watch")) {
         const id = getWatchId();
-        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+        const songTime = await getVideoTime() ?? 0;
         if (id && songTime !== lastSongTime) {
             lastSongTime = songTime;
-            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            const paused = getVideoElement()?.paused ?? false;
             // don't immediately update to reduce race conditions and only update if the video is playing
             // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
             if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
@@ -2907,7 +2712,7 @@ async function remTimeStartUpdateLoop() {
             else if (!paused) {
                 const entry = remVids.find(entry => entry.id === id);
                 if (entry && songTime <= entry.time)
-                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { time: songTime, updated: Date.now() }));
+                    await remTimeUpsertEntry({ ...entry, time: songTime, updated: Date.now() });
             }
         }
     }
@@ -3011,7 +2816,7 @@ async function compressionSupported() {
         await UserUtils.compress(".", compressionFormat$1, "string");
         return isCompressionSupported = true;
     }
-    catch (_a) {
+    catch {
         return isCompressionSupported = false;
     }
 }
@@ -3038,7 +2843,7 @@ function parseChannelIdFromUrl(url) {
         else
             return null;
     }
-    catch (_a) {
+    catch {
         return null;
     }
 }
@@ -3069,7 +2874,6 @@ async function getBestThumbnailUrl(videoID) {
             }
             catch (err) {
                 error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
-                void err;
             }
             if (response && response.status < 300 && response.status >= 200)
                 return url;
@@ -3084,7 +2888,7 @@ function openInTab(href, background = false) {
     try {
         UserUtils.openInNewTab(href, background);
     }
-    catch (_a) {
+    catch {
         window.open(href, "_blank", "noopener noreferrer");
     }
 }
@@ -3095,7 +2899,7 @@ async function tryToDecompressAndParse(input) {
     try {
         parsed = JSON.parse(val);
     }
-    catch (_a) {
+    catch {
         try {
             parsed = JSON.parse(await UserUtils.decompress(val, compressionFormat$1, "string"));
         }
@@ -3116,7 +2920,7 @@ function getOS() {
 }
 /** Formats a number based on the config or the passed {@linkcode notation} */
 function formatNumber(num, notation) {
-    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation !== null && notation !== void 0 ? notation : getFeature("numbersFormat")) === "short"
+    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation ?? getFeature("numbersFormat")) === "short"
         ? {
             notation: "compact",
             compactDisplay: "short",
@@ -3131,12 +2935,11 @@ function formatNumber(num, notation) {
 const reloadTabVideoTimeThreshold = 3;
 /** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
 async function reloadTab() {
-    var _a, _b, _c;
     const win = UserUtils.getUnsafeWindow();
     try {
         enableDiscardBeforeUnload();
-        if (((_b = (_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.readyState) !== null && _b !== void 0 ? _b : 0) > 0) {
-            const time = (_c = await getVideoTime(0)) !== null && _c !== void 0 ? _c : 0;
+        if ((getVideoElement()?.readyState ?? 0) > 0) {
+            const time = await getVideoTime(0) ?? 0;
             const volume = Math.round(getVideoElement().volume * 100);
             const url = new URL(win.location.href);
             if (!isNaN(time) && time > reloadTabVideoTimeThreshold)
@@ -3157,8 +2960,8 @@ function scrollToCurrentSongInQueue(evt) {
     addSelectorListener("sidePanel", "ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]", {
         listener(activeItem) {
             activeItem.scrollIntoView({
-                behavior: (evt === null || evt === void 0 ? void 0 : evt.shiftKey) ? "instant" : "smooth",
-                block: (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) || (evt === null || evt === void 0 ? void 0 : evt.altKey) ? "start" : "center",
+                behavior: evt?.shiftKey ? "instant" : "smooth",
+                block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
                 inline: "center",
             });
             log("Scrolled to active song in queue:", activeItem);
@@ -3187,11 +2990,10 @@ function overflowVal(value, minOrMax, max) {
  * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
 async function getResourceUrl(name) {
-    var _a;
-    const resObjOrStr = (_a = resourcesJson.resources) === null || _a === void 0 ? void 0 : _a[name];
+    const resObjOrStr = resourcesJson.resources?.[name];
     if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-        const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.path : resObjOrStr;
-        const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr === null || resObjOrStr === void 0 ? void 0 : resObjOrStr.ref : buildNumber$1;
+        const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
+        const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber$1;
         if (pathName) {
             return pathName.startsWith("http")
                 ? pathName
@@ -3221,18 +3023,17 @@ async function getResourceUrl(name) {
  * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
  */
 function getPreferredLocale() {
-    var _a, _b;
     const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
     const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
         .map((v) => v.replace(/_/g, "-"));
     for (const nvLoc of allNvLocs) {
-        const resolvedLoc = (_a = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))) === null || _a === void 0 ? void 0 : _a[0];
+        const resolvedLoc = Object.entries(locales)
+            .find(([key, { altLocales }]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))?.[0];
         if (resolvedLoc)
             return resolvedLoc.trim();
         const trimmedNvLoc = nvLoc.split("-")[0];
-        const resolvedFallbackLoc = (_b = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))) === null || _b === void 0 ? void 0 : _b[0];
+        const resolvedFallbackLoc = Object.entries(locales)
+            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))?.[0];
         if (resolvedFallbackLoc)
             return resolvedFallbackLoc.trim();
     }
@@ -3320,7 +3121,7 @@ async function downloadData(useEncoding = true) {
 }let pluginListDialog = null;
 /** Creates and/or returns the import dialog */
 async function getPluginListDialog() {
-    return pluginListDialog = pluginListDialog !== null && pluginListDialog !== void 0 ? pluginListDialog : new BytmDialog({
+    return pluginListDialog = pluginListDialog ?? new BytmDialog({
         id: "plugin-list",
         width: 800,
         height: 600,
@@ -3344,7 +3145,6 @@ async function renderHeader$2() {
     return titleElem;
 }
 async function renderBody$3() {
-    var _a;
     const listContainerEl = document.createElement("div");
     listContainerEl.id = "bytm-plugin-list-container";
     const registeredPlugins = getRegisteredPlugins();
@@ -3393,7 +3193,7 @@ async function renderBody$3() {
         const descEl = document.createElement("p");
         descEl.classList.add("bytm-plugin-list-row-desc");
         descEl.tabIndex = 0;
-        descEl.textContent = descEl.title = descEl.ariaLabel = (_a = plugin.description[getLocale()]) !== null && _a !== void 0 ? _a : plugin.description["en-US"];
+        descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
         leftEl.appendChild(descEl);
         const linksList = document.createElement("div");
         linksList.classList.add("bytm-plugin-list-row-links-list");
@@ -3464,58 +3264,44 @@ async function addActualLyricsBtn(likeContainer) {
         return warn("Couldn't find song title element");
     currentSongTitle = songTitleElem.title;
     const onMutation = async (mutations) => {
-        var _a, e_1, _b, _c;
-        var _d, _e, _f;
-        try {
-            for (var _g = true, mutations_1 = __asyncValues(mutations), mutations_1_1; mutations_1_1 = await mutations_1.next(), _a = mutations_1_1.done, !_a; _g = true) {
-                _c = mutations_1_1.value;
-                _g = false;
-                const mut = _c;
-                const newTitle = mut.target.title;
-                if (newTitle !== currentSongTitle && newTitle.length > 0) {
-                    const lyricsBtn = document.querySelector("#bytm-player-bar-lyrics-btn");
-                    if (!lyricsBtn)
-                        continue;
-                    lyricsBtn.style.cursor = "wait";
-                    lyricsBtn.style.pointerEvents = "none";
-                    setInnerHtml(lyricsBtn, await resourceAsString("icon-spinner"));
-                    (_d = lyricsBtn.querySelector("svg")) === null || _d === void 0 ? void 0 : _d.classList.add("bytm-generic-btn-img", "bytm-spinner");
-                    currentSongTitle = newTitle;
-                    const url = await getCurrentLyricsUrl(); // can take a second or two
-                    setInnerHtml(lyricsBtn, await resourceAsString("icon-lyrics"));
-                    (_e = lyricsBtn.querySelector("svg")) === null || _e === void 0 ? void 0 : _e.classList.add("bytm-generic-btn-img");
-                    if (!url) {
-                        let artist, song;
-                        if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
-                            artist = navigator.mediaSession.metadata.artist;
-                            song = navigator.mediaSession.metadata.title;
-                        }
-                        const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
-                        setInnerHtml(lyricsBtn, await resourceAsString("icon-error"));
-                        (_f = lyricsBtn.querySelector("svg")) === null || _f === void 0 ? void 0 : _f.classList.add("bytm-generic-btn-img");
-                        lyricsBtn.ariaLabel = lyricsBtn.title = t("lyrics_not_found_click_open_search");
-                        lyricsBtn.style.cursor = "pointer";
-                        lyricsBtn.style.pointerEvents = "all";
-                        lyricsBtn.style.display = "inline-flex";
-                        lyricsBtn.style.visibility = "visible";
-                        lyricsBtn.href = `https://genius.com/search${query}`;
-                        continue;
+        for await (const mut of mutations) {
+            const newTitle = mut.target.title;
+            if (newTitle !== currentSongTitle && newTitle.length > 0) {
+                const lyricsBtn = document.querySelector("#bytm-player-bar-lyrics-btn");
+                if (!lyricsBtn)
+                    continue;
+                lyricsBtn.style.cursor = "wait";
+                lyricsBtn.style.pointerEvents = "none";
+                setInnerHtml(lyricsBtn, await resourceAsString("icon-spinner"));
+                lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img", "bytm-spinner");
+                currentSongTitle = newTitle;
+                const url = await getCurrentLyricsUrl(); // can take a second or two
+                setInnerHtml(lyricsBtn, await resourceAsString("icon-lyrics"));
+                lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+                if (!url) {
+                    let artist, song;
+                    if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
+                        artist = navigator.mediaSession.metadata.artist;
+                        song = navigator.mediaSession.metadata.title;
                     }
-                    lyricsBtn.href = url;
-                    lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
+                    const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
+                    setInnerHtml(lyricsBtn, await resourceAsString("icon-error"));
+                    lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+                    lyricsBtn.ariaLabel = lyricsBtn.title = t("lyrics_not_found_click_open_search");
                     lyricsBtn.style.cursor = "pointer";
-                    lyricsBtn.style.visibility = "visible";
+                    lyricsBtn.style.pointerEvents = "all";
                     lyricsBtn.style.display = "inline-flex";
-                    lyricsBtn.style.pointerEvents = "initial";
+                    lyricsBtn.style.visibility = "visible";
+                    lyricsBtn.href = `https://genius.com/search${query}`;
+                    continue;
                 }
+                lyricsBtn.href = url;
+                lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
+                lyricsBtn.style.cursor = "pointer";
+                lyricsBtn.style.visibility = "visible";
+                lyricsBtn.style.display = "inline-flex";
+                lyricsBtn.style.pointerEvents = "initial";
             }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (!_g && !_a && (_b = mutations_1.return)) await _b.call(mutations_1);
-            }
-            finally { if (e_1) throw e_1.error; }
         }
     };
     // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
@@ -3606,9 +3392,8 @@ async function getCurrentLyricsUrl() {
 }
 /** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
 async function fetchLyricsUrlTop(artist, song) {
-    var _a, _b;
     try {
-        const path = (_b = (_a = (await fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.path;
+        const path = (await fetchLyricsUrls(artist, song))?.[0]?.path;
         return path ? resolveLyricsUrl(path) : undefined;
     }
     catch (err) {
@@ -3621,7 +3406,6 @@ async function fetchLyricsUrlTop(artist, song) {
  * **the passed parameters need to be sanitized first!**
  */
 async function fetchLyricsUrls(artist, song) {
-    var _a, _b, _c;
     try {
         const cacheEntry = getLyricsCacheEntry(artist, song);
         if (cacheEntry) {
@@ -3635,18 +3419,20 @@ async function fetchLyricsUrls(artist, song) {
         });
         log("Requesting lyrics from geniURL:", String(fetchUrl));
         const token = getFeature("geniUrlToken");
-        const fetchRes = await UserUtils.fetchAdvanced(fetchUrl, Object.assign({}, (token ? {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        } : {})));
+        const fetchRes = await UserUtils.fetchAdvanced(fetchUrl, {
+            ...(token ? {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            } : {}),
+        });
         if (fetchRes.status === 429) {
-            const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
+            const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
             await showPrompt({ type: "alert", message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
             return undefined;
         }
         else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-            getFeature("errorOnLyricsNotFound") && error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (await fetchRes.json()).message) !== null && _b !== void 0 ? _b : await fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`));
+            getFeature("errorOnLyricsNotFound") && error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`));
             return undefined;
         }
         const result = await fetchRes.json();
@@ -3661,13 +3447,14 @@ async function fetchLyricsUrls(artist, song) {
         }
         const allResultsSan = allResults
             .filter(({ meta, path }) => (meta.title || meta.fullTitle) && meta.artists && path)
-            .map(({ meta, path }) => {
-            var _a;
-            return ({
-                meta: Object.assign(Object.assign({}, meta), { title: sanitizeSong(String((_a = meta.title) !== null && _a !== void 0 ? _a : meta.fullTitle)), artists: sanitizeArtists(String(meta.artists)) }),
-                path,
-            });
-        });
+            .map(({ meta, path }) => ({
+            meta: {
+                ...meta,
+                title: sanitizeSong(String(meta.title ?? meta.fullTitle)),
+                artists: sanitizeArtists(String(meta.artists)),
+            },
+            path,
+        }));
         const topRes = allResultsSan[0];
         topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.path);
         return allResultsSan.map(r => ({
@@ -3690,7 +3477,6 @@ async function addGeniusUrlToLyricsBtn(btnElem, geniusUrl) {
 }
 /** Creates the base lyrics button element */
 async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-    var _a;
     const linkElem = document.createElement("a");
     linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
     linkElem.ariaLabel = linkElem.title = t("lyrics_loading");
@@ -3700,8 +3486,7 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     linkElem.style.visibility = "hidden";
     linkElem.style.display = "none";
     onInteraction(linkElem, (e) => {
-        var _a;
-        const url = (_a = linkElem.href) !== null && _a !== void 0 ? _a : geniusUrl;
+        const url = linkElem.href ?? geniusUrl;
         if (!url || e instanceof MouseEvent)
             return;
         if (!e.ctrlKey && !e.altKey)
@@ -3711,7 +3496,7 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
         stopPropagation: false,
     });
     setInnerHtml(linkElem, await resourceAsString("icon-lyrics"));
-    (_a = linkElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
+    linkElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
     onInteraction(linkElem, async (e) => {
         if (e.ctrlKey || e.altKey) {
             e.preventDefault();
@@ -3763,7 +3548,14 @@ function constructUrl(base, params) {
  */
 function sendRequest(details) {
     return new Promise((resolve, reject) => {
-        GM.xmlHttpRequest(Object.assign(Object.assign({ timeout: 10000 }, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
+        GM.xmlHttpRequest({
+            timeout: 10000,
+            ...details,
+            onload: resolve,
+            onerror: reject,
+            ontimeout: reject,
+            onabort: reject,
+        });
     });
 }
 //#region css
@@ -3771,7 +3563,7 @@ function sendRequest(details) {
 async function fetchCss(key) {
     try {
         const css = await (await UserUtils.fetchAdvanced(await getResourceUrl(key))).text();
-        return css !== null && css !== void 0 ? css : undefined;
+        return css ?? undefined;
     }
     catch (err) {
         error("Couldn't fetch CSS due to an error:", err);
@@ -3873,8 +3665,8 @@ async function getFeatHelpDialog({ featKey, }) {
             renderBody: renderBody$2,
         });
         // make config menu inert while help dialog is open
-        featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
-        featHelpDialog.on("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
+        featHelpDialog.on("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
+        featHelpDialog.on("close", () => document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert"));
     }
     return featHelpDialog;
 }
@@ -3885,9 +3677,8 @@ async function renderHeader$1() {
     return headerEl;
 }
 async function renderBody$2() {
-    var _a, _b;
     const contElem = document.createElement("div");
-    const localeObj = locales === null || locales === void 0 ? void 0 : locales[getLocale()];
+    const localeObj = locales?.[getLocale()];
     // insert sentence terminator if not present, to improve flow with screenreaders
     let featText = t(`feature_desc_${curFeatKey}`);
     if (localeObj) {
@@ -3903,8 +3694,8 @@ async function renderBody$2() {
     helpTextElem.id = "bytm-feat-help-dialog-text";
     helpTextElem.tabIndex = 0;
     // @ts-expect-error
-    const helpText = (_b = (_a = featInfo[curFeatKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
-    helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${curFeatKey}`);
+    const helpText = featInfo[curFeatKey]?.helpText?.();
+    helpTextElem.textContent = helpText ?? t(`feature_helptext_${curFeatKey}`);
     contElem.appendChild(featDescElem);
     contElem.appendChild(helpTextElem);
     return contElem;
@@ -3912,7 +3703,6 @@ async function renderBody$2() {
 const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
 /** Creates a hotkey input element */
 function createHotkeyInput({ initialValue, onChange, createTitle }) {
-    var _a;
     const initialHotkey = initialValue;
     let currentHotkey;
     if (!createTitle)
@@ -3925,7 +3715,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     inputElem.role = "button";
     inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
     inputElem.dataset.state = infoElem.dataset.state = "inactive";
-    inputElem.innerText = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+    inputElem.innerText = initialValue?.code ?? t("hotkey_input_click_to_change");
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
     const resetElem = document.createElement("span");
     resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
@@ -3934,13 +3724,12 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     resetElem.textContent = `(${t("reset")})`;
     resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
     const deactivate = () => {
-        var _a;
         if (!otherHotkeyInputActive)
             return;
         emitSiteEvent("hotkeyInputActive", false);
         otherHotkeyInputActive = false;
-        const curHk = currentHotkey !== null && currentHotkey !== void 0 ? currentHotkey : initialValue;
-        inputElem.innerText = (_a = curHk === null || curHk === void 0 ? void 0 : curHk.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+        const curHk = currentHotkey ?? initialValue;
+        inputElem.innerText = curHk?.code ?? t("hotkey_input_click_to_change");
         inputElem.dataset.state = infoElem.dataset.state = "inactive";
         inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
         setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
@@ -3971,7 +3760,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     document.addEventListener("keypress", (e) => {
         if (inputElem.dataset.state === "inactive")
             return;
-        if ((lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.code) === e.code && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.shift) === e.shiftKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.ctrl) === e.ctrlKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.alt) === e.altKey)
+        if (lastKeyDown?.code === e.code && lastKeyDown?.shift === e.shiftKey && lastKeyDown?.ctrl === e.ctrlKey && lastKeyDown?.alt === e.altKey)
             return;
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -4007,7 +3796,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
             ctrl: e.ctrlKey,
             alt: e.altKey,
         };
-        const keyChanged = (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.code) !== hotkey.code || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.shift) !== hotkey.shift || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.ctrl) !== hotkey.ctrl || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.alt) !== hotkey.alt;
+        const keyChanged = initialHotkey?.code !== hotkey.code || initialHotkey?.shift !== hotkey.shift || initialHotkey?.ctrl !== hotkey.ctrl || initialHotkey?.alt !== hotkey.alt;
         lastKeyDown = hotkey;
         onChange(hotkey);
         currentHotkey = hotkey;
@@ -4088,7 +3877,6 @@ let hiddenCopiedTxtTimeout;
  * TODO: replace with new menu using BytmDialog - see https://github.com/Sv443/BetterYTM/issues/23
  */
 async function mountCfgMenu() {
-    var _a, _b, _c, _d, _e, _f;
     try {
         if (isMenuMounting || hasMenuFinishedMounting)
             return;
@@ -4106,8 +3894,7 @@ async function mountCfgMenu() {
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
-            var _a;
-            if (isMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-cfg-menu-bg")
+            if (isMenuOpen && e.target?.id === "bytm-cfg-menu-bg")
                 closeCfgMenu(e);
         });
         document.body.addEventListener("keydown", (e) => {
@@ -4135,10 +3922,9 @@ async function mountCfgMenu() {
         if (logoSrc)
             titleLogoElem.src = logoSrc;
         onInteraction(titleLogoElem, (e) => {
-            var _a, _b;
             e.preventDefault();
             e.stopPropagation();
-            const clicks = Number((_b = (_a = titleLogoElem.dataset) === null || _a === void 0 ? void 0 : _a.clicks) !== null && _b !== void 0 ? _b : "0");
+            const clicks = Number(titleLogoElem.dataset?.clicks ?? "0");
             if (clicks === 2) {
                 titleLogoElem.classList.add("somersault");
                 titleLogoElem.dataset.clicks = "0";
@@ -4280,7 +4066,7 @@ async function mountCfgMenu() {
                     }
                     else if (parsed.formatVersion !== formatVersion)
                         return await showPrompt({ type: "alert", message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
-                    await setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
+                    await setFeatures({ ...getFeatures(), ...parsed.data });
                     if (await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
                         log("Reloading tab after importing configuration");
                         return reloadTab();
@@ -4406,17 +4192,16 @@ async function mountCfgMenu() {
         }
         sidenavCont.appendChild(sidenavBtmSectionCont);
         siteEvents.once("cfgMenuMounted", () => {
-            var _a;
             document.querySelectorAll("#bytm-ftconf-category-about a, #bytm-ftconf-category-changelog a").forEach((linkEl) => {
                 linkEl.target = "_blank";
             });
-            (_a = document.querySelector("#bytm-ftconf-category-changelog details")) === null || _a === void 0 ? void 0 : _a.setAttribute("open", "true");
+            document.querySelector("#bytm-ftconf-category-changelog details")
+                ?.setAttribute("open", "true");
         });
         //#region feature list
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
         const onCfgChange = async (key, initialVal, newVal) => {
-            var _a, _b, _c, _d;
             try {
                 const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
                 info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
@@ -4426,10 +4211,10 @@ async function mountCfgMenu() {
                     && featConf[k] !== initConfig$1[k]) : [];
                 const requiresReload = 
                 // @ts-expect-error
-                changedKeys.some((k) => { var _a; return ((_a = featInfo[k]) === null || _a === void 0 ? void 0 : _a.reloadRequired) !== false; });
+                changedKeys.some((k) => featInfo[k]?.reloadRequired !== false);
                 await setFeatures(featConf);
                 // @ts-expect-error
-                (_b = (_a = featInfo[key]) === null || _a === void 0 ? void 0 : _a.change) === null || _b === void 0 ? void 0 : _b.call(_a, key, initialVal, newVal);
+                featInfo[key]?.change?.(key, initialVal, newVal);
                 if (requiresReload) {
                     reloadFooterEl.classList.remove("hidden");
                     reloadFooterEl.removeAttribute("aria-hidden");
@@ -4442,8 +4227,8 @@ async function mountCfgMenu() {
                     await initTranslations(featConf.locale);
                     setLocale(featConf.locale);
                     const newText = t("lang_changed_prompt_reload");
-                    const newLangEmoji = ((_c = locales[featConf.locale]) === null || _c === void 0 ? void 0 : _c.emoji) ? `${locales[featConf.locale].emoji}\n` : "";
-                    const initLangEmoji = ((_d = locales[initLocale]) === null || _d === void 0 ? void 0 : _d.emoji) ? `${locales[initLocale].emoji}\n` : "";
+                    const newLangEmoji = locales[featConf.locale]?.emoji ? `${locales[featConf.locale].emoji}\n` : "";
+                    const initLangEmoji = locales[initLocale]?.emoji ? `${locales[initLocale].emoji}\n` : "";
                     const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
                     if (await showPrompt({
                         type: "confirm",
@@ -4478,14 +4263,13 @@ async function mountCfgMenu() {
          * If an error occurs during formatting (like when passing objects with circular references), the original value will be returned as a string (trimmed).
          */
         const fmtVal = (v, key) => {
-            var _a;
             try {
                 // @ts-expect-error
-                const renderValue = typeof ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.renderValue) === "function" ? featInfo[key].renderValue : undefined;
+                const renderValue = typeof featInfo?.[key]?.renderValue === "function" ? featInfo[key].renderValue : undefined;
                 const retVal = (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
                 return renderValue ? renderValue(retVal) : retVal;
             }
-            catch (_b) {
+            catch {
                 // absolute last resort fallback because stringify throws on circular refs
                 return String(v).trim();
             }
@@ -4522,7 +4306,7 @@ async function mountCfgMenu() {
                 const { type, default: ftDefault } = ftInfo;
                 const step = "step" in ftInfo ? ftInfo.step : undefined;
                 const val = featureCfg[featKey];
-                const initialVal = val !== null && val !== void 0 ? val : ftDefault;
+                const initialVal = val ?? ftDefault;
                 const ftConfElem = document.createElement("div");
                 ftConfElem.classList.add("bytm-ftitem");
                 {
@@ -4549,7 +4333,7 @@ async function mountCfgMenu() {
                     textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
                     textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
                     let adornmentElem;
-                    const adornContentAsync = (_a = ftInfo.textAdornment) === null || _a === void 0 ? void 0 : _a.call(ftInfo);
+                    const adornContentAsync = ftInfo.textAdornment?.();
                     const adornContent = await adornContentAsync;
                     if ((typeof adornContentAsync === "string" || adornContentAsync instanceof Promise) && typeof adornContent !== "undefined") {
                         adornmentElem = document.createElement("span");
@@ -4559,7 +4343,7 @@ async function mountCfgMenu() {
                     }
                     let helpElem;
                     // @ts-expect-error
-                    const hasHelpTextFunc = typeof ((_b = featInfo[featKey]) === null || _b === void 0 ? void 0 : _b.helpText) === "function";
+                    const hasHelpTextFunc = typeof featInfo[featKey]?.helpText === "function";
                     // @ts-expect-error
                     const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
                     if (await hasKey(`feature_helptext_${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
@@ -4635,10 +4419,9 @@ async function mountCfgMenu() {
                         advCopyHiddenBtn.textContent = t("copy_hidden");
                         advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
                         const copyHiddenInteraction = (e) => {
-                            var _a;
                             e.preventDefault();
                             e.stopPropagation();
-                            copyToClipboard((_a = getFeatures()[featKey]) !== null && _a !== void 0 ? _a : "");
+                            copyToClipboard(getFeatures()[featKey] ?? "");
                             advCopyHintElem.style.display = "inline";
                             if (typeof hiddenCopiedTxtTimeout === "undefined") {
                                 hiddenCopiedTxtTimeout = setTimeout(() => {
@@ -4742,7 +4525,7 @@ async function mountCfgMenu() {
                             ctrlElem.appendChild(labelElem);
                         }
                         inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
-                        inputElem.setAttribute("aria-labelledby", (_c = labelElem === null || labelElem === void 0 ? void 0 : labelElem.id) !== null && _c !== void 0 ? _c : `bytm-ftitem-text-${featKey}`);
+                        inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
                         ctrlElem.appendChild(inputElem);
                     }
                     else {
@@ -4796,11 +4579,11 @@ async function mountCfgMenu() {
                         }
                         if (customInputEl && !customInputEl.hasAttribute("aria-label"))
                             customInputEl.ariaLabel = t(`feature_desc_${featKey}`);
-                        customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
-                        if ((customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.getAttribute("aria-labelledby")) === null) {
+                        customInputEl?.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
+                        if (customInputEl?.getAttribute("aria-labelledby") === null) {
                             // try to find a label element to link to for a11y, else default to the text element
-                            const lbl = customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.querySelector("label");
-                            customInputEl === null || customInputEl === void 0 ? void 0 : customInputEl.setAttribute("aria-labelledby", lbl && lbl.id.length > 0 ? lbl.id : `bytm-ftitem-text-${featKey}`);
+                            const lbl = customInputEl?.querySelector("label");
+                            customInputEl?.setAttribute("aria-labelledby", lbl && lbl.id.length > 0 ? lbl.id : `bytm-ftitem-text-${featKey}`);
                         }
                         ctrlElem.appendChild(customInputEl);
                     }
@@ -4889,13 +4672,12 @@ async function mountCfgMenu() {
         featuresCont.appendChild(scrollIndicator);
         scrollIndicator.addEventListener("click", () => {
             const bottomAnchor = document.querySelector("#bytm-menu-bottom-anchor");
-            bottomAnchor === null || bottomAnchor === void 0 ? void 0 : bottomAnchor.scrollIntoView({
+            bottomAnchor?.scrollIntoView({
                 behavior: "smooth",
             });
         });
         featuresCont.addEventListener("scroll", (evt) => {
-            var _a, _b;
-            const scrollPos = (_b = (_a = evt.target) === null || _a === void 0 ? void 0 : _a.scrollTop) !== null && _b !== void 0 ? _b : 0;
+            const scrollPos = evt.target?.scrollTop ?? 0;
             const scrollIndicator = document.querySelector("#bytm-menu-scroll-indicator");
             if (!scrollIndicator)
                 return;
@@ -4921,7 +4703,7 @@ async function mountCfgMenu() {
             modeDisplayCont.id = "bytm-menu-mode-display-cont";
             for (const [id, trKey, resourceKey] of modeItems) {
                 const isSvg = resourceKey.startsWith("icon-");
-                const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: (_d = GM.info.scriptHandler) !== null && _d !== void 0 ? _d : "(your userscript manager extension)" });
+                const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM.info.scriptHandler ?? "(your userscript manager extension)" });
                 const modeDispWrapperEl = document.createElement("div");
                 modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
                 modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
@@ -4983,7 +4765,7 @@ async function mountCfgMenu() {
         }
         menuContainer.appendChild(footerCont);
         backgroundElem.appendChild(menuContainer);
-        ((_e = document.querySelector("#bytm-dialog-container")) !== null && _e !== void 0 ? _e : document.body).appendChild(backgroundElem);
+        (document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
         window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 250));
         log(`Mounted config menu element in ${Date.now() - startTs}ms`);
         forceEmitSiteEvent("cfgMenuMounted");
@@ -4992,7 +4774,7 @@ async function mountCfgMenu() {
         // ensure stuff is reset if menu was opened before being added
         isMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
-        (_f = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _f === void 0 ? void 0 : _f.removeAttribute("inert");
+        document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         // ensure menu is inert if BytmDialog instances stacked on top of it:
@@ -5001,7 +4783,7 @@ async function mountCfgMenu() {
         window.addEventListener("bytm:dialogOpened", (evt) => {
             if (!isMenuOpen || !("detail" in evt))
                 return;
-            const dlg = evt === null || evt === void 0 ? void 0 : evt.detail;
+            const dlg = evt?.detail;
             if (dlg && dlg instanceof BytmDialog) {
                 stackedOpenDialogIds.push(dlg.id);
                 menuContainer.setAttribute("aria-hidden", "true");
@@ -5009,8 +4791,7 @@ async function mountCfgMenu() {
             }
         });
         window.addEventListener("bytm:dialogClosed", (evt) => {
-            var _a;
-            const idx = stackedOpenDialogIds.indexOf((_a = evt === null || evt === void 0 ? void 0 : evt.detail) === null || _a === void 0 ? void 0 : _a.id);
+            const idx = stackedOpenDialogIds.indexOf(evt?.detail?.id);
             if (idx > -1)
                 stackedOpenDialogIds.splice(idx, 1);
             if (stackedOpenDialogIds.length === 0) {
@@ -5038,31 +4819,29 @@ async function mountCfgMenu() {
 //#region open & close
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 function closeCfgMenu(evt, enableScroll = true) {
-    var _a, _b, _c;
     if (!isMenuOpen)
         return;
     isMenuOpen = false;
-    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
+    evt?.bubbles && evt.stopPropagation();
     if (enableScroll) {
         document.body.classList.remove("bytm-disable-scroll");
-        (_a = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
+        document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     }
     const menuBg = document.querySelector("#bytm-cfg-menu-bg");
     clearTimeout(hiddenCopiedTxtTimeout);
     UserUtils.openDialogs.splice(UserUtils.openDialogs.indexOf("cfg-menu"), 1);
-    setCurrentDialogId((_b = UserUtils.openDialogs === null || UserUtils.openDialogs === void 0 ? void 0 : UserUtils.openDialogs[0]) !== null && _b !== void 0 ? _b : null);
+    setCurrentDialogId(UserUtils.openDialogs?.[0] ?? null);
     // since this menu doesn't have a BytmDialog instance, it's undefined here
     emitInterface("bytm:dialogClosed", undefined);
     emitInterface("bytm:dialogClosed:cfg-menu", undefined);
     if (!menuBg)
         return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
-    (_c = menuBg.querySelectorAll(".bytm-ftconf-adv-copy-hint")) === null || _c === void 0 ? void 0 : _c.forEach((el) => el.style.display = "none");
+    menuBg.querySelectorAll(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
 }
 /** Opens the config menu if it is closed */
 async function openCfgMenu() {
-    var _a;
     try {
         if (isMenuOpen)
             return;
@@ -5074,7 +4853,7 @@ async function openCfgMenu() {
         }
         isMenuOpen = true;
         document.body.classList.add("bytm-disable-scroll");
-        (_a = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+        document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-cfg-menu-bg");
         setCurrentDialogId("cfg-menu");
         UserUtils.openDialogs.unshift("cfg-menu");
@@ -5208,7 +4987,7 @@ async function addConfigMenuOptionYTM(container) {
     cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo$1.name);
     onInteraction(cfgOptItemElem, async (e) => {
         const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button button");
-        settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
+        settingsBtnElem?.click();
         if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
             openCfgMenu();
         if (!logoExchanged && (e.shiftKey || e.ctrlKey))
@@ -5246,7 +5025,7 @@ async function addConfigMenuOptionYT(container) {
     cfgOptElem.appendChild(cfgOptItemElem);
     cfgOptWrapperElem.appendChild(cfgOptElem);
     onInteraction(cfgOptWrapperElem, () => openCfgMenu());
-    const firstChild = container === null || container === void 0 ? void 0 : container.firstElementChild;
+    const firstChild = container?.firstElementChild;
     if (firstChild)
         container.insertBefore(cfgOptWrapperElem, firstChild);
     else
@@ -5266,7 +5045,6 @@ async function addAnchorImprovements() {
         const preventDefault = (e) => e.preventDefault();
         /** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
         const addListItemAnchors = (items) => {
-            var _a;
             for (const item of items) {
                 if (item.classList.contains("bytm-anchor-improved"))
                     continue;
@@ -5277,7 +5055,7 @@ async function addAnchorImprovements() {
                     continue;
                 const anchorElem = document.createElement("a");
                 anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
-                anchorElem.href = (_a = titleElem === null || titleElem === void 0 ? void 0 : titleElem.href) !== null && _a !== void 0 ? _a : "#";
+                anchorElem.href = titleElem?.href ?? "#";
                 anchorElem.target = "_self";
                 anchorElem.role = "button";
                 anchorElem.addEventListener("click", preventDefault);
@@ -5422,12 +5200,11 @@ const sidebarPaths = [
  */
 function improveSidebarAnchors(sidebarItems) {
     sidebarItems.forEach((item, i) => {
-        var _a;
         const anchorElem = document.createElement("a");
         anchorElem.classList.add("bytm-anchor", "bytm-no-select");
         anchorElem.role = "button";
         anchorElem.target = "_self";
-        anchorElem.href = (_a = sidebarPaths[i]) !== null && _a !== void 0 ? _a : "#";
+        anchorElem.href = sidebarPaths[i] ?? "#";
         anchorElem.ariaLabel = anchorElem.title = t("middle_click_open_tab");
         anchorElem.addEventListener("click", (e) => {
             e.preventDefault();
@@ -5442,7 +5219,6 @@ function improveSongListClickArea(items) {
             return;
         item.classList.add("bytm-click-area-improved");
         item.addEventListener("click", (e) => {
-            var _a;
             const tgt = e.target;
             if (!tgt)
                 return;
@@ -5457,11 +5233,11 @@ function improveSongListClickArea(items) {
             ];
             const antiConditions = [
                 (el) => el.tagName.toLowerCase() === "a",
-                (el) => { var _a; return Boolean((_a = el.getAttribute("href")) === null || _a === void 0 ? void 0 : _a.length); },
+                (el) => Boolean(el.getAttribute("href")?.length),
                 (el) => el.classList.contains("bytm-anchor"),
             ];
             if (conditions.some((cnd) => cnd(tgt)) && antiConditions.every((acnd) => !acnd(tgt)))
-                (_a = item.querySelector("ytmusic-play-button-renderer")) === null || _a === void 0 ? void 0 : _a.click();
+                item.querySelector("ytmusic-play-button-renderer")?.click();
         });
         itemsAmt++;
     });
@@ -5655,7 +5431,6 @@ async function initThumbnailOverlay() {
             if (getFeature("thumbnailOverlayToggleBtnShown")) {
                 addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
                     async listener(toggleBtnElem) {
-                        var _a;
                         const toggleBtnIconElem = toggleBtnElem.querySelector("svg");
                         if (toggleBtnIconElem) {
                             let key = `icon-image${overlayState === ThumbOvlState.YT
@@ -5666,7 +5441,7 @@ async function initThumbnailOverlay() {
                             if (getCurrentMediaType() === "video" && overlayState !== ThumbOvlState.Off)
                                 key = "icon-image_filled";
                             setInnerHtml(toggleBtnElem, await resourceAsString(key));
-                            (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
+                            toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
                         }
                         if (toggleBtnElem)
                             toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
@@ -5692,7 +5467,7 @@ async function initThumbnailOverlay() {
                         toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
                         toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
                     }
-                    if ((toggleBtnElem === null || toggleBtnElem === void 0 ? void 0 : toggleBtnElem.href) !== "" && (toggleBtnElem === null || toggleBtnElem === void 0 ? void 0 : toggleBtnElem.href) === thumbUrl && (thumbImgElem === null || thumbImgElem === void 0 ? void 0 : thumbImgElem.src) === thumbUrl)
+                    if (toggleBtnElem?.href !== "" && toggleBtnElem?.href === thumbUrl && thumbImgElem?.src === thumbUrl)
                         return;
                     if (toggleBtnElem)
                         toggleBtnElem.href = thumbUrl;
@@ -5711,11 +5486,9 @@ async function initThumbnailOverlay() {
                 }).catch(() => void 0);
                 addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
                     async listener() {
-                        var _a, _b, _c, _d;
                         const [primaryArtist, albumName] = (() => {
                             // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
                             // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
-                            var _a, _b;
                             const parent = document.querySelector(".content-info-wrapper .subtitle yt-formatted-string");
                             if (!parent)
                                 return [undefined, undefined];
@@ -5733,20 +5506,22 @@ async function initThumbnailOverlay() {
                             const firstArtistLink = splitList[0].find((el) => el.tagName === "A");
                             const firstArtistName = splitList[0].find((el) => !el.innerText.match(/^\s*•\s*$/));
                             return [
-                                (_a = (firstArtistLink !== null && firstArtistLink !== void 0 ? firstArtistLink : firstArtistName)) === null || _a === void 0 ? void 0 : _a.innerText,
-                                (_b = splitList[1].find((el) => el.tagName === "A")) === null || _b === void 0 ? void 0 : _b.innerText,
+                                (firstArtistLink ?? firstArtistName)?.innerText,
+                                splitList[1].find((el) => el.tagName === "A")?.innerText,
                             ];
                         })();
                         const iTunesAlbum = primaryArtist && albumName
                             ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
                             : undefined;
-                        const imgRes = (_a = getFeature("thumbnailOverlayITunesImgRes")) !== null && _a !== void 0 ? _a : featInfo.thumbnailOverlayITunesImgRes.default;
-                        const iTunesUrl = ((_b = iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl100) !== null && _b !== void 0 ? _b : iTunesAlbum === null || iTunesAlbum === void 0 ? void 0 : iTunesAlbum.artworkUrl60);
+                        const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
+                        const iTunesUrl = (iTunesAlbum?.artworkUrl100 ?? iTunesAlbum?.artworkUrl60);
                         iTunesUrl && !ac.signal.aborted && ac.abort();
-                        const thumbUrl = (_d = (_c = iTunesUrl === null || iTunesUrl === void 0 ? void 0 : iTunesUrl.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)) !== null && _c !== void 0 ? _c : bestNativeThumbUrl) !== null && _d !== void 0 ? _d : await getBestThumbnailUrl(videoID);
+                        const thumbUrl = iTunesUrl?.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)
+                            ?? bestNativeThumbUrl
+                            ?? await getBestThumbnailUrl(videoID);
                         if (thumbUrl) {
                             log(`Successfully resolved artwork for '${primaryArtist} - ${albumName}'`);
-                            setOverlayUrl(bestNativeThumbUrl !== null && bestNativeThumbUrl !== void 0 ? bestNativeThumbUrl : thumbUrl, thumbUrl);
+                            setOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
                         }
                         else
                             warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
@@ -5758,7 +5533,6 @@ async function initThumbnailOverlay() {
             }
         };
         const createElements = async () => {
-            var _a;
             try {
                 // overlay
                 const overlayElem = document.createElement("div");
@@ -5816,7 +5590,7 @@ async function initThumbnailOverlay() {
                         updateOverlayVisibility(true);
                     });
                     setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
-                    (_a = toggleBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
+                    toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
                     addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
                         listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
                     });
@@ -5877,7 +5651,7 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
     let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
     if (!bestMatch)
         [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
-    const match = bestMatch !== null && bestMatch !== void 0 ? bestMatch : fallback;
+    const match = bestMatch ?? fallback;
     if (match) {
         const entries = albumArtCacheStore.getData().entries;
         if (!entries.find((e) => e.videoId === videoId)) {
@@ -5973,7 +5747,6 @@ async function initShowVotes() {
                 if (getFeature("showVotes")) {
                     addVoteNumbers(voteCont, voteObj);
                     siteEvents.on("watchIdChanged", async (videoID) => {
-                        var _a, _b;
                         const labelLikes = document.querySelector("ytmusic-like-button-renderer .bytm-vote-label.likes");
                         const labelDislikes = document.querySelector("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
                         if (!labelLikes || !labelDislikes)
@@ -5985,12 +5758,12 @@ async function initShowVotes() {
                             return error("Couldn't fetch votes from the Return YouTube Dislike API");
                         const likesLabelText = tp("vote_label_likes", voteObj.likes, formatNumber(voteObj.likes, "long"));
                         const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatNumber(voteObj.dislikes, "long"));
-                        labelLikes.dataset.watchId = (_a = getWatchId()) !== null && _a !== void 0 ? _a : "";
+                        labelLikes.dataset.watchId = getWatchId() ?? "";
                         labelLikes.textContent = formatNumber(voteObj.likes);
                         labelLikes.title = labelLikes.ariaLabel = likesLabelText;
                         labelDislikes.textContent = formatNumber(voteObj.dislikes);
                         labelDislikes.title = labelDislikes.ariaLabel = dislikesLabelText;
-                        labelDislikes.dataset.watchId = (_b = getWatchId()) !== null && _b !== void 0 ? _b : "";
+                        labelDislikes.dataset.watchId = getWatchId() ?? "";
                         addSelectorListener("playerBar", "ytmusic-like-button-renderer#like-button-renderer", {
                             listener: (bar) => upsertVoteBtnLabels(bar, likesLabelText, dislikesLabelText),
                         });
@@ -6009,17 +5782,15 @@ function addVoteNumbers(voteCont, voteObj) {
     if (!likeBtn || !dislikeBtn)
         return error("Couldn't find like or dislike button while adding vote numbers");
     const createLabel = (amount, type) => {
-        var _a;
         const label = document.createElement("span");
         label.classList.add("bytm-vote-label", "bytm-no-select", type);
         label.textContent = String(formatNumber(amount));
         label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatNumber(amount, "long"));
-        label.dataset.watchId = (_a = getWatchId()) !== null && _a !== void 0 ? _a : "";
+        label.dataset.watchId = getWatchId() ?? "";
         label.addEventListener("click", (e) => {
-            var _a;
             e.preventDefault();
             e.stopPropagation();
-            (_a = (type === "likes" ? likeBtn : dislikeBtn).querySelector("button")) === null || _a === void 0 ? void 0 : _a.click();
+            (type === "likes" ? likeBtn : dislikeBtn).querySelector("button")?.click();
         });
         return label;
     };
@@ -6113,7 +5884,6 @@ async function initArrowKeySkip() {
         listener: (el) => sliderEl = el,
     });
     document.addEventListener("keydown", (evt) => {
-        var _a, _b;
         if (!getFeature("arrowKeySupport") || isIgnoredInputElement())
             return;
         if (["ArrowUp", "ArrowDown"].includes(evt.code) && getDomain() === "ytm")
@@ -6122,11 +5892,11 @@ async function initArrowKeySkip() {
             return;
         const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
         // discard the event when a (text) input is currently active, like when editing a playlist or writing a comment
-        if (isIgnoredInputElement() && !allowedClasses.some((cls) => { var _a; return (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.classList.contains(cls); }))
-            return info(`Captured valid key to skip forward or backward but the current active element is <${(_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName.toLowerCase()}>, so the keypress is ignored`);
+        if (isIgnoredInputElement() && !allowedClasses.some((cls) => document.activeElement?.classList.contains(cls)))
+            return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
         evt.preventDefault();
         evt.stopImmediatePropagation();
-        let skipBy = (_b = getFeature("arrowKeySkipBy")) !== null && _b !== void 0 ? _b : featInfo.arrowKeySkipBy.default;
+        let skipBy = getFeature("arrowKeySkipBy") ?? featInfo.arrowKeySkipBy.default;
         if (evt.code === "ArrowLeft")
             skipBy *= -1;
         log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
@@ -6137,7 +5907,6 @@ async function initArrowKeySkip() {
     log("Added arrow key press listener");
 }
 function handleVolumeKeyPress(evt) {
-    var _a;
     evt.preventDefault();
     evt.stopImmediatePropagation();
     if (!getVideoElement())
@@ -6147,7 +5916,7 @@ function handleVolumeKeyPress(evt) {
     const step = Number(sliderEl.step);
     const newVol = UserUtils.clamp(Number(sliderEl.value)
         + (evt.code === "ArrowUp" ? 1 : -1)
-            * UserUtils.clamp(((_a = getFeature("arrowKeyVolumeStep")) !== null && _a !== void 0 ? _a : featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
+            * UserUtils.clamp((getFeature("arrowKeyVolumeStep") ?? featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
     if (newVol !== Number(sliderEl.value)) {
         sliderEl.value = String(newVol);
         sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
@@ -6271,9 +6040,9 @@ async function initLikeDislikeHotkeys() {
             return;
         const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
         if (hotkeyMatches(e, getFeature("likeHotkey")))
-            likeBtn === null || likeBtn === void 0 ? void 0 : likeBtn.click();
+            likeBtn?.click();
         else if (hotkeyMatches(e, getFeature("dislikeHotkey")))
-            dislikeBtn === null || dislikeBtn === void 0 ? void 0 : dislikeBtn.click();
+            dislikeBtn?.click();
     }, { capture: true });
 }
 //#region lyrics
@@ -6287,7 +6056,7 @@ async function initLyricsHotkey() {
             e.preventDefault();
             e.stopImmediatePropagation();
             const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
-            lyricsBtn === null || lyricsBtn === void 0 ? void 0 : lyricsBtn.click();
+            lyricsBtn?.click();
         }
     }, { capture: true });
 }
@@ -6311,12 +6080,11 @@ async function initSearchBarHotkeys() {
         ? "ytmusic-search-box input"
         : "yt-searchbox input");
     const checkFocusHotkey = (e) => {
-        var _a;
         if (isIgnoredInputElement() || !getFeature("focusSearchBarHotkeyEnabled"))
             return;
         e.preventDefault();
         e.stopImmediatePropagation();
-        (_a = getSearchBarInput()) === null || _a === void 0 ? void 0 : _a.focus();
+        getSearchBarInput()?.focus();
         log("Focused on the search bar");
     };
     const checkClearHotkey = (e) => {
@@ -6341,7 +6109,12 @@ let lastProxyHkTime = 0;
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
     const dispatchProxyKey = (hkProps) => {
-        document.body.dispatchEvent(new KeyboardEvent("keydown", Object.assign(Object.assign({}, hkProps), { bubbles: true, cancelable: false, view: UserUtils.getUnsafeWindow() })));
+        document.body.dispatchEvent(new KeyboardEvent("keydown", {
+            ...hkProps,
+            bubbles: true,
+            cancelable: false,
+            view: UserUtils.getUnsafeWindow(),
+        }));
         log("Dispatched proxy hotkey:", hkProps);
     };
     /** All proxy hotkey groups, identified by the feature key that toggles them off or on */
@@ -6390,8 +6163,7 @@ async function initProxyHotkeys() {
         for (const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
             if (getFeature(featKey) !== true)
                 continue;
-            for (let _a of proxyGroup) {
-                const { hkFeatKey, onPress, domains } = _a, rest = __rest(_a, ["hkFeatKey", "onPress", "domains"]);
+            for (const { hkFeatKey, onPress, domains, ...rest } of proxyGroup) {
                 if (!domains.includes(getDomain()))
                     continue;
                 const nowTs = Date.now();
@@ -6458,7 +6230,6 @@ async function fixThemeSong() {
                 case "lighter":
                     return "--ts-palette-lightmuted-hex";
             }
-            ;
         })();
         document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
     }
@@ -6581,10 +6352,9 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
         lyricsBtnElem.role = "link";
         lyricsBtnElem.tabIndex = 0;
         onInteraction(lyricsBtnElem, async (e) => {
-            var _a, _b, _c;
             e.preventDefault();
             e.stopImmediatePropagation();
-            const thumbSrc = (_a = queueItem.querySelector("yt-img-shadow img")) === null || _a === void 0 ? void 0 : _a.src;
+            const thumbSrc = queueItem.querySelector("yt-img-shadow img")?.src;
             const isVideo = thumbSrc ? thumbSrc.includes("ytimg.com/vi/") : true;
             // TODO: if isVideo, use just the song title, not the artist name
             let song, artist;
@@ -6593,8 +6363,8 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                 if (!songInfo)
                     return error("Couldn't find song info element in queue item", queueItem);
                 const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
-                song = songEl === null || songEl === void 0 ? void 0 : songEl.textContent;
-                artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
+                song = songEl?.textContent;
+                artist = artistEl?.textContent;
             }
             else if (listType === "genericList") {
                 const songEl = queueItem.querySelector(".title-column yt-formatted-string a");
@@ -6603,19 +6373,19 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                     artistEl = document.querySelector("ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a");
                 if (!artistEl || !artistEl.textContent)
                     artistEl = queueItem.querySelector(".secondary-flex-columns yt-formatted-string:first-child a");
-                song = songEl === null || songEl === void 0 ? void 0 : songEl.textContent;
-                artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
+                song = songEl?.textContent;
+                artist = artistEl?.textContent;
                 if (!artist) {
                     // new playlist design
                     artistEl = document.querySelector("ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]");
-                    artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
+                    artist = artistEl?.textContent;
                 }
             }
             else
                 return error("Invalid list type:", listType);
             // hate doing it like this but there's nothing else in the DOM indicating what format the title is in
             if (song && isVideo && song.includes("-")) {
-                artist = (_b = song.split("-")[0]) === null || _b === void 0 ? void 0 : _b.trim();
+                artist = song.split("-")[0]?.trim();
                 song = song.split("-").slice(1).join("-").trim();
             }
             if (!song || !artist)
@@ -6630,21 +6400,21 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
             if (cachedLyricsEntry)
                 lyricsUrl = resolveLyricsUrl(cachedLyricsEntry.path);
             else if (!queueItem.hasAttribute("data-bytm-loading")) {
-                const imgEl = lyricsBtnElem === null || lyricsBtnElem === void 0 ? void 0 : lyricsBtnElem.querySelector("img, svg");
+                const imgEl = lyricsBtnElem?.querySelector("img, svg");
                 if (!cachedLyricsEntry) {
                     queueItem.setAttribute("data-bytm-loading", "");
                     if (imgEl) {
                         if (imgEl.tagName === "IMG") {
                             imgEl.src = await getResourceUrl("icon-spinner");
-                            imgEl === null || imgEl === void 0 ? void 0 : imgEl.classList.add("bytm-spinner");
+                            imgEl?.classList.add("bytm-spinner");
                         }
                         else if (lyricsBtnElem) {
                             setInnerHtml(lyricsBtnElem, await resourceAsString("icon-spinner"));
-                            (_c = lyricsBtnElem.querySelector("svg")) === null || _c === void 0 ? void 0 : _c.classList.add("bytm-generic-btn-img", "bytm-spinner");
+                            lyricsBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img", "bytm-spinner");
                         }
                     }
                 }
-                const cachedPath = cachedLyricsEntry === null || cachedLyricsEntry === void 0 ? void 0 : cachedLyricsEntry.path;
+                const cachedPath = cachedLyricsEntry?.path;
                 lyricsUrl = cachedPath
                     ? resolveLyricsUrl(cachedPath)
                     : await fetchLyricsUrlTop(artistsSan, songSan);
@@ -6657,15 +6427,14 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                     });
                 }
                 const resetImgElem = async () => {
-                    var _a;
                     if (imgEl) {
                         if (imgEl.tagName === "IMG") {
                             imgEl.src = lyricsIconUrl;
-                            imgEl === null || imgEl === void 0 ? void 0 : imgEl.classList.remove("bytm-spinner");
+                            imgEl?.classList.remove("bytm-spinner");
                         }
                         else if (lyricsBtnElem) {
                             setInnerHtml(lyricsBtnElem, await resourceAsString("icon-lyrics"));
-                            (_a = lyricsBtnElem.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-generic-btn-img");
+                            lyricsBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
                         }
                     }
                 };
@@ -6716,20 +6485,20 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                     queueItem.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: false }));
                 }
                 queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
-                queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.setAttribute("data-bytm-hidden", "true");
+                queuePopupCont?.setAttribute("data-bytm-hidden", "true");
                 await UserUtils.pauseFor(15);
                 delImgElem.src = deleteIconUrl;
                 delImgElem.classList.remove("bytm-spinner");
-                const removeFromQueueOrPlaylistBtn = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-                const removeFromQueueBtnOptional = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)");
+                const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+                const removeFromQueueBtnOptional = queuePopupCont?.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)");
                 let removeFromQueueBtn;
                 // in regular queues, the 3rd item is "remove from queue"
                 // in playlists, the 3rd item is "remove from playlist", and the 4th item is "remove from queue"
-                if (removeFromQueueBtnOptional && (removeFromQueueBtnOptional === null || removeFromQueueBtnOptional === void 0 ? void 0 : removeFromQueueBtnOptional.previousElementSibling) === removeFromQueueOrPlaylistBtn)
+                if (removeFromQueueBtnOptional && removeFromQueueBtnOptional?.previousElementSibling === removeFromQueueOrPlaylistBtn)
                     removeFromQueueBtn = removeFromQueueBtnOptional;
                 else if (removeFromQueueOrPlaylistBtn)
                     removeFromQueueBtn = removeFromQueueOrPlaylistBtn;
-                removeFromQueueBtn === null || removeFromQueueBtn === void 0 ? void 0 : removeFromQueueBtn.click();
+                removeFromQueueBtn?.click();
                 // queue items aren't removed automatically outside of the current queue
                 if (removeFromQueueBtn && listType === "genericList") {
                     await UserUtils.pauseFor(200);
@@ -6738,7 +6507,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                 }
                 if (!removeFromQueueBtn) {
                     error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
-                    dotsBtnElem === null || dotsBtnElem === void 0 ? void 0 : dotsBtnElem.click();
+                    dotsBtnElem?.click();
                     delImgElem.src = await getResourceUrl("icon-error");
                     if (deleteBtnElem)
                         deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list"));
@@ -6748,7 +6517,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                 error("Couldn't remove song from queue due to error:", err);
             }
             finally {
-                queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.removeAttribute("data-bytm-hidden");
+                queuePopupCont?.removeAttribute("data-bytm-hidden");
             }
         });
         deleteBtnElem.appendChild(delImgElem);
@@ -6757,11 +6526,11 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
     deleteBtnElem && queueBtnsCont.appendChild(createRipple(deleteBtnElem));
     const parentEl = queueItem.querySelector(containerParentSelector);
     if (insertPosition === "child")
-        parentEl === null || parentEl === void 0 ? void 0 : parentEl.appendChild(queueBtnsCont);
+        parentEl?.appendChild(queueBtnsCont);
     else if (insertPosition === "beforeParent")
-        parentEl === null || parentEl === void 0 ? void 0 : parentEl.before(queueBtnsCont);
+        parentEl?.before(queueBtnsCont);
     else if (insertPosition === "afterParent")
-        parentEl === null || parentEl === void 0 ? void 0 : parentEl.after(queueBtnsCont);
+        parentEl?.after(queueBtnsCont);
     queueItem.classList.add("bytm-has-queue-btns");
 }
 //#region track numbers
@@ -6851,11 +6620,10 @@ async function initVolumeFeatures() {
 function initScrollStep(volSliderCont, sliderElem) {
     for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
         volSliderCont.addEventListener(evtName, (e) => {
-            var _a, _b;
             e.preventDefault();
             // cancels all the other events that would be fired
             e.stopImmediatePropagation();
-            const delta = Number((_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e === null || e === void 0 ? void 0 : e.detail) !== null && _b !== void 0 ? _b : 1);
+            const delta = Number(e.deltaY ?? e?.detail ?? 1);
             if (isNaN(delta))
                 return warn("Invalid scroll delta:", delta);
             const volumeDir = -Math.sign(delta);
@@ -6892,9 +6660,8 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
         }
     }
     const getLabel = (value) => {
-        var _a, _b;
         if (sliderElem.dataset.dragging === "true") {
-            const roundedValue = Math.round(Number(value) / ((_a = getFeature("volumeSliderStep")) !== null && _a !== void 0 ? _a : 1)) * ((_b = getFeature("volumeSliderStep")) !== null && _b !== void 0 ? _b : 1);
+            const roundedValue = Math.round(Number(value) / (getFeature("volumeSliderStep") ?? 1)) * (getFeature("volumeSliderStep") ?? 1);
             return `${roundedValue}%`;
         }
         else
@@ -6907,7 +6674,7 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
     // prevent video from minimizing
     labelContElem.addEventListener("click", (e) => e.stopPropagation());
     labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
-    const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeature("volumeSliderStep")) !== null && _a !== void 0 ? _a : slider.step); };
+    const getLabelText = (slider) => t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
     const labelFull = getLabelText(sliderElem);
     sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
@@ -7024,10 +6791,9 @@ class ExampleError extends UserUtils.UUError {
 }
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className, title, resource, extraAttributes) => {
-    var _a;
     title = title ? await UserUtils.consumeStringGen(title) : undefined;
     extraAttributes = extraAttributes ? await UserUtils.consumeStringGen(extraAttributes) : undefined;
-    return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${(_a = await resourceAsString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`;
+    return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 };
 /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 const combineAdornments = (adornments) => new Promise(async (resolve) => {
@@ -8190,11 +7956,10 @@ const formatVersion = 11;
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 const defaultData = UserUtils.purifyObj(Object.keys(featInfo)
     // @ts-expect-error
-    .filter((ftKey) => { var _a; return ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[ftKey]) === null || _a === void 0 ? void 0 : _a.default) !== undefined; })
+    .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
     .reduce((acc, key) => {
-    var _a;
     // @ts-expect-error
-    acc[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
+    acc[key] = featInfo?.[key]?.default;
     return acc;
 }, {}));
 //#region migrations
@@ -8206,7 +7971,11 @@ const migrations = {
             return defaultData;
         const queueBtnsEnabled = Boolean(oldData.queueButtons);
         delete oldData.queueButtons;
-        return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
+        return {
+            ...oldData,
+            deleteFromQueueButton: queueBtnsEnabled,
+            lyricsQueueButton: queueBtnsEnabled,
+        };
     },
     // 2 -> 3 (v1.0)
     3: (oldData) => useNewDefaults(oldData, [
@@ -8215,17 +7984,21 @@ const migrations = {
     ]),
     // 3 -> 4 (v1.1)
     4: (oldData) => {
-        var _a, _b, _c, _d;
         const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
-        return Object.assign(Object.assign({}, useNewDefaults(oldData, [
-            "rememberSongTime", "rememberSongTimeSites",
-            "volumeSliderScrollStep", "locale", "versionCheck",
-        ])), { arrowKeySkipBy: 10, switchSitesHotkey: {
-                code: (_a = oldSwitchSitesHotkey.key) !== null && _a !== void 0 ? _a : "F9",
-                shift: Boolean((_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false),
-                ctrl: Boolean((_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false),
-                alt: Boolean((_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false),
-            }, listButtonsPlacement: "queueOnly" });
+        return {
+            ...useNewDefaults(oldData, [
+                "rememberSongTime", "rememberSongTimeSites",
+                "volumeSliderScrollStep", "locale", "versionCheck",
+            ]),
+            arrowKeySkipBy: 10,
+            switchSitesHotkey: {
+                code: oldSwitchSitesHotkey.key ?? "F9",
+                shift: Boolean(oldSwitchSitesHotkey.shift ?? false),
+                ctrl: Boolean(oldSwitchSitesHotkey.ctrl ?? false),
+                alt: Boolean(oldSwitchSitesHotkey.meta ?? false),
+            },
+            listButtonsPlacement: "queueOnly",
+        };
     },
     // 4 -> 5 (v2.0)
     5: (oldData) => useNewDefaults(oldData, [
@@ -8335,10 +8108,9 @@ const migrations = {
 //#region migration helpers
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useNewDefaults(baseData, resetKeys) {
-    var _a;
-    const newData = Object.assign(Object.assign({}, defaultData), (baseData !== null && baseData !== void 0 ? baseData : {}));
+    const newData = { ...defaultData, ...(baseData ?? {}) };
     for (const key of resetKeys) // @ts-expect-error
-        newData[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default; // typescript funny moments
+        newData[key] = featInfo?.[key]?.default; // typescript funny moments
     return newData;
 }
 /**
@@ -8347,11 +8119,10 @@ function useNewDefaults(baseData, resetKeys) {
  * Returns a copy of the object.
  */
 function useNewDefaultsIfUnchanged(oldData, defaults) {
-    var _a;
-    const newData = Object.assign({}, oldData);
+    const newData = { ...oldData };
     for (const { key, oldDefault } of defaults) {
         // @ts-expect-error
-        const defaultVal = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
+        const defaultVal = featInfo?.[key]?.default;
         if (newData[key] === oldDefault)
             newData[key] = defaultVal; // we love TS
     }
@@ -8380,7 +8151,7 @@ async function initConfig() {
         if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
             oldDataHash = await UserUtils.computeHash(JSON.stringify(oldDataObj), "sha256");
     }
-    catch (_a) {
+    catch {
     }
     // remove extraneous keys
     let data = fixCfgKeys(await configStore.loadData());
@@ -8411,7 +8182,7 @@ async function initConfig() {
         }
     }
     emitInterface("bytm:configReady");
-    return Object.assign({}, data);
+    return { ...data };
 }
 //#region fix keys
 /**
@@ -8419,7 +8190,7 @@ async function initConfig() {
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
 function fixCfgKeys(cfg) {
-    const newCfg = Object.assign({}, cfg);
+    const newCfg = { ...cfg };
     const passedKeys = Object.keys(cfg);
     const defaultKeys = Object.keys(defaultData);
     const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
@@ -8543,7 +8314,7 @@ const globalFuncs = purifyObj({
 });
 /** Initializes the BYTM interface */
 function initInterface() {
-    const props = Object.assign(Object.assign(Object.assign({ 
+    const props = {
         // constants
         mode,
         branch,
@@ -8551,7 +8322,11 @@ function initInterface() {
         buildNumber,
         initialParams,
         compressionFormat,
-        sessionStorageAvailable }, scriptInfo), globalFuncs), { 
+        sessionStorageAvailable,
+        // meta
+        ...scriptInfo,
+        // functions
+        ...globalFuncs,
         // classes
         NanoEmitter,
         // dialogs legacy (TODO: remove in v4)
@@ -8565,7 +8340,8 @@ function initInterface() {
         // libraries
         CoreUtils: CoreUtils__namespace,
         UserUtils: UserUtils__namespace,
-        compareVersions: compareVersions__namespace });
+        compareVersions: compareVersions__namespace,
+    };
     for (const [key, value] of Object.entries(props))
         setGlobalProp(key, value);
     log("Initialized BYTM interface");
@@ -8580,12 +8356,11 @@ function setGlobalProp(key, value) {
 }
 /** Emits an event on the BYTM interface */
 function emitInterface(type, ...detail) {
-    var _a;
     try {
-        getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: (_a = detail === null || detail === void 0 ? void 0 : detail[0]) !== null && _a !== void 0 ? _a : undefined }));
+        getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
         //@ts-expect-error
         emitOnPlugins(type, undefined, ...detail);
-        log(`Emitted interface event '${type}'${detail.length > 0 && (detail === null || detail === void 0 ? void 0 : detail[0]) ? " with data:" : ""}`, ...detail);
+        log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
     }
     catch (err) {
         error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
@@ -8612,7 +8387,6 @@ function initPlugins() {
 }
 /** Registers a plugin on the BYTM interface. */
 function registerPlugin(def) {
-    var _a, _b;
     // TODO: check perms and ask user for initial activation
     try {
         if (pluginsInitialized)
@@ -8622,7 +8396,7 @@ function registerPlugin(def) {
             throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
         const validationErrors = validatePluginDef(def);
         if (validationErrors)
-            throw new PluginError(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
+            throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
         const events = new NanoEmitter({ publicEmit: true });
         const token = crypto.randomUUID();
         registeredPlugins.set(plKey, {
@@ -8694,28 +8468,26 @@ function getPlugin(...args) {
  * @public Intended for general use in plugins.
  */
 function getPluginInfo(...args) {
-    var _a;
     if (resolveToken(args[0]) === undefined)
         return undefined;
-    return pluginDefToInfo((_a = registeredPlugins.get(typeof args[1] === "string" && typeof args[2] === "undefined"
+    return pluginDefToInfo(registeredPlugins.get(typeof args[1] === "string" && typeof args[2] === "undefined"
         ? args[1]
         : args.length === 2
             ? `${args[2]}/${args[1]}`
-            : getPluginKey(args[1]))) === null || _a === void 0 ? void 0 : _a.def);
+            : getPluginKey(args[1]))?.def);
 }
 /**
  * @private FOR INTERNAL USE ONLY!
  * Whether the given plugin has the given granted intents.
  */
 function pluginHasPerms(...args) {
-    var _a;
     const plugin = typeof args[0] === "string" && typeof args[1] === "string"
         ? getPlugin(args[0], args[1])
         : getPlugin(args[0]);
     if (!plugin)
         return false;
     const asArray = (value) => Array.isArray(value) ? value : [value];
-    const perms = (_a = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2]) : asArray(args[1]))) !== null && _a !== void 0 ? _a : [];
+    const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2]) : asArray(args[1])) ?? [];
     if (!Array.isArray(perms))
         throw new TypeError("The second argument must be an array of PluginIntent values");
     const pluginIntents = defToIntentsBitSet(plugin.def);
@@ -8737,9 +8509,9 @@ function validatePluginDef(pluginDef) {
     // def.plugin and its properties:
     typeof pluginDef.plugin !== "object" && addNoPropErr("plugin", "object");
     const { plugin } = pluginDef;
-    !(plugin === null || plugin === void 0 ? void 0 : plugin.name) && addNoPropErr("plugin.name", "string");
-    !(plugin === null || plugin === void 0 ? void 0 : plugin.namespace) && addNoPropErr("plugin.namespace", "string");
-    if (typeof (plugin === null || plugin === void 0 ? void 0 : plugin.version) !== "string")
+    !plugin?.name && addNoPropErr("plugin.name", "string");
+    !plugin?.namespace && addNoPropErr("plugin.namespace", "string");
+    if (typeof plugin?.version !== "string")
         addNoPropErr("plugin.version", "MAJOR.MINOR.PATCH");
     else if (!compareVersions__namespace.validateStrict(plugin.version))
         addInvalidPropErr("plugin.version", plugin.version, ["0.0.1", "2.5.21-rc.1"]);
@@ -8747,10 +8519,9 @@ function validatePluginDef(pluginDef) {
 }
 /** Checks whether the passed token is a valid auth token for any registered plugin and returns the plugin ID, else returns undefined */
 function resolveToken(token) {
-    var _a, _b;
     return typeof token === "string" && token.length > 0
-        ? (_b = (_a = [...registeredPluginTokens.entries()]
-            .find(([k, t]) => registeredPlugins.has(k) && token === t)) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : undefined
+        ? [...registeredPluginTokens.entries()]
+            .find(([k, t]) => registeredPlugins.has(k) && token === t)?.[0] ?? undefined
         : undefined;
 }
 //#region proxy funcs
@@ -8891,13 +8662,21 @@ function initObservers() {
         //#region body
         // -> the entire <body> element - use sparingly due to performance impacts!
         //    enabled immediately
-        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 150, subtree: false }));
+        globservers.body = new UserUtils.SelectorObserver(document.body, {
+            ...defaultObserverOptions,
+            defaultDebounce: 150,
+            subtree: false,
+        });
         globservers.body.enable();
         //#region bytmDialogContainer
         // -> the container for all BytmDialog instances
         //    enabled immediately
         const bytmDialogContainerSelector = "#bytm-dialog-container";
-        globservers.bytmDialogContainer = new UserUtils.SelectorObserver(bytmDialogContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 100, subtree: true }));
+        globservers.bytmDialogContainer = new UserUtils.SelectorObserver(bytmDialogContainerSelector, {
+            ...defaultObserverOptions,
+            defaultDebounce: 100,
+            subtree: true,
+        });
         globservers.bytmDialogContainer.enable();
         switch (getDomain()) {
             case "ytm": {
@@ -8906,7 +8685,11 @@ function initObservers() {
                 // -> for example the /channel/UC... page#
                 //    enabled by "body"
                 const browseResponseSelector = "ytmusic-browse-response";
-                globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 75, subtree: true }));
+                globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, {
+                    ...defaultObserverOptions,
+                    defaultDebounce: 75,
+                    subtree: true,
+                });
                 globservers.body.addListener(browseResponseSelector, {
                     listener: () => globservers.browseResponse.enable(),
                 });
@@ -8914,7 +8697,10 @@ function initObservers() {
                 // -> the search page
                 //    enabled by "body"
                 const searchPageSelector = "ytmusic-search-page";
-                globservers.searchPage = new UserUtils.SelectorObserver(searchPageSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.searchPage = new UserUtils.SelectorObserver(searchPageSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(searchPageSelector, {
                     listener: () => globservers.searchPage.enable(),
                 });
@@ -8922,7 +8708,10 @@ function initObservers() {
                 // -> the navigation / title bar at the top of the page
                 //    enabled by "body"
                 const navBarSelector = "ytmusic-nav-bar";
-                globservers.navBar = new UserUtils.SelectorObserver(navBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+                globservers.navBar = new UserUtils.SelectorObserver(navBarSelector, {
+                    ...defaultObserverOptions,
+                    subtree: false,
+                });
                 globservers.body.addListener(navBarSelector, {
                     listener: () => globservers.navBar.enable(),
                 });
@@ -8930,7 +8719,10 @@ function initObservers() {
                 // -> the main content panel - includes things like the video element
                 //    enabled by "body"
                 const mainPanelSelector = "ytmusic-player-page #main-panel";
-                globservers.mainPanel = new UserUtils.SelectorObserver(mainPanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.mainPanel = new UserUtils.SelectorObserver(mainPanelSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(mainPanelSelector, {
                     listener: () => globservers.mainPanel.enable(),
                 });
@@ -8938,7 +8730,12 @@ function initObservers() {
                 // -> the sidebar on the left side of the page
                 //    enabled by "body"
                 const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
-                globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, childList: true, subtree: true }));
+                globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, {
+                    ...defaultObserverOptions,
+                    attributes: true,
+                    childList: true,
+                    subtree: true,
+                });
                 globservers.body.addListener(sidebarSelector, {
                     listener: () => globservers.sideBar.enable(),
                 });
@@ -8946,7 +8743,10 @@ function initObservers() {
                 // -> the side panel on the right side of the /watch page
                 //    enabled by "body"
                 const sidePanelSelector = "#side-panel";
-                globservers.sidePanel = new UserUtils.SelectorObserver(sidePanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.sidePanel = new UserUtils.SelectorObserver(sidePanelSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(sidePanelSelector, {
                     listener: () => globservers.sidePanel.enable(),
                 });
@@ -8954,7 +8754,10 @@ function initObservers() {
                 // -> media controls bar at the bottom of the page
                 //    enabled by "body"
                 const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-                globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+                globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, {
+                    ...defaultObserverOptions,
+                    defaultDebounce: 200,
+                });
                 globservers.body.addListener(playerBarSelector, {
                     listener: () => {
                         globservers.playerBar.enable();
@@ -8964,7 +8767,11 @@ function initObservers() {
                 // -> song title, artist, album, etc. inside the player bar
                 //    enabled by "playerBar"
                 const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-                globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+                globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, {
+                    ...defaultObserverOptions,
+                    attributes: true,
+                    attributeFilter: ["title"],
+                });
                 globservers.playerBar.addListener(playerBarInfoSelector, {
                     listener: () => globservers.playerBarInfo.enable(),
                 });
@@ -8972,7 +8779,10 @@ function initObservers() {
                 // -> the buttons inside the player bar (like, dislike, lyrics, etc.)
                 //    enabled by "playerBar"
                 const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
-                globservers.playerBarMiddleButtons = new UserUtils.SelectorObserver(playerBarMiddleButtonsSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.playerBarMiddleButtons = new UserUtils.SelectorObserver(playerBarMiddleButtonsSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
                     listener: () => globservers.playerBarMiddleButtons.enable(),
                 });
@@ -8980,7 +8790,10 @@ function initObservers() {
                 // -> the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
                 //    enabled by "playerBar"
                 const playerBarRightControls = "#right-controls";
-                globservers.playerBarRightControls = new UserUtils.SelectorObserver(playerBarRightControls, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.playerBarRightControls = new UserUtils.SelectorObserver(playerBarRightControls, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.playerBar.addListener(playerBarRightControls, {
                     listener: () => globservers.playerBarRightControls.enable(),
                 });
@@ -8988,7 +8801,10 @@ function initObservers() {
                 // -> the container for popups (e.g. the queue popup)
                 //    enabled by "body"
                 const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
-                globservers.popupContainer = new UserUtils.SelectorObserver(popupContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.popupContainer = new UserUtils.SelectorObserver(popupContainerSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(popupContainerSelector, {
                     listener: () => globservers.popupContainer.enable(),
                 });
@@ -9000,7 +8816,10 @@ function initObservers() {
                 // -> the left sidebar menu
                 //    enabled by "body"
                 const ytGuideSelector = "#content tp-yt-app-drawer#guide #guide-inner-content";
-                globservers.ytGuide = new UserUtils.SelectorObserver(ytGuideSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.ytGuide = new UserUtils.SelectorObserver(ytGuideSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(ytGuideSelector, {
                     listener: () => globservers.ytGuide.enable(),
                 });
@@ -9008,7 +8827,10 @@ function initObservers() {
                 // -> channel pages for example
                 //    enabled by "body"
                 const ytdBrowseSelector = "ytd-app ytd-page-manager ytd-browse";
-                globservers.ytdBrowse = new UserUtils.SelectorObserver(ytdBrowseSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.ytdBrowse = new UserUtils.SelectorObserver(ytdBrowseSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(ytdBrowseSelector, {
                     listener: () => globservers.ytdBrowse.enable(),
                 });
@@ -9016,7 +8838,11 @@ function initObservers() {
                 // -> header of the page
                 //    enabled by "ytdBrowse"
                 const ytAppHeaderSelector = "#header tp-yt-app-header";
-                globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 75, subtree: true }));
+                globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, {
+                    ...defaultObserverOptions,
+                    defaultDebounce: 75,
+                    subtree: true,
+                });
                 globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
                     listener: () => globservers.ytAppHeader.enable(),
                 });
@@ -9024,7 +8850,10 @@ function initObservers() {
                 // -> the main content of the /watch page
                 //    enabled by "body"
                 const ytWatchFlexySelector = "ytd-app ytd-watch-flexy";
-                globservers.ytWatchFlexy = new UserUtils.SelectorObserver(ytWatchFlexySelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.ytWatchFlexy = new UserUtils.SelectorObserver(ytWatchFlexySelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(ytWatchFlexySelector, {
                     listener: () => globservers.ytWatchFlexy.enable(),
                 });
@@ -9032,7 +8861,10 @@ function initObservers() {
                 // -> the metadata section of the /watch page (title, channel, views, description, buttons, etc. but not comments)
                 //    enabled by "ytWatchFlexy"
                 const ytWatchMetadataSelector = "#columns #primary-inner ytd-watch-metadata";
-                globservers.ytWatchMetadata = new UserUtils.SelectorObserver(ytWatchMetadataSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.ytWatchMetadata = new UserUtils.SelectorObserver(ytWatchMetadataSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, {
                     listener: () => globservers.ytWatchMetadata.enable(),
                 });
@@ -9040,7 +8872,10 @@ function initObservers() {
                 // -> the masthead (title bar) at the top of the page
                 //    enabled by "body"
                 const mastheadSelector = "#content ytd-masthead#masthead";
-                globservers.ytMasthead = new UserUtils.SelectorObserver(mastheadSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.ytMasthead = new UserUtils.SelectorObserver(mastheadSelector, {
+                    ...defaultObserverOptions,
+                    subtree: true,
+                });
                 globservers.body.addListener(mastheadSelector, {
                     listener: () => globservers.ytMasthead.enable(),
                 });
@@ -9146,8 +8981,13 @@ function ytForceShowVideoTime() {
     const { x, y, width, height } = player.getBoundingClientRect();
     const screenY = Math.round(y + height / 2);
     const screenX = x + Math.min(50, Math.round(width / 3));
-    player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
-        screenX, movementX: 5, movementY: 0 })));
+    player.dispatchEvent(new MouseEvent("mousemove", {
+        ...defaultProps,
+        screenY,
+        screenX,
+        movementX: 5,
+        movementY: 0,
+    }));
     return true;
 }
 //#region vid ready
@@ -9158,12 +8998,11 @@ function ytForceShowVideoTime() {
  */
 function waitVideoElementReady() {
     return new Promise(async (res, rej) => {
-        var _a;
         try {
             if (!UserUtils.isDomLoaded())
                 await UserUtils.onDomLoad();
             const vidEl = getVideoElement();
-            if (vidEl && ((_a = vidEl === null || vidEl === void 0 ? void 0 : vidEl.readyState) !== null && _a !== void 0 ? _a : 0) > 0)
+            if (vidEl && (vidEl?.readyState ?? 0) > 0)
                 return res(vidEl);
             if (!location.pathname.startsWith("/watch"))
                 await siteEvents.once("watchIdChanged");
@@ -9188,27 +9027,26 @@ function waitVideoElementReady() {
  * The btnRenderer element is a parent of both buttons.
  */
 function getLikeDislikeBtns() {
-    var _a, _b, _c, _d, _e, _f, _g;
     let btnRenderer;
     let likeBtn;
     let dislikeBtn;
     let likeState;
     switch (getDomain()) {
         case "ytm": {
-            btnRenderer = (_a = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer")) !== null && _a !== void 0 ? _a : undefined;
-            likeBtn = (_b = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("#button-shape-like button")) !== null && _b !== void 0 ? _b : undefined;
-            dislikeBtn = (_c = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("#button-shape-dislike button")) !== null && _c !== void 0 ? _c : undefined;
-            const likeStateRaw = (_d = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.getAttribute("like-status")) === null || _d === void 0 ? void 0 : _d.toUpperCase();
-            likeState = ["LIKE", "DISLIKE", "INDIFFERENT"].includes(likeStateRaw !== null && likeStateRaw !== void 0 ? likeStateRaw : "") ? likeStateRaw : "INDIFFERENT";
+            btnRenderer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer") ?? undefined;
+            likeBtn = btnRenderer?.querySelector("#button-shape-like button") ?? undefined;
+            dislikeBtn = btnRenderer?.querySelector("#button-shape-dislike button") ?? undefined;
+            const likeStateRaw = btnRenderer?.getAttribute("like-status")?.toUpperCase();
+            likeState = ["LIKE", "DISLIKE", "INDIFFERENT"].includes(likeStateRaw ?? "") ? likeStateRaw : "INDIFFERENT";
             break;
         }
         case "yt": {
-            btnRenderer = (_e = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model")) !== null && _e !== void 0 ? _e : undefined;
-            likeBtn = (_f = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("like-button-view-model button")) !== null && _f !== void 0 ? _f : undefined;
-            dislikeBtn = (_g = btnRenderer === null || btnRenderer === void 0 ? void 0 : btnRenderer.querySelector("dislike-button-view-model button")) !== null && _g !== void 0 ? _g : undefined;
-            if ((likeBtn === null || likeBtn === void 0 ? void 0 : likeBtn.getAttribute("aria-pressed")) === "true")
+            btnRenderer = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model") ?? undefined;
+            likeBtn = btnRenderer?.querySelector("like-button-view-model button") ?? undefined;
+            dislikeBtn = btnRenderer?.querySelector("dislike-button-view-model button") ?? undefined;
+            if (likeBtn?.getAttribute("aria-pressed") === "true")
                 likeState = "LIKE";
-            else if ((dislikeBtn === null || dislikeBtn === void 0 ? void 0 : dislikeBtn.getAttribute("aria-pressed")) === "true")
+            else if (dislikeBtn?.getAttribute("aria-pressed") === "true")
                 likeState = "DISLIKE";
             else if (likeBtn || dislikeBtn)
                 likeState = "INDIFFERENT";
@@ -9233,7 +9071,7 @@ async function addStyle(css, ref, transform = (c) => c) {
     if (!UserUtils.isDomLoaded())
         throw new Error("DOM has not finished loading yet");
     const elem = UserUtils.addGlobalStyle(await transform(await UserUtils.consumeStringGen(css)));
-    elem.id = `bytm-style-${ref !== null && ref !== void 0 ? ref : UserUtils.randomId(6, 36)}`;
+    elem.id = `bytm-style-${ref ?? UserUtils.randomId(6, 36)}`;
     return elem;
 }
 /**
@@ -9287,7 +9125,7 @@ function copyToClipboard(text) {
     try {
         GM.setClipboard(String(text));
     }
-    catch (_a) {
+    catch {
         showPrompt({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
     }
 }
@@ -9315,17 +9153,17 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
  * If no HTML string is given, the element's innerHTML will be set to an empty string.
  */
 function setInnerHtml(element, html) {
-    var _a, _b;
     if (!html)
         html = "";
-    if (!ttPolicy && ((_a = window === null || window === void 0 ? void 0 : window.trustedTypes) === null || _a === void 0 ? void 0 : _a.createPolicy)) {
+    if (!ttPolicy && window?.trustedTypes?.createPolicy) {
         ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
             createHTML: (dirty) => DOMPurify.sanitize(dirty, {
                 RETURN_TRUSTED_TYPE: true,
             }),
         });
     }
-    element.innerHTML = (_b = ttPolicy === null || ttPolicy === void 0 ? void 0 : ttPolicy.createHTML(String(html))) !== null && _b !== void 0 ? _b : DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: false });
+    element.innerHTML = ttPolicy?.createHTML(String(html))
+        ?? DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: false });
 }
 /** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
 function downloadFile(fileName, data, mimeType = "text/plain") {
@@ -9501,14 +9339,14 @@ async function renderFooter() {
     openCfgElem.id = "bytm-welcome-menu-open-cfg";
     openCfgElem.classList.add("bytm-btn");
     openCfgElem.addEventListener("click", () => {
-        welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+        welcomeDialog?.close();
         openCfgMenu();
     });
     const closeBtnElem = document.createElement("button");
     closeBtnElem.id = "bytm-welcome-menu-footer-close";
     closeBtnElem.classList.add("bytm-btn");
     closeBtnElem.addEventListener("click", async () => {
-        welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+        welcomeDialog?.close();
     });
     const leftButtonsCont = document.createElement("div");
     leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
@@ -9537,7 +9375,10 @@ async function getAllDataExImDialog() {
             exportData: async () => await getStoreSerializer().serialize(),
             onImport,
         };
-        allDataExImDialog = new ExImDialog(Object.assign(Object.assign({}, eximOpts), { renderBody: async () => await renderBody(eximOpts) }));
+        allDataExImDialog = new ExImDialog({
+            ...eximOpts,
+            renderBody: async () => await renderBody(eximOpts),
+        });
     }
     return allDataExImDialog;
 }
@@ -9709,13 +9550,12 @@ function measureDuration(name) {
 //#region preInit
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-    var _a, _b;
     try {
         initTimings.start = Date.now();
         const unsupportedHandlers = [
             "FireMonkey",
         ];
-        if (unsupportedHandlers.includes((_b = (_a = GM === null || GM === void 0 ? void 0 : GM.info) === null || _a === void 0 ? void 0 : _a.scriptHandler) !== null && _b !== void 0 ? _b : "_"))
+        if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
             return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
         setLogLevel(defaultLogLevel);
         initInterface();
@@ -9731,7 +9571,6 @@ function preInit() {
 }
 //#region init
 async function init() {
-    var _a;
     try {
         const domain = getDomain();
         const endCfgDur = measureDuration("config");
@@ -9742,7 +9581,7 @@ async function init() {
         const endLyrCacheDur = measureDuration("lyricsCache");
         await initLyricsCache();
         endLyrCacheDur();
-        const initLoc = (_a = features.locale) !== null && _a !== void 0 ? _a : "en-US";
+        const initLoc = features.locale ?? "en-US";
         const locPromises = [];
         locPromises.push(initTranslations(initLoc));
         // since en-US always has the complete set of keys, it needs to always be loaded:
@@ -9793,6 +9632,7 @@ async function onDomLoad() {
     catch (err) {
         error("Encountered error in feature pre-init:", err);
     }
+    initSiteEvents();
     info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
     mountCfgMenu();
     try {
@@ -9869,8 +9709,6 @@ async function onDomLoad() {
             error("Couldn't add config menu option:", err);
         }
         if (["ytm", "yt"].includes(domain)) {
-            //#region general
-            ftInit.push(["initSiteEvents", initSiteEvents()]);
             //#region (ytm+yt) layout
             if (feats.removeShareTrackingParamSites)
                 ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
@@ -9890,9 +9728,11 @@ async function onDomLoad() {
         (() => Promise.race([
             UserUtils.pauseFor(initTimeout),
             Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
-                var _a;
                 const v = await prom;
-                initTimings.featureDurations = Object.assign(Object.assign({}, ((_a = initTimings.featureDurations) !== null && _a !== void 0 ? _a : {})), { [name]: Date.now() - initStartTs });
+                initTimings.featureDurations = {
+                    ...(initTimings.featureDurations ?? {}),
+                    [name]: Date.now() - initStartTs,
+                };
                 initializedFeats.push(name);
                 emitInterface("bytm:featureInitialized", name);
                 res(v);
@@ -9906,7 +9746,7 @@ async function onDomLoad() {
             else
                 info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
         }))();
-        // ensure site adjusts itself to new CSS files
+        // ensure site adjusts itself to new global CSS
         UserUtils.getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
         // preload icons
         preloadResources();
@@ -10063,11 +9903,10 @@ function registerDevCommands() {
         }
     });
     GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-        var _a;
         const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
         if (!keys)
             return;
-        for (const key of (_a = keys === null || keys === void 0 ? void 0 : keys.split(",")) !== null && _a !== void 0 ? _a : []) {
+        for (const key of keys?.split(",") ?? []) {
             if (key && key.length > 0) {
                 const truncLength = 400;
                 const oldVal = await GM.getValue(key);
