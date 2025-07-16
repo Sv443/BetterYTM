@@ -1,7 +1,7 @@
 import { fetchAdvanced } from "@sv443-network/userutils";
 import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
-import { scriptInfo } from "../constants.js";
+import { mode, scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
 import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.js";
 import type { LyricsCacheEntry } from "../types.js";
@@ -222,7 +222,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
       disableFuzzy: null,
-      source: scriptInfo.name,
+      source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
       q: `${artist} ${song}`,
     });
 
@@ -238,7 +238,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     });
 
     if(fetchRes.status === 429) {
-      const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
+      const waitSeconds = Number(fetchRes.headers.get("Retry-After") ?? geniUrlRatelimitTimeframe);
       await showPrompt({ type: "alert", message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
       return undefined;
     }

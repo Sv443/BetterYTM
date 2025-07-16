@@ -218,7 +218,7 @@
   "plugin_list_permissions_header": "Permissões:",
 
   "plugin_link_type_source": "Repositório",
-  "plugin_link_type_other": "Outro / Página inicial",
+  "plugin_link_type_other": "Página inicial / Outro",
   "plugin_link_type_bug": "Reportar um bug",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",

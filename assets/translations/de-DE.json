@@ -231,8 +231,8 @@
   "plugin_list_permissions_header": "Berechtigungen:",
 
   "plugin_link_type_source": "Quellcode",
-  "plugin_link_type_other": "Andere / Homepage",
-  "plugin_link_type_bug": "Fehler melden",
+  "plugin_link_type_other": "Homepage / Anderes",
+  "plugin_link_type_bug": "Problem melden",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",
 

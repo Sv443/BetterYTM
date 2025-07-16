@@ -108,8 +108,9 @@ Your userscript manager extension's storage API is used to store all settings an
 Open its settings to see and manage this data. Delete the userscript to automatically delete all associated data.  
   
 BetterYTM makes use of external services and APIs to provide some of its features, which may collect data about you.  
-In every case, only the bare minimum of data is sent to these services and only when necessary for the function of the script.  
+You may disable these features in the configuration menu if you don't want to use them, which will prevent any data from being sent to the services.  
   
+These are the privacy policies of the external services BetterYTM uses, and what data they collect:
 - [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
 - [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
 - [Apple Music - Privacy Policy](https://www.apple.com/legal/privacy/data/en/apple-music/) (album and artist names, IP address)
@@ -149,8 +150,8 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 ### Disclaimers
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
 - I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
-- I do not intend to ever collect any data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
-  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching).
+- I do not intend to ever sell any personally identifiable data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
+  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
 - This script comes as-is, so I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the code or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
 
 <br><br><br><br>

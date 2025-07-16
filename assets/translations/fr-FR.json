@@ -231,7 +231,7 @@
   "plugin_list_permissions_header": "Permissions:",
 
   "plugin_link_type_source": "Dépôt",
-  "plugin_link_type_other": "Autre / Page d'accueil",
+  "plugin_link_type_other": "Page d'accueil / Autre",
   "plugin_link_type_bug": "Signaler un bug",
   "plugin_link_type_greasyfork": "GreasyFork",
   "plugin_link_type_openuserjs": "OpenUserJS",

@@ -368,6 +368,9 @@ function registerDevPlugin() {
         homepage: {
           source: pkgJson.homepage,
           bug: pkgJson.bugs.url,
+          greasyfork: pkgJson.hosts.greasyfork,
+          openuserjs: pkgJson.hosts.openuserjs,
+          other: pkgJson.hosts.github,
         },
         iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
       },
