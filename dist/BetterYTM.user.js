@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3a61bc57/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@39f4f458/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -354,7 +354,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3a61bc57",
+    buildNumber: "39f4f458",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -993,6 +993,7 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
     return wrapperEl;
 }var version = "3.0.0";
 var homepage = "https://github.com/Sv443/BetterYTM";
+var namespace = "https://github.com/Sv443/BetterYTM";
 var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
@@ -1015,6 +1016,7 @@ var updates = {
 var packageJson = {
 	version: version,
 	homepage: homepage,
+	namespace: namespace,
 	author: author,
 	bugs: bugs,
 	funding: funding,
@@ -4123,7 +4125,7 @@ async function mountCfgMenu() {
                 headerElem.ariaLevel = "2";
                 headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo$1.name);
                 headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
-                onInteraction(headerElem, () => {
+                onInteraction(headerElem, (e) => {
                     const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
                     if (selectedHeader) {
                         selectedHeader.classList.remove("selected");
@@ -4141,6 +4143,8 @@ async function mountCfgMenu() {
                         catElem.classList.remove("hidden");
                         catElem.removeAttribute("aria-hidden");
                         catElem.removeAttribute("inert");
+                        if (e.type.startsWith("key"))
+                            setTimeout(() => catElem.focus(), 10);
                     }
                     checkToggleScrollIndicator();
                     emitSiteEvent("configHeaderSelected", headerId);
@@ -8357,7 +8361,7 @@ function setGlobalProp(key, value) {
 /** Emits an event on the BYTM interface */
 function emitInterface(type, ...detail) {
     try {
-        getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
+        unsafeWindow.dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
         //@ts-expect-error
         emitOnPlugins(type, undefined, ...detail);
         log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
@@ -8374,15 +8378,19 @@ const registeredPluginTokens = new Map();
 let pluginsInitialized = false;
 /** Pre-init for eager plugins that need to be initialized as soon as physically possible */
 function preInitPlugins() {
-    emitInterface("bytm:preInitPlugin", (def) => registerPlugin(def));
+    emitInterface("bytm:preInitPlugin", registerPlugin);
 }
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 function initPlugins() {
-    emitInterface("bytm:registerPlugin", (def) => registerPlugin(def));
+    emitInterface("bytm:registerPlugin", registerPlugin);
+    if (mode === "development")
+        registerDevPlugin();
     window.addEventListener("bytm:ready", () => {
         pluginsInitialized = true;
         if (registeredPlugins.size > 0)
             log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+        else
+            log("No plugins registered");
     }, { once: true });
 }
 /** Registers a plugin on the BYTM interface. */
@@ -8405,7 +8413,7 @@ function registerPlugin(def) {
         });
         registeredPluginTokens.set(plKey, token);
         info(`Successfully registered plugin '${plKey}'`);
-        emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def));
+        setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 0);
         window.addEventListener("bytm:ready", () => {
             emitOnPlugins("bytmReady");
         });
@@ -8421,6 +8429,33 @@ function registerPlugin(def) {
     catch (err) {
         error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
         throw err;
+    }
+}
+/** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
+let devPluginToken;
+/** Registers a plugin that only exists in development mode to test the plugin system */
+function registerDevPlugin() {
+    try {
+        const { token } = registerPlugin({
+            plugin: {
+                name: "BetterYTM Dev Plugin",
+                namespace: packageJson.namespace,
+                version: packageJson.version,
+                description: {
+                    "en-US": "Internal plugin that only exists in development mode to test the plugin system.",
+                },
+                homepage: {
+                    source: packageJson.homepage,
+                    bug: packageJson.bugs.url,
+                },
+                iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
+            },
+            intents: PluginIntent.FullAccess,
+        });
+        devPluginToken = token;
+    }
+    catch (err) {
+        error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
     }
 }
 /** Returns the registered plugins as an array of tuples with the items `[id: string, item: PluginItem]` */
@@ -9986,6 +10021,10 @@ function registerDevCommands() {
         if (await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
             await reloadTab();
     });
+    GM.registerMenuCommand("Get developer plugin token", () => showPrompt({
+        type: "alert",
+        message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+    }));
     log("Registered dev menu commands");
 }
 async function runDevTreatments() {
