@@ -69,6 +69,7 @@
       - 🔒 `getMarkdownDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `MarkdownDialog` class, to render a markdown string in a modal dialog.
       - 🔒 `getLibraryHook()` (requires intent `InternalAccess` (256)) - returns some internal function and object references that can be used by core libraries and deeper reaching plugins.
     - Added new events:
+      - `bytm:preInitPlugin` (no arguments) - emitted at the earliest possible point in time, even before the DOM is loaded, to allow plugins to do any immediate but superficial initialization.
       - `bytm:allReady` (no arguments) - emitted when all features have been initialized and the interface is fully ready to use.  
         This triggers much later than `bytm:ready`, which is emitted when the DOM is loaded and all features are *starting* to initialize.  
         For the fastest response times, use `bytm:featureInitialized` for every feature your code depends on.
@@ -78,15 +79,18 @@
       - `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
     - Added SelectorObserver instance `searchPage`, as the root observer for the YTM search page.
 - **Internal Changes:**
+  - Added `@antifeature tracking` directive, to indicate that services temporarily log IP addresses and the currently playing song.
   - Added [`@sv443-network/coreutils`](https://github.com/Sv443-Network/CoreUtils) as a new core library, accessible on the BYTM API via `BYTM.CoreUtils`.
+  - Updated [`@sv443-network/userutils`](https://github.com/Sv443-Network/UserUtils) to v9.4.3 to fix two bugs related to the template literal placeholder format. This now allows specifying a single placeholder multiple times per translation string.
   - Made `siteEvents` system use CoreUtils' improved `NanoEmitter`, so it can now also be used to listen to multiple events using `.onMulti()`.
+  - Moved `siteEvents` initialization to an earlier point, so that it is no longer initialized alongside features. It is now available to plugins at an earlier point in time, before any feature has started initializing, but still after plugin initialization is already done.
   - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
   - Improved script performance by refactoring the feature initialization process. As an effect of this, `bytm:ready` will now emit earlier and the new event `bytm:allReady` will emit much later, once all features have been initialized or the configured timeout has been reached.
+  - BYTM now targets [ES2020](https://en.wikipedia.org/wiki/ECMAScript_version_history#11th_Edition_%E2%80%93_ECMAScript_2020)
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - Moved the `general` feature category to the top of the config menu.
   - Wrapped feature config elements in a new container element with the ID `bytm-ftconf-category-${categoryName}` to allow for the sidenav to disable all but one at a time.
-  - Updated UserUtils to v9.4.3 to fix two bugs related to the template literal placeholder format. This now allows specifying a single placeholder multiple times per translation string.
   - Added ability to render custom info categories in the config menu. Their navigation headers will be aligned to the bottom, and they render arbitrary elements. They use the same general formatting as the new feature category containers, just with their own `categoryName` (currently just `"about"` and `"changelog"`).
   - Added intent checking function `pluginHasPerms()` to `interface.ts`, which will now check for `FullAccess` or the given intents before allowing authenticated functions to be called.
   - Added CSS var `--bytm-menu-bg-highlight-2` (hex, opacity 1) as a secondary level of highlight to `--bytm-menu-bg-highlight`.
