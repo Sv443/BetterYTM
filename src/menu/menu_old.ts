@@ -350,7 +350,7 @@ export async function mountCfgMenu() {
         headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo.name);
         headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
 
-        onInteraction(headerElem, () => {
+        onInteraction(headerElem, (e: MouseEvent | KeyboardEvent) => {
           const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
           if(selectedHeader) {
             selectedHeader.classList.remove("selected");
@@ -359,7 +359,7 @@ export async function mountCfgMenu() {
           headerElem.classList.add("selected");
           headerElem.ariaChecked = "true";
 
-          const catElem = featuresCont.querySelector(`#bytm-ftconf-category-${headerId}`);
+          const catElem = featuresCont.querySelector<HTMLElement>(`#bytm-ftconf-category-${headerId}`);
           if(catElem) {
             document.querySelectorAll<HTMLElement>("#bytm-menu-opts .bytm-ftconf-category").forEach((el) => {
               el.classList.add("hidden");
@@ -369,6 +369,9 @@ export async function mountCfgMenu() {
             catElem.classList.remove("hidden");
             catElem.removeAttribute("aria-hidden");
             catElem.removeAttribute("inert");
+
+            if(e.type.startsWith("key"))
+              setTimeout(() => catElem.focus(), 10);
           }
 
           checkToggleScrollIndicator();
