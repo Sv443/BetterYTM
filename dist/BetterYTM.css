@@ -2263,7 +2263,10 @@ button[disabled].bytm-busy {
 }
 
 .bytm-cfg-menu-option-item:hover {
-  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
+  background-color: var(
+    --ts-overlay-highlighted-color,
+    var(--yt-spec-badge-chip-background, #3e3e3e)
+  );
 }
 
 .bytm-cfg-menu-option-icon {
