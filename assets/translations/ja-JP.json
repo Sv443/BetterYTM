@@ -5,7 +5,10 @@
     "countryName": "日本",
     "authors": [
       "Sv443"
-    ]
+    ],
+    "antifeatures": {
+      "tracking": "一部のサービスは、あなたのIPアドレスと再生する曲を一時的に記録します。"
+    }
   },
   "config_menu_option": "%1 構成",
   "config_menu_title": "%1 - 構成",

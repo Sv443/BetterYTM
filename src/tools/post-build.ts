@@ -10,6 +10,7 @@ import type { RollupArgs } from "../types.js";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import localesJson from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
+import type en_US from "../../assets/translations/en-US.json";
 import pkg from "../../package.json" with { type: "json" };
 
 const { argv, env, stdout } = process;
@@ -210,13 +211,13 @@ async function getHeaders(buildNbr: string) {
   const resourcesDirectives = await getResourceDirectives(buildNbr);
   const requireDirectives = await getRequireDirectives();
   const localizedDescriptions = getLocalizedDescriptions();
+  const antifeatureDescriptions = await getAntifeatureDescriptions();
 
   const header = `\
 // ==UserScript==
 // @name              ${pkg.userscriptName}
 // @namespace         ${pkg.homepage}
 // @version           ${pkg.version}
-// @description       ${pkg.description}
 // @homepageURL       ${pkg.homepage}#readme
 // @supportURL        ${pkg.bugs.url}
 // @license           ${pkg.license}
@@ -232,7 +233,8 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
-// @noframes
+// @noframes\
+${antifeatureDescriptions ? "\n" + antifeatureDescriptions : "\n"}\
 // @updateURL         ${hostMetaUrl}
 // @downloadURL       ${hostScriptUrl}
 // @grant             GM.getValue
@@ -472,6 +474,10 @@ function getLocalizedDescriptions() {
       let loc = locale;
       if(loc.length < 5)
         loc += " ".repeat(5 - loc.length);
+
+      if(locale === "en-US")
+        descriptions.unshift(`// @description       ${userscriptDesc}`);
+
       descriptions.push(`// @description:${loc} ${userscriptDesc}`);
 
       if("altLocales" in rest) {
@@ -488,6 +494,39 @@ function getLocalizedDescriptions() {
   catch(err) {
     console.warn(k.yellow("No localized descriptions found:"), err);
   }
+}
+
+//#region @antifeature
+
+/** Returns the @antifeature directive block for each defined antifeature, with translations. */
+async function getAntifeatureDescriptions() {
+  const antifeatures = ["tracking"] as const;
+
+  const antifeatureDescriptions: string[] = [];
+
+  for(const [locale] of Object.entries(localesJson)) {
+    const trFilePath = resolveResourcePath(`translations/${locale}.json`);
+    const trFile = JSON.parse(String(await readFile(trFilePath))) as typeof en_US;
+    for(const antifeature of antifeatures) {
+      if(!("meta" in trFile) || !("antifeatures" in trFile.meta) || !(antifeature in trFile.meta.antifeatures))
+        continue;
+
+      const desc = trFile.meta.antifeatures[antifeature];
+      if(!desc || desc.length === 0)
+        continue;
+
+      const getAntiFeatStr = (tagSuffix = "      ") => `// @antifeature${tagSuffix} ${antifeature} ${desc}`;
+
+      if(locale === "en-US")
+        antifeatureDescriptions.unshift(getAntiFeatStr());
+
+      antifeatureDescriptions.push(getAntiFeatStr(`:${locale}`));
+    }
+  }
+
+  if(antifeatureDescriptions.length > 0)
+    return antifeatureDescriptions.join("\n") + "\n";
+  return undefined;
 }
 
 //#region @resource

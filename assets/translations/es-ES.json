@@ -5,7 +5,10 @@
     "countryName": "España",
     "authors": [
       "Sv443"
-    ]
+    ],
+    "antifeatures": {
+      "tracking": "Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas."
+    }
   },
   "config_menu_option": "Configuración de %1",
   "config_menu_title": "%1 - Configuración",

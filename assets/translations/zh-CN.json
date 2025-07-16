@@ -5,7 +5,10 @@
     "countryName": "中国",
     "authors": [
       "Sv443"
-    ]
+    ],
+    "antifeatures": {
+      "tracking": "某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。"
+    }
   },
   "config_menu_option": "%1 配置",
   "config_menu_title": "%1 - 配置",

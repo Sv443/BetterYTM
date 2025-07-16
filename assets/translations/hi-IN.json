@@ -5,7 +5,10 @@
     "countryName": "भारत",
     "authors": [
       "Sv443"
-    ]
+    ],
+    "antifeatures": {
+      "tracking": "कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी।"
+    }
   },
   "config_menu_option": "%1 कॉन्फ़िगरेशन",
   "config_menu_title": "%1 - कॉन्फ़िगरेशन",
