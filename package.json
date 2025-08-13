@@ -3,10 +3,31 @@
   "userscriptName": "BetterYTM",
   "version": "3.0.0",
   "description": "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+  "license": "AGPL-3.0-only",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "namespace": "https://github.com/Sv443/BetterYTM",
   "main": "./src/index.ts",
   "type": "module",
+  "author": {
+    "name": "Sv443",
+    "url": "https://github.com/Sv443"
+  },
+  "contributors": [
+    {
+      "name": "indierodo",
+      "url": "https://github.com/indierodo",
+      "contributions": [
+        "Track numbers feature"
+      ]
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/Sv443/BetterYTM/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Sv443"
+  },
   "scripts": {
     "dev": "concurrently \"nodemon --exec pnpm build-local-base --config-assetSource=local\" \"pnpm serve\"",
     "dev-cdn": "concurrently \"nodemon --exec pnpm build-local-base\" \"pnpm serve\"",
@@ -40,27 +61,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sv443/BetterYTM.git"
-  },
-  "author": {
-    "name": "Sv443",
-    "url": "https://github.com/Sv443"
-  },
-  "contributors": [
-    {
-      "name": "indierodo",
-      "url": "https://github.com/indierodo",
-      "contributions": [
-        "Track numbers feature"
-      ]
-    }
-  ],
-  "license": "AGPL-3.0-only",
-  "bugs": {
-    "url": "https://github.com/Sv443/BetterYTM/issues"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/Sv443"
   },
   "hosts": {
     "github": "https://github.com/Sv443/BetterYTM",
