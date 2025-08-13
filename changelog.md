@@ -12,6 +12,7 @@
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - 🎵 Show a track number in the currently playing queue and playlists.
+  - 🎵 Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
 - **Changes and improvements:**
   - Improved script initialization performance.
   - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix inconsistencies.
@@ -19,7 +20,12 @@
     - Allow manually toggling between thumbnail providers.
     - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
   - 🎵 Decoupled volume slider step and scroll step.
-  - 🎵 The "improve links" feature now also applies to all types of song list items. Clicking them anywhere will now play the song. Clicking and dragging still works.
+  - 🎵 The "improve links" feature now also applies to all types of song list items.  
+    Clicking a list item anywhere will now start playing that song. This doesn't affect clicking and dragging them.
+  - The values of some features (if left unchanged), will be updated to the new defaults:
+    - `initTimeout` will be changed from `8` to `5` seconds amid initialization performance improvements.
+    - `rememberSongTimeDuration` will be changed from `60` to `180` seconds.
+    - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
 - **Fixes:**
   - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering.
   - 🎵 Fixed SyntaxError when no AM album artwork found.
@@ -53,13 +59,13 @@
       - `getMarkdownDialog()` - `CreateModalDialogs` (32)
       - `getAutoLikeData()` - `ReadAutoLikeData` (64)
       - `saveAutoLikeData()` - `WriteAutoLikeData` (128)
-      - `getLibraryHook()` - `InternalAccess` (256)
+      - `getInternals()` - `InternalAccess` (256)
     - The dialog classes `BytmDialog`, `ExImDialog` and `MarkdownDialog` should now be gotten using the new authenticated `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()` functions, respectively.  
     Using the direct access will work until version 4.0.0, but it is recommended you switch to the new functions as soon as possible.
     - The `PluginDef` object's `intents` property can now be either an array of `PluginIntent` values or a single number that is the bitwise OR of the intents.
     - Auth tokens are now in the format of a UUIDv4 instead of a 16-character, 36-radix string.
   - **API Additions:**
-    - Added new intents `InternalAccess` (256) (currently only used by `getLibraryHook()`) and `FullAccess` (512) (grants all intents).
+    - Added new intents `InternalAccess` (256) (currently only used by `getInternals()`) and `FullAccess` (512) (grants all intents).
     - Added new functions to the interface that allow for better interaction with the siteEvents system:
       - `onSiteEvent()` - Adds a site event listener.
       - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
@@ -67,7 +73,7 @@
       - 🔒 `getBytmDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `BytmDialog` class, which can be used to create new generic dialog instances.
       - 🔒 `getExImDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `ExImDialog` class, to export and import serializable data.
       - 🔒 `getMarkdownDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `MarkdownDialog` class, to render a markdown string in a modal dialog.
-      - 🔒 `getLibraryHook()` (requires intent `InternalAccess` (256)) - returns some internal function and object references that can be used by core libraries and deeper reaching plugins.
+      - 🔒 `getInternals()` (requires intent `InternalAccess` (256)) - returns some internal function and object references that can be used by core libraries and deeper reaching plugins.
     - Added new events:
       - `bytm:preInitPlugin` (no arguments) - emitted at the earliest possible point in time, even before the DOM is loaded, to allow plugins to do any immediate but superficial initialization.
       - `bytm:allReady` (no arguments) - emitted when all features have been initialized and the interface is fully ready to use.  

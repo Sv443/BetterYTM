@@ -5,7 +5,7 @@ import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
 import { closeCfgMenu, openCfgMenu } from "./menu/menu_old.js";
-import type { FeatureConfig, FeatureKey, NumberLengthFormat } from "./types.js";
+import type { FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 //#region format version
@@ -182,11 +182,13 @@ export const migrations: DataMigrationsDict = {
         "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
         "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
         "songListTrackNumbersEnabled", "songListTrackNumbers",
-        "yesImStillThere",
+        "yesImStillThere", "removeThumbnailRatingBar",
+        "numKeysSkipToTimeDoublePress",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
         { key: "initTimeout", oldDefault: 8 },
+        { key: "rememberSongTimeDuration", oldDefault: 60 },
       ],
     );
 
@@ -330,15 +332,26 @@ export function getFeature<TKey extends FeatureKey>(key: TKey | "_"): FeatureCon
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 export function setFeatures(featureConf: FeatureConfig) {
   const res = configStore.setData(featureConf);
-  emitSiteEvent("configChanged", configStore.getData());
-  info("Saved new feature config:", featureConf);
+  emitSiteEvent("configChanged", getFeaturesNoHidden());
+  info("Saved new feature config:", getFeaturesNoHidden());
   return res;
+}
+
+/** Returns the feature config with all hidden features removed, as a copy */
+export function getFeaturesNoHidden(featureCfg?: FeatureConfig): FeatureConfig {
+  const feats = { ...(featureCfg ?? getFeatures()) };
+  for(const ftKey of Object.keys(feats)) {
+    const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
+    if(info && "valueHidden" in info && info.valueHidden) // @ts-expect-error
+      feats[ftKey as keyof typeof feats] = undefined;
+  }
+  return feats as FeatureConfig;
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 export function setDefaultFeatures() {
   const res = configStore.saveDefaultData();
-  emitSiteEvent("configChanged", configStore.getData());
+  emitSiteEvent("configChanged", getFeaturesNoHidden());
   info("Reset feature config to its default values");
   return res;
 }
