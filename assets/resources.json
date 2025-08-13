@@ -12,6 +12,7 @@
     "css-fix_spacing": "style/fixSpacing.css",
     "css-fix_sponsorblock": "style/fixSponsorBlock.css",
     "css-hide_themesong_logo": "style/hideThemeSongLogo.css",
+    "css-remove_thumb_rating_bar": "style/removeThumbRatingBar.css",
     "css-show_votes": "style/showVotes.css",
     "css-track_numbers_current_queue": "style/trackNumbersCurrentQueue.css",
     "css-track_numbers_song_lists": "style/trackNumbersSongLists.css",

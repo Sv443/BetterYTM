@@ -1,5 +1,5 @@
 import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, errorNoToast, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -315,6 +315,9 @@ async function onDomLoad() {
         ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);
       else
         ftInit.push(["themeSongIntegration", Promise.allSettled([fixPlayerPageTheming(), hideThemeSongLogo])]);
+
+      if(feats.removeThumbnailRatingBar)
+        ftInit.push(["removeThumbnailRatingBar", (async () => void await addStyleFromResource("css-remove_thumb_rating_bar"))()]);
     }
 
     //#region (ytm+yt) cfg menu
@@ -679,6 +682,10 @@ function registerDevCommands() {
       message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
     })
   );
+
+  GM.registerMenuCommand("Download log file", () => {
+    downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+  });
 
   log("Registered dev menu commands");
 }
