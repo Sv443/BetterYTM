@@ -1,5 +1,6 @@
-import { autoPlural, clamp, interceptWindowEvent, isDomLoaded, pauseFor } from "@sv443-network/userutils";
-import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, scrollToCurrentSongInQueue, warn } from "../utils/index.js";
+import { autoPlural, clamp, pauseFor, setImmediateInterval } from "@sv443-network/coreutils";
+import { getUnsafeWindow, interceptWindowEvent, isDomLoaded } from "@sv443-network/userutils";
+import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, scrollToCurrentSongInQueue, warn, dbg } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
@@ -295,41 +296,133 @@ let curSongTitle: string | undefined;
 export async function initStillThere() {
   siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
 
-  let firstRun = true;
-  addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
-    listener(youThereCont) {
-      const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
+  let firstCheck = true;
+  let obs: MutationObserver | undefined;
 
-      if(!dialogCont)
-        return warn("Could not find the dialog container to dismiss the \"Are you still there?\" popup");
+  const checkStillThere = (youThereCont: HTMLElement) => {
+    const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
 
-      const check = () => {
-        if(!getFeature("yesImStillThere") || !dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
-          return;
+    if(!dialogCont)
+      return warn("Could not find the dialog container to dismiss the \"Are you still there?\" popup");
 
-        const btn = youThereCont.querySelector<HTMLButtonElement>(".actions button");
+    const doCheck = () => {
+      if(!getFeature("yesImStillThere") || !dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
+        return;
 
-        if(!btn)
-          return warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
+      const btn = youThereCont.querySelector<HTMLButtonElement>(".actions button");
 
-        btn.click();
-        info("Automatically dismissed the \"Are you still here?\" dialog on the song", curSongTitle, LogLevel.Info);
-      };
+      if(!btn)
+        return warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
 
-      if(firstRun) {
-        firstRun = false;
-        check();
+      btn.click();
+      if(obs) {
+        obs.disconnect();
+        obs = undefined;
       }
+      info("Automatically dismissed the \"Are you still here?\" dialog on the song", curSongTitle, LogLevel.Info);
+    };
 
-      const obs = new MutationObserver(check);
+    if(firstCheck) {
+      firstCheck = false;
+      doCheck();
+    }
 
-      obs.observe(dialogCont, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-      });
+    if(obs)
+      return;
 
-      getFeature("yesImStillThere") && log("Initialized automatic dismissal of the \"Are you still there?\" popup");
-    },
+    obs = new MutationObserver(doCheck);
+
+    obs.observe(dialogCont, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
+
+    getFeature("yesImStillThere") && dbg("Checked for \"Are you still there?\" popup and set up observer to dismiss it");
+  };
+
+  addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
+    listener: (el) => checkStillThere(el),
   });
+
+  siteEvents.on("watchIdChanged", () => {
+    const youThereCont = document.querySelector<HTMLElement>("ytmusic-popup-container ytmusic-you-there-renderer");
+    if(youThereCont) {
+      checkStillThere(youThereCont);
+      let i = 0;
+      const iv = setInterval(() => {
+        checkStillThere(youThereCont);
+        i++;
+        if(i > 10)
+          clearInterval(iv);
+      }, 1_000);
+    }
+  });
+
+  // dispatch on interval
+
+  const tryClick = () => {
+    // click the navbar
+    const navBar = document.querySelector<HTMLElement>("ytmusic-nav-bar .center-content");
+
+    navBar?.dispatchEvent(new MouseEvent("click", {
+      // @ts-expect-error
+      altitudeAngle: 1.5707963267948966,
+      cancelable: true,
+      clientX: 975,
+      clientY: 13,
+      composed: true,
+      explicitOriginalTarget: navBar,
+      isPrimary: true,
+      isTrusted: true,
+      layerX: 615,
+      layerY: 13,
+      movementX: 0,
+      movementY: 0,
+      offsetX: 615,
+      offsetY: 13,
+      originalTarget: navBar,
+      pageX: 975,
+      pageY: 13,
+      screenX: 975,
+      screenY: 70,
+      srcElement: navBar,
+      target: navBar,
+      timeStamp: 44955,
+      view: getUnsafeWindow(),
+      x: 975,
+      y: 13,
+    }));
+  };
+
+  const tryMove = async () => {
+    // dispatch mousemoves with random vector for a second
+    const incX = (Math.random() * 2 - 1) / 10,
+      incY = (Math.random() * 2 - 1) / 10;
+    const vidEl = getVideoElement();
+
+    if(!vidEl)
+      return;
+
+    for(let i = 0; i < 20; i++) {
+      const x = Math.random() * clamp(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100),
+        y = Math.random() * clamp(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
+      vidEl?.dispatchEvent(new MouseEvent("mousemove", {
+        bubbles: true,
+        cancelable: true,
+        clientX: x + incX * i,
+        clientY: y + incY * i,
+        view: getUnsafeWindow(),
+      }));
+      await pauseFor(10);
+    }
+  };
+
+  setImmediateInterval(async () => {
+    if(!getFeature("yesImStillThere"))
+      return;
+
+    tryClick();
+    await tryMove();
+  }, 30_000);
 }
