@@ -391,7 +391,7 @@ export async function mountCfgMenu() {
 
     // top section:
     const sidenavTopSectionCont = document.createElement("section");
-    sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section");
+    sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
     sidenavTopSectionCont.role = "radiogroup";
     sidenavTopSectionCont.tabIndex = 0;
@@ -420,7 +420,7 @@ export async function mountCfgMenu() {
 
     // bottom section:
     const sidenavBtmSectionCont = document.createElement("section");
-    sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section");
+    sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
     sidenavBtmSectionCont.role = "radiogroup";
     sidenavBtmSectionCont.tabIndex = 0;

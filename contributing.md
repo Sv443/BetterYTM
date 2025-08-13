@@ -1235,9 +1235,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 >   
 > Description:  
-> Returns true, if the given element (`document.activeElement` by default) is an input element, so that all other keypress event listeners need to be ignored.  
+> Returns true, if the given focusable element (`document.activeElement` if not provided) is an input element, so that all other keypress event listeners need to be ignored.  
 > This is very useful for global keypress listeners (like ones on the `document.body`), which would trigger on every keypress, even if the user is interacting with an input element, like when typing in the search bar or the comment box.  
 > Determining whether the element is an input element is based on HTML IDs, classes and tag names, making it sophisticated and tailored to the YT and YTM pages, so some elements might not be supported by this function yet. In this case, please open an issue to get it added.  
+> To add your own focusable input elements to this function, just add the `bytm-ignored-input` class to them.  
 >   
 > Arguments:
 > - `element` - The element to check. If not provided, the currently focused element (`document.activeElement`) is used.  
@@ -1249,11 +1250,15 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > // add a global keypress listener to the document body:
 > document.body.addEventListener("keydown", (event) => {
 >   // check if the currently focused element is an input element:
->   if(unsafeWindow.BYTM.isIgnoredInputElement())
->     return console.warn("User is currently interacting with an input element, ignoring keypress event");
+>   if(unsafeWindow.BYTM.isIgnoredInputElement()) {
+>     console.log("An input element is currently focused, so the keypress event is ignored");
+>     return;
+>   }
 > 
->   console.log("The user is not typing in an input element");
+>   // handle the keypress:
 >   doStuff();
+> 
+>   console.info("No input element is focused (anymore), so the keypress event was handled");
 > });
 > 
 > // or check a specific element:

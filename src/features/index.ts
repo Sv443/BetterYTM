@@ -986,7 +986,7 @@ export const featInfo = {
   numKeysSkipToTimeDoublePress: {
     type: "slider",
     category: "input",
-    supportedSites: ["ytm"],
+    supportedSites: ["ytm", "yt"],
     default: 0,
     min: 0,
     max: 1500,
@@ -998,7 +998,6 @@ export const featInfo = {
     ),
     reloadRequired: false,
     enable: noop,
-    textAdornment: adornments.ytmOnly,
   },
 
   //#region cat:hotkeys
