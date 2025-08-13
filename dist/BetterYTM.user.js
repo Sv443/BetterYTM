@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@99047482/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@72295d03/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -355,7 +355,7 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "99047482",
+    buildNumber: "72295d03",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4293,7 +4293,7 @@ async function mountCfgMenu() {
         };
         // top section:
         const sidenavTopSectionCont = document.createElement("section");
-        sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section");
+        sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
         sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
         sidenavTopSectionCont.role = "radiogroup";
         sidenavTopSectionCont.tabIndex = 0;
@@ -4317,7 +4317,7 @@ async function mountCfgMenu() {
         sidenavCont.appendChild(sidenavTopSectionCont);
         // bottom section:
         const sidenavBtmSectionCont = document.createElement("section");
-        sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section");
+        sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
         sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
         sidenavBtmSectionCont.role = "radiogroup";
         sidenavBtmSectionCont.tabIndex = 0;
@@ -6011,7 +6011,7 @@ const ignoreInputIds = [
     "bytm-cfg-menu-sidenav", // cfg menu sidenav
 ];
 const ignoreInputClassNames = [
-    "bytm-menu-sidenav-section", // cfg menu sidenav section
+    "bytm-ignored-input", // generic class for ignored inputs
     "cbTitleTextBox", // dearrow title input
 ];
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
@@ -6092,12 +6092,16 @@ const lastKeyPress = [0, ""];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 async function initNumKeysSkip() {
     document.addEventListener("keydown", (e) => {
-        if (!getFeature("numKeysSkipToTime") || isIgnoredInputElement())
+        const doublePressTime = getFeature("numKeysSkipToTimeDoublePress");
+        if ((!getFeature("numKeysSkipToTime") && (getDomain() === "ytm" || (getDomain() === "yt" && doublePressTime === 0))) || isIgnoredInputElement())
             return;
         if (!e.key.trim().match(/^[0-9]$/))
             return;
-        const doublePressTime = getFeature("numKeysSkipToTimeDoublePress");
         if (doublePressTime > 0) {
+            if (getDomain() === "yt") {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
             if (lastKeyPress[1] !== e.key || Date.now() - lastKeyPress[0] > doublePressTime) {
                 lastKeyPress[0] = Date.now();
                 lastKeyPress[1] = e.key;
@@ -6109,6 +6113,8 @@ async function initNumKeysSkip() {
                 return;
             }
         }
+        else if (getDomain() === "yt")
+            return; // no need to override default behavior if not for the double-press guard
         const vidElem = getVideoElement();
         if (!vidElem || vidElem.readyState === 0)
             return warn("Could not find video element, so the keypress is ignored");
@@ -6117,7 +6123,7 @@ async function initNumKeysSkip() {
             log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
             vidElem.currentTime = newVidTime;
         }
-    });
+    }, { capture: true });
     log("Added number key press listener");
 }//#region init
 async function initHotkeys() {
@@ -7868,7 +7874,7 @@ const featInfo = {
     numKeysSkipToTimeDoublePress: {
         type: "slider",
         category: "input",
-        supportedSites: ["ytm"],
+        supportedSites: ["ytm", "yt"],
         default: 0,
         min: 0,
         max: 1500,
@@ -7878,7 +7884,6 @@ const featInfo = {
             : `${value} ms`),
         reloadRequired: false,
         enable: noop,
-        textAdornment: adornments.ytmOnly,
     },
     //#region cat:hotkeys
     switchBetweenSites: {
@@ -9913,7 +9918,6 @@ async function onDomLoad() {
             ftInit.push(["frameSkip", initFrameSkip()]);
             if (feats.anchorImprovements)
                 ftInit.push(["anchorImprovements", addAnchorImprovements()]);
-            ftInit.push(["numKeysSkip", initNumKeysSkip()]);
             //#region (ytm) lyrics
             if (feats.geniusLyrics)
                 ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
@@ -9952,6 +9956,7 @@ async function onDomLoad() {
             ftInit.push(["hotkeys", initHotkeys()]);
             if (feats.autoLikeChannels)
                 ftInit.push(["autoLikeChannels", initAutoLike()]);
+            ftInit.push(["numKeysSkip", initNumKeysSkip()]);
             //#region (ytm+yt) integrations
             if (feats.disableDarkReaderSites !== "none")
                 ftInit.push(["disableDarkReaderSites", disableDarkReader()]);
