@@ -1,3 +1,5 @@
+/* TODO:FIXME: if there's no bytm anchor, the margin-right needs to be unmodified */
+
 ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   margin-right: 0 !important;
 }

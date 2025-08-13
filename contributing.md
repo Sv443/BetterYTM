@@ -430,16 +430,16 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
-  - [getLibraryHook()](#getlibraryhook) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
+  - [getInternals()](#getInternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
 - BYTM-specific:
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
   - [reloadTab()](#reloadtab) - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
 - DOM:
-  - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
-  - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
-  - [MarkdownDialog](#markdowndialog) - Subclass of BytmDialog for displaying markdown content
+  - [getBytmDialog()](#getbytmdialog) - A class for creating and managing modal, fully customizable dialogs
+  - [getExImDialog()](#geteximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
+  - [getMarkdownDialog()](#getmarkdowndialog) - Subclass of BytmDialog for displaying markdown content
   - [setInnerHtml()](#setinnerhtml) - Sets the innerHTML property of an element after sanitizing the string with [DOMPurify](https://github.com/cure53/DOMPurify) and [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
@@ -490,7 +490,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [fetchVideoVotes()](#fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
-  - [formatNumber](#formatnumber) - Formats a number with the configured locale and passed or configured format
+  - [formatNumber()](#formatnumber) - Formats a number with the configured locale and passed or configured format
 
 <br><br>
 
@@ -649,22 +649,22 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> ### getLibraryHook()
+> ### getInternals()
 > Signature:
 > ```ts
-> unsafeWindow.BYTM.getLibraryHook(token: string | undefined): LibraryHookObj | undefined
+> unsafeWindow.BYTM.getInternals(token: string | undefined): BytmInternals | undefined
 > ```
 >   
 > Description:  
 > This function returns an object with functions and instances useful for core libraries or deeper-reaching plugins.  
-> One such example is the [BYTMUtils library](https://github.com/Sv443/BYTMUtils), which contains many core functions and components BetterYTM depends on.  
+> One such example is the [BYTMUtils library](https://github.com/Sv443/BYTMUtils), which contains many core functions and components BetterYTM depends on. It will call this function to gain access to some internals required for it to work.  
 >   
 > ⚠️ Requires the intent `InternalAccess` to be granted, else always returns `undefined`.  
 >   
 > Arguments:  
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will throw an error)
 >   
-> The object returned by this function is a `LibraryHookObj` type, which contains the following properties:
+> The `BytmInternals` object returned by this function contains the following properties:
 > | Property | Type | Description |
 > | :-- | :-- | :-- |
 > | `constants` | Object | Contains all exports from the `src/constants.ts` file |
@@ -1818,13 +1818,16 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> ### BytmDialog
+> ### getBytmDialog()
 > Signature:  
 > ```ts
-> new unsafeWindow.BYTM.BytmDialog(options: BytmDialogOptions): BytmDialog
+> // getting the class reference:
+> unsafeWindow.BYTM.getBytmDialog(token?: string): typeof BytmDialog;
+> // instantiating an instance:
+> new BytmDialog(options: BytmDialogOptions): typeof BytmDialog;
 > ```
 >   
-> A class that can be used to create and manage a modal dialog with a fully customizable header, body and footer.  
+> Returns a class that can be used to create and manage a modal dialog with a fully customizable header, body and footer.  
 >   
 > Features:
 > - Can be opened, closed, mounted, unmounted and destroyed at any time for full control.
@@ -1833,7 +1836,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - The dialog can be closed by clicking the background, pressing the escape key or clicking the close button (freely configurable).
 > - Features many helper methods and events to make it more flexible and easier to work with.
 > - Has an optional small mode for a more compact appearance.
-> - If needed, the relatively uniform CSS naming conventions make it easy for the appearance to be overridden by a [BetterYTM plugin](#developing-a-plugin-that-interfaces-with-betterytm) or userstyle.
+> - If needed, the relatively uniform CSS naming conventions make it easy for the appearance to be overridden by a [BetterYTM plugin](#developing-a-plugin-that-interfaces-with-betterytm) or userstyle.  
+>   
+> ⚠️ Requires the intent `CreateModalDialogs` to be granted, else always returns `undefined`.  
 >   
 > Options properties:
 > | Property | Description |
@@ -1901,7 +1906,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const dialog = new unsafeWindow.BYTM.BytmDialog({
+> const BytmDialog = unsafeWindow.BYTM.getBytmDialog(myToken); // see registerPlugin() docs
+> if(!BytmDialog)
+>   throw new Error("BYTM is not available or the intent was not granted");
+> 
+> const dialog = new BytmDialog({
 >   id: "my-dialog",
 >   width: 500,
 >   height: 300,
@@ -1948,13 +1957,16 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> ### ExImDialog
+> ### getExImDialog()
 > Signature:
 > ```ts
-> new unsafeWindow.BYTM.ExImDialog(options: ExImDialogOptions): ExImDialog
+> // getting the class reference:
+> unsafeWindow.BYTM.getExImDialog(token?: string): typeof ExImDialog;
+> // instantiating an instance:
+> new ExImDialog(options: ExImDialogOptions): typeof ExImDialog;
 > ```
 >   
-> A subclass of [BytmDialog](#bytmdialog) that can be used to create and manage a generic export/import dialog.  
+> Returns a subclass of [BytmDialog](#bytmdialog) that can be used to create and manage a generic export/import dialog.  
 >   
 > Features:
 > - Has all the features of the [BytmDialog](#bytmdialog) class
@@ -1963,7 +1975,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - Copy to clipboard button for the export textarea
 > - Ability to copy a second variety of the data when shift-clicking the copy button
 > - Exported data is hidden by default in case it contains sensitive information
-> - Text can be given as a constant string or "lazy-loaded" via sync or async function
+> - Text can be given as a constant string or "lazy-loaded" via sync or async function  
+>   
+> ⚠️ Requires the intent `CreateModalDialogs` to be granted, else always returns `undefined`.  
 >   
 > Options properties:  
 > All properties from the [BytmDialog](#bytmdialog) class are available here as well, except for `renderHeader`, `renderBody` and `renderFooter`  
@@ -1979,7 +1993,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const exImDialog = new unsafeWindow.BYTM.ExImDialog({
+> const ExImDialog = unsafeWindow.BYTM.getExImDialog(myToken); // see registerPlugin() docs
+> if(!ExImDialog)
+>   throw new Error("BYTM is not available or the intent was not granted");
+> 
+> const exImDialog = new ExImDialog({
 >   id: "my-exim-dialog",
 >   width: 500,
 >   height: 400,
@@ -2042,19 +2060,24 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> ### MarkdownDialog
+> ### getMarkdownDialog()
 > Signature:
 > ```ts
-> new unsafeWindow.BYTM.MarkdownDialog(options: MarkdownDialogOptions): MarkdownDialog
+> // getting the class reference:
+> unsafeWindow.BYTM.getMarkdownDialog(token?: string): typeof MarkdownDialog;
+> // instantiating an instance:
+> new MarkdownDialog(options: MarkdownDialogOptions): typeof MarkdownDialog;
 > ```
 >
-> A subclass of [BytmDialog](#bytmdialog) that can be used to create and manage a dialog that renders its entire body using GitHub-flavored Markdown (and HTML mixins).  
+> Returns a subclass of [BytmDialog](#bytmdialog) that can be used to create and manage a dialog that renders its entire body using GitHub-flavored Markdown (and HTML mixins).  
 > Note: the provided `id` will be prefixed with `md-` to avoid conflicts with other dialogs.  
 >   
 > Features:
 > - Has all the features of the [BytmDialog](#bytmdialog) class
 > - Can be used to display any kind of information in a dialog that can be written in Markdown
-> - Supports GitHub-flavored Markdown and HTML mixins like `<details>` and `<summary>`
+> - Supports GitHub-flavored Markdown and HTML mixins like `<details>` and `<summary>`  
+>   
+> ⚠️ Requires the intent `CreateModalDialogs` to be granted, else always returns `undefined`.  
 >   
 > Options properties:  
 > All properties from the [BytmDialog](#bytmdialog) class are available here as well, except for `renderBody` (which was replaced by `body`)  
@@ -2073,7 +2096,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const markdownDialog = new unsafeWindow.BYTM.MarkdownDialog({
+> const MarkdownDialog = unsafeWindow.BYTM.getMarkdownDialog(myToken); // see registerPlugin() docs
+> if(!MarkdownDialog)
+>   throw new Error("BYTM is not available or the intent was not granted");
+> 
+> const markdownDialog = new MarkdownDialog({
 >   id: "my-markdown-dialog",
 >   width: 400,
 >   height: 600,
@@ -2089,6 +2116,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   <summary>Click me!</summary>
 >   I'm a hidden text block!
 > </details>`,
+> });
+> 
+> markdownDialog.open().then(() => {
+>   console.log("The dialog is now open");
 > });
 > ```
 > </details>

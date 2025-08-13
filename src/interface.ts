@@ -4,10 +4,10 @@ import * as compareVersions from "compare-versions";
 import * as constants from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
-import { defaultData, getFeatures, setFeatures } from "./config.js";
-import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
+import { defaultData, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
+import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "./siteEvents.js";
-import { PluginIntent, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
+import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { BytmDialog } from "./components/BytmDialog.js";
 import { createHotkeyInput } from "./components/hotkeyInput.js";
@@ -123,7 +123,7 @@ export const allInterfaceEvents = [
 const globalFuncs: InterfaceFunctions = purifyObj({
   // meta:
   /*🔒*/ getPluginInfo,
-  /*🔒*/ getLibraryHook,
+  /*🔒*/ getInternals,
 
   // bytm-specific:
   getDomain,
@@ -265,7 +265,9 @@ export function emitInterface<
     unsafeWindow.dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
     //@ts-expect-error
     emitOnPlugins(type, undefined, ...detail);
-    log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
+    detail.length > 0 && detail?.[0]
+      ? log(`Emitted interface event '${type}' with data:`, ...detail)
+      : log(`Emitted interface event '${type}' with no data`);
   }
   catch(err) {
     error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
@@ -291,8 +293,7 @@ export function preInitPlugins() {
 export function initPlugins() {
   emitInterface("bytm:registerPlugin", registerPlugin);
 
-  if(mode === "development")
-    registerDevPlugin();
+  registerDevPlugin();
 
   window.addEventListener("bytm:ready", () => {
     pluginsInitialized = true;
@@ -356,6 +357,8 @@ export let devPluginToken: string | undefined;
 
 /** Registers a plugin that only exists in development mode to test the plugin system */
 function registerDevPlugin() {
+  if(mode !== "development")
+    return;
   try {
     const { token } = registerPlugin({
       plugin: {
@@ -378,6 +381,8 @@ function registerDevPlugin() {
     });
 
     devPluginToken = token;
+
+    log("Registered dev plugin");
   }
   catch(err) {
     error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
@@ -475,13 +480,14 @@ export function getPluginInfo(...args: [token: string | undefined, pluginDefOrNa
   if(resolveToken(args[0]) === undefined)
     return undefined;
 
+  // TODO:FIXME:
   return pluginDefToInfo(
     registeredPlugins.get(
       typeof args[1] === "string" && typeof args[2] === "undefined"
         ? args[1]
         : args.length === 2
-          ? `${args[2]}/${args[1]}`
-          : getPluginKey(args[1] as PluginDefResolvable)
+          ? getPluginKey(args[1] as PluginDefResolvable)
+          : `${args[2]}/${args[1]}`
     )?.def
   );
 }
@@ -588,12 +594,7 @@ export function getFeaturesInterface(token: string | undefined) {
   if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.ReadFeatureConfig))
     return undefined;
   const hiddenAccess = pluginHasPerms(pluginId, PluginIntent.SeeHiddenConfigValues);
-  const features = getFeatures();
-  for(const ftKey of Object.keys(features)) {
-    const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
-    if(info && info.valueHidden && !hiddenAccess) // @ts-expect-error
-      features[ftKey as keyof typeof features] = undefined;
-  }
+  const features = hiddenAccess ? getFeatures() : getFeaturesNoHidden();
   return features as FeatureConfig;
 }
 
@@ -654,10 +655,10 @@ export function getMarkdownDialog(token: string | undefined) {
   return MarkdownDialog;
 }
 
-//#region library hook
+//#region internals
 
 /** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
-export function getLibraryHook(token: string | undefined) {
+export function getInternals(token: string | undefined) {
   const pluginId = resolveToken(token);
   if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.InternalAccess))
     return undefined;

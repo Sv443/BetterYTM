@@ -7,7 +7,7 @@ import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
 import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "../utils/translations.js";
-import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
+import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getFeatHelpDialog } from "../dialogs/featHelp.js";
@@ -1148,7 +1148,7 @@ export async function mountCfgMenu() {
 
     log(`Mounted config menu element in ${Date.now() - startTs}ms`);
 
-    forceEmitSiteEvent("cfgMenuMounted");
+    emitSiteEvent("cfgMenuMounted");
     isMenuMounting = false;
     hasMenuFinishedMounting = true;
 

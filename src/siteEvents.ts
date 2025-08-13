@@ -189,7 +189,6 @@ export function initSiteEvents() {
         window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
     }
 
-    // TODO: investigate whether to use ready or allReady
     window.addEventListener("bytm:ready", () => {
       runIntervalChecks();
       setInterval(runIntervalChecks, 100);
@@ -224,11 +223,11 @@ export function initSiteEvents() {
 }
 
 let bytmReady = false;
-window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
+window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true });
 
-// FIXME: not a big fan of delaying events until `bytm:ready`, but changing it requires refactoring a lot of ugly code
+// FIXME: not a big fan of delaying events until `bytm:allReady`, but changing it requires refactoring a lot of ugly code
 
-/** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
+/** Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
     if(!bytmReady) {
@@ -250,8 +249,8 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
 }
 
 /**
- * Forcefully emits a site event with the given key and arguments, even if `bytm:ready` has not been emitted yet.  
- * Temporary workaround for `bytm:ready` event queueing issues in {@linkcode emitSiteEvent()}.
+ * Forcefully emits a site event with the given key and arguments, even if `bytm:allReady` has not been emitted yet.  
+ * Temporary workaround for `bytm:allReady` event queueing issues in {@linkcode emitSiteEvent()}.
  */
 export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {

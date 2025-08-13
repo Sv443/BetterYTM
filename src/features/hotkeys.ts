@@ -25,8 +25,15 @@ export async function initHotkeys() {
   return await Promise.allSettled(promises);
 }
 
+//#region utils
+
 function hotkeyMatches(e: KeyboardEvent, hk: HotkeyObj) {
   return e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt;
+}
+
+function preventBubble(e: Event) {
+  e.preventDefault();
+  e.stopImmediatePropagation();
 }
 
 //#region site switch
@@ -110,10 +117,14 @@ async function initLikeDislikeHotkeys() {
 
     const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
 
-    if(hotkeyMatches(e, getFeature("likeHotkey")))
+    if(hotkeyMatches(e, getFeature("likeHotkey"))) {
       likeBtn?.click();
-    else if(hotkeyMatches(e, getFeature("dislikeHotkey")))
+      preventBubble(e);
+    }
+    else if(hotkeyMatches(e, getFeature("dislikeHotkey"))) {
       dislikeBtn?.click();
+      preventBubble(e);
+    }
   }, { capture: true });
 }
 
@@ -127,8 +138,7 @@ async function initLyricsHotkey() {
       return;
 
     if(hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+      preventBubble(e);
 
       const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
       lyricsBtn?.click();
@@ -146,8 +156,7 @@ async function initSkipToRemTimeHotkey() {
       return;
 
     if(hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+      preventBubble(e);
 
       await remTimeTryRestoreTime(true);
     }
@@ -167,8 +176,7 @@ async function initSearchBarHotkeys() {
     if(isIgnoredInputElement() || !getFeature("focusSearchBarHotkeyEnabled"))
       return;
 
-    e.preventDefault();
-    e.stopImmediatePropagation();
+    preventBubble(e);
 
     getSearchBarInput()?.focus();
 
@@ -179,8 +187,7 @@ async function initSearchBarHotkeys() {
     if(!getFeature("clearSearchBarHotkeyEnabled"))
       return;
 
-    e.preventDefault();
-    e.stopImmediatePropagation();
+    preventBubble(e);
 
     const inputEl = getSearchBarInput();
     if(inputEl) {
@@ -204,7 +211,7 @@ type ProxyHotkeys = Partial<Record<
   Array<{
     /** The feature key that contains the hotkey object */
     hkFeatKey: FeatKeysOfType<HotkeyObj>;
-    /** Which key should have its default action and propagation prevented */
+    /** Which key should have its default action and propagation prevented (has to be a valid [`KeyboardEvent.code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code)) */
     preventKey?: string;
     /** Which domains this hotkey should be active on */
     domains: Domain[];
@@ -285,10 +292,8 @@ async function initProxyHotkeys() {
         if(nowTs - lastProxyHkTime < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
           continue;
 
-        if("preventKey" in rest && e.code === rest.preventKey) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-        }
+        if("preventKey" in rest && e.code === rest.preventKey)
+          preventBubble(e);
 
         if(hotkeyMatches(e, getFeature(hkFeatKey))) {
           lastProxyHkTime = nowTs;

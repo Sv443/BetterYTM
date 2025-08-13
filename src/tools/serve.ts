@@ -15,7 +15,7 @@ const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Whether to log requests to the console */
-const enableLogging = false;
+const enableLogging = env.DEV_SERVER_LOGGING?.toLowerCase() === "true" || argv.includes("--logging");
 
 const autoExitRaw = Number(argv.find(arg => arg.startsWith("--auto-exit-time="))?.split("=")[1]);
 /** Time in milliseconds after which the process should automatically exit */
