@@ -159,9 +159,6 @@ async function addQueueButtons(
     lyricsBtnElem.tabIndex = 0;
 
     onInteraction(lyricsBtnElem, async (e: MouseEvent | KeyboardEvent) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-
       const thumbSrc = queueItem.querySelector<HTMLImageElement>("yt-img-shadow img")?.src;
       const isVideo = thumbSrc ? thumbSrc.includes("ytimg.com/vi/") : true;
 
@@ -219,6 +216,9 @@ async function addQueueButtons(
         ? getLyricsCacheEntry(splitTitle.artist, splitTitle.song)
         : getLyricsCacheEntry(artistsSan, songSan);
 
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
       if(cachedLyricsEntry)
         lyricsUrl = resolveLyricsUrl(cachedLyricsEntry.path);
       else if(!queueItem.hasAttribute("data-bytm-loading")) {
@@ -253,6 +253,9 @@ async function addQueueButtons(
           });
         }
 
+        if(lyricsBtnElem)
+          lyricsBtnElem.dataset.state = lyricsUrl ? "ready" : "error";
+
         const resetImgElem = async () => {
           if(imgEl) {
             if(imgEl.tagName === "IMG") {
@@ -270,7 +273,7 @@ async function addQueueButtons(
           queueItem.removeAttribute("data-bytm-loading");
 
           // so the new image doesn't "blink"
-          setTimeout(resetImgElem, 100);
+          setTimeout(() => resetImgElem(), 100);
         }
 
         if(!lyricsUrl) {
@@ -282,6 +285,8 @@ async function addQueueButtons(
       }
 
       lyricsUrl && openInTab(lyricsUrl);
+    }, {
+      capture: true,
     });
   }
 

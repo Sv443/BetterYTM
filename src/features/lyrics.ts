@@ -49,6 +49,8 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
 
+        lyricsBtn.dataset.state = url ? "ready" : "error";
+
         setInnerHtml(lyricsBtn, await resourceAsString("icon-lyrics"));
         lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
@@ -310,15 +312,16 @@ export async function addGeniusUrlToLyricsBtn(btnElem: HTMLAnchorElement, genius
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
   linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-  linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
-  if(geniusUrl)
-    linkElem.href = geniusUrl;
+  linkElem.dataset.state = geniusUrl ? "ready" : "loading";
   linkElem.role = "button";
   linkElem.target = "_blank";
   linkElem.rel = "noopener noreferrer";
   linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
   linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-
+  if(geniusUrl)
+    linkElem.href = geniusUrl;
+  linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+  
   onInteraction(linkElem, (e) => {
     const url = linkElem.href ?? geniusUrl;
     if(!url || e instanceof MouseEvent)
@@ -334,7 +337,9 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   linkElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
   onInteraction(linkElem, async (e) => {
-    if(e.ctrlKey || e.altKey) {
+    const isModKey = e.ctrlKey || e.altKey,
+      isInvState = ["error", "loading"].includes(linkElem.dataset.state ?? "");
+    if((isModKey && !isInvState) || (!(isModKey || e.shiftKey) && isInvState)) {
       e.preventDefault();
       e.stopImmediatePropagation();
 

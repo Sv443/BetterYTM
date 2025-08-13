@@ -1,4 +1,4 @@
-import { fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/userutils";
+import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/coreutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
 import { error, info, warn } from "./logging.js";
@@ -66,7 +66,7 @@ export async function fetchCss(key: StyleResourceKey) {
 /** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
 const voteCache = new Map<string, VideoVotesObj>();
 /** Time-to-live for the vote cache in milliseconds */
-const voteCacheTTL = 1000 * 60 * 10;
+const voteCacheTTL = 1000 * 60 * 60;
 
 /**
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
@@ -100,7 +100,7 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
       id: votesRaw.id,
       likes: votesRaw.likes,
       dislikes: votesRaw.dislikes,
-      rating: votesRaw.rating,
+      rating: roundFixed(votesRaw.rating, 3),
       timestamp: Date.now(),
     };
     voteCache.set(votesObj.id, votesObj);

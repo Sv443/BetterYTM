@@ -144,7 +144,7 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
         await onDomLoad();
 
       const vidEl = getVideoElement();
-      if(vidEl && (vidEl?.readyState ?? 0) > 0)
+      if(vidEl && (vidEl?.readyState ?? 0) === 4)
         return res(vidEl);
 
       if(!location.pathname.startsWith("/watch"))

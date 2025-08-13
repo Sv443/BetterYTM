@@ -43,7 +43,7 @@ const lyricsCacheStore = new DataStore<LyricsCache>({
 export async function initLyricsCache() {
   canCompress = await compressionSupported();
   const data = await lyricsCacheStore.loadData();
-  log(`Initialized lyrics cache with ${data.cache.length} entries:`, data);
+  log(`Initialized lyrics cache (${data.cache.length} entries)`);
   emitInterface("bytm:lyricsCacheReady");
   return data;
 }
