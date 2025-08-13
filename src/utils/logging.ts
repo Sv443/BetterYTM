@@ -16,6 +16,65 @@ let curLogLevel = LogLevel.Info;
 const consPrefix = `[${scriptInfo.name}]`;
 const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
 
+/** In dev mode, all logs are stored in this array for exporting */
+const logs = [] as [type: string, time: number, ...args: unknown[]][];
+
+/** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
+export const getLogsTxt = () => {
+  const getVal = (val: unknown, primaryScope = true): string => {
+    if(typeof val === "undefined")
+      return "<undefined>";
+    if(val === null)
+      return "<null>";
+    if(Array.isArray(val))
+      return `<Array [${val.map((v) => getVal(v, false)).join(", ")}]>`;
+    if(typeof val === "function")
+      return val.name ? `<function ${val.name}()>` : "<function()>";
+    if(typeof val === "object") {
+      try {
+        if(val.constructor?.name === "Object")
+          return JSON.stringify(val);
+        return `[object ${val.constructor?.name ?? "Unknown"}]`;
+      }
+      catch {
+        // @ts-expect-error
+        return "toString" in val ? val.toString() : `[object ${val?.constructor?.name ?? "Unknown"}]`;
+      }
+    }
+    return primaryScope ? `${val}` : `"${val}"`;
+  };
+
+  const longestLogType = Math.max(...logs.map(([type]) => type.length));
+
+  const sortedLogs = [...logs].sort((a, b) => b[1] - a[1]);
+
+  return sortedLogs.reduce((acc, [type, time, ...args]) => {
+    if(args.length === 0)
+      return acc;
+
+    const dateTime = `${
+      new Date(time).toLocaleString(undefined, {
+        dateStyle: "short",
+      })
+    }, ${
+      new Date(time).toLocaleString(undefined, {
+        timeStyle: "medium",
+      })
+    }.${
+      new Date(time).toLocaleString(undefined, {
+        fractionalSecondDigits: 3,
+      })
+    }` as const;
+
+    try {
+      return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
+    }
+    catch {
+      return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
+    }
+  }, "");
+};
+
 /** Sets the current log level. 0 = Debug, 1 = Info */
 export function setLogLevel(level: LogLevel) {
   curLogLevel = level;
@@ -44,6 +103,7 @@ function getLogLevel(args: unknown[]): number {
 export function log(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
     console.log(consPrefix, ...args);
+  logs.push(["log", Date.now(), ...args]);
 }
 
 /**
@@ -53,11 +113,13 @@ export function log(...args: unknown[]): void {
 export function info(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
     console.info(consPrefix, ...args);
+  logs.push(["info", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console as a warning, no matter the log level. */
 export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
+  logs.push(["warn", Date.now(), ...args]);
 }
 
 const showErrToast = debounce(
@@ -75,6 +137,7 @@ const showErrToast = debounce(
 /** Logs all passed values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
+  logs.push(["error", Date.now(), ...args]);
 
   getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
 }
@@ -82,11 +145,13 @@ export function error(...args: unknown[]): void {
 /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
 export function errorNoToast(...args: unknown[]): void {
   console.error(consPrefix, ...args);
+  logs.push(["error", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {
   console.log(consPrefixDbg, ...args);
+  logs.push(["dbg", Date.now(), ...args]);
 }
 
 //#region error dialog
