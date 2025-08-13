@@ -1,4 +1,5 @@
-import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { getUnsafeWindow, isDomLoaded, preloadImages, setInnerHtmlUnsafe } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";

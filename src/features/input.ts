@@ -1,4 +1,4 @@
-import { clamp } from "@sv443-network/userutils";
+import { clamp } from "@sv443-network/coreutils";
 import { info, log, warn, getDomain, getVideoElement } from "../utils/index.js";
 import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";

@@ -1,4 +1,4 @@
-import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/userutils";
+import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
 import { BytmDialog } from "../components/BytmDialog.js";
 import { addSelectorListener } from "../observers.js";

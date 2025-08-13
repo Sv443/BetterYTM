@@ -1,4 +1,4 @@
-import { compress, debounce } from "@sv443-network/userutils";
+import { compress, debounce } from "@sv443-network/coreutils";
 import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "../utils/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";

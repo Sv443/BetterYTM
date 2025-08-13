@@ -1,4 +1,4 @@
-import { randomId } from "@sv443-network/userutils";
+import { randomId } from "@sv443-network/coreutils";
 import { setInnerHtml, t } from "../utils/index.js";
 import "./toggleInput.css";
 

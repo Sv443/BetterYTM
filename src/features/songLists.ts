@@ -1,4 +1,5 @@
-import { autoPlural, pauseFor, preloadImages } from "@sv443-network/userutils";
+import { autoPlural, pauseFor } from "@sv443-network/coreutils";
+import { preloadImages } from "@sv443-network/userutils";
 import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement } from "../utils/index.js";
 import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";

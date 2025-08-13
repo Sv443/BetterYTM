@@ -1,5 +1,5 @@
-import { DataStoreSerializer, type Stringifiable } from "@sv443-network/userutils";
-
+import { type Stringifiable } from "@sv443-network/coreutils";
+import { DataStoreSerializer } from "@sv443-network/userutils";
 import { configStore } from "./config.js";
 import { autoLikeStore } from "./features/autoLike.js";
 import { showPrompt } from "./dialogs/prompt.js";

@@ -2,9 +2,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import k from "kleur";
+import type { TrObject } from "@sv443-network/userutils";
 import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
-import type { TrObject } from "@sv443-network/userutils";
 
 const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 

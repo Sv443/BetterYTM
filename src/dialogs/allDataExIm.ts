@@ -1,4 +1,5 @@
-import { consumeStringGen, type SerializedDataStore } from "@sv443-network/userutils";
+import { consumeStringGen } from "@sv443-network/coreutils";
+import { type SerializedDataStore } from "@sv443-network/userutils";
 import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.js";
 import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.js";
 import { getSerializerStoresIds, getStoreSerializer } from "../serializer.js";

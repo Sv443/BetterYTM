@@ -1,5 +1,4 @@
-import type { NanoEmitter } from "@sv443-network/coreutils";
-import type { LooseUnion, Prettify } from "@sv443-network/userutils";
+import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/coreutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";

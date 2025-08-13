@@ -1,4 +1,4 @@
-import { consumeStringGen, UUError, type StringGen } from "@sv443-network/userutils";
+import { consumeStringGen, DatedError, type StringGen } from "@sv443-network/coreutils";
 import { error, formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
@@ -32,7 +32,7 @@ export * from "./volume.js";
 /** No-operation function used when `reloadRequired` is set to `false` to explicitly indicate that no `enable` function is needed */
 const noop = () => void 0;
 
-class ExampleError extends UUError {
+class ExampleError extends DatedError {
   constructor(message: string, options?: ErrorOptions) {
     super(message, options);
     this.name = "ExampleError";

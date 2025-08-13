@@ -1,4 +1,5 @@
-import { compress, consumeStringGen, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify, type StringGen } from "@sv443-network/userutils";
+import { compress, consumeStringGen, decompress, fetchAdvanced, pauseFor, randomId, randRange, type Prettify, type StringGen } from "@sv443-network/coreutils";
+import { getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";

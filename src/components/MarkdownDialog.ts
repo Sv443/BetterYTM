@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
+import { consumeStringGen, type StringGen } from "@sv443-network/coreutils";
 import { setInnerHtml } from "../utils/dom.js";
 import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 

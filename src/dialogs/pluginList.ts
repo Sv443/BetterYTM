@@ -1,4 +1,4 @@
-import { bitSetHas } from "@sv443-network/userutils";
+import { bitSetHas } from "@sv443-network/coreutils";
 import { BytmDialog } from "../components/BytmDialog.js";
 import { getRegisteredPlugins } from "../interface.js";
 import { getLocale, t } from "../utils/translations.js";

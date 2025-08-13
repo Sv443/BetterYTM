@@ -1,5 +1,4 @@
-import { NanoEmitter } from "@sv443-network/coreutils";
-import { type LooseUnion } from "@sv443-network/userutils";
+import { NanoEmitter, type LooseUnion } from "@sv443-network/coreutils";
 import { error, getDomain, info, warn } from "./utils/index.js";
 import { FeatureConfig, type FeatureCategory } from "./types.js";
 import { emitInterface } from "./interface.js";

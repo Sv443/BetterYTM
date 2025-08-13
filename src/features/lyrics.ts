@@ -1,4 +1,4 @@
-import { fetchAdvanced } from "@sv443-network/userutils";
+import { fetchAdvanced } from "@sv443-network/coreutils";
 import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
 import { mode, scriptInfo } from "../constants.js";

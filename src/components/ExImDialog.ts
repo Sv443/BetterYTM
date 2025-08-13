@@ -1,4 +1,4 @@
-import { consumeStringGen, type StringGen } from "@sv443-network/userutils";
+import { consumeStringGen, type StringGen } from "@sv443-network/coreutils";
 import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 import { t } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";

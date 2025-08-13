@@ -1,4 +1,4 @@
-import { clamp, debounce } from "@sv443-network/userutils";
+import { clamp, debounce } from "@sv443-network/coreutils";
 import { showIconToast } from "../components/toast.js";
 import { MarkdownDialog } from "../components/MarkdownDialog.js";
 import { scriptInfo } from "../constants.js";

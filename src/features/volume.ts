@@ -1,4 +1,5 @@
-import { addParent, debounce, type Stringifiable } from "@sv443-network/userutils";
+import { debounce, type Stringifiable } from "@sv443-network/coreutils";
+import { addParent } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
 import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";

@@ -1,4 +1,5 @@
-import { DataStore, compress, decompress } from "@sv443-network/userutils";
+import { compress, decompress } from "@sv443-network/coreutils";
+import { DataStore } from "@sv443-network/userutils";
 import { error, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, setInnerHtml, getLikeDislikeBtns } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";

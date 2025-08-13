@@ -1,4 +1,5 @@
-import { tr, Stringifiable, fetchAdvanced } from "@sv443-network/userutils";
+import { Stringifiable, fetchAdvanced } from "@sv443-network/coreutils";
+import { tr } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, warn } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
 import { getFeature } from "../config.js";

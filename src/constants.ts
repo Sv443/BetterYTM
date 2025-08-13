@@ -1,4 +1,4 @@
-import { purifyObj, randomId } from "@sv443-network/userutils";
+import { pureObj, randomId } from "@sv443-network/coreutils";
 import { LogLevel } from "./types.js";
 
 type ConstTypes = {
@@ -49,7 +49,7 @@ export const changelogUrl = assetSource === "local"
 export const initialParams = new URL(location.href).searchParams;
 
 /** Names of platforms by key of {@linkcode host} */
-export const platformNames = purifyObj({
+export const platformNames = pureObj({
   github: "GitHub",
   greasyfork: "GreasyFork",
   openuserjs: "OpenUserJS",
@@ -80,7 +80,7 @@ export const sessionStorageAvailable =
 export const defaultLogLevel: LogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
 
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-export const scriptInfo = purifyObj({
+export const scriptInfo = pureObj({
   name: GM.info.script.name,
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,

@@ -1,4 +1,5 @@
-import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
+import { clamp, compress, decompress } from "@sv443-network/coreutils";
+import { DataStore } from "@sv443-network/userutils";
 import { compressionFormat } from "../constants.js";
 import { compressionSupported, log } from "../utils/index.js";
 import { emitInterface } from "../interface.js";

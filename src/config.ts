@@ -1,4 +1,5 @@
-import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp, purifyObj, computeHash } from "@sv443-network/userutils";
+import { compress, decompress, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
+import { DataStore, type DataMigrationsDict } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
 import { compressionSupported, error, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
@@ -16,7 +17,7 @@ export const formatVersion = 11;
 //#region default data
 
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
-export const defaultData = purifyObj(
+export const defaultData = pureObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
     // @ts-expect-error
     .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)

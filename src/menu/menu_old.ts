@@ -1,4 +1,5 @@
-import { compress, debounce, isScrollable, openDialogs, purifyObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
+import { compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { isScrollable, openDialogs } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, groupedCategories } from "../features/index.js";
@@ -936,7 +937,7 @@ export async function mountCfgMenu() {
         const aboutTextCont = document.createElement("p");
         aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
         aboutTextCont.classList.add("bytm-markdown-container");
-        const aboutTrParams = purifyObj({
+        const aboutTrParams = pureObj({
           scriptName: scriptInfo.name,
           scriptVersion: pkg.version,
           buildNumber,
