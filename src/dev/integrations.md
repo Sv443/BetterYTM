@@ -2,6 +2,8 @@
 BetterYTM integrates with other extensions and tools to provide a smoother experience:
 - (Any other userscript or extension)
   - BYTM has a plugin system that allows users to write their own userscripts or extensions to extend the functionality of BYTM and benefit from its API - [you can read about it here.](../../contributing.md#developing-a-plugin-that-interfaces-with-betterytm)
+- [Apple Music / iTunes](https://music.apple.com/)
+  - BYTM fetches the highest resolution album artwork from Apple Music / iTunes for the thumbnail overlay feature.
 - [Dark Reader](https://darkreader.org/)
   - BYTM disables Dark Reader entirely in YTM because the page doesn't even have a light theme.
   - Dark Reader is also disabled for a few elements on YT, because it would break BYTM's styling.
@@ -15,5 +17,6 @@ BetterYTM integrates with other extensions and tools to provide a smoother exper
 - [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong)
   - BYTM adjusts the colors it uses throughout the YTM page to fit the theme configured in the ThemeSong extension.
   - There is a feature in the BYTM config menu that can be enabled for even better integration with ThemeSong.
-- [Apple Music / iTunes](https://music.apple.com/)
-  - BYTM fetches the highest resolution album artwork from Apple Music / iTunes for the thumbnail overlay feature.
+- [Thumbnail Rating Bar for YouTube](https://github.com/elliotwaite/thumbnail-rating-bar-for-youtube)
+  - BYTM can remove the rating bar that this extension adds to every song and video thumbnail on YTM.
+  - This is useful because the rating bar is absolutely tiny on YTM, making it impossible to use.

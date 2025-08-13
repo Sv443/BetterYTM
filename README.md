@@ -65,12 +65,13 @@ Please make sure to manually remove and reinstall the userscript once the next r
 
 ## Integrations
 BetterYTM integrates with other extensions and tools to adjust its or their behavior and provide a smoother experience:
+- [Apple Music](https://music.apple.com/) (album artworks for thumbnail overlay)
 - [Dark Reader](https://darkreader.org/) (disabled fully or partially)
 - [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube) (BYTM respects the set theme)
 - [Return YouTube Dislike](https://returnyoutubedislike.com/) (shows approx. like and dislike counts)
 - [SponsorBlock](https://sponsor.ajay.app/) (compatibility adjustments)
 - [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) (BYTM respects the set theme)
-- [Apple Music](https://music.apple.com/) (album artworks for thumbnail overlay)
+- [Thumbnail Rating Bar for YouTube](https://github.com/elliotwaite/thumbnail-rating-bar-for-youtube) (rating bars can be removed on YTM)
   
 To find out more about these integrations, [click here](./src/dev/integrations.md)
 
@@ -111,9 +112,9 @@ BetterYTM makes use of external services and APIs to provide some of its feature
 You may disable these features in the configuration menu if you don't want to use them, which will prevent any data from being sent to the services.  
   
 These are the privacy policies of the external services BetterYTM uses, and what data they collect:
-- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
-- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
 - [Apple Music - Privacy Policy](https://www.apple.com/legal/privacy/data/en/apple-music/) (album and artist names, IP address)
+- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
+- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
 
 <br><br>
 
