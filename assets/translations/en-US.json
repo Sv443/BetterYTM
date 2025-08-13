@@ -289,7 +289,6 @@
   "feature_desc_removeShareTrackingParam": "Remove the tracking parameter \"?si\" from the URL in share menus",
   "feature_helptext_removeShareTrackingParam": "For analytics purposes YouTube adds a tracking parameter to the end of the URL you can copy in the share menu. While not directly harmful, it makes the URL longer and gives YouTube more information about you and the people you send the link to.",
   "feature_desc_removeShareTrackingParamSites": "On which sites should the share tracking parameter be removed?",
-  "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
   "feature_desc_fixSpacing": "Fix spacing issues in the layout",
   "feature_helptext_fixSpacing": "There are various locations in the user interface where the spacing between elements is inconsistent. This feature fixes those issues.",
   "feature_desc_thumbnailOverlayBehavior": "When to automatically replace the video element with its thumbnail in the highest resolution",
@@ -371,7 +370,10 @@
   "feature_desc_autoLikeOpenMgmtDialog": "Open the dialog to manage auto-liked channels",
   "feature_btn_autoLikeOpenMgmtDialog": "Open dialog",
   "feature_btn_autoLikeOpenMgmtDialog_running": "Opening...",
-  
+  "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
+  "feature_desc_numKeysSkipToTimeDoublePress": "Whether a double press of the number key is required and in which time frame",
+  "feature_helptext_numKeysSkipToTimeDoublePress": "If enabled, you need to double-press the number key within this time frame to skip to the specific time in the video. Increase the time if you have trouble double-pressing the key in time.\nIf disabled, a single press of the number key will skip to the specific time in the video.",
+
   "feature_desc_switchBetweenSites": "Add a hotkey to switch between the YT and YTM sites on a video/song",
   "feature_helptext_switchBetweenSites": "Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video/song.",
   "feature_desc_switchSitesHotkey": "The hotkey to switch between the sites",
@@ -381,6 +383,7 @@
   "feature_desc_currentLyricsHotkeyEnabled": "Add a hotkey to open the current song's lyrics in a new tab",
   "feature_desc_currentLyricsHotkey": "The hotkey to open the song's lyrics",
   "feature_desc_skipToRemTimeHotkeyEnabled": "Add a hotkey to restore the last remembered timestamp of the current video/song",
+  "feature_helptext_skipToRemTimeHotkeyEnabled": "By pressing the hotkey from the feature below, the feature restores the furthest timestamp the video was at, within the configured time frame.\nThis will only work if the \"Remember song time\" feature is enabled.",
   "feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled": "This feature will only work if the \"Remember song time\" feature is enabled.",
   "feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary": "Requires \"Remember song time\"",
   "feature_desc_skipToRemTimeHotkey": "The hotkey to restore the last remembered timestamp",
@@ -419,6 +422,8 @@
   "feature_helptext_themeSongIntegration": "If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!",
   "feature_desc_themeSongLightness": "How light the accent colors should be that are derived from the current ThemeSong theme",
   "feature_helptext_themeSongLightness": "Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the accent colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.",
+  "feature_desc_removeThumbnailRatingBar": "Remove the rating bar added by the Thumbnail Rating Bar extension",
+  "feature_helptext_removeThumbnailRatingBar": "If you have the Thumbnail Rating Bar extension installed, you will notice a rating bar on every song and video thumbnail, which are absolutely tiny on YT Music.\nThis feature will remove that rating bar to prevent it from taking up space and being distracting.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.",
 
   "feature_desc_openPluginList": "Open the list of plugins you have installed",
   "feature_btn_openPluginList": "Open list",
