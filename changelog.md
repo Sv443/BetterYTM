@@ -12,7 +12,7 @@
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - 🎵 Show a track number in the currently playing queue and playlists.
-  - 🎵 Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
+  - Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
 - **Changes and improvements:**
   - Improved script initialization performance.
   - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix inconsistencies.

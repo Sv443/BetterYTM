@@ -15,8 +15,8 @@ const ignoreInputIds: string[] = [
 ];
 
 const ignoreInputClassNames: string[] = [
-  "bytm-menu-sidenav-section", // cfg menu sidenav section
-  "cbTitleTextBox",            // dearrow title input
+  "bytm-ignored-input", // generic class for ignored inputs
+  "cbTitleTextBox",     // dearrow title input
 ];
 
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
@@ -135,14 +135,19 @@ const lastKeyPress = [0, ""] as [time: number, key: string];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
-    if(!getFeature("numKeysSkipToTime") || isIgnoredInputElement())
+    const doublePressTime = getFeature("numKeysSkipToTimeDoublePress");
+
+    if((!getFeature("numKeysSkipToTime") && (getDomain() === "ytm" || (getDomain() === "yt" && doublePressTime === 0))) || isIgnoredInputElement())
       return;
     if(!e.key.trim().match(/^[0-9]$/))
       return;
 
-    const doublePressTime = getFeature("numKeysSkipToTimeDoublePress");
-
     if(doublePressTime > 0) {
+      if(getDomain() === "yt") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+
       if(lastKeyPress[1] !== e.key || Date.now() - lastKeyPress[0] > doublePressTime) {
         lastKeyPress[0] = Date.now();
         lastKeyPress[1] = e.key;
@@ -155,6 +160,8 @@ export async function initNumKeysSkip() {
         return;
       }
     }
+    else if(getDomain() === "yt")
+      return; // no need to override default behavior if not for the double-press guard
 
     const vidElem = getVideoElement();
     if(!vidElem || vidElem.readyState === 0)
@@ -165,6 +172,6 @@ export async function initNumKeysSkip() {
       log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
       vidElem.currentTime = newVidTime;
     }
-  });
+  }, { capture: true });
   log("Added number key press listener");
 }

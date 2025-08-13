@@ -298,8 +298,6 @@ async function onDomLoad() {
       if(feats.anchorImprovements)
         ftInit.push(["anchorImprovements", addAnchorImprovements()]);
 
-      ftInit.push(["numKeysSkip", initNumKeysSkip()]);
-
       //#region (ytm) lyrics
 
       if(feats.geniusLyrics)
@@ -350,6 +348,8 @@ async function onDomLoad() {
 
       if(feats.autoLikeChannels)
         ftInit.push(["autoLikeChannels", initAutoLike()]);
+
+      ftInit.push(["numKeysSkip", initNumKeysSkip()]);
 
       //#region (ytm+yt) integrations
 
