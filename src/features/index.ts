@@ -794,7 +794,7 @@ export const featInfo = {
     min: 1,
     max: 60 * 60 * 24 * 7,
     step: 1,
-    default: 60,
+    default: 180,
     unit: "s",
     reloadRequired: false,
     enable: noop,
@@ -979,6 +979,23 @@ export const featInfo = {
     category: "input",
     supportedSites: ["ytm"],
     default: true,
+    reloadRequired: false,
+    enable: noop,
+    textAdornment: adornments.ytmOnly,
+  },
+  numKeysSkipToTimeDoublePress: {
+    type: "slider",
+    category: "input",
+    supportedSites: ["ytm"],
+    default: 0,
+    min: 0,
+    max: 1500,
+    step: 50,
+    renderValue: (value) => String(
+      Number(value) === 0
+        ? t("toggled_off")
+        : `${value} ms`
+    ),
     reloadRequired: false,
     enable: noop,
     textAdornment: adornments.ytmOnly,
@@ -1229,6 +1246,13 @@ export const featInfo = {
     supportedSites: ["ytm"],
     options: options.colorLightness,
     default: "darker",
+    textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
+  },
+  removeThumbnailRatingBar: {
+    type: "toggle",
+    category: "integrations",
+    supportedSites: ["ytm"],
+    default: true,
     textAdornment: () => combineAdornments([adornments.ytmOnly, adornments.reload]),
   },
 

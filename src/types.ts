@@ -5,7 +5,7 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
 import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getLibraryHook, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { isIgnoredInputElement } from "./features/input.js";
@@ -348,7 +348,7 @@ export type InterfaceFunctions = {
   /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it */
   getPluginInfo: typeof getPluginInfo;
   /** 🔒 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins */
-  getLibraryHook: typeof getLibraryHook;
+  getInternals: typeof getInternals;
 
   // bytm-specific:
   /** Returns the current domain as a constant string representation */
@@ -627,8 +627,6 @@ export interface FeatureConfig {
   removeShareTrackingParam: boolean;
   /** On which sites to remove the "si" tracking parameter from links in the share menu */
   removeShareTrackingParamSites: SiteSelection;
-  /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
-  numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
   fixSpacing: boolean;
   /** Where to show a thumbnail overlay over the video element and whether to show it at all */
@@ -766,6 +764,10 @@ export interface FeatureConfig {
   frameSkipAmount: number;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
+  /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
+  numKeysSkipToTime: boolean;
+  /** Whether skipping to a specific time requires two key presses and in which time frame */
+  numKeysSkipToTimeDoublePress: number;
 
   //#region hotkeys
   /** Add a hotkey to switch between the YT and YTM sites on a video/song */
@@ -814,6 +816,8 @@ export interface FeatureConfig {
   themeSongIntegration: boolean;
   /** Lightness of the color used when ThemeSong is enabled */
   themeSongLightness: ColorLightnessPref;
+  /** Removes all thumbnail rating bars if the extension is installed */
+  removeThumbnailRatingBar: boolean;
 
   //#region plugins
   /** Button that opens the plugin list dialog */
