@@ -155,6 +155,12 @@ export type KeysOfType<T, U> = {
   [K in keyof T]: T[K] extends U ? K : never
 }[keyof T];
 
+/** TS enum type for bitset-like enums, where the keys are strings and the values are numbers */
+export type BitSetEnum = Enum<string, number>;
+
+/** Generic type for TS enums, where there is a key-value as well as value-key mapping */
+export type Enum<K extends string | number, V extends string | number> = Record<K, V> & Record<V, K>;
+
 //#region global
 
 /** All properties of the `unsafeWindow.BYTM` object (also called "plugin interface") */
@@ -252,6 +258,11 @@ export type PluginRegisterResult = {
   events: NanoEmitter<PluginEventMap>;
   /** Authentication token for the plugin to use in certain restricted function calls */
   token: string;
+  /** Permissions granted to the plugin - this is a bitwise OR of {@linkcode PluginIntent} values under the `int` prop, or an array of them under the `array` prop */
+  permissions: {
+    int: number;
+    array: PluginIntent[];
+  };
 }
 
 /** Minimal object that describes a plugin - this is all info the other installed plugins can see */
@@ -767,6 +778,8 @@ export interface FeatureConfig {
   numKeysSkipToTime: boolean;
   /** Whether skipping to a specific time requires two key presses and in which time frame */
   numKeysSkipToTimeDoublePress: number;
+  /** Whether there's a buffer for double pressing the number keys to skip to a specific time, and how long it is in seconds */
+  numKeysSkipToTimeDoublePressBuffer: number;
 
   //#region hotkeys
   /** Add a hotkey to switch between the YT and YTM sites on a video/song */

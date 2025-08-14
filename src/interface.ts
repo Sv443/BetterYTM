@@ -7,7 +7,7 @@ import { addSelectorListener } from "./observers.js";
 import { defaultData, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "./siteEvents.js";
-import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
+import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetEnum } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { BytmDialog } from "./components/BytmDialog.js";
 import { createHotkeyInput } from "./components/hotkeyInput.js";
@@ -20,8 +20,8 @@ import { MarkdownDialog } from "./components/MarkdownDialog.js";
 import pkgJson from "../package.json" with { type: "json" };
 
 const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
-const { NanoEmitter } = CoreUtils;
-const { autoPlural, getUnsafeWindow, purifyObj } = UserUtils;
+const { autoPlural, NanoEmitter, pureObj } = CoreUtils;
+const { getUnsafeWindow } = UserUtils;
 
 //#region interface globals
 
@@ -120,7 +120,7 @@ export const allInterfaceEvents = [
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
  */
-const globalFuncs: InterfaceFunctions = purifyObj({
+const globalFuncs: InterfaceFunctions = pureObj({
   // meta:
   /*🔒*/ getPluginInfo,
   /*🔒*/ getInternals,
@@ -248,7 +248,7 @@ export function setGlobalProp<
   const win = getUnsafeWindow();
 
   if(typeof win.BYTM !== "object")
-    win.BYTM = purifyObj({}) as BytmObject;
+    win.BYTM = pureObj({}) as BytmObject;
 
   win.BYTM[key] = value;
 }
@@ -306,7 +306,6 @@ export function initPlugins() {
 
 /** Registers a plugin on the BYTM interface. */
 function registerPlugin(def: PluginDef): PluginRegisterResult {
-  // TODO: check perms and ask user for initial activation
   try {
     if(pluginsInitialized)
       throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
@@ -329,6 +328,14 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     });
     registeredPluginTokens.set(plKey, token);
 
+    // TODO: check perms and ask user for initial activation
+    const permissionInt = defToIntentsBitSet(def);
+
+    const permissions: PluginRegisterResult["permissions"] = {
+      int: permissionInt,
+      array: parseBitSetEnumArray(permissionInt, PluginIntent as unknown as BitSetEnum),
+    };
+
     info(`Successfully registered plugin '${plKey}'`);
 
     setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
@@ -344,6 +351,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
       info: getPluginInfo(token, def)!,
       events,
       token,
+      permissions,
     };
   }
   catch(err) {
@@ -528,9 +536,10 @@ export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvabl
 
   const pluginIntents = defToIntentsBitSet(plugin.def);
 
-  return UserUtils.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => UserUtils.bitSetHas(pluginIntents, perm));
+  return UserUtils.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils.bitSetHas(pluginIntents, perm));
 }
 
+/** Converts the intents from a PluginDef object into a bit set value. */
 function defToIntentsBitSet(def: PluginDef): number {
   if(Array.isArray(def.intents))
     return def.intents.reduce((acc, intent) => acc | intent, 0);
@@ -538,6 +547,15 @@ function defToIntentsBitSet(def: PluginDef): number {
     return def.intents;
   else
     return 0;
+}
+
+/** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
+function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetEnum): TNum[] {
+  const result: TNum[] = [];
+  for(const [, val] of Object.entries(enumRef))
+    if((typeof val === "number" || typeof val === "bigint") && CoreUtils.bitSetHas(bitSet, val as TNum))
+      result.push(val as TNum);
+  return result;
 }
 
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
