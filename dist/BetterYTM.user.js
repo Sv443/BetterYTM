@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@72295d03/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c0c844e2/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -73,13 +73,13 @@
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
+// @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@2.0.0/dist/CoreUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.3/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.5
-// @grant             GM.registerMenuCommand
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -355,7 +355,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "72295d03",
+    buildNumber: "c0c844e2",
+    buildTimestamp: "1755137865775",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -373,6 +374,8 @@ const branch$1 = getConst("branch", "main");
 const host$1 = getConst("host", "github");
 /** The build number of the userscript */
 const buildNumber$1 = getConst("buildNumber", "!BUILD_ERROR!");
+/** When the script was built, as a UNIX timestamp */
+const buildTimestamp = Number(getConst("buildTimestamp", 0));
 /** The source of the assets - github, jsdelivr or local */
 const assetSource = getConst("assetSource", "jsdelivr");
 /** The port of the dev server */
@@ -414,7 +417,7 @@ const scriptInfo$1 = CoreUtils.pureObj({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-});var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});let canCompress$2 = true;
+});var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});let canCompress$2 = true;
 const lyricsCacheStore = new UserUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
@@ -4742,6 +4745,10 @@ async function mountCfgMenu() {
                     scriptName: scriptInfo$1.name,
                     scriptVersion: packageJson.version,
                     buildNumber: buildNumber$1,
+                    buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                    }),
                     authorName: packageJson.author.name,
                     authorLink: packageJson.author.url,
                     githubLink: scriptInfo$1.namespace,
@@ -9621,7 +9628,7 @@ async function getAllDataExImDialog() {
     }
     return allDataExImDialog;
 }
-/** Creates and/or returns the AutoLikeExIm dialog */
+/** Called when data is imported */
 async function onImport(data) {
     try {
         const serializer = getStoreSerializer();
@@ -10087,15 +10094,14 @@ async function initSvgSpritesheet() {
 //#region dev menu cmds
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
-    if (mode$1 !== "development")
-        return;
+    const isDev = mode$1 === "development";
     GM.registerMenuCommand("Reset config", async () => {
         if (await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
             await clearConfig();
             await reloadTab();
         }
     });
-    GM.registerMenuCommand("List GM values in console with decompression", async () => {
+    isDev && GM.registerMenuCommand("List GM values in console with decompression", async () => {
         const keys = await GM.listValues();
         dbg(`GM values (${keys.length}):`);
         if (keys.length === 0)
@@ -10114,7 +10120,7 @@ function registerDevCommands() {
             dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
         }
     });
-    GM.registerMenuCommand("List GM values in console, without decompression", async () => {
+    isDev && GM.registerMenuCommand("List GM values in console, without decompression", async () => {
         const keys = await GM.listValues();
         dbg(`GM values (${keys.length}):`);
         if (keys.length === 0)
@@ -10131,7 +10137,7 @@ function registerDevCommands() {
             dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
         }
     });
-    GM.registerMenuCommand("Delete all GM values", async () => {
+    isDev && GM.registerMenuCommand("Delete all GM values", async () => {
         const keys = await GM.listValues();
         if (await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
             dbg(`Clearing ${keys.length} GM values:`);
@@ -10143,7 +10149,7 @@ function registerDevCommands() {
             }
         }
     });
-    GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
+    isDev && GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
         const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
         if (!keys)
             return;
@@ -10156,15 +10162,15 @@ function registerDevCommands() {
             }
         }
     });
-    GM.registerMenuCommand("Reset install timestamp", async () => {
+    isDev && GM.registerMenuCommand("Reset install timestamp", async () => {
         await GM.deleteValue("bytm-installed");
         dbg("Reset install time.");
     });
-    GM.registerMenuCommand("Reset version check timestamp", async () => {
+    isDev && GM.registerMenuCommand("Reset version check timestamp", async () => {
         await GM.deleteValue("bytm-version-check");
         dbg("Reset version check time.");
     });
-    GM.registerMenuCommand("List active selector listeners in console", async () => {
+    isDev && GM.registerMenuCommand("List active selector listeners in console", async () => {
         const lines = [];
         let listenersAmt = 0;
         for (const [obsName, obs] of Object.entries(globservers)) {
@@ -10180,14 +10186,14 @@ function registerDevCommands() {
         }
         dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     });
-    GM.registerMenuCommand("Compress value", async () => {
+    isDev && GM.registerMenuCommand("Compress value", async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
         if (input && input.length > 0) {
             const compressed = await CoreUtils.compress(input, compressionFormat$1);
             dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
         }
     });
-    GM.registerMenuCommand("Decompress value", async () => {
+    isDev && GM.registerMenuCommand("Decompress value", async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
         if (input && input.length > 0) {
             const decompressed = await CoreUtils.decompress(input, compressionFormat$1);
@@ -10203,8 +10209,8 @@ function registerDevCommands() {
                 await reloadTab();
         }
     });
-    GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-    GM.registerMenuCommand("Example MarkdownDialog", async () => {
+    isDev && GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+    isDev && GM.registerMenuCommand("Example MarkdownDialog", async () => {
         const mdDlg = new MarkdownDialog({
             id: "example",
             width: 500,
@@ -10218,20 +10224,20 @@ function registerDevCommands() {
         });
         await mdDlg.open();
     });
-    GM.registerMenuCommand("Print init timings to console", () => {
+    isDev && GM.registerMenuCommand("Print init timings to console", () => {
         info("Init timings:\n", initTimings);
     });
-    GM.registerMenuCommand("Toggle dev treatments", async () => {
+    isDev && GM.registerMenuCommand("Toggle dev treatments", async () => {
         const val = !await GM.getValue("bytm-dev-treatments", false);
         await GM.setValue("bytm-dev-treatments", val);
         if (await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
             await reloadTab();
     });
-    GM.registerMenuCommand("Get developer plugin token", () => showPrompt({
+    isDev && GM.registerMenuCommand("Get developer plugin token", () => showPrompt({
         type: "alert",
         message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
     }));
-    GM.registerMenuCommand("Download log file", () => {
+    GM.registerMenuCommand("Download console log file", () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
     });
     log("Registered dev menu commands");
