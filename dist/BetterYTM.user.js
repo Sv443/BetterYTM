@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c0c844e2/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2de01a6e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -355,8 +355,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "c0c844e2",
-    buildTimestamp: "1755137865775",
+    buildNumber: "2de01a6e",
+    buildTimestamp: "1755213401956",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6098,34 +6098,40 @@ async function initFrameSkip() {
 const lastKeyPress = [0, ""];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 async function initNumKeysSkip() {
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", async (e) => {
         const doublePressTime = getFeature("numKeysSkipToTimeDoublePress");
         if ((!getFeature("numKeysSkipToTime") && (getDomain() === "ytm" || (getDomain() === "yt" && doublePressTime === 0))) || isIgnoredInputElement())
             return;
         if (!e.key.trim().match(/^[0-9]$/))
             return;
+        const vidElem = await waitVideoElementReady();
+        const newVidTime = vidElem.duration / (10 / Number(e.key));
         if (doublePressTime > 0) {
             if (getDomain() === "yt") {
                 e.preventDefault();
                 e.stopImmediatePropagation();
             }
+            const videoTime = await getVideoTime();
+            const dpBuffer = getFeature("numKeysSkipToTimeDoublePressBuffer");
+            const vidTimeIsClose = dpBuffer > 0 && videoTime ? Math.abs(videoTime - newVidTime) < dpBuffer : false;
+            const vidTimeAtStartOrEnd = CoreUtils.valsWithin(videoTime ?? -Infinity, vidElem.duration, 1) || CoreUtils.valsWithin(videoTime ?? Infinity, 0, 1);
             if (lastKeyPress[1] !== e.key || Date.now() - lastKeyPress[0] > doublePressTime) {
                 lastKeyPress[0] = Date.now();
                 lastKeyPress[1] = e.key;
-                return;
+                if (!vidTimeIsClose && !vidTimeAtStartOrEnd)
+                    return;
             }
             if (Date.now() - lastKeyPress[0] > doublePressTime) {
                 lastKeyPress[0] = Date.now();
                 lastKeyPress[1] = e.key;
-                return;
+                if (!vidTimeIsClose && !vidTimeAtStartOrEnd)
+                    return;
             }
         }
         else if (getDomain() === "yt")
             return; // no need to override default behavior if not for the double-press guard
-        const vidElem = getVideoElement();
         if (!vidElem || vidElem.readyState === 0)
             return warn("Could not find video element, so the keypress is ignored");
-        const newVidTime = vidElem.duration / (10 / Number(e.key));
         if (!isNaN(newVidTime)) {
             log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
             vidElem.currentTime = newVidTime;
@@ -7888,9 +7894,25 @@ const featInfo = {
         step: 50,
         renderValue: (value) => String(Number(value) === 0
             ? t("toggled_off")
-            : `${value} ms`),
+            : `${value}ms`),
         reloadRequired: false,
         enable: noop,
+    },
+    numKeysSkipToTimeDoublePressBuffer: {
+        type: "slider",
+        category: "input",
+        supportedSites: ["ytm", "yt"],
+        default: 5,
+        min: 0,
+        max: 30,
+        step: 0.5,
+        renderValue: (value) => String(Number(value) === 0
+            ? t("toggled_off")
+            : `${formatNumber(Number(value), "short")}s`),
+        reloadRequired: false,
+        enable: noop,
+        advanced: true,
+        textAdornment: adornments.advanced,
     },
     //#region cat:hotkeys
     switchBetweenSites: {
@@ -8296,7 +8318,7 @@ const migrations = {
             "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
             "songListTrackNumbersEnabled", "songListTrackNumbers",
             "yesImStillThere", "removeThumbnailRatingBar",
-            "numKeysSkipToTimeDoublePress",
+            "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
             { key: "initTimeout", oldDefault: 8 },
@@ -8455,13 +8477,13 @@ async function clearConfig() {
     await configStore.deleteData();
     info("Deleted config from persistent storage");
 }const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
-const { NanoEmitter } = CoreUtils__namespace;
-const { autoPlural, getUnsafeWindow, purifyObj } = UserUtils__namespace;
+const { autoPlural, NanoEmitter, pureObj } = CoreUtils__namespace;
+const { getUnsafeWindow } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
  * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
  */
-const globalFuncs = purifyObj({
+const globalFuncs = pureObj({
     // meta:
     /*🔒*/ getPluginInfo,
     /*🔒*/ getInternals,
@@ -8563,7 +8585,7 @@ function setGlobalProp(key, value) {
     // use unsafeWindow so the properties are available to plugins outside of the userscript's scope
     const win = getUnsafeWindow();
     if (typeof win.BYTM !== "object")
-        win.BYTM = purifyObj({});
+        win.BYTM = pureObj({});
     win.BYTM[key] = value;
 }
 /** Emits an event on the BYTM interface */
@@ -8604,7 +8626,6 @@ function initPlugins() {
 }
 /** Registers a plugin on the BYTM interface. */
 function registerPlugin(def) {
-    // TODO: check perms and ask user for initial activation
     try {
         if (pluginsInitialized)
             throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
@@ -8621,6 +8642,12 @@ function registerPlugin(def) {
             events,
         });
         registeredPluginTokens.set(plKey, token);
+        // TODO: check perms and ask user for initial activation
+        const permissionInt = defToIntentsBitSet(def);
+        const permissions = {
+            int: permissionInt,
+            array: parseBitSetEnumArray(permissionInt, PluginIntent),
+        };
         info(`Successfully registered plugin '${plKey}'`);
         setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 0);
         window.addEventListener("bytm:ready", () => {
@@ -8633,6 +8660,7 @@ function registerPlugin(def) {
             info: getPluginInfo(token, def),
             events,
             token,
+            permissions,
         };
     }
     catch (err) {
@@ -8742,8 +8770,9 @@ function pluginHasPerms(...args) {
     if (!Array.isArray(perms))
         throw new TypeError("The second argument must be an array of PluginIntent values");
     const pluginIntents = defToIntentsBitSet(plugin.def);
-    return UserUtils__namespace.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => UserUtils__namespace.bitSetHas(pluginIntents, perm));
+    return UserUtils__namespace.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils__namespace.bitSetHas(pluginIntents, perm));
 }
+/** Converts the intents from a PluginDef object into a bit set value. */
 function defToIntentsBitSet(def) {
     if (Array.isArray(def.intents))
         return def.intents.reduce((acc, intent) => acc | intent, 0);
@@ -8751,6 +8780,14 @@ function defToIntentsBitSet(def) {
         return def.intents;
     else
         return 0;
+}
+/** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
+function parseBitSetEnumArray(bitSet, enumRef) {
+    const result = [];
+    for (const [, val] of Object.entries(enumRef))
+        if ((typeof val === "number" || typeof val === "bigint") && CoreUtils__namespace.bitSetHas(bitSet, val))
+            result.push(val);
+    return result;
 }
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 function validatePluginDef(pluginDef) {
