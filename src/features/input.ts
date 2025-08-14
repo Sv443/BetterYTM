@@ -1,5 +1,5 @@
-import { clamp } from "@sv443-network/coreutils";
-import { info, log, warn, getDomain, getVideoElement } from "../utils/index.js";
+import { clamp, valsWithin } from "@sv443-network/coreutils";
+import { info, log, warn, getDomain, getVideoElement, waitVideoElementReady, getVideoTime } from "../utils/index.js";
 import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
@@ -134,7 +134,7 @@ const lastKeyPress = [0, ""] as [time: number, key: string];
 
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", async (e) => {
     const doublePressTime = getFeature("numKeysSkipToTimeDoublePress");
 
     if((!getFeature("numKeysSkipToTime") && (getDomain() === "ytm" || (getDomain() === "yt" && doublePressTime === 0))) || isIgnoredInputElement())
@@ -142,32 +142,42 @@ export async function initNumKeysSkip() {
     if(!e.key.trim().match(/^[0-9]$/))
       return;
 
+    const vidElem = await waitVideoElementReady();
+    const newVidTime = vidElem.duration / (10 / Number(e.key));
+
     if(doublePressTime > 0) {
       if(getDomain() === "yt") {
         e.preventDefault();
         e.stopImmediatePropagation();
       }
 
+      const videoTime = await getVideoTime();
+      const dpBuffer = getFeature("numKeysSkipToTimeDoublePressBuffer");
+      const vidTimeIsClose = dpBuffer > 0 && videoTime ? Math.abs(videoTime - newVidTime) < dpBuffer : false;
+      const vidTimeAtStartOrEnd = valsWithin(videoTime ?? -Infinity, vidElem.duration, 1) || valsWithin(videoTime ?? Infinity, 0, 1);
+
       if(lastKeyPress[1] !== e.key || Date.now() - lastKeyPress[0] > doublePressTime) {
         lastKeyPress[0] = Date.now();
         lastKeyPress[1] = e.key;
-        return;
+
+        if(!vidTimeIsClose && !vidTimeAtStartOrEnd)
+          return;
       }
 
       if(Date.now() - lastKeyPress[0] > doublePressTime) {
         lastKeyPress[0] = Date.now();
         lastKeyPress[1] = e.key;
-        return;
+
+        if(!vidTimeIsClose && !vidTimeAtStartOrEnd)
+          return;
       }
     }
     else if(getDomain() === "yt")
       return; // no need to override default behavior if not for the double-press guard
 
-    const vidElem = getVideoElement();
     if(!vidElem || vidElem.readyState === 0)
       return warn("Could not find video element, so the keypress is ignored");
 
-    const newVidTime = vidElem.duration / (10 / Number(e.key));
     if(!isNaN(newVidTime)) {
       log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
       vidElem.currentTime = newVidTime;

@@ -248,7 +248,6 @@
   "feature_desc_watermarkEnabled": "Mostrar uma marca d'água sob o logotipo do site que abre este menu de configuração",
   "feature_helptext_watermarkEnabled": "Se isso estiver desativado, você ainda pode abrir o menu de configuração clicando na opção no menu que abre quando você clica em sua foto de perfil no canto superior direito.\nNo entanto, será mais difícil encontrar o easter egg ;)",
   "feature_desc_removeShareTrackingParam": "Remover o parâmetro de rastreamento \"?si\" do URL nos menus de compartilhamento",
-  "feature_helptext_removeShareTrackingParam": "Para fins de análise, o YouTube adiciona um parâmetro de rastreamento ao final do URL que você pode copiar no menu de compartilhamento. Embora não seja diretamente prejudicial, ele torna o URL mais longo e dá ao YouTube mais informações sobre você e as pessoas para quem você envia o link.",
   "feature_desc_removeShareTrackingParamSites": "Em quais sites o parâmetro de rastreamento de compartilhamento deve ser removido?",
   "feature_desc_numKeysSkipToTime": "Ative a capacidade de pular para um horário específico no vídeo pressionando uma tecla numérica (0-9)",
   "feature_desc_fixSpacing": "Corrigir problemas de espaçamento no layout",

@@ -281,7 +281,6 @@
   "feature_desc_watermarkEnabled": "この構成メニューを開くサイトロゴの下に透かしを表示する",
   "feature_helptext_watermarkEnabled": "これが無効になっている場合、プロフィール画像をクリックして右上隅にあるメニューを開くと、構成メニューを開くことができます。\nただし、イースターエッグを見つけるのは難しくなります ;)",
   "feature_desc_removeShareTrackingParam": "共有メニューでコピーできる URL から追跡パラメータ \"?si\" を削除する",
-  "feature_helptext_removeShareTrackingParam": "アナリティクスの目的で、YouTube は共有メニューでコピーできる URL の末尾に追跡パラメータを追加します。直接的な害はありませんが、URL を長くし、YouTube にリンクを送信する人々についての情報をより多く提供します。",
   "feature_desc_removeShareTrackingParamSites": "共有トラッキングパラメータを削除するサイトはどこですか？",
   "feature_desc_numKeysSkipToTime": "数字キー (0-9) を押して特定の時間にスキップする",
   "feature_desc_fixSpacing": "レイアウトのスペーシング問題を修正する",

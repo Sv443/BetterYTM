@@ -281,7 +281,6 @@
   "feature_desc_watermarkEnabled": "Zeige ein Wasserzeichen unter dem Seitenlogo, das dieses Einstellungsmenü öffnet",
   "feature_helptext_watermarkEnabled": "Wenn dies deaktiviert ist, kannst du das Einstellungsmenü immer noch öffnen, indem du die Option im Menü anklickst, das sich öffnet, wenn du auf dein Profilbild in der oberen rechten Ecke klickst.\nEs wird jedoch schwieriger sein, das Easter Egg zu finden ;)",
   "feature_desc_removeShareTrackingParam": "Entferne den Tracking-Parameter \"?si\" aus der URL in den Teilen-Menüs",
-  "feature_helptext_removeShareTrackingParam": "Zu Analysezwecken fügt YouTube einen Tracking-Parameter am Ende der URL hinzu, die im Teilen-Menü angezeigt wird. Obwohl es nicht direkt schädlich ist, macht es die URL länger und gibt YouTube mehr Informationen über dich und die Personen, denen du den Link sendest.",
   "feature_desc_removeShareTrackingParamSites": "Auf welchen Seiten soll der Tracking-Parameter entfernt werden?",
   "feature_desc_numKeysSkipToTime": "Das Drücken einer Zahlentaste (0-9) springt zu einer bestimmten Zeit im Video",
   "feature_desc_fixSpacing": "Behebe diverse Abstandprobleme im Layout",

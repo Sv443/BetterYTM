@@ -248,7 +248,6 @@
   "feature_desc_watermarkEnabled": "在网站标志下方显示一个水印，以打开此配置菜单",
   "feature_helptext_watermarkEnabled": "如果禁用此功能，您仍然可以通过单击右上角的个人资料图片打开配置菜单中的选项。\n但是，要找到彩蛋将会更难 ;)",
   "feature_desc_removeShareTrackingParam": "从共享菜单的 URL 中移除跟踪参数（\"?si\"）",
-  "feature_helptext_removeShareTrackingParam": "出于分析目的，YouTube 在您可以复制的共享菜单中的 URL 末尾添加了一个跟踪参数。虽然不会直接有害，但它会使 URL 变得更长，并且会向 YouTube 提供有关您和您发送链接的人的更多信息。",
   "feature_desc_removeShareTrackingParamSites": "在哪些网站上应该删除共享跟踪参数？",
   "feature_desc_numKeysSkipToTime": "启用按数字键（0-9）跳转到视频中的特定时间",
   "feature_desc_fixSpacing": "修复布局中的间距问题",

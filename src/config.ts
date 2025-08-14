@@ -184,7 +184,7 @@ export const migrations: DataMigrationsDict = {
         "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
         "songListTrackNumbersEnabled", "songListTrackNumbers",
         "yesImStillThere", "removeThumbnailRatingBar",
-        "numKeysSkipToTimeDoublePress",
+        "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },

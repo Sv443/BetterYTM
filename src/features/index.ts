@@ -994,10 +994,28 @@ export const featInfo = {
     renderValue: (value) => String(
       Number(value) === 0
         ? t("toggled_off")
-        : `${value} ms`
+        : `${value}ms`
     ),
     reloadRequired: false,
     enable: noop,
+  },
+  numKeysSkipToTimeDoublePressBuffer: {
+    type: "slider",
+    category: "input",
+    supportedSites: ["ytm", "yt"],
+    default: 5,
+    min: 0,
+    max: 30,
+    step: 0.5,
+    renderValue: (value) => String(
+      Number(value) === 0
+        ? t("toggled_off")
+        : `${formatNumber(Number(value), "short")}s`
+    ),
+    reloadRequired: false,
+    enable: noop,
+    advanced: true,
+    textAdornment: adornments.advanced,
   },
 
   //#region cat:hotkeys
