@@ -1,7 +1,7 @@
 import { compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { isScrollable, openDialogs } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
-import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
+import { buildNumber, buildTimestamp, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, groupedCategories } from "../features/index.js";
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
 import { onInteraction } from "../utils/input.js";
@@ -941,6 +941,10 @@ export async function mountCfgMenu() {
           scriptName: scriptInfo.name,
           scriptVersion: pkg.version,
           buildNumber,
+          buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
           authorName: pkg.author.name,
           authorLink: pkg.author.url,
           githubLink: scriptInfo.namespace,

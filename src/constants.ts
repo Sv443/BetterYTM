@@ -6,6 +6,7 @@ type ConstTypes = {
   branch: "main" | "develop";
   host: "github" | "greasyfork" | "openuserjs";
   buildNumber: string;
+  buildTimestamp: number;
   assetSource: "github" | "jsdelivr" | "local";
   devServerPort: number;
 };
@@ -16,6 +17,7 @@ const rawConsts = {
   branch: "#{{BRANCH}}",
   host: "#{{HOST}}",
   buildNumber: "#{{BUILD_NUMBER}}",
+  buildTimestamp: "#{{BUILD_TIMESTAMP}}",
   assetSource: "#{{ASSET_SOURCE}}",
   devServerPort: "#{{DEV_SERVER_PORT}}",
 } as const satisfies Record<keyof ConstTypes, string>;
@@ -35,6 +37,8 @@ export const branch = getConst("branch", "main");
 export const host = getConst("host", "github");
 /** The build number of the userscript */
 export const buildNumber = getConst("buildNumber", "!BUILD_ERROR!");
+/** When the script was built, as a UNIX timestamp */
+export const buildTimestamp = Number(getConst("buildTimestamp", 0));
 /** The source of the assets - github, jsdelivr or local */
 export const assetSource = getConst("assetSource", "jsdelivr");
 /** The port of the dev server */

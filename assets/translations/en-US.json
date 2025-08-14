@@ -267,7 +267,7 @@
   "cfg_menu_feature_category_header_tooltip": "Click to view the configuration options for the category \"%1\"",
   "cfg_menu_feature_category_info_header_tooltip": "Click to view the information in the \"%1\" section",
 
-  "about_bytm_content_markdown": "### ${scriptName}  \nv${scriptVersion} (#${buildNumber})  \n\n${scriptName} is a userscript that enhances the YouTube Music experience by adding many features and improvements.  \nIt is developed by [${authorName}](${authorLink}) and is available via [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  \nIf you like this script, [please consider donating](${fundingLink}) to help fund its development.  \n[Join the Discord server](${discordLink}) to discuss issues, suggest features or just chat with other users.",
+  "about_bytm_content_markdown": "### ${scriptName}  \nv${scriptVersion} (#${buildNumber} &bull; ${buildDate})  \n\n${scriptName} is a userscript that enhances the YouTube Music experience by adding many features and improvements.  \nIt is developed by [${authorName}](${authorLink}) and is available via [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  \nIf you like this script, [please consider donating](${fundingLink}) to help fund its development.  \n[Join the Discord server](${discordLink}) to discuss issues, suggest features or just chat with other users.",
 
   "feature_category_general": "General",
   "feature_category_layout": "Layout",
@@ -372,7 +372,7 @@
   "feature_btn_autoLikeOpenMgmtDialog_running": "Opening...",
   "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
   "feature_desc_numKeysSkipToTimeDoublePress": "Whether a double press of the number key is required and in which time frame",
-  "feature_helptext_numKeysSkipToTimeDoublePress": "If enabled, you need to double-press the number key within this time frame to skip to the specific time in the video. Increase the time if you have trouble double-pressing the key in time.\nIf disabled, a single press of the number key will skip to the specific time in the video.",
+  "feature_helptext_numKeysSkipToTimeDoublePress": "If enabled, you need to double-press the number key within this time frame to skip to the specific time in the video. This works on both YTM and YT.\nIncrease the time if you have trouble double-pressing the key in time.\nIf disabled, a single press of the number key is enough to skip to the specific time in the video.",
 
   "feature_desc_switchBetweenSites": "Add a hotkey to switch between the YT and YTM sites on a video/song",
   "feature_helptext_switchBetweenSites": "Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video/song.",

@@ -39,7 +39,7 @@ export async function getAllDataExImDialog() {
   return allDataExImDialog;
 }
 
-/** Creates and/or returns the AutoLikeExIm dialog */
+/** Called when data is imported */
 async function onImport(data: string) {
   try {
     const serializer = getStoreSerializer();

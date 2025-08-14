@@ -1,4 +1,5 @@
-import { addParent, autoPlural, compress, DataStore, debounce, decompress, fetchAdvanced, isDomLoaded, preloadImages, type SelectorListenerOptions } from "@sv443-network/userutils";
+import { autoPlural, compress, debounce, decompress, fetchAdvanced } from "@sv443-network/coreutils";
+import { addParent, DataStore, isDomLoaded, preloadImages, type SelectorListenerOptions } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
@@ -6,7 +7,7 @@ import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
 import { compressionSupported, formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, transplantElement, waitVideoElementReady } from "../utils/dom.js";
-import { error, log, warn } from "../utils/logging.js";
+import { dbg, error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
@@ -1183,31 +1184,39 @@ export async function initSwapLikeDislikeBtns(i = 0) {
     if(i === 0 && getFeature("showVotes"))
       await siteEvents.once("voteLabelsAdded");
 
+    await waitVideoElementReady();
+
     const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
     const options = {
       all: true,
-      debounce: 50,
       listener: (elements) => {
-        const els = [...elements];
+        const els = [...elements.entries()].map(([_, el]) => el);
+        dbg("swap like dislike - elements", els, els.find((el) => el.getAttribute("id") === "button-shape-dislike"));
 
-        const dislikeBtn = els.find((el) => el.id === "button-shape-dislike");
-        const likeBtn = els.find((el) => el.id === "button-shape-like");
+        // the getter of the id prop seems to be shimmed cause it always returns undefined
+        // so use getAttribute() to grab the *attribute* instead of the *property*:
+        const dislikeBtn = els.find((el) => el.getAttribute("id") === "button-shape-dislike");
+        const likeBtn = els.find((el) => el.getAttribute("id") === "button-shape-like");
 
         if(!dislikeBtn || !likeBtn)
-          return error("Couldn't find like or dislike button while swapping like and dislike buttons");
+          return error("Couldn't find like or dislike button while swapping like and dislike buttons:", likeBtn, dislikeBtn);
 
         if(getFeature("showVotes") && elements.length === 4) {
-          const dislikeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("dislikes"));
-          const likeLabel = els.find((el) => el.classList.contains("bytm-vote-label") && el.classList.contains("likes"));
+          const dislikeLabel = els.find((el) => el.getAttribute("class")?.includes("bytm-vote-label") && el.getAttribute("class")?.includes("dislikes"));
+          const likeLabel = els.find((el) => el.getAttribute("class")?.includes("bytm-vote-label") && el.getAttribute("class")?.includes("likes"));
 
           if(!dislikeLabel || !likeLabel)
             return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
 
           transplantElement(dislikeBtn, likeLabel);
           transplantElement(dislikeLabel, dislikeBtn);
+
+          log("Swapped like and dislike buttons and labels");
         }
-        else if(!getFeature("showVotes") && elements.length === 2)
+        else if(!getFeature("showVotes") && elements.length === 2) {
           transplantElement(dislikeBtn, likeBtn);
+          log("Swapped like and dislike buttons and labels");
+        }
         else
           setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
       },
@@ -1215,7 +1224,7 @@ export async function initSwapLikeDislikeBtns(i = 0) {
 
     addSelectorListener("playerBarMiddleButtons", selector, options);
 
-    log("Swapped like and dislike buttons");
+    log("Initialized \"swap like and dislike buttons\" feature");
   })();
 }
 

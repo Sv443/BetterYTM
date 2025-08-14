@@ -44,6 +44,7 @@ type BuildStats = {
   sizeKiB: number;
   mode: string;
   timestamp: number;
+  uid: string;
 };
 
 //#region vars
@@ -65,9 +66,7 @@ const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Local URL of the userscript file when served by the dev server */
 const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}` as const;
 /** Extra `@grant` directives added when `mode` is `development` */
-const devGrants = [
-  "GM.registerMenuCommand",
-] as const;
+const devGrants: string[] = [] as const;
 
 const repo = "Sv443/BetterYTM" as const;
 const userscriptDistFile = `BetterYTM${suffix}.user.js` as const;
@@ -89,7 +88,7 @@ const hostMetaUrl = `https://github.com/${repo}/raw/refs/heads/main/dist/${users
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
 
 /** Directives that are only added in dev mode */
-const devDirectives = mode !== "development"
+const devDirectives = mode !== "development" || devGrants.length === 0
   ? undefined
   : devGrants.map((g) => `// @grant             ${g}`).join("\n");
 
@@ -113,6 +112,7 @@ async function main() {
         BRANCH: branch,
         HOST: host,
         BUILD_NUMBER: buildNbr,
+        BUILD_TIMESTAMP: buildTs,
         ASSET_SOURCE: assetSource,
         DEV_SERVER_PORT: devServerPort,
       },
@@ -172,6 +172,7 @@ async function main() {
       sizeKiB,
       mode,
       timestamp: buildTs,
+      uid: buildUid,
     };
 
     const newBuildStats = [
@@ -245,6 +246,7 @@ ${antifeatureDescriptions ? "\n" + antifeatureDescriptions : "\n"}\
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
+// @grant             GM.registerMenuCommand
 // @grant             unsafeWindow\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
@@ -282,7 +284,8 @@ function resolveResourceVal(value: string, buildNbr: string) {
     ["\\$BRANCH", branch],
     ["\\$HOST", host],
     ["\\$BUILD_NUMBER", buildNbr],
-    ["\\$UID", buildUid],
+    ["\\$BUILD_TIMESTAMP", String(buildTs)],
+    ["\\$BUILD_UID", buildUid],
   ] as const;
 
   return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), value);

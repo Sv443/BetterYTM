@@ -515,8 +515,7 @@ async function initSvgSpritesheet() {
 
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
-  if(mode !== "development")
-    return;
+  const isDev = mode === "development";
 
   GM.registerMenuCommand("Reset config", async () => {
     if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
@@ -525,7 +524,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("List GM values in console with decompression", async () => {
+  isDev && GM.registerMenuCommand("List GM values in console with decompression", async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -547,7 +546,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("List GM values in console, without decompression", async () => {
+  isDev && GM.registerMenuCommand("List GM values in console, without decompression", async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -567,7 +566,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Delete all GM values", async () => {
+  isDev && GM.registerMenuCommand("Delete all GM values", async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
       dbg(`Clearing ${keys.length} GM values:`);
@@ -580,7 +579,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
+  isDev && GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
     const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
     if(!keys)
       return;
@@ -594,17 +593,17 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Reset install timestamp", async () => {
+  isDev && GM.registerMenuCommand("Reset install timestamp", async () => {
     await GM.deleteValue("bytm-installed");
     dbg("Reset install time.");
   });
 
-  GM.registerMenuCommand("Reset version check timestamp", async () => {
+  isDev && GM.registerMenuCommand("Reset version check timestamp", async () => {
     await GM.deleteValue("bytm-version-check");
     dbg("Reset version check time.");
   });
 
-  GM.registerMenuCommand("List active selector listeners in console", async () => {
+  isDev && GM.registerMenuCommand("List active selector listeners in console", async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
     for(const [obsName, obs] of Object.entries(globservers)) {
@@ -621,7 +620,7 @@ function registerDevCommands() {
     dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
-  GM.registerMenuCommand("Compress value", async () => {
+  isDev && GM.registerMenuCommand("Compress value", async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
@@ -629,7 +628,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Decompress value", async () => {
+  isDev && GM.registerMenuCommand("Decompress value", async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
@@ -648,9 +647,9 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+  isDev && GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
 
-  GM.registerMenuCommand("Example MarkdownDialog", async () => {
+  isDev && GM.registerMenuCommand("Example MarkdownDialog", async () => {
     const mdDlg = new MarkdownDialog({
       id: "example",
       width: 500,
@@ -666,25 +665,25 @@ function registerDevCommands() {
     await mdDlg.open();
   });
 
-  GM.registerMenuCommand("Print init timings to console", () => {
+  isDev && GM.registerMenuCommand("Print init timings to console", () => {
     info("Init timings:\n", initTimings);
   });
 
-  GM.registerMenuCommand("Toggle dev treatments", async () => {
+  isDev && GM.registerMenuCommand("Toggle dev treatments", async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
     if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
       await reloadTab();
   });
 
-  GM.registerMenuCommand("Get developer plugin token", () =>
+  isDev && GM.registerMenuCommand("Get developer plugin token", () =>
     showPrompt({
       type: "alert",
       message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
     })
   );
 
-  GM.registerMenuCommand("Download log file", () => {
+  GM.registerMenuCommand("Download console log file", () => {
     downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
   });
 

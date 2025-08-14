@@ -26,6 +26,7 @@
     - `initTimeout` will be changed from `8` to `5` seconds amid initialization performance improvements.
     - `rememberSongTimeDuration` will be changed from `60` to `180` seconds.
     - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
+  - Made some dev menu commands available in production mode. This currently includes resetting the config, the WIP full data export and import, and downloading a console log file to attach to an issue.
 - **Fixes:**
   - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering.
   - 🎵 Fixed SyntaxError when no AM album artwork found.
