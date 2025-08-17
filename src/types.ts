@@ -573,7 +573,7 @@ type FeatureFuncProps = (
 );
 
 export type AdornFunc =
-  | ((...args: any[]) => Promise<string | undefined> | string | undefined)
+  | ((...args: any[]) => (Promise<string | undefined> | string | undefined))
   | Promise<string | undefined>;
 
 export type FeatAdornments = AdornFunc[] | (() => AdornFunc[]);

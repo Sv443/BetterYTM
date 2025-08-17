@@ -42,6 +42,27 @@ class ExampleError extends DatedError {
 
 //#region adornments
 
+/** Decoration elements that can be added next to the label */
+const adornments = {
+  alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
+  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
+  ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm"),
+  globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
+  reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
+  newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new"),
+} as const satisfies Record<string, AdornFunc>;
+
+/** Order of adornment elements in the {@linkcode combineAdornments()} function */
+const adornmentOrder = new Map<AdornFunc, number>();
+adornmentOrder.set(adornments.alert, 0);
+adornmentOrder.set(adornments.experimental, 1);
+adornmentOrder.set(adornments.ytmOnly, 2);
+adornmentOrder.set(adornments.globe, 3);
+adornmentOrder.set(adornments.reload, 4);
+adornmentOrder.set(adornments.advanced, 5);
+adornmentOrder.set(adornments.newFeature, 6);
+
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className: string, title: StringGen | undefined, resource: ResourceKey, extraAttributes?: StringGen) => {
   title = title ? await consumeStringGen(title) : undefined;
@@ -49,20 +70,33 @@ const getAdornHtml = async (className: string, title: StringGen | undefined, res
   return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 };
 
-/** Resolves the adornments property from a featInfo entry and returns an array of HTML strings */
+/**
+ * Resolves the adornments property from a featInfo entry and returns an array of HTML strings.  
+ * Also adds conditional adornments like the "new feature" adornment.
+ */
 export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey, adorns: FeatAdornments): Promise<string[]> {
   const feat = ftInfo[featKey];
 
   if(typeof adorns === "function")
     adorns = adorns();
 
-  if(feat.since && compareVer(feat.since, scriptInfo.version, "=") && getVersionSessionCount() < 5)
-    adorns.push(adornments.newFeature);
+  const resolvedAdorns = [...adorns];
 
-  const htmlStrings = await Promise.all(adorns.map(adorn => typeof adorn === "function" ? adorn() : adorn));
+  const isDev = mode === "development";
+  if(feat.since && compareVer(feat.since, scriptInfo.version, isDev ? ">" : "=") && (getVersionSessionCount() < 5 || isDev))
+    resolvedAdorns.push(adornments.newFeature);
+
+  const sortedAdorns = resolvedAdorns.sort((a, b) => {
+    const aIndex = adornmentOrder.get(a) ? adornmentOrder.get(a)! : -1;
+    const bIndex = adornmentOrder.has(b) ? adornmentOrder.get(b)! : -1;
+    return aIndex - bIndex;
+  });
+
+  const htmlStrings = await Promise.all(sortedAdorns.map(adorn => typeof adorn === "function" ? adorn() : adorn));
   return htmlStrings.filter(Boolean) as string[];
 }
 
+// TODO: reimplement
 // /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 // const combineAdornments = (
 //   adornments: Array<AdornmentFunc>
@@ -85,17 +119,6 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
 //     resolve(html.join(""));
 //   }
 // );
-
-/** Decoration elements that can be added next to the label */
-const adornments = {
-  alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-  newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new"),
-  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-  ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm"),
-  globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
-  reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
-  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
-} as const satisfies Record<string, AdornFunc>;
 
 //#region select options
 
@@ -478,7 +501,7 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     supportedSites: ["ytm"],
-    since: "3.1.0",
+    since: "2.0.0",
     default: true,
     reloadRequired: false,
     enable: noop,
@@ -834,6 +857,14 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
   },
+  yesImStillThere: {
+    category: "behavior",
+    type: "toggle",
+    supportedSites: ["ytm"],
+    since: "3.1.0",
+    default: true,
+    adornments: [adornments.ytmOnly, adornments.reload],
+  },
   rememberSongTime: {
     type: "toggle",
     category: "behavior",
@@ -907,14 +938,6 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
     adornments: [adornments.ytmOnly],
-  },
-  yesImStillThere: {
-    category: "behavior",
-    type: "toggle",
-    supportedSites: ["ytm"],
-    since: "3.1.0",
-    default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
 
   //#region cat:autoLike

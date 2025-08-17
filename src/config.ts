@@ -98,8 +98,8 @@ export const migrations: DataMigrationsDict = {
         // forgot to add this to the migration when adding the feature way before so now will have to do:
         "volumeSliderLabel",
       ]), [
-        { key: "rememberSongTimeSites", oldDefault: "ytm" },
-        { key: "volumeSliderScrollStep", oldDefault: 10 },
+        { key: "rememberSongTimeSites", oldDefault: "ytm" }, // new: "all"
+        { key: "volumeSliderScrollStep", oldDefault: 10 },   // new: 4
       ],
     );
     "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
@@ -115,7 +115,7 @@ export const migrations: DataMigrationsDict = {
         "themeSongIntegration", "themeSongLightness",
         "errorOnLyricsNotFound", "openPluginList",
       ]), [
-        { key: "toastDuration", oldDefault: 3 },
+        { key: "toastDuration", oldDefault: 3 }, // new: 4
       ],
     );
     newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
@@ -169,7 +169,7 @@ export const migrations: DataMigrationsDict = {
         "previousHotkey", "rebindPlayPause",
         "playPauseHotkey", "thumbnailOverlayITunesImgRes",
       ]), [
-        { key: "lyricsCacheMaxSize", oldDefault: 2000 },
+        { key: "lyricsCacheMaxSize", oldDefault: 2000 }, // new: 5000
       ],
     );
   },
@@ -187,9 +187,9 @@ export const migrations: DataMigrationsDict = {
         "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
       ]),
       [
-        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
-        { key: "initTimeout", oldDefault: 8 },
-        { key: "rememberSongTimeDuration", oldDefault: 60 },
+        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
+        { key: "initTimeout", oldDefault: 8 },                     // new: 5
+        { key: "rememberSongTimeDuration", oldDefault: 60 },       // new: 180
       ],
     );
 
@@ -204,23 +204,23 @@ export const migrations: DataMigrationsDict = {
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useNewDefaults(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
-  const newData = { ...defaultData, ...(baseData ?? {}) };
+  const newData = structuredClone({ ...defaultData, ...(baseData ?? {}) });
   for(const key of resetKeys) // @ts-expect-error
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
   return newData;
 }
 
 /**
- * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode defaults} to their old default values, as long as their current value is equal to the provided old default.  
- * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be reset to the new default value.  
+ * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaultsCfg} to their old default values, as long as their current value is equal to the provided old default.  
+ * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be set to the new default.  
  * Returns a copy of the object.
  */
 function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
   oldData: TConfig,
-  defaults: Array<{ key: FeatureKey, oldDefault: unknown }>,
+  oldDefaultsCfg: Array<{ key: FeatureKey, oldDefault: unknown }>,
 ) {
-  const newData = { ...oldData };
-  for(const { key, oldDefault } of defaults) {
+  const newData = structuredClone(oldData);
+  for(const { key, oldDefault } of oldDefaultsCfg) {
     // @ts-expect-error
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)
@@ -292,7 +292,7 @@ export async function initConfig() {
 
   emitInterface("bytm:configReady");
 
-  return { ...data };
+  return structuredClone(data);
 }
 
 //#region fix keys
@@ -302,7 +302,7 @@ export async function initConfig() {
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
 export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
-  const newCfg = { ...cfg };
+  const newCfg = structuredClone(cfg);
   const passedKeys = Object.keys(cfg);
   const defaultKeys = Object.keys(defaultData);
   const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
@@ -340,7 +340,7 @@ export function setFeatures(featureConf: FeatureConfig) {
 
 /** Returns the feature config with all hidden features removed, as a copy */
 export function getFeaturesNoHidden(featureCfg?: FeatureConfig): FeatureConfig {
-  const feats = { ...(featureCfg ?? getFeatures()) };
+  const feats = structuredClone({ ...(featureCfg ?? getFeatures()) });
   for(const ftKey of Object.keys(feats)) {
     const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
     if(info && "valueHidden" in info && info.valueHidden) // @ts-expect-error
