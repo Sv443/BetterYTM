@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d7c73663/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6ff24170/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -356,8 +356,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "d7c73663",
-    buildTimestamp: "1755458741075",
+    buildNumber: "6ff24170",
+    buildTimestamp: "1755461498177",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6998,52 +6998,51 @@ class ExampleError extends CoreUtils.DatedError {
     }
 }
 //#region adornments
+/** Decoration elements that can be added next to the label */
+const adornments = {
+    alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
+    experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
+    ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm"),
+    globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
+    reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+    advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
+    newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new"),
+};
+/** Order of adornment elements in the {@linkcode combineAdornments()} function */
+const adornmentOrder = new Map();
+adornmentOrder.set(adornments.alert, 0);
+adornmentOrder.set(adornments.experimental, 1);
+adornmentOrder.set(adornments.ytmOnly, 2);
+adornmentOrder.set(adornments.globe, 3);
+adornmentOrder.set(adornments.reload, 4);
+adornmentOrder.set(adornments.advanced, 5);
+adornmentOrder.set(adornments.newFeature, 6);
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className, title, resource, extraAttributes) => {
     title = title ? await CoreUtils.consumeStringGen(title) : undefined;
     extraAttributes = extraAttributes ? await CoreUtils.consumeStringGen(extraAttributes) : undefined;
     return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 };
-/** Resolves the adornments property from a featInfo entry and returns an array of HTML strings */
+/**
+ * Resolves the adornments property from a featInfo entry and returns an array of HTML strings.
+ * Also adds conditional adornments like the "new feature" adornment.
+ */
 async function resolveAdornments(ftInfo, featKey, adorns) {
     const feat = ftInfo[featKey];
     if (typeof adorns === "function")
         adorns = adorns();
-    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, "=") && getVersionSessionCount() < 5)
-        adorns.push(adornments.newFeature);
-    const htmlStrings = await Promise.all(adorns.map(adorn => typeof adorn === "function" ? adorn() : adorn));
+    const resolvedAdorns = [...adorns];
+    const isDev = mode$1 === "development";
+    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : "=") && (getVersionSessionCount() < 5 || isDev))
+        resolvedAdorns.push(adornments.newFeature);
+    const sortedAdorns = resolvedAdorns.sort((a, b) => {
+        const aIndex = adornmentOrder.get(a) ? adornmentOrder.get(a) : -1;
+        const bIndex = adornmentOrder.has(b) ? adornmentOrder.get(b) : -1;
+        return aIndex - bIndex;
+    });
+    const htmlStrings = await Promise.all(sortedAdorns.map(adorn => typeof adorn === "function" ? adorn() : adorn));
     return htmlStrings.filter(Boolean);
 }
-// /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
-// const combineAdornments = (
-//   adornments: Array<AdornmentFunc>
-// ) => new Promise<string>(
-//   async (resolve) => {
-//     const sortedAdornments = adornments.sort((a, b) => {
-//       const aIndex = adornmentOrder.get(a) ? adornmentOrder.get(a)! : -1;
-//       const bIndex = adornmentOrder.has(b) ? adornmentOrder.get(b)! : -1;
-//       return aIndex - bIndex;
-//     });
-//     const html = [] as string[];
-//     for(const adornment of sortedAdornments) {
-//       const val = typeof adornment === "function"
-//         ? await adornment()
-//         : await adornment;
-//       val && html.push(val);
-//     }
-//     resolve(html.join(""));
-//   }
-// );
-/** Decoration elements that can be added next to the label */
-const adornments = {
-    alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-    newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new"),
-    experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-    ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm"),
-    globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
-    reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
-    advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
-};
 const removeEmoji = (str) => str.replace(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu, "").trim();
 /** Common options for config items of type "select" */
 const options = {
@@ -7413,7 +7412,7 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         supportedSites: ["ytm"],
-        since: "3.1.0",
+        since: "2.0.0",
         default: true,
         reloadRequired: false,
         enable: noop,
@@ -7765,6 +7764,14 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
+    yesImStillThere: {
+        category: "behavior",
+        type: "toggle",
+        supportedSites: ["ytm"],
+        since: "3.1.0",
+        default: true,
+        adornments: [adornments.ytmOnly, adornments.reload],
+    },
     rememberSongTime: {
         type: "toggle",
         category: "behavior",
@@ -7838,14 +7845,6 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
         adornments: [adornments.ytmOnly],
-    },
-    yesImStillThere: {
-        category: "behavior",
-        type: "toggle",
-        supportedSites: ["ytm"],
-        since: "3.1.0",
-        default: true,
-        adornments: [adornments.ytmOnly, adornments.reload],
     },
     //#region cat:autoLike
     autoLikeChannels: {
@@ -8387,8 +8386,8 @@ const migrations = {
             // forgot to add this to the migration when adding the feature way before so now will have to do:
             "volumeSliderLabel",
         ]), [
-            { key: "rememberSongTimeSites", oldDefault: "ytm" },
-            { key: "volumeSliderScrollStep", oldDefault: 10 },
+            { key: "rememberSongTimeSites", oldDefault: "ytm" }, // new: "all"
+            { key: "volumeSliderScrollStep", oldDefault: 10 }, // new: 4
         ]);
         "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
         "advancedLyricsFilter" in newData && delete newData.advancedLyricsFilter;
@@ -8401,7 +8400,7 @@ const migrations = {
             "themeSongIntegration", "themeSongLightness",
             "errorOnLyricsNotFound", "openPluginList",
         ]), [
-            { key: "toastDuration", oldDefault: 3 },
+            { key: "toastDuration", oldDefault: 3 }, // new: 4
         ]);
         newData.arrowKeySkipBy = CoreUtils.clamp(newData.arrowKeySkipBy, 0.5, 30);
         return newData;
@@ -8445,7 +8444,7 @@ const migrations = {
             "previousHotkey", "rebindPlayPause",
             "playPauseHotkey", "thumbnailOverlayITunesImgRes",
         ]), [
-            { key: "lyricsCacheMaxSize", oldDefault: 2000 },
+            { key: "lyricsCacheMaxSize", oldDefault: 2000 }, // new: 5000
         ]);
     },
     // 10 -> 11 (v3.1)
@@ -8459,9 +8458,9 @@ const migrations = {
             "yesImStillThere", "removeThumbnailRatingBar",
             "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
         ]), [
-            { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 },
-            { key: "initTimeout", oldDefault: 8 },
-            { key: "rememberSongTimeDuration", oldDefault: 60 },
+            { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
+            { key: "initTimeout", oldDefault: 8 }, // new: 5
+            { key: "rememberSongTimeDuration", oldDefault: 60 }, // new: 180
         ]);
         if (newCfg.initTimeout > featInfo.initTimeout.max)
             newCfg.initTimeout = featInfo.initTimeout.max;
@@ -8471,19 +8470,19 @@ const migrations = {
 //#region migration helpers
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useNewDefaults(baseData, resetKeys) {
-    const newData = { ...defaultData, ...(baseData ?? {}) };
+    const newData = structuredClone({ ...defaultData, ...(baseData ?? {}) });
     for (const key of resetKeys) // @ts-expect-error
         newData[key] = featInfo?.[key]?.default; // typescript funny moments
     return newData;
 }
 /**
- * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode defaults} to their old default values, as long as their current value is equal to the provided old default.
- * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be reset to the new default value.
+ * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaultsCfg} to their old default values, as long as their current value is equal to the provided old default.
+ * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be set to the new default.
  * Returns a copy of the object.
  */
-function useNewDefaultsIfUnchanged(oldData, defaults) {
-    const newData = { ...oldData };
-    for (const { key, oldDefault } of defaults) {
+function useNewDefaultsIfUnchanged(oldData, oldDefaultsCfg) {
+    const newData = structuredClone(oldData);
+    for (const { key, oldDefault } of oldDefaultsCfg) {
         // @ts-expect-error
         const defaultVal = featInfo?.[key]?.default;
         if (newData[key] === oldDefault)
@@ -8545,7 +8544,7 @@ async function initConfig() {
         }
     }
     emitInterface("bytm:configReady");
-    return { ...data };
+    return structuredClone(data);
 }
 //#region fix keys
 /**
@@ -8553,7 +8552,7 @@ async function initConfig() {
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
 function fixCfgKeys(cfg) {
-    const newCfg = { ...cfg };
+    const newCfg = structuredClone(cfg);
     const passedKeys = Object.keys(cfg);
     const defaultKeys = Object.keys(defaultData);
     const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
@@ -8586,7 +8585,7 @@ function setFeatures(featureConf) {
 }
 /** Returns the feature config with all hidden features removed, as a copy */
 function getFeaturesNoHidden(featureCfg) {
-    const feats = { ...(getFeatures()) };
+    const feats = structuredClone({ ...(getFeatures()) });
     for (const ftKey of Object.keys(feats)) {
         const info = featInfo[ftKey];
         if (info && "valueHidden" in info && info.valueHidden) // @ts-expect-error
