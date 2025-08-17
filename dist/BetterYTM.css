@@ -469,6 +469,9 @@ hr {
   --bytm-reload-col: #77e064;
   --bytm-ytm-only-circle-col: #f13440;
   --bytm-ytm-only-note-col: #fff0e9;
+  --bytm-new-feature-col: #ef438d;
+  --bytm-flame-lower-col: #ffb300;
+  --bytm-flame-upper-col: #ff6f00;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
@@ -589,6 +592,18 @@ hr {
 
 .bytm-ytm-only-icon svg path.note {
   fill: var(--bytm-ytm-only-note-col, #fff);
+}
+
+.bytm-new-feature-icon svg path.outer {
+  fill: var(--bytm-new-feature-col, #fff);
+}
+
+.bytm-new-feature-icon svg path.flame-lower {
+  fill: var(--bytm-flame-lower-col, #fff);
+}
+
+.bytm-new-feature-icon svg path.flame-upper {
+  fill: var(--bytm-flame-upper-col, #fff);
 }
 
 /* #region feature help dialog */

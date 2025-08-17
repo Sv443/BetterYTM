@@ -107,7 +107,7 @@ export const migrations: DataMigrationsDict = {
     return newData;
   },
 
-  // 6 -> 7 (v2.1-dev)
+  // 6 -> 7 (v2.1-preview.1)
   7: (oldData: FeatureConfig) => {
     const newData = useNewDefaultsIfUnchanged(
       useNewDefaults(oldData, [

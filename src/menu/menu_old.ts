@@ -2,7 +2,7 @@ import { compress, debounce, pureObj, randRange, type LooseUnion, type Stringifi
 import { isScrollable, openDialogs } from "@sv443-network/userutils";
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, buildTimestamp, compressionFormat, host, mode, scriptInfo } from "../constants.js";
-import { featInfo, groupedCategories } from "../features/index.js";
+import { featInfo, groupedCategories, resolveAdornments } from "../features/index.js";
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
 import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
@@ -617,13 +617,14 @@ export async function mountCfgMenu() {
 
           let adornmentElem: undefined | HTMLElement;
 
-          const adornContentAsync = ftInfo.textAdornment?.();
-          const adornContent = await adornContentAsync;
-          if((typeof adornContentAsync === "string" || adornContentAsync instanceof Promise) && typeof adornContent !== "undefined") {
+          const adornContent = ftInfo.adornments ? await resolveAdornments(featInfo, featKey as FeatureKey, ftInfo.adornments) : [];
+
+          if(adornContent && adornContent.length > 0) {
+            const adornHtml = adornContent.join(" ");
             adornmentElem = document.createElement("span");
             adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
             adornmentElem.classList.add("bytm-ftitem-adornment");
-            setInnerHtml(adornmentElem, adornContent);
+            setInnerHtml(adornmentElem, adornHtml);
           }
 
           let helpElem: undefined | HTMLDivElement;

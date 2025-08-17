@@ -572,18 +572,19 @@ type FeatureFuncProps = (
   }
 );
 
-/**
- * The feature info object that contains all properties necessary to construct the config menu and the feature config object.  
- * All values are loosely typed so try to only use this via `const myObj = {} satisfies FeatureInfo;`  
- * For full type safety, use `typeof featInfo` (from `src/features/index.ts`) instead.
- */
-export type FeatureInfo = Record<
-  keyof FeatureConfig,
-  {
+export type AdornFunc =
+  | ((...args: any[]) => Promise<string | undefined> | string | undefined)
+  | Promise<string | undefined>;
+
+export type FeatAdornments = AdornFunc[] | (() => AdornFunc[]);
+
+export type FeatureInfoEntry = {
     /** Feature category */
     category: FeatureCategory;
     /** On which sites the feature is available */
     supportedSites: Domain[];
+    /** Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while */
+    since: `${number}.${number}.${number}${string}`;
     /**
      * HTML string that will be the help text for this feature  
      * Specifying a function is useful for pluralizing or inserting values into the translation at runtime
@@ -593,14 +594,20 @@ export type FeatureInfo = Record<
     valueHidden?: boolean;
     /** Transformation function called before the value is rendered in the config menu */
     renderValue?: (value: string) => string | Promise<string>;
-    /** HTML string that is prepended to the feature's text description */
-    textAdornment?: () => (Promise<string | undefined> | string | undefined);
+    /** Array of functions returning HTML strings that are prepended to the feature's text description as icons */
+    adornments?: FeatAdornments;
 
     /** Whether to only show this feature when advanced mode is activated (default false) */
     advanced?: boolean;
   }
-  & FeatureTypeProps
->;
+  & FeatureTypeProps;
+
+/**
+ * The feature info object that contains all properties necessary to construct the config menu and the feature config object.  
+ * All values are loosely typed so try to only use this via `const myObj = {} satisfies FeatureInfo;`  
+ * For full type safety, use `typeof featInfo` (from `src/features/index.ts`) instead.
+ */
+export type FeatureInfo = Prettify<Record<keyof FeatureConfig, FeatureInfoEntry>>;
 
 //#region feature config
 

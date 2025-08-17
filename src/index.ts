@@ -1,6 +1,6 @@
 import { compress, decompress, fetchAdvanced, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages, setInnerHtmlUnsafe } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initVersionSessionCounter, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -239,6 +239,8 @@ async function onDomLoad() {
       info("Showing welcome menu");
       await dlg.open();
     }
+
+    await initVersionSessionCounter();
 
     if(domain === "ytm") {
       //#region (ytm) layout
@@ -603,6 +605,11 @@ function registerDevCommands() {
     dbg("Reset version check time.");
   });
 
+  isDev && GM.registerMenuCommand("Reset version session counter", async () => {
+    await GM.deleteValue("bytm-version-session-counter");
+    dbg("Reset version session counter.");
+  });
+
   isDev && GM.registerMenuCommand("List active selector listeners in console", async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
@@ -636,10 +643,10 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData(false));
+  GM.registerMenuCommand("Full data export [WIP]", () => downloadData(false));
 
-  GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Paste the content of the export file to import:", confirmBtnText: "Import" });
+  GM.registerMenuCommand("Full data import [WIP]", async () => {
+    const input = await showPrompt({ type: "prompt", message: "Paste the content of the exported file to import:", confirmBtnText: "Import" });
     if(input && input.length > 0) {
       await getStoreSerializer().deserialize(input);
       if(await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))

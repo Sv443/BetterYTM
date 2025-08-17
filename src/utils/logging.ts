@@ -21,6 +21,7 @@ const logs = [] as [type: string, time: number, ...args: unknown[]][];
 
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 export const getLogsTxt = () => {
+  // TODO: expand error objects
   const getVal = (val: unknown, primaryScope = true): string => {
     if(typeof val === "undefined")
       return "<undefined>";
@@ -103,7 +104,7 @@ function getLogLevel(args: unknown[]): number {
 export function log(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
     console.log(consPrefix, ...args);
-  logs.push(["log", Date.now(), ...args]);
+  logs.push(["LOG", Date.now(), ...args]);
 }
 
 /**
@@ -113,13 +114,13 @@ export function log(...args: unknown[]): void {
 export function info(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
     console.info(consPrefix, ...args);
-  logs.push(["info", Date.now(), ...args]);
+  logs.push(["INFO", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console as a warning, no matter the log level. */
 export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
-  logs.push(["warn", Date.now(), ...args]);
+  logs.push(["WARN", Date.now(), ...args]);
 }
 
 const showErrToast = debounce(
@@ -137,7 +138,7 @@ const showErrToast = debounce(
 /** Logs all passed values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
-  logs.push(["error", Date.now(), ...args]);
+  logs.push(["ERROR", Date.now(), ...args]);
 
   getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
 }
@@ -145,13 +146,13 @@ export function error(...args: unknown[]): void {
 /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
 export function errorNoToast(...args: unknown[]): void {
   console.error(consPrefix, ...args);
-  logs.push(["error", Date.now(), ...args]);
+  logs.push(["ERROR", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {
   console.log(consPrefixDbg, ...args);
-  logs.push(["dbg", Date.now(), ...args]);
+  logs.push(["DBG", Date.now(), ...args]);
 }
 
 //#region error dialog
