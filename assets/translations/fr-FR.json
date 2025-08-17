@@ -428,7 +428,6 @@
   "feature_btn_resetConfig": "Réinitialiser les paramètres",
   "feature_btn_resetConfig_running": "Réinitialisation...",
   "feature_desc_resetEverything": "Réinitialiser toutes les données stockées aux valeurs par défaut",
-  "feature_helptext_resetEverything": "Cela réinitialisera absolument tout à ses valeurs par défaut, y compris la configuration des fonctionnalités, le cache des paroles et les chaînes auto-aimées.\nC'est utile si vous voulez repartir de zéro ou si vous rencontrez des problèmes avec le script.",
   "feature_btn_resetEverything": "Réinitialiser tout",
   "feature_btn_resetEverything_running": "Réinitialisation...",
   "feature_desc_advancedMode": "Afficher les paramètres avancés (cela recharge le menu)",

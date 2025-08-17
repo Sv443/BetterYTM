@@ -374,7 +374,6 @@
   "feature_btn_resetConfig": "重置设置",
   "feature_btn_resetConfig_running": "正在重置...",
   "feature_desc_resetEverything": "重置所有存储的数据为默认值",
-  "feature_helptext_resetEverything": "这将重置所有存储的数据为默认值，包括功能配置、歌词缓存和自动喜欢的频道。\n如果您想从头开始或遇到脚本问题，这将很有用。",
   "feature_btn_resetEverything": "重置所有数据",
   "feature_btn_resetEverything_running": "正在重置...",
   "feature_desc_advancedMode": "显示高级设置（重新加载菜单）",

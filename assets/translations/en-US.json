@@ -256,7 +256,7 @@
   "plugin_intent_name_InternalAccess": "Internal Access",
   "plugin_intent_description_InternalAccess": "This plugin has deeper access to the internal functions",
   "plugin_intent_name_FullAccess": "Full Access",
-  "plugin_intent_description_FullAccess": "This plugin has unrestricted access",
+  "plugin_intent_description_FullAccess": "This plugin has unrestricted access to all functions and data",
 
   "plugin_validation_error_no_property": "No property '%1' with type '%2'",
   "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
@@ -425,8 +425,8 @@
   "feature_helptext_themeSongIntegration": "If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!",
   "feature_desc_themeSongLightness": "How light the accent colors should be that are derived from the current ThemeSong theme",
   "feature_helptext_themeSongLightness": "Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the accent colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.",
-  "feature_desc_removeThumbnailRatingBar": "Remove the rating bar added by the Thumbnail Rating Bar extension",
-  "feature_helptext_removeThumbnailRatingBar": "If you have the Thumbnail Rating Bar extension installed, you will notice a rating bar on every song and video thumbnail, which are absolutely tiny on YT Music.\nThis feature will remove that rating bar to prevent it from taking up space and being distracting.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.",
+  "feature_desc_removeThumbnailRatingBar": "Remove the rating bar added by the \"Thumbnail Rating Bar\" extension",
+  "feature_helptext_removeThumbnailRatingBar": "If you have the \"Thumbnail Rating Bar\" extension installed, you will notice a rating bar on every song and video thumbnail, which are absolutely tiny on YT Music.\nThis feature will remove that rating bar to prevent it from taking up space and being distracting.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.",
 
   "feature_desc_openPluginList": "Open the list of plugins you have installed",
   "feature_btn_openPluginList": "Open list",
@@ -451,7 +451,7 @@
   "feature_btn_resetConfig": "Reset settings",
   "feature_btn_resetConfig_running": "Resetting...",
   "feature_desc_resetEverything": "Reset all stored data to the default values",
-  "feature_helptext_resetEverything": "This will reset absolutely everything to its default values, including the feature configuration, the lyrics cache and auto-liked channels.\nThis is useful if you want to start over with a clean slate or if you are experiencing problems with the script.",
+  "feature_helptext_resetEverything": "The data that will be reset to the defaults includes the feature configuration, the lyrics cache and auto-liked channels.\nThis is useful if you want a soft reset with a clean slate, like when you are experiencing weird problems.",
   "feature_btn_resetEverything": "Reset everything",
   "feature_btn_resetEverything_running": "Resetting...",
   "feature_desc_advancedMode": "Show advanced settings (reloads the menu)",

@@ -428,7 +428,6 @@
   "feature_btn_resetConfig": "Restablecer configuraciones",
   "feature_btn_resetConfig_running": "Restableciendo...",
   "feature_desc_resetEverything": "Restablecer todas las configuraciones y datos a sus valores predeterminados",
-  "feature_helptext_resetEverything": "Esto restablecerá absolutamente todo a sus valores predeterminados, incluida la configuración de funciones, la caché de letras y los canales con me gusta automático.\nEsto es útil si desea comenzar de nuevo desde cero o si está experimentando problemas con el script.",
   "feature_btn_resetEverything": "Restablecer todo",
   "feature_btn_resetEverything_running": "Restableciendo...",
   "feature_desc_advancedMode": "Mostrar configuración avanzada (recarga el menú)",

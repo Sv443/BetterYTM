@@ -428,7 +428,6 @@
   "feature_btn_resetConfig": "設定をリセット",
   "feature_btn_resetConfig_running": "リセット中...",
   "feature_desc_resetEverything": "すべての保存されたデータをデフォルト値にリセットする",
-  "feature_helptext_resetEverything": "これにより、機能構成、歌詞キャッシュ、自動的に好きなチャンネルを含むすべてがデフォルト値にリセットされます。\nこれは、クリーンスレートでやり直したい場合や、スクリプトに問題が発生している場合に便利です。",
   "feature_btn_resetEverything": "すべてリセット",
   "feature_btn_resetEverything_running": "リセット中...",
   "feature_desc_advancedMode": "詳細設定を表示する（メニューを再読み込み）",

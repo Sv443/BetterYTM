@@ -374,7 +374,6 @@
   "feature_btn_resetConfig": "Redefinir configurações",
   "feature_btn_resetConfig_running": "Redefinindo...",
   "feature_desc_resetEverything": "Redefinir todos os dados armazenados para os valores padrão",
-  "feature_helptext_resetEverything": "Isso redefinirá absolutamente tudo para seus valores padrão, incluindo a configuração de recursos, o cache de letras e canais auto-curtidos.\nIsso é útil se você quiser começar do zero ou se estiver enfrentando problemas com o script.",
   "feature_btn_resetEverything": "Redefinir tudo",
   "feature_btn_resetEverything_running": "Redefinindo...",
   "feature_desc_advancedMode": "Mostrar configurações avançadas (isso recarrega o menu)",
