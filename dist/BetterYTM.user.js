@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6ff24170/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7f54edc8/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -356,8 +356,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "6ff24170",
-    buildTimestamp: "1755461498177",
+    buildNumber: "7f54edc8",
+    buildTimestamp: "1755521205069",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4497,7 +4497,7 @@ async function mountCfgMenu() {
                     textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
                     textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
                     let adornmentElem;
-                    const adornContent = ftInfo.adornments ? await resolveAdornments(featInfo, featKey, ftInfo.adornments) : [];
+                    const adornContent = await resolveAdornments(featInfo, featKey, ftInfo.adornments ?? []);
                     if (adornContent && adornContent.length > 0) {
                         const adornHtml = adornContent.join(" ");
                         adornmentElem = document.createElement("span");
