@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7f54edc8/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@effd6425/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -356,8 +356,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "7f54edc8",
-    buildTimestamp: "1755521205069",
+    buildNumber: "effd6425",
+    buildTimestamp: "1755524754354",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4497,7 +4497,7 @@ async function mountCfgMenu() {
                     textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
                     textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
                     let adornmentElem;
-                    const adornContent = await resolveAdornments(featInfo, featKey, ftInfo.adornments ?? []);
+                    const adornContent = await resolveAdornments(featInfo, featKey);
                     if (adornContent && adornContent.length > 0) {
                         const adornHtml = adornContent.join(" ");
                         adornmentElem = document.createElement("span");
@@ -7024,21 +7024,22 @@ const getAdornHtml = async (className, title, resource, extraAttributes) => {
     return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 };
 /**
- * Resolves the adornments property from a featInfo entry and returns an array of HTML strings.
+ * Resolves the adornments property from a {@linkcode featInfo} entry and returns an array of HTML strings.
  * Also adds conditional adornments like the "new feature" adornment.
  */
-async function resolveAdornments(ftInfo, featKey, adorns) {
+async function resolveAdornments(ftInfo, featKey) {
     const feat = ftInfo[featKey];
+    let adorns = feat.adornments;
     if (typeof adorns === "function")
         adorns = adorns();
-    const resolvedAdorns = [...adorns];
     const isDev = mode$1 === "development";
+    const resolvedAdorns = adorns ? [...adorns] : [];
     if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : "=") && (getVersionSessionCount() < 5 || isDev))
         resolvedAdorns.push(adornments.newFeature);
     const sortedAdorns = resolvedAdorns.sort((a, b) => {
-        const aIndex = adornmentOrder.get(a) ? adornmentOrder.get(a) : -1;
-        const bIndex = adornmentOrder.has(b) ? adornmentOrder.get(b) : -1;
-        return aIndex - bIndex;
+        const aIdx = adornmentOrder.has(a) ? adornmentOrder.get(a) : 0;
+        const bIdx = adornmentOrder.has(b) ? adornmentOrder.get(b) : 0;
+        return aIdx - bIdx;
     });
     const htmlStrings = await Promise.all(sortedAdorns.map(adorn => typeof adorn === "function" ? adorn() : adorn));
     return htmlStrings.filter(Boolean);
