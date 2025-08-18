@@ -617,7 +617,7 @@ export async function mountCfgMenu() {
 
           let adornmentElem: undefined | HTMLElement;
 
-          const adornContent = ftInfo.adornments ? await resolveAdornments(featInfo, featKey as FeatureKey, ftInfo.adornments) : [];
+          const adornContent = await resolveAdornments(featInfo, featKey as FeatureKey, ftInfo.adornments ?? []);
 
           if(adornContent && adornContent.length > 0) {
             const adornHtml = adornContent.join(" ");
