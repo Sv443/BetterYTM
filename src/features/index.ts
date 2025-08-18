@@ -3,7 +3,7 @@ import { error, formatNumber, getErrorDialog, getLocale, getPreferredLocale, get
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
-import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatAdornments, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
+import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { closeToast, showIconToast } from "../components/toast.js";
@@ -71,25 +71,26 @@ const getAdornHtml = async (className: string, title: StringGen | undefined, res
 };
 
 /**
- * Resolves the adornments property from a featInfo entry and returns an array of HTML strings.  
+ * Resolves the adornments property from a {@linkcode featInfo} entry and returns an array of HTML strings.  
  * Also adds conditional adornments like the "new feature" adornment.
  */
-export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey, adorns: FeatAdornments): Promise<string[]> {
+export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey): Promise<string[]> {
   const feat = ftInfo[featKey];
+  let adorns = feat.adornments;
 
   if(typeof adorns === "function")
     adorns = adorns();
 
-  const resolvedAdorns = [...adorns];
-
   const isDev = mode === "development";
+  const resolvedAdorns = adorns ? [...adorns] : [];
+
   if(feat.since && compareVer(feat.since, scriptInfo.version, isDev ? ">" : "=") && (getVersionSessionCount() < 5 || isDev))
     resolvedAdorns.push(adornments.newFeature);
 
   const sortedAdorns = resolvedAdorns.sort((a, b) => {
-    const aIndex = adornmentOrder.get(a) ? adornmentOrder.get(a)! : -1;
-    const bIndex = adornmentOrder.has(b) ? adornmentOrder.get(b)! : -1;
-    return aIndex - bIndex;
+    const aIdx = adornmentOrder.has(a) ? adornmentOrder.get(a)! : 0;
+    const bIdx = adornmentOrder.has(b) ? adornmentOrder.get(b)! : 0;
+    return aIdx - bIdx;
   });
 
   const htmlStrings = await Promise.all(sortedAdorns.map(adorn => typeof adorn === "function" ? adorn() : adorn));
