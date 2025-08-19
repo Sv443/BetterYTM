@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@45317bc0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4254ea23/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -109,6 +109,7 @@ var resources = {
 	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
 	"css-remove_thumb_rating_bar": "style/removeThumbRatingBar.css",
 	"css-show_votes": "style/showVotes.css",
+	"css-swap_like_dislike_btns": "style/swapLikeDislikeBtns.css",
 	"css-track_numbers_current_queue": "style/trackNumbersCurrentQueue.css",
 	"css-track_numbers_song_lists": "style/trackNumbersSongLists.css",
 	"css-vol_slider_size": "style/volSliderSize.css",
@@ -356,8 +357,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "45317bc0",
-    buildTimestamp: "1755615239535",
+    buildNumber: "4254ea23",
+    buildTimestamp: "1755620722407",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3262,7 +3263,7 @@ async function resourceAsString(resourceKey) {
         return str;
     }
     catch (err) {
-        error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' due to an error:`, err);
+        error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
         return null;
     }
 }
@@ -5855,6 +5856,13 @@ function addVoteNumbers(voteCont, voteObj) {
     const dislikeBtn = voteCont.querySelector("#button-shape-dislike");
     if (!likeBtn || !dislikeBtn)
         return error("Couldn't find like or dislike button while adding vote numbers");
+    // wrap buttons in a container
+    const likeBtnCont = document.createElement("div");
+    likeBtnCont.id = "bytm-like-btn-cont";
+    UserUtils.addParent(likeBtn, likeBtnCont);
+    const dislikeBtnCont = document.createElement("div");
+    dislikeBtnCont.id = "bytm-dislike-btn-cont";
+    UserUtils.addParent(dislikeBtn, dislikeBtnCont);
     const createLabel = (amount, type) => {
         const label = document.createElement("span");
         label.classList.add("bytm-vote-label", "bytm-no-select", type);
@@ -5889,48 +5897,19 @@ function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
 }
 //#region swap like&dislike btns
 /** Swaps the like and dislike buttons on the watch page */
-async function initSwapLikeDislikeBtns(i = 0) {
-    if (i > 30)
-        return error("Couldn't swap like and dislike buttons after ~3 seconds - giving up");
-    if (!getFeature("swapLikeDislikeButtons") || getDomain() === "yt")
-        return;
-    // don't pause script exec
-    (async () => {
-        if (i === 0 && getFeature("showVotes"))
-            await siteEvents.once("voteLabelsAdded");
-        await waitVideoElementReady();
-        const selector = "ytmusic-like-button-renderer yt-button-shape, ytmusic-like-button-renderer .bytm-vote-label";
-        const options = {
-            all: true,
-            listener: (elements) => {
-                const els = [...elements.entries()].map(([_, el]) => el);
-                dbg("swap like dislike - elements", els, els.find((el) => el.getAttribute("id") === "button-shape-dislike"));
-                // the getter of the id prop seems to be shimmed cause it always returns undefined
-                // so use getAttribute() to grab the *attribute* instead of the *property*:
-                const dislikeBtn = els.find((el) => el.getAttribute("id") === "button-shape-dislike");
-                const likeBtn = els.find((el) => el.getAttribute("id") === "button-shape-like");
-                if (!dislikeBtn || !likeBtn)
-                    return error("Couldn't find like or dislike button while swapping like and dislike buttons:", likeBtn, dislikeBtn);
-                if (getFeature("showVotes") && elements.length === 4) {
-                    const dislikeLabel = els.find((el) => el.getAttribute("class")?.includes("bytm-vote-label") && el.getAttribute("class")?.includes("dislikes"));
-                    const likeLabel = els.find((el) => el.getAttribute("class")?.includes("bytm-vote-label") && el.getAttribute("class")?.includes("likes"));
-                    if (!dislikeLabel || !likeLabel)
-                        return error("Couldn't find like or dislike label elements while swapping like and dislike buttons");
-                    transplantElement(dislikeBtn, likeLabel);
-                    transplantElement(dislikeLabel, dislikeBtn);
-                    log("Swapped like and dislike buttons and labels");
-                }
-                else if (!getFeature("showVotes") && elements.length === 2) {
-                    transplantElement(dislikeBtn, likeBtn);
-                    log("Swapped like and dislike buttons and labels");
-                }
-                else
-                    setTimeout(() => initSwapLikeDislikeBtns(i + 1), 50);
-            },
-        };
-        addSelectorListener("playerBarMiddleButtons", selector, options);
-        log("Initialized \"swap like and dislike buttons\" feature");
-    })();
+async function initSwapLikeDislikeBtns() {
+    const err = (err) => error("Couldn't initialize \"swap like and dislike buttons\" feature due to an error" + err ? ":" : "", err);
+    try {
+        if (!getFeature("swapLikeDislikeButtons"))
+            return;
+        if (await addStyleFromResource("css-swap_like_dislike_btns"))
+            log("Initialized \"swap like and dislike buttons\" feature");
+        else
+            err();
+    }
+    catch (e) {
+        err(e);
+    }
 }
 //#region watch page full size
 /** Makes the watch page full size */
@@ -9589,6 +9568,7 @@ async function addStyleFromResource(key, transform = (c) => c) {
         await addStyle(String(transform(css)), key.slice(4));
         return true;
     }
+    error(`Couldn't add style from resource "${key}" - check adjacent console errors for details`);
     return false;
 }
 /** Sets a global CSS variable on the &lt;document&gt; element with the name `--bytm-global-${name}` */
@@ -10361,7 +10341,7 @@ function registerDevCommands() {
     const isDev = mode$1 === "development";
     const isAdv = getFeature("advancedMode");
     const isAny = isDev || isAdv;
-    GM.registerMenuCommand(t("dev_menu_command_reset_config"), async () => {
+    GM.registerMenuCommand(t("menu_command.reset_config"), async () => {
         if (await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
             await clearConfig();
             await reloadTab();
