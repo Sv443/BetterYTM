@@ -71,7 +71,7 @@ export async function mountCfgMenu() {
         closeCfgMenu(e);
     });
     document.body.addEventListener("keydown", (e) => {
-      if(isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
+      if(isCfgMenuOpen && e.key === "Escape" && (BytmDialog.getCurrentDialogId() === "cfg-menu" || BytmDialog.getCurrentDialogId() === null))
         closeCfgMenu(e);
     });
 
@@ -240,6 +240,9 @@ export async function mountCfgMenu() {
       exportDataSpecial,
       async onImport(data) {
         try {
+          if(!data || data.trim().length === 0)
+            return;
+
           const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
           log("Trying to import configuration:", parsed);
 
