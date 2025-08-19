@@ -66,6 +66,11 @@ export let currentDialogId: string | null = null;
 export const openDialogs: string[] = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
+/** Whether the config menu is currently open */
+let isCfgMenuOpen = false;
+
+window.addEventListener("bytm:dialogOpened:cfg-menu", () => isCfgMenuOpen = true);
+window.addEventListener("bytm:dialogClosed:cfg-menu", () => isCfgMenuOpen = false);
 
 //#region class
 
@@ -219,8 +224,6 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
   //#region pb:close
 
-  //#FIXME: if opened on top of config menu, after closing a BytmDialog, the body scroll lock is erroneously removed
-
   /** Closes the dialog - prevents default action and immediate propagation of the passed event */
   public close(e?: MouseEvent | KeyboardEvent) {
     e?.preventDefault();
@@ -241,8 +244,6 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     openDialogs.splice(openDialogs.indexOf(this.id), 1);
     currentDialogId = openDialogs[0] ?? null;
 
-    this.removeBgInert();
-
     this.events.emit("close");
     emitInterface("bytm:dialogClosed", this as BytmDialog);
     emitInterface(`bytm:dialogClosed:${this.id}` as "bytm:dialogClosed:id", this as BytmDialog);
@@ -253,7 +254,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     else if(this.options.unmountOnClose)
       this.unmount();
 
-    this.removeBgInert();
+    if(openDialogs.length === 0 && !isCfgMenuOpen)
+      this.removeBgInert();
   }
 
   //#region pb:isOpen
