@@ -247,10 +247,12 @@ export const configStore = new DataStore({
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
   canCompress = await compressionSupported();
+  // TODO: when switching to new engine-based DataStores, change this key prefix:
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
 
   let oldDataHash: string | undefined;
   try {
+    // TODO: when switching to new engine-based DataStores, change this key prefix:
     const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
     const oldDataObj = JSON.parse(oldData as string);
     // only show prompt if there is actual old data (not on the first initialization, resets, etc.)

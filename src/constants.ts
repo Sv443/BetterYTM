@@ -11,7 +11,7 @@ type ConstTypes = {
   devServerPort: number;
 };
 
-// these strings will have their values replaced by the post-build script:
+/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
 const rawConsts = {
   mode: "#{{MODE}}",
   branch: "#{{BRANCH}}",
@@ -22,6 +22,7 @@ const rawConsts = {
   devServerPort: "#{{DEV_SERVER_PORT}}",
 } as const satisfies Record<keyof ConstTypes, string>;
 
+/** Parses a raw constant or falls back to a default value */
 const getConst = <TKey extends keyof typeof rawConsts, TDefault extends string | number>(constKey: TKey, defaultVal: TDefault) => {
   const val = rawConsts[constKey];
   return (val.match(/^#{{.+}}$/) ? defaultVal : val) as ConstTypes[TKey] | TDefault;
@@ -83,7 +84,7 @@ export const sessionStorageAvailable =
  */
 export const defaultLogLevel: LogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
 
-/** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
+/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
 export const scriptInfo = pureObj({
   name: GM.info.script.name,
   version: GM.info.script.version,

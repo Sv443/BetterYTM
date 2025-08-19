@@ -261,7 +261,7 @@ async function remTimeStartUpdateLoop() {
   // for no overlapping calls and better error handling:
   if(remVidCheckTimeout)
     clearTimeout(remVidCheckTimeout);
-  remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 500);
+  remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 250);
 }
 
 /** Updates an existing or inserts a new entry to be remembered */

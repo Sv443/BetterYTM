@@ -1,4 +1,4 @@
-import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/coreutils";
+import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-network/coreutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
@@ -163,14 +163,19 @@ export type Enum<K extends string | number, V extends string | number> = Record<
 
 //#region global
 
-/** All properties of the `unsafeWindow.BYTM` object (also called "plugin interface") */
+/**
+ * All properties of the `unsafeWindow.BYTM` object (also called "plugin interface").  
+ * ⚠️ Do not overwrite these properties, only call the functions or read the values!
+ */
 export type BytmObject =
   {
     [key: string]: unknown;
+    /** Current BYTM locale */
     locale: TrLocale;
+    /** Current log level */
     logLevel: LogLevel;
   }
-  // information from the userscript header
+  // meta info from the BYTM userscript header
   & typeof scriptInfo
   // certain variables from `src/constants.ts`
   & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "initialParams" | "compressionFormat" | "sessionStorageAvailable" | "scriptInfo">
@@ -179,6 +184,7 @@ export type BytmObject =
   // classes
   & {
     // utility
+    /** [NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#nanoemitter) class reference to create your own event emitters */
     NanoEmitter: typeof NanoEmitter;
 
     // dialogs legacy (TODO: remove in v4)
@@ -190,22 +196,26 @@ export type BytmObject =
     MarkdownDialog: typeof MarkdownDialog,
 
     // dialogs
+    /** Returns a reference to the {@linkcode BytmDialog} class, which can be used to create new dialogs */
     getBytmDialog: () => typeof BytmDialog;
+    /** Returns a reference to the {@linkcode ExImDialog} class, which can be used to create new export/import dialogs */
     getExImDialog: () => typeof ExImDialog;
+    /** Returns a reference to the {@linkcode MarkdownDialog} class, which can be used to create new markdown rendering dialogs */
     getMarkdownDialog: () => typeof MarkdownDialog;
   }
   // libraries
   & {
-    // the entire CoreUtils library
+    /** The entire CoreUtils library */
     CoreUtils: typeof import("@sv443-network/coreutils");
-    // the entire UserUtils library
+    /** The entire UserUtils library */
     UserUtils: typeof import("@sv443-network/userutils");
-    // the entire compare-versions library
+    /** The entire compare-versions library */
     compareVersions: typeof import("compare-versions");
   };
 
+/** [Trusted Type Policy](https://developer.mozilla.org/en-US/docs/Web/API/TrustedTypePolicy) */
 export type TTPolicy = {
-  createHTML: (dirty: string) => string;
+  createHTML: (dirty: Stringifiable) => string;
 };
 
 declare global {
@@ -214,7 +224,7 @@ declare global {
     // alternatively navigate with ctrl+click to find the types
     BYTM: BytmObject;
     // polyfill for the new Trusted Types API
-    trustedTypes: {
+    trustedTypes?: {
       createPolicy(name: string, policy: TTPolicy): TTPolicy;
     };
   }

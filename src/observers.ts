@@ -48,8 +48,8 @@ export type YTObserverName =
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
-  disableOnNoListeners: false,
-  enableOnAddListener: false,
+  disableOnNoListeners: false, // keepalive for plugins and opportunistic features
+  enableOnAddListener: false,  // important because of strict init order
   defaultDebounce: 150,
   defaultDebounceType: "immediate",
 };
@@ -98,7 +98,7 @@ export function addSelectorListener<
 /** Call after DOM load to initialize all SelectorObserver instances */
 export function initObservers() {
   try {
-    //#region both sites
+    //#region # both sites
 
     //#region body
     // -> the entire <body> element - use sparingly due to performance impacts!
@@ -125,10 +125,10 @@ export function initObservers() {
 
     switch(getDomain()) {
     case "ytm": {
-      //#region YTM
+      //#region # YTM only
 
       //#region browseResponse
-      // -> for example the /channel/UC... page#
+      // -> for example the /channel/UC... page
       //    enabled by "body"
       const browseResponseSelector = "ytmusic-browse-response";
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
@@ -279,7 +279,7 @@ export function initObservers() {
       break;
     }
     case "yt": {
-      //#region YT
+      //#region # YT only
 
       //#region ytGuide
       // -> the left sidebar menu
