@@ -239,6 +239,7 @@ export async function addStyleFromResource(key: StyleResourceKey, transform: (cs
     await addStyle(String(transform(css)), key.slice(4));
     return true;
   }
+  error(`Couldn't add style from resource "${key}" - check adjacent console errors for details`);
   return false;
 }
 

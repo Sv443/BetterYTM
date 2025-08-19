@@ -1,0 +1,6 @@
+.middle-controls ytmusic-like-button-renderer {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 8px;
+}

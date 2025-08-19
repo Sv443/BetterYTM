@@ -486,7 +486,7 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
     return str;
   }
   catch(err) {
-    error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' due to an error:`, err);
+    error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
     return null;
   }
 }
