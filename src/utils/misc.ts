@@ -1,14 +1,14 @@
-import { compress, consumeStringGen, decompress, fetchAdvanced, pauseFor, randomId, randRange, type Prettify, type StringGen } from "@sv443-network/coreutils";
-import { getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
+import { compress, consumeStringGen, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
+import { DataStore, getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, repo, scriptInfo, sessionStorageAvailable } from "../constants.js";
-import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";
-import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
+import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime, sanitizeHtml } from "./index.js";
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
+import { addSelectorListener } from "../observers.js";
 import { getFeature } from "../config.js";
+import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
-import { addSelectorListener } from "src/observers.js";
 
 //#region misc
 
@@ -54,6 +54,7 @@ let isCompressionSupported: boolean | undefined;
 export async function compressionSupported() {
   if(typeof isCompressionSupported === "boolean")
     return isCompressionSupported;
+
   try {
     await compress(".", compressionFormat, "string");
     return isCompressionSupported = true;
@@ -121,14 +122,17 @@ export function isValidChannelId(channelId: string) {
 }
 
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
-type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq"}default` | "default";
+export type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq"}default` | "default";
+
+/** Numeric still frame thumbnail index */
+export type ThumbIndex = 0 | 1 | 2 | 3;
 
 /** Returns the thumbnail URL for a video with the given video ID and quality (defaults to "hqdefault") */
 export function getThumbnailUrl(videoID: string, quality?: ThumbQuality): string
 /** Returns the thumbnail URL for a video with the given video ID and index (0 is low quality thumbnail, 1-3 are low quality frames from the video) */
-export function getThumbnailUrl(videoID: string, index?: 0 | 1 | 2 | 3): string
+export function getThumbnailUrl(videoID: string, index?: ThumbIndex): string
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
-export function getThumbnailUrl(videoID: string, qualityOrIndex: Prettify<ThumbQuality | 0 | 1 | 2 | 3> = "maxresdefault") {
+export function getThumbnailUrl(videoID: string, qualityOrIndex: ThumbQuality | ThumbIndex = "maxresdefault") {
   return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
 }
 
@@ -399,39 +403,103 @@ export function getPreferredLocale(): TrLocale {
   return "en-US";
 }
 
-const resourceCache = new Map<string, string>();
+type ResourceCache = {
+  resources: Partial<Record<ResourceKey | "_", string>>;
+  lastModified: number;
+  buildNumber: string;
+}
+
+/** Max age for the resource cache, after its last modification, in milliseconds */
+const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+/** Cache for resources fetched via {@linkcode resourceAsString()} */
+export const resourceCacheStore = new DataStore<ResourceCache>({
+  id: "bytm-resource-cache",
+  formatVersion: 0,
+  encodeData: (data) => isCompressionSupported ? compress(data, compressionFormat, "string") : data,
+  decodeData: (data) => isCompressionSupported ? decompress(data, compressionFormat, "string") : data,
+  defaultData: {
+    resources: {},
+    lastModified: 0,
+    buildNumber,
+  },
+});
+
+/** Resources with these prefixes are cached in the resource cache */
+const cachedResourcePrefixes = [
+  "icon-",  // SVG icons
+  "style-", // dynamic stylesheets
+];
+
+async function resourceCacheHas(key: ResourceKey | "_") {
+  if(resourceCacheStore.getData().buildNumber !== buildNumber) {
+    await resourceCacheStore.setData({
+      resources: {},
+      lastModified: Date.now(),
+      buildNumber,
+    });
+    return false;
+  }
+
+  const val = resourceCacheGet(key);
+  return val !== undefined && val !== null && val.length > 0;
+}
+
+function resourceCacheGet(key: ResourceKey | "_") {
+  return resourceCacheStore.getData().resources[key] ?? null;
+}
+
+async function resourceCacheSet(key: ResourceKey | "_", val: string) {
+  const data = resourceCacheStore.getData();
+  data.resources[key] = val;
+  data.lastModified = Date.now();
+  return await resourceCacheStore.setData(data);
+}
 
 /**
  * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.  
- * Caches the resulting string if the resource key starts with `icon-`
+ * Caches the resulting string if the resource key starts with any item in {@linkcode cachedResourcePrefixes}
  */
-export async function resourceAsString(resource: ResourceKey | "_") {
-  if(resourceCache.has(resource))
-    return resourceCache.get(resource)!;
+export async function resourceAsString(resourceKey: ResourceKey | "_") {
+  if(typeof isCompressionSupported === "undefined")
+    await compressionSupported(); // init variable
 
-  const resourceUrl = await getResourceUrl(resource);
+  if(await resourceCacheHas(resourceKey) && Date.now() - resourceCacheStore.getData().lastModified < resourceCacheTTL)
+    return resourceCacheGet(resourceKey)!;
+
+  const resourceUrl = await getResourceUrl(resourceKey);
+
   try {
     if(!resourceUrl)
-      throw new Error(`Couldn't find URL for resource '${resource}'`);
-    const str = await (await fetchAdvanced(resourceUrl)).text();
+      throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 
-    // since SVG is lightweight, caching it in memory is fine
-    if(resource.startsWith("icon-"))
-      resourceCache.set(resource, str);
+    const res = await fetchAdvanced(resourceUrl);
+    if(!res.ok)
+      throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
+
+    const str = await res.text();
+
+    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
+      await resourceCacheSet(resourceKey, str);
+
     return str;
   }
   catch(err) {
-    error(`Couldn't fetch resource '${resource}' at URL '${resourceUrl}' due to an error:`, err);
+    error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' due to an error:`, err);
     return null;
   }
 }
 
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
-export function parseMarkdown(mdString: string) {
-  return marked.parse(mdString, {
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS by default! */
+export async function parseMarkdown(mdString: string, sanitize = false) {
+  const mdHtml = await marked.parse(mdString, {
     async: true,
+    breaks: true,
     gfm: true,
+    silent: true,
   });
+
+  return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
 }
 
 /** Returns the content of the changelog markdown file */
