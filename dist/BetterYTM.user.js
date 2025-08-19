@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@949bbfe0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a12ed2c3/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -357,8 +357,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "949bbfe0",
-    buildTimestamp: "1755639161916",
+    buildNumber: "a12ed2c3",
+    buildTimestamp: "1755640489314",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -680,7 +680,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         };
         this.id = options.id;
     }
-    //#region pb:mount
+    //#region pub:mount
     /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
     async mount() {
         if (this.dialogMounted)
@@ -710,7 +710,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         this.events.emit("render");
         return bgElem;
     }
-    //#region pb:unmount
+    //#region pub:unmount
     /** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
     unmount() {
         this.close();
@@ -725,18 +725,18 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         }
         this.events.emit("clear");
     }
-    //#region pb:remount
+    //#region pub:remount
     /** Clears the DOM of the dialog and then renders it again */
     async remount() {
         this.unmount();
         await this.mount();
     }
-    //#region pb:isMounted
+    //#region pub:isMounted
     /** Returns true if the dialog is currently mounted */
     isMounted() {
         return this.dialogMounted;
     }
-    //#region pb:open
+    //#region pub:open
     /**
      * Opens the dialog - also mounts it if it hasn't been mounted yet
      * Prevents default action and immediate propagation of the passed event
@@ -769,7 +769,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         emitInterface(`bytm:dialogOpened:${this.id}`, this);
         return dialogBg;
     }
-    //#region pb:close
+    //#region pub:close
     /** Closes the dialog - prevents default action and immediate propagation of the passed event */
     close(e) {
         e?.preventDefault();
@@ -792,15 +792,15 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         // don't destroy *and* unmount at the same time
         else if (this.options.unmountOnClose)
             this.unmount();
-        if (openDialogs.length === 0 && !isCfgMenuOpen$1)
+        if ((!isCfgMenuOpen$1 && openDialogs.length === 0) || (isCfgMenuOpen$1 && openDialogs.length > 0))
             this.removeBgInert();
     }
-    //#region pb:isOpen
+    //#region pub:isOpen
     /** Returns true if the dialog is currently open */
     isOpen() {
         return this.dialogOpen;
     }
-    //#region pb:destroy
+    //#region pub:destroy
     /** Clears the DOM of the dialog and removes all event listeners */
     destroy() {
         this.unmount();
@@ -1728,7 +1728,7 @@ async function createLongBtn({ title, text, iconPosition, ripple, ...rest }) {
     iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
     btnElem.appendChild(txtElem);
     iconPosition === "right" && btnElem.appendChild(imgElem);
-    return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
+    return ripple ? createRipple(btnElem, { speed: "normal", triggerEvent: "mouseup" }) : btnElem;
 }//#region class
 /** Generic dialog for exporting and importing any string of data */
 class ExImDialog extends BytmDialog {
@@ -1779,16 +1779,17 @@ class ExImDialog extends BytmDialog {
             });
             const exportCenterBtnCont = document.createElement("div");
             exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
-            const copyBtn = createRipple(await createLongBtn({
+            const copyBtn = await createLongBtn({
                 title: t("copy_to_clipboard"),
                 text: t("copy"),
                 resourceName: "icon-copy",
+                ripple: true,
                 async onClick({ shiftKey }) {
                     const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
                     copyToClipboard(await CoreUtils.consumeStringGen(copyData));
                     await showToast({ message: t("copied_to_clipboard") });
                 },
-            }));
+            });
             exportCenterBtnCont.appendChild(copyBtn);
             exportPane.append(descEl, dataEl, exportCenterBtnCont);
         }
@@ -1806,12 +1807,13 @@ class ExImDialog extends BytmDialog {
             dataEl.tabIndex = 0;
             const importCenterBtnCont = document.createElement("div");
             importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
-            const importBtn = createRipple(await createLongBtn({
+            const importBtn = await createLongBtn({
                 title: t("start_import_tooltip"),
                 text: t("import"),
                 resourceName: "icon-upload",
+                ripple: true,
                 onClick: () => opts.onImport(dataEl.value),
-            }));
+            });
             importCenterBtnCont.appendChild(importBtn);
             importPane.append(descEl, dataEl, importCenterBtnCont);
         }
@@ -1855,7 +1857,7 @@ async function createCircularBtn({ title, ripple = true, ...rest }) {
         setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
         btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
     }
-    return ripple ? createRipple(btnElem) : btnElem;
+    return ripple ? createRipple(btnElem, { triggerEvent: "mouseup" }) : btnElem;
 }let autoLikeDialog = null;
 let autoLikeExImDialog = null;
 /** Creates and/or returns the import dialog */
@@ -3047,7 +3049,7 @@ async function tryToDecompressAndParse(input) {
             parsed = JSON.parse(await CoreUtils.decompress(val, compressionFormat$1, "string"));
         }
         catch (err) {
-            error("Couldn't decompress and parse data due to an error:", err);
+            error("Couldn't decompress and parse data.", err);
             return null;
         }
     }
@@ -3954,7 +3956,7 @@ async function mountCfgMenu() {
                 closeCfgMenu(e);
         });
         document.body.addEventListener("keydown", (e) => {
-            if (isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
+            if (isCfgMenuOpen && e.key === "Escape" && (BytmDialog.getCurrentDialogId() === "cfg-menu" || BytmDialog.getCurrentDialogId() === null))
                 closeCfgMenu(e);
         });
         const menuContainer = document.createElement("div");
@@ -4091,6 +4093,8 @@ async function mountCfgMenu() {
             exportDataSpecial,
             async onImport(data) {
                 try {
+                    if (!data || data.trim().length === 0)
+                        return;
                     const parsed = await tryToDecompressAndParse(data.trim());
                     log("Trying to import configuration:", parsed);
                     if (!parsed || typeof parsed !== "object")
@@ -9957,20 +9961,22 @@ async function renderBody(opts) {
         });
         const exportCenterBtnCont = document.createElement("div");
         exportCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-        const cpBtn = createRipple(await createLongBtn({
+        const cpBtn = await createLongBtn({
             title: t("copy_to_clipboard"),
             text: t("copy"),
             resourceName: "icon-copy",
+            ripple: true,
             async onClick({ shiftKey }) {
                 const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
                 copyToClipboard(filter(await CoreUtils.consumeStringGen(copyData)));
                 await showToast({ message: t("copied_to_clipboard") });
             },
-        }));
-        const dlBtn = createRipple(await createLongBtn({
+        });
+        const dlBtn = await createLongBtn({
             title: t("download_file"),
             text: t("download"),
             resourceName: "icon-arrow_down",
+            ripple: true,
             async onClick({ shiftKey }) {
                 const dlData = filter(await CoreUtils.consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
                 copyToClipboard(dlData);
@@ -9981,7 +9987,7 @@ async function renderBody(opts) {
                 downloadFile(fileName, dlData, "application/json");
                 await showToast({ message: t("downloaded_file_hint") });
             },
-        }));
+        });
         exportCenterBtnCont.append(cpBtn, dlBtn);
         exportPane.append(descEl, dataEl, exportPartsCont, exportCenterBtnCont);
     }
@@ -10001,12 +10007,13 @@ async function renderBody(opts) {
         dataEl.tabIndex = 0;
         const importCenterBtnCont = document.createElement("div");
         importCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-        const importBtn = createRipple(await createLongBtn({
+        const importBtn = await createLongBtn({
             title: t("start_import_tooltip"),
             text: t("import"),
             resourceName: "icon-upload",
+            ripple: true,
             onClick: () => opts.onImport(dataEl.value),
-        }));
+        });
         importCenterBtnCont.appendChild(importBtn);
         importPane.append(descEl, dataEl, importCenterBtnCont);
     }
