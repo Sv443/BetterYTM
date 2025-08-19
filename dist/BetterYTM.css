@@ -1045,7 +1045,7 @@ body .bytm-ripple.slowest {
 }
 
 .bytm-auto-like-channel-row:hover {
-  background-color: var(--bytm-menu-bg-highlight);
+  background-color: var(--bytm-menu-bg-highlight-2);
 }
 
 .bytm-auto-like-channel-row
@@ -1062,18 +1062,20 @@ body .bytm-ripple.slowest {
 .bytm-auto-like-channel-name-label {
   display: flex;
   flex-direction: row;
-  align-items: center;
-}
-
-.bytm-auto-like-channel-id {
-  cursor: text;
-  font-family: var(--bytm-font-monospace);
-  font-size: 1.25rem;
-  color: #aaa;
-  margin-left: 10px;
+  align-items: end;
 }
 
 /* add more specificity to override the default styles */
+
+:root .bytm-auto-like-channel-id.bytm-link {
+  font-family: var(--bytm-font-monospace);
+  font-size: 1.4rem;
+  color: #999 !important;
+  margin-left: 10px;
+}
+:root .bytm-auto-like-channel-id.bytm-link:hover {
+  text-decoration: none !important;
+}
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn {
   margin-right: 8px;
@@ -1923,6 +1925,7 @@ html[dark] {
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;
   --bytm-generic-btn-height: 36px;
+  --bytm-flash-border-color: rgba(255, 255, 255, 0.4);
 
   display: inline-flex;
   align-items: center;
@@ -1962,7 +1965,7 @@ html[dark] {
     border: 1px solid initial;
   }
   25% {
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--bytm-flash-border-color, rgba(255, 255, 255, 0.4));
   }
   100% {
     border: 1px solid initial;
@@ -1975,6 +1978,8 @@ html[dark] {
 
 .bytm-generic-btn.long {
   --bytm-generic-btn-width: calc(min(136px, fit-content));
+  --bytm-flash-border-color: #bbb;
+
   padding: 0px 14px;
   line-height: 36px;
 
@@ -1987,10 +1992,16 @@ html[dark] {
   margin-left: 0px;
 
   border: 1px solid #999;
+
+  transition: border-color 0.2s ease;
 }
 
 .bytm-generic-btn.long:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn.long:active {
+  animation: bytm-flash-border 0.4s ease 1;
 }
 
 .bytm-generic-btn.long .bytm-generic-btn-img.left {
@@ -2522,10 +2533,19 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   white-space: nowrap;
 }
 
+.bytm-plugin-list-row-right.is-dev-plugin {
+  display: initial;
+  flex-direction: unset;
+}
+
 .bytm-plugin-list-row-right {
   overflow-y: auto;
   min-width: 25%;
   max-height: var(--bytm-plugin-list-row-max-height);
+}
+
+.bytm-dev-plugin-note-info-icon {
+  color: #95c2ed;
 }
 
 .bytm-plugin-list-row-permissions-header {

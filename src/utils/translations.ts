@@ -19,6 +19,8 @@ const initializedLocales = new Set<TrLocale>();
 
 /** The currently active locale */
 let activeLocale: TrLocale = "en-US";
+/** The current locale's text direction */
+export let activeLocaleDir: "ltr" | "rtl" = "ltr";
 
 tr.addTransform(tr.transforms.percent);
 tr.addTransform(tr.transforms.templateLiteral);
@@ -77,6 +79,7 @@ async function fetchLocaleJson(locale: TrLocale) {
 /** Sets the current language for translations */
 export function setLocale(locale: TrLocale) {
   activeLocale = locale;
+  activeLocaleDir = langMapping[locale]?.textDir as "ltr" | "rtl" ?? "ltr";
   setGlobalProp("locale", locale);
   emitInterface("bytm:setLocale", { locale });
 }

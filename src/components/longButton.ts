@@ -102,5 +102,5 @@ export async function createLongBtn({
   btnElem.appendChild(txtElem);
   iconPosition === "right" && btnElem.appendChild(imgElem);
 
-  return ripple ? createRipple(btnElem, { speed: "normal", triggerEvent: "mouseup" }) : btnElem;
+  return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
 }

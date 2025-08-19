@@ -202,19 +202,25 @@ async function renderBody() {
     nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
     nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
 
+    const chanHref = (!chanId.startsWith("@") && getDomain() === "ytm")
+      ? `https://music.youtube.com/channel/${chanId}`
+      : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+
     const nameElem = document.createElement("a");
     nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
     nameElem.ariaLabel = nameElem.textContent = chanName;
-    nameElem.href = (!chanId.startsWith("@") && getDomain() === "ytm")
-      ? `https://music.youtube.com/channel/${chanId}`
-      : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+    nameElem.href = chanHref;
     nameElem.target = "_blank";
     nameElem.rel = "noopener noreferrer";
     nameElem.tabIndex = 0;
 
-    const idElem = document.createElement("span");
-    idElem.classList.add("bytm-auto-like-channel-id");
+    const idElem = document.createElement("a");
+    idElem.classList.add("bytm-auto-like-channel-id", "bytm-link");
     idElem.textContent = idElem.title = chanId;
+    idElem.href = chanHref;
+    idElem.target = "_blank";
+    idElem.rel = "noopener noreferrer";
+    idElem.tabIndex = 0;
 
     nameLabelEl.appendChild(nameElem);
     nameLabelEl.appendChild(idElem);

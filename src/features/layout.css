@@ -41,6 +41,7 @@ html[dark] {
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;
   --bytm-generic-btn-height: 36px;
+  --bytm-flash-border-color: rgba(255, 255, 255, 0.4);
 
   display: inline-flex;
   align-items: center;
@@ -80,7 +81,7 @@ html[dark] {
     border: 1px solid initial;
   }
   25% {
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--bytm-flash-border-color, rgba(255, 255, 255, 0.4));
   }
   100% {
     border: 1px solid initial;
@@ -93,6 +94,8 @@ html[dark] {
 
 .bytm-generic-btn.long {
   --bytm-generic-btn-width: calc(min(136px, fit-content));
+  --bytm-flash-border-color: #bbb;
+
   padding: 0px 14px;
   line-height: 36px;
 
@@ -105,10 +108,16 @@ html[dark] {
   margin-left: 0px;
 
   border: 1px solid #999;
+
+  transition: border-color 0.2s ease;
 }
 
 .bytm-generic-btn.long:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn.long:active {
+  animation: bytm-flash-border 0.4s ease 1;
 }
 
 .bytm-generic-btn.long .bytm-generic-btn-img.left {

@@ -71,5 +71,5 @@ export async function createCircularBtn({
     btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
   }
 
-  return ripple ? createRipple(btnElem, { triggerEvent: "mouseup" }) : btnElem;
+  return ripple ? createRipple(btnElem) : btnElem;
 }
