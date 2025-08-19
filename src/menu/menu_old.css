@@ -3,6 +3,16 @@
   --bytm-menu-bg-highlight-2: #252525;
 }
 
+#bytm-cfg-menu-bg.bytm-remounting {
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+#bytm-cfg-menu-bg.bytm-remounted {
+  opacity: 1 !important;
+  transition: opacity 0.1s ease-out;
+}
+
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-separator-color: #797979;
@@ -117,7 +127,7 @@
   overflow-x: hidden;
   text-overflow: ellipsis;
   border-radius: 5rem 0 0 5rem;
-  transition: background-color 0.15s ease-out;
+  transition: background-color 0.1s cubic-bezier(0, 0, 0, 0.6);
 }
 
 .bytm-menu-sidenav-header:hover {

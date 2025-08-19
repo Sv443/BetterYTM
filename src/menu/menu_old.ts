@@ -615,9 +615,8 @@ export async function mountCfgMenu() {
           textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
           textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
 
-          let adornmentElem: undefined | HTMLElement;
-
           const adornContent = await resolveAdornments(featInfo, featKey as FeatureKey);
+          let adornmentElem: undefined | HTMLElement;
 
           if(adornContent && adornContent.length > 0) {
             const adornHtml = adornContent.join(" ");
@@ -627,9 +626,9 @@ export async function mountCfgMenu() {
             setInnerHtml(adornmentElem, adornHtml);
           }
 
-          let helpElem: undefined | HTMLDivElement;
+          let helpElem: HTMLDivElement | undefined;
 
-          // @ts-expect-error
+          // @ts-expect-error shhhh its fine
           const hasHelpTextFunc = typeof featInfo[featKey as keyof typeof featInfo]?.helpText === "function";
           // @ts-expect-error
           const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
@@ -643,6 +642,7 @@ export async function mountCfgMenu() {
               helpElem.role = "button";
               helpElem.tabIndex = 0;
               setInnerHtml(helpElem, helpElemImgHtml);
+
               onInteraction(helpElem, async (e: MouseEvent | KeyboardEvent) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -823,8 +823,7 @@ export async function mountCfgMenu() {
                 if(typeof initialVal !== "undefined")
                   confChanged(featKey as keyof FeatureConfig, initialVal, v);
               };
-              const unsub = siteEvents.on("cfgMenuClosed", () => {
-                unsub();
+              siteEvents.once("cfgMenuClosed", () => {
                 textInputUpdate();
               });
               inputElem.addEventListener("blur", () => textInputUpdate());
@@ -963,7 +962,7 @@ export async function mountCfgMenu() {
         mdContElem.classList.add("bytm-markdown-container");
         setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
 
-        siteEvents.on("cfgMenuMounted", () => {
+        siteEvents.once("cfgMenuMounted", () => {
           const detailsElems = mdContElem.querySelectorAll("details");
           detailsElems.forEach((el) => {
             el.addEventListener("toggle", () => checkToggleScrollIndicator());
@@ -1191,15 +1190,35 @@ export async function mountCfgMenu() {
 
     // remount if siteEvent recreateCfgMenu emitted:
 
-    siteEvents.on("recreateCfgMenu", async () => {
+    siteEvents.once("recreateCfgMenu", async () => {
       const bgElem = document.querySelector("#bytm-cfg-menu-bg");
-      if(!bgElem)
+      if(!bgElem) {
+        error("Couldn't remount config menu because the background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
         return;
-      closeCfgMenu();
-      bgElem.remove();
-      isMenuMounting = hasMenuFinishedMounting = isMenuOpen = false;
-      await mountCfgMenu();
-      await openCfgMenu();
+      }
+
+      bgElem.addEventListener("transitionend", async () => {
+        closeCfgMenu();
+        bgElem.remove();
+
+        isMenuMounting = hasMenuFinishedMounting = false;
+        await mountCfgMenu();
+
+        const bgElemNew = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
+        if(bgElemNew) {
+          bgElemNew.classList.add("bytm-remounting");
+          setTimeout(() => {
+            bgElemNew.addEventListener("transitionend", () => {
+              bgElemNew.classList.remove("bytm-remounting", "bytm-remounted");
+            }, { once: true });
+
+            openCfgMenu();
+            bgElemNew.classList.add("bytm-remounted");
+          }, 1);
+        }
+      }, { once: true });
+
+      bgElem.classList.add("bytm-remounting");
     });
   }
   catch(err) {
@@ -1208,39 +1227,9 @@ export async function mountCfgMenu() {
   }
 }
 
-//#region open & close
+// #region open
 
-/** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = true) {
-  if(!isMenuOpen)
-    return;
-  isMenuOpen = false;
-
-  evt?.bubbles && evt.stopPropagation();
-
-  if(enableScroll) {
-    document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
-  }
-  const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
-
-  clearTimeout(hiddenCopiedTxtTimeout);
-
-  openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
-  setCurrentDialogId(openDialogs?.[0] ?? null);
-
-  // since this menu doesn't have a BytmDialog instance, it's undefined here
-  emitInterface("bytm:dialogClosed", undefined as unknown as BytmDialog);
-  emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", undefined as unknown as BytmDialog);
-
-  if(!menuBg)
-    return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
-
-  menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
-
-  menuBg.style.visibility = "hidden";
-  menuBg.style.display = "none";
-}
+// TODO:FIXME: if openened before mounting, the menu should open at the next earliest point
 
 /** Opens the config menu if it is closed */
 export async function openCfgMenu() {
@@ -1290,7 +1279,41 @@ export async function openCfgMenu() {
   }
 }
 
-//#region chk scroll indicator
+// #region close
+
+/** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = true) {
+  if(!isMenuOpen)
+    return;
+  isMenuOpen = false;
+
+  evt?.bubbles && evt.stopPropagation();
+
+  if(enableScroll) {
+    document.body.classList.remove("bytm-disable-scroll");
+    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+  }
+  const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
+
+  clearTimeout(hiddenCopiedTxtTimeout);
+
+  openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
+  setCurrentDialogId(openDialogs?.[0] ?? null);
+
+  // since this menu doesn't have a BytmDialog instance, it's undefined here
+  emitInterface("bytm:dialogClosed", undefined as unknown as BytmDialog);
+  emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", undefined as unknown as BytmDialog);
+
+  if(!menuBg)
+    return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+
+  menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
+
+  menuBg.style.visibility = "hidden";
+  menuBg.style.display = "none";
+}
+
+// #region chk scroll indicator
 
 /** Checks if the features container is scrollable and toggles the scroll indicator accordingly */
 function checkToggleScrollIndicator() {
