@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ad0655e0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9a048d00/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -357,8 +357,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ad0655e0",
-    buildTimestamp: "1755643794754",
+    buildNumber: "9a048d00",
+    buildTimestamp: "1755644381309",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3789,8 +3789,8 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     resetElem.tabIndex = 0;
     resetElem.textContent = `(${t("reset")})`;
     resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
-    const deactivate = () => {
-        if (!otherHotkeyInputActive)
+    const deactivate = (force = false) => {
+        if (!otherHotkeyInputActive && !force)
             return;
         emitSiteEvent("hotkeyInputActive", false);
         otherHotkeyInputActive = false;
@@ -3809,6 +3809,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         inputElem.dataset.state = infoElem.dataset.state = "active";
         inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
     };
+    window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true));
     onInteraction(resetElem, (e) => {
         e.preventDefault();
         e.stopImmediatePropagation();
