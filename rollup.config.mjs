@@ -2,6 +2,7 @@ import pluginTypeScript from "@rollup/plugin-typescript";
 import pluginNodeResolve from "@rollup/plugin-node-resolve";
 import pluginJson from "@rollup/plugin-json";
 import pluginCss from "rollup-plugin-import-css";
+import pluginTerser from "@rollup/plugin-terser";
 import pluginExecute from "rollup-plugin-execute";
 import typescript from "typescript";
 import k from "kleur";
@@ -34,7 +35,7 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
   };
   const passCliArgsStr = Object.entries(passCliArgs).map(([key, value]) => `--${key}=${value}`).join(" ");
 
-  const { mode, suffix } = passCliArgs;
+  const { host, mode, suffix } = passCliArgs;
 
   const linkedPkgs = requireJson.filter((pkg) => typeof pkg.link === "string");
 
@@ -59,6 +60,19 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
       pluginCss({
         output: "BetterYTM.css",
       }),
+      ...(host === "greasyfork" ? [
+        pluginTerser({
+          compress: false,
+          mangle: false,
+          format: {
+            comments: false,
+            beautify: true,
+            indent_level: 2,
+            keep_quoted_props: true,
+            preserve_annotations: true
+          },
+        })
+      ] : []),
       pluginExecute([
         `pnpm run --silent post-build ${passCliArgsStr}`,
         ...(mode === "development" ? ["pnpm run --silent invisible \"pnpm run tr-progress\""] : []),

@@ -97,30 +97,6 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
   return htmlStrings.filter(Boolean) as string[];
 }
 
-// TODO: reimplement
-// /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
-// const combineAdornments = (
-//   adornments: Array<AdornmentFunc>
-// ) => new Promise<string>(
-//   async (resolve) => {
-//     const sortedAdornments = adornments.sort((a, b) => {
-//       const aIndex = adornmentOrder.get(a) ? adornmentOrder.get(a)! : -1;
-//       const bIndex = adornmentOrder.has(b) ? adornmentOrder.get(b)! : -1;
-//       return aIndex - bIndex;
-//     });
-//     const html = [] as string[];
-
-//     for(const adornment of sortedAdornments) {
-//       const val = typeof adornment === "function"
-//         ? await adornment()
-//         : await adornment;
-//       val && html.push(val);
-//     }
-
-//     resolve(html.join(""));
-//   }
-// );
-
 //#region select options
 
 type SelectOption<TValue = number | string> = {
@@ -147,7 +123,7 @@ const options = {
     .reduce((a, [locale, { name, emoji }]) => {
       return [...a, {
         value: locale,
-        label: `${emoji} ${name}${mode === "development" ? ` [${locale}]` : ""}`,
+        label: `${emoji} ${name}${mode === "development" || getFeature("advancedMode") ? ` [${locale}]` : ""}`,
       }];
     }, [] as SelectOption[])
     .sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
@@ -213,8 +189,6 @@ export const groupedCategories: FeatureCategory[][] = [
  * | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                     |
  * | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu                                                                                 |
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
- * 
- * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 export const featInfo = {
   //#region cat:general
