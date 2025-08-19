@@ -173,7 +173,7 @@ async function renderBody() {
       devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
       devPluginNoteEl.tabIndex = 0;
       devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list_dev_plugin_note");
-      const infoIcon = "<span class=\"bytm-dev-plugin-note-info-infoIcon\">🛈</span>";
+      const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
       setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list_dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
       rowEl.appendChild(devPluginNoteEl);
     }
