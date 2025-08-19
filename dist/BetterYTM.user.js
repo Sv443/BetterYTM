@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9a048d00/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1984439f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -357,8 +357,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "9a048d00",
-    buildTimestamp: "1755644381309",
+    buildNumber: "1984439f",
+    buildTimestamp: "1755645403678",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2820,6 +2820,11 @@ async function remTimeDeleteEntry(videoID) {
 }
 //#region dismiss "are you still there"
 let curSongTitle;
+let isDragging = false;
+document.addEventListener("dragstart", () => isDragging = true);
+document.addEventListener("dragend", () => isDragging = false);
+document.addEventListener("mousedown", () => isDragging = true);
+document.addEventListener("mouseup", () => isDragging = false);
 /** Initializes the "Are you still there?" popup dismissing feature */
 async function initStillThere() {
     siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
@@ -2874,6 +2879,8 @@ async function initStillThere() {
     });
     // dispatch on interval
     const tryClick = () => {
+        if (isDragging)
+            return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
         // click the navbar
         const navBar = document.querySelector("ytmusic-nav-bar .center-content");
         navBar?.dispatchEvent(new MouseEvent("click", {
@@ -2906,6 +2913,8 @@ async function initStillThere() {
         }));
     };
     const tryMove = async () => {
+        if (isDragging)
+            return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
         // dispatch mousemoves with random vector for a second
         const incX = (Math.random() * 2 - 1) / 10, incY = (Math.random() * 2 - 1) / 10;
         const vidEl = getVideoElement();
