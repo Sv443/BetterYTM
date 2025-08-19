@@ -32,11 +32,13 @@
   - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering.
   - 🎵 Fixed SyntaxError when no AM album artwork found.
   - Fixed Error when clicking on a BytmDialog's exit button.
-  - [🚧 WIP] 🎵 Fixed list buttons not disappearing with the native buttons in song lists.
-  - [🚧 WIP] 🎵 Fixed anchor improvements feature on the search page.
+  - Fixed config menu not closing on <kbd>Esc</kbd> press when other dialog over top was closed with <kbd>Esc</kbd>
+  - 🎵 Fixed list buttons not disappearing with the native buttons in song lists.
+  - 🎵 Fixed anchor improvements feature on the search page.
   - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension.
-  - [🚧 WIP] Fixed page scroll bar reappearing after BytmDialog opened over top of the config menu is closed.
+  - Fixed page scroll bar reappearing after BytmDialog opened over top of the config menu is closed.
   - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this).
+  - Fixed hotkey inputs not deactivating when the config menu is closed.
 
 <details><summary>Click to expand plugin and internal changes</summary>
 
