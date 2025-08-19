@@ -2661,6 +2661,12 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
   visibility: visible !important;
 }
 
+#contents[data-any-checkbox-checked="true"]
+  > ytmusic-responsive-list-item-renderer
+  .bytm-queue-btn-container {
+  display: none !important;
+}
+
 .ytmusic-player-queue .bytm-song-list-item-btn,
 ytmusic-player-queue-item
   ytmusic-menu-renderer

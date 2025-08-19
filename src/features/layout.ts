@@ -410,6 +410,8 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
+//#region song list click area
+
 function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
   let itemsAmt = 0;
 
@@ -439,6 +441,7 @@ function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
         (el) => el.tagName.toLowerCase() === "a",
         (el) => Boolean(el.getAttribute("href")?.length),
         (el) => el.classList.contains("bytm-anchor"),
+        (el) => el.classList.contains("multi-select-overlay"),
       ] satisfies CondFns;
 
       if(conditions.some((cnd) => cnd(tgt)) && antiConditions.every((acnd) => !acnd(tgt)))

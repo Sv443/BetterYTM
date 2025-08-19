@@ -22,10 +22,32 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-
 ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
 `;
 
+/** Whether any song list item's checkbox is currently checked */
+let isCheckboxChecked = false;
+
 //#region init queue btns
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
+  const multiSelectObs = new MutationObserver(() => {
+    const multiSelectEl = document.querySelector<HTMLElement>("ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]");
+    const newIsCheckboxChecked = Boolean(multiSelectEl) && !multiSelectEl?.hasAttribute("aria-hidden");
+    if(newIsCheckboxChecked === isCheckboxChecked)
+      return;
+    isCheckboxChecked = newIsCheckboxChecked;
+
+    const allSongLists = document.querySelectorAll<HTMLElement>(songListSelector);
+    allSongLists.forEach((list) => {
+      list.dataset.anyCheckboxChecked = String(isCheckboxChecked);
+    });
+  });
+
+  multiSelectObs.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributeFilter: ["dialog-type", "aria-hidden"],
+  });
+
   /** Tries to add queue buttons to the current song queue items on the /watch page. */
   const tryAddCurrentQueueBtns = (
     evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
