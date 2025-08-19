@@ -362,6 +362,8 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
 
 /** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 export let devPluginToken: string | undefined;
+export const devPluginName = "BetterYTM Dev Plugin";
+export const devPluginId = CoreUtils.randomId(8, 36, true, true);
 
 /** Registers a plugin that only exists in development mode to test the plugin system */
 function registerDevPlugin() {
@@ -370,11 +372,18 @@ function registerDevPlugin() {
   try {
     const { token } = registerPlugin({
       plugin: {
-        name: "BetterYTM Dev Plugin",
-        namespace: pkgJson.namespace,
+        name: devPluginName,
+        namespace: `${pkgJson.namespace}+${devPluginId}`,
         version: pkgJson.version,
         description: {
-          "en-US": "Internal plugin that only exists in development mode to test the plugin system.",
+          "de-DE": "Internes Plugin, das nur im Entwicklungsmodus existiert, um das Plugin-System einfach testen zu können.",
+          "en-US": "Internal plugin that only exists in development mode to make testing the plugin system easier.",
+          "es-ES": "Plugin interno que solo existe en el modo de desarrollo para facilitar la prueba del sistema de plugins.",
+          "fr-FR": "Plugin interne qui n'existe qu'en mode développement pour faciliter les tests du système de plugins.",
+          "hi-IN": "डेवलपमेंट मोड में मौजूद आंतरिक प्लगइन जो प्लगइन सिस्टम का परीक्षण करना आसान बनाता है।",
+          "ja-JP": "開発モードでのみ存在する内部プラグインで、プラグインシステムのテストを容易にします。",
+          "pt-BR": "Plugin interno que só existe no modo de desenvolvimento para facilitar o teste do sistema de plugins.",
+          "zh-CN": "仅在开发模式下存在的内部插件，以便更轻松地测试插件系统。",
         },
         homepage: {
           source: pkgJson.homepage,
@@ -488,7 +497,6 @@ export function getPluginInfo(...args: [token: string | undefined, pluginDefOrNa
   if(resolveToken(args[0]) === undefined)
     return undefined;
 
-  // TODO:FIXME:
   return pluginDefToInfo(
     registeredPlugins.get(
       typeof args[1] === "string" && typeof args[2] === "undefined"

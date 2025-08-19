@@ -25,10 +25,10 @@ import "./menu_old.css";
 //#region create menu
 
 /** Whether the config menu has finished mounting and can be opened with {@linkcode openCfgMenu()} */
-export let hasMenuFinishedMounting = false;
+export let isCfgMenuDoneMounting = false;
 /** Whether the config menu is currently mounting. Subsequent calls to {@linkcode mountCfgMenu()} will wait until the menu has finished mounting. */
-export let isMenuMounting = false;
-export let isMenuOpen = false;
+export let isCfgMenuMounting = false;
+export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
@@ -46,9 +46,9 @@ let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
  */
 export async function mountCfgMenu() {
   try {
-    if(isMenuMounting || hasMenuFinishedMounting)
+    if(isCfgMenuMounting || isCfgMenuDoneMounting)
       return;
-    isMenuMounting = true;
+    isCfgMenuMounting = true;
 
     const startTs = Date.now();
 
@@ -67,11 +67,11 @@ export async function mountCfgMenu() {
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
     backgroundElem.addEventListener("click", (e) => {
-      if(isMenuOpen && (e.target as HTMLElement)?.id === "bytm-cfg-menu-bg")
+      if(isCfgMenuOpen && (e.target as HTMLElement)?.id === "bytm-cfg-menu-bg")
         closeCfgMenu(e);
     });
     document.body.addEventListener("keydown", (e) => {
-      if(isMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
+      if(isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
         closeCfgMenu(e);
     });
 
@@ -1154,11 +1154,11 @@ export async function mountCfgMenu() {
     log(`Mounted config menu element in ${Date.now() - startTs}ms`);
 
     emitSiteEvent("cfgMenuMounted");
-    isMenuMounting = false;
-    hasMenuFinishedMounting = true;
+    isCfgMenuMounting = false;
+    isCfgMenuDoneMounting = true;
 
     // ensure stuff is reset if menu was opened before being added
-    isMenuOpen = false;
+    isCfgMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
@@ -1169,7 +1169,7 @@ export async function mountCfgMenu() {
     /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
     const stackedOpenDialogIds: string[] = [];
     window.addEventListener("bytm:dialogOpened", (evt) => {
-      if(!isMenuOpen || !("detail" in evt))
+      if(!isCfgMenuOpen || !("detail" in evt))
         return;
       const dlg = (evt as CustomEvent<BytmDialog>)?.detail;
       if(dlg && dlg instanceof BytmDialog) {
@@ -1201,7 +1201,7 @@ export async function mountCfgMenu() {
         closeCfgMenu();
         bgElem.remove();
 
-        isMenuMounting = hasMenuFinishedMounting = false;
+        isCfgMenuMounting = isCfgMenuDoneMounting = false;
         await mountCfgMenu();
 
         const bgElemNew = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
@@ -1234,17 +1234,17 @@ export async function mountCfgMenu() {
 /** Opens the config menu if it is closed */
 export async function openCfgMenu() {
   try {
-    if(isMenuOpen)
+    if(isCfgMenuOpen)
       return;
 
-    if(!hasMenuFinishedMounting) {
-      if(isMenuMounting)
+    if(!isCfgMenuDoneMounting) {
+      if(isCfgMenuMounting)
         return void siteEvents.once("cfgMenuMounted", () => openCfgMenu());
       else
         await mountCfgMenu();
     }
 
-    isMenuOpen = true;
+    isCfgMenuOpen = true;
 
     document.body.classList.add("bytm-disable-scroll");
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
@@ -1283,9 +1283,9 @@ export async function openCfgMenu() {
 
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = true) {
-  if(!isMenuOpen)
+  if(!isCfgMenuOpen)
     return;
-  isMenuOpen = false;
+  isCfgMenuOpen = false;
 
   evt?.bubbles && evt.stopPropagation();
 

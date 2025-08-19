@@ -304,8 +304,9 @@ export type PluginDef = {
     };
     /** URL to the plugin's icon - recommended size: 48x48 to 128x128 */
     iconUrl?: string;
+    /** Optional license information for the plugin */
     license?: {
-      /** License name */
+      /** License [SPDX identifier](https://spdx.org/licenses/) or short name */
       name: string;
       /** URL to the license text */
       url: string;

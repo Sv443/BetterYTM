@@ -251,6 +251,7 @@
   "plugin_list_no_plugins": "No plugins are currently installed.\nVisit %1this page%2 for more information.",
   "plugin_list_no_plugins_tooltip": "No plugins are currently installed.",
   "plugin_list_permissions_header": "Permissions:",
+  "plugin_list_dev_plugin_note": "The dev plugin always has full access.",
 
   "plugin_link_type_source": "Repository",
   "plugin_link_type_other": "Other / Homepage",

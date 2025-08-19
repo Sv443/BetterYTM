@@ -238,6 +238,7 @@
   "plugin_list_no_plugins": "Derzeit sind keine Plugins installiert.\nBesuche %1diese Seite%2 für mehr Informationen.",
   "plugin_list_no_plugins_tooltip": "Derzeit sind keine Plugins installiert.",
   "plugin_list_permissions_header": "Berechtigungen:",
+  "plugin_list_dev_plugin_note": "Das Dev-Plugin hat immer vollen Zugriff.",
 
   "plugin_link_type_source": "Quellcode",
   "plugin_link_type_other": "Homepage / Anderes",

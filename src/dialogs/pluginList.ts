@@ -1,6 +1,6 @@
 import { bitSetHas } from "@sv443-network/coreutils";
 import { BytmDialog } from "../components/BytmDialog.js";
-import { getRegisteredPlugins } from "../interface.js";
+import { devPluginId, devPluginName, devPluginToken, getPluginInfo, getRegisteredPlugins } from "../interface.js";
 import { getLocale, t } from "../utils/translations.js";
 import { setInnerHtml } from "../utils/dom.js";
 import { PluginIntent } from "../types.js";
@@ -13,7 +13,7 @@ let pluginListDialog: BytmDialog | null = null;
 export async function getPluginListDialog() {
   return pluginListDialog = pluginListDialog ?? new BytmDialog({
     id: "plugin-list",
-    width: 800,
+    width: 900,
     height: 600,
     closeBtnEnabled: true,
     closeOnBgClick: true,
@@ -128,9 +128,12 @@ async function renderBody() {
       linksList.appendChild(linkEl);
     }
 
-    const rightEl = document.createElement("div");
-    rightEl.classList.add("bytm-plugin-list-row-right");
-    rowEl.appendChild(rightEl);
+    const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
+    const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${devPluginName}`;
+    const isDevPlugin = Boolean(
+      pluginIdentifier === devPluginIdentifier
+      && getPluginInfo(devPluginToken, devPluginIdentifier)
+    );
 
     const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
     const intentsAmount = Object.keys(PluginIntent).length / 2;
@@ -143,21 +146,35 @@ async function renderBody() {
         return arr;
       })() : []);
 
-    const permissionsHeaderEl = document.createElement("div");
-    permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
-    permissionsHeaderEl.tabIndex = 0;
-    permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
-    rightEl.appendChild(permissionsHeaderEl);
+    if(!isDevPlugin) {
+      if(intentsArr.length !== 0) {
+        const rightEl = document.createElement("div");
+        rightEl.classList.add("bytm-plugin-list-row-right");
+        rowEl.appendChild(rightEl);
 
-    for(const intent of intentsArr) {
-      const intentEl = document.createElement("div");
-      intentEl.classList.add("bytm-plugin-list-row-intent-item");
-      intentEl.tabIndex = 0;
-      intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
-      intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
-      rightEl.appendChild(intentEl);
+        const permissionsHeaderEl = document.createElement("div");
+        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
+        permissionsHeaderEl.tabIndex = 0;
+        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
+        rightEl.appendChild(permissionsHeaderEl);
+
+        for(const intent of intentsArr) {
+          const intentEl = document.createElement("div");
+          intentEl.classList.add("bytm-plugin-list-row-intent-item");
+          intentEl.tabIndex = 0;
+          intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
+          intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
+          rightEl.appendChild(intentEl);
+        }
+      }
     }
-
+    else {
+      const devPluginNoteEl = document.createElement("div");
+      devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
+      devPluginNoteEl.tabIndex = 0;
+      devPluginNoteEl.textContent = devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list_dev_plugin_note");
+      rowEl.appendChild(devPluginNoteEl);
+    }
     listContainerEl.appendChild(rowEl);
   }
 

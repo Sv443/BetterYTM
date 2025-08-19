@@ -2434,13 +2434,12 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 }
 
 .bytm-plugin-list-row {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 8fr 4fr;
   align-items: flex-start;
-  justify-content: space-between;
+  gap: 20px;
   border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
   padding: var(--bytm-plugin-list-row-padding-ver) 0px;
-  gap: 20px;
 }
 
 .bytm-plugin-list-row:first-child {
@@ -2510,17 +2509,21 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 .bytm-plugin-list-row-links-list {
   font-size: 1.4rem;
   margin-top: 4px;
+  white-space: pre;
 }
 
 .bytm-plugin-list-row-links-list-bullet {
   margin: 0 5px;
 }
 
-.bytm-plugin-list-row-right {
+.bytm-plugin-list-row-right:not(.is-dev-plugin) {
   overflow-x: hidden;
-  overflow-y: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.bytm-plugin-list-row-right {
+  overflow-y: auto;
   min-width: 25%;
   max-height: var(--bytm-plugin-list-row-max-height);
 }

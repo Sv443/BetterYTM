@@ -149,13 +149,9 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
   }
 
   const getLabel = (value: Stringifiable) => {
-    if(sliderElem.dataset.dragging === "true") {
-      const step = Number(getFeature(sliderElem.dataset.dragging === "true" ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
-      const roundedValue = Math.round(Number(value) / step) * step;
-      return `${roundedValue}%`;
-    }
-    else
-      return `${value}%`;
+    const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
+    const roundedValue = Math.round(Number(value) / step) * step;
+    return `${roundedValue}%`;
   };
 
   const labelElem = document.createElement("div");
@@ -190,11 +186,6 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
     for(const el of labelElem2)
       el.textContent = getLabel(sliderElem.value);
   };
-
-  sliderElem.addEventListener("dragstart", () => sliderElem.dataset.dragging = "true");
-  sliderElem.addEventListener("dragend", () => sliderElem.dataset.dragging = "false");
-  sliderElem.addEventListener("mousedown", () => sliderElem.dataset.dragging = "true");
-  sliderElem.addEventListener("mouseup", () => sliderElem.dataset.dragging = "false");
 
   sliderElem.addEventListener("change", () => updateLabel());
   siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
