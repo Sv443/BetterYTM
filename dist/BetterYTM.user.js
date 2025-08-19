@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5f36efc5/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@45317bc0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -356,8 +356,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "5f36efc5",
-    buildTimestamp: "1755613421162",
+    buildNumber: "45317bc0",
+    buildTimestamp: "1755615239535",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3217,6 +3217,7 @@ const resourceCacheStore = new UserUtils.DataStore({
 const cachedResourcePrefixes = [
     "icon-", // SVG icons
     "style-", // dynamic stylesheets
+    "trans-", // translations
 ];
 async function resourceCacheHas(key) {
     if (resourceCacheStore.getData().buildNumber !== buildNumber$1) {
@@ -6945,7 +6946,8 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
     }
     const getLabel = (value) => {
         if (sliderElem.dataset.dragging === "true") {
-            const roundedValue = Math.round(Number(value) / (getFeature("volumeSliderStep") ?? 1)) * (getFeature("volumeSliderStep") ?? 1);
+            const step = Number(getFeature(sliderElem.dataset.dragging === "true" ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
+            const roundedValue = Math.round(Number(value) / step) * step;
             return `${roundedValue}%`;
         }
         else
@@ -6974,6 +6976,10 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
         for (const el of labelElem2)
             el.textContent = getLabel(sliderElem.value);
     };
+    sliderElem.addEventListener("dragstart", () => sliderElem.dataset.dragging = "true");
+    sliderElem.addEventListener("dragend", () => sliderElem.dataset.dragging = "false");
+    sliderElem.addEventListener("mousedown", () => sliderElem.dataset.dragging = "true");
+    sliderElem.addEventListener("mouseup", () => sliderElem.dataset.dragging = "false");
     sliderElem.addEventListener("change", () => updateLabel());
     siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
     siteEvents.on("configChanged", () => updateLabel());
