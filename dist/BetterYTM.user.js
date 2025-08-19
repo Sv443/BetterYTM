@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a12ed2c3/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cfb17706/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -357,8 +357,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "a12ed2c3",
-    buildTimestamp: "1755640489314",
+    buildNumber: "cfb17706",
+    buildTimestamp: "1755643612877",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -526,6 +526,8 @@ function addLyricsCacheEntryBest(artist, song, path) {
 const initializedLocales = new Set();
 /** The currently active locale */
 let activeLocale = "en-US";
+/** The current locale's text direction */
+let activeLocaleDir = "ltr";
 UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
 UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
 /** Initializes the translations */
@@ -570,6 +572,7 @@ async function fetchLocaleJson(locale) {
 /** Sets the current language for translations */
 function setLocale(locale) {
     activeLocale = locale;
+    activeLocaleDir = locales[locale]?.textDir ?? "ltr";
     setGlobalProp("locale", locale);
     emitInterface("bytm:setLocale", { locale });
 }
@@ -1728,7 +1731,7 @@ async function createLongBtn({ title, text, iconPosition, ripple, ...rest }) {
     iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
     btnElem.appendChild(txtElem);
     iconPosition === "right" && btnElem.appendChild(imgElem);
-    return ripple ? createRipple(btnElem, { speed: "normal", triggerEvent: "mouseup" }) : btnElem;
+    return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
 }//#region class
 /** Generic dialog for exporting and importing any string of data */
 class ExImDialog extends BytmDialog {
@@ -1857,7 +1860,7 @@ async function createCircularBtn({ title, ripple = true, ...rest }) {
         setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
         btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
     }
-    return ripple ? createRipple(btnElem, { triggerEvent: "mouseup" }) : btnElem;
+    return ripple ? createRipple(btnElem) : btnElem;
 }let autoLikeDialog = null;
 let autoLikeExImDialog = null;
 /** Creates and/or returns the import dialog */
@@ -2013,18 +2016,23 @@ async function renderBody$4() {
         nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
         nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
         nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
+        const chanHref = (!chanId.startsWith("@") && getDomain() === "ytm")
+            ? `https://music.youtube.com/channel/${chanId}`
+            : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
         const nameElem = document.createElement("a");
         nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
         nameElem.ariaLabel = nameElem.textContent = chanName;
-        nameElem.href = (!chanId.startsWith("@") && getDomain() === "ytm")
-            ? `https://music.youtube.com/channel/${chanId}`
-            : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+        nameElem.href = chanHref;
         nameElem.target = "_blank";
         nameElem.rel = "noopener noreferrer";
         nameElem.tabIndex = 0;
-        const idElem = document.createElement("span");
-        idElem.classList.add("bytm-auto-like-channel-id");
+        const idElem = document.createElement("a");
+        idElem.classList.add("bytm-auto-like-channel-id", "bytm-link");
         idElem.textContent = idElem.title = chanId;
+        idElem.href = chanHref;
+        idElem.target = "_blank";
+        idElem.rel = "noopener noreferrer";
+        idElem.tabIndex = 0;
         nameLabelEl.appendChild(nameElem);
         nameLabelEl.appendChild(idElem);
         const toggleElem = await createToggleInput({
@@ -5294,6 +5302,7 @@ function improveSidebarAnchors(sidebarItems) {
         UserUtils.addParent(item, anchorElem);
     });
 }
+//#region song list click area
 function improveSongListClickArea(items) {
     let itemsAmt = 0;
     items.forEach((item) => {
@@ -5317,6 +5326,7 @@ function improveSongListClickArea(items) {
                 (el) => el.tagName.toLowerCase() === "a",
                 (el) => Boolean(el.getAttribute("href")?.length),
                 (el) => el.classList.contains("bytm-anchor"),
+                (el) => el.classList.contains("multi-select-overlay"),
             ];
             if (conditions.some((cnd) => cnd(tgt)) && antiConditions.every((acnd) => !acnd(tgt)))
                 item.querySelector("ytmusic-play-button-renderer")?.click();
@@ -6105,7 +6115,9 @@ async function renderBody$2() {
             const devPluginNoteEl = document.createElement("div");
             devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
             devPluginNoteEl.tabIndex = 0;
-            devPluginNoteEl.textContent = devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list_dev_plugin_note");
+            devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list_dev_plugin_note");
+            const infoIcon = "<span class=\"bytm-dev-plugin-note-info-infoIcon\">🛈</span>";
+            setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list_dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
             rowEl.appendChild(devPluginNoteEl);
         }
         listContainerEl.appendChild(rowEl);
@@ -6527,9 +6539,27 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-r
 ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
 ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
 `;
+/** Whether any song list item's checkbox is currently checked */
+let isCheckboxChecked = false;
 //#region init queue btns
 /** Initializes the queue buttons */
 async function initQueueButtons() {
+    const multiSelectObs = new MutationObserver(() => {
+        const multiSelectEl = document.querySelector("ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]");
+        const newIsCheckboxChecked = Boolean(multiSelectEl) && !multiSelectEl?.hasAttribute("aria-hidden");
+        if (newIsCheckboxChecked === isCheckboxChecked)
+            return;
+        isCheckboxChecked = newIsCheckboxChecked;
+        const allSongLists = document.querySelectorAll(songListSelector);
+        allSongLists.forEach((list) => {
+            list.dataset.anyCheckboxChecked = String(isCheckboxChecked);
+        });
+    });
+    multiSelectObs.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributeFilter: ["dialog-type", "aria-hidden"],
+    });
     /** Tries to add queue buttons to the current song queue items on the /watch page. */
     const tryAddCurrentQueueBtns = (evt) => {
         if (getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
