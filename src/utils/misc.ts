@@ -429,6 +429,7 @@ export const resourceCacheStore = new DataStore<ResourceCache>({
 const cachedResourcePrefixes = [
   "icon-",  // SVG icons
   "style-", // dynamic stylesheets
+  "trans-", // translations
 ];
 
 async function resourceCacheHas(key: ResourceKey | "_") {
