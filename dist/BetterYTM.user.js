@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4254ea23/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@949bbfe0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -357,8 +357,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "4254ea23",
-    buildTimestamp: "1755620722407",
+    buildNumber: "949bbfe0",
+    buildTimestamp: "1755639161916",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -632,6 +632,10 @@ let currentDialogId = null;
 const openDialogs = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 const setCurrentDialogId = (id) => currentDialogId = id;
+/** Whether the config menu is currently open */
+let isCfgMenuOpen$1 = false;
+window.addEventListener("bytm:dialogOpened:cfg-menu", () => isCfgMenuOpen$1 = true);
+window.addEventListener("bytm:dialogClosed:cfg-menu", () => isCfgMenuOpen$1 = false);
 //#region class
 /** Creates and manages a modal dialog element */
 class BytmDialog extends CoreUtils.NanoEmitter {
@@ -766,7 +770,6 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         return dialogBg;
     }
     //#region pb:close
-    //#FIXME: if opened on top of config menu, after closing a BytmDialog, the body scroll lock is erroneously removed
     /** Closes the dialog - prevents default action and immediate propagation of the passed event */
     close(e) {
         e?.preventDefault();
@@ -781,7 +784,6 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         dialogBg.style.display = "none";
         openDialogs.splice(openDialogs.indexOf(this.id), 1);
         currentDialogId = openDialogs[0] ?? null;
-        this.removeBgInert();
         this.events.emit("close");
         emitInterface("bytm:dialogClosed", this);
         emitInterface(`bytm:dialogClosed:${this.id}`, this);
@@ -790,7 +792,8 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         // don't destroy *and* unmount at the same time
         else if (this.options.unmountOnClose)
             this.unmount();
-        this.removeBgInert();
+        if (openDialogs.length === 0 && !isCfgMenuOpen$1)
+            this.removeBgInert();
     }
     //#region pb:isOpen
     /** Returns true if the dialog is currently open */
@@ -3912,10 +3915,10 @@ function hotkeyToString(hotkey) {
     return str;
 }//#region create menu
 /** Whether the config menu has finished mounting and can be opened with {@linkcode openCfgMenu()} */
-let hasMenuFinishedMounting = false;
+let isCfgMenuDoneMounting = false;
 /** Whether the config menu is currently mounting. Subsequent calls to {@linkcode mountCfgMenu()} will wait until the menu has finished mounting. */
-let isMenuMounting = false;
-let isMenuOpen = false;
+let isCfgMenuMounting = false;
+let isCfgMenuOpen = false;
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
@@ -3931,9 +3934,9 @@ let hiddenCopiedTxtTimeout;
  */
 async function mountCfgMenu() {
     try {
-        if (isMenuMounting || hasMenuFinishedMounting)
+        if (isCfgMenuMounting || isCfgMenuDoneMounting)
             return;
-        isMenuMounting = true;
+        isCfgMenuMounting = true;
         const startTs = Date.now();
         BytmDialog.initDialogs();
         initLocale = getFeature("locale");
@@ -3947,11 +3950,11 @@ async function mountCfgMenu() {
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
-            if (isMenuOpen && e.target?.id === "bytm-cfg-menu-bg")
+            if (isCfgMenuOpen && e.target?.id === "bytm-cfg-menu-bg")
                 closeCfgMenu(e);
         });
         document.body.addEventListener("keydown", (e) => {
-            if (isMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
+            if (isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
                 closeCfgMenu(e);
         });
         const menuContainer = document.createElement("div");
@@ -4827,10 +4830,10 @@ async function mountCfgMenu() {
         window.addEventListener("resize", CoreUtils.debounce(checkToggleScrollIndicator, 250));
         log(`Mounted config menu element in ${Date.now() - startTs}ms`);
         emitSiteEvent("cfgMenuMounted");
-        isMenuMounting = false;
-        hasMenuFinishedMounting = true;
+        isCfgMenuMounting = false;
+        isCfgMenuDoneMounting = true;
         // ensure stuff is reset if menu was opened before being added
-        isMenuOpen = false;
+        isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
         document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
@@ -4839,7 +4842,7 @@ async function mountCfgMenu() {
         /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
         const stackedOpenDialogIds = [];
         window.addEventListener("bytm:dialogOpened", (evt) => {
-            if (!isMenuOpen || !("detail" in evt))
+            if (!isCfgMenuOpen || !("detail" in evt))
                 return;
             const dlg = evt?.detail;
             if (dlg && dlg instanceof BytmDialog) {
@@ -4867,7 +4870,7 @@ async function mountCfgMenu() {
             bgElem.addEventListener("transitionend", async () => {
                 closeCfgMenu();
                 bgElem.remove();
-                isMenuMounting = hasMenuFinishedMounting = false;
+                isCfgMenuMounting = isCfgMenuDoneMounting = false;
                 await mountCfgMenu();
                 const bgElemNew = document.querySelector("#bytm-cfg-menu-bg");
                 if (bgElemNew) {
@@ -4894,15 +4897,15 @@ async function mountCfgMenu() {
 /** Opens the config menu if it is closed */
 async function openCfgMenu() {
     try {
-        if (isMenuOpen)
+        if (isCfgMenuOpen)
             return;
-        if (!hasMenuFinishedMounting) {
-            if (isMenuMounting)
+        if (!isCfgMenuDoneMounting) {
+            if (isCfgMenuMounting)
                 return void siteEvents.once("cfgMenuMounted", () => openCfgMenu());
             else
                 await mountCfgMenu();
         }
-        isMenuOpen = true;
+        isCfgMenuOpen = true;
         document.body.classList.add("bytm-disable-scroll");
         document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-cfg-menu-bg");
@@ -4932,9 +4935,9 @@ async function openCfgMenu() {
 // #region close
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 function closeCfgMenu(evt, enableScroll = true) {
-    if (!isMenuOpen)
+    if (!isCfgMenuOpen)
         return;
-    isMenuOpen = false;
+    isCfgMenuOpen = false;
     evt?.bubbles && evt.stopPropagation();
     if (enableScroll) {
         document.body.classList.remove("bytm-disable-scroll");
@@ -5963,7 +5966,7 @@ async function downloadData(useEncoding = true, full = false) {
 async function getPluginListDialog() {
     return pluginListDialog = pluginListDialog ?? new BytmDialog({
         id: "plugin-list",
-        width: 800,
+        width: 900,
         height: 600,
         closeBtnEnabled: true,
         closeOnBgClick: true,
@@ -6059,9 +6062,10 @@ async function renderBody$2() {
             linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
             linksList.appendChild(linkEl);
         }
-        const rightEl = document.createElement("div");
-        rightEl.classList.add("bytm-plugin-list-row-right");
-        rowEl.appendChild(rightEl);
+        const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
+        const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${devPluginName}`;
+        const isDevPlugin = Boolean(pluginIdentifier === devPluginIdentifier
+            && getPluginInfo(devPluginToken, devPluginIdentifier));
         const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
         const intentsAmount = Object.keys(PluginIntent).length / 2;
         const intentsArr = CoreUtils.bitSetHas(intentsBitSet, PluginIntent.FullAccess)
@@ -6073,18 +6077,32 @@ async function renderBody$2() {
                         arr.push(2 ** i);
                 return arr;
             })() : []);
-        const permissionsHeaderEl = document.createElement("div");
-        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
-        permissionsHeaderEl.tabIndex = 0;
-        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
-        rightEl.appendChild(permissionsHeaderEl);
-        for (const intent of intentsArr) {
-            const intentEl = document.createElement("div");
-            intentEl.classList.add("bytm-plugin-list-row-intent-item");
-            intentEl.tabIndex = 0;
-            intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
-            intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
-            rightEl.appendChild(intentEl);
+        if (!isDevPlugin) {
+            if (intentsArr.length !== 0) {
+                const rightEl = document.createElement("div");
+                rightEl.classList.add("bytm-plugin-list-row-right");
+                rowEl.appendChild(rightEl);
+                const permissionsHeaderEl = document.createElement("div");
+                permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
+                permissionsHeaderEl.tabIndex = 0;
+                permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
+                rightEl.appendChild(permissionsHeaderEl);
+                for (const intent of intentsArr) {
+                    const intentEl = document.createElement("div");
+                    intentEl.classList.add("bytm-plugin-list-row-intent-item");
+                    intentEl.tabIndex = 0;
+                    intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
+                    intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
+                    rightEl.appendChild(intentEl);
+                }
+            }
+        }
+        else {
+            const devPluginNoteEl = document.createElement("div");
+            devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
+            devPluginNoteEl.tabIndex = 0;
+            devPluginNoteEl.textContent = devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list_dev_plugin_note");
+            rowEl.appendChild(devPluginNoteEl);
         }
         listContainerEl.appendChild(rowEl);
     }
@@ -6924,13 +6942,9 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
         }
     }
     const getLabel = (value) => {
-        if (sliderElem.dataset.dragging === "true") {
-            const step = Number(getFeature(sliderElem.dataset.dragging === "true" ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
-            const roundedValue = Math.round(Number(value) / step) * step;
-            return `${roundedValue}%`;
-        }
-        else
-            return `${value}%`;
+        const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
+        const roundedValue = Math.round(Number(value) / step) * step;
+        return `${roundedValue}%`;
     };
     const labelElem = document.createElement("div");
     labelElem.classList.add("label");
@@ -6955,10 +6969,6 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
         for (const el of labelElem2)
             el.textContent = getLabel(sliderElem.value);
     };
-    sliderElem.addEventListener("dragstart", () => sliderElem.dataset.dragging = "true");
-    sliderElem.addEventListener("dragend", () => sliderElem.dataset.dragging = "false");
-    sliderElem.addEventListener("mousedown", () => sliderElem.dataset.dragging = "true");
-    sliderElem.addEventListener("mouseup", () => sliderElem.dataset.dragging = "false");
     sliderElem.addEventListener("change", () => updateLabel());
     siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
     siteEvents.on("configChanged", () => updateLabel());
@@ -7123,7 +7133,7 @@ const options = {
         .reduce((a, [locale, { name, emoji }]) => {
         return [...a, {
                 value: locale,
-                label: `${emoji} ${name}${mode$1 === "development" ? ` [${locale}]` : ""}`,
+                label: `${emoji} ${name}${mode$1 === "development" || getFeature("advancedMode") ? ` [${locale}]` : ""}`,
             }];
     }, [])
         .sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
@@ -7186,8 +7196,6 @@ const groupedCategories = [
  * | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                     |
  * | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu                                                                                 |
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
- *
- * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 const featInfo = {
     //#region cat:general
@@ -8871,6 +8879,8 @@ function registerPlugin(def) {
 }
 /** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 let devPluginToken;
+const devPluginName = "BetterYTM Dev Plugin";
+const devPluginId = CoreUtils__namespace.randomId(8, 36, true, true);
 /** Registers a plugin that only exists in development mode to test the plugin system */
 function registerDevPlugin() {
     if (mode !== "development")
@@ -8878,11 +8888,18 @@ function registerDevPlugin() {
     try {
         const { token } = registerPlugin({
             plugin: {
-                name: "BetterYTM Dev Plugin",
-                namespace: packageJson.namespace,
+                name: devPluginName,
+                namespace: `${packageJson.namespace}+${devPluginId}`,
                 version: packageJson.version,
                 description: {
-                    "en-US": "Internal plugin that only exists in development mode to test the plugin system.",
+                    "de-DE": "Internes Plugin, das nur im Entwicklungsmodus existiert, um das Plugin-System einfach testen zu können.",
+                    "en-US": "Internal plugin that only exists in development mode to make testing the plugin system easier.",
+                    "es-ES": "Plugin interno que solo existe en el modo de desarrollo para facilitar la prueba del sistema de plugins.",
+                    "fr-FR": "Plugin interne qui n'existe qu'en mode développement pour faciliter les tests du système de plugins.",
+                    "hi-IN": "डेवलपमेंट मोड में मौजूद आंतरिक प्लगइन जो प्लगइन सिस्टम का परीक्षण करना आसान बनाता है।",
+                    "ja-JP": "開発モードでのみ存在する内部プラグインで、プラグインシステムのテストを容易にします。",
+                    "pt-BR": "Plugin interno que só existe no modo de desenvolvimento para facilitar o teste do sistema de plugins.",
+                    "zh-CN": "仅在开发模式下存在的内部插件，以便更轻松地测试插件系统。",
                 },
                 homepage: {
                     source: packageJson.homepage,
@@ -8949,7 +8966,6 @@ function getPlugin(...args) {
 function getPluginInfo(...args) {
     if (resolveToken(args[0]) === undefined)
         return undefined;
-    // TODO:FIXME:
     return pluginDefToInfo(registeredPlugins.get(typeof args[1] === "string" && typeof args[2] === "undefined"
         ? args[1]
         : args.length === 2
