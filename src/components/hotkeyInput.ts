@@ -42,8 +42,8 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
   resetElem.textContent = `(${t("reset")})`;
   resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
 
-  const deactivate = () => {
-    if(!otherHotkeyInputActive)
+  const deactivate = (force = false) => {
+    if(!otherHotkeyInputActive && !force)
       return;
     emitSiteEvent("hotkeyInputActive", false);
     otherHotkeyInputActive = false;
@@ -63,6 +63,8 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.dataset.state = infoElem.dataset.state = "active";
     inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
   };
+
+  window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true));
 
   onInteraction(resetElem, (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
