@@ -434,6 +434,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - BYTM-specific:
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
+  - [resourceAsString()](#resourceasstring) - Returns the specified resource as a string - uses a cross-session cache for better performance
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
   - [reloadTab()](#reloadtab) - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
 - DOM:
@@ -712,19 +713,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### getResourceUrl()
 > Signature:  
 > ```ts
-> unsafeWindow.BYTM.getResourceUrl(): Promise<string>
+> unsafeWindow.BYTM.getResourceUrl(key: ResourceKey | "_"): Promise<string>
 > ```
 >   
 > Description:  
-> Returns a `blob:` URL for the specified BYTM resource file.  
-> You can find a list of them by looking at the `@resource` directives in the userscript header or in the files `assets/resources.json` and `src/tools/post-build.ts`  
-> The resource and its URL are provided by the userscript extension and it is locally cached for quicker fetching.  
+> Returns a URL for the BYTM resource file with the specified key, so it can be used in the DOM or fetched.  
+> The resource and its URL could be in either `https:`, rarely `blob:` or exceedingly rarely even in `data:` format. Both work about the same in the DOM and `fetch()`.  
 >   
-> Should a resource not be defined, the function will return the equivalent URL from the GitHub repository instead.  
+> Should a resource not be defined, the function will try to return the equivalent URL from the GitHub repository instead.  
 > Should that also fail, it will try to return a base64-encoded `data:` URI version of the resource.  
 >   
 > Arguments:  
-> - `resourceName` - The name of the resource to get the URL for.
+> - `key` - The key of the resource to get the URL of. You can find a list of them by searching for `type ResourceKey` in the file [`src/types.ts`](./src/types.ts). If TS is complaining, use `key as "_"` to make it shut up.
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -735,6 +735,22 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > myElement.appendChild(deleteButtonImg);
 > ```
 > </details>
+
+<br>
+
+> ### resourceAsString()
+> Signature:
+> ```ts
+> unsafeWindow.BYTM.resourceAsString(key: ResourceKey | "_"): Promise<string>
+> ```
+>   
+> Description:  
+> Returns the specified resource as a string.  
+> Uses a cross-session cache for better performance and basically immediate Promise resolution.  
+> If the resource is not cached, it will be fetched and then cached for the next session.  
+>   
+> Arguments:
+> - `key` - The key of the resource to get as a string. You can find a list of them by searching for `type ResourceKey` in the file [`src/types.ts`](./src/types.ts). If TS is complaining, use `key as "_"` to make it shut up.
 
 <br>
 

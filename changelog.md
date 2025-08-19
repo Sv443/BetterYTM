@@ -73,6 +73,7 @@
   - **API Additions:**
     - Added new intents `InternalAccess` (256) (currently only used by `getInternals()`) and `FullAccess` (512) (grants all intents).
     - Added new functions to the interface that allow for better interaction with the siteEvents system:
+      - `resourceAsString()` - Returns a BYTM resource as a string, some of which are cached cross-session in GM storage for better performance.
       - `onSiteEvent()` - Adds a site event listener.
       - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
       - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.

@@ -2,7 +2,7 @@ import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-ne
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.js";
 import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
@@ -382,6 +382,11 @@ export type InterfaceFunctions = {
    * This makes the resource fast to fetch and also prevents CORS issues
    */
   getResourceUrl: typeof getResourceUrl;
+  /**
+   * Returns the string content of a resource as defined in `assets/resources.json` as a Promise.  
+   * Uses a builtin cache to speed up subsequent calls, even across sessions.
+   */
+  resourceAsString: typeof resourceAsString;
   /** Returns the unique session ID for the current tab */
   getSessionId: typeof getSessionId;
   /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used */
