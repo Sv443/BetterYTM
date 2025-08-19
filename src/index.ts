@@ -520,7 +520,7 @@ function registerDevCommands() {
   const isAdv = getFeature("advancedMode");
   const isAny = isDev || isAdv;
 
-  GM.registerMenuCommand(t("dev_menu_command_reset_config"), async () => {
+  GM.registerMenuCommand(t("menu_command.reset_config"), async () => {
     if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
       await clearConfig();
       await reloadTab();
