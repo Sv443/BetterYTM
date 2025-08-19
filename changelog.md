@@ -3,7 +3,7 @@
 
 <!-- #region 3.1.0 -->
 ## 3.1.0
-- **New features:**
+- **New Features:**
   - 🟡 Improved config menu UX with a sidenav:
     - Removed advanced mode flag from a lot of features since there's much more space now.
     - Removed the subtitle elements. Instead, icons will be rendered in the footer, below the sidenav.
@@ -13,7 +13,7 @@
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - 🎵 Show a track number in the currently playing queue and playlists.
   - Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
-- **Changes and improvements:**
+- **Improvements and Changes:**
   - Improved script initialization performance.
   - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix inconsistencies.
     - Fixed album artwork being fetched with wrong parameters.
@@ -26,7 +26,8 @@
     - `initTimeout` will be changed from `8` to `5` seconds amid initialization performance improvements.
     - `rememberSongTimeDuration` will be changed from `60` to `180` seconds.
     - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
-  - Made some dev menu commands available in production mode. This currently includes resetting the config, the WIP full data export and import, and downloading a console log file to attach to an issue.
+  - Made some menu commands usable by default without requiring to be compiled in dev mode, and there's even more when the advanced mode is enabled. See internal changes for a full list.
+  - Increased the amount of times per second the video/song time is remembered from 2 to 4.
 - **Fixes:**
   - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering.
   - 🎵 Fixed SyntaxError when no AM album artwork found.
@@ -95,7 +96,25 @@
   - Moved `siteEvents` initialization to an earlier point, so that it is no longer initialized alongside features. It is now available to plugins at an earlier point in time, before any feature has started initializing, but still after plugin initialization is already done.
   - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
   - Improved script performance by refactoring the feature initialization process. As an effect of this, `bytm:ready` will now emit earlier and the new event `bytm:allReady` will emit much later, once all features have been initialized or the configured timeout has been reached.
+  - Some resources are now cached in GM storage, when using the internal function `resourceAsString()` for even better feature init performance.
   - BYTM now targets [ES2020](https://en.wikipedia.org/wiki/ECMAScript_version_history#11th_Edition_%E2%80%93_ECMAScript_2020)
+  - Added new GM menu commands:
+    - These commands are now available by default:
+      - Reset the config to its default values
+      - Export all config data [WIP]
+      - Export all data, including caches [WIP]
+      - Import data from a previous export [WIP]
+      - Download a console log file to attach to a GitHub issue
+    - In advanced mode, you can also use these additional commands:
+      - Decompress all GM storage values and list them in the JS console
+      - List all raw GM storage values in the JS console
+      - Delete all GM storage values (full wipe of all the data BYTM has accumulated)
+      - Reset the version session counter
+      - List active SelectorObserver listeners in the JS console
+      - Compress a value
+      - Decompress a value
+      - Log the script's initialization timings to the JS console
+      - Toggle developer treatments (experiments that are not quite ready for production)
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - Moved the `general` feature category to the top of the config menu.
