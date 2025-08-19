@@ -183,7 +183,7 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
       parsed = JSON.parse(await decompress(val, compressionFormat, "string"));
     }
     catch(err) {
-      error("Couldn't decompress and parse data due to an error:", err);
+      error("Couldn't decompress and parse data.", err);
       return null;
     }
   }

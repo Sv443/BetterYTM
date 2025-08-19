@@ -3,7 +3,6 @@ import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 import { t } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { copyToClipboard } from "../utils/dom.js";
-import { createRipple } from "./ripple.js";
 import { createLongBtn } from "./longButton.js";
 import { showToast } from "./toast.js";
 import "./ExImDialog.css";
@@ -92,16 +91,17 @@ export class ExImDialog extends BytmDialog {
       const exportCenterBtnCont = document.createElement("div");
       exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 
-      const copyBtn = createRipple(await createLongBtn({
+      const copyBtn = await createLongBtn({
         title: t("copy_to_clipboard"),
         text: t("copy"),
         resourceName: "icon-copy",
+        ripple: true,
         async onClick({ shiftKey }) {
           const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
           copyToClipboard(await consumeStringGen(copyData));
           await showToast({ message: t("copied_to_clipboard") });
         },
-      }));
+      });
 
       exportCenterBtnCont.appendChild(copyBtn);
       exportPane.append(descEl, dataEl, exportCenterBtnCont);
@@ -126,12 +126,13 @@ export class ExImDialog extends BytmDialog {
       const importCenterBtnCont = document.createElement("div");
       importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 
-      const importBtn = createRipple(await createLongBtn({
+      const importBtn = await createLongBtn({
         title: t("start_import_tooltip"),
         text: t("import"),
         resourceName: "icon-upload",
+        ripple: true,
         onClick: () => opts.onImport(dataEl.value),
-      }));
+      });
 
       importCenterBtnCont.appendChild(importBtn);
       importPane.append(descEl, dataEl, importCenterBtnCont);

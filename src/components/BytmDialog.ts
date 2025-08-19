@@ -1,7 +1,7 @@
 import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, dbg, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -253,8 +253,6 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     // don't destroy *and* unmount at the same time
     else if(this.options.unmountOnClose)
       this.unmount();
-
-    dbg(">>>", isCfgMenuOpen, openDialogs);
 
     if((!isCfgMenuOpen && openDialogs.length === 0) || (isCfgMenuOpen && openDialogs.length > 0))
       this.removeBgInert();
