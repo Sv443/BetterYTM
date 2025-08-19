@@ -1,7 +1,7 @@
 import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, dbg, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -103,7 +103,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     this.id = options.id;
   }
 
-  //#region pb:mount
+  //#region pub:mount
 
   /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
   public async mount() {
@@ -141,7 +141,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     return bgElem;
   }
 
-  //#region pb:unmount
+  //#region pub:unmount
 
   /** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
   public unmount() {
@@ -162,7 +162,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     this.events.emit("clear");
   }
 
-  //#region pb:remount
+  //#region pub:remount
 
   /** Clears the DOM of the dialog and then renders it again */
   public async remount() {
@@ -170,14 +170,14 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     await this.mount();
   }
 
-  //#region pb:isMounted
+  //#region pub:isMounted
 
   /** Returns true if the dialog is currently mounted */
   public isMounted() {
     return this.dialogMounted;
   }
 
-  //#region pb:open
+  //#region pub:open
 
   /**
    * Opens the dialog - also mounts it if it hasn't been mounted yet  
@@ -222,7 +222,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     return dialogBg;
   }
 
-  //#region pb:close
+  //#region pub:close
 
   /** Closes the dialog - prevents default action and immediate propagation of the passed event */
   public close(e?: MouseEvent | KeyboardEvent) {
@@ -254,18 +254,20 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     else if(this.options.unmountOnClose)
       this.unmount();
 
-    if(openDialogs.length === 0 && !isCfgMenuOpen)
+    dbg(">>>", isCfgMenuOpen, openDialogs);
+
+    if((!isCfgMenuOpen && openDialogs.length === 0) || (isCfgMenuOpen && openDialogs.length > 0))
       this.removeBgInert();
   }
 
-  //#region pb:isOpen
+  //#region pub:isOpen
 
   /** Returns true if the dialog is currently open */
   public isOpen() {
     return this.dialogOpen;
   }
 
-  //#region pb:destroy
+  //#region pub:destroy
 
   /** Clears the DOM of the dialog and removes all event listeners */
   public destroy() {
