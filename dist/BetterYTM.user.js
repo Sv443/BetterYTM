@@ -4,10 +4,10 @@
 // @version           3.0.0
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
-// @license           AGPL-3.0-only
+// @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@effd6425/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5f36efc5/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -351,16 +351,17 @@ var PluginIntent;
     PluginIntent[PluginIntent["InternalAccess"] = 256] = "InternalAccess";
     /** Grants all other intents */
     PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
-})(PluginIntent || (PluginIntent = {}));// these strings will have their values replaced by the post-build script:
+})(PluginIntent || (PluginIntent = {}));/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
 const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "effd6425",
-    buildTimestamp: "1755524754354",
+    buildNumber: "5f36efc5",
+    buildTimestamp: "1755613421162",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
+/** Parses a raw constant or falls back to a default value */
 const getConst = (constKey, defaultVal) => {
     const val = rawConsts[constKey];
     return (val.match(/^#{{.+}}$/) ? defaultVal : val);
@@ -413,7 +414,7 @@ const sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function"
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
 const defaultLogLevel = mode$1 === "production" ? LogLevel.Info : LogLevel.Debug;
-/** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
+/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
 const scriptInfo$1 = CoreUtils.pureObj({
     name: GM.info.script.name,
     version: GM.info.script.version,
@@ -2782,7 +2783,7 @@ async function remTimeStartUpdateLoop() {
     // for no overlapping calls and better error handling:
     if (remVidCheckTimeout)
         clearTimeout(remVidCheckTimeout);
-    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 500);
+    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 250);
 }
 /** Updates an existing or inserts a new entry to be remembered */
 async function remTimeUpsertEntry(data, force = false) {
@@ -3198,35 +3199,81 @@ function getPreferredLocale() {
     }
     return "en-US";
 }
-const resourceCache = new Map();
+/** Max age for the resource cache, after its last modification, in milliseconds */
+const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+/** Cache for resources fetched via {@linkcode resourceAsString()} */
+const resourceCacheStore = new UserUtils.DataStore({
+    id: "bytm-resource-cache",
+    formatVersion: 0,
+    encodeData: (data) => isCompressionSupported ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
+    decodeData: (data) => isCompressionSupported ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    defaultData: {
+        resources: {},
+        lastModified: 0,
+        buildNumber: buildNumber$1,
+    },
+});
+/** Resources with these prefixes are cached in the resource cache */
+const cachedResourcePrefixes = [
+    "icon-", // SVG icons
+    "style-", // dynamic stylesheets
+];
+async function resourceCacheHas(key) {
+    if (resourceCacheStore.getData().buildNumber !== buildNumber$1) {
+        await resourceCacheStore.setData({
+            resources: {},
+            lastModified: Date.now(),
+            buildNumber: buildNumber$1,
+        });
+        return false;
+    }
+    const val = resourceCacheGet(key);
+    return val !== undefined && val !== null && val.length > 0;
+}
+function resourceCacheGet(key) {
+    return resourceCacheStore.getData().resources[key] ?? null;
+}
+async function resourceCacheSet(key, val) {
+    const data = resourceCacheStore.getData();
+    data.resources[key] = val;
+    data.lastModified = Date.now();
+    return await resourceCacheStore.setData(data);
+}
 /**
  * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.
- * Caches the resulting string if the resource key starts with `icon-`
+ * Caches the resulting string if the resource key starts with any item in {@linkcode cachedResourcePrefixes}
  */
-async function resourceAsString(resource) {
-    if (resourceCache.has(resource))
-        return resourceCache.get(resource);
-    const resourceUrl = await getResourceUrl(resource);
+async function resourceAsString(resourceKey) {
+    if (typeof isCompressionSupported === "undefined")
+        await compressionSupported(); // init variable
+    if (await resourceCacheHas(resourceKey) && Date.now() - resourceCacheStore.getData().lastModified < resourceCacheTTL)
+        return resourceCacheGet(resourceKey);
+    const resourceUrl = await getResourceUrl(resourceKey);
     try {
         if (!resourceUrl)
-            throw new Error(`Couldn't find URL for resource '${resource}'`);
-        const str = await (await CoreUtils.fetchAdvanced(resourceUrl)).text();
-        // since SVG is lightweight, caching it in memory is fine
-        if (resource.startsWith("icon-"))
-            resourceCache.set(resource, str);
+            throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
+        const res = await CoreUtils.fetchAdvanced(resourceUrl);
+        if (!res.ok)
+            throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
+        const str = await res.text();
+        if (cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
+            await resourceCacheSet(resourceKey, str);
         return str;
     }
     catch (err) {
-        error(`Couldn't fetch resource '${resource}' at URL '${resourceUrl}' due to an error:`, err);
+        error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' due to an error:`, err);
         return null;
     }
 }
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
-function parseMarkdown(mdString) {
-    return marked.marked.parse(mdString, {
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS by default! */
+async function parseMarkdown(mdString, sanitize = false) {
+    const mdHtml = await marked.marked.parse(mdString, {
         async: true,
+        breaks: true,
         gfm: true,
+        silent: true,
     });
+    return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
 }
 /** Returns the content of the changelog markdown file */
 async function getChangelogMd() {
@@ -3250,164 +3297,6 @@ async function getChangelogHtmlWithDetails() {
     catch (err) {
         return `Error while preparing changelog: ${err}`;
     }
-}/** Central serializer for all data stores */
-let serializer;
-/** Array of all data stores that are included in the DataStoreSerializer instance */
-const getSerializerStores = () => [
-    configStore,
-    autoLikeStore,
-];
-/** Array of IDs of all stores included in the DataStoreSerializer instance */
-const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
-/** Returns the serializer for all data stores */
-function getStoreSerializer() {
-    if (!serializer)
-        serializer = new UserUtils.DataStoreSerializer(getSerializerStores(), {
-            addChecksum: true,
-            ensureIntegrity: true,
-        });
-    return serializer;
-}
-/** Downloads the current data stores as a single file */
-async function downloadData(useEncoding = true) {
-    const serializer = getStoreSerializer();
-    const pad = (val, len = 2) => String(val).padStart(len, "0");
-    const d = new Date();
-    const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
-    const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
-    const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
-    downloadFile(fileName, data, "application/json");
-}let pluginListDialog = null;
-/** Creates and/or returns the import dialog */
-async function getPluginListDialog() {
-    return pluginListDialog = pluginListDialog ?? new BytmDialog({
-        id: "plugin-list",
-        width: 800,
-        height: 600,
-        closeBtnEnabled: true,
-        closeOnBgClick: true,
-        closeOnEscPress: true,
-        destroyOnClose: true,
-        small: true,
-        renderHeader: renderHeader$2,
-        renderBody: renderBody$3,
-    });
-}
-async function renderHeader$2() {
-    const titleElem = document.createElement("h2");
-    titleElem.id = "bytm-plugin-list-title";
-    titleElem.classList.add("bytm-dialog-title");
-    titleElem.role = "heading";
-    titleElem.ariaLevel = "1";
-    titleElem.tabIndex = 0;
-    titleElem.textContent = t("plugin_list_title");
-    return titleElem;
-}
-async function renderBody$3() {
-    const listContainerEl = document.createElement("div");
-    listContainerEl.id = "bytm-plugin-list-container";
-    const registeredPlugins = getRegisteredPlugins();
-    if (registeredPlugins.length === 0) {
-        const noPluginsEl = document.createElement("div");
-        noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
-        noPluginsEl.tabIndex = 0;
-        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
-        noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
-        listContainerEl.appendChild(noPluginsEl);
-        return listContainerEl;
-    }
-    for (const [, { def: { plugin, intents: intentsRaw } }] of registeredPlugins) {
-        const rowEl = document.createElement("div");
-        rowEl.classList.add("bytm-plugin-list-row");
-        const leftEl = document.createElement("div");
-        leftEl.classList.add("bytm-plugin-list-row-left");
-        rowEl.appendChild(leftEl);
-        const headerWrapperEl = document.createElement("div");
-        headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
-        leftEl.appendChild(headerWrapperEl);
-        if (plugin.iconUrl) {
-            const iconEl = document.createElement("img");
-            iconEl.classList.add("bytm-plugin-list-row-icon");
-            iconEl.src = plugin.iconUrl;
-            iconEl.alt = "";
-            headerWrapperEl.appendChild(iconEl);
-        }
-        const headerEl = document.createElement("div");
-        headerEl.classList.add("bytm-plugin-list-row-header");
-        headerWrapperEl.appendChild(headerEl);
-        const titleEl = document.createElement("div");
-        titleEl.classList.add("bytm-plugin-list-row-title");
-        titleEl.tabIndex = 0;
-        titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
-        headerEl.appendChild(titleEl);
-        const verEl = document.createElement("span");
-        verEl.classList.add("bytm-plugin-list-row-version");
-        verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
-        titleEl.appendChild(verEl);
-        const namespaceEl = document.createElement("div");
-        namespaceEl.classList.add("bytm-plugin-list-row-namespace");
-        namespaceEl.tabIndex = 0;
-        namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
-        headerEl.appendChild(namespaceEl);
-        const descEl = document.createElement("p");
-        descEl.classList.add("bytm-plugin-list-row-desc");
-        descEl.tabIndex = 0;
-        descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
-        leftEl.appendChild(descEl);
-        const linksList = document.createElement("div");
-        linksList.classList.add("bytm-plugin-list-row-links-list");
-        leftEl.appendChild(linksList);
-        let linkElCreated = false;
-        for (const key in plugin.homepage) {
-            const url = plugin.homepage[key];
-            if (!url)
-                continue;
-            if (linkElCreated) {
-                const bulletEl = document.createElement("span");
-                bulletEl.classList.add("bytm-plugin-list-row-links-list-bullet");
-                bulletEl.textContent = "•";
-                linksList.appendChild(bulletEl);
-            }
-            linkElCreated = true;
-            const linkEl = document.createElement("a");
-            linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
-            linkEl.href = url;
-            linkEl.tabIndex = 0;
-            linkEl.target = "_blank";
-            linkEl.rel = "noopener noreferrer";
-            linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
-            linksList.appendChild(linkEl);
-        }
-        const rightEl = document.createElement("div");
-        rightEl.classList.add("bytm-plugin-list-row-right");
-        rowEl.appendChild(rightEl);
-        const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
-        const intentsAmount = Object.keys(PluginIntent).length / 2;
-        const intentsArr = CoreUtils.bitSetHas(intentsBitSet, PluginIntent.FullAccess)
-            ? [PluginIntent.FullAccess]
-            : (typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
-                const arr = [];
-                for (let i = 0; i < intentsAmount; i++)
-                    if (intentsBitSet & (2 ** i))
-                        arr.push(2 ** i);
-                return arr;
-            })() : []);
-        const permissionsHeaderEl = document.createElement("div");
-        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
-        permissionsHeaderEl.tabIndex = 0;
-        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
-        rightEl.appendChild(permissionsHeaderEl);
-        for (const intent of intentsArr) {
-            const intentEl = document.createElement("div");
-            intentEl.classList.add("bytm-plugin-list-row-intent-item");
-            intentEl.tabIndex = 0;
-            intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
-            intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
-            rightEl.appendChild(intentEl);
-        }
-        listContainerEl.appendChild(rowEl);
-    }
-    return listContainerEl;
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 //#region media control bar
@@ -3823,8 +3712,8 @@ async function getFeatHelpDialog({ featKey, }) {
             closeOnBgClick: true,
             closeOnEscPress: true,
             small: true,
-            renderHeader: renderHeader$1,
-            renderBody: renderBody$2,
+            renderHeader: renderHeader$2,
+            renderBody: renderBody$3,
         });
         // make config menu inert while help dialog is open
         featHelpDialog.on("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
@@ -3832,13 +3721,13 @@ async function getFeatHelpDialog({ featKey, }) {
     }
     return featHelpDialog;
 }
-async function renderHeader$1() {
+async function renderHeader$2() {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-feat-help-dialog-header";
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
-async function renderBody$2() {
+async function renderBody$3() {
     const contElem = document.createElement("div");
     const localeObj = locales?.[getLocale()];
     // insert sentence terminator if not present, to improve flow with screenreaders
@@ -4496,8 +4385,8 @@ async function mountCfgMenu() {
                     textElem.id = `bytm-ftitem-text-${featKey}`;
                     textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
                     textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
-                    let adornmentElem;
                     const adornContent = await resolveAdornments(featInfo, featKey);
+                    let adornmentElem;
                     if (adornContent && adornContent.length > 0) {
                         const adornHtml = adornContent.join(" ");
                         adornmentElem = document.createElement("span");
@@ -4506,7 +4395,7 @@ async function mountCfgMenu() {
                         setInnerHtml(adornmentElem, adornHtml);
                     }
                     let helpElem;
-                    // @ts-expect-error
+                    // @ts-expect-error shhhh its fine
                     const hasHelpTextFunc = typeof featInfo[featKey]?.helpText === "function";
                     // @ts-expect-error
                     const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
@@ -4667,8 +4556,7 @@ async function mountCfgMenu() {
                                 if (typeof initialVal !== "undefined")
                                     confChanged(featKey, initialVal, v);
                             };
-                            const unsub = siteEvents.on("cfgMenuClosed", () => {
-                                unsub();
+                            siteEvents.once("cfgMenuClosed", () => {
                                 textInputUpdate();
                             });
                             inputElem.addEventListener("blur", () => textInputUpdate());
@@ -4788,7 +4676,7 @@ async function mountCfgMenu() {
                 mdContElem.id = "bytm-cfg-menu-changelog-md-cont";
                 mdContElem.classList.add("bytm-markdown-container");
                 setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
-                siteEvents.on("cfgMenuMounted", () => {
+                siteEvents.once("cfgMenuMounted", () => {
                     const detailsElems = mdContElem.querySelectorAll("details");
                     detailsElems.forEach((el) => {
                         el.addEventListener("toggle", () => checkToggleScrollIndicator());
@@ -4968,15 +4856,30 @@ async function mountCfgMenu() {
             }
         });
         // remount if siteEvent recreateCfgMenu emitted:
-        siteEvents.on("recreateCfgMenu", async () => {
+        siteEvents.once("recreateCfgMenu", async () => {
             const bgElem = document.querySelector("#bytm-cfg-menu-bg");
-            if (!bgElem)
+            if (!bgElem) {
+                error("Couldn't remount config menu because the background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
                 return;
-            closeCfgMenu();
-            bgElem.remove();
-            isMenuMounting = hasMenuFinishedMounting = isMenuOpen = false;
-            await mountCfgMenu();
-            await openCfgMenu();
+            }
+            bgElem.addEventListener("transitionend", async () => {
+                closeCfgMenu();
+                bgElem.remove();
+                isMenuMounting = hasMenuFinishedMounting = false;
+                await mountCfgMenu();
+                const bgElemNew = document.querySelector("#bytm-cfg-menu-bg");
+                if (bgElemNew) {
+                    bgElemNew.classList.add("bytm-remounting");
+                    setTimeout(() => {
+                        bgElemNew.addEventListener("transitionend", () => {
+                            bgElemNew.classList.remove("bytm-remounting", "bytm-remounted");
+                        }, { once: true });
+                        openCfgMenu();
+                        bgElemNew.classList.add("bytm-remounted");
+                    }, 1);
+                }
+            }, { once: true });
+            bgElem.classList.add("bytm-remounting");
         });
     }
     catch (err) {
@@ -4984,30 +4887,8 @@ async function mountCfgMenu() {
         closeCfgMenu();
     }
 }
-//#region open & close
-/** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-function closeCfgMenu(evt, enableScroll = true) {
-    if (!isMenuOpen)
-        return;
-    isMenuOpen = false;
-    evt?.bubbles && evt.stopPropagation();
-    if (enableScroll) {
-        document.body.classList.remove("bytm-disable-scroll");
-        document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
-    }
-    const menuBg = document.querySelector("#bytm-cfg-menu-bg");
-    clearTimeout(hiddenCopiedTxtTimeout);
-    UserUtils.openDialogs.splice(UserUtils.openDialogs.indexOf("cfg-menu"), 1);
-    setCurrentDialogId(UserUtils.openDialogs?.[0] ?? null);
-    // since this menu doesn't have a BytmDialog instance, it's undefined here
-    emitInterface("bytm:dialogClosed", undefined);
-    emitInterface("bytm:dialogClosed:cfg-menu", undefined);
-    if (!menuBg)
-        return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
-    menuBg.querySelectorAll(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
-    menuBg.style.visibility = "hidden";
-    menuBg.style.display = "none";
-}
+// #region open
+// TODO:FIXME: if openened before mounting, the menu should open at the next earliest point
 /** Opens the config menu if it is closed */
 async function openCfgMenu() {
     try {
@@ -5046,7 +4927,31 @@ async function openCfgMenu() {
         error("Error while opening config menu:", err);
     }
 }
-//#region chk scroll indicator
+// #region close
+/** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+function closeCfgMenu(evt, enableScroll = true) {
+    if (!isMenuOpen)
+        return;
+    isMenuOpen = false;
+    evt?.bubbles && evt.stopPropagation();
+    if (enableScroll) {
+        document.body.classList.remove("bytm-disable-scroll");
+        document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+    }
+    const menuBg = document.querySelector("#bytm-cfg-menu-bg");
+    clearTimeout(hiddenCopiedTxtTimeout);
+    UserUtils.openDialogs.splice(UserUtils.openDialogs.indexOf("cfg-menu"), 1);
+    setCurrentDialogId(UserUtils.openDialogs?.[0] ?? null);
+    // since this menu doesn't have a BytmDialog instance, it's undefined here
+    emitInterface("bytm:dialogClosed", undefined);
+    emitInterface("bytm:dialogClosed:cfg-menu", undefined);
+    if (!menuBg)
+        return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+    menuBg.querySelectorAll(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
+    menuBg.style.visibility = "hidden";
+    menuBg.style.display = "none";
+}
+// #region chk scroll indicator
 /** Checks if the features container is scrollable and toggles the scroll indicator accordingly */
 function checkToggleScrollIndicator() {
     const featuresCont = document.querySelector("#bytm-menu-opts");
@@ -6033,6 +5938,177 @@ async function initWatchPageFullSize() {
         error("Couldn't load stylesheet to make watch page full size");
     else
         log("Made watch page full size");
+}/** Central serializer for all data stores */
+let serializer;
+/** Central serializer for all data stores, including the caches and other stores that have volatile enough data */
+let fullSerializer;
+/** Array of all data stores that are included in the DataStoreSerializer instance */
+const getSerializerStores = () => [
+    configStore,
+    autoLikeStore,
+];
+/** Array of all data stores, including the caches and other stores that have volatile enough data */
+const getSerializerStoresFull = () => [
+    ...getSerializerStores(),
+    albumArtCacheStore,
+    lyricsCacheStore,
+    resourceCacheStore,
+];
+/** Array of IDs of all stores included in the DataStoreSerializer instance */
+const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
+/** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
+function getDSSerializer(full = false) {
+    if (!full && !serializer)
+        return serializer = new UserUtils.DataStoreSerializer(getSerializerStores(), {
+            addChecksum: true,
+            ensureIntegrity: true,
+        });
+    else if (full && !fullSerializer)
+        return fullSerializer = new UserUtils.DataStoreSerializer(getSerializerStoresFull(), {
+            addChecksum: true,
+            ensureIntegrity: true,
+        });
+    return full ? fullSerializer : serializer;
+}
+/** Downloads the current data stores as a single file */
+async function downloadData(useEncoding = true, full = false) {
+    const serializer = getDSSerializer(full);
+    // const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
+    // const fileName = `BetterYTM ${packageJson.version}${full ? " full" : ""} data export ${dateStr}.json`;
+    const fileName = t(`data_export_file_name${full ? "_full" : ""}`, { version: packageJson.version, date: new Date().toISOString() });
+    const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
+    downloadFile(fileName, data, "application/json");
+}let pluginListDialog = null;
+/** Creates and/or returns the import dialog */
+async function getPluginListDialog() {
+    return pluginListDialog = pluginListDialog ?? new BytmDialog({
+        id: "plugin-list",
+        width: 800,
+        height: 600,
+        closeBtnEnabled: true,
+        closeOnBgClick: true,
+        closeOnEscPress: true,
+        destroyOnClose: true,
+        small: true,
+        renderHeader: renderHeader$1,
+        renderBody: renderBody$2,
+    });
+}
+async function renderHeader$1() {
+    const titleElem = document.createElement("h2");
+    titleElem.id = "bytm-plugin-list-title";
+    titleElem.classList.add("bytm-dialog-title");
+    titleElem.role = "heading";
+    titleElem.ariaLevel = "1";
+    titleElem.tabIndex = 0;
+    titleElem.textContent = t("plugin_list_title");
+    return titleElem;
+}
+async function renderBody$2() {
+    const listContainerEl = document.createElement("div");
+    listContainerEl.id = "bytm-plugin-list-container";
+    const registeredPlugins = getRegisteredPlugins();
+    if (registeredPlugins.length === 0) {
+        const noPluginsEl = document.createElement("div");
+        noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
+        noPluginsEl.tabIndex = 0;
+        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+        noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
+        listContainerEl.appendChild(noPluginsEl);
+        return listContainerEl;
+    }
+    for (const [, { def: { plugin, intents: intentsRaw } }] of registeredPlugins) {
+        const rowEl = document.createElement("div");
+        rowEl.classList.add("bytm-plugin-list-row");
+        const leftEl = document.createElement("div");
+        leftEl.classList.add("bytm-plugin-list-row-left");
+        rowEl.appendChild(leftEl);
+        const headerWrapperEl = document.createElement("div");
+        headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
+        leftEl.appendChild(headerWrapperEl);
+        if (plugin.iconUrl) {
+            const iconEl = document.createElement("img");
+            iconEl.classList.add("bytm-plugin-list-row-icon");
+            iconEl.src = plugin.iconUrl;
+            iconEl.alt = "";
+            headerWrapperEl.appendChild(iconEl);
+        }
+        const headerEl = document.createElement("div");
+        headerEl.classList.add("bytm-plugin-list-row-header");
+        headerWrapperEl.appendChild(headerEl);
+        const titleEl = document.createElement("div");
+        titleEl.classList.add("bytm-plugin-list-row-title");
+        titleEl.tabIndex = 0;
+        titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
+        headerEl.appendChild(titleEl);
+        const verEl = document.createElement("span");
+        verEl.classList.add("bytm-plugin-list-row-version");
+        verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
+        titleEl.appendChild(verEl);
+        const namespaceEl = document.createElement("div");
+        namespaceEl.classList.add("bytm-plugin-list-row-namespace");
+        namespaceEl.tabIndex = 0;
+        namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
+        headerEl.appendChild(namespaceEl);
+        const descEl = document.createElement("p");
+        descEl.classList.add("bytm-plugin-list-row-desc");
+        descEl.tabIndex = 0;
+        descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
+        leftEl.appendChild(descEl);
+        const linksList = document.createElement("div");
+        linksList.classList.add("bytm-plugin-list-row-links-list");
+        leftEl.appendChild(linksList);
+        let linkElCreated = false;
+        for (const key in plugin.homepage) {
+            const url = plugin.homepage[key];
+            if (!url)
+                continue;
+            if (linkElCreated) {
+                const bulletEl = document.createElement("span");
+                bulletEl.classList.add("bytm-plugin-list-row-links-list-bullet");
+                bulletEl.textContent = "•";
+                linksList.appendChild(bulletEl);
+            }
+            linkElCreated = true;
+            const linkEl = document.createElement("a");
+            linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
+            linkEl.href = url;
+            linkEl.tabIndex = 0;
+            linkEl.target = "_blank";
+            linkEl.rel = "noopener noreferrer";
+            linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
+            linksList.appendChild(linkEl);
+        }
+        const rightEl = document.createElement("div");
+        rightEl.classList.add("bytm-plugin-list-row-right");
+        rowEl.appendChild(rightEl);
+        const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
+        const intentsAmount = Object.keys(PluginIntent).length / 2;
+        const intentsArr = CoreUtils.bitSetHas(intentsBitSet, PluginIntent.FullAccess)
+            ? [PluginIntent.FullAccess]
+            : (typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
+                const arr = [];
+                for (let i = 0; i < intentsAmount; i++)
+                    if (intentsBitSet & (2 ** i))
+                        arr.push(2 ** i);
+                return arr;
+            })() : []);
+        const permissionsHeaderEl = document.createElement("div");
+        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
+        permissionsHeaderEl.tabIndex = 0;
+        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
+        rightEl.appendChild(permissionsHeaderEl);
+        for (const intent of intentsArr) {
+            const intentEl = document.createElement("div");
+            intentEl.classList.add("bytm-plugin-list-row-intent-item");
+            intentEl.tabIndex = 0;
+            intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
+            intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
+            rightEl.appendChild(intentEl);
+        }
+        listContainerEl.appendChild(rowEl);
+    }
+    return listContainerEl;
 }//#region ignored input elements
 const ignoreInputTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 const ignoreInputIds = [
@@ -7239,7 +7315,7 @@ const featInfo = {
                 type: "confirm",
                 message: t("reset_everything_confirm"),
             })) {
-                await getStoreSerializer().resetStoresData();
+                await getDSSerializer().resetStoresData();
                 const gmKeys = await GM.listValues();
                 await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
                 await reloadTab();
@@ -7810,7 +7886,6 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "2.0.0",
         min: 0,
-        max: 30,
         step: 0.05,
         default: 0.2,
         unit: "s",
@@ -8505,9 +8580,11 @@ const configStore = new UserUtils.DataStore({
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 async function initConfig() {
     canCompress = await compressionSupported();
+    // TODO: when switching to new engine-based DataStores, change this key prefix:
     const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
     let oldDataHash;
     try {
+        // TODO: when switching to new engine-based DataStores, change this key prefix:
         const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
         const oldDataObj = JSON.parse(oldData);
         // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
@@ -9046,8 +9123,8 @@ function getInternals(token) {
 }//#region globals
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
-    disableOnNoListeners: false,
-    enableOnAddListener: false,
+    disableOnNoListeners: false, // keepalive for plugins and opportunistic features
+    enableOnAddListener: false, // important because of strict init order
     defaultDebounce: 150,
     defaultDebounceType: "immediate",
 };
@@ -9080,7 +9157,7 @@ function addSelectorListener(observerName, selector, options) {
 /** Call after DOM load to initialize all SelectorObserver instances */
 function initObservers() {
     try {
-        //#region both sites
+        //#region # both sites
         //#region body
         // -> the entire <body> element - use sparingly due to performance impacts!
         //    enabled immediately
@@ -9102,9 +9179,9 @@ function initObservers() {
         globservers.bytmDialogContainer.enable();
         switch (getDomain()) {
             case "ytm": {
-                //#region YTM
+                //#region # YTM only
                 //#region browseResponse
-                // -> for example the /channel/UC... page#
+                // -> for example the /channel/UC... page
                 //    enabled by "body"
                 const browseResponseSelector = "ytmusic-browse-response";
                 globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, {
@@ -9233,7 +9310,7 @@ function initObservers() {
                 break;
             }
             case "yt": {
-                //#region YT
+                //#region # YT only
                 //#region ytGuide
                 // -> the left sidebar menu
                 //    enabled by "body"
@@ -9551,6 +9628,7 @@ function copyToClipboard(text) {
         showPrompt({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
     }
 }
+const trustedTypesSupported = typeof window?.trustedTypes?.createPolicy === "function";
 let ttPolicy;
 // workaround for supporting `target="_blank"` links without compromising security:
 const tempTargetAttrName = `data-tmp-target-${CoreUtils.randomId(6, 36)}`;
@@ -9570,6 +9648,10 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
             node.setAttribute("rel", "noopener noreferrer");
     }
 });
+/** Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links */
+function sanitizeHtml(html, returnTrustedType = trustedTypesSupported) {
+    return DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: returnTrustedType });
+}
 /**
  * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.
  * If no HTML string is given, the element's innerHTML will be set to an empty string.
@@ -9577,15 +9659,14 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
 function setInnerHtml(element, html) {
     if (!html)
         html = "";
-    if (!ttPolicy && window?.trustedTypes?.createPolicy) {
+    if (!ttPolicy && trustedTypesSupported) {
         ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
-            createHTML: (dirty) => DOMPurify.sanitize(dirty, {
+            createHTML: (dirty) => DOMPurify.sanitize(String(dirty), {
                 RETURN_TRUSTED_TYPE: true,
             }),
         });
     }
-    element.innerHTML = ttPolicy?.createHTML(String(html))
-        ?? DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: false });
+    element.innerHTML = ttPolicy?.createHTML(html) ?? sanitizeHtml(html, false);
 }
 /** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
 function downloadFile(fileName, data, mimeType = "text/plain") {
@@ -9794,7 +9875,7 @@ async function getAllDataExImDialog() {
             title: () => t("all_data_exim_title"),
             descExport: () => t("all_data_exim_export_desc"),
             descImport: () => t("all_data_exim_import_desc"),
-            exportData: async () => await getStoreSerializer().serialize(),
+            exportData: async () => await getDSSerializer().serialize(),
             onImport,
         };
         allDataExImDialog = new ExImDialog({
@@ -9807,7 +9888,7 @@ async function getAllDataExImDialog() {
 /** Called when data is imported */
 async function onImport(data) {
     try {
-        const serializer = getStoreSerializer();
+        const serializer = getDSSerializer();
         await serializer.deserialize(data);
         showToast(t("import_success"));
     }
@@ -10272,13 +10353,15 @@ async function initSvgSpritesheet() {
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
     const isDev = mode$1 === "development";
-    GM.registerMenuCommand("Reset config", async () => {
+    const isAdv = getFeature("advancedMode");
+    const isAny = isDev || isAdv;
+    GM.registerMenuCommand(t("dev_menu_command_reset_config"), async () => {
         if (await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
             await clearConfig();
             await reloadTab();
         }
     });
-    isDev && GM.registerMenuCommand("List GM values in console with decompression", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_decompressed"), async () => {
         const keys = await GM.listValues();
         dbg(`GM values (${keys.length}):`);
         if (keys.length === 0)
@@ -10286,18 +10369,20 @@ function registerDevCommands() {
         const values = {};
         let longestKey = 0;
         for (const key of keys) {
+            // TODO: when switching to new engine-based DataStores, change these key prefixes:
             const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
             const val = await GM.getValue(key, undefined);
             values[key] = typeof val !== "undefined" && isEncoded ? await CoreUtils.decompress(val, compressionFormat$1, "string") : val;
             longestKey = Math.max(longestKey, key.length);
         }
         for (const [key, finalVal] of Object.entries(values)) {
+            // TODO: when switching to new engine-based DataStores, change these key prefixes:
             const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
             const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
             dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
         }
     });
-    isDev && GM.registerMenuCommand("List GM values in console, without decompression", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_raw"), async () => {
         const keys = await GM.listValues();
         dbg(`GM values (${keys.length}):`);
         if (keys.length === 0)
@@ -10314,7 +10399,7 @@ function registerDevCommands() {
             dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
         }
     });
-    isDev && GM.registerMenuCommand("Delete all GM values", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_delete_all"), async () => {
         const keys = await GM.listValues();
         if (await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
             dbg(`Clearing ${keys.length} GM values:`);
@@ -10326,32 +10411,16 @@ function registerDevCommands() {
             }
         }
     });
-    isDev && GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-        const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
-        if (!keys)
-            return;
-        for (const key of keys?.split(",") ?? []) {
-            if (key && key.length > 0) {
-                const truncLength = 400;
-                const oldVal = await GM.getValue(key);
-                await GM.deleteValue(key);
-                dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
-            }
-        }
-    });
-    isDev && GM.registerMenuCommand("Reset install timestamp", async () => {
+    isDev && GM.registerMenuCommand(t("menu_command.reset_install_timestamp"), async () => {
         await GM.deleteValue("bytm-installed");
         dbg("Reset install time.");
     });
-    isDev && GM.registerMenuCommand("Reset version check timestamp", async () => {
-        await GM.deleteValue("bytm-version-check");
-        dbg("Reset version check time.");
-    });
-    isDev && GM.registerMenuCommand("Reset version session counter", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.reset_version_session_counter"), async () => {
+        const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
         await GM.deleteValue("bytm-version-session-counter");
-        dbg("Reset version session counter.");
+        dbg("Reset version session counter. Was previously:", verSesCount);
     });
-    isDev && GM.registerMenuCommand("List active selector listeners in console", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.list_selectorobserver_listeners"), async () => {
         const lines = [];
         let listenersAmt = 0;
         for (const [obsName, obs] of Object.entries(globservers)) {
@@ -10365,60 +10434,47 @@ function registerDevCommands() {
                 });
             });
         }
-        dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+        dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     });
-    isDev && GM.registerMenuCommand("Compress value", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.compress_value"), async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
         if (input && input.length > 0) {
             const compressed = await CoreUtils.compress(input, compressionFormat$1);
             dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
         }
     });
-    isDev && GM.registerMenuCommand("Decompress value", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.decompress_value"), async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
         if (input && input.length > 0) {
             const decompressed = await CoreUtils.decompress(input, compressionFormat$1);
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     });
-    GM.registerMenuCommand("Full data export [WIP]", () => downloadData(false));
-    GM.registerMenuCommand("Full data import [WIP]", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.export_config"), () => downloadData(false));
+    isAny && GM.registerMenuCommand(t("menu_command.export_full"), () => downloadData(false, true));
+    isAny && GM.registerMenuCommand(t("menu_command.import_full"), async () => {
         const input = await showPrompt({ type: "prompt", message: "Paste the content of the exported file to import:", confirmBtnText: "Import" });
         if (input && input.length > 0) {
-            await getStoreSerializer().deserialize(input);
+            await getDSSerializer().deserialize(input);
             if (await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
                 await reloadTab();
         }
     });
-    isDev && GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-    isDev && GM.registerMenuCommand("Example MarkdownDialog", async () => {
-        const mdDlg = new MarkdownDialog({
-            id: "example",
-            width: 500,
-            height: 400,
-            renderHeader() {
-                const header = document.createElement("h1");
-                header.textContent = "Example Markdown Dialog";
-                return header;
-            },
-            body: "## This is a test dialog\n```ts\nconsole.log(\"Hello, world!\");\n```\n\n- List item 1\n- List item 2\n- List item 3",
-        });
-        await mdDlg.open();
+    isDev && GM.registerMenuCommand(t("menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+    isAny && GM.registerMenuCommand(t("menu_command.print_init_timings"), () => {
+        info(`\n${">".repeat(64)}\n\nInit timings:\n`, initTimings);
     });
-    isDev && GM.registerMenuCommand("Print init timings to console", () => {
-        info("Init timings:\n", initTimings);
-    });
-    isDev && GM.registerMenuCommand("Toggle dev treatments", async () => {
+    isAny && GM.registerMenuCommand(t("menu_command.toggle_dev_treatments"), async () => {
         const val = !await GM.getValue("bytm-dev-treatments", false);
         await GM.setValue("bytm-dev-treatments", val);
         if (await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
             await reloadTab();
     });
-    isDev && GM.registerMenuCommand("Get developer plugin token", () => showPrompt({
+    isDev && GM.registerMenuCommand(t("menu_command.get_dev_plugin_token"), () => showPrompt({
         type: "alert",
         message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
     }));
-    GM.registerMenuCommand("Download console log file", () => {
+    GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
     });
     log("Registered dev menu commands");
