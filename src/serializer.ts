@@ -1,4 +1,3 @@
-import { type Stringifiable } from "@sv443-network/coreutils";
 import { DataStoreSerializer } from "@sv443-network/userutils";
 import { configStore } from "./config.js";
 import { autoLikeStore } from "./features/autoLike.js";
@@ -6,11 +5,16 @@ import { showPrompt } from "./dialogs/prompt.js";
 import { t } from "./utils/translations.js";
 import { error } from "./utils/logging.js";
 import { downloadFile } from "./utils/dom.js";
-import { reloadTab } from "./utils/misc.js";
+import { reloadTab, resourceCacheStore } from "./utils/misc.js";
 import packageJson from "../package.json" with { type: "json" };
+import { albumArtCacheStore } from "./features/layout.js";
+import { lyricsCacheStore } from "./features/lyricsCache.js";
 
 /** Central serializer for all data stores */
 let serializer: DataStoreSerializer | undefined;
+
+/** Central serializer for all data stores, including the caches and other stores that have volatile enough data */
+let fullSerializer: DataStoreSerializer | undefined;
 
 /** Array of all data stores that are included in the DataStoreSerializer instance */
 export const getSerializerStores = () => [
@@ -18,23 +22,37 @@ export const getSerializerStores = () => [
   autoLikeStore,
 ];
 
+/** Array of all data stores, including the caches and other stores that have volatile enough data */
+export const getSerializerStoresFull = () => [
+  ...getSerializerStores(),
+  albumArtCacheStore,
+  lyricsCacheStore,
+  resourceCacheStore,
+];
+
 /** Array of IDs of all stores included in the DataStoreSerializer instance */
 export const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
 
-/** Returns the serializer for all data stores */
-export function getStoreSerializer() {
-  if(!serializer)
-    serializer = new DataStoreSerializer(getSerializerStores(), {
+/** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
+export function getDSSerializer(full = false): DataStoreSerializer {
+  if(!full && !serializer)
+    return serializer = new DataStoreSerializer(getSerializerStores(), {
       addChecksum: true,
       ensureIntegrity: true,
     });
-  return serializer;
+  else if(full && !fullSerializer)
+    return fullSerializer = new DataStoreSerializer(getSerializerStoresFull(), {
+      addChecksum: true,
+      ensureIntegrity: true,
+    });
+  return full ? fullSerializer! : serializer!;
 }
 
 /** Imports data from a file into all data stores */
 export async function importData(blob: File | Blob) {
   try {
-    const serializer = getStoreSerializer();
+    // full DSS import won't fail, even with missing stores
+    const serializer = getDSSerializer(true);
 
     const data = await blob.text();
     await serializer.deserialize(data);
@@ -46,7 +64,8 @@ export async function importData(blob: File | Blob) {
       await reloadTab();
   }
   catch(err) {
-    error(err);
+    error("Error while importing serialized DataStores:", err);
+
     await showPrompt({
       type: "alert",
       message: t("import_error_invalid"),
@@ -55,14 +74,13 @@ export async function importData(blob: File | Blob) {
 }
 
 /** Downloads the current data stores as a single file */
-export async function downloadData(useEncoding = true) {
-  const serializer = getStoreSerializer();
+export async function downloadData(useEncoding = true, full = false) {
+  const serializer = getDSSerializer(full);
 
-  const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
+  // const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
+  // const fileName = `BetterYTM ${packageJson.version}${full ? " full" : ""} data export ${dateStr}.json`;
 
-  const d = new Date();
-  const dateStr = `${pad(d.getFullYear(), 4)}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
-  const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
+  const fileName = t(`data_export_file_name${full ? "_full" : ""}`, { version: packageJson.version, date: new Date().toISOString() });
 
   const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
 

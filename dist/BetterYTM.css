@@ -468,7 +468,7 @@ hr {
   --bytm-error-col: #fa5b5b;
   --bytm-reload-col: #77e064;
   --bytm-ytm-only-circle-col: #f13440;
-  --bytm-ytm-only-note-col: #fff0e9;
+  --bytm-ytm-only-note-col: #fff2ec;
   --bytm-flame-lower-col: #ffb300;
   --bytm-flame-upper-col: #ff6f00;
 }
@@ -1135,134 +1135,6 @@ body.bytm-dom-ytm
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
 
-#bytm-plugin-list-dialog-bg {
-  --bytm-plugin-list-secondary-col: #c8c8c8;
-  --bytm-plugin-list-row-padding-ver: 12px;
-  --bytm-plugin-list-row-max-height: 130px;
-}
-
-#bytm-plugin-list-dialog-body {
-  overflow-y: auto;
-  max-height: 100%;
-}
-
-.bytm-plugin-list-no-plugins {
-  font-size: 1.7rem;
-  text-align: center;
-  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
-  white-space: pre-wrap;
-}
-
-.bytm-plugin-list-row {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
-  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
-  gap: 20px;
-}
-
-.bytm-plugin-list-row:first-child {
-  padding-top: 0;
-}
-
-.bytm-plugin-list-row:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.bytm-plugin-list-row-header-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 5px;
-}
-
-.bytm-plugin-list-row-icon {
-  width: 32px;
-  height: 32px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.bytm-plugin-list-row-left,
-.bytm-plugin-list-row-right {
-  display: flex;
-  flex-direction: column;
-}
-
-.bytm-plugin-list-row-title {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-end;
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 1px;
-}
-
-.bytm-plugin-list-row-version {
-  font-size: 1.25rem;
-  font-weight: normal;
-  color: var(--bytm-plugin-list-secondary-col);
-  margin-left: 10px;
-}
-
-.bytm-plugin-list-row-namespace {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: var(--bytm-plugin-list-secondary-col);
-}
-
-.bytm-plugin-list-row-desc {
-  overflow-wrap: break-word;
-  text-overflow: ellipsis;
-  white-space: pre-wrap;
-  overflow-x: hidden;
-  max-height: calc(var(--bytm-plugin-list-row-max-height) - 30px);
-  overflow-y: auto;
-}
-
-.bytm-plugin-list-row-links-list {
-  font-size: 1.4rem;
-  margin-top: 4px;
-}
-
-.bytm-plugin-list-row-links-list-bullet {
-  margin: 0 5px;
-}
-
-.bytm-plugin-list-row-right {
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 25%;
-  max-height: var(--bytm-plugin-list-row-max-height);
-}
-
-.bytm-plugin-list-row-permissions-header {
-  position: sticky;
-  top: 0;
-  background-color: var(--bytm-dialog-bg);
-  font-size: 1.4rem;
-  font-weight: bold;
-  padding-bottom: 5px;
-}
-
-.bytm-plugin-list-row-intent-item::before {
-  content: "•";
-  margin-right: 3px;
-}
-
-.bytm-plugin-list-row-intent-item {
-  cursor: help;
-}
-
 .bytm-hotkey-wrapper {
   display: flex;
   flex-direction: row;
@@ -1287,6 +1159,16 @@ body.bytm-dom-ytm
 :root {
   --bytm-menu-bg-highlight: #181818;
   --bytm-menu-bg-highlight-2: #252525;
+}
+
+#bytm-cfg-menu-bg.bytm-remounting {
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+#bytm-cfg-menu-bg.bytm-remounted {
+  opacity: 1 !important;
+  transition: opacity 0.1s ease-out;
 }
 
 .bytm-menu-bg {
@@ -1403,7 +1285,7 @@ body.bytm-dom-ytm
   overflow-x: hidden;
   text-overflow: ellipsis;
   border-radius: 5rem 0 0 5rem;
-  transition: background-color 0.15s ease-out;
+  transition: background-color 0.1s cubic-bezier(0, 0, 0, 0.6);
 }
 
 .bytm-menu-sidenav-header:hover {
@@ -2531,6 +2413,134 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   ytmusic-player-bar[slot="player-bar"]
   .time-info {
   color: #fff;
+}
+
+#bytm-plugin-list-dialog-bg {
+  --bytm-plugin-list-secondary-col: #c8c8c8;
+  --bytm-plugin-list-row-padding-ver: 12px;
+  --bytm-plugin-list-row-max-height: 130px;
+}
+
+#bytm-plugin-list-dialog-body {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.bytm-plugin-list-no-plugins {
+  font-size: 1.7rem;
+  text-align: center;
+  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
+  white-space: pre-wrap;
+}
+
+.bytm-plugin-list-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
+  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
+  gap: 20px;
+}
+
+.bytm-plugin-list-row:first-child {
+  padding-top: 0;
+}
+
+.bytm-plugin-list-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bytm-plugin-list-row-header-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.bytm-plugin-list-row-icon {
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bytm-plugin-list-row-left,
+.bytm-plugin-list-row-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.bytm-plugin-list-row-title {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1px;
+}
+
+.bytm-plugin-list-row-version {
+  font-size: 1.25rem;
+  font-weight: normal;
+  color: var(--bytm-plugin-list-secondary-col);
+  margin-left: 10px;
+}
+
+.bytm-plugin-list-row-namespace {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--bytm-plugin-list-secondary-col);
+}
+
+.bytm-plugin-list-row-desc {
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  overflow-x: hidden;
+  max-height: calc(var(--bytm-plugin-list-row-max-height) - 30px);
+  overflow-y: auto;
+}
+
+.bytm-plugin-list-row-links-list {
+  font-size: 1.4rem;
+  margin-top: 4px;
+}
+
+.bytm-plugin-list-row-links-list-bullet {
+  margin: 0 5px;
+}
+
+.bytm-plugin-list-row-right {
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 25%;
+  max-height: var(--bytm-plugin-list-row-max-height);
+}
+
+.bytm-plugin-list-row-permissions-header {
+  position: sticky;
+  top: 0;
+  background-color: var(--bytm-dialog-bg);
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.bytm-plugin-list-row-intent-item::before {
+  content: "•";
+  margin-right: 3px;
+}
+
+.bytm-plugin-list-row-intent-item {
+  cursor: help;
 }
 
 :root {

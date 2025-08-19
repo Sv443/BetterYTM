@@ -8,7 +8,7 @@ import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { closeToast, showIconToast } from "../components/toast.js";
 import { mode, scriptInfo } from "../constants.js";
-import { getStoreSerializer } from "../serializer.js";
+import { getDSSerializer } from "../serializer.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getPluginListDialog } from "../dialogs/pluginList.js";
@@ -327,7 +327,7 @@ export const featInfo = {
         type: "confirm",
         message: t("reset_everything_confirm"),
       })) {
-        await getStoreSerializer().resetStoresData();
+        await getDSSerializer().resetStoresData();
         const gmKeys = await GM.listValues();
         await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
         await reloadTab();
@@ -903,7 +903,6 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     min: 0,
-    max: 30,
     step: 0.05,
     default: 0.2,
     unit: "s",

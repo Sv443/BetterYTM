@@ -604,7 +604,7 @@ type AlbumArtCache = {
   entries: AlbumArtCacheEntry[];
 };
 
-const albumArtCacheStore = new DataStore<AlbumArtCache>({
+export const albumArtCacheStore = new DataStore<AlbumArtCache>({
   id: "album-art-cache",
   formatVersion: 1,
   defaultData: {

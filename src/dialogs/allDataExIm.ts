@@ -2,7 +2,7 @@ import { consumeStringGen } from "@sv443-network/coreutils";
 import { type SerializedDataStore } from "@sv443-network/userutils";
 import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.js";
 import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.js";
-import { getSerializerStoresIds, getStoreSerializer } from "../serializer.js";
+import { getSerializerStoresIds, getDSSerializer } from "../serializer.js";
 import { showToast } from "../components/toast.js";
 import { createRipple } from "../components/ripple.js";
 import { createLongBtn } from "../components/longButton.js";
@@ -27,7 +27,7 @@ export async function getAllDataExImDialog() {
       title: () => t("all_data_exim_title"),
       descExport: () => t("all_data_exim_export_desc"),
       descImport: () => t("all_data_exim_import_desc"),
-      exportData: async () => await getStoreSerializer().serialize(),
+      exportData: async () => await getDSSerializer().serialize(),
       onImport,
     };
 
@@ -42,7 +42,7 @@ export async function getAllDataExImDialog() {
 /** Called when data is imported */
 async function onImport(data: string) {
   try {
-    const serializer = getStoreSerializer();
+    const serializer = getDSSerializer();
     await serializer.deserialize(data);
 
     showToast(t("import_success"));

@@ -1,14 +1,13 @@
 import { compress, decompress, fetchAdvanced, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages, setInnerHtmlUnsafe } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initVersionSessionCounter, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
-import { clearConfig, getFeatures, initConfig } from "./config.js";
+import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initVersionSessionCounter, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
+import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { initSiteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
-import { downloadData, getStoreSerializer } from "./serializer.js";
-import { MarkdownDialog } from "./components/MarkdownDialog.js";
+import { downloadData, getDSSerializer } from "./serializer.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
 import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
 import { showPrompt } from "./dialogs/prompt.js";
@@ -518,15 +517,17 @@ async function initSvgSpritesheet() {
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
   const isDev = mode === "development";
+  const isAdv = getFeature("advancedMode");
+  const isAny = isDev || isAdv;
 
-  GM.registerMenuCommand("Reset config", async () => {
+  GM.registerMenuCommand(t("dev_menu_command_reset_config"), async () => {
     if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
       await clearConfig();
       await reloadTab();
     }
   });
 
-  isDev && GM.registerMenuCommand("List GM values in console with decompression", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_decompressed"), async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -536,19 +537,21 @@ function registerDevCommands() {
     let longestKey = 0;
 
     for(const key of keys) {
+      // TODO: when switching to new engine-based DataStores, change these key prefixes:
       const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
       const val = await GM.getValue(key, undefined);
       values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, compressionFormat, "string") : val;
       longestKey = Math.max(longestKey, key.length);
     }
     for(const [key, finalVal] of Object.entries(values)) {
+      // TODO: when switching to new engine-based DataStores, change these key prefixes:
       const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
       const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
       dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
     }
   });
 
-  isDev && GM.registerMenuCommand("List GM values in console, without decompression", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_raw"), async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -568,7 +571,7 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand("Delete all GM values", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
       dbg(`Clearing ${keys.length} GM values:`);
@@ -581,36 +584,18 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-    const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
-    if(!keys)
-      return;
-    for(const key of keys?.split(",") ?? []) {
-      if(key && key.length > 0) {
-        const truncLength = 400;
-        const oldVal = await GM.getValue(key);
-        await GM.deleteValue(key);
-        dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
-      }
-    }
-  });
-
-  isDev && GM.registerMenuCommand("Reset install timestamp", async () => {
+  isDev && GM.registerMenuCommand(t("menu_command.reset_install_timestamp"), async () => {
     await GM.deleteValue("bytm-installed");
     dbg("Reset install time.");
   });
 
-  isDev && GM.registerMenuCommand("Reset version check timestamp", async () => {
-    await GM.deleteValue("bytm-version-check");
-    dbg("Reset version check time.");
-  });
-
-  isDev && GM.registerMenuCommand("Reset version session counter", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.reset_version_session_counter"), async () => {
+    const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
     await GM.deleteValue("bytm-version-session-counter");
-    dbg("Reset version session counter.");
+    dbg("Reset version session counter. Was previously:", verSesCount);
   });
 
-  isDev && GM.registerMenuCommand("List active selector listeners in console", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.list_selectorobserver_listeners"), async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
     for(const [obsName, obs] of Object.entries(globservers)) {
@@ -624,10 +609,10 @@ function registerDevCommands() {
         });
       });
     }
-    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
-  isDev && GM.registerMenuCommand("Compress value", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.compress_value"), async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
@@ -635,7 +620,7 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand("Decompress value", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.decompress_value"), async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
@@ -643,54 +628,40 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Full data export [WIP]", () => downloadData(false));
+  isAny && GM.registerMenuCommand(t("menu_command.export_config"), () => downloadData(false));
 
-  GM.registerMenuCommand("Full data import [WIP]", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.export_full"), () => downloadData(false, true));
+
+  isAny && GM.registerMenuCommand(t("menu_command.import_full"), async () => {
     const input = await showPrompt({ type: "prompt", message: "Paste the content of the exported file to import:", confirmBtnText: "Import" });
     if(input && input.length > 0) {
-      await getStoreSerializer().deserialize(input);
+      await getDSSerializer().deserialize(input);
       if(await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
         await reloadTab();
     }
   });
 
-  isDev && GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+  isDev && GM.registerMenuCommand(t("menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
 
-  isDev && GM.registerMenuCommand("Example MarkdownDialog", async () => {
-    const mdDlg = new MarkdownDialog({
-      id: "example",
-      width: 500,
-      height: 400,
-      renderHeader() {
-        const header = document.createElement("h1");
-        header.textContent = "Example Markdown Dialog";
-        return header;
-      },
-      body: "## This is a test dialog\n```ts\nconsole.log(\"Hello, world!\");\n```\n\n- List item 1\n- List item 2\n- List item 3",
-    });
-
-    await mdDlg.open();
+  isAny && GM.registerMenuCommand(t("menu_command.print_init_timings"), () => {
+    info(`\n${">".repeat(64)}\n\nInit timings:\n`, initTimings);
   });
 
-  isDev && GM.registerMenuCommand("Print init timings to console", () => {
-    info("Init timings:\n", initTimings);
-  });
-
-  isDev && GM.registerMenuCommand("Toggle dev treatments", async () => {
+  isAny && GM.registerMenuCommand(t("menu_command.toggle_dev_treatments"), async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
     if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
       await reloadTab();
   });
 
-  isDev && GM.registerMenuCommand("Get developer plugin token", () =>
+  isDev && GM.registerMenuCommand(t("menu_command.get_dev_plugin_token"), () =>
     showPrompt({
       type: "alert",
       message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
     })
   );
 
-  GM.registerMenuCommand("Download console log file", () => {
+  GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
     downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
   });
 
