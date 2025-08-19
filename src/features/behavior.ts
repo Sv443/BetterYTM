@@ -292,6 +292,13 @@ async function remTimeDeleteEntry(videoID: string) {
 
 let curSongTitle: string | undefined;
 
+let isDragging = false;
+
+document.addEventListener("dragstart", () => isDragging = true);
+document.addEventListener("dragend", () => isDragging = false);
+document.addEventListener("mousedown", () => isDragging = true);
+document.addEventListener("mouseup", () => isDragging = false);
+
 /** Initializes the "Are you still there?" popup dismissing feature */
 export async function initStillThere() {
   siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
@@ -362,6 +369,9 @@ export async function initStillThere() {
   // dispatch on interval
 
   const tryClick = () => {
+    if(isDragging)
+      return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
+
     // click the navbar
     const navBar = document.querySelector<HTMLElement>("ytmusic-nav-bar .center-content");
 
@@ -396,6 +406,9 @@ export async function initStillThere() {
   };
 
   const tryMove = async () => {
+    if(isDragging)
+      return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
+
     // dispatch mousemoves with random vector for a second
     const incX = (Math.random() * 2 - 1) / 10,
       incY = (Math.random() * 2 - 1) / 10;
