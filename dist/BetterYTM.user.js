@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1984439f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d78c12ec/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -357,8 +357,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "1984439f",
-    buildTimestamp: "1755645403678",
+    buildNumber: "d78c12ec",
+    buildTimestamp: "1755646365614",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -8743,6 +8743,7 @@ const globalFuncs = pureObj({
     // bytm-specific:
     getDomain,
     getResourceUrl,
+    resourceAsString,
     getSessionId,
     reloadTab,
     // dom:
