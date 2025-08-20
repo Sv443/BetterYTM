@@ -158,8 +158,6 @@ async function main() {
       }
     }
 
-    await createSvgSpritesheet();
-
     console.info([
       "",
       `Successfully built for ${envText} - build number (last commit SHA): ${buildNbr}`,
@@ -370,36 +368,6 @@ async function getResourceDirectives(ref: string) {
   }
   catch(err) {
     console.warn("No resource directives found:", err);
-  }
-}
-
-//#region @resource SVG spritesheet
-
-/** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
-async function createSvgSpritesheet() {
-  try {
-    const sprites: string[] = [];
-
-    for(const [name, val] of Object.entries(resourcesJson.resources)) {
-      if(!/^icon-/.test(name))
-        continue;
-
-      const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
-      const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
-
-      sprites.push(`<symbol id="bytm-svg-${name}">\n    ${iconSvg}\n  </symbol>`);
-    }
-
-    const spritesheet = `\
-<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" style="display: none;" inert="true">
-  ${sprites.join("\n  ")}
-</svg>`;
-
-    await writeFile(resolveResourcePath("spritesheet.svg"), spritesheet);
-  }
-  catch(err) {
-    console.error(k.red("Error while creating SVG spritesheet:"), err);
-    return schedExit(1);
   }
 }
 

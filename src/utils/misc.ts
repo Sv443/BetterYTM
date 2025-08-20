@@ -1,7 +1,7 @@
 import { compress, consumeStringGen, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
 import { DataStore, getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, repo, scriptInfo, sessionStorageAvailable } from "../constants.js";
+import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "../constants.js";
 import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime, sanitizeHtml } from "./index.js";
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
 import { addSelectorListener } from "../observers.js";
@@ -406,11 +406,13 @@ export function getPreferredLocale(): TrLocale {
 type ResourceCache = {
   resources: Partial<Record<ResourceKey | "_", string>>;
   created: number;
-  buildNumber: string;
+  cacheKey: string;
 }
 
 /** Max age for the resource cache, after its last modification, in milliseconds */
 const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+const resourceCacheKey = mode === "development" ? scriptInfo.version : buildNumber;
 
 /** Cache for resources fetched via {@linkcode resourceAsString()} */
 export const resourceCacheStore = new DataStore<ResourceCache>({
@@ -421,19 +423,21 @@ export const resourceCacheStore = new DataStore<ResourceCache>({
   defaultData: {
     resources: {},
     created: Date.now(),
-    buildNumber,
+    cacheKey: resourceCacheKey,
   },
 });
 
 /** Resources with these prefixes are cached in the resource cache */
 const cachedResourcePrefixes = [
+  "doc-",   // random documents
   "icon-",  // SVG icons
+  "img-",   // images
   "style-", // dynamic stylesheets
   "trans-", // translations
 ];
 
 async function resourceCacheHas(key: ResourceKey | "_") {
-  if(resourceCacheStore.getData().buildNumber !== buildNumber) {
+  if(resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
     await resourceCacheStore.saveDefaultData();
     return false;
   }

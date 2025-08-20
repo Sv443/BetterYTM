@@ -1,5 +1,5 @@
-import { compress, decompress, fetchAdvanced, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
-import { getUnsafeWindow, isDomLoaded, preloadImages, setInnerHtmlUnsafe } from "@sv443-network/userutils";
+import { compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initVersionSessionCounter, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
@@ -210,7 +210,6 @@ async function onDomLoad() {
       const endInitGlobalDur = measureDuration("initGlobal_decoupled");
       initGlobalCss();
       initObservers();
-      initSvgSpritesheet();
 
       Promise.allSettled([
         injectCssBundle(),
@@ -499,17 +498,6 @@ async function initFonts() {
 }`;
 
   addStyle(css, "fonts");
-}
-
-//#region svg spritesheet
-
-/** Initializes the SVG spritesheet */
-async function initSvgSpritesheet() {
-  const svgUrl = await getResourceUrl("doc-svg_spritesheet");
-  const div = document.createElement("div");
-  div.style.display = "none";
-  setInnerHtmlUnsafe(div, await (await fetchAdvanced(svgUrl)).text());
-  document.body.appendChild(div);
 }
 
 //#region dev menu cmds

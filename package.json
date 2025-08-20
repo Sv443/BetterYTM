@@ -141,8 +141,7 @@
     "ignore": [
       "dist/*",
       "dev/*",
-      "*/stories/*",
-      "assets/**/spritesheet.svg"
+      "*/stories/*"
     ]
   },
   "pnpm": {

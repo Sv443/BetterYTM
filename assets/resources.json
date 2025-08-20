@@ -24,7 +24,6 @@
       "ref": "$BRANCH",
       "integrity": false
     },
-    "doc-svg_spritesheet": "spritesheet.svg",
     "font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
     "font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
     "font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
