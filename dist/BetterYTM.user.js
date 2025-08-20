@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d78c12ec/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3aa4f3a6/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -119,7 +119,6 @@ var resources = {
 		ref: "$BRANCH",
 		integrity: false
 	},
-	"doc-svg_spritesheet": "spritesheet.svg",
 	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
 	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
 	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
@@ -357,8 +356,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "d78c12ec",
-    buildTimestamp: "1755646365614",
+    buildNumber: "3aa4f3a6",
+    buildTimestamp: "1755648602059",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3167,8 +3166,8 @@ function getVersionSessionCount(version = scriptInfo$1.version) {
 }
 //#region resources
 /**
- * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
- * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.
+ * Tries to fall back to a base64-encoded data: URI in GM resources if the CDN resource was not found.
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
  * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
@@ -3197,7 +3196,7 @@ async function getResourceUrl(name) {
                 })();
         }
     }
-    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
+    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded data: URI fallback`);
     // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
     return await GM.getResourceUrl(name, false);
 }
@@ -3224,6 +3223,7 @@ function getPreferredLocale() {
 }
 /** Max age for the resource cache, after its last modification, in milliseconds */
 const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+const resourceCacheKey = mode$1 === "development" ? scriptInfo$1.version : buildNumber$1;
 /** Cache for resources fetched via {@linkcode resourceAsString()} */
 const resourceCacheStore = new UserUtils.DataStore({
     id: "bytm-resource-cache",
@@ -3232,23 +3232,21 @@ const resourceCacheStore = new UserUtils.DataStore({
     decodeData: (data) => isCompressionSupported ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
     defaultData: {
         resources: {},
-        lastModified: 0,
-        buildNumber: buildNumber$1,
+        created: Date.now(),
+        cacheKey: resourceCacheKey,
     },
 });
 /** Resources with these prefixes are cached in the resource cache */
 const cachedResourcePrefixes = [
+    "doc-", // random documents
     "icon-", // SVG icons
+    "img-", // images
     "style-", // dynamic stylesheets
     "trans-", // translations
 ];
 async function resourceCacheHas(key) {
-    if (resourceCacheStore.getData().buildNumber !== buildNumber$1) {
-        await resourceCacheStore.setData({
-            resources: {},
-            lastModified: Date.now(),
-            buildNumber: buildNumber$1,
-        });
+    if (resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
+        await resourceCacheStore.saveDefaultData();
         return false;
     }
     const val = resourceCacheGet(key);
@@ -3260,7 +3258,7 @@ function resourceCacheGet(key) {
 async function resourceCacheSet(key, val) {
     const data = resourceCacheStore.getData();
     data.resources[key] = val;
-    data.lastModified = Date.now();
+    data.created = Date.now();
     return await resourceCacheStore.setData(data);
 }
 /**
@@ -3270,7 +3268,9 @@ async function resourceCacheSet(key, val) {
 async function resourceAsString(resourceKey) {
     if (typeof isCompressionSupported === "undefined")
         await compressionSupported(); // init variable
-    if (await resourceCacheHas(resourceKey) && Date.now() - resourceCacheStore.getData().lastModified < resourceCacheTTL)
+    if (Date.now() - resourceCacheStore.getData().created > resourceCacheTTL)
+        await resourceCacheStore.saveDefaultData();
+    else if (await resourceCacheHas(resourceKey))
         return resourceCacheGet(resourceKey);
     const resourceUrl = await getResourceUrl(resourceKey);
     try {
@@ -10175,7 +10175,6 @@ async function onDomLoad() {
             const endInitGlobalDur = measureDuration("initGlobal_decoupled");
             initGlobalCss();
             initObservers();
-            initSvgSpritesheet();
             Promise.allSettled([
                 injectCssBundle(),
                 initVersionCheck(),
@@ -10389,15 +10388,6 @@ async function initFonts() {
   font-display: swap;
 }`;
     addStyle(css, "fonts");
-}
-//#region svg spritesheet
-/** Initializes the SVG spritesheet */
-async function initSvgSpritesheet() {
-    const svgUrl = await getResourceUrl("doc-svg_spritesheet");
-    const div = document.createElement("div");
-    div.style.display = "none";
-    UserUtils.setInnerHtmlUnsafe(div, await (await CoreUtils.fetchAdvanced(svgUrl)).text());
-    document.body.appendChild(div);
 }
 //#region dev menu cmds
 /** Registers dev commands using `GM.registerMenuCommand` */
