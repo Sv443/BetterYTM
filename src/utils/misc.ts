@@ -334,8 +334,8 @@ export function getVersionSessionCount(version = scriptInfo.version): number {
 //#region resources
 
 /**
- * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
- * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache  
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.  
+ * Tries to fall back to a base64-encoded data: URI in GM resources if the CDN resource was not found.  
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
  * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
@@ -367,7 +367,7 @@ export async function getResourceUrl(name: ResourceKey | "_") {
     }
   }
 
-  warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
+  warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded data: URI fallback`);
   // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
   return await GM.getResourceUrl(name, false);
 }
@@ -405,7 +405,7 @@ export function getPreferredLocale(): TrLocale {
 
 type ResourceCache = {
   resources: Partial<Record<ResourceKey | "_", string>>;
-  lastModified: number;
+  created: number;
   buildNumber: string;
 }
 
@@ -420,7 +420,7 @@ export const resourceCacheStore = new DataStore<ResourceCache>({
   decodeData: (data) => isCompressionSupported ? decompress(data, compressionFormat, "string") : data,
   defaultData: {
     resources: {},
-    lastModified: 0,
+    created: Date.now(),
     buildNumber,
   },
 });
@@ -434,11 +434,7 @@ const cachedResourcePrefixes = [
 
 async function resourceCacheHas(key: ResourceKey | "_") {
   if(resourceCacheStore.getData().buildNumber !== buildNumber) {
-    await resourceCacheStore.setData({
-      resources: {},
-      lastModified: Date.now(),
-      buildNumber,
-    });
+    await resourceCacheStore.saveDefaultData();
     return false;
   }
 
@@ -453,7 +449,7 @@ function resourceCacheGet(key: ResourceKey | "_") {
 async function resourceCacheSet(key: ResourceKey | "_", val: string) {
   const data = resourceCacheStore.getData();
   data.resources[key] = val;
-  data.lastModified = Date.now();
+  data.created = Date.now();
   return await resourceCacheStore.setData(data);
 }
 
@@ -465,7 +461,9 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
   if(typeof isCompressionSupported === "undefined")
     await compressionSupported(); // init variable
 
-  if(await resourceCacheHas(resourceKey) && Date.now() - resourceCacheStore.getData().lastModified < resourceCacheTTL)
+  if(Date.now() - resourceCacheStore.getData().created > resourceCacheTTL)
+    await resourceCacheStore.saveDefaultData();
+  else if(await resourceCacheHas(resourceKey))
     return resourceCacheGet(resourceKey)!;
 
   const resourceUrl = await getResourceUrl(resourceKey);
