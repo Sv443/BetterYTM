@@ -1,7 +1,7 @@
 import { autoPlural, pauseFor } from "@sv443-network/coreutils";
 import { preloadImages } from "@sv443-network/userutils";
-import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement } from "../utils/index.js";
-import { SiteEventsMap, siteEvents } from "../siteEvents.js";
+import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "../utils/index.js";
+import { siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
 import { getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.js";
@@ -50,13 +50,19 @@ export async function initQueueButtons() {
 
   /** Tries to add queue buttons to the current song queue items on the /watch page. */
   const tryAddCurrentQueueBtns = (
-    evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
+    parentSelector: string,
   ) => {
     if(getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
       return;
 
+    const parent = document.querySelector<HTMLElement>(parentSelector);
+    if(!parent)
+      return warn("Couldn't find current queue parent element to add queue buttons to");
+
+    const queueItems = parent.querySelectorAll<HTMLElement>("ytmusic-player-queue-item");
+
     let amt = 0;
-    for(const queueItm of evt.childNodes as NodeListOf<HTMLElement>) {
+    for(const queueItm of queueItems) {
       if(!queueItm.classList.contains("bytm-has-queue-btns")) {
         addQueueButtons(queueItm, undefined, "currentQueue");
         amt++;
@@ -68,8 +74,8 @@ export async function initQueueButtons() {
 
   // current queue
 
-  siteEvents.on("queueChanged", tryAddCurrentQueueBtns);
-  siteEvents.on("autoplayQueueChanged", tryAddCurrentQueueBtns);
+  siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #contents"));
+  siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #automix-contents"));
 
   const queueItems = document.querySelectorAll<HTMLElement>("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
   if(queueItems.length > 0) {
