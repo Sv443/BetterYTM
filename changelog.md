@@ -86,6 +86,8 @@
       - `bytm:allReady` (no arguments) - emitted when all features have been initialized and the interface is fully ready to use.  
         This triggers much later than `bytm:ready`, which is emitted when the DOM is loaded and all features are *starting* to initialize.  
         For the fastest response times, use `bytm:featureInitialized` for every feature your code depends on.
+      - `bytm:featureInitialized:id` (no arguments) - emitted when a feature with the specified key has been initialized.  
+        In TypeScript, use `"bytm:featureInitialized:myFeatureKey" as "bytm:featureInitialized:id"` to make the error go away.
       - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
       - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
       - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
