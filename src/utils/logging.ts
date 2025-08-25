@@ -1,4 +1,4 @@
-import { clamp, debounce } from "@sv443-network/coreutils";
+import { clamp, DatedError, debounce } from "@sv443-network/coreutils";
 import { showIconToast } from "../components/toast.js";
 import { MarkdownDialog } from "../components/MarkdownDialog.js";
 import { scriptInfo } from "../constants.js";
@@ -21,16 +21,21 @@ const logs = [] as [type: string, time: number, ...args: unknown[]][];
 
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 export const getLogsTxt = () => {
-  // TODO: expand error objects
   const getVal = (val: unknown, primaryScope = true): string => {
     if(typeof val === "undefined")
       return "<undefined>";
     if(val === null)
       return "<null>";
     if(Array.isArray(val))
-      return `<Array [${val.map((v) => getVal(v, false)).join(", ")}]>`;
+      return `[Array <${val.map((v) => getVal(v, false)).join(", ")}>]`;
     if(typeof val === "function")
-      return val.name ? `<function ${val.name}()>` : "<function()>";
+      return val.name ? `[function ${val.name}()]` : "[function()]";
+    if(val instanceof DatedError)
+      return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
+    if(val instanceof Error)
+      return `[${val.name}: ${val.message}]`;
+    if(val instanceof Date)
+      return `[Date: ${val.toISOString()}]`;
     if(typeof val === "object") {
       try {
         if(val.constructor?.name === "Object")
@@ -46,7 +51,6 @@ export const getLogsTxt = () => {
   };
 
   const longestLogType = Math.max(...logs.map(([type]) => type.length));
-
   const sortedLogs = [...logs].sort((a, b) => b[1] - a[1]);
 
   return sortedLogs.reduce((acc, [type, time, ...args]) => {
@@ -140,7 +144,13 @@ export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
   logs.push(["ERROR", Date.now(), ...args]);
 
-  getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
+  try {
+    getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
+  }
+  catch(e) {
+    console.error(consPrefix, "Error while showing error toast:", e);
+    logs.push(["ERROR", Date.now(), "Error while showing error toast:", e]);
+  }
 }
 
 /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
