@@ -50,6 +50,7 @@ export type InterfaceEvents = {
    * Use `unsafeWindow.BYTM.addObserverListener(name, selector, opts)` to add custom listener functions to the observers (see contributing guide).
    */
   "bytm:observersReady": undefined;
+
   /**
    * Emitted when the feature initialization has started.  
    * This is the last event that is emitted before the `bytm:ready` event.  
@@ -58,6 +59,8 @@ export type InterfaceEvents = {
   "bytm:featureInitStarted": undefined;
   /** Emitted when a feature has been initialized. The data is the feature's key as seen in `onDomLoad()` of `src/index.ts` */
   "bytm:featureInitialized": string;
+  /** Emitted when the feature with the specified key has been initialized - in TS, use `"bytm:featureInitialized:myFeatureKey" as "bytm:featureInitialized:id"` to make the error go away */
+  "bytm:featureInitialized:id": void;
 
 
   /** Emitted when BYTM has finished general initialization. */
@@ -101,6 +104,7 @@ export const allInterfaceEvents = [
   "bytm:registerPlugin",
   "bytm:featureInitStarted",
   "bytm:featureInitialized",
+  "bytm:featureInitialized:id",
   "bytm:ready",
   "bytm:allReady",
   "bytm:fatalError",
@@ -268,7 +272,7 @@ export function emitInterface<
     emitOnPlugins(type, undefined, ...detail);
     detail.length > 0 && detail?.[0]
       ? log(`Emitted interface event '${type}' with data:`, ...detail)
-      : log(`Emitted interface event '${type}' with no data`);
+      : log(`Emitted interface event '${type}' (without data)`);
   }
   catch(err) {
     error(`Couldn't emit interface event '${type}' due to an error:\n`, err);

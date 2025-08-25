@@ -7,7 +7,7 @@ import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTransl
 import { initSiteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
-import { downloadData, getDSSerializer } from "./serializer.js";
+import { downloadData, getDSSerializer } from "./serializers.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
 import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
 import { showPrompt } from "./dialogs/prompt.js";
@@ -378,6 +378,7 @@ async function onDomLoad() {
               } as InitTimings["featureDurations"];
               initializedFeats.push(name);
               emitInterface("bytm:featureInitialized", name);
+              emitInterface(`bytm:featureInitialized:${name}` as "bytm:featureInitialized:id");
               res(v);
             })
           )

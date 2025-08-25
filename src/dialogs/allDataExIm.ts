@@ -2,7 +2,7 @@ import { consumeStringGen } from "@sv443-network/coreutils";
 import { type SerializedDataStore } from "@sv443-network/userutils";
 import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.js";
 import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.js";
-import { getSerializerStoresIds, getDSSerializer } from "../serializer.js";
+import { getSerializerStoresIds, getDSSerializer } from "../serializers.js";
 import { showToast } from "../components/toast.js";
 import { createLongBtn } from "../components/longButton.js";
 import packageJson from "../../package.json" with { type: "json" };

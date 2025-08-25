@@ -64,12 +64,12 @@ src/
 │   ├── misc.ts         # Misc utils
 │   ├── translations.ts # Translations
 │   └── ./              # Other utils
-├── config.ts     # User configuration
-├── constants.ts  # Constants injected at build time
-├── index.ts      # Script entrypoint
-├── interface.ts  # Plugin interface
-├── observers.ts  # Collection of MutationObserver instances
-├── serializer.ts # Serializer for DataStore instances
-├── siteEvents.ts # Event system for site events
-└── types.ts      # Type definitions
+├── config.ts      # User configuration
+├── constants.ts   # Constants injected at build time
+├── index.ts       # Script entrypoint
+├── interface.ts   # Plugin interface
+├── observers.ts   # Collection of MutationObserver instances
+├── serializers.ts # Serializers for all DataStore instances
+├── siteEvents.ts  # Event system for site events
+└── types.ts       # Type definitions
 ```

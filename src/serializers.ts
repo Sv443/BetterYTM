@@ -1,4 +1,4 @@
-import { DataStoreSerializer } from "@sv443-network/userutils";
+import { ChecksumMismatchError, DataStoreSerializer } from "@sv443-network/userutils";
 import { configStore } from "./config.js";
 import { autoLikeStore } from "./features/autoLike.js";
 import { showPrompt } from "./dialogs/prompt.js";
@@ -35,17 +35,16 @@ export const getSerializerStoresIds = () => getSerializerStores().map(store => s
 
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 export function getDSSerializer(full = false): DataStoreSerializer {
-  if(!full && !serializer)
-    return serializer = new DataStoreSerializer(getSerializerStores(), {
+  if(!full)
+    return serializer = serializer ?? new DataStoreSerializer(getSerializerStores(), {
       addChecksum: true,
       ensureIntegrity: true,
     });
-  else if(full && !fullSerializer)
-    return fullSerializer = new DataStoreSerializer(getSerializerStoresFull(), {
+  else
+    return fullSerializer = fullSerializer ?? new DataStoreSerializer(getSerializerStoresFull(), {
       addChecksum: true,
       ensureIntegrity: true,
     });
-  return full ? fullSerializer! : serializer!;
 }
 
 /** Imports data from a file into all data stores */
@@ -66,10 +65,21 @@ export async function importData(blob: File | Blob) {
   catch(err) {
     error("Error while importing serialized DataStores:", err);
 
-    await showPrompt({
-      type: "alert",
-      message: t("import_error_invalid"),
-    });
+    if(err instanceof TypeError)
+      await showPrompt({
+        type: "alert",
+        message: t("import_error.no_data"),
+      });
+    else if(err instanceof ChecksumMismatchError)
+      await showPrompt({
+        type: "alert",
+        message: t("import_error.checksum_mismatch"),
+      });
+    else
+      await showPrompt({
+        type: "alert",
+        message: t("import_error.invalid"),
+      });
   }
 }
 

@@ -1,5 +1,5 @@
-import { NanoEmitter, type LooseUnion } from "@sv443-network/coreutils";
-import { error, getDomain, info, warn } from "./utils/index.js";
+import { autoPlural, NanoEmitter, type LooseUnion } from "@sv443-network/coreutils";
+import { error, getDomain, info, log, warn } from "./utils/index.js";
 import { FeatureConfig, type FeatureCategory } from "./types.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
@@ -229,18 +229,25 @@ window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true })
 /** Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
+    const logEmit = () => args.length > 0
+      ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
+      : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+
     if(!bytmReady) {
       const startTs = Date.now();
       window.addEventListener("bytm:ready", () => {
         bytmReady = true;
         forceEmitSiteEvent(key, ...args);
+        logEmit();
         if(Date.now() - startTs > 500)
           warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
       }, { once: true });
       return;
     }
-    else
+    else {
       forceEmitSiteEvent(key, ...args);
+      logEmit();
+    }
   }
   catch(err) {
     error(`Couldn't emit site event "${key}" due to an error:\n`, err);

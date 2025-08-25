@@ -12,6 +12,8 @@ import { createRipple } from "../components/ripple.js";
 import type { AutoLikeData } from "../types.js";
 import "./autoLike.css";
 
+//#region store
+
 let canCompress = false;
 
 /** DataStore instance for all auto-liked channels */
@@ -46,13 +48,15 @@ export async function initAutoLikeStore() {
   return autoLikeStore.loadData();
 }
 
+//#region init auto-like
+
 /** Initializes the auto-like feature */
 export async function initAutoLike() {
   try {
     canCompress = await compressionSupported();
     await initAutoLikeStore();
 
-    //#SECTION ytm
+    //#region ytm
     if(getDomain() === "ytm") {
       let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("songTitleChanged", () => {
@@ -135,7 +139,7 @@ export async function initAutoLike() {
         }
       });
     }
-    //#SECTION yt
+    //#region yt
     else if(getDomain() === "yt") {
       addStyleFromResource("css-auto_like");
 
@@ -221,7 +225,7 @@ export async function initAutoLike() {
   }
 }
 
-//#SECTION toggle btn
+//#region toggle btn
 
 /** Adds a toggle button to enable or disable auto-liking videos from a channel */
 async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null, extraClasses?: string[]) {

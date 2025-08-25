@@ -8,7 +8,7 @@ import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { closeToast, showIconToast } from "../components/toast.js";
 import { mode, scriptInfo } from "../constants.js";
-import { getDSSerializer } from "../serializer.js";
+import { getDSSerializer } from "../serializers.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getPluginListDialog } from "../dialogs/pluginList.js";

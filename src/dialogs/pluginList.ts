@@ -119,6 +119,7 @@ async function renderBody() {
       linkElCreated = true;
 
       const linkEl = document.createElement("a");
+      linkEl.id = `bytm-plugin-list-row-link-${key}`;
       linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
       linkEl.href = url;
       linkEl.tabIndex = 0;
