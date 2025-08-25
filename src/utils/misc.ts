@@ -331,6 +331,58 @@ export function getVersionSessionCount(version = scriptInfo.version): number {
   return verSessions[version].count;
 }
 
+//#region repeat task
+
+/**
+ * Schedules a task to run immediately and repeatedly at the given interval as long as the given condition returns true.
+ * @param options.interval Interval to try running the task, in milliseconds
+ * @param options.task The task to run
+ * @param options.condition Condition that needs to return true in order to run the task
+ * @param options.callback Gets called with the task's return value once it finished
+ * @param options.maxIterations Maximum number of times to run the task - if not given, will run indefinitely as long as the condition is true
+ * @param options.signal Optional AbortSignal to cancel the task
+ */
+export function createRepeatTask<TVal extends void | unknown>(
+  options: {
+    interval: number,
+    task: () => TVal | Promise<TVal>,
+    condition: () => boolean | Promise<boolean>,
+    callback?: (value: TVal) => void | Promise<void>,
+    maxIterations?: number,
+    signal?: AbortSignal,
+  },
+) {
+  let iterations = 0;
+  let aborted = false;
+
+  options.signal?.addEventListener("abort", () => {
+    aborted = true;
+  });
+
+  const run = async () => {
+    if(aborted)
+      return;
+
+    try {
+      if(await options.condition()) {
+        const val = await options.task();
+        if(options.callback)
+          await options.callback(val);
+
+        iterations++;
+      }
+    }
+    catch(err) {
+      error("Error in repeat task:", err);
+    }
+
+    if(!aborted && (typeof options.maxIterations !== "number" || iterations < options.maxIterations))
+      setTimeout(run, options.interval);
+  };
+
+  void run();
+}
+
 //#region resources
 
 /**
