@@ -1,0 +1,266 @@
+# BetterYTM Docs - Contributing
+
+## Table of Contents
+- [**TODO: Reporting Issues**](#reporting-issues)
+- [**TODO: Translations**](#translations)
+  - [TODO: Adding translations for a new language](#adding-translations-for-a-new-language)
+  - [TODO: Editing an existing translation](#editing-an-existing-translation)
+- [**TODO: Local Development**](#local-development)
+  - [TODO: Requirements](#requirements)
+  - [**TODO: Getting started**](#getting-started)
+  - [TODO: CLI Commands](#cli-commands)
+  - [TODO: Extras](#extras)
+  - [**TODO: Common Procedures**](#common-procedures)
+
+<br>
+
+<!-- #region reporting issues -->
+
+### Reporting Issues
+TODO:
+
+<br>
+
+
+<!-- #region submitting translations -->
+
+## Translations:
+Thank you so much for your interest in translating BetterYTM!  
+Before submitting a translation, please check on [this document](https://github.com/Sv443/BetterYTM/tree/develop/assets/translations) if the language you want to translate to has already been translated and how many strings are still missing.
+
+<br>
+
+### Adding translations for a new language:
+> [!IMPORTANT]  
+> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**  
+  
+To submit a translation, please follow these steps:
+1. Select the `develop` branch to translate for the latest version of BetterYTM.  
+  If you are setting up the project for local development, also make sure you have checked out the `develop` branch.
+2. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
+3. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
+  You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
+  The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...).
+4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.  
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o="xx-YY"` (see [the "editing a translation" section](#editing-an-existing-translation) for more info).
+5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites.  
+  Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
+6. If you want to submit a pull request with the translated file:
+    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `language-COUNTRY.json`
+    2. Edit it to your translated version and keep the left side of the colon unchanged.
+    3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered).
+    4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order.
+    5. Add your name to the respective `authors` properties in [`assets/locales.json`](./assets/locales.json) and the translation file.
+    6. Test your changes by following [the "local development" section](#local-development), then submit your pull request.
+7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info.  
+  Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)
+
+<br>
+
+<!-- #region editing translations -->
+
+### Editing an existing translation:
+> [!IMPORTANT]  
+> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**
+
+To edit an existing translation, please follow these steps:
+1. Set up the project for local development by following the instructions in [the "local development" section.](#local-development)  
+  **Make sure you fork the repository and clone your own fork instead of the original repository, and to create a branch with a short but descriptive name.**  
+2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
+3. Run the command `pnpm tr-format -p -o="language-COUNTRY"`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
+  This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
+4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.
+5. Make sure there are no duplicate keys in the file.
+6. Run the command `pnpm tr-format -o="language-COUNTRY"` to make sure the file is formatted correctly.
+7. Test for syntax errors and update translation progress with the command `pnpm tr-progress`
+8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice).
+9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [the "local development" section.](#local-development)
+10. [Submit your pull request here](https://github.com/Sv443/BetterYTM/compare/) and make sure to set the `compare:` dropdown to your fork and the `base:` dropdown to `develop`  
+  Make sure to describe your changes in the pull request and reference the issue you are fixing, if applicable.
+11. Check that the CI checks just above the comment box pass and then wait for the pull request to be reviewed and merged.  
+  If any changes are requested, please implement them and push them to your branch. The pull request will automatically update and the checks will run again.
+
+<br><br><br>
+
+<!-- #region local dev -->
+
+## Local Development:
+### Requirements:
+1. Have current versions of Node.js, npm and Git installed.
+2. Install pnpm by running `npm i -g pnpm`
+3. Clone this repository.  
+  If you plan on contributing to the project through Git, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead.
+  **Also make sure to create a new branch from the upstream's `develop` branch with a short but descriptive name, and specify it when submitting your pull request at the end.**
+5. Switch to the `develop` branch (or your own one) by running `git checkout -b develop` in the project root.  
+  **I will only accept pull requests that originate from and are set to target the `develop` branch**, since there is usually a newer version in progress on that branch compared to `main`  
+  Skip this step if you are using your own forked repository.
+6. Open a terminal in the project root and run `pnpm i` to install all dependencies.
+7. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
+8. Now you can run `pnpm dev` to build the userscript and host it on a development server or check out the other commands below.
+
+<br>
+
+<!-- #region CLI -->
+
+### CLI Commands:
+- **`pnpm i`**  
+  Run once to install dependencies.
+- **`pnpm dev`**  
+  This is the command you want to use to locally develop and test BetterYTM.  
+  It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager ([see the "extras" section](#extras)).  
+  You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
+    
+  This command uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript. Note that this also means the server needs to keep running for the userscript to work. If it's not running, you will run into weird errors because none of the necessary assets are able to be fetched.  
+  Also, no meta file will be generated, since it's not needed for local development.  
+    
+  Once the build is finished, a link will be printed to the console. Open it to install the userscript.
+- **`pnpm dev-cdn`**  
+  Works exactly like `pnpm dev`, but uses the default CDN as the asset source.  
+  Practically, this means the server doesn't have to be constantly running.  
+  But this also means that changes to the assets won't be reflected in the userscript until committed, pushed and the script is rebuilt.  
+  Also, no meta file will be generated, since it's not needed for local development.  
+    
+  Once the build is finished, a link will be printed to the console. Open it to install the userscript.
+- **`pnpm build-prod`**  
+  Builds the userscript for production for all hosts with their respective options already set.  
+  Outputs the files using a suffix predefined in the `package.json` file.  
+  Use this to build the userscript for distribution on all host/CDN platforms.
+- **`pnpm build <arguments>`**  
+  Builds the userscript with custom options  
+  Arguments:  
+  - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
+  - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
+  - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
+  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`
+  - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
+  - `--config-gen-meta=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header. Can be either `true` (default) or `false`
+    
+  Shorthand commands:
+  - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
+    Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=jsdelivr`
+  - `pnpm build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
+    Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=jsdelivr`
+  - `pnpm preview` - Same as `pnpm build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
+- **`pnpm lint`**  
+  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
+- **`pnpm storybook`**  
+  Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
+- **`pnpm gen-readme`**  
+  Updates the README files by inserting different parts of generated sections into them.
+- **`pnpm tr-changed "<keys>"`**  
+  Removes the provided keys (comma-separated) from all translation files but `en-US.json`  
+  This is useful when the translation for one or more keys has changed and needs to be regenerated for all locales with `pnpm tr-format -p`
+- **`pnpm tr-progress`**  
+  Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
+  Will also be run automatically after every script build.
+- **`pnpm tr-format <arguments>`**  
+  Reformats all translation files so they match that of the base file `en-US.json`  
+  This includes sorting keys and adding the same empty lines and indentation.
+  Arguments:  
+  - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
+  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr-FR,de-DE"` or `-o="pt-BR"`)
+  - `--include-based` or `-b` - Also includes files which have a base locale specified
+  - `--keys="<keys>"` or `-k="<keys>"` - Ignores all keys except the ones specified (comma-separated)
+- **`pnpm tr-prep`**  
+  Shorthand for `pnpm tr-format --prep` (see above).
+- **`pnpm --silent invisible "<command>"`**  
+  Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
+  Remove `--silent` to see pnpm's info and error messages.
+- **`pnpm node-ts <path>`**  
+  Runs the TypeScript file at the given path using the regular node binary and [tsx.](https://tsx.is/)  
+  Also enables source map support and disables experimental warnings.
+
+> [!NOTE]  
+> When you are using npm (as opposed to `pnpm`), read the following carefully:  
+> You will need to use a lone ` -- ` between the command name and the arguments, for example: `pnpm tr-format -- -p -o="de-DE"`  
+> This is so npm can tell the difference between arguments passed to it versus arguments passed to the script it is running.
+
+<br>
+
+<!-- #region extras -->
+
+### Extras:
+- When using ViolentMonkey, after letting the command `pnpm dev` or `pnpm dev-cdn` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
+  This makes it so the userscript automatically updates when the code changes.  
+  Note: the tab needs to stay open on Firefox or the script will not update itself.
+- To link any local JS file (like a work-in-progress library) in the userscript, add a `"link": "/path/to/script.umd.js"` property to the respective library in [`assets/require.json`](./assets/require.json) (relative or absolute path)  
+  As this file will just be injected as-is at build time, make sure you are targeting a UMD or IIFE bundle that exports a variable with the name set by `"global"`.  
+  In order to make TypeScript shut up, you will still need to link the library manually with `pnpm link -g /path/to/library_root`
+
+<br>
+
+<!-- #region getting started -->
+
+### Getting Started:
+After setting the project up for local development ([see "local development" section](#local-development)), you can start working on the project.  
+The main files you will be working with are:  
+- [`src/index.ts`](./src/index.ts) - The main entry point for the userscript and where all features are initialized
+- [`src/interface.ts`](./src/interface.ts) - The file that contains all events and functions that are exposed to plugins
+- [`src/types.ts`](./src/types.ts) - The file that contains all types and interfaces that are used throughout the project
+- [`src/observers.ts`](./src/observers.ts) - The file that contains all mutation observers that are used to detect changes on the page
+- [`src/siteEvents.ts`](./src/siteEvents.ts) - The file that contains all site- and script-specific events that are dispatched by BetterYTM
+- [`src/tools`](./src/tools) - The folder that contains all CLI tools and utilities that are used throughout the project
+- [`src/components`](./src/components) - The folder that contains all HTML component functions for reusable UI elements
+
+<br>
+
+<!-- #region procedures -->
+### Procedures:
+Here are some well explained procedures for common tasks.  
+If you need help with these, don't hesitate to reach out to me (see the top of this file).  
+  
+- Adding a new feature:
+  1. Add your feature to the `FeatureConfig` type in [`src/types.ts`](./src/types.ts) (after choosing a fitting category for it)
+  2. Add your feature and its properties to the `featInfo` object in [`src/features/index.ts`](./src/features/index.ts), under the correct category
+  3. Create an async initialization function for your feature in the respective category's file inside the `src/features` folder
+  4. Add the init function to the `onDomLoad` function in [`src/index.ts`](./src/index.ts), under the correct "domain guard condition" and category by following the format of the other features
+- Adding an asset (image, icon, stylesheet, translation file and misc. other files):
+  1. Check out [`assets/README.md`](./assets/README.md) for information on all asset formats
+  2. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
+  3. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
+    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.  
+    The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
+  4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode and if the asset key matches the `externalAssetPattern` in the `assets/resources.json` file.
+  5. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
+    This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
+- Adding a new site event:
+  1. Add your event to the `SiteEventsMap` type in [`src/siteEvents.ts`](./src/siteEvents.ts)
+  2. Dispatch the event inside `initSiteEvents` in [`src/siteEvents.ts`](./src/siteEvents.ts) or at another point where it is run *independent of the feature configuration* (the only exception being domain-specific events).  
+    **Always use the function `emitSiteEvent`** to dispatch the event, so it will automatically be logged and emitted to the plugin interface as well.
+- Adding something to the plugin interface:
+  - If you want to make a function globally available, simply add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the correct category.  
+    If the function should require a token, create a proxy function at the bottom of the file that checks for the token and then calls the actual function (also see the bottom of the file for examples).
+  - If you want to add something else like a class, constant or entire library (as long as its license allows it), add it to the `props` variable inside the function `initInterface` in [`src/interface.ts`](./src/interface.ts)
+- Creating a new reusable UI component:  
+  1. Create a new file in the `src/components` folder with a descriptive name
+  2. Add a function that takes a single object of properties as an argument (kind of like a React component), and returns an element that extends the `HTMLElement` interface (like what the return value of `document.createElement()` is)
+  3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
+  4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
+  5. Write some API documentation for the component inside the file [`docs/api.md`](./docs/api.md) under the appropriate section, following the format of the other entries
+- Adding a locale (language & country code):
+  1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
+    Please make sure the alphabetical order is kept.  
+    You can find [a list of BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
+    The final locale code should be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
+  2. Add a translation file for the locale by following the instructions in the ["adding translations" section](#adding-translations-for-a-new-language)
+  3. Your locale will be immediately available in the userscript after the next build.
+- Creating a release:
+  1. Make sure the version in `package.json` is bumped according to [semantic versioning](https://semver.org/)
+  2. Run `pnpm i` so the version is updated in the lockfile
+  3. Update the `changelog.md` with the new version and an exhaustive list of changes that were made
+  4. Make sure all files are committed before the built userscript is, so the next build will have the correct build number
+  5. Run `pnpm build-prod` to build the userscript for all hosts
+  6. Commit and push the built files
+  7. Create a new release on GitHub with a tag that follows the *exact* format of the previous releases, a copy of the relevant section in the changelog and an install button that points to the built userscript on GitHub (make sure it uses the version tag in its URL to ensure the correct version is installed)
+  8. Update the userscript on GreasyFork and OpenUserJS from the built files  
+    GreasyFork also needs the relevant section of the changelog, but the internal and plugin changes should be trimmed out
+  9. Send an announcement in the Discord server linking to the install pages and the changelog, with a summary of the most important changes
+  10. Update the [BYTM plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) by setting the BYTM submodule to the *exact* commit matching the release and making sure everything else is compatible with the changes of the latest BYTM version
+  11. Create a release in the BYTM plugin template repository, following the *exact* format of the previous releases
+
+<br><br>
+
+<div style="text-align: center;" align="center">
+
+[◀️ Previous: API Reference](./api.md)</a> &nbsp; | &nbsp; [🏠 API Docs - Home](./README.md)
+</div>
