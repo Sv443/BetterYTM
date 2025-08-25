@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3aa4f3a6/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ca330a3c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -356,8 +356,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3aa4f3a6",
-    buildTimestamp: "1755648602059",
+    buildNumber: "ca330a3c",
+    buildTimestamp: "1756134749920",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1151,18 +1151,24 @@ window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true })
 /** Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is */
 function emitSiteEvent(key, ...args) {
     try {
+        const logEmit = () => args.length > 0
+            ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${CoreUtils.autoPlural("argument", args)}:`, ...args)
+            : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
         if (!bytmReady) {
             const startTs = Date.now();
             window.addEventListener("bytm:ready", () => {
                 bytmReady = true;
                 forceEmitSiteEvent(key, ...args);
+                logEmit();
                 if (Date.now() - startTs > 500)
                     warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
             }, { once: true });
             return;
         }
-        else
+        else {
             forceEmitSiteEvent(key, ...args);
+            logEmit();
+        }
     }
     catch (err) {
         error(`Couldn't emit site event "${key}" due to an error:\n`, err);
@@ -1914,9 +1920,9 @@ async function getAutoLikeDialog() {
                     const parsed = await tryToDecompressAndParse(data);
                     log("Trying to import auto-like data:", parsed);
                     if (!parsed || typeof parsed !== "object")
-                        return await showPrompt({ type: "alert", message: t("import_error_invalid") });
+                        return await showPrompt({ type: "alert", message: t("import_error.invalid") });
                     if (!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-                        return await showPrompt({ type: "alert", message: t("import_error_no_data") });
+                        return await showPrompt({ type: "alert", message: t("import_error.no_data") });
                     await autoLikeStore.setData(parsed);
                     emitSiteEvent("autoLikeChannelsUpdated");
                     showToast({ message: t("import_success") });
@@ -2148,7 +2154,8 @@ function getChannelIdFromPrompt(promptStr) {
     const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
     const id = (isId?.[0] || isUrl?.[1] || "").trim();
     return id.length > 0 ? id : null;
-}let canCompress$1 = false;
+}//#region store
+let canCompress$1 = false;
 /** DataStore instance for all auto-liked channels */
 const autoLikeStore = new UserUtils.DataStore({
     id: "bytm-auto-like-channels",
@@ -2178,12 +2185,13 @@ async function initAutoLikeStore() {
     autoLikeStoreLoaded = true;
     return autoLikeStore.loadData();
 }
+//#region init auto-like
 /** Initializes the auto-like feature */
 async function initAutoLike() {
     try {
         canCompress$1 = await compressionSupported();
         await initAutoLikeStore();
-        //#SECTION ytm
+        //#region ytm
         if (getDomain() === "ytm") {
             let timeout;
             siteEvents.on("songTitleChanged", () => {
@@ -2251,7 +2259,7 @@ async function initAutoLike() {
                 }
             });
         }
-        //#SECTION yt
+        //#region yt
         else if (getDomain() === "yt") {
             addStyleFromResource("css-auto_like");
             let timeout;
@@ -2324,7 +2332,7 @@ async function initAutoLike() {
         error("Error while auto-liking channel:", err);
     }
 }
-//#SECTION toggle btn
+//#region toggle btn
 /** Adds a toggle button to enable or disable auto-liking videos from a channel */
 async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
     const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
@@ -2443,16 +2451,21 @@ const consPrefixDbg = `[${scriptInfo$1.name}/#DEBUG]`;
 const logs = [];
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 const getLogsTxt = () => {
-    // TODO: expand error objects
     const getVal = (val, primaryScope = true) => {
         if (typeof val === "undefined")
             return "<undefined>";
         if (val === null)
             return "<null>";
         if (Array.isArray(val))
-            return `<Array [${val.map((v) => getVal(v, false)).join(", ")}]>`;
+            return `[Array <${val.map((v) => getVal(v, false)).join(", ")}>]`;
         if (typeof val === "function")
-            return val.name ? `<function ${val.name}()>` : "<function()>";
+            return val.name ? `[function ${val.name}()]` : "[function()]";
+        if (val instanceof CoreUtils.DatedError)
+            return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
+        if (val instanceof Error)
+            return `[${val.name}: ${val.message}]`;
+        if (val instanceof Date)
+            return `[Date: ${val.toISOString()}]`;
         if (typeof val === "object") {
             try {
                 if (val.constructor?.name === "Object")
@@ -2535,7 +2548,13 @@ const showErrToast = CoreUtils.debounce((errName, ...args) => showIconToast({
 function error(...args) {
     console.error(consPrefix, ...args);
     logs.push(["ERROR", Date.now(), ...args]);
-    getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
+    try {
+        getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
+    }
+    catch (e) {
+        console.error(consPrefix, "Error while showing error toast:", e);
+        logs.push(["ERROR", Date.now(), "Error while showing error toast:", e]);
+    }
 }
 /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
 function errorNoToast(...args) {
@@ -4116,11 +4135,11 @@ async function mountCfgMenu() {
                     const parsed = await tryToDecompressAndParse(data.trim());
                     log("Trying to import configuration:", parsed);
                     if (!parsed || typeof parsed !== "object")
-                        return await showPrompt({ type: "alert", message: t("import_error_invalid") });
+                        return await showPrompt({ type: "alert", message: t("import_error.invalid") });
                     if (typeof parsed.formatVersion !== "number")
-                        return await showPrompt({ type: "alert", message: t("import_error_no_format_version") });
+                        return await showPrompt({ type: "alert", message: t("import_error.no_format_version") });
                     if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-                        return await showPrompt({ type: "alert", message: t("import_error_no_data") });
+                        return await showPrompt({ type: "alert", message: t("import_error.no_data") });
                     if (parsed.formatVersion < formatVersion) {
                         let newData = JSON.parse(JSON.stringify(parsed.data));
                         const sortedMigrations = Object.entries(migrations)
@@ -4143,7 +4162,7 @@ async function mountCfgMenu() {
                         parsed.data = newData;
                     }
                     else if (parsed.formatVersion !== formatVersion)
-                        return await showPrompt({ type: "alert", message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
+                        return await showPrompt({ type: "alert", message: t("import_error.wrong_format_version", formatVersion, parsed.formatVersion) });
                     await setFeatures({ ...getFeatures(), ...parsed.data });
                     if (await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
                         log("Reloading tab after importing configuration");
@@ -4154,7 +4173,7 @@ async function mountCfgMenu() {
                 }
                 catch (err) {
                     warn("Couldn't import configuration:", err);
-                    await showPrompt({ type: "alert", message: t("import_error_invalid") });
+                    await showPrompt({ type: "alert", message: t("import_error.invalid") });
                 }
             },
             title: () => t("bytm_config_export_import_title"),
@@ -4890,7 +4909,7 @@ async function mountCfgMenu() {
                 return;
             }
             bgElem.addEventListener("transitionend", async () => {
-                closeCfgMenu();
+                closeCfgMenu(undefined, false);
                 bgElem.remove();
                 isCfgMenuMounting = isCfgMenuDoneMounting = false;
                 await mountCfgMenu();
@@ -5965,17 +5984,16 @@ const getSerializerStoresFull = () => [
 const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 function getDSSerializer(full = false) {
-    if (!full && !serializer)
-        return serializer = new UserUtils.DataStoreSerializer(getSerializerStores(), {
+    if (!full)
+        return serializer = serializer ?? new UserUtils.DataStoreSerializer(getSerializerStores(), {
             addChecksum: true,
             ensureIntegrity: true,
         });
-    else if (full && !fullSerializer)
-        return fullSerializer = new UserUtils.DataStoreSerializer(getSerializerStoresFull(), {
+    else
+        return fullSerializer = fullSerializer ?? new UserUtils.DataStoreSerializer(getSerializerStoresFull(), {
             addChecksum: true,
             ensureIntegrity: true,
         });
-    return full ? fullSerializer : serializer;
 }
 /** Downloads the current data stores as a single file */
 async function downloadData(useEncoding = true, full = false) {
@@ -6078,6 +6096,7 @@ async function renderBody$2() {
             }
             linkElCreated = true;
             const linkEl = document.createElement("a");
+            linkEl.id = `bytm-plugin-list-row-link-${key}`;
             linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
             linkEl.href = url;
             linkEl.tabIndex = 0;
@@ -6571,11 +6590,15 @@ async function initQueueButtons() {
         attributeFilter: ["dialog-type", "aria-hidden"],
     });
     /** Tries to add queue buttons to the current song queue items on the /watch page. */
-    const tryAddCurrentQueueBtns = (evt) => {
+    const tryAddCurrentQueueBtns = (parentSelector) => {
         if (getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
             return;
+        const parent = document.querySelector(parentSelector);
+        if (!parent)
+            return warn("Couldn't find current queue parent element to add queue buttons to");
+        const queueItems = parent.querySelectorAll("ytmusic-player-queue-item");
         let amt = 0;
-        for (const queueItm of evt.childNodes) {
+        for (const queueItm of queueItems) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
                 addQueueButtons(queueItm, undefined, "currentQueue");
                 amt++;
@@ -6585,8 +6608,8 @@ async function initQueueButtons() {
             log(`Added buttons to ${amt} new queue ${CoreUtils.autoPlural("item", amt)}`);
     };
     // current queue
-    siteEvents.on("queueChanged", tryAddCurrentQueueBtns);
-    siteEvents.on("autoplayQueueChanged", tryAddCurrentQueueBtns);
+    siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #contents"));
+    siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #automix-contents"));
     const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
     if (queueItems.length > 0) {
         queueItems.forEach(itm => addQueueButtons(itm, undefined, "currentQueue"));
@@ -8850,7 +8873,7 @@ function emitInterface(type, ...detail) {
         emitOnPlugins(type, undefined, ...detail);
         detail.length > 0 && detail?.[0]
             ? log(`Emitted interface event '${type}' with data:`, ...detail)
-            : log(`Emitted interface event '${type}' with no data`);
+            : log(`Emitted interface event '${type}' (without data)`);
     }
     catch (err) {
         error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
@@ -10290,6 +10313,7 @@ async function onDomLoad() {
                 };
                 initializedFeats.push(name);
                 emitInterface("bytm:featureInitialized", name);
+                emitInterface(`bytm:featureInitialized:${name}`);
                 res(v);
             }))),
         ]).then(() => {
