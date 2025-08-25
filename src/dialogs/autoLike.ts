@@ -72,9 +72,9 @@ export async function getAutoLikeDialog() {
           log("Trying to import auto-like data:", parsed);
 
           if(!parsed || typeof parsed !== "object")
-            return await showPrompt({ type: "alert", message: t("import_error_invalid") });
+            return await showPrompt({ type: "alert", message: t("import_error.invalid") });
           if(!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-            return await showPrompt({ type: "alert", message: t("import_error_no_data") });
+            return await showPrompt({ type: "alert", message: t("import_error.no_data") });
 
           await autoLikeStore.setData(parsed);
           emitSiteEvent("autoLikeChannelsUpdated");
