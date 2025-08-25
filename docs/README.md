@@ -8,12 +8,23 @@ This document and the ones it references will walk you through the API and its u
 ## Table of Contents
 - [**Getting Started**](#getting-started)
   - [Background Knowledge](#background-knowledge)
+  - [Concepts](#concepts)
   - [Interaction Summary](#interaction-summary)
   - [**Plugin Template**](#plugin-template)
   - [**TODO: Creating a Simple Plugin**](#creating-a-simple-plugin)
   - [**Most Useful API Features**](#most-useful-api-features)
 - [**TODO: API Reference**](#api-reference)
   - [**Full Feature Overview**](#full-feature-overview)
+    - [Meta](#meta)
+    - [BYTM-specific](#bytm-specific)
+    - [DOM](#dom)
+    - [Components](#components)
+    - [Translations](#translations)
+    - [Feature Config](#feature-config)
+    - [Lyrics](#lyrics)
+    - [Auto-Like](#auto-like)
+    - [Other](#other)
+    - [Events](#events)
 - [**TODO: Contributing**](#contributing)
   - [TODO: Reporting Issues](#reporting-issues)
   - [TODO: Contributing Guide](#contributing-guide)
@@ -47,6 +58,44 @@ This section will walk you through the basics of using the BetterYTM API.
 - This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find the actual information
 - The [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start with a plugin
 - The fact you can [join my Discord server](https://dc.sv443.net) to ask questions or get help with writing your plugin
+
+<br>
+
+### Concepts
+Firstly, here are some concepts and mechanics that are important to understand when working with BetterYTM:
+- **Domains:**  
+  BYTM works on both `music.youtube.com` and `www.youtube.com`, and has some domain-specific features, a different set of [SelectorObserver instances](#function-addselectorlistener) and events that only get emitted on a specific domain.  
+  You can check which domain you're on with the [`getDomain()` function.](#function-getdomain)
+- **Resources / Assets:**  
+  BYTM has a set of resources (images, icons, CSS files, fonts, documents, etc.) that it uses internally and also makes available to plugins.
+- **Constants:**  
+  Some constants are available on `unsafeWindow.BYTM` that give you some generic info about BYTM, such as its version, build number, whether session storage is available and more.
+- **DataStore:**  
+  This class is currently provided by [UserUtils](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#datastore), but will soon be replaced by [CoreUtils' class of the same name.](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#datastore)  
+  It is a powerful JSON-based key-value store, that persists data in [GreaseMonkey stoarge](https://wiki.greasespot.net/GM_setValue) by default, and also supports data migrations from outdated formats, compression and bulk imports and exports including integrity check via [DataStoreSerializer.](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#datastoreserializer)  
+  BYTM has many of these instances strewn throughout its codebase, for example to store the feature configuration, auto-like data, lyrics cache and more.
+- **Observers / SelectorObserver instances / MutationObservers:**  
+  BYTM uses [UserUtils' SelectorObserver class](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver) to watch for changes in the DOM, so each feature can be easily initialized at just the right time.  
+  Internally, it leverages the [MutationObserver API](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) to do this somewhat efficiently.  
+  The function [`addSelectorListener()`](#function-addselectorlistener) is a wrapper around BYTM's instances of this class that makes it very easy to use.  
+  Please read up on the SelectorObserver documentation to understand the problems you may run into and how to avoid them.
+- **Site Events:**  
+  This is a generic event system based on [CoreUtils' NanoEmitter class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#nanoemitter) that is used for random BYTM features as well as an abstraction layer for stuff that happens on the site.  
+  All site events are prefixed with `bytm:siteEvent:` and can be listened to with [the `onSiteEvent()` function](#function-onsiteevent) or via `unsafeWindow.addEventListener("...")`.
+- **Interface Events:**  
+  Interface events don't use the NanoEmitter class, but are instead emitted as [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) events on the `window` object, so they can be listened to with the standard [DOM event system](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener).  
+  They are prefixed with just `bytm:` and are mostly intended for plugin communication, which is why they're in a separate system.  
+  All site events will also be emitted on the interface.
+- **Components:**  
+  BYTM also has a set of reusable UI components in the form of functions that create `HTMLElement` instances with a certain style and behavior.  
+  Use them to more easily create your plugin's UIs and have a consistent look and feel with the rest of BYTM.  
+    
+  The [BytmDialog class](#function-getbytmdialog) is a very powerful and flexible dialog class that can be used to create modal dialogs with custom content, buttons, styles and behavior.  
+  It is also the foundation for some of the predefined dialog subclasses, such as [MarkdownDialog](#function-getmarkdowndialog), [ExImDialog](#function-geteximdialog) and the [`showPrompt()` dialog.](#function-showprompt)
+- **Translations:**  
+  BYTM uses [UserUtils' translation system](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#translation) for a simple but still powerful enough way to translate strings.  
+  Out of the box, it supports pluralization via key suffixes, nested keys (though BYTM doesn't yet), value interpolation and default language fallbacks.  
+  Use the functions [`t()`](#function-t), [`tp()`](#function-tp), [`tl()`](#function-tl) and [`tlp()`](#function-tlp) to access BYTM's translations for the currently set locale, or a given locale.
 
 <br>
 
@@ -97,8 +146,8 @@ It includes the basic boilerplate that registers your plugin, some example code 
 [**Click here to view the template repository and the instructions for setting it up.**](https://github.com/Sv443/BetterYTM-Plugin-Template#readme)  
   
 - [The "creating a simple plugin" section](#creating-a-simple-plugin) will walk you through the process of creating a plugin using this template as a starting point.
+- Since [the template is licensed under the Unlicense](https://github.com/Sv443/BetterYTM-Plugin-Template/blob/main/LICENSE.txt), the code is essentially in the public domain and you may change whatever you want, without any restrictions.  
 - If you are not into the idea of hosting your code on GitHub, you may also clone or download and extract it, at the cost of not having the default CI workflows.
-- Since [the template is licensed under the Unlicense](https://github.com/Sv443/BetterYTM-Plugin-Template/blob/main/LICENSE.txt), the code is essentially in the public domain and you may change whatever you want, without any restrictions.
 
 <br>
 
@@ -135,6 +184,7 @@ This is just a non-exhaustive list of the API features and utilities that I find
   - [`function isIgnoredInputElement()`](#function-isigoredinputelement) - Checks if the currently focused element is an input element, so that other interactions can be ignored.
   - [`function onSiteEvent()`](#function-onsiteevent) - Listen for a specific site event.
   - [`function onMultiSiteEvents()`](#function-onmultisiteevents) - Listen for multiple site events at once.
+  - [`function resourceAsString()`](#function-resourceasstring) - Returns the cached content of a BYTM resource as a string.
   - [`function showToast()`](#function-showtoast) - Shows a toast notification.
   - [`function showPrompt()`](#function-showprompt) - Shows a modal dialog mimicking the native `prompt()`, `alert()` and `confirm()` functions.
   - [`function formatNumber()`](#function-formatnumber) - Formats a number with the configured locale and passed or configured format.
@@ -144,17 +194,18 @@ This is just a non-exhaustive list of the API features and utilities that I find
   - [`function getMarkdownDialog()`](#function-getmarkdowndialog) - A dialog that displays markdown content.
   - [`class NanoEmitter`](#class-nanoemitter) - A class for creating lightweight, type-safe event emitters in OOP or FP style.
 - Events:
-  - [`bytm:observersReady`](#event-bytm-observersReady)
-  - [`bytm:featureInitialized`](#event-bytm-featureInitialized)
-  - [`bytm:allReady`](#event-bytm-allReady)
-  - [`bytm:dialogOpened:id`](#event-bytm-dialogOpened-id)
-  - [`bytm:siteEvent:configChanged`](#event-bytm-siteEvent-configChanged)
-  - [`bytm:siteEvent:queueChanged`](#event-bytm-siteEvent-queueChanged)
-  - [`bytm:siteEvent:autoplayQueueChanged`](#event-bytm-siteEvent-autoplayQueueChanged)
-  - [`bytm:siteEvent:songTitleChanged`](#event-bytm-siteEvent-songTitleChanged)
-  - [`bytm:siteEvent:watchIdChanged`](#event-bytm-siteEvent-watchIdChanged)
-  - [`bytm:siteEvent:pathChanged`](#event-bytm-siteEvent-pathChanged)
-  - [`bytm:siteEvent:fullscreenToggled`](#event-bytm-siteEvent-fullscreenToggled)
+  - [Event Overview and Timings](#event-overview-and-timings)
+  - [`bytm:observersReady`](#bytm-observersready)
+  - [`bytm:featureInitialized:id`](#bytm-featureinitialized-id)
+  - [`bytm:allReady`](#bytm-allready)
+  - [`bytm:dialogOpened:id`](#bytm-dialogopened-id)
+  - [`bytm:siteEvent:configChanged`](#bytm-siteevent-configchanged)
+  - [`bytm:siteEvent:queueChanged`](#bytm-siteevent-queuechanged)
+  - [`bytm:siteEvent:autoplayQueueChanged`](#bytm-siteevent-autoplayqueuechanged)
+  - [`bytm:siteEvent:songTitleChanged`](#bytm-siteevent-songtitlechanged)
+  - [`bytm:siteEvent:watchIdChanged`](#bytm-siteevent-watchidchanged)
+  - [`bytm:siteEvent:pathChanged`](#bytm-siteevent-pathchanged)
+  - [`bytm:siteEvent:fullscreenToggled`](#bytm-siteevent-fullscreentoggled)
 
 <br>
 
@@ -166,17 +217,18 @@ It is recommended to read the [Getting Started](#getting-started) section first.
 
 ### Full Feature Overview
 Here's everything BetterYTM offers in terms of API features, organized by category.  
-Note: The 🔒 emoji means it's an authenticated function and you're *required* to [register your plugin](#function-registerplugin) in order to use them.  
-- Meta:
+Note: The 🔒 emoji means it's an authenticated function and you're *required to [register your plugin](#function-registerplugin)* in order to use them.  
+- [Meta:](#meta)
   - [`function registerPlugin()`](#function-registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [`function getPluginInfo()`](#function-getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
   - [`function getInternals()`](#function-getInternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
-- BYTM-specific:
+- [BYTM-specific:](#bytm-specific)
   - [`function getDomain()`](#function-getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
-  - [`function getResourceUrl()`](#function-getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
+  - [`function getResourceUrl()`](#function-getresourceurl) - Returns an `https:`, `blob:` or `data:` URI provided by the local userscript extension for the specified BYTM resource
+  - [`function resourceAsString()`](#function-resourceasstring) - Returns the cached content of a BYTM resource as a string
   - [`function getSessionId()`](#function-getsessionid) - Returns the unique session ID that is generated on every started session
   - [`function reloadTab()`](#function-reloadtab) - Reloads the current tab while preserving video time and volume and making features like initial tab volume lower priority
-- DOM:
+- [DOM:](#dom)
   - [`function getBytmDialog()`](#function-getbytmdialog) - A generic class for creating and managing modal, fully customizable dialogs
   - [`function getExImDialog()`](#function-geteximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [`function getMarkdownDialog()`](#function-getmarkdowndialog) - Subclass of BytmDialog for displaying markdown content
@@ -193,11 +245,11 @@ Note: The 🔒 emoji means it's an authenticated function and you're *required* 
   - [`function getCurrentMediaType()`](#function-getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
   - [`function getLikeDislikeBtns()`](#function-getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
   - [`function isIgnoredInputElement()`](#function-isignoredinputelement) - Checks if the given element (or `document.activeElement`) is an input element that should prevent all other keypresses from being processed
-- Site Events:
+- [Site Events:](#Site events)
   - [`function onSiteEvent()`](#function-onsiteevent) - Adds a site event listener
   - [`function onceSiteEvent()`](#function-oncesiteevent) - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
   - [`function onMultiSiteEvents()`](#function-onmultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function
-- Components:
+- [Components:](#components)
   - [`function createHotkeyInput()`](#function-createhotkeyinput) - Creates a hotkey input element
   - [`function createToggleInput()`](#function-createtoggleinput) - Creates a toggle input element
   - [`function createCircularBtn()`](#function-createcircularbtn) - Creates a generic, circular button element with just an icon
@@ -206,7 +258,7 @@ Note: The 🔒 emoji means it's an authenticated function and you're *required* 
   - [`function showToast()`](#function-showtoast) - Shows a toast notification and a message string or element
   - [`function showIconToast()`](#function-showicontoast) - Shows a toast notification with an icon and a message string or element
   - [`function showPrompt()`](#function-showprompt) - Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt`
-- Translations:
+- [Translations:](#translations)
   - [`function setLocale()`](#function-setlocale) 🔒 - Sets the locale for BetterYTM
   - [`function getLocale()`](#function-getlocale) - Returns the currently set locale
   - [`function hasKey()`](#function-haskey) - Checks if the specified translation key exists in the currently set locale
@@ -215,31 +267,113 @@ Note: The 🔒 emoji means it's an authenticated function and you're *required* 
   - [`function tp()`](#function-tp) - Translates the specified translation key including pluralization using the currently set locale
   - [`function tl()`](#function-tl) - Returns the translation for the provided key and provided locale
   - [`function tlp()`](#function-tlp) - Returns the translation for the provided locale and key, including pluralization identifier
-- Feature config:
+- [Feature Config:](#feature-config)
   - [`function getFeatures()`](#function-getfeatures) 🔒 - Returns the current BYTM feature configuration object
   - [`function saveFeatures()`](#function-savefeatures) 🔒 - Overwrites the current BYTM feature configuration object with the provided one
   - [`function getDefaultFeatures()`](#function-getdefaultfeatures) - Returns the default feature configuration object
-- Lyrics:
+- [Lyrics:](#lyrics)
   - [`function fetchLyricsUrlTop()`](#function-fetchlyricsurltop) - Fetches the URL to the lyrics page for the specified song
   - [`function getLyricsCacheEntry()`](#function-getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
   - [`function sanitizeArtists()`](#function-sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
   - [`function sanitizeSong()`](#function-sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
-- Auto-Like:
+- [Auto-Like:](#auto-like)
   - [`function getAutoLikeData()`](#function-getautolikedata) 🔒 - Returns the current auto-like data object
   - [`function saveAutoLikeData()`](#function-saveautolikedata) 🔒 - Overwrites the current auto-like data object with the provided one
   - [`function fetchVideoVotes()`](#function-fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
-- Other:
+- [Other:](#other)
   - [`class NanoEmitter`](#class-nanoemitter) - Class for creating lightweight, type safe event emitting classes
   - [`function formatNumber()`](#function-formatnumber) - Formats a number with the configured locale and passed or configured format
-- Events:
-  - [`bytm:observersReady`](#event-bytm-observersReady)
-  - [`bytm:featureInitialized`](#event-bytm-featureInitialized)
-  - [`bytm:allReady`](#event-bytm-allReady)
-  - [`bytm:dialogOpened:id`](#event-bytm-dialogOpened-id)
-  - [`bytm:siteEvent:configChanged`](#event-bytm-siteEvent-configChanged)
-  - [`bytm:siteEvent:queueChanged`](#event-bytm-siteEvent-queueChanged)
-  - [`bytm:siteEvent:autoplayQueueChanged`](#event-bytm-siteEvent-autoplayQueueChanged)
-  - [`bytm:siteEvent:songTitleChanged`](#event-bytm-siteEvent-songTitleChanged)
-  - [`bytm:siteEvent:watchIdChanged`](#event-bytm-siteEvent-watchIdChanged)
-  - [`bytm:siteEvent:pathChanged`](#event-bytm-siteEvent-pathChanged)
-  - [`bytm:siteEvent:fullscreenToggled`](#event-bytm-siteEvent-fullscreenToggled)
+- [Events:](#events)
+  - [**Event Overview and Timings**](#event-overview-and-timings)
+  - [Event List:](#event-list)
+    - Interface Events:
+      - Init:
+        - [`bytm:observersReady`](#bytm-observersready) - [addSelectorListener()](#function-addselectorlistener) can be used
+        - [`bytm:featureInitStarted`](#bytm-featureinitstarted) - features start initializing
+        - [`bytm:featureInitialized`](#bytm-featureinitialized) - a feature has been initialized
+        - [`bytm:featureInitialized:id`](#bytm-featureinitialized-id) - a feature has been initialized
+        - [`bytm:ready`](#bytm-ready) - BYTM general init is done, features may still be initializing
+        - [`bytm:allReady`](#bytm-allready) - all features are initialized
+        - [`bytm:fatalError`](#bytm-fatalerror) - fatal error during init
+      - Plugins:
+        - [`bytm:preInitPlugin`](#bytm-preinitplugin) - earliest possible plugin entrypoint
+        - [`bytm:registerPlugin`](#bytm-registerplugin) - regular plugin entrypoint
+      - Data:
+        - [`bytm:configReady`](#bytm-configready) - feature config is loaded
+        - [`bytm:lyricsCacheReady`](#bytm-lyricscacheready) - lyrics cache is loaded
+        - [`bytm:setLocale`](#bytm-setlocale) - locale was set
+        - [`bytm:lyricsLoaded`](#bytm-lyricsloaded) - lyrics for a song were loaded
+        - [`bytm:lyricsCacheCleared`](#bytm-lyricscachecleared)
+        - [`bytm:lyricsCacheEntryAdded`](#bytm-lyricscacheentryadded)
+      - Dialogs:
+        - [`bytm:dialogOpened`](#bytm-dialogopened) - a BytmDialog was opened
+        - [`bytm:dialogOpened:id`](#bytm-dialogopened-id) - a BytmDialog was opened
+        - [`bytm:dialogClosed`](#bytm-dialogclosed) - a BytmDialog was closed
+        - [`bytm:dialogClosed:id`](#bytm-dialogclosed-id) - a BytmDialog was closed
+    - Site Events:
+      - Feature Config:
+        - [`bytm:siteEvent:configChanged`](#bytm-siteevent-configchanged) - the config object was changed
+        - [`bytm:siteEvent:configOptionChanged`](#bytm-siteevent-configoptionchanged) - a cfg menu option was changed
+        - [`bytm:siteEvent:configHeaderSelected`](#bytm-siteevent-configheaderselected) - a cfg menu header was selected
+        - [`bytm:siteEvent:rebuildCfgMenu`](#bytm-siteevent-rebuildcfgmenu) - makes the cfg menu rebuild itself
+        - [`bytm:siteEvent:cfgMenuMounted`](#bytm-siteevent-cfgmenumounted) - the cfg menu was mounted
+        - [`bytm:siteEvent:recreateCfgMenu`](#bytm-siteevent-recreatecfgmenu) - makes the cfg menu completely recreate and remount itself
+        - [`bytm:siteEvent:cfgMenuClosed`](#bytm-siteevent-cfgmenuclosed) - the cfg menu was closed
+      - Site:
+        - [`bytm:siteEvent:queueChanged`](#bytm-siteevent-queuechanged) - the current queue changed
+        - [`bytm:siteEvent:autoplayQueueChanged`](#bytm-siteevent-autoplayqueuechanged) - the autoplay queue changed
+        - [`bytm:siteEvent:songTitleChanged`](#bytm-siteevent-songtitlechanged) - the song title changed
+        - [`bytm:siteEvent:watchIdChanged`](#bytm-siteevent-watchidchanged) - the watch/video ID changed
+        - [`bytm:siteEvent:pathChanged`](#bytm-siteevent-pathchanged) - the URL path changed
+        - [`bytm:siteEvent:fullscreenToggled`](#bytm-siteevent-fullscreentoggled) - fullscreen mode was toggled
+      - Features:
+        - [`bytm:siteEvent:voteLabelsAdded`](#bytm-siteevent-votelabelsadded) - the like/dislike vote labels were added to the buttons
+        - [`bytm:siteEvent:updateVolumeSliderLabel`](#bytm-siteevent-updatevolumesliderlabel) - makes the volume slider labels update manually
+        - [`bytm:siteEvent:autoLikeChannelsUpdated`](#bytm-siteevent-autolikechannelsupdated) - the auto-like channels list was updated
+      - Misc:
+        - [`bytm:siteEvent:welcomeMenuClosed`](#bytm-siteevent-welcomemenuclosed) - the welcome menu was closed
+        - [`bytm:siteEvent:hotkeyInputActive`](#bytm-siteevent-hotkeyinputactive) - any hotkey input was focused or unfocused
+
+<br>
+
+### Events
+### Event Overview and Timings
+
+The following is a list of events in chronological order, grouped by the init phase and certain user actions.  
+The timings might be slightly off in each session, but this should give you a good idea of when to expect which event.  
+  
+> [!NOTE]  
+> `[Interface]` means the event is only emitted via the interface event system (`unsafeWindow.addEventListener("...")`)  
+> `[Both]` means the event is emitted via both the interface and the site event system (`unsafeWindow.addEventListener("...")` and `unsafeWindow.BYTM.onSiteEvent("...")`, `onceSiteEvent()` and `onMultiSiteEvents()`)
+
+### 1. Init on YTM home page
+- `[Interface]` : [`bytm:preInitPlugin`](#bytm-preinitplugin)
+- `[Interface]` : [`bytm:configReady`](#bytm-configready)
+- `[Interface]` : [`bytm:lyricsCacheReady`](#bytm-lyricscacheready)
+- `[Interface]` : [`bytm:registerPlugin`](#bytm-registerplugin)
+- `[Interface]` : [`bytm:setLocale`](#bytm-setlocale)
+- `[Interface]` : [`bytm:featureInitStarted`](#bytm-featureinitstarted)
+- `[Interface]` : [`bytm:ready`](#bytm-ready)
+- Repeated for every feature:  
+  - `[Interface]` : [`bytm:featureInitialized:id`](#bytm-featureinitialized-id)  
+  - `[Interface]` : [`bytm:featureInitialized`](#bytm-featureinitialized)
+- `[Interface]` : [`bytm:observersReady`](#bytm-observersready)
+- `[Interface]` : [`bytm:allReady`](#bytm-allready)
+- `[Both]     ` : [`bytm:siteEvent:cfgMenuMounted`](#bytm-siteevent-cfgmenumounted)
+
+### 2. Navigate to `/watch`
+- `[Both]     ` : [`bytm:siteEvent:fullscreenToggled`](#event-bytm:siteEvent-fullscreentoggled)
+- `[Both]     ` : [`bytm:siteEvent:watchIdChanged`](#event-bytm:siteEvent-watchidchanged)
+- `[Interface]` : [`bytm:siteEvent:voteLabelsAdded`](#event-bytm:siteEvent-votelabelsadded)
+- `[Both]     ` : [`bytm:siteEvent:pathChanged`](#event-bytm:siteEvent-pathchanged)
+- `[Both]     ` : [`bytm:siteEvent:queueChanged`](#event-bytm:siteEvent-queuechanged)
+- `[Both]     ` : [`bytm:siteEvent:songTitleChanged`](#event-bytm:siteEvent-songtitlechanged)
+- `[Interface]` : [`bytm:lyricsCacheEntryAdded`](#bytm-lyricscacheentryadded)
+- `[Interface]` : [`bytm:lyricsLoaded`](#bytm-lyricsloaded)
+
+### 3. Open config menu and change a setting
+- `[Interface]` : [`bytm:dialogOpened:cfg-menu`](#bytm-dialogopened-cfg-menu)
+- `[Interface]` : [`bytm:dialogOpened`](#bytm-dialogopened)
+- `[Both]     ` : [`bytm:siteEvent:configHeaderSelected`](#bytm-siteevent-configheaderselected)
+- `[Both]     ` : [`bytm:siteEvent:configChanged`](#bytm-siteevent-configchanged)
+- `[Both]     ` : [`bytm:siteEvent:configOptionChanged`](#bytm-siteevent-configoptionchanged)
