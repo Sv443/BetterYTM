@@ -22,7 +22,7 @@ import pkg from "../../package.json" with { type: "json" };
 import localeMapping from "../../assets/locales.json" with { type: "json" };
 import "./menu_old.css";
 
-//#region create menu
+//#region >> create menu
 
 /** Whether the config menu has finished mounting and can be opened with {@linkcode openCfgMenu()} */
 export let isCfgMenuDoneMounting = false;
@@ -59,7 +59,7 @@ export async function mountCfgMenu() {
 
     const initLangReloadText = t("lang_changed_prompt_reload");
 
-    //#region bg & container
+    //#region > bg & container
     const backgroundElem = document.createElement("div");
     backgroundElem.id = "bytm-cfg-menu-bg";
     backgroundElem.classList.add("bytm-menu-bg");
@@ -81,7 +81,7 @@ export async function mountCfgMenu() {
     menuContainer.id = "bytm-cfg-menu";
 
 
-    //#region title bar
+    //#region > title bar
     const headerElem = document.createElement("div");
     headerElem.classList.add("bytm-menu-header");
 
@@ -198,7 +198,7 @@ export async function mountCfgMenu() {
     headerElem.appendChild(titleLogoHeaderCont);
     headerElem.appendChild(closeElem);
 
-    //#region footer
+    //#region > footer
     const footerCont = document.createElement("div");
     footerCont.classList.add("bytm-menu-footer-cont");
 
@@ -312,7 +312,7 @@ export async function mountCfgMenu() {
     footerCont.appendChild(buttonsCont);
 
 
-    //#region main body
+    //#region > main body
 
     const bodyCont = document.createElement("div");
     bodyCont.id = "bytm-cfg-menu-main-body";
@@ -331,7 +331,7 @@ export async function mountCfgMenu() {
         {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
       );
 
-    //#region sidenav
+    //#region > sidenav
 
     const sidenavCont = document.createElement("nav");
     sidenavCont.classList.add("bytm-menu-sidenav");
@@ -448,7 +448,7 @@ export async function mountCfgMenu() {
         ?.setAttribute("open", "true");
     });
 
-    //#region feature list
+    //#region > feature list
     const featuresCont = document.createElement("div");
     featuresCont.id = "bytm-menu-opts";
 
@@ -556,6 +556,9 @@ export async function mountCfgMenu() {
       return categoryCont;
     };
 
+    let currentGroup: string | undefined;
+    let groupCont: HTMLElement | undefined;
+
     let firstCategory = true;
     for(const category in featureCfgWithCategories) {
       const featObj = featureCfgWithCategories[category as FeatureCategory];
@@ -579,6 +582,31 @@ export async function mountCfgMenu() {
 
         if(ftInfo.advanced && !featureCfg.advancedMode)
           continue;
+
+        // handle groups:
+        if(currentGroup && groupCont && currentGroup !== ftInfo.group) {
+          categoryCont.appendChild(groupCont);
+          groupCont = undefined;
+        }
+
+        currentGroup = ftInfo.group ?? undefined;
+
+        if(currentGroup && (!groupCont || groupCont.dataset.group !== currentGroup)) {
+          groupCont = document.createElement("div");
+          groupCont.id = `bytm-ftconf-group-${currentGroup}`;
+          groupCont.classList.add("bytm-ftconf-group");
+          groupCont.dataset.group = currentGroup;
+
+          const groupHeader = document.createElement("h3");
+          groupHeader.id = `bytm-ftconf-group-${currentGroup}-header`;
+          groupHeader.classList.add("bytm-ftconf-group-header", "bytm-no-select");
+          groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`);
+          groupHeader.tabIndex = 0;
+          groupHeader.role = "heading";
+          groupHeader.ariaLevel = "3";
+
+          groupCont.appendChild(groupHeader);
+        }
 
         const { type, default: ftDefault } = ftInfo;
 
@@ -926,7 +954,15 @@ export async function mountCfgMenu() {
           ftConfElem.appendChild(ctrlElem);
         } // end right side element
 
-        categoryCont.appendChild(ftConfElem);
+        if(groupCont)
+          groupCont.appendChild(ftConfElem); // groupCont gets appended to categoryCont at the top of the last category features iteration with the same group name
+        else
+          categoryCont.appendChild(ftConfElem);
+      }
+
+      if(currentGroup && groupCont) {
+        categoryCont.appendChild(groupCont);
+        groupCont = undefined;
       }
 
       featuresCont.appendChild(categoryCont);

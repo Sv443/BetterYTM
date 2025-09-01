@@ -15,7 +15,7 @@
 
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
-  --bytm-menu-separator-color: #797979;
+  --bytm-menu-separator-color: #696969;
   --bytm-menu-border-radius: 10px;
 }
 
@@ -475,6 +475,18 @@
 
 .bytm-ftconf-category.hidden {
   display: none;
+}
+
+.bytm-ftconf-group {
+  border: 2px solid var(--bytm-menu-separator-color);
+  border-style: none none solid none;
+  margin-bottom: 6px;
+  padding: 8px 0px;
+}
+
+.bytm-ftconf-group h3 {
+  margin: 0px 16px 8px 16px;
+  font-size: 1.6rem;
 }
 
 .bytm-ftitem {

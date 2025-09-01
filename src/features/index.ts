@@ -161,6 +161,7 @@ export const groupedCategories: FeatureCategory[][] = [
  * | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
  * | `type: string`                 | Type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
  * | `category: string`             | Category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
+ * | `group: string`                | Shared group name for features related to each other - usually the name of the "main feature" - used to group features in the config menu - should not be used across categories! |
  * | `supportedSites: Domain[]`     | On which sites the feature is available - values can be `"yt"` or `"ytm"`                                                        |
  * | `since: string`                | Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while                |
  * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`                                                     |
@@ -195,6 +196,7 @@ export const featInfo = {
   locale: {
     type: "select",
     category: "general",
+    group: "locale",
     supportedSites: ["ytm", "yt"],
     since: "1.0.0",
     options: options.locale,
@@ -204,6 +206,7 @@ export const featInfo = {
   localeFallback: {
     type: "toggle",
     category: "general",
+    group: "locale",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     default: true,
@@ -213,6 +216,7 @@ export const featInfo = {
   versionCheck: {
     type: "toggle",
     category: "general",
+    group: "versionCheck",
     supportedSites: ["ytm", "yt"],
     since: "1.1.0",
     default: true,
@@ -221,6 +225,7 @@ export const featInfo = {
   checkVersionNow: {
     type: "button",
     category: "general",
+    group: "versionCheck",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     click: () => doVersionCheck(true),
@@ -228,6 +233,7 @@ export const featInfo = {
   numbersFormat: {
     type: "select",
     category: "general",
+    group: "numbersFormat",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     options: () => [
@@ -241,6 +247,7 @@ export const featInfo = {
   toastDuration: {
     type: "slider",
     category: "general",
+    group: "toasts",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     min: 0,
@@ -260,6 +267,7 @@ export const featInfo = {
   showToastOnGenericError: {
     type: "toggle",
     category: "general",
+    group: "toasts",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0-preview.1",
     default: true,
@@ -272,6 +280,7 @@ export const featInfo = {
   initTimeout: {
     type: "number",
     category: "general",
+    group: "init",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     min: mode === "development" ? 0.1 : 3,
@@ -285,6 +294,7 @@ export const featInfo = {
   resetConfig: {
     type: "button",
     category: "general",
+    group: "resetData",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
     click: promptResetConfig,
@@ -293,6 +303,7 @@ export const featInfo = {
   resetEverything: {
     type: "button",
     category: "general",
+    group: "resetData",
     supportedSites: ["ytm", "yt"],
     since: "2.2.0",
     click: async () => {
@@ -312,6 +323,7 @@ export const featInfo = {
   logLevel: {
     type: "select",
     category: "general",
+    group: "logLevel",
     supportedSites: ["ytm", "yt"],
     since: "1.0.0",
     options: () => [
@@ -325,6 +337,7 @@ export const featInfo = {
   advancedMode: {
     type: "toggle",
     category: "general",
+    group: "advancedMode",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     default: false,
@@ -335,6 +348,7 @@ export const featInfo = {
   watermarkEnabled: {
     type: "toggle",
     category: "layout",
+    group: "watermarkEnabled",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -343,6 +357,7 @@ export const featInfo = {
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
+    group: "removeShareTrackingParam",
     supportedSites: ["ytm", "yt"],
     since: "1.0.0",
     default: true,
@@ -351,6 +366,7 @@ export const featInfo = {
   removeShareTrackingParamSites: {
     type: "select",
     category: "layout",
+    group: "removeShareTrackingParam",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     options: options.siteSelection,
@@ -363,6 +379,7 @@ export const featInfo = {
   fixSpacing: {
     type: "toggle",
     category: "layout",
+    group: "fixSpacing",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -372,6 +389,7 @@ export const featInfo = {
   thumbnailOverlayBehavior: {
     type: "select",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "2.0.0",
     options: () => [
@@ -388,6 +406,7 @@ export const featInfo = {
   thumbnailOverlayToggleBtnShown: {
     type: "toggle",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: true,
@@ -396,6 +415,7 @@ export const featInfo = {
   thumbnailOverlayITunesImgRes: {
     type: "slider",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: 2000,
@@ -410,6 +430,7 @@ export const featInfo = {
   thumbnailOverlayAlbumArtCacheMaxSize: {
     type: "slider",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "3.1.0",
     default: 2000,
@@ -426,6 +447,7 @@ export const featInfo = {
   thumbnailOverlayAlbumArtCacheTTL: {
     type: "slider",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "3.1.0",
     default: 30,
@@ -442,6 +464,7 @@ export const featInfo = {
   thumbnailOverlayShowIndicator: {
     type: "toggle",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: true,
@@ -450,6 +473,7 @@ export const featInfo = {
   thumbnailOverlayIndicatorOpacity: {
     type: "slider",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "2.0.0",
     min: 5,
@@ -463,6 +487,7 @@ export const featInfo = {
   thumbnailOverlayPreferredSource: {
     type: "select",
     category: "layout",
+    group: "thumbnailOverlay",
     supportedSites: ["ytm"],
     since: "3.1.0",
     default: "am",
@@ -474,6 +499,7 @@ export const featInfo = {
   hideCursorOnIdle: {
     type: "toggle",
     category: "layout",
+    group: "hideCursorOnIdle",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: true,
@@ -484,6 +510,7 @@ export const featInfo = {
   hideCursorOnIdleDelay: {
     type: "slider",
     category: "layout",
+    group: "hideCursorOnIdle",
     supportedSites: ["ytm"],
     since: "2.0.0",
     min: 0.5,
@@ -499,6 +526,7 @@ export const featInfo = {
   fixHdrIssues: {
     type: "toggle",
     category: "layout",
+    group: "fixHdrIssues",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: true,
@@ -508,6 +536,7 @@ export const featInfo = {
   showVotes: {
     type: "toggle",
     category: "layout",
+    group: "votes",
     supportedSites: ["ytm"],
     since: "2.1.0",
     default: true,
@@ -516,6 +545,7 @@ export const featInfo = {
   swapLikeDislikeButtons: {
     type: "toggle",
     category: "layout",
+    group: "votes",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: false,
@@ -524,6 +554,7 @@ export const featInfo = {
   watchPageFullSize: {
     type: "toggle",
     category: "layout",
+    group: "watchPageFullSize",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: true,
@@ -533,6 +564,7 @@ export const featInfo = {
   // showVoteRatio: {
   //   type: "select",
   //   category: "layout",
+  //   group: "showVoteRatio",
   //   supportedSites: ["ytm"],
   //   since: "x.x.x",
   //   options: () => [
@@ -548,6 +580,7 @@ export const featInfo = {
   lyricsQueueButton: {
     type: "toggle",
     category: "songLists",
+    group: "queueButtons",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -556,6 +589,7 @@ export const featInfo = {
   deleteFromQueueButton: {
     type: "toggle",
     category: "songLists",
+    group: "queueButtons",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -564,6 +598,7 @@ export const featInfo = {
   listButtonsPlacement: {
     type: "select",
     category: "songLists",
+    group: "queueButtons",
     supportedSites: ["ytm"],
     since: "1.1.0",
     options: options.songListType,
@@ -576,6 +611,7 @@ export const featInfo = {
   scrollToActiveSongBtn: {
     type: "toggle",
     category: "songLists",
+    group: "aboveQueueButtons",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -584,6 +620,7 @@ export const featInfo = {
   clearQueueBtn: {
     type: "toggle",
     category: "songLists",
+    group: "aboveQueueButtons",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: true,
@@ -592,6 +629,7 @@ export const featInfo = {
   aboveQueueBtnsSticky: {
     type: "toggle",
     category: "songLists",
+    group: "aboveQueueButtons",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: true,
@@ -601,6 +639,7 @@ export const featInfo = {
   songListTrackNumbersEnabled: {
     type: "toggle",
     category: "songLists",
+    group: "songListTrackNumbers",
     supportedSites: ["ytm"],
     since: "3.1.0",
     default: true,
@@ -609,6 +648,7 @@ export const featInfo = {
   songListTrackNumbers: {
     type: "select",
     category: "songLists",
+    group: "songListTrackNumbers",
     supportedSites: ["ytm"],
     since: "3.1.0",
     options: options.songListType,
@@ -620,6 +660,7 @@ export const featInfo = {
   geniusLyrics: {
     type: "toggle",
     category: "lyrics",
+    group: "geniusLyrics",
     supportedSites: ["ytm"],
     since: "0.2.0",
     default: true,
@@ -628,6 +669,7 @@ export const featInfo = {
   errorOnLyricsNotFound: {
     type: "toggle",
     category: "lyrics",
+    group: "geniusLyrics",
     supportedSites: ["ytm"],
     since: "2.1.0-preview.1",
     default: false,
@@ -638,6 +680,7 @@ export const featInfo = {
   geniUrlBase: {
     type: "text",
     category: "lyrics",
+    group: "geniURL",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: "https://api.sv443.net/geniurl",
@@ -650,6 +693,7 @@ export const featInfo = {
   geniUrlToken: {
     type: "text",
     category: "lyrics",
+    group: "geniURL",
     supportedSites: ["ytm"],
     since: "2.0.0",
     valueHidden: true,
@@ -663,6 +707,7 @@ export const featInfo = {
   lyricsCacheMaxSize: {
     type: "slider",
     category: "lyrics",
+    group: "lyricsCache",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: 5000,
@@ -679,6 +724,7 @@ export const featInfo = {
   lyricsCacheTTL: {
     type: "slider",
     category: "lyrics",
+    group: "lyricsCache",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: 30,
@@ -695,6 +741,7 @@ export const featInfo = {
   clearLyricsCache: {
     type: "button",
     category: "lyrics",
+    group: "lyricsCache",
     supportedSites: ["ytm"],
     since: "2.0.0",
     async click() {
@@ -712,6 +759,7 @@ export const featInfo = {
   // advancedLyricsFilter: {
   //   type: "toggle",
   //   category: "lyrics",
+  //   group: "geniusLyrics",
   //   supportedSites: ["ytm"],
   //   since: "x.x.x",
   //   default: false,
@@ -726,6 +774,7 @@ export const featInfo = {
   volumeSliderLabel: {
     type: "toggle",
     category: "volume",
+    group: "volumeSlider",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -734,6 +783,7 @@ export const featInfo = {
   volumeSliderSize: {
     type: "number",
     category: "volume",
+    group: "volumeSlider",
     supportedSites: ["ytm"],
     since: "1.0.0",
     min: 50,
@@ -746,6 +796,7 @@ export const featInfo = {
   volumeSliderStep: {
     type: "slider",
     category: "volume",
+    group: "volumeSlider",
     supportedSites: ["ytm"],
     since: "1.0.0",
     min: 1,
@@ -757,6 +808,7 @@ export const featInfo = {
   volumeSliderScrollStep: {
     type: "slider",
     category: "volume",
+    group: "volumeSlider",
     supportedSites: ["ytm"],
     since: "1.1.0",
     min: 1,
@@ -768,6 +820,7 @@ export const featInfo = {
   volumeSharedBetweenTabs: {
     type: "toggle",
     category: "volume",
+    group: "volumeSharedBetweenTabs",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: false,
@@ -776,6 +829,7 @@ export const featInfo = {
   setInitialTabVolume: {
     type: "toggle",
     category: "volume",
+    group: "initialTabVolume",
     supportedSites: ["ytm"],
     since: "2.0.0",
     default: false,
@@ -786,6 +840,7 @@ export const featInfo = {
   initialTabVolumeLevel: {
     type: "slider",
     category: "volume",
+    group: "initialTabVolume",
     supportedSites: ["ytm"],
     since: "2.0.0",
     min: 0,
@@ -804,6 +859,7 @@ export const featInfo = {
   disableBeforeUnloadPopup: {
     type: "toggle",
     category: "behavior",
+    group: "disableBeforeUnloadPopup",
     supportedSites: ["ytm", "yt"],
     since: "1.0.0",
     default: false,
@@ -812,6 +868,7 @@ export const featInfo = {
   autoCloseToasts: {
     type: "toggle",
     category: "behavior",
+    group: "autoCloseToasts",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
     default: true,
@@ -821,6 +878,7 @@ export const featInfo = {
   closeToastsTimeout: {
     type: "slider",
     category: "behavior",
+    group: "autoCloseToasts",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     min: 0.5,
@@ -833,6 +891,7 @@ export const featInfo = {
   },
   yesImStillThere: {
     category: "behavior",
+    group: "yesImStillThere",
     type: "toggle",
     supportedSites: ["ytm"],
     since: "3.1.0",
@@ -842,6 +901,7 @@ export const featInfo = {
   rememberSongTime: {
     type: "toggle",
     category: "behavior",
+    group: "rememberSongTime",
     supportedSites: ["ytm", "yt"],
     since: "1.1.0",
     default: true,
@@ -851,6 +911,7 @@ export const featInfo = {
   rememberSongTimeSites: {
     type: "select",
     category: "behavior",
+    group: "rememberSongTime",
     supportedSites: ["ytm", "yt"],
     since: "1.1.0",
     options: options.siteSelection,
@@ -860,6 +921,7 @@ export const featInfo = {
   rememberSongTimeDuration: {
     type: "number",
     category: "behavior",
+    group: "rememberSongTime",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     min: 1,
@@ -873,6 +935,7 @@ export const featInfo = {
   rememberSongTimeReduction: {
     type: "number",
     category: "behavior",
+    group: "rememberSongTime",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     min: 0,
@@ -885,6 +948,7 @@ export const featInfo = {
   rememberSongTimeMinPlayTime: {
     type: "slider",
     category: "behavior",
+    group: "rememberSongTime",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     min: 3,
@@ -898,6 +962,7 @@ export const featInfo = {
   autoScrollToActiveSongMode: {
     type: "select",
     category: "behavior",
+    group: "autoScrollToActiveSongMode",
     supportedSites: ["ytm"],
     since: "3.0.0",
     options: () => [
@@ -917,6 +982,7 @@ export const featInfo = {
   autoLikeChannels: {
     type: "toggle",
     category: "autoLike",
+    group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     default: true,
@@ -925,6 +991,7 @@ export const featInfo = {
   autoLikeOpenMgmtDialog: {
     type: "button",
     category: "autoLike",
+    group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     click: () => getAutoLikeDialog().then(d => d.open()),
@@ -932,6 +999,7 @@ export const featInfo = {
   autoLikeChannelToggleBtn: {
     type: "toggle",
     category: "autoLike",
+    group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     default: true,
@@ -944,6 +1012,7 @@ export const featInfo = {
   // autoLikePlayerBarToggleBtn: {
   //   type: "toggle",
   //   category: "autoLike",
+  //   group: "autoLikeChannels",
   //   supportedSites: ["ytm", "yt"],
   //   since: "x.x.x",
   //   default: false,
@@ -952,6 +1021,7 @@ export const featInfo = {
   autoLikeTimeout: {
     type: "slider",
     category: "autoLike",
+    group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     min: 3,
@@ -965,6 +1035,7 @@ export const featInfo = {
   autoLikeShowToast: {
     type: "toggle",
     category: "autoLike",
+    group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
     default: true,
@@ -976,6 +1047,7 @@ export const featInfo = {
   arrowKeySupport: {
     type: "toggle",
     category: "input",
+    group: "arrowKeySupport",
     supportedSites: ["ytm"],
     since: "0.1.0",
     default: true,
@@ -986,6 +1058,7 @@ export const featInfo = {
   arrowKeySkipBy: {
     type: "slider",
     category: "input",
+    group: "arrowKeySupport",
     supportedSites: ["ytm"],
     since: "1.1.0",
     min: 0.5,
@@ -1000,6 +1073,7 @@ export const featInfo = {
   arrowKeyVolumeStep: {
     type: "slider",
     category: "input",
+    group: "arrowKeySupport",
     supportedSites: ["ytm"],
     since: "3.0.0",
     min: 1,
@@ -1014,6 +1088,7 @@ export const featInfo = {
   frameSkip: {
     type: "toggle",
     category: "input",
+    group: "frameSkip",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: true,
@@ -1024,6 +1099,7 @@ export const featInfo = {
   frameSkipWhilePlaying: {
     type: "toggle",
     category: "input",
+    group: "frameSkip",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: false,
@@ -1035,6 +1111,7 @@ export const featInfo = {
   frameSkipAmount: {
     type: "number",
     category: "input",
+    group: "frameSkip",
     supportedSites: ["ytm"],
     since: "3.0.0",
     min: 0,
@@ -1049,6 +1126,7 @@ export const featInfo = {
   anchorImprovements: {
     type: "toggle",
     category: "input",
+    group: "anchorImprovements",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -1057,6 +1135,7 @@ export const featInfo = {
   numKeysSkipToTime: {
     type: "toggle",
     category: "input",
+    group: "numKeysSkipToTime",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
@@ -1067,6 +1146,7 @@ export const featInfo = {
   numKeysSkipToTimeDoublePress: {
     type: "slider",
     category: "input",
+    group: "numKeysSkipToTime",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: 0,
@@ -1084,6 +1164,7 @@ export const featInfo = {
   numKeysSkipToTimeDoublePressBuffer: {
     type: "slider",
     category: "input",
+    group: "numKeysSkipToTime",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: 5,
@@ -1106,6 +1187,7 @@ export const featInfo = {
   switchBetweenSites: {
     type: "toggle",
     category: "hotkeys",
+    group: "switchBetweenSites",
     supportedSites: ["ytm", "yt"],
     since: "0.2.0",
     default: true,
@@ -1115,6 +1197,7 @@ export const featInfo = {
   switchSitesHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "switchBetweenSites",
     supportedSites: ["ytm", "yt"],
     since: "1.1.0",
     default: {
@@ -1129,6 +1212,7 @@ export const featInfo = {
   likeDislikeHotkeys: {
     type: "toggle",
     category: "hotkeys",
+    group: "likeDislikeHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
     default: true,
@@ -1138,6 +1222,7 @@ export const featInfo = {
   likeHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "likeDislikeHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
     default: {
@@ -1152,6 +1237,7 @@ export const featInfo = {
   dislikeHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "likeDislikeHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
     default: {
@@ -1166,6 +1252,7 @@ export const featInfo = {
   currentLyricsHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
+    group: "currentLyricsHotkeyEnabled",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: true,
@@ -1176,6 +1263,7 @@ export const featInfo = {
   currentLyricsHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "currentLyricsHotkeyEnabled",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: {
@@ -1191,6 +1279,7 @@ export const featInfo = {
   skipToRemTimeHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
+    group: "skipToRemTimeHotkeyEnabled",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
     default: true,
@@ -1212,6 +1301,7 @@ export const featInfo = {
   skipToRemTimeHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "skipToRemTimeHotkeyEnabled",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
     default: {
@@ -1226,6 +1316,7 @@ export const featInfo = {
   focusSearchBarHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
+    group: "searchBarHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: true,
@@ -1235,6 +1326,7 @@ export const featInfo = {
   focusSearchBarHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "searchBarHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: {
@@ -1249,6 +1341,7 @@ export const featInfo = {
   clearSearchBarHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
+    group: "searchBarHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: true,
@@ -1258,6 +1351,7 @@ export const featInfo = {
   clearSearchBarHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "searchBarHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: {
@@ -1272,6 +1366,7 @@ export const featInfo = {
   rebindNextAndPrevious: {
     type: "toggle",
     category: "hotkeys",
+    group: "rebindNextAndPrevious",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: false,
@@ -1282,6 +1377,7 @@ export const featInfo = {
   nextHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "rebindNextAndPrevious",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: {
@@ -1297,6 +1393,7 @@ export const featInfo = {
   previousHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "rebindNextAndPrevious",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: {
@@ -1312,6 +1409,7 @@ export const featInfo = {
   rebindPlayPause: {
     type: "toggle",
     category: "hotkeys",
+    group: "rebindPlayPause",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: false,
@@ -1322,6 +1420,7 @@ export const featInfo = {
   playPauseHotkey: {
     type: "hotkey",
     category: "hotkeys",
+    group: "rebindPlayPause",
     supportedSites: ["ytm"],
     since: "3.0.0",
     default: {
@@ -1339,6 +1438,7 @@ export const featInfo = {
   disableDarkReaderSites: {
     type: "select",
     category: "integrations",
+    group: "darkReader",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     options: options.siteSelectionOrNone,
@@ -1348,6 +1448,7 @@ export const featInfo = {
   sponsorBlockIntegration: {
     type: "toggle",
     category: "integrations",
+    group: "sponsorBlock",
     supportedSites: ["ytm"],
     since: "2.1.0-preview.1",
     default: true,
@@ -1356,6 +1457,7 @@ export const featInfo = {
   themeSongIntegration: {
     type: "toggle",
     category: "integrations",
+    group: "themeSong",
     supportedSites: ["ytm"],
     since: "2.1.0-preview.1",
     default: false,
@@ -1364,6 +1466,7 @@ export const featInfo = {
   themeSongLightness: {
     type: "select",
     category: "integrations",
+    group: "themeSong",
     supportedSites: ["ytm"],
     since: "2.1.0-preview.1",
     options: options.colorLightness,
@@ -1373,6 +1476,7 @@ export const featInfo = {
   removeThumbnailRatingBar: {
     type: "toggle",
     category: "integrations",
+    group: "thumbnailRatingBar",
     supportedSites: ["ytm"],
     since: "3.1.0",
     default: true,
@@ -1383,6 +1487,7 @@ export const featInfo = {
   openPluginList: {
     type: "button",
     category: "plugins",
+    group: "pluginList",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0-preview.1",
     default: undefined,

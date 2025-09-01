@@ -1175,7 +1175,7 @@ body.bytm-dom-ytm
 
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
-  --bytm-menu-separator-color: #797979;
+  --bytm-menu-separator-color: #696969;
   --bytm-menu-border-radius: 10px;
 }
 
@@ -1637,6 +1637,18 @@ body.bytm-dom-ytm
   display: none;
 }
 
+.bytm-ftconf-group {
+  border: 2px solid var(--bytm-menu-separator-color);
+  border-style: none none solid none;
+  margin-bottom: 6px;
+  padding: 8px 0px;
+}
+
+.bytm-ftconf-group h3 {
+  margin: 0px 16px 8px 16px;
+  font-size: 1.6rem;
+}
+
 .bytm-ftitem {
   display: flex;
   flex-direction: row;
@@ -1919,6 +1931,10 @@ html[dark] {
 .subtitle yt-formatted-string span:last-of-type {
   text-overflow: ellipsis;
   overflow-x: hidden;
+}
+
+ytmusic-description-shelf-renderer[page-type="MUSIC_PAGE_TYPE_TRACK_LYRICS"] > .description {
+  user-select: text;
 }
 
 /* #region generic (circular) button */
@@ -2573,6 +2589,17 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 #ts-visualizer-container #ThemeSong-Visualizer canvas {
   /* Fix for the thumbnail overlay */
   z-index: 1;
+}
+
+/* hide ThemeSong container when hovering enlarged slider: */
+
+#ts-panel-container {
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+
+#ts-panel-container.bytm-hidden {
+  opacity: 0;
 }
 
 /* #region queue buttons */

@@ -597,6 +597,8 @@ export type FeatAdornments = AdornFunc[] | (() => AdornFunc[]);
 export type FeatureInfoEntry = {
     /** Feature category */
     category: FeatureCategory;
+    /** Shared group name for related features - usually the name of the first feature or "main feature" (the feature that has the enable/disable toggle button) - groups features together in the config menu - don't use group names across cateogories! */
+    group: string;
     /** On which sites the feature is available */
     supportedSites: Domain[];
     /** Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while */
