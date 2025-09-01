@@ -201,17 +201,25 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   let lastSliderVal = Number(sliderElem.value);
 
+  /** Hide or show the ThemeSong media controls element when the volume slider is expanded */
+  const setThemeSongContHidden = (hidden = true) => {
+    const contEl = document.querySelector<HTMLElement>("#ts-panel-container");
+    contEl?.classList[(hidden ? "add" : "remove")]("bytm-hidden");
+  };
+
   // show label if hovering over slider or slider is focused
   const sliderHoverObserver = new MutationObserver(() => {
     if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
       labelContElem.style.display = "initial";
       labelContElem.setAttribute("aria-hidden", "false");
       labelContElem.classList.add("bytm-visible");
+      setThemeSongContHidden();
     }
     else if(labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
       labelContElem.addEventListener("transitionend", () => {
         labelContElem.style.display = "none";
         labelContElem.setAttribute("aria-hidden", "true");
+        setThemeSongContHidden(false);
       }, { once: true });
       labelContElem.classList.remove("bytm-visible");
     }

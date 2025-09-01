@@ -37,6 +37,10 @@ html[dark] {
   overflow-x: hidden;
 }
 
+ytmusic-description-shelf-renderer[page-type="MUSIC_PAGE_TYPE_TRACK_LYRICS"] > .description {
+  user-select: text;
+}
+
 /* #region generic (circular) button */
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;

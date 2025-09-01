@@ -6,3 +6,14 @@
   /* Fix for the thumbnail overlay */
   z-index: 1;
 }
+
+/* hide ThemeSong container when hovering enlarged slider: */
+
+#ts-panel-container {
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+
+#ts-panel-container.bytm-hidden {
+  opacity: 0;
+}
