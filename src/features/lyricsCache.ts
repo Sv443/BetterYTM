@@ -69,30 +69,29 @@ export function getLyricsCacheEntry(artist: string, song: string, refreshEntry =
     return undefined;
   }
 
-  // refresh timestamp of the entry by mutating cache
   if(entry && refreshEntry)
-    updateLyricsCacheEntry(artist, song);
+    updateLyricsCacheEntry(artist, song); // refresh view timestamp
   return entry;
 }
 
 /** Updates the "last viewed" timestamp of the cache entry for the passed artist and song */
-function updateLyricsCacheEntry(artist: string, song: string) {
+async function updateLyricsCacheEntry(artist: string, song: string) {
   const { cache } = lyricsCacheStore.getData();
   const idx = cache.findIndex(e => e.artist === artist && e.song === song);
   if(idx !== -1) {
     const newEntry = cache.splice(idx, 1)[0]!;
     newEntry.viewed = Math.floor(Date.now() / 1000);
-    lyricsCacheStore.setData({ cache: [ newEntry, ...cache ] });
+    return await lyricsCacheStore.setData({ cache: [ newEntry, ...cache ] });
   }
 }
 
 /** Deletes the cache entry for the passed artist and song */
-function deleteLyricsCacheEntry(artist: string, song: string) {
+async function deleteLyricsCacheEntry(artist: string, song: string) {
   const { cache } = lyricsCacheStore.getData();
   const idx = cache.findIndex(e => e.artist === artist && e.song === song);
   if(idx !== -1) {
     cache.splice(idx, 1);
-    lyricsCacheStore.setData({ cache });
+    return await lyricsCacheStore.setData({ cache });
   }
 }
 
@@ -103,9 +102,9 @@ export async function deleteLyricsCache() {
 }
 
 /** Clears the lyrics cache locally and clears it in persistent storage */
-export function clearLyricsCache() {
+export async function clearLyricsCache() {
   emitInterface("bytm:lyricsCacheCleared");
-  return lyricsCacheStore.setData({ cache: [] });
+  return await lyricsCacheStore.setData({ cache: [] });
 }
 
 /** Returns the full lyrics cache array */
@@ -117,7 +116,7 @@ export function getLyricsCache() {
  * Adds the provided "best" (non-penalized) entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage  
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
  */
-export function addLyricsCacheEntryBest(artist: string, song: string, path: string) {
+export async function addLyricsCacheEntryBest(artist: string, song: string, path: string) {
   // refresh entry if it exists and don't overwrite / duplicate it
   const cachedEntry = getLyricsCacheEntry(artist, song, true);
   if(cachedEntry)
@@ -147,7 +146,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, path: stri
  * ⚠️ `artist` and `song` need to be sanitized first!
  * @param penaltyFr Fraction of the max bounds {@linkcode maxViewedPenalty} and {@linkcode maxAddedPenalty} to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the max penalty)
  */
-export function addLyricsCacheEntryPenalized(artist: string, song: string, path: string, penaltyFr = 0) {
+export async function addLyricsCacheEntryPenalized(artist: string, song: string, path: string, penaltyFr = 0) {
   // refresh entry if it exists and don't overwrite / duplicate it
   const cachedEntry = getLyricsCacheEntry(artist, song, true);
   if(cachedEntry)
