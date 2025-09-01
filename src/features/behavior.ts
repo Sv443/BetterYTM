@@ -293,11 +293,15 @@ async function remTimeDeleteEntry(videoID: string) {
 let curSongTitle: string | undefined;
 
 let isDragging = false;
+let lastClick = 0;
+
+const lastInteractionTimeout = 5_000;
 
 document.addEventListener("dragstart", () => isDragging = true);
 document.addEventListener("dragend", () => isDragging = false);
 document.addEventListener("mousedown", () => isDragging = true);
 document.addEventListener("mouseup", () => isDragging = false);
+document.addEventListener("click", () => lastClick = Date.now());
 
 /** Initializes the "Are you still there?" popup dismissing feature */
 export async function initStillThere() {
@@ -369,7 +373,7 @@ export async function initStillThere() {
   // dispatch on interval
 
   const tryClick = () => {
-    if(isDragging)
+    if(isDragging || Date.now() - lastClick < lastInteractionTimeout)
       return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
 
     // click the navbar
@@ -377,7 +381,7 @@ export async function initStillThere() {
 
     navBar?.dispatchEvent(new MouseEvent("click", {
       // @ts-expect-error
-      altitudeAngle: 1.5707963267948966,
+      altitudeAngle: 1 + Math.random(),
       cancelable: true,
       clientX: 975,
       clientY: 13,
@@ -399,14 +403,15 @@ export async function initStillThere() {
       srcElement: navBar,
       target: navBar,
       timeStamp: 44955,
-      view: getUnsafeWindow(),
       x: 975,
       y: 13,
+      // see https://github.com/Sv443/BetterYTM/issues/18
+      view: getUnsafeWindow(),
     }));
   };
 
   const tryMove = async () => {
-    if(isDragging)
+    if(isDragging || Date.now() - lastClick < lastInteractionTimeout)
       return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
 
     // dispatch mousemoves with random vector for a second
@@ -418,13 +423,19 @@ export async function initStillThere() {
       return;
 
     for(let i = 0; i < 20; i++) {
-      const x = Math.random() * clamp(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100),
-        y = Math.random() * clamp(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
+      const x = Math.random() * clamp(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100);
+      const y = Math.random() * clamp(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
+
       vidEl?.dispatchEvent(new MouseEvent("mousemove", {
         bubbles: true,
         cancelable: true,
         clientX: x + incX * i,
         clientY: y + incY * i,
+        screenX: x + incX * i,
+        screenY: y + incY * i,
+        movementX: incX,
+        movementY: incY,
+        // see https://github.com/Sv443/BetterYTM/issues/18
         view: getUnsafeWindow(),
       }));
       await pauseFor(10);

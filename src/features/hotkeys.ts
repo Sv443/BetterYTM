@@ -229,6 +229,7 @@ async function initProxyHotkeys() {
       ...hkProps,
       bubbles: true,
       cancelable: false,
+      // see https://github.com/Sv443/BetterYTM/issues/18
       view: getUnsafeWindow(),
     }));
     log("Dispatched proxy hotkey:", hkProps);

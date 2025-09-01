@@ -54,7 +54,7 @@ Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), 
   <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
 
 2. **Then, [visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button on the latest release.**  
-  <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18#show_issue" target="_blank">more info here</a>).</sub>
+  <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18" target="_blank">more info here</a>).</sub>
 
 <br>
   
