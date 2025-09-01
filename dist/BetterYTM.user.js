@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ca330a3c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4cbb5cf2/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -356,8 +356,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ca330a3c",
-    buildTimestamp: "1756134749920",
+    buildNumber: "4cbb5cf2",
+    buildTimestamp: "1756740797887",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -468,34 +468,33 @@ function getLyricsCacheEntry(artist, song, refreshEntry = true) {
         deleteLyricsCacheEntry(artist, song);
         return undefined;
     }
-    // refresh timestamp of the entry by mutating cache
     if (entry && refreshEntry)
-        updateLyricsCacheEntry(artist, song);
+        updateLyricsCacheEntry(artist, song); // refresh view timestamp
     return entry;
 }
 /** Updates the "last viewed" timestamp of the cache entry for the passed artist and song */
-function updateLyricsCacheEntry(artist, song) {
+async function updateLyricsCacheEntry(artist, song) {
     const { cache } = lyricsCacheStore.getData();
     const idx = cache.findIndex(e => e.artist === artist && e.song === song);
     if (idx !== -1) {
         const newEntry = cache.splice(idx, 1)[0];
         newEntry.viewed = Math.floor(Date.now() / 1000);
-        lyricsCacheStore.setData({ cache: [newEntry, ...cache] });
+        return await lyricsCacheStore.setData({ cache: [newEntry, ...cache] });
     }
 }
 /** Deletes the cache entry for the passed artist and song */
-function deleteLyricsCacheEntry(artist, song) {
+async function deleteLyricsCacheEntry(artist, song) {
     const { cache } = lyricsCacheStore.getData();
     const idx = cache.findIndex(e => e.artist === artist && e.song === song);
     if (idx !== -1) {
         cache.splice(idx, 1);
-        lyricsCacheStore.setData({ cache });
+        return await lyricsCacheStore.setData({ cache });
     }
 }
 /** Clears the lyrics cache locally and clears it in persistent storage */
-function clearLyricsCache() {
+async function clearLyricsCache() {
     emitInterface("bytm:lyricsCacheCleared");
-    return lyricsCacheStore.setData({ cache: [] });
+    return await lyricsCacheStore.setData({ cache: [] });
 }
 /** Returns the full lyrics cache array */
 function getLyricsCache() {
@@ -505,7 +504,7 @@ function getLyricsCache() {
  * Adds the provided "best" (non-penalized) entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
  */
-function addLyricsCacheEntryBest(artist, song, path) {
+async function addLyricsCacheEntryBest(artist, song, path) {
     // refresh entry if it exists and don't overwrite / duplicate it
     const cachedEntry = getLyricsCacheEntry(artist, song, true);
     if (cachedEntry)
@@ -529,6 +528,31 @@ let activeLocale = "en-US";
 let activeLocaleDir = "ltr";
 UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
 UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
+let devUsedTrKeysStoreLoaded = false;
+const devUsedTrKeysStore = new UserUtils.DataStore({
+    id: "bytm-dev-used-tr-keys",
+    defaultData: { keys: [] },
+    formatVersion: 0,
+});
+/** Used to check which keys are unused. */
+const devMarkTrKeyUsed = async (key) => {
+    try {
+        if (mode$1 !== "development")
+            return;
+        if (!devUsedTrKeysStoreLoaded) {
+            await devUsedTrKeysStore.loadData();
+            devUsedTrKeysStoreLoaded = true;
+        }
+        const data = devUsedTrKeysStore.getData();
+        const keysSet = new Set(data.keys);
+        keysSet.add(key);
+        data.keys = Array.from(keysSet);
+        return await devUsedTrKeysStore.setData(data);
+    }
+    catch (e) {
+        error("Failed to mark translation key as used", e);
+    }
+};
 /** Initializes the translations */
 async function initTranslations(locale) {
     if (initializedLocales.has(locale))
@@ -560,62 +584,68 @@ async function initTranslations(locale) {
         throw new Error(errStr);
     }
 }
-/** Fetches the translation JSON file of the passed locale */
+/** Fetches the JSON translations file of the passed locale. */
 async function fetchLocaleJson(locale) {
     const url = await getResourceUrl(`trans-${locale}`);
     const res = await CoreUtils.fetchAdvanced(url);
     if (res.status < 200 || res.status >= 300)
         throw new Error(`Failed to fetch translation file for locale '${locale}'`);
-    return await res.json();
+    return await res.json(); // since en-US keys are merged in, this assertion is safe
 }
-/** Sets the current language for translations */
+/** Sets the new locale to use in translations. */
 function setLocale(locale) {
     activeLocale = locale;
     activeLocaleDir = locales[locale]?.textDir ?? "ltr";
     setGlobalProp("locale", locale);
     emitInterface("bytm:setLocale", { locale });
 }
-/** Returns the currently set language */
+/** Returns the currently set locale. */
 function getLocale() {
     return activeLocale;
 }
-/** Returns whether the given translation key exists in the current locale */
+/** Returns whether the given translation key exists in the current locale. Loads the translations if they weren't yet. */
 async function hasKey(key) {
     return await hasKeyFor(getLocale(), key);
 }
-/** Returns whether the given translation key exists in the given locale - if it hasn't been initialized yet, initializes it first. */
+/** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
 async function hasKeyFor(locale, key) {
+    devMarkTrKeyUsed(key);
     if (!initializedLocales.has(locale))
         await initTranslations(locale);
     return typeof UserUtils.tr.getTranslations(locale)?.[key] === "string";
 }
-/** Returns the translated string for the given key, after optionally inserting arguments */
+/**
+ * Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.
+ * ℹ️ UserUtils' `templateLiteral` transform is not used yet, since CoreUtils will implement an even newer translation system and it's simply not worth it to refactor everything twice.
+ */
 function t(key, ...args) {
-    return tl(activeLocale, key, ...args);
+    return tl(getLocale(), key, ...args);
 }
 /**
  * Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}
- * Also inserts the passed {@linkcode args} into the translation at the markers `%1`, `%2`, etc.
- * Tries to fall back to the non-pluralized syntax if no translation was found
+ * Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.
+ * Tries to fall back to the non-pluralized syntax if no translation was found.
  */
 function tp(key, num, ...args) {
     return tlp(getLocale(), key, num, ...args);
 }
-/** Returns the translated string for the given key in the specified locale, after optionally inserting arguments */
+/** Returns the translated string for the given key in the specified locale, after optionally inserting positional arguments into 1-indexed `%n` placeholders. */
 function tl(locale, key, ...args) {
     if (locale === "en-US")
         hasKeyFor(locale, key).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+    devMarkTrKeyUsed(key);
     return UserUtils.tr.for(locale, key, ...args);
 }
 /**
  * Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}
- * Also inserts the passed {@linkcode args} into the translation at the markers `%1`, `%2`, etc.
- * Tries to fall back to the non-pluralized syntax if no translation was found
+ * Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.
+ * Tries to fall back to the non-pluralized syntax if no translation was found.
  */
 function tlp(locale, key, num, ...args) {
     if (typeof num !== "number")
         num = num.length;
     const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
+    devMarkTrKeyUsed(tlKey);
     if (locale === "en-US")
         hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
     const trans = tl(locale, tlKey, ...args);
@@ -1526,15 +1556,29 @@ async function doVersionCheck(notifyNoNewVerFound = false) {
         return;
     }
     return await noNewVerFound();
-}/** Max amount of seconds a toast can be shown for */
-const maxToastDuration = 30000;
+}//#region vars
+/** Max amount of seconds a toast can be shown for */
+const maxToastDuration = 15000;
+/** Queue of future toasts to be shown */
+const toastQueue = [];
+/** Whether a toast is currently being shown */
+let showingToast = false;
+/** Timeout ID for the currently shown toast */
 let timeout;
-/** Shows a toast message with an icon */
+// TODO:FIXME: no workis
+//#region icon toast
+/**
+ * Shows a toast message with an icon.
+ * @returns The toast element if it could be immediately shown, otherwise `void` (like when it was queued to be shown later)
+ */
 async function showIconToast({ duration, position = "tr", iconPos = "left", ...rest }) {
     if (typeof duration !== "number" || isNaN(duration))
         duration = getFeature("toastDuration") * 1000;
     if (duration <= 0)
         return info("Toast duration is <= 0, so it won't be shown");
+    if (showingToast)
+        return void toastQueue.push(() => showIconToast({ duration, position, iconPos, ...rest }));
+    showingToast = true;
     const toastWrapper = document.createElement("div");
     toastWrapper.classList.add("bytm-toast-flex-wrapper");
     let toastIcon;
@@ -1568,13 +1612,26 @@ async function showIconToast({ duration, position = "tr", iconPos = "left", ...r
     iconPos === "left" && toastWrapper.appendChild(toastIcon);
     toastWrapper.appendChild(toastMessage);
     iconPos === "right" && toastWrapper.appendChild(toastIcon);
-    return await showToast({
+    const elem = await showToast({
         duration,
         position,
         element: toastWrapper,
         title: "message" in rest ? rest.message : rest.title,
         onClick: rest.onClick,
     });
+    if (toastQueue.length > 0) {
+        return new Promise(resolve => {
+            elem?.addEventListener("transitionend", async () => {
+                const nextToast = toastQueue.shift();
+                showingToast = false;
+                return resolve(void await nextToast());
+            }, { once: true });
+        });
+    }
+    else {
+        showingToast = false;
+        return elem;
+    }
 }
 /** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
 async function showToast(arg) {
@@ -1587,6 +1644,9 @@ async function showToast(arg) {
     const { duration: durationMs = getFeature("toastDuration") * 1000, onClick, position = "tr", ...rest } = props;
     if (durationMs <= 0)
         return info("Toast duration is <= 0, so it won't be shown");
+    if (showingToast)
+        return void toastQueue.push(() => showToast(props));
+    showingToast = true;
     if (document.querySelector("#bytm-toast"))
         await closeToast();
     const toastElem = document.createElement("div");
@@ -1614,7 +1674,19 @@ async function showToast(arg) {
             timeout = setTimeout(closeToast, CoreUtils.clamp(durationMs, 250, maxToastDuration));
         }
     });
-    return toastElem;
+    if (toastQueue.length > 0) {
+        return new Promise(resolve => {
+            toastElem?.addEventListener("transitionend", async () => {
+                const nextToast = toastQueue.shift();
+                showingToast = false;
+                return resolve(void await nextToast());
+            }, { once: true });
+        });
+    }
+    else {
+        showingToast = false;
+        return toastElem;
+    }
 }
 /** Closes the currently open toast */
 async function closeToast() {
@@ -1622,14 +1694,13 @@ async function closeToast() {
         clearTimeout(timeout);
         timeout = undefined;
     }
+    // query all for safety even though there should only be one at a time
     const toastEls = document.querySelectorAll("#bytm-toast");
     if (toastEls.length === 0)
         return;
     await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
+        toastEl.addEventListener("transitionend", async () => toastEl.remove(), { once: true });
         toastEl.classList.remove("visible");
-        await CoreUtils.pauseFor(300);
-        toastEl.remove();
-        await CoreUtils.pauseFor(100);
     }));
 }const interactionKeys = ["Enter", " ", "Space"];
 /**
@@ -2839,10 +2910,13 @@ async function remTimeDeleteEntry(videoID) {
 //#region dismiss "are you still there"
 let curSongTitle;
 let isDragging = false;
+let lastClick = 0;
+const lastInteractionTimeout = 5000;
 document.addEventListener("dragstart", () => isDragging = true);
 document.addEventListener("dragend", () => isDragging = false);
 document.addEventListener("mousedown", () => isDragging = true);
 document.addEventListener("mouseup", () => isDragging = false);
+document.addEventListener("click", () => lastClick = Date.now());
 /** Initializes the "Are you still there?" popup dismissing feature */
 async function initStillThere() {
     siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
@@ -2897,13 +2971,13 @@ async function initStillThere() {
     });
     // dispatch on interval
     const tryClick = () => {
-        if (isDragging)
+        if (isDragging || Date.now() - lastClick < lastInteractionTimeout)
             return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
         // click the navbar
         const navBar = document.querySelector("ytmusic-nav-bar .center-content");
         navBar?.dispatchEvent(new MouseEvent("click", {
             // @ts-expect-error
-            altitudeAngle: 1.5707963267948966,
+            altitudeAngle: 1 + Math.random(),
             cancelable: true,
             clientX: 975,
             clientY: 13,
@@ -2925,13 +2999,14 @@ async function initStillThere() {
             srcElement: navBar,
             target: navBar,
             timeStamp: 44955,
-            view: UserUtils.getUnsafeWindow(),
             x: 975,
             y: 13,
+            // see https://github.com/Sv443/BetterYTM/issues/18
+            view: UserUtils.getUnsafeWindow(),
         }));
     };
     const tryMove = async () => {
-        if (isDragging)
+        if (isDragging || Date.now() - lastClick < lastInteractionTimeout)
             return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
         // dispatch mousemoves with random vector for a second
         const incX = (Math.random() * 2 - 1) / 10, incY = (Math.random() * 2 - 1) / 10;
@@ -2939,12 +3014,18 @@ async function initStillThere() {
         if (!vidEl)
             return;
         for (let i = 0; i < 20; i++) {
-            const x = Math.random() * CoreUtils.clamp(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100), y = Math.random() * CoreUtils.clamp(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
+            const x = Math.random() * CoreUtils.clamp(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100);
+            const y = Math.random() * CoreUtils.clamp(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
             vidEl?.dispatchEvent(new MouseEvent("mousemove", {
                 bubbles: true,
                 cancelable: true,
                 clientX: x + incX * i,
                 clientY: y + incY * i,
+                screenX: x + incX * i,
+                screenY: y + incY * i,
+                movementX: incX,
+                movementY: incY,
+                // see https://github.com/Sv443/BetterYTM/issues/18
                 view: UserUtils.getUnsafeWindow(),
             }));
             await CoreUtils.pauseFor(10);
@@ -3774,7 +3855,7 @@ async function renderBody$3() {
     const contElem = document.createElement("div");
     const localeObj = locales?.[getLocale()];
     // insert sentence terminator if not present, to improve flow with screenreaders
-    let featText = t(`feature_desc_${curFeatKey}`);
+    let featText = t(`feature_desc.${curFeatKey}`);
     if (localeObj) {
         if (!featText.endsWith(localeObj.sentenceTerminator))
             featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminator}${localeObj.textDir === "rtl" ? featText : ""}`;
@@ -3789,7 +3870,7 @@ async function renderBody$3() {
     helpTextElem.tabIndex = 0;
     // @ts-expect-error
     const helpText = featInfo[curFeatKey]?.helpText?.();
-    helpTextElem.textContent = helpText ?? t(`feature_helptext_${curFeatKey}`);
+    helpTextElem.textContent = helpText ?? t(`feature_helptext.${curFeatKey}`);
     contElem.appendChild(featDescElem);
     contElem.appendChild(helpTextElem);
     return contElem;
@@ -4218,8 +4299,8 @@ async function mountCfgMenu() {
                 headerElem.ariaChecked = String(selected);
                 headerElem.tabIndex = 0;
                 headerElem.ariaLevel = "2";
-                headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo$1.name);
-                headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
+                headerElem.textContent = t(`feature_category.${headerId}`, scriptInfo$1.name);
+                headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`));
                 onInteraction(headerElem, (e) => {
                     const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
                     if (selectedHeader) {
@@ -4380,7 +4461,7 @@ async function mountCfgMenu() {
             categoryCont.classList.add("bytm-ftconf-category");
             categoryCont.tabIndex = 0;
             categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
-            categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
+            categoryCont.setAttribute("aria-label", t(`feature_category.${category}`));
             return categoryCont;
         };
         let firstCategory = true;
@@ -4423,14 +4504,14 @@ async function mountCfgMenu() {
                         const adv = ftInfo.advanced ? " (advanced feature)" : "";
                         ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
                     }
-                    if (!await hasKeyFor("en-US", `feature_desc_${featKey}`)) {
-                        error(`Missing en-US translation with key "feature_desc_${featKey}" for feature description, skipping this config menu feature...`);
+                    if (!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
+                        error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
                         continue;
                     }
                     const textElem = document.createElement("span");
                     textElem.id = `bytm-ftitem-text-${featKey}`;
                     textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
-                    textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
+                    textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc.${featKey}`);
                     const adornContent = await resolveAdornments(featInfo, featKey);
                     let adornmentElem;
                     if (adornContent && adornContent.length > 0) {
@@ -4445,12 +4526,12 @@ async function mountCfgMenu() {
                     const hasHelpTextFunc = typeof featInfo[featKey]?.helpText === "function";
                     // @ts-expect-error
                     const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
-                    if (await hasKey(`feature_helptext_${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
+                    if (await hasKey(`feature_helptext.${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
                         const helpElemImgHtml = await resourceAsString("icon-help");
                         if (helpElemImgHtml) {
                             helpElem = document.createElement("div");
                             helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
-                            helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc_${featKey}`));
+                            helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc.${featKey}`));
                             helpElem.role = "button";
                             helpElem.tabIndex = 0;
                             setInnerHtml(helpElem, helpElemImgHtml);
@@ -4540,7 +4621,7 @@ async function mountCfgMenu() {
                         const inputElem = document.createElement(inputTag);
                         inputElem.classList.add("bytm-ftconf-input");
                         inputElem.id = inputElemId;
-                        inputElem.ariaLabel = t(`feature_desc_${featKey}`);
+                        inputElem.ariaLabel = t(`feature_desc.${featKey}`);
                         if (inputType)
                             inputElem.type = inputType;
                         if ("min" in ftInfo && typeof ftInfo.min !== "undefined")
@@ -4634,7 +4715,7 @@ async function mountCfgMenu() {
                                 customInputEl = createHotkeyInput({
                                     initialValue: typeof initialVal === "object" ? initialVal : undefined,
                                     onChange: (hotkey) => confChanged(featKey, initialVal, hotkey),
-                                    createTitle: (value) => t("hotkey_input_click_to_change_tooltip", t(`feature_desc_${featKey}`), value),
+                                    createTitle: (value) => t("hotkey_input_click_to_change_tooltip", t(`feature_desc.${featKey}`), value),
                                 });
                                 break;
                             case "toggle":
@@ -4649,8 +4730,8 @@ async function mountCfgMenu() {
                                 customInputEl = document.createElement("button");
                                 customInputEl.classList.add("bytm-btn");
                                 customInputEl.tabIndex = 0;
-                                customInputEl.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
-                                customInputEl.ariaLabel = customInputEl.title = t(`feature_desc_${featKey}`);
+                                customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
+                                customInputEl.ariaLabel = customInputEl.title = t(`feature_desc.${featKey}`);
                                 onInteraction(customInputEl, async () => {
                                     if (customInputEl.disabled)
                                         return;
@@ -4658,13 +4739,13 @@ async function mountCfgMenu() {
                                     const res = ftInfo.click();
                                     customInputEl.disabled = true;
                                     customInputEl.classList.add("bytm-busy");
-                                    customInputEl.textContent = await hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+                                    customInputEl.textContent = await hasKey(`feature_btn.${featKey}_running`) ? t(`feature_btn.${featKey}_running`) : t("trigger_btn_action_running");
                                     if (res instanceof Promise)
                                         await res;
                                     const finalize = async () => {
                                         customInputEl.disabled = false;
                                         customInputEl.classList.remove("bytm-busy");
-                                        customInputEl.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                                        customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
                                     };
                                     // artificial timeout ftw
                                     const rTime = CoreUtils.randRange(200, 400);
@@ -4676,7 +4757,7 @@ async function mountCfgMenu() {
                                 break;
                         }
                         if (customInputEl && !customInputEl.hasAttribute("aria-label"))
-                            customInputEl.ariaLabel = t(`feature_desc_${featKey}`);
+                            customInputEl.ariaLabel = t(`feature_desc.${featKey}`);
                         customInputEl?.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
                         if (customInputEl?.getAttribute("aria-labelledby") === null) {
                             // try to find a label element to link to for a11y, else default to the text element
@@ -5565,7 +5646,7 @@ async function initThumbnailOverlay() {
                             toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
                         }
                         if (toggleBtnElem)
-                            toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
+                            toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay.toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
                     },
                 });
             }
@@ -5667,7 +5748,7 @@ async function initThumbnailOverlay() {
                     indicatorElem.id = "bytm-thumbnail-overlay-indicator";
                     indicatorElem.src = await getResourceUrl("icon-image");
                     indicatorElem.role = "presentation";
-                    indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+                    indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay.indicator_tooltip");
                     indicatorElem.ariaHidden = "true";
                     indicatorElem.style.display = "none";
                     indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
@@ -6026,7 +6107,7 @@ async function renderHeader$1() {
     titleElem.role = "heading";
     titleElem.ariaLevel = "1";
     titleElem.tabIndex = 0;
-    titleElem.textContent = t("plugin_list_title");
+    titleElem.textContent = t("plugin_list.title");
     return titleElem;
 }
 async function renderBody$2() {
@@ -6037,8 +6118,8 @@ async function renderBody$2() {
         const noPluginsEl = document.createElement("div");
         noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
         noPluginsEl.tabIndex = 0;
-        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
-        noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
+        setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+        noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list.no_plugins_tooltip");
         listContainerEl.appendChild(noPluginsEl);
         return listContainerEl;
     }
@@ -6102,7 +6183,7 @@ async function renderBody$2() {
             linkEl.tabIndex = 0;
             linkEl.target = "_blank";
             linkEl.rel = "noopener noreferrer";
-            linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
+            linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link.type_${key}`);
             linksList.appendChild(linkEl);
         }
         const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
@@ -6128,14 +6209,14 @@ async function renderBody$2() {
                 const permissionsHeaderEl = document.createElement("div");
                 permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
                 permissionsHeaderEl.tabIndex = 0;
-                permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
+                permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list.permissions_header");
                 rightEl.appendChild(permissionsHeaderEl);
                 for (const intent of intentsArr) {
                     const intentEl = document.createElement("div");
                     intentEl.classList.add("bytm-plugin-list-row-intent-item");
                     intentEl.tabIndex = 0;
-                    intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
-                    intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
+                    intentEl.textContent = t(`plugin_intent.name_${PluginIntent[intent]}`);
+                    intentEl.title = intentEl.ariaLabel = t(`plugin_intent.description_${PluginIntent[intent]}`);
                     rightEl.appendChild(intentEl);
                 }
             }
@@ -6144,9 +6225,9 @@ async function renderBody$2() {
             const devPluginNoteEl = document.createElement("div");
             devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
             devPluginNoteEl.tabIndex = 0;
-            devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list_dev_plugin_note");
+            devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list.dev_plugin_note");
             const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
-            setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list_dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
+            setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
             rowEl.appendChild(devPluginNoteEl);
         }
         listContainerEl.appendChild(rowEl);
@@ -6438,6 +6519,7 @@ async function initProxyHotkeys() {
             ...hkProps,
             bubbles: true,
             cancelable: false,
+            // see https://github.com/Sv443/BetterYTM/issues/18
             view: UserUtils.getUnsafeWindow(),
         }));
         log("Dispatched proxy hotkey:", hkProps);
@@ -7210,8 +7292,8 @@ const options = {
         { value: "lighter", label: t("color_lightness_lighter") },
     ],
     thumbOverlaySources: () => [
-        { value: "am", label: t("thumbnail_overlay_source_am") },
-        { value: "yt", label: t("thumbnail_overlay_source_yt") },
+        { value: "am", label: t("thumbnail_overlay.source_am") },
+        { value: "yt", label: t("thumbnail_overlay.source_yt") },
     ],
     songListType: () => [
         { value: "currentQueue", label: t("list_button_placement_queue_only") },
@@ -7249,7 +7331,7 @@ const groupedCategories = [
  * | `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                  |
  * | `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                   |
  * | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked                                                                    |
- * | `helpText: string \| () => string`                                 | Function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `helpText: string \| () => string`                                 | Function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext.<featKey>` will be used instead, if available |
  * | `adornments: AdornFunc[] | (() => AdornFunc[])`                    | Array of functions that return HTML strings that will be prepended to the label of the feature in the config menu - used to add icons               |
  * | `unit: string \| (val: number) => string`                          | For types `number` or `slider` only - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added too! |
  * | `min: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `min` property of the HTML input element                                        |
@@ -7321,8 +7403,7 @@ const featInfo = {
         max: 15,
         default: 4,
         step: 0.5,
-        unit: (val) => val === 0 ? "" : "s",
-        renderValue: (val) => Number(val) === 0 ? t("toggled_off") : val,
+        renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
         reloadRequired: false,
         enable: noop,
         change: (_k, _iV, newVal) => newVal === 0
@@ -7449,10 +7530,10 @@ const featInfo = {
         supportedSites: ["ytm"],
         since: "2.0.0",
         options: () => [
-            { value: "songsOnly", label: t("thumbnail_overlay_behavior_songs_only") },
-            { value: "videosOnly", label: t("thumbnail_overlay_behavior_videos_only") },
-            { value: "always", label: t("thumbnail_overlay_behavior_always") },
-            { value: "never", label: t("thumbnail_overlay_behavior_never") },
+            { value: "songsOnly", label: t("thumbnail_overlay.behavior_songs_only") },
+            { value: "videosOnly", label: t("thumbnail_overlay.behavior_videos_only") },
+            { value: "always", label: t("thumbnail_overlay.behavior_always") },
+            { value: "never", label: t("thumbnail_overlay.behavior_never") },
         ],
         default: "songsOnly",
         reloadRequired: false,
@@ -7851,7 +7932,7 @@ const featInfo = {
         since: "2.0.0",
         default: false,
         adornments: () => getFeature("volumeSharedBetweenTabs")
-            ? [adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
+            ? [adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
             : [adornments.ytmOnly, adornments.reload],
     },
     initialTabVolumeLevel: {
@@ -7867,7 +7948,7 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
         adornments: () => getFeature("volumeSharedBetweenTabs")
-            ? [adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
+            ? [adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
             : [adornments.ytmOnly],
     },
     //#region cat:behavior
@@ -7915,7 +7996,7 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "1.1.0",
         default: true,
-        helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
+        helpText: () => tp("feature_helptext.rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
         adornments: [adornments.reload],
     },
     rememberSongTimeSites: {
@@ -7971,11 +8052,11 @@ const featInfo = {
         supportedSites: ["ytm"],
         since: "3.0.0",
         options: () => [
-            { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
-            { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
-            { value: "videoChangeAll", label: t("auto_scroll_to_active_song_mode_video_change_all") },
-            { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode_video_change_manual") },
-            { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode_video_change_auto") },
+            { value: "never", label: t("auto_scroll_to_active_song_mode.never") },
+            { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode.initial_page_load") },
+            { value: "videoChangeAll", label: t("auto_scroll_to_active_song_mode.video_change_all") },
+            { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode.video_change_manual") },
+            { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode.video_change_auto") },
         ],
         default: "videoChangeManual",
         reloadRequired: false,
@@ -8260,12 +8341,12 @@ const featInfo = {
         enable: () => !getFeature("rememberSongTime") && showIconToast({
             icon: "icon-error",
             iconFill: "var(--bytm-error-col)",
-            message: t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
+            message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
             duration: 10,
-            onClick: () => getErrorDialog(t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"), [t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]).open(),
+            onClick: () => getErrorDialog(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"), [t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]).open(),
         }),
         adornments: () => !getFeature("rememberSongTime")
-            ? [() => adornments.alert(t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'"))]
+            ? [() => adornments.alert(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'"))]
             : [],
     },
     skipToRemTimeHotkey: {
@@ -9540,7 +9621,7 @@ function ytForceShowVideoTime() {
     if (!player)
         return false;
     const defaultProps = {
-        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
+        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18
         view: UserUtils.getUnsafeWindow(),
         bubbles: true,
         cancelable: false,
@@ -9877,14 +9958,9 @@ function retranslateWelcomeMenu() {
     };
     const changes = {
         "#bytm-welcome-menu-title": (e) => e.textContent = e.ariaLabel = t("welcome_menu_title", scriptInfo$1.name),
-        "#bytm-welcome-menu-title-close": (e) => e.ariaLabel = e.title = t("close_menu_tooltip"),
         "#bytm-welcome-menu-open-cfg": (e) => {
             e.textContent = e.ariaLabel = t("config_menu");
             e.ariaLabel = e.title = t("open_config_menu_tooltip");
-        },
-        "#bytm-welcome-menu-open-changelog": (e) => {
-            e.textContent = e.ariaLabel = t("open_changelog");
-            e.ariaLabel = e.title = t("open_changelog_tooltip");
         },
         "#bytm-welcome-menu-footer-close": (e) => {
             e.textContent = e.ariaLabel = t("close");
@@ -10540,6 +10616,19 @@ function registerDevCommands() {
     }));
     GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+    });
+    isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
+        const data = await GM.getValue("_uucfg-bytm-dev-used-tr-keys", "{\"keys\":[]}");
+        const obj = typeof data === "string" ? JSON.parse(data) : data;
+        const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
+        // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
+        const unusedKeys = [];
+        for (const key of allTrKeys) {
+            if (!obj.keys.includes(key) && key !== "meta")
+                unusedKeys.push(key);
+        }
+        if (unusedKeys.length > 0)
+            dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
     });
     log("Registered dev menu commands");
 }
