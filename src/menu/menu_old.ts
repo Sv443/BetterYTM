@@ -351,8 +351,8 @@ export async function mountCfgMenu() {
         headerElem.ariaChecked = String(selected);
         headerElem.tabIndex = 0;
         headerElem.ariaLevel = "2";
-        headerElem.textContent = t(`feature_category_${headerId}`, scriptInfo.name);
-        headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category_${headerId}`));
+        headerElem.textContent = t(`feature_category.${headerId}`, scriptInfo.name);
+        headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`));
 
         onInteraction(headerElem, (e: MouseEvent | KeyboardEvent) => {
           const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
@@ -552,7 +552,7 @@ export async function mountCfgMenu() {
       categoryCont.classList.add("bytm-ftconf-category");
       categoryCont.tabIndex = 0;
       categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
-      categoryCont.setAttribute("aria-label", t(`feature_category_${category}`));
+      categoryCont.setAttribute("aria-label", t(`feature_category.${category}`));
       return categoryCont;
     };
 

@@ -1,10 +1,11 @@
 import { Stringifiable, fetchAdvanced } from "@sv443-network/coreutils";
-import { tr } from "@sv443-network/userutils";
+import { DataStore, tr } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, warn } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import tr_enUS from "../../assets/translations/en-US.json" with { type: "json" };
+import { mode } from "src/constants.js";
 
 void [langMapping, tr_enUS];
 
@@ -24,6 +25,39 @@ export let activeLocaleDir: "ltr" | "rtl" = "ltr";
 
 tr.addTransform(tr.transforms.percent);
 tr.addTransform(tr.transforms.templateLiteral);
+
+
+let devUsedTrKeysStoreLoaded = false;
+const devUsedTrKeysStore = new DataStore<{
+  keys: string[];
+}>({
+  id: "bytm-dev-used-tr-keys",
+  defaultData: { keys: [] },
+  formatVersion: 0,
+});
+
+/** Used to check which keys are unused. */
+const devMarkTrKeyUsed = async (key: string) => {
+  try {
+    if(mode !== "development")
+      return;
+
+    if(!devUsedTrKeysStoreLoaded) {
+      await devUsedTrKeysStore.loadData();
+      devUsedTrKeysStoreLoaded = true;
+    }
+
+    const data = devUsedTrKeysStore.getData();
+    const keysSet = new Set(data.keys);
+    keysSet.add(key);
+    data.keys = Array.from(keysSet);
+    return await devUsedTrKeysStore.setData(data);
+  }
+  catch(e) {
+    error("Failed to mark translation key as used", e);
+  }
+};
+
 
 /** Initializes the translations */
 export async function initTranslations(locale: TrLocale) {
@@ -67,7 +101,7 @@ export async function initTranslations(locale: TrLocale) {
 }
 
 /** Fetches the JSON translations file of the passed locale. */
-async function fetchLocaleJson(locale: TrLocale) {
+export async function fetchLocaleJson(locale: TrLocale) {
   const url = await getResourceUrl(`trans-${locale}` as "_");
   const res = await fetchAdvanced(url);
 
@@ -96,8 +130,11 @@ export async function hasKey(key: TFuncKey) {
 
 /** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
 export async function hasKeyFor(locale: TrLocale, key: TFuncKey) {
+  devMarkTrKeyUsed(key);
+
   if(!initializedLocales.has(locale))
     await initTranslations(locale);
+
   return typeof tr.getTranslations(locale)?.[key] === "string";
 }
 
@@ -106,7 +143,7 @@ export async function hasKeyFor(locale: TrLocale, key: TFuncKey) {
  * ℹ️ UserUtils' `templateLiteral` transform is not used yet, since CoreUtils will implement an even newer translation system and it's simply not worth it to refactor everything twice.
  */
 export function t(key: TFuncKey, ...args: TrArg[]) {
-  return tl(activeLocale, key, ...args);
+  return tl(getLocale(), key, ...args);
 }
 
 /**
@@ -123,6 +160,8 @@ export function tl(locale: TrLocale, key: TFuncKey, ...args: TrArg[]) {
   if(locale === "en-US")
     hasKeyFor(locale, key).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
 
+  devMarkTrKeyUsed(key);
+
   return tr.for(locale, key, ...args);
 }
 
@@ -136,6 +175,7 @@ export function tlp(locale: TrLocale, key: TFuncKey, num: number | unknown[] | N
     num = num.length;
 
   const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
+  devMarkTrKeyUsed(tlKey);
 
   if(locale === "en-US")
     hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);

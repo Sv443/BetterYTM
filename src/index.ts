@@ -1,6 +1,6 @@
 import { compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initVersionSessionCounter, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initVersionSessionCounter, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -652,6 +652,25 @@ function registerDevCommands() {
 
   GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
     downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+  });
+
+  isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
+    const data = await GM.getValue("_uucfg-bytm-dev-used-tr-keys", "{\"keys\":[]}");
+    const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
+
+    const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
+
+    // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
+
+    const unusedKeys = [] as string[];
+
+    for(const key of allTrKeys) {
+      if(!obj.keys.includes(key) && key !== "meta")
+        unusedKeys.push(key);
+    }
+
+    if(unusedKeys.length > 0)
+      dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
   });
 
   log("Registered dev menu commands");
