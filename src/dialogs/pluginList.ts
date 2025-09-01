@@ -32,7 +32,7 @@ async function renderHeader() {
   titleElem.role = "heading";
   titleElem.ariaLevel = "1";
   titleElem.tabIndex = 0;
-  titleElem.textContent = t("plugin_list_title");
+  titleElem.textContent = t("plugin_list.title");
 
   return titleElem;
 }
@@ -47,8 +47,8 @@ async function renderBody() {
     const noPluginsEl = document.createElement("div");
     noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
     noPluginsEl.tabIndex = 0;
-    setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
-    noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
+    setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+    noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list.no_plugins_tooltip");
     listContainerEl.appendChild(noPluginsEl);
     return listContainerEl;
   }
@@ -125,7 +125,7 @@ async function renderBody() {
       linkEl.tabIndex = 0;
       linkEl.target = "_blank";
       linkEl.rel = "noopener noreferrer";
-      linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
+      linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link.type_${key}`);
       linksList.appendChild(linkEl);
     }
 
@@ -156,15 +156,15 @@ async function renderBody() {
         const permissionsHeaderEl = document.createElement("div");
         permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
         permissionsHeaderEl.tabIndex = 0;
-        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
+        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list.permissions_header");
         rightEl.appendChild(permissionsHeaderEl);
 
         for(const intent of intentsArr) {
           const intentEl = document.createElement("div");
           intentEl.classList.add("bytm-plugin-list-row-intent-item");
           intentEl.tabIndex = 0;
-          intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
-          intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
+          intentEl.textContent = t(`plugin_intent.name_${PluginIntent[intent]}`);
+          intentEl.title = intentEl.ariaLabel = t(`plugin_intent.description_${PluginIntent[intent]}`);
           rightEl.appendChild(intentEl);
         }
       }
@@ -173,9 +173,9 @@ async function renderBody() {
       const devPluginNoteEl = document.createElement("div");
       devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
       devPluginNoteEl.tabIndex = 0;
-      devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list_dev_plugin_note");
+      devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list.dev_plugin_note");
       const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
-      setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list_dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
+      setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
       rowEl.appendChild(devPluginNoteEl);
     }
     listContainerEl.appendChild(rowEl);

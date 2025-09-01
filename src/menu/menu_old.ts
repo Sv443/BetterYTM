@@ -608,15 +608,15 @@ export async function mountCfgMenu() {
             ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
           }
 
-          if(!await hasKeyFor("en-US", `feature_desc_${featKey}`)) {
-            error(`Missing en-US translation with key "feature_desc_${featKey}" for feature description, skipping this config menu feature...`);
+          if(!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
+            error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
             continue;
           }
 
           const textElem = document.createElement("span");
           textElem.id = `bytm-ftitem-text-${featKey}`;
           textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
-          textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
+          textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc.${featKey}`);
 
           const adornContent = await resolveAdornments(featInfo, featKey as FeatureKey);
           let adornmentElem: undefined | HTMLElement;
@@ -636,12 +636,12 @@ export async function mountCfgMenu() {
           // @ts-expect-error
           const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
 
-          if(await hasKey(`feature_helptext_${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
+          if(await hasKey(`feature_helptext.${featKey}`) || (helpTextVal && await hasKey(helpTextVal))) {
             const helpElemImgHtml = await resourceAsString("icon-help");
             if(helpElemImgHtml) {
               helpElem = document.createElement("div");
               helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
-              helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc_${featKey}`));
+              helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc.${featKey}`));
               helpElem.role = "button";
               helpElem.tabIndex = 0;
               setInnerHtml(helpElem, helpElemImgHtml);
@@ -751,7 +751,7 @@ export async function mountCfgMenu() {
             const inputElem = document.createElement(inputTag) as HTMLInputElement;
             inputElem.classList.add("bytm-ftconf-input");
             inputElem.id = inputElemId;
-            inputElem.ariaLabel = t(`feature_desc_${featKey}`);
+            inputElem.ariaLabel = t(`feature_desc.${featKey}`);
             if(inputType)
               inputElem.type = inputType;
 
@@ -862,7 +862,7 @@ export async function mountCfgMenu() {
               customInputEl = createHotkeyInput({
                 initialValue: typeof initialVal === "object" ? initialVal as HotkeyObj : undefined,
                 onChange: (hotkey) => confChanged(featKey as keyof FeatureConfig, initialVal, hotkey),
-                createTitle: (value: string) => t("hotkey_input_click_to_change_tooltip", t(`feature_desc_${featKey}`), value),
+                createTitle: (value: string) => t("hotkey_input_click_to_change_tooltip", t(`feature_desc.${featKey}`), value),
               });
               break;
             case "toggle":
@@ -877,8 +877,8 @@ export async function mountCfgMenu() {
               customInputEl = document.createElement("button");
               customInputEl.classList.add("bytm-btn");
               customInputEl.tabIndex = 0;
-              customInputEl.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
-              customInputEl.ariaLabel = customInputEl.title = t(`feature_desc_${featKey}`);
+              customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
+              customInputEl.ariaLabel = customInputEl.title = t(`feature_desc.${featKey}`);
 
               onInteraction(customInputEl, async () => {
                 if((customInputEl as HTMLButtonElement).disabled)
@@ -889,7 +889,7 @@ export async function mountCfgMenu() {
 
                 (customInputEl as HTMLButtonElement).disabled = true;
                 customInputEl!.classList.add("bytm-busy");
-                customInputEl!.textContent = await hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+                customInputEl!.textContent = await hasKey(`feature_btn.${featKey}_running`) ? t(`feature_btn.${featKey}_running`) : t("trigger_btn_action_running");
 
                 if(res instanceof Promise)
                   await res;
@@ -897,7 +897,7 @@ export async function mountCfgMenu() {
                 const finalize = async () => {
                   (customInputEl as HTMLButtonElement).disabled = false;
                   customInputEl!.classList.remove("bytm-busy");
-                  customInputEl!.textContent = await hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                  customInputEl!.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
                 };
 
                 // artificial timeout ftw
@@ -911,7 +911,7 @@ export async function mountCfgMenu() {
             }
 
             if(customInputEl && !customInputEl.hasAttribute("aria-label"))
-              customInputEl.ariaLabel = t(`feature_desc_${featKey}`);
+              customInputEl.ariaLabel = t(`feature_desc.${featKey}`);
 
             customInputEl?.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
             if(customInputEl?.getAttribute("aria-labelledby") === null) {

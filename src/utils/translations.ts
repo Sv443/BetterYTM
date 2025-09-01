@@ -66,17 +66,17 @@ export async function initTranslations(locale: TrLocale) {
   }
 }
 
-/** Fetches the translation JSON file of the passed locale */
+/** Fetches the JSON translations file of the passed locale. */
 async function fetchLocaleJson(locale: TrLocale) {
   const url = await getResourceUrl(`trans-${locale}` as "_");
   const res = await fetchAdvanced(url);
 
   if(res.status < 200 || res.status >= 300)
     throw new Error(`Failed to fetch translation file for locale '${locale}'`);
-  return await res.json() as { base?: TrLocale } & typeof tr_enUS;
+  return await res.json() as { base?: TrLocale } & typeof tr_enUS; // since en-US keys are merged in, this assertion is safe
 }
 
-/** Sets the current language for translations */
+/** Sets the new locale to use in translations. */
 export function setLocale(locale: TrLocale) {
   activeLocale = locale;
   activeLocaleDir = langMapping[locale]?.textDir as "ltr" | "rtl" ?? "ltr";
@@ -84,38 +84,41 @@ export function setLocale(locale: TrLocale) {
   emitInterface("bytm:setLocale", { locale });
 }
 
-/** Returns the currently set language */
+/** Returns the currently set locale. */
 export function getLocale() {
   return activeLocale;
 }
 
-/** Returns whether the given translation key exists in the current locale */
+/** Returns whether the given translation key exists in the current locale. Loads the translations if they weren't yet. */
 export async function hasKey(key: TFuncKey) {
   return await hasKeyFor(getLocale(), key);
 }
 
-/** Returns whether the given translation key exists in the given locale - if it hasn't been initialized yet, initializes it first. */
+/** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
 export async function hasKeyFor(locale: TrLocale, key: TFuncKey) {
   if(!initializedLocales.has(locale))
     await initTranslations(locale);
   return typeof tr.getTranslations(locale)?.[key] === "string";
 }
 
-/** Returns the translated string for the given key, after optionally inserting arguments */
+/**
+ * Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.  
+ * ℹ️ UserUtils' `templateLiteral` transform is not used yet, since CoreUtils will implement an even newer translation system and it's simply not worth it to refactor everything twice.
+ */
 export function t(key: TFuncKey, ...args: TrArg[]) {
   return tl(activeLocale, key, ...args);
 }
 
 /**
  * Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}  
- * Also inserts the passed {@linkcode args} into the translation at the markers `%1`, `%2`, etc.  
- * Tries to fall back to the non-pluralized syntax if no translation was found
+ * Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
+ * Tries to fall back to the non-pluralized syntax if no translation was found.
  */
 export function tp(key: TFuncKey, num: number | unknown[] | NodeList, ...args: TrArg[]) {
   return tlp(getLocale(), key, num, ...args);
 }
 
-/** Returns the translated string for the given key in the specified locale, after optionally inserting arguments */
+/** Returns the translated string for the given key in the specified locale, after optionally inserting positional arguments into 1-indexed `%n` placeholders. */
 export function tl(locale: TrLocale, key: TFuncKey, ...args: TrArg[]) {
   if(locale === "en-US")
     hasKeyFor(locale, key).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
@@ -125,8 +128,8 @@ export function tl(locale: TrLocale, key: TFuncKey, ...args: TrArg[]) {
 
 /**
  * Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}  
- * Also inserts the passed {@linkcode args} into the translation at the markers `%1`, `%2`, etc.  
- * Tries to fall back to the non-pluralized syntax if no translation was found
+ * Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
+ * Tries to fall back to the non-pluralized syntax if no translation was found.
  */
 export function tlp(locale: TrLocale, key: TFuncKey, num: number | unknown[] | NodeList, ...args: TrArg[]) {
   if(typeof num !== "number")

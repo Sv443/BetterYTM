@@ -50,7 +50,7 @@ async function renderBody() {
   const localeObj = locales?.[getLocale()];
 
   // insert sentence terminator if not present, to improve flow with screenreaders
-  let featText = t(`feature_desc_${curFeatKey}`);
+  let featText = t(`feature_desc.${curFeatKey}`);
   if(localeObj) {
     if(!featText.endsWith(localeObj.sentenceTerminator))
       featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminator}${localeObj.textDir === "rtl" ? featText : ""}`;
@@ -67,7 +67,7 @@ async function renderBody() {
   helpTextElem.tabIndex = 0;
   // @ts-expect-error
   const helpText: string | undefined = featInfo[curFeatKey!]?.helpText?.();
-  helpTextElem.textContent = helpText ?? t(`feature_helptext_${curFeatKey}`);
+  helpTextElem.textContent = helpText ?? t(`feature_helptext.${curFeatKey}`);
 
   contElem.appendChild(featDescElem);
   contElem.appendChild(helpTextElem);

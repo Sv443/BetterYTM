@@ -133,8 +133,8 @@ const options = {
     { value: "lighter", label: t("color_lightness_lighter") },
   ] satisfies SelectOption<ColorLightnessPref>[],
   thumbOverlaySources: () => [
-    { value: "am", label: t("thumbnail_overlay_source_am") },
-    { value: "yt", label: t("thumbnail_overlay_source_yt") },
+    { value: "am", label: t("thumbnail_overlay.source_am") },
+    { value: "yt", label: t("thumbnail_overlay.source_yt") },
   ] satisfies SelectOption<FeatureConfig["thumbnailOverlayPreferredSource"]>[],
   songListType: () => [
     { value: "currentQueue", label: t("list_button_placement_queue_only") },
@@ -175,7 +175,7 @@ export const groupedCategories: FeatureCategory[][] = [
  * | `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                  |
  * | `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                   |
  * | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked                                                                    |
- * | `helpText: string \| () => string`                                 | Function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `helpText: string \| () => string`                                 | Function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext.<featKey>` will be used instead, if available |
  * | `adornments: AdornFunc[] | (() => AdornFunc[])`                    | Array of functions that return HTML strings that will be prepended to the label of the feature in the config menu - used to add icons               |
  * | `unit: string \| (val: number) => string`                          | For types `number` or `slider` only - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added too! |
  * | `min: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `min` property of the HTML input element                                        |
@@ -247,8 +247,7 @@ export const featInfo = {
     max: 15,
     default: 4,
     step: 0.5,
-    unit: (val) => val === 0 ? "" : "s",
-    renderValue: (val) => Number(val) === 0 ? t("toggled_off") : val,
+    renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
     reloadRequired: false,
     enable: noop,
     change: (_k, _iV, newVal) => newVal === 0
@@ -376,10 +375,10 @@ export const featInfo = {
     supportedSites: ["ytm"],
     since: "2.0.0",
     options: () => [
-      { value: "songsOnly", label: t("thumbnail_overlay_behavior_songs_only") },
-      { value: "videosOnly", label: t("thumbnail_overlay_behavior_videos_only") },
-      { value: "always", label: t("thumbnail_overlay_behavior_always") },
-      { value: "never", label: t("thumbnail_overlay_behavior_never") },
+      { value: "songsOnly", label: t("thumbnail_overlay.behavior_songs_only") },
+      { value: "videosOnly", label: t("thumbnail_overlay.behavior_videos_only") },
+      { value: "always", label: t("thumbnail_overlay.behavior_always") },
+      { value: "never", label: t("thumbnail_overlay.behavior_never") },
     ],
     default: "songsOnly",
     reloadRequired: false,
@@ -781,7 +780,7 @@ export const featInfo = {
     since: "2.0.0",
     default: false,
     adornments: () => getFeature("volumeSharedBetweenTabs")
-      ? [adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
+      ? [adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
       : [adornments.ytmOnly, adornments.reload],
   },
   initialTabVolumeLevel: {
@@ -797,7 +796,7 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
     adornments: () => getFeature("volumeSharedBetweenTabs")
-      ? [adornments.ytmOnly, adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
+      ? [adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
       : [adornments.ytmOnly],
   },
 
@@ -846,7 +845,7 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "1.1.0",
     default: true,
-    helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
+    helpText: () => tp("feature_helptext.rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
     adornments: [adornments.reload],
   },
   rememberSongTimeSites: {
@@ -902,11 +901,11 @@ export const featInfo = {
     supportedSites: ["ytm"],
     since: "3.0.0",
     options: () => [
-      { value: "never", label: t("auto_scroll_to_active_song_mode_never") },
-      { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode_initial_page_load") },
-      { value: "videoChangeAll", label: t("auto_scroll_to_active_song_mode_video_change_all") },
-      { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode_video_change_manual") },
-      { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode_video_change_auto") },
+      { value: "never", label: t("auto_scroll_to_active_song_mode.never") },
+      { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode.initial_page_load") },
+      { value: "videoChangeAll", label: t("auto_scroll_to_active_song_mode.video_change_all") },
+      { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode.video_change_manual") },
+      { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode.video_change_auto") },
     ],
     default: "videoChangeManual",
     reloadRequired: false,
@@ -1199,15 +1198,15 @@ export const featInfo = {
     enable: () => !getFeature("rememberSongTime") && showIconToast({
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
-      message: t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
+      message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
       duration: 10,
       onClick: () => getErrorDialog(
-        t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
-        [t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]
+        t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
+        [t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]
       ).open(),
     }),
     adornments: () => !getFeature("rememberSongTime")
-      ? [() => adornments.alert(t("feature_warning_skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'"))]
+      ? [() => adornments.alert(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'"))]
       : [],
   },
   skipToRemTimeHotkey: {

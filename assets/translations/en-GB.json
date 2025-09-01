@@ -8,6 +8,6 @@
       "Sv443"
     ]
   },
-  "feature_category_behavior": "Behaviour",
+  "feature_category.behavior": "Behaviour",
   "vote_ratio_blue_gray": "Blue and grey"
 }

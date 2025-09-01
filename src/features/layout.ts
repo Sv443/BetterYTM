@@ -710,7 +710,7 @@ export async function initThumbnailOverlay() {
               toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
             }
             if(toggleBtnElem)
-              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
+              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay.toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
           },
         });
       }
@@ -836,7 +836,7 @@ export async function initThumbnailOverlay() {
           indicatorElem.id = "bytm-thumbnail-overlay-indicator";
           indicatorElem.src = await getResourceUrl("icon-image");
           indicatorElem.role = "presentation";
-          indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+          indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay.indicator_tooltip");
           indicatorElem.ariaHidden = "true";
           indicatorElem.style.display = "none";
           indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
