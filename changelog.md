@@ -4,9 +4,11 @@
 <!-- #region 3.1.0 -->
 ## 3.1.0
 - **New Features:**
-  - 🟡 Improved config menu UX with a sidenav:
-    - Removed advanced mode flag from a lot of features since there's much more space now.
-    - Removed the subtitle elements. Instead, icons will be rendered in the footer, below the sidenav.
+  - 🟡 Improved config menu UX:
+    - Added a sidenav that displays one group at a time, for a much less overwhelming experience.
+    - Added feature groups, which further divide each group's features into logical sections.
+    - Removed advanced mode flag from a lot of features since there's much more breathing room now.
+    - Removed the dialog title subtexts. Instead, icons will be rendered in the footer, below the sidenav.
     - Reordered categories and features to be grouped more logically.
   - New configurable hotkeys:
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
@@ -101,6 +103,7 @@
   - Moved `siteEvents` initialization to an earlier point, so that it is no longer initialized alongside features. It is now available to plugins at an earlier point in time, before any feature has started initializing, but still after plugin initialization is already done.
   - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
   - Improved script performance by refactoring the feature initialization process. As an effect of this, `bytm:ready` will now emit earlier and the new event `bytm:allReady` will emit much later, once all features have been initialized or the configured timeout has been reached.
+  - Updated a boatload of translation values and translation keys. [Open this page to find all changes.](https://github.com/Sv443/BetterYTM/compare/v3.0.0...v3.1.0`)
   - Some resources are now cached in GM storage, when using the internal function `resourceAsString()` for even better feature init performance.
   - BYTM now targets [ES2020](https://en.wikipedia.org/wiki/ECMAScript_version_history#11th_Edition_%E2%80%93_ECMAScript_2020)
   - Added new GM menu commands:
