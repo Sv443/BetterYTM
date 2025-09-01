@@ -157,14 +157,9 @@ function retranslateWelcomeMenu() {
 
   const changes = {
     "#bytm-welcome-menu-title": (e: HTMLElement) => e.textContent = e.ariaLabel = t("welcome_menu_title", scriptInfo.name),
-    "#bytm-welcome-menu-title-close": (e: HTMLElement) => e.ariaLabel = e.title = t("close_menu_tooltip"),
     "#bytm-welcome-menu-open-cfg": (e: HTMLElement) => {
       e.textContent = e.ariaLabel = t("config_menu");
       e.ariaLabel = e.title = t("open_config_menu_tooltip");
-    },
-    "#bytm-welcome-menu-open-changelog": (e: HTMLElement) => {
-      e.textContent = e.ariaLabel = t("open_changelog");
-      e.ariaLabel = e.title = t("open_changelog_tooltip");
     },
     "#bytm-welcome-menu-footer-close": (e: HTMLElement) => {
       e.textContent = e.ariaLabel = t("close");
