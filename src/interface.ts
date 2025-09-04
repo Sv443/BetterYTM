@@ -65,7 +65,7 @@ export type InterfaceEvents = {
 
   /** Emitted when BYTM has finished general initialization. */
   "bytm:ready": undefined;
-  /** Emitted when all features have been initialized. */
+  /** Emitted when all features have been initialized or initialization has timed out. */
   "bytm:allReady": undefined;
 
   //#region additional events
@@ -344,13 +344,6 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     info(`Successfully registered plugin '${plKey}'`);
 
     setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
-
-    window.addEventListener("bytm:ready", () => {
-      emitOnPlugins("bytmReady");
-    });
-    window.addEventListener("bytm:allReady", () => {
-      emitOnPlugins("bytmAllReady");
-    });
 
     return {
       info: getPluginInfo(token, def)!,

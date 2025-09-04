@@ -132,7 +132,7 @@ unsafeWindow.addEventListener("bytm:siteEvent:eventName", (event) => {
 ```ts
 // listening to generic events:
 unsafeWindow.addEventListener("bytm:allReady", () => {
-  console.log("The DOM is loaded and all BetterYTM features have been initialized");
+  console.log("The DOM is loaded and all BetterYTM features have been initialized (or initialization has timed out)");
 });
 
 unsafeWindow.addEventListener("bytm:lyricsLoaded", (event) => {
