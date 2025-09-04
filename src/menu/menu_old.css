@@ -198,7 +198,7 @@
   flex-direction: column;
   flex-grow: 1;
   position: relative;
-  padding: 10px 0px;
+  padding-bottom: 10px;
   overflow-y: auto;
 }
 
@@ -471,6 +471,10 @@
 
 .bytm-hidden {
   visibility: hidden !important;
+}
+
+.bytm-ftconf-category {
+  margin-top: 10px;
 }
 
 .bytm-ftconf-category.hidden {

@@ -3,8 +3,8 @@ import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, setInnerH
 import { BytmDialog } from "../components/BytmDialog.js";
 import { createToggleInput } from "../components/toggleInput.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
-import pkg from "../../package.json" with { type: "json" };
 import { emitSiteEvent } from "../siteEvents.js";
+import pkg from "../../package.json" with { type: "json" };
 
 let verNotifDialog: BytmDialog | null = null;
 

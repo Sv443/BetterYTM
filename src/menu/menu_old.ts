@@ -16,7 +16,6 @@ import { BytmDialog, setCurrentDialogId } from "../components/BytmDialog.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { createHotkeyInput } from "../components/hotkeyInput.js";
 import { createToggleInput } from "../components/toggleInput.js";
-import { createRipple } from "../components/ripple.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo, ResourceKey } from "../types.js";
 import pkg from "../../package.json" with { type: "json" };
 import localeMapping from "../../assets/locales.json" with { type: "json" };
@@ -381,11 +380,13 @@ export async function mountCfgMenu() {
           checkToggleScrollIndicator();
 
           emitSiteEvent("configHeaderSelected", headerId);
+
+          document.querySelector("#bytm-menu-top-anchor")?.scrollIntoView({
+            behavior: "instant",
+          });
         });
 
-        return createRipple(headerElem, {
-          triggerEvent: "mouseup",
-        });
+        return headerElem;
       }
       catch(err) {
         error(`Error while creating sidenav header for category '${headerId}':`, err);
@@ -451,6 +452,10 @@ export async function mountCfgMenu() {
     //#region > feature list
     const featuresCont = document.createElement("div");
     featuresCont.id = "bytm-menu-opts";
+
+    const topAnchor = document.createElement("div");
+    topAnchor.id = "bytm-menu-top-anchor";
+    featuresCont.appendChild(topAnchor);
 
     const onCfgChange = async (
       key: keyof typeof defaultData,

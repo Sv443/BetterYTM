@@ -1,4 +1,5 @@
 import { consumeStringGen, DatedError, type StringGen } from "@sv443-network/coreutils";
+import { compare as compareVer } from "compare-versions";
 import { error, formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
@@ -12,7 +13,6 @@ import { getDSSerializer } from "../serializers.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getPluginListDialog } from "../dialogs/pluginList.js";
-import { compare as compareVer } from "compare-versions";
 
 //#region re-exports
 
