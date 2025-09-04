@@ -6,7 +6,7 @@ import { addSelectorListener } from "../observers.js";
 import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
 import { compressionSupported, formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
-import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
+import { addStyleFromResource, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
 import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
@@ -47,7 +47,7 @@ export async function addWatermark() {
         exchangeLogo();
     };
 
-    // TODO: space and enter dont work fsr
+    // TODO:FIXME: space and enter dont work fsr
     onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
 
     addSelectorListener("navBar", "ytmusic-logo a", {
@@ -1153,6 +1153,49 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     });
     return label;
   };
+
+  /** Called when the like/dislike state toggles to apply the adjusted numbers */
+  const updateLabels = async () => {
+    const { likeState } = getLikeDislikeBtns();
+
+    const voteObj = await fetchVideoVotes(getWatchId()!);
+
+    if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+      return error("Couldn't fetch votes from the Return YouTube Dislike API");
+
+    const likeLbl = voteCont.querySelector<HTMLElement>(".bytm-vote-label.likes");
+    const dislikeLbl = voteCont.querySelector<HTMLElement>(".bytm-vote-label.dislikes");
+
+    const likeNum = voteObj.likes + (likeState === "LIKE" ? 1 : 0);
+    const dislikeNum = voteObj.dislikes + (likeState === "DISLIKE" ? 1 : 0);
+
+    if(likeLbl) {
+      likeLbl.textContent = String(formatNumber(likeNum));
+      likeLbl.title = likeLbl.ariaLabel = tp("vote_label_likes", likeNum, formatNumber(likeNum, "long"));
+    }
+    if(dislikeLbl) {
+      dislikeLbl.textContent = String(formatNumber(dislikeNum));
+      dislikeLbl.title = dislikeLbl.ariaLabel = tp("vote_label_dislikes", dislikeNum, formatNumber(dislikeNum, "long"));
+    }
+  };
+
+  const { btnRenderer } = getLikeDislikeBtns();
+
+  if(btnRenderer) {
+    const rendererObs = new MutationObserver(() => updateLabels());
+
+    rendererObs.observe(btnRenderer, {
+      attributes: true,
+      attributeFilter: ["like-status"],
+      childList: false,
+      subtree: false,
+    });
+
+    siteEvents.on("pathChanged", () => {
+      rendererObs.disconnect();
+      updateLabels();
+    });
+  }
 
   addStyleFromResource("css-show_votes")
     .catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));

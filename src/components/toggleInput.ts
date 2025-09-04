@@ -64,13 +64,15 @@ export async function createToggleInput({
     wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
   };
 
-  toggleEl.addEventListener("change", toggleElClicked);
+  toggleEl.addEventListener("change", toggleElClicked, { capture: true });
   wrapperEl.addEventListener("keydown", (e) => {
     if(["Space", " ", "Enter"].includes(e.code)) {
       toggleEl.checked = !toggleEl.checked;
       toggleElClicked(e);
     }
-  });
+  }, { capture: true });
+
+  //TODO:FIXME: space and enter dont work fsr
 
   toggleEl.appendChild(toggleKnobEl);
   toggleWrapperEl.appendChild(toggleEl);

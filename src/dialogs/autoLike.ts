@@ -15,6 +15,9 @@ import "./autoLike.css";
 let autoLikeDialog: BytmDialog | null = null;
 let autoLikeExImDialog: ExImDialog | null = null;
 
+// TODO:FIXME: dialog isnt properly closed?
+// to reproduce: open dialog, create new entry, confirm with enter, close dialog -> cfg menu is still inert and dialog is still open for some reason
+
 /** Creates and/or returns the import dialog */
 export async function getAutoLikeDialog() {
   if(!autoLikeDialog) {
