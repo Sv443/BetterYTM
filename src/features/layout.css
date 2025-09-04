@@ -144,8 +144,8 @@ ytmusic-description-shelf-renderer[page-type="MUSIC_PAGE_TYPE_TRACK_LYRICS"] > .
 .bytm-generic-btn-img {
   display: inline-block;
   z-index: 1;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
 }
 
 .bytm-dom-yt .bytm-generic-btn-img path {
