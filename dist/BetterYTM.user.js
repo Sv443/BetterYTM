@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@386a653a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@44a0664c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -189,7 +189,12 @@ var resourcesJson = {
 		"de-LU"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "."
+	sentenceTerminatorNeutral: ".",
+	sentenceTerminators: [
+		".",
+		"!",
+		"?"
+	]
 },
 	"en-US": {
 	name: "English (United States)",
@@ -204,7 +209,12 @@ var resourcesJson = {
 		"en-CA"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "."
+	sentenceTerminatorNeutral: ".",
+	sentenceTerminators: [
+		".",
+		"!",
+		"?"
+	]
 },
 	"en-GB": {
 	name: "English (Great Britain)",
@@ -221,7 +231,12 @@ var resourcesJson = {
 		"en-ZA"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "."
+	sentenceTerminatorNeutral: ".",
+	sentenceTerminators: [
+		".",
+		"!",
+		"?"
+	]
 },
 	"es-ES": {
 	name: "Español (España)",
@@ -236,7 +251,12 @@ var resourcesJson = {
 		"es-MX"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "."
+	sentenceTerminatorNeutral: ".",
+	sentenceTerminators: [
+		".",
+		"!",
+		"?"
+	]
 },
 	"fr-FR": {
 	name: "Français (France)",
@@ -254,7 +274,12 @@ var resourcesJson = {
 		"fr-LU"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "."
+	sentenceTerminatorNeutral: ".",
+	sentenceTerminators: [
+		".",
+		"!",
+		"?"
+	]
 },
 	"hi-IN": {
 	name: "हिंदी (भारत)",
@@ -269,7 +294,13 @@ var resourcesJson = {
 		"hi-NP"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "।"
+	sentenceTerminatorNeutral: "।",
+	sentenceTerminators: [
+		"।",
+		".",
+		"!",
+		"?"
+	]
 },
 	"ja-JP": {
 	name: "日本語 (日本)",
@@ -283,7 +314,15 @@ var resourcesJson = {
 		"ja"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "。"
+	sentenceTerminatorNeutral: "。",
+	sentenceTerminators: [
+		"。",
+		"！",
+		"？",
+		".",
+		"!",
+		"?"
+	]
 },
 	"pt-BR": {
 	name: "Português (Brasil)",
@@ -298,7 +337,12 @@ var resourcesJson = {
 		"pt-PT"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "."
+	sentenceTerminatorNeutral: ".",
+	sentenceTerminators: [
+		".",
+		"!",
+		"?"
+	]
 },
 	"zh-CN": {
 	name: "中文（简化，中国）",
@@ -315,7 +359,15 @@ var resourcesJson = {
 		"zh-SG"
 	],
 	textDir: "ltr",
-	sentenceTerminator: "。"
+	sentenceTerminatorNeutral: "。",
+	sentenceTerminators: [
+		"。",
+		"！",
+		"？",
+		".",
+		"!",
+		"?"
+	]
 }
 };// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 var LogLevel;
@@ -356,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "386a653a",
-    buildTimestamp: "1756747555974",
+    buildNumber: "44a0664c",
+    buildTimestamp: "1757028379452",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1020,51 +1072,21 @@ async function createToggleInput({ onChange, initialValue = false, id = CoreUtil
             labelEl.textContent = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
         wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
     };
-    toggleEl.addEventListener("change", toggleElClicked);
+    toggleEl.addEventListener("change", toggleElClicked, { capture: true });
     wrapperEl.addEventListener("keydown", (e) => {
         if (["Space", " ", "Enter"].includes(e.code)) {
             toggleEl.checked = !toggleEl.checked;
             toggleElClicked(e);
         }
-    });
+    }, { capture: true });
+    //TODO:FIXME: space and enter dont work fsr
     toggleEl.appendChild(toggleKnobEl);
     toggleWrapperEl.appendChild(toggleEl);
     labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
     wrapperEl.appendChild(toggleWrapperEl);
     labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
     return wrapperEl;
-}var version = "3.0.0";
-var homepage = "https://github.com/Sv443/BetterYTM";
-var namespace = "https://github.com/Sv443/BetterYTM";
-var author = {
-	name: "Sv443",
-	url: "https://github.com/Sv443"
-};
-var bugs = {
-	url: "https://github.com/Sv443/BetterYTM/issues"
-};
-var funding = {
-	url: "https://github.com/sponsors/Sv443"
-};
-var hosts = {
-	github: "https://github.com/Sv443/BetterYTM",
-	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
-	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
-};
-var updates = {
-	github: "https://github.com/Sv443/BetterYTM/releases",
-	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
-	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
-};
-var packageJson = {
-	version: version,
-	homepage: homepage,
-	namespace: namespace,
-	author: author,
-	bugs: bugs,
-	funding: funding,
-	hosts: hosts,
-	updates: updates};/** EventEmitter instance that is used to detect various changes to the site and userscript */
+}/** EventEmitter instance that is used to detect various changes to the site and userscript */
 const siteEvents = new CoreUtils.NanoEmitter({
     publicEmit: true,
 });
@@ -1235,7 +1257,38 @@ function runIntervalChecks() {
         emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
         lastPathname = String(location.pathname);
     }
-}let verNotifDialog = null;
+}var version = "3.0.0";
+var homepage = "https://github.com/Sv443/BetterYTM";
+var namespace = "https://github.com/Sv443/BetterYTM";
+var author = {
+	name: "Sv443",
+	url: "https://github.com/Sv443"
+};
+var bugs = {
+	url: "https://github.com/Sv443/BetterYTM/issues"
+};
+var funding = {
+	url: "https://github.com/sponsors/Sv443"
+};
+var hosts = {
+	github: "https://github.com/Sv443/BetterYTM",
+	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
+	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
+};
+var updates = {
+	github: "https://github.com/Sv443/BetterYTM/releases",
+	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
+	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
+};
+var packageJson = {
+	version: version,
+	homepage: homepage,
+	namespace: namespace,
+	author: author,
+	bugs: bugs,
+	funding: funding,
+	hosts: hosts,
+	updates: updates};let verNotifDialog = null;
 /** Creates and/or returns the dialog to be shown when a new version is available */
 async function getVersionNotifDialog({ latestTag, }) {
     if (!verNotifDialog) {
@@ -1939,6 +1992,8 @@ async function createCircularBtn({ title, ripple = true, ...rest }) {
     return ripple ? createRipple(btnElem) : btnElem;
 }let autoLikeDialog = null;
 let autoLikeExImDialog = null;
+// TODO:FIXME: dialog isnt properly closed?
+// to reproduce: open dialog, create new entry, confirm with enter, close dialog -> cfg menu is still inert and dialog is still open for some reason
 /** Creates and/or returns the import dialog */
 async function getAutoLikeDialog() {
     if (!autoLikeDialog) {
@@ -3857,8 +3912,8 @@ async function renderBody$3() {
     // insert sentence terminator if not present, to improve flow with screenreaders
     let featText = t(`feature_desc.${curFeatKey}`);
     if (localeObj) {
-        if (!featText.endsWith(localeObj.sentenceTerminator))
-            featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminator}${localeObj.textDir === "rtl" ? featText : ""}`;
+        if (!(localeObj.sentenceTerminators.every((term) => featText.endsWith(term))))
+            featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
     }
     const featDescElem = document.createElement("h3");
     featDescElem.role = "subheading";
@@ -4324,10 +4379,11 @@ async function mountCfgMenu() {
                     }
                     checkToggleScrollIndicator();
                     emitSiteEvent("configHeaderSelected", headerId);
+                    document.querySelector("#bytm-menu-top-anchor")?.scrollIntoView({
+                        behavior: "instant",
+                    });
                 });
-                return createRipple(headerElem, {
-                    triggerEvent: "mouseup",
-                });
+                return headerElem;
             }
             catch (err) {
                 error(`Error while creating sidenav header for category '${headerId}':`, err);
@@ -4381,6 +4437,9 @@ async function mountCfgMenu() {
         //#region > feature list
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
+        const topAnchor = document.createElement("div");
+        topAnchor.id = "bytm-menu-top-anchor";
+        featuresCont.appendChild(topAnchor);
         const onCfgChange = async (key, initialVal, newVal) => {
             try {
                 const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
@@ -5148,7 +5207,7 @@ async function addWatermark() {
             if (!logoExchanged && (e.shiftKey || e.ctrlKey))
                 exchangeLogo();
         };
-        // TODO: space and enter dont work fsr
+        // TODO:FIXME: space and enter dont work fsr
         onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
         addSelectorListener("navBar", "ytmusic-logo a", {
             listener: (logoElem) => logoElem.appendChild(watermarkEl),
@@ -6032,6 +6091,39 @@ function addVoteNumbers(voteCont, voteObj) {
         });
         return label;
     };
+    /** Called when the like/dislike state toggles to apply the adjusted numbers */
+    const updateLabels = async () => {
+        const { likeState } = getLikeDislikeBtns();
+        const voteObj = await fetchVideoVotes(getWatchId());
+        if (!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+            return error("Couldn't fetch votes from the Return YouTube Dislike API");
+        const likeLbl = voteCont.querySelector(".bytm-vote-label.likes");
+        const dislikeLbl = voteCont.querySelector(".bytm-vote-label.dislikes");
+        const likeNum = voteObj.likes + (likeState === "LIKE" ? 1 : 0);
+        const dislikeNum = voteObj.dislikes + (likeState === "DISLIKE" ? 1 : 0);
+        if (likeLbl) {
+            likeLbl.textContent = String(formatNumber(likeNum));
+            likeLbl.title = likeLbl.ariaLabel = tp("vote_label_likes", likeNum, formatNumber(likeNum, "long"));
+        }
+        if (dislikeLbl) {
+            dislikeLbl.textContent = String(formatNumber(dislikeNum));
+            dislikeLbl.title = dislikeLbl.ariaLabel = tp("vote_label_dislikes", dislikeNum, formatNumber(dislikeNum, "long"));
+        }
+    };
+    const { btnRenderer } = getLikeDislikeBtns();
+    if (btnRenderer) {
+        const rendererObs = new MutationObserver(() => updateLabels());
+        rendererObs.observe(btnRenderer, {
+            attributes: true,
+            attributeFilter: ["like-status"],
+            childList: false,
+            subtree: false,
+        });
+        siteEvents.on("pathChanged", () => {
+            rendererObs.disconnect();
+            updateLabels();
+        });
+    }
     addStyleFromResource("css-show_votes")
         .catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
     const likeLblEl = createLabel(voteObj.likes, "likes");
@@ -9149,12 +9241,6 @@ function registerPlugin(def) {
         };
         info(`Successfully registered plugin '${plKey}'`);
         setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 0);
-        window.addEventListener("bytm:ready", () => {
-            emitOnPlugins("bytmReady");
-        });
-        window.addEventListener("bytm:allReady", () => {
-            emitOnPlugins("bytmAllReady");
-        });
         return {
             info: getPluginInfo(token, def),
             events,
