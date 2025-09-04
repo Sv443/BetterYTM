@@ -7,7 +7,12 @@
     "authors": ["Sv443"],
     "altLocales": ["de", "de-AT", "de-CH", "de-LI", "de-LU"],
     "textDir": "ltr",
-    "sentenceTerminator": "."
+    "sentenceTerminatorNeutral": ".",
+    "sentenceTerminators": [
+      ".",
+      "!",
+      "?"
+    ]
   },
   "en-US": {
     "name": "English (United States)",
@@ -17,7 +22,12 @@
     "authors": ["Sv443"],
     "altLocales": ["en", "en-CA"],
     "textDir": "ltr",
-    "sentenceTerminator": "."
+    "sentenceTerminatorNeutral": ".",
+    "sentenceTerminators": [
+      ".",
+      "!",
+      "?"
+    ]
   },
   "en-GB": {
     "name": "English (Great Britain)",
@@ -27,7 +37,12 @@
     "authors": ["Sv443"],
     "altLocales": ["en-AU", "en-IE", "en-NZ", "en-ZA"],
     "textDir": "ltr",
-    "sentenceTerminator": "."
+    "sentenceTerminatorNeutral": ".",
+    "sentenceTerminators": [
+      ".",
+      "!",
+      "?"
+    ]
   },
   "es-ES": {
     "name": "Español (España)",
@@ -37,7 +52,12 @@
     "authors": ["Sv443"],
     "altLocales": ["es", "es-MX"],
     "textDir": "ltr",
-    "sentenceTerminator": "."
+    "sentenceTerminatorNeutral": ".",
+    "sentenceTerminators": [
+      ".",
+      "!",
+      "?"
+    ]
   },
   "fr-FR": {
     "name": "Français (France)",
@@ -47,7 +67,12 @@
     "authors": ["Sv443"],
     "altLocales": ["fr", "fr-CA", "fr-BE", "fr-CH", "fr-LU"],
     "textDir": "ltr",
-    "sentenceTerminator": "."
+    "sentenceTerminatorNeutral": ".",
+    "sentenceTerminators": [
+      ".",
+      "!",
+      "?"
+    ]
   },
   "hi-IN": {
     "name": "हिंदी (भारत)",
@@ -57,7 +82,13 @@
     "authors": ["Sv443"],
     "altLocales": ["hi", "hi-NP"],
     "textDir": "ltr",
-    "sentenceTerminator": "।"
+    "sentenceTerminatorNeutral": "।",
+    "sentenceTerminators": [
+      "।",
+      ".",
+      "!",
+      "?"
+    ]
   },
   "ja-JP": {
     "name": "日本語 (日本)",
@@ -67,7 +98,15 @@
     "authors": ["Sv443"],
     "altLocales": ["ja"],
     "textDir": "ltr",
-    "sentenceTerminator": "。"
+    "sentenceTerminatorNeutral": "。",
+    "sentenceTerminators": [
+      "。",
+      "！",
+      "？",
+      ".",
+      "!",
+      "?"
+    ]
   },
   "pt-BR": {
     "name": "Português (Brasil)",
@@ -77,7 +116,12 @@
     "authors": ["Sv443"],
     "altLocales": ["pt", "pt-PT"],
     "textDir": "ltr",
-    "sentenceTerminator": "."
+    "sentenceTerminatorNeutral": ".",
+    "sentenceTerminators": [
+      ".",
+      "!",
+      "?"
+    ]
   },
   "zh-CN": {
     "name": "中文（简化，中国）",
@@ -87,6 +131,14 @@
     "authors": ["Sv443"],
     "altLocales": ["zh", "zh-TW", "zh-HK", "zh-SG"],
     "textDir": "ltr",
-    "sentenceTerminator": "。"
+    "sentenceTerminatorNeutral": "。",
+    "sentenceTerminators": [
+      "。",
+      "！",
+      "？",
+      ".",
+      "!",
+      "?"
+    ]
   }
 }

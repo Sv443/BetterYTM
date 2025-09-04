@@ -5,7 +5,7 @@
   "patternProperties": {
     "^[a-z]{2}-[A-Z]{2}$": {
       "type": "object",
-      "required": ["name", "nameEnglish", "emoji", "userscriptDesc", "authors", "altLocales", "textDir", "sentenceTerminator"],
+      "required": ["name", "nameEnglish", "emoji", "userscriptDesc", "authors", "altLocales", "textDir", "sentenceTerminatorNeutral", "sentenceTerminators"],
       "description": "Main locale code in the format \"ll-CC\" (language-COUNTRY).",
       "properties": {
         "name": {
@@ -42,17 +42,27 @@
             "type": "string",
             "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
           },
-          "description": "Alternative locale codes that will be redirected to this locale, e.g. for all German languages: [\"de\", \"de-AT\", \"de-CH\", \"de-LI\", \"de-LU\"]."
+          "description": "List of alternate BCP-47 locale codes that will be redirected to this locale, e.g. for all German languages it would be: [\"de\", \"de-AT\", \"de-CH\", \"de-LI\", \"de-LU\"]."
         },
         "textDir": {
           "type": "string",
           "enum": ["ltr", "rtl"],
           "description": "Text direction of the language."
         },
-        "sentenceTerminator": {
+        "sentenceTerminatorNeutral": {
           "type": "string",
           "description": "The character that ends a neutral, informative sentence, e.g. \".\", \"।\" or \"。\".",
           "pattern": "^.{1}$"
+        },
+        "sentenceTerminators": {
+          "type": "array",
+          "description": "List of characters that end a sentence, e.g. \".\", \"!\" or \"?\" in English.",
+          "items": {
+            "contains": {
+              "pattern": "^.{1}$"
+            },
+            "type": "string"
+          }
         }
       },
       "additionalProperties": false
