@@ -290,8 +290,8 @@
   "cfg_menu_sidenav_label": "Configuration menu navigation",
   "cfg_menu_sidenav_top_section_label": "Configuration Settings Categories",
   "cfg_menu_sidenav_bottom_section_label": "Extra Information Categories",
-  "cfg_menu_feature_category_header_tooltip": "Click to view the configuration options for the category \"%1\"",
-  "cfg_menu_feature_category_info_header_tooltip": "Click to view the information in the \"%1\" section",
+  "cfg_menu_feature_category_header_tooltip": "Configuration category \"%1\"",
+  "cfg_menu_feature_category_info_header_tooltip": "Information section \"%1\"",
 
   "about_bytm_content_markdown": "### ${scriptName}  \nv${scriptVersion} (#${buildNumber} &bull; ${buildDate})  \n\n${scriptName} is a userscript that enhances the YouTube Music experience by adding many features and improvements.  \nIt is developed by [${authorName}](${authorLink}) and is available via [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  \nIf you like this script, [please consider donating](${fundingLink}) to help fund its development.  \n[Join the Discord server](${discordLink}) to discuss issues, suggest features or just chat with other users.",
 

@@ -260,8 +260,6 @@
   "cfg_menu_sidenav_label": "Menú de configuración de navegación",
   "cfg_menu_sidenav_top_section_label": "Categorías de configuración",
   "cfg_menu_sidenav_bottom_section_label": "Categorías de información extra",
-  "cfg_menu_feature_category_header_tooltip": "Haga clic para ver las opciones de configuración de la categoría \"%1\"",
-  "cfg_menu_feature_category_info_header_tooltip": "Haga clic para ver la información de la categoría \"%1\"",
 
   "feature_category.general": "General",
   "feature_category.layout": "Diseño",

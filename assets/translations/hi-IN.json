@@ -258,8 +258,6 @@
   "cfg_menu_sidenav_label": "कॉन्फ़िगरेशन मेनू नेविगेशन",
   "cfg_menu_sidenav_top_section_label": "कॉन्फ़िगरेशन सेटिंग्स श्रेणियाँ",
   "cfg_menu_sidenav_bottom_section_label": "अतिरिक्त जानकारी श्रेणियाँ",
-  "cfg_menu_feature_category_header_tooltip": "\"%1\" श्रेणी के लिए कॉन्फ़िगरेशन विकल्प देखने के लिए क्लिक करें",
-  "cfg_menu_feature_category_info_header_tooltip": "\"%1\" अनुभाग में जानकारी देखने के लिए क्लिक करें",
 
   "feature_category.general": "सामान्य",
   "feature_category.layout": "लेआउट",

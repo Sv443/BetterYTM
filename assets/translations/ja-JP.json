@@ -260,8 +260,6 @@
   "cfg_menu_sidenav_label": "設定メニューのナビゲーション",
   "cfg_menu_sidenav_top_section_label": "設定カテゴリ",
   "cfg_menu_sidenav_bottom_section_label": "追加情報カテゴリ",
-  "cfg_menu_feature_category_header_tooltip": "クリックすると、カテゴリ「%1」の設定オプションが表示されます",
-  "cfg_menu_feature_category_info_header_tooltip": "クリックすると、「%1」セクションの情報が表示されます",
 
   "feature_category.general": "一般的な",
   "feature_category.layout": "レイアウト",

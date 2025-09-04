@@ -260,8 +260,6 @@
   "cfg_menu_sidenav_label": "Menu de configuration",
   "cfg_menu_sidenav_top_section_label": "Catégories de paramètres de configuration",
   "cfg_menu_sidenav_bottom_section_label": "Catégories d'informations supplémentaires",
-  "cfg_menu_feature_category_header_tooltip": "Cliquez pour afficher les options de configuration de la catégorie \"%1\"",
-  "cfg_menu_feature_category_info_header_tooltip": "Cliquez pour afficher les informations de la catégorie \"%1\"",
 
   "feature_category.general": "Général",
   "feature_category.layout": "Disposition",
