@@ -142,7 +142,9 @@ ytmusic-description-shelf-renderer[page-type="MUSIC_PAGE_TYPE_TRACK_LYRICS"] > .
 }
 
 .bytm-generic-btn-img {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
   width: 28px;
   height: 28px;

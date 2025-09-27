@@ -1,10 +1,13 @@
 import { compress, decompress } from "@sv443-network/coreutils";
 import { DataStore } from "@sv443-network/userutils";
-import { error, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, setInnerHtml, getLikeDislikeBtns } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { compressionFormat } from "../constants.js";
+import { compressionSupported, getCurrentChannelId, getDomain, isValidChannelId, resourceAsString, sanitizeChannelId } from "../utils/misc.js";
+import { addStyleFromResource, clearNode, getCurrentMediaType, getLikeDislikeBtns, setInnerHtml } from "../utils/dom.js";
+import { error, info, log, warn } from "../utils/logging.js";
+import { t } from "../utils/translations.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showIconToast } from "../components/toast.js";
 import { createLongBtn } from "../components/longButton.js";
@@ -193,7 +196,7 @@ export async function initAutoLike() {
           document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 
           const recreateBtn = (headerCont: HTMLElement) => {
-            const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
+            const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model");
             if(!titleCont)
               return;
 
@@ -202,21 +205,23 @@ export async function initAutoLike() {
                 recreateBtn(headerCont);
             }, 350);
 
-            const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
+            const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string, h1 > .yt-core-attributed-string")?.textContent ?? null;
             log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
 
             const buttonsCont = headerCont.querySelector<HTMLElement>("#inner-header-container #buttons, yt-flexible-actions-view-model");
             if(buttonsCont) {
-              addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
+              addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction", {
                 listener: (otherBtns) =>
                   addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn),
               });
             }
-            else if(titleCont)
-              addAutoLikeToggleBtn(titleCont, chanId, chanName).then(checkBtn);
+            else if(titleCont) {
+              const titleH1OrCont = titleCont.querySelector<HTMLElement>("h1") ?? titleCont;
+              addAutoLikeToggleBtn(titleH1OrCont, chanId, chanName, titleH1OrCont !== titleCont ? ["left-margin-xl"] : []).then(checkBtn);
+            }
           };
 
-          addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container, #page-header", {
+          addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container, #page-header, #page-header-container", {
             listener: recreateBtn,
           });
         }

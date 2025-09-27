@@ -1090,8 +1090,16 @@ body .bytm-ripple.slowest {
   margin: 0 0 0 8px;
 }
 
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin-xl {
+  margin: 0 0 0 16px;
+}
+
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
   margin: 0 8px 0 0;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin-xl {
+  margin: 0 16px 0 0;
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {
@@ -2042,7 +2050,9 @@ ytmusic-description-shelf-renderer[page-type="MUSIC_PAGE_TYPE_TRACK_LYRICS"] > .
 }
 
 .bytm-generic-btn-img {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
   width: 28px;
   height: 28px;

@@ -114,8 +114,16 @@
   margin: 0 0 0 8px;
 }
 
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin-xl {
+  margin: 0 0 0 16px;
+}
+
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
   margin: 0 8px 0 0;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin-xl {
+  margin: 0 16px 0 0;
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {

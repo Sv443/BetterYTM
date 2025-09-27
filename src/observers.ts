@@ -310,7 +310,7 @@ export function initObservers() {
       //#region ytAppHeader
       // -> header of the page
       //    enabled by "ytdBrowse"
-      const ytAppHeaderSelector = "#header tp-yt-app-header";
+      const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
       globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
         defaultDebounce: 75,
