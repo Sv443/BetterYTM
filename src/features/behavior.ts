@@ -1,10 +1,12 @@
 import { autoPlural, clamp, pauseFor, setImmediateInterval } from "@sv443-network/coreutils";
 import { getUnsafeWindow, interceptWindowEvent, isDomLoaded } from "@sv443-network/userutils";
-import { error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, getCurrentMediaType, getVideoElement, scrollToCurrentSongInQueue, warn, dbg } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
 import { siteEvents } from "../siteEvents.js";
+import { dbg, error, info, log, warn } from "../utils/logging.js";
+import { clearNode, getCurrentMediaType, getVideoElement, getVideoTime, waitVideoElementReady } from "../utils/dom.js";
+import { getDomain, getWatchId, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { LogLevel } from "../types.js";
 
 //#region beforeunload popup
@@ -111,9 +113,9 @@ export async function initAutoScrollToActiveSong() {
   }
 }
 
-//#region remember song time
+//#region remember times
 
-type RemVidObj = {
+type RemTimeObj = {
   /** Watch ID */
   id: string;
   /** Time of the song/video in seconds */
@@ -123,35 +125,35 @@ type RemVidObj = {
 };
 
 /**
- * Remembers the time of the last played video and resumes playback from that time.  
- * **Needs to be called *before* DOM is ready!**
+ * Remembers the time of the last played video and resumes playback from that time when the site is reloaded or the video is revisited.  
+ * *Needs to be called **before** DOM is ready!*
  */
-export async function initRememberSongTime() {
+export async function initRememberVideoTime() {
   if(getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
     return;
 
-  const storedDataRaw = await GM.getValue("bytm-rem-songs");
-  if(!storedDataRaw)
-    await GM.setValue("bytm-rem-songs", "[]");
+  const remTimesRaw = await GM.getValue("bytm-remember-times");
+  if(!remTimesRaw)
+    await GM.setValue("bytm-remember-times", "[]");
 
-  let remVids: RemVidObj[];
+  let remTimeEntries: RemTimeObj[];
 
   try {
-    remVids = JSON.parse(String(storedDataRaw ?? "[]")) as RemVidObj[];
+    remTimeEntries = JSON.parse(String(remTimesRaw ?? "[]")) as RemTimeObj[];
   }
   catch(err) {
     error("Error parsing stored video time data, defaulting to empty cache:", err);
-    await GM.setValue("bytm-rem-songs", "[]");
-    remVids = [];
+    await GM.setValue("bytm-remember-times", "[]");
+    remTimeEntries = [];
   }
 
-  if(remVids.some(e => "watchID" in e)) {
-    remVids = remVids.filter(e => "id" in e);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
-    log(`Removed ${remVids.length} ${autoPlural("entry", remVids)} with an outdated format from the video time cache`);
+  if(remTimeEntries.some(e => "watchID" in e)) {
+    remTimeEntries = remTimeEntries.filter(e => "id" in e);
+    await GM.setValue("bytm-remember-times", JSON.stringify(remTimeEntries));
+    log(`Removed ${remTimeEntries.length} ${autoPlural("entry", remTimeEntries)} with an outdated format from the video time cache`);
   }
 
-  log(`Initialized video time restoring with ${remVids.length} initial ${autoPlural("entry", remVids)}:`, remVids);
+  log(`Initialized video time restoring with ${remTimeEntries.length} initial ${autoPlural("entry", remTimeEntries)}:`, remTimeEntries);
 
   await remTimeTryRestoreTime();
 
@@ -170,15 +172,24 @@ export async function initRememberSongTime() {
 export function remTimeTryRestoreTime(force = false) {
   return new Promise<boolean>(async (resolve, reject) => {
     try {
-      const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
+      const remVids = JSON.parse(await GM.getValue("bytm-remember-times", "[]")) as RemTimeObj[];
 
       if(location.pathname.startsWith("/watch")) {
-        const videoID = new URL(location.href).searchParams.get("v");
-        if(!videoID)
+        let videoID: string | null = getWatchId();
+
+        if(!videoID) {
+          const thumbEl = document.querySelector<HTMLImageElement>("ytmusic-player-bar .thumbnail-image-wrapper img[src]");
+          if(thumbEl && thumbEl.src.includes("/vi/"))
+            videoID = thumbEl.src.split("/vi/")[1].split("/")[0];
+        }
+
+        if(!videoID) {
+          error("Could not determine the video ID of the current video - not restoring time");
           return resolve(false);
+        }
 
         if(initialParams.has("t") && !force) {
-          info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+          info("Not restoring song time because the page was loaded with the '&t' parameter", LogLevel.Info);
           return resolve(false);
         }
 
@@ -225,7 +236,7 @@ let remVidCheckTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
 async function remTimeStartUpdateLoop() {
-  const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
+  const remVids = JSON.parse(await GM.getValue("bytm-remember-times", "[]")) as RemTimeObj[];
 
   if(location.pathname.startsWith("/watch")) {
     const id = getWatchId();
@@ -265,8 +276,8 @@ async function remTimeStartUpdateLoop() {
 }
 
 /** Updates an existing or inserts a new entry to be remembered */
-async function remTimeUpsertEntry(data: RemVidObj, force = false) {
-  const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[];
+async function remTimeUpsertEntry(data: RemTimeObj, force = false) {
+  const remVids = JSON.parse(await GM.getValue("bytm-remember-times", "[]")) as RemTimeObj[];
   const foundIdx = remVids.findIndex(entry => entry.id === data.id);
 
   // only upsert when no previous entry exists or its time is lower than the provided data
@@ -278,14 +289,14 @@ async function remTimeUpsertEntry(data: RemVidObj, force = false) {
   else
     remVids.push(data);
 
-  await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+  await GM.setValue("bytm-remember-times", JSON.stringify(remVids));
 }
 
 /** Deletes an entry in the "remember cache" */
 async function remTimeDeleteEntry(videoID: string) {
-  const remVids = (JSON.parse(await GM.getValue("bytm-rem-songs", "[]")) as RemVidObj[])
+  const remVids = (JSON.parse(await GM.getValue("bytm-remember-times", "[]")) as RemTimeObj[])
     .filter(entry => entry.id !== videoID);
-  await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+  await GM.setValue("bytm-remember-times", JSON.stringify(remVids));
 }
 
 //#region dismiss "are you still there"

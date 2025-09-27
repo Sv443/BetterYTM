@@ -26,7 +26,7 @@ import {
   addTrackNumbers,
   // behavior category:
   initBeforeUnloadHook, enableDiscardBeforeUnload,
-  initAutoCloseToasts, initRememberSongTime,
+  initAutoCloseToasts, initRememberVideoTime,
   initAutoScrollToActiveSong, initStillThere,
   // input category:
   initArrowKeySkip, initFrameSkip,
@@ -180,7 +180,7 @@ async function init() {
       enableDiscardBeforeUnload();
 
     if(features.rememberSongTime)
-      initRememberSongTime();
+      initRememberVideoTime();
 
     if(!isDomLoaded())
       document.addEventListener("DOMContentLoaded", () => onDomLoad(), { once: true });
