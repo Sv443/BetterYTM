@@ -1195,18 +1195,18 @@ export async function mountCfgMenu() {
 
     window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250));
 
-    log(`Mounted config menu element in ${Date.now() - startTs}ms`);
-
-    emitSiteEvent("cfgMenuMounted");
-    isCfgMenuMounting = false;
-    isCfgMenuDoneMounting = true;
-
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
+
+    log(`Mounted config menu element in ${Date.now() - startTs}ms`);
+
+    isCfgMenuMounting = false;
+    isCfgMenuDoneMounting = true;
+    emitSiteEvent("cfgMenuMounted");
 
     // ensure menu is inert if BytmDialog instances stacked on top of it:
 
