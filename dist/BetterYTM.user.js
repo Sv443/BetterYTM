@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@44a0664c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@516d3026/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "44a0664c",
-    buildTimestamp: "1757028379452",
+    buildNumber: "516d3026",
+    buildTimestamp: "1759008203443",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2490,7 +2490,7 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
                 const chanId = sanitizeChannelId(buttonEl.dataset.channelId ?? channelId);
                 const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
                 imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`));
-                if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+                if (autoLikeStore.getData().channels.some((ch) => ch.id === chanId)) {
                     await autoLikeStore.setData({
                         channels: [
                             ...autoLikeStore.getData().channels,
@@ -2709,10 +2709,22 @@ function getErrorDialog(errName, args) {
             header.textContent = header.ariaLabel = errName;
             return header;
         },
+        renderFooter() {
+            const footer = document.createElement("div");
+            footer.classList.add("bytm-dialog-footer");
+            const dlLogsBtn = document.createElement("button");
+            dlLogsBtn.type = "button";
+            dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
+            onInteraction(dlLogsBtn, () => {
+                downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+            });
+            footer.appendChild(dlLogsBtn);
+            return footer;
+        },
         body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
   
-${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
     });
 }
 //#region error classes
@@ -2822,30 +2834,30 @@ async function initAutoScrollToActiveSong() {
     }
 }
 /**
- * Remembers the time of the last played video and resumes playback from that time.
- * **Needs to be called *before* DOM is ready!**
+ * Remembers the time of the last played video and resumes playback from that time when the site is reloaded or the video is revisited.
+ * *Needs to be called **before** DOM is ready!*
  */
-async function initRememberSongTime() {
+async function initRememberVideoTime() {
     if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
         return;
-    const storedDataRaw = await GM.getValue("bytm-rem-songs");
-    if (!storedDataRaw)
-        await GM.setValue("bytm-rem-songs", "[]");
-    let remVids;
+    const remTimesRaw = await GM.getValue("bytm-remember-times");
+    if (!remTimesRaw)
+        await GM.setValue("bytm-remember-times", "[]");
+    let remTimeEntries;
     try {
-        remVids = JSON.parse(String(storedDataRaw ?? "[]"));
+        remTimeEntries = JSON.parse(String(remTimesRaw ?? "[]"));
     }
     catch (err) {
         error("Error parsing stored video time data, defaulting to empty cache:", err);
-        await GM.setValue("bytm-rem-songs", "[]");
-        remVids = [];
+        await GM.setValue("bytm-remember-times", "[]");
+        remTimeEntries = [];
     }
-    if (remVids.some(e => "watchID" in e)) {
-        remVids = remVids.filter(e => "id" in e);
-        await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
-        log(`Removed ${remVids.length} ${CoreUtils.autoPlural("entry", remVids)} with an outdated format from the video time cache`);
+    if (remTimeEntries.some(e => "watchID" in e)) {
+        remTimeEntries = remTimeEntries.filter(e => "id" in e);
+        await GM.setValue("bytm-remember-times", JSON.stringify(remTimeEntries));
+        log(`Removed ${remTimeEntries.length} ${CoreUtils.autoPlural("entry", remTimeEntries)} with an outdated format from the video time cache`);
     }
-    log(`Initialized video time restoring with ${remVids.length} initial ${CoreUtils.autoPlural("entry", remVids)}:`, remVids);
+    log(`Initialized video time restoring with ${remTimeEntries.length} initial ${CoreUtils.autoPlural("entry", remTimeEntries)}:`, remTimeEntries);
     await remTimeTryRestoreTime();
     try {
         if (!UserUtils.isDomLoaded())
@@ -2861,13 +2873,20 @@ async function initRememberSongTime() {
 function remTimeTryRestoreTime(force = false) {
     return new Promise(async (resolve, reject) => {
         try {
-            const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+            const remVids = JSON.parse(await GM.getValue("bytm-remember-times", "[]"));
             if (location.pathname.startsWith("/watch")) {
-                const videoID = new URL(location.href).searchParams.get("v");
-                if (!videoID)
+                let videoID = getWatchId();
+                if (!videoID) {
+                    const thumbEl = document.querySelector("ytmusic-player-bar .thumbnail-image-wrapper img[src]");
+                    if (thumbEl && thumbEl.src.includes("/vi/"))
+                        videoID = thumbEl.src.split("/vi/")[1].split("/")[0];
+                }
+                if (!videoID) {
+                    error("Could not determine the video ID of the current video - not restoring time");
                     return resolve(false);
+                }
                 if (initialParams$1.has("t") && !force) {
-                    info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+                    info("Not restoring song time because the page was loaded with the '&t' parameter", LogLevel.Info);
                     return resolve(false);
                 }
                 const entry = remVids.find(entry => entry.id === videoID);
@@ -2910,7 +2929,7 @@ let lastSongTime = -1;
 let remVidCheckTimeout;
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
 async function remTimeStartUpdateLoop() {
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+    const remVids = JSON.parse(await GM.getValue("bytm-remember-times", "[]"));
     if (location.pathname.startsWith("/watch")) {
         const id = getWatchId();
         const songTime = await getVideoTime() ?? 0;
@@ -2945,7 +2964,7 @@ async function remTimeStartUpdateLoop() {
 }
 /** Updates an existing or inserts a new entry to be remembered */
 async function remTimeUpsertEntry(data, force = false) {
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"));
+    const remVids = JSON.parse(await GM.getValue("bytm-remember-times", "[]"));
     const foundIdx = remVids.findIndex(entry => entry.id === data.id);
     // only upsert when no previous entry exists or its time is lower than the provided data
     if (foundIdx > -1 && !force && data.time <= remVids[foundIdx].time)
@@ -2954,13 +2973,13 @@ async function remTimeUpsertEntry(data, force = false) {
         remVids[foundIdx] = data;
     else
         remVids.push(data);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+    await GM.setValue("bytm-remember-times", JSON.stringify(remVids));
 }
 /** Deletes an entry in the "remember cache" */
 async function remTimeDeleteEntry(videoID) {
-    const remVids = JSON.parse(await GM.getValue("bytm-rem-songs", "[]"))
+    const remVids = JSON.parse(await GM.getValue("bytm-remember-times", "[]"))
         .filter(entry => entry.id !== videoID);
-    await GM.setValue("bytm-rem-songs", JSON.stringify(remVids));
+    await GM.setValue("bytm-remember-times", JSON.stringify(remVids));
 }
 //#region dismiss "are you still there"
 let curSongTitle;
@@ -3845,7 +3864,10 @@ async function fetchVideoVotes(videoID) {
     }
 }
 //#region iTunes album info
-/** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
+/**
+ * Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`
+ * Never throws, just returns an empty array on failure.
+ */
 async function fetchITunesAlbumInfo(artist, album) {
     try {
         const res = await CoreUtils.fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
@@ -3860,13 +3882,11 @@ async function fetchITunesAlbumInfo(artist, album) {
         }
         const json = await res.json().catch(warn);
         if (!("resultCount" in json) || !("results" in json)) {
-            warn("Couldn't parse iTunes album info due to an error:", json);
+            error("Couldn't parse iTunes album info due to an error:", json);
             return [];
         }
-        if (json.resultCount === 0) {
-            warn("The iTunes API found no album info for", artist, "-", album);
+        if (json.resultCount === 0)
             return [];
-        }
         return json.results.filter((result) => {
             if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
                 return false;
@@ -5038,16 +5058,16 @@ async function mountCfgMenu() {
         backgroundElem.appendChild(menuContainer);
         (document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
         window.addEventListener("resize", CoreUtils.debounce(checkToggleScrollIndicator, 250));
-        log(`Mounted config menu element in ${Date.now() - startTs}ms`);
-        emitSiteEvent("cfgMenuMounted");
-        isCfgMenuMounting = false;
-        isCfgMenuDoneMounting = true;
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
         document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
+        log(`Mounted config menu element in ${Date.now() - startTs}ms`);
+        isCfgMenuMounting = false;
+        isCfgMenuDoneMounting = true;
+        emitSiteEvent("cfgMenuMounted");
         // ensure menu is inert if BytmDialog instances stacked on top of it:
         /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
         const stackedOpenDialogIds = [];
@@ -5667,7 +5687,7 @@ async function deleteExpiredAlbumArtCacheEntries() {
     if (expiredEntries.length > 0) {
         log(`Deleting ${expiredEntries.length} expired album art cache entries`);
         albumArtCacheStore.setData({
-            entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
+            entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
         });
     }
 }
@@ -5923,15 +5943,12 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
             };
         }
     }
+    /** Fetches the album info from the iTunes API and returns the best match as well as the first result as a fallback in a tuple */
     const doFetchITunesAlbum = async (artist, album) => {
         const albumObjs = await fetchITunesAlbumInfo(artist, album);
         if (albumObjs && albumObjs.length > 0) {
-            const bestMatch = albumObjs.find((al) => ((sanitizeArtists(al.artistName) === artist
-                || sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
-                || sanitizeArtists(al.artistName) === artistsRaw
-                || sanitizeArtists(al.artistName).toLowerCase() === artistsRaw.toLowerCase()) && (sanitizeSong(al.collectionName) === sanitizeSong(album)
-                || sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
-                || sanitizeSong(al.collectionCensoredName) === sanitizeSong(album)
+            const bestMatch = albumObjs.find((al) => ((sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
+                || sanitizeArtists(al.artistName) === artistsRaw) && (sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
                 || sanitizeSong(al.collectionCensoredName).toLowerCase() === sanitizeSong(album).toLowerCase())));
             return [bestMatch, albumObjs[0]];
         }
@@ -5940,11 +5957,11 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
     const artist = sanitizeArtists(artistsRaw);
     let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
     if (!bestMatch)
-        [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
+        [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
     const match = bestMatch ?? fallback;
     if (match) {
         const entries = albumArtCacheStore.getData().entries;
-        if (!entries.find((e) => e.videoId === videoId)) {
+        if (!entries.some((e) => e.videoId === videoId)) {
             entries.push({
                 videoId,
                 url: match.artworkUrl100,
@@ -5954,6 +5971,8 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
             await albumArtCacheStore.setData({ entries });
         }
     }
+    else
+        warn("The iTunes API found no album info for", artist, "-", albumRaw);
     return match;
 }
 //#region idle hide cursor
@@ -10477,7 +10496,7 @@ async function init() {
         if (features.disableBeforeUnloadPopup && domain === "ytm")
             enableDiscardBeforeUnload();
         if (features.rememberSongTime)
-            initRememberSongTime();
+            initRememberVideoTime();
         if (!UserUtils.isDomLoaded())
             document.addEventListener("DOMContentLoaded", () => onDomLoad(), { once: true });
         else
