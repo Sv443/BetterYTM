@@ -114,7 +114,9 @@ export async function initAutoLike() {
         const buttonsCont = headerCont.querySelector<HTMLElement>(".buttons");
         if(buttonsCont) {
           const lastBtn = buttonsCont.querySelector<HTMLElement>("ytmusic-subscribe-button-renderer");
-          const chanName = document.querySelector<HTMLElement>("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent ?? null;
+          const chanName = document.querySelector<HTMLElement>(".ytmusic-immersive-header-renderer > h1 > yt-formatted-string")?.textContent
+            ?? document.querySelector<HTMLElement>("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent
+            ?? null;
           lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
         }
         else {
@@ -125,8 +127,8 @@ export async function initAutoLike() {
         }
       };
 
-      siteEvents.on("pathChanged", (path) => {
-        if(getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
+      const tryAddBtnYTM = () => {
+        if(getFeature("autoLikeChannelToggleBtn") && location.pathname.match(/\/channel\/.+/)) {
           const chanId = getCurrentChannelId();
           if(!chanId)
             return error("Couldn't extract channel ID from URL");
@@ -137,7 +139,10 @@ export async function initAutoLike() {
             listener: (el) => recreateBtn(el, chanId),
           });
         }
-      });
+      };
+
+      siteEvents.on("pathChanged", () => tryAddBtnYTM());
+      tryAddBtnYTM();
     }
     //#region yt
     else if(getDomain() === "yt") {
@@ -179,8 +184,8 @@ export async function initAutoLike() {
         timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
       });
 
-      siteEvents.on("pathChanged", (path) => {
-        if(path.match(/(\/?@|\/?channel\/)\S+/)) {
+      const tryAddBtnYT = () => {
+        if(location.pathname.match(/(\/?@|\/?channel\/)\S+/)) {
           const chanId = getCurrentChannelId();
           if(!chanId)
             return error("Couldn't extract channel ID from URL");
@@ -215,7 +220,10 @@ export async function initAutoLike() {
             listener: recreateBtn,
           });
         }
-      });
+      };
+
+      siteEvents.on("pathChanged", () => tryAddBtnYT());
+      tryAddBtnYT();
     }
 
     log("Initialized auto-like channels feature");
@@ -233,16 +241,20 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
 
   log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
 
-  siteEvents.on("autoLikeChannelsUpdated", () => {
+  siteEvents.on("autoLikeChannelsUpdated", async () => {
     const buttonEl = document.querySelector<HTMLElement>(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
     if(!buttonEl)
       return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
 
     const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
+
     if(enabled)
       buttonEl.classList.add("toggled");
     else
       buttonEl.classList.remove("toggled");
+
+    const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
+    imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`));
   });
 
   const buttonEl = await createLongBtn({
@@ -251,44 +263,45 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
     title: t(`auto_like_button_tooltip${chan?.enabled ? "_enabled" : "_disabled"}`),
     toggle: true,
     toggleInitialState: chan?.enabled ?? false,
-    togglePredicate(e) {
-      e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
-      return !e.shiftKey;
+    togglePredicate({ shiftKey, ctrlKey }) {
+      const shiftOrCtrl = shiftKey || ctrlKey;
+      shiftOrCtrl && getAutoLikeDialog().then((dlg) => dlg.open());
+      return !shiftOrCtrl;
     },
-    async onToggle(toggled) {
+    async onToggle(isToggled) {
       try {
         await autoLikeStore.loadData();
 
-        buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
+        buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${isToggled ? "_enabled" : "_disabled"}`);
 
         const chanId = sanitizeChannelId(buttonEl.dataset.channelId ?? channelId);
 
         const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-        imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`));
+        imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${isToggled ? "_enabled" : ""}`));
 
         if(autoLikeStore.getData().channels.some((ch) => ch.id === chanId)) {
           await autoLikeStore.setData({
-            channels: [
-              ...autoLikeStore.getData().channels,
-              { id: chanId, name: channelName ?? "", enabled: toggled },
-            ],
+            channels: autoLikeStore.getData().channels
+              .map((ch) => ch.id === chanId ? { ...ch, enabled: isToggled } : ch),
           });
         }
         else {
           await autoLikeStore.setData({
-            channels: autoLikeStore.getData().channels
-              .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
+            channels: [
+              ...autoLikeStore.getData().channels,
+              { id: chanId, name: channelName ?? "", enabled: isToggled },
+            ],
           });
         }
 
         emitSiteEvent("autoLikeChannelsUpdated");
         showIconToast({
-          message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+          message: isToggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
           subtitle: t("auto_like_click_to_configure"),
-          icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
+          icon: `icon-auto_like${isToggled ? "_enabled" : ""}`,
           onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
         }).catch(e => error("Error while showing auto-like toast:", e));
-        log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
+        log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${isToggled ? "enabled" : "disabled"}`);
       }
       catch(err) {
         error("Error while toggling auto-like channel:", err);
@@ -299,19 +312,4 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
   buttonEl.dataset.channelId = channelId;
 
   siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
-
-  siteEvents.on("autoLikeChannelsUpdated", async () => {
-    const buttonEl = document.querySelector<HTMLElement>(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
-    if(!buttonEl)
-      return;
-
-    const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
-    if(enabled)
-      buttonEl.classList.add("toggled");
-    else
-      buttonEl.classList.remove("toggled");
-
-    const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-    imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`));
-  });
 }
