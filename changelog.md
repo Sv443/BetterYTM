@@ -4,7 +4,7 @@
 <!-- #region 3.1.0 -->
 ## 3.1.0
 - **New Features:**
-  - 🟡 Improved config menu UX:
+  - Improved config menu UX:
     - Added a sidenav that displays one group at a time, for a much less overwhelming experience.
     - Added feature groups, which further divide each group's features into logical sections.
     - Removed advanced mode flag from a lot of features since there's much more breathing room now.
@@ -19,7 +19,7 @@
   - 🎵 Automatically close the activity check dialog. Note: Might only work if the browser isn't minimized.
 - **Improvements and Changes:**
   - Improved script initialization performance.
-  - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix inconsistencies.
+  - 🎵 Overhauled thumbnail overlay to fix inconsistencies.
     - Fixed album artwork being fetched with wrong parameters.
     - Allow manually toggling between thumbnail providers.
     - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
@@ -33,7 +33,7 @@
   - Made some menu commands usable by default without requiring to be compiled in dev mode, and there's even more when the advanced mode is enabled. See internal changes for a full list.
   - Increased the amount of times per second the video/song time is remembered from 2 to 4.
 - **Fixes:**
-  - 🟡 Fixed inconsistent auto-like button rendering and channel name resolution on both pages.
+  - Fixed inconsistent auto-like button rendering and channel name resolution on both pages.
   - 🎵 Fixed SyntaxError when no AM album artwork found.
   - Fixed Error when clicking on a BytmDialog's exit button.
   - Fixed interactivity problems with config menu and stacked BytmDialogs when other dialog was opened over top and then closed.
