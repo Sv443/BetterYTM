@@ -14,14 +14,16 @@
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - 🎵 Show a track number in the currently playing queue and playlists.
+  - 🎵 Swap like- and dislike buttons to match the layout on YT.
   - Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
+  - 🎵 Automatically close the activity check dialog. Note: Might only work if the browser isn't minimized.
 - **Improvements and Changes:**
   - Improved script initialization performance.
   - [🚧 WIP] 🎵 Overhauled thumbnail overlay to fix inconsistencies.
     - Fixed album artwork being fetched with wrong parameters.
     - Allow manually toggling between thumbnail providers.
     - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
-  - 🎵 Decoupled volume slider step and scroll step.
+  - 🎵 Decoupled volume slider step and scroll step, allowing for both to work and be configured independently.
   - 🎵 The "improve links" feature now also applies to all types of song list items.  
     Clicking a list item anywhere will now start playing that song. This doesn't affect clicking and dragging them.
   - The values of some features (if left unchanged), will be updated to the new defaults:
@@ -42,18 +44,20 @@
   - Fixed hotkey inputs not deactivating when the config menu is closed.
 
 <details><summary>Click to expand plugin and internal changes</summary>
+<sup>(I did my best to order these by importance, but it's still a lot, sorry about that.)</sup>
+  
 
 - **Plugin Changes:**  
-  *(also refer to [version 3.1.0's API docs](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md))*
+  *(also refer to **[version 3.1.0's API docs](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md)**)*
   - **Migration guide:**
-    - ⚠️ **BREAKING:** Since BYTM now *requires* plugin intents to be set, make sure to add all intents required by the authenticated functions your plugin calls to the `PluginDef` object's `intents` property (which can now also be an array instead of just a bitwise-or'ed number). Read below for a list of functions and their required intents.
+    - ⚠️ **POT. BREAKING:** Since BYTM now *requires* plugin intents to be set, make sure to add all intents required by the authenticated functions your plugin calls to the `PluginDef` object's `intents` property (which can now also be an array instead of just a bitwise-or'ed number). Read below for a list of functions and their required intents.
     - If you use the `BytmDialog`, `ExImDialog` or `MarkdownDialog` classes directly, switch to the new authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()`. Direct access will continue to work until version 4.0.0, but to future-proof your plugin, switch to the new functions as soon as possible, and make sure to add the `CreateModalDialogs` (32) intent to your plugin definition's `intents` property.
     - If you were using `bytm:ready` to reliably wait until *all* features are initialized, switch to `bytm:allReady` instead.  
       The `bytm:ready` event is still emitted, but it is now only guaranteed to be emitted when the DOM is loaded and all features have *started* to initialize.
     - All `NanoEmitter` subclasses and the interface-exposed `NanoEmitter` class reference now use [CoreUtils' new `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter), which grants you access to the powerful `onMulti()` method to listen to multiple events at once, with configurable behavior.
     - The `intents` prop can now be an array of `PluginIntent` enum members.
   - **API Changes:**
-    - ⚠️ **BREAKING:** Plugins will no longer be able to call authenticated functions without the required intents.  
+    - ⚠️ **POT. BREAKING:** Plugins will no longer be able to call authenticated functions without the required intents.  
       Intents are now required to be set in the plugin definition object, though for now they will still all be granted and don't need to be explicitly allowed by the user once after installing yet.  
       The new intent `FullAccess` (512) grants all other intents, though you should only use it if your plugin truly requires all intents.  
       These are the intents that are now required for the respective functions:
