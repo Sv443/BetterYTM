@@ -10,7 +10,7 @@
   - [**TODO: Getting started**](#getting-started)
   - [TODO: CLI Commands](#cli-commands)
   - [TODO: Extras](#extras)
-  - [**TODO: Common Procedures**](#common-procedures)
+  - [**Common Procedures**](#common-procedures)
 
 <br>
 
@@ -204,8 +204,8 @@ The main files you will be working with are:
 
 <br>
 
-<!-- #region procedures -->
-### Procedures:
+<!-- #region common procedures -->
+### Common Procedures:
 Here are some well explained procedures for common tasks.  
 If you need help with these, don't hesitate to reach out to me (see the top of this file).  
   
