@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5239b26f/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ecd78d5d/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "github",
-    buildNumber: "5239b26f",
-    buildTimestamp: "1759012680535",
+    buildNumber: "ecd78d5d",
+    buildTimestamp: "1759012897933",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
