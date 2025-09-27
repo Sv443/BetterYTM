@@ -31,14 +31,13 @@
   - Made some menu commands usable by default without requiring to be compiled in dev mode, and there's even more when the advanced mode is enabled. See internal changes for a full list.
   - Increased the amount of times per second the video/song time is remembered from 2 to 4.
 - **Fixes:**
-  - [🚧 WIP] 🟡 Fixed inconsistent auto-like button rendering.
+  - 🟡 Fixed inconsistent auto-like button rendering and channel name resolution on both pages.
   - 🎵 Fixed SyntaxError when no AM album artwork found.
   - Fixed Error when clicking on a BytmDialog's exit button.
-  - Fixed config menu not closing on <kbd>Esc</kbd> press when other dialog over top was closed with <kbd>Esc</kbd>
+  - Fixed interactivity problems with config menu and stacked BytmDialogs when other dialog was opened over top and then closed.
   - 🎵 Fixed list buttons not disappearing with the native buttons in song lists.
   - 🎵 Fixed anchor improvements feature on the search page.
   - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension.
-  - Fixed page scroll bar reappearing after BytmDialog opened over top of the config menu is closed.
   - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this).
   - Fixed hotkey inputs not deactivating when the config menu is closed.
 
