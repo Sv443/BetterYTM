@@ -847,18 +847,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > // fetch the album info for the specified artist and album name:
 > const albumObjects = await unsafeWindow.BYTM.fetchITunesAlbumInfo(
+>   // always sanitize artist names first due to various formatting edge cases:
 >   unsafeWindow.BYTM.sanitizeArtists("The Beatles"),
 >   "Abbey Road"
 > );
+> // to see the full type of each album object, search for 'type ITunesAlbumObj' in 'src/types.ts'
 > 
 > if(albumObjects.length > 0) {
 >   // try to find the best match:
 >   const bestMatch = albumObjs.find((al) => (
->     (al.artistName === artist || al.artistName.toLowerCase() === artist.toLowerCase())
+>     (al.artistName.toLowerCase() === artist.toLowerCase())
 >     && (
->       al.collectionName === album
->       || al.collectionName.toLowerCase() === album.toLowerCase()
->       || al.collectionCensoredName === album
+>       al.collectionName.toLowerCase() === album.toLowerCase()
 >       || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
 >     )
 >   ));
@@ -867,11 +867,13 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 >   console.log("Album name:", albumObj.collectionName);
 >   console.log("Album artist:", albumObj.artistName);
->   console.log("Album release date:", albumObj.releaseDate);
+>   console.log("Album release date:", new Date(albumObj.releaseDate)); // the property is an ISO 8601 timestamp string
 > 
->   // replace the 100x100 with 1800x1800 to get a much more high-res cover artwork URL:
->   const artwork1800 = albumObj.artworkUrl100.replace("100x100", "1800x1800");
->   console.log("Large cover artwork URL:", artwork1800);
+>   // replace the 100x100 with 2000x2000 to get a much more high-res cover artwork URL:
+>   const artwork2000 = albumObj.artworkUrl100.replace("100x100", "2000x2000");
+>   // most artworks are available in up to 3000x3000 - if there's no matching resolution, you'll receive the highest available one
+> 
+>   console.log("Large album cover artwork URL:", artwork2000);
 > }
 > else
 >   console.error("No album info found for the specified artist and album name");
