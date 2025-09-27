@@ -1,11 +1,13 @@
 import { clamp, DatedError, debounce } from "@sv443-network/coreutils";
 import { showIconToast } from "../components/toast.js";
 import { MarkdownDialog } from "../components/MarkdownDialog.js";
+import { getFeature } from "../config.js";
 import { scriptInfo } from "../constants.js";
 import { setGlobalProp } from "../interface.js";
-import { LogLevel } from "../types.js";
 import { t } from "./translations.js";
-import { getFeature } from "../config.js";
+import { onInteraction } from "./input.js";
+import { downloadFile } from "./dom.js";
+import { LogLevel } from "../types.js";
 import packageJson from "../../package.json" with { type: "json" };
 
 //#region logging fns
@@ -181,12 +183,27 @@ export function getErrorDialog(errName: string, args: unknown[]) {
       header.ariaLevel = "1";
       header.tabIndex = 0;
       header.textContent = header.ariaLabel = errName;
+
       return header;
+    },
+    renderFooter() {
+      const footer = document.createElement("div");
+      footer.classList.add("bytm-dialog-footer");
+
+      const dlLogsBtn = document.createElement("button");
+      dlLogsBtn.type = "button";
+      dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
+      onInteraction(dlLogsBtn, () => {
+        downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+      });
+
+      footer.appendChild(dlLogsBtn);
+      return footer;
     },
     body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
   
-${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
   });
 }
 

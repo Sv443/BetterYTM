@@ -117,7 +117,10 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
 
 //#region iTunes album info
 
-/** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
+/**
+ * Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`  
+ * Never throws, just returns an empty array on failure.
+ */
 export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {
   try {
     const res = await fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
@@ -135,13 +138,11 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
     const json = await res.json().catch(warn) as ITunesAPIResponse;
 
     if(!("resultCount" in json) || !("results" in json)) {
-      warn("Couldn't parse iTunes album info due to an error:", json);
+      error("Couldn't parse iTunes album info due to an error:", json);
       return [];
     }
-    if(json.resultCount === 0) {
-      warn("The iTunes API found no album info for", artist, "-", album);
+    if(json.resultCount === 0)
       return [];
-    }
 
     return json.results.filter((result) => {
       if(!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
