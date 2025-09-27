@@ -66,11 +66,6 @@ export let currentDialogId: string | null = null;
 export const openDialogs: string[] = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
-/** Whether the config menu is currently open */
-let isCfgMenuOpen = false;
-
-window.addEventListener("bytm:dialogOpened:cfg-menu", () => isCfgMenuOpen = true);
-window.addEventListener("bytm:dialogClosed:cfg-menu", () => isCfgMenuOpen = false);
 
 //#region class
 
@@ -254,8 +249,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     else if(this.options.unmountOnClose)
       this.unmount();
 
-    if((!isCfgMenuOpen && openDialogs.length === 0) || (isCfgMenuOpen && openDialogs.length > 0))
-      this.removeBgInert();
+    this.removeBgInert();
   }
 
   //#region pub:isOpen
