@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@516d3026/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5239b26f/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -79,7 +79,7 @@
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.3/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.5
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.7
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -405,11 +405,11 @@ var PluginIntent;
     PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
 })(PluginIntent || (PluginIntent = {}));/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
 const rawConsts = {
-    mode: "development",
-    branch: "develop",
+    mode: "production",
+    branch: "main",
     host: "github",
-    buildNumber: "516d3026",
-    buildTimestamp: "1759008203443",
+    buildNumber: "5239b26f",
+    buildTimestamp: "1759012680535",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -716,10 +716,6 @@ let currentDialogId = null;
 const openDialogs = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 const setCurrentDialogId = (id) => currentDialogId = id;
-/** Whether the config menu is currently open */
-let isCfgMenuOpen$1 = false;
-window.addEventListener("bytm:dialogOpened:cfg-menu", () => isCfgMenuOpen$1 = true);
-window.addEventListener("bytm:dialogClosed:cfg-menu", () => isCfgMenuOpen$1 = false);
 //#region class
 /** Creates and manages a modal dialog element */
 class BytmDialog extends CoreUtils.NanoEmitter {
@@ -876,8 +872,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         // don't destroy *and* unmount at the same time
         else if (this.options.unmountOnClose)
             this.unmount();
-        if ((!isCfgMenuOpen$1 && openDialogs.length === 0) || (isCfgMenuOpen$1 && openDialogs.length > 0))
-            this.removeBgInert();
+        this.removeBgInert();
     }
     //#region pub:isOpen
     /** Returns true if the dialog is currently open */
@@ -1755,784 +1750,6 @@ async function closeToast() {
         toastEl.addEventListener("transitionend", async () => toastEl.remove(), { once: true });
         toastEl.classList.remove("visible");
     }));
-}const interactionKeys = ["Enter", " ", "Space"];
-/**
- * Adds generic, accessible interaction listeners to the passed element.
- * All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
- * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
- */
-function onInteraction(elem, listener, listenerOptions) {
-    const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
-    const proxListener = (e) => {
-        if (e instanceof KeyboardEvent) {
-            if (interactionKeys.includes(e.key)) {
-                preventDefault && e.preventDefault();
-                stopPropagation && e.stopPropagation();
-            }
-            else
-                return;
-        }
-        else if (e instanceof MouseEvent) {
-            preventDefault && e.preventDefault();
-            stopPropagation && e.stopPropagation();
-        }
-        // clean up the other listener that isn't automatically removed if `once` is set
-        listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
-        listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
-        listener(e);
-    };
-    elem.addEventListener("click", proxListener, listenerOpts);
-    elem.addEventListener("keydown", proxListener, listenerOpts);
-}/**
- * Creates an element with a ripple effect on click.
- * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
- * @returns The passed element or the newly created element with the ripple effect.
- */
-function createRipple(rippleElement, properties) {
-    const props = {
-        speed: "normal",
-        ...properties,
-    };
-    const rippleEl = rippleElement ?? document.createElement("div");
-    "additionalProps" in props && Object.assign(rippleEl, props.additionalProps);
-    rippleEl.classList.add("bytm-ripple", props.speed);
-    const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
-    rippleEl.addEventListener(props?.triggerEvent ?? "mousedown", (e) => {
-        updateRippleWidth();
-        const x = e.clientX - rippleEl.getBoundingClientRect().left;
-        const y = e.clientY - rippleEl.getBoundingClientRect().top;
-        const rippleAreaEl = document.createElement("span");
-        rippleAreaEl.classList.add("bytm-ripple-area");
-        rippleAreaEl.style.left = `${Math.round(x)}px`;
-        rippleAreaEl.style.top = `${Math.round(y)}px`;
-        if (rippleEl.firstChild)
-            rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
-        else
-            rippleEl.appendChild(rippleAreaEl);
-        rippleAreaEl.addEventListener("animationend", () => rippleAreaEl.remove());
-    });
-    updateRippleWidth();
-    return rippleEl;
-}/**
- * Creates a generic, circular, long button element with an icon and text.
- * Has classes for the enabled and disabled states for easier styling.
- * If `href` is provided, the button will be an anchor element.
- * If `onClick` or `onToggle` is provided, the button will be a div element.
- * Provide either `resourceName` or `src` to specify the icon inside the button.
- */
-async function createLongBtn({ title, text, iconPosition, ripple, ...rest }) {
-    if (["href", "onClick", "onToggle"].every((key) => !(key in rest)))
-        throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
-    let btnElem;
-    if ("href" in rest && rest.href) {
-        btnElem = document.createElement("a");
-        btnElem.href = rest.href;
-        btnElem.role = "button";
-        btnElem.target = "_blank";
-        btnElem.rel = "noopener noreferrer";
-    }
-    else
-        btnElem = document.createElement("div");
-    if ("toggle" in rest && rest.toggle) {
-        btnElem.classList.add("bytm-toggle");
-        if ("toggleInitialState" in rest && rest.toggleInitialState)
-            btnElem.classList.add("toggled");
-    }
-    onInteraction(btnElem, (evt) => {
-        if ("onClick" in rest)
-            rest.onClick(evt);
-        if ("toggle" in rest && rest.toggle && (rest.togglePredicate ?? (() => true))(evt))
-            rest.onToggle(btnElem.classList.toggle("toggled"), evt);
-    });
-    btnElem.classList.add("bytm-generic-btn", "long");
-    btnElem.ariaLabel = btnElem.title = title;
-    btnElem.tabIndex = 0;
-    btnElem.role = "button";
-    const imgElem = document.createElement("src" in rest ? "img" : "div");
-    imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
-    if ("src" in rest)
-        imgElem.src = rest.src;
-    else
-        setInnerHtml(imgElem, await resourceAsString(rest.resourceName));
-    const txtElem = document.createElement("span");
-    txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
-    txtElem.textContent = txtElem.ariaLabel = text;
-    iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
-    btnElem.appendChild(txtElem);
-    iconPosition === "right" && btnElem.appendChild(imgElem);
-    return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
-}//#region class
-/** Generic dialog for exporting and importing any string of data */
-class ExImDialog extends BytmDialog {
-    constructor(options) {
-        super({
-            renderHeader: () => ExImDialog.renderHeader(options),
-            renderBody: () => ExImDialog.renderBody(options),
-            renderFooter: undefined,
-            closeOnBgClick: true,
-            closeOnEscPress: true,
-            closeBtnEnabled: true,
-            unmountOnClose: true,
-            small: true,
-            ...options,
-        });
-    }
-    //#region header
-    static async renderHeader(opts) {
-        const headerEl = document.createElement("h2");
-        headerEl.classList.add("bytm-menu-title");
-        headerEl.role = "heading";
-        headerEl.ariaLevel = "1";
-        headerEl.tabIndex = 0;
-        headerEl.textContent = headerEl.ariaLabel = await CoreUtils.consumeStringGen(opts.title);
-        return headerEl;
-    }
-    //#region body
-    static async renderBody(opts) {
-        const panesCont = document.createElement("div");
-        panesCont.classList.add("bytm-exim-dialog-panes-cont");
-        //#region export
-        const exportPane = document.createElement("div");
-        exportPane.classList.add("bytm-exim-dialog-pane", "export");
-        {
-            const descEl = document.createElement("p");
-            descEl.classList.add("bytm-exim-dialog-desc");
-            descEl.role = "note";
-            descEl.tabIndex = 0;
-            descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descExport);
-            const dataEl = document.createElement("textarea");
-            dataEl.classList.add("bytm-exim-dialog-data");
-            dataEl.readOnly = true;
-            dataEl.tabIndex = 0;
-            dataEl.value = t("click_to_reveal");
-            onInteraction(dataEl, async () => {
-                dataEl.value = await CoreUtils.consumeStringGen(opts.exportData);
-                dataEl.setSelectionRange(0, dataEl.value.length);
-            });
-            const exportCenterBtnCont = document.createElement("div");
-            exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
-            const copyBtn = await createLongBtn({
-                title: t("copy_to_clipboard"),
-                text: t("copy"),
-                resourceName: "icon-copy",
-                ripple: true,
-                async onClick({ shiftKey }) {
-                    const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-                    copyToClipboard(await CoreUtils.consumeStringGen(copyData));
-                    await showToast({ message: t("copied_to_clipboard") });
-                },
-            });
-            exportCenterBtnCont.appendChild(copyBtn);
-            exportPane.append(descEl, dataEl, exportCenterBtnCont);
-        }
-        //#region import
-        const importPane = document.createElement("div");
-        importPane.classList.add("bytm-exim-dialog-pane", "import");
-        {
-            const descEl = document.createElement("p");
-            descEl.classList.add("bytm-exim-dialog-desc");
-            descEl.role = "note";
-            descEl.tabIndex = 0;
-            descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descImport);
-            const dataEl = document.createElement("textarea");
-            dataEl.classList.add("bytm-exim-dialog-data");
-            dataEl.tabIndex = 0;
-            const importCenterBtnCont = document.createElement("div");
-            importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
-            const importBtn = await createLongBtn({
-                title: t("start_import_tooltip"),
-                text: t("import"),
-                resourceName: "icon-upload",
-                ripple: true,
-                onClick: () => opts.onImport(dataEl.value),
-            });
-            importCenterBtnCont.appendChild(importBtn);
-            importPane.append(descEl, dataEl, importCenterBtnCont);
-        }
-        panesCont.append(exportPane, importPane);
-        return panesCont;
-    }
-}/**
- * Creates a generic, circular button element.
- * If `href` is provided, the button will be an anchor element.
- * If `onClick` is provided, the button will be a div element.
- * Provide either `resourceName` or `src` to specify the icon inside the button.
- */
-async function createCircularBtn({ title, ripple = true, ...rest }) {
-    let btnElem;
-    if ("href" in rest && rest.href) {
-        btnElem = document.createElement("a");
-        btnElem.href = rest.href;
-        btnElem.role = "button";
-        btnElem.target = "_blank";
-        btnElem.rel = "noopener noreferrer";
-    }
-    else if ("onClick" in rest && rest.onClick) {
-        btnElem = document.createElement("div");
-        rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
-    }
-    else
-        throw new TypeError("Either 'href' or 'onClick' must be provided");
-    btnElem.classList.add("bytm-generic-btn");
-    btnElem.ariaLabel = btnElem.title = title;
-    btnElem.tabIndex = 0;
-    btnElem.role = "button";
-    if ("src" in rest || ("resourceName" in rest && !rest.resourceName.startsWith("icon-"))) {
-        const imgElem = document.createElement("img");
-        imgElem.classList.add("bytm-generic-btn-img");
-        imgElem.src = "src" in rest
-            ? await rest.src
-            : await getResourceUrl(rest.resourceName);
-        btnElem.appendChild(imgElem);
-    }
-    else if ("resourceName" in rest && rest.resourceName.startsWith("icon-")) {
-        setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
-        btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
-    }
-    return ripple ? createRipple(btnElem) : btnElem;
-}let autoLikeDialog = null;
-let autoLikeExImDialog = null;
-// TODO:FIXME: dialog isnt properly closed?
-// to reproduce: open dialog, create new entry, confirm with enter, close dialog -> cfg menu is still inert and dialog is still open for some reason
-/** Creates and/or returns the import dialog */
-async function getAutoLikeDialog() {
-    if (!autoLikeDialog) {
-        await initAutoLikeStore();
-        autoLikeDialog = new BytmDialog({
-            id: "auto-like-channels",
-            width: 700,
-            height: 1200,
-            closeBtnEnabled: true,
-            closeOnBgClick: true,
-            closeOnEscPress: true,
-            destroyOnClose: true,
-            removeListenersOnDestroy: false,
-            small: true,
-            verticalAlign: "top",
-            renderHeader: renderHeader$3,
-            renderBody: renderBody$4,
-            renderFooter: renderFooter$1,
-        });
-        siteEvents.on("autoLikeChannelsUpdated", async () => {
-            try {
-                if (autoLikeExImDialog?.isOpen())
-                    autoLikeExImDialog.unmount();
-                if (autoLikeDialog?.isOpen()) {
-                    autoLikeDialog.unmount();
-                    await autoLikeDialog.open();
-                    log("Auto-like channels updated, refreshed dialog");
-                }
-            }
-            catch (err) {
-                error("Couldn't refresh auto-like channels dialog:", err);
-            }
-        });
-        autoLikeDialog.on("open", () => document.querySelector(".bytm-auto-like-channels-searchbar")?.focus());
-        autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
-    }
-    if (!autoLikeExImDialog) {
-        autoLikeExImDialog = new ExImDialog({
-            id: "auto-like-channels-export-import",
-            width: 800,
-            height: 600,
-            // try to compress the data if possible
-            exportData: async () => await compressionSupported()
-                ? await CoreUtils.compress(JSON.stringify(autoLikeStore.getData()), compressionFormat$1, "string")
-                : JSON.stringify(autoLikeStore.getData()),
-            // copy plain when shift-clicking the copy button
-            exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
-            async onImport(data) {
-                try {
-                    const parsed = await tryToDecompressAndParse(data);
-                    log("Trying to import auto-like data:", parsed);
-                    if (!parsed || typeof parsed !== "object")
-                        return await showPrompt({ type: "alert", message: t("import_error.invalid") });
-                    if (!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-                        return await showPrompt({ type: "alert", message: t("import_error.no_data") });
-                    await autoLikeStore.setData(parsed);
-                    emitSiteEvent("autoLikeChannelsUpdated");
-                    showToast({ message: t("import_success") });
-                    autoLikeExImDialog?.unmount();
-                }
-                catch (err) {
-                    error("Couldn't import auto-like channels data:", err);
-                }
-            },
-            title: () => t("auto_like_export_import_title"),
-            descImport: () => t("auto_like_import_desc"),
-            descExport: () => t("auto_like_export_desc"),
-        });
-    }
-    return autoLikeDialog;
-}
-//#region header
-async function renderHeader$3() {
-    const headerEl = document.createElement("h2");
-    headerEl.classList.add("bytm-dialog-title");
-    headerEl.role = "heading";
-    headerEl.ariaLevel = "1";
-    headerEl.tabIndex = 0;
-    headerEl.textContent = headerEl.ariaLabel = t("auto_like_channels_dialog_title");
-    return headerEl;
-}
-//#region body
-async function renderBody$4() {
-    const contElem = document.createElement("div");
-    const descriptionEl = document.createElement("p");
-    descriptionEl.classList.add("bytm-auto-like-channels-desc");
-    descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
-    descriptionEl.tabIndex = 0;
-    contElem.appendChild(descriptionEl);
-    const searchCont = document.createElement("div");
-    searchCont.classList.add("bytm-auto-like-channels-search-cont");
-    contElem.appendChild(searchCont);
-    const searchContLeftSideEl = document.createElement("div");
-    searchContLeftSideEl.classList.add("left-side");
-    searchCont.appendChild(searchContLeftSideEl);
-    const searchContRightSideEl = document.createElement("div");
-    searchContRightSideEl.tabIndex = 0;
-    searchContRightSideEl.classList.add("right-side");
-    searchCont.appendChild(searchContRightSideEl);
-    const updateCountElem = () => {
-        const count = autoLikeStore.getData().channels.length;
-        searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
-    };
-    siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
-    updateCountElem();
-    const searchbarEl = document.createElement("input");
-    searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
-    searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
-    searchbarEl.type = searchbarEl.role = "search";
-    searchbarEl.tabIndex = 0;
-    searchbarEl.autofocus = true;
-    searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
-    searchbarEl.spellcheck = false;
-    searchbarEl.addEventListener("input", () => {
-        const searchVal = searchbarEl.value.trim().toLowerCase();
-        const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
-        for (const row of rows) {
-            const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
-            const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
-            row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
-        }
-    });
-    searchContLeftSideEl.appendChild(searchbarEl);
-    const searchClearEl = document.createElement("button");
-    searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
-    searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
-    searchClearEl.tabIndex = 0;
-    searchClearEl.innerText = "×";
-    onInteraction(searchClearEl, () => {
-        searchbarEl.value = "";
-        searchbarEl.dispatchEvent(new Event("input"));
-    });
-    searchContLeftSideEl.appendChild(searchClearEl);
-    const channelListCont = document.createElement("div");
-    channelListCont.id = "bytm-auto-like-channels-list";
-    const setChannelEnabled = CoreUtils.debounce((id, enabled) => {
-        autoLikeStore.setData({
-            channels: autoLikeStore.getData().channels
-                .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
-        });
-    }, 250);
-    const sortedChannels = autoLikeStore
-        .getData().channels
-        .sort((a, b) => a.name.localeCompare(b.name));
-    for (const { name: chanName, id: chanId, enabled } of sortedChannels) {
-        const rowElem = document.createElement("div");
-        rowElem.classList.add("bytm-auto-like-channel-row");
-        const leftCont = document.createElement("div");
-        leftCont.classList.add("bytm-auto-like-channel-row-left-cont");
-        const nameLabelEl = document.createElement("label");
-        nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
-        nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
-        nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
-        const chanHref = (!chanId.startsWith("@") && getDomain() === "ytm")
-            ? `https://music.youtube.com/channel/${chanId}`
-            : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
-        const nameElem = document.createElement("a");
-        nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
-        nameElem.ariaLabel = nameElem.textContent = chanName;
-        nameElem.href = chanHref;
-        nameElem.target = "_blank";
-        nameElem.rel = "noopener noreferrer";
-        nameElem.tabIndex = 0;
-        const idElem = document.createElement("a");
-        idElem.classList.add("bytm-auto-like-channel-id", "bytm-link");
-        idElem.textContent = idElem.title = chanId;
-        idElem.href = chanHref;
-        idElem.target = "_blank";
-        idElem.rel = "noopener noreferrer";
-        idElem.tabIndex = 0;
-        nameLabelEl.appendChild(nameElem);
-        nameLabelEl.appendChild(idElem);
-        const toggleElem = await createToggleInput({
-            id: `auto-like-channel-list-${chanId}`,
-            labelPos: "off",
-            initialValue: enabled,
-            onChange: (en) => setChannelEnabled(chanId, en),
-        });
-        toggleElem.classList.add("bytm-auto-like-channel-toggle");
-        toggleElem.title = toggleElem.ariaLabel = t("auto_like_channel_toggle_tooltip", chanName);
-        const btnCont = document.createElement("div");
-        btnCont.classList.add("bytm-auto-like-channel-row-btn-cont");
-        const editBtn = await createCircularBtn({
-            resourceName: "icon-edit",
-            title: t("edit_entry"),
-            async onClick() {
-                const newNamePr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_name_prompt"), defaultValue: chanName }))?.trim();
-                if (!newNamePr || newNamePr.length === 0)
-                    return;
-                const newName = newNamePr.length > 0 ? newNamePr : chanName;
-                const newIdPr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_id_prompt"), defaultValue: chanId }))?.trim();
-                if (!newIdPr || newIdPr.length === 0)
-                    return;
-                const newId = newIdPr.length > 0 ? getChannelIdFromPrompt(newIdPr) ?? chanId : chanId;
-                await autoLikeStore.setData({
-                    channels: autoLikeStore.getData().channels
-                        .map((ch) => ch.id === chanId ? { ...ch, name: newName, id: newId } : ch),
-                });
-                emitSiteEvent("autoLikeChannelsUpdated");
-            },
-        });
-        btnCont.appendChild(editBtn);
-        const removeBtn = await createCircularBtn({
-            resourceName: "icon-delete",
-            title: t("remove_entry"),
-            onClick() {
-                autoLikeStore.setData({
-                    channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
-                });
-                rowElem.remove();
-                emitSiteEvent("autoLikeChannelsUpdated");
-            },
-        });
-        btnCont.appendChild(removeBtn);
-        leftCont.appendChild(toggleElem);
-        leftCont.appendChild(nameLabelEl);
-        rowElem.appendChild(leftCont);
-        rowElem.appendChild(btnCont);
-        channelListCont.appendChild(rowElem);
-    }
-    contElem.appendChild(channelListCont);
-    return contElem;
-}
-//#region footer
-function renderFooter$1() {
-    const wrapperEl = document.createElement("div");
-    wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
-    const addNewBtnElem = document.createElement("button");
-    addNewBtnElem.classList.add("bytm-btn");
-    addNewBtnElem.textContent = t("new_entry");
-    addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
-    wrapperEl.appendChild(addNewBtnElem);
-    const importExportBtnElem = document.createElement("button");
-    importExportBtnElem.classList.add("bytm-btn");
-    importExportBtnElem.textContent = t("export_import");
-    importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
-    wrapperEl.appendChild(importExportBtnElem);
-    onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
-    onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
-    return wrapperEl;
-}
-async function openImportExportAutoLikeChannelsDialog() {
-    await autoLikeExImDialog?.open();
-}
-//#region add prompt
-async function addAutoLikeEntryPrompts() {
-    await autoLikeStore.loadData();
-    const idPrompt = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_id_prompt") }))?.trim();
-    if (!idPrompt)
-        return;
-    const id = parseChannelIdFromUrl(idPrompt) ?? (isValidChannelId(idPrompt) ? idPrompt : null);
-    if (!id || id.length <= 0)
-        return await showPrompt({ type: "alert", message: t("add_auto_like_channel_invalid_id") });
-    let overwriteName = false;
-    const hasChannelEntry = autoLikeStore.getData().channels.find((ch) => ch.id === id);
-    if (hasChannelEntry) {
-        if (!await showPrompt({ type: "confirm", message: t("add_auto_like_channel_already_exists_prompt_new_name") }))
-            return;
-        overwriteName = true;
-    }
-    const name = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_name_prompt"), defaultValue: hasChannelEntry?.name }))?.trim();
-    if (!name || name.length === 0)
-        return;
-    await autoLikeStore.setData(overwriteName
-        ? {
-            channels: autoLikeStore.getData().channels
-                .map((ch) => ch.id === id ? { ...ch, name } : ch),
-        }
-        : {
-            channels: [
-                ...autoLikeStore.getData().channels,
-                { id, name, enabled: true },
-            ],
-        });
-    emitSiteEvent("autoLikeChannelsUpdated");
-    const unsub = autoLikeDialog?.on("clear", async () => {
-        unsub?.();
-        await autoLikeDialog?.open();
-    });
-    autoLikeDialog?.unmount();
-}
-function getChannelIdFromPrompt(promptStr) {
-    const isId = promptStr.match(/^@?.+$/);
-    const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
-    const id = (isId?.[0] || isUrl?.[1] || "").trim();
-    return id.length > 0 ? id : null;
-}//#region store
-let canCompress$1 = false;
-/** DataStore instance for all auto-liked channels */
-const autoLikeStore = new UserUtils.DataStore({
-    id: "bytm-auto-like-channels",
-    formatVersion: 2,
-    defaultData: {
-        channels: [],
-    },
-    encodeData: (data) => canCompress$1 ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: (data) => canCompress$1 ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
-    migrations: {
-        // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
-        2: (oldData) => ({
-            channels: oldData.channels.map((ch) => ({
-                ...ch,
-                id: isValidChannelId(ch.id.trim())
-                    ? ch.id.trim()
-                    : `@${ch.id.trim()}`,
-            })),
-        }),
-    },
-});
-let autoLikeStoreLoaded = false;
-/** Inits the auto-like DataStore instance */
-async function initAutoLikeStore() {
-    if (autoLikeStoreLoaded)
-        return;
-    autoLikeStoreLoaded = true;
-    return autoLikeStore.loadData();
-}
-//#region init auto-like
-/** Initializes the auto-like feature */
-async function initAutoLike() {
-    try {
-        canCompress$1 = await compressionSupported();
-        await initAutoLikeStore();
-        //#region ytm
-        if (getDomain() === "ytm") {
-            let timeout;
-            siteEvents.on("songTitleChanged", () => {
-                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
-                timeout && clearTimeout(timeout);
-                const ytmTryAutoLike = () => {
-                    const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
-                    const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
-                    const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
-                    if (!likeChan || !likeChan.enabled)
-                        return;
-                    if (artistEls.length === 0 || channelIds.length === 0)
-                        return error("Couldn't auto-like because the artist element couldn't be found");
-                    const { likeBtn, likeState } = getLikeDislikeBtns();
-                    if (!likeBtn)
-                        return error("Couldn't auto-like because the like button couldn't be found");
-                    if (!likeState || likeState === "INDIFFERENT") {
-                        likeBtn.click();
-                        getFeature("autoLikeShowToast") && showIconToast({
-                            message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
-                            subtitle: t("auto_like_click_to_configure"),
-                            icon: "icon-auto_like",
-                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                        }).catch(e => error("Error while showing auto-like toast:", e));
-                        info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
-                    }
-                    else
-                        info("Skipping auto-like, because the like state is currently set to", likeState);
-                };
-                timeout = setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs);
-                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs));
-            });
-            const recreateBtn = (headerCont, chanId) => {
-                const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title");
-                if (!titleCont)
-                    return;
-                const checkBtn = () => setTimeout(() => {
-                    if (!document.querySelector(".bytm-auto-like-toggle-btn"))
-                        recreateBtn(headerCont, chanId);
-                }, 250);
-                const chanName = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
-                log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
-                const buttonsCont = headerCont.querySelector(".buttons");
-                if (buttonsCont) {
-                    const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
-                    const chanName = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent ?? null;
-                    lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
-                }
-                else {
-                    // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
-                    const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
-                    const chanName = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")?.textContent ?? null;
-                    shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName).then(checkBtn);
-                }
-            };
-            siteEvents.on("pathChanged", (path) => {
-                if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
-                    const chanId = getCurrentChannelId();
-                    if (!chanId)
-                        return error("Couldn't extract channel ID from URL");
-                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                    addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
-                        listener: (el) => recreateBtn(el, chanId),
-                    });
-                }
-            });
-        }
-        //#region yt
-        else if (getDomain() === "yt") {
-            addStyleFromResource("css-auto_like");
-            let timeout;
-            siteEvents.on("watchIdChanged", () => {
-                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
-                timeout && clearTimeout(timeout);
-                if (!location.pathname.startsWith("/watch"))
-                    return;
-                const ytTryAutoLike = () => {
-                    addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
-                        listener(chanElem) {
-                            const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
-                            const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
-                            if (!likeChan || !likeChan.enabled)
-                                return;
-                            addSelectorListener("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
-                                listener(likeBtn) {
-                                    if (likeBtn.getAttribute("aria-pressed") !== "true") {
-                                        likeBtn.click();
-                                        getFeature("autoLikeShowToast") && showIconToast({
-                                            message: t("auto_liked_a_channels_video", likeChan.name),
-                                            subtitle: t("auto_like_click_to_configure"),
-                                            icon: "icon-auto_like",
-                                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                                        }).catch(e => error("Error while showing auto-like toast:", e));
-                                        log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
-                                    }
-                                }
-                            });
-                        }
-                    });
-                };
-                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
-                timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
-            });
-            siteEvents.on("pathChanged", (path) => {
-                if (path.match(/(\/?@|\/?channel\/)\S+/)) {
-                    const chanId = getCurrentChannelId();
-                    if (!chanId)
-                        return error("Couldn't extract channel ID from URL");
-                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                    const recreateBtn = (headerCont) => {
-                        const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
-                        if (!titleCont)
-                            return;
-                        const checkBtn = () => setTimeout(() => {
-                            if (!document.querySelector(".bytm-auto-like-toggle-btn"))
-                                recreateBtn(headerCont);
-                        }, 350);
-                        const chanName = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
-                        log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
-                        const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
-                        if (buttonsCont) {
-                            addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
-                                listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn),
-                            });
-                        }
-                        else if (titleCont)
-                            addAutoLikeToggleBtn(titleCont, chanId, chanName).then(checkBtn);
-                    };
-                    addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
-                        listener: recreateBtn,
-                    });
-                }
-            });
-        }
-        log("Initialized auto-like channels feature");
-    }
-    catch (err) {
-        error("Error while auto-liking channel:", err);
-    }
-}
-//#region toggle btn
-/** Adds a toggle button to enable or disable auto-liking videos from a channel */
-async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
-    const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
-    log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
-    siteEvents.on("autoLikeChannelsUpdated", () => {
-        const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
-        if (!buttonEl)
-            return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
-        const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
-        if (enabled)
-            buttonEl.classList.add("toggled");
-        else
-            buttonEl.classList.remove("toggled");
-    });
-    const buttonEl = await createLongBtn({
-        resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : ""}`,
-        text: t("auto_like"),
-        title: t(`auto_like_button_tooltip${chan?.enabled ? "_enabled" : "_disabled"}`),
-        toggle: true,
-        toggleInitialState: chan?.enabled ?? false,
-        togglePredicate(e) {
-            e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
-            return !e.shiftKey;
-        },
-        async onToggle(toggled) {
-            try {
-                await autoLikeStore.loadData();
-                buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
-                const chanId = sanitizeChannelId(buttonEl.dataset.channelId ?? channelId);
-                const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-                imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`));
-                if (autoLikeStore.getData().channels.some((ch) => ch.id === chanId)) {
-                    await autoLikeStore.setData({
-                        channels: [
-                            ...autoLikeStore.getData().channels,
-                            { id: chanId, name: channelName ?? "", enabled: toggled },
-                        ],
-                    });
-                }
-                else {
-                    await autoLikeStore.setData({
-                        channels: autoLikeStore.getData().channels
-                            .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
-                    });
-                }
-                emitSiteEvent("autoLikeChannelsUpdated");
-                showIconToast({
-                    message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
-                    subtitle: t("auto_like_click_to_configure"),
-                    icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
-                    onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                }).catch(e => error("Error while showing auto-like toast:", e));
-                log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
-            }
-            catch (err) {
-                error("Error while toggling auto-like channel:", err);
-            }
-        }
-    });
-    buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses ?? [])]);
-    buttonEl.dataset.channelId = channelId;
-    siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
-    siteEvents.on("autoLikeChannelsUpdated", async () => {
-        const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
-        if (!buttonEl)
-            return;
-        const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
-        if (enabled)
-            buttonEl.classList.add("toggled");
-        else
-            buttonEl.classList.remove("toggled");
-        const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
-        imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`));
-    });
 }class MarkdownDialog extends BytmDialog {
     constructor(options) {
         super({
@@ -2568,6 +1785,34 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
         bodyEl.appendChild(markdownEl);
         return bodyEl;
     }
+}const interactionKeys = ["Enter", " ", "Space"];
+/**
+ * Adds generic, accessible interaction listeners to the passed element.
+ * All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
+ * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
+ */
+function onInteraction(elem, listener, listenerOptions) {
+    const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
+    const proxListener = (e) => {
+        if (e instanceof KeyboardEvent) {
+            if (interactionKeys.includes(e.key)) {
+                preventDefault && e.preventDefault();
+                stopPropagation && e.stopPropagation();
+            }
+            else
+                return;
+        }
+        else if (e instanceof MouseEvent) {
+            preventDefault && e.preventDefault();
+            stopPropagation && e.stopPropagation();
+        }
+        // clean up the other listener that isn't automatically removed if `once` is set
+        listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
+        listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
+        listener(e);
+    };
+    elem.addEventListener("click", proxListener, listenerOpts);
+    elem.addEventListener("keydown", proxListener, listenerOpts);
 }//#region logging fns
 let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
@@ -3495,6 +2740,755 @@ async function getChangelogHtmlWithDetails() {
     catch (err) {
         return `Error while preparing changelog: ${err}`;
     }
+}/**
+ * Creates an element with a ripple effect on click.
+ * @param rippleElement If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
+ * @returns The passed element or the newly created element with the ripple effect.
+ */
+function createRipple(rippleElement, properties) {
+    const props = {
+        speed: "normal",
+        ...properties,
+    };
+    const rippleEl = rippleElement ?? document.createElement("div");
+    "additionalProps" in props && Object.assign(rippleEl, props.additionalProps);
+    rippleEl.classList.add("bytm-ripple", props.speed);
+    const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
+    rippleEl.addEventListener(props?.triggerEvent ?? "mousedown", (e) => {
+        updateRippleWidth();
+        const x = e.clientX - rippleEl.getBoundingClientRect().left;
+        const y = e.clientY - rippleEl.getBoundingClientRect().top;
+        const rippleAreaEl = document.createElement("span");
+        rippleAreaEl.classList.add("bytm-ripple-area");
+        rippleAreaEl.style.left = `${Math.round(x)}px`;
+        rippleAreaEl.style.top = `${Math.round(y)}px`;
+        if (rippleEl.firstChild)
+            rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
+        else
+            rippleEl.appendChild(rippleAreaEl);
+        rippleAreaEl.addEventListener("animationend", () => rippleAreaEl.remove());
+    });
+    updateRippleWidth();
+    return rippleEl;
+}/**
+ * Creates a generic, circular, long button element with an icon and text.
+ * Has classes for the enabled and disabled states for easier styling.
+ * If `href` is provided, the button will be an anchor element.
+ * If `onClick` or `onToggle` is provided, the button will be a div element.
+ * Provide either `resourceName` or `src` to specify the icon inside the button.
+ */
+async function createLongBtn({ title, text, iconPosition, ripple, ...rest }) {
+    if (["href", "onClick", "onToggle"].every((key) => !(key in rest)))
+        throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
+    let btnElem;
+    if ("href" in rest && rest.href) {
+        btnElem = document.createElement("a");
+        btnElem.href = rest.href;
+        btnElem.role = "button";
+        btnElem.target = "_blank";
+        btnElem.rel = "noopener noreferrer";
+    }
+    else
+        btnElem = document.createElement("div");
+    if ("toggle" in rest && rest.toggle) {
+        btnElem.classList.add("bytm-toggle");
+        if ("toggleInitialState" in rest && rest.toggleInitialState)
+            btnElem.classList.add("toggled");
+    }
+    onInteraction(btnElem, (evt) => {
+        if ("onClick" in rest)
+            rest.onClick(evt);
+        if ("toggle" in rest && rest.toggle && (rest.togglePredicate ?? (() => true))(evt))
+            rest.onToggle(btnElem.classList.toggle("toggled"), evt);
+    });
+    btnElem.classList.add("bytm-generic-btn", "long");
+    btnElem.ariaLabel = btnElem.title = title;
+    btnElem.tabIndex = 0;
+    btnElem.role = "button";
+    const imgElem = document.createElement("src" in rest ? "img" : "div");
+    imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
+    if ("src" in rest)
+        imgElem.src = rest.src;
+    else
+        setInnerHtml(imgElem, await resourceAsString(rest.resourceName));
+    const txtElem = document.createElement("span");
+    txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
+    txtElem.textContent = txtElem.ariaLabel = text;
+    iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
+    btnElem.appendChild(txtElem);
+    iconPosition === "right" && btnElem.appendChild(imgElem);
+    return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
+}//#region class
+/** Generic dialog for exporting and importing any string of data */
+class ExImDialog extends BytmDialog {
+    constructor(options) {
+        super({
+            renderHeader: () => ExImDialog.renderHeader(options),
+            renderBody: () => ExImDialog.renderBody(options),
+            renderFooter: undefined,
+            closeOnBgClick: true,
+            closeOnEscPress: true,
+            closeBtnEnabled: true,
+            unmountOnClose: true,
+            small: true,
+            ...options,
+        });
+    }
+    //#region header
+    static async renderHeader(opts) {
+        const headerEl = document.createElement("h2");
+        headerEl.classList.add("bytm-menu-title");
+        headerEl.role = "heading";
+        headerEl.ariaLevel = "1";
+        headerEl.tabIndex = 0;
+        headerEl.textContent = headerEl.ariaLabel = await CoreUtils.consumeStringGen(opts.title);
+        return headerEl;
+    }
+    //#region body
+    static async renderBody(opts) {
+        const panesCont = document.createElement("div");
+        panesCont.classList.add("bytm-exim-dialog-panes-cont");
+        //#region export
+        const exportPane = document.createElement("div");
+        exportPane.classList.add("bytm-exim-dialog-pane", "export");
+        {
+            const descEl = document.createElement("p");
+            descEl.classList.add("bytm-exim-dialog-desc");
+            descEl.role = "note";
+            descEl.tabIndex = 0;
+            descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descExport);
+            const dataEl = document.createElement("textarea");
+            dataEl.classList.add("bytm-exim-dialog-data");
+            dataEl.readOnly = true;
+            dataEl.tabIndex = 0;
+            dataEl.value = t("click_to_reveal");
+            onInteraction(dataEl, async () => {
+                dataEl.value = await CoreUtils.consumeStringGen(opts.exportData);
+                dataEl.setSelectionRange(0, dataEl.value.length);
+            });
+            const exportCenterBtnCont = document.createElement("div");
+            exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
+            const copyBtn = await createLongBtn({
+                title: t("copy_to_clipboard"),
+                text: t("copy"),
+                resourceName: "icon-copy",
+                ripple: true,
+                async onClick({ shiftKey }) {
+                    const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
+                    copyToClipboard(await CoreUtils.consumeStringGen(copyData));
+                    await showToast({ message: t("copied_to_clipboard") });
+                },
+            });
+            exportCenterBtnCont.appendChild(copyBtn);
+            exportPane.append(descEl, dataEl, exportCenterBtnCont);
+        }
+        //#region import
+        const importPane = document.createElement("div");
+        importPane.classList.add("bytm-exim-dialog-pane", "import");
+        {
+            const descEl = document.createElement("p");
+            descEl.classList.add("bytm-exim-dialog-desc");
+            descEl.role = "note";
+            descEl.tabIndex = 0;
+            descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descImport);
+            const dataEl = document.createElement("textarea");
+            dataEl.classList.add("bytm-exim-dialog-data");
+            dataEl.tabIndex = 0;
+            const importCenterBtnCont = document.createElement("div");
+            importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
+            const importBtn = await createLongBtn({
+                title: t("start_import_tooltip"),
+                text: t("import"),
+                resourceName: "icon-upload",
+                ripple: true,
+                onClick: () => opts.onImport(dataEl.value),
+            });
+            importCenterBtnCont.appendChild(importBtn);
+            importPane.append(descEl, dataEl, importCenterBtnCont);
+        }
+        panesCont.append(exportPane, importPane);
+        return panesCont;
+    }
+}/**
+ * Creates a generic, circular button element.
+ * If `href` is provided, the button will be an anchor element.
+ * If `onClick` is provided, the button will be a div element.
+ * Provide either `resourceName` or `src` to specify the icon inside the button.
+ */
+async function createCircularBtn({ title, ripple = true, ...rest }) {
+    let btnElem;
+    if ("href" in rest && rest.href) {
+        btnElem = document.createElement("a");
+        btnElem.href = rest.href;
+        btnElem.role = "button";
+        btnElem.target = "_blank";
+        btnElem.rel = "noopener noreferrer";
+    }
+    else if ("onClick" in rest && rest.onClick) {
+        btnElem = document.createElement("div");
+        rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
+    }
+    else
+        throw new TypeError("Either 'href' or 'onClick' must be provided");
+    btnElem.classList.add("bytm-generic-btn");
+    btnElem.ariaLabel = btnElem.title = title;
+    btnElem.tabIndex = 0;
+    btnElem.role = "button";
+    if ("src" in rest || ("resourceName" in rest && !rest.resourceName.startsWith("icon-"))) {
+        const imgElem = document.createElement("img");
+        imgElem.classList.add("bytm-generic-btn-img");
+        imgElem.src = "src" in rest
+            ? await rest.src
+            : await getResourceUrl(rest.resourceName);
+        btnElem.appendChild(imgElem);
+    }
+    else if ("resourceName" in rest && rest.resourceName.startsWith("icon-")) {
+        setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
+        btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+    }
+    return ripple ? createRipple(btnElem) : btnElem;
+}let autoLikeDialog = null;
+let autoLikeExImDialog = null;
+// TODO:FIXME: dialog isnt properly closed?
+// to reproduce: open dialog, create new entry, confirm with enter, close dialog -> cfg menu is still inert and dialog is still open for some reason
+/** Creates and/or returns the import dialog */
+async function getAutoLikeDialog() {
+    if (!autoLikeDialog) {
+        await initAutoLikeStore();
+        autoLikeDialog = new BytmDialog({
+            id: "auto-like-channels",
+            width: 700,
+            height: 1200,
+            closeBtnEnabled: true,
+            closeOnBgClick: true,
+            closeOnEscPress: true,
+            destroyOnClose: true,
+            removeListenersOnDestroy: false,
+            small: true,
+            verticalAlign: "top",
+            renderHeader: renderHeader$3,
+            renderBody: renderBody$4,
+            renderFooter: renderFooter$1,
+        });
+        siteEvents.on("autoLikeChannelsUpdated", async () => {
+            try {
+                if (autoLikeExImDialog?.isOpen())
+                    autoLikeExImDialog.unmount();
+                if (autoLikeDialog?.isOpen()) {
+                    autoLikeDialog.unmount();
+                    await autoLikeDialog.open();
+                    log("Auto-like channels updated, refreshed dialog");
+                }
+            }
+            catch (err) {
+                error("Couldn't refresh auto-like channels dialog:", err);
+            }
+        });
+        autoLikeDialog.on("open", () => document.querySelector(".bytm-auto-like-channels-searchbar")?.focus());
+        autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
+    }
+    if (!autoLikeExImDialog) {
+        autoLikeExImDialog = new ExImDialog({
+            id: "auto-like-channels-export-import",
+            width: 800,
+            height: 600,
+            // try to compress the data if possible
+            exportData: async () => await compressionSupported()
+                ? await CoreUtils.compress(JSON.stringify(autoLikeStore.getData()), compressionFormat$1, "string")
+                : JSON.stringify(autoLikeStore.getData()),
+            // copy plain when shift-clicking the copy button
+            exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
+            async onImport(data) {
+                try {
+                    const parsed = await tryToDecompressAndParse(data);
+                    log("Trying to import auto-like data:", parsed);
+                    if (!parsed || typeof parsed !== "object")
+                        return await showPrompt({ type: "alert", message: t("import_error.invalid") });
+                    if (!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
+                        return await showPrompt({ type: "alert", message: t("import_error.no_data") });
+                    await autoLikeStore.setData(parsed);
+                    emitSiteEvent("autoLikeChannelsUpdated");
+                    showToast({ message: t("import_success") });
+                    autoLikeExImDialog?.unmount();
+                }
+                catch (err) {
+                    error("Couldn't import auto-like channels data:", err);
+                }
+            },
+            title: () => t("auto_like_export_import_title"),
+            descImport: () => t("auto_like_import_desc"),
+            descExport: () => t("auto_like_export_desc"),
+        });
+    }
+    return autoLikeDialog;
+}
+//#region header
+async function renderHeader$3() {
+    const headerEl = document.createElement("h2");
+    headerEl.classList.add("bytm-dialog-title");
+    headerEl.role = "heading";
+    headerEl.ariaLevel = "1";
+    headerEl.tabIndex = 0;
+    headerEl.textContent = headerEl.ariaLabel = t("auto_like_channels_dialog_title");
+    return headerEl;
+}
+//#region body
+async function renderBody$4() {
+    const contElem = document.createElement("div");
+    const descriptionEl = document.createElement("p");
+    descriptionEl.classList.add("bytm-auto-like-channels-desc");
+    descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
+    descriptionEl.tabIndex = 0;
+    contElem.appendChild(descriptionEl);
+    const searchCont = document.createElement("div");
+    searchCont.classList.add("bytm-auto-like-channels-search-cont");
+    contElem.appendChild(searchCont);
+    const searchContLeftSideEl = document.createElement("div");
+    searchContLeftSideEl.classList.add("left-side");
+    searchCont.appendChild(searchContLeftSideEl);
+    const searchContRightSideEl = document.createElement("div");
+    searchContRightSideEl.tabIndex = 0;
+    searchContRightSideEl.classList.add("right-side");
+    searchCont.appendChild(searchContRightSideEl);
+    const updateCountElem = () => {
+        const count = autoLikeStore.getData().channels.length;
+        searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
+    };
+    siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
+    updateCountElem();
+    const searchbarEl = document.createElement("input");
+    searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
+    searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
+    searchbarEl.type = searchbarEl.role = "search";
+    searchbarEl.tabIndex = 0;
+    searchbarEl.autofocus = true;
+    searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
+    searchbarEl.spellcheck = false;
+    searchbarEl.addEventListener("input", () => {
+        const searchVal = searchbarEl.value.trim().toLowerCase();
+        const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
+        for (const row of rows) {
+            const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
+            const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
+            row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
+        }
+    });
+    searchContLeftSideEl.appendChild(searchbarEl);
+    const searchClearEl = document.createElement("button");
+    searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
+    searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
+    searchClearEl.tabIndex = 0;
+    searchClearEl.innerText = "×";
+    onInteraction(searchClearEl, () => {
+        searchbarEl.value = "";
+        searchbarEl.dispatchEvent(new Event("input"));
+    });
+    searchContLeftSideEl.appendChild(searchClearEl);
+    const channelListCont = document.createElement("div");
+    channelListCont.id = "bytm-auto-like-channels-list";
+    const setChannelEnabled = CoreUtils.debounce((id, enabled) => {
+        autoLikeStore.setData({
+            channels: autoLikeStore.getData().channels
+                .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
+        });
+    }, 250);
+    const sortedChannels = autoLikeStore
+        .getData().channels
+        .sort((a, b) => a.name.localeCompare(b.name));
+    for (const { name: chanName, id: chanId, enabled } of sortedChannels) {
+        const rowElem = document.createElement("div");
+        rowElem.classList.add("bytm-auto-like-channel-row");
+        const leftCont = document.createElement("div");
+        leftCont.classList.add("bytm-auto-like-channel-row-left-cont");
+        const nameLabelEl = document.createElement("label");
+        nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
+        nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
+        nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
+        const chanHref = (!chanId.startsWith("@") && getDomain() === "ytm")
+            ? `https://music.youtube.com/channel/${chanId}`
+            : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+        const nameElem = document.createElement("a");
+        nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
+        nameElem.ariaLabel = nameElem.textContent = chanName;
+        nameElem.href = chanHref;
+        nameElem.target = "_blank";
+        nameElem.rel = "noopener noreferrer";
+        nameElem.tabIndex = 0;
+        const idElem = document.createElement("a");
+        idElem.classList.add("bytm-auto-like-channel-id", "bytm-link");
+        idElem.textContent = idElem.title = chanId;
+        idElem.href = chanHref;
+        idElem.target = "_blank";
+        idElem.rel = "noopener noreferrer";
+        idElem.tabIndex = 0;
+        nameLabelEl.appendChild(nameElem);
+        nameLabelEl.appendChild(idElem);
+        const toggleElem = await createToggleInput({
+            id: `auto-like-channel-list-${chanId}`,
+            labelPos: "off",
+            initialValue: enabled,
+            onChange: (en) => setChannelEnabled(chanId, en),
+        });
+        toggleElem.classList.add("bytm-auto-like-channel-toggle");
+        toggleElem.title = toggleElem.ariaLabel = t("auto_like_channel_toggle_tooltip", chanName);
+        const btnCont = document.createElement("div");
+        btnCont.classList.add("bytm-auto-like-channel-row-btn-cont");
+        const editBtn = await createCircularBtn({
+            resourceName: "icon-edit",
+            title: t("edit_entry"),
+            async onClick() {
+                const newNamePr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_name_prompt"), defaultValue: chanName }))?.trim();
+                if (!newNamePr || newNamePr.length === 0)
+                    return;
+                const newName = newNamePr.length > 0 ? newNamePr : chanName;
+                const newIdPr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_id_prompt"), defaultValue: chanId }))?.trim();
+                if (!newIdPr || newIdPr.length === 0)
+                    return;
+                const newId = newIdPr.length > 0 ? getChannelIdFromPrompt(newIdPr) ?? chanId : chanId;
+                await autoLikeStore.setData({
+                    channels: autoLikeStore.getData().channels
+                        .map((ch) => ch.id === chanId ? { ...ch, name: newName, id: newId } : ch),
+                });
+                emitSiteEvent("autoLikeChannelsUpdated");
+            },
+        });
+        btnCont.appendChild(editBtn);
+        const removeBtn = await createCircularBtn({
+            resourceName: "icon-delete",
+            title: t("remove_entry"),
+            onClick() {
+                autoLikeStore.setData({
+                    channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
+                });
+                rowElem.remove();
+                emitSiteEvent("autoLikeChannelsUpdated");
+            },
+        });
+        btnCont.appendChild(removeBtn);
+        leftCont.appendChild(toggleElem);
+        leftCont.appendChild(nameLabelEl);
+        rowElem.appendChild(leftCont);
+        rowElem.appendChild(btnCont);
+        channelListCont.appendChild(rowElem);
+    }
+    contElem.appendChild(channelListCont);
+    return contElem;
+}
+//#region footer
+function renderFooter$1() {
+    const wrapperEl = document.createElement("div");
+    wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
+    const addNewBtnElem = document.createElement("button");
+    addNewBtnElem.classList.add("bytm-btn");
+    addNewBtnElem.textContent = t("new_entry");
+    addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
+    wrapperEl.appendChild(addNewBtnElem);
+    const importExportBtnElem = document.createElement("button");
+    importExportBtnElem.classList.add("bytm-btn");
+    importExportBtnElem.textContent = t("export_import");
+    importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
+    wrapperEl.appendChild(importExportBtnElem);
+    onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
+    onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
+    return wrapperEl;
+}
+async function openImportExportAutoLikeChannelsDialog() {
+    await autoLikeExImDialog?.open();
+}
+//#region add prompt
+async function addAutoLikeEntryPrompts() {
+    await autoLikeStore.loadData();
+    const idPrompt = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_id_prompt") }))?.trim();
+    if (!idPrompt)
+        return;
+    const id = parseChannelIdFromUrl(idPrompt) ?? (isValidChannelId(idPrompt) ? idPrompt : null);
+    if (!id || id.length <= 0)
+        return await showPrompt({ type: "alert", message: t("add_auto_like_channel_invalid_id") });
+    let overwriteName = false;
+    const hasChannelEntry = autoLikeStore.getData().channels.find((ch) => ch.id === id);
+    if (hasChannelEntry) {
+        if (!await showPrompt({ type: "confirm", message: t("add_auto_like_channel_already_exists_prompt_new_name") }))
+            return;
+        overwriteName = true;
+    }
+    const name = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_name_prompt"), defaultValue: hasChannelEntry?.name }))?.trim();
+    if (!name || name.length === 0)
+        return;
+    await autoLikeStore.setData(overwriteName
+        ? {
+            channels: autoLikeStore.getData().channels
+                .map((ch) => ch.id === id ? { ...ch, name } : ch),
+        }
+        : {
+            channels: [
+                ...autoLikeStore.getData().channels,
+                { id, name, enabled: true },
+            ],
+        });
+    emitSiteEvent("autoLikeChannelsUpdated");
+    const unsub = autoLikeDialog?.on("clear", async () => {
+        unsub?.();
+        await autoLikeDialog?.open();
+    });
+    autoLikeDialog?.unmount();
+}
+function getChannelIdFromPrompt(promptStr) {
+    const isId = promptStr.match(/^@?.+$/);
+    const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
+    const id = (isId?.[0] || isUrl?.[1] || "").trim();
+    return id.length > 0 ? id : null;
+}//#region store
+let canCompress$1 = false;
+/** DataStore instance for all auto-liked channels */
+const autoLikeStore = new UserUtils.DataStore({
+    id: "bytm-auto-like-channels",
+    formatVersion: 2,
+    defaultData: {
+        channels: [],
+    },
+    encodeData: (data) => canCompress$1 ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
+    decodeData: (data) => canCompress$1 ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    migrations: {
+        // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
+        2: (oldData) => ({
+            channels: oldData.channels.map((ch) => ({
+                ...ch,
+                id: isValidChannelId(ch.id.trim())
+                    ? ch.id.trim()
+                    : `@${ch.id.trim()}`,
+            })),
+        }),
+    },
+});
+let autoLikeStoreLoaded = false;
+/** Inits the auto-like DataStore instance */
+async function initAutoLikeStore() {
+    if (autoLikeStoreLoaded)
+        return;
+    autoLikeStoreLoaded = true;
+    return autoLikeStore.loadData();
+}
+//#region init auto-like
+/** Initializes the auto-like feature */
+async function initAutoLike() {
+    try {
+        canCompress$1 = await compressionSupported();
+        await initAutoLikeStore();
+        //#region ytm
+        if (getDomain() === "ytm") {
+            let timeout;
+            siteEvents.on("songTitleChanged", () => {
+                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
+                timeout && clearTimeout(timeout);
+                const ytmTryAutoLike = () => {
+                    const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
+                    const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
+                    const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
+                    if (!likeChan || !likeChan.enabled)
+                        return;
+                    if (artistEls.length === 0 || channelIds.length === 0)
+                        return error("Couldn't auto-like because the artist element couldn't be found");
+                    const { likeBtn, likeState } = getLikeDislikeBtns();
+                    if (!likeBtn)
+                        return error("Couldn't auto-like because the like button couldn't be found");
+                    if (!likeState || likeState === "INDIFFERENT") {
+                        likeBtn.click();
+                        getFeature("autoLikeShowToast") && showIconToast({
+                            message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
+                            subtitle: t("auto_like_click_to_configure"),
+                            icon: "icon-auto_like",
+                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                        }).catch(e => error("Error while showing auto-like toast:", e));
+                        info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
+                    }
+                    else
+                        info("Skipping auto-like, because the like state is currently set to", likeState);
+                };
+                timeout = setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs);
+                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs));
+            });
+            const recreateBtn = (headerCont, chanId) => {
+                const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title");
+                if (!titleCont)
+                    return;
+                const checkBtn = () => setTimeout(() => {
+                    if (!document.querySelector(".bytm-auto-like-toggle-btn"))
+                        recreateBtn(headerCont, chanId);
+                }, 250);
+                const chanName = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
+                log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+                const buttonsCont = headerCont.querySelector(".buttons");
+                if (buttonsCont) {
+                    const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
+                    const chanName = document.querySelector(".ytmusic-immersive-header-renderer > h1 > yt-formatted-string")?.textContent
+                        ?? document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent
+                        ?? null;
+                    lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
+                }
+                else {
+                    // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
+                    const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
+                    const chanName = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")?.textContent ?? null;
+                    shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName).then(checkBtn);
+                }
+            };
+            const tryAddBtnYTM = () => {
+                if (getFeature("autoLikeChannelToggleBtn") && location.pathname.match(/\/channel\/.+/)) {
+                    const chanId = getCurrentChannelId();
+                    if (!chanId)
+                        return error("Couldn't extract channel ID from URL");
+                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+                    addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
+                        listener: (el) => recreateBtn(el, chanId),
+                    });
+                }
+            };
+            siteEvents.on("pathChanged", () => tryAddBtnYTM());
+            tryAddBtnYTM();
+        }
+        //#region yt
+        else if (getDomain() === "yt") {
+            addStyleFromResource("css-auto_like");
+            let timeout;
+            siteEvents.on("watchIdChanged", () => {
+                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
+                timeout && clearTimeout(timeout);
+                if (!location.pathname.startsWith("/watch"))
+                    return;
+                const ytTryAutoLike = () => {
+                    addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
+                        listener(chanElem) {
+                            const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
+                            const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
+                            if (!likeChan || !likeChan.enabled)
+                                return;
+                            addSelectorListener("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
+                                listener(likeBtn) {
+                                    if (likeBtn.getAttribute("aria-pressed") !== "true") {
+                                        likeBtn.click();
+                                        getFeature("autoLikeShowToast") && showIconToast({
+                                            message: t("auto_liked_a_channels_video", likeChan.name),
+                                            subtitle: t("auto_like_click_to_configure"),
+                                            icon: "icon-auto_like",
+                                            onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                                        }).catch(e => error("Error while showing auto-like toast:", e));
+                                        log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                };
+                siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
+                timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
+            });
+            const tryAddBtnYT = () => {
+                if (location.pathname.match(/(\/?@|\/?channel\/)\S+/)) {
+                    const chanId = getCurrentChannelId();
+                    if (!chanId)
+                        return error("Couldn't extract channel ID from URL");
+                    document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+                    const recreateBtn = (headerCont) => {
+                        const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model");
+                        if (!titleCont)
+                            return;
+                        const checkBtn = () => setTimeout(() => {
+                            if (!document.querySelector(".bytm-auto-like-toggle-btn"))
+                                recreateBtn(headerCont);
+                        }, 350);
+                        const chanName = titleCont.querySelector("yt-formatted-string, h1 > .yt-core-attributed-string")?.textContent ?? null;
+                        log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+                        const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
+                        if (buttonsCont) {
+                            addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction", {
+                                listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn),
+                            });
+                        }
+                        else if (titleCont) {
+                            const titleH1OrCont = titleCont.querySelector("h1") ?? titleCont;
+                            addAutoLikeToggleBtn(titleH1OrCont, chanId, chanName, titleH1OrCont !== titleCont ? ["left-margin-xl"] : []).then(checkBtn);
+                        }
+                    };
+                    addSelectorListener("ytAppHeader", "#channel-header-container, #page-header, #page-header-container", {
+                        listener: recreateBtn,
+                    });
+                }
+            };
+            siteEvents.on("pathChanged", () => tryAddBtnYT());
+            tryAddBtnYT();
+        }
+        log("Initialized auto-like channels feature");
+    }
+    catch (err) {
+        error("Error while auto-liking channel:", err);
+    }
+}
+//#region toggle btn
+/** Adds a toggle button to enable or disable auto-liking videos from a channel */
+async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
+    const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
+    log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
+    siteEvents.on("autoLikeChannelsUpdated", async () => {
+        const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+        if (!buttonEl)
+            return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
+        const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
+        if (enabled)
+            buttonEl.classList.add("toggled");
+        else
+            buttonEl.classList.remove("toggled");
+        const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+        imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`));
+    });
+    const buttonEl = await createLongBtn({
+        resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : ""}`,
+        text: t("auto_like"),
+        title: t(`auto_like_button_tooltip${chan?.enabled ? "_enabled" : "_disabled"}`),
+        toggle: true,
+        toggleInitialState: chan?.enabled ?? false,
+        togglePredicate({ shiftKey, ctrlKey }) {
+            const shiftOrCtrl = shiftKey || ctrlKey;
+            shiftOrCtrl && getAutoLikeDialog().then((dlg) => dlg.open());
+            return !shiftOrCtrl;
+        },
+        async onToggle(isToggled) {
+            try {
+                await autoLikeStore.loadData();
+                buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${isToggled ? "_enabled" : "_disabled"}`);
+                const chanId = sanitizeChannelId(buttonEl.dataset.channelId ?? channelId);
+                const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+                imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${isToggled ? "_enabled" : ""}`));
+                if (autoLikeStore.getData().channels.some((ch) => ch.id === chanId)) {
+                    await autoLikeStore.setData({
+                        channels: autoLikeStore.getData().channels
+                            .map((ch) => ch.id === chanId ? { ...ch, enabled: isToggled } : ch),
+                    });
+                }
+                else {
+                    await autoLikeStore.setData({
+                        channels: [
+                            ...autoLikeStore.getData().channels,
+                            { id: chanId, name: channelName ?? "", enabled: isToggled },
+                        ],
+                    });
+                }
+                emitSiteEvent("autoLikeChannelsUpdated");
+                showIconToast({
+                    message: isToggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+                    subtitle: t("auto_like_click_to_configure"),
+                    icon: `icon-auto_like${isToggled ? "_enabled" : ""}`,
+                    onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                }).catch(e => error("Error while showing auto-like toast:", e));
+                log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${isToggled ? "enabled" : "disabled"}`);
+            }
+            catch (err) {
+                error("Error while toggling auto-like channel:", err);
+            }
+        }
+    });
+    buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses ?? [])]);
+    buttonEl.dataset.channelId = channelId;
+    siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 //#region media control bar
@@ -9732,7 +9726,7 @@ function initObservers() {
                 //#region ytAppHeader
                 // -> header of the page
                 //    enabled by "ytdBrowse"
-                const ytAppHeaderSelector = "#header tp-yt-app-header";
+                const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
                 globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, {
                     ...defaultObserverOptions,
                     defaultDebounce: 75,
@@ -10884,4 +10878,4 @@ async function runDevTreatments() {
     const dlg = await getAllDataExImDialog();
     await dlg.open();
 }
-preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);
