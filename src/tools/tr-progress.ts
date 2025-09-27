@@ -98,6 +98,7 @@ async function run() {
   const missingKeys = [] as string[];
 
   for(const [locale] of Object.entries({ "en-US": enUS, ...restLocs })) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const loc = locale as TrLocale;
     const lines = [] as string[];
     // TODO:FIXME: recurse over nested objects to extract keys & turn into dot notation

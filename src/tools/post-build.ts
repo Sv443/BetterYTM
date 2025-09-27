@@ -534,14 +534,14 @@ function resolveResourcePath(path: string): string {
 
 //#region utils/process
 
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
-  const arg = argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
-  const val = arg?.split("=")?.[1];
+/** Returns the value of a CLI argument (matching `^--arg-name[\s=]`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(argName: string, defaultVal: TReturn | (string & {})): TReturn
+/** Returns the value of a CLI argument (matching `^--arg-name[\s=]`) or undefined if it doesn't exist */
+function getCliArg<TReturn extends string = string>(argName: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
+/** Returns the value of a CLI argument (matching `^--arg-name[\s=]`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(argName: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
+  const arg = argv.find((v) => v.trim().match(new RegExp(`^(?:--)?${argName}[\\s=].+$`, "i")));
+  const val = arg?.split(/[\s=]/)?.[1];
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
 }
 

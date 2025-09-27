@@ -266,7 +266,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
         const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
         imgEl && setInnerHtml(imgEl, await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`));
 
-        if(autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+        if(autoLikeStore.getData().channels.some((ch) => ch.id === chanId)) {
           await autoLikeStore.setData({
             channels: [
               ...autoLikeStore.getData().channels,

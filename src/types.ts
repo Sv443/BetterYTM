@@ -57,17 +57,27 @@ export type StyleResourceKey = ResourceKey & `css-${string}`;
 
 /** Describes a single hotkey */
 export type HotkeyObj = {
+  /** [`KeyboardEvent.code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) value of the key */
   code: string,
+  /** Whether the Shift key must be held */
   shift: boolean,
+  /** Whether the Ctrl (or Cmd on Mac) key must be held */
   ctrl: boolean,
+  /** Whether the Alt (or Option on Mac) key must be held */
   alt: boolean,
 };
 
+/** An entry in the lyrics cache */
 export type LyricsCacheEntry = {
+  /** Sanitized artist name */
   artist: string;
+  /** Sanitized song name */
   song: string;
+  /** genius.com URL path, starting with a slash, e.g. `/Adele-Hello-Lyrics` */
   path: string;
+  /** UNIX timestamp of when this entry was last fetched */
   viewed: number;
+  /** UNIX timestamp of when this entry was added */
   added: number;
 };
 
@@ -82,10 +92,11 @@ export type AutoLikeData = {
   }[];
 };
 
+/** Object returned by the [Return YouTube Dislike API](https://returnyoutubedislike.com/docs) */
 export type RYDVotesObj = {
   /** The watch ID of the video */
   id: string;
-  /** ISO timestamp of when the video was uploaded */
+  /** ISO 8601 timestamp of when the video was uploaded */
   dateCreated: string;
   /** Amount of likes */
   likes: number;
@@ -99,53 +110,74 @@ export type RYDVotesObj = {
   deleted: boolean;
 };
 
-export type VideoVotesObj = {
-  /** The watch ID of the video */
-  id: string;
-  /** Amount of likes */
-  likes: number;
-  /** Amount of dislikes */
-  dislikes: number;
-  /** Like to dislike ratio from 0.0 to 5.0 */
-  rating: number;
-  /** Timestamp of when the data was fetched */
-  timestamp: number;
-};
+/** Video votes object internally used by BYTM, which is a subset of {@linkcode RYDVotesObj} */
+export type VideoVotesObj = Prettify<
+  & Pick<RYDVotesObj, "id" | "likes" | "dislikes" | "rating">
+  & {
+    /** Timestamp of when the data was fetched */
+    timestamp: number;
+  }
+>;
 
 /** Response from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
 export type ITunesAPIResponse = {
+  /** Number of results in the results array */
   resultCount: number;
+  /** Array of album objects - see {@linkcode ITunesAlbumObj} */
   results: ITunesAlbumObj[];
 };
 
-/** One album object returned by the iTunes API */
+/** One album object returned by the Apple Music / iTunes API */
 export type ITunesAlbumObj = Prettify<{
+  /** "collection" for albums */
   wrapperType: LooseUnion<"collection">;
+  /** "Album" for albums */
   collectionType: LooseUnion<"Album">;
+  /** API-internal ID of the artist */
   artistId: number;
+  /** API-internal ID of the album */
   collectionId: number;
+  /** Artist name */
   artistName: string;
+  /** Album name */
   collectionName: string;
+  /** Censored album name */
   collectionCensoredName: string;
+  /** Artist's page on Apple Music / iTunes */
   artistViewUrl: `https://music.apple.com/us/artist/${string}/${number}?uo=${number}`;
+  /** Album's page on Apple Music / iTunes */
   collectionViewUrl: `https://music.apple.com/us/album/${string}/${number}?uo=${number}`;
+  /** Apple Music / iTunes only returns 60x60 and 100x100 out of the box, but the numbers can simply be string-replaced all the way up to 3000x3000 */
   artworkUrl60: `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg`;
+  /** Apple Music / iTunes only returns 60x60 and 100x100 out of the box, but the numbers can simply be string-replaced all the way up to 3000x3000 */
   artworkUrl100: `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg`;
+  /** Price of the album in the store */
   collectionPrice: number;
+  /** Whether the album contains explicit content, or has been "cleaned" (censored) */
   collectionExplicitness: LooseUnion<"explicit" | "notExplicit" | "cleaned">;
+  /** Whether the album is explicit or clean */
   contentAdvisoryRating?: LooseUnion<"Explicit" | "Clean">;
+  /** Number of tracks in the album */
   trackCount: number;
+  /** Copyright text */
   copyright: string;
+  /** Country where the album is available - BYTM always fetches from the US store so this is always "USA" */
   country: LooseUnion<"USA">;
+  /** Currency of the price value - BYTM always fetches from the US store so this is always "USD" */
   currency: LooseUnion<"USD">;
+  /** ISO 8601 timestamp of the album release date */
   releaseDate: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
+  /** Primary genre of the album */
   primaryGenreName: string;
 }>;
 
+/** Format for large numbers - differs for each locale - to see the [`Intl.NumberFormatOptions`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options) used for each type, search for `function formatNumber` in `src/utils/misc.ts` */
 export type NumberLengthFormat = "short" | "long";
 
+/** Preferred lightness of derived colors in the UI */
 export type ColorLightnessPref = "darker" | "normal" | "lighter";
 
+/** Like/dislike state identifier, as presented by the attribute `like-status` on the YTM element `ytmusic-player-bar ytmusic-like-button-renderer` */
 export type LikeDislikeState = "LIKE" | "DISLIKE" | "INDIFFERENT";
 
 //#region utility
@@ -155,11 +187,11 @@ export type KeysOfType<T, U> = {
   [K in keyof T]: T[K] extends U ? K : never
 }[keyof T];
 
-/** TS enum type for bitset-like enums, where the keys are strings and the values are numbers */
-export type BitSetEnum = Enum<string, number>;
+/** Bitset-like TS enum type, where the keys are strings and the values are numbers (plus the reverse mapping) */
+export type BitSetTSEnum = TSEnum<string, number>;
 
 /** Generic type for TS enums, where there is a key-value as well as value-key mapping */
-export type Enum<K extends string | number, V extends string | number> = Record<K, V> & Record<V, K>;
+export type TSEnum<K extends string | number, V extends string | number> = Record<K, V> & Record<V, K>;
 
 //#region global
 
@@ -218,10 +250,11 @@ export type TTPolicy = {
   createHTML: (dirty: Stringifiable) => string;
 };
 
+// this block communicates to TypeScript that the `BYTM` property exists on the `window` object:
 declare global {
   interface Window {
     // to see the expanded type, install the VS Code extension "MylesMurphy.prettify-ts" and hover over the property below
-    // alternatively navigate with ctrl+click to find the types
+    // alternatively, navigate with ctrl+click to traverse all the different types
     BYTM: BytmObject;
     // polyfill for the new Trusted Types API
     trustedTypes?: {
@@ -405,7 +438,7 @@ export type InterfaceFunctions = {
   getThumbnailUrl: typeof getThumbnailUrl;
   /** Returns the thumbnail URL with the best quality for the provided video ID */
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
-  /** Fetches the iTunes album info objects for the given artist and album names */
+  /** Fetches the Apple Music / iTunes album info objects for the given artist and album names */
   fetchITunesAlbumInfo: typeof fetchITunesAlbumInfo;
   /** Resolves the returned promise when the video element is queryable in the DOM */
   waitVideoElementReady: typeof waitVideoElementReady;
@@ -515,48 +548,64 @@ export type FeatureCategory =
   | "integrations"
   | "plugins";
 
-type SelectOption = {
+/** One option in a select input */
+export type SelectOption = {
   value: string | number;
   label: string;
 };
 
+/** A unit string or a function that returns a unit string for the provided value */
+export type FeatUnit = string | ((val: number) => string);
+
 type FeatureTypeProps = ({
+    /** Custom toggle input - uses `input[type="checkbox"]` under the hood */
     type: "toggle";
     default: boolean;
   } & FeatureFuncProps)
   | ({
+    /** `input[type="number"]` */
     type: "number";
     default: number;
     min: number;
     max?: number;
     step?: number;
-    unit?: string | ((val: number) => string);
+    /** Optional unit string or function that returns a unit string for the provided value */
+    unit?: FeatUnit;
   } & FeatureFuncProps)
   | ({
+    /** `select` input */
     type: "select";
     default: string | number;
     options: SelectOption[] | (() => SelectOption[]);
   } & FeatureFuncProps)
   | ({
+    /** `input[type="range"]` */
     type: "slider";
     default: number;
     min: number;
     max: number;
     step?: number;
-    unit?: string | ((val: number) => string);
+    /** Optional unit string or function that returns a unit string for the provided value */
+    unit?: FeatUnit;
   } & FeatureFuncProps)
   | ({
+    /** Custom hotkey input component using a `button` and listening for keydown events */
     type: "hotkey";
     default: HotkeyObj;
   } & FeatureFuncProps)
   | ({
+    /** `input[type="text"]` */
     type: "text";
     default: string;
+    /** Called to normalize the configured value before it gets persisted */
     normalize?: (val: string) => string;
   } & FeatureFuncProps)
   | {
+    /** `button` with a loading state where it sets itself to `disabled` */
     type: "button";
+    /** Persistent value is always undefined, meaning it gets stripped out at serialization */
     default?: undefined;
+    /** Called when the button is clicked - if it returns a Promise, the button will only be re-enabled after it resolves or rejects */
     click: () => Promise<void | unknown> | void | unknown;
   }
 
@@ -584,12 +633,15 @@ type FeatureFuncProps = (
   }
 );
 
+/** Any kind of adornment function used by the feature info list in `src/features/index.ts` to render icons in the config menu */
 export type AdornFunc =
   | ((...args: any[]) => (Promise<string | undefined> | string | undefined))
   | Promise<string | undefined>;
 
+/** An array of adornment functions or a function that returns the array, used by the feature info list in `src/features/index.ts` to render icons in the config menu */
 export type FeatAdornments = AdornFunc[] | (() => AdornFunc[]);
 
+/** An entry of the feature info list in `src/features/index.ts`, containing all information necessary to construct the config menu, manage the persistent data, and instantiate the feature */
 export type FeatureInfoEntry = {
     /** Feature category */
     category: FeatureCategory;
@@ -598,7 +650,7 @@ export type FeatureInfoEntry = {
     /** On which sites the feature is available */
     supportedSites: Domain[];
     /** Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while */
-    since: `${number}.${number}.${number}${string}`;
+    since: `${number}.${number}.${number}` | `${number}.${number}.${number}-${string}`;
     /**
      * HTML string that will be the help text for this feature  
      * Specifying a function is useful for pluralizing or inserting values into the translation at runtime
@@ -606,7 +658,7 @@ export type FeatureInfoEntry = {
     helpText?: string | (() => string);
     /** Whether the value should be hidden in the config menu and from plugins */
     valueHidden?: boolean;
-    /** Transformation function called before the value is rendered in the config menu */
+    /** Transformation function called before the value is rendered in the config menu to modify it in fun ways */
     renderValue?: (value: string) => string | Promise<string>;
     /** Array of functions returning HTML strings that are prepended to the feature's text description as icons */
     adornments?: FeatAdornments;

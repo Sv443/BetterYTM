@@ -7,7 +7,7 @@ import { addSelectorListener } from "./observers.js";
 import { defaultData, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "./siteEvents.js";
-import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetEnum } from "./types.js";
+import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { BytmDialog } from "./components/BytmDialog.js";
 import { createHotkeyInput } from "./components/hotkeyInput.js";
@@ -338,7 +338,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
 
     const permissions: PluginRegisterResult["permissions"] = {
       int: permissionInt,
-      array: parseBitSetEnumArray(permissionInt, PluginIntent as unknown as BitSetEnum),
+      array: parseBitSetEnumArray(permissionInt, PluginIntent as unknown as BitSetTSEnum),
     };
 
     info(`Successfully registered plugin '${plKey}'`);
@@ -556,7 +556,7 @@ function defToIntentsBitSet(def: PluginDef): number {
 }
 
 /** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
-function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetEnum): TNum[] {
+function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetTSEnum): TNum[] {
   const result: TNum[] = [];
   for(const [, val] of Object.entries(enumRef))
     if((typeof val === "number" || typeof val === "bigint") && CoreUtils.bitSetHas(bitSet, val as TNum))

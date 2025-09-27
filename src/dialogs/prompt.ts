@@ -6,26 +6,33 @@ import "./prompt.css";
 
 //#region types
 
-type PromptStringGen = Stringifiable | ((type: PromptType) => Stringifiable | Promise<Stringifiable>);
+/** StringGen variant used by the {@linkcode showPrompt()} function - gets passed the type as a parameter */
+export type PromptStringGen = Stringifiable | ((type: PromptType) => Stringifiable | Promise<Stringifiable>);
 
+/** Props for rendering the prompt dialog - see {@linkcode showPrompt()} */
 export type PromptDialogRenderProps = ConfirmRenderProps | AlertRenderProps | PromptRenderProps;
 
+/** Type of prompt dialog to show - see {@linkcode showPrompt()} */
 export type PromptType = PromptDialogRenderProps["type"];
 
-type ConfirmRenderProps = BaseRenderProps & {
+/** Props for rendering a `confirm()`-like prompt dialog - see {@linkcode showPrompt()} */
+export type ConfirmRenderProps = BaseRenderProps & {
   type: "confirm";
 };
 
-type AlertRenderProps = BaseRenderProps & {
+/** Props for rendering an `alert()`-like prompt dialog - see {@linkcode showPrompt()} */
+export type AlertRenderProps = BaseRenderProps & {
   type: "alert";
 };
 
-type PromptRenderProps = BaseRenderProps & {
+/** Props for rendering a `prompt()`-like dialog - see {@linkcode showPrompt()} */
+export type PromptRenderProps = BaseRenderProps & {
   type: "prompt";
   defaultValue?: StringGen;
 };
 
-type BaseRenderProps = {
+/** Base props for rendering any type of prompt dialog - see {@linkcode showPrompt()} */
+export type BaseRenderProps = {
   message: PromptStringGen;
   confirmBtnText?: PromptStringGen;
   confirmBtnTooltip?: PromptStringGen;
@@ -33,9 +40,8 @@ type BaseRenderProps = {
   denyBtnTooltip?: PromptStringGen;
 };
 
+/** Any value that can be returned by the {@linkcode showPrompt()} function */
 export type PromptDialogResolveVal = boolean | string | null;
-
-export type ShowPromptProps = Partial<PromptDialogRenderProps> & Required<Pick<PromptDialogRenderProps, "message">>;
 
 //#region PromptDialog
 

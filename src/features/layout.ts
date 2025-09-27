@@ -626,7 +626,7 @@ async function deleteExpiredAlbumArtCacheEntries() {
   if(expiredEntries.length > 0) {
     log(`Deleting ${expiredEntries.length} expired album art cache entries`);
     albumArtCacheStore.setData({
-      entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.find((ex) => ex.videoId === en.videoId)),
+      entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
     });
   }
 }
@@ -943,19 +943,17 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
     }
   }
 
+  /** Fetches the album info from the iTunes API and returns the best match as well as the first result as a fallback in a tuple */
   const doFetchITunesAlbum = async (artist: string, album: string) => {
     const albumObjs = await fetchITunesAlbumInfo(artist, album);
+
     if(albumObjs && albumObjs.length > 0) {
       const bestMatch = albumObjs.find((al) => (
         (
-          sanitizeArtists(al.artistName) === artist
-          || sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
+          sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
           || sanitizeArtists(al.artistName) === artistsRaw
-          || sanitizeArtists(al.artistName).toLowerCase() === artistsRaw.toLowerCase()
         ) && (
-          sanitizeSong(al.collectionName) === sanitizeSong(album)
-          || sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
-          || sanitizeSong(al.collectionCensoredName) === sanitizeSong(album)
+          sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
           || sanitizeSong(al.collectionCensoredName).toLowerCase() === sanitizeSong(album).toLowerCase()
         )
       ));
@@ -968,13 +966,13 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
 
   let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
   if(!bestMatch)
-    [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
+    [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
 
   const match = bestMatch ?? fallback;
 
   if(match) {
     const entries = albumArtCacheStore.getData().entries;
-    if(!entries.find((e) => e.videoId === videoId)) {
+    if(!entries.some((e) => e.videoId === videoId)) {
       entries.push({
         videoId,
         url: match.artworkUrl100,
@@ -984,6 +982,8 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
       await albumArtCacheStore.setData({ entries });
     }
   }
+  else 
+    warn("The iTunes API found no album info for", artist, "-", albumRaw);
 
   return match;
 }
