@@ -139,8 +139,7 @@ export async function hasKeyFor(locale: TrLocale, key: TFuncKey) {
 }
 
 /**
- * Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.  
- * ℹ️ UserUtils' `templateLiteral` transform is not used yet, since CoreUtils will implement an even newer translation system and it's simply not worth it to refactor everything twice.
+ * Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.
  */
 export function t(key: TFuncKey, ...args: TrArg[]) {
   return tl(getLocale(), key, ...args);

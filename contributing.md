@@ -287,28 +287,40 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - `events` - A [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
 >   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin
+> - `permissions` - An object with the properties `int` and `array`, which are the granted intents as a bitwise-OR number and as an array of PluginIntent enum numbers, respectively
 > 
 > <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
+> import type { PluginDef, PluginIntent } from "bytm/src/types.js";
+> const { CoreUtils } = unsafeWindow.BYTM;
+> 
 > // Search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
 >   plugin: { // required
->     // The name and namespace should combine to be unique across all plugins
->     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier
+>     // The name and namespace should combine to be unique across all plugins.
+>     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier.
 >     name: "My cool plugin",                     // required
 >     namespace: "https://github.com/MyUsername", // required
+>     // Semver-compliant version string. See https://semver.org/ for more information.
 >     version: "4.2.0",                           // required
+>     // Specify an icon URL here (should be 250px or smaller and square, in png, jpg or webp format, preferably hosted on a CDN).
+>     // If you have a public GitHub repo, you should specify the CDN URL starting with raw.githubusercontent.com here.
+>     // I don't recommend using services like imgur, since they might be too restrictive for certain clients.
 >     iconUrl: "https://picsum.photos/128/128",   // required
+>     // Localized description of your plugin.
 >     description: { // required
 >       "en-US": "This plugin does cool stuff",      // required
 >       "de-DE": "Dieses Plugin macht coole Sachen", // (all other locales are optional)
 >       // (see all supported locale codes in "assets/locales.json")
 >     },
+>     // The SPDX identifier (or name) and URL to your plugin's license text.
+>     // If your code is all rights reserved, omit this property.
 >     license: { // (optional)
->       name: "MIT",                                // both required
->       url: "https://opensource.org/licenses/MIT", // both required
+>       name: "MIT",                                // either both or none required
+>       url: "https://opensource.org/licenses/MIT", // either both or none required
 >     },
+>     // Homepage URLs that will be displayed in the plugin list UI.
 >     homepage: { // required
 >       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",     // required
 >       other: "https://example.org/MyCoolBYTMPlugin",                // (optional)
@@ -318,10 +330,16 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     },
 >   },
 >   // The intents (requested permissions) the plugin needs to be granted by BetterYTM and the user to be able to use certain functions.
->   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then bitwise-OR all of them together to get the final intents number.
->   // If you have BYTM as a dependency/submodule, you can import the enum and join the values like so: `PluginIntent.Foo | PluginIntent.Bar`
+>   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then bitwise-OR them together or put them in an array.
+>   // Arrays of intents are also accepted.
+>   // If you have BYTM as a dependency/submodule, you can import the enum and join the values: `PluginIntent.Foo | PluginIntent.Bar` or `[PluginIntent.Foo, PluginIntent.Bar]`
 >   // Set to 0 to indicate no permissions need to be granted.
->   intents: PluginIntent.ReadFeatureConfig | PluginIntent.CreateModalDialogs, // (optional, defaults to 0)
+>   intents: [ // (optional)
+>     PluginIntent.ReadFeatureConfig,
+>     PluginIntent.CreateModalDialogs,
+>   ],
+>   // A list of plugin contributors, including the main author (you).
+>   // This is unused at the moment, but might be added to the BYTM UI later on.
 >   contributors: [ // (optional)
 >     {                                            // (optional)
 >       name: "MyUsername",                        // required
@@ -334,7 +352,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >       email: "someotherguy@star-co.net.kp",        // (optional)
 >     },
 >   ],
-> };
+> } satisfies PluginDef;
 > 
 > // private token for authenticated function calls (don't store this persistently, as your plugin gets a new one every page load!)
 > let authToken: string | undefined;
@@ -344,10 +362,19 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   return authToken;
 > }
 > 
-> unsafeWindow.addEventListener("bytm:registerPlugin", (registerPlugin) => {
+> unsafeWindow.addEventListener("bytm:registerPlugin", async (registerPlugin) => {
 >   try {
 >     // register the plugin
->     const { token, events } = registerPlugin(pluginDef);
+>     const { token, events, permissions } = registerPlugin(pluginDef);
+> 
+>     // show a welcome alert once, if the CreateModalDialogs intent was granted
+>     if(!await GM.getValue("welcomeMsgShown") && CoreUtils.bitSetHas(permissions.int, PluginIntent.CreateModalDialogs)) {
+>         await unsafeWindow.BYTM.showPrompt({
+>             type: "alert",
+>             message: `You've successfully installed ${pluginDef.plugin.name} (version ${pluginDef.plugin.version})!`,
+>         });
+>         await GM.setValue("welcomeMsgShown", true);
+>     }
 > 
 >     // store the private token for later use in authenticated function calls
 >     authToken = token;
@@ -371,7 +398,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     // example authenticated function call:
 >     const bytmFeatureConfig = unsafeWindow.BYTM.getFeatures(getToken());
 >     if(!bytmFeatureConfig)
->       console.error("Failed to get feature config object, the token is probably somehow invalid");
+>       console.error("Failed to get feature config object, likely because the ReadFeatureConfig intent was not granted");
 >     else
 >       console.log("Feature config object:", bytmFeatureConfig);
 >   }

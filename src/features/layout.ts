@@ -640,7 +640,6 @@ export enum ThumbOvlState {
 /** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
 let overlayState = ThumbOvlState.Off;
 
-// FIXME: if toggled to YT, the AM URL is applied instead
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
   if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
@@ -715,6 +714,9 @@ export async function initThumbnailOverlay() {
         });
       }
     };
+
+    // TODO:FIXME: sometimes when switching videos, the cache gets bypassed and the API is called anyways
+    // example: https://music.youtube.com/watch?v=Q6W6Lm3MgGA&list=PLed0zlh3c4e1jxK6QgkFnFhXgnKJswo3A
 
     /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
     const applyThumbUrl = async (videoID: string) => {
