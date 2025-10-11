@@ -784,7 +784,6 @@ export const featInfo = {
       { value: "x^5", label: t("volume_mapping_x5") }
     ],
     default: "linear",
-    helpText: () => t("feature_helptext.volumeSliderExponential"),
     adornments: [adornments.ytmOnly, adornments.reload],
   },
   volumeSliderLabel: {
