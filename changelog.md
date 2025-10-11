@@ -17,6 +17,7 @@
   - 🎵 Swap like- and dislike buttons to match the layout on YT.
   - Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
   - 🎵 Automatically close the activity check dialog. Note: Might only work if the browser isn't minimized.
+  - 🎵 Add option to use exponential scaling for the volume slider ([more infos](https://www.dr-lex.be/info-stuff/volumecontrols.html)).
 - **Improvements and Changes:**
   - Improved script initialization performance.
   - 🎵 Overhauled thumbnail overlay to fix inconsistencies.
