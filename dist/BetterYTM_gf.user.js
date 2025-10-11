@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b911959/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b2ba7a8/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -319,8 +319,8 @@ I welcome every contribution on GitHub!
     mode: "production",
     branch: "main",
     host: "greasyfork",
-    buildNumber: "b911959",
-    buildTimestamp: "1760191609208",
+    buildNumber: "b2ba7a8",
+    buildTimestamp: "1760212152570",
     assetSource: "jsdelivr",
     devServerPort: "8710"
   };
@@ -6938,7 +6938,6 @@ I welcome every contribution on GitHub!
         label: t("volume_mapping_x5")
       } ],
       default: "linear",
-      helpText: () => t("feature_helptext.volumeSliderExponential"),
       adornments: [ adornments.ytmOnly, adornments.reload ]
     },
     volumeSliderLabel: {
