@@ -4,7 +4,7 @@ import * as compareVersions from "compare-versions";
 import * as constants from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
-import { defaultData, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
+import { cfgDefaultData, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "./siteEvents.js";
 import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum } from "./types.js";
@@ -169,7 +169,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   // feature config:
   /*🔒*/ getFeatures: getFeaturesInterface,
   /*🔒*/ saveFeatures: saveFeaturesInterface,
-  getDefaultFeatures: () => JSON.parse(JSON.stringify(defaultData)),
+  getDefaultFeatures: () => structuredClone(cfgDefaultData),
 
   // lyrics:
   fetchLyricsUrlTop,

@@ -12,12 +12,12 @@ import { showPrompt } from "./dialogs/prompt.js";
 //#region format version
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 11;
+export const cfgFormatVersion = 11;
 
 //#region default data
 
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
-export const defaultData = pureObj(
+export const cfgDefaultData = pureObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
     // @ts-expect-error
     .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
@@ -31,11 +31,11 @@ export const defaultData = pureObj(
 //#region migrations
 
 /** Config data format migration dictionary */
-export const migrations: DataMigrationsDict = {
+export const cfgMigrations: DataMigrationsDict = {
   // 1 -> 2 (<=v1.0)
   2: (oldData: Record<string, unknown>) => {
     if(typeof oldData !== "object" || oldData === null)
-      return defaultData;
+      return cfgDefaultData;
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
     delete oldData.queueButtons;
     return {
@@ -205,7 +205,7 @@ export const migrations: DataMigrationsDict = {
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useNewDefaults(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
-  const newData = structuredClone({ ...defaultData, ...(baseData ?? {}) });
+  const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
   for(const key of resetKeys) // @ts-expect-error
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
   return newData;
@@ -236,9 +236,9 @@ let canCompress = true;
 
 export const configStore = new DataStore({
   id: "bytm-config",
-  formatVersion,
-  defaultData,
-  migrations,
+  formatVersion: cfgFormatVersion,
+  defaultData: cfgDefaultData,
+  migrations: cfgMigrations,
   encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
   decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
 });
@@ -307,11 +307,11 @@ export async function initConfig() {
 export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   const newCfg = structuredClone(cfg);
   const passedKeys = Object.keys(cfg);
-  const defaultKeys = Object.keys(defaultData);
+  const defaultKeys = Object.keys(cfgDefaultData);
   const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
   if(missingKeys.length > 0) {
     for(const key of missingKeys)
-      newCfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
+      newCfg[key as keyof FeatureConfig] = cfgDefaultData[key as keyof FeatureConfig] as never;
   }
   const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
   if(extraKeys.length > 0) {

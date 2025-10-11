@@ -723,8 +723,7 @@ export async function initThumbnailOverlay() {
       try {
         const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
         if(
-          toggleBtnElem
-          && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
+          toggleBtnElem?.dataset.albumArtworkUrl?.startsWith("http")
           && (
             (!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
             && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))

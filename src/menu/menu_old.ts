@@ -1,6 +1,6 @@
 import { compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { isScrollable, openDialogs } from "@sv443-network/userutils";
-import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
+import { type cfgDefaultData, cfgFormatVersion, getFeature, getFeatures, cfgMigrations, setFeatures } from "../config.js";
 import { buildNumber, buildTimestamp, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, groupedCategories, resolveAdornments } from "../features/index.js";
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
@@ -8,7 +8,7 @@ import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
 import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "../utils/translations.js";
-import { emitSiteEvent, siteEvents } from "../siteEvents.js";
+import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getFeatHelpDialog } from "../dialogs/featHelp.js";
@@ -226,7 +226,7 @@ export async function mountCfgMenu() {
     leftSideFooterCont.appendChild(reloadFooterEl);
 
     /** For copying plain when shift-clicking the copy button or when compression is not supported */
-    const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
+    const exportDataSpecial = () => JSON.stringify({ formatVersion: cfgFormatVersion, data: getFeatures() });
 
     const exImDlg = new ExImDialog({
       id: "config-export-import",
@@ -234,7 +234,7 @@ export async function mountCfgMenu() {
       height: 600,
       // try to compress the data if possible
       exportData: async () => await compressionSupported()
-        ? await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
+        ? await compress(JSON.stringify({ formatVersion: cfgFormatVersion, data: getFeatures() }), compressionFormat, "string")
         : exportDataSpecial(),
       exportDataSpecial,
       async onImport(data) {
@@ -251,18 +251,18 @@ export async function mountCfgMenu() {
             return await showPrompt({ type: "alert", message: t("import_error.no_format_version") });
           if(typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
             return await showPrompt({ type: "alert", message: t("import_error.no_data") });
-          if(parsed.formatVersion < formatVersion) {
-            let newData = JSON.parse(JSON.stringify(parsed.data));
-            const sortedMigrations = Object.entries(migrations)
+          if(parsed.formatVersion < cfgFormatVersion) {
+            let newData = structuredClone(parsed.data);
+            const sortedMigrations = Object.entries(cfgMigrations)
               .sort(([a], [b]) => Number(a) - Number(b));
 
             let curFmtVer = Number(parsed.formatVersion);
 
             for(const [fmtVer, migrationFunc] of sortedMigrations) {
               const ver = Number(fmtVer);
-              if(curFmtVer < formatVersion && curFmtVer < ver) {
+              if(curFmtVer < cfgFormatVersion && curFmtVer < ver) {
                 try {
-                  const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                  const migRes = structuredClone(migrationFunc(newData));
                   newData = await migRes;
                   curFmtVer = ver;
                 }
@@ -274,8 +274,8 @@ export async function mountCfgMenu() {
             parsed.formatVersion = curFmtVer;
             parsed.data = newData;
           }
-          else if(parsed.formatVersion !== formatVersion)
-            return await showPrompt({ type: "alert", message: t("import_error.wrong_format_version", formatVersion, parsed.formatVersion) });
+          else if(parsed.formatVersion !== cfgFormatVersion)
+            return await showPrompt({ type: "alert", message: t("import_error.wrong_format_version", cfgFormatVersion, parsed.formatVersion) });
 
           await setFeatures({ ...getFeatures(), ...parsed.data });
 
@@ -458,7 +458,7 @@ export async function mountCfgMenu() {
     featuresCont.appendChild(topAnchor);
 
     const onCfgChange = async (
-      key: keyof typeof defaultData,
+      key: keyof typeof cfgDefaultData,
       initialVal: string | number | boolean | HotkeyObj | undefined,
       newVal: string | number | boolean | HotkeyObj | undefined,
     ) => {
@@ -466,9 +466,10 @@ export async function mountCfgMenu() {
         const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
         info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
-        const featConf = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
+        const featConf = structuredClone(getFeatures()) as FeatureConfig;
 
-        featConf[key] = newVal as never;
+        // @ts-expect-error
+        featConf[key] = newVal;
 
         const changedKeys = initConfig ? Object.keys(featConf).filter((k) =>
           typeof featConf[k as FeatureKey] !== "object"
@@ -1066,6 +1067,7 @@ export async function mountCfgMenu() {
     //#region scroll indicator
     const scrollIndicator = document.createElement("img");
     scrollIndicator.id = "bytm-menu-scroll-indicator";
+    scrollIndicator.classList.add("bytm-no-select");
     scrollIndicator.src = await getResourceUrl("icon-arrow_down");
     scrollIndicator.role = "button";
     scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
@@ -1153,7 +1155,7 @@ export async function mountCfgMenu() {
         if(isSvg) {
           const modeDisplayWrapperEl = document.createElement("span");
           modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
-          modeDisplayWrapperEl.classList.add("bytm-menu-mode-display");
+          modeDisplayWrapperEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
           modeDisplayWrapperEl.tabIndex = 0;
           modeDisplayWrapperEl.role = "img";
           modeDisplayWrapperEl.title = modeDisplayWrapperEl.ariaLabel = modeElTooltip;
@@ -1169,7 +1171,7 @@ export async function mountCfgMenu() {
         else {
           const modeDisplayEl = document.createElement("img");
           modeDisplayEl.id = `bytm-menu-mode-display-${id}`;
-          modeDisplayEl.classList.add("bytm-menu-mode-display");
+          modeDisplayEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
           modeDisplayEl.tabIndex = 0;
           modeDisplayEl.role = "img";
           modeDisplayEl.title = modeDisplayEl.ariaLabel = modeDisplayEl.alt = modeElTooltip;
@@ -1206,7 +1208,7 @@ export async function mountCfgMenu() {
 
     isCfgMenuMounting = false;
     isCfgMenuDoneMounting = true;
-    emitSiteEvent("cfgMenuMounted");
+    forceEmitSiteEvent("cfgMenuMounted");
 
     // ensure menu is inert if BytmDialog instances stacked on top of it:
 
@@ -1272,8 +1274,6 @@ export async function mountCfgMenu() {
 }
 
 // #region open
-
-// TODO:FIXME: if openened before mounting, the menu should open at the next earliest point
 
 /** Opens the config menu if it is closed */
 export async function openCfgMenu() {
