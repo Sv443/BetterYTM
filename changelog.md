@@ -15,9 +15,9 @@
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - 🎵 Show a track number in the currently playing queue and playlists.
   - 🎵 Swap like- and dislike buttons to match the layout on YT.
+  - 🎵 Add option to use exponential scaling for the volume slider ([more infos](https://www.dr-lex.be/info-stuff/volumecontrols.html)).
   - Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
   - 🎵 Automatically close the activity check dialog. Note: Might only work if the browser isn't minimized.
-  - 🎵 Add option to use exponential scaling for the volume slider ([more infos](https://www.dr-lex.be/info-stuff/volumecontrols.html)).
 - **Improvements and Changes:**
   - Improved script initialization performance.
   - 🎵 Overhauled thumbnail overlay to fix inconsistencies.

@@ -127,6 +127,13 @@ This project is based on my extensive template for making a userscript with Type
 > [!NOTE]  
 > Each folder contains a `README.md` file with further information about the contents. If you want to know more about a specific part of the project, please refer to these files.
 
+<br>
+
+### Special Thanks
+A big thank you to these people for their contributions to this project:
+- [indierodo](https://github.com/indierodo): Track numbers feature
+- [cryeprecision](https://github.com/cryeprecision): Exponential volume slider feature
+
 <br><br>
 
 ### Attributions

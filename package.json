@@ -19,6 +19,13 @@
       "contributions": [
         "Track numbers feature"
       ]
+    },
+    {
+      "name": "cryeprecision",
+      "url": "https://github.com/cryeprecision",
+      "contributions": [
+        "Exponential volume slider feature"
+      ]
     }
   ],
   "bugs": {
