@@ -780,6 +780,8 @@ export interface FeatureConfig {
   // advancedLyricsFilter: boolean;
 
   //#region volume
+  /** Use exponential scaling for the volume slider */
+  volumeSliderExponential: "linear" | "x^3" | "x^4" | "x^5";
   /** Add a percentage label to the volume slider */
   volumeSliderLabel: boolean;
   /** The width of the volume slider in pixels */
