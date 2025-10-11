@@ -1,3 +1,5 @@
+// unused snippet to test audio capture for visualizers, etc.
+
 (() => {
   try {
     // Get the video element
@@ -16,7 +18,8 @@
 
     // Use Firefox-compatible method to capture stream
     const stream = "mozCaptureStream" in videoElement
-      ? (videoElement.mozCaptureStream as () => MediaStream)() // @ts-expect-error idk why captureStream isn't in lib.dom.d.ts
+      ? (videoElement.mozCaptureStream as () => MediaStream)()
+      // @ts-expect-error idk why only mozCaptureStream is in lib.dom.d.ts
       : (videoElement.captureStream as () => MediaStream)()
 
     const streamSource = audioCtx.createMediaStreamSource(stream);
