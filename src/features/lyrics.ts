@@ -110,20 +110,20 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
 
 //#region lyrics utils
 
+const parensRegex = /\(.+\)/gm;
+const squareParensRegex = /\[.+\]/gm;
+
 /** Removes everything in parentheses from the passed song name */
 export function sanitizeSong(songName: string) {
   if(typeof songName !== "string")
     return songName;
-
-  const parensRegex = /\(.+\)/gmi;
-  const squareParensRegex = /\[.+\]/gmi;
 
   // trim right after the song name:
   const sanitized = songName
     .replace(parensRegex, "")
     .replace(squareParensRegex, "");
 
-  return sanitized.trim();
+  return sanitizeUnicode(sanitized);
 }
 
 /**
@@ -139,16 +139,27 @@ export function sanitizeArtists(artists: string) {
   if(artists.match(/,/))
     artists = artists.split(/,\s*/gm)[0];
 
-  if(artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
-    const parensRegex = /\(.+\)/gmi;
-    const squareParensRegex = /\[.+\]/gmi;
-
+  if(artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?\W)/i))
     artists = artists
       .replace(parensRegex, "")
       .replace(squareParensRegex, "");
-  }
 
-  return artists.trim();
+  return sanitizeUnicode(artists);
+}
+
+const singleQuotesRegex = /[‘’‛‹›]/gm;
+const doubleQuotesRegex = /[“”„‟«»]/gm;
+const commaRegex = /[,，、]/gm;
+const periodRegex = /[.。．]/gm;
+
+function sanitizeUnicode(str: string) {
+  return str
+    // replace unicode symbols:
+    .replace(singleQuotesRegex, "'")
+    .replace(doubleQuotesRegex, "\"")
+    .replace(commaRegex, ",")
+    .replace(periodRegex, ".")
+    .trim();
 }
 
 /** Returns the lyrics URL from genius for the currently selected song */
