@@ -5,22 +5,22 @@
 ## 3.1.0
 - **New Features:**
   - Improved config menu UX:
-    - Added a sidenav that displays one group at a time, for a much less overwhelming experience.
-    - Added feature groups, which further divide each group's features into logical sections.
+    - Added a sidenav that displays one category at a time, for a much less overwhelming experience.
+    - Added feature groups, which further divide each categories' features into logical sections.
     - Removed advanced mode flag from a lot of features since there's much more breathing room now.
     - Removed the dialog title subtexts. Instead, icons will be rendered in the footer, below the sidenav.
     - Reordered categories and features to be grouped more logically.
   - New configurable hotkeys:
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
-  - 🎵 Show a track number in the currently playing queue and playlists.
+  - 🎵 Show a track number in the currently playing queue and playlists (by [@indierodo](https://github.com/indierodo)).
+  - 🎵 Use exponential scaling for the volume slider ([more info](https://www.dr-lex.be/info-stuff/volumecontrols.html)) (by [@cryeprecision](https://github.com/cryeprecision)).
   - 🎵 Swap like- and dislike buttons to match the layout on YT.
-  - 🎵 Add option to use exponential scaling for the volume slider ([more infos](https://www.dr-lex.be/info-stuff/volumecontrols.html)).
-  - Require double-pressing the number keys within a configurable time frame to skip to a specific point in the song.
+  - Require double-pressing the number keys within a configurable time frame to skip to a specific point in the video/song.
   - 🎵 Automatically close the activity check dialog. Note: Might only work if the browser isn't minimized.
 - **Improvements and Changes:**
   - Improved script initialization performance.
-  - 🎵 Overhauled thumbnail overlay to fix inconsistencies.
+  - 🎵 Overhauled thumbnail overlay for much better stability.
     - Fixed album artwork being fetched with wrong parameters.
     - Allow manually toggling between thumbnail providers.
     - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
@@ -43,9 +43,10 @@
   - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension.
   - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this).
   - Fixed hotkey inputs not deactivating when the config menu is closed.
+  - Fixed minor hotkey input event memory leak when the config menu is recreated.
 
-<details><summary>Click to expand plugin and internal changes</summary>
-<sup>(I did my best to order these by importance, but it's still a lot, sorry about that.)</sup>
+<details><summary><b><i>Click to expand plugin and internal changes</i></b></summary>
+<sup>(I did my best to order these by relevance for each section)</sup>
   
 
 - **Plugin Changes:**  
@@ -129,6 +130,7 @@
       - Toggle developer treatments (experiments that are not quite ready for production)
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
+  - The functions `sanitizeArtists()` and `sanitizeSong()` will now replace some common Unicode punctuation symbols with their ASCII counterparts (e.g. `‘` -> `'`).
   - Moved the `general` feature category to the top of the config menu.
   - Wrapped feature config elements in a new container element with the ID `bytm-ftconf-category-${categoryName}` to allow for the sidenav to disable all but one at a time.
   - Added ability to render custom info categories in the config menu. Their navigation headers will be aligned to the bottom, and they render arbitrary elements. They use the same general formatting as the new feature category containers, just with their own `categoryName` (currently just `"about"` and `"changelog"`).
@@ -141,7 +143,7 @@
 </details>
 
 <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/148" rel="noopener noreferrer">See pull request for more info</a>
+  <a href="https://github.com/Sv443/BetterYTM/pull/148" rel="noopener noreferrer">Also see pull request #148</a>
 </div>
 
 <div class="split"></div>
