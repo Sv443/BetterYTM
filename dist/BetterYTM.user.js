@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@dbe5528c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0dfefd44/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "dbe5528c",
-    buildTimestamp: "1760218281018",
+    buildNumber: "0dfefd44",
+    buildTimestamp: "1760219153808",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3561,17 +3561,17 @@ async function addActualLyricsBtn(likeContainer) {
         likeContainer.insertAdjacentElement("afterend", lyricsBtnElem);
 }
 //#region lyrics utils
+const parensRegex = /\(.+\)/gm;
+const squareParensRegex = /\[.+\]/gm;
 /** Removes everything in parentheses from the passed song name */
 function sanitizeSong(songName) {
     if (typeof songName !== "string")
         return songName;
-    const parensRegex = /\(.+\)/gmi;
-    const squareParensRegex = /\[.+\]/gmi;
     // trim right after the song name:
     const sanitized = songName
         .replace(parensRegex, "")
         .replace(squareParensRegex, "");
-    return sanitized.trim();
+    return sanitizeUnicode(sanitized);
 }
 /**
  * Removes the secondary artists (if they exist) from the passed artists string.
@@ -3583,14 +3583,24 @@ function sanitizeArtists(artists) {
         artists = artists.split(/\s*&\s*/gm)[0];
     if (artists.match(/,/))
         artists = artists.split(/,\s*/gm)[0];
-    if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
-        const parensRegex = /\(.+\)/gmi;
-        const squareParensRegex = /\[.+\]/gmi;
+    if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?\W)/i))
         artists = artists
             .replace(parensRegex, "")
             .replace(squareParensRegex, "");
-    }
-    return artists.trim();
+    return sanitizeUnicode(artists);
+}
+const singleQuotesRegex = /[‘’‛‹›]/gm;
+const doubleQuotesRegex = /[“”„‟«»]/gm;
+const commaRegex = /[,，、]/gm;
+const periodRegex = /[.。．]/gm;
+function sanitizeUnicode(str) {
+    return str
+        // replace unicode symbols:
+        .replace(singleQuotesRegex, "'")
+        .replace(doubleQuotesRegex, "\"")
+        .replace(commaRegex, ",")
+        .replace(periodRegex, ".")
+        .trim();
 }
 /** Returns the lyrics URL from genius for the currently selected song */
 async function getCurrentLyricsUrl() {
@@ -3986,7 +3996,10 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         inputElem.dataset.state = infoElem.dataset.state = "active";
         inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
     };
-    window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true));
+    // bandaid fix for the legacy config menu
+    const remountAC = new AbortController();
+    siteEvents.once("recreateCfgMenu", () => remountAC.abort());
+    window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true), { signal: remountAC.signal });
     onInteraction(resetElem, (e) => {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -4020,7 +4033,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
         onChange(hotkey);
         currentHotkey = hotkey;
-    });
+    }, { signal: remountAC.signal });
     document.addEventListener("keydown", (e) => {
         if (reservedKeys.filter(k => k !== "Tab").includes(e.code))
             return;
@@ -4053,20 +4066,21 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         inputElem.innerText = hotkey.code;
         inputElem.dataset.state = infoElem.dataset.state = "inactive";
         setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
-    });
-    siteEvents.on("cfgMenuClosed", deactivate);
+    }, { signal: remountAC.signal });
+    const unsub = siteEvents.on("cfgMenuClosed", deactivate);
+    remountAC.signal.addEventListener("abort", () => unsub());
     inputElem.addEventListener("click", () => {
         if (inputElem.dataset.state === "inactive")
             activate();
         else
             deactivate();
-    });
+    }, { signal: remountAC.signal });
     inputElem.addEventListener("keydown", (e) => {
         if (reservedKeys.includes(e.code))
             return;
         if (inputElem.dataset.state === "inactive")
             activate();
-    });
+    }, { signal: remountAC.signal });
     wrapperElem.appendChild(resetElem);
     wrapperElem.appendChild(infoElem);
     wrapperElem.appendChild(inputElem);
@@ -4267,14 +4281,14 @@ async function mountCfgMenu() {
         reloadFooterEl.appendChild(reloadTxtEl);
         leftSideFooterCont.appendChild(reloadFooterEl);
         /** For copying plain when shift-clicking the copy button or when compression is not supported */
-        const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
+        const exportDataSpecial = () => JSON.stringify({ formatVersion: cfgFormatVersion, data: getFeatures() });
         const exImDlg = new ExImDialog({
             id: "config-export-import",
             width: 800,
             height: 600,
             // try to compress the data if possible
             exportData: async () => await compressionSupported()
-                ? await CoreUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat$1, "string")
+                ? await CoreUtils.compress(JSON.stringify({ formatVersion: cfgFormatVersion, data: getFeatures() }), compressionFormat$1, "string")
                 : exportDataSpecial(),
             exportDataSpecial,
             async onImport(data) {
@@ -4289,16 +4303,16 @@ async function mountCfgMenu() {
                         return await showPrompt({ type: "alert", message: t("import_error.no_format_version") });
                     if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
                         return await showPrompt({ type: "alert", message: t("import_error.no_data") });
-                    if (parsed.formatVersion < formatVersion) {
-                        let newData = JSON.parse(JSON.stringify(parsed.data));
-                        const sortedMigrations = Object.entries(migrations)
+                    if (parsed.formatVersion < cfgFormatVersion) {
+                        let newData = structuredClone(parsed.data);
+                        const sortedMigrations = Object.entries(cfgMigrations)
                             .sort(([a], [b]) => Number(a) - Number(b));
                         let curFmtVer = Number(parsed.formatVersion);
                         for (const [fmtVer, migrationFunc] of sortedMigrations) {
                             const ver = Number(fmtVer);
-                            if (curFmtVer < formatVersion && curFmtVer < ver) {
+                            if (curFmtVer < cfgFormatVersion && curFmtVer < ver) {
                                 try {
-                                    const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                                    const migRes = structuredClone(migrationFunc(newData));
                                     newData = await migRes;
                                     curFmtVer = ver;
                                 }
@@ -4310,8 +4324,8 @@ async function mountCfgMenu() {
                         parsed.formatVersion = curFmtVer;
                         parsed.data = newData;
                     }
-                    else if (parsed.formatVersion !== formatVersion)
-                        return await showPrompt({ type: "alert", message: t("import_error.wrong_format_version", formatVersion, parsed.formatVersion) });
+                    else if (parsed.formatVersion !== cfgFormatVersion)
+                        return await showPrompt({ type: "alert", message: t("import_error.wrong_format_version", cfgFormatVersion, parsed.formatVersion) });
                     await setFeatures({ ...getFeatures(), ...parsed.data });
                     if (await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
                         log("Reloading tab after importing configuration");
@@ -4457,7 +4471,8 @@ async function mountCfgMenu() {
             try {
                 const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
                 info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
-                const featConf = JSON.parse(JSON.stringify(getFeatures()));
+                const featConf = structuredClone(getFeatures());
+                // @ts-expect-error
                 featConf[key] = newVal;
                 const changedKeys = initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object"
                     && featConf[k] !== initConfig$1[k]) : [];
@@ -4950,6 +4965,7 @@ async function mountCfgMenu() {
         //#region scroll indicator
         const scrollIndicator = document.createElement("img");
         scrollIndicator.id = "bytm-menu-scroll-indicator";
+        scrollIndicator.classList.add("bytm-no-select");
         scrollIndicator.src = await getResourceUrl("icon-arrow_down");
         scrollIndicator.role = "button";
         scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
@@ -5017,7 +5033,7 @@ async function mountCfgMenu() {
                 if (isSvg) {
                     const modeDisplayWrapperEl = document.createElement("span");
                     modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
-                    modeDisplayWrapperEl.classList.add("bytm-menu-mode-display");
+                    modeDisplayWrapperEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
                     modeDisplayWrapperEl.tabIndex = 0;
                     modeDisplayWrapperEl.role = "img";
                     modeDisplayWrapperEl.title = modeDisplayWrapperEl.ariaLabel = modeElTooltip;
@@ -5032,7 +5048,7 @@ async function mountCfgMenu() {
                 else {
                     const modeDisplayEl = document.createElement("img");
                     modeDisplayEl.id = `bytm-menu-mode-display-${id}`;
-                    modeDisplayEl.classList.add("bytm-menu-mode-display");
+                    modeDisplayEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
                     modeDisplayEl.tabIndex = 0;
                     modeDisplayEl.role = "img";
                     modeDisplayEl.title = modeDisplayEl.ariaLabel = modeDisplayEl.alt = modeElTooltip;
@@ -5060,7 +5076,7 @@ async function mountCfgMenu() {
         log(`Mounted config menu element in ${Date.now() - startTs}ms`);
         isCfgMenuMounting = false;
         isCfgMenuDoneMounting = true;
-        emitSiteEvent("cfgMenuMounted");
+        forceEmitSiteEvent("cfgMenuMounted");
         // ensure menu is inert if BytmDialog instances stacked on top of it:
         /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
         const stackedOpenDialogIds = [];
@@ -5116,7 +5132,6 @@ async function mountCfgMenu() {
     }
 }
 // #region open
-// TODO:FIXME: if openened before mounting, the menu should open at the next earliest point
 /** Opens the config menu if it is closed */
 async function openCfgMenu() {
     try {
@@ -5757,8 +5772,7 @@ async function initThumbnailOverlay() {
         const applyThumbUrl = async (videoID) => {
             try {
                 const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
-                if (toggleBtnElem
-                    && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
+                if (toggleBtnElem?.dataset.albumArtworkUrl?.startsWith("http")
                     && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
                         && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
                     return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
@@ -8883,10 +8897,10 @@ const featInfo = {
     },
 };//#region format version
 /** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 11;
+const cfgFormatVersion = 11;
 //#region default data
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
-const defaultData = CoreUtils.pureObj(Object.keys(featInfo)
+const cfgDefaultData = CoreUtils.pureObj(Object.keys(featInfo)
     // @ts-expect-error
     .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
     .reduce((acc, key) => {
@@ -8896,11 +8910,11 @@ const defaultData = CoreUtils.pureObj(Object.keys(featInfo)
 }, {}));
 //#region migrations
 /** Config data format migration dictionary */
-const migrations = {
+const cfgMigrations = {
     // 1 -> 2 (<=v1.0)
     2: (oldData) => {
         if (typeof oldData !== "object" || oldData === null)
-            return defaultData;
+            return cfgDefaultData;
         const queueBtnsEnabled = Boolean(oldData.queueButtons);
         delete oldData.queueButtons;
         return {
@@ -9043,7 +9057,7 @@ const migrations = {
 //#region migration helpers
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useNewDefaults(baseData, resetKeys) {
-    const newData = structuredClone({ ...defaultData, ...(baseData ?? {}) });
+    const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
     for (const key of resetKeys) // @ts-expect-error
         newData[key] = featInfo?.[key]?.default; // typescript funny moments
     return newData;
@@ -9067,9 +9081,9 @@ function useNewDefaultsIfUnchanged(oldData, oldDefaultsCfg) {
 let canCompress = true;
 const configStore = new UserUtils.DataStore({
     id: "bytm-config",
-    formatVersion,
-    defaultData,
-    migrations,
+    formatVersion: cfgFormatVersion,
+    defaultData: cfgDefaultData,
+    migrations: cfgMigrations,
     encodeData: (data) => canCompress ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
     decodeData: (data) => canCompress ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
 });
@@ -9129,11 +9143,11 @@ async function initConfig() {
 function fixCfgKeys(cfg) {
     const newCfg = structuredClone(cfg);
     const passedKeys = Object.keys(cfg);
-    const defaultKeys = Object.keys(defaultData);
+    const defaultKeys = Object.keys(cfgDefaultData);
     const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
     if (missingKeys.length > 0) {
         for (const key of missingKeys)
-            newCfg[key] = defaultData[key];
+            newCfg[key] = cfgDefaultData[key];
     }
     const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
     if (extraKeys.length > 0) {
@@ -9236,7 +9250,7 @@ const globalFuncs = pureObj({
     // feature config:
     /*🔒*/ getFeatures: getFeaturesInterface,
     /*🔒*/ saveFeatures: saveFeaturesInterface,
-    getDefaultFeatures: () => JSON.parse(JSON.stringify(defaultData)),
+    getDefaultFeatures: () => structuredClone(cfgDefaultData),
     // lyrics:
     fetchLyricsUrlTop,
     getLyricsCacheEntry,
