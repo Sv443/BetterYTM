@@ -1,36 +1,63 @@
-For the purpose of creating plugins, anyone is hereby allowed to freely copy,
-modify, embed, redistribute, sublicense and sell copies of the source code of
-the root directory (licensed under the AGPL-3.0-only - see `LICENSE.txt`) and
-`src/` and `assets/` folders, *excluding* the subfolders in `src/` and also
-*excluding* all files in `assets/images/external/`.
+BetterYTM Plugin Sublicense Agreement (version 2)
+-----------------------------------------------------------------------------------
 
-You may include the source code of the BetterYTM project in the source of yours,
-as long as only the above mentioned files are included in the *runtime* code that
-will be distributed to the end user. (For development purposes *only*, you may
-include and use the entire source code of this project.)
+For the sole purpose of the creation of plugins that interface with the BetterYTM
+project, the following sublicense agreement is made between the original author
+of the BetterYTM project (Sv443) and anyone who wishes to create plugins for it.
 
-Additionally, you are to make the source code of your plugin available to anyone
-so they may check it for security and legitimacy. And you are also obligated to
-provide a link to said source code in the plugin definition object used in the
-registration of the plugin at runtime (see contributing.md).
+The following terms are to be followed when creating and distributing plugins for
+the BetterYTM project, which itself is licensed under the AGPL-3.0-only license
+(see `LICENSE.txt`).
 
-Lastly, your plugin is to follow the local laws and regulations of the country
-you are in, and you are to take full responsibility for any legal issues that may
-arise from the use of your plugin.
+The plugin author (referred to as "you" in this document) is hereby granted a
+sublicense to use parts of the source code of the BetterYTM project in the source
+code of their plugin, under terms different than that of the AGPL-3.0-only license,
+as long as the following terms are followed:
 
-Use is granted under the condition that the original author and the BetterYTM
-project is credited in the plugin, in a place that is easily accessible to the
-end user. This can be done by including a link to the BetterYTM project in a
-dialog in the plugin's runtime code or by putting it in its readme or similar.
+1. Permitted Source Code Usage:
+  Within the scope of using the source code for the plugin's functionality, you are
+  allowed to include, modify, embed, redistribute, sublicense and sell copies of
+  the source code inside the following folders of the BetterYTM project:
+    - The root directory (which contains `package.json`)
+    - The `src/` folder, *excluding all subfolders in `src/`*
+    - The `assets/` folder
 
-Failure to comply with these terms will mean your plugin won't be endorsed by the
-BetterYTM project and could, in severe cases, even result in legal action being
-taken against you and your plugin.
+2. Source Code Availability:
+  You are to make the source code of your plugin available to anyone so they may
+  check it for security and legitimacy. And you are also obligated to provide a
+  link to said source code in the plugin definition object used in the registration
+  of the plugin at runtime (if applicable).
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. Legal Responsibility:
+  You retain full responsibility for your plugin and its source code. and your
+  plugin is to follow the local laws and regulations of the country you are in.
+  The original authors of BetterYTM are not to be held responsible for any legal
+  issues that may arise from the use of your plugin.
+  BetterYTM reserves the right to prevent the use of its source code in plugins
+  that it deems illegal or unethical, and to block or remove such plugins from
+  any official plugin repositories or listings.
+
+4. Platform Terms of Service:
+  Since BetterYTM runs on top of YouTube and YouTube Music, your plugin must also
+  comply with YouTube's Terms of Service and Community Guidelines. Any plugin that
+  violates these terms may be subject to removal.
+
+5. Credit to Original Author:
+  Use is granted under the condition that the original authors and the BetterYTM
+  project are credited in the plugin, in a place that is easily accessible to the
+  end user. This can be done by including a link to the BetterYTM project in a
+  dialog in the plugin's runtime code, by putting it in its readme, or similar.
+
+6. Non-Compliance:
+  Failure to comply with these terms will mean your plugin won't be endorsed by the
+  BetterYTM project and could, in severe cases, even result in legal action being
+  taken against you and your plugin.
+
+7. No Warranty:
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.

@@ -52,6 +52,7 @@
 - **Plugin Changes:**  
   *(also refer to **[version 3.1.0's API docs](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md)**)*
   - **Migration guide:**
+    - ⚠️ The plugin sublicense agreement was updated to version 2 to clarify points which were worded poorly. [Read it here.](https://github.com/Sv443/BetterYTM/blob/v3.1.0/license-for-plugins.txt)
     - ⚠️ **POT. BREAKING:** Since BYTM now *requires* plugin intents to be set, make sure to add all intents required by the authenticated functions your plugin calls to the `PluginDef` object's `intents` property (which can now also be an array instead of just a bitwise-or'ed number). Read below for a list of functions and their required intents.
     - If you use the `BytmDialog`, `ExImDialog` or `MarkdownDialog` classes directly, switch to the new authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()`. Direct access will continue to work until version 4.0.0, but to future-proof your plugin, switch to the new functions as soon as possible, and make sure to add the `CreateModalDialogs` (32) intent to your plugin definition's `intents` property.
     - If you were using `bytm:ready` to reliably wait until *all* features are initialized, switch to `bytm:allReady` instead.  
