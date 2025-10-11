@@ -778,12 +778,12 @@ export const featInfo = {
     supportedSites: ["ytm"],
     since: "3.1.0",
     options: () => [
-      { value: 'linear', label: t("volume_mapping_linear") },
-      { value: 'x^3', label: t("volume_mapping_x3") },
-      { value: 'x^4', label: t("volume_mapping_x4") },
-      { value: 'x^5', label: t("volume_mapping_x5") }
+      { value: "linear", label: t("volume_mapping_linear") },
+      { value: "x^3", label: t("volume_mapping_x3") },
+      { value: "x^4", label: t("volume_mapping_x4") },
+      { value: "x^5", label: t("volume_mapping_x5") }
     ],
-    default: 'linear',
+    default: "linear",
     helpText: () => t("feature_helptext.volumeSliderExponential"),
     adornments: [adornments.ytmOnly, adornments.reload],
   },
