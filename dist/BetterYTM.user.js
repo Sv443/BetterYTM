@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ecd78d5d/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b911959/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "github",
-    buildNumber: "ecd78d5d",
-    buildTimestamp: "1759012897933",
+    buildNumber: "b911959",
+    buildTimestamp: "1760191604634",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -668,7 +668,6 @@ async function hasKeyFor(locale, key) {
 }
 /**
  * Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.
- * ℹ️ UserUtils' `templateLiteral` transform is not used yet, since CoreUtils will implement an even newer translation system and it's simply not worth it to refactor everything twice.
  */
 function t(key, ...args) {
     return tl(getLocale(), key, ...args);
@@ -5693,7 +5692,6 @@ var ThumbOvlState;
 })(ThumbOvlState || (ThumbOvlState = {}));
 /** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
 let overlayState = ThumbOvlState.Off;
-// FIXME: if toggled to YT, the AM URL is applied instead
 async function initThumbnailOverlay() {
     const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
     if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
@@ -5753,6 +5751,8 @@ async function initThumbnailOverlay() {
                 });
             }
         };
+        // TODO:FIXME: sometimes when switching videos, the cache gets bypassed and the API is called anyways
+        // example: https://music.youtube.com/watch?v=Q6W6Lm3MgGA&list=PLed0zlh3c4e1jxK6QgkFnFhXgnKJswo3A
         /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
         const applyThumbUrl = async (videoID) => {
             try {
@@ -7115,7 +7115,44 @@ async function addTrackNumbers() {
         }
         await Promise.allSettled(promises);
     })();
-}//#region init vol features
+}//#region exponential volume mapping
+function expVolClamp(x) {
+    return Math.min(1, Math.max(0, x));
+}
+/** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFn(x) {
+    switch (getFeature("volumeSliderExponential")) {
+        case "x^3":
+            return expVolClamp(Math.pow(expVolClamp(x), 3));
+        case "x^4":
+            return expVolClamp(Math.pow(expVolClamp(x), 4));
+        case "x^5":
+            return expVolClamp(Math.pow(expVolClamp(x), 5));
+        case "linear":
+        default:
+            return expVolClamp(x);
+    }
+}
+/** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFnInv(y) {
+    switch (getFeature("volumeSliderExponential")) {
+        case "x^3":
+            return expVolClamp(Math.pow(expVolClamp(y), 1 / 3));
+        case "x^4":
+            return expVolClamp(Math.pow(expVolClamp(y), 1 / 4));
+        case "x^5":
+            return expVolClamp(Math.pow(expVolClamp(y), 1 / 5));
+        case "linear":
+        default:
+            return expVolClamp(y);
+    }
+}
+const { 
+// eslint-disable-next-line @typescript-eslint/unbound-method
+get: nativeGetVolume, 
+// eslint-disable-next-line @typescript-eslint/unbound-method
+set: nativeSetVolume } = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
+//#region init vol features
 /** Initializes all volume-related features */
 async function initVolumeFeatures() {
     let listenerOnce = false;
@@ -7126,6 +7163,8 @@ async function initVolumeFeatures() {
         sliderElem.setAttribute("step", "1");
         if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
             initScrollStep(volSliderCont, sliderElem);
+        if (getFeature("volumeSliderExponential") !== "linear")
+            initExponentialVolume();
         UserUtils.addParent(sliderElem, volSliderCont);
         if (getFeature("volumeSliderLabel"))
             await addVolumeSliderLabel(type, sliderElem, volSliderCont);
@@ -7180,6 +7219,23 @@ async function initVolumeFeatures() {
     waitVideoElementReady().then(onResize);
     onResize();
 }
+//#region exponential volume
+/** Initializes the exponential volume scaling feature */
+function initExponentialVolume() {
+    Object.defineProperty(HTMLMediaElement.prototype, "volume", {
+        get() {
+            const actual = nativeGetVolume?.call(this);
+            if (typeof actual !== "number" || isNaN(actual))
+                return actual;
+            return expVolFnInv(actual);
+        },
+        set(value) {
+            if (typeof value !== "number" || isNaN(value))
+                return nativeSetVolume?.call(this, value);
+            return nativeSetVolume?.call(this, expVolFn(value));
+        }
+    });
+}
 //#region scroll step
 /** Initializes the volume slider scroll step feature */
 function initScrollStep(volSliderCont, sliderElem) {
@@ -7227,7 +7283,13 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
     const getLabel = (value) => {
         const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
         const roundedValue = Math.round(Number(value) / step) * step;
-        return `${roundedValue}%`;
+        let label = `${roundedValue}%`;
+        if (getFeature("volumeSliderExponential") !== "linear") {
+            const expMapped = expVolFn(Number(value) / 100) * 100;
+            const expRoundedValue = Math.round(expMapped / step) * step;
+            label += ` (${expRoundedValue}%)`;
+        }
+        return label;
     };
     const labelElem = document.createElement("div");
     labelElem.classList.add("label");
@@ -8064,6 +8126,22 @@ const featInfo = {
     //   enable: noop,
     // },
     //#region cat:volume
+    volumeSliderExponential: {
+        type: "select",
+        category: "volume",
+        group: "volumeSlider",
+        supportedSites: ["ytm"],
+        since: "3.1.0",
+        options: () => [
+            { value: "linear", label: t("volume_mapping_linear") },
+            { value: "x^3", label: t("volume_mapping_x3") },
+            { value: "x^4", label: t("volume_mapping_x4") },
+            { value: "x^5", label: t("volume_mapping_x5") }
+        ],
+        default: "linear",
+        helpText: () => t("feature_helptext.volumeSliderExponential"),
+        adornments: [adornments.ytmOnly, adornments.reload],
+    },
     volumeSliderLabel: {
         type: "toggle",
         category: "volume",
@@ -8920,6 +8998,7 @@ const migrations = {
             "songListTrackNumbersEnabled", "songListTrackNumbers",
             "yesImStillThere", "removeThumbnailRatingBar",
             "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
+            "volumeSliderExponential",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
             { key: "initTimeout", oldDefault: 8 }, // new: 5
