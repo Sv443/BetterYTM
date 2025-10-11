@@ -230,6 +230,11 @@
   "votes_format_short": "Kurz",
   "votes_format_long": "Lang",
 
+  "volume_mapping_linear": "Linear",
+  "volume_mapping_x3": "x³",
+  "volume_mapping_x4": "x⁴",
+  "volume_mapping_x5": "x⁵",
+
   "unit_entries-1": "Eintrag",
   "unit_entries-n": "Einträge",
 
@@ -387,6 +392,8 @@
   "feature_desc.numbersFormat": "Wie sollen Zahlen formatiert werden?",
   "feature_desc.watchPageFullSize": "Vergrößere den Hauptinhalt auf der /watch-Seite, um den gesamt verfügbaren Platz zu nutzen",
 
+  "feature_desc.volumeSliderExponential": "Verwende eine (annähernd) exponentielle Skala für den Lautstärkeregler",
+  "feature_helptext.volumeSliderExponential": "Standardmäßig verwendet der Lautstärkeregler eine lineare Skala, was bedeutet, dass die Lautstärke gleichmäßig von 0% bis 100% ansteigt.Mit dieser Funktion wird die Skala annähernd exponentiell, was bedeutet, dass die Lautstärke in den niedrigeren Bereichen feiner abgestuft ist und in den höheren Bereichen schneller ansteigt. Dies kann hilfreich sein, wenn du Schwierigkeiten hast, die Lautstärke in den niedrigeren Bereichen genau einzustellen.\n\nSiehe auch https://www.dr-lex.be/info-stuff/volumecontrols.html",
   "feature_desc.volumeSliderLabel": "Füge eine Prozent-Beschriftung neben dem Lautstärkeregler hinzu",
   "feature_desc.volumeSliderSize": "Die Breite des Lautstärkereglers in Pixeln",
   "feature_desc.volumeSliderStep": "Lautstärkeregler-Sensitivität (um wie wenig Prozent die Lautstärke auf einmal geändert werden kann)",

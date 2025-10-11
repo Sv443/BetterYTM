@@ -7,6 +7,49 @@ import { featInfo } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import "./volume.css";
 
+//#region exponential volume mapping
+
+function expVolClamp(x: number) {
+  return Math.min(1, Math.max(0, x));
+}
+
+/** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFn(x: number) {
+  switch(getFeature("volumeSliderExponential")) {
+    case "x^3": 
+      return expVolClamp(Math.pow(expVolClamp(x), 3));
+    case "x^4": 
+      return expVolClamp(Math.pow(expVolClamp(x), 4));
+    case "x^5": 
+      return expVolClamp(Math.pow(expVolClamp(x), 5));
+    case "linear":
+    default: 
+      return expVolClamp(x);
+  }
+}
+
+/** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFnInv(y: number) {
+  switch (getFeature("volumeSliderExponential")) {
+    case "x^3": 
+      return expVolClamp(Math.pow(expVolClamp(y), 1/3));
+    case "x^4": 
+      return expVolClamp(Math.pow(expVolClamp(y), 1/4));
+    case "x^5": 
+      return expVolClamp(Math.pow(expVolClamp(y), 1/5));
+    case "linear":
+    default: 
+      return expVolClamp(y);
+  }
+}
+
+const {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  get: nativeGetVolume,
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  set: nativeSetVolume
+} = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
+
 //#region init vol features
 
 /** Initializes all volume-related features */
@@ -22,6 +65,9 @@ export async function initVolumeFeatures() {
 
     if(getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
       initScrollStep(volSliderCont, sliderElem);
+
+    if(getFeature("volumeSliderExponential") !== 'linear')
+      initExponentialVolume();
 
     addParent(sliderElem, volSliderCont);
 
@@ -95,6 +141,25 @@ export async function initVolumeFeatures() {
   onResize();
 }
 
+//#region exponential volume
+
+/** Initializes the exponential volume scaling feature */
+export function initExponentialVolume() {
+  Object.defineProperty(HTMLMediaElement.prototype, "volume", {
+    get() {
+      const actual = nativeGetVolume?.call(this);
+      if (typeof actual !== "number" || isNaN(actual))
+        return actual;
+      return expVolFnInv(actual);
+    },
+    set(value) {
+      if (typeof value !== "number" || isNaN(value))
+        return nativeSetVolume?.call(this, value);
+      return nativeSetVolume?.call(this, expVolFn(value));
+    }
+  });
+}
+
 //#region scroll step
 
 /** Initializes the volume slider scroll step feature */
@@ -151,7 +216,15 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
   const getLabel = (value: Stringifiable) => {
     const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
     const roundedValue = Math.round(Number(value) / step) * step;
-    return `${roundedValue}%`;
+    let label = `${roundedValue}%`;
+
+    if (getFeature("volumeSliderExponential") !== 'linear') {
+      const expMapped = expVolFn(Number(value) / 100) * 100;
+      const expRoundedValue = Math.round(expMapped / step) * step;
+      label += ` (${expRoundedValue}%)`;
+    }
+
+    return label;
   };
 
   const labelElem = document.createElement("div");
