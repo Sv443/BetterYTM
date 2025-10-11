@@ -13,6 +13,7 @@ import { getDSSerializer } from "../serializers.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getPluginListDialog } from "../dialogs/pluginList.js";
+import { expVolFn } from "./volume.js";
 
 //#region re-exports
 
@@ -778,13 +779,30 @@ export const featInfo = {
     supportedSites: ["ytm"],
     since: "3.1.0",
     options: () => [
-      { value: "linear", label: t("volume_mapping_linear") },
-      { value: "x^3", label: t("volume_mapping_x3") },
-      { value: "x^4", label: t("volume_mapping_x4") },
-      { value: "x^5", label: t("volume_mapping_x5") }
+      { value: "linear", label: t("volume_mapping.linear") },
+      { value: "x^3", label: t("volume_mapping.x3") },
+      { value: "x^4", label: t("volume_mapping.x4") },
+      { value: "x^5", label: t("volume_mapping.x5") }
     ],
     default: "linear",
     adornments: [adornments.ytmOnly, adornments.reload],
+  },
+  volumeSliderExponentialLabelType: {
+    type: "select",
+    category: "volume",
+    group: "volumeSlider",
+    supportedSites: ["ytm"],
+    since: "3.1.0",
+    options: () => [
+      { value: "positionBased", label: t("volume_label_mapped_type.positionBased") },
+      { value: "valueBased", label: t("volume_label_mapped_type.valueBased") },
+      { value: "both", label: t("volume_label_mapped_type.both") },
+    ],
+    default: "valueBased",
+    advanced: true,
+    reloadRequired: false,
+    enable: noop,
+    adornments: [adornments.ytmOnly, adornments.advanced],
   },
   volumeSliderLabel: {
     type: "toggle",
@@ -862,12 +880,20 @@ export const featInfo = {
     max: 100,
     step: 1,
     default: 100,
-    unit: "%",
-    reloadRequired: false,
-    enable: noop,
+    renderValue: (value) => {
+      if(getFeature("volumeSliderExponential") !== "linear") {
+        const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
+        const fixedPtVal = ["0.0", "100.0"].includes(expMapped)
+          ? expMapped.slice(0, -2)
+          : expMapped;
+
+        return `${value}% (${fixedPtVal}%)`;
+      }
+      return `${value}%`;
+    },
     adornments: () => getFeature("volumeSharedBetweenTabs")
-      ? [adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
-      : [adornments.ytmOnly],
+      ? [adornments.ytmOnly, adornments.reload, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
+      : [adornments.ytmOnly, adornments.reload],
   },
 
   //#region cat:behavior

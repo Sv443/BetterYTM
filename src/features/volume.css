@@ -31,8 +31,16 @@
   transition: opacity 0.2s ease;
 }
 
+.bytm-vol-slider-label.wide {
+  transform: translate(calc(-50% - 34px), -50%);
+}
+
 .bytm-vol-slider-label.has-icon {
   transform: translate(calc(-50% - 25px), -50%);
+}
+
+.bytm-vol-slider-label.wide.has-icon {
+  transform: translate(calc(-50% - 34px - 25px), -50%);
 }
 
 .bytm-vol-slider-label svg {

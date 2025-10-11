@@ -230,10 +230,14 @@
   "votes_format_short": "Kurz",
   "votes_format_long": "Lang",
 
-  "volume_mapping_linear": "Linear",
-  "volume_mapping_x3": "x³",
-  "volume_mapping_x4": "x⁴",
-  "volume_mapping_x5": "x⁵",
+  "volume_mapping.linear": "Linear",
+  "volume_mapping.x3": "x³",
+  "volume_mapping.x4": "x⁴",
+  "volume_mapping.x5": "x⁵",
+
+  "volume_label_mapped_type.positionBased": "Positions-basiert (Standard)",
+  "volume_label_mapped_type.valueBased": "Wert-basiert",
+  "volume_label_mapped_type.both": "Beide",
 
   "unit_entries-1": "Eintrag",
   "unit_entries-n": "Einträge",
@@ -394,6 +398,8 @@
 
   "feature_desc.volumeSliderExponential": "Die Skala für den Lautstärkeregler",
   "feature_helptext.volumeSliderExponential": "Standardmäßig verwendet der Lautstärkeregler eine lineare Skala, was bedeutet, dass die Lautstärke gleichmäßig von 0% bis 100% ansteigt. Mit dieser Funktion wird die Skala annähernd exponentiell, was bedeutet, dass die Lautstärke in den niedrigeren Bereichen feiner abgestuft ist und in den höheren Bereichen schneller ansteigt. Dies kann hilfreich sein, wenn du Schwierigkeiten hast, die Lautstärke in den niedrigeren Bereichen genau einzustellen.\n\nSiehe auch https://www.dr-lex.be/info-stuff/volumecontrols.html",
+  "feature_desc.volumeSliderExponentialLabelType": "Art der Beschriftung bei aktivierter exponentiellen Skala",
+  "feature_helptext.volumeSliderExponentialLabelType": "Bei Verwendung der exponentiellen Skala kann der Lautstärkeregler verschiedene Arten von Beschriftungen anzeigen, um den aktuellen Lautstärkepegel anzuzeigen:\n\n- Positions-basiert: Zeigt die Position des Reglers als Prozentsatz (0% bis 100%) an\n- Wert-basiert: Zeigt den tatsächlichen wahrgenommenen Lautstärkepegel als Prozentsatz (0% bis 100%) an\n- Beide: Zeigt den Positionswert, gefolgt vom wahrgenommenen Lautstärkepegel in Klammern, an",
   "feature_desc.volumeSliderLabel": "Füge eine Prozent-Beschriftung neben dem Lautstärkeregler hinzu",
   "feature_desc.volumeSliderSize": "Die Breite des Lautstärkereglers in Pixeln",
   "feature_desc.volumeSliderStep": "Lautstärkeregler-Sensitivität (um wie wenig Prozent die Lautstärke auf einmal geändert werden kann)",

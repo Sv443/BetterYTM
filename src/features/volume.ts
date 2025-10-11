@@ -7,49 +7,6 @@ import { featInfo } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import "./volume.css";
 
-//#region exponential volume mapping
-
-function expVolClamp(x: number) {
-  return Math.min(1, Math.max(0, x));
-}
-
-/** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
-function expVolFn(x: number) {
-  switch(getFeature("volumeSliderExponential")) {
-  case "x^3": 
-    return expVolClamp(Math.pow(expVolClamp(x), 3));
-  case "x^4": 
-    return expVolClamp(Math.pow(expVolClamp(x), 4));
-  case "x^5": 
-    return expVolClamp(Math.pow(expVolClamp(x), 5));
-  case "linear":
-  default: 
-    return expVolClamp(x);
-  }
-}
-
-/** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
-function expVolFnInv(y: number) {
-  switch (getFeature("volumeSliderExponential")) {
-  case "x^3": 
-    return expVolClamp(Math.pow(expVolClamp(y), 1/3));
-  case "x^4": 
-    return expVolClamp(Math.pow(expVolClamp(y), 1/4));
-  case "x^5": 
-    return expVolClamp(Math.pow(expVolClamp(y), 1/5));
-  case "linear":
-  default: 
-    return expVolClamp(y);
-  }
-}
-
-const {
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  get: nativeGetVolume,
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  set: nativeSetVolume
-} = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
-
 //#region init vol features
 
 /** Initializes all volume-related features */
@@ -143,6 +100,13 @@ export async function initVolumeFeatures() {
 
 //#region exponential volume
 
+const {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  get: nativeGetVolume,
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  set: nativeSetVolume
+} = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
+
 /** Initializes the exponential volume scaling feature */
 export function initExponentialVolume() {
   Object.defineProperty(HTMLMediaElement.prototype, "volume", {
@@ -158,6 +122,40 @@ export function initExponentialVolume() {
       return nativeSetVolume?.call(this, expVolFn(value));
     }
   });
+}
+
+function expVolClamp(x: number) {
+  return Math.min(1, Math.max(0, x));
+}
+
+/** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
+export function expVolFn(x: number) {
+  switch(getFeature("volumeSliderExponential")) {
+  case "x^3": 
+    return expVolClamp(Math.pow(expVolClamp(x), 3));
+  case "x^4": 
+    return expVolClamp(Math.pow(expVolClamp(x), 4));
+  case "x^5": 
+    return expVolClamp(Math.pow(expVolClamp(x), 5));
+  case "linear":
+  default: 
+    return expVolClamp(x);
+  }
+}
+
+/** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFnInv(y: number) {
+  switch (getFeature("volumeSliderExponential")) {
+  case "x^3": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/3));
+  case "x^4": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/4));
+  case "x^5": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/5));
+  case "linear":
+  default: 
+    return expVolClamp(y);
+  }
 }
 
 //#region scroll step
@@ -212,16 +210,26 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
       labelContElem.appendChild(linkIconElem);
     }
   }
-
   const getLabel = (value: Stringifiable) => {
     const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
     const roundedValue = Math.round(Number(value) / step) * step;
     let label = `${roundedValue}%`;
 
+    labelContElem.classList.remove("wide");
+
     if (getFeature("volumeSliderExponential") !== "linear") {
-      const expMapped = expVolFn(Number(value) / 100) * 100;
-      const expRoundedValue = Math.round(expMapped / step) * step;
-      label += ` (${expRoundedValue}%)`;
+      const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
+      const fixedPtVal = ["0.0", "100.0"].includes(expMapped)
+        ? expMapped.slice(0, -2)
+        : expMapped;
+
+      const lblType = getFeature("volumeSliderExponentialLabelType");
+      if(lblType === "both") {
+        label += ` (${fixedPtVal}%)`;
+        labelContElem.classList.add("wide");
+      }
+      else if(lblType === "valueBased")
+        label = `${fixedPtVal}%`;
     }
 
     return label;

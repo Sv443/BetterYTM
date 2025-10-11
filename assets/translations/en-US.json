@@ -232,10 +232,14 @@
   "votes_format_short": "Short",
   "votes_format_long": "Long",
 
-  "volume_mapping_linear": "Linear",
-  "volume_mapping_x3": "x³",
-  "volume_mapping_x4": "x⁴",
-  "volume_mapping_x5": "x⁵",
+  "volume_mapping.linear": "Linear",
+  "volume_mapping.x3": "x³",
+  "volume_mapping.x4": "x⁴",
+  "volume_mapping.x5": "x⁵",
+
+  "volume_label_mapped_type.positionBased": "Position-based (standard)",
+  "volume_label_mapped_type.valueBased": "Value-based",
+  "volume_label_mapped_type.both": "Both",
 
   "unit_entries-1": "entry",
   "unit_entries-n": "entries",
@@ -396,6 +400,8 @@
 
   "feature_desc.volumeSliderExponential": "The scale to use for the volume slider",
   "feature_helptext.volumeSliderExponential": "By default, the volume slider uses a linear scale, meaning the volume increases evenly from 0% to 100%. With this feature enabled, the scale becomes approximately exponential, meaning the volume is more finely graded in the lower ranges and increases more rapidly in the higher ranges. This can be helpful if you have trouble adjusting the volume precisely in the lower ranges.\n\nSee also https://www.dr-lex.be/info-stuff/volumecontrols.html",
+  "feature_desc.volumeSliderExponentialLabelType": "The type of volume label to show when using the exponential scale",
+  "feature_helptext.volumeSliderExponentialLabelType": "When using the exponential scale, the volume slider can show different types of labels to indicate the current volume level:\n\n- Position-based: Shows the position of the slider as a percentage (0% to 100%)\n- Value-based: Shows the actual perceived volume level as a percentage (0% to 100%)\n- Both: Shows the position value, followed by the perceived volume level in parentheses",
   "feature_desc.volumeSliderLabel": "Add a percentage label next to the volume slider",
   "feature_desc.volumeSliderSize": "The width of the volume slider in pixels",
   "feature_desc.volumeSliderStep": "Volume slider sensitivity (by how little percent the volume can be changed at a time)",

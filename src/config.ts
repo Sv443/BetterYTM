@@ -185,7 +185,7 @@ export const migrations: DataMigrationsDict = {
         "songListTrackNumbersEnabled", "songListTrackNumbers",
         "yesImStillThere", "removeThumbnailRatingBar",
         "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
-        "volumeSliderExponential",
+        "volumeSliderExponential", "volumeSliderExponentialLabelType",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
