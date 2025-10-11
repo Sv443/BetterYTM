@@ -394,7 +394,7 @@
   "feature_desc.numbersFormat": "How should numbers be formatted?",
   "feature_desc.watchPageFullSize": "Make the main content on the /watch page use all available space",
 
-  "feature_desc.volumeSliderExponential": "Use an (approximately) exponential scale for the volume slider",
+  "feature_desc.volumeSliderExponential": "The scale to use for the volume slider",
   "feature_helptext.volumeSliderExponential": "By default, the volume slider uses a linear scale, meaning the volume increases evenly from 0% to 100%. With this feature enabled, the scale becomes approximately exponential, meaning the volume is more finely graded in the lower ranges and increases more rapidly in the higher ranges. This can be helpful if you have trouble adjusting the volume precisely in the lower ranges.\n\nSee also https://www.dr-lex.be/info-stuff/volumecontrols.html",
   "feature_desc.volumeSliderLabel": "Add a percentage label next to the volume slider",
   "feature_desc.volumeSliderSize": "The width of the volume slider in pixels",
