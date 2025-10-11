@@ -16,30 +16,30 @@ function expVolClamp(x: number) {
 /** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
 function expVolFn(x: number) {
   switch(getFeature("volumeSliderExponential")) {
-    case "x^3": 
-      return expVolClamp(Math.pow(expVolClamp(x), 3));
-    case "x^4": 
-      return expVolClamp(Math.pow(expVolClamp(x), 4));
-    case "x^5": 
-      return expVolClamp(Math.pow(expVolClamp(x), 5));
-    case "linear":
-    default: 
-      return expVolClamp(x);
+  case "x^3": 
+    return expVolClamp(Math.pow(expVolClamp(x), 3));
+  case "x^4": 
+    return expVolClamp(Math.pow(expVolClamp(x), 4));
+  case "x^5": 
+    return expVolClamp(Math.pow(expVolClamp(x), 5));
+  case "linear":
+  default: 
+    return expVolClamp(x);
   }
 }
 
 /** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
 function expVolFnInv(y: number) {
   switch (getFeature("volumeSliderExponential")) {
-    case "x^3": 
-      return expVolClamp(Math.pow(expVolClamp(y), 1/3));
-    case "x^4": 
-      return expVolClamp(Math.pow(expVolClamp(y), 1/4));
-    case "x^5": 
-      return expVolClamp(Math.pow(expVolClamp(y), 1/5));
-    case "linear":
-    default: 
-      return expVolClamp(y);
+  case "x^3": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/3));
+  case "x^4": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/4));
+  case "x^5": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/5));
+  case "linear":
+  default: 
+    return expVolClamp(y);
   }
 }
 
@@ -66,7 +66,7 @@ export async function initVolumeFeatures() {
     if(getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
       initScrollStep(volSliderCont, sliderElem);
 
-    if(getFeature("volumeSliderExponential") !== 'linear')
+    if(getFeature("volumeSliderExponential") !== "linear")
       initExponentialVolume();
 
     addParent(sliderElem, volSliderCont);
@@ -218,7 +218,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
     const roundedValue = Math.round(Number(value) / step) * step;
     let label = `${roundedValue}%`;
 
-    if (getFeature("volumeSliderExponential") !== 'linear') {
+    if (getFeature("volumeSliderExponential") !== "linear") {
       const expMapped = expVolFn(Number(value) / 100) * 100;
       const expRoundedValue = Math.round(expMapped / step) * step;
       label += ` (${expRoundedValue}%)`;
