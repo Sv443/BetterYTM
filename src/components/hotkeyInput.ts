@@ -64,7 +64,11 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
   };
 
-  window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true));
+  // bandaid fix for the legacy config menu
+  const remountAC = new AbortController();
+  siteEvents.once("recreateCfgMenu", () => remountAC.abort());
+
+  window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true), { signal: remountAC.signal });
 
   onInteraction(resetElem, (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
@@ -106,7 +110,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
 
     onChange(hotkey);
     currentHotkey = hotkey;
-  });
+  }, { signal: remountAC.signal });
 
   document.addEventListener("keydown", (e) => {
     if(reservedKeys.filter(k => k !== "Tab").includes(e.code))
@@ -146,22 +150,23 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.innerText = hotkey.code;
     inputElem.dataset.state = infoElem.dataset.state = "inactive";
     setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
-  });
+  }, { signal: remountAC.signal });
 
-  siteEvents.on("cfgMenuClosed", deactivate);
+  const unsub = siteEvents.on("cfgMenuClosed", deactivate);
+  remountAC.signal.addEventListener("abort", () => unsub());
 
   inputElem.addEventListener("click", () => {
     if(inputElem.dataset.state === "inactive")
       activate();
     else
       deactivate();
-  });
+  }, { signal: remountAC.signal });
   inputElem.addEventListener("keydown", (e) => {
     if(reservedKeys.includes(e.code))
       return;
     if(inputElem.dataset.state === "inactive")
       activate();
-  });
+  }, { signal: remountAC.signal });
 
   wrapperElem.appendChild(resetElem);
   wrapperElem.appendChild(infoElem);
