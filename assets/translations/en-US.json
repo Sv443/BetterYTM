@@ -247,9 +247,9 @@
   "unit_days-1": "day",
   "unit_days-n": "days",
 
-  "color_lightness_darker": "Darker",
-  "color_lightness_normal": "Normal",
-  "color_lightness_lighter": "Lighter",
+  "color_lightness.darker": "Darker",
+  "color_lightness.normal": "Normal",
+  "color_lightness.lighter": "Lighter",
 
   "auto_scroll_to_active_song_mode.never": "Never",
   "auto_scroll_to_active_song_mode.initial_page_load": "On first page load only",

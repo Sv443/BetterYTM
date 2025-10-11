@@ -211,9 +211,9 @@
   "unit_days-1": "日",
   "unit_days-n": "日",
 
-  "color_lightness_darker": "暗い",
-  "color_lightness_normal": "通常",
-  "color_lightness_lighter": "明るい",
+  "color_lightness.darker": "暗い",
+  "color_lightness.normal": "通常",
+  "color_lightness.lighter": "明るい",
 
   "auto_scroll_to_active_song_mode.never": "しない",
   "auto_scroll_to_active_song_mode.initial_page_load": "初回のみ",

@@ -245,9 +245,9 @@
   "unit_days-1": "Tag",
   "unit_days-n": "Tage",
 
-  "color_lightness_darker": "Dunkler",
-  "color_lightness_normal": "Normal",
-  "color_lightness_lighter": "Heller",
+  "color_lightness.darker": "Dunkler",
+  "color_lightness.normal": "Normal",
+  "color_lightness.lighter": "Heller",
 
   "auto_scroll_to_active_song_mode.never": "Nie",
   "auto_scroll_to_active_song_mode.initial_page_load": "Beim initialen Laden der Seite",

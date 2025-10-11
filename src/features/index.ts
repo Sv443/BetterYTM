@@ -129,9 +129,9 @@ const options = {
     }, [] as SelectOption[])
     .sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
   colorLightness: () => [
-    { value: "darker", label: t("color_lightness_darker") },
-    { value: "normal", label: t("color_lightness_normal") },
-    { value: "lighter", label: t("color_lightness_lighter") },
+    { value: "darker", label: t("color_lightness.darker") },
+    { value: "normal", label: t("color_lightness.normal") },
+    { value: "lighter", label: t("color_lightness.lighter") },
   ] satisfies SelectOption<ColorLightnessPref>[],
   thumbOverlaySources: () => [
     { value: "am", label: t("thumbnail_overlay.source_am") },
@@ -821,7 +821,7 @@ export const featInfo = {
     since: "1.0.0",
     min: 50,
     max: 500,
-    step: 5,
+    step: 1,
     default: 150,
     unit: "px",
     adornments: [adornments.ytmOnly, adornments.reload],

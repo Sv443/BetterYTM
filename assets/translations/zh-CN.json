@@ -201,9 +201,9 @@
   "unit_days-1": "天",
   "unit_days-n": "天",
 
-  "color_lightness_darker": "更暗",
-  "color_lightness_normal": "正常",
-  "color_lightness_lighter": "更亮",
+  "color_lightness.darker": "更暗",
+  "color_lightness.normal": "正常",
+  "color_lightness.lighter": "更亮",
 
   "auto_scroll_to_active_song_mode.never": "从不",
   "auto_scroll_to_active_song_mode.initial_page_load": "仅在第一次加载页面时",

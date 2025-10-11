@@ -211,9 +211,9 @@
   "unit_days-1": "दिन",
   "unit_days-n": "दिन",
 
-  "color_lightness_darker": "गहरे",
-  "color_lightness_normal": "सामान्य",
-  "color_lightness_lighter": "हल्का",
+  "color_lightness.darker": "गहरे",
+  "color_lightness.normal": "सामान्य",
+  "color_lightness.lighter": "हल्का",
 
   "auto_scroll_to_active_song_mode.never": "कभी नहीं",
   "auto_scroll_to_active_song_mode.initial_page_load": "पहले पृष्ठ लोड पर केवल",

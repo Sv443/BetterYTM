@@ -201,9 +201,9 @@
   "unit_days-1": "dia",
   "unit_days-n": "dias",
 
-  "color_lightness_darker": "Mais escuro",
-  "color_lightness_normal": "Normal",
-  "color_lightness_lighter": "Mais claro",
+  "color_lightness.darker": "Mais escuro",
+  "color_lightness.normal": "Normal",
+  "color_lightness.lighter": "Mais claro",
 
   "auto_scroll_to_active_song_mode.never": "Nunca",
   "auto_scroll_to_active_song_mode.initial_page_load": "Apenas na primeira carga da página",
