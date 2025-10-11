@@ -91,7 +91,9 @@
   "example_toast": "Beispiel-Toast",
   "generic_error_toast_encountered_error_type": "Ein ${errorName} ist aufgetreten",
   "generic_error_toast_click_for_details": "Klicke für Details",
+  "download_log_file": "Logdatei herunterladen",
   "error": "Error",
+  "generic_error_dialog_message": "Ein Fehler ist aufgetreten.",
   "generic_error_dialog_open_console_note": "Sollte dieser Fehler weiterhin auftreten, lade bitte die Konsolen-Logdatei unten herunter und füge sie einem [neuen GitHub Issue](${issueUrl}) bei.",
   "dev_mode": "Entwicklermodus",
   "active_mode_tooltip_dev_mode": "Entwicklermodus ist aktiv. Du hast jetzt Zugriff auf Entwicklerbefehle über das ${scriptHandler} Menü.",
@@ -301,7 +303,7 @@
   "cfg_menu_feature_category_header_tooltip": "Einstellungs-Kategorie \"%1\"",
   "cfg_menu_feature_category_info_header_tooltip": "Info-Kategorie \"%1\"",
 
-  "about_bytm_content_markdown": "### ${scriptName}  \nv${scriptVersion} (#${buildNumber} &bull; ${buildDate})  \n\n${scriptName} ist ein Userscript, das die YouTube Music Erfahrung verbessert, indem es viele Funktionen und Verbesserungen hinzufügt.  \nEs wird von [${authorName}](${authorLink}) entwickelt und ist auf [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) und [OpenUserJS](${openuserjsLink}) verfügbar.  \nWenn dir dieses Skript gefällt, [bitte überlege zu spenden](${fundingLink}), um die Entwicklung zu unterstützen.  \n[Tritt dem Discord-Server bei](${discordLink}), um Probleme zu diskutieren, neue Funktionen vorzuschlagen oder einfach mit anderen Nutzern zu chatten.",
+  "about_bytm_content_markdown": "### ${scriptName}  \nv${scriptVersion} [${buildNumber}] (Build vom ${buildDate})  \n\n${scriptName} verbessert die YouTube Music Erfahrung, indem es viele Funktionen und Verbesserungen hinzufügt und Teile der Seite überarbeitet.  \nEs wird von [${authorName}](${authorLink}) entwickelt und ist auf [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) und [OpenUserJS](${openuserjsLink}) verfügbar.  \nWenn dir ${scriptName} gefällt, [bitte überlege die Entwicklung finanziell zu unterstützen ❤️](${fundingLink})  \n[Tritt dem Discord-Server bei](${discordLink}), um Benachrichtigungen bei Updates zu erhalten, Probleme zu diskutieren oder neue Funktionen vorzuschlagen, oder einfach mit anderen Nutzern zu chatten.",
 
   "feature_category.general": "Allgemein",
   "feature_category.layout": "Layout",
@@ -420,6 +422,7 @@
   "feature_desc.aboveQueueBtnsSticky": "Positioniere das Element, in dem die Knöpfe über der Wiedergabeliste sind, immer am oberen Rand",
   "feature_desc.songListTrackNumbersEnabled": "Füge Tracknummern zu Songlisten hinzu",
   "feature_desc.songListTrackNumbers": "Wo sollen die Tracknummern angezeigt werden?",
+
   "feature_desc.disableBeforeUnloadPopup": "Verhindere die Bestätigung, die erscheint, wenn du versuchst die Seite zu verlassen während ein Video läuft",
   "feature_helptext.disableBeforeUnloadPopup": "Wenn du versuchst die Seite zu verlassen, während ein Video abgespielt wird, erscheint ein Popup, das dich auffordert zu bestätigen, ob du die Seite wirklich verlassen möchtest. Etwas in der Richtung von \"du hast ungespeicherte Daten\" oder \"diese Seite fragt, ob du sie schließen möchtest\".\nDieses Feature deaktiviert dieses Popup vollständig.",
   "feature_desc.autoCloseToasts": "Automatisch alle Toast-Benachrichtigungen schließen, die normalerweise permanent sind",

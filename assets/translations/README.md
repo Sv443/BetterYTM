@@ -17,7 +17,7 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 |  | [`en-US`](./en-US.json) | `490` (default locale) |  |
-| ⚠ | [`de-DE`](./de-DE.json) | `488/490` (99.6%) | ─ |
+| ✅ | [`de-DE`](./de-DE.json) | `490/490` (100%) | ─ |
 |  | [`en-GB`](./en-GB.json) | `490/490` (100%) | `en-US` |
 | ‼️ | [`es-ES`](./es-ES.json) | `365/490` (74.5%) | ─ |
 | ‼️ | [`fr-FR`](./fr-FR.json) | `365/490` (74.5%) | ─ |
