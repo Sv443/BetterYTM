@@ -525,18 +525,34 @@ function registerDevCommands() {
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
 
+    const decodeError = (key: string, err: unknown) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
+
     for(const key of keys) {
-      // TODO: when switching to new engine-based DataStores, change these key prefixes:
-      const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-      const val = await GM.getValue(key, undefined);
-      values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, compressionFormat, "string") : val;
-      longestKey = Math.max(longestKey, key.length);
+      try {
+        // TODO: when switching to new engine-based DataStores, change these key prefixes:
+        const isEncoded = key.startsWith("_uucfg-")
+          ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, "true") !== "false"
+          : false;
+        const val = await GM.getValue(key, undefined);
+        values[key] = typeof val !== "undefined" && isEncoded
+          ? await decompress(val, compressionFormat, "string")
+          : val;
+        longestKey = Math.max(longestKey, key.length);
+      }
+      catch(err) {
+        decodeError(key, err);
+      }
     }
     for(const [key, finalVal] of Object.entries(values)) {
-      // TODO: when switching to new engine-based DataStores, change these key prefixes:
-      const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-      const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+      try {
+        // TODO: when switching to new engine-based DataStores, change these key prefixes:
+        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+        const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
+        dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+      }
+      catch(err) {
+        decodeError(key, err);
+      }
     }
   });
 
