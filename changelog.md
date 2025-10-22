@@ -33,6 +33,7 @@
     - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
   - Made some menu commands usable by default without requiring to be compiled in dev mode, and there's even more when the advanced mode is enabled. See internal changes for a full list.
   - Increased the amount of times per second the video/song time is remembered from 2 to 4.
+  - The "like" and "dislike" hotkeys now also work in the YT Shorts player.
 - **Fixes:**
   - Fixed inconsistent auto-like button rendering and channel name resolution on both pages.
   - 🎵 Fixed SyntaxError when no AM album artwork found.

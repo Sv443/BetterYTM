@@ -4,6 +4,10 @@ declare module "*.html" {
   export default {} as string;
 }
 
+declare module "*.css" {
+  export default {} as string;
+}
+
 declare module "*.md" {
   export default {} as {
     /** Content of the markdown file, converted to an HTML string */

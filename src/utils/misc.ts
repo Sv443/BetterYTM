@@ -424,37 +424,6 @@ export async function getResourceUrl(name: ResourceKey | "_") {
   return await GM.getResourceUrl(name, false);
 }
 
-/**
- * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
- * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
- */
-export function getPreferredLocale(): TrLocale {
-  const sanEq = (str1: string, str2: string) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
-
-  const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
-    .map((v) => v.replace(/_/g, "-"));
-
-  for(const nvLoc of allNvLocs) {
-    const resolvedLoc = Object.entries(langMapping)
-      .find(([key, { altLocales }]) =>
-        sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc))
-      )?.[0];
-    if(resolvedLoc)
-      return resolvedLoc.trim() as TrLocale;
-
-    const trimmedNvLoc = nvLoc.split("-")[0];
-    const resolvedFallbackLoc = Object.entries(langMapping)
-      .find(([key, { altLocales }]) =>
-        sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc))
-      )?.[0];
-
-    if(resolvedFallbackLoc)
-      return resolvedFallbackLoc.trim() as TrLocale;
-  }
-
-  return "en-US";
-}
-
 type ResourceCache = {
   resources: Partial<Record<ResourceKey | "_", string>>;
   created: number;
@@ -545,6 +514,41 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
   }
 }
 
+// #region preferred locale
+
+/**
+ * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
+ * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
+ */
+export function getPreferredLocale(): TrLocale {
+  const sanEq = (str1: string, str2: string) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
+
+  const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
+    .map((v) => v.replace(/_/g, "-"));
+
+  for(const nvLoc of allNvLocs) {
+    const resolvedLoc = Object.entries(langMapping)
+      .find(([key, { altLocales }]) =>
+        sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc))
+      )?.[0];
+    if(resolvedLoc)
+      return resolvedLoc.trim() as TrLocale;
+
+    const trimmedNvLoc = nvLoc.split("-")[0];
+    const resolvedFallbackLoc = Object.entries(langMapping)
+      .find(([key, { altLocales }]) =>
+        sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc))
+      )?.[0];
+
+    if(resolvedFallbackLoc)
+      return resolvedFallbackLoc.trim() as TrLocale;
+  }
+
+  return "en-US";
+}
+
+// #region markdown
+
 /** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS by default! */
 export async function parseMarkdown(mdString: string, sanitize = false) {
   const mdHtml = await marked.parse(mdString, {
@@ -556,6 +560,8 @@ export async function parseMarkdown(mdString: string, sanitize = false) {
 
   return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
 }
+
+// #region changelog
 
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {

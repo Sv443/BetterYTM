@@ -1,12 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import tseslint from "typescript-eslint";
+import { defineConfig } from "eslint/config";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import storybookEslint from "eslint-plugin-storybook";
 import globals from "globals";
-import tsParser from "@typescript-eslint/parser";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import tsParser from "@typescript-eslint/parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -124,4 +124,4 @@ const config = [
   },
 ];
 
-export default tseslint.config(config);
+export default defineConfig(config);

@@ -97,6 +97,8 @@ export async function initAutoScrollToActiveSong() {
     prevVidMaxTime = getVideoElement()?.duration ?? Infinity;
   }, 50);
 
+  // TODO: refactor to trigger on queue changes instead of watchID
+
   siteEvents.on("watchIdChanged", (_, oldId) => {
     if(!oldId)
       return;

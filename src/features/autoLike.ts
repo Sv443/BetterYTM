@@ -148,6 +148,9 @@ export async function initAutoLike() {
       tryAddBtnYTM();
     }
     //#region yt
+    
+    // TODO:FIXME: doesnt work with new yt ui
+
     else if(getDomain() === "yt") {
       addStyleFromResource("css-auto_like");
 

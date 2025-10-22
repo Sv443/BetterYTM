@@ -66,20 +66,20 @@ This is done to massively reduce the bundle size and make use of the userscript 
 Each library will be set as an external in the [rollup configuration](../rollup.config.js) to prevent it from including it in the bundle.  
 The version of each package will be parsed from [`package.json`](../package.json)'s `dependencies` or `devDependencies` to ensure consistent versions across the project.  
   
-Inside the file is an array of objects, which each have one of the following properties:  
+Inside the file is an array of objects, which each have one of the following sets of properties:  
   
-Using npm packages through a CDN:
+Using npm packages via a CDN:
 | Property   | Type      | Description                                                                                            |
 | :--------- | :-------- | :----------------------------------------------------------------------------------------------------- |
 | `pkgName`  | `string`  | The name of the npm package, as in `npm i pkgName`                                                     |
-| `path`     | `string`  | The path to the file that should be loaded, relative to the library root dir                           |
+| `path`     | `string`  | The path to the UMD or global var declaration bundle that should be loaded, relative to the library root dir |
 | `global`   | `string`  | The name of the global variable that the library exports                                               |
 | `baseUrl?` | `string`  | Base URL of the CDN to use - `https://cdn.jsdelivr.net/npm/` by default - package will be appended as `pkgName@versionFromPkgJson` |
-| `link?`    | `boolean` | Whether `npm link` is active and the library should be force-included in the bundle (false by default) |
+| `link?`    | `boolean` | Liked `npm link` - force-includes the library in the bundle (false by default) |
 
-Using a direct URL:
+Using a direct URL (not recommended because of potential versioning inconsistencies):
 | Property | Type      | Description                                                                         |
 | :------- | :-------- | :---------------------------------------------------------------------------------- |
 | `url`    | `string`  | URL to the file to include                                                          |
 | `global` | `string`  | The name of the global variable that the library exports                            |
-| `link?`  | `boolean` | Whether `npm link` is active and the library should be force-included in the bundle |
+| `link?`  | `boolean` | Liked `npm link` - force-includes the library in the bundle (false by default) |

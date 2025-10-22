@@ -43,6 +43,9 @@ class ExampleError extends DatedError {
 
 //#region adornments
 
+/** Maximum number of sessions per user to show the "new feature" adornment */
+const newFeatureAdornmentMaxSessionCount = 10;
+
 /** Decoration elements that can be added next to the label */
 const adornments = {
   alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
@@ -85,7 +88,7 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
   const isDev = mode === "development";
   const resolvedAdorns = adorns ? [...adorns] : [];
 
-  if(feat.since && compareVer(feat.since, scriptInfo.version, isDev ? ">" : "=") && (getVersionSessionCount() < 5 || isDev))
+  if(feat.since && compareVer(feat.since, scriptInfo.version, isDev ? ">" : "=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev))
     resolvedAdorns.push(adornments.newFeature);
 
   const sortedAdorns = resolvedAdorns.sort((a, b) => {
