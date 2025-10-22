@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0dfefd44/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5259605e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "0dfefd44",
-    buildTimestamp: "1760219153808",
+    buildNumber: "5259605e",
+    buildTimestamp: "1761155431666",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2063,6 +2063,7 @@ async function initAutoScrollToActiveSong() {
         prevTime = getVideoElement()?.currentTime ?? -1;
         prevVidMaxTime = getVideoElement()?.duration ?? Infinity;
     }, 50);
+    // TODO: refactor to trigger on queue changes instead of watchID
     siteEvents.on("watchIdChanged", (_, oldId) => {
         if (!oldId)
             return;
@@ -2618,27 +2619,6 @@ async function getResourceUrl(name) {
     // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
     return await GM.getResourceUrl(name, false);
 }
-/**
- * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
- * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
- */
-function getPreferredLocale() {
-    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
-    const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
-        .map((v) => v.replace(/_/g, "-"));
-    for (const nvLoc of allNvLocs) {
-        const resolvedLoc = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))?.[0];
-        if (resolvedLoc)
-            return resolvedLoc.trim();
-        const trimmedNvLoc = nvLoc.split("-")[0];
-        const resolvedFallbackLoc = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))?.[0];
-        if (resolvedFallbackLoc)
-            return resolvedFallbackLoc.trim();
-    }
-    return "en-US";
-}
 /** Max age for the resource cache, after its last modification, in milliseconds */
 const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
 const resourceCacheKey = mode$1 === "development" ? scriptInfo$1.version : buildNumber$1;
@@ -2707,6 +2687,29 @@ async function resourceAsString(resourceKey) {
         return null;
     }
 }
+// #region preferred locale
+/**
+ * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
+ * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
+ */
+function getPreferredLocale() {
+    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
+    const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
+        .map((v) => v.replace(/_/g, "-"));
+    for (const nvLoc of allNvLocs) {
+        const resolvedLoc = Object.entries(locales)
+            .find(([key, { altLocales }]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))?.[0];
+        if (resolvedLoc)
+            return resolvedLoc.trim();
+        const trimmedNvLoc = nvLoc.split("-")[0];
+        const resolvedFallbackLoc = Object.entries(locales)
+            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))?.[0];
+        if (resolvedFallbackLoc)
+            return resolvedFallbackLoc.trim();
+    }
+    return "en-US";
+}
+// #region markdown
 /** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS by default! */
 async function parseMarkdown(mdString, sanitize = false) {
     const mdHtml = await marked.marked.parse(mdString, {
@@ -2717,6 +2720,7 @@ async function parseMarkdown(mdString, sanitize = false) {
     });
     return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
 }
+// #region changelog
 /** Returns the content of the changelog markdown file */
 async function getChangelogMd() {
     const clRes = await CoreUtils.fetchAdvanced(changelogUrl);
@@ -3346,6 +3350,7 @@ async function initAutoLike() {
             tryAddBtnYTM();
         }
         //#region yt
+        // TODO:FIXME: doesnt work with new yt ui
         else if (getDomain() === "yt") {
             addStyleFromResource("css-auto_like");
             let timeout;
@@ -7443,6 +7448,8 @@ class ExampleError extends CoreUtils.DatedError {
     }
 }
 //#region adornments
+/** Maximum number of sessions per user to show the "new feature" adornment */
+const newFeatureAdornmentMaxSessionCount = 10;
 /** Decoration elements that can be added next to the label */
 const adornments = {
     alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
@@ -7479,7 +7486,7 @@ async function resolveAdornments(ftInfo, featKey) {
         adorns = adorns();
     const isDev = mode$1 === "development";
     const resolvedAdorns = adorns ? [...adorns] : [];
-    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : "=") && (getVersionSessionCount() < 5 || isDev))
+    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : "=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev))
         resolvedAdorns.push(adornments.newFeature);
     const sortedAdorns = resolvedAdorns.sort((a, b) => {
         const aIdx = adornmentOrder.has(a) ? adornmentOrder.get(a) : 0;
@@ -10063,6 +10070,16 @@ function getLikeDislikeBtns() {
                 likeState = "DISLIKE";
             else if (likeBtn || dislikeBtn)
                 likeState = "INDIFFERENT";
+            // yt shorts:
+            if (!btnRenderer && !likeBtn && !dislikeBtn) {
+                btnRenderer = document.querySelector("reel-action-bar-view-model") ?? undefined;
+                likeBtn = btnRenderer?.querySelector("like-button-view-model button") ?? undefined;
+                dislikeBtn = btnRenderer?.querySelector("dislike-button-view-model button") ?? undefined;
+            }
+            const liked = likeBtn?.getAttribute("aria-pressed") === "true";
+            const disliked = dislikeBtn?.getAttribute("aria-pressed") === "true";
+            if (likeBtn && dislikeBtn)
+                likeState = liked ? "LIKE" : disliked ? "DISLIKE" : "INDIFFERENT";
             break;
         }
     }
@@ -10872,18 +10889,33 @@ function registerDevCommands() {
             dbg("  No values found.");
         const values = {};
         let longestKey = 0;
+        const decodeError = (key, err) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
         for (const key of keys) {
-            // TODO: when switching to new engine-based DataStores, change these key prefixes:
-            const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-            const val = await GM.getValue(key, undefined);
-            values[key] = typeof val !== "undefined" && isEncoded ? await CoreUtils.decompress(val, compressionFormat$1, "string") : val;
-            longestKey = Math.max(longestKey, key.length);
+            try {
+                // TODO: when switching to new engine-based DataStores, change these key prefixes:
+                const isEncoded = key.startsWith("_uucfg-")
+                    ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, "true") !== "false"
+                    : false;
+                const val = await GM.getValue(key, undefined);
+                values[key] = typeof val !== "undefined" && isEncoded
+                    ? await CoreUtils.decompress(val, compressionFormat$1, "string")
+                    : val;
+                longestKey = Math.max(longestKey, key.length);
+            }
+            catch (err) {
+                decodeError(key, err);
+            }
         }
         for (const [key, finalVal] of Object.entries(values)) {
-            // TODO: when switching to new engine-based DataStores, change these key prefixes:
-            const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-            const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-            dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+            try {
+                // TODO: when switching to new engine-based DataStores, change these key prefixes:
+                const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+                const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
+                dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+            }
+            catch (err) {
+                decodeError(key, err);
+            }
         }
     });
     isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_raw"), async () => {
