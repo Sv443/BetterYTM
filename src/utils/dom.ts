@@ -201,6 +201,20 @@ export function getLikeDislikeBtns() {
       likeState = "DISLIKE";
     else if(likeBtn || dislikeBtn)
       likeState = "INDIFFERENT";
+
+    // yt shorts:
+    if(!btnRenderer && !likeBtn && !dislikeBtn) {
+      btnRenderer = document.querySelector<HTMLElement>("reel-action-bar-view-model") ?? undefined;
+      likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
+      dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+    }
+
+    const liked = likeBtn?.getAttribute("aria-pressed") === "true";
+    const disliked = dislikeBtn?.getAttribute("aria-pressed") === "true";
+
+    if(likeBtn && dislikeBtn)
+      likeState = liked ? "LIKE" : disliked ? "DISLIKE" : "INDIFFERENT";
+
     break;
   }
   }
