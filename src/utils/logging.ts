@@ -23,30 +23,33 @@ const logs = [] as [type: string, time: number, ...args: unknown[]][];
 
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 export const getLogsTxt = () => {
+  /** Converts a value to a string for logging. */
   const getVal = (val: unknown, primaryScope = true): string => {
     if(typeof val === "undefined")
-      return "<undefined>";
+      return primaryScope ? "[undefined]" : "(undefined)";
     if(val === null)
-      return "<null>";
+      return primaryScope ? "[null]" : "(null)";
     if(Array.isArray(val))
-      return `[Array <${val.map((v) => getVal(v, false)).join(", ")}>]`;
+      return `[Array (${val.length}) <${val.map((v) => getVal(v, false)).join(", ")}>]`;
+    if(val instanceof Element)
+      return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
     if(typeof val === "function")
-      return val.name ? `[function ${val.name}()]` : "[function()]";
+      return val.name ? `[Function <${val.name}()>]` : "[function()]";
     if(val instanceof DatedError)
       return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
     if(val instanceof Error)
       return `[${val.name}: ${val.message}]`;
     if(val instanceof Date)
-      return `[Date: ${val.toISOString()}]`;
+      return `[Date <${val.toISOString()}>]`;
     if(typeof val === "object") {
       try {
         if(val.constructor?.name === "Object")
           return JSON.stringify(val);
-        return `[object ${val.constructor?.name ?? "Unknown"}]`;
+        return `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
       }
       catch {
         // @ts-expect-error
-        return "toString" in val ? val.toString() : `[object ${val?.constructor?.name ?? "Unknown"}]`;
+        return "toString" in val ? val.toString() : `[Object <${val?.constructor?.name ?? "(unknown)"}>]`;
       }
     }
     return primaryScope ? `${val}` : `"${val}"`;

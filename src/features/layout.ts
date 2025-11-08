@@ -986,7 +986,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
     }
   }
   else 
-    warn("The iTunes API found no album info for", artist, "-", albumRaw);
+    warn(`The iTunes API yielded no album info for '${artist} - ${albumRaw}', defaulting to regular YT thumbnail`);
 
   return match;
 }
