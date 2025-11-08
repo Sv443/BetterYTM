@@ -547,3 +547,12 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   .time-info {
   color: #fff;
 }
+
+/* #region swap like/dislike buttons */
+
+.middle-controls ytmusic-like-button-renderer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}

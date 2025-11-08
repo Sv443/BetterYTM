@@ -2456,6 +2456,15 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   color: #fff;
 }
 
+/* #region swap like/dislike buttons */
+
+.middle-controls ytmusic-like-button-renderer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
 #bytm-plugin-list-dialog-bg {
   --bytm-plugin-list-secondary-col: #c8c8c8;
   --bytm-plugin-list-row-padding-ver: 12px;
