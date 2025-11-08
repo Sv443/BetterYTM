@@ -51,10 +51,8 @@ async function renderBody() {
 
   // insert sentence terminator if not present, to improve flow with screenreaders
   let featText = t(`feature_desc.${curFeatKey}`);
-  if(localeObj) {
-    if(!(localeObj.sentenceTerminators.every((term) => featText.endsWith(term))))
-      featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
-  }
+  if(localeObj && !(localeObj.sentenceTerminators.every((term) => featText.endsWith(term))))
+    featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
 
   const featDescElem = document.createElement("h3");
   featDescElem.role = "subheading";

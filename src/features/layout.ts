@@ -456,6 +456,8 @@ function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
 
 //#region share track param
 
+// TODO:FIXME: stopped working on YT
+
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
   const removeSiParam = (inputElem: HTMLInputElement) => {

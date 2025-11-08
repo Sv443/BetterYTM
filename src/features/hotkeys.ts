@@ -137,7 +137,7 @@ async function initLyricsHotkey() {
     if(isIgnoredInputElement())
       return;
 
-    if(hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
+    if(hotkeyMatches(e, getFeature("currentLyricsHotkey")) && location.pathname.startsWith("/watch")) {
       preventBubble(e);
 
       const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
