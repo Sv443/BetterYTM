@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5259605e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ae4c21cf/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "5259605e",
-    buildTimestamp: "1761155431666",
+    buildNumber: "ae4c21cf",
+    buildTimestamp: "1762624498107",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3939,10 +3939,8 @@ async function renderBody$3() {
     const localeObj = locales?.[getLocale()];
     // insert sentence terminator if not present, to improve flow with screenreaders
     let featText = t(`feature_desc.${curFeatKey}`);
-    if (localeObj) {
-        if (!(localeObj.sentenceTerminators.every((term) => featText.endsWith(term))))
-            featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
-    }
+    if (localeObj && !(localeObj.sentenceTerminators.every((term) => featText.endsWith(term))))
+        featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
     const featDescElem = document.createElement("h3");
     featDescElem.role = "subheading";
     featDescElem.tabIndex = 0;
@@ -5567,6 +5565,7 @@ function improveSongListClickArea(items) {
     return itemsAmt;
 }
 //#region share track param
+// TODO:FIXME: stopped working on YT
 /** Removes the ?si tracking parameter from share URLs */
 async function initRemShareTrackParam() {
     const removeSiParam = (inputElem) => {
@@ -6919,7 +6918,7 @@ async function initLyricsHotkey() {
             return;
         if (isIgnoredInputElement())
             return;
-        if (hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
+        if (hotkeyMatches(e, getFeature("currentLyricsHotkey")) && location.pathname.startsWith("/watch")) {
             preventBubble(e);
             const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
             lyricsBtn?.click();
@@ -7534,7 +7533,7 @@ const options = {
     ],
 };
 //#region # features
-/** List of categories that are related to each other and can be grouped together in the config menu */
+/** List of categories that are related to each other and can be grouped together in the config menu. */
 const groupedCategories = [
     ["general", "layout", "songLists", "lyrics", "volume"],
     ["behavior", "autoLike", "input", "hotkeys"],
@@ -7544,39 +7543,39 @@ const groupedCategories = [
  * Contains all possible features with their default values and other configuration.
  *
  * **Required props:**
- * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
- * | Property                       | Description                                                                                                                      |
- * | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
- * | `type: string`                 | Type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
- * | `category: string`             | Category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
- * | `group: string`                | Shared group name for features related to each other - usually the name of the "main feature" - used to group features in the config menu - should not be used across categories! |
- * | `supportedSites: Domain[]`     | On which sites the feature is available - values can be `"yt"` or `"ytm"`                                                        |
- * | `since: string`                | Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while                |
- * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`                                                     |
- * | `enable(value: unknown): void` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
- * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+ * <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+ * | Property:                      | Description:                                                                                                                        |
+ * | :----------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+ * | `type: string`                 | Type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`.                         |
+ * | `category: string`             | Category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`.                                            |
+ * | `group: string`                | Shared group name for features related to each other - usually the name of the "main feature". Is used to group features in the config menu - don't use a single group across multiple categories! |
+ * | `supportedSites: Domain[]`     | On which sites the feature is active - values can be `"yt"` or `"ytm"`.                                                             |
+ * | `since: string`                | Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while.                  |
+ * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`.                                                       |
+ * | `enable(value: unknown): void` | (required if `reloadRequired = false`) - function that will be called when the feature is enabled / initialized for the first time. |
+ * <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  *
  *
  * **Optional props:**
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
- * | Property                                                           | Description                                                                                                                                         |
+ * | Property:                                                          | Description:                                                                                                                                        |
  * | :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------|
- * | `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                  |
- * | `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                   |
- * | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked                                                                    |
- * | `helpText: string \| () => string`                                 | Function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext.<featKey>` will be used instead, if available |
- * | `adornments: AdornFunc[] | (() => AdornFunc[])`                    | Array of functions that return HTML strings that will be prepended to the label of the feature in the config menu - used to add icons               |
+ * | `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function.                 |
+ * | `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed.                                  |
+ * | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked.                                                                   |
+ * | `helpText: string \| () => string`                                 | If undefined, translation with key `feature_helptext.<featKey>` will be used. If set, needs to be a function that returns an HTML string or the literal string itself that will be the help text for this feature - this is useful for pluralizing or inserting values into the translation at runtime. |
+ * | `adornments: AdornFunc[] \| (() => AdornFunc[])`                   | Array of functions that return HTML strings that will be prepended to the label of the feature in the config menu - used to add icons.              |
  * | `unit: string \| (val: number) => string`                          | For types `number` or `slider` only - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added too! |
- * | `min: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `min` property of the HTML input element                                        |
- * | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element                                        |
- * | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element                                       |
- * | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties                                              |
- * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                         |
- * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on                                                             |
- * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false)                                                               |
- * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                        |
- * | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                     |
- * | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu                                                                                 |
+ * | `min: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `min` property of the HTML input element.                                       |
+ * | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
+ * | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
+ * | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
+ * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided.                        |
+ * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
+ * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
+ * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
+ * | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations.                    |
+ * | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu.                                                                                |
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  */
 const featInfo = {
