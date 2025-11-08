@@ -47,6 +47,8 @@ as long as the following terms are followed:
   project are credited in the plugin, in a place that is easily accessible to the
   end user. This can be done by including a link to the BetterYTM project in a
   dialog in the plugin's runtime code, by putting it in its readme, or similar.
+  At no point should you claim ownership over parts of the BetterYTM source code
+  that you did not write yourself.
 
 6. Non-Compliance:
   Failure to comply with these terms will mean your plugin won't be endorsed by the
