@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@020c7a3a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ebc11ff3/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "020c7a3a",
-    buildTimestamp: "1762628500372",
+    buildNumber: "ebc11ff3",
+    buildTimestamp: "1762629349292",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1821,30 +1821,33 @@ const consPrefixDbg = `[${scriptInfo$1.name}/#DEBUG]`;
 const logs = [];
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 const getLogsTxt = () => {
+    /** Converts a value to a string for logging. */
     const getVal = (val, primaryScope = true) => {
         if (typeof val === "undefined")
-            return "<undefined>";
+            return primaryScope ? "[undefined]" : "(undefined)";
         if (val === null)
-            return "<null>";
+            return primaryScope ? "[null]" : "(null)";
         if (Array.isArray(val))
-            return `[Array <${val.map((v) => getVal(v, false)).join(", ")}>]`;
+            return `[Array (${val.length}) <${val.map((v) => getVal(v, false)).join(", ")}>]`;
+        if (val instanceof Element)
+            return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
         if (typeof val === "function")
-            return val.name ? `[function ${val.name}()]` : "[function()]";
+            return val.name ? `[Function <${val.name}()>]` : "[function()]";
         if (val instanceof CoreUtils.DatedError)
             return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
         if (val instanceof Error)
             return `[${val.name}: ${val.message}]`;
         if (val instanceof Date)
-            return `[Date: ${val.toISOString()}]`;
+            return `[Date <${val.toISOString()}>]`;
         if (typeof val === "object") {
             try {
                 if (val.constructor?.name === "Object")
                     return JSON.stringify(val);
-                return `[object ${val.constructor?.name ?? "Unknown"}]`;
+                return `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
             }
             catch {
                 // @ts-expect-error
-                return "toString" in val ? val.toString() : `[object ${val?.constructor?.name ?? "Unknown"}]`;
+                return "toString" in val ? val.toString() : `[Object <${val?.constructor?.name ?? "(unknown)"}>]`;
             }
         }
         return primaryScope ? `${val}` : `"${val}"`;
@@ -5984,7 +5987,7 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
         }
     }
     else
-        warn("The iTunes API found no album info for", artist, "-", albumRaw);
+        warn(`The iTunes API yielded no album info for '${artist} - ${albumRaw}', defaulting to regular YT thumbnail`);
     return match;
 }
 //#region idle hide cursor
