@@ -189,6 +189,10 @@
   overflow-y: hidden;
 }
 
+#bytm-cfg-menu-about-text-cont {
+  margin-top: 8px;
+}
+
 .bytm-menu-body {
   padding: 15px;
 }

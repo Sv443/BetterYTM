@@ -230,10 +230,12 @@
   "plugin_list.permissions_header": "अनुमतियाँ:",
 
   "plugin_link.type_source": "संग्रह",
-  "plugin_link.type_other": "अन्य / होमपेज",
+  "plugin_link.type_changelog": "चेंजलॉग",
+  "plugin_link.type_other": "मुखपृष्ठ",
   "plugin_link.type_bug": "बग रिपोर्ट करें",
   "plugin_link.type_greasyfork": "GreasyFork",
   "plugin_link.type_openuserjs": "OpenUserJS",
+
   "plugin_intent.name_ReadFeatureConfig": "फ़ीचर कॉन्फ़िगरेशन पढ़ें",
   "plugin_intent.description_ReadFeatureConfig": "यह प्लगइन फीचर कॉन्फ़िगरेशन को पढ़ सकता है",
   "plugin_intent.name_WriteFeatureConfig": "फ़ीचर कॉन्फ़िगरेशन लिखें",

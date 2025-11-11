@@ -230,7 +230,8 @@
   "plugin_list.permissions_header": "権限：",
 
   "plugin_link.type_source": "リポジトリ",
-  "plugin_link.type_other": "その他 / ホームページ",
+  "plugin_link.type_changelog": "更新履歴",
+  "plugin_link.type_other": "ホームページ",
   "plugin_link.type_bug": "バグを報告",
   "plugin_link.type_greasyfork": "GreasyFork",
   "plugin_link.type_openuserjs": "OpenUserJS",

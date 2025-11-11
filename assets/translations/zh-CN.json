@@ -217,10 +217,12 @@
   "plugin_list.permissions_header": "权限：",
 
   "plugin_link.type_source": "存储库",
-  "plugin_link.type_other": "其他 / 主页",
+  "plugin_link.type_changelog": "更新日志",
+  "plugin_link.type_other": "首页",
   "plugin_link.type_bug": "报告错误",
   "plugin_link.type_greasyfork": "GreasyFork",
   "plugin_link.type_openuserjs": "OpenUserJS",
+
   "plugin_intent.description_ReadFeatureConfig": "此插件可以读取功能配置",
   "plugin_intent.description_WriteFeatureConfig": "此插件可以写入功能配置",
   "plugin_intent.description_SeeHiddenConfigValues": "此插件可以访问隐藏的配置值",

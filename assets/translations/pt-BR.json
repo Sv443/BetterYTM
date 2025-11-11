@@ -217,10 +217,12 @@
   "plugin_list.permissions_header": "Permissões:",
 
   "plugin_link.type_source": "Repositório",
-  "plugin_link.type_other": "Página inicial / Outro",
+  "plugin_link.type_changelog": "Registro de alterações",
+  "plugin_link.type_other": "Página inicial",
   "plugin_link.type_bug": "Reportar um bug",
   "plugin_link.type_greasyfork": "GreasyFork",
   "plugin_link.type_openuserjs": "OpenUserJS",
+
   "plugin_intent.description_ReadFeatureConfig": "Este plugin pode ler a configuração do recurso",
   "plugin_intent.description_WriteFeatureConfig": "Este plugin pode escrever na configuração do recurso",
   "plugin_intent.description_SeeHiddenConfigValues": "Este plugin tem acesso a valores de configuração ocultos",

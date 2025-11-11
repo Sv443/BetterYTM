@@ -230,7 +230,8 @@
   "plugin_list.permissions_header": "Permisos:",
 
   "plugin_link.type_source": "Repositorio",
-  "plugin_link.type_other": "Página de inicio / Otro",
+  "plugin_link.type_changelog": "Registro de cambios",
+  "plugin_link.type_other": "Página de inicio",
   "plugin_link.type_bug": "Informar de un error",
   "plugin_link.type_greasyfork": "GreasyFork",
   "plugin_link.type_openuserjs": "OpenUserJS",
