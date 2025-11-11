@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ebc11ff3/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d4841680/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ebc11ff3",
-    buildTimestamp: "1762629349292",
+    buildNumber: "d4841680",
+    buildTimestamp: "1762905306210",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1857,11 +1857,11 @@ const getLogsTxt = () => {
     return sortedLogs.reduce((acc, [type, time, ...args]) => {
         if (args.length === 0)
             return acc;
-        const dateTime = `${new Date(time).toLocaleString(undefined, {
+        const dateTime = `${new Date(time).toLocaleString("en-US", {
             dateStyle: "short",
-        })}, ${new Date(time).toLocaleString(undefined, {
+        })}, ${new Date(time).toLocaleString("en-US", {
             timeStyle: "medium",
-        })}.${new Date(time).toLocaleString(undefined, {
+        })}.${new Date(time).toLocaleString("en-US", {
             fractionalSecondDigits: 3,
         })}`;
         try {
@@ -4607,6 +4607,7 @@ async function mountCfgMenu() {
                 {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
+                    // dev tooltip
                     if (mode$1 === "development") {
                         const defVal = fmtVal(ftDefault, featKey);
                         const extraTxts = [
@@ -4615,9 +4616,9 @@ async function mountCfgMenu() {
                         "min" in ftInfo && extraTxts.push(`min: ${ftInfo.min}`);
                         "max" in ftInfo && extraTxts.push(`max: ${ftInfo.max}`);
                         "step" in ftInfo && extraTxts.push(`step: ${ftInfo.step}`);
-                        const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
-                        const adv = ftInfo.advanced ? " (advanced feature)" : "";
-                        ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
+                        const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? "reload required - " : "";
+                        const adv = ftInfo.advanced ? "advanced feature - " : "";
+                        ftConfElem.title = `[Dev] ${ftInfo.category} > ${ftInfo.group} > ${featKey}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}\n(${rel}${adv}since v${ftInfo.since})`;
                     }
                     if (!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
                         error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
@@ -4778,7 +4779,7 @@ async function mountCfgMenu() {
                             for (const { value, label } of ftOpts) {
                                 const optionElem = document.createElement("option");
                                 optionElem.value = String(value);
-                                optionElem.textContent = label;
+                                optionElem.textContent = `${label}${mode$1 === "development" ? ` [${value}]` : ""}`;
                                 if (value === initialVal)
                                     optionElem.selected = true;
                                 inputElem.appendChild(optionElem);
@@ -7513,12 +7514,10 @@ const options = {
         { value: "none", label: t("site_selection_none") },
     ],
     locale: () => Object.entries(locales)
-        .reduce((a, [locale, { name, emoji }]) => {
-        return [...a, {
-                value: locale,
-                label: `${emoji} ${name}${mode$1 === "development" || getFeature("advancedMode") ? ` [${locale}]` : ""}`,
-            }];
-    }, [])
+        .reduce((a, [locale, { name, emoji }]) => ([...a, {
+            value: locale,
+            label: `${emoji} ${name}`,
+        }]), [])
         .sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
     colorLightness: () => [
         { value: "darker", label: t("color_lightness.darker") },
@@ -9356,7 +9355,7 @@ function initPlugins() {
     window.addEventListener("bytm:ready", () => {
         pluginsInitialized = true;
         if (registeredPlugins.size > 0)
-            log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+            log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
         else
             log("No plugins registered");
     }, { once: true });
@@ -9425,6 +9424,7 @@ function registerDevPlugin() {
                 },
                 homepage: {
                     source: packageJson.homepage,
+                    changelog: `${packageJson.homepage}/blob/${branch}/changelog.md`,
                     bug: packageJson.bugs.url,
                     greasyfork: packageJson.hosts.greasyfork,
                     openuserjs: packageJson.hosts.openuserjs,
