@@ -303,7 +303,7 @@ export function initPlugins() {
   window.addEventListener("bytm:ready", () => {
     pluginsInitialized = true;
     if(registeredPlugins.size > 0)
-      log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+      log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
     else
       log("No plugins registered");
   }, { once: true });
@@ -385,6 +385,7 @@ function registerDevPlugin() {
         },
         homepage: {
           source: pkgJson.homepage,
+          changelog: `${pkgJson.homepage}/blob/${branch}/changelog.md`,
           bug: pkgJson.bugs.url,
           greasyfork: pkgJson.hosts.greasyfork,
           openuserjs: pkgJson.hosts.openuserjs,

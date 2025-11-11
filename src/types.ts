@@ -348,13 +348,15 @@ export type PluginDef = {
     homepage: {
       /** URL to the plugin's source code (i.e. Git repo) - closed source plugins are not officially accepted at the moment. */
       source: string;
-      /** Any other homepage URL */
+      /** URL to the plugin's changelog file. */
+      changelog?: string;
+      /** Any other homepage URL. */
       other?: string;
-      /** URL to the plugin's bug tracker page, like GitHub issues */
+      /** URL to the plugin's bug tracker page, like GitHub issues. */
       bug?: string;
-      /** URL to the plugin's GreasyFork page */
+      /** URL to the plugin's GreasyFork page. */
       greasyfork?: string;
-      /** URL to the plugin's OpenUserJS page */
+      /** URL to the plugin's OpenUserJS page. */
       openuserjs?: string;
     };
   };
