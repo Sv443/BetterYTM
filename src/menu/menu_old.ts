@@ -627,6 +627,7 @@ export async function mountCfgMenu() {
         {
           const featLeftSideElem = document.createElement("div");
           featLeftSideElem.classList.add("bytm-ftitem-leftside");
+          // dev tooltip
           if(mode === "development") {
             const defVal = fmtVal(ftDefault, featKey as FeatureKey);
             const extraTxts = [
@@ -636,10 +637,10 @@ export async function mountCfgMenu() {
             "max" in ftInfo && extraTxts.push(`max: ${ftInfo.max}`);
             "step" in ftInfo && extraTxts.push(`step: ${ftInfo.step}`);
 
-            const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
-            const adv = ftInfo.advanced ? " (advanced feature)" : "";
+            const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? "reload required - " : "";
+            const adv = ftInfo.advanced ? "advanced feature - " : "";
 
-            ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
+            ftConfElem.title = `[Dev] ${ftInfo.category} > ${ftInfo.group} > ${featKey}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}\n(${rel}${adv}since v${ftInfo.since})`;
           }
 
           if(!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
@@ -839,7 +840,7 @@ export async function mountCfgMenu() {
               for(const { value, label } of ftOpts) {
                 const optionElem = document.createElement("option");
                 optionElem.value = String(value);
-                optionElem.textContent = label;
+                optionElem.textContent = `${label}${mode === "development" ? ` [${value}]` : ""}`;
                 if(value === initialVal)
                   optionElem.selected = true;
                 inputElem.appendChild(optionElem);

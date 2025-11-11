@@ -63,15 +63,15 @@ export const getLogsTxt = () => {
       return acc;
 
     const dateTime = `${
-      new Date(time).toLocaleString(undefined, {
+      new Date(time).toLocaleString("en-US", {
         dateStyle: "short",
       })
     }, ${
-      new Date(time).toLocaleString(undefined, {
+      new Date(time).toLocaleString("en-US", {
         timeStyle: "medium",
       })
     }.${
-      new Date(time).toLocaleString(undefined, {
+      new Date(time).toLocaleString("en-US", {
         fractionalSecondDigits: 3,
       })
     }` as const;

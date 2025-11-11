@@ -124,12 +124,12 @@ const options = {
     { value: "none", label: t("site_selection_none") },
   ] satisfies SelectOption<SiteSelectionOrNone>[],
   locale: () => Object.entries(langMapping)
-    .reduce((a, [locale, { name, emoji }]) => {
-      return [...a, {
+    .reduce((a, [locale, { name, emoji }]) => (
+      [...a, {
         value: locale,
-        label: `${emoji} ${name}${mode === "development" || getFeature("advancedMode") ? ` [${locale}]` : ""}`,
-      }];
-    }, [] as SelectOption[])
+        label: `${emoji} ${name}`,
+      }]
+    ), [] as SelectOption[])
     .sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
   colorLightness: () => [
     { value: "darker", label: t("color_lightness.darker") },
