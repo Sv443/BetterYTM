@@ -283,16 +283,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Search for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts) to see the properties of the returned object.  
 >   
 > The returned properties include:  
-> - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
-> - `events` - A [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
->   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
-> - `info` - The info object that contains all data other plugins will be able to see about your plugin
-> - `permissions` - An object with the properties `int` and `array`, which are the granted intents as a bitwise-OR number and as an array of PluginIntent enum numbers, respectively
+> - `token` - A per-session private token that is used for authenticated function calls that **should not be persistently stored.**
+> - `events` - A [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM. Its `publicEmit` prop is set to `true`, so you can use its `emit()` method if that's what you want to do for whatever reason. Other plugins will *not* receive your own dispatched events.  
+>   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts).
+> - `info` - The info object that contains all data other plugins will be able to see about your plugin. This is a reduced version of the plugin definition object.
+> - `permissions` - An object with the properties `int` and `array`, which are the granted intents as a bitwise-OR number and as an array of PluginIntent enum numbers, respectively.
 > 
 > <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
+> // Assuming BetterYTM is added as a submodule in the "/bytm/" folder
 > import type { PluginDef, PluginIntent } from "bytm/src/types.js";
+> // Load the version of CoreUtils that's installed in BetterYTM
 > const { CoreUtils } = unsafeWindow.BYTM;
 > 
 > // Search for "type PluginDef" in "src/types.ts" to see the whole type
@@ -305,12 +307,13 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     // Semver-compliant version string. See https://semver.org/ for more information.
 >     version: "4.2.0",                           // required
 >     // Specify an icon URL here (should be 250px or smaller and square, in png, jpg or webp format, preferably hosted on a CDN).
->     // If you have a public GitHub repo, you should specify the CDN URL starting with raw.githubusercontent.com here.
->     // I don't recommend using services like imgur, since they might be too restrictive for certain clients.
->     iconUrl: "https://picsum.photos/128/128",   // required
+>     // If you have a public GitHub repo, you could specify the CDN URL starting with raw.githubusercontent.com here. For better caching, proxy it through a CDN like jsDelivr: https://www.jsdelivr.com/github
+>     // I don't recommend using services like imgur, since they might be too restrictive for certain clients or countries.
+>     // The image should be square and have a height and width less than or equal to 256px.
+>     iconUrl: "https://picsum.photos/128/128", // required
 >     // Localized description of your plugin.
 >     description: { // required
->       "en-US": "This plugin does cool stuff",      // required
+>       "en-US": "This plugin does cool stuff",      // "en-US" is required
 >       "de-DE": "Dieses Plugin macht coole Sachen", // (all other locales are optional)
 >       // (see all supported locale codes in "assets/locales.json")
 >     },
@@ -322,11 +325,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     },
 >     // Homepage URLs that will be displayed in the plugin list UI.
 >     homepage: { // required
->       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",     // required
->       other: "https://example.org/MyCoolBYTMPlugin",                // (optional)
->       bug: "https://github.com/MyUsername/MyCoolBYTMPlugin/issues", // (optional)
->       greasyfork: "...",                                            // (optional)
->       openuserjs: "...",                                            // (optional)
+>       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",     // required   - plugin source code
+>       changelog: "https://url.shortener/MyCoolBYTMPluginChangelog", // (optional) - latest changelog
+>       other: "https://example.org/MyCoolBYTMPlugin",                // (optional) - plugin website
+>       bug: "https://github.com/MyUsername/MyCoolBYTMPlugin/issues", // (optional) - bugs / issue tracker
+>       greasyfork: "...",                                            // (optional) - greasyfork.org page
+>       openuserjs: "...",                                            // (optional) - openuserjs.org page
 >     },
 >   },
 >   // The intents (requested permissions) the plugin needs to be granted by BetterYTM and the user to be able to use certain functions.
@@ -341,12 +345,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   // A list of plugin contributors, including the main author (you).
 >   // This is unused at the moment, but might be added to the BYTM UI later on.
 >   contributors: [ // (optional)
->     {                                            // (optional)
+>     { // (optional)
 >       name: "MyUsername",                        // required
 >       homepage: "https://github.com/MyUsername", // (optional)
 >       email: "somedude420@hotmail.co.bd",        // (optional)
 >     },
->     {                                              // (optional)
+>     { // (optional)
 >       name: "SomeOtherGuy",                        // required
 >       homepage: "https://github.com/SomeOtherGuy", // (optional)
 >       email: "someotherguy@star-co.net.kp",        // (optional)
@@ -357,7 +361,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > // private token for authenticated function calls (don't store this persistently, as your plugin gets a new one every page load!)
 > let authToken: string | undefined;
 > 
-> // since some function calls require the token, this function can be called to return it once the plugin is fully registered
+> // since some function calls require the token, this function can be imported and called to return it once the plugin is fully registered
 > export function getToken() {
 >   return authToken;
 > }
@@ -368,13 +372,17 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     const { token, events, permissions } = registerPlugin(pluginDef);
 > 
 >     // show a welcome alert once, if the CreateModalDialogs intent was granted
->     if(!await GM.getValue("welcomeMsgShown") && CoreUtils.bitSetHas(permissions.int, PluginIntent.CreateModalDialogs)) {
+>     if(CoreUtils.bitSetHas(permissions.int, PluginIntent.CreateModalDialogs)) {
+>       if(!await GM.getValue("my_plugin_welcome_msg_shown", false)) {
 >         await unsafeWindow.BYTM.showPrompt({
->             type: "alert",
->             message: `You've successfully installed ${pluginDef.plugin.name} (version ${pluginDef.plugin.version})!`,
+>           type: "alert",
+>           message: `You've successfully installed ${pluginDef.plugin.name} (version ${pluginDef.plugin.version})!`,
 >         });
->         await GM.setValue("welcomeMsgShown", true);
+>         await GM.setValue("my_plugin_welcome_msg_shown", true);
+>       }
 >     }
+>     else
+>       alert("Permissions haven't been granted. The plugin might not work as intended.");
 > 
 >     // store the private token for later use in authenticated function calls
 >     authToken = token;
