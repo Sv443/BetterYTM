@@ -300,29 +300,38 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > // Search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
 >   plugin: { // required
->     // The name and namespace should combine to be unique across all plugins.
->     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier.
->     name: "My cool plugin",                     // required
+>     // ⚠️ The name and namespace should combine to be unique across all plugins.
+>     // ⚠️ Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier.
+>     // The display name of your plugin, preferably in English, "Title Case", and not too long.
+>     name: "My cool plugin", // required
+> 
+>     // This needs to be a unique string identifying you or your organization.
+>     // You should ideally use a URL that identifies you and you have control over, without a trailing slash.
 >     namespace: "https://github.com/MyUsername", // required
+> 
 >     // Semver-compliant version string. See https://semver.org/ for more information.
->     version: "4.2.0",                           // required
+>     version: "0.2.1-alpha.5", // required
+> 
 >     // Specify an icon URL here (should be 250px or smaller and square, in png, jpg or webp format, preferably hosted on a CDN).
 >     // If you have a public GitHub repo, you could specify the CDN URL starting with raw.githubusercontent.com here. For better caching, proxy it through a CDN like jsDelivr: https://www.jsdelivr.com/github
 >     // I don't recommend using services like imgur, since they might be too restrictive for certain clients or countries.
 >     // The image should be square and have a height and width less than or equal to 256px.
 >     iconUrl: "https://picsum.photos/128/128", // required
+> 
 >     // Localized description of your plugin.
 >     description: { // required
 >       "en-US": "This plugin does cool stuff",      // "en-US" is required
 >       "de-DE": "Dieses Plugin macht coole Sachen", // (all other locales are optional)
 >       // (see all supported locale codes in "assets/locales.json")
 >     },
+> 
 >     // The SPDX identifier (or name) and URL to your plugin's license text.
 >     // If your code is all rights reserved, omit this property.
 >     license: { // (optional)
 >       name: "MIT",                                // either both or none required
 >       url: "https://opensource.org/licenses/MIT", // either both or none required
 >     },
+> 
 >     // Homepage URLs that will be displayed in the plugin list UI.
 >     homepage: { // required
 >       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",     // required   - plugin source code
