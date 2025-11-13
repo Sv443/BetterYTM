@@ -368,7 +368,7 @@ function registerDevPlugin() {
   if(mode !== "development")
     return;
   try {
-    const { token } = registerPlugin({
+    const { token, events } = registerPlugin({
       plugin: {
         name: devPluginName,
         namespace: `${pkgJson.namespace}+${devPluginId}`,
@@ -397,6 +397,7 @@ function registerDevPlugin() {
     });
 
     devPluginToken = token;
+    setGlobalProp("devPluginEvents", events);
 
     log("Registered dev plugin");
   }
