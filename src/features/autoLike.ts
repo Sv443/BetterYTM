@@ -15,6 +15,8 @@ import { createRipple } from "../components/ripple.js";
 import type { AutoLikeData } from "../types.js";
 import "./autoLike.css";
 
+// TODO:FIXME: race condition: multiple buttons can appear on YT channel pages, with both the @ID format as well as UC... (extraneous)
+
 //#region store
 
 let canCompress = false;

@@ -359,7 +359,7 @@ ytmusic-shelf-renderer #contents,
 ytmusic-card-shelf-renderer .card-container`, {
           continuous: true,
           all: true,
-          debounce: 250,
+          debounce: 200,
           listener: genericSongListListener,
         });
       }
@@ -375,7 +375,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-
 ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
       continuous: true,
       all: true,
-      debounce: 250,
+      debounce: 200,
       listener: genericSongListListener,
     });
   }

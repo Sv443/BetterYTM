@@ -113,7 +113,7 @@ export async function initQueueButtons() {
 
   addSelectorListener("body", songListSelector, {
     all: true,
-    debounce: 150,
+    debounce: Math.floor(1000 / 6),
     listener: doSongListsChecks,
   });
 

@@ -93,7 +93,7 @@ export async function initVolumeFeatures() {
     });
   };
 
-  window.addEventListener("resize", debounce(onResize, 150));
+  window.addEventListener("resize", debounce(onResize, Math.floor(1000 / 6)));
   waitVideoElementReady().then(onResize);
   onResize();
 }
