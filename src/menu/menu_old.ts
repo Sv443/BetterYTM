@@ -459,12 +459,15 @@ export async function mountCfgMenu() {
 
     const onCfgChange = async (
       key: keyof typeof cfgDefaultData,
-      initialVal: string | number | boolean | HotkeyObj | undefined,
-      newVal: string | number | boolean | HotkeyObj | undefined,
+      initialVal: unknown,
+      newVal: unknown,
     ) => {
+      const ftInfo = featInfo?.[key as FeatureKey];
+      const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
+
       try {
         const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
-        info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+        info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
 
         const featConf = structuredClone(getFeatures()) as FeatureConfig;
 
@@ -523,7 +526,12 @@ export async function mountCfgMenu() {
         error("Error while reacting to config change:", err);
       }
       finally {
-        emitSiteEvent("configOptionChanged", key, initialVal, newVal);
+        // @ts-expect-error
+        emitSiteEvent("configOptionChanged", ...(
+          valueHidden
+            ? [key, undefined, undefined] as const
+            : [key, initialVal, newVal] as const
+        ));
       }
     };
 
