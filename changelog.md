@@ -36,7 +36,8 @@
   - Increased the amount of times per second the video/song time is remembered from 2 to 4.
   - The "like" and "dislike" hotkeys now also work in the YT Shorts player.
 - **Fixes:**
-  - Fixed inconsistent auto-like button rendering and channel name resolution on both pages.
+  - Fixed auto-like button sometimes not appearing, and channel name resolution on both pages.
+  - Fixed missing toggle input knob in Chromium-based browsers.
   - 🎵 Fixed SyntaxError when no AM album artwork found.
   - Fixed Error when clicking on a BytmDialog's exit button.
   - Fixed interactivity problems with config menu and stacked BytmDialogs when other dialog was opened over top and then closed.

@@ -704,7 +704,6 @@ hr {
   display: block;
   background: linear-gradient(to bottom, #fff 0%, #eee 100%);
   border-radius: 50%;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
   width: 12px;
   height: 12px;
   position: absolute;
@@ -715,7 +714,6 @@ hr {
 
 .bytm-toggle:hover .bytm-toggle-switch:before {
   background: linear-gradient(to bottom, #fff 0%, #fff 100%);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
 .bytm-toggle-checkbox:checked + .bytm-toggle-switch {
