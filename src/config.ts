@@ -191,6 +191,7 @@ export const cfgMigrations: DataMigrationsDict = {
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
         { key: "initTimeout", oldDefault: 8 },                     // new: 5
         { key: "rememberSongTimeDuration", oldDefault: 60 },       // new: 180
+        { key: "frameSkipAmount", oldDefault: 0.0417 },            // new: 0.0166
       ],
     );
 

@@ -28,9 +28,10 @@
   - 🎵 The "improve links" feature now also applies to all types of song list items.  
     Clicking a list item anywhere will now start playing that song. This doesn't affect clicking and dragging them.
   - The values of some features (if left unchanged), will be updated to the new defaults:
-    - `initTimeout` will be changed from `8` to `5` seconds amid initialization performance improvements.
+    - `initTimeout` will be changed from `8` to `5` seconds (amid initialization performance improvements).
     - `rememberSongTimeDuration` will be changed from `60` to `180` seconds.
     - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
+    - `frameSkipAmount` will be changed from `0.0417` to `0.0166` seconds.
   - Made some menu commands usable by default without requiring to be compiled in dev mode, and there's even more when the advanced mode is enabled. See internal changes for a full list.
   - Increased the amount of times per second the video/song time is remembered from 2 to 4.
   - The "like" and "dislike" hotkeys now also work in the YT Shorts player.
@@ -79,6 +80,7 @@
     - The `PluginDef` object's `intents` property can now be either an array of `PluginIntent` values or a single number that is the bitwise OR of the intents.
     - Auth tokens are now in the format of a UUIDv4 instead of a 16-character, 36-radix string.
     - `registerPlugin()` now also returns a `permissions` object with the `int` and `array` properties, which contain all of the bitwise OR of the plugin's intents and an array of the intents that were actually granted to the plugin. The `int` property can be used with [CoreUtils' `bitSetHas()` function](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#function-bitsethas) to check if specific intents were granted.
+    - A URL to the plugin's changelog file can now be specified in the `PluginDef` object's `homepage.changelog` property.
   - **API Additions:**
     - Added new intents `InternalAccess` (256) (currently only used by `getInternals()`) and `FullAccess` (512) (grants all intents).
     - Added new functions to the interface that allow for better interaction with the siteEvents system:

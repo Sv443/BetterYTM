@@ -1161,7 +1161,7 @@ export const featInfo = {
     min: 0,
     max: 1,
     step: 0.0001,
-    default: 0.0417,
+    default: 0.0166,
     reloadRequired: false,
     enable: noop,
     advanced: true,
