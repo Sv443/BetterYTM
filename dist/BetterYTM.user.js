@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d4841680/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6ad47980/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "d4841680",
-    buildTimestamp: "1762905306210",
+    buildNumber: "6ad47980",
+    buildTimestamp: "1762996537737",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1031,53 +1031,57 @@ class BytmDialog extends CoreUtils.NanoEmitter {
 }/** Creates a simple toggle element */
 async function createToggleInput({ onChange, initialValue = false, id = CoreUtils.randomId(6, 36), labelPos = "left", }) {
     const wrapperEl = document.createElement("div");
-    wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
+    wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
     wrapperEl.role = "switch";
     wrapperEl.tabIndex = 0;
+    wrapperEl.ariaChecked = String(initialValue);
     const labelEl = labelPos !== "off" ? document.createElement("label") : undefined;
     if (labelEl) {
-        labelEl.id = `bytm-toggle-input-label-${id}`;
-        labelEl.classList.add("bytm-toggle-input-label");
+        labelEl.id = `bytm-toggle-label-${id}`;
+        labelEl.classList.add("bytm-toggle-label");
         labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
         if (id)
-            labelEl.htmlFor = `bytm-toggle-input-${id}`;
+            labelEl.htmlFor = `bytm-toggle-${id}`;
         wrapperEl.setAttribute("aria-labelledby", labelEl.id);
     }
-    const toggleWrapperEl = document.createElement("div");
-    toggleWrapperEl.classList.add("bytm-toggle-input");
-    toggleWrapperEl.tabIndex = -1;
-    const toggleEl = document.createElement("input");
-    toggleEl.type = "checkbox";
-    toggleEl.checked = initialValue;
-    toggleEl.dataset.toggled = String(Boolean(initialValue));
-    toggleEl.tabIndex = -1;
+    const toggleEl = document.createElement("label");
+    toggleEl.classList.add("bytm-toggle");
+    const checkboxEl = document.createElement("input");
+    checkboxEl.type = "checkbox";
+    checkboxEl.checked = initialValue;
+    checkboxEl.classList.add("bytm-toggle-checkbox");
+    checkboxEl.tabIndex = -1;
     if (id)
-        toggleEl.id = `bytm-toggle-input-${id}`;
-    const toggleKnobEl = document.createElement("div");
-    toggleKnobEl.classList.add("bytm-toggle-input-knob");
-    // TODO: this doesn't make the knob show up on Chromium
-    setInnerHtml(toggleKnobEl, "&nbsp;");
-    const toggleElClicked = (e) => {
+        checkboxEl.id = `bytm-toggle-${id}`;
+    const toggleSwitchEl = document.createElement("div");
+    toggleSwitchEl.classList.add("bytm-toggle-switch");
+    const handleToggle = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        onChange(toggleEl.checked);
-        toggleEl.dataset.toggled = String(Boolean(toggleEl.checked));
+        onChange(checkboxEl.checked);
         if (labelEl)
-            labelEl.textContent = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
-        wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+            labelEl.textContent = t(`toggled_${checkboxEl.checked ? "on" : "off"}`);
+        wrapperEl.ariaChecked = String(checkboxEl.checked);
     };
-    toggleEl.addEventListener("change", toggleElClicked, { capture: true });
+    checkboxEl.addEventListener("change", handleToggle, { capture: true });
     wrapperEl.addEventListener("keydown", (e) => {
         if (["Space", " ", "Enter"].includes(e.code)) {
-            toggleEl.checked = !toggleEl.checked;
-            toggleElClicked(e);
+            e.preventDefault();
+            e.stopPropagation();
+            checkboxEl.checked = !checkboxEl.checked;
+            handleToggle(e);
         }
     }, { capture: true });
-    //TODO:FIXME: space and enter dont work fsr
-    toggleEl.appendChild(toggleKnobEl);
-    toggleWrapperEl.appendChild(toggleEl);
+    wrapperEl.addEventListener("click", (e) => {
+        if (e.target !== checkboxEl) {
+            checkboxEl.checked = !checkboxEl.checked;
+            handleToggle(e);
+        }
+    });
+    toggleEl.appendChild(checkboxEl);
+    toggleEl.appendChild(toggleSwitchEl);
     labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
-    wrapperEl.appendChild(toggleWrapperEl);
+    wrapperEl.appendChild(toggleEl);
     labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
     return wrapperEl;
 }/** EventEmitter instance that is used to detect various changes to the site and userscript */
@@ -3097,7 +3101,7 @@ async function renderBody$4() {
             channels: autoLikeStore.getData().channels
                 .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
         });
-    }, 250);
+    }, 100);
     const sortedChannels = autoLikeStore
         .getData().channels
         .sort((a, b) => a.name.localeCompare(b.name));
@@ -3243,7 +3247,8 @@ function getChannelIdFromPrompt(promptStr) {
     const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
     const id = (isId?.[0] || isUrl?.[1] || "").trim();
     return id.length > 0 ? id : null;
-}//#region store
+}// TODO:FIXME: race condition: multiple buttons can appear on YT channel pages, with both the @ID format as well as UC... (extraneous)
+//#region store
 let canCompress$1 = false;
 /** DataStore instance for all auto-liked channels */
 const autoLikeStore = new UserUtils.DataStore({
@@ -4474,9 +4479,11 @@ async function mountCfgMenu() {
         topAnchor.id = "bytm-menu-top-anchor";
         featuresCont.appendChild(topAnchor);
         const onCfgChange = async (key, initialVal, newVal) => {
+            const ftInfo = featInfo?.[key];
+            const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
             try {
                 const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
-                info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+                info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
                 const featConf = structuredClone(getFeatures());
                 // @ts-expect-error
                 featConf[key] = newVal;
@@ -4523,7 +4530,10 @@ async function mountCfgMenu() {
                 error("Error while reacting to config change:", err);
             }
             finally {
-                emitSiteEvent("configOptionChanged", key, initialVal, newVal);
+                // @ts-expect-error
+                emitSiteEvent("configOptionChanged", ...(valueHidden
+                    ? [key, undefined, undefined]
+                    : [key, initialVal, newVal]));
             }
         };
         /** Call whenever the feature config is changed */
@@ -5489,7 +5499,7 @@ ytmusic-shelf-renderer #contents,
 ytmusic-card-shelf-renderer .card-container`, {
                     continuous: true,
                     all: true,
-                    debounce: 250,
+                    debounce: 200,
                     listener: genericSongListListener,
                 });
             }
@@ -5504,7 +5514,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-
 ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
             continuous: true,
             all: true,
-            debounce: 250,
+            debounce: 200,
             listener: genericSongListListener,
         });
     }
@@ -6452,7 +6462,7 @@ async function initVolumeFeatures() {
             listener: (el) => onSliderElExists("expand", el),
         });
     };
-    window.addEventListener("resize", CoreUtils.debounce(onResize, 150));
+    window.addEventListener("resize", CoreUtils.debounce(onResize, Math.floor(1000 / 6)));
     waitVideoElementReady().then(onResize);
     onResize();
 }
@@ -7183,7 +7193,7 @@ async function initQueueButtons() {
     };
     addSelectorListener("body", songListSelector, {
         all: true,
-        debounce: 150,
+        debounce: Math.floor(1000 / 6),
         listener: doSongListsChecks,
     });
     siteEvents.on("pathChanged", () => {
@@ -8538,7 +8548,7 @@ const featInfo = {
         min: 0,
         max: 1,
         step: 0.0001,
-        default: 0.0417,
+        default: 0.0166,
         reloadRequired: false,
         enable: noop,
         advanced: true,
@@ -9056,6 +9066,7 @@ const cfgMigrations = {
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
             { key: "initTimeout", oldDefault: 8 }, // new: 5
             { key: "rememberSongTimeDuration", oldDefault: 60 }, // new: 180
+            { key: "frameSkipAmount", oldDefault: 0.0417 }, // new: 0.0166
         ]);
         if (newCfg.initTimeout > featInfo.initTimeout.max)
             newCfg.initTimeout = featInfo.initTimeout.max;
@@ -9407,7 +9418,7 @@ function registerDevPlugin() {
     if (mode !== "development")
         return;
     try {
-        const { token } = registerPlugin({
+        const { token, events } = registerPlugin({
             plugin: {
                 name: devPluginName,
                 namespace: `${packageJson.namespace}+${devPluginId}`,
@@ -9435,6 +9446,7 @@ function registerDevPlugin() {
             intents: PluginIntent.FullAccess,
         });
         devPluginToken = token;
+        setGlobalProp("devPluginEvents", events);
         log("Registered dev plugin");
     }
     catch (err) {
