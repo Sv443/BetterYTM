@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@08d1d6d9/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d8fbb429/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "08d1d6d9",
-    buildTimestamp: "1762999144433",
+    buildNumber: "d8fbb429",
+    buildTimestamp: "1763236182935",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2002,21 +2002,21 @@ class PluginError extends CustomError {
         super("PluginError", message, opts);
     }
 }//#region beforeunload popup
-let discardBeforeUnload = false;
+let discardBeforeUnloadOverride;
 /** Disables the popup before leaving the site */
 function enableDiscardBeforeUnload() {
-    discardBeforeUnload = true;
+    discardBeforeUnloadOverride = true;
     info("Disabled popup before leaving the site");
 }
 /** (Re-)enables the popup before leaving the site */
 function disableDiscardBeforeUnload() {
-    discardBeforeUnload = false;
+    discardBeforeUnloadOverride = false;
     info("Enabled popup before leaving the site");
 }
 /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
 async function initBeforeUnloadHook() {
     try {
-        UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
+        UserUtils.interceptWindowEvent("beforeunload", () => typeof discardBeforeUnloadOverride !== "undefined" ? discardBeforeUnloadOverride : getFeature("disableBeforeUnloadPopup"));
     }
     catch (err) {
         error("Error in beforeunload hook:", err);
@@ -6887,17 +6887,17 @@ async function switchSite(newDomain) {
             throw new Error(`Unrecognized domain '${newDomain}'`);
         enableDiscardBeforeUnload();
         const { pathname, search, hash } = new URL(location.href);
-        const vt = await getVideoTime(0);
-        log(`Found video time of ${vt} seconds`);
+        const time = await getVideoTime(0);
+        log(`Found video time of ${time} seconds`);
         const cleanSearch = search.split("&")
             .filter((param) => !param.match(/^\??(t|time_continue)=/))
             .join("&");
-        const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+        const newSearch = typeof time === "number" && time > videoTimeThreshold ?
             cleanSearch.includes("?")
                 ? `${cleanSearch.startsWith("?")
                     ? cleanSearch
-                    : "?" + cleanSearch}&time_continue=${vt}`
-                : `?time_continue=${vt}`
+                    : "?" + cleanSearch}&time_continue=${time}`
+                : `?time_continue=${time}`
             : cleanSearch;
         const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
         info(`Switching to domain '${newDomain}' at ${newUrl}`);
@@ -6914,12 +6914,16 @@ async function initLikeDislikeHotkeys() {
             return;
         if (isIgnoredInputElement())
             return;
-        const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
+        const { likeBtn, dislikeBtn, likeState } = getLikeDislikeBtns();
         if (hotkeyMatches(e, getFeature("likeHotkey"))) {
+            if (!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE")
+                return;
             likeBtn?.click();
             preventBubble(e);
         }
         else if (hotkeyMatches(e, getFeature("dislikeHotkey"))) {
+            if (!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE")
+                return;
             dislikeBtn?.click();
             preventBubble(e);
         }
@@ -6982,58 +6986,48 @@ async function initSearchBarHotkeys() {
     });
 }
 let lastProxyHkTime = 0;
+/** All proxy hotkey groups, identified by the feature key that toggles them off or on */
+const proxyHotkeys = {
+    rebindNextAndPrevious: [
+        {
+            hkFeatKey: "nextHotkey",
+            preventKey: "KeyJ",
+            domains: ["ytm"],
+            onPress: () => dispatchProxyKey({
+                code: "KeyJ",
+                key: "j",
+                keyCode: 74,
+                which: 74,
+            }),
+        },
+        {
+            hkFeatKey: "previousHotkey",
+            preventKey: "KeyK",
+            domains: ["ytm"],
+            onPress: () => dispatchProxyKey({
+                code: "KeyK",
+                key: "k",
+                keyCode: 75,
+                which: 75,
+            }),
+        },
+    ],
+    rebindPlayPause: [
+        {
+            hkFeatKey: "playPauseHotkey",
+            preventKey: "Space",
+            domains: ["ytm"],
+            onPress: () => dispatchProxyKey({
+                code: "Space",
+                key: " ",
+                keyCode: 32,
+                which: 32,
+            }),
+        },
+    ]
+};
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
-    const dispatchProxyKey = (hkProps) => {
-        document.body.dispatchEvent(new KeyboardEvent("keydown", {
-            ...hkProps,
-            bubbles: true,
-            cancelable: false,
-            // see https://github.com/Sv443/BetterYTM/issues/18
-            view: UserUtils.getUnsafeWindow(),
-        }));
-        log("Dispatched proxy hotkey:", hkProps);
-    };
-    /** All proxy hotkey groups, identified by the feature key that toggles them off or on */
-    const proxyHotkeys = {
-        rebindNextAndPrevious: [
-            {
-                hkFeatKey: "nextHotkey",
-                preventKey: "KeyJ",
-                domains: ["ytm"],
-                onPress: () => dispatchProxyKey({
-                    code: "KeyJ",
-                    key: "j",
-                    keyCode: 74,
-                    which: 74,
-                }),
-            },
-            {
-                hkFeatKey: "previousHotkey",
-                preventKey: "KeyK",
-                domains: ["ytm"],
-                onPress: () => dispatchProxyKey({
-                    code: "KeyK",
-                    key: "k",
-                    keyCode: 75,
-                    which: 75,
-                }),
-            },
-        ],
-        rebindPlayPause: [
-            {
-                hkFeatKey: "playPauseHotkey",
-                preventKey: "Space",
-                domains: ["ytm"],
-                onPress: () => dispatchProxyKey({
-                    code: "Space",
-                    key: " ",
-                    keyCode: 32,
-                    which: 32,
-                }),
-            },
-        ]
-    };
     document.addEventListener("keydown", (e) => {
         if (isIgnoredInputElement())
             return;
@@ -7058,9 +7052,19 @@ async function initProxyHotkeys() {
             }
         }
     }, {
-        // ensure precedence over YTM's own listeners:
+        // ensure precedence over the page's own listeners:
         capture: true,
     });
+}
+function dispatchProxyKey(hkProps) {
+    document.body.dispatchEvent(new KeyboardEvent("keydown", {
+        ...hkProps,
+        bubbles: true,
+        cancelable: true,
+        // see https://github.com/Sv443/BetterYTM/issues/18
+        view: UserUtils.getUnsafeWindow(),
+    }));
+    log("Dispatched proxy hotkey:", hkProps);
 }//#region Dark Reader
 /** Disables Dark Reader if it is present */
 async function disableDarkReader() {
@@ -7958,21 +7962,6 @@ const featInfo = {
         default: true,
         adornments: [adornments.ytmOnly, adornments.reload],
     },
-    // archived idea for future version (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes):
-    // showVoteRatio: {
-    //   type: "select",
-    //   category: "layout",
-    //   group: "showVoteRatio",
-    //   supportedSites: ["ytm"],
-    //   since: "x.x.x",
-    //   options: () => [
-    //     { value: "disabled", label: t("vote_ratio_disabled") },
-    //     { value: "greenRed", label: t("vote_ratio_green_red") },
-    //     { value: "blueGray", label: t("vote_ratio_blue_gray") },
-    //   ],
-    //   default: "disabled",
-    //   adornments: [adornments.reload],
-    // },
     //#region cat:song lists
     lyricsQueueButton: {
         type: "toggle",
@@ -8151,20 +8140,6 @@ const featInfo = {
         advanced: true,
         adornments: [adornments.ytmOnly, adornments.advanced],
     },
-    // scrapped feature, maybe will be re-added in the future:
-    // advancedLyricsFilter: {
-    //   type: "toggle",
-    //   category: "lyrics",
-    //   group: "geniusLyrics",
-    //   supportedSites: ["ytm"],
-    //   since: "x.x.x",
-    //   default: false,
-    //   change: () => setTimeout(async () => await showPrompt({ type: "confirm", message: t("lyrics_cache_changed_clear_confirm") }) && clearLyricsCache(), 200),
-    //   advanced: true,
-    //   adornments: [adornments.experimental],
-    //   reloadRequired: false,
-    //   enable: noop,
-    // },
     //#region cat:volume
     volumeSliderExponential: {
         type: "select",
@@ -8296,7 +8271,8 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "1.0.0",
         default: false,
-        adornments: [adornments.reload],
+        reloadRequired: false,
+        enable: noop,
     },
     autoCloseToasts: {
         type: "toggle",
@@ -8644,6 +8620,16 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
+    likeDislikeHotkeysToggle: {
+        type: "toggle",
+        category: "hotkeys",
+        group: "likeDislikeHotkeys",
+        supportedSites: ["ytm", "yt"],
+        since: "3.1.0",
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+    },
     likeHotkey: {
         type: "hotkey",
         category: "hotkeys",
@@ -8943,16 +8929,22 @@ const cfgMigrations = {
     },
     // 2 -> 3 (v1.0)
     3: (oldData) => useNewDefaults(oldData, [
-        "removeShareTrackingParam", "numKeysSkipToTime",
-        "fixSpacing", "scrollToActiveSongBtn", "logLevel",
+        "removeShareTrackingParam",
+        "numKeysSkipToTime",
+        "fixSpacing",
+        "scrollToActiveSongBtn",
+        "logLevel",
     ]),
     // 3 -> 4 (v1.1)
     4: (oldData) => {
         const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
         return {
             ...useNewDefaults(oldData, [
-                "rememberSongTime", "rememberSongTimeSites",
-                "volumeSliderScrollStep", "locale", "versionCheck",
+                "rememberSongTime",
+                "rememberSongTimeSites",
+                "volumeSliderScrollStep",
+                "locale",
+                "versionCheck",
             ]),
             arrowKeySkipBy: 10,
             switchSitesHotkey: {
@@ -8966,26 +8958,43 @@ const cfgMigrations = {
     },
     // 4 -> 5 (v2.0)
     5: (oldData) => useNewDefaults(oldData, [
-        "localeFallback", "geniUrlBase", "geniUrlToken",
-        "lyricsCacheMaxSize", "lyricsCacheTTL",
-        "clearLyricsCache", "advancedMode",
-        "checkVersionNow", "advancedLyricsFilter",
-        "rememberSongTimeDuration", "rememberSongTimeReduction",
-        "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
-        "setInitialTabVolume", "initialTabVolumeLevel",
-        "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
-        "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
-        "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
-        "fixHdrIssues", "clearQueueBtn",
-        "closeToastsTimeout", "disableDarkReaderSites",
+        "localeFallback",
+        "geniUrlBase",
+        "geniUrlToken",
+        "lyricsCacheMaxSize",
+        "lyricsCacheTTL",
+        "clearLyricsCache",
+        "advancedMode",
+        "checkVersionNow",
+        "advancedLyricsFilter",
+        "rememberSongTimeDuration",
+        "rememberSongTimeReduction",
+        "rememberSongTimeMinPlayTime",
+        "volumeSharedBetweenTabs",
+        "setInitialTabVolume",
+        "initialTabVolumeLevel",
+        "thumbnailOverlayBehavior",
+        "thumbnailOverlayToggleBtnShown",
+        "thumbnailOverlayShowIndicator",
+        "thumbnailOverlayIndicatorOpacity",
+        "thumbnailOverlayImageFit",
+        "removeShareTrackingParamSites",
+        "fixHdrIssues",
+        "clearQueueBtn",
+        "closeToastsTimeout",
+        "disableDarkReaderSites",
     ]),
     // 5 -> 6 (v2.1)
     6: (oldData) => {
         const newData = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
-            "autoLikeChannels", "autoLikeChannelToggleBtn",
-            "autoLikeTimeout", "autoLikeShowToast",
-            "autoLikeOpenMgmtDialog", "showVotes",
-            "numbersFormat", "toastDuration",
+            "autoLikeChannels",
+            "autoLikeChannelToggleBtn",
+            "autoLikeTimeout",
+            "autoLikeShowToast",
+            "autoLikeOpenMgmtDialog",
+            "showVotes",
+            "numbersFormat",
+            "toastDuration",
             "initTimeout",
             // forgot to add this to the migration when adding the feature way before so now will have to do:
             "volumeSliderLabel",
@@ -9000,9 +9009,12 @@ const cfgMigrations = {
     // 6 -> 7 (v2.1-preview.1)
     7: (oldData) => {
         const newData = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
-            "showToastOnGenericError", "sponsorBlockIntegration",
-            "themeSongIntegration", "themeSongLightness",
-            "errorOnLyricsNotFound", "openPluginList",
+            "showToastOnGenericError",
+            "sponsorBlockIntegration",
+            "themeSongIntegration",
+            "themeSongLightness",
+            "errorOnLyricsNotFound",
+            "openPluginList",
         ]), [
             { key: "toastDuration", oldDefault: 3 }, // new: 4
         ]);
@@ -9037,16 +9049,26 @@ const cfgMigrations = {
         if ("thumbnailOverlayImageFit" in oldData)
             delete oldData.thumbnailOverlayImageFit;
         return useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
-            "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
-            "frameSkip", "frameSkipWhilePlaying",
-            "frameSkipAmount", "watchPageFullSize",
-            "arrowKeyVolumeStep", "likeDislikeHotkeys",
-            "likeHotkey", "dislikeHotkey",
-            "currentLyricsHotkeyEnabled", "currentLyricsHotkey",
-            "skipToRemTimeHotkeyEnabled", "skipToRemTimeHotkey",
-            "rebindNextAndPrevious", "nextHotkey",
-            "previousHotkey", "rebindPlayPause",
-            "playPauseHotkey", "thumbnailOverlayITunesImgRes",
+            "aboveQueueBtnsSticky",
+            "autoScrollToActiveSongMode",
+            "frameSkip",
+            "frameSkipWhilePlaying",
+            "frameSkipAmount",
+            "watchPageFullSize",
+            "arrowKeyVolumeStep",
+            "likeDislikeHotkeys",
+            "likeHotkey",
+            "dislikeHotkey",
+            "currentLyricsHotkeyEnabled",
+            "currentLyricsHotkey",
+            "skipToRemTimeHotkeyEnabled",
+            "skipToRemTimeHotkey",
+            "rebindNextAndPrevious",
+            "nextHotkey",
+            "previousHotkey",
+            "rebindPlayPause",
+            "playPauseHotkey",
+            "thumbnailOverlayITunesImgRes",
         ]), [
             { key: "lyricsCacheMaxSize", oldDefault: 2000 }, // new: 5000
         ]);
@@ -9054,14 +9076,23 @@ const cfgMigrations = {
     // 10 -> 11 (v3.1)
     11: (oldData) => {
         const newCfg = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
-            "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
-            "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
-            "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
-            "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
-            "songListTrackNumbersEnabled", "songListTrackNumbers",
-            "yesImStillThere", "removeThumbnailRatingBar",
-            "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
-            "volumeSliderExponential", "volumeSliderExponentialLabelType",
+            "thumbnailOverlayPreferredSource",
+            "swapLikeDislikeButtons",
+            "thumbnailOverlayAlbumArtCacheTTL",
+            "thumbnailOverlayAlbumArtCacheMaxSize",
+            "focusSearchBarHotkeyEnabled",
+            "focusSearchBarHotkey",
+            "clearSearchBarHotkeyEnabled",
+            "clearSearchBarHotkey",
+            "songListTrackNumbersEnabled",
+            "songListTrackNumbers",
+            "yesImStillThere",
+            "removeThumbnailRatingBar",
+            "numKeysSkipToTimeDoublePress",
+            "numKeysSkipToTimeDoublePressBuffer",
+            "volumeSliderExponential",
+            "volumeSliderExponentialLabelType",
+            "likeDislikeHotkeysToggle",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
             { key: "initTimeout", oldDefault: 8 }, // new: 5
@@ -9074,21 +9105,26 @@ const cfgMigrations = {
     },
 };
 //#region migration helpers
-/** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
+/**
+ * Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values.
+ * This function is basically used for migrations where new features have been introduced, or where some features absolutely NEED to be reset to their new default value, like for a breaking change.
+ * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
+ */
 function useNewDefaults(baseData, resetKeys) {
     const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
     for (const key of resetKeys) // @ts-expect-error
-        newData[key] = featInfo?.[key]?.default; // typescript funny moments
+        newData[key] = featInfo?.[key]?.default; // typescript funny moments part 0x1a4
     return newData;
 }
 /**
- * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaultsCfg} to their old default values, as long as their current value is equal to the provided old default.
+ * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.
  * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be set to the new default.
- * Returns a copy of the object.
+ * This function is basically used for migrations where some features' default values have changed, but we don't want to upset users who have changed the value from its old default. May only be used for non-breaking changes.
+ * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
-function useNewDefaultsIfUnchanged(oldData, oldDefaultsCfg) {
+function useNewDefaultsIfUnchanged(oldData, oldDefaults) {
     const newData = structuredClone(oldData);
-    for (const { key, oldDefault } of oldDefaultsCfg) {
+    for (const { key, oldDefault } of oldDefaults) {
         // @ts-expect-error
         const defaultVal = featInfo?.[key]?.default;
         if (newData[key] === oldDefault)

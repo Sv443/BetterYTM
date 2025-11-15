@@ -483,15 +483,15 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The `BytmInternals` object returned by this function contains the following properties:
 > | Property | Type | Description |
 > | :-- | :-- | :-- |
-> | `constants` | Object | Contains all exports from the `src/constants.ts` file |
-> | `emitInterface` | Function | Emits a generic, global interface event |
-> | `emitSiteEvent` | Function | Emits an event using the siteEvents system |
-> | `siteEvents` | [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) | Event emitting instance of the siteEvents system |
-> | `addSelectorListener` | Function | Adds a listener checking for DOM changes using BYTM's own SelectorObserver instances |
-> | `showPrompt` | Function | Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt` |
-> | `setGlobalProp` | Function | Sets a global property on the `unsafeWindow.BYTM` object |
-> | `enableDiscardBeforeUnload` | Function | Enables discarding of the "beforeunload" window event (disables "unsaved data" popup) |
-> | `disableDiscardBeforeUnload` | Function | Disables discarding of the "beforeunload" window event (reenables "unsaved data" popup) |
+> | `constants` | `Object` | Contains all exports from the `src/constants.ts` file |
+> | `emitInterface` | `Function` | Emits a generic, global interface event |
+> | `emitSiteEvent` | `Function` | Emits an event using the siteEvents system |
+> | `siteEvents` | [CoreUtils `NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) | Event emitting instance of the siteEvents system |
+> | `addSelectorListener` | `Function` | Adds a listener checking for DOM changes using BYTM's own SelectorObserver instances |
+> | `showPrompt` | `Function` | Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt` |
+> | `setGlobalProp` | `Function` | Sets a global property on the `unsafeWindow.BYTM` object |
+> | `enableDiscardBeforeUnload` | `Function` | Enables discarding of the "beforeunload" window event (disables "you have unsaved data" popup) |
+> | `disableDiscardBeforeUnload` | `Function` | Disables discarding of the "beforeunload" window event (re-enables "you have unsaved data" popup) |
 
 <br>
 
