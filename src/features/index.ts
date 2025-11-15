@@ -1,11 +1,11 @@
-import { consumeStringGen, DatedError, type StringGen } from "@sv443-network/coreutils";
+import { consumeStringGen, DatedError, randomId, type StringGen } from "@sv443-network/coreutils";
 import { compare as compareVer } from "compare-versions";
 import { error, formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
-import { emitSiteEvent } from "../siteEvents.js";
+import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { closeToast, showIconToast } from "../components/toast.js";
 import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "../constants.js";
@@ -45,13 +45,13 @@ class ExampleError extends DatedError {
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
-  alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-  ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm"),
+  alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\"", title),
+  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental", undefined, t("experimental_feature")),
+  ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm", undefined, t("feature_only_works_on_ytm")),
   globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
-  reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
-  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
-  newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new"),
+  reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
+  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
+  newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new")),
 } as const satisfies Record<string, AdornFunc>;
 
 /** Order of adornment elements in the {@linkcode combineAdornments()} function */
@@ -65,10 +65,22 @@ adornmentOrder.set(adornments.advanced, 5);
 adornmentOrder.set(adornments.newFeature, 6);
 
 /** Creates an HTML string for the given adornment properties */
-const getAdornHtml = async (className: string, title: StringGen | undefined, resource: ResourceKey, extraAttributes?: StringGen) => {
+const getAdornHtml = async (className: string, title: StringGen | undefined, resource: ResourceKey, extraAttributes?: StringGen, clickDialogText?: StringGen) => {
   title = title ? await consumeStringGen(title) : undefined;
   extraAttributes = extraAttributes ? await consumeStringGen(extraAttributes) : undefined;
-  return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
+  const id = randomId(8, 36);
+  if(clickDialogText) {
+    siteEvents.once("cfgMenuMounted", () => {
+      const elem = document.getElementById(`bytm-adornment-${id}`);
+      if(!elem)
+        return;
+      elem.addEventListener("click", () => showPrompt({
+        type: "alert",
+        message: String(clickDialogText),
+      }));
+    });
+  }
+  return `<span id="bytm-adornment-${id}" class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 };
 
 /**
@@ -1311,7 +1323,7 @@ export const featInfo = {
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
-      duration: 10,
+      duration: 20,
       onClick: () => getErrorDialog(
         t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
         [t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]

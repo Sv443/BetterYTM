@@ -431,7 +431,7 @@
   "feature_helptext.rememberSongTime-1": "Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the video's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.",
   "feature_helptext.rememberSongTime-n": "Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the video's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.",
   "feature_desc.rememberSongTimeSites": "On which sites should the video time be remembered and restored?",
-  "feature_desc.rememberSongTimeDuration": "How long to remember the video's time for after it was last played",
+  "feature_desc.rememberSongTimeDuration": "How long to remember the video's time for after it was last played in seconds",
   "feature_desc.rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered video",
   "feature_helptext.rememberSongTimeReduction": "When restoring the time of a video that was remembered, this amount of seconds will be subtracted from the remembered time so you have more context when watching or listening to the part that was interrupted again.",
   "feature_desc.rememberSongTimeMinPlayTime": "Minimum amount of seconds a video needs to be played for its time to be remembered",

@@ -560,6 +560,16 @@ hr {
 
 /* #region cfg menu adornments */
 
+@keyframes svgPathFadeInOut {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
 .bytm-locale-icon svg path {
   fill: var(--bytm-locale-color, #fff);
 }
@@ -579,6 +589,7 @@ hr {
 
 .bytm-warning-icon svg path {
   fill: var(--bytm-warning-col, #fff);
+  animation: svgPathFadeInOut 1.5s infinite;
 }
 
 .bytm-reload-icon svg path {
