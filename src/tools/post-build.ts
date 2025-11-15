@@ -190,11 +190,11 @@ async function main() {
 
 //#region string replacements
 
-/** Replaces tokens in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with their respective value */
-function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
+/** Replaces patterns in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with the respective stringified value. */
+function insertValues(str: string, replacements: Record<string, Stringifiable>) {
   for(const key in replacements)
-    userscript = userscript.replace(new RegExp(`(\\/\\*\\s*)?#{{${key}}}(\\s*\\*\\/)?`, "gm"), String(replacements[key]));
-  return userscript;
+    str = str.replace(new RegExp(`(\\/\\*\\s*)?#{{${key}}}(\\s*\\*\\/)?`, "gm"), String(replacements[key]));
+  return str;
 }
 
 /** Removes sourcemapping comments */
@@ -402,7 +402,7 @@ function getRequireEntry(entry: RequireObjPkg) {
   if(entry.pkgName in deps)
     version = deps[entry.pkgName].replace(/[^0-9.]/g, "");
   else
-    throw new Error(`Library '${entry.pkgName}', referenced in 'assets/require.json' not found in dependencies or devDependencies`);
+    throw new Error(`Library '${entry.pkgName}' (referenced in 'assets/require.json') not found in package.json's dependencies or devDependencies`);
 
   return `// @require           ${baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
 }
@@ -437,7 +437,7 @@ async function getLinkedPkgs() {
 
 //#region @description:localized
 
-/** Returns the @description directive block for each defined locale in `assets/locales.json` */
+/** Returns the `@description` directive block for each defined locale in `assets/locales.json` */
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
@@ -469,7 +469,7 @@ function getLocalizedDescriptions() {
 
 //#region @antifeature
 
-/** Returns the @antifeature directive block for each defined antifeature, with translations. */
+/** Returns the `@antifeature` directive block for each defined antifeature, with translations. */
 async function getAntifeatureDescriptions() {
   const antifeatures = ["tracking"] as const;
 

@@ -47,8 +47,11 @@ export const cfgMigrations: DataMigrationsDict = {
 
   // 2 -> 3 (v1.0)
   3: (oldData: FeatureConfig) => useNewDefaults(oldData, [
-    "removeShareTrackingParam", "numKeysSkipToTime",
-    "fixSpacing", "scrollToActiveSongBtn", "logLevel",
+    "removeShareTrackingParam",
+    "numKeysSkipToTime",
+    "fixSpacing",
+    "scrollToActiveSongBtn",
+    "logLevel",
   ]),
 
   // 3 -> 4 (v1.1)
@@ -56,8 +59,11 @@ export const cfgMigrations: DataMigrationsDict = {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
       ...useNewDefaults(oldData, [
-        "rememberSongTime", "rememberSongTimeSites",
-        "volumeSliderScrollStep", "locale", "versionCheck",
+        "rememberSongTime",
+        "rememberSongTimeSites",
+        "volumeSliderScrollStep",
+        "locale",
+        "versionCheck",
       ]),
       arrowKeySkipBy: 10,
       switchSitesHotkey: {
@@ -72,28 +78,45 @@ export const cfgMigrations: DataMigrationsDict = {
 
   // 4 -> 5 (v2.0)
   5: (oldData: FeatureConfig) => useNewDefaults(oldData, [
-    "localeFallback", "geniUrlBase", "geniUrlToken",
-    "lyricsCacheMaxSize", "lyricsCacheTTL",
-    "clearLyricsCache", "advancedMode",
-    "checkVersionNow", "advancedLyricsFilter",
-    "rememberSongTimeDuration", "rememberSongTimeReduction",
-    "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
-    "setInitialTabVolume", "initialTabVolumeLevel",
-    "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
-    "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
-    "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
-    "fixHdrIssues", "clearQueueBtn",
-    "closeToastsTimeout", "disableDarkReaderSites",
+    "localeFallback",
+    "geniUrlBase",
+    "geniUrlToken",
+    "lyricsCacheMaxSize",
+    "lyricsCacheTTL",
+    "clearLyricsCache",
+    "advancedMode",
+    "checkVersionNow",
+    "advancedLyricsFilter",
+    "rememberSongTimeDuration",
+    "rememberSongTimeReduction",
+    "rememberSongTimeMinPlayTime",
+    "volumeSharedBetweenTabs",
+    "setInitialTabVolume",
+    "initialTabVolumeLevel",
+    "thumbnailOverlayBehavior",
+    "thumbnailOverlayToggleBtnShown",
+    "thumbnailOverlayShowIndicator",
+    "thumbnailOverlayIndicatorOpacity",
+    "thumbnailOverlayImageFit",
+    "removeShareTrackingParamSites",
+    "fixHdrIssues",
+    "clearQueueBtn",
+    "closeToastsTimeout",
+    "disableDarkReaderSites",
   ]),
 
   // 5 -> 6 (v2.1)
   6: (oldData: FeatureConfig) => {
     const newData = useNewDefaultsIfUnchanged(
       useNewDefaults(oldData, [
-        "autoLikeChannels", "autoLikeChannelToggleBtn",
-        "autoLikeTimeout", "autoLikeShowToast",
-        "autoLikeOpenMgmtDialog", "showVotes",
-        "numbersFormat", "toastDuration",
+        "autoLikeChannels",
+        "autoLikeChannelToggleBtn",
+        "autoLikeTimeout",
+        "autoLikeShowToast",
+        "autoLikeOpenMgmtDialog",
+        "showVotes",
+        "numbersFormat",
+        "toastDuration",
         "initTimeout",
         // forgot to add this to the migration when adding the feature way before so now will have to do:
         "volumeSliderLabel",
@@ -111,9 +134,12 @@ export const cfgMigrations: DataMigrationsDict = {
   7: (oldData: FeatureConfig) => {
     const newData = useNewDefaultsIfUnchanged(
       useNewDefaults(oldData, [
-        "showToastOnGenericError", "sponsorBlockIntegration",
-        "themeSongIntegration", "themeSongLightness",
-        "errorOnLyricsNotFound", "openPluginList",
+        "showToastOnGenericError",
+        "sponsorBlockIntegration",
+        "themeSongIntegration",
+        "themeSongLightness",
+        "errorOnLyricsNotFound",
+        "openPluginList",
       ]), [
         { key: "toastDuration", oldDefault: 3 }, // new: 4
       ],
@@ -158,16 +184,26 @@ export const cfgMigrations: DataMigrationsDict = {
 
     return useNewDefaultsIfUnchanged(
       useNewDefaults(oldData, [
-        "aboveQueueBtnsSticky", "autoScrollToActiveSongMode",
-        "frameSkip", "frameSkipWhilePlaying",
-        "frameSkipAmount", "watchPageFullSize",
-        "arrowKeyVolumeStep", "likeDislikeHotkeys",
-        "likeHotkey", "dislikeHotkey",
-        "currentLyricsHotkeyEnabled", "currentLyricsHotkey",
-        "skipToRemTimeHotkeyEnabled", "skipToRemTimeHotkey",
-        "rebindNextAndPrevious", "nextHotkey",
-        "previousHotkey", "rebindPlayPause",
-        "playPauseHotkey", "thumbnailOverlayITunesImgRes",
+        "aboveQueueBtnsSticky",
+        "autoScrollToActiveSongMode",
+        "frameSkip",
+        "frameSkipWhilePlaying",
+        "frameSkipAmount",
+        "watchPageFullSize",
+        "arrowKeyVolumeStep",
+        "likeDislikeHotkeys",
+        "likeHotkey",
+        "dislikeHotkey",
+        "currentLyricsHotkeyEnabled",
+        "currentLyricsHotkey",
+        "skipToRemTimeHotkeyEnabled",
+        "skipToRemTimeHotkey",
+        "rebindNextAndPrevious",
+        "nextHotkey",
+        "previousHotkey",
+        "rebindPlayPause",
+        "playPauseHotkey",
+        "thumbnailOverlayITunesImgRes",
       ]), [
         { key: "lyricsCacheMaxSize", oldDefault: 2000 }, // new: 5000
       ],
@@ -178,14 +214,23 @@ export const cfgMigrations: DataMigrationsDict = {
   11: (oldData: FeatureConfig) => {
     const newCfg = useNewDefaultsIfUnchanged(
       useNewDefaults(oldData, [
-        "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons",
-        "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize",
-        "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey",
-        "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey",
-        "songListTrackNumbersEnabled", "songListTrackNumbers",
-        "yesImStillThere", "removeThumbnailRatingBar",
-        "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer",
-        "volumeSliderExponential", "volumeSliderExponentialLabelType",
+        "thumbnailOverlayPreferredSource",
+        "swapLikeDislikeButtons",
+        "thumbnailOverlayAlbumArtCacheTTL",
+        "thumbnailOverlayAlbumArtCacheMaxSize",
+        "focusSearchBarHotkeyEnabled",
+        "focusSearchBarHotkey",
+        "clearSearchBarHotkeyEnabled",
+        "clearSearchBarHotkey",
+        "songListTrackNumbersEnabled",
+        "songListTrackNumbers",
+        "yesImStillThere",
+        "removeThumbnailRatingBar",
+        "numKeysSkipToTimeDoublePress",
+        "numKeysSkipToTimeDoublePressBuffer",
+        "volumeSliderExponential",
+        "volumeSliderExponentialLabelType",
+        "likeDislikeHotkeysToggle",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
@@ -204,25 +249,30 @@ export const cfgMigrations: DataMigrationsDict = {
 
 //#region migration helpers
 
-/** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
+/**
+ * Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values.  
+ * This function is basically used for migrations where new features have been introduced, or where some features absolutely NEED to be reset to their new default value, like for a breaking change.  
+ * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
+ */
 function useNewDefaults(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
   const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
   for(const key of resetKeys) // @ts-expect-error
-    newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
+    newData[key] = featInfo?.[key]?.default as never; // typescript funny moments part 0x1a4
   return newData;
 }
 
 /**
- * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaultsCfg} to their old default values, as long as their current value is equal to the provided old default.  
+ * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.  
  * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be set to the new default.  
- * Returns a copy of the object.
+ * This function is basically used for migrations where some features' default values have changed, but we don't want to upset users who have changed the value from its old default. May only be used for non-breaking changes.  
+ * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
 function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
   oldData: TConfig,
-  oldDefaultsCfg: Array<{ key: FeatureKey, oldDefault: unknown }>,
-) {
+  oldDefaults: Array<{ key: FeatureKey, oldDefault: unknown }>,
+): TConfig {
   const newData = structuredClone(oldData);
-  for(const { key, oldDefault } of oldDefaultsCfg) {
+  for(const { key, oldDefault } of oldDefaults) {
     // @ts-expect-error
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)

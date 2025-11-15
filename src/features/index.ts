@@ -744,20 +744,6 @@ export const featInfo = {
     advanced: true,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
-  // scrapped feature, maybe will be re-added in the future:
-  // advancedLyricsFilter: {
-  //   type: "toggle",
-  //   category: "lyrics",
-  //   group: "geniusLyrics",
-  //   supportedSites: ["ytm"],
-  //   since: "x.x.x",
-  //   default: false,
-  //   change: () => setTimeout(async () => await showPrompt({ type: "confirm", message: t("lyrics_cache_changed_clear_confirm") }) && clearLyricsCache(), 200),
-  //   advanced: true,
-  //   adornments: [adornments.experimental],
-  //   reloadRequired: false,
-  //   enable: noop,
-  // },
 
   //#region cat:volume
   volumeSliderExponential: {
