@@ -67,7 +67,7 @@ async function switchSite(newDomain: Domain) {
     if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
       return warn("Not on a supported page, so the site switch is ignored");
 
-    let subdomain;
+    let subdomain: "music" | "www" | undefined;
     if(newDomain === "ytm")
       subdomain = "music";
     else if(newDomain === "yt")
@@ -80,21 +80,21 @@ async function switchSite(newDomain: Domain) {
 
     const { pathname, search, hash } = new URL(location.href);
 
-    const vt = await getVideoTime(0);
+    const time = await getVideoTime(0);
 
-    log(`Found video time of ${vt} seconds`);
+    log(`Found video time of ${time} seconds`);
 
     const cleanSearch = search.split("&")
       .filter((param) => !param.match(/^\??(t|time_continue)=/))
       .join("&");
 
-    const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+    const newSearch = typeof time === "number" && time > videoTimeThreshold ?
       cleanSearch.includes("?")
         ? `${cleanSearch.startsWith("?")
           ? cleanSearch
           : "?" + cleanSearch
-        }&time_continue=${vt}`
-        : `?time_continue=${vt}`
+        }&time_continue=${time}`
+        : `?time_continue=${time}`
       : cleanSearch;
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
@@ -115,13 +115,17 @@ async function initLikeDislikeHotkeys() {
     if(isIgnoredInputElement())
       return;
 
-    const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
+    const { likeBtn, dislikeBtn, likeState } = getLikeDislikeBtns();
 
     if(hotkeyMatches(e, getFeature("likeHotkey"))) {
+      if(!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE")
+        return;
       likeBtn?.click();
       preventBubble(e);
     }
     else if(hotkeyMatches(e, getFeature("dislikeHotkey"))) {
+      if(!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE")
+        return;
       dislikeBtn?.click();
       preventBubble(e);
     }
@@ -206,6 +210,7 @@ async function initSearchBarHotkeys() {
 
 //#region proxy hotkeys
 
+/** Map of "proxy hotkey enable" feature keys to their respective proxy hotkey configurations */
 type ProxyHotkeys = Partial<Record<
   FeatKeysOfType<boolean>,
   Array<{
@@ -220,62 +225,55 @@ type ProxyHotkeys = Partial<Record<
   }>
 >>;
 
+type DispatchProxyHkOpts =
+  Required<Pick<KeyboardEventInit, "code" | "key" | "keyCode" | "which">>
+  & Pick<KeyboardEventInit, "shiftKey" | "ctrlKey" | "altKey" | "metaKey">;
+
 let lastProxyHkTime = 0;
+
+/** All proxy hotkey groups, identified by the feature key that toggles them off or on */
+const proxyHotkeys: ProxyHotkeys = {
+  rebindNextAndPrevious: [
+    {
+      hkFeatKey: "nextHotkey",
+      preventKey: "KeyJ",
+      domains: ["ytm"],
+      onPress: () => dispatchProxyKey({
+        code: "KeyJ",
+        key: "j",
+        keyCode: 74,
+        which: 74,
+      }),
+    },
+    {
+      hkFeatKey: "previousHotkey",
+      preventKey: "KeyK",
+      domains: ["ytm"],
+      onPress: () => dispatchProxyKey({
+        code: "KeyK",
+        key: "k",
+        keyCode: 75,
+        which: 75,
+      }),
+    },
+  ],
+  rebindPlayPause: [
+    {
+      hkFeatKey: "playPauseHotkey",
+      preventKey: "Space",
+      domains: ["ytm"],
+      onPress: () => dispatchProxyKey({
+        code: "Space",
+        key: " ",
+        keyCode: 32,
+        which: 32,
+      }),
+    },
+  ]
+} as const;
 
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
-  const dispatchProxyKey = (hkProps: Pick<KeyboardEventInit, "code" | "key" | "keyCode" | "which" | "shiftKey" | "ctrlKey" | "altKey" | "metaKey">) => {
-    document.body.dispatchEvent(new KeyboardEvent("keydown", {
-      ...hkProps,
-      bubbles: true,
-      cancelable: false,
-      // see https://github.com/Sv443/BetterYTM/issues/18
-      view: getUnsafeWindow(),
-    }));
-    log("Dispatched proxy hotkey:", hkProps);
-  };
-
-  /** All proxy hotkey groups, identified by the feature key that toggles them off or on */
-  const proxyHotkeys: ProxyHotkeys = {
-    rebindNextAndPrevious: [
-      {
-        hkFeatKey: "nextHotkey",
-        preventKey: "KeyJ",
-        domains: ["ytm"],
-        onPress: () => dispatchProxyKey({
-          code: "KeyJ",
-          key: "j",
-          keyCode: 74,
-          which: 74,
-        }),
-      },
-      {
-        hkFeatKey: "previousHotkey",
-        preventKey: "KeyK",
-        domains: ["ytm"],
-        onPress: () => dispatchProxyKey({
-          code: "KeyK",
-          key: "k",
-          keyCode: 75,
-          which: 75,
-        }),
-      },
-    ],
-    rebindPlayPause: [
-      {
-        hkFeatKey: "playPauseHotkey",
-        preventKey: "Space",
-        domains: ["ytm"],
-        onPress: () => dispatchProxyKey({
-          code: "Space",
-          key: " ",
-          keyCode: 32,
-          which: 32,
-        }),
-      },
-    ]
-  } as const;
-
   document.addEventListener("keydown", (e) => {
     if(isIgnoredInputElement())
       return;
@@ -305,7 +303,18 @@ async function initProxyHotkeys() {
       }
     }
   }, {
-    // ensure precedence over YTM's own listeners:
+    // ensure precedence over the page's own listeners:
     capture: true,
   });
 }
+
+function dispatchProxyKey(hkProps: DispatchProxyHkOpts) {
+  document.body.dispatchEvent(new KeyboardEvent("keydown", {
+    ...hkProps,
+    bubbles: true,
+    cancelable: true,
+    // see https://github.com/Sv443/BetterYTM/issues/18
+    view: getUnsafeWindow(),
+  }));
+  log("Dispatched proxy hotkey:", hkProps);
+};

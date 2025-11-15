@@ -225,10 +225,6 @@
   "vote_label_dislikes-1": "%1 dislike",
   "vote_label_dislikes-n": "%1 dislikes",
 
-  "vote_ratio_disabled": "Disabled",
-  "vote_ratio_green_red": "Green and red",
-  "vote_ratio_blue_gray": "Blue and gray",
-
   "votes_format_short": "Short",
   "votes_format_long": "Long",
 
@@ -469,6 +465,8 @@
   "feature_helptext.switchBetweenSites": "Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video/song.",
   "feature_desc.switchSitesHotkey": "The hotkey to switch between the sites",
   "feature_desc.likeDislikeHotkeys": "Add hotkeys to like and dislike the currently playing video/song",
+  "feature_desc.likeDislikeHotkeysToggle": "Allow the hotkeys to toggle the like/dislike state off again",
+  "feature_helptext.likeDislikeHotkeysToggle": "When enabled, pressing the like or dislike hotkey again will remove your like or dislike from the video/song. If disabled, you can only ever set the like or dislike buttons to be active via the hotkey, but not unset them.",
   "feature_desc.likeHotkey": "The hotkey to like the current video/song",
   "feature_desc.dislikeHotkey": "The hotkey to dislike the current video/song",
   "feature_desc.currentLyricsHotkeyEnabled": "Add a hotkey to open the current song's lyrics in a new tab",

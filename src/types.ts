@@ -867,6 +867,8 @@ export interface FeatureConfig {
   switchSitesHotkey: HotkeyObj;
   /** Add hotkeys for liking and disliking the current video/song */
   likeDislikeHotkeys: boolean;
+  /** Whether the hotkeys should toggle the like/dislike buttons instead of only setting them */
+  likeDislikeHotkeysToggle: boolean;
   /** The hotkey that needs to be pressed to like the current video/song */
   likeHotkey: HotkeyObj;
   /** The hotkey that needs to be pressed to dislike the current video/song */

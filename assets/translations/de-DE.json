@@ -225,10 +225,6 @@
   "vote_label_dislikes-1": "%1 Dislike",
   "vote_label_dislikes-n": "%1 Dislikes",
 
-  "vote_ratio_disabled": "Deaktiviert",
-  "vote_ratio_green_red": "Grün und rot",
-  "vote_ratio_blue_gray": "Blau und grau",
-
   "votes_format_short": "Kurz",
   "votes_format_long": "Lang",
 
@@ -469,6 +465,8 @@
   "feature_helptext.switchBetweenSites": "Wenn du auf YouTube oder YouTube Music bist, kannst du mit diesem Hotkey zur anderen Seite wechseln, während du auf demselben Video / Song bleibst.",
   "feature_desc.switchSitesHotkey": "Der Hotkey, um zwischen den Seiten zu wechseln",
   "feature_desc.likeDislikeHotkeys": "Füge Hotkeys hinzu, um das aktuell spielende Video/Lied zu liken oder disliken",
+  "feature_desc.likeDislikeHotkeysToggle": "Erlaube den Hotkeys, den Like/Dislike-Status wieder auszuschalten",
+  "feature_helptext.likeDislikeHotkeysToggle": "Wenn eingeschaltet, wird das erneute Drücken des Like- oder Dislike-Hotkeys deinen Like- oder Dislike-Status wieder vom Video/Lied entfernen. Wenn ausgeschaltet, kannst du die Like- oder Dislike-Buttons über den Hotkey nur noch aktivieren und nicht mehr deaktivieren.",
   "feature_desc.likeHotkey": "Der Hotkey, um das aktuell spielende Video/Lied zu liken",
   "feature_desc.dislikeHotkey": "Der Hotkey, um das aktuell spielende Video/Lied zu disliken",
   "feature_desc.currentLyricsHotkeyEnabled": "Einen Hotkey hinzufügen, um den Songtext des aktuell spielenden Songs in einem neuen Tab zu öffnen",
