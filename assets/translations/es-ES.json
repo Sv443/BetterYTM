@@ -92,6 +92,7 @@
   "active_mode_tooltip_dev_mode": "El modo de desarrollador está activo. Ahora tiene acceso a comandos de desarrollador, disponibles a través del menú ${scriptHandler}.",
   "advanced_mode": "Modo avanzado",
   "active_mode_tooltip_advanced_mode": "El modo avanzado está activo. Muchas funciones normalmente ocultas ahora son visibles y se pueden configurar.",
+
   "experimental_feature": "Función experimental",
   "advanced_feature": "Función de modo avanzado",
   "feature_only_works_on_ytm": "Solo funciona en YT Music",
