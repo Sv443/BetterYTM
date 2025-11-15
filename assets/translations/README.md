@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en-US`](./en-US.json) | `490` (default locale) |  |
-| ✅ | [`de-DE`](./de-DE.json) | `490/490` (100%) | ─ |
-|  | [`en-GB`](./en-GB.json) | `490/490` (100%) | `en-US` |
-| ‼️ | [`es-ES`](./es-ES.json) | `363/490` (74.1%) | ─ |
-| ‼️ | [`fr-FR`](./fr-FR.json) | `363/490` (74.1%) | ─ |
-| ‼️ | [`hi-IN`](./hi-IN.json) | `363/490` (74.1%) | ─ |
-| ‼️ | [`ja-JP`](./ja-JP.json) | `363/490` (74.1%) | ─ |
-| ‼️ | [`pt-BR`](./pt-BR.json) | `316/490` (64.5%) | ─ |
-| ‼️ | [`zh-CN`](./zh-CN.json) | `316/490` (64.5%) | ─ |
+|  | [`en-US`](./en-US.json) | `491` (default locale) |  |
+| ✅ | [`de-DE`](./de-DE.json) | `491/491` (100%) | ─ |
+|  | [`en-GB`](./en-GB.json) | `491/491` (100%) | `en-US` |
+| ‼️ | [`es-ES`](./es-ES.json) | `363/491` (73.9%) | ─ |
+| ‼️ | [`fr-FR`](./fr-FR.json) | `363/491` (73.9%) | ─ |
+| ‼️ | [`hi-IN`](./hi-IN.json) | `363/491` (73.9%) | ─ |
+| ‼️ | [`ja-JP`](./ja-JP.json) | `363/491` (73.9%) | ─ |
+| ‼️ | [`pt-BR`](./pt-BR.json) | `316/491` (64.4%) | ─ |
+| ‼️ | [`zh-CN`](./zh-CN.json) | `316/491` (64.4%) | ─ |
 
 <sub>
 ✅ - Fully translated

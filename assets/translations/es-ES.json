@@ -112,11 +112,12 @@
   "hotkey_input_click_to_change": "Haga clic para cambiar",
   "hotkey_input_click_to_change_tooltip": "%1 - Actualmente configurado en: %2 - Ingrese cualquier combinación de teclas para cambiar. Nota: algunos lectores de pantalla pueden bloquear ciertas combinaciones de teclas.",
   "hotkey_input_click_to_reset_tooltip": "Restablecer a la última combinación de teclas guardada",
-  "hotkey_key_ctrl": "Ctrl",
-  "hotkey_key_shift": "Mayús",
-  "hotkey_key_mac_option": "Option",
-  "hotkey_key_alt": "Alt",
-  "hotkey_key_none": "Ninguno seleccionado",
+  "hotkey_input_none_selected": "Ninguno seleccionado",
+
+  "hotkey_modifier_ctrl": "Ctrl",
+  "hotkey_modifier_shift": "Mayús",
+  "hotkey_modifier_mac_option": "Option",
+  "hotkey_modifier_alt": "Alt",
 
   "welcome_menu_title": "¡Bienvenido a %1!",
   "config_menu": "Configuración",

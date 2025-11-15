@@ -112,11 +112,12 @@
   "hotkey_input_click_to_change": "Cliquez pour changer",
   "hotkey_input_click_to_change_tooltip": "%1 - Actuellement défini sur: %2 - Entrez n'importe quelle combinaison de touches pour changer. Remarque: certains lecteurs d'écran peuvent bloquer certaines combinaisons de touches.",
   "hotkey_input_click_to_reset_tooltip": "Réinitialiser à la dernière combinaison de touches enregistrée",
-  "hotkey_key_ctrl": "Ctrl",
-  "hotkey_key_shift": "Maj",
-  "hotkey_key_mac_option": "Option",
-  "hotkey_key_alt": "Alt",
-  "hotkey_key_none": "Aucune touche",
+  "hotkey_input_none_selected": "Aucune touche",
+
+  "hotkey_modifier_ctrl": "Ctrl",
+  "hotkey_modifier_shift": "Maj",
+  "hotkey_modifier_mac_option": "Option",
+  "hotkey_modifier_alt": "Alt",
 
   "welcome_menu_title": "Bienvenue sur %1!",
   "config_menu": "Menu de configuration",

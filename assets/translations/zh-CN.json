@@ -108,11 +108,12 @@
   "hotkey_input_click_to_change": "点击更改",
   "hotkey_input_click_to_change_tooltip": "%1 - 当前设置为：%2 - 输入任何键组合以更改。注意：某些屏幕阅读器可能会阻止某些键组合。",
   "hotkey_input_click_to_reset_tooltip": "重置为上次保存的键组合",
-  "hotkey_key_ctrl": "Ctrl",
-  "hotkey_key_shift": "Shift",
-  "hotkey_key_mac_option": "Option",
-  "hotkey_key_alt": "Alt",
-  "hotkey_key_none": "未选择热键",
+  "hotkey_input_none_selected": "未选择热键",
+
+  "hotkey_modifier_ctrl": "Ctrl",
+  "hotkey_modifier_shift": "Shift",
+  "hotkey_modifier_mac_option": "Option",
+  "hotkey_modifier_alt": "Alt",
 
   "welcome_menu_title": "欢迎使用 %1！",
   "config_menu": "配置菜单",

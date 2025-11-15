@@ -112,11 +112,12 @@
   "hotkey_input_click_to_change": "बदलने के लिए क्लिक करें",
   "hotkey_input_click_to_change_tooltip": "%1 - वर्तमान रूप में सेट किया गया है: %2 - किसी भी कुंजी संयोजन को बदलने के लिए कोई भी कुंजी संयोजन दर्ज करें। ध्यान दें: कुछ स्क्रीन रीडर्स कुछ कुंजी संयोजनों को ब्लॉक कर सकते हैं।",
   "hotkey_input_click_to_reset_tooltip": "अंतिम सहेजे गए कुंजी संयोजन पर रीसेट करें",
-  "hotkey_key_ctrl": "Ctrl",
-  "hotkey_key_shift": "Shift",
-  "hotkey_key_mac_option": "विकल्प",
-  "hotkey_key_alt": "Alt",
-  "hotkey_key_none": "कोई नहीं",
+  "hotkey_input_none_selected": "कोई नहीं",
+
+  "hotkey_modifier_ctrl": "Ctrl",
+  "hotkey_modifier_shift": "Shift",
+  "hotkey_modifier_mac_option": "Option",
+  "hotkey_modifier_alt": "Alt",
 
   "welcome_menu_title": "%1 में आपका स्वागत है!",
   "config_menu": "कॉन्फ़िगरेशन मेनू",
