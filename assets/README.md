@@ -43,14 +43,18 @@ The keys of the object are the locale codes (which follow the [BCP 47 standard](
 ### [`resources.json`](resources.json)
 This file contains the resources that are loaded into the runtime through the `@resource` userscript directive.  
 That includes icons, images, CSS files, fonts, translations and other assets.  
-Configure which resources will always be fetched from the external asset source (GitHub's CDN) by editing the regexp pattern in the `externalAssetPattern` property.  
   
-Inside the file is an object under the `resources` prop, whose keys are the resource names and the values are the path to the resource or a configuration object (props are listed in the table below).  
+Configure which resources will always be fetched from the external asset source (GitHub's CDN) by editing the regexp pattern in the `externalAssetPattern` property.  
+The regexp pattern at `preloadAssetPattern` defines which resources will be preloaded immediately on page load.  
+Note that these regexp patterns need double escaping (e.g. `\\\"`) because they are stored as strings in JSON.  
+  
+Under the `resources` prop is an object, whose keys are the resource names and the values are the path to the resource or a configuration object (props are listed in the table below).  
 The path to the resource can be relative, in which case it's resolved relative to the `assets` directory.  
 If it starts with a slash, it will be resolved relative to the project root (where `package.json` is).  
+Otherwise, it will be treated as a static URL.  
   
 All values will be run through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](../src/tools/post-build.ts) to replace placeholders with dynamic values.  
-For example, `$BRANCH` will be replaced with the branch name. Find all possible replacements in that function's declaration.  
+For example, `$BRANCH` will be replaced with the build branch name. Find all possible replacements in that function's declaration.  
   
 The configuration object can have the following properties:
 | Property | Type     | Description              |

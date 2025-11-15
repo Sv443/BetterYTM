@@ -198,10 +198,6 @@
   "vote_label_dislikes-1": "%1 je n'aime pas",
   "vote_label_dislikes-n": "%1 je n'aime pas",
 
-  "vote_ratio_disabled": "Désactivé",
-  "vote_ratio_green_red": "Vert et rouge",
-  "vote_ratio_blue_gray": "Bleu et gris",
-
   "votes_format_short": "Court",
   "votes_format_long": "Long",
 
