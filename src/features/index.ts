@@ -8,7 +8,7 @@ import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type Fe
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { closeToast, showIconToast } from "../components/toast.js";
-import { mode, scriptInfo } from "../constants.js";
+import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "../constants.js";
 import { getDSSerializer } from "../serializers.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -42,9 +42,6 @@ class ExampleError extends DatedError {
 }
 
 //#region adornments
-
-/** Maximum number of sessions per user to show the "new feature" adornment */
-const newFeatureAdornmentMaxSessionCount = 10;
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
@@ -1241,7 +1238,7 @@ export const featInfo = {
     group: "likeDislikeHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
-    default: true,
+    default: false,
     reloadRequired: false,
     enable: noop,
   },
@@ -1342,7 +1339,7 @@ export const featInfo = {
   focusSearchBarHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
-    group: "searchBarHotkeys",
+    group: "focusSearchBarHotkey",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: true,
@@ -1352,7 +1349,7 @@ export const featInfo = {
   focusSearchBarHotkey: {
     type: "hotkey",
     category: "hotkeys",
-    group: "searchBarHotkeys",
+    group: "focusSearchBarHotkey",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: {
@@ -1367,7 +1364,7 @@ export const featInfo = {
   clearSearchBarHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
-    group: "searchBarHotkeys",
+    group: "clearSearchBarHotkey",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: true,
@@ -1377,7 +1374,7 @@ export const featInfo = {
   clearSearchBarHotkey: {
     type: "hotkey",
     category: "hotkeys",
-    group: "searchBarHotkeys",
+    group: "clearSearchBarHotkey",
     supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: {

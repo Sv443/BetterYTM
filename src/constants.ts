@@ -90,3 +90,6 @@ export const scriptInfo = pureObj({
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,
 } as const);
+
+/** Maximum number of sessions per user to show the "new feature" adornment in the config menu. */
+export const newFeatureAdornmentMaxSessionCount = 20;
