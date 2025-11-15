@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d8fbb429/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@56979679/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -76,10 +76,10 @@
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@2.0.0/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.3/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.4/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.7
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.0
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -408,8 +408,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "d8fbb429",
-    buildTimestamp: "1763236182935",
+    buildNumber: "56979679",
+    buildTimestamp: "1763243478962",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -471,7 +471,9 @@ const scriptInfo$1 = CoreUtils.pureObj({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-});var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});let canCompress$2 = true;
+});
+/** Maximum number of sessions per user to show the "new feature" adornment in the config menu. */
+const newFeatureAdornmentMaxSessionCount = 20;var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,newFeatureAdornmentMaxSessionCount:newFeatureAdornmentMaxSessionCount,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});let canCompress$2 = true;
 const lyricsCacheStore = new UserUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
@@ -3979,7 +3981,12 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     inputElem.role = "button";
     inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
     inputElem.dataset.state = infoElem.dataset.state = "inactive";
-    inputElem.innerText = initialValue?.code ?? t("hotkey_input_click_to_change");
+    if (typeof initialValue?.code === "string")
+        getHkInputContent(initialValue).then(content => {
+            inputElem.innerText = content;
+        });
+    else
+        inputElem.innerText = t("hotkey_input_click_to_change");
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
     const resetElem = document.createElement("span");
     resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
@@ -3993,10 +4000,16 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         emitSiteEvent("hotkeyInputActive", false);
         otherHotkeyInputActive = false;
         const curHk = currentHotkey ?? initialValue;
-        inputElem.innerText = curHk?.code ?? t("hotkey_input_click_to_change");
+        if (typeof curHk?.code === "string") {
+            getHkInputContent(curHk).then(content => {
+                inputElem.innerText = content;
+            });
+        }
+        else
+            inputElem.innerText = t("hotkey_input_click_to_change");
         inputElem.dataset.state = infoElem.dataset.state = "inactive";
         inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
-        setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
+        setInnerHtml(infoElem, curHk ? getHotkeyModifiersHtml(curHk) : "");
     };
     const activate = () => {
         if (otherHotkeyInputActive)
@@ -4011,21 +4024,21 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     const remountAC = new AbortController();
     siteEvents.once("recreateCfgMenu", () => remountAC.abort());
     window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true), { signal: remountAC.signal });
-    onInteraction(resetElem, (e) => {
+    onInteraction(resetElem, async (e) => {
         e.preventDefault();
         e.stopImmediatePropagation();
         onChange(initialValue);
         currentHotkey = initialValue;
         deactivate();
-        inputElem.innerText = initialValue.code;
-        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
+        inputElem.innerText = await getHkInputContent(initialValue);
+        setInnerHtml(infoElem, getHotkeyModifiersHtml(initialValue));
         resetElem.classList.add("bytm-hidden");
         inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
     });
     if (initialValue)
-        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
+        setInnerHtml(infoElem, getHotkeyModifiersHtml(initialValue));
     let lastKeyDown;
-    document.addEventListener("keypress", (e) => {
+    document.addEventListener("keypress", async (e) => {
         if (inputElem.dataset.state === "inactive")
             return;
         if (lastKeyDown?.code === e.code && lastKeyDown?.shift === e.shiftKey && lastKeyDown?.ctrl === e.ctrlKey && lastKeyDown?.alt === e.altKey)
@@ -4038,14 +4051,14 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
             ctrl: e.ctrlKey,
             alt: e.altKey,
         };
-        inputElem.innerText = hotkey.code;
+        inputElem.innerText = await getHkInputContent(hotkey);
         inputElem.dataset.state = infoElem.dataset.state = "inactive";
-        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
+        setInnerHtml(infoElem, getHotkeyModifiersHtml(hotkey));
         inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
         onChange(hotkey);
         currentHotkey = hotkey;
     }, { signal: remountAC.signal });
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", async (e) => {
         if (reservedKeys.filter(k => k !== "Tab").includes(e.code))
             return;
         if (inputElem.dataset.state !== "active")
@@ -4074,9 +4087,9 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         }
         else
             resetElem.classList.add("bytm-hidden");
-        inputElem.innerText = hotkey.code;
+        inputElem.innerText = await getHkInputContent(hotkey);
         inputElem.dataset.state = infoElem.dataset.state = "inactive";
-        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
+        setInnerHtml(infoElem, getHotkeyModifiersHtml(hotkey));
     }, { signal: remountAC.signal });
     const unsub = siteEvents.on("cfgMenuClosed", deactivate);
     remountAC.signal.addEventListener("abort", () => unsub());
@@ -4098,11 +4111,11 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
     return wrapperElem;
 }
 /** Returns HTML for the hotkey modifier keys info element */
-function getHotkeyInfoHtml(hotkey) {
+function getHotkeyModifiersHtml(hotkey) {
     const modifiers = [];
-    hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
-    hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
-    hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
+    hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_ctrl")}</kbd>`);
+    hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
+    hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
     return `\
 <div style="display: flex; align-items: center;">
   <span>
@@ -4113,17 +4126,32 @@ function getHotkeyInfoHtml(hotkey) {
   </span>
 </div>`;
 }
-/** Converts a hotkey object to a string */
-function hotkeyToString(hotkey) {
+async function getHkInputContent(hotkey) {
+    const trimCode = ({ code }) => {
+        if (/^Key[A-Z].+$/.test(code))
+            return code.slice(3);
+        if (/^Digit[0-9].+$/.test(code))
+            return code.slice(5);
+        return code.trim();
+    };
+    const keyCodeTrKey = `key_code.${hotkey.code}`;
+    const keyStr = await hasKey(keyCodeTrKey)
+        ? t(keyCodeTrKey)
+        : trimCode(hotkey);
+    return keyStr;
+}
+/** Converts a hotkey object to a string, with optional whitespace padding between symbols */
+function hotkeyToString(hotkey, padding = false) {
     if (!hotkey)
-        return t("hotkey_key_none");
+        return t("hotkey_input_none_selected");
     let str = "";
+    const p = padding ? " " : "";
     if (hotkey.ctrl)
-        str += `${t("hotkey_key_ctrl")}+`;
+        str += `${t("hotkey_modifier_ctrl")}${p}+${p}`;
     if (hotkey.shift)
-        str += `${t("hotkey_key_shift")}+`;
+        str += `${t("hotkey_modifier_shift")}${p}+${p}`;
     if (hotkey.alt)
-        str += `${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}+`;
+        str += `${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}${p}+${p}`;
     str += hotkey.code;
     return str;
 }//#region >> create menu
@@ -7465,8 +7493,6 @@ class ExampleError extends CoreUtils.DatedError {
     }
 }
 //#region adornments
-/** Maximum number of sessions per user to show the "new feature" adornment */
-const newFeatureAdornmentMaxSessionCount = 10;
 /** Decoration elements that can be added next to the label */
 const adornments = {
     alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
@@ -8626,7 +8652,7 @@ const featInfo = {
         group: "likeDislikeHotkeys",
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
-        default: true,
+        default: false,
         reloadRequired: false,
         enable: noop,
     },
@@ -8724,7 +8750,7 @@ const featInfo = {
     focusSearchBarHotkeyEnabled: {
         type: "toggle",
         category: "hotkeys",
-        group: "searchBarHotkeys",
+        group: "focusSearchBarHotkey",
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
         default: true,
@@ -8734,7 +8760,7 @@ const featInfo = {
     focusSearchBarHotkey: {
         type: "hotkey",
         category: "hotkeys",
-        group: "searchBarHotkeys",
+        group: "focusSearchBarHotkey",
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
         default: {
@@ -8749,7 +8775,7 @@ const featInfo = {
     clearSearchBarHotkeyEnabled: {
         type: "toggle",
         category: "hotkeys",
-        group: "searchBarHotkeys",
+        group: "clearSearchBarHotkey",
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
         default: true,
@@ -8759,7 +8785,7 @@ const featInfo = {
     clearSearchBarHotkey: {
         type: "hotkey",
         category: "hotkeys",
-        group: "searchBarHotkeys",
+        group: "clearSearchBarHotkey",
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
         default: {
