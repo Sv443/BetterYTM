@@ -564,21 +564,6 @@ export const featInfo = {
     default: true,
     adornments: [adornments.ytmOnly, adornments.reload],
   },
-  // archived idea for future version (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes):
-  // showVoteRatio: {
-  //   type: "select",
-  //   category: "layout",
-  //   group: "showVoteRatio",
-  //   supportedSites: ["ytm"],
-  //   since: "x.x.x",
-  //   options: () => [
-  //     { value: "disabled", label: t("vote_ratio_disabled") },
-  //     { value: "greenRed", label: t("vote_ratio_green_red") },
-  //     { value: "blueGray", label: t("vote_ratio_blue_gray") },
-  //   ],
-  //   default: "disabled",
-  //   adornments: [adornments.reload],
-  // },
 
   //#region cat:song lists
   lyricsQueueButton: {
@@ -907,7 +892,8 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "1.0.0",
     default: false,
-    adornments: [adornments.reload],
+    reloadRequired: false,
+    enable: noop,
   },
   autoCloseToasts: {
     type: "toggle",
@@ -1259,6 +1245,16 @@ export const featInfo = {
     group: "likeDislikeHotkeys",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  likeDislikeHotkeysToggle: {
+    type: "toggle",
+    category: "hotkeys",
+    group: "likeDislikeHotkeys",
+    supportedSites: ["ytm", "yt"],
+    since: "3.1.0",
     default: true,
     reloadRequired: false,
     enable: noop,

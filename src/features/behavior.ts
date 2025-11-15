@@ -11,24 +11,24 @@ import { LogLevel } from "../types.js";
 
 //#region beforeunload popup
 
-let discardBeforeUnload = false;
+let discardBeforeUnloadOverride: boolean | undefined;
 
 /** Disables the popup before leaving the site */
 export function enableDiscardBeforeUnload() {
-  discardBeforeUnload = true;
+  discardBeforeUnloadOverride = true;
   info("Disabled popup before leaving the site");
 }
 
 /** (Re-)enables the popup before leaving the site */
 export function disableDiscardBeforeUnload() {
-  discardBeforeUnload = false;
+  discardBeforeUnloadOverride = false;
   info("Enabled popup before leaving the site");
 }
 
 /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
 export async function initBeforeUnloadHook() {
   try {
-    interceptWindowEvent("beforeunload", () => discardBeforeUnload);
+    interceptWindowEvent("beforeunload", () => typeof discardBeforeUnloadOverride !== "undefined" ? discardBeforeUnloadOverride : getFeature("disableBeforeUnloadPopup"));
   }
   catch(err) {
     error("Error in beforeunload hook:", err);
