@@ -210,7 +210,7 @@ async function getHeaders(buildNbr: string) {
   const resourcesDirectives = await getResourceDirectives(buildNbr);
   const requireDirectives = await getRequireDirectives();
   const localizedDescriptions = getLocalizedDescriptions();
-  const antifeatureDescriptions = await getAntifeatureDescriptions();
+  const localizedAntifeatures = await getLocalizedAntifeatures();
 
   const header = `\
 // ==UserScript==
@@ -232,8 +232,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
-// @noframes\
-${antifeatureDescriptions ? "\n" + antifeatureDescriptions : "\n"}\
+// @noframes
 // @updateURL         ${hostMetaUrl}
 // @downloadURL       ${hostScriptUrl}
 // @grant             GM.getValue
@@ -248,6 +247,7 @@ ${antifeatureDescriptions ? "\n" + antifeatureDescriptions : "\n"}\
 // @grant             unsafeWindow\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
+${localizedAntifeatures ? "\n" + localizedAntifeatures : ""}\
 ${devDirectives ? "\n" + devDirectives : ""}
 // ==/UserScript==
 /*
@@ -470,15 +470,16 @@ function getLocalizedDescriptions() {
 //#region @antifeature
 
 /** Returns the `@antifeature` directive block for each defined antifeature, with translations. */
-async function getAntifeatureDescriptions() {
+async function getLocalizedAntifeatures() {
   const antifeatures = ["tracking"] as const;
 
   const antifeatureDescriptions: string[] = [];
 
-  for(const [locale] of Object.entries(localesJson)) {
-    const trFilePath = resolveResourcePath(`translations/${locale}.json`);
-    const trFile = JSON.parse(String(await readFile(trFilePath))) as typeof en_US;
-    for(const antifeature of antifeatures) {
+  for(const antifeature of antifeatures) {
+    for(const [locale, localeData] of Object.entries(localesJson)) {
+      const trFilePath = resolveResourcePath(`translations/${locale}.json`);
+      const trFile = JSON.parse(String(await readFile(trFilePath))) as typeof en_US;
+
       if(!("meta" in trFile) || !("antifeatures" in trFile.meta) || !(antifeature in trFile.meta.antifeatures))
         continue;
 
@@ -486,12 +487,25 @@ async function getAntifeatureDescriptions() {
       if(!desc || desc.length === 0)
         continue;
 
+      let loc = locale;
+      if(loc.length < 5)
+        loc += " ".repeat(5 - loc.length);
+
       const getAntiFeatStr = (tagSuffix = "      ") => `// @antifeature${tagSuffix} ${antifeature} ${desc}`;
 
       if(locale === "en-US")
         antifeatureDescriptions.unshift(getAntiFeatStr());
 
-      antifeatureDescriptions.push(getAntiFeatStr(`:${locale}`));
+      antifeatureDescriptions.push(getAntiFeatStr(`:${loc}`));
+
+      if("altLocales" in localeData) {
+        for(const altLoc of localeData.altLocales) {
+          let alt = altLoc.replace(/_/, "-");
+          if(alt.length < 5)
+            alt += " ".repeat(5 - alt.length);
+          antifeatureDescriptions.push(getAntiFeatStr(`:${alt}`));
+        }
+      }
     }
   }
 
