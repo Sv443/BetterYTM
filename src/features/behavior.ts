@@ -316,6 +316,11 @@ document.addEventListener("mousedown", () => isDragging = true);
 document.addEventListener("mouseup", () => isDragging = false);
 document.addEventListener("click", () => lastClick = Date.now());
 
+let isInFullscreen = false;
+siteEvents.on("fullscreenToggled", (val) => isInFullscreen = val);
+
+// TODO:FIXME: disable movement events while in fullscreen
+
 /** Initializes the "Are you still there?" popup dismissing feature */
 export async function initStillThere() {
   siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
@@ -386,6 +391,8 @@ export async function initStillThere() {
   // dispatch on interval
 
   const tryClick = () => {
+    if(isInFullscreen)
+      return warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
     if(isDragging || Date.now() - lastClick < lastInteractionTimeout)
       return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
 
@@ -424,6 +431,8 @@ export async function initStillThere() {
   };
 
   const tryMove = async () => {
+    if(isInFullscreen)
+      return warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
     if(isDragging || Date.now() - lastClick < lastInteractionTimeout)
       return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
 

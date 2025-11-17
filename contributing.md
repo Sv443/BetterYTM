@@ -2232,7 +2232,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > unsafeWindow.BYTM.showIconToast({
 >   message: "This is an icon toast",
 >   icon: "icon-help",
->   iconFill: "var(--bytm-warning-col)", // find all values in src/dialogs.css
+>   iconFill: "var(--bytm-error-col)", // you can find most variables at the top of 'src/dialogs/dialogs.css', 'src/components/BytmDialog.css' and 'src/features/layout.css'
 >   duration: 3_000,
 >   position: "bl",
 > });

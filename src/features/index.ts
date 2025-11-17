@@ -45,27 +45,35 @@ class ExampleError extends DatedError {
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
-  alert: async (title: StringGen) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\"", title),
-  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental", undefined, t("experimental_feature")),
-  ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm", undefined, t("feature_only_works_on_ytm")),
-  globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
-  reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
-  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
-  newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new")),
+  /** Indicates that the feature is important and should be used with caution. */
+  alert: async (title: StringGen) => await getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\"", title),
+  /** Indicates that the feature is experimental and may be unstable. */
+  experimental: async () => await getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental", undefined, t("experimental_feature")),
+  /** Indicates that the feature only works on YT Music. */
+  ytmOnly: async () => await getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm", undefined, t("feature_only_works_on_ytm")),
+  /** Indicates that the feature relates to language, as a language-independent way to find the translation option. */
+  globe: async () => await getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
+  /** Indicates that changing this feature requires a page reload to take effect. */
+  reload: async () => getFeature("advancedMode") ? await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
+  /** Indicates that the feature is only configurable in advanced mode. */
+  advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
+  /** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
+  newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new")),
 } as const satisfies Record<string, AdornFunc>;
 
-/** Order of adornment elements in the {@linkcode combineAdornments()} function */
-const adornmentOrder = new Map<AdornFunc, number>();
-adornmentOrder.set(adornments.alert, 0);
-adornmentOrder.set(adornments.experimental, 1);
-adornmentOrder.set(adornments.ytmOnly, 2);
-adornmentOrder.set(adornments.globe, 3);
-adornmentOrder.set(adornments.reload, 4);
-adornmentOrder.set(adornments.advanced, 5);
-adornmentOrder.set(adornments.newFeature, 6);
+/** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
+const adornmentOrder = new Map<AdornFunc, number>([
+  [adornments.alert, 0],
+  [adornments.experimental, 1],
+  [adornments.ytmOnly, 2],
+  [adornments.globe, 3],
+  [adornments.reload, 4],
+  [adornments.advanced, 5],
+  [adornments.newFeature, 6],
+]);
 
 /** Creates an HTML string for the given adornment properties */
-const getAdornHtml = async (className: string, title: StringGen | undefined, resource: ResourceKey, extraAttributes?: StringGen, clickDialogText?: StringGen) => {
+async function getAdornHtml(className: string, title: StringGen | undefined, resource: ResourceKey, extraAttributes?: StringGen, clickDialogText?: StringGen) {
   title = title ? await consumeStringGen(title) : undefined;
   extraAttributes = extraAttributes ? await consumeStringGen(extraAttributes) : undefined;
   const id = randomId(8, 36);
@@ -875,7 +883,7 @@ export const featInfo = {
       return `${value}%`;
     },
     adornments: () => getFeature("volumeSharedBetweenTabs")
-      ? [adornments.ytmOnly, adornments.reload, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
+      ? [adornments.ytmOnly, adornments.reload, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))]
       : [adornments.ytmOnly, adornments.reload],
   },
 

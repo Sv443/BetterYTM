@@ -25,7 +25,9 @@ assignees: Sv443
 
 
 ### Compliance:
-<!-- After submitting, please click the checkbox below to confirm you've read and agree to the Plugin SLA. -->
-- [ ] My plugin complies with the [BetterYTM Plugin SLA (sublicense agreement) v2.](https://github.com/Sv443/BetterYTM/blob/main/license-for-plugins.txt)
+<!-- After submitting, please click the checkboxes below to confirm. -->
+- [ ] My plugin complies with the [BetterYTM Plugin Sublicense Agreement v2.](https://github.com/Sv443/BetterYTM/blob/main/license-for-plugins.txt)
 - [ ] My plugin follows the [YouTube Terms of Service.](https://www.youtube.com/static?template=terms)
-- [ ] My plugin does not infringe on any third-party rights, including copyrights, trademarks or privacy rights.
+- [ ] My plugin does not infringe on any third-party rights, including copyrights, trademarks, privacy rights or human rights.
+- [ ] I am the original author of the plugin or have obtained permission from the original author to submit it here.
+- [ ] I understand that submitting this plugin does not guarantee it will be included in the BetterYTM readme or userscript.
