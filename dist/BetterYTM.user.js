@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6e86ac51/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@87c38d53/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -54,15 +54,6 @@
 // @connect           youtube.com
 // @connect           returnyoutubedislikeapi.com
 // @noframes
-// @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:en-US tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
-// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
 // @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
 // @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
 // @grant             GM.getValue
@@ -80,6 +71,39 @@
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.0
+// @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:en-US tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en    tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en-CA tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:es    tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:es-MX tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr    tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-CA tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-BE tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-CH tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-LU tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:hi    tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:hi-NP tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
+// @antifeature:ja    tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
+// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:pt    tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:pt-PT tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh    tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-TW tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-HK tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-SG tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -408,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "6e86ac51",
-    buildTimestamp: "1763245009015",
+    buildNumber: "87c38d53",
+    buildTimestamp: "1763397291676",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2245,6 +2269,9 @@ document.addEventListener("dragend", () => isDragging = false);
 document.addEventListener("mousedown", () => isDragging = true);
 document.addEventListener("mouseup", () => isDragging = false);
 document.addEventListener("click", () => lastClick = Date.now());
+let isInFullscreen = false;
+siteEvents.on("fullscreenToggled", (val) => isInFullscreen = val);
+// TODO:FIXME: disable movement events while in fullscreen
 /** Initializes the "Are you still there?" popup dismissing feature */
 async function initStillThere() {
     siteEvents.on("songTitleChanged", (newTitle) => curSongTitle = newTitle);
@@ -2299,6 +2326,8 @@ async function initStillThere() {
     });
     // dispatch on interval
     const tryClick = () => {
+        if (isInFullscreen)
+            return warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
         if (isDragging || Date.now() - lastClick < lastInteractionTimeout)
             return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
         // click the navbar
@@ -2334,6 +2363,8 @@ async function initStillThere() {
         }));
     };
     const tryMove = async () => {
+        if (isInFullscreen)
+            return warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
         if (isDragging || Date.now() - lastClick < lastInteractionTimeout)
             return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
         // dispatch mousemoves with random vector for a second
@@ -7495,25 +7526,33 @@ class ExampleError extends CoreUtils.DatedError {
 //#region adornments
 /** Decoration elements that can be added next to the label */
 const adornments = {
-    alert: async (title) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\"", title),
-    experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental", undefined, t("experimental_feature")),
-    ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm", undefined, t("feature_only_works_on_ytm")),
-    globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
-    reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
-    advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
-    newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new")),
+    /** Indicates that the feature is important and should be used with caution. */
+    alert: async (title) => await getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\"", title),
+    /** Indicates that the feature is experimental and may be unstable. */
+    experimental: async () => await getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental", undefined, t("experimental_feature")),
+    /** Indicates that the feature only works on YT Music. */
+    ytmOnly: async () => await getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm", undefined, t("feature_only_works_on_ytm")),
+    /** Indicates that the feature relates to language, as a language-independent way to find the translation option. */
+    globe: async () => await getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
+    /** Indicates that changing this feature requires a page reload to take effect. */
+    reload: async () => getFeature("advancedMode") ? await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
+    /** Indicates that the feature is only configurable in advanced mode. */
+    advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
+    /** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
+    newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new")),
 };
-/** Order of adornment elements in the {@linkcode combineAdornments()} function */
-const adornmentOrder = new Map();
-adornmentOrder.set(adornments.alert, 0);
-adornmentOrder.set(adornments.experimental, 1);
-adornmentOrder.set(adornments.ytmOnly, 2);
-adornmentOrder.set(adornments.globe, 3);
-adornmentOrder.set(adornments.reload, 4);
-adornmentOrder.set(adornments.advanced, 5);
-adornmentOrder.set(adornments.newFeature, 6);
+/** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
+const adornmentOrder = new Map([
+    [adornments.alert, 0],
+    [adornments.experimental, 1],
+    [adornments.ytmOnly, 2],
+    [adornments.globe, 3],
+    [adornments.reload, 4],
+    [adornments.advanced, 5],
+    [adornments.newFeature, 6],
+]);
 /** Creates an HTML string for the given adornment properties */
-const getAdornHtml = async (className, title, resource, extraAttributes, clickDialogText) => {
+async function getAdornHtml(className, title, resource, extraAttributes, clickDialogText) {
     title = title ? await CoreUtils.consumeStringGen(title) : undefined;
     extraAttributes = extraAttributes ? await CoreUtils.consumeStringGen(extraAttributes) : undefined;
     const id = CoreUtils.randomId(8, 36);
@@ -7529,7 +7568,7 @@ const getAdornHtml = async (className, title, resource, extraAttributes, clickDi
         });
     }
     return `<span id="bytm-adornment-${id}" class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
-};
+}
 /**
  * Resolves the adornments property from a {@linkcode featInfo} entry and returns an array of HTML strings.
  * Also adds conditional adornments like the "new feature" adornment.
@@ -8298,7 +8337,7 @@ const featInfo = {
             return `${value}%`;
         },
         adornments: () => getFeature("volumeSharedBetweenTabs")
-            ? [adornments.ytmOnly, adornments.reload, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
+            ? [adornments.ytmOnly, adornments.reload, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))]
             : [adornments.ytmOnly, adornments.reload],
     },
     //#region cat:behavior
