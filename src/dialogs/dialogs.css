@@ -126,8 +126,13 @@
   height: 24px;
 }
 
-.bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff);
+.bytm-warning-icon svg path.circle {
+  fill: var(--bytm-error-col, #fff);
+  animation: svgPathFadeInOut 1.5s infinite;
+}
+
+.bytm-warning-icon svg path.bang {
+  fill: var(--bytm-error-col, #fff);
   animation: svgPathFadeInOut 1.5s infinite;
 }
 

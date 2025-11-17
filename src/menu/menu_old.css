@@ -231,7 +231,7 @@
   --bytm-menu-logo-animation-timing-function: cubic-bezier(0.3, 0.35, 0.45, 1);
   width: 32px;
   height: 32px;
-  margin-right: 10px;
+  margin-right: 14px;
   cursor: pointer;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -315,7 +315,7 @@
 }
 
 .bytm-menu-link:not(:last-of-type) {
-  margin-right: 10px;
+  margin-right: 14px;
 }
 
 .bytm-menu-link .bytm-menu-img {

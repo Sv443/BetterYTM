@@ -1,3 +1,4 @@
+/* Applies to all BytmDialog instances */
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
@@ -587,8 +588,13 @@ hr {
   height: 24px;
 }
 
-.bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff);
+.bytm-warning-icon svg path.circle {
+  fill: var(--bytm-error-col, #fff);
+  animation: svgPathFadeInOut 1.5s infinite;
+}
+
+.bytm-warning-icon svg path.bang {
+  fill: var(--bytm-error-col, #fff);
   animation: svgPathFadeInOut 1.5s infinite;
 }
 
@@ -1396,7 +1402,7 @@ body.bytm-dom-ytm
   --bytm-menu-logo-animation-timing-function: cubic-bezier(0.3, 0.35, 0.45, 1);
   width: 32px;
   height: 32px;
-  margin-right: 10px;
+  margin-right: 14px;
   cursor: pointer;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -1480,7 +1486,7 @@ body.bytm-dom-ytm
 }
 
 .bytm-menu-link:not(:last-of-type) {
-  margin-right: 10px;
+  margin-right: 14px;
 }
 
 .bytm-menu-link .bytm-menu-img {
@@ -2467,7 +2473,7 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 }
 
 #bytm-plugin-list-dialog-bg {
-  --bytm-plugin-list-secondary-col: #c8c8c8;
+  --bytm-plugin-list-secondary-col: #c4c4c4;
   --bytm-plugin-list-row-padding-ver: 12px;
   --bytm-plugin-list-row-max-height: 130px;
 }
