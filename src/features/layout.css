@@ -31,6 +31,32 @@ html[dark] {
   white-space: normal;
 }
 
+.bytm-flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.bytm-flex-row-no-gap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bytm-flex-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.bytm-flex-col-no-gap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .subtitle yt-formatted-string a,
 .subtitle yt-formatted-string span:last-of-type {
   text-overflow: ellipsis;

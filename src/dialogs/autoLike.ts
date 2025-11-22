@@ -305,6 +305,7 @@ function renderFooter() {
   wrapperEl.appendChild(addNewBtnElem);
 
   const rightBtnsCont = document.createElement("div");
+  rightBtnsCont.classList.add("bytm-flex-row");
 
   const deleteAllBtnElem = document.createElement("button");
   deleteAllBtnElem.classList.add("bytm-btn");
