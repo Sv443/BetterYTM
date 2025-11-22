@@ -20,7 +20,7 @@
     const stream = "mozCaptureStream" in videoElement
       ? (videoElement.mozCaptureStream as () => MediaStream)()
       // @ts-expect-error idk why only mozCaptureStream is in lib.dom.d.ts
-      : (videoElement.captureStream as () => MediaStream)()
+      : (videoElement.captureStream as () => MediaStream)();
 
     const streamSource = audioCtx.createMediaStreamSource(stream);
 
