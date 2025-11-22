@@ -5,11 +5,23 @@ For the sole purpose of the creation of plugins that interface with the BetterYT
 project, the following sublicense agreement is made between the original author
 of the BetterYTM project (Sv443) and anyone who wishes to create plugins for it.
 
+For purposes of this Agreement, 'BetterYTM' refers to the BetterYTM project and its
+associated source code. 'BetterYTM Maintainers' or 'Maintainers' refers to the
+individual(s) or entity that holds the copyright to the BetterYTM source code and
+controls the project's official distribution channels. Unless otherwise stated,
+this is the project's original author, Sv443, and any designated contributors
+explicitly authorized by the original author to act on behalf of the project.
+
 The following terms are to be followed when creating and distributing plugins for
 the BetterYTM project, which itself is licensed under the AGPL-3.0-only license
 (see `LICENSE.txt`).
 
-The plugin author (referred to as "you" in this document) is hereby granted a
+This Agreement is governed by the laws of the Federal Republic of Germany, excluding
+its conflict-of-law provisions. Exclusive place of jurisdiction for all disputes
+arising from or in connection with this Agreement is the competent courts of the
+Federal Republic of Germany.
+
+The plugin author (also referred to as 'you' in this document) is hereby granted a
 sublicense to use parts of the source code of the BetterYTM project in the source
 code of their plugin, under terms different than that of the AGPL-3.0-only license,
 as long as the following terms are followed:
@@ -17,10 +29,11 @@ as long as the following terms are followed:
 1. Permitted Source Code Usage:
   Within the scope of using the source code for the plugin's functionality, you are
   allowed to include, modify, embed, redistribute, sublicense and sell copies of
-  the source code inside the following folders of the BetterYTM project:
+  the plugin, as long as only the following parts of the BetterYTM source code are
+  used in the plugin's distributed source code:
     - The root directory (which contains `package.json`)
-    - The `src/` folder, *excluding all subfolders in `src/`*
-    - The `assets/` folder
+    - The `/src/` folder, excluding all subfolders in `/src/`
+    - The `/assets/` folder
 
 2. Source Code Availability:
   You are to make the source code of your plugin available to anyone so they may
@@ -39,8 +52,9 @@ as long as the following terms are followed:
 
 4. Platform Terms of Service:
   Since BetterYTM runs on top of YouTube and YouTube Music, your plugin must also
-  comply with YouTube's Terms of Service and Community Guidelines. Any plugin that
-  violates these terms may be subject to removal.
+  comply with YouTube's current Terms of Service and Community Guidelines. Any plugin
+  that is found to violate these terms may be subject to removal from official plugin
+  repositories or listings, and will not be endorsed by the BetterYTM project.
 
 5. Credit to Original Author:
   Use is granted under the condition that the original authors and the BetterYTM
@@ -55,11 +69,28 @@ as long as the following terms are followed:
   BetterYTM project and could, in severe cases, even result in legal action being
   taken against you and your plugin.
 
-7. No Warranty:
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
+7. Termination:
+  Your rights under this Agreement automatically terminate upon any material breach of
+  its terms. Upon termination, you must cease distributing plugins that rely on the
+  sublicensed BetterYTM source code. The BetterYTM Maintainers may reinstate your
+  rights at their discretion if the breach is remedied. Termination under this section
+  does not affect any rights the Maintainers may have under applicable law.
+
+8. Disclaimer of Warranty:
+  THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
+  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+  PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+  IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND
+  PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU
+  ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+9. Limitation of Liability:
+  IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY
+  COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS
+  PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL,
+  INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
+  PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE
+  OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE
+  WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGES.
