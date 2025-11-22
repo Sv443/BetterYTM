@@ -66,6 +66,7 @@
 
   "reset": "Reset",
   "close": "Close",
+  "delete_all": "Delete All",
   "log_level_debug": "Debug (most)",
   "log_level_info": "Info (only important)",
   "toggled_on": "On",
@@ -213,6 +214,8 @@
   "auto_like_export_import_title": "Export or Import Auto-liked Channels",
   "auto_like_export_desc": "Copy the following text to export your auto-liked channels.",
   "auto_like_import_desc": "Paste the auto-liked channels you want to import into the field below, then click the import button:",
+  "auto_like_delete_all_tooltip": "Delete all auto-liked channels",
+  "auto_like_delete_all_confirm": "Do you really want to delete all auto-liked channels?",
 
   "prompt_confirm": "Confirm",
   "prompt_close": "Close",

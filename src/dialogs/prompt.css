@@ -34,7 +34,7 @@
 #bytm-prompt-dialog-buttons-cont {
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  gap: 16px;
 }
 
 #bytm-prompt-dialog-buttons-cont button {

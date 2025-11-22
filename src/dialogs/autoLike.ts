@@ -155,9 +155,10 @@ async function renderBody() {
     const searchVal = searchbarEl.value.trim().toLowerCase();
     const rows = document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row");
     for(const row of rows) {
-      const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
-      const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
-      row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
+      const san = (str?: string) => str?.trim().toLowerCase().replace(/\s/g, "");
+      const name = san(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
+      const id = san(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
+      row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
     }
   });
 
@@ -303,13 +304,24 @@ function renderFooter() {
   addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
   wrapperEl.appendChild(addNewBtnElem);
 
+  const rightBtnsCont = document.createElement("div");
+
+  const deleteAllBtnElem = document.createElement("button");
+  deleteAllBtnElem.classList.add("bytm-btn");
+  deleteAllBtnElem.textContent = t("delete_all");
+  deleteAllBtnElem.ariaLabel = deleteAllBtnElem.title = t("auto_like_delete_all_tooltip");
+  rightBtnsCont.appendChild(deleteAllBtnElem);
+
   const importExportBtnElem = document.createElement("button");
   importExportBtnElem.classList.add("bytm-btn");
   importExportBtnElem.textContent = t("export_import");
   importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
-  wrapperEl.appendChild(importExportBtnElem);
+  rightBtnsCont.appendChild(importExportBtnElem);
 
+  wrapperEl.appendChild(rightBtnsCont);
+  
   onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
+  onInteraction(deleteAllBtnElem, () => deleteAllAutoLikeChannelsPrompt());
   onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
 
   return wrapperEl;
@@ -317,6 +329,28 @@ function renderFooter() {
 
 async function openImportExportAutoLikeChannelsDialog() {
   await autoLikeExImDialog?.open();
+}
+
+// #region delete all prompt
+
+async function deleteAllAutoLikeChannelsPrompt() {
+  const confirm = await showPrompt({
+    type: "confirm",
+    message: t("auto_like_delete_all_confirm"),
+  });
+
+  if(!confirm)
+    return;
+
+  await autoLikeStore.setData({ channels: [] });
+  emitSiteEvent("autoLikeChannelsUpdated");
+
+  const unsub = autoLikeDialog?.on("clear", async () => {
+    unsub?.();
+    await autoLikeDialog?.open();
+  });
+
+  autoLikeDialog?.unmount();
 }
 
 //#region add prompt

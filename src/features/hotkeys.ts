@@ -27,13 +27,18 @@ export async function initHotkeys() {
 
 //#region utils
 
-function hotkeyMatches(e: KeyboardEvent, hk: HotkeyObj) {
-  return e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt;
+/** Checks whether the given keyboard event matches the given hotkey object. */
+function hotkeyMatches(evt: KeyboardEvent, hk: HotkeyObj) {
+  return evt.code === hk.code
+    && evt.shiftKey === hk.shift
+    && evt.ctrlKey === hk.ctrl
+    && evt.altKey === hk.alt;
 }
 
-function preventBubble(e: Event) {
-  e.preventDefault();
-  e.stopImmediatePropagation();
+/** Prevents bubbling and the default action of the given event. */
+function preventBubble(evt: Event) {
+  evt.preventDefault();
+  evt.stopImmediatePropagation();
 }
 
 //#region site switch
@@ -53,10 +58,10 @@ export async function initSiteSwitch() {
     if(siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
       switchSite(domain === "yt" ? "ytm" : "yt");
   }, { capture: true });
-  siteEvents.on("hotkeyInputActive", (state) => {
+  siteEvents.on("hotkeyInputActive", (hkInputActive) => {
     if(!getFeature("switchBetweenSites"))
       return;
-    siteSwitchEnabled = !state;
+    siteSwitchEnabled = !hkInputActive;
   });
   log("Initialized site switch listener");
 }
@@ -118,16 +123,16 @@ async function initLikeDislikeHotkeys() {
     const { likeBtn, dislikeBtn, likeState } = getLikeDislikeBtns();
 
     if(hotkeyMatches(e, getFeature("likeHotkey"))) {
+      preventBubble(e);
       if(!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE")
         return;
       likeBtn?.click();
-      preventBubble(e);
     }
     else if(hotkeyMatches(e, getFeature("dislikeHotkey"))) {
+      preventBubble(e);
       if(!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE")
         return;
       dislikeBtn?.click();
-      preventBubble(e);
     }
   }, { capture: true });
 }
