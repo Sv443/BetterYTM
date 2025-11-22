@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@87c38d53/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1907fbb2/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "87c38d53",
-    buildTimestamp: "1763397291676",
+    buildNumber: "1907fbb2",
+    buildTimestamp: "1763854250184",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3111,9 +3111,10 @@ async function renderBody$4() {
         const searchVal = searchbarEl.value.trim().toLowerCase();
         const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
         for (const row of rows) {
-            const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
-            const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
-            row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
+            const san = (str) => str?.trim().toLowerCase().replace(/\s/g, "");
+            const name = san(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
+            const id = san(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
+            row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
         }
     });
     searchContLeftSideEl.appendChild(searchbarEl);
@@ -3226,17 +3227,41 @@ function renderFooter$1() {
     addNewBtnElem.textContent = t("new_entry");
     addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
     wrapperEl.appendChild(addNewBtnElem);
+    const rightBtnsCont = document.createElement("div");
+    const deleteAllBtnElem = document.createElement("button");
+    deleteAllBtnElem.classList.add("bytm-btn");
+    deleteAllBtnElem.textContent = t("delete_all");
+    deleteAllBtnElem.ariaLabel = deleteAllBtnElem.title = t("auto_like_delete_all_tooltip");
+    rightBtnsCont.appendChild(deleteAllBtnElem);
     const importExportBtnElem = document.createElement("button");
     importExportBtnElem.classList.add("bytm-btn");
     importExportBtnElem.textContent = t("export_import");
     importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
-    wrapperEl.appendChild(importExportBtnElem);
+    rightBtnsCont.appendChild(importExportBtnElem);
+    wrapperEl.appendChild(rightBtnsCont);
     onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
+    onInteraction(deleteAllBtnElem, () => deleteAllAutoLikeChannelsPrompt());
     onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
     return wrapperEl;
 }
 async function openImportExportAutoLikeChannelsDialog() {
     await autoLikeExImDialog?.open();
+}
+// #region delete all prompt
+async function deleteAllAutoLikeChannelsPrompt() {
+    const confirm = await showPrompt({
+        type: "confirm",
+        message: t("auto_like_delete_all_confirm"),
+    });
+    if (!confirm)
+        return;
+    await autoLikeStore.setData({ channels: [] });
+    emitSiteEvent("autoLikeChannelsUpdated");
+    const unsub = autoLikeDialog?.on("clear", async () => {
+        unsub?.();
+        await autoLikeDialog?.open();
+    });
+    autoLikeDialog?.unmount();
 }
 //#region add prompt
 async function addAutoLikeEntryPrompts() {
@@ -6903,12 +6928,17 @@ async function initHotkeys() {
     return await Promise.allSettled(promises);
 }
 //#region utils
-function hotkeyMatches(e, hk) {
-    return e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt;
+/** Checks whether the given keyboard event matches the given hotkey object. */
+function hotkeyMatches(evt, hk) {
+    return evt.code === hk.code
+        && evt.shiftKey === hk.shift
+        && evt.ctrlKey === hk.ctrl
+        && evt.altKey === hk.alt;
 }
-function preventBubble(e) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
+/** Prevents bubbling and the default action of the given event. */
+function preventBubble(evt) {
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
 }
 //#region site switch
 /** switch sites only if current video time is greater than this value */
@@ -6925,10 +6955,10 @@ async function initSiteSwitch() {
         if (siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
             switchSite(domain === "yt" ? "ytm" : "yt");
     }, { capture: true });
-    siteEvents.on("hotkeyInputActive", (state) => {
+    siteEvents.on("hotkeyInputActive", (hkInputActive) => {
         if (!getFeature("switchBetweenSites"))
             return;
-        siteSwitchEnabled = !state;
+        siteSwitchEnabled = !hkInputActive;
     });
     log("Initialized site switch listener");
 }
@@ -6975,16 +7005,16 @@ async function initLikeDislikeHotkeys() {
             return;
         const { likeBtn, dislikeBtn, likeState } = getLikeDislikeBtns();
         if (hotkeyMatches(e, getFeature("likeHotkey"))) {
+            preventBubble(e);
             if (!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE")
                 return;
             likeBtn?.click();
-            preventBubble(e);
         }
         else if (hotkeyMatches(e, getFeature("dislikeHotkey"))) {
+            preventBubble(e);
             if (!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE")
                 return;
             dislikeBtn?.click();
-            preventBubble(e);
         }
     }, { capture: true });
 }
