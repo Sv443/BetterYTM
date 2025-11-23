@@ -2,27 +2,27 @@ BetterYTM Plugin Sublicense Agreement (version 2)
 -----------------------------------------------------------------------------------
 
 For the sole purpose of the creation of plugins that interface with the BetterYTM
-project, the following sublicense agreement is made between the original author
-of the BetterYTM project (Sv443) and anyone who wishes to create plugins for it.
+Project, the following sublicense agreement is made between the Maintainers of the
+BetterYTM Project and anyone who wishes to create plugins for it.
 
-For purposes of this Agreement, 'BetterYTM' refers to the BetterYTM project and its
+For purposes of this agreement, 'BetterYTM' refers to the BetterYTM Project and its
 associated source code. 'BetterYTM Maintainers' or 'Maintainers' refers to the
 individual(s) or entity that holds the copyright to the BetterYTM source code and
-controls the project's official distribution channels. Unless otherwise stated,
-this is the project's original author, Sv443, and any designated contributors
-explicitly authorized by the original author to act on behalf of the project.
+controls the Project's official distribution channels. Unless otherwise stated,
+this is the Project's original author, Sv443, and any designated contributors
+explicitly authorized by the original author to act on behalf of the Project.
 
 The following terms are to be followed when creating and distributing plugins for
-the BetterYTM project, which itself is licensed under the AGPL-3.0-only license
+the BetterYTM Project, which itself is licensed under the AGPL-3.0-only license
 (see `LICENSE.txt`).
 
-This Agreement is governed by the laws of the Federal Republic of Germany, excluding
+This agreement is governed by the laws of the Federal Republic of Germany, excluding
 its conflict-of-law provisions. Exclusive place of jurisdiction for all disputes
-arising from or in connection with this Agreement is the competent courts in the
+arising from or in connection with this agreement is the competent courts in the
 Federal Republic of Germany.
 
-The plugin author (also referred to as 'you' in this document) is hereby granted a
-sublicense to use parts of the source code of the BetterYTM project in the source
+The plugin author (also referred to as 'You' in this document) is hereby granted a
+sublicense to use parts of the source code of the BetterYTM Project in the source
 code of their plugin, under terms different than that of the AGPL-3.0-only license,
 as long as the following terms are followed:
 
@@ -30,44 +30,44 @@ as long as the following terms are followed:
   You are granted a non-exclusive, royalty-free sublicense to use, modify, reproduce,
   embed, and distribute the portions of the BetterYTM source code listed below, solely
   for the purpose of creating and distributing plugins for BetterYTM. This sublicense
-  applies only to the following locations within the BetterYTM project:
+  applies only to the following locations within the BetterYTM Project:
     - Contents of the root directory (which contains `package.json`)
     - Contents of the `/src/` folder, excluding all subfolders in `/src/`
     - Contents of the `/assets/` folder, excluding any subfolders named `/external/`
 
 2. Source Code Availability:
-  You are to make the source code of your plugin available to anyone so they may
-  check it for security and legitimacy. And you are also obligated to provide a
+  You are to make the source code of Your plugin available to anyone so they may
+  check it for security and legitimacy. And You are also obligated to provide a
   link to said source code in the plugin definition object used in the registration
   of the plugin at runtime (if applicable).
 
 3. Legal Responsibility:
-  You retain full responsibility for your plugin and its source code, and your
-  plugin is to follow the local laws and regulations of the country you are in.
-  The original authors of BetterYTM are not to be held responsible for any legal
-  issues that may arise from the use of your plugin.
+  You retain full responsibility for Your plugin and its source code, and Your
+  plugin is to follow the local laws and regulations of the country You are in.
+  The Maintainers of BetterYTM are not to be held responsible for any legal
+  issues that may arise from the use of Your plugin.
   BetterYTM reserves the right to prevent the use of its source code in plugins
   that it deems illegal or unethical, and to block or remove such plugins from
   any official plugin repositories or listings.
 
 4. Platform Terms of Service:
-  Since BetterYTM runs on top of YouTube and YouTube Music, your plugin must also
+  Since BetterYTM runs on top of YouTube and YouTube Music, Your plugin must also
   comply with YouTube's current Terms of Service and Community Guidelines. Any plugin
   that is found to violate these terms may be subject to removal from official plugin
-  repositories or listings, and will not be endorsed by the BetterYTM project.
+  repositories or listings, and will not be endorsed by the BetterYTM Project.
 
-5. Credit to Original Author:
+5. Attribution:
   Use is granted under the condition that the original authors and the BetterYTM
-  project are credited in the plugin, in a place that is easily accessible to the
-  end user. This can be done by including a link to the BetterYTM project in a
-  dialog in the plugin's runtime code, by putting it in its readme, or similar.
-  At no point should you claim ownership over parts of the BetterYTM source code
-  that you did not write yourself.
+  Project are credited in the plugin, in a place that is easily accessible to the
+  end user. This can be done by including a link to the BetterYTM Project in an
+  informational dialog in the plugin's runtime code, by putting it in its readme, or
+  similar. At no point should You claim ownership over parts of the BetterYTM source
+  code that You did not write Yourself.
 
 6. Non-Compliance and Termination:
-  Your rights under this Agreement automatically terminate upon any material breach of
-  its terms. Upon termination, you must cease distributing plugins that rely on the
-  sublicensed BetterYTM source code. The BetterYTM Maintainers may reinstate your
+  Your rights under this agreement automatically terminate upon any material breach of
+  its terms. Upon termination, You must cease distributing plugins that rely on the
+  sublicensed BetterYTM source code. The BetterYTM Maintainers may reinstate Your
   rights at their discretion if the breach is remedied. Termination under this section
   does not affect any rights the Maintainers may have under applicable law.
 
