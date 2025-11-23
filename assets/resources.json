@@ -24,9 +24,9 @@
       "ref": "$BRANCH",
       "integrity": false
     },
-    "font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
-    "font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
-    "font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
+    "font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
+    "font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
+    "font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
     "icon-advanced_mode": "icons/plus_circle_small.svg",
     "icon-advanced_mode_large": "icons/plus_circle.svg",
     "icon-alert": "icons/alert.svg",
