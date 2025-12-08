@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@76ae8076/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@28f407f7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -143,9 +143,9 @@ var resources = {
 		ref: "$BRANCH",
 		integrity: false
 	},
-	"font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
-	"font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
-	"font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
+	"font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
+	"font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
+	"font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
 	"icon-advanced_mode": "icons/plus_circle_small.svg",
 	"icon-advanced_mode_large": "icons/plus_circle.svg",
 	"icon-alert": "icons/alert.svg",
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "76ae8076",
-    buildTimestamp: "1763854456647",
+    buildNumber: "28f407f7",
+    buildTimestamp: "1765163493850",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2655,7 +2655,7 @@ async function getResourceUrl(name) {
                 })();
         }
     }
-    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded data: URI fallback`);
+    warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
     // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
     return await GM.getResourceUrl(name, false);
 }
@@ -7930,7 +7930,7 @@ const featInfo = {
         since: "3.0.0",
         default: 2000,
         min: 100,
-        max: 5000,
+        max: 3000,
         step: 100,
         renderValue: (n) => `${n}x${n}`,
         reloadRequired: false,
@@ -9007,10 +9007,10 @@ const featInfo = {
         default: undefined,
         click: () => getPluginListDialog().then(d => d.open()),
     },
-};//#region format version
+};//#region >> format version
 /** If this number is incremented, the features object data will be migrated to the new format */
 const cfgFormatVersion = 11;
-//#region default data
+//#region >> default data
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 const cfgDefaultData = CoreUtils.pureObj(Object.keys(featInfo)
     // @ts-expect-error
@@ -9020,7 +9020,7 @@ const cfgDefaultData = CoreUtils.pureObj(Object.keys(featInfo)
     acc[key] = featInfo?.[key]?.default;
     return acc;
 }, {}));
-//#region migrations
+//#region >> migrations
 /** Config data format migration dictionary */
 const cfgMigrations = {
     // 1 -> 2 (<=v1.0)
@@ -9207,9 +9207,10 @@ const cfgMigrations = {
             { key: "rememberSongTimeDuration", oldDefault: 60 }, // new: 180
             { key: "frameSkipAmount", oldDefault: 0.0417 }, // new: 0.0166
         ]);
-        if (newCfg.initTimeout > featInfo.initTimeout.max)
-            newCfg.initTimeout = featInfo.initTimeout.max;
-        return newCfg;
+        return useNewRanges(newCfg, [
+            "initTimeout",
+            "thumbnailOverlayITunesImgRes",
+        ]);
     },
 };
 //#region migration helpers
@@ -9240,7 +9241,26 @@ function useNewDefaultsIfUnchanged(oldData, oldDefaults) {
     }
     return newData;
 }
-//#region store
+/**
+ * Uses the passed config as the base, then clamps all numeric feature values to their defined min/max ranges.
+ * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
+ */
+function useNewRanges(config, keys) {
+    const newCfg = structuredClone(config);
+    for (const key of keys) {
+        const info = featInfo[key];
+        if (info && "min" in info && "max" in info)
+            newCfg[key] = clampNewRange(newCfg, key);
+    }
+    return newCfg;
+}
+/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. **/
+function clampNewRange(config, key) {
+    const val = config[key];
+    const info = featInfo[key];
+    return CoreUtils.clamp(val, info.min, info.max);
+}
+//#region >> store
 let canCompress = true;
 const configStore = new UserUtils.DataStore({
     id: "bytm-config",
@@ -9250,7 +9270,7 @@ const configStore = new UserUtils.DataStore({
     encodeData: (data) => canCompress ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
     decodeData: (data) => canCompress ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
 });
-//#region init
+//#region >> init
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 async function initConfig() {
     canCompress = await compressionSupported();
