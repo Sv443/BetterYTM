@@ -1,5 +1,9 @@
 ## BetterYTM Docs - API Reference
 
+> [!NOTE]
+> **THIS DOCUMENT IS A WORK IN PROGRESS**  
+> Please check back later for an improved full API reference. For now, please refer to [the legacy `contributing.md` file.](../contributing.md)
+
 ### Table of Contents
 - [**TODO: API Reference**](#api-reference)
   - [**Full Feature Overview**](#full-feature-overview)
@@ -151,7 +155,9 @@ The timings might be slightly off in each session, but this should give you a go
   
 > [!NOTE]  
 > `[Interface]` means the event is only emitted via the interface event system (`unsafeWindow.addEventListener("...")`)  
-> `[Both]` means the event is emitted via both the interface and the site event system (`unsafeWindow.addEventListener("...")` and `unsafeWindow.BYTM.onSiteEvent("...")`, `onceSiteEvent()` and `onMultiSiteEvents()`)
+> `[Both]` means the event is emitted via both the interface and the site event system (`unsafeWindow.addEventListener("...")` and `unsafeWindow.BYTM.onSiteEvent("...")`, `onceSiteEvent()` and `onMultiSiteEvents()`)  
+>   
+> `<foo>` is a placeholder for dynamic values, e.g. feature or dialog IDs.
 
 ### 1. Init on YTM home page
 - `[Interface]` : [`bytm:preInitPlugin`](#bytm-preinitplugin)
@@ -162,7 +168,7 @@ The timings might be slightly off in each session, but this should give you a go
 - `[Interface]` : [`bytm:featureInitStarted`](#bytm-featureinitstarted)
 - `[Interface]` : [`bytm:ready`](#bytm-ready)
 - Repeated for every feature:  
-  - `[Interface]` : [`bytm:featureInitialized:id`](#bytm-featureinitialized-id)  
+  - `[Interface]` : [`bytm:featureInitialized:<id>`](#bytm-featureinitialized-id)  
   - `[Interface]` : [`bytm:featureInitialized`](#bytm-featureinitialized)
 - `[Interface]` : [`bytm:observersReady`](#bytm-observersready)
 - `[Interface]` : [`bytm:allReady`](#bytm-allready)
@@ -178,7 +184,13 @@ The timings might be slightly off in each session, but this should give you a go
 - `[Interface]` : [`bytm:lyricsCacheEntryAdded`](#bytm-lyricscacheentryadded)
 - `[Interface]` : [`bytm:lyricsLoaded`](#bytm-lyricsloaded)
 
-### 3. Open config menu and change a setting
+### 3. Open and immediately close any BytmDialog dialog (not the config menu)
+- `[Interface]` : [`bytm:dialogOpened:<id>`](#bytm-dialogopened-id)
+- `[Interface]` : [`bytm:dialogOpened`](#bytm-dialogopened)
+- `[Interface]` : [`bytm:dialogClosed:<id>`](#bytm-dialogclosed-id)
+- `[Interface]` : [`bytm:dialogClosed`](#bytm-dialogclosed)
+
+### 4. Open config menu and change a setting
 - `[Interface]` : [`bytm:dialogOpened:cfg-menu`](#bytm-dialogopened-cfg-menu)
 - `[Interface]` : [`bytm:dialogOpened`](#bytm-dialogopened)
 - `[Both]     ` : [`bytm:siteEvent:configHeaderSelected`](#bytm-siteevent-configheaderselected)
@@ -189,5 +201,6 @@ The timings might be slightly off in each session, but this should give you a go
 
 <div style="text-align: center;" align="center">
 
-[◀️ Previous: Getting Started](./getting-started.md)</a> &nbsp; | &nbsp; [🏠 API Docs - Home](./README.md) &nbsp; | &nbsp; [Next: Contributing ▶️](./contributing.md)
+[🏠 API Docs - Home](./README.md)
+<!-- TODO: [◀️ Previous: Getting Started](./getting-started.md)</a> &nbsp; | &nbsp; [🏠 API Docs - Home](./README.md) &nbsp; | &nbsp; [Next: Contributing ▶️](./contributing.md) -->
 </div>

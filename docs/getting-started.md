@@ -6,8 +6,11 @@
   - [**Concepts**](#concepts)
   - [Interaction Summary](#interaction-summary)
   - [**Plugin Template**](#plugin-template)
-  - [**TODO: Creating a Simple Plugin**](#creating-a-simple-plugin)
+<!--
+  TODO:
+  - [**Creating a Simple Plugin**](#creating-a-simple-plugin)
   - [**Most Useful API Features**](#most-useful-api-features)
+-->
 
 <br>
 
@@ -129,12 +132,10 @@ It includes the basic boilerplate that registers your plugin, some example code 
 - Since [the template is licensed under the Unlicense](https://github.com/Sv443/BetterYTM-Plugin-Template/blob/main/LICENSE.txt), the code is essentially in the public domain and you may change whatever you want, without any restrictions.  
 - If you are not into the idea of hosting your code on GitHub, you may also clone or download and extract it, at the cost of not having the default CI workflows.
 
-<br>
+<!-- <br>
 
 ### Creating a Simple Plugin
 In this section, we will use the [official plugin template](#plugin-template) to create a simple plugin that ...
-
-<!--
 
 TODO:
 1. Setup repo
@@ -147,49 +148,50 @@ TODO:
   - creating a BYTM component element
   - reading constants
 
--->
 
 <br>
 
 ### Most Useful API Features
 This is just a non-exhaustive list of the API features and utilities that I find most useful:
 - Functions:
-  - [`addSelectorListener()`](./api.md#function-addselectorlistener) - Listen for an element matching a selector to exist or be updated.
-  - [`function reloadTab()`](./api.md#function-reloadtab) - Reloads the current tab while remembering the volume and video time as well as disabling features like initial tab volume.
-  - [`function setInnerHtml()`](./api.md#function-setinnerhtml) - Sets the inner HTML of an element using [DOMPurify](https://github.com/cure53/DOMPurify) and the [Trusted Types API.](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
-  - [`function onInteraction()`](./api.md#function-oninteraction) - Listen for a user interaction event, such as a click or spacebar press.
-  - [`function getVideoTime()`](./api.md#function-getvideotime) - Returns the current video time in seconds.
-  - [`function waitVideoElementReady()`](./api.md#function-waitvideoelementready) - Waits for the video element to be ready, and returns it.
-  - [`function getLikeDislikeBtns()`](./api.md#function-getlikedislikebtns) - Returns the current like/dislike state, the like and dislike buttons, as well as their container element.
-  - [`function isIgnoredInputElement()`](./api.md#function-isigoredinputelement) - Checks if the currently focused element is an input element, so that other interactions can be ignored.
-  - [`function onSiteEvent()`](./api.md#function-onsiteevent) - Listen for a specific site event.
-  - [`function onMultiSiteEvents()`](./api.md#function-onmultisiteevents) - Listen for multiple site events at once.
-  - [`function resourceAsString()`](./api.md#function-resourceasstring) - Returns the cached content of a BYTM resource as a string.
-  - [`function showToast()`](./api.md#function-showtoast) - Shows a toast notification.
-  - [`function showPrompt()`](./api.md#function-showprompt) - Shows a modal dialog mimicking the native `prompt()`, `alert()` and `confirm()` functions.
-  - [`function formatNumber()`](./api.md#function-formatnumber) - Formats a number with the configured locale and passed or configured format.
-  - [`function getInternals()`](./api.md#function-getinternals) - Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins.
+  - [`addSelectorListener()`](../contributing.md#function-addselectorlistener) - Listen for an element matching a selector to exist or be updated.
+  - [`function reloadTab()`](../contributing.md#function-reloadtab) - Reloads the current tab while remembering the volume and video time as well as disabling features like initial tab volume.
+  - [`function setInnerHtml()`](../contributing.md#function-setinnerhtml) - Sets the inner HTML of an element using [DOMPurify](https://github.com/cure53/DOMPurify) and the [Trusted Types API.](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
+  - [`function onInteraction()`](../contributing.md#function-oninteraction) - Listen for a user interaction event, such as a click or spacebar press.
+  - [`function getVideoTime()`](../contributing.md#function-getvideotime) - Returns the current video time in seconds.
+  - [`function waitVideoElementReady()`](../contributing.md#function-waitvideoelementready) - Waits for the video element to be ready, and returns it.
+  - [`function getLikeDislikeBtns()`](../contributing.md#function-getlikedislikebtns) - Returns the current like/dislike state, the like and dislike buttons, as well as their container element.
+  - [`function isIgnoredInputElement()`](../contributing.md#function-isigoredinputelement) - Checks if the currently focused element is an input element, so that other interactions can be ignored.
+  - [`function onSiteEvent()`](../contributing.md#function-onsiteevent) - Listen for a specific site event.
+  - [`function onMultiSiteEvents()`](../contributing.md#function-onmultisiteevents) - Listen for multiple site events at once.
+  - [`function resourceAsString()`](../contributing.md#function-resourceasstring) - Returns the cached content of a BYTM resource as a string.
+  - [`function showToast()`](../contributing.md#function-showtoast) - Shows a toast notification.
+  - [`function showPrompt()`](../contributing.md#function-showprompt) - Shows a modal dialog mimicking the native `prompt()`, `alert()` and `confirm()` functions.
+  - [`function formatNumber()`](../contributing.md#function-formatnumber) - Formats a number with the configured locale and passed or configured format.
+  - [`function getInternals()`](../contributing.md#function-getinternals) - Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins.
 - Classes:
-  - [`function getBytmDialog()`](./api.md#function-getbytmdialog) - A generic dialog class that allows you to create and manage modal dialogs with custom content and styles.
-  - [`function getMarkdownDialog()`](./api.md#function-getmarkdowndialog) - A dialog that displays markdown content.
-  - [`class NanoEmitter`](./api.md#class-nanoemitter) - A class for creating lightweight, type-safe event emitters in OOP or FP style.
+  - [`function getBytmDialog()`](../contributing.md#function-getbytmdialog) - A generic dialog class that allows you to create and manage modal dialogs with custom content and styles.
+  - [`function getMarkdownDialog()`](../contributing.md#function-getmarkdowndialog) - A dialog that displays markdown content.
+  - [`class NanoEmitter`](../contributing.md#class-nanoemitter) - A class for creating lightweight, type-safe event emitters in OOP or FP style.
 - Events:
-  - [Event Overview and Timings](./api.md#overview-and-timings)
-  - [`bytm:observersReady`](./api.md#bytm-observersready)
-  - [`bytm:featureInitialized:id`](./api.md#bytm-featureinitialized-id)
-  - [`bytm:allReady`](./api.md#bytm-allready)
-  - [`bytm:dialogOpened:id`](./api.md#bytm-dialogopened-id)
-  - [`bytm:siteEvent:configChanged`](./api.md#bytm-siteevent-configchanged)
-  - [`bytm:siteEvent:queueChanged`](./api.md#bytm-siteevent-queuechanged)
-  - [`bytm:siteEvent:autoplayQueueChanged`](./api.md#bytm-siteevent-autoplayqueuechanged)
-  - [`bytm:siteEvent:songTitleChanged`](./api.md#bytm-siteevent-songtitlechanged)
-  - [`bytm:siteEvent:watchIdChanged`](./api.md#bytm-siteevent-watchidchanged)
-  - [`bytm:siteEvent:pathChanged`](./api.md#bytm-siteevent-pathchanged)
-  - [`bytm:siteEvent:fullscreenToggled`](./api.md#bytm-siteevent-fullscreentoggled)
+  - [Event Overview and Timings](../contributing.md#overview-and-timings)
+  - [`bytm:observersReady`](../contributing.md#bytm-observersready)
+  - [`bytm:featureInitialized:id`](../contributing.md#bytm-featureinitialized-id)
+  - [`bytm:allReady`](../contributing.md#bytm-allready)
+  - [`bytm:dialogOpened:id`](../contributing.md#bytm-dialogopened-id)
+  - [`bytm:siteEvent:configChanged`](../contributing.md#bytm-siteevent-configchanged)
+  - [`bytm:siteEvent:queueChanged`](../contributing.md#bytm-siteevent-queuechanged)
+  - [`bytm:siteEvent:autoplayQueueChanged`](../contributing.md#bytm-siteevent-autoplayqueuechanged)
+  - [`bytm:siteEvent:songTitleChanged`](../contributing.md#bytm-siteevent-songtitlechanged)
+  - [`bytm:siteEvent:watchIdChanged`](../contributing.md#bytm-siteevent-watchidchanged)
+  - [`bytm:siteEvent:pathChanged`](../contributing.md#bytm-siteevent-pathchanged)
+  - [`bytm:siteEvent:fullscreenToggled`](../contributing.md#bytm-siteevent-fullscreentoggled)
+-->
 
 <br><br>
 
 <div style="text-align: center;" align="center">
 
-[🏠 API Docs - Home](./README.md) &nbsp; | &nbsp; [Next: API Reference ▶️](./api.md)
+[🏠 API Docs - Home](./README.md) &nbsp; | &nbsp; [Next: Contributing ▶️](./contributing.md)
+<!-- TODO: [🏠 API Docs - Home](./README.md) &nbsp; | &nbsp; [Next: API Reference ▶️](./api.md) -->
 </div>

@@ -1,26 +1,26 @@
 # BetterYTM Docs - Contributing
 
 ## Table of Contents
-- [**TODO: Reporting Issues**](#reporting-issues)
-- [**TODO: Translations**](#translations)
-  - [TODO: Adding translations for a new language](#adding-translations-for-a-new-language)
-  - [TODO: Editing an existing translation](#editing-an-existing-translation)
-- [**TODO: Local Development**](#local-development)
-  - [TODO: Requirements](#requirements)
+<!--- [**TODO: Reporting Issues**](#reporting-issues)-->
+- [**Translations**](#translations)
+  - [Adding translations for a new language](#adding-translations-for-a-new-language)
+  - [Editing an existing translation](#editing-an-existing-translation)
+- [**Local Development**](#local-development)
+  - [Requirements](#requirements)
   - [**TODO: Getting started**](#getting-started)
-  - [TODO: CLI Commands](#cli-commands)
-  - [TODO: Extras](#extras)
+  - [CLI Commands](#cli-commands)
+  - [Extras](#extras)
   - [**Common Procedures**](#common-procedures)
 
 <br>
 
 <!-- #region reporting issues -->
-
+<!--
 ### Reporting Issues
 TODO:
 
 <br>
-
+-->
 
 <!-- #region submitting translations -->
 
@@ -262,5 +262,6 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
 
 <div style="text-align: center;" align="center">
 
-[◀️ Previous: API Reference](./api.md)</a> &nbsp; | &nbsp; [🏠 API Docs - Home](./README.md)
+[◀️ Previous: Getting Started](./getting-started.md)</a> &nbsp; | &nbsp; [🏠 API Docs - Home](./README.md)
+<!-- TODO: [◀️ Previous: API Reference](./api.md)</a> &nbsp; | &nbsp; [🏠 API Docs - Home](./README.md) -->
 </div>

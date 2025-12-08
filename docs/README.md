@@ -5,6 +5,10 @@ This document and the ones it references will walk you through the API and its u
   
 You should [start with the Getting Started guide](./getting-started.md) if you are new to the API, then [move on to the API Reference](./api.md) for a full list of features and code examples. Use the table below for navigation between parts of the docs.
 
+> [!NOTE]
+> **THIS DOCUMENT IS A WORK IN PROGRESS**  
+> Please check back later for an improved documentation. For the API reference, please still refer to [the legacy `contributing.md` file.](../contributing.md)
+
 <br>
 
 ## Table of Contents
@@ -14,7 +18,7 @@ You should [start with the Getting Started guide](./getting-started.md) if you a
   - [Interaction Summary](./getting-started.md#interaction-summary)
   - [**Plugin Template**](./getting-started.md#plugin-template)
   - [**TODO: Creating a Simple Plugin**](./getting-started.md#creating-a-simple-plugin)
-  - [**Most Useful API Features**](./getting-started.md#most-useful-api-features)
+  - [**TODO: Most Useful API Features**](./getting-started.md#most-useful-api-features)
 - [**TODO: API Reference**](./api.md)
   - [**Full Feature Overview**](./api.md#full-feature-overview)
     - [TODO: Meta](./api.md#meta)

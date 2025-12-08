@@ -11,15 +11,15 @@ Or you can also [join my Discord server](https://dc.sv443.net) to get in touch o
 <br>
 
 ## Table of contents:
-- [**Submitting or Editing Translations**](./contributing.md#translations)
-  - [Adding translations for a new language](./contributing.md#adding-translations-for-a-new-language)
-  - [Editing an existing translation](./contributing.md#editing-an-existing-translation)
-- [**Local Development Guide**](./contributing.md#local-development)
-  - [Requirements](./contributing.md#requirements)
-  - [**Getting started**](./contributing.md#getting-started)
-  - [CLI Commands](./contributing.md#cli-commands)
-  - [Extras](./contributing.md#extras)
-  - [**Common Procedures**](./contributing.md#common-procedures)
+- [**Submitting or Editing Translations**](./docs/contributing.md#translations)
+  - [Adding translations for a new language](./docs/contributing.md#adding-translations-for-a-new-language)
+  - [Editing an existing translation](./docs/contributing.md#editing-an-existing-translation)
+- [**Local Development Guide**](./docs/contributing.md#local-development)
+  - [Requirements](./docs/contributing.md#requirements)
+  - [**Getting started**](./docs/contributing.md#getting-started)
+  - [CLI Commands](./docs/contributing.md#cli-commands)
+  - [Extras](./docs/contributing.md#extras)
+  - [**Common Procedures**](./docs/contributing.md#common-procedures)
 - Plugin Development:
   - [**BetterYTM Plugin Development Guide**](#developing-a-plugin-that-interfaces-with-betterytm)
   - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
