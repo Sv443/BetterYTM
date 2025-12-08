@@ -441,7 +441,7 @@ export const featInfo = {
     since: "3.0.0",
     default: 2000,
     min: 100,
-    max: 5000,
+    max: 3000,
     step: 100,
     renderValue: (n: string) => `${n}x${n}`,
     reloadRequired: false,

@@ -6,15 +6,15 @@ import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
 import { closeCfgMenu, openCfgMenu } from "./menu/menu_old.js";
-import type { FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "./types.js";
+import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
-//#region format version
+//#region >> format version
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const cfgFormatVersion = 11;
 
-//#region default data
+//#region >> default data
 
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 export const cfgDefaultData = pureObj(
@@ -28,7 +28,7 @@ export const cfgDefaultData = pureObj(
     }, {}) as FeatureConfig
 );
 
-//#region migrations
+//#region >> migrations
 
 /** Config data format migration dictionary */
 export const cfgMigrations: DataMigrationsDict = {
@@ -240,10 +240,10 @@ export const cfgMigrations: DataMigrationsDict = {
       ],
     );
 
-    if(newCfg.initTimeout > featInfo.initTimeout.max)
-      newCfg.initTimeout = featInfo.initTimeout.max;
-
-    return newCfg;
+    return useNewRanges(newCfg, [
+      "initTimeout",
+      "thumbnailOverlayITunesImgRes",
+    ]);
   },
 } as const satisfies DataMigrationsDict;
 
@@ -281,7 +281,28 @@ function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
   return newData as TConfig;
 }
 
-//#region store
+/**
+ * Uses the passed config as the base, then clamps all numeric feature values to their defined min/max ranges.  
+ * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
+ */
+function useNewRanges(config: FeatureConfig, keys: FeatKeysOfType<number>[]): FeatureConfig {
+  const newCfg = structuredClone(config);
+  for(const key of keys) {
+    const info = featInfo[key as keyof typeof featInfo];
+    if(info && "min" in info && "max" in info)
+      newCfg[key as FeatKeysOfType<number>] = clampNewRange(newCfg, key as FeatKeysOfType<number>) as never;
+  }
+  return newCfg;
+}
+
+/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. **/
+function clampNewRange(config: FeatureConfig, key: FeatKeysOfType<number>): number {
+  const val = config[key];
+  const info = featInfo[key] as FeatureConfig[typeof key] extends number ? { min: number; max: number } : never;
+  return clamp(val as number, info.min, info.max);
+}
+  
+//#region >> store
 
 let canCompress = true;
 
@@ -294,7 +315,7 @@ export const configStore = new DataStore({
   decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
 });
 
-//#region init
+//#region >> init
 
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {

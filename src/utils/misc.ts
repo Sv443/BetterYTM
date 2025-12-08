@@ -419,7 +419,7 @@ export async function getResourceUrl(name: ResourceKey | "_") {
     }
   }
 
-  warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded data: URI fallback`);
+  warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
   // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
   return await GM.getResourceUrl(name, false);
 }
