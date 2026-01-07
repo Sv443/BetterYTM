@@ -63,8 +63,8 @@ html[dark] {
   overflow-x: hidden;
 }
 
-ytmusic-description-shelf-renderer[page-type="MUSIC_PAGE_TYPE_TRACK_LYRICS"] > .description {
-  user-select: text;
+:root ytmusic-description-shelf-renderer[is-track-lyrics-page] {
+  user-select: unset !important;
 }
 
 /* #region generic (circular) button */
