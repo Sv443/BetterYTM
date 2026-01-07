@@ -327,7 +327,7 @@ async function onDomLoad() {
         });
       }
       else if(domain === "yt") {
-        addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
+        addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(6) #items ytd-guide-entry-renderer:nth-child(1)", {
           listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
         });
       }
