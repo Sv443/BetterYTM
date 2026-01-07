@@ -62,25 +62,13 @@ export const getLogsTxt = () => {
     if(args.length === 0)
       return acc;
 
-    const dateTime = `${
-      new Date(time).toLocaleString("en-US", {
-        dateStyle: "short",
-      })
-    }, ${
-      new Date(time).toLocaleString("en-US", {
-        timeStyle: "medium",
-      })
-    }.${
-      new Date(time).toLocaleString("en-US", {
-        fractionalSecondDigits: 3,
-      })
-    }` as const;
+    const timestamp = (new Date(time)).toISOString();
 
     try {
-      return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
+      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
     }
     catch {
-      return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
+      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
     }
   }, "");
 };
