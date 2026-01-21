@@ -574,7 +574,7 @@ export async function getChangelogMd() {
 export async function getChangelogHtmlWithDetails() {
   try {
     const changelogMd = await getChangelogMd();
-    let changelogHtml = await parseMarkdown(changelogMd);
+    let changelogHtml = await parseMarkdown(changelogMd, true);
 
     const getVerId = (verStr: string) => verStr.trim().replace(/[._#\s-]/g, "");
 

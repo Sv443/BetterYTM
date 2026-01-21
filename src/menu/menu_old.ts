@@ -1007,7 +1007,7 @@ export async function mountCfgMenu() {
           fundingLink: pkg.funding.url,
           discordLink: "https://dc.sv443.net/",
         });
-        setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
+        setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams), true));
         return [aboutTextCont] as HTMLElement[];
       },
       changelog: async () => {

@@ -305,7 +305,7 @@
   "cfg_menu_feature_category_header_tooltip": "Configuration category \"%1\"",
   "cfg_menu_feature_category_info_header_tooltip": "Information section \"%1\"",
 
-  "about_bytm_content_markdown": "## ${scriptName}\n\n---\n\n`v${scriptVersion}` • `#${buildNumber}` • `${buildDate}`\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  <br>\nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n[Join the Discord server](${discordLink}) to receive update notifications, to discuss issues or suggest features, and to chat with members.",
+  "about_bytm_content_markdown": "`v${scriptVersion}` • `#${buildNumber}` • `${buildDate}`\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  <br>\nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n[Join the Discord server](${discordLink}) to receive update notifications, to discuss issues or suggest features, and to chat with members.",
 
   "feature_category.general": "General",
   "feature_category.layout": "Layout",
