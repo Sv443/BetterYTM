@@ -249,7 +249,7 @@ export function setGlobalProp<
   key: TKey | (string & {}),
   value: TValue,
 ) {
-  // use unsafeWindow so the properties are available to plugins outside of the userscript's scope
+  // use unsafeWindow so the properties are available to plugins (outside of the userscript's scope)
   const win = getUnsafeWindow();
 
   if(typeof win.BYTM !== "object")

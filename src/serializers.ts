@@ -7,8 +7,9 @@ import { error } from "./utils/logging.js";
 import { downloadFile } from "./utils/dom.js";
 import { reloadTab, resourceCacheStore } from "./utils/misc.js";
 import packageJson from "../package.json" with { type: "json" };
-import { albumArtCacheStore } from "./features/layout.js";
+import { artCacheStore } from "./features/layout.js";
 import { lyricsCacheStore } from "./features/lyricsCache.js";
+import { scriptInfo } from "./constants.js";
 
 /** Central serializer for all data stores */
 let serializer: DataStoreSerializer | undefined;
@@ -25,7 +26,7 @@ export const getSerializerStores = () => [
 /** Array of all data stores, including the caches and other stores that have volatile enough data */
 export const getSerializerStoresFull = () => [
   ...getSerializerStores(),
-  albumArtCacheStore,
+  artCacheStore,
   lyricsCacheStore,
   resourceCacheStore,
 ];
@@ -90,7 +91,11 @@ export async function downloadData(useEncoding = true, full = false) {
   // const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
   // const fileName = `BetterYTM ${packageJson.version}${full ? " full" : ""} data export ${dateStr}.json`;
 
-  const fileName = t(`data_export_file_name${full ? "_full" : ""}`, { version: packageJson.version, date: new Date().toISOString() });
+  const fileName = t(`data_export_file_name${full ? "_full" : ""}`, {
+    scriptName: scriptInfo.name,
+    version: packageJson.version,
+    date: new Date().toISOString(),
+  });
 
   const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
 

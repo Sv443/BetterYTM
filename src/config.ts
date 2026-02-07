@@ -19,11 +19,11 @@ export const cfgFormatVersion = 11;
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 export const cfgDefaultData = pureObj(
   (Object.keys(featInfo) as (keyof typeof featInfo)[])
-    // @ts-expect-error
-    .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
+    .filter((ftKey) => featInfo?.[ftKey] && "default" in featInfo[ftKey] && featInfo[ftKey].default !== undefined)
     .reduce<Partial<FeatureConfig>>((acc, key) => {
-      // @ts-expect-error
-      acc[key] = featInfo?.[key]?.default as unknown as undefined;
+      acc[key] = featInfo?.[key] && "default" in featInfo[key]
+        ? featInfo?.[key]?.default as undefined // TypeScript moments to relax and study to part 578
+        : undefined;
       return acc;
     }, {}) as FeatureConfig
 );

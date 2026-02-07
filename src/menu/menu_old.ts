@@ -1,7 +1,7 @@
 import { compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { isScrollable, openDialogs } from "@sv443-network/userutils";
 import { type cfgDefaultData, cfgFormatVersion, getFeature, getFeatures, cfgMigrations, setFeatures } from "../config.js";
-import { buildNumber, buildTimestamp, compressionFormat, host, mode, scriptInfo } from "../constants.js";
+import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, repo, scriptInfo } from "../constants.js";
 import { featInfo, groupedCategories, resolveAdornments } from "../features/index.js";
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
 import { onInteraction } from "../utils/input.js";
@@ -1006,6 +1006,9 @@ export async function mountCfgMenu() {
           openuserjsLink: pkg.hosts.openuserjs,
           fundingLink: pkg.funding.url,
           discordLink: "https://dc.sv443.net/",
+          currentYear: new Date().getFullYear(),
+          licenseName: pkg.license,
+          licenseUrl: `https://github.com/${repo}/blob/${branch}/LICENSE.txt`,
         });
         setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams), true));
         return [aboutTextCont] as HTMLElement[];

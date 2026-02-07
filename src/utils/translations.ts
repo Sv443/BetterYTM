@@ -1,4 +1,4 @@
-import { Stringifiable, fetchAdvanced } from "@sv443-network/coreutils";
+import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
 import { DataStore, tr } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, warn } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
