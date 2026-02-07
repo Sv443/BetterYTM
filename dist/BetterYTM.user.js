@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@28f407f7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2983d30f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "28f407f7",
-    buildTimestamp: "1765163493850",
+    buildNumber: "2983d30f",
+    buildTimestamp: "1770499975709",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1282,6 +1282,7 @@ function runIntervalChecks() {
         lastPathname = String(location.pathname);
     }
 }var version = "3.0.0";
+var license = "AGPL-3.0-or-later";
 var homepage = "https://github.com/Sv443/BetterYTM";
 var namespace = "https://github.com/Sv443/BetterYTM";
 var author = {
@@ -1306,6 +1307,7 @@ var updates = {
 };
 var packageJson = {
 	version: version,
+	license: license,
 	homepage: homepage,
 	namespace: namespace,
 	author: author,
@@ -1319,7 +1321,7 @@ async function getVersionNotifDialog({ latestTag, }) {
         const changelogMdFull = await getChangelogMd();
         // I messed up because this should be 0 so the changelog will always need to have an extra div at the top for backwards compatibility
         const changelogMd = changelogMdFull.split("<div class=\"split\">")[1];
-        const changelogHtml = await parseMarkdown(changelogMd);
+        const changelogHtml = await parseMarkdown(changelogMd, true);
         verNotifDialog = new BytmDialog({
             id: "version-notif",
             width: 600,
@@ -1887,18 +1889,12 @@ const getLogsTxt = () => {
     return sortedLogs.reduce((acc, [type, time, ...args]) => {
         if (args.length === 0)
             return acc;
-        const dateTime = `${new Date(time).toLocaleString("en-US", {
-            dateStyle: "short",
-        })}, ${new Date(time).toLocaleString("en-US", {
-            timeStyle: "medium",
-        })}.${new Date(time).toLocaleString("en-US", {
-            fractionalSecondDigits: 3,
-        })}`;
+        const timestamp = (new Date(time)).toISOString();
         try {
-            return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
+            return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
         }
         catch {
-            return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
+            return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
         }
     }, "");
 };
@@ -2771,7 +2767,7 @@ async function getChangelogMd() {
 async function getChangelogHtmlWithDetails() {
     try {
         const changelogMd = await getChangelogMd();
-        let changelogHtml = await parseMarkdown(changelogMd);
+        let changelogHtml = await parseMarkdown(changelogMd, true);
         const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
         changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
         const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
@@ -5012,8 +5008,11 @@ async function mountCfgMenu() {
                     openuserjsLink: packageJson.hosts.openuserjs,
                     fundingLink: packageJson.funding.url,
                     discordLink: "https://dc.sv443.net/",
+                    currentYear: new Date().getFullYear(),
+                    licenseName: packageJson.license,
+                    licenseUrl: `https://github.com/${repo}/blob/${branch$1}/LICENSE.txt`,
                 });
-                setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
+                setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams), true));
                 return [aboutTextCont];
             },
             changelog: async () => {
@@ -5782,8 +5781,10 @@ async function initAboveQueueBtns() {
         });
     }, 1);
 }
-const albumArtCacheStore = new UserUtils.DataStore({
-    id: "album-art-cache",
+/** Album artwork cache */
+const artCacheStore = new UserUtils.DataStore({
+    id: "bytm-artwork-cache",
+    migrateIds: ["album-art-cache"],
     formatVersion: 1,
     defaultData: {
         entries: [],
@@ -5792,13 +5793,13 @@ const albumArtCacheStore = new UserUtils.DataStore({
     decodeData: async (data) => await compressionSupported() ? await CoreUtils.decompress(data, compressionFormat$1, "string") : data,
 });
 async function deleteExpiredAlbumArtCacheEntries() {
-    await albumArtCacheStore.loadData();
+    await artCacheStore.loadData();
     const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
-    const expiredEntries = albumArtCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+    const expiredEntries = artCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
     if (expiredEntries.length > 0) {
         log(`Deleting ${expiredEntries.length} expired album art cache entries`);
-        albumArtCacheStore.setData({
-            entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
+        artCacheStore.setData({
+            entries: artCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
         });
     }
 }
@@ -6045,7 +6046,7 @@ async function initThumbnailOverlay() {
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
     if (overlayState === ThumbOvlState.AM) {
-        const cacheEntry = albumArtCacheStore.getData().entries.find((e) => e.videoId === videoId);
+        const cacheEntry = artCacheStore.getData().entries.find((e) => e.videoId === videoId);
         if (cacheEntry) {
             log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
             return {
@@ -6071,7 +6072,7 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
         [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
     const match = bestMatch ?? fallback;
     if (match) {
-        const entries = albumArtCacheStore.getData().entries;
+        const entries = artCacheStore.getData().entries;
         if (!entries.some((e) => e.videoId === videoId)) {
             entries.push({
                 videoId,
@@ -6079,7 +6080,7 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
                 created: Date.now(),
             });
             log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
-            await albumArtCacheStore.setData({ entries });
+            await artCacheStore.setData({ entries });
         }
     }
     else
@@ -6308,7 +6309,7 @@ const getSerializerStores = () => [
 /** Array of all data stores, including the caches and other stores that have volatile enough data */
 const getSerializerStoresFull = () => [
     ...getSerializerStores(),
-    albumArtCacheStore,
+    artCacheStore,
     lyricsCacheStore,
     resourceCacheStore,
 ];
@@ -6332,7 +6333,11 @@ async function downloadData(useEncoding = true, full = false) {
     const serializer = getDSSerializer(full);
     // const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
     // const fileName = `BetterYTM ${packageJson.version}${full ? " full" : ""} data export ${dateStr}.json`;
-    const fileName = t(`data_export_file_name${full ? "_full" : ""}`, { version: packageJson.version, date: new Date().toISOString() });
+    const fileName = t(`data_export_file_name${full ? "_full" : ""}`, {
+        scriptName: scriptInfo$1.name,
+        version: packageJson.version,
+        date: new Date().toISOString(),
+    });
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
     downloadFile(fileName, data, "application/json");
 }let pluginListDialog = null;
@@ -9013,11 +9018,11 @@ const cfgFormatVersion = 11;
 //#region >> default data
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 const cfgDefaultData = CoreUtils.pureObj(Object.keys(featInfo)
-    // @ts-expect-error
-    .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
+    .filter((ftKey) => featInfo?.[ftKey] && "default" in featInfo[ftKey] && featInfo[ftKey].default !== undefined)
     .reduce((acc, key) => {
-    // @ts-expect-error
-    acc[key] = featInfo?.[key]?.default;
+    acc[key] = featInfo?.[key] && "default" in featInfo[key]
+        ? featInfo?.[key]?.default // TypeScript moments to relax and study to part 578
+        : undefined;
     return acc;
 }, {}));
 //#region >> migrations
@@ -9493,7 +9498,7 @@ function initInterface() {
 }
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
 function setGlobalProp(key, value) {
-    // use unsafeWindow so the properties are available to plugins outside of the userscript's scope
+    // use unsafeWindow so the properties are available to plugins (outside of the userscript's scope)
     const win = getUnsafeWindow();
     if (typeof win.BYTM !== "object")
         win.BYTM = pureObj({});
@@ -10912,7 +10917,7 @@ async function onDomLoad() {
                 });
             }
             else if (domain === "yt") {
-                addSelectorListener("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
+                addSelectorListener("ytGuide", "#sections ytd-guide-section-renderer:nth-child(6) #items ytd-guide-entry-renderer:nth-child(1)", {
                     listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
                 });
             }
