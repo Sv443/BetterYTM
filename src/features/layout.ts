@@ -599,18 +599,20 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
-type AlbumArtCacheEntry = {
+type ArtCacheEntry = {
   videoId: string;
   url: string;
   created: number;
 };
 
-type AlbumArtCache = {
-  entries: AlbumArtCacheEntry[];
+type ArtCache = {
+  entries: ArtCacheEntry[];
 };
 
-export const albumArtCacheStore = new DataStore<AlbumArtCache>({
-  id: "album-art-cache",
+/** Album artwork cache */
+export const artCacheStore = new DataStore<ArtCache>({
+  id: "bytm-artwork-cache",
+  migrateIds: ["album-art-cache"],
   formatVersion: 1,
   defaultData: {
     entries: [],
@@ -620,15 +622,15 @@ export const albumArtCacheStore = new DataStore<AlbumArtCache>({
 });
 
 async function deleteExpiredAlbumArtCacheEntries() {
-  await albumArtCacheStore.loadData();
+  await artCacheStore.loadData();
 
   const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
 
-  const expiredEntries = albumArtCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+  const expiredEntries = artCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
   if(expiredEntries.length > 0) {
     log(`Deleting ${expiredEntries.length} expired album art cache entries`);
-    albumArtCacheStore.setData({
-      entries: albumArtCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
+    artCacheStore.setData({
+      entries: artCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
     });
   }
 }
@@ -935,7 +937,7 @@ export async function initThumbnailOverlay() {
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albumRaw: string) {
   if(overlayState === ThumbOvlState.AM) {
-    const cacheEntry = albumArtCacheStore.getData().entries.find((e) => e.videoId === videoId);
+    const cacheEntry = artCacheStore.getData().entries.find((e) => e.videoId === videoId);
 
     if(cacheEntry) {
       log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
@@ -974,7 +976,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
   const match = bestMatch ?? fallback;
 
   if(match) {
-    const entries = albumArtCacheStore.getData().entries;
+    const entries = artCacheStore.getData().entries;
     if(!entries.some((e) => e.videoId === videoId)) {
       entries.push({
         videoId,
@@ -982,7 +984,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
         created: Date.now(),
       });
       log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
-      await albumArtCacheStore.setData({ entries });
+      await artCacheStore.setData({ entries });
     }
   }
   else 
