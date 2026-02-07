@@ -27,8 +27,8 @@
   "export": "Export",
   "export_hint": "Copy the following text to export your configuration.\nWarning: it may contain sensitive data.",
   "export_tooltip": "Export your current configuration",
-  "data_export_file_name": "BetterYTM ${version} data export - ${date}.json",
-  "data_export_file_name_full": "BetterYTM ${version} full data export - ${date}.json",
+  "data_export_file_name": "${scriptName} ${version} data export - ${date}.json",
+  "data_export_file_name_full": "${scriptName} ${version} full data export - ${date}.json",
   "click_to_reveal": "(click to reveal)",
   "click_to_reveal_sensitive_info": "(click to reveal sensitive information)",
   "import": "Import",
@@ -305,7 +305,7 @@
   "cfg_menu_feature_category_header_tooltip": "Configuration category \"%1\"",
   "cfg_menu_feature_category_info_header_tooltip": "Information section \"%1\"",
 
-  "about_bytm_content_markdown": "`v${scriptVersion}` • `#${buildNumber}` • `${buildDate}`\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  <br>\nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n[Join the Discord server](${discordLink}) to receive update notifications, to discuss issues or suggest features, and to chat with members.",
+  "about_bytm_content_markdown": "`v${scriptVersion}` • `#${buildNumber}` • `${buildDate}`\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and contributors and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  <br>\nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n[Join the Discord server](${discordLink}) to receive update notifications, to discuss issues or suggest features, and to chat with members.\n\n---\n\n${scriptName} is **not affiliated** with YouTube or Google **in any way.**  \nCopyright © ${currentYear} ${authorName}. Licensed under the [${licenseName}](${licenseUrl}).",
 
   "feature_category.general": "General",
   "feature_category.layout": "Layout",
