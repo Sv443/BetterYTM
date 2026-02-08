@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@84e05c23/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bad1838a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "84e05c23",
-    buildTimestamp: "1770524871809",
+    buildNumber: "bad1838a",
+    buildTimestamp: "1770526459149",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1285,6 +1285,7 @@ function runIntervalChecks() {
 var license = "AGPL-3.0-or-later";
 var homepage = "https://github.com/Sv443/BetterYTM";
 var namespace = "https://github.com/Sv443/BetterYTM";
+var pluginDiscoveryUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins";
 var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
@@ -1310,6 +1311,7 @@ var packageJson = {
 	license: license,
 	homepage: homepage,
 	namespace: namespace,
+	pluginDiscoveryUrl: pluginDiscoveryUrl,
 	author: author,
 	bugs: bugs,
 	funding: funding,
@@ -6585,6 +6587,8 @@ function expVolClamp(x) {
 /** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
 function expVolFn(x) {
     switch (getFeature("volumeSliderExponential")) {
+        case "x^2":
+            return expVolClamp(Math.pow(expVolClamp(x), 2));
         case "x^3":
             return expVolClamp(Math.pow(expVolClamp(x), 3));
         case "x^4":
@@ -8263,6 +8267,7 @@ const featInfo = {
         since: "3.1.0",
         options: () => [
             { value: "linear", label: t("volume_mapping.linear") },
+            { value: "x^2", label: t("volume_mapping.x2") },
             { value: "x^3", label: t("volume_mapping.x3") },
             { value: "x^4", label: t("volume_mapping.x4") },
             { value: "x^5", label: t("volume_mapping.x5") }
@@ -9013,6 +9018,15 @@ const featInfo = {
         default: undefined,
         click: () => getPluginListDialog().then(d => d.open()),
     },
+    openPluginDiscoverySite: {
+        type: "button",
+        category: "plugins",
+        group: "pluginList",
+        supportedSites: ["ytm", "yt"],
+        since: "3.1.0",
+        default: undefined,
+        click: () => UserUtils.openInNewTab(packageJson.pluginDiscoveryUrl),
+    },
 };//#region >> format version
 /** If this number is incremented, the features object data will be migrated to the new format */
 const cfgFormatVersion = 11;
@@ -9207,6 +9221,7 @@ const cfgMigrations = {
             "volumeSliderExponential",
             "volumeSliderExponentialLabelType",
             "likeDislikeHotkeysToggle",
+            "openPluginDiscoverySite",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
             { key: "initTimeout", oldDefault: 8 }, // new: 5
