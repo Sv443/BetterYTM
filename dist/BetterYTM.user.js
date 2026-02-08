@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2983d30f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ebb26824/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -66,11 +66,11 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@2.0.0/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.4/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.0.4/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.0.4/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.0
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.1
 // @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
 // @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "2983d30f",
-    buildTimestamp: "1770499975709",
+    buildNumber: "ebb26824",
+    buildTimestamp: "1770524595298",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -497,15 +497,14 @@ const scriptInfo$1 = CoreUtils.pureObj({
     namespace: GM.info.script.namespace,
 });
 /** Maximum number of sessions per user to show the "new feature" adornment in the config menu. */
-const newFeatureAdornmentMaxSessionCount = 20;var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,newFeatureAdornmentMaxSessionCount:newFeatureAdornmentMaxSessionCount,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});let canCompress$2 = true;
-const lyricsCacheStore = new UserUtils.DataStore({
+const newFeatureAdornmentMaxSessionCount = 20;var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,newFeatureAdornmentMaxSessionCount:newFeatureAdornmentMaxSessionCount,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});const lyricsCacheStore = new CoreUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
         cache: [],
     },
     formatVersion: 2,
-    encodeData: (data) => canCompress$2 ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: (data) => canCompress$2 ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    engine: new UserUtils.GMStorageEngine(),
+    compressionFormat: compressionFormat$1,
     migrations: {
         // 1 -> 2 (v3.1.0) - debulkify cache entry objects
         2: (oldData) => {
@@ -522,7 +521,6 @@ const lyricsCacheStore = new UserUtils.DataStore({
     }
 });
 async function initLyricsCache() {
-    canCompress$2 = await compressionSupported();
     const data = await lyricsCacheStore.loadData();
     log(`Initialized lyrics cache (${data.cache.length} entries)`);
     emitInterface("bytm:lyricsCacheReady");
@@ -607,8 +605,9 @@ let activeLocaleDir = "ltr";
 UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
 UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
 let devUsedTrKeysStoreLoaded = false;
-const devUsedTrKeysStore = new UserUtils.DataStore({
+const devUsedTrKeysStore = new CoreUtils.DataStore({
     id: "bytm-dev-used-tr-keys",
+    engine: new UserUtils.GMStorageEngine(),
     defaultData: { keys: [] },
     formatVersion: 0,
 });
@@ -2659,11 +2658,11 @@ async function getResourceUrl(name) {
 const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
 const resourceCacheKey = mode$1 === "development" ? scriptInfo$1.version : buildNumber$1;
 /** Cache for resources fetched via {@linkcode resourceAsString()} */
-const resourceCacheStore = new UserUtils.DataStore({
+const resourceCacheStore = new CoreUtils.DataStore({
     id: "bytm-resource-cache",
     formatVersion: 0,
-    encodeData: (data) => isCompressionSupported ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: (data) => isCompressionSupported ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    engine: new UserUtils.GMStorageEngine(),
+    compressionFormat: compressionFormat$1,
     defaultData: {
         resources: {},
         created: Date.now(),
@@ -2678,6 +2677,9 @@ const cachedResourcePrefixes = [
     "style-", // dynamic stylesheets
     "trans-", // translations
 ];
+async function initResourceCache() {
+    await resourceCacheStore.loadData();
+}
 async function resourceCacheHas(key) {
     if (resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
         await resourceCacheStore.saveDefaultData();
@@ -3304,16 +3306,15 @@ function getChannelIdFromPrompt(promptStr) {
     return id.length > 0 ? id : null;
 }// TODO:FIXME: race condition: multiple buttons can appear on YT channel pages, with both the @ID format as well as UC... (extraneous)
 //#region store
-let canCompress$1 = false;
 /** DataStore instance for all auto-liked channels */
-const autoLikeStore = new UserUtils.DataStore({
+const autoLikeStore = new CoreUtils.DataStore({
     id: "bytm-auto-like-channels",
     formatVersion: 2,
     defaultData: {
         channels: [],
     },
-    encodeData: (data) => canCompress$1 ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: (data) => canCompress$1 ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    engine: new UserUtils.GMStorageEngine(),
+    compressionFormat: compressionFormat$1,
     migrations: {
         // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
         2: (oldData) => ({
@@ -3338,7 +3339,6 @@ async function initAutoLikeStore() {
 /** Initializes the auto-like feature */
 async function initAutoLike() {
     try {
-        canCompress$1 = await compressionSupported();
         await initAutoLikeStore();
         //#region ytm
         if (getDomain() === "ytm") {
@@ -5782,15 +5782,15 @@ async function initAboveQueueBtns() {
     }, 1);
 }
 /** Album artwork cache */
-const artCacheStore = new UserUtils.DataStore({
+const artCacheStore = new CoreUtils.DataStore({
     id: "bytm-artwork-cache",
     migrateIds: ["album-art-cache"],
     formatVersion: 1,
+    engine: new UserUtils.GMStorageEngine(),
+    compressionFormat: compressionFormat$1,
     defaultData: {
         entries: [],
     },
-    encodeData: async (data) => await compressionSupported() ? await CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: async (data) => await compressionSupported() ? await CoreUtils.decompress(data, compressionFormat$1, "string") : data,
 });
 async function deleteExpiredAlbumArtCacheEntries() {
     await artCacheStore.loadData();
@@ -6318,12 +6318,12 @@ const getSerializerStoresIds = () => getSerializerStores().map(store => store.id
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 function getDSSerializer(full = false) {
     if (!full)
-        return serializer = serializer ?? new UserUtils.DataStoreSerializer(getSerializerStores(), {
+        return serializer = serializer ?? new CoreUtils.DataStoreSerializer(getSerializerStores(), {
             addChecksum: true,
             ensureIntegrity: true,
         });
     else
-        return fullSerializer = fullSerializer ?? new UserUtils.DataStoreSerializer(getSerializerStoresFull(), {
+        return fullSerializer = fullSerializer ?? new CoreUtils.DataStoreSerializer(getSerializerStoresFull(), {
             addChecksum: true,
             ensureIntegrity: true,
         });
@@ -9266,19 +9266,17 @@ function clampNewRange(config, key) {
     return CoreUtils.clamp(val, info.min, info.max);
 }
 //#region >> store
-let canCompress = true;
-const configStore = new UserUtils.DataStore({
+const configStore = new CoreUtils.DataStore({
     id: "bytm-config",
     formatVersion: cfgFormatVersion,
+    engine: new UserUtils.GMStorageEngine(),
     defaultData: cfgDefaultData,
     migrations: cfgMigrations,
-    encodeData: (data) => canCompress ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: (data) => canCompress ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    compressionFormat: compressionFormat$1,
 });
 //#region >> init
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 async function initConfig() {
-    canCompress = await compressionSupported();
     // TODO: when switching to new engine-based DataStores, change this key prefix:
     const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
     let oldDataHash;
@@ -10795,6 +10793,7 @@ async function init() {
         setLogLevel(features.logLevel);
         info("Session ID:", getSessionId());
         const endLyrCacheDur = measureDuration("lyricsCache");
+        await initResourceCache();
         await initLyricsCache();
         endLyrCacheDur();
         const initLoc = features.locale ?? "en-US";
