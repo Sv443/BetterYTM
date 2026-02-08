@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ebb26824/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@84e05c23/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ebb26824",
-    buildTimestamp: "1770524595298",
+    buildNumber: "84e05c23",
+    buildTimestamp: "1770524871809",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -610,6 +610,7 @@ const devUsedTrKeysStore = new CoreUtils.DataStore({
     engine: new UserUtils.GMStorageEngine(),
     defaultData: { keys: [] },
     formatVersion: 0,
+    compressionFormat: null,
 });
 /** Used to check which keys are unused. */
 const devMarkTrKeyUsed = async (key) => {

@@ -35,6 +35,7 @@ const devUsedTrKeysStore = new DataStore<{
   engine: new GMStorageEngine(),
   defaultData: { keys: [] },
   formatVersion: 0,
+  compressionFormat: null,
 });
 
 /** Used to check which keys are unused. */
