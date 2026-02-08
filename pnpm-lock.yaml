@@ -9,146 +9,146 @@ importers:
   .:
     dependencies:
       '@sv443-network/coreutils':
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       '@sv443-network/userutils':
-        specifier: ^9.4.4
+        specifier: 9.4.4
         version: 9.4.4
       compare-versions:
-        specifier: ^6.1.1
+        specifier: 6.1.1
         version: 6.1.1
       dompurify:
-        specifier: ^3.3.1
+        specifier: 3.3.1
         version: 3.3.1
       marked:
-        specifier: ^12.0.2
+        specifier: 12.0.2
         version: 12.0.2
       tslib:
-        specifier: ^2.8.1
+        specifier: 2.8.1
         version: 2.8.1
     devDependencies:
       '@chromatic-com/storybook':
-        specifier: ^1.9.0
+        specifier: 1.9.0
         version: 1.9.0(react@19.2.4)
       '@eslint/eslintrc':
-        specifier: ^3.3.3
+        specifier: 3.3.3
         version: 3.3.3
       '@eslint/js':
-        specifier: ^9.39.2
+        specifier: 9.39.2
         version: 9.39.2
       '@rollup/plugin-json':
-        specifier: ^6.1.0
+        specifier: 6.1.0
         version: 6.1.0(rollup@4.57.1)
       '@rollup/plugin-node-resolve':
-        specifier: ^15.3.1
+        specifier: 15.3.1
         version: 15.3.1(rollup@4.57.1)
       '@rollup/plugin-terser':
-        specifier: ^0.4.4
+        specifier: 0.4.4
         version: 0.4.4(rollup@4.57.1)
       '@rollup/plugin-typescript':
-        specifier: ^11.1.6
+        specifier: 11.1.6
         version: 11.1.6(rollup@4.57.1)(tslib@2.8.1)(typescript@5.9.3)
       '@storybook/addon-essentials':
-        specifier: ^8.6.14
+        specifier: 8.6.14
         version: 8.6.14(@types/react@18.3.3)(storybook@8.6.15(prettier@3.3.2))
       '@storybook/addon-interactions':
-        specifier: ^8.6.14
+        specifier: 8.6.14
         version: 8.6.14(storybook@8.6.15(prettier@3.3.2))
       '@storybook/addon-links':
-        specifier: ^8.6.15
+        specifier: 8.6.15
         version: 8.6.15(react@19.2.4)(storybook@8.6.15(prettier@3.3.2))
       '@storybook/blocks':
-        specifier: ^8.6.14
+        specifier: 8.6.14
         version: 8.6.14(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@8.6.15(prettier@3.3.2))
       '@storybook/html':
-        specifier: ^8.6.15
+        specifier: 8.6.15
         version: 8.6.15(storybook@8.6.15(prettier@3.3.2))
       '@storybook/html-vite':
-        specifier: ^8.6.15
+        specifier: 8.6.15
         version: 8.6.15(storybook@8.6.15(prettier@3.3.2))(vite@5.3.1(@types/node@20.19.32)(terser@5.46.0))
       '@storybook/test':
-        specifier: ^8.6.15
+        specifier: 8.6.15
         version: 8.6.15(storybook@8.6.15(prettier@3.3.2))
       '@types/cors':
-        specifier: ^2.8.19
+        specifier: 2.8.19
         version: 2.8.19
       '@types/express':
-        specifier: ^4.17.25
+        specifier: 4.17.25
         version: 4.17.25
       '@types/greasemonkey':
-        specifier: ^4.0.7
+        specifier: 4.0.7
         version: 4.0.7
       '@types/node':
-        specifier: ^20.19.32
+        specifier: 20.19.32
         version: 20.19.32
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.54.0
+        specifier: 8.54.0
         version: 8.54.0(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/parser':
-        specifier: ^8.54.0
+        specifier: 8.54.0
         version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/utils':
-        specifier: ^8.54.0
+        specifier: 8.54.0
         version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       concurrently:
-        specifier: ^9.2.1
+        specifier: 9.2.1
         version: 9.2.1
       cors:
-        specifier: ^2.8.6
+        specifier: 2.8.6
         version: 2.8.6
       dotenv:
-        specifier: ^16.6.1
+        specifier: 16.6.1
         version: 16.6.1
       eslint:
-        specifier: ^9.39.2
+        specifier: 9.39.2
         version: 9.39.2(jiti@2.6.1)
       eslint-plugin-storybook:
-        specifier: ^0.11.6
+        specifier: 0.11.6
         version: 0.11.6(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       express:
-        specifier: ^4.22.1
+        specifier: 4.22.1
         version: 4.22.1
       globals:
-        specifier: ^15.15.0
+        specifier: 15.15.0
         version: 15.15.0
       kleur:
-        specifier: ^4.1.5
+        specifier: 4.1.5
         version: 4.1.5
       knip:
-        specifier: ^5.83.1
+        specifier: 5.83.1
         version: 5.83.1(@types/node@20.19.32)(typescript@5.9.3)
       nanoevents:
-        specifier: ^9.1.0
+        specifier: 9.1.0
         version: 9.1.0
       nodemon:
-        specifier: ^3.1.11
+        specifier: 3.1.11
         version: 3.1.11
       pnpm:
-        specifier: ^10.29.1
+        specifier: 10.29.1
         version: 10.29.1
       rollup:
-        specifier: ^4.57.1
+        specifier: 4.57.1
         version: 4.57.1
       rollup-plugin-execute:
-        specifier: ^1.1.1
+        specifier: 1.1.1
         version: 1.1.1
       rollup-plugin-import-css:
-        specifier: ^3.5.8
+        specifier: 3.5.8
         version: 3.5.8(rollup@4.57.1)
       storybook:
-        specifier: ^8.6.15
+        specifier: 8.6.15
         version: 8.6.15(prettier@3.3.2)
       storybook-dark-mode:
-        specifier: ^4.0.2
+        specifier: 4.0.2
         version: 4.0.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@8.6.15(prettier@3.3.2))
       tsx:
-        specifier: ^4.21.0
+        specifier: 4.21.0
         version: 4.21.0
       typescript:
-        specifier: ^5.9.3
+        specifier: 5.9.3
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.54.0
+        specifier: 8.54.0
         version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
 
 packages:
