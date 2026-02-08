@@ -1,4 +1,4 @@
-import "greasemonkey";
+/// <reference types="greasemonkey" />
 
 /** Import HTML as modules - https://stackoverflow.com/a/47705264/3323672 */
 declare module "*.html" {
