@@ -6,7 +6,7 @@
   },
   {
     "pkgName": "@sv443-network/userutils",
-    "path": "dist/index.global.js",
+    "path": "dist/UserUtils.umd.js",
     "global": "UserUtils"
   },
   {
