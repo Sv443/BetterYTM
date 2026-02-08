@@ -1,4 +1,5 @@
 import { consumeStringGen, DatedError, randomId, type StringGen } from "@sv443-network/coreutils";
+import { openInNewTab } from "@sv443-network/userutils";
 import { compare as compareVer } from "compare-versions";
 import { error, formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
@@ -6,7 +7,6 @@ import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import langMapping from "../../assets/locales.json" with { type: "json" };
 import { closeToast, showIconToast } from "../components/toast.js";
 import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "../constants.js";
 import { getDSSerializer } from "../serializers.js";
@@ -14,6 +14,8 @@ import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getPluginListDialog } from "../dialogs/pluginList.js";
 import { expVolFn } from "./volume.js";
+import langMapping from "../../assets/locales.json" with { type: "json" };
+import packageJson from "../../package.json" with { type: "json" };
 
 //#region re-exports
 
@@ -771,6 +773,7 @@ export const featInfo = {
     since: "3.1.0",
     options: () => [
       { value: "linear", label: t("volume_mapping.linear") },
+      { value: "x^2", label: t("volume_mapping.x2") },
       { value: "x^3", label: t("volume_mapping.x3") },
       { value: "x^4", label: t("volume_mapping.x4") },
       { value: "x^5", label: t("volume_mapping.x5") }
@@ -1535,5 +1538,14 @@ export const featInfo = {
     since: "2.1.0-preview.1",
     default: undefined,
     click: () => getPluginListDialog().then(d => d.open()),
+  },
+  openPluginDiscoverySite: {
+    type: "button",
+    category: "plugins",
+    group: "pluginList",
+    supportedSites: ["ytm", "yt"],
+    since: "3.1.0",
+    default: undefined,
+    click: () => openInNewTab(packageJson.pluginDiscoveryUrl),
   },
 } as const satisfies FeatureInfo;

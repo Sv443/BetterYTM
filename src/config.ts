@@ -231,6 +231,7 @@ export const cfgMigrations: DataMigrationsDict = {
         "volumeSliderExponential",
         "volumeSliderExponentialLabelType",
         "likeDislikeHotkeysToggle",
+        "openPluginDiscoverySite",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000

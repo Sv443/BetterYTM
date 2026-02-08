@@ -6,6 +6,7 @@
   "license": "AGPL-3.0-or-later",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "namespace": "https://github.com/Sv443/BetterYTM",
+  "pluginDiscoveryUrl": "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",
   "main": "./src/index.ts",
   "type": "module",
   "author": {
