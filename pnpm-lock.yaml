@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@sv443-network/coreutils':
-        specifier: 3.0.0
-        version: 3.0.0
+        specifier: 3.0.1
+        version: 3.0.1
       '@sv443-network/userutils':
-        specifier: 9.4.4
-        version: 9.4.4
+        specifier: 10.0.1
+        version: 10.0.1
       compare-versions:
         specifier: 6.1.1
         version: 6.1.1
@@ -1188,11 +1188,11 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
-  '@sv443-network/coreutils@3.0.0':
-    resolution: {integrity: sha512-2NC82ZkAcRD4TGic11mq7qrosO1gDyvme8y2X8gkJRUAtGY2AGNlIeSnomxtT/bt6VIcdOftvOn1nuA/0sM7wA==}
+  '@sv443-network/coreutils@3.0.1':
+    resolution: {integrity: sha512-qONW5UBFzL6Mp9kx33CcJsQ4rnANaFQBwAbO8WmUhWnMABe8up4GGkVqHS0pFZsTsErWtYwDZVTEbJ7UOYeyzw==}
 
-  '@sv443-network/userutils@9.4.4':
-    resolution: {integrity: sha512-/57YFyC6C1vKSG3Uref+aolRt11RdKL7SS4DEvnFdGLElzeuL3sKxomm4pbdKuGJ5XH73nGJ7GsUI+CXJCyFhQ==}
+  '@sv443-network/userutils@10.0.1':
+    resolution: {integrity: sha512-pBt2WKjPkCQJbXF4ObGw2eTHVMhurACqapQ5JOn4ovPhms393fXd20RMQ8Ur/xa1kROg61zzv9iWJEZ6d0mDsQ==}
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -3475,12 +3475,13 @@ snapshots:
     dependencies:
       storybook: 8.6.15(prettier@3.3.2)
 
-  '@sv443-network/coreutils@3.0.0':
+  '@sv443-network/coreutils@3.0.1':
     dependencies:
       nanoevents: 9.1.0
 
-  '@sv443-network/userutils@9.4.4':
+  '@sv443-network/userutils@10.0.1':
     dependencies:
+      '@sv443-network/coreutils': 3.0.1
       nanoevents: 9.1.0
 
   '@testing-library/dom@10.4.0':

@@ -1,10 +1,10 @@
-import { compress, decompress } from "@sv443-network/coreutils";
-import { DataStore } from "@sv443-network/userutils";
+import { DataStore } from "@sv443-network/coreutils";
+import { GMStorageEngine } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { compressionFormat } from "../constants.js";
-import { compressionSupported, getCurrentChannelId, getDomain, isValidChannelId, resourceAsString, sanitizeChannelId } from "../utils/misc.js";
+import { getCurrentChannelId, getDomain, isValidChannelId, resourceAsString, sanitizeChannelId } from "../utils/misc.js";
 import { addStyleFromResource, clearNode, getCurrentMediaType, getLikeDislikeBtns, setInnerHtml } from "../utils/dom.js";
 import { error, info, log, warn } from "../utils/logging.js";
 import { t } from "../utils/translations.js";
@@ -19,8 +19,6 @@ import "./autoLike.css";
 
 //#region store
 
-let canCompress = false;
-
 /** DataStore instance for all auto-liked channels */
 export const autoLikeStore = new DataStore<AutoLikeData>({
   id: "bytm-auto-like-channels",
@@ -28,8 +26,8 @@ export const autoLikeStore = new DataStore<AutoLikeData>({
   defaultData: {
     channels: [],
   },
-  encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
-  decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
+  engine: new GMStorageEngine(),
+  compressionFormat,
   migrations: {
     // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
     2: (oldData: AutoLikeData) => ({
@@ -58,7 +56,6 @@ export async function initAutoLikeStore() {
 /** Initializes the auto-like feature */
 export async function initAutoLike() {
   try {
-    canCompress = await compressionSupported();
     await initAutoLikeStore();
 
     //#region ytm

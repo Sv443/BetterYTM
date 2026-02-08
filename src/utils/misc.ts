@@ -1,5 +1,5 @@
-import { compress, consumeStringGen, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
-import { DataStore, getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
+import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
+import { getUnsafeWindow, GMStorageEngine, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "../constants.js";
 import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime, sanitizeHtml } from "./index.js";
@@ -439,8 +439,8 @@ const resourceCacheKey = mode === "development" ? scriptInfo.version : buildNumb
 export const resourceCacheStore = new DataStore<ResourceCache>({
   id: "bytm-resource-cache",
   formatVersion: 0,
-  encodeData: (data) => isCompressionSupported ? compress(data, compressionFormat, "string") : data,
-  decodeData: (data) => isCompressionSupported ? decompress(data, compressionFormat, "string") : data,
+  engine: new GMStorageEngine(),
+  compressionFormat,
   defaultData: {
     resources: {},
     created: Date.now(),

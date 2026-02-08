@@ -1,11 +1,11 @@
-import { autoPlural, compress, debounce, decompress, fetchAdvanced } from "@sv443-network/coreutils";
-import { addParent, DataStore, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { autoPlural, debounce, fetchAdvanced } from "@sv443-network/coreutils";
+import { addParent, DataStore, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
 import { featInfo } from "./index.js";
 import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
-import { compressionSupported, formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { addStyleFromResource, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
 import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
@@ -614,11 +614,11 @@ export const artCacheStore = new DataStore<ArtCache>({
   id: "bytm-artwork-cache",
   migrateIds: ["album-art-cache"],
   formatVersion: 1,
+  engine: new GMStorageEngine(),
+  compressionFormat,
   defaultData: {
     entries: [],
   },
-  encodeData: async (data) => await compressionSupported() ? await compress(data, compressionFormat, "string") : data,
-  decodeData: async (data) => await compressionSupported() ? await decompress(data, compressionFormat, "string") : data,
 });
 
 async function deleteExpiredAlbumArtCacheEntries() {

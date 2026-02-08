@@ -1,7 +1,7 @@
-import { clamp, compress, decompress } from "@sv443-network/coreutils";
-import { DataStore } from "@sv443-network/userutils";
+import { clamp, DataStore } from "@sv443-network/coreutils";
+import { GMStorageEngine } from "@sv443-network/userutils";
 import { compressionFormat } from "../constants.js";
-import { compressionSupported, log } from "../utils/index.js";
+import { log } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
 import { getFeature } from "../config.js";
 import type { LyricsCacheEntry } from "../types.js";
@@ -15,16 +15,14 @@ const maxViewedPenalty = 1000 * 60 * 60 * 24 * 5; // 5 days
 /** A fraction of this max value will be removed from the "added" timestamp when adding penalized cache entries */
 const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
 
-let canCompress = true;
-
 export const lyricsCacheStore = new DataStore<LyricsCache>({
   id: "bytm-lyrics-cache",
   defaultData: {
     cache: [],
   },
   formatVersion: 2,
-  encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
-  decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
+  engine: new GMStorageEngine(),
+  compressionFormat,
   migrations: {
     // 1 -> 2 (v3.1.0) - debulkify cache entry objects
     2: (oldData: LyricsCache): LyricsCache => {
@@ -42,7 +40,6 @@ export const lyricsCacheStore = new DataStore<LyricsCache>({
 });
 
 export async function initLyricsCache() {
-  canCompress = await compressionSupported();
   const data = await lyricsCacheStore.loadData();
   log(`Initialized lyrics cache (${data.cache.length} entries)`);
   emitInterface("bytm:lyricsCacheReady");

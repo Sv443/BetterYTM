@@ -1,5 +1,5 @@
-import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
-import { DataStore, tr } from "@sv443-network/userutils";
+import { DataStore, fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
+import { GMStorageEngine, tr } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, warn } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
 import { getFeature } from "../config.js";
@@ -32,6 +32,7 @@ const devUsedTrKeysStore = new DataStore<{
   keys: string[];
 }>({
   id: "bytm-dev-used-tr-keys",
+  engine: new GMStorageEngine(),
   defaultData: { keys: [] },
   formatVersion: 0,
 });

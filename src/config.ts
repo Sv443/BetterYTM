@@ -1,7 +1,7 @@
-import { compress, decompress, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
-import { DataStore, type DataMigrationsDict } from "@sv443-network/userutils";
+import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
+import { GMStorageEngine } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
-import { compressionSupported, error, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
+import { error, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -304,22 +304,19 @@ function clampNewRange(config: FeatureConfig, key: FeatKeysOfType<number>): numb
   
 //#region >> store
 
-let canCompress = true;
-
 export const configStore = new DataStore({
   id: "bytm-config",
   formatVersion: cfgFormatVersion,
+  engine: new GMStorageEngine(),
   defaultData: cfgDefaultData,
   migrations: cfgMigrations,
-  encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
-  decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
+  compressionFormat,
 });
 
 //#region >> init
 
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
-  canCompress = await compressionSupported();
   // TODO: when switching to new engine-based DataStores, change this key prefix:
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
 
