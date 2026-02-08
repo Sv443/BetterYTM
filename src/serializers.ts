@@ -1,4 +1,4 @@
-import { ChecksumMismatchError, DataStoreSerializer } from "@sv443-network/userutils";
+import { ChecksumMismatchError, DataStoreSerializer } from "@sv443-network/coreutils";
 import { configStore } from "./config.js";
 import { autoLikeStore } from "./features/autoLike.js";
 import { showPrompt } from "./dialogs/prompt.js";
@@ -12,10 +12,10 @@ import { lyricsCacheStore } from "./features/lyricsCache.js";
 import { scriptInfo } from "./constants.js";
 
 /** Central serializer for all data stores */
-let serializer: DataStoreSerializer<{}> | undefined;
+let serializer: DataStoreSerializer | undefined;
 
 /** Central serializer for all data stores, including the caches and other stores that have volatile enough data */
-let fullSerializer: DataStoreSerializer<{}> | undefined;
+let fullSerializer: DataStoreSerializer | undefined;
 
 /** Array of all data stores that are included in the DataStoreSerializer instance */
 export const getSerializerStores = () => [
@@ -35,14 +35,14 @@ export const getSerializerStoresFull = () => [
 export const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
 
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
-export function getDSSerializer(full = false): DataStoreSerializer<{}> {
+export function getDSSerializer(full = false): DataStoreSerializer {
   if(!full)
-    return serializer = serializer ?? new DataStoreSerializer<{}>(getSerializerStores(), {
+    return serializer = serializer ?? new DataStoreSerializer(getSerializerStores(), {
       addChecksum: true,
       ensureIntegrity: true,
     });
   else
-    return fullSerializer = fullSerializer ?? new DataStoreSerializer<{}>(getSerializerStoresFull(), {
+    return fullSerializer = fullSerializer ?? new DataStoreSerializer(getSerializerStoresFull(), {
       addChecksum: true,
       ensureIntegrity: true,
     });

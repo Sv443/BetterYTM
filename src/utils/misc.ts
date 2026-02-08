@@ -457,6 +457,10 @@ const cachedResourcePrefixes = [
   "trans-", // translations
 ];
 
+export async function initResourceCache() {
+  await resourceCacheStore.loadData();
+}
+
 async function resourceCacheHas(key: ResourceKey | "_") {
   if(resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
     await resourceCacheStore.saveDefaultData();

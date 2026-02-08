@@ -1,5 +1,5 @@
-import { autoPlural, debounce, fetchAdvanced } from "@sv443-network/coreutils";
-import { addParent, DataStore, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { DataStore, autoPlural, debounce, fetchAdvanced } from "@sv443-network/coreutils";
+import { addParent, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "../config.js";
 import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
