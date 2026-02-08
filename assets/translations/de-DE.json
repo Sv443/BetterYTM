@@ -234,6 +234,7 @@
   "votes_format_long": "Lang",
 
   "volume_mapping.linear": "Linear",
+  "volume_mapping.x2": "x²",
   "volume_mapping.x3": "x³",
   "volume_mapping.x4": "x⁴",
   "volume_mapping.x5": "x⁵",

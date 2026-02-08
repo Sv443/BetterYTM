@@ -234,6 +234,7 @@
   "votes_format_long": "Long",
 
   "volume_mapping.linear": "Linear",
+  "volume_mapping.x2": "x²",
   "volume_mapping.x3": "x³",
   "volume_mapping.x4": "x⁴",
   "volume_mapping.x5": "x⁵",
@@ -523,6 +524,10 @@
   "feature_desc.openPluginList": "Open the list of plugins you have installed",
   "feature_btn.openPluginList": "Open list",
   "feature_btn.openPluginList_running": "Opening...",
+  "feature_desc.openPluginDiscoverySite": "Find more plugins to install",
+  "feature_btn.openPluginDiscoverySite": "Open site",
+  "feature_btn.openPluginDiscoverySite_running": "Opening...",
+
   "feature_desc.initTimeout": "How many seconds to wait for features to initialize before considering them to likely be in an errored state",
   "feature_helptext.initTimeout": "This is the amount of time in seconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
 

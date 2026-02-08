@@ -783,7 +783,7 @@ export interface FeatureConfig {
 
   //#region volume
   /** Use exponential scaling for the volume slider */
-  volumeSliderExponential: "linear" | "x^3" | "x^4" | "x^5";
+  volumeSliderExponential: "linear" | "x^2" | "x^3" | "x^4" | "x^5";
   /** Type of label to show on the volume slider when using exponential scaling */
   volumeSliderExponentialLabelType: "positionBased" | "valueBased" | "both";
   /** Add a percentage label to the volume slider */
@@ -915,4 +915,6 @@ export interface FeatureConfig {
   //#region plugins
   /** Button that opens the plugin list dialog */
   openPluginList: undefined;
+  /** Button that opens the plugin discovery site */
+  openPluginDiscoverySite: undefined;
 }

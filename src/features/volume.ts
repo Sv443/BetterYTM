@@ -131,6 +131,8 @@ function expVolClamp(x: number) {
 /** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
 export function expVolFn(x: number) {
   switch(getFeature("volumeSliderExponential")) {
+  case "x^2":
+    return expVolClamp(Math.pow(expVolClamp(x), 2));
   case "x^3": 
     return expVolClamp(Math.pow(expVolClamp(x), 3));
   case "x^4": 
