@@ -610,27 +610,27 @@ type ArtCache = {
 };
 
 /** Album artwork cache */
-export const artCacheStore = new DataStore<ArtCache>({
+export const artCacheStore = new DataStore({
   id: "bytm-artwork-cache",
   migrateIds: ["album-art-cache"],
   formatVersion: 1,
   engine: new GMStorageEngine(),
   compressionFormat,
+  memoryCache: false,
   defaultData: {
     entries: [],
-  },
+  } as ArtCache,
 });
 
 async function deleteExpiredAlbumArtCacheEntries() {
-  await artCacheStore.loadData();
-
   const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
 
-  const expiredEntries = artCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+  const cacheData = await artCacheStore.loadData();
+  const expiredEntries = cacheData.entries.filter((e) => Date.now() - e.created > ttl);
   if(expiredEntries.length > 0) {
     log(`Deleting ${expiredEntries.length} expired album art cache entries`);
     artCacheStore.setData({
-      entries: artCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
+      entries: cacheData.entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
     });
   }
 }
@@ -937,7 +937,7 @@ export async function initThumbnailOverlay() {
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albumRaw: string) {
   if(overlayState === ThumbOvlState.AM) {
-    const cacheEntry = artCacheStore.getData().entries.find((e) => e.videoId === videoId);
+    const cacheEntry = (await artCacheStore.loadData()).entries.find((e) => e.videoId === videoId);
 
     if(cacheEntry) {
       log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
@@ -976,7 +976,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
   const match = bestMatch ?? fallback;
 
   if(match) {
-    const entries = artCacheStore.getData().entries;
+    const entries = (await artCacheStore.loadData()).entries;
     if(!entries.some((e) => e.videoId === videoId)) {
       entries.push({
         videoId,

@@ -436,7 +436,7 @@ const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
 const resourceCacheKey = mode === "development" ? scriptInfo.version : buildNumber;
 
 /** Cache for resources fetched via {@linkcode resourceAsString()} */
-export const resourceCacheStore = new DataStore<ResourceCache>({
+export const resourceCacheStore = new DataStore({
   id: "bytm-resource-cache",
   formatVersion: 0,
   engine: new GMStorageEngine(),
@@ -445,7 +445,7 @@ export const resourceCacheStore = new DataStore<ResourceCache>({
     resources: {},
     created: Date.now(),
     cacheKey: resourceCacheKey,
-  },
+  } as ResourceCache,
 });
 
 /** Resources with these prefixes are cached in the resource cache */

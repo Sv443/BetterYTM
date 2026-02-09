@@ -15,11 +15,11 @@ const maxViewedPenalty = 1000 * 60 * 60 * 24 * 5; // 5 days
 /** A fraction of this max value will be removed from the "added" timestamp when adding penalized cache entries */
 const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
 
-export const lyricsCacheStore = new DataStore<LyricsCache>({
+export const lyricsCacheStore = new DataStore({
   id: "bytm-lyrics-cache",
   defaultData: {
     cache: [],
-  },
+  } as LyricsCache,
   formatVersion: 2,
   engine: new GMStorageEngine(),
   compressionFormat,
