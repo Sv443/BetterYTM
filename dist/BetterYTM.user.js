@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@85099e84/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@58e4944b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -71,16 +71,16 @@
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.1
-// @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
 // @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:en-US tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:en    tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:en-CA tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
 // @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
 // @antifeature:es    tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
 // @antifeature:es-MX tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "85099e84",
-    buildTimestamp: "1770678192252",
+    buildNumber: "58e4944b",
+    buildTimestamp: "1770679914180",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
