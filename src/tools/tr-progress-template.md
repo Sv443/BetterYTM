@@ -1,5 +1,5 @@
 ## BetterYTM - Translations
-To submit or edit a translation, please follow [this guide](../../contributing.md#submitting-translations)
+To submit or edit a translation, please [follow this guide.](../../docs/contributing.md#translations)
 
 <br>
 

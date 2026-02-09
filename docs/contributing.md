@@ -3,6 +3,7 @@
 ## Table of Contents
 <!--- [**TODO: Reporting Issues**](#reporting-issues)-->
 - [**Translations**](#translations)
+  - [Info about locales and translations](#information-about-locales-and-translations)
   - [Adding translations for a new language](#adding-translations-for-a-new-language)
   - [Editing an existing translation](#editing-an-existing-translation)
 - [**Local Development**](#local-development)
@@ -26,7 +27,29 @@ TODO:
 
 ## Translations:
 Thank you so much for your interest in translating BetterYTM!  
-Before submitting a translation, please check on [this document](https://github.com/Sv443/BetterYTM/tree/develop/assets/translations) if the language you want to translate to has already been translated and how many strings are still missing.
+Before submitting a translation, please check on [this document](https://github.com/Sv443/BetterYTM/tree/develop/assets/translations) if the language you want to translate to has already been translated and how many strings are still missing.  
+  
+Please refer to the following sections for instructions:
+- [Info about locales and translations](#information-about-locales-and-translations)
+- [Adding translations for a new language](#adding-translations-for-a-new-language)
+- [Editing an existing translation](#editing-an-existing-translation)
+
+<br>
+
+### Information about locales and translations:
+- **The default locale is `en-US`.**  
+  If a string is missing in another translation, the value from `en-US` will be used as a fallback (unless turned off via the "Language" settings in advanced mode, which can be used to spot untranslated values when BYTM is set up for local development).  
+  This means that if you want to submit a translation that is not fully complete, you can just leave the untranslated keys in the file and they will be automatically filled with the English text.
+- **If a translation is based on another translation**, that means the keys from the base translation file are automatically applied if they are missing. This is used for locales that are very similar to each other, such as `en-GB` and `en-US`.  
+  This means to figure out which keys are untranslated in these cases, you will need to manually check against the base translation file.
+- **The translation progress is tracked in [the table on this page](../assets/translations/README.md)** and is automatically updated after every build of the script.
+- **To register a new locale**, it needs to be added to the file [`assets/locales.json`](../assets/locales.json).  
+  If it's just an alternative locale (same translation file as another locale, but different code, like `de-DE` and `de-AT`), it only needs to be added to the respective locale's `altLocales` array. This acts as a sort of "redirect" to the base locale and will also ensure the userscript description will exist for the new locale.  
+  If the locale has unique translations, it also needs its own translation file in the `assets/translations/` folder, following the format `language-COUNTRY.json` (e.g. `en-US.json`, `en-GB.json`, ...), which also has to be registered in [`assets/resources.json`](../assets/resources.json) to be included in the build.
+- **If you want to help with translations but don't want to set up a local development environment**, you can also just [create a fork of the repository on GitHub](https://github.com/Sv443/BetterYTM/fork) with the "Copy the main branch only" setting disabled, create a new branch originating from `develop`, edit the translation files directly in the browser, and then submit a pull request with your changes.  
+  Just make sure to select the `develop` branch when editing the files, as the `main` branch is only used for releases and will be outdated.
+- **If you want to submit a translation but don't want to use GitHub at all**, you can also just send the translated file to me directly, [see my homepage for contact info.](https://sv443.net/)  
+  Make sure to select the `develop` branch when downloading the `en-US.json` file as the base for your translation. Also make sure you add your language to the contents of [`assets/locales.json`](../assets/locales.json) and send both the translation file and the updated `locales.json` file to me.
 
 <br>
 
@@ -36,24 +59,24 @@ Before submitting a translation, please check on [this document](https://github.
   
 To submit a translation, please follow these steps:
 1. Select the `develop` branch to translate for the latest version of BetterYTM.  
-  If you are setting up the project for local development, also make sure you have checked out the `develop` branch.
-2. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
+  If you are setting up the project for local development, also make sure you have created a new branch originating from it. The `main` branch is only used for releases and will be outdated.
+2. Copy the contents of the default translation file [`assets/translations/en-US.json`](../assets/translations/en-US.json)
 3. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to  
   You can find [a list of these BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
   The final locale code should always be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...).
 4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.  
   If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm tr-format -p -o="xx-YY"` (see [the "editing a translation" section](#editing-an-existing-translation) for more info).
 5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites.  
-  Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
+  Please duplicate the file `README-summary.md` and call it `README-summary-xx-YY.md` and place it in the [`assets/translations/`](../assets/translations/) folder.
 6. If you want to submit a pull request with the translated file:
-    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `language-COUNTRY.json`
+    1. Duplicate the `en-US.json` file in the folder [`assets/translations/`](../assets/translations/) by keeping the format `language-COUNTRY.json`
     2. Edit it to your translated version and keep the left side of the colon unchanged.
     3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered).
     4. Add the path to the JSON file to `assets/resources.json` by following the format of the others and also alphabetical order.
-    5. Add your name to the respective `authors` properties in [`assets/locales.json`](./assets/locales.json) and the translation file.
+    5. Add your name to the respective `authors` properties in [`assets/locales.json`](../assets/locales.json) and the translation file.
     6. Test your changes by following [the "local development" section](#local-development), then submit your pull request.
 7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info.  
-  Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)
+  Make sure you also add your language to the contents of [`assets/locales.json`](../assets/locales.json)
 
 <br>
 
@@ -66,14 +89,14 @@ To submit a translation, please follow these steps:
 To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following the instructions in [the "local development" section.](#local-development)  
   **Make sure you fork the repository and clone your own fork instead of the original repository, and to create a branch with a short but descriptive name.**  
-2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
+2. Find the file for the language you want to edit in the folder [`assets/translations/`](../assets/translations/)
 3. Run the command `pnpm tr-format -p -o="language-COUNTRY"`, where `language-COUNTRY` is the part of the file name before the `.json` extension.  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en-US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format `%n` (where n is any number starting at 1), as well as `${name}` (don't translate what's inside the brackets). In general, it's recommended to only cut and paste the placeholder to move it around.
 5. Make sure there are no duplicate keys in the file.
 6. Run the command `pnpm tr-format -o="language-COUNTRY"` to make sure the file is formatted correctly.
 7. Test for syntax errors and update translation progress with the command `pnpm tr-progress`
-8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice).
+8. Open the file [`assets/translations/README.md`](../assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice).
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [the "local development" section.](#local-development)
 10. [Submit your pull request here](https://github.com/Sv443/BetterYTM/compare/) and make sure to set the `compare:` dropdown to your fork and the `base:` dropdown to `develop`  
   Make sure to describe your changes in the pull request and reference the issue you are fixing, if applicable.
@@ -183,7 +206,7 @@ To edit an existing translation, please follow these steps:
 - When using ViolentMonkey, after letting the command `pnpm dev` or `pnpm dev-cdn` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
   This makes it so the userscript automatically updates when the code changes.  
   Note: the tab needs to stay open on Firefox or the script will not update itself.
-- To link any local JS file (like a work-in-progress library) in the userscript, add a `"link": "/path/to/script.umd.js"` property to the respective library in [`assets/require.json`](./assets/require.json) (relative or absolute path)  
+- To link any local JS file (like a work-in-progress library) in the userscript, add a `"link": "/path/to/script.umd.js"` property to the respective library in [`assets/require.json`](../assets/require.json) (relative or absolute path)  
   As this file will just be injected as-is at build time, make sure you are targeting a UMD or IIFE bundle that exports a variable with the name set by `"global"`.  
   In order to make TypeScript shut up, you will still need to link the library manually with `pnpm link -g /path/to/library_root`
 
@@ -215,9 +238,9 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
   3. Create an async initialization function for your feature in the respective category's file inside the `src/features` folder
   4. Add the init function to the `onDomLoad` function in [`src/index.ts`](./src/index.ts), under the correct "domain guard condition" and category by following the format of the other features
 - Adding an asset (image, icon, stylesheet, translation file and misc. other files):
-  1. Check out [`assets/README.md`](./assets/README.md) for information on all asset formats
+  1. Check out [`assets/README.md`](../assets/README.md) for information on all asset formats
   2. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
-  3. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
+  3. Add the asset to the [`assets/resources.json`](../assets/resources.json) file by following the format of the other entries.  
     If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.  
     The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
   4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode and if the asset key matches the `externalAssetPattern` in the `assets/resources.json` file.
@@ -238,7 +261,7 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
   4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
   5. Write some API documentation for the component inside the file [`docs/api.md`](./docs/api.md) under the appropriate section, following the format of the other entries
 - Adding a locale (language & country code):
-  1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
+  1. Add the locale code and info about the locale to the file [`assets/locales.json`](../assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.  
     You can find [a list of BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
     The final locale code should be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
