@@ -7,7 +7,7 @@
       "Sv443"
     ],
     "antifeatures": {
-      "tracking": "Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings."
+      "tracking": "Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings."
     }
   },
   "config_menu_option": "%1 Configuration",
