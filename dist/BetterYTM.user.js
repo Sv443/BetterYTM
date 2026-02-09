@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@749bdc6a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@85099e84/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -66,8 +66,8 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.0.4/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.0.4/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.0.5/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.0.6/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.1
@@ -432,8 +432,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "749bdc6a",
-    buildTimestamp: "1770526490235",
+    buildNumber: "85099e84",
+    buildTimestamp: "1770678192252",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5791,18 +5791,19 @@ const artCacheStore = new CoreUtils.DataStore({
     formatVersion: 1,
     engine: new UserUtils.GMStorageEngine(),
     compressionFormat: compressionFormat$1,
+    memoryCache: false,
     defaultData: {
         entries: [],
     },
 });
 async function deleteExpiredAlbumArtCacheEntries() {
-    await artCacheStore.loadData();
     const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
-    const expiredEntries = artCacheStore.getData().entries.filter((e) => Date.now() - e.created > ttl);
+    const cacheData = await artCacheStore.loadData();
+    const expiredEntries = cacheData.entries.filter((e) => Date.now() - e.created > ttl);
     if (expiredEntries.length > 0) {
         log(`Deleting ${expiredEntries.length} expired album art cache entries`);
         artCacheStore.setData({
-            entries: artCacheStore.getData().entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
+            entries: cacheData.entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
         });
     }
 }
@@ -6049,7 +6050,7 @@ async function initThumbnailOverlay() {
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
 async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
     if (overlayState === ThumbOvlState.AM) {
-        const cacheEntry = artCacheStore.getData().entries.find((e) => e.videoId === videoId);
+        const cacheEntry = (await artCacheStore.loadData()).entries.find((e) => e.videoId === videoId);
         if (cacheEntry) {
             log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
             return {
@@ -6075,7 +6076,7 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
         [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
     const match = bestMatch ?? fallback;
     if (match) {
-        const entries = artCacheStore.getData().entries;
+        const entries = (await artCacheStore.loadData()).entries;
         if (!entries.some((e) => e.videoId === videoId)) {
             entries.push({
                 videoId,
