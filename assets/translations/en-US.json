@@ -450,7 +450,7 @@
   "feature_desc.frameSkip": "Use the period and comma keys to skip forwards and backwards by a frame when the video is paused",
   "feature_desc.frameSkipWhilePlaying": "Also allow skipping by a frame while the video is still playing",
   "feature_desc.frameSkipAmount": "How many seconds to skip with the period and comma keys",
-  "feature_helptext.frameSkipAmount": "This same feature which is natively available on YT skips by a fixed value of about 0.0417 seconds. If needed, adjust it to a different value here.",
+  "feature_helptext.frameSkipAmount": "This same feature which is natively available on YT skips by a fixed value of about 0.0166 seconds. If needed, adjust it to a different value here.",
   "feature_desc.anchorImprovements": "Add and improve clickable elements on the page",
   "feature_helptext.anchorImprovements": "Some elements on the page are only clickable with the left mouse button, some have quite the small hitbox, and some aren't clickable at all.\nThis feature adds and improves clickable elements all over the page to make it easier to interact with them, or quickly open them in a new tab using the middle mouse button or shift-click and shift-rightclick.",
   "feature_desc.autoLikeChannels": "Automatically like all videos and songs of certain channels",

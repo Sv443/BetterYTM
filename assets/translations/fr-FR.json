@@ -329,7 +329,7 @@
   "feature_desc.arrowKeySkipBy": "De combien de secondes sauter en utilisant les touches fléchées",
   "feature_desc.arrowKeyVolumeStep": "De combien de pourcentage augmenter ou diminuer le volume lorsque vous utilisez les touches fléchées",
   "feature_desc.frameSkipAmount": "De combien de secondes sauter avec les touches \"point\" et \"virgule\"",
-  "feature_helptext.frameSkipAmount": "Cette fonctionnalité est également disponible sur YT et saute une valeur fixe d'environ 0,0417 secondes. Si nécessaire, vous pouvez définir une autre valeur ici.",
+  "feature_helptext.frameSkipAmount": "Cette fonctionnalité est également disponible sur YT et saute une valeur fixe d'environ 0;0166 secondes. Si nécessaire, vous pouvez définir une autre valeur ici.",
   "feature_desc.autoLikeChannelToggleBtn": "Ajouter un bouton à chaque page de chaîne pour activer ou désactiver l'auto-aimer",
   "feature_desc.autoLikePlayerBarToggleBtn": "Ajouter un bouton aux contrôles multimédias pour activer ou désactiver l'auto-aimer",
   "feature_desc.autoLikeOpenMgmtDialog": "Ouvrir la boîte de dialogue pour gérer les chaînes auto-aimées",

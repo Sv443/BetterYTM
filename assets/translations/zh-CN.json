@@ -284,7 +284,7 @@
   "feature_desc.arrowKeySkipBy": "使用箭头键跳过多少秒",
   "feature_desc.arrowKeyVolumeStep": "使用箭头键时音量增加或减少的百分比",
   "feature_desc.frameSkipAmount": "在视频或歌曲暂停时使用逗号和句号键前进和后退",
-  "feature_helptext.frameSkipAmount": "该功能也可在 YT 上使用，并跳过约 0.0417 秒的固定值。如果需要，您可以在此处设置不同的值。",
+  "feature_helptext.frameSkipAmount": "该功能也可在 YT 上使用，并跳过约 0.0166 秒的固定值。如果需要，您可以在此处设置不同的值。",
   "feature_desc.autoLikeChannelToggleBtn": "在每个频道页面上添加一个按钮，以启用或禁用自动喜欢",
   "feature_desc.autoLikePlayerBarToggleBtn": "在媒体控件中添加一个按钮，以启用或禁用自动喜欢",
   "feature_desc.autoLikeOpenMgmtDialog": "打开对话框以管理自动喜欢的频道",

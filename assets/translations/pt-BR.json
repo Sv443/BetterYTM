@@ -284,7 +284,7 @@
   "feature_desc.arrowKeySkipBy": "Por quantos segundos pular ao usar as teclas de seta",
   "feature_desc.arrowKeyVolumeStep": "Em quantos por cento aumentar ou diminuir o volume ao usar as teclas de seta",
   "feature_desc.frameSkipAmount": "Quantos segundos devem ser pulados com as teclas \"ponto\" e \"vírgula\"",
-  "feature_helptext.frameSkipAmount": "Este recurso também está disponível no YT e pula um valor fixo de cerca de 0,0417 segundos. Se necessário, você pode definir outro valor aqui.",
+  "feature_helptext.frameSkipAmount": "Este recurso também está disponível no YT e pula um valor fixo de cerca de 0;0166 segundos. Se necessário, você pode definir outro valor aqui.",
   "feature_desc.autoLikeChannelToggleBtn": "Adicionar um botão a cada página do canal para ativar ou desativar o auto-curtir",
   "feature_desc.autoLikePlayerBarToggleBtn": "Adicionar um botão aos controles de mídia para ativar ou desativar o auto-curtir",
   "feature_desc.autoLikeOpenMgmtDialog": "Abrir o diálogo para gerenciar os canais auto-curtidos",

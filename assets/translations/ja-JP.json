@@ -329,7 +329,7 @@
   "feature_desc.arrowKeySkipBy": "矢印キーを使用してスキップする秒数",
   "feature_desc.arrowKeyVolumeStep": "矢印キーを使用したときに音量を何パーセント増減するか",
   "feature_desc.frameSkipAmount": "\"ピリオド\"と\"カンマ\"キーで何秒スキップするか",
-  "feature_helptext.frameSkipAmount": "この機能は YT でも利用可能で、約 0.0417 秒の固定値をスキップします。必要に応じて、ここで別の値を設定できます。",
+  "feature_helptext.frameSkipAmount": "この機能は YT でも利用可能で、約 0.0166 秒の固定値をスキップします。必要に応じて、ここで別の値を設定できます。",
   "feature_desc.autoLikeChannelToggleBtn": "各チャンネルページにトグルボタンを追加して、自動的に好きにするかどうかを切り替える",
   "feature_desc.autoLikePlayerBarToggleBtn": "メディアコントロールにボタンを追加して、自動的に好きにするかどうかを切り替える",
   "feature_desc.autoLikeOpenMgmtDialog": "自動的に好きなチャンネルを管理するダイアログを開く",

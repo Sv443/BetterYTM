@@ -330,7 +330,7 @@
   "feature_desc.arrowKeySkipBy": "Por cuántos segundos saltar al usar las teclas de flecha",
   "feature_desc.arrowKeyVolumeStep": "¿En qué porcentaje se debe aumentar o disminuir el volumen al usar las teclas de flecha?",
   "feature_desc.frameSkipAmount": "Cuántos segundos saltar al usar las teclas de punto y coma",
-  "feature_helptext.frameSkipAmount": "Este ajuste también está disponible en YT y salta un valor fijo de aproximadamente 0.0417 segundos. Si es necesario, puede establecer otro valor aquí.",
+  "feature_helptext.frameSkipAmount": "Este ajuste también está disponible en YT y salta un valor fijo de aproximadamente 0.0166 segundos. Si es necesario, puede establecer otro valor aquí.",
   "feature_desc.autoLikeChannelToggleBtn": "Agregue un botón a cada página de canal para habilitar o deshabilitar el me gusta automático",
   "feature_desc.autoLikePlayerBarToggleBtn": "Agregue un botón a los controles multimedia para habilitar o deshabilitar el me gusta automático",
   "feature_desc.autoLikeOpenMgmtDialog": "Abrir el diálogo para administrar los canales con me gusta automático",
