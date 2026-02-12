@@ -1,4 +1,4 @@
-name: "Build BetterYTM"
+name: Build BetterYTM
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
-    timeout-minutes: 8
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -21,8 +21,8 @@ jobs:
     env:
       CI: "true"
       STORE_PATH: ""
-      PNPM_VERSION: 9
-      RETENTION_DAYS: 2
+      PNPM_VERSION: 10
+      RETENTION_DAYS: 14
 
     steps:
       - name: Check out the repository
@@ -41,8 +41,7 @@ jobs:
 
       - name: Get pnpm store directory
         shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Setup pnpm cache
         uses: actions/cache@v5
@@ -55,12 +54,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Get BYTM version
+        id: get_version
+        run: echo "BYTM_VERSION=$(node src/tools/get-pkg-prop.mjs version)" >> $GITHUB_ENV
+
       - name: Build all for production
         run: pnpm run build-prod
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: dist
+          name: BetterYTM v${{ steps.get_version.outputs.BYTM_VERSION }}-${{ github.run_number }} (${{ github.sha }})
           path: dist
           retention-days: ${{ env.RETENTION_DAYS }}

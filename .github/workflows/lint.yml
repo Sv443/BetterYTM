@@ -10,7 +10,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
 
-    timeout-minutes: 8
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -19,7 +19,7 @@ jobs:
     env:
       CI: "true"
       STORE_PATH: ""
-      PNPM_VERSION: 9
+      PNPM_VERSION: 10
 
     steps:
       - name: Check out the repository
@@ -38,8 +38,7 @@ jobs:
 
       - name: Get pnpm store directory
         shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Setup pnpm cache
         uses: actions/cache@v5
