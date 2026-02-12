@@ -55,11 +55,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Get BYTM version
-        id: get_version
+      - name: Get version info
+        id: get_version_info
         run: |
           BYTM_VERSION=$(node src/tools/get-pkg-prop.mjs version)
           echo "BYTM_VERSION=$BYTM_VERSION" >> $GITHUB_OUTPUT
+          GIT_SHA_SHORT=$(git rev-parse --short HEAD)
+          echo "GIT_SHA_SHORT=$GIT_SHA_SHORT" >> $GITHUB_OUTPUT
 
       - name: Build all for production
         run: pnpm run build-prod
@@ -67,6 +69,6 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: BetterYTM v${{ steps.get_version.outputs.BYTM_VERSION }}-${{ github.run_number }} (${{ github.sha }})
+          name: "BetterYTM v${{ steps.get_version_info.outputs.BYTM_VERSION }} (${{ steps.get_version_info.outputs.GIT_SHA_SHORT }}) [${{ github.run_number }}]"
           path: dist
           retention-days: ${{ github.event_name == 'push' && env.RETENTION_DAYS_PUSH || env.RETENTION_DAYS_PR }}
