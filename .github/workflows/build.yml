@@ -57,7 +57,9 @@ jobs:
 
       - name: Get BYTM version
         id: get_version
-        run: echo "BYTM_VERSION=$(node src/tools/get-pkg-prop.mjs version)" >> $GITHUB_ENV
+        run: |
+          BYTM_VERSION=$(node src/tools/get-pkg-prop.mjs version)
+          echo "BYTM_VERSION=$BYTM_VERSION" >> $GITHUB_OUTPUT
 
       - name: Build all for production
         run: pnpm run build-prod
