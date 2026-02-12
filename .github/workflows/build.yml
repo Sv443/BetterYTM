@@ -22,7 +22,8 @@ jobs:
       CI: "true"
       STORE_PATH: ""
       PNPM_VERSION: 10
-      RETENTION_DAYS: 14
+      RETENTION_DAYS_PUSH: 30
+      RETENTION_DAYS_PR: 2
 
     steps:
       - name: Check out the repository
@@ -66,4 +67,4 @@ jobs:
         with:
           name: BetterYTM v${{ steps.get_version.outputs.BYTM_VERSION }}-${{ github.run_number }} (${{ github.sha }})
           path: dist
-          retention-days: ${{ env.RETENTION_DAYS }}
+          retention-days: ${{ github.event_name == 'push' && env.RETENTION_DAYS_PUSH || env.RETENTION_DAYS_PR }}
