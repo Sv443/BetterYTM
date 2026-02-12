@@ -258,13 +258,28 @@ ${devDirectives ? "\n" + devDirectives : ""}
 
         Made with ❤️ by Sv443
 I welcome every contribution on GitHub!
-  https://github.com/Sv443/BetterYTM
+  ${pkg.homepage}
+
+
+You can install the latest in-development version here:
+${pkg.devVersionUrl}
+
 */
 ` as const;
+
+  const greasyForkDisclaimer = `
+/*
+  Note: The GreasyFork version has to fit within a size limit of 500kB, so comments had to be removed.
+  If you want install the full, unmodified version, please use one of these sources instead:
+    - GitHub: ${pkg.hosts.github}
+    - OpenUserJS: ${pkg.hosts.openuserjs}
+*/
+`;
 
   const subHeader = `
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
+${host === "greasyfork" ? greasyForkDisclaimer : ""}
 ` as const;
 
   return [header, subHeader];
