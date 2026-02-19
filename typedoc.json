@@ -1,0 +1,25 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "src/components/*.ts",
+    "src/dialogs/*.ts",
+    "src/config.ts",
+    "src/constants.ts",
+    "src/interface.ts",
+    "src/siteEvents.ts",
+    "src/types.ts",
+  ],
+  "excludeTags": [
+    "@override",
+    "@virtual",
+    "@privateRemarks",
+    "@satisfies",
+    "@overload",
+    "@inline",
+    "@inlineType",
+    "@see",
+  ],
+  "plugin": ["typedoc-plugin-markdown"],
+  "out": "docs/typedocs/",
+  "skipErrorChecking": true
+}
