@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@499716f1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c46b0eda/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -438,8 +438,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "499716f1",
-    buildTimestamp: "1770925819896",
+    buildNumber: "c46b0eda",
+    buildTimestamp: "1771528822082",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -9300,12 +9300,10 @@ const configStore = new CoreUtils.DataStore({
 //#region >> init
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 async function initConfig() {
-    // TODO: when switching to new engine-based DataStores, change this key prefix:
-    const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
+    const oldFmtVer = Number(await GM.getValue(`__ds-${configStore.id}-ver`, NaN));
     let oldDataHash;
     try {
-        // TODO: when switching to new engine-based DataStores, change this key prefix:
-        const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
+        const oldData = await GM.getValue(`__ds-${configStore.id}-dat`, "{}");
         const oldDataObj = JSON.parse(oldData);
         // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
         if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
@@ -9330,14 +9328,14 @@ async function initConfig() {
     }
     log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
     if (isNaN(oldFmtVer))
-        info("  !- Config data was initialized with default values");
+        warn("  ⚠️ - Config data was initialized with default values");
     else if (oldFmtVer !== configStore.formatVersion) {
         try {
             await configStore.setData(data = fixCfgKeys(data));
-            info(`  !- Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
+            info(`  ⚠️ - Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
         }
         catch (err) {
-            error("  !- Config data migration failed, falling back to default data:", err);
+            error("  ⚠️ - Config data migration failed, falling back to default data:", err);
             await configStore.setData(data = configStore.defaultData);
         }
     }
@@ -11098,8 +11096,8 @@ function registerDevCommands() {
         for (const key of keys) {
             try {
                 // TODO: when switching to new engine-based DataStores, change these key prefixes:
-                const isEncoded = key.startsWith("_uucfg-")
-                    ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, "true") !== "false"
+                const isEncoded = key.startsWith("__ds-")
+                    ? String(await GM.getValue(`__ds-${key.substring(5)}-enf`, "null")) !== "null"
                     : false;
                 const val = await GM.getValue(key, undefined);
                 values[key] = typeof val !== "undefined" && isEncoded
@@ -11114,7 +11112,7 @@ function registerDevCommands() {
         for (const [key, finalVal] of Object.entries(values)) {
             try {
                 // TODO: when switching to new engine-based DataStores, change these key prefixes:
-                const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+                const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
                 const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
                 dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
             }
@@ -11219,7 +11217,7 @@ function registerDevCommands() {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
     });
     isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
-        const data = await GM.getValue("_uucfg-bytm-dev-used-tr-keys", "{\"keys\":[]}");
+        const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
         const obj = typeof data === "string" ? JSON.parse(data) : data;
         const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
         // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
