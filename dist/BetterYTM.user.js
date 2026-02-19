@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c46b0eda/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@87c4f02a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -438,8 +438,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "c46b0eda",
-    buildTimestamp: "1771528822082",
+    buildNumber: "87c4f02a",
+    buildTimestamp: "1771529368445",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1233,10 +1233,15 @@ window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true })
 /** Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is */
 function emitSiteEvent(key, ...args) {
     try {
-        const logEmit = () => args.length > 0
-            ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${CoreUtils.autoPlural("argument", args)}:`, ...args)
-            : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+        const logEmit = () => {
+            if (getFeature("logEvents")) {
+                args.length > 0
+                    ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${CoreUtils.autoPlural("argument", args)}:`, ...args)
+                    : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+            }
+        };
         if (!bytmReady) {
+            // log slow siteEvents that are emitted before `bytm:ready` to help identify bottlenecks in the initialization process
             const startTs = Date.now();
             window.addEventListener("bytm:ready", () => {
                 bytmReady = true;
@@ -7851,7 +7856,7 @@ const featInfo = {
     logLevel: {
         type: "select",
         category: "general",
-        group: "logLevel",
+        group: "logging",
         supportedSites: ["ytm", "yt"],
         since: "1.0.0",
         options: () => [
@@ -7859,6 +7864,16 @@ const featInfo = {
             { value: LogLevel.Info, label: t("log_level_info") },
         ],
         default: LogLevel.Info,
+        advanced: true,
+        adornments: [adornments.advanced, adornments.reload],
+    },
+    logEvents: {
+        type: "toggle",
+        category: "general",
+        group: "logging",
+        supportedSites: ["ytm", "yt"],
+        since: "3.1.0",
+        default: mode$1 === "development",
         advanced: true,
         adornments: [adornments.advanced, adornments.reload],
     },
@@ -9529,9 +9544,11 @@ function emitInterface(type, ...detail) {
         unsafeWindow.dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
         //@ts-expect-error
         emitOnPlugins(type, undefined, ...detail);
-        detail.length > 0 && detail?.[0]
-            ? log(`Emitted interface event '${type}' with data:`, ...detail)
-            : log(`Emitted interface event '${type}' (without data)`);
+        if (getFeature("logEvents")) {
+            detail.length > 0 && detail?.[0]
+                ? log(`Emitted interface event '${type}' with data:`, ...detail)
+                : log(`Emitted interface event '${type}' (without data)`);
+        }
     }
     catch (err) {
         error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
