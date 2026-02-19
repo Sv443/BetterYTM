@@ -154,48 +154,48 @@ The following is a list of events in chronological order, grouped by the init ph
 The timings might be slightly off in each session, but this should give you a good idea of when to expect which event.  
   
 > [!NOTE]  
-> `[Interface]` means the event is only emitted via the interface event system (`unsafeWindow.addEventListener("...")`)  
-> `[Both]` means the event is emitted via both the interface and the site event system (`unsafeWindow.addEventListener("...")` and `unsafeWindow.BYTM.onSiteEvent("...")`, `onceSiteEvent()` and `onMultiSiteEvents()`)  
+> `[Interface]` means the event is only emitted via the interface event system (using `unsafeWindow.addEventListener()` with [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent)).  
+> `[Both]` means the event is emitted via both the interface and the site event system (`unsafeWindow.BYTM.onSiteEvent()`, `unsafeWindow.BYTM.onceSiteEvent()` and `unsafeWindow.BYTM.onMultiSiteEvents()`).  
 >   
 > `<foo>` is a placeholder for dynamic values, e.g. feature or dialog IDs.
 
 ### 1. Init on YTM home page
-- `[Interface]` : [`bytm:preInitPlugin`](#bytm-preinitplugin)
-- `[Interface]` : [`bytm:configReady`](#bytm-configready)
-- `[Interface]` : [`bytm:lyricsCacheReady`](#bytm-lyricscacheready)
-- `[Interface]` : [`bytm:registerPlugin`](#bytm-registerplugin)
-- `[Interface]` : [`bytm:setLocale`](#bytm-setlocale)
-- `[Interface]` : [`bytm:featureInitStarted`](#bytm-featureinitstarted)
-- `[Interface]` : [`bytm:ready`](#bytm-ready)
-- Repeated for every feature:  
-  - `[Interface]` : [`bytm:featureInitialized:<id>`](#bytm-featureinitialized-id)  
+- `[Interface]` : [`bytm:preInitPlugin`](#bytm-preinitplugin) - earliest plugin entrypoint
+- `[Interface]` : [`bytm:configReady`](#bytm-configready) - feature config can be read
+- `[Interface]` : [`bytm:lyricsCacheReady`](#bytm-lyricscacheready) - lyrics cache can be read
+- `[Interface]` : [`bytm:registerPlugin`](#bytm-registerplugin) - regular plugin entrypoint
+- `[Interface]` : [`bytm:setLocale`](#bytm-setlocale) - locale was set, translations can be used
+- `[Interface]` : [`bytm:featureInitStarted`](#bytm-featureinitstarted) - features start initializing
+- `[Interface]` : [`bytm:ready`](#bytm-ready) - BYTM general init is done, features still initializing
+- *Repeated for every feature:*
+  - `[Interface]` : [`bytm:featureInitialized:<id>`](#bytm-featureinitialized-id)
   - `[Interface]` : [`bytm:featureInitialized`](#bytm-featureinitialized)
-- `[Interface]` : [`bytm:observersReady`](#bytm-observersready)
-- `[Interface]` : [`bytm:allReady`](#bytm-allready)
-- `[Both]     ` : [`bytm:siteEvent:cfgMenuMounted`](#bytm-siteevent-cfgmenumounted)
+- `[Interface]` : [`bytm:observersReady`](#bytm-observersready) - [addSelectorListener()](#function-addselectorlistener) can be used
+- `[Interface]` : [`bytm:allReady`](#bytm-allready) - DOM and all features are initialized
+- `[Both]     ` : [`bytm:siteEvent:cfgMenuMounted`](#bytm-siteevent-cfgmenumounted) - config menu was mounted and is ready to be opened
 
 ### 2. Navigate to `/watch`
-- `[Both]     ` : [`bytm:siteEvent:fullscreenToggled`](#bytm-siteevent-fullscreentoggled)
-- `[Both]     ` : [`bytm:siteEvent:watchIdChanged`](#bytm-siteevent-watchidchanged)
-- `[Interface]` : [`bytm:siteEvent:voteLabelsAdded`](#bytm-siteevent-votelabelsadded)
-- `[Both]     ` : [`bytm:siteEvent:pathChanged`](#bytm-siteevent-pathchanged)
-- `[Both]     ` : [`bytm:siteEvent:queueChanged`](#bytm-siteevent-queuechanged)
-- `[Both]     ` : [`bytm:siteEvent:songTitleChanged`](#bytm-siteevent-songtitlechanged)
-- `[Interface]` : [`bytm:lyricsCacheEntryAdded`](#bytm-lyricscacheentryadded)
-- `[Interface]` : [`bytm:lyricsLoaded`](#bytm-lyricsloaded)
+- `[Both]     ` : [`bytm:siteEvent:fullscreenToggled`](#bytm-siteevent-fullscreentoggled) - fullscreen mode toggled
+- `[Both]     ` : [`bytm:siteEvent:watchIdChanged`](#bytm-siteevent-watchidchanged) - video changed
+- `[Interface]` : [`bytm:siteEvent:voteLabelsAdded`](#bytm-siteevent-votelabelsadded) - like/dislike vote labels added
+- `[Both]     ` : [`bytm:siteEvent:pathChanged`](#bytm-siteevent-pathchanged) - URL path changed
+- `[Both]     ` : [`bytm:siteEvent:queueChanged`](#bytm-siteevent-queuechanged) - currently playing queue changed
+- `[Both]     ` : [`bytm:siteEvent:songTitleChanged`](#bytm-siteevent-songtitlechanged) - song title changed
+- `[Interface]` : [`bytm:lyricsCacheEntryAdded`](#bytm-lyricscacheentryadded) - current lyrics URL fetched and added to cache
+- `[Interface]` : [`bytm:lyricsLoaded`](#bytm-lyricsloaded) - lyrics URL loaded and ready
 
 ### 3. Open and immediately close any BytmDialog dialog (not the config menu)
-- `[Interface]` : [`bytm:dialogOpened:<id>`](#bytm-dialogopened-id)
+- `[Interface]` : [`bytm:dialogOpened:<id>`](#bytm-dialogopened-id) - BytmDialog instance opened
 - `[Interface]` : [`bytm:dialogOpened`](#bytm-dialogopened)
-- `[Interface]` : [`bytm:dialogClosed:<id>`](#bytm-dialogclosed-id)
+- `[Interface]` : [`bytm:dialogClosed:<id>`](#bytm-dialogclosed-id) - BytmDialog instance closed
 - `[Interface]` : [`bytm:dialogClosed`](#bytm-dialogclosed)
 
 ### 4. Open config menu and change a setting
-- `[Interface]` : [`bytm:dialogOpened:cfg-menu`](#bytm-dialogopened-cfg-menu)
+- `[Interface]` : [`bytm:dialogOpened:cfg-menu`](#bytm-dialogopened-cfg-menu) - config menu opened
 - `[Interface]` : [`bytm:dialogOpened`](#bytm-dialogopened)
-- `[Both]     ` : [`bytm:siteEvent:configHeaderSelected`](#bytm-siteevent-configheaderselected)
-- `[Both]     ` : [`bytm:siteEvent:configChanged`](#bytm-siteevent-configchanged)
-- `[Both]     ` : [`bytm:siteEvent:configOptionChanged`](#bytm-siteevent-configoptionchanged)
+- `[Both]     ` : [`bytm:siteEvent:configHeaderSelected`](#bytm-siteevent-configheaderselected) - config menu header selected
+- `[Both]     ` : [`bytm:siteEvent:configChanged`](#bytm-siteevent-configchanged) - config was changed
+- `[Both]     ` : [`bytm:siteEvent:configOptionChanged`](#bytm-siteevent-configoptionchanged) - config option was changed
 
 <br><br>
 
