@@ -349,14 +349,14 @@ export async function initConfig() {
 
   log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
-    warn("  !- Config data was initialized with default values");
+    warn("  ⚠️ - Config data was initialized with default values");
   else if(oldFmtVer !== configStore.formatVersion) {
     try {
       await configStore.setData(data = fixCfgKeys(data));
-      info(`  !- Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
+      info(`  ⚠️ - Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
     }
     catch(err) {
-      error("  !- Config data migration failed, falling back to default data:", err);
+      error("  ⚠️ - Config data migration failed, falling back to default data:", err);
       await configStore.setData(data = configStore.defaultData);
     }
   }
