@@ -1,7 +1,7 @@
 import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
-import { error, info, log, reloadTab, t, type TrLocale } from "./utils/index.js";
+import { error, info, log, reloadTab, t, warn, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
@@ -318,13 +318,11 @@ export const configStore = new DataStore({
 
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
-  // TODO: when switching to new engine-based DataStores, change this key prefix:
-  const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
+  const oldFmtVer = Number(await GM.getValue(`__ds-${configStore.id}-ver`, NaN));
 
   let oldDataHash: string | undefined;
   try {
-    // TODO: when switching to new engine-based DataStores, change this key prefix:
-    const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
+    const oldData = await GM.getValue(`__ds-${configStore.id}-dat`, "{}");
     const oldDataObj = JSON.parse(oldData as string);
     // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
     if(oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
@@ -351,7 +349,7 @@ export async function initConfig() {
 
   log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
-    info("  !- Config data was initialized with default values");
+    warn("  !- Config data was initialized with default values");
   else if(oldFmtVer !== configStore.formatVersion) {
     try {
       await configStore.setData(data = fixCfgKeys(data));

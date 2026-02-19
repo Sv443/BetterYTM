@@ -531,8 +531,8 @@ function registerDevCommands() {
     for(const key of keys) {
       try {
         // TODO: when switching to new engine-based DataStores, change these key prefixes:
-        const isEncoded = key.startsWith("_uucfg-")
-          ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, "true") !== "false"
+        const isEncoded = key.startsWith("__ds-")
+          ? String(await GM.getValue(`__ds-${key.substring(5)}-enf`, "null")) !== "null"
           : false;
         const val = await GM.getValue(key, undefined);
         values[key] = typeof val !== "undefined" && isEncoded
@@ -547,7 +547,7 @@ function registerDevCommands() {
     for(const [key, finalVal] of Object.entries(values)) {
       try {
         // TODO: when switching to new engine-based DataStores, change these key prefixes:
-        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+        const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
         const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
         dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
       }
@@ -672,7 +672,7 @@ function registerDevCommands() {
   });
 
   isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
-    const data = await GM.getValue("_uucfg-bytm-dev-used-tr-keys", "{\"keys\":[]}");
+    const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
     const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
 
     const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
