@@ -692,6 +692,8 @@ export interface FeatureConfig {
   checkVersionNow: undefined;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
+  /** Whether to log interface and site events to the console */
+  logEvents: boolean;
   /** Amount of seconds to show BYTM's toasts for */
   toastDuration: number;
   /** Whether to show a toast on generic errors */

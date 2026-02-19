@@ -346,7 +346,7 @@ export const featInfo = {
   logLevel: {
     type: "select",
     category: "general",
-    group: "logLevel",
+    group: "logging",
     supportedSites: ["ytm", "yt"],
     since: "1.0.0",
     options: () => [
@@ -354,6 +354,16 @@ export const featInfo = {
       { value: LogLevel.Info, label: t("log_level_info") },
     ],
     default: LogLevel.Info,
+    advanced: true,
+    adornments: [adornments.advanced, adornments.reload],
+  },
+  logEvents: {
+    type: "toggle",
+    category: "general",
+    group: "logging",
+    supportedSites: ["ytm", "yt"],
+    since: "3.1.0",
+    default: mode === "development",
     advanced: true,
     adornments: [adornments.advanced, adornments.reload],
   },

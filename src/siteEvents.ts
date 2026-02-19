@@ -1,8 +1,9 @@
 import { autoPlural, NanoEmitter, type LooseUnion } from "@sv443-network/coreutils";
 import { error, getDomain, info, log, warn } from "./utils/index.js";
-import { FeatureConfig, type FeatureCategory } from "./types.js";
+import { getFeature } from "./config.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
+import { FeatureConfig, type FeatureCategory } from "./types.js";
 
 /** Map of all site events and their arguments */
 export type SiteEventsMap = {
@@ -229,11 +230,16 @@ window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true })
 /** Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
-    const logEmit = () => args.length > 0
-      ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
-      : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+    const logEmit = () => {
+      if(getFeature("logEvents")) {
+        args.length > 0
+          ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
+          : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+      }
+    };
 
     if(!bytmReady) {
+      // log slow siteEvents that are emitted before `bytm:ready` to help identify bottlenecks in the initialization process
       const startTs = Date.now();
       window.addEventListener("bytm:ready", () => {
         bytmReady = true;

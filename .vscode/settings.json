@@ -5,6 +5,7 @@
   "search.exclude": {
     "**/*.user.js": true,
     "**/BetterYTM.css": true,
+    "docs/typedocs/**/*.md": true,
   },
   "files.associations": {
     "*.env": "dotenv",

@@ -4,7 +4,7 @@ import * as compareVersions from "compare-versions";
 import * as constants from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
-import { cfgDefaultData, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
+import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "./siteEvents.js";
 import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum } from "./types.js";
@@ -270,9 +270,11 @@ export function emitInterface<
     unsafeWindow.dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
     //@ts-expect-error
     emitOnPlugins(type, undefined, ...detail);
-    detail.length > 0 && detail?.[0]
-      ? log(`Emitted interface event '${type}' with data:`, ...detail)
-      : log(`Emitted interface event '${type}' (without data)`);
+    if(getFeature("logEvents")) {
+      detail.length > 0 && detail?.[0]
+        ? log(`Emitted interface event '${type}' with data:`, ...detail)
+        : log(`Emitted interface event '${type}' (without data)`);
+    }
   }
   catch(err) {
     error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
