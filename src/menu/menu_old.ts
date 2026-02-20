@@ -505,14 +505,15 @@ export async function mountCfgMenu() {
           const initLangEmoji = localeMapping[initLocale!]?.emoji ? `${localeMapping[initLocale!].emoji}\n` : "";
 
           const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
+          const isLocalesTextDifferent = t("reload_now") !== tl(initLocale!, "reload_now");
 
           if(await showPrompt({
             type: "confirm",
             message: confirmText,
-            confirmBtnText: () => `${t("prompt_confirm")} / ${tl(initLocale!, "prompt_confirm")}`,
-            confirmBtnTooltip: () => `${t("click_to_confirm_tooltip")} / ${tl(initLocale!, "click_to_confirm_tooltip")}`,
-            denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")} / ${tl(initLocale!, type === "alert" ? "prompt_close" : "prompt_cancel")}`,
-            denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale!, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
+            confirmBtnText: () => `${t("reload_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_now")}` : ""}`,
+            confirmBtnTooltip: () => `${t("reload_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_tooltip")}` : ""}`,
+            denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, type === "alert" ? "prompt_close" : "prompt_cancel")}` : ""}`,
+            denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}` : ""}`,
           })) {
             closeCfgMenu();
             log("Reloading tab after changing language");
@@ -996,9 +997,9 @@ export async function mountCfgMenu() {
           scriptVersion: pkg.version,
           buildNumber,
           buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
-            dateStyle: "short",
-            timeStyle: "short",
+            dateStyle: "medium",
           }),
+          buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber}`,
           authorName: pkg.author.name,
           authorLink: pkg.author.url,
           githubLink: scriptInfo.namespace,
@@ -1009,6 +1010,7 @@ export async function mountCfgMenu() {
           currentYear: new Date().getFullYear(),
           licenseName: pkg.license,
           licenseUrl: `https://github.com/${repo}/blob/${branch}/LICENSE.txt`,
+          contributorsLink: pkg.specialThanksUrl,
         });
         setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams), true));
         return [aboutTextCont] as HTMLElement[];

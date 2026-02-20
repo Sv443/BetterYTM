@@ -306,7 +306,7 @@
   "cfg_menu_feature_category_header_tooltip": "Configuration category \"%1\"",
   "cfg_menu_feature_category_info_header_tooltip": "Information section \"%1\"",
 
-  "about_bytm_content_markdown": "`v${scriptVersion}` • `#${buildNumber}` • `${buildDate}`\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and contributors and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS](${openuserjsLink}).  <br>\nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n[Join the Discord server](${discordLink}) to receive update notifications, to discuss issues or suggest features, and to chat with members.\n\n---\n\n${scriptName} is **not affiliated** with YouTube or Google **in any way.**  \nCopyright © ${currentYear} ${authorName}. Licensed under the [${licenseName}](${licenseUrl}).",
+  "about_bytm_content_markdown": "Version `${scriptVersion}` (build [`#${buildNumber}`](${buildBrowseLink}) from ${buildDate})\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and [contributors](${contributorsLink}) and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS.](${openuserjsLink})  \nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n[Join the Discord server](${discordLink}) to receive update notifications, to discuss issues or suggest features, and to chat with members.\n\n---\n\n${scriptName} is **not affiliated** with YouTube or Google **in any way.**  \nCopyright © ${currentYear} ${authorName}. Licensed under the [${licenseName}.](${licenseUrl})",
 
   "feature_category.general": "General",
   "feature_category.layout": "Layout",
@@ -541,7 +541,7 @@
   "feature_desc.logLevel": "How much information to log to the console",
   "feature_helptext.logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.",
   "feature_desc.logEvents": "Log interface and site events to the console",
-  "feature_helptext.logEvents": "This will log events that occur on both event systems used internally by BetterYTM to the console. This is useful for debugging purposes and for making plugins.",
+  "feature_helptext.logEvents": "This will log events that occur on both internally used event systems to the console. This is useful for debugging purposes and for making plugins.",
   "feature_desc.toastDuration": "For how many seconds custom toast notifications should be shown - 0 to disable them",
   "feature_desc.showToastOnGenericError": "Show a notification when an error occurs",
   "feature_helptext.showToastOnGenericError": "Should an error occur in the script that prevents parts of it from working correctly, a notification will be shown to inform you about it.\nIf you encounter a problem often, please copy the error from the JavaScript console (usually in the F12 menu) and please open an issue on GitHub.",

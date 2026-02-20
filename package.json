@@ -7,6 +7,7 @@
   "homepage": "https://github.com/Sv443/BetterYTM",
   "namespace": "https://github.com/Sv443/BetterYTM",
   "pluginDiscoveryUrl": "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",
+  "specialThanksUrl": "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks",
   "devVersionUrl": "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen",
   "main": "./src/index.ts",
   "type": "module",
