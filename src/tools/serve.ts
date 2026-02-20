@@ -1,9 +1,9 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { styleText } from "node:util";
 import type { Server } from "node:http";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
-import k from "kleur";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
 
@@ -27,14 +27,34 @@ app.use(cors());
 
 let server: Server;
 
-enableLogging && app.use((_req, _res, next) => {
-  stdout.write("*");
+enableLogging && app.use((req, _res, next) => {
+  let char: string | undefined;
+
+  // set char based on method and URL path
+  if(["HEAD", "OPTIONS"].includes(req.method))
+    char = styleText("gray", "H");
+  else if(req.method === "GET") {
+    if(req.path.startsWith("/assets/"))
+      char = styleText("blue", "A");
+    else if(req.path.endsWith(".user.js"))
+      char = styleText("greenBright", "U");
+    else if(req.path.endsWith(".md"))
+      char = styleText("cyan", "M");
+    else if(req.path.endsWith(".css"))
+      char = styleText("magenta", "C");
+    else
+      char = styleText("green", "G");
+  }
+  else
+    char = styleText("yellow", `<${req.method}>`);
+
+  char && stdout.write(char);
   next();
 });
 
 app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
   if(typeof err === "string" || err instanceof Error)
-    console.error(k.red("Error in dev server:\n"), err);
+    console.error(styleText("red", "Error in dev server:\n"), err);
 });
 
 app.use("/", express.static(
@@ -61,10 +81,20 @@ function closeAndExit(code: number) {
 try {
   server = app.listen(devServerPort, "0.0.0.0", () => {
     console.log(`Dev server is running on port ${devServerPort}`);
-    if(enableLogging)
-      stdout.write("\nRequests: ");
+    if(enableLogging) {
+      console.log([
+        `\n${styleText("yellow", "Request logging enabled:")}`,
+        ` ${styleText("gray", "H")}  HEAD/OPTIONS`,
+        ` ${styleText("greenBright", "U")}  GET *.user.js`,
+        ` ${styleText("magenta", "C")}  GET *.css`,
+        ` ${styleText("cyan", "M")}  GET *.md`,
+        ` ${styleText("blue", "A")}  GET /assets/`,
+        ` ${styleText("green", "G")}  GET other`,
+        `${styleText("yellow", "<*>")} other methods`,
+      ].join(`\n${styleText("yellow", "|")} `));
+    }
     else
-      console.log(k.gray("(request logging is disabled)"));
+      console.log(styleText("gray", "(request logging is disabled)"));
     console.log();
 
     if(autoExitTime) {
@@ -74,6 +104,6 @@ try {
   });
 }
 catch(err) {
-  console.error(k.red("Error starting dev server:"), err);
+  console.error(styleText("red", "Error starting dev server:"), err);
   closeAndExit(1);
 }
