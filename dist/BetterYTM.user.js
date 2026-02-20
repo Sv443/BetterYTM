@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@87c4f02a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e7f27701/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -438,8 +438,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "87c4f02a",
-    buildTimestamp: "1771529368445",
+    buildNumber: "e7f27701",
+    buildTimestamp: "1771591077378",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1297,6 +1297,7 @@ var license = "AGPL-3.0-or-later";
 var homepage = "https://github.com/Sv443/BetterYTM";
 var namespace = "https://github.com/Sv443/BetterYTM";
 var pluginDiscoveryUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins";
+var specialThanksUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks";
 var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
@@ -1323,6 +1324,7 @@ var packageJson = {
 	homepage: homepage,
 	namespace: namespace,
 	pluginDiscoveryUrl: pluginDiscoveryUrl,
+	specialThanksUrl: specialThanksUrl,
 	author: author,
 	bugs: bugs,
 	funding: funding,
@@ -4605,13 +4607,14 @@ async function mountCfgMenu() {
                     const newLangEmoji = locales[featConf.locale]?.emoji ? `${locales[featConf.locale].emoji}\n` : "";
                     const initLangEmoji = locales[initLocale]?.emoji ? `${locales[initLocale].emoji}\n` : "";
                     const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
+                    const isLocalesTextDifferent = t("reload_now") !== tl(initLocale, "reload_now");
                     if (await showPrompt({
                         type: "confirm",
                         message: confirmText,
-                        confirmBtnText: () => `${t("prompt_confirm")} / ${tl(initLocale, "prompt_confirm")}`,
-                        confirmBtnTooltip: () => `${t("click_to_confirm_tooltip")} / ${tl(initLocale, "click_to_confirm_tooltip")}`,
-                        denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")} / ${tl(initLocale, type === "alert" ? "prompt_close" : "prompt_cancel")}`,
-                        denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`,
+                        confirmBtnText: () => `${t("reload_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_now")}` : ""}`,
+                        confirmBtnTooltip: () => `${t("reload_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_tooltip")}` : ""}`,
+                        denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")}${isLocalesTextDifferent ? ` / ${tl(initLocale, type === "alert" ? "prompt_close" : "prompt_cancel")}` : ""}`,
+                        denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}` : ""}`,
                     })) {
                         closeCfgMenu();
                         log("Reloading tab after changing language");
@@ -5012,9 +5015,9 @@ async function mountCfgMenu() {
                     scriptVersion: packageJson.version,
                     buildNumber: buildNumber$1,
                     buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
-                        dateStyle: "short",
-                        timeStyle: "short",
+                        dateStyle: "medium",
                     }),
+                    buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber$1}`,
                     authorName: packageJson.author.name,
                     authorLink: packageJson.author.url,
                     githubLink: scriptInfo$1.namespace,
@@ -5025,6 +5028,7 @@ async function mountCfgMenu() {
                     currentYear: new Date().getFullYear(),
                     licenseName: packageJson.license,
                     licenseUrl: `https://github.com/${repo}/blob/${branch$1}/LICENSE.txt`,
+                    contributorsLink: packageJson.specialThanksUrl,
                 });
                 setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams), true));
                 return [aboutTextCont];
