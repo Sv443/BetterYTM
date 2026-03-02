@@ -1,10 +1,10 @@
-import { compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { autoPlural, compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
-import { emitBroadcast, initBroadcast } from "./utils/broadcast.js";
+import { broadcastTxID, emitBroadcast, initBroadcast } from "./utils/broadcast.js";
 import { initSiteEvents, siteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
@@ -42,7 +42,7 @@ import {
   fixPlayerPageTheming, fixThemeSong,
   // general category:
   initVersionCheck,
-  // menu:
+  // cfg menu:
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
 import resourcesJson from "../assets/resources.json" with { type: "json" };
@@ -105,6 +105,10 @@ const initTimings: InitTimings = {
   durations: {} as InitTimings["durations"],
 };
 
+/**
+ * Starts a timer for measuring the duration of a specific phase of the initialization process.  
+ * Returns a function that, when called, will stop the timer and save the duration in the `initTimings` object under the specified name.
+ */
 function measureDuration(name: LooseUnion<keyof InitTimings & FeatureKey>): () => void {
   const start = Date.now();
   return () => {
@@ -125,8 +129,12 @@ function preInit() {
       "FireMonkey",
     ];
 
-    if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
-      return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
+    if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? ""))
+      return showPrompt({
+        type: "alert",
+        message: `BetterYTM does not work when using ${GM?.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`,
+        denyBtnText: "Close",
+      }); // (translations not loaded yet)
 
     setLogLevel(defaultLogLevel);
 
@@ -152,6 +160,7 @@ async function init() {
   try {
     const domain = getDomain();
 
+    // feature config:
     const endCfgDur = measureDuration("config");
     const features = await initConfig();
     endCfgDur();
@@ -159,11 +168,17 @@ async function init() {
 
     info("Session ID:", getSessionId());
 
-    const endLyrCacheDur = measureDuration("lyricsCache");
+    // resource cache:
+    const endResCacheDur = measureDuration("resourceCache");
     await initResourceCache();
+    endResCacheDur();
+
+    // lyrics cache:
+    const endLyrCacheDur = measureDuration("lyricsCache");
     await initLyricsCache();
     endLyrCacheDur();
 
+    // translations:
     const initLoc = features.locale ?? "en-US";
     const locPromises: Promise<void>[] = [];
     locPromises.push(initTranslations(initLoc));
@@ -172,6 +187,7 @@ async function init() {
     await Promise.allSettled(locPromises);
     setLocale(initLoc);
 
+    // plugins:
     try {
       initPlugins();
     }
@@ -180,12 +196,15 @@ async function init() {
       emitInterface("bytm:fatalError", "Error while loading plugins");
     }
 
+    // pre-DOM-load features:
+
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       enableDiscardBeforeUnload();
 
     if(features.rememberSongTime)
       initRememberVideoTime();
 
+    // wait for DOM load before continuing init:
     if(!isDomLoaded())
       document.addEventListener("DOMContentLoaded", () => onDomLoad(), { once: true });
     else
@@ -206,9 +225,10 @@ async function onDomLoad() {
   const feats = getFeatures();
   const ftInit = [] as [string, Promise<void | unknown>][];
 
-  // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
+  // for being able to query styles based on domain (just prefix any CSS selector with ".bytm-dom-yt " or ".bytm-dom-ytm ")
   document.body.classList.add(`bytm-dom-${domain}`);
 
+  // initialize DOM globals:
   try {
     setTimeout(() => {
       const endInitGlobalDur = measureDuration("initGlobal_decoupled");
@@ -219,17 +239,17 @@ async function onDomLoad() {
         injectCssBundle(),
         initVersionCheck(),
       ]).then(() => endInitGlobalDur());
+
+      initSiteEvents();
+
+      mountCfgMenu();
     }, 0);
   }
   catch(err) {
     error("Encountered error in feature pre-init:", err);
   }
 
-  initSiteEvents();
-
   info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
-
-  mountCfgMenu();
 
   try {
     //#region welcome dlg
@@ -694,24 +714,19 @@ function registerDevCommands() {
   });
   
   GM.registerMenuCommand(t("menu_command.collect_session_ids"), () => {
-    let logTimeout: ReturnType<typeof setTimeout> | undefined;
     const sessions = [
-      `${getSessionId()} (this session)`,
+      `${broadcastTxID} (current session)`,
     ];
 
     const unsub = siteEvents.on("broadcast", (type, { from }) => {
-      if(type === "collectSessionsReply") {
+      if(type === "collectSessionsReply")
         sessions.push(from);
-
-        if(!logTimeout) {
-          logTimeout = setTimeout(() => {
-            dbg(`Collected session IDs from ${sessions.length} open tabs:\n${sessions.map(s => `- ${s}`).join("\n")}`);
-            logTimeout = undefined;
-            unsub();
-          }, 500);
-        }
-      }
     });
+
+    setTimeout(() => {
+      dbg(`Collected session IDs from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${sessions.map(s => `- ${s}`).join("\n")}`);
+      unsub();
+    }, 500);
 
     emitBroadcast({
       type: "collectSessions",

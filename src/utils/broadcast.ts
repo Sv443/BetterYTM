@@ -1,7 +1,6 @@
 // module that facilitates inter-session (tab) communication using BroadcastChannel API
 
 import { debounce, randomId } from "@sv443-network/coreutils";
-import { getSessionId } from "./misc.js";
 import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
@@ -9,11 +8,8 @@ import { log, warn } from "./logging.js";
 
 //#region vars
 
-/**
- * Gets set to the session ID (when `sessionStorage` is available) or a random ID set at init time.  
- * Used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets.
- */
-let transmitId: string | undefined;
+/** Random ID used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets. */
+export const broadcastTxID = randomId(16, 36);
 
 // #region types
 
@@ -22,9 +18,9 @@ export type BroadcastPacketType =
   // whenever any DataStore's data is changed, to trigger updates in other sessions
   | "dataStoreUpdate"
 
-  // called to make other sessions reply with their session ID, in order to collect a list of all open sessions
+  // called to make other sessions reply with an empty `collectSessionsReply`, in order to collect a list of all open sessions
   | "collectSessions"
-  // reply to a "collectSessions" packet, contains the session ID of the replying session
+  // reply to a "collectSessions" packet
   | "collectSessionsReply"
 
   // reserved for custom, non-standard BYTM packets
@@ -83,15 +79,14 @@ export function initBroadcast() {
   // broadcast DataStore data update packets:
   getSerializerStoresFull().forEach(store => {
     store.on("updateData", debounce(() => {
-      if(getFeature("logEvents"))
-        log(`Emitting broadcast packet for updated DataStore "${store.id}"`);
-
       emitBroadcast({
         type: "dataStoreUpdate",
         data: {
           id: store.id,
         },
       });
+
+      getFeature("logEvents") && log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
     }, 100));
   });
 
@@ -102,11 +97,11 @@ export function initBroadcast() {
 /** Called to parse and handle received broadcast packets. */
 async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, packet }: BroadcastTransitPacket) {
   // ignore own sent packets:
-  if(from === getSessionId())
+  if(from === broadcastTxID)
     return;
 
   // ignore packets not intended for this session:
-  if(Array.isArray(to) && !to.includes(getSessionId() ?? ""))
+  if(Array.isArray(to) && !to.includes(broadcastTxID))
     return;
 
   switch(type) {
@@ -126,10 +121,10 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
 
     break;
   }
-  // reply to "collectSessions" packets with a "replySession" packet containing this session's ID:
+  // reply to "collectSessions" packets with a "collectSessionsReply" packet:
   case "collectSessions":
     emitBroadcast({ type: "collectSessionsReply" }, [from]);
-    getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's ID "${getSessionId()}"`);
+    getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
     break;
   }
 }
@@ -140,15 +135,14 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
  * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.  
  * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.  
  * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
- * @param to Optional array of session IDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
+ * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
 export function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
-  const transmitPacket: BroadcastTransitPacket<TPacketType> = {
-    from: transmitId ??= getSessionId() ?? randomId(16, 36),
+  broadcastChannel.postMessage({
+    from: broadcastTxID,
     to,
     packet,
-  };
-  broadcastChannel.postMessage(transmitPacket);
+  } satisfies BroadcastTransitPacket<TPacketType>);
 }
 
 //#region validate
@@ -184,7 +178,7 @@ function handleBroadcastMessage({ data }: MessageEvent) {
   }
 
   // if the packet is not intended for this session, ignore it
-  if(data.from === transmitId || (Array.isArray(data.to) && !data.to.includes(transmitId ?? "")))
+  if(data.from === broadcastTxID || (Array.isArray(data.to) && !data.to.includes(broadcastTxID ?? "")))
     return;
 
   if(getFeature("logEvents"))

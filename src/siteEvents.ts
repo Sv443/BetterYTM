@@ -60,7 +60,12 @@ export type SiteEventsMap = {
   /** Emitted after the Return YouTube Dislike vote labels were added to the DOM */
   voteLabelsAdded: () => void;
 
-  /** Emitted whenever a packet is emitted through the BroadcastChannel, contains the type and full data of the packet, including metadata about the sender and intended recipients. */
+  //#region broadcast:
+  /**
+   * Emitted whenever a broadcast packet is emitted through a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) (named `bytm-broadcast`), which is used for inter-session communication in BYTM.  
+   * Contains the type and full data of the packet, including metadata about the sender and intended recipients.  
+   * See `src/utils/broadcast.ts` for more info and the type definition of the packet data.
+   */
   broadcast: (type: BroadcastPacketType, packet: BroadcastTransitPacket) => void;
 };
 

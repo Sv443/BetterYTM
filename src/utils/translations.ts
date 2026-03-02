@@ -61,7 +61,7 @@ const devMarkTrKeyUsed = async (key: string) => {
 };
 
 
-/** Initializes the translations */
+/** Initializes the translations for the given locale if they haven't been initialized yet. */
 export async function initTranslations(locale: TrLocale) {
   if(initializedLocales.has(locale))
     return;
