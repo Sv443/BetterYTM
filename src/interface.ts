@@ -238,6 +238,8 @@ export function initInterface() {
   for(const [key, value] of Object.entries(props))
     setGlobalProp(key, value);
 
+  setGlobalProp("sessionId", getSessionId());
+
   log("Initialized BYTM interface");
 }
 

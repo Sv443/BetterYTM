@@ -306,7 +306,7 @@ function clampNewRange(config: FeatureConfig, key: FeatKeysOfType<number>): numb
   
 //#region >> store
 
-export const configStore = new DataStore({
+export const configStore = new DataStore<FeatureConfig>({
   id: "bytm-config",
   formatVersion: cfgFormatVersion,
   engine: new GMStorageEngine(),
@@ -331,9 +331,8 @@ export async function initConfig() {
   }
   catch { void 0; }
 
-  // remove extraneous keys
+  // remove extraneous keys (persistent save is deferred to the next setData call)
   let data = fixCfgKeys(await configStore.loadData());
-  await configStore.setData(data);
 
   // show prompt if config data was migrated
   if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {

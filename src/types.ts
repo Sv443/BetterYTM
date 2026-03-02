@@ -206,6 +206,8 @@ export type BytmObject =
     locale: TrLocale;
     /** Current log level */
     logLevel: LogLevel;
+    /** Session ID (unique per tab). Is null if sessionStorage is not available. */
+    sessionId: string | null;
   }
   // meta info from the BYTM userscript header
   & typeof scriptInfo

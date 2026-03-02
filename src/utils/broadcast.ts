@@ -1,10 +1,11 @@
 // module that facilitates inter-session (tab) communication using BroadcastChannel API
 
-import { randomId } from "@sv443-network/coreutils";
+import { debounce, randomId } from "@sv443-network/coreutils";
 import { getSessionId } from "./misc.js";
-import { forceEmitSiteEvent } from "../siteEvents.js";
+import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { log } from "./logging.js";
 import { getFeature } from "../config.js";
+import { getSerializerStoresFull } from "../serializers.js";
 
 //#region vars
 
@@ -26,8 +27,8 @@ export type BroadcastPacketType =
 /** Maps a {@linkcode BroadcastPacketType} to the type of data it should contain. */
 export type BroadcastPacketDataMap = {
   dataStoreUpdate: {
-    /** The IDs of the DataStores that were updated. */
-    ids: string[];
+    /** The ID of the DataStore that was updated. */
+    id: string;
   };
   custom: {
     /** Identifies the custom packet, used to determine how to handle it when received. */
@@ -44,7 +45,7 @@ export type BroadcastPacket<TPacketType extends BroadcastPacketType = BroadcastP
 };
 
 /** Object type of the packets sent through the BroadcastChannel, including metadata about the sender and intended recipients. */
-export type TransmitBroadcastPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
+export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
   /** Session ID of the sender. */
   from: string;
   /** Indicates which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions. */
@@ -65,18 +66,62 @@ export const broadcastChannel = new BroadcastChannel("bytm-broadcast");
 /** Initializes the broadcast module by setting up the necessary event listeners. */
 export function initBroadcast() {
   broadcastChannel.addEventListener("message", handleBroadcastMessage);
+
+  // broadcast DataStore data update packets:
+  getSerializerStoresFull().forEach(store => {
+    store.on("updateData", debounce(() => {
+      if(getFeature("logEvents"))
+        log(`Emitting broadcast packet for updated DataStore "${store.id}"`);
+
+      emitBroadcast({
+        type: "dataStoreUpdate",
+        data: {
+          id: store.id,
+        },
+      });
+    }, 100));
+  });
+
+  // receive and handle broadcast packets:
+  siteEvents.on("broadcast", async (type: BroadcastPacketType, { from, to, packet }: BroadcastTransitPacket) => {
+    // ignore own sent packets:
+    if(from === getSessionId())
+      return;
+
+    // ignore packets not intended for this session:
+    if(Array.isArray(to) && !to.includes(getSessionId() ?? ""))
+      return;
+
+    switch(type) {
+    // update local DataStore data when a "dataStoreUpdate" packet is received:
+    case "dataStoreUpdate":
+      try {
+        await getSerializerStoresFull()
+          .find(s => s.id === packet.data.id)
+          ?.loadData();
+
+        getFeature("logEvents")
+          && log(`Received "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}", reloaded data for that store`);
+      }
+      catch(err) {
+        log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}":`, err);
+      }
+
+      break;
+    }
+  });
 }
 
 //#region emit
 
 /**
  * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.  
- * The packet will be wrapped in a {@linkcode TransmitBroadcastPacket} that includes metadata about the sender and intended recipients.  
+ * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.  
  * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
  * @param to Optional array of session IDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
 export function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
-  const transmitPacket: TransmitBroadcastPacket<TPacketType> = {
+  const transmitPacket: BroadcastTransitPacket<TPacketType> = {
     from: transmitId ??= getSessionId() ?? randomId(16, 36),
     to,
     packet,
@@ -87,10 +132,10 @@ export function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: B
 //#region validate
 
 /**
- * Validates if the given object is a valid {@linkcode TransmitBroadcastPacket}.  
+ * Validates if the given object is a valid {@linkcode BroadcastTransitPacket}.  
  * This is used in the `message` event listener of the BroadcastChannel to validate incoming packets before processing them.
  */
-function isValidTransmitBroadcastPacket(obj: any): obj is TransmitBroadcastPacket {
+function isValidTransmitBroadcastPacket(obj: any): obj is BroadcastTransitPacket {
   return typeof obj === "object"
     && obj !== null
     && typeof obj.from === "string"
