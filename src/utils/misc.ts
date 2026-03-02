@@ -29,7 +29,10 @@ export function getDomain(): Domain {
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
-/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
+/**
+ * Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.  
+ * Note: as duplicated tabs will receive the same sessionStorage, this ID is not guaranteed to be entirely unique.
+ */
 export function getSessionId(): string | null {
   try {
     if(!sessionStorageAvailable)

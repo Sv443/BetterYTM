@@ -4,7 +4,7 @@ import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocale
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
-import { broadcastTxID, emitBroadcast, initBroadcast } from "./utils/broadcast.js";
+import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "./utils/broadcast.js";
 import { initSiteEvents, siteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
@@ -713,18 +713,20 @@ function registerDevCommands() {
       dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
   });
   
-  GM.registerMenuCommand(t("menu_command.collect_session_ids"), () => {
-    const sessions = [
-      `${broadcastTxID} (current session)`,
+  isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
+    const sessions: [sesId: string | null, txID: string][] = [
+      [getSessionId(), broadcastTxID],
     ];
 
-    const unsub = siteEvents.on("broadcast", (type, { from }) => {
+    const unsub = siteEvents.on("broadcast", (type, { from, packet }) => {
       if(type === "collectSessionsReply")
-        sessions.push(from);
+        sessions.push([(packet.data as BroadcastPacketDataMap["collectSessionsReply"]).sessionId, from]);
     });
 
+    dbg("Collecting session info from open tabs...");
+
     setTimeout(() => {
-      dbg(`Collected session IDs from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${sessions.map(s => `- ${s}`).join("\n")}`);
+      dbg(`Collected session IDs and TxIDs from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${sessions.map(([ses, tx]) => `- ${tx === broadcastTxID ? "Current Session:" : "Other Session:  "} ${ses} (TxID: ${tx})`).join("\n")}`);
       unsub();
     }, 500);
 
