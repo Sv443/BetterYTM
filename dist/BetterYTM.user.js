@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e7f27701/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bc7b7f96/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -66,8 +66,8 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.0.5/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.0.6/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.3.0/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.1.0/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.1
@@ -438,8 +438,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e7f27701",
-    buildTimestamp: "1771591077378",
+    buildNumber: "bc7b7f96",
+    buildTimestamp: "1772465165258",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6129,6 +6129,11 @@ async function initHideCursorOnIdle() {
                     vidContainer.style.cursor = "none";
                     vidContainer.classList.add("bytm-cursor-hidden");
                     hideTransTimer = undefined;
+                    if (getFeature("hidePlayerBarOnIdleInFullscreen") && document.fullscreenElement) {
+                        const playerBarElem = document.querySelector("ytmusic-player-bar");
+                        if (playerBarElem)
+                            playerBarElem.style.display = "none";
+                    }
                 }, 200);
             };
             const show = () => {
@@ -6139,6 +6144,11 @@ async function initHideCursorOnIdle() {
                 vidContainer.style.cursor = "initial";
                 overlayElem.style.display = "initial";
                 overlayElem.style.opacity = "1 !important";
+                if (getFeature("hidePlayerBarOnIdleInFullscreen") && document.fullscreenElement) {
+                    const playerBarElem = document.querySelector("ytmusic-player-bar");
+                    if (playerBarElem)
+                        playerBarElem.style.display = "initial";
+                }
             };
             const cursorHideTimerCb = () => cursorHideTimer = setTimeout(hide, getFeature("hideCursorOnIdleDelay") * 1000);
             const onMove = () => {
@@ -8069,6 +8079,17 @@ const featInfo = {
         enable: noop,
         adornments: [adornments.ytmOnly, adornments.advanced],
     },
+    hidePlayerBarOnIdleInFullscreen: {
+        type: "toggle",
+        category: "layout",
+        group: "hideCursorOnIdle",
+        supportedSites: ["ytm"],
+        since: "3.1.0",
+        default: true,
+        reloadRequired: false,
+        enable: noop,
+        adornments: [adornments.ytmOnly],
+    },
     fixHdrIssues: {
         type: "toggle",
         category: "layout",
@@ -9248,6 +9269,7 @@ const cfgMigrations = {
             "volumeSliderExponentialLabelType",
             "likeDislikeHotkeysToggle",
             "openPluginDiscoverySite",
+            "hidePlayerBarOnIdleInFullscreen",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
             { key: "initTimeout", oldDefault: 8 }, // new: 5
@@ -9330,9 +9352,8 @@ async function initConfig() {
     }
     catch {
     }
-    // remove extraneous keys
+    // remove extraneous keys (persistent save is deferred to the next setData call)
     let data = fixCfgKeys(await configStore.loadData());
-    await configStore.setData(data);
     // show prompt if config data was migrated
     if (oldDataHash && oldDataHash !== await CoreUtils.computeHash(JSON.stringify(data), "sha256")) {
         if (await showPrompt({
@@ -9532,6 +9553,7 @@ function initInterface() {
     };
     for (const [key, value] of Object.entries(props))
         setGlobalProp(key, value);
+    setGlobalProp("sessionId", getSessionId());
     log("Initialized BYTM interface");
 }
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
@@ -10444,6 +10466,107 @@ function transplantElement(element, target, position = "afterend") {
     if (!inserted)
         throw new Error(`Failed to transplant element at position "${position}"`);
     return element;
+}// module that facilitates inter-session (tab) communication using BroadcastChannel API
+//#region vars
+/**
+ * Gets set to the session ID (when `sessionStorage` is available) or a random ID set at init time.
+ * Used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets.
+ */
+let transmitId;
+/**
+ * [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance used for inter-session communication in BYTM.
+ * The channel name is "bytm-broadcast".
+ * Use the {@linkcode BroadcastPacket} type for the packets sent through this channel.
+ */
+const broadcastChannel = new BroadcastChannel("bytm-broadcast");
+//#region init
+/** Initializes the broadcast module by setting up the necessary event listeners. */
+function initBroadcast() {
+    broadcastChannel.addEventListener("message", handleBroadcastMessage);
+    // broadcast DataStore data update packets:
+    getSerializerStoresFull().forEach(store => {
+        store.on("updateData", CoreUtils.debounce(() => {
+            if (getFeature("logEvents"))
+                log(`Emitting broadcast packet for updated DataStore "${store.id}"`);
+            emitBroadcast({
+                type: "dataStoreUpdate",
+                data: {
+                    id: store.id,
+                },
+            });
+        }, 100));
+    });
+    // receive and handle broadcast packets:
+    siteEvents.on("broadcast", async (type, { from, to, packet }) => {
+        // ignore own sent packets:
+        if (from === getSessionId())
+            return;
+        // ignore packets not intended for this session:
+        if (Array.isArray(to) && !to.includes(getSessionId() ?? ""))
+            return;
+        switch (type) {
+            // update local DataStore data when a "dataStoreUpdate" packet is received:
+            case "dataStoreUpdate":
+                try {
+                    await getSerializerStoresFull()
+                        .find(s => s.id === packet.data.id)
+                        ?.loadData();
+                    getFeature("logEvents")
+                        && log(`Received "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}", reloaded data for that store`);
+                }
+                catch (err) {
+                    log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}":`, err);
+                }
+                break;
+        }
+    });
+}
+//#region emit
+/**
+ * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.
+ * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.
+ * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
+ * @param to Optional array of session IDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
+ */
+function emitBroadcast(packet, to) {
+    const transmitPacket = {
+        from: transmitId ?? (transmitId = getSessionId() ?? CoreUtils.randomId(16, 36)),
+        to,
+        packet,
+    };
+    broadcastChannel.postMessage(transmitPacket);
+}
+//#region validate
+/**
+ * Validates if the given object is a valid {@linkcode BroadcastTransitPacket}.
+ * This is used in the `message` event listener of the BroadcastChannel to validate incoming packets before processing them.
+ */
+function isValidTransmitBroadcastPacket(obj) {
+    return typeof obj === "object"
+        && obj !== null
+        && typeof obj.from === "string"
+        && (obj.to === undefined || (Array.isArray(obj.to) && obj.to.every((id) => typeof id === "string")))
+        && typeof obj.packet === "object"
+        && obj.packet !== null
+        && typeof obj.packet.type === "string"
+        && typeof obj.packet.data === "object"
+        && obj.packet.data !== null;
+}
+//#region handler
+/**
+ * Gets called when a message is received through the BroadcastChannel.
+ * Validates the packet and emits an internal event with the packet data for other modules to listen to.
+ */
+function handleBroadcastMessage({ data }) {
+    if (!isValidTransmitBroadcastPacket(data))
+        return;
+    // if the packet is not intended for this session, ignore it
+    if (data.from === transmitId || (Array.isArray(data.to) && !data.to.includes(transmitId ?? "")))
+        return;
+    if (getFeature("logEvents"))
+        log(`Received broadcast packet of type "${data.packet.type}" from session "${data.from}":`, data);
+    // emit an internal event with the packet data for other modules to listen to
+    forceEmitSiteEvent("broadcast", data.packet.type, data);
 }let welcomeDialog = null;
 /** Creates and/or returns the import dialog */
 async function getWelcomeDialog() {
@@ -10814,6 +10937,7 @@ function preInit() {
         if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
             return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
         setLogLevel(defaultLogLevel);
+        initBroadcast();
         initInterface();
         preInitPlugins();
         if (getDomain() === "ytm")
