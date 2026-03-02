@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bc7b7f96/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a7ae0e5f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -438,8 +438,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "bc7b7f96",
-    buildTimestamp: "1772465165258",
+    buildNumber: "a7ae0e5f",
+    buildTimestamp: "1772466882653",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -10497,29 +10497,37 @@ function initBroadcast() {
         }, 100));
     });
     // receive and handle broadcast packets:
-    siteEvents.on("broadcast", async (type, { from, to, packet }) => {
-        // ignore own sent packets:
-        if (from === getSessionId())
-            return;
-        // ignore packets not intended for this session:
-        if (Array.isArray(to) && !to.includes(getSessionId() ?? ""))
-            return;
-        switch (type) {
-            // update local DataStore data when a "dataStoreUpdate" packet is received:
-            case "dataStoreUpdate":
-                try {
-                    await getSerializerStoresFull()
-                        .find(s => s.id === packet.data.id)
-                        ?.loadData();
-                    getFeature("logEvents")
-                        && log(`Received "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}", reloaded data for that store`);
-                }
-                catch (err) {
-                    log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}":`, err);
-                }
-                break;
+    siteEvents.on("broadcast", handleBroadcastPacket);
+}
+/** Called to parse and handle received broadcast packets. */
+async function handleBroadcastPacket(type, { from, to, packet }) {
+    // ignore own sent packets:
+    if (from === getSessionId())
+        return;
+    // ignore packets not intended for this session:
+    if (Array.isArray(to) && !to.includes(getSessionId() ?? ""))
+        return;
+    switch (type) {
+        // update local DataStore data when a "dataStoreUpdate" packet is received:
+        case "dataStoreUpdate": {
+            const data = packet.data;
+            try {
+                await getSerializerStoresFull()
+                    .find(s => s.id === data.id)
+                    ?.loadData();
+                getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
+            }
+            catch (err) {
+                log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
+            }
+            break;
         }
-    });
+        // reply to "collectSessions" packets with a "replySession" packet containing this session's ID:
+        case "collectSessions":
+            emitBroadcast({ type: "collectSessionsReply" }, [from]);
+            getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's ID "${getSessionId()}"`);
+            break;
+    }
 }
 //#region emit
 /**
@@ -10549,8 +10557,8 @@ function isValidTransmitBroadcastPacket(obj) {
         && typeof obj.packet === "object"
         && obj.packet !== null
         && typeof obj.packet.type === "string"
-        && typeof obj.packet.data === "object"
-        && obj.packet.data !== null;
+        && ((typeof obj.packet.data === "object" && obj.packet.data !== null)
+            || obj.packet.data === undefined);
 }
 //#region handler
 /**
@@ -10558,8 +10566,10 @@ function isValidTransmitBroadcastPacket(obj) {
  * Validates the packet and emits an internal event with the packet data for other modules to listen to.
  */
 function handleBroadcastMessage({ data }) {
-    if (!isValidTransmitBroadcastPacket(data))
+    if (!isValidTransmitBroadcastPacket(data)) {
+        warn("Received invalid broadcast packet, ignoring:", data);
         return;
+    }
     // if the packet is not intended for this session, ignore it
     if (data.from === transmitId || (Array.isArray(data.to) && !data.to.includes(transmitId ?? "")))
         return;
@@ -11373,6 +11383,27 @@ function registerDevCommands() {
         }
         if (unusedKeys.length > 0)
             dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+    });
+    GM.registerMenuCommand(t("menu_command.collect_session_ids"), () => {
+        let logTimeout;
+        const sessions = [
+            `${getSessionId()} (this session)`,
+        ];
+        const unsub = siteEvents.on("broadcast", (type, { from }) => {
+            if (type === "collectSessionsReply") {
+                sessions.push(from);
+                if (!logTimeout) {
+                    logTimeout = setTimeout(() => {
+                        dbg(`Collected session IDs from ${sessions.length} open tabs:\n${sessions.map(s => `- ${s}`).join("\n")}`);
+                        logTimeout = undefined;
+                        unsub();
+                    }, 500);
+                }
+            }
+        });
+        emitBroadcast({
+            type: "collectSessions",
+        });
     });
     log("Registered dev menu commands");
 }
