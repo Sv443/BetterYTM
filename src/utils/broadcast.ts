@@ -4,41 +4,43 @@ import { debounce, randomId } from "@sv443-network/coreutils";
 import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
-import { log, warn } from "./logging.js";
+import { info, log, warn } from "./logging.js";
+import { getSessionId } from "./misc.js";
 
 //#region vars
 
 /** Random ID used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets. */
-export const broadcastTxID = randomId(16, 36);
+export const broadcastTxID = randomId(10, 36);
 
 // #region types
 
-/** The type of packet sent through the BroadcastChannel. */
-export type BroadcastPacketType =
-  // whenever any DataStore's data is changed, to trigger updates in other sessions
-  | "dataStoreUpdate"
-
-  // called to make other sessions reply with an empty `collectSessionsReply`, in order to collect a list of all open sessions
-  | "collectSessions"
-  // reply to a "collectSessions" packet
-  | "collectSessionsReply"
-
-  // reserved for custom, non-standard BYTM packets
-  | "custom";
-
 /** Maps a {@linkcode BroadcastPacketType} to the type of data it should contain. */
 export type BroadcastPacketDataMap = {
+  /** Whenever any DataStore's data is changed, to trigger updates in other sessions. */
   dataStoreUpdate: {
     /** The ID of the DataStore that was updated. */
     id: string;
   };
+  /** Called to make other sessions reply with a `collectSessionsReply`, in order to collect a list of all open sessions. */
   collectSessions: void;
-  collectSessionsReply: void;
+  /** Reply to a "collectSessions" packet. */
+  collectSessionsReply: {
+    /**
+     * Session ID of the sender (not the TxID).  
+     * Note that this ID might not be unique across tabs, as sessionStorage can get duplicated when duplicating tabs.  
+     * For actual unique identification, use the TxID in the `from` field of the transmitted packet instead.
+     */
+    sessionId: string | null;
+  };
+  /** Reserved for custom, non-standard BYTM packets. */
   custom: {
     /** Identifies the custom packet, used to determine how to handle it when received. */
     name: string;
   } & Record<string, any>; // allow custom packets to contain any additional data they need
 };
+
+/** The type of packet sent through the BroadcastChannel. */
+export type BroadcastPacketType = keyof BroadcastPacketDataMap;
 
 /** Raw object type of the packets sent through the BroadcastChannel. */
 export type BroadcastPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
@@ -55,9 +57,9 @@ export type BroadcastPacket<TPacketType extends BroadcastPacketType = BroadcastP
 
 /** Object type of the packets sent through the BroadcastChannel, including metadata about the sender and intended recipients. */
 export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
-  /** Session ID of the sender. */
+  /** TxID of the sender. */
   from: string;
-  /** Indicates which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions. */
+  /** List of TxIDs that indicates which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions. */
   to?: string[];
   /** The actual packet to be sent. */
   packet: BroadcastPacket<TPacketType>;
@@ -92,6 +94,8 @@ export function initBroadcast() {
 
   // receive and handle broadcast packets:
   siteEvents.on("broadcast", handleBroadcastPacket);
+
+  info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
 }
 
 /** Called to parse and handle received broadcast packets. */
@@ -123,7 +127,12 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
   }
   // reply to "collectSessions" packets with a "collectSessionsReply" packet:
   case "collectSessions":
-    emitBroadcast({ type: "collectSessionsReply" }, [from]);
+    emitBroadcast({
+      type: "collectSessionsReply",
+      data: {
+        sessionId: getSessionId(),
+      },
+    }, [from]);
     getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
     break;
   }
