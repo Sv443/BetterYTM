@@ -394,6 +394,7 @@
   "feature_helptext.thumbnailOverlayPreferredSource": "Apple Music / iTunes Albumcover haben zwar eine viel höhere Auflösung als YouTube-Thumbnails, können aber ab und zu falsch sein.\nWenn diese Option aktiviert ist, wird das Apple Music / iTunes Albumcover bevorzugt, wenn es verfügbar ist. Andernfalls wird immer das YouTube-Thumbnail verwendet.",
   "feature_desc.hideCursorOnIdle": "Verstecke den Cursor nach einigen Sekunden Inaktivität über dem Video",
   "feature_desc.hideCursorOnIdleDelay": "Wie viele Sekunden Inaktivität, bevor der Cursor versteckt wird",
+  "feature_desc.hidePlayerBarOnIdleInFullscreen": "Verstecke auch die Player-Leiste im Vollbildmodus, wenn der Cursor versteckt ist",
   "feature_desc.fixHdrIssues": "Verhindere einige Rendering-Probleme bei der Verwendung einer HDR-kompatiblen Grafikkarte und Monitor",
   "feature_desc.showVotes": "Zeige die Anzahl der Likes und Dislikes auf dem aktuell spielenden Song",
   "feature_helptext.showVotes": "Dieses Feature ist dank Return YouTube Dislike möglich. Es zeigt die ungefähre Anzahl von Likes und Dislikes auf dem aktuell spielenden Song an.",

@@ -736,6 +736,8 @@ export interface FeatureConfig {
   hideCursorOnIdle: boolean;
   /** Delay in seconds after which the cursor should be hidden */
   hideCursorOnIdleDelay: number;
+  /** When in fullscreen and the cursor is idling according to the `hideCursorOnIdle` feature, also hide the player bar */
+  hidePlayerBarOnIdleInFullscreen: boolean;
   /** Whether to fix various issues in the layout when HDR is supported and active */
   fixHdrIssues: boolean;
   /** Whether to show the like/dislike ratio on the currently playing song */

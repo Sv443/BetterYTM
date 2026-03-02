@@ -1021,6 +1021,12 @@ export async function initHideCursorOnIdle() {
           vidContainer.style.cursor = "none";
           vidContainer.classList.add("bytm-cursor-hidden");
           hideTransTimer = undefined;
+
+          if(getFeature("hidePlayerBarOnIdleInFullscreen") && document.fullscreenElement) {
+            const playerBarElem = document.querySelector<HTMLElement>("ytmusic-player-bar");
+            if(playerBarElem)
+              playerBarElem.style.display = "none";
+          }
         }, 200);
       };
 
@@ -1032,6 +1038,12 @@ export async function initHideCursorOnIdle() {
         vidContainer.style.cursor = "initial";
         overlayElem.style.display = "initial";
         overlayElem.style.opacity = "1 !important";
+
+        if(getFeature("hidePlayerBarOnIdleInFullscreen") && document.fullscreenElement) {
+          const playerBarElem = document.querySelector<HTMLElement>("ytmusic-player-bar");
+          if(playerBarElem)
+            playerBarElem.style.display = "initial";
+        }
       };
 
       const cursorHideTimerCb = () =>

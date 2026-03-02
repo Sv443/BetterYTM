@@ -394,6 +394,7 @@
   "feature_helptext.thumbnailOverlayPreferredSource": "Apple Music / iTunes album artwork has a much higher resolution than YouTube thumbnails, but can sometimes be incorrect.",
   "feature_desc.hideCursorOnIdle": "Hide the cursor after a few seconds of inactivity over the video",
   "feature_desc.hideCursorOnIdleDelay": "How many seconds of inactivity before the cursor should be hidden",
+  "feature_desc.hidePlayerBarOnIdleInFullscreen": "Also hide the player bar in fullscreen mode when the cursor is hidden",
   "feature_desc.fixHdrIssues": "Prevent some rendering issues when using an HDR-compatible GPU and monitor",
   "feature_desc.showVotes": "Show the amount of likes and dislikes on the currently playing song",
   "feature_helptext.showVotes": "This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.",

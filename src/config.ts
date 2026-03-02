@@ -232,6 +232,7 @@ export const cfgMigrations: DataMigrationsDict = {
         "volumeSliderExponentialLabelType",
         "likeDislikeHotkeysToggle",
         "openPluginDiscoverySite",
+        "hidePlayerBarOnIdleInFullscreen",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000

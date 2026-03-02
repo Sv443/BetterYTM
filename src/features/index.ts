@@ -556,6 +556,17 @@ export const featInfo = {
     enable: noop,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
+  hidePlayerBarOnIdleInFullscreen: {
+    type: "toggle",
+    category: "layout",
+    group: "hideCursorOnIdle",
+    supportedSites: ["ytm"],
+    since: "3.1.0",
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+    adornments: [adornments.ytmOnly],
+  },
   fixHdrIssues: {
     type: "toggle",
     category: "layout",
