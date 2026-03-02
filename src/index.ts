@@ -4,6 +4,7 @@ import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocale
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
+import { initBroadcast } from "./utils/broadcast.js";
 import { initSiteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
@@ -128,6 +129,8 @@ function preInit() {
       return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
 
     setLogLevel(defaultLogLevel);
+
+    initBroadcast();
 
     initInterface();
     preInitPlugins();

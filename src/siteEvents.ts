@@ -4,6 +4,7 @@ import { getFeature } from "./config.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
 import { FeatureConfig, type FeatureCategory } from "./types.js";
+import type { BroadcastPacketType, TransmitBroadcastPacket } from "./utils/broadcast.js";
 
 /** Map of all site events and their arguments */
 export type SiteEventsMap = {
@@ -58,6 +59,9 @@ export type SiteEventsMap = {
   autoLikeChannelsUpdated: () => void;
   /** Emitted after the Return YouTube Dislike vote labels were added to the DOM */
   voteLabelsAdded: () => void;
+
+  /** Emitted whenever a packet is emitted through the BroadcastChannel, contains the type and full data of the packet, including metadata about the sender and intended recipients. */
+  broadcast: (type: BroadcastPacketType, packet: TransmitBroadcastPacket) => void;
 };
 
 /** Same as {@link SiteEventsMap} but with the prefix `bytm:siteEvent:` added to each key. */
@@ -84,6 +88,7 @@ export const allSiteEvents = [
   "updateVolumeSliderLabel",
   "autoLikeChannelsUpdated",
   "voteLabelsAdded",
+  "broadcast",
 ] as const;
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */

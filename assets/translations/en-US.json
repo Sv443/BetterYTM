@@ -324,7 +324,7 @@
   "feature_category.changelog": "Changelog",
 
   "feature_group_header.locale": "Language:",
-  "feature_group_header.versionCheck": "Version Check:",
+  "feature_group_header.versionCheck": "Check for Updates:",
   "feature_group_header.numbersFormat": "Number Format:",
   "feature_group_header.toasts": "Toasts:",
   "feature_group_header.init": "Initialization:",
