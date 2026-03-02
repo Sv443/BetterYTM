@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a7ae0e5f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f7cf014f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -438,8 +438,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "a7ae0e5f",
-    buildTimestamp: "1772466882653",
+    buildNumber: "f7cf014f",
+    buildTimestamp: "1772487046556",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -637,7 +637,7 @@ const devMarkTrKeyUsed = async (key) => {
         error("Failed to mark translation key as used", e);
     }
 };
-/** Initializes the translations */
+/** Initializes the translations for the given locale if they haven't been initialized yet. */
 async function initTranslations(locale) {
     if (initializedLocales.has(locale))
         return;
@@ -2423,7 +2423,10 @@ function getDomain() {
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
-/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
+/**
+ * Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.
+ * Note: as duplicated tabs will receive the same sessionStorage, this ID is not guaranteed to be entirely unique.
+ */
 function getSessionId() {
     try {
         if (!sessionStorageAvailable$1)
@@ -10468,11 +10471,8 @@ function transplantElement(element, target, position = "afterend") {
     return element;
 }// module that facilitates inter-session (tab) communication using BroadcastChannel API
 //#region vars
-/**
- * Gets set to the session ID (when `sessionStorage` is available) or a random ID set at init time.
- * Used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets.
- */
-let transmitId;
+/** Random ID used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets. */
+const broadcastTxID = CoreUtils.randomId(10, 36);
 /**
  * [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance used for inter-session communication in BYTM.
  * The channel name is "bytm-broadcast".
@@ -10486,26 +10486,26 @@ function initBroadcast() {
     // broadcast DataStore data update packets:
     getSerializerStoresFull().forEach(store => {
         store.on("updateData", CoreUtils.debounce(() => {
-            if (getFeature("logEvents"))
-                log(`Emitting broadcast packet for updated DataStore "${store.id}"`);
             emitBroadcast({
                 type: "dataStoreUpdate",
                 data: {
                     id: store.id,
                 },
             });
+            getFeature("logEvents") && log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
         }, 100));
     });
     // receive and handle broadcast packets:
     siteEvents.on("broadcast", handleBroadcastPacket);
+    info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
 }
 /** Called to parse and handle received broadcast packets. */
 async function handleBroadcastPacket(type, { from, to, packet }) {
     // ignore own sent packets:
-    if (from === getSessionId())
+    if (from === broadcastTxID)
         return;
     // ignore packets not intended for this session:
-    if (Array.isArray(to) && !to.includes(getSessionId() ?? ""))
+    if (Array.isArray(to) && !to.includes(broadcastTxID))
         return;
     switch (type) {
         // update local DataStore data when a "dataStoreUpdate" packet is received:
@@ -10522,10 +10522,15 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
             }
             break;
         }
-        // reply to "collectSessions" packets with a "replySession" packet containing this session's ID:
+        // reply to "collectSessions" packets with a "collectSessionsReply" packet:
         case "collectSessions":
-            emitBroadcast({ type: "collectSessionsReply" }, [from]);
-            getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's ID "${getSessionId()}"`);
+            emitBroadcast({
+                type: "collectSessionsReply",
+                data: {
+                    sessionId: getSessionId(),
+                },
+            }, [from]);
+            getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
             break;
     }
 }
@@ -10534,15 +10539,14 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
  * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.
  * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.
  * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
- * @param to Optional array of session IDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
+ * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
 function emitBroadcast(packet, to) {
-    const transmitPacket = {
-        from: transmitId ?? (transmitId = getSessionId() ?? CoreUtils.randomId(16, 36)),
+    broadcastChannel.postMessage({
+        from: broadcastTxID,
         to,
         packet,
-    };
-    broadcastChannel.postMessage(transmitPacket);
+    });
 }
 //#region validate
 /**
@@ -10571,7 +10575,7 @@ function handleBroadcastMessage({ data }) {
         return;
     }
     // if the packet is not intended for this session, ignore it
-    if (data.from === transmitId || (Array.isArray(data.to) && !data.to.includes(transmitId ?? "")))
+    if (data.from === broadcastTxID || (Array.isArray(data.to) && !data.to.includes(broadcastTxID ?? "")))
         return;
     if (getFeature("logEvents"))
         log(`Received broadcast packet of type "${data.packet.type}" from session "${data.from}":`, data);
@@ -10928,6 +10932,10 @@ const initTimings = {
     start: 0,
     durations: {},
 };
+/**
+ * Starts a timer for measuring the duration of a specific phase of the initialization process.
+ * Returns a function that, when called, will stop the timer and save the duration in the `initTimings` object under the specified name.
+ */
 function measureDuration(name) {
     const start = Date.now();
     return () => {
@@ -10944,8 +10952,12 @@ function preInit() {
         const unsupportedHandlers = [
             "FireMonkey",
         ];
-        if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
-            return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
+        if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? ""))
+            return showPrompt({
+                type: "alert",
+                message: `BetterYTM does not work when using ${GM?.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`,
+                denyBtnText: "Close",
+            }); // (translations not loaded yet)
         setLogLevel(defaultLogLevel);
         initBroadcast();
         initInterface();
@@ -10963,15 +10975,21 @@ function preInit() {
 async function init() {
     try {
         const domain = getDomain();
+        // feature config:
         const endCfgDur = measureDuration("config");
         const features = await initConfig();
         endCfgDur();
         setLogLevel(features.logLevel);
         info("Session ID:", getSessionId());
-        const endLyrCacheDur = measureDuration("lyricsCache");
+        // resource cache:
+        const endResCacheDur = measureDuration("resourceCache");
         await initResourceCache();
+        endResCacheDur();
+        // lyrics cache:
+        const endLyrCacheDur = measureDuration("lyricsCache");
         await initLyricsCache();
         endLyrCacheDur();
+        // translations:
         const initLoc = features.locale ?? "en-US";
         const locPromises = [];
         locPromises.push(initTranslations(initLoc));
@@ -10979,6 +10997,7 @@ async function init() {
         initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
         await Promise.allSettled(locPromises);
         setLocale(initLoc);
+        // plugins:
         try {
             initPlugins();
         }
@@ -10986,10 +11005,12 @@ async function init() {
             error("Plugin loading error:", err);
             emitInterface("bytm:fatalError", "Error while loading plugins");
         }
+        // pre-DOM-load features:
         if (features.disableBeforeUnloadPopup && domain === "ytm")
             enableDiscardBeforeUnload();
         if (features.rememberSongTime)
             initRememberVideoTime();
+        // wait for DOM load before continuing init:
         if (!UserUtils.isDomLoaded())
             document.addEventListener("DOMContentLoaded", () => onDomLoad(), { once: true });
         else
@@ -11006,8 +11027,9 @@ async function onDomLoad() {
     const domain = getDomain();
     const feats = getFeatures();
     const ftInit = [];
-    // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
+    // for being able to query styles based on domain (just prefix any CSS selector with ".bytm-dom-yt " or ".bytm-dom-ytm ")
     document.body.classList.add(`bytm-dom-${domain}`);
+    // initialize DOM globals:
     try {
         setTimeout(() => {
             const endInitGlobalDur = measureDuration("initGlobal_decoupled");
@@ -11017,14 +11039,14 @@ async function onDomLoad() {
                 injectCssBundle(),
                 initVersionCheck(),
             ]).then(() => endInitGlobalDur());
+            initSiteEvents();
+            mountCfgMenu();
         }, 0);
     }
     catch (err) {
         error("Encountered error in feature pre-init:", err);
     }
-    initSiteEvents();
     info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
-    mountCfgMenu();
     try {
         //#region welcome dlg
         if (typeof await GM.getValue("bytm-installed") !== "string") {
@@ -11384,23 +11406,19 @@ function registerDevCommands() {
         if (unusedKeys.length > 0)
             dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
     });
-    GM.registerMenuCommand(t("menu_command.collect_session_ids"), () => {
-        let logTimeout;
+    isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
         const sessions = [
-            `${getSessionId()} (this session)`,
+            [getSessionId(), broadcastTxID],
         ];
-        const unsub = siteEvents.on("broadcast", (type, { from }) => {
-            if (type === "collectSessionsReply") {
-                sessions.push(from);
-                if (!logTimeout) {
-                    logTimeout = setTimeout(() => {
-                        dbg(`Collected session IDs from ${sessions.length} open tabs:\n${sessions.map(s => `- ${s}`).join("\n")}`);
-                        logTimeout = undefined;
-                        unsub();
-                    }, 500);
-                }
-            }
+        const unsub = siteEvents.on("broadcast", (type, { from, packet }) => {
+            if (type === "collectSessionsReply")
+                sessions.push([packet.data.sessionId, from]);
         });
+        dbg("Collecting session info from open tabs...");
+        setTimeout(() => {
+            dbg(`Collected session IDs and TxIDs from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([ses, tx]) => `- ${tx === broadcastTxID ? "Current Session:" : "Other Session:  "} ${ses} (TxID: ${tx})`).join("\n")}`);
+            unsub();
+        }, 500);
         emitBroadcast({
             type: "collectSessions",
         });
