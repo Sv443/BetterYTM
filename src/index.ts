@@ -4,8 +4,8 @@ import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocale
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
-import { initBroadcast } from "./utils/broadcast.js";
-import { initSiteEvents } from "./siteEvents.js";
+import { emitBroadcast, initBroadcast } from "./utils/broadcast.js";
+import { initSiteEvents, siteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
 import { downloadData, getDSSerializer } from "./serializers.js";
@@ -691,6 +691,31 @@ function registerDevCommands() {
 
     if(unusedKeys.length > 0)
       dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+  });
+  
+  GM.registerMenuCommand(t("menu_command.collect_session_ids"), () => {
+    let logTimeout: ReturnType<typeof setTimeout> | undefined;
+    const sessions = [
+      `${getSessionId()} (this session)`,
+    ];
+
+    const unsub = siteEvents.on("broadcast", (type, { from }) => {
+      if(type === "collectSessionsReply") {
+        sessions.push(from);
+
+        if(!logTimeout) {
+          logTimeout = setTimeout(() => {
+            dbg(`Collected session IDs from ${sessions.length} open tabs:\n${sessions.map(s => `- ${s}`).join("\n")}`);
+            logTimeout = undefined;
+            unsub();
+          }, 500);
+        }
+      }
+    });
+
+    emitBroadcast({
+      type: "collectSessions",
+    });
   });
 
   log("Registered dev menu commands");

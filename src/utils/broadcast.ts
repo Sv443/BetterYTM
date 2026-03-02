@@ -3,9 +3,9 @@
 import { debounce, randomId } from "@sv443-network/coreutils";
 import { getSessionId } from "./misc.js";
 import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
-import { log } from "./logging.js";
 import { getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
+import { log, warn } from "./logging.js";
 
 //#region vars
 
@@ -21,6 +21,12 @@ let transmitId: string | undefined;
 export type BroadcastPacketType =
   // whenever any DataStore's data is changed, to trigger updates in other sessions
   | "dataStoreUpdate"
+
+  // called to make other sessions reply with their session ID, in order to collect a list of all open sessions
+  | "collectSessions"
+  // reply to a "collectSessions" packet, contains the session ID of the replying session
+  | "collectSessionsReply"
+
   // reserved for custom, non-standard BYTM packets
   | "custom";
 
@@ -30,6 +36,8 @@ export type BroadcastPacketDataMap = {
     /** The ID of the DataStore that was updated. */
     id: string;
   };
+  collectSessions: void;
+  collectSessionsReply: void;
   custom: {
     /** Identifies the custom packet, used to determine how to handle it when received. */
     name: string;
@@ -40,9 +48,14 @@ export type BroadcastPacketDataMap = {
 export type BroadcastPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
   /** Used to determine how to handle the packet when received. */
   type: TPacketType;
-  /** The actual data of the packet, its structure depends on the {@linkcode BroadcastPacketType}. */
-  data: BroadcastPacketDataMap[TPacketType];
-};
+} & (
+  BroadcastPacketDataMap[TPacketType] extends void
+    ? {}
+    : {
+      /** The actual data of the packet, its structure depends on the {@linkcode BroadcastPacketType}. */
+      data: BroadcastPacketDataMap[TPacketType];
+    }
+);
 
 /** Object type of the packets sent through the BroadcastChannel, including metadata about the sender and intended recipients. */
 export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
@@ -83,33 +96,42 @@ export function initBroadcast() {
   });
 
   // receive and handle broadcast packets:
-  siteEvents.on("broadcast", async (type: BroadcastPacketType, { from, to, packet }: BroadcastTransitPacket) => {
-    // ignore own sent packets:
-    if(from === getSessionId())
-      return;
+  siteEvents.on("broadcast", handleBroadcastPacket);
+}
 
-    // ignore packets not intended for this session:
-    if(Array.isArray(to) && !to.includes(getSessionId() ?? ""))
-      return;
+/** Called to parse and handle received broadcast packets. */
+async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, packet }: BroadcastTransitPacket) {
+  // ignore own sent packets:
+  if(from === getSessionId())
+    return;
 
-    switch(type) {
-    // update local DataStore data when a "dataStoreUpdate" packet is received:
-    case "dataStoreUpdate":
-      try {
-        await getSerializerStoresFull()
-          .find(s => s.id === packet.data.id)
-          ?.loadData();
+  // ignore packets not intended for this session:
+  if(Array.isArray(to) && !to.includes(getSessionId() ?? ""))
+    return;
 
-        getFeature("logEvents")
-          && log(`Received "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}", reloaded data for that store`);
-      }
-      catch(err) {
-        log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${packet.data.id}":`, err);
-      }
+  switch(type) {
+  // update local DataStore data when a "dataStoreUpdate" packet is received:
+  case "dataStoreUpdate": {
+    const data = packet.data as BroadcastPacketDataMap["dataStoreUpdate"];
+    try {
+      await getSerializerStoresFull()
+        .find(s => s.id === data.id)
+        ?.loadData();
 
-      break;
+      getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
     }
-  });
+    catch(err) {
+      log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
+    }
+
+    break;
+  }
+  // reply to "collectSessions" packets with a "replySession" packet containing this session's ID:
+  case "collectSessions":
+    emitBroadcast({ type: "collectSessionsReply" }, [from]);
+    getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's ID "${getSessionId()}"`);
+    break;
+  }
 }
 
 //#region emit
@@ -143,8 +165,10 @@ function isValidTransmitBroadcastPacket(obj: any): obj is BroadcastTransitPacket
     && typeof obj.packet === "object"
     && obj.packet !== null
     && typeof obj.packet.type === "string"
-    && typeof obj.packet.data === "object"
-    && obj.packet.data !== null;
+    && (
+      (typeof obj.packet.data === "object" && obj.packet.data !== null)
+      || obj.packet.data === undefined
+    );
 }
 
 //#region handler
@@ -154,8 +178,10 @@ function isValidTransmitBroadcastPacket(obj: any): obj is BroadcastTransitPacket
  * Validates the packet and emits an internal event with the packet data for other modules to listen to.
  */
 function handleBroadcastMessage({ data }: MessageEvent) {
-  if(!isValidTransmitBroadcastPacket(data))
+  if(!isValidTransmitBroadcastPacket(data)) {
+    warn("Received invalid broadcast packet, ignoring:", data);
     return;
+  }
 
   // if the packet is not intended for this session, ignore it
   if(data.from === transmitId || (Array.isArray(data.to) && !data.to.includes(transmitId ?? "")))
