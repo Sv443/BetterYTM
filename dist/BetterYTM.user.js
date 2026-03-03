@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f7cf014f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@801613f9/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -438,8 +438,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "f7cf014f",
-    buildTimestamp: "1772487046556",
+    buildNumber: "801613f9",
+    buildTimestamp: "1772575139384",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6117,14 +6117,44 @@ async function initHideCursorOnIdle() {
             const overlayElem = document.querySelector(overlaySelector);
             if (!overlayElem)
                 return warn("Couldn't find overlay element while initializing cursor hiding");
+            /** Last element the mouse was hovered over */
+            let lastMouseoverElement = null;
+            document.body.addEventListener("mouseover", (e) => {
+                const tgt = e.target;
+                if (!tgt)
+                    return;
+                lastMouseoverElement = tgt;
+            });
+            let isFullscreen = false;
             /** Timer after which the cursor is hidden */
             let cursorHideTimer;
             /** Timer for the opacity transition while switching to the hidden state */
             let hideTransTimer;
+            /** Timer for the player bar slide-down animation */
+            let hidePlayerBarTimer;
+            const hidePlayerBar = () => {
+                // cancel hide if cursor is somewhere within playerBar
+                if (lastMouseoverElement && lastMouseoverElement.closest("ytmusic-player-bar"))
+                    return;
+                if (getFeature("hidePlayerBarOnIdleInFullscreen") && isFullscreen) {
+                    const playerBar = document.querySelector("ytmusic-player-bar");
+                    if (playerBar) {
+                        hidePlayerBarTimer = setTimeout(() => {
+                            if (playerBar.classList.contains("hidden"))
+                                playerBar.style.display = "none";
+                            hidePlayerBarTimer = undefined;
+                        }, 300);
+                        playerBar.classList.add("hidden");
+                    }
+                }
+            };
             const hide = () => {
                 if (!getFeature("hideCursorOnIdle"))
                     return;
                 if (vidContainer.classList.contains("bytm-cursor-hidden"))
+                    return;
+                // cancel hide if cursor is somewhere within playerBar
+                if (lastMouseoverElement && lastMouseoverElement.closest("ytmusic-player-bar"))
                     return;
                 overlayElem.style.opacity = ".000001 !important";
                 hideTransTimer = setTimeout(() => {
@@ -6132,13 +6162,28 @@ async function initHideCursorOnIdle() {
                     vidContainer.style.cursor = "none";
                     vidContainer.classList.add("bytm-cursor-hidden");
                     hideTransTimer = undefined;
-                    if (getFeature("hidePlayerBarOnIdleInFullscreen") && document.fullscreenElement) {
-                        const playerBarElem = document.querySelector("ytmusic-player-bar");
-                        if (playerBarElem)
-                            playerBarElem.style.display = "none";
-                    }
+                    hidePlayerBar();
                 }, 200);
             };
+            const showPlayerBar = () => {
+                const playerBar = document.querySelector("ytmusic-player-bar");
+                if (playerBar && playerBar.classList.contains("hidden")) {
+                    if (hidePlayerBarTimer !== undefined) {
+                        clearTimeout(hidePlayerBarTimer);
+                        hidePlayerBarTimer = undefined;
+                    }
+                    playerBar.style.display = "";
+                    playerBar.classList.remove("hidden");
+                }
+            };
+            siteEvents.on("fullscreenToggled", (fsEnabled) => {
+                isFullscreen = fsEnabled;
+                if (!getFeature("hidePlayerBarOnIdleInFullscreen"))
+                    return;
+                fsEnabled
+                    ? hidePlayerBar()
+                    : showPlayerBar();
+            });
             const show = () => {
                 hideTransTimer && clearTimeout(hideTransTimer);
                 if (!vidContainer.classList.contains("bytm-cursor-hidden"))
@@ -6147,11 +6192,7 @@ async function initHideCursorOnIdle() {
                 vidContainer.style.cursor = "initial";
                 overlayElem.style.display = "initial";
                 overlayElem.style.opacity = "1 !important";
-                if (getFeature("hidePlayerBarOnIdleInFullscreen") && document.fullscreenElement) {
-                    const playerBarElem = document.querySelector("ytmusic-player-bar");
-                    if (playerBarElem)
-                        playerBarElem.style.display = "initial";
-                }
+                showPlayerBar();
             };
             const cursorHideTimerCb = () => cursorHideTimer = setTimeout(hide, getFeature("hideCursorOnIdleDelay") * 1000);
             const onMove = () => {
