@@ -2499,6 +2499,23 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   gap: 8px;
 }
 
+/* #region hide player bar on idle in fullscreen */
+
+:root ytmusic-app ytmusic-app-layout ytmusic-player-bar.hidden {
+  animation: player-bar-slide-down 0.3s ease-out both !important;
+}
+
+@keyframes player-bar-slide-down {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
 #bytm-plugin-list-dialog-bg {
   --bytm-plugin-list-secondary-col: #c4c4c4;
   --bytm-plugin-list-row-padding-ver: 12px;
