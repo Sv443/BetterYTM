@@ -1082,9 +1082,7 @@ export async function initHideCursorOnIdle() {
         if(!getFeature("hidePlayerBarOnIdleInFullscreen"))
           return;
 
-        fsEnabled
-          ? hidePlayerBar()
-          : showPlayerBar();
+        !fsEnabled && showPlayerBar();
       });
 
       const show = () => {
@@ -1108,18 +1106,17 @@ export async function initHideCursorOnIdle() {
         cursorHideTimerCb();
       };
 
-      vidContainer.addEventListener("mouseenter", onMove);
-      vidContainer.addEventListener("mousemove", debounce(onMove, 200));
+      vidContainer.addEventListener("mousemove", debounce(onMove, 150), { capture: true });
       vidContainer.addEventListener("mouseleave", () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
         hideTransTimer && clearTimeout(hideTransTimer);
         hide();
-      });
+      }, { capture: true });
       vidContainer.addEventListener("click", () => {
         show();
         cursorHideTimerCb();
         setTimeout(hide, 3000);
-      });
+      }, { capture: true });
 
       log("Initialized cursor hiding on idle");
     },
