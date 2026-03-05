@@ -607,7 +607,7 @@ type FeatureTypeProps = ({
   | {
     /** `button` with a loading state where it sets itself to `disabled` */
     type: "button";
-    /** Persistent value is always undefined, meaning it gets stripped out at serialization */
+    /** Persistent value is always undefined for buttons, meaning it gets stripped out at serialization */
     default?: undefined;
     /** Called when the button is clicked - if it returns a Promise, the button will only be re-enabled after it resolves or rejects */
     click: () => Promise<void | unknown> | void | unknown;
@@ -618,13 +618,13 @@ type FeatureFuncProps = (
     /** Whether the feature requires a page reload to take effect */
     reloadRequired: false;
     /** Called to instantiate the feature on the page */
-    enable: (featCfg: FeatureConfig) => void,
+    enable?: (featCfg: FeatureConfig) => void,
   }
   | {
     /** Whether the feature requires a page reload to take effect */
     reloadRequired?: true;
     /** Called to instantiate the feature on the page */
-    enable?: undefined;
+    enable?: never;
   }
 ) & (
   {

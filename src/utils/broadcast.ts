@@ -193,6 +193,6 @@ function handleBroadcastMessage({ data }: MessageEvent) {
   if(getFeature("logEvents"))
     log(`Received broadcast packet of type "${data.packet.type}" from session "${data.from}":`, data);
 
-  // emit an internal event with the packet data for other modules to listen to
   forceEmitSiteEvent("broadcast", data.packet.type, data);
+  forceEmitSiteEvent(`broadcast:${data.packet.type}`, data as any); // love dealing with TS mapped type shenanigans
 }

@@ -4,7 +4,7 @@ import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocale
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
-import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "./utils/broadcast.js";
+import { broadcastTxID, emitBroadcast, initBroadcast } from "./utils/broadcast.js";
 import { initSiteEvents, siteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
@@ -17,9 +17,8 @@ import {
   // layout category:
   addWatermark, initRemShareTrackParam,
   fixSpacing, initThumbnailOverlay,
-  initHideCursorOnIdle, fixHdrIssues,
-  initShowVotes, initSwapLikeDislikeBtns,
-  initWatchPageFullSize,
+  fixHdrIssues, initShowVotes,
+  initSwapLikeDislikeBtns, initWatchPageFullSize,
   // volume category:
   initVolumeFeatures,
   // song lists category:
@@ -29,6 +28,7 @@ import {
   initBeforeUnloadHook, enableDiscardBeforeUnload,
   initAutoCloseToasts, initRememberVideoTime,
   initAutoScrollToActiveSong, initStillThere,
+  initHideCursorOnIdle,
   // input category:
   initArrowKeySkip, initFrameSkip,
   addAnchorImprovements, initNumKeysSkip,
@@ -718,9 +718,8 @@ function registerDevCommands() {
       [getSessionId(), broadcastTxID],
     ];
 
-    const unsub = siteEvents.on("broadcast", (type, { from, packet }) => {
-      if(type === "collectSessionsReply")
-        sessions.push([(packet.data as BroadcastPacketDataMap["collectSessionsReply"]).sessionId, from]);
+    const unsub = siteEvents.on("broadcast:collectSessionsReply", ({ from, packet }) => {
+      sessions.push([packet.data.sessionId, from]);
     });
 
     dbg("Collecting session info from open tabs...");

@@ -1,4 +1,4 @@
-import { autoPlural, NanoEmitter, type LooseUnion } from "@sv443-network/coreutils";
+import { autoPlural, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
 import { error, getDomain, info, log, warn } from "./utils/index.js";
 import { getFeature } from "./config.js";
 import { emitInterface } from "./interface.js";
@@ -6,75 +6,83 @@ import { addSelectorListener, globserversReady } from "./observers.js";
 import { FeatureConfig, type FeatureCategory } from "./types.js";
 import type { BroadcastPacketType, BroadcastTransitPacket } from "./utils/broadcast.js";
 
-/** Map of all site events and their arguments */
-export type SiteEventsMap = {
-  //#region misc:
-  /** Emitted whenever the feature config is changed - initialization is not counted */
-  configChanged: (newConfig: FeatureConfig) => void;
-  /** Emitted whenever a config header is selected in the config menu. Gets passed its ID which is either a feature category or extra information section ID. */
-  configHeaderSelected: (name: LooseUnion<FeatureCategory>) => void;
-  /** Emitted whenever a config option is changed - contains the old and new value */
-  configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
-  /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
-  rebuildCfgMenu: (newConfig: FeatureConfig) => void;
-  /** Emitted whenever the config menu is mounted in the DOM */
-  cfgMenuMounted: () => void;
-  /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
-  recreateCfgMenu: () => void;
-  /** Emitted whenever the config menu is closed */
-  cfgMenuClosed: () => void;
-  /** Emitted when the welcome menu is closed */
-  welcomeMenuClosed: () => void;
-  /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
-  hotkeyInputActive: (active: boolean) => void;
-
-  //#region DOM:
-  /** Emitted whenever child nodes are added to or removed from the song queue */
-  queueChanged: (queueElement: HTMLElement) => void;
-  /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
-  autoplayQueueChanged: (queueElement: HTMLElement) => void;
-  /**
-   * Emitted whenever the current song title changes.  
-   * Uses the DOM element `yt-formatted-string.title` to detect changes and emit instantaneously.  
-   * If `oldTitle` is `null`, this is the first song played in the session.
-   */
-  songTitleChanged: (newTitle: string, oldTitle: string | null) => void;
-  /**
-   * Emitted whenever the current song's watch/video ID changes.  
-   * If `oldId` is `null`, this is the first song played in the session.
-   */
-  watchIdChanged: (newId: string, oldId: string | null) => void;
-  /**
-   * Emitted whenever the URL path (`location.pathname`) changes.  
-   * If `oldPath` is `null`, this is the first path in the session.
-   */
-  pathChanged: (newPath: string, oldPath: string | null) => void;
-  /** Emitted whenever the player enters or exits fullscreen mode */
-  fullscreenToggled: (isFullscreen: boolean) => void;
-  /** Call to force the volume slider label to update. Set `round` to false to allow setting values outside `volumeSliderStep`. */
-  updateVolumeSliderLabel: () => void;
-
-  //#region features:
-  /** Emitted whenever a channel was added, edited or removed from the auto-like list */
-  autoLikeChannelsUpdated: () => void;
-  /** Emitted after the Return YouTube Dislike vote labels were added to the DOM */
-  voteLabelsAdded: () => void;
-
-  //#region broadcast:
-  /**
-   * Emitted whenever a broadcast packet is emitted through a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) (named `bytm-broadcast`), which is used for inter-session communication in BYTM.  
-   * Contains the type and full data of the packet, including metadata about the sender and intended recipients.  
-   * See `src/utils/broadcast.ts` for more info and the type definition of the packet data.
-   */
-  broadcast: (type: BroadcastPacketType, packet: BroadcastTransitPacket) => void;
+/** Mapped type that creates a typed site event entry for each {@linkcode BroadcastPacketType}, e.g. `"broadcast:collectSessionsReply"` */
+export type BroadcastSiteEventsMapped = {
+  [K in BroadcastPacketType as `broadcast:${K}`]: (packet: BroadcastTransitPacket<K>) => void;
 };
+
+/** Map of all site events and their arguments. Doesn't include the `bytm:siteEvent:` prefix, which is added when emitting events on the `window` object. */
+export type SiteEventsMap = Prettify<
+  & {
+    //#region misc:
+    /** Emitted whenever the feature config is changed - initialization is not counted */
+    configChanged: (newConfig: FeatureConfig) => void;
+    /** Emitted whenever a config header is selected in the config menu. Gets passed its ID which is either a feature category or extra information section ID. */
+    configHeaderSelected: (name: LooseUnion<FeatureCategory>) => void;
+    /** Emitted whenever a config option is changed - contains the old and new value */
+    configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
+    /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
+    rebuildCfgMenu: (newConfig: FeatureConfig) => void;
+    /** Emitted whenever the config menu is mounted in the DOM */
+    cfgMenuMounted: () => void;
+    /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
+    recreateCfgMenu: () => void;
+    /** Emitted whenever the config menu is closed */
+    cfgMenuClosed: () => void;
+    /** Emitted when the welcome menu is closed */
+    welcomeMenuClosed: () => void;
+    /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
+    hotkeyInputActive: (active: boolean) => void;
+
+    //#region DOM:
+    /** Emitted whenever child nodes are added to or removed from the song queue */
+    queueChanged: (queueElement: HTMLElement) => void;
+    /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
+    autoplayQueueChanged: (queueElement: HTMLElement) => void;
+    /**
+     * Emitted whenever the current song title changes.  
+     * Uses the DOM element `yt-formatted-string.title` to detect changes and emit instantaneously.  
+     * If `oldTitle` is `null`, this is the first song played in the session.
+     */
+    songTitleChanged: (newTitle: string, oldTitle: string | null) => void;
+    /**
+     * Emitted whenever the current song's watch/video ID changes.  
+     * If `oldId` is `null`, this is the first song played in the session.
+     */
+    watchIdChanged: (newId: string, oldId: string | null) => void;
+    /**
+     * Emitted whenever the URL path (`location.pathname`) changes.  
+     * If `oldPath` is `null`, this is the first path in the session.
+     */
+    pathChanged: (newPath: string, oldPath: string | null) => void;
+    /** Emitted whenever the player enters or exits fullscreen mode */
+    fullscreenToggled: (isFullscreen: boolean) => void;
+    /** Call to force the volume slider label to update. Set `round` to false to allow setting values outside `volumeSliderStep`. */
+    updateVolumeSliderLabel: () => void;
+
+    //#region features:
+    /** Emitted whenever a channel was added, edited or removed from the auto-like list */
+    autoLikeChannelsUpdated: () => void;
+    /** Emitted after the Return YouTube Dislike vote labels were added to the DOM */
+    voteLabelsAdded: () => void;
+
+    //#region broadcast:
+    /**
+     * Emitted whenever a broadcast packet is emitted through a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) (named `bytm-broadcast`), which is used for inter-session communication in BYTM.  
+     * Contains the type and full data of the packet, including metadata about the sender and intended recipients.  
+     * See `src/utils/broadcast.ts` for more info and the type definition of the packet data.
+     */
+    broadcast: (type: BroadcastPacketType, packet: BroadcastTransitPacket) => void;
+  }
+  & BroadcastSiteEventsMapped
+>;
 
 /** Same as {@link SiteEventsMap} but with the prefix `bytm:siteEvent:` added to each key. */
 export type SiteEventsMapPrefixed = {
   [K in keyof SiteEventsMap as `bytm:siteEvent:${K}`]: SiteEventsMap[K];
 };
 
-/** Array of all site events */
+/** Array of all site events. */
 export const allSiteEvents = [
   "configChanged",
   "configHeaderSelected",
@@ -94,7 +102,7 @@ export const allSiteEvents = [
   "autoLikeChannelsUpdated",
   "voteLabelsAdded",
   "broadcast",
-] as const;
+] as const satisfies readonly (keyof SiteEventsMap)[];
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
 export const siteEvents = new NanoEmitter<SiteEventsMap>({

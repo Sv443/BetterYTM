@@ -37,12 +37,12 @@ export const getSerializerStoresIds = () => getSerializerStores().map(store => s
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 export function getDSSerializer(full = false): DataStoreSerializer {
   if(!full)
-    return serializer = serializer ?? new DataStoreSerializer(getSerializerStores() as DataStore<any, boolean>[], {
+    return serializer ??= new DataStoreSerializer(getSerializerStores() as DataStore<any, boolean>[], {
       addChecksum: true,
       ensureIntegrity: true,
     });
   else
-    return fullSerializer = fullSerializer ?? new DataStoreSerializer(getSerializerStoresFull() as DataStore<any, boolean>[], {
+    return fullSerializer ??= new DataStoreSerializer(getSerializerStoresFull() as DataStore<any, boolean>[], {
       addChecksum: true,
       ensureIntegrity: true,
     });
