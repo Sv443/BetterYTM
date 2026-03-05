@@ -33,9 +33,6 @@ export * from "./volume.js";
 
 //#region misc
 
-/** No-operation function used when `reloadRequired` is set to `false` to explicitly indicate that no `enable` function is needed */
-const noop = () => void 0;
-
 class ExampleError extends DatedError {
   constructor(message: string, options?: ErrorOptions) {
     super(message, options);
@@ -265,7 +262,6 @@ export const featInfo = {
     ],
     default: "short",
     reloadRequired: false,
-    enable: noop,
   },
   toastDuration: {
     type: "slider",
@@ -279,7 +275,6 @@ export const featInfo = {
     step: 0.5,
     renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
     reloadRequired: false,
-    enable: noop,
     change: (_k, _iV, newVal) => newVal === 0
       ? closeToast()
       : showIconToast({
@@ -296,7 +291,6 @@ export const featInfo = {
     default: true,
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.advanced],
     change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
   },
@@ -406,7 +400,6 @@ export const featInfo = {
     default: "all",
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.advanced],
   },
   fixSpacing: {
@@ -433,7 +426,6 @@ export const featInfo = {
     ],
     default: "songsOnly",
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   thumbnailOverlayToggleBtnShown: {
@@ -457,7 +449,6 @@ export const featInfo = {
     step: 100,
     renderValue: (n: string) => `${n}x${n}`,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   thumbnailOverlayAlbumArtCacheMaxSize: {
@@ -474,7 +465,6 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     reloadRequired: false,
     advanced: true,
-    enable: noop,
     adornments: [adornments.advanced, adornments.ytmOnly],
   },
   thumbnailOverlayAlbumArtCacheTTL: {
@@ -491,7 +481,6 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     reloadRequired: false,
     advanced: true,
-    enable: noop,
     adornments: [adornments.advanced, adornments.ytmOnly],
   },
   thumbnailOverlayShowIndicator: {
@@ -526,45 +515,6 @@ export const featInfo = {
     default: "am",
     options: options.thumbOverlaySources,
     reloadRequired: false,
-    enable: noop,
-    adornments: [adornments.ytmOnly],
-  },
-  hideCursorOnIdle: {
-    type: "toggle",
-    category: "layout",
-    group: "hideCursorOnIdle",
-    supportedSites: ["ytm"],
-    since: "2.0.0",
-    default: true,
-    reloadRequired: false,
-    enable: noop,
-    adornments: [adornments.ytmOnly],
-  },
-  hideCursorOnIdleDelay: {
-    type: "slider",
-    category: "layout",
-    group: "hideCursorOnIdle",
-    supportedSites: ["ytm"],
-    since: "2.0.0",
-    min: 0.5,
-    max: 10,
-    step: 0.25,
-    default: 2,
-    unit: "s",
-    advanced: true,
-    reloadRequired: false,
-    enable: noop,
-    adornments: [adornments.ytmOnly, adornments.advanced],
-  },
-  hidePlayerBarOnIdleInFullscreen: {
-    type: "toggle",
-    category: "layout",
-    group: "hideCursorOnIdle",
-    supportedSites: ["ytm"],
-    since: "3.1.0",
-    default: true,
-    reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   fixHdrIssues: {
@@ -634,7 +584,6 @@ export const featInfo = {
     default: "everywhere",
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
   scrollToActiveSongBtn: {
@@ -703,7 +652,6 @@ export const featInfo = {
     since: "2.1.0-preview.1",
     default: false,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   geniUrlBase: {
@@ -716,7 +664,6 @@ export const featInfo = {
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
   geniUrlToken: {
@@ -730,7 +677,6 @@ export const featInfo = {
     normalize: (val: string) => val.trim(),
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
   lyricsCacheMaxSize: {
@@ -747,7 +693,6 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
   lyricsCacheTTL: {
@@ -764,7 +709,6 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
   clearLyricsCache: {
@@ -816,7 +760,6 @@ export const featInfo = {
     default: "valueBased",
     advanced: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
   volumeSliderLabel: {
@@ -920,7 +863,6 @@ export const featInfo = {
     since: "1.0.0",
     default: false,
     reloadRequired: false,
-    enable: noop,
   },
   autoCloseToasts: {
     type: "toggle",
@@ -930,7 +872,6 @@ export const featInfo = {
     since: "3.0.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
   },
   closeToastsTimeout: {
     type: "slider",
@@ -944,16 +885,6 @@ export const featInfo = {
     default: 3,
     unit: "s",
     reloadRequired: false,
-    enable: noop,
-  },
-  yesImStillThere: {
-    category: "behavior",
-    group: "yesImStillThere",
-    type: "toggle",
-    supportedSites: ["ytm"],
-    since: "3.1.0",
-    default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   rememberSongTime: {
     type: "toggle",
@@ -987,7 +918,6 @@ export const featInfo = {
     default: 180,
     unit: "s",
     reloadRequired: false,
-    enable: noop,
   },
   rememberSongTimeReduction: {
     type: "number",
@@ -1000,7 +930,6 @@ export const featInfo = {
     default: 0.2,
     unit: "s",
     reloadRequired: false,
-    enable: noop,
   },
   rememberSongTimeMinPlayTime: {
     type: "slider",
@@ -1014,7 +943,50 @@ export const featInfo = {
     default: 10,
     unit: "s",
     reloadRequired: false,
-    enable: noop,
+  },
+  hideCursorOnIdle: {
+    type: "toggle",
+    category: "behavior",
+    group: "hideCursorOnIdle",
+    supportedSites: ["ytm"],
+    since: "2.0.0",
+    default: true,
+    reloadRequired: false,
+    adornments: [adornments.ytmOnly],
+  },
+  hideCursorOnIdleDelay: {
+    type: "slider",
+    category: "behavior",
+    group: "hideCursorOnIdle",
+    supportedSites: ["ytm"],
+    since: "2.0.0",
+    min: 0.5,
+    max: 10,
+    step: 0.25,
+    default: 2,
+    unit: "s",
+    advanced: true,
+    reloadRequired: false,
+    adornments: [adornments.ytmOnly, adornments.advanced],
+  },
+  hidePlayerBarOnIdleInFullscreen: {
+    type: "toggle",
+    category: "behavior",
+    group: "hideCursorOnIdle",
+    supportedSites: ["ytm"],
+    since: "3.1.0",
+    default: true,
+    reloadRequired: false,
+    adornments: [adornments.ytmOnly],
+  },
+  yesImStillThere: {
+    category: "behavior",
+    group: "yesImStillThere",
+    type: "toggle",
+    supportedSites: ["ytm"],
+    since: "3.1.0",
+    default: true,
+    adornments: [adornments.ytmOnly, adornments.reload],
   },
   autoScrollToActiveSongMode: {
     type: "select",
@@ -1031,7 +1003,6 @@ export const featInfo = {
     ],
     default: "videoChangeManual",
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
 
@@ -1061,7 +1032,6 @@ export const featInfo = {
     since: "2.1.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
     advanced: true,
     adornments: [adornments.advanced],
   },
@@ -1087,7 +1057,6 @@ export const featInfo = {
     default: 5,
     unit: "s",
     reloadRequired: false,
-    enable: noop,
   },
   autoLikeShowToast: {
     type: "toggle",
@@ -1097,7 +1066,6 @@ export const featInfo = {
     since: "2.1.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
   },
 
   //#region cat:input
@@ -1109,7 +1077,6 @@ export const featInfo = {
     since: "0.1.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   arrowKeySkipBy: {
@@ -1124,7 +1091,6 @@ export const featInfo = {
     default: 5,
     unit: "s",
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   arrowKeyVolumeStep: {
@@ -1139,7 +1105,6 @@ export const featInfo = {
     default: 2,
     unit: "%",
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   frameSkip: {
@@ -1150,7 +1115,6 @@ export const featInfo = {
     since: "3.0.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   frameSkipWhilePlaying: {
@@ -1161,7 +1125,6 @@ export const featInfo = {
     since: "3.0.0",
     default: false,
     reloadRequired: false,
-    enable: noop,
     advanced: true,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
@@ -1176,7 +1139,6 @@ export const featInfo = {
     step: 0.0001,
     default: 0.0166,
     reloadRequired: false,
-    enable: noop,
     advanced: true,
     adornments: [adornments.ytmOnly, adornments.advanced],
   },
@@ -1197,7 +1159,6 @@ export const featInfo = {
     since: "1.0.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   numKeysSkipToTimeDoublePress: {
@@ -1216,7 +1177,6 @@ export const featInfo = {
         : `${value}ms`
     ),
     reloadRequired: false,
-    enable: noop,
   },
   numKeysSkipToTimeDoublePressBuffer: {
     type: "slider",
@@ -1234,7 +1194,6 @@ export const featInfo = {
         : `${formatNumber(Number(value), "short")}s`
     ),
     reloadRequired: false,
-    enable: noop,
     advanced: true,
     adornments: [adornments.advanced],
   },
@@ -1249,7 +1208,6 @@ export const featInfo = {
     since: "0.2.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
   },
   switchSitesHotkey: {
     type: "hotkey",
@@ -1264,7 +1222,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
   },
   likeDislikeHotkeys: {
     type: "toggle",
@@ -1274,7 +1231,6 @@ export const featInfo = {
     since: "3.0.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
   },
   likeDislikeHotkeysToggle: {
     type: "toggle",
@@ -1284,7 +1240,6 @@ export const featInfo = {
     since: "3.1.0",
     default: false,
     reloadRequired: false,
-    enable: noop,
   },
   likeHotkey: {
     type: "hotkey",
@@ -1299,7 +1254,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
   },
   dislikeHotkey: {
     type: "hotkey",
@@ -1314,7 +1268,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
   },
   currentLyricsHotkeyEnabled: {
     type: "toggle",
@@ -1324,7 +1277,6 @@ export const featInfo = {
     since: "3.0.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   currentLyricsHotkey: {
@@ -1340,7 +1292,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   skipToRemTimeHotkeyEnabled: {
@@ -1378,7 +1329,6 @@ export const featInfo = {
       alt: true,
     },
     reloadRequired: false,
-    enable: noop,
   },
   focusSearchBarHotkeyEnabled: {
     type: "toggle",
@@ -1388,7 +1338,6 @@ export const featInfo = {
     since: "3.1.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
   },
   focusSearchBarHotkey: {
     type: "hotkey",
@@ -1403,7 +1352,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
   },
   clearSearchBarHotkeyEnabled: {
     type: "toggle",
@@ -1413,7 +1361,6 @@ export const featInfo = {
     since: "3.1.0",
     default: true,
     reloadRequired: false,
-    enable: noop,
   },
   clearSearchBarHotkey: {
     type: "hotkey",
@@ -1428,7 +1375,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
   },
   rebindNextAndPrevious: {
     type: "toggle",
@@ -1438,7 +1384,6 @@ export const featInfo = {
     since: "3.0.0",
     default: false,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   nextHotkey: {
@@ -1454,7 +1399,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   previousHotkey: {
@@ -1470,7 +1414,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   rebindPlayPause: {
@@ -1481,7 +1424,6 @@ export const featInfo = {
     since: "3.0.0",
     default: false,
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
   playPauseHotkey: {
@@ -1497,7 +1439,6 @@ export const featInfo = {
       alt: false,
     },
     reloadRequired: false,
-    enable: noop,
     adornments: [adornments.ytmOnly],
   },
 
