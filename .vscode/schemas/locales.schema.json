@@ -1,9 +1,9 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft-07/schema#",
   "type": "object",
   "description": "All locales and translations that are available in BYTM.",
   "patternProperties": {
-    "^[a-z]{2}-[A-Z]{2}$": {
+    "^[a-z]{2}-[A-Z]{2,}": {
       "type": "object",
       "required": ["name", "nameEnglish", "emoji", "userscriptDesc", "authors", "altLocales", "textDir", "sentenceTerminatorNeutral", "sentenceTerminators"],
       "description": "Main locale code in the format \"ll-CC\" (language-COUNTRY).",
@@ -24,14 +24,14 @@
         },
         "userscriptDesc": {
           "type": "string",
-          "description": "Localized userscript description (from \"description\" in package.json)."
+          "description": "Localized userscript description (the original is \"description\" in package.json)."
         },
         "authors": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "List of authors that contributed to the translation."
+          "description": "List of authors that contributed to the translation. Preferably a GitHub username or real name"
         },
         "altLocales": {
           "type": "array",
@@ -40,9 +40,9 @@
               "pattern": "^[a-z]{2}$"
             },
             "type": "string",
-            "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+            "pattern": "^[a-z]{2}(-[A-Z]{2,})?"
           },
-          "description": "List of alternate BCP-47 locale codes that will be redirected to this locale, e.g. for all German languages it would be: [\"de\", \"de-AT\", \"de-CH\", \"de-LI\", \"de-LU\"]."
+          "description": "List of alternate BCP-47 locale codes that will be redirected to this locale, e.g. for the locale \"de-DE\" they would be: [\"de\", \"de-AT\", \"de-BE\", \"de-CH\", \"de-LI\", \"de-LU\"]."
         },
         "textDir": {
           "type": "string",

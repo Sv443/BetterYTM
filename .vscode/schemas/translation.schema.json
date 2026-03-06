@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft-07/schema#",
   "type": "object",
   "required": ["meta"],
   "description": "Mapping of translation keys to strings.",
@@ -23,7 +23,7 @@
         "base": {
           "type": "string",
           "description": "Optional base locale from which all missing translations are automatically inherited. Must be in the format \"ll-CC\" (language-country), e.g. en-US.",
-          "pattern": "^[a-z]{2}-[A-Z]{2}$",
+          "pattern": "^[a-z]{2}-[A-Z]{2,}",
           "default": "en-US"
         },
         "langName": {

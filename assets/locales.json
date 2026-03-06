@@ -5,7 +5,7 @@
     "emoji": "🇩🇪",
     "userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
     "authors": ["Sv443"],
-    "altLocales": ["de", "de-AT", "de-CH", "de-LI", "de-LU"],
+    "altLocales": ["de", "de-AT", "de-BE", "de-CH", "de-LI", "de-LU"],
     "textDir": "ltr",
     "sentenceTerminatorNeutral": ".",
     "sentenceTerminators": [
