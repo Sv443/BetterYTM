@@ -13,7 +13,7 @@ this is the Project's original author, Sv443, and any designated contributors
 explicitly authorized by the original author to act on behalf of the Project.
 
 The following terms are to be followed when creating and distributing plugins for
-the BetterYTM Project, which itself is licensed under the AGPL-3.0-only license
+the BetterYTM Project, which itself is licensed under the AGPL-3.0-or-later license
 (see `LICENSE.txt`).
 
 This agreement is governed by the laws of the Federal Republic of Germany, excluding
@@ -23,8 +23,8 @@ Federal Republic of Germany.
 
 The plugin author (also referred to as 'You' in this document) is hereby granted a
 sublicense to use parts of the source code of the BetterYTM Project in the source
-code of their plugin, under terms different than that of the AGPL-3.0-only license,
-as long as the following terms are followed:
+code of their plugin, under terms different than that of the AGPL-3.0-or-later
+license, as long as the following terms are followed:
 
 1. Permitted Source Code Usage:
   You are granted a non-exclusive, royalty-free sublicense to use, modify, reproduce,
