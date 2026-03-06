@@ -794,6 +794,81 @@ hr {
   font-size: 1.45rem;
 }
 
+/* #region volume slider */
+
+.bytm-vol-slider-cont {
+  position: relative;
+}
+
+.bytm-vol-slider-label {
+  --bytm-slider-label-bg-col: var(
+    --ytmusic-player-bar-background,
+    var(--bytm-themed-bg-col)
+  );
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 11px), -50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  background-color: var(--bytm-slider-label-bg-col);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-slider-label-bg-col) 20%
+  );
+  font-size: 1.4rem;
+  text-align: right;
+  padding: 15px;
+  padding-right: 5px;
+  opacity: 0.000001;
+  transition: opacity 0.2s ease;
+}
+
+.bytm-vol-slider-label.wide {
+  transform: translate(calc(-50% - 34px), -50%);
+}
+
+.bytm-vol-slider-label.has-icon {
+  transform: translate(calc(-50% - 25px), -50%);
+}
+
+.bytm-vol-slider-label.wide.has-icon {
+  transform: translate(calc(-50% - 34px - 25px), -50%);
+}
+
+.bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+.bytm-vol-slider-label svg path {
+  fill: #909090;
+}
+
+.bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  .bytm-vol-slider-label {
+  color: #fff;
+}
+
+.bytm-vol-slider-shared {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bytm-vol-slider-shared svg {
+  width: 20px;
+  height: 20px;
+}
+
 :root {
   --bytm-toast-bg-color: #323232;
   --bytm-toast-text-color: #fff;
@@ -2654,81 +2729,6 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 
 .bytm-plugin-list-row-intent-item {
   cursor: help;
-}
-
-/* #region volume slider */
-
-.bytm-vol-slider-cont {
-  position: relative;
-}
-
-.bytm-vol-slider-label {
-  --bytm-slider-label-bg-col: var(
-    --ytmusic-player-bar-background,
-    var(--bytm-themed-bg-col)
-  );
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 11px), -50%);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  background-color: var(--bytm-slider-label-bg-col);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-slider-label-bg-col) 20%
-  );
-  font-size: 1.4rem;
-  text-align: right;
-  padding: 15px;
-  padding-right: 5px;
-  opacity: 0.000001;
-  transition: opacity 0.2s ease;
-}
-
-.bytm-vol-slider-label.wide {
-  transform: translate(calc(-50% - 34px), -50%);
-}
-
-.bytm-vol-slider-label.has-icon {
-  transform: translate(calc(-50% - 25px), -50%);
-}
-
-.bytm-vol-slider-label.wide.has-icon {
-  transform: translate(calc(-50% - 34px - 25px), -50%);
-}
-
-.bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-.bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-.bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
-:root
-  body.bytm-dom-ytm
-  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
-  .bytm-vol-slider-label {
-  color: #fff;
-}
-
-.bytm-vol-slider-shared {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.bytm-vol-slider-shared svg {
-  width: 20px;
-  height: 20px;
 }
 
 :root {

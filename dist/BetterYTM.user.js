@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3971070e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8b7a4afd/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -441,8 +441,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3971070e",
-    buildTimestamp: "1772827930923",
+    buildNumber: "8b7a4afd",
+    buildTimestamp: "1772833670900",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1655,6 +1655,312 @@ async function doVersionCheck(notifyNoNewVerFound = false) {
         return;
     }
     return await noNewVerFound();
+}//#region init vol features
+/** Initializes all volume-related features */
+async function initVolumeFeatures() {
+    let listenerOnce = false;
+    // sliderElem is not technically an input element but behaves pretty much the same
+    const onSliderElExists = async (type, sliderElem) => {
+        const volSliderCont = document.createElement("div");
+        volSliderCont.classList.add("bytm-vol-slider-cont");
+        sliderElem.setAttribute("step", "1");
+        if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
+            initScrollStep(volSliderCont, sliderElem);
+        if (getFeature("volumeSliderExponential") !== "linear")
+            initExponentialVolume();
+        UserUtils.addParent(sliderElem, volSliderCont);
+        if (getFeature("volumeSliderLabel"))
+            await addVolumeSliderLabel(type, sliderElem, volSliderCont);
+        const updateSliderVal = (step) => {
+            if (step && step > 0) {
+                const roundedValue = Math.round(Number(sliderElem.value) / step) * step;
+                if (roundedValue !== Number(sliderElem.value)) {
+                    sliderElem.value = sliderElem.dataset.scrollVal = String(roundedValue);
+                    sliderElem.setAttribute("aria-valuenow", String(roundedValue));
+                    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+                    siteEvents.emit("updateVolumeSliderLabel");
+                }
+            }
+        };
+        sliderElem.addEventListener("mousedown", () => {
+            sliderElem.dataset.dragging = "true";
+        });
+        sliderElem.addEventListener("mouseup", () => {
+            delete sliderElem.dataset.dragging;
+            if (getFeature("volumeSharedBetweenTabs"))
+                sharedVolumeChanged(Number(sliderElem.value));
+            updateSliderVal(getFeature("volumeSliderStep"));
+        });
+        sliderElem.addEventListener("scrollend", () => {
+            if (getFeature("volumeSharedBetweenTabs"))
+                sharedVolumeChanged(Number(sliderElem.value));
+            updateSliderVal(getFeature("volumeSliderScrollStep"));
+        });
+        if (listenerOnce)
+            return;
+        listenerOnce = true;
+        // the following are only run once:
+        setInitialTabVolume(sliderElem);
+        if (typeof getFeature("volumeSliderSize") === "number")
+            setVolSliderSize();
+        if (getFeature("volumeSharedBetweenTabs"))
+            checkSharedVolume();
+    };
+    addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+        listener: (el) => onSliderElExists("normal", el),
+    });
+    let sizeSmOnce = false;
+    const onResize = () => {
+        if (sizeSmOnce || window.innerWidth >= 1150)
+            return;
+        sizeSmOnce = true;
+        addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
+            listener: (el) => onSliderElExists("expand", el),
+        });
+    };
+    window.addEventListener("resize", CoreUtils.debounce(onResize, Math.floor(1000 / 6)));
+    waitVideoElementReady().then(onResize);
+    onResize();
+}
+//#region exponential volume
+const { 
+// eslint-disable-next-line @typescript-eslint/unbound-method
+get: nativeGetVolume, 
+// eslint-disable-next-line @typescript-eslint/unbound-method
+set: nativeSetVolume } = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
+/** Initializes the exponential volume scaling feature */
+function initExponentialVolume() {
+    Object.defineProperty(HTMLMediaElement.prototype, "volume", {
+        get() {
+            const actual = nativeGetVolume?.call(this);
+            if (typeof actual !== "number" || isNaN(actual))
+                return actual;
+            return expVolFnInv(actual);
+        },
+        set(value) {
+            if (typeof value !== "number" || isNaN(value))
+                return nativeSetVolume?.call(this, value);
+            return nativeSetVolume?.call(this, expVolFn(value));
+        }
+    });
+}
+function expVolClamp(x) {
+    return Math.min(1, Math.max(0, x));
+}
+/** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFn(x) {
+    switch (getFeature("volumeSliderExponential")) {
+        case "x^2":
+            return expVolClamp(Math.pow(expVolClamp(x), 2));
+        case "x^3":
+            return expVolClamp(Math.pow(expVolClamp(x), 3));
+        case "x^4":
+            return expVolClamp(Math.pow(expVolClamp(x), 4));
+        case "x^5":
+            return expVolClamp(Math.pow(expVolClamp(x), 5));
+        case "linear":
+        default:
+            return expVolClamp(x);
+    }
+}
+/** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFnInv(y) {
+    switch (getFeature("volumeSliderExponential")) {
+        case "x^3":
+            return expVolClamp(Math.pow(expVolClamp(y), 1 / 3));
+        case "x^4":
+            return expVolClamp(Math.pow(expVolClamp(y), 1 / 4));
+        case "x^5":
+            return expVolClamp(Math.pow(expVolClamp(y), 1 / 5));
+        case "linear":
+        default:
+            return expVolClamp(y);
+    }
+}
+//#region scroll step
+/** Initializes the volume slider scroll step feature */
+function initScrollStep(volSliderCont, sliderElem) {
+    for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
+        volSliderCont.addEventListener(evtName, (e) => {
+            e.preventDefault();
+            // cancels all the other events that would be fired
+            e.stopImmediatePropagation();
+            const delta = Number(e.deltaY ?? e?.detail ?? 1);
+            if (isNaN(delta))
+                return warn("Invalid scroll delta:", delta);
+            const volumeDir = -Math.sign(delta);
+            const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
+            sliderElem.value = newVolume;
+            sliderElem.setAttribute("aria-valuenow", newVolume);
+            // make the site actually change the volume
+            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+        }, {
+            // takes precedence over the slider's own event listener
+            capture: true,
+        });
+    }
+}
+//#region volume slider label
+/** Adds a percentage label to the volume slider and tooltip */
+async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
+    const labelContElem = document.createElement("div");
+    labelContElem.classList.add("bytm-vol-slider-label");
+    labelContElem.style.display = "none";
+    labelContElem.setAttribute("aria-hidden", "true");
+    const volShared = getFeature("volumeSharedBetweenTabs");
+    if (volShared) {
+        const linkIconHtml = await resourceAsString("icon-link");
+        if (linkIconHtml) {
+            const linkIconElem = document.createElement("div");
+            linkIconElem.classList.add("bytm-vol-slider-shared");
+            setInnerHtml(linkIconElem, linkIconHtml);
+            linkIconElem.role = "alert";
+            linkIconElem.ariaLive = "polite";
+            linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
+            labelContElem.classList.add("has-icon");
+            labelContElem.appendChild(linkIconElem);
+        }
+    }
+    const getLabel = (value) => {
+        const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
+        const roundedValue = Math.round(Number(value) / step) * step;
+        let label = `${roundedValue}%`;
+        labelContElem.classList.remove("wide");
+        if (getFeature("volumeSliderExponential") !== "linear") {
+            const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
+            const fixedPtVal = ["0.0", "100.0"].includes(expMapped)
+                ? expMapped.slice(0, -2)
+                : expMapped;
+            const lblType = getFeature("volumeSliderExponentialLabelType");
+            if (lblType === "both") {
+                label += ` (${fixedPtVal}%)`;
+                labelContElem.classList.add("wide");
+            }
+            else if (lblType === "valueBased")
+                label = `${fixedPtVal}%`;
+        }
+        return label;
+    };
+    const labelElem = document.createElement("div");
+    labelElem.classList.add("label");
+    labelElem.textContent = getLabel(sliderElem.value);
+    labelContElem.appendChild(labelElem);
+    // prevent video from minimizing
+    labelContElem.addEventListener("click", (e) => e.stopPropagation());
+    labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
+    const getLabelText = (slider) => t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
+    const labelFull = getLabelText(sliderElem);
+    sliderContainer.setAttribute("title", labelFull);
+    sliderElem.setAttribute("title", labelFull);
+    sliderElem.setAttribute("aria-valuetext", labelFull);
+    const updateLabel = () => {
+        const labelFull = getLabelText(sliderElem);
+        sliderContainer.setAttribute("title", labelFull);
+        sliderElem.setAttribute("title", labelFull);
+        sliderElem.setAttribute("aria-valuetext", labelFull);
+        if (!isNaN(Number(sliderElem.dataset.scrollVal)) && Number(sliderElem.dataset.scrollVal) % getFeature("volumeSliderStep") !== 0)
+            sliderElem.dataset.scrollVal = "";
+        const labelElem2 = document.querySelectorAll(".bytm-vol-slider-label div.label");
+        for (const el of labelElem2)
+            el.textContent = getLabel(sliderElem.value);
+    };
+    sliderElem.addEventListener("change", () => updateLabel());
+    siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
+    siteEvents.on("configChanged", () => updateLabel());
+    addSelectorListener("playerBarRightControls", type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont", {
+        listener: (volumeCont) => volumeCont.appendChild(labelContElem),
+    });
+    let lastSliderVal = Number(sliderElem.value);
+    /** Hide or show the ThemeSong media controls element when the volume slider is expanded */
+    const setThemeSongContHidden = (hidden = true) => {
+        const contEl = document.querySelector("#ts-panel-container");
+        contEl?.classList[(hidden ? "add" : "remove")]("bytm-hidden");
+    };
+    // show label if hovering over slider or slider is focused
+    const sliderHoverObserver = new MutationObserver(() => {
+        if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
+            labelContElem.style.display = "initial";
+            labelContElem.setAttribute("aria-hidden", "false");
+            labelContElem.classList.add("bytm-visible");
+            setThemeSongContHidden();
+        }
+        else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
+            labelContElem.addEventListener("transitionend", () => {
+                labelContElem.style.display = "none";
+                labelContElem.setAttribute("aria-hidden", "true");
+                setThemeSongContHidden(false);
+            }, { once: true });
+            labelContElem.classList.remove("bytm-visible");
+        }
+        if (Number(sliderElem.value) !== lastSliderVal) {
+            lastSliderVal = Number(sliderElem.value);
+            updateLabel();
+        }
+    });
+    sliderHoverObserver.observe(sliderElem, {
+        attributes: true,
+    });
+}
+//#region volume slider size
+/** Sets the volume slider to a set size */
+function setVolSliderSize() {
+    const size = getFeature("volumeSliderSize");
+    if (typeof size !== "number" || isNaN(Number(size)))
+        return error("Invalid volume slider size:", size);
+    setGlobalCssVar("vol-slider-size", `${size}px`);
+    addStyleFromResource("css-vol_slider_size");
+}
+//#region shared volume
+/** Saves the shared volume level to persistent storage */
+async function sharedVolumeChanged(vol) {
+    try {
+        await GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
+    }
+    catch (err) {
+        error("Couldn't save shared volume level due to an error:", err);
+    }
+}
+let ignoreVal = -1;
+let lastCheckedSharedVolume = -1;
+/** Only call once as this calls itself after a timeout! - Checks if the shared volume has changed and updates the volume slider accordingly */
+async function checkSharedVolume() {
+    try {
+        const vol = await GM.getValue("bytm-shared-volume");
+        if (vol && lastCheckedSharedVolume !== Number(vol)) {
+            if (ignoreVal === Number(vol))
+                return;
+            lastCheckedSharedVolume = Number(vol);
+            const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+            if (sliderElem) {
+                sliderElem.value = String(vol);
+                sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+        }
+        setTimeout(checkSharedVolume, 333);
+    }
+    catch (err) {
+        error("Couldn't check for shared volume level due to an error:", err);
+    }
+}
+//#region initial volume
+/** Sets the volume slider to a set volume level when the session starts */
+async function setInitialTabVolume(sliderElem) {
+    const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
+    GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
+    if ((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
+        return;
+    await waitVideoElementReady();
+    const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
+    if (isNaN(initialVol) || initialVol < 0 || initialVol > 100)
+        return;
+    if (getFeature("volumeSharedBetweenTabs")) {
+        lastCheckedSharedVolume = ignoreVal = initialVol;
+        if (getFeature("volumeSharedBetweenTabs"))
+            GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
+    }
+    sliderElem.value = String(initialVol);
+    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+    log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
 }//#region vars
 /** Max amount of seconds a toast can be shown for */
 const maxToastDuration = 15000;
@@ -2418,6 +2724,134 @@ async function initStillThere() {
         await tryMove();
     }, 30000);
 }//#region misc
+/**
+ * Constructs a URL from a base URL and a record of query parameters.
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
+ * All values will be stringified using their `toString()` method and then URI-encoded.
+ * @returns Returns a string instead of a URL object
+ */
+function constructUrlString(baseUrl, params) {
+    return `${baseUrl}?${Object.entries(params)
+        .filter(([, v]) => v !== undefined)
+        .map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`)
+        .join("&")}`;
+}
+/**
+ * Constructs a URL object from a base URL and a record of query parameters.
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
+ * All values will be stringified and then URI-encoded.
+ * @returns Returns a URL object instead of a string
+ */
+function constructUrl(base, params) {
+    return new URL(constructUrlString(base, params));
+}
+/**
+ * Sends a request with the specified parameters and returns the response as a Promise.
+ * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
+ */
+function sendRequest(details) {
+    return new Promise((resolve, reject) => {
+        GM.xmlHttpRequest({
+            timeout: 10000,
+            ...details,
+            onload: resolve,
+            onerror: reject,
+            ontimeout: reject,
+            onabort: reject,
+        });
+    });
+}
+//#region css
+/** Fetches a CSS file from the specified resource with a key starting with `css-` */
+async function fetchCss(key) {
+    try {
+        const css = await (await CoreUtils.fetchAdvanced(await getResourceUrl(key))).text();
+        return css ?? undefined;
+    }
+    catch (err) {
+        error("Couldn't fetch CSS due to an error:", err);
+        return undefined;
+    }
+}
+//#region RYD
+/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
+const voteCache = new Map();
+/** Time-to-live for the vote cache in milliseconds */
+const voteCacheTTL = 1000 * 60 * 60;
+/**
+ * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
+ * @param videoID The video ID of the video
+ */
+async function fetchVideoVotes(videoID) {
+    try {
+        if (voteCache.has(videoID)) {
+            const cached = voteCache.get(videoID);
+            if (Date.now() - cached.timestamp < voteCacheTTL) {
+                info(`Returning cached video votes for video ID '${videoID}':`, cached);
+                return cached;
+            }
+            else
+                voteCache.delete(videoID);
+        }
+        const votesRaw = JSON.parse((await sendRequest({
+            method: "GET",
+            url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`,
+        })).response);
+        if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
+            error("Couldn't parse video votes due to an error:", votesRaw);
+            return undefined;
+        }
+        const votesObj = {
+            id: votesRaw.id,
+            likes: votesRaw.likes,
+            dislikes: votesRaw.dislikes,
+            rating: CoreUtils.roundFixed(votesRaw.rating, 3),
+            timestamp: Date.now(),
+        };
+        voteCache.set(votesObj.id, votesObj);
+        info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
+        return votesObj;
+    }
+    catch (err) {
+        error("Couldn't fetch video votes due to an error:", err);
+        return undefined;
+    }
+}
+//#region iTunes album info
+/**
+ * Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`
+ * Never throws, just returns an empty array on failure.
+ */
+async function fetchITunesAlbumInfo(artist, album) {
+    try {
+        const res = await CoreUtils.fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
+            country: "us",
+            limit: 5,
+            entity: "album",
+            term: `${artist} ${album}`,
+        }));
+        if (!res.ok) {
+            warn("Couldn't fetch iTunes album info for", artist, "-", album, "due to a request error:", res);
+            return [];
+        }
+        const json = await res.json().catch(warn);
+        if (!("resultCount" in json) || !("results" in json)) {
+            error("Couldn't parse iTunes album info due to an error:", json);
+            return [];
+        }
+        if (json.resultCount === 0)
+            return [];
+        return json.results.filter((result) => {
+            if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
+                return false;
+            return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+        });
+    }
+    catch (err) {
+        error("Couldn't fetch iTunes album info due to an error:", err);
+        return [];
+    }
+}//#region misc
 let domain;
 /**
  * Returns the current domain as a constant string representation
@@ -2657,12 +3091,12 @@ function createRecurringTask(options) {
     options.signal?.addEventListener("abort", () => {
         aborted = true;
     }, { once: true });
-    const runRecurringTask = async () => {
+    const runRecurringTask = async (initial = false) => {
         if (aborted)
             return;
         try {
             // don't execute task if immediate = false on the first run
-            if ((options.immediate ?? true) || iterations > 0) {
+            if ((options.immediate ?? true) || !initial) {
                 if (await options.condition?.() ?? true) {
                     const val = await options.task();
                     if (options.onSuccess)
@@ -2670,8 +3104,6 @@ function createRecurringTask(options) {
                     iterations++;
                 }
             }
-            else
-                iterations++;
         }
         catch (err) {
             error("Error in recurring task:", err);
@@ -2684,7 +3116,7 @@ function createRecurringTask(options) {
         if (!aborted && (typeof options.maxIterations !== "number" || iterations < options.maxIterations))
             setTimeout(runRecurringTask, options.timeout);
     };
-    void runRecurringTask();
+    void runRecurringTask(true);
 }
 //#region resources
 /**
@@ -3912,134 +4344,6 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
 function splitVideoTitle(title) {
     const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
     return { artist, song: rest.join("-") };
-}//#region misc
-/**
- * Constructs a URL from a base URL and a record of query parameters.
- * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
- * All values will be stringified using their `toString()` method and then URI-encoded.
- * @returns Returns a string instead of a URL object
- */
-function constructUrlString(baseUrl, params) {
-    return `${baseUrl}?${Object.entries(params)
-        .filter(([, v]) => v !== undefined)
-        .map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`)
-        .join("&")}`;
-}
-/**
- * Constructs a URL object from a base URL and a record of query parameters.
- * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
- * All values will be stringified and then URI-encoded.
- * @returns Returns a URL object instead of a string
- */
-function constructUrl(base, params) {
-    return new URL(constructUrlString(base, params));
-}
-/**
- * Sends a request with the specified parameters and returns the response as a Promise.
- * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
- */
-function sendRequest(details) {
-    return new Promise((resolve, reject) => {
-        GM.xmlHttpRequest({
-            timeout: 10000,
-            ...details,
-            onload: resolve,
-            onerror: reject,
-            ontimeout: reject,
-            onabort: reject,
-        });
-    });
-}
-//#region css
-/** Fetches a CSS file from the specified resource with a key starting with `css-` */
-async function fetchCss(key) {
-    try {
-        const css = await (await CoreUtils.fetchAdvanced(await getResourceUrl(key))).text();
-        return css ?? undefined;
-    }
-    catch (err) {
-        error("Couldn't fetch CSS due to an error:", err);
-        return undefined;
-    }
-}
-//#region RYD
-/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
-const voteCache = new Map();
-/** Time-to-live for the vote cache in milliseconds */
-const voteCacheTTL = 1000 * 60 * 60;
-/**
- * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
- * @param videoID The video ID of the video
- */
-async function fetchVideoVotes(videoID) {
-    try {
-        if (voteCache.has(videoID)) {
-            const cached = voteCache.get(videoID);
-            if (Date.now() - cached.timestamp < voteCacheTTL) {
-                info(`Returning cached video votes for video ID '${videoID}':`, cached);
-                return cached;
-            }
-            else
-                voteCache.delete(videoID);
-        }
-        const votesRaw = JSON.parse((await sendRequest({
-            method: "GET",
-            url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`,
-        })).response);
-        if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
-            error("Couldn't parse video votes due to an error:", votesRaw);
-            return undefined;
-        }
-        const votesObj = {
-            id: votesRaw.id,
-            likes: votesRaw.likes,
-            dislikes: votesRaw.dislikes,
-            rating: CoreUtils.roundFixed(votesRaw.rating, 3),
-            timestamp: Date.now(),
-        };
-        voteCache.set(votesObj.id, votesObj);
-        info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
-        return votesObj;
-    }
-    catch (err) {
-        error("Couldn't fetch video votes due to an error:", err);
-        return undefined;
-    }
-}
-//#region iTunes album info
-/**
- * Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`
- * Never throws, just returns an empty array on failure.
- */
-async function fetchITunesAlbumInfo(artist, album) {
-    try {
-        const res = await CoreUtils.fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
-            country: "us",
-            limit: 5,
-            entity: "album",
-            term: `${artist} ${album}`,
-        }));
-        if (!res.ok) {
-            warn("Couldn't fetch iTunes album info for", artist, "-", album, "due to a request error:", res);
-            return [];
-        }
-        const json = await res.json().catch(warn);
-        if (!("resultCount" in json) || !("results" in json)) {
-            error("Couldn't parse iTunes album info due to an error:", json);
-            return [];
-        }
-        if (json.resultCount === 0)
-            return [];
-        return json.results.filter((result) => {
-            if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
-                return false;
-            return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
-        });
-    }
-    catch (err) {
-        error("Couldn't fetch iTunes album info due to an error:", err);
-        return [];
-    }
 }let featHelpDialog = null;
 let curFeatKey = null;
 /** Creates or modifies the help dialog for a specific feature and returns it */
@@ -4076,7 +4380,7 @@ async function renderBody$3() {
     let featText = t(`feature_desc.${curFeatKey}`);
     const isLtr = localeObj?.textDir !== "rtl";
     if (localeObj && !(localeObj.sentenceTerminators.every((termChar) => featText[isLtr ? "endsWith" : "startsWith"](termChar))))
-        featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${isLtr ? featText : ""}`;
+        featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${!isLtr ? featText : ""}`;
     const featDescElem = document.createElement("h3");
     featDescElem.role = "subheading";
     featDescElem.tabIndex = 0;
@@ -6613,312 +6917,6 @@ async function renderBody$2() {
         listContainerEl.appendChild(rowEl);
     }
     return listContainerEl;
-}//#region init vol features
-/** Initializes all volume-related features */
-async function initVolumeFeatures() {
-    let listenerOnce = false;
-    // sliderElem is not technically an input element but behaves pretty much the same
-    const onSliderElExists = async (type, sliderElem) => {
-        const volSliderCont = document.createElement("div");
-        volSliderCont.classList.add("bytm-vol-slider-cont");
-        sliderElem.setAttribute("step", "1");
-        if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
-            initScrollStep(volSliderCont, sliderElem);
-        if (getFeature("volumeSliderExponential") !== "linear")
-            initExponentialVolume();
-        UserUtils.addParent(sliderElem, volSliderCont);
-        if (getFeature("volumeSliderLabel"))
-            await addVolumeSliderLabel(type, sliderElem, volSliderCont);
-        const updateSliderVal = (step) => {
-            if (step && step > 0) {
-                const roundedValue = Math.round(Number(sliderElem.value) / step) * step;
-                if (roundedValue !== Number(sliderElem.value)) {
-                    sliderElem.value = sliderElem.dataset.scrollVal = String(roundedValue);
-                    sliderElem.setAttribute("aria-valuenow", String(roundedValue));
-                    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-                    siteEvents.emit("updateVolumeSliderLabel");
-                }
-            }
-        };
-        sliderElem.addEventListener("mousedown", () => {
-            sliderElem.dataset.dragging = "true";
-        });
-        sliderElem.addEventListener("mouseup", () => {
-            delete sliderElem.dataset.dragging;
-            if (getFeature("volumeSharedBetweenTabs"))
-                sharedVolumeChanged(Number(sliderElem.value));
-            updateSliderVal(getFeature("volumeSliderStep"));
-        });
-        sliderElem.addEventListener("scrollend", () => {
-            if (getFeature("volumeSharedBetweenTabs"))
-                sharedVolumeChanged(Number(sliderElem.value));
-            updateSliderVal(getFeature("volumeSliderScrollStep"));
-        });
-        if (listenerOnce)
-            return;
-        listenerOnce = true;
-        // the following are only run once:
-        setInitialTabVolume(sliderElem);
-        if (typeof getFeature("volumeSliderSize") === "number")
-            setVolSliderSize();
-        if (getFeature("volumeSharedBetweenTabs"))
-            checkSharedVolume();
-    };
-    addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-        listener: (el) => onSliderElExists("normal", el),
-    });
-    let sizeSmOnce = false;
-    const onResize = () => {
-        if (sizeSmOnce || window.innerWidth >= 1150)
-            return;
-        sizeSmOnce = true;
-        addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
-            listener: (el) => onSliderElExists("expand", el),
-        });
-    };
-    window.addEventListener("resize", CoreUtils.debounce(onResize, Math.floor(1000 / 6)));
-    waitVideoElementReady().then(onResize);
-    onResize();
-}
-//#region exponential volume
-const { 
-// eslint-disable-next-line @typescript-eslint/unbound-method
-get: nativeGetVolume, 
-// eslint-disable-next-line @typescript-eslint/unbound-method
-set: nativeSetVolume } = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
-/** Initializes the exponential volume scaling feature */
-function initExponentialVolume() {
-    Object.defineProperty(HTMLMediaElement.prototype, "volume", {
-        get() {
-            const actual = nativeGetVolume?.call(this);
-            if (typeof actual !== "number" || isNaN(actual))
-                return actual;
-            return expVolFnInv(actual);
-        },
-        set(value) {
-            if (typeof value !== "number" || isNaN(value))
-                return nativeSetVolume?.call(this, value);
-            return nativeSetVolume?.call(this, expVolFn(value));
-        }
-    });
-}
-function expVolClamp(x) {
-    return Math.min(1, Math.max(0, x));
-}
-/** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
-function expVolFn(x) {
-    switch (getFeature("volumeSliderExponential")) {
-        case "x^2":
-            return expVolClamp(Math.pow(expVolClamp(x), 2));
-        case "x^3":
-            return expVolClamp(Math.pow(expVolClamp(x), 3));
-        case "x^4":
-            return expVolClamp(Math.pow(expVolClamp(x), 4));
-        case "x^5":
-            return expVolClamp(Math.pow(expVolClamp(x), 5));
-        case "linear":
-        default:
-            return expVolClamp(x);
-    }
-}
-/** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
-function expVolFnInv(y) {
-    switch (getFeature("volumeSliderExponential")) {
-        case "x^3":
-            return expVolClamp(Math.pow(expVolClamp(y), 1 / 3));
-        case "x^4":
-            return expVolClamp(Math.pow(expVolClamp(y), 1 / 4));
-        case "x^5":
-            return expVolClamp(Math.pow(expVolClamp(y), 1 / 5));
-        case "linear":
-        default:
-            return expVolClamp(y);
-    }
-}
-//#region scroll step
-/** Initializes the volume slider scroll step feature */
-function initScrollStep(volSliderCont, sliderElem) {
-    for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
-        volSliderCont.addEventListener(evtName, (e) => {
-            e.preventDefault();
-            // cancels all the other events that would be fired
-            e.stopImmediatePropagation();
-            const delta = Number(e.deltaY ?? e?.detail ?? 1);
-            if (isNaN(delta))
-                return warn("Invalid scroll delta:", delta);
-            const volumeDir = -Math.sign(delta);
-            const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
-            sliderElem.value = newVolume;
-            sliderElem.setAttribute("aria-valuenow", newVolume);
-            // make the site actually change the volume
-            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-        }, {
-            // takes precedence over the slider's own event listener
-            capture: true,
-        });
-    }
-}
-//#region volume slider label
-/** Adds a percentage label to the volume slider and tooltip */
-async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
-    const labelContElem = document.createElement("div");
-    labelContElem.classList.add("bytm-vol-slider-label");
-    labelContElem.style.display = "none";
-    labelContElem.setAttribute("aria-hidden", "true");
-    const volShared = getFeature("volumeSharedBetweenTabs");
-    if (volShared) {
-        const linkIconHtml = await resourceAsString("icon-link");
-        if (linkIconHtml) {
-            const linkIconElem = document.createElement("div");
-            linkIconElem.classList.add("bytm-vol-slider-shared");
-            setInnerHtml(linkIconElem, linkIconHtml);
-            linkIconElem.role = "alert";
-            linkIconElem.ariaLive = "polite";
-            linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
-            labelContElem.classList.add("has-icon");
-            labelContElem.appendChild(linkIconElem);
-        }
-    }
-    const getLabel = (value) => {
-        const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
-        const roundedValue = Math.round(Number(value) / step) * step;
-        let label = `${roundedValue}%`;
-        labelContElem.classList.remove("wide");
-        if (getFeature("volumeSliderExponential") !== "linear") {
-            const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
-            const fixedPtVal = ["0.0", "100.0"].includes(expMapped)
-                ? expMapped.slice(0, -2)
-                : expMapped;
-            const lblType = getFeature("volumeSliderExponentialLabelType");
-            if (lblType === "both") {
-                label += ` (${fixedPtVal}%)`;
-                labelContElem.classList.add("wide");
-            }
-            else if (lblType === "valueBased")
-                label = `${fixedPtVal}%`;
-        }
-        return label;
-    };
-    const labelElem = document.createElement("div");
-    labelElem.classList.add("label");
-    labelElem.textContent = getLabel(sliderElem.value);
-    labelContElem.appendChild(labelElem);
-    // prevent video from minimizing
-    labelContElem.addEventListener("click", (e) => e.stopPropagation());
-    labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
-    const getLabelText = (slider) => t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
-    const labelFull = getLabelText(sliderElem);
-    sliderContainer.setAttribute("title", labelFull);
-    sliderElem.setAttribute("title", labelFull);
-    sliderElem.setAttribute("aria-valuetext", labelFull);
-    const updateLabel = () => {
-        const labelFull = getLabelText(sliderElem);
-        sliderContainer.setAttribute("title", labelFull);
-        sliderElem.setAttribute("title", labelFull);
-        sliderElem.setAttribute("aria-valuetext", labelFull);
-        if (!isNaN(Number(sliderElem.dataset.scrollVal)) && Number(sliderElem.dataset.scrollVal) % getFeature("volumeSliderStep") !== 0)
-            sliderElem.dataset.scrollVal = "";
-        const labelElem2 = document.querySelectorAll(".bytm-vol-slider-label div.label");
-        for (const el of labelElem2)
-            el.textContent = getLabel(sliderElem.value);
-    };
-    sliderElem.addEventListener("change", () => updateLabel());
-    siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
-    siteEvents.on("configChanged", () => updateLabel());
-    addSelectorListener("playerBarRightControls", type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont", {
-        listener: (volumeCont) => volumeCont.appendChild(labelContElem),
-    });
-    let lastSliderVal = Number(sliderElem.value);
-    /** Hide or show the ThemeSong media controls element when the volume slider is expanded */
-    const setThemeSongContHidden = (hidden = true) => {
-        const contEl = document.querySelector("#ts-panel-container");
-        contEl?.classList[(hidden ? "add" : "remove")]("bytm-hidden");
-    };
-    // show label if hovering over slider or slider is focused
-    const sliderHoverObserver = new MutationObserver(() => {
-        if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
-            labelContElem.style.display = "initial";
-            labelContElem.setAttribute("aria-hidden", "false");
-            labelContElem.classList.add("bytm-visible");
-            setThemeSongContHidden();
-        }
-        else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
-            labelContElem.addEventListener("transitionend", () => {
-                labelContElem.style.display = "none";
-                labelContElem.setAttribute("aria-hidden", "true");
-                setThemeSongContHidden(false);
-            }, { once: true });
-            labelContElem.classList.remove("bytm-visible");
-        }
-        if (Number(sliderElem.value) !== lastSliderVal) {
-            lastSliderVal = Number(sliderElem.value);
-            updateLabel();
-        }
-    });
-    sliderHoverObserver.observe(sliderElem, {
-        attributes: true,
-    });
-}
-//#region volume slider size
-/** Sets the volume slider to a set size */
-function setVolSliderSize() {
-    const size = getFeature("volumeSliderSize");
-    if (typeof size !== "number" || isNaN(Number(size)))
-        return error("Invalid volume slider size:", size);
-    setGlobalCssVar("vol-slider-size", `${size}px`);
-    addStyleFromResource("css-vol_slider_size");
-}
-//#region shared volume
-/** Saves the shared volume level to persistent storage */
-async function sharedVolumeChanged(vol) {
-    try {
-        await GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
-    }
-    catch (err) {
-        error("Couldn't save shared volume level due to an error:", err);
-    }
-}
-let ignoreVal = -1;
-let lastCheckedSharedVolume = -1;
-/** Only call once as this calls itself after a timeout! - Checks if the shared volume has changed and updates the volume slider accordingly */
-async function checkSharedVolume() {
-    try {
-        const vol = await GM.getValue("bytm-shared-volume");
-        if (vol && lastCheckedSharedVolume !== Number(vol)) {
-            if (ignoreVal === Number(vol))
-                return;
-            lastCheckedSharedVolume = Number(vol);
-            const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
-            if (sliderElem) {
-                sliderElem.value = String(vol);
-                sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-            }
-        }
-        setTimeout(checkSharedVolume, 333);
-    }
-    catch (err) {
-        error("Couldn't check for shared volume level due to an error:", err);
-    }
-}
-//#region initial volume
-/** Sets the volume slider to a set volume level when the session starts */
-async function setInitialTabVolume(sliderElem) {
-    const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
-    GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
-    if ((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
-        return;
-    await waitVideoElementReady();
-    const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
-    if (isNaN(initialVol) || initialVol < 0 || initialVol > 100)
-        return;
-    if (getFeature("volumeSharedBetweenTabs")) {
-        lastCheckedSharedVolume = ignoreVal = initialVol;
-        if (getFeature("volumeSharedBetweenTabs"))
-            GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
-    }
-    sliderElem.value = String(initialVol);
-    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-    log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
 }//#region ignored input elements
 const ignoreInputTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 const ignoreInputIds = [
