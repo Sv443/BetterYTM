@@ -528,20 +528,21 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
  * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
  */
 export function getPreferredLocale(): TrLocale {
+  /** Trimmed & case insensitive string equality check. */
   const sanEq = (str1: string, str2: string) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
 
-  const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
+  const allNavLangs = [...new Set([navigator.language, ...navigator.languages])]
     .map((v) => v.replace(/_/g, "-"));
 
-  for(const nvLoc of allNvLocs) {
+  for(const navLang of allNavLangs) {
     const resolvedLoc = Object.entries(langMapping)
       .find(([key, { altLocales }]) =>
-        sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc))
+        sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang))
       )?.[0];
     if(resolvedLoc)
       return resolvedLoc.trim() as TrLocale;
 
-    const trimmedNvLoc = nvLoc.split("-")[0];
+    const trimmedNvLoc = navLang.split("-")[0];
     const resolvedFallbackLoc = Object.entries(langMapping)
       .find(([key, { altLocales }]) =>
         sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc))

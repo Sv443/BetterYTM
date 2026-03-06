@@ -1,8 +1,8 @@
 // module that facilitates inter-session (tab) communication using BroadcastChannel API
 
 import { debounce, randomId } from "@sv443-network/coreutils";
-import { forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
-import { getFeature } from "../config.js";
+import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
+import { configStore, getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
 import { info, log, warn } from "./logging.js";
 import { getSessionId } from "./misc.js";
@@ -116,6 +116,9 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
       await getSerializerStoresFull()
         .find(s => s.id === data.id)
         ?.loadData();
+
+      if(data.id === configStore.id)
+        emitSiteEvent("configChanged", configStore.getData());
 
       getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
     }
