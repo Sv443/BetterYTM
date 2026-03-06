@@ -1,38 +1,46 @@
 {
-  "javascript.preferences.importModuleSpecifier": "relative",
-  "typescript.tsdk": "node_modules/typescript/lib",
+  // 2-space indents
+  "editor.tabSize": 2,
 
+  // reduce search clutter from irrelevant files
   "search.exclude": {
     "**/*.user.js": true,
     "**/BetterYTM.css": true,
     "docs/typedocs/**/*.md": true,
   },
+
+  // fix .env and .env.template consistency
   "files.associations": {
     "*.env": "dotenv",
     "*.env.template": "dotenv",
   },
-  "editor.tabSize": 2,
 
+  // use installed TS version & relative import paths
+  "js/ts.preferences.importModuleSpecifier": "relative",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+
+  // custom JSON schemas
   "json.schemas": [
     {
-      "fileMatch": ["**/locales.json"],
-      "url": ".vscode/schemas/locales.schema.json"
+      "fileMatch": ["assets/locales.json"],
+      "url": "./assets/schemas/locales.schema.json"
     },
     {
-      "fileMatch": ["**/require.json"],
-      "url": ".vscode/schemas/require.schema.json"
+      "fileMatch": ["assets/require.json"],
+      "url": "./assets/schemas/require.schema.json"
     },
     {
-      "fileMatch": ["**/resources.json"],
-      "url": ".vscode/schemas/resources.schema.json"
+      "fileMatch": ["assets/resources.json"],
+      "url": "./assets/schemas/resources.schema.json"
     },
     {
-      "fileMatch": ["**/translations/*-*.json"],
-      "url": ".vscode/schemas/translation.schema.json"
+      "fileMatch": ["assets/translations/*.json"],
+      "url": "./assets/schemas/translation.schema.json"
     },
   ],
 
-  // requires extension: fabiospampinato.vscode-highlight
+  // highlight TODOs, regions, debug flags, and other important comments
+  // >>>>> requires extension: fabiospampinato.vscode-highlight <<<<<
   "highlight.regexes": {
     "(TODO(\\((\\s|\\d|\\w|[,.-_+*&])+\\))?:?)": { // TODO: or TODO or TODO(xy): but not todo or todo:
       "backgroundColor": "#ed0",
