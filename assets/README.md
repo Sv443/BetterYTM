@@ -7,7 +7,7 @@
 - External images are stored in [`assets/images/external/`](./images/external)
 - The BYTM logo files are in [`assets/images/logo/`](./images/logo)
 - SVG icons are stored in [`assets/icons/`](./icons)
-- CSS stylesheets are in [`assets/style/`](./style)
+- CSS stylesheets are in [`assets/styles/`](./style)
 - Translations are in [`assets/translations/`](./translations)
 
 <br>
