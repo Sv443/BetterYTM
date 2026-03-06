@@ -50,7 +50,7 @@ type BuildStats = {
 //#region vars
 
 const buildTs = Date.now();
-/** Used to force the browser and userscript extension to refresh resources */
+/** Random, URL-friendly string used to force the browser and userscript extension to refresh resources */
 const buildUid = randomId(12, 36);
 
 const mode = getCliArg<CliArg<"config-mode">>("mode", "development");

@@ -12,7 +12,7 @@
     },
     "preloadAssetPattern": {
       "type": "string",
-      "description": "Pattern passed to `new RegExp()` that identifies an asset that should be preloaded.",
+      "description": "Pattern passed to `new RegExp()` that identifies an asset that should be preloaded when the page loads.",
       "format": "regex",
       "pattern": "^.+$"
     },
@@ -25,7 +25,7 @@
           "oneOf": [
             {
               "type": "string",
-              "description": "Path or URL to the resource. If it starts with /, it's relative to the project root, else it's relative to the assets folder. Query strings and hashes are allowed. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER, $BUILD_TIMESTAMP and $BUILD_UID anywhere in the string."
+              "description": "Path or URL to the resource. If it's a path that starts with /, it's relative to the project root, else it's relative to the assets folder. Query strings and hashes are allowed. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER, $BUILD_TIMESTAMP and $BUILD_UID anywhere in the string."
             },
             {
               "type": "object",
@@ -33,16 +33,17 @@
               "properties": {
                 "path": {
                   "type": "string",
-                  "description": "Path or URL to the resource. If it starts with /, it's relative to the project root, else it's relative to the assets folder. Query strings and hashes are allowed. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER, $BUILD_TIMESTAMP and $BUILD_UID anywhere in the string."
+                  "description": "Path or URL to the resource. If it's a path that starts with /, it's relative to the project root, else it's relative to the assets folder. Query strings and hashes are allowed. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER, $BUILD_TIMESTAMP and $BUILD_UID anywhere in the string."
                 },
                 "ref": {
                   "type": "string",
-                  "description": "Git Ref (branch, tag, or commit SHA) to use when fetching the resource from the CDN. Uses the branch and build number from src/constants.ts if not set. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER, $BUILD_TIMESTAMP and $BUILD_UID anywhere in the string."
+                  "default": "$BUILD_NUMBER",
+                  "description": "Git Ref (branch, tag, or commit SHA) to use when fetching the resource from the CDN. Defaults to the build number from src/constants.ts if not set. You may make use of the placeholders $MODE, $BRANCH, $HOST, $BUILD_NUMBER, $BUILD_TIMESTAMP and $BUILD_UID anywhere in the string. For example, use \"$BRANCH\" to always get the latest version of the resource on the build branch, or provide a version tag like \"v3.0.0\" to target a specific commit by version."
                 },
                 "integrity": {
                   "type": "boolean",
                   "default": true,
-                  "description": "Whether to calculate a Subresource Integrity hash for the resource (works with URLs too)."
+                  "description": "Whether to calculate a Subresource Integrity hash for the resource (works with URLs too). True by default, which means if a resource changes on the remote, the userscript manager will refuse to load it. Set to false if the resource is expected to change frequently and/or out of sync with the userscript updates."
                 }
               },
               "additionalProperties": false
