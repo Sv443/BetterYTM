@@ -2,11 +2,14 @@ import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pause
 import { getUnsafeWindow, GMStorageEngine, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "../constants.js";
-import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime, sanitizeHtml } from "./index.js";
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
 import { addSelectorListener } from "../observers.js";
 import { getFeature } from "../config.js";
-import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";
+import { error, log, warn } from "./logging.js";
+import { sendRequest } from "./xhr.js";
+import { getLocale, type TrLocale } from "./translations.js";
+import { getVideoElement, getVideoTime, sanitizeHtml } from "./dom.js";
+import type { Domain, NumberLengthFormat, ResourceKey } from "../types.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
 
@@ -370,13 +373,13 @@ export function createRecurringTask<TVal extends void | unknown>(options: Recurr
     aborted = true;
   }, { once: true });
 
-  const runRecurringTask = async () => {
+  const runRecurringTask = async (initial = false) => {
     if(aborted)
       return;
 
     try {
       // don't execute task if immediate = false on the first run
-      if((options.immediate ?? true) || iterations > 0) {
+      if((options.immediate ?? true) || !initial) {
         if(await options.condition?.() ?? true) {
           const val = await options.task();
           if(options.onSuccess)
@@ -385,8 +388,6 @@ export function createRecurringTask<TVal extends void | unknown>(options: Recurr
           iterations++;
         }
       }
-      else
-        iterations++;
     }
     catch(err) {
       error("Error in recurring task:", err);
@@ -401,7 +402,7 @@ export function createRecurringTask<TVal extends void | unknown>(options: Recurr
       setTimeout(runRecurringTask, options.timeout);
   };
 
-  void runRecurringTask();
+  void runRecurringTask(true);
 }
 
 //#region resources

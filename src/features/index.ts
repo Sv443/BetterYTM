@@ -1,19 +1,21 @@
 import { consumeStringGen, DatedError, randomId, type StringGen } from "@sv443-network/coreutils";
 import { openInNewTab } from "@sv443-network/userutils";
 import { compare as compareVer } from "compare-versions";
-import { error, formatNumber, getErrorDialog, getLocale, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
+import { expVolFn } from "./volume.js";
+import { getLocale, t, tp } from "../utils/translations.js";
+import { formatNumber, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString } from "../utils/misc.js";
+import { error, getErrorDialog } from "../utils/logging.js";
 import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { closeToast, showIconToast } from "../components/toast.js";
 import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "../constants.js";
 import { getDSSerializer } from "../serializers.js";
+import { closeToast, showIconToast } from "../components/toast.js";
 import { getAutoLikeDialog } from "../dialogs/autoLike.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { getPluginListDialog } from "../dialogs/pluginList.js";
-import { expVolFn } from "./volume.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import packageJson from "../../package.json" with { type: "json" };
 
