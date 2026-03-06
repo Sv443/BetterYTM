@@ -1,5 +1,5 @@
 import { autoPlural, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
-import { error, getDomain, info, log, warn } from "./utils/index.js";
+import { createRecurringTask, error, getDomain, info, log, warn } from "./utils/index.js";
 import { getFeature } from "./config.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
@@ -208,8 +208,10 @@ export function initSiteEvents() {
     }
 
     window.addEventListener("bytm:ready", () => {
-      runIntervalChecks();
-      setInterval(runIntervalChecks, 100);
+      createRecurringTask({
+        timeout: 150,
+        task: runIntervalChecks,
+      });
 
       if(getDomain() === "ytm") {
         addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
@@ -227,10 +229,10 @@ export function initSiteEvents() {
           }
         });
       }
-      if(getDomain() === "ytm") {
-        setInterval(checkVideoIdChange, 250);
-        checkVideoIdChange();
-      }
+      getDomain() === "ytm" && createRecurringTask({
+        timeout: 250,
+        task: checkVideoIdChange,
+      });
     }, {
       once: true,
     });

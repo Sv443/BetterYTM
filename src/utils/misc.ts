@@ -334,56 +334,74 @@ export function getVersionSessionCount(version = scriptInfo.version): number {
   return verSessions[version].count;
 }
 
-//#region repeat task
+//#region recurring task
+
+/** Options object for {@linkcode createRecurringTask()} */
+export type RecurringTaskOptions<TVal extends void | unknown> = {
+  /** Timeout between running the task, in milliseconds. For async tasks and conditions, the timeout will be added onto the execution time of the Promises. */
+  timeout: number;
+  /** The task to run. Can return a value or a promise that resolves to a value of any type, which will be passed to the optional callback once the task is finished. */
+  task: () => TVal | Promise<TVal>;
+  /** Condition that needs to return true in order to run the task. If not given, the task will run indefinitely with the given timeout. */
+  condition?: () => boolean | Promise<boolean>;
+  /** Gets called with the task's return value once it's finished. Can be an async function if asynchronous operations are needed in the callback. */
+  onSuccess?: (value: TVal) => void | Promise<void>;
+  /** Gets called with the error if the condition or task functions throw an error or return a rejected promise. Can be an async function if asynchronous operations are needed in the callback. */
+  onError?: (error: unknown) => void | Promise<void>;
+  /** If true, the recurring task will stop if the condition or task functions throw an error or return a rejected promise. Defaults to false. */
+  abortOnError?: boolean;
+  /** Max number of times to run the task. If not given, will run indefinitely as long as the condition is true. */
+  maxIterations?: number;
+  /** Optional AbortSignal to cancel the task. */
+  signal?: AbortSignal;
+  /** Whether to run the task immediately on the first call or wait for the first timeout to pass. Defaults to true. */
+  immediate?: boolean;
+};
 
 /**
- * Schedules a task to run immediately and repeatedly at the given interval as long as the given condition returns true.
- * @param options.interval Interval to try running the task, in milliseconds
- * @param options.task The task to run
- * @param options.condition Condition that needs to return true in order to run the task
- * @param options.callback Gets called with the task's return value once it finished
- * @param options.maxIterations Maximum number of times to run the task - if not given, will run indefinitely as long as the condition is true
- * @param options.signal Optional AbortSignal to cancel the task
+ * Schedules a task to run immediately and repeatedly at the given timeout as long as the given condition returns true.  
+ * Ensures no overlapping task executions and multiple ways to cleanly stop the repeated execution.
  */
-export function createRepeatTask<TVal extends void | unknown>(
-  options: {
-    interval: number,
-    task: () => TVal | Promise<TVal>,
-    condition: () => boolean | Promise<boolean>,
-    callback?: (value: TVal) => void | Promise<void>,
-    maxIterations?: number,
-    signal?: AbortSignal,
-  },
-) {
+export function createRecurringTask<TVal extends void | unknown>(options: RecurringTaskOptions<TVal>) {
   let iterations = 0;
   let aborted = false;
 
   options.signal?.addEventListener("abort", () => {
     aborted = true;
-  });
+  }, { once: true });
 
-  const run = async () => {
+  const runRecurringTask = async () => {
     if(aborted)
       return;
 
     try {
-      if(await options.condition()) {
-        const val = await options.task();
-        if(options.callback)
-          await options.callback(val);
+      // don't execute task if immediate = false on the first run
+      if((options.immediate ?? true) || iterations > 0) {
+        if(await options.condition?.() ?? true) {
+          const val = await options.task();
+          if(options.onSuccess)
+            await options.onSuccess(val);
 
-        iterations++;
+          iterations++;
+        }
       }
+      else
+        iterations++;
     }
     catch(err) {
-      error("Error in repeat task:", err);
+      error("Error in recurring task:", err);
+      if(options.onError)
+        await options.onError(err);
+      if(options.abortOnError)
+        aborted = true;
     }
 
+    // evaluate if task should run again
     if(!aborted && (typeof options.maxIterations !== "number" || iterations < options.maxIterations))
-      setTimeout(run, options.interval);
+      setTimeout(runRecurringTask, options.timeout);
   };
 
-  void run();
+  void runRecurringTask();
 }
 
 //#region resources
@@ -521,10 +539,10 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
   }
 }
 
-// #region preferred locale
+//#region preferred locale
 
 /**
- * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
+ * Resolves the preferred locale code, given the browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
  * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
  */
 export function getPreferredLocale(): TrLocale {
@@ -542,14 +560,14 @@ export function getPreferredLocale(): TrLocale {
     if(resolvedLoc)
       return resolvedLoc.trim() as TrLocale;
 
-    const trimmedNvLoc = navLang.split("-")[0];
-    const resolvedFallbackLoc = Object.entries(langMapping)
+    const navLangTrimmed = navLang.split("-")[0];
+    const resolvedFallbackLang = Object.entries(langMapping)
       .find(([key, { altLocales }]) =>
-        sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc))
+        sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed))
       )?.[0];
 
-    if(resolvedFallbackLoc)
-      return resolvedFallbackLoc.trim() as TrLocale;
+    if(resolvedFallbackLang)
+      return resolvedFallbackLang.trim() as TrLocale;
   }
 
   return "en-US";
@@ -557,8 +575,11 @@ export function getPreferredLocale(): TrLocale {
 
 // #region markdown
 
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS by default! */
-export async function parseMarkdown(mdString: string, sanitize = false) {
+/**
+ * Parses a markdown string using marked and turns it into an HTML string with default settings.  
+ * @param sanitize Sanitizes against XSS by default using DOMPurify in {@linkcode sanitizeHtml()} - set to false to disable.
+ */
+export async function parseMarkdown(mdString: string, sanitize = true) {
   const mdHtml = await marked.parse(mdString, {
     async: true,
     breaks: true,
@@ -582,7 +603,7 @@ export async function getChangelogMd() {
 export async function getChangelogHtmlWithDetails() {
   try {
     const changelogMd = await getChangelogMd();
-    let changelogHtml = await parseMarkdown(changelogMd, true);
+    let changelogHtml = await parseMarkdown(changelogMd);
 
     const getVerId = (verStr: string) => verStr.trim().replace(/[._#\s-]/g, "");
 

@@ -94,6 +94,7 @@ Note: The 🔒 emoji means it's an authenticated function and you're *required t
 - [Other:](#other)
   - [`class NanoEmitter`](#class-nanoemitter) - Class for creating lightweight, type safe event emitting classes
   - [`function formatNumber()`](#function-formatnumber) - Formats a number with the configured locale and passed or configured format
+  - [`function createRecurringTask()`](#function-createrecurringtask) - Schedules a task to run immediately and repeatedly with many extra bells and whistles
 - [Events:](#events)
   - [**Event Overview and Timings**](#overview-and-timings)
   - [Event List:](#list)

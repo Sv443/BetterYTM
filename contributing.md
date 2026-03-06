@@ -270,6 +270,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
   - [formatNumber()](#formatnumber) - Formats a number with the configured locale and passed or configured format
+  - [createRecurringTask()](#createRecurringTask) - Schedules a task to run immediately and repeatedly as long as the given condition returns true
 
 <br><br>
 
@@ -2341,6 +2342,63 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > setLocale(myToken, "hi-IN");             // In Hindi, the separators are sometimes every two digits:
 > console.log(formatNumber(num, "long"));  // 12,34,56,789
+> ```
+> </details>
+
+<br>
+
+> ### createRecurringTask()
+> Signature:  
+> ```ts
+> unsafeWindow.BYTM.createRecurringTask(options: RecurringTaskOptions): void
+> ```
+>   
+> Schedules a task to run immediately and repeatedly with the given timeout as long as the given condition returns true.  
+> Ensures no overlapping task executions and multiple ways to cleanly stop the repeated execution.  
+>   
+> Options properties:
+> - `timeout: number` - Timeout between running the task, in milliseconds. For async tasks and conditions, the timeout will be added onto the execution time of the Promises.
+> - `task: () => TVal | Promise<TVal>` - The task to run. Can return a value or a promise that resolves to a value of any type, which will be passed to the optional callback once the task is finished.
+> - `condition?: () => boolean | Promise<boolean>` - Condition that needs to return true in order to run the task. If not given, the task will run indefinitely with the given timeout.
+> - `onSuccess?: (value: TVal) => void | Promise<void>` - Gets called with the task's return value once it's finished. Can be an async function if asynchronous operations are needed in the callback.
+> - `onError?: (error: unknown) => void | Promise<void>` - Gets called with the error if the condition or task functions throw an error or return a rejected promise. Can be an async function if asynchronous operations are needed in the callback.
+> - `abortOnError?: boolean` - If true, the recurring task will stop if the condition or task functions throw an error or return a rejected promise. Defaults to false.
+> - `maxIterations?: number` - Max number of times to run the task. If not given, will run indefinitely as long as the condition is true.
+> - `signal?: AbortSignal` - Optional AbortSignal to cancel the task.
+> - `immediate?: boolean` - Whether to run the task immediately on the first call or wait for the first timeout to pass. Defaults to true.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // fetch some data every 5 seconds and update the UI with it, but only when the user is on the homepage. Stop if any error occurs or the passed AbortSignal is aborted:
+> 
+> const { signal, abort } = new AbortController();
+> 
+> unsafeWindow.BYTM.createRecurringTask({
+>   timeout: 5_000,
+>   async task() {
+>     const data = await fetchData();
+>     console.log("Fetched data:", data);
+>     return data;
+>   },
+>   condition() {
+>     // only run the task if the user is on the homepage
+>     return location.pathname === "/";
+>   },
+>   onSuccess(data) {
+>     updateUI(data);
+>   },
+>   onError(error) {
+>     console.error("An error occurred while running the recurring task:", error);
+>   },
+>   abortOnError: true,
+>   signal,
+> });
+> 
+> document.querySelector("#stop-button").addEventListener("click", () => {
+>   abort();
+>   console.log("Recurring task manually aborted");
+> });
 > ```
 > </details>
 

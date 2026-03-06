@@ -20,7 +20,7 @@ export async function getVersionNotifDialog({
     const changelogMdFull = await getChangelogMd();
     // I messed up because this should be 0 so the changelog will always need to have an extra div at the top for backwards compatibility
     const changelogMd = changelogMdFull.split("<div class=\"split\">")[1];
-    const changelogHtml = await parseMarkdown(changelogMd, true);
+    const changelogHtml = await parseMarkdown(changelogMd);
 
     verNotifDialog = new BytmDialog({
       id: "version-notif",

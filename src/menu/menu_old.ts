@@ -1012,7 +1012,7 @@ export async function mountCfgMenu() {
           licenseUrl: `https://github.com/${repo}/blob/${branch}/LICENSE.txt`,
           contributorsLink: pkg.specialThanksUrl,
         });
-        setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams), true));
+        setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
         return [aboutTextCont] as HTMLElement[];
       },
       changelog: async () => {

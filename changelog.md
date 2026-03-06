@@ -89,6 +89,7 @@
       - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
       - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.
       - `resourceAsString()` - Returns a BYTM resource as a string, most of which are cached between sessions in GM storage for much better performance.
+      - `createRecurringTask()` - Schedules a task to run immediately and repeatedly with the given timeout as long as the given condition returns true. Ensures no overlapping task executions and offers multiple ways to cleanly stop the repeated execution.
       - 🔒 `getBytmDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `BytmDialog` class, which can be used to create new generic dialog instances.
       - 🔒 `getExImDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `ExImDialog` class (subclass of `BytmDialog`), to export and import serializable data.
       - 🔒 `getMarkdownDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `MarkdownDialog` class (subclass of `BytmDialog`), to render a markdown string in a modal dialog.

@@ -6,7 +6,7 @@ import { initialParams } from "../constants.js";
 import { siteEvents } from "../siteEvents.js";
 import { dbg, error, info, log, warn } from "../utils/logging.js";
 import { clearNode, getCurrentMediaType, getVideoElement, getVideoTime, waitVideoElementReady } from "../utils/dom.js";
-import { getDomain, getWatchId, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { createRecurringTask, getDomain, getWatchId, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { LogLevel } from "../types.js";
 
 //#region beforeunload popup
@@ -92,10 +92,15 @@ let prevTime = -1;
 
 /** Initializes the autoScrollToActiveSong feature */
 export async function initAutoScrollToActiveSong() {
-  setInterval(() => {
-    prevTime = getVideoElement()?.currentTime ?? -1;
-    prevVidMaxTime = getVideoElement()?.duration ?? Infinity;
-  }, 50);
+  createRecurringTask({
+    timeout: 50,
+    async task() {
+      // since tasks don't overlap, this will pause until the element is ready
+      const vidEl = await waitVideoElementReady();
+      prevTime = vidEl.currentTime ?? -1;
+      prevVidMaxTime = vidEl.duration ?? Infinity;
+    },
+  });
 
   // TODO: refactor to trigger on queue changes instead of watchID
 

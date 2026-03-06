@@ -2,7 +2,7 @@ import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-ne
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createRecurringTask } from "./utils/index.js";
 import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
@@ -528,6 +528,8 @@ export type InterfaceFunctions = {
   // other:
   /** Formats a number to a string using the configured locale and configured or passed number notation */
   formatNumber: typeof formatNumber;
+  /** Schedules a task to run immediately and repeatedly at the given interval as long as the given condition returns true. Offers multiple ways to cancel the recurring task. */
+  createRecurringTask: typeof createRecurringTask;
 };
 
 //#region feature defs
