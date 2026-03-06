@@ -53,7 +53,7 @@ async function renderBody() {
   let featText = t(`feature_desc.${curFeatKey}`);
   const isLtr = localeObj?.textDir !== "rtl";
   if(localeObj && !(localeObj.sentenceTerminators.every((termChar) => featText[isLtr ? "endsWith" : "startsWith"](termChar))))
-    featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${isLtr ? featText : ""}`;
+    featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${!isLtr ? featText : ""}`;
 
   const featDescElem = document.createElement("h3");
   featDescElem.role = "subheading";
