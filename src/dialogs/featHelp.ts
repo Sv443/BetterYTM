@@ -51,13 +51,14 @@ async function renderBody() {
 
   // insert sentence terminator if not present, to improve flow with screenreaders
   let featText = t(`feature_desc.${curFeatKey}`);
-  if(localeObj && !(localeObj.sentenceTerminators.every((term) => featText.endsWith(term))))
-    featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
+  const isLtr = localeObj?.textDir !== "rtl";
+  if(localeObj && !(localeObj.sentenceTerminators.every((termChar) => featText[isLtr ? "endsWith" : "startsWith"](termChar))))
+    featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${isLtr ? featText : ""}`;
 
   const featDescElem = document.createElement("h3");
   featDescElem.role = "subheading";
   featDescElem.tabIndex = 0;
-  featDescElem.textContent = featText;
+  featDescElem.textContent = featDescElem.title = featText;
   featDescElem.id = "bytm-feat-help-dialog-desc";
 
   const helpTextElem = document.createElement("div");
@@ -65,7 +66,7 @@ async function renderBody() {
   helpTextElem.tabIndex = 0;
   // @ts-expect-error
   const helpText: string | undefined = featInfo[curFeatKey!]?.helpText?.();
-  helpTextElem.textContent = helpText ?? t(`feature_helptext.${curFeatKey}`);
+  helpTextElem.textContent = helpTextElem.title = helpText ?? t(`feature_helptext.${curFeatKey}`);
 
   contElem.appendChild(featDescElem);
   contElem.appendChild(helpTextElem);
