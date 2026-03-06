@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@16963cdc/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3971070e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -15,6 +15,7 @@
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-BE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-LI Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-LU Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
@@ -75,6 +76,7 @@
 // @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
@@ -127,23 +129,23 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
 
 (function(CoreUtils,UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var CoreUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(CoreUtils);var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var preloadAssetPattern = "^(icon|img)-";
 var resources = {
-	"css-above_queue_btns": "style/aboveQueueBtns.css",
-	"css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
-	"css-anchor_improvements": "style/anchorImprovements.css",
-	"css-auto_like": "style/autoLike.css",
+	"css-above_queue_btns": "styles/aboveQueueBtns.css",
+	"css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
+	"css-anchor_improvements": "styles/anchorImprovements.css",
+	"css-auto_like": "styles/autoLike.css",
 	"css-bundle": "/dist/BetterYTM.css",
-	"css-fix_hdr": "style/fixHDR.css",
-	"css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
-	"css-fix_spacing": "style/fixSpacing.css",
-	"css-fix_sponsorblock": "style/fixSponsorBlock.css",
-	"css-hide_themesong_logo": "style/hideThemeSongLogo.css",
-	"css-remove_thumb_rating_bar": "style/removeThumbRatingBar.css",
-	"css-show_votes": "style/showVotes.css",
-	"css-swap_like_dislike_btns": "style/swapLikeDislikeBtns.css",
-	"css-track_numbers_current_queue": "style/trackNumbersCurrentQueue.css",
-	"css-track_numbers_song_lists": "style/trackNumbersSongLists.css",
-	"css-vol_slider_size": "style/volSliderSize.css",
-	"css-watch_page_full_size": "style/watchPageFullSize.css",
+	"css-fix_hdr": "styles/fixHDR.css",
+	"css-fix_playerpage_theming": "styles/fixPlayerPageTheming.css",
+	"css-fix_spacing": "styles/fixSpacing.css",
+	"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
+	"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
+	"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
+	"css-show_votes": "styles/showVotes.css",
+	"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
+	"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
+	"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
+	"css-vol_slider_size": "styles/volSliderSize.css",
+	"css-watch_page_full_size": "styles/watchPageFullSize.css",
 	"doc-license": {
 		path: "/LICENSE.txt",
 		ref: "$BRANCH",
@@ -214,6 +216,7 @@ var resourcesJson = {
 	altLocales: [
 		"de",
 		"de-AT",
+		"de-BE",
 		"de-CH",
 		"de-LI",
 		"de-LU"
@@ -438,8 +441,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "16963cdc",
-    buildTimestamp: "1772711054280",
+    buildNumber: "3971070e",
+    buildTimestamp: "1772827930923",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1198,8 +1201,10 @@ function initSiteEvents() {
                 window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
         }
         window.addEventListener("bytm:ready", () => {
-            runIntervalChecks();
-            setInterval(runIntervalChecks, 100);
+            createRecurringTask({
+                timeout: 150,
+                task: runIntervalChecks,
+            });
             if (getDomain() === "ytm") {
                 addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
                     listener(el) {
@@ -1215,10 +1220,10 @@ function initSiteEvents() {
                     }
                 });
             }
-            if (getDomain() === "ytm") {
-                setInterval(checkVideoIdChange, 250);
-                checkVideoIdChange();
-            }
+            getDomain() === "ytm" && createRecurringTask({
+                timeout: 250,
+                task: checkVideoIdChange,
+            });
         }, {
             once: true,
         });
@@ -1336,7 +1341,7 @@ async function getVersionNotifDialog({ latestTag, }) {
         const changelogMdFull = await getChangelogMd();
         // I messed up because this should be 0 so the changelog will always need to have an extra div at the top for backwards compatibility
         const changelogMd = changelogMdFull.split("<div class=\"split\">")[1];
-        const changelogHtml = await parseMarkdown(changelogMd, true);
+        const changelogHtml = await parseMarkdown(changelogMd);
         verNotifDialog = new BytmDialog({
             id: "version-notif",
             width: 600,
@@ -2103,10 +2108,15 @@ let prevVidMaxTime = Infinity;
 let prevTime = -1;
 /** Initializes the autoScrollToActiveSong feature */
 async function initAutoScrollToActiveSong() {
-    setInterval(() => {
-        prevTime = getVideoElement()?.currentTime ?? -1;
-        prevVidMaxTime = getVideoElement()?.duration ?? Infinity;
-    }, 50);
+    createRecurringTask({
+        timeout: 50,
+        async task() {
+            // since tasks don't overlap, this will pause until the element is ready
+            const vidEl = await waitVideoElementReady();
+            prevTime = vidEl.currentTime ?? -1;
+            prevVidMaxTime = vidEl.duration ?? Infinity;
+        },
+    });
     // TODO: refactor to trigger on queue changes instead of watchID
     siteEvents.on("watchIdChanged", (_, oldId) => {
         if (!oldId)
@@ -2637,6 +2647,45 @@ function getVersionSessionCount(version = scriptInfo$1.version) {
         return 0;
     return verSessions[version].count;
 }
+/**
+ * Schedules a task to run immediately and repeatedly at the given timeout as long as the given condition returns true.
+ * Ensures no overlapping task executions and multiple ways to cleanly stop the repeated execution.
+ */
+function createRecurringTask(options) {
+    let iterations = 0;
+    let aborted = false;
+    options.signal?.addEventListener("abort", () => {
+        aborted = true;
+    }, { once: true });
+    const runRecurringTask = async () => {
+        if (aborted)
+            return;
+        try {
+            // don't execute task if immediate = false on the first run
+            if ((options.immediate ?? true) || iterations > 0) {
+                if (await options.condition?.() ?? true) {
+                    const val = await options.task();
+                    if (options.onSuccess)
+                        await options.onSuccess(val);
+                    iterations++;
+                }
+            }
+            else
+                iterations++;
+        }
+        catch (err) {
+            error("Error in recurring task:", err);
+            if (options.onError)
+                await options.onError(err);
+            if (options.abortOnError)
+                aborted = true;
+        }
+        // evaluate if task should run again
+        if (!aborted && (typeof options.maxIterations !== "number" || iterations < options.maxIterations))
+            setTimeout(runRecurringTask, options.timeout);
+    };
+    void runRecurringTask();
+}
 //#region resources
 /**
  * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.
@@ -2744,31 +2793,35 @@ async function resourceAsString(resourceKey) {
         return null;
     }
 }
-// #region preferred locale
+//#region preferred locale
 /**
- * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
+ * Resolves the preferred locale code, given the browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
  * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
  */
 function getPreferredLocale() {
+    /** Trimmed & case insensitive string equality check. */
     const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
-    const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
+    const allNavLangs = [...new Set([navigator.language, ...navigator.languages])]
         .map((v) => v.replace(/_/g, "-"));
-    for (const nvLoc of allNvLocs) {
+    for (const navLang of allNavLangs) {
         const resolvedLoc = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))?.[0];
+            .find(([key, { altLocales }]) => sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang)))?.[0];
         if (resolvedLoc)
             return resolvedLoc.trim();
-        const trimmedNvLoc = nvLoc.split("-")[0];
-        const resolvedFallbackLoc = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))?.[0];
-        if (resolvedFallbackLoc)
-            return resolvedFallbackLoc.trim();
+        const navLangTrimmed = navLang.split("-")[0];
+        const resolvedFallbackLang = Object.entries(locales)
+            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed)))?.[0];
+        if (resolvedFallbackLang)
+            return resolvedFallbackLang.trim();
     }
     return "en-US";
 }
 // #region markdown
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS by default! */
-async function parseMarkdown(mdString, sanitize = false) {
+/**
+ * Parses a markdown string using marked and turns it into an HTML string with default settings.
+ * @param sanitize Sanitizes against XSS by default using DOMPurify in {@linkcode sanitizeHtml()} - set to false to disable.
+ */
+async function parseMarkdown(mdString, sanitize = true) {
     const mdHtml = await marked.marked.parse(mdString, {
         async: true,
         breaks: true,
@@ -2788,7 +2841,7 @@ async function getChangelogMd() {
 async function getChangelogHtmlWithDetails() {
     try {
         const changelogMd = await getChangelogMd();
-        let changelogHtml = await parseMarkdown(changelogMd, true);
+        let changelogHtml = await parseMarkdown(changelogMd);
         const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
         changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
         const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
@@ -4021,19 +4074,20 @@ async function renderBody$3() {
     const localeObj = locales?.[getLocale()];
     // insert sentence terminator if not present, to improve flow with screenreaders
     let featText = t(`feature_desc.${curFeatKey}`);
-    if (localeObj && !(localeObj.sentenceTerminators.every((term) => featText.endsWith(term))))
-        featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
+    const isLtr = localeObj?.textDir !== "rtl";
+    if (localeObj && !(localeObj.sentenceTerminators.every((termChar) => featText[isLtr ? "endsWith" : "startsWith"](termChar))))
+        featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${isLtr ? featText : ""}`;
     const featDescElem = document.createElement("h3");
     featDescElem.role = "subheading";
     featDescElem.tabIndex = 0;
-    featDescElem.textContent = featText;
+    featDescElem.textContent = featDescElem.title = featText;
     featDescElem.id = "bytm-feat-help-dialog-desc";
     const helpTextElem = document.createElement("div");
     helpTextElem.id = "bytm-feat-help-dialog-text";
     helpTextElem.tabIndex = 0;
     // @ts-expect-error
     const helpText = featInfo[curFeatKey]?.helpText?.();
-    helpTextElem.textContent = helpText ?? t(`feature_helptext.${curFeatKey}`);
+    helpTextElem.textContent = helpTextElem.title = helpText ?? t(`feature_helptext.${curFeatKey}`);
     contElem.appendChild(featDescElem);
     contElem.appendChild(helpTextElem);
     return contElem;
@@ -5033,7 +5087,7 @@ async function mountCfgMenu() {
                     licenseUrl: `https://github.com/${repo}/blob/${branch$1}/LICENSE.txt`,
                     contributorsLink: packageJson.specialThanksUrl,
                 });
-                setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams), true));
+                setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
                 return [aboutTextCont];
             },
             changelog: async () => {
@@ -9503,6 +9557,7 @@ const globalFuncs = pureObj({
     showPrompt,
     // other:
     formatNumber,
+    createRecurringTask,
 });
 /** Initializes the BYTM interface */
 function initInterface() {
@@ -10495,6 +10550,8 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
                 await getSerializerStoresFull()
                     .find(s => s.id === data.id)
                     ?.loadData();
+                if (data.id === configStore.id)
+                    emitSiteEvent("configChanged", configStore.getData());
                 getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
             }
             catch (err) {
