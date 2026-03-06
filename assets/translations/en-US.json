@@ -556,5 +556,5 @@
   "feature_btn.resetEverything": "Reset everything",
   "feature_btn.resetEverything_running": "Resetting...",
   "feature_desc.advancedMode": "Show advanced settings (reloads the menu)",
-  "feature_helptext.advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to more deeply customize the script's behavior and don't care about an overcrowded menu."
+  "feature_helptext.advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu."
 }
