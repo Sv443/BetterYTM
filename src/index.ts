@@ -1,4 +1,4 @@
-import { autoPlural, compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { autoPlural, createRecurringTask, compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
@@ -10,7 +10,6 @@ import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugi
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
 import { downloadData, getDSSerializer } from "./serializers.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
-import { getAllDataExImDialog } from "./dialogs/allDataExIm.js";
 import { showPrompt } from "./dialogs/prompt.js";
 import { mountCfgMenu } from "./menu/menu_old.js";
 import {
@@ -741,8 +740,20 @@ async function runDevTreatments() {
   if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
     return;
 
-  const dlg = await getAllDataExImDialog();
-  await dlg.open();
+  // const dlg = await getAllDataExImDialog();
+  // await dlg.open();
+
+  let i = 0;
+  createRecurringTask({
+    timeout: 1000,
+    task: () => {
+      console.log(">>> re", i);
+      i++;
+    },
+    condition: () => i < 5,
+    immediate: true,
+    maxIterations: 10,
+  });
 }
 
 preInit();

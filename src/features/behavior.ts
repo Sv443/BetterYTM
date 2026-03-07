@@ -1,4 +1,4 @@
-import { autoPlural, clamp, pauseFor, setImmediateInterval } from "@sv443-network/coreutils";
+import { autoPlural, createRecurringTask, clamp, pauseFor, setImmediateInterval } from "@sv443-network/coreutils";
 import { getUnsafeWindow, interceptWindowEvent, isDomLoaded } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
@@ -6,7 +6,7 @@ import { initialParams } from "../constants.js";
 import { siteEvents } from "../siteEvents.js";
 import { dbg, error, info, log, warn } from "../utils/logging.js";
 import { clearNode, getCurrentMediaType, getVideoElement, getVideoTime, waitVideoElementReady } from "../utils/dom.js";
-import { createRecurringTask, getDomain, getWatchId, scrollToCurrentSongInQueue } from "../utils/misc.js";
+import { getDomain, getWatchId, scrollToCurrentSongInQueue } from "../utils/misc.js";
 import { LogLevel } from "../types.js";
 
 //#region beforeunload popup

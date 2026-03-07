@@ -1,5 +1,5 @@
-import { autoPlural, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
-import { createRecurringTask, error, getDomain, info, log, warn } from "./utils/index.js";
+import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
+import { error, getDomain, info, log, warn } from "./utils/index.js";
 import { getFeature } from "./config.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
@@ -231,7 +231,7 @@ export function initSiteEvents() {
       }
       getDomain() === "ytm" && createRecurringTask({
         timeout: 250,
-        task: checkVideoIdChange,
+        task: () => checkVideoIdChange(),
       });
     }, {
       once: true,
