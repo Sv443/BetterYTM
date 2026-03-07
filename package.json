@@ -59,6 +59,8 @@
     "gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
     "node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
     "invisible": "node --no-warnings=ExperimentalWarning --enable-source-maps src/tools/run-invisible.mjs",
+    "change": "changeset",
+    "changeset-version": "node src/tools/changeset-version.mjs",
     "knip": "knip",
     "typedoc": "typedoc",
     "storybook": "storybook dev -p 6006",
@@ -91,6 +93,7 @@
     "tslib": "2.8.1"
   },
   "devDependencies": {
+    "@changesets/cli": "2.30.0",
     "@chromatic-com/storybook": "1.9.0",
     "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "9.39.2",
