@@ -20,7 +20,8 @@ Components are written using the vanilla JS DOM API, no framework like React is 
 # Libraries Summary
 
 - UserUtils: DOM and GM utilities, notably:
-  - `DataStore`: A wrapper around the GM and browser storage APIs including data migration and other features.
+  - `DataStore`: Persistent JSON database including data migration and other features.
+    - `GMStorageEngine`: A wrapper around the GM and browser storage APIs.
   - `DataStoreSerializer`: A serializer for combining, exporting and importing multiple DataStore instances.
 - CoreUtils: Misc JS utilities.
   - `NanoEmitter`: Wrapper around `nanoevents` to offer a class resembling Node's EventEmitter, with lots of extra features.

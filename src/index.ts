@@ -552,7 +552,6 @@ function registerDevCommands() {
 
     for(const key of keys) {
       try {
-        // TODO: when switching to new engine-based DataStores, change these key prefixes:
         const isEncoded = key.startsWith("__ds-")
           ? String(await GM.getValue(`__ds-${key.substring(5)}-enf`, "null")) !== "null"
           : false;
@@ -568,7 +567,6 @@ function registerDevCommands() {
     }
     for(const [key, finalVal] of Object.entries(values)) {
       try {
-        // TODO: when switching to new engine-based DataStores, change these key prefixes:
         const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
         const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
         dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
@@ -711,7 +709,7 @@ function registerDevCommands() {
     if(unusedKeys.length > 0)
       dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
   });
-  
+
   isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
     const sessions: [sesId: string | null, txID: string][] = [
       [getSessionId(), broadcastTxID],

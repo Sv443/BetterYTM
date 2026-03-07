@@ -30,7 +30,15 @@ export const cfgDefaultData = pureObj(
 
 //#region >> migrations
 
-/** Config data format migration dictionary */
+/**
+ * Config data format migration functions.  
+ * Each key is the version to migrate *to*, and the value is a function that takes the old data as an argument and returns the new data.  
+ *   
+ * Some helper functions are used to make writing migration functions easier and less error-prone:
+ * - **When a new feature was added,** the migration function should use {@linkcode useNewDefaults()} to set the new feature to its default value, while keeping all other values from the old config.  
+ * - **When a feature's default value was changed,** the migration function should use {@linkcode useNewDefaultsIfUnchanged()} to set the feature to its new default value, but only if the user hasn't changed it from its old default value. This way, a user's preference will be respected instead of being reset without their knowledge.
+ * - **When a feature's valid value range was changed,** the migration function should use {@linkcode useNewRanges()} to clamp the feature's value to the new valid range. This only applies to numeric features with a `min` and `max` property defined in the {@linkcode featInfo} object.
+ */
 export const cfgMigrations: DataMigrationsDict = {
   // 1 -> 2 (<=v1.0)
   2: (oldData: Record<string, unknown>) => {
@@ -258,8 +266,8 @@ export const cfgMigrations: DataMigrationsDict = {
  */
 function useNewDefaults(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
   const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
-  for(const key of resetKeys) // @ts-expect-error
-    newData[key] = featInfo?.[key]?.default as never; // typescript funny moments part 0x1a4
+  for(const key of resetKeys) // @ts-expect-error typescript funny moments part 0x1a4
+    newData[key] = featInfo?.[key]?.default as never;
   return newData;
 }
 
@@ -275,10 +283,10 @@ function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 ): TConfig {
   const newData = structuredClone(oldData);
   for(const { key, oldDefault } of oldDefaults) {
-    // @ts-expect-error
+    // @ts-expect-error we love TS
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)
-      newData[key] = defaultVal as never; // we love TS
+      newData[key] = defaultVal as never; // have you ever heard of the song "never gonna give you up" by rick astley?
   }
   return newData as TConfig;
 }
@@ -319,11 +327,11 @@ export const configStore = new DataStore<FeatureConfig>({
 
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
-  const oldFmtVer = Number(await GM.getValue(`__ds-${configStore.id}-ver`, NaN));
+  const oldFmtVer = Number(await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-ver`, NaN));
 
   let oldDataHash: string | undefined;
   try {
-    const oldData = await GM.getValue(`__ds-${configStore.id}-dat`, "{}");
+    const oldData = await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-dat`, "{}");
     const oldDataObj = JSON.parse(oldData as string);
     // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
     if(oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
