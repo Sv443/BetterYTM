@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@92cb9545/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e3ee5e8f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -441,8 +441,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "92cb9545",
-    buildTimestamp: "1772911218011",
+    buildNumber: "e3ee5e8f",
+    buildTimestamp: "1772911771060",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1200,32 +1200,28 @@ function initSiteEvents() {
             else
                 window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
         }
-        window.addEventListener("bytm:ready", () => {
-            CoreUtils.createRecurringTask({
-                timeout: 150,
-                task: runIntervalChecks,
+        CoreUtils.createRecurringTask({
+            timeout: 150,
+            task: runIntervalChecks,
+        });
+        if (getDomain() === "ytm") {
+            addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+                listener(el) {
+                    const urlRefObs = new MutationObserver(([{ target }]) => {
+                        if (!target || !target?.href?.includes("/watch"))
+                            return;
+                        const videoID = new URL(target.href).searchParams.get("v");
+                        checkVideoIdChange(videoID);
+                    });
+                    urlRefObs.observe(el, {
+                        attributeFilter: ["href"],
+                    });
+                }
             });
-            if (getDomain() === "ytm") {
-                addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
-                    listener(el) {
-                        const urlRefObs = new MutationObserver(([{ target }]) => {
-                            if (!target || !target?.href?.includes("/watch"))
-                                return;
-                            const videoID = new URL(target.href).searchParams.get("v");
-                            checkVideoIdChange(videoID);
-                        });
-                        urlRefObs.observe(el, {
-                            attributeFilter: ["href"],
-                        });
-                    }
-                });
-            }
-            getDomain() === "ytm" && CoreUtils.createRecurringTask({
-                timeout: 250,
-                task: () => checkVideoIdChange(),
-            });
-        }, {
-            once: true,
+        }
+        getDomain() === "ytm" && CoreUtils.createRecurringTask({
+            timeout: 250,
+            task: () => checkVideoIdChange(),
         });
     }
     catch (err) {
@@ -9455,7 +9451,7 @@ async function clearConfig() {
     await configStore.deleteData();
     info("Deleted config from persistent storage");
 }const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
-const { autoPlural, createRecurringTask, NanoEmitter, pureObj } = CoreUtils__namespace;
+const { autoPlural, NanoEmitter, pureObj } = CoreUtils__namespace;
 const { getUnsafeWindow } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
@@ -9524,7 +9520,6 @@ const globalFuncs = pureObj({
     showPrompt,
     // other:
     formatNumber,
-    createRecurringTask,
 });
 /** Initializes the BYTM interface */
 function initInterface() {
@@ -11275,16 +11270,5 @@ async function runDevTreatments() {
         return;
     // const dlg = await getAllDataExImDialog();
     // await dlg.open();
-    let i = 0;
-    CoreUtils.createRecurringTask({
-        timeout: 1000,
-        task: () => {
-            console.log(">>> re", i);
-            i++;
-        },
-        condition: () => i < 5,
-        immediate: true,
-        maxIterations: 10,
-    });
 }
 preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
