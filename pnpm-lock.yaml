@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@sv443-network/coreutils':
-        specifier: 3.3.0
-        version: 3.3.0
+        specifier: 3.4.0
+        version: 3.4.0
       '@sv443-network/userutils':
-        specifier: 10.1.0
-        version: 10.1.0
+        specifier: 10.2.0
+        version: 10.2.0
       compare-versions:
         specifier: 6.1.1
         version: 6.1.1
@@ -647,8 +647,8 @@ packages:
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
-  '@eslint/config-array@0.21.1':
-    resolution: {integrity: sha512-aw1gNayWpdI/jSYVgzN5pL0cfzU02GT3NBpeT/DXbx1/1x7ZKxFPd9bwrzygx/qiwIQiJ1sw/zD8qY/kRvlGHA==}
+  '@eslint/config-array@0.21.2':
+    resolution: {integrity: sha512-nJl2KGTlrf9GjLimgIru+V/mzgSK0ABCDQRvxw5BjURL7WfH5uoWmizbH7QB6MmnMBd8cIC9uceWnezL1VZWWw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/config-helpers@0.4.2':
@@ -1233,11 +1233,11 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
-  '@sv443-network/coreutils@3.3.0':
-    resolution: {integrity: sha512-fwzk1QNWGgWPVPBNfl9vNG4Yixc5SU0cSlZV4/n9BYPhlgiNR2+rkBrXd7/4ITAB8RYEXxxVxOMGIuIOOnWPhw==}
+  '@sv443-network/coreutils@3.4.0':
+    resolution: {integrity: sha512-cwyJZtUrAlG/uHxsGg45iqUEWRJHdTjayhTRuYKwrepMgEHqzrmfAPIMMBlNjmAhVpuumH5//3GrBulF/85j+g==}
 
-  '@sv443-network/userutils@10.1.0':
-    resolution: {integrity: sha512-Qv/V0gmxzb88XbOXmQ4UjF+psojpmswFWnz1NTuGegGuSlCp1RiFs81PL52GaZrE07ViRJX1OmW8HMfXi7Ornw==}
+  '@sv443-network/userutils@10.2.0':
+    resolution: {integrity: sha512-GP8ouLTbAA2KJcMCcgbJjrQ01059KD6VD7yJOBA8HkAOoDZuSt0pM8Vnttmp3rsRf3PMNXYdQQFnL+pl/QELFw==}
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -1301,8 +1301,8 @@ packages:
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
 
-  '@types/qs@6.14.0':
-    resolution: {integrity: sha512-eOunJqu0K1923aExK6y8p6fsihYEn/BYuQ4g0CxAAgFc4b/ZLN4CrsRZ55srTdqoiLzU2B2evC+apEIxprEzkQ==}
+  '@types/qs@6.15.0':
+    resolution: {integrity: sha512-JawvT8iBVWpzTrz3EGw9BTQFg3BQNmwERdKE22vlTxawwtbyUSlMppvZYKLZzB5zgACXdXxbD3m1bXaMqP/9ow==}
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
@@ -2290,8 +2290,8 @@ packages:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
     engines: {node: '>= 0.4'}
 
-  postcss@8.5.6:
-    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
+  postcss@8.5.8:
+    resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -3052,7 +3052,7 @@ snapshots:
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint/config-array@0.21.1':
+  '@eslint/config-array@0.21.2':
     dependencies:
       '@eslint/object-schema': 2.1.7
       debug: 4.4.3(supports-color@5.5.0)
@@ -3597,13 +3597,13 @@ snapshots:
     dependencies:
       storybook: 8.6.15(prettier@3.3.2)
 
-  '@sv443-network/coreutils@3.3.0':
+  '@sv443-network/coreutils@3.4.0':
     dependencies:
       nanoevents: 9.1.0
 
-  '@sv443-network/userutils@10.1.0':
+  '@sv443-network/userutils@10.2.0':
     dependencies:
-      '@sv443-network/coreutils': 3.3.0
+      '@sv443-network/coreutils': 3.4.0
       nanoevents: 9.1.0
 
   '@testing-library/dom@10.4.0':
@@ -3656,7 +3656,7 @@ snapshots:
   '@types/express-serve-static-core@4.19.8':
     dependencies:
       '@types/node': 20.19.32
-      '@types/qs': 6.14.0
+      '@types/qs': 6.15.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
 
@@ -3664,7 +3664,7 @@ snapshots:
     dependencies:
       '@types/body-parser': 1.19.6
       '@types/express-serve-static-core': 4.19.8
-      '@types/qs': 6.14.0
+      '@types/qs': 6.15.0
       '@types/serve-static': 1.15.10
 
   '@types/greasemonkey@4.0.7': {}
@@ -3687,7 +3687,7 @@ snapshots:
 
   '@types/prop-types@15.7.15': {}
 
-  '@types/qs@6.14.0': {}
+  '@types/qs@6.15.0': {}
 
   '@types/range-parser@1.2.7': {}
 
@@ -4227,7 +4227,7 @@ snapshots:
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.2(jiti@2.6.1))
       '@eslint-community/regexpp': 4.12.2
-      '@eslint/config-array': 0.21.1
+      '@eslint/config-array': 0.21.2
       '@eslint/config-helpers': 0.4.2
       '@eslint/core': 0.17.0
       '@eslint/eslintrc': 3.3.3
@@ -4788,7 +4788,7 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss@8.5.6:
+  postcss@8.5.8:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
@@ -5218,7 +5218,7 @@ snapshots:
   vite@5.3.1(@types/node@20.19.32)(terser@5.46.0):
     dependencies:
       esbuild: 0.21.5
-      postcss: 8.5.6
+      postcss: 8.5.8
       rollup: 4.57.1
     optionalDependencies:
       '@types/node': 20.19.32
