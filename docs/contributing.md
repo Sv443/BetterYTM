@@ -236,15 +236,16 @@ The main files you will be working with are:
 
 <!-- #region common procedures -->
 ### Common Procedures:
-Here are some well explained procedures for common tasks.  
-If you need help with these, don't hesitate to reach out to me (see the top of this file).  
+Here are some well explained procedures for common tasks regarding BetterYTM's internal development.  
+If you need help with these, don't hesitate to reach out to me ([see my homepage for contact info](https://sv443.net/)).  
   
-- Adding a new feature:
-  1. Add your feature to the `FeatureConfig` type in [`src/types.ts`](./src/types.ts) (after choosing a fitting category for it)
-  2. Add your feature and its properties to the `featInfo` object in [`src/features/index.ts`](./src/features/index.ts), under the correct category
-  3. Create an async initialization function for your feature in the respective category's file inside the `src/features` folder
-  4. Add the init function to the `onDomLoad` function in [`src/index.ts`](./src/index.ts), under the correct "domain guard condition" and category by following the format of the other features
-- Adding an asset (image, icon, stylesheet, translation file and misc. other files):
+- **Adding a new feature:**
+  1. Add your feature to the `FeatureConfig` type in [`src/types.ts`](./src/types.ts) and choose fitting category and group identifiers for it.
+  2. Add your feature and its properties to the `featInfo` object in [`src/features/index.ts`](./src/features/index.ts), under the correct category.
+  3. Create an async initialization function for your feature (yes it *needs* to be async) in the respective category's file inside the `src/features` folder.
+  4. Add the init function to the `onDomLoad` function in [`src/index.ts`](./src/index.ts), under the correct "domain guard condition" and category, by following the format of the other features.
+  5. Modify the latest feature config migration function (`const cfgMigrations` in [`src/config.ts`](./src/config.ts)), so that the feature is properly initialized.
+- **Adding an asset** (image, icon, stylesheet, translation file and misc. other files):
   1. Check out [`assets/README.md`](../assets/README.md) for information on all asset formats
   2. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
   3. Add the asset to the [`assets/resources.json`](../assets/resources.json) file by following the format of the other entries.  
@@ -253,28 +254,33 @@ If you need help with these, don't hesitate to reach out to me (see the top of t
   4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode and if the asset key matches the `externalAssetPattern` in the `assets/resources.json` file.
   5. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
     This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
-- Adding a new site event:
+- **Adding a new site event:**
   1. Add your event to the `SiteEventsMap` type in [`src/siteEvents.ts`](./src/siteEvents.ts)
   2. Dispatch the event inside `initSiteEvents` in [`src/siteEvents.ts`](./src/siteEvents.ts) or at another point where it is run *independent of the feature configuration* (the only exception being domain-specific events).  
     **Always use the function `emitSiteEvent`** to dispatch the event, so it will automatically be logged and emitted to the plugin interface as well.
-- Adding something to the plugin interface:
+- **Adding something to the plugin interface** (function, class, constant, etc.):
   - If you want to make a function globally available, simply add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the correct category.  
     If the function should require a token, create a proxy function at the bottom of the file that checks for the token and then calls the actual function (also see the bottom of the file for examples).
   - If you want to add something else like a class, constant or entire library (as long as its license allows it), add it to the `props` variable inside the function `initInterface` in [`src/interface.ts`](./src/interface.ts)
-- Creating a new reusable UI component:  
+- **Creating a new reusable UI component:**
   1. Create a new file in the `src/components` folder with a descriptive name
   2. Add a function that takes a single object of properties as an argument (kind of like a React component), and returns an element that extends the `HTMLElement` interface (like what the return value of `document.createElement()` is)
   3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
   4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
   5. Write some API documentation for the component inside the file [`docs/api.md`](./docs/api.md) under the appropriate section, following the format of the other entries
-- Adding a locale (language & country code):
+- **Adding a locale** (language & country code):
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](../assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.  
     You can find [a list of BCP 47 codes here.](https://www.techonthenet.com/js/language_tags.php)  
     The final locale code should be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
   2. Add a translation file for the locale by following the instructions in the ["adding translations" section](#adding-translations-for-a-new-language)
   3. Your locale will be immediately available in the userscript after the next build.
-- Creating a release:
+- **Updating CoreUtils & UserUtils:**
+  - Since UserUtils re-exports CoreUtils in its entirety, the versions of both libraries need to be compatible with each other.
+  1. In the [UserUtils repo](https://github.com/Sv443-Network/UserUtils), switch to the tag of the version you want to update to. Write down that version number as well.
+  2. Navigate to the `package.json` file and write down the version number of CoreUtils that is used in the `dependencies` section.
+  3. Update both libraries using the command `pnpm i @sv443-network/coreutils@<version> @sv443-network/userutils@<version>` in the project root, where `<version>` is the version number from the previous steps.
+- **Creating a release:**
   1. Make sure the version in `package.json` is bumped according to [semantic versioning](https://semver.org/)
   2. Run `pnpm i` so the version is updated in the lockfile
   3. Update the `changelog.md` with the new version and an exhaustive list of changes that were made
