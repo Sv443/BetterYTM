@@ -20,7 +20,7 @@ import { MarkdownDialog } from "./components/MarkdownDialog.js";
 import pkgJson from "../package.json" with { type: "json" };
 
 const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
-const { autoPlural, createRecurringTask, NanoEmitter, pureObj } = CoreUtils;
+const { autoPlural, NanoEmitter, pureObj } = CoreUtils;
 const { getUnsafeWindow } = UserUtils;
 
 //#region interface globals
@@ -196,7 +196,6 @@ const globalFuncs: InterfaceFunctions = pureObj({
 
   // other:
   formatNumber,
-  createRecurringTask,
 });
 
 /** Initializes the BYTM interface */

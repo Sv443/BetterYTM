@@ -207,34 +207,30 @@ export function initSiteEvents() {
         window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
     }
 
-    window.addEventListener("bytm:ready", () => {
-      createRecurringTask({
-        timeout: 150,
-        task: runIntervalChecks,
-      });
+    createRecurringTask({
+      timeout: 150,
+      task: runIntervalChecks,
+    });
 
-      if(getDomain() === "ytm") {
-        addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
-          listener(el) {
-            const urlRefObs = new MutationObserver(([ { target } ]) => {
-              if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
-                return;
-              const videoID = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
-              checkVideoIdChange(videoID);
-            });
+    if(getDomain() === "ytm") {
+      addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+        listener(el) {
+          const urlRefObs = new MutationObserver(([ { target } ]) => {
+            if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
+              return;
+            const videoID = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
+            checkVideoIdChange(videoID);
+          });
 
-            urlRefObs.observe(el, {
-              attributeFilter: ["href"],
-            });
-          }
-        });
-      }
-      getDomain() === "ytm" && createRecurringTask({
-        timeout: 250,
-        task: () => checkVideoIdChange(),
+          urlRefObs.observe(el, {
+            attributeFilter: ["href"],
+          });
+        }
       });
-    }, {
-      once: true,
+    }
+    getDomain() === "ytm" && createRecurringTask({
+      timeout: 250,
+      task: () => checkVideoIdChange(),
     });
   }
   catch(err) {

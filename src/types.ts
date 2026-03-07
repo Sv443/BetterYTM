@@ -1,4 +1,4 @@
-import type { createRecurringTask, LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-network/coreutils";
+import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-network/coreutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
@@ -528,8 +528,6 @@ export type InterfaceFunctions = {
   // other:
   /** Formats a number to a string using the configured locale and configured or passed number notation */
   formatNumber: typeof formatNumber;
-  /** Schedules a task to run immediately and repeatedly at the given interval as long as the given condition returns true. Offers multiple ways to cancel the recurring task. */
-  createRecurringTask: typeof createRecurringTask;
 };
 
 //#region feature defs
