@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@52029b2c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@92cb9545/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -67,8 +67,8 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.3.0/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.1.0/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.4.0/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.2.0/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.1
@@ -441,8 +441,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "52029b2c",
-    buildTimestamp: "1772834344344",
+    buildNumber: "92cb9545",
+    buildTimestamp: "1772911218011",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1201,7 +1201,7 @@ function initSiteEvents() {
                 window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
         }
         window.addEventListener("bytm:ready", () => {
-            createRecurringTask({
+            CoreUtils.createRecurringTask({
                 timeout: 150,
                 task: runIntervalChecks,
             });
@@ -1220,9 +1220,9 @@ function initSiteEvents() {
                     }
                 });
             }
-            getDomain() === "ytm" && createRecurringTask({
+            getDomain() === "ytm" && CoreUtils.createRecurringTask({
                 timeout: 250,
-                task: checkVideoIdChange,
+                task: () => checkVideoIdChange(),
             });
         }, {
             once: true,
@@ -1323,7 +1323,7 @@ var updates = {
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
-var packageJson = {
+var pkg = {
 	version: version,
 	license: license,
 	homepage: homepage,
@@ -1352,7 +1352,7 @@ async function getVersionNotifDialog({ latestTag, }) {
             destroyOnClose: true,
             small: true,
             renderHeader: renderHeader$4,
-            renderBody: () => renderBody$5({ latestTag, changelogHtml }),
+            renderBody: () => renderBody$4({ latestTag, changelogHtml }),
         });
     }
     return verNotifDialog;
@@ -1365,7 +1365,7 @@ async function renderHeader$4() {
     return logoEl;
 }
 let disableUpdateCheck = false;
-async function renderBody$5({ latestTag, changelogHtml, }) {
+async function renderBody$4({ latestTag, changelogHtml, }) {
     disableUpdateCheck = false;
     const wrapperEl = document.createElement("div");
     const pEl = document.createElement("p");
@@ -1438,7 +1438,7 @@ async function renderBody$5({ latestTag, changelogHtml, }) {
     btnUpdate.tabIndex = 0;
     btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host$1]);
     onInteraction(btnUpdate, () => {
-        window.open(packageJson.updates[host$1]);
+        window.open(pkg.updates[host$1]);
         verNotifDialog?.close();
     });
     const btnClose = document.createElement("button");
@@ -2323,7 +2323,7 @@ function getErrorDialog(errName, args) {
         body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
   
-${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", pkg.bugs.url)}`,
     });
 }
 //#region error classes
@@ -2414,7 +2414,7 @@ let prevVidMaxTime = Infinity;
 let prevTime = -1;
 /** Initializes the autoScrollToActiveSong feature */
 async function initAutoScrollToActiveSong() {
-    createRecurringTask({
+    CoreUtils.createRecurringTask({
         timeout: 50,
         async task() {
             // since tasks don't overlap, this will pause until the element is ready
@@ -3081,43 +3081,6 @@ function getVersionSessionCount(version = scriptInfo$1.version) {
         return 0;
     return verSessions[version].count;
 }
-/**
- * Schedules a task to run immediately and repeatedly at the given timeout as long as the given condition returns true.
- * Ensures no overlapping task executions and multiple ways to cleanly stop the repeated execution.
- */
-function createRecurringTask(options) {
-    let iterations = 0;
-    let aborted = false;
-    options.signal?.addEventListener("abort", () => {
-        aborted = true;
-    }, { once: true });
-    const runRecurringTask = async (initial = false) => {
-        if (aborted)
-            return;
-        try {
-            // don't execute task if immediate = false on the first run
-            if ((options.immediate ?? true) || !initial) {
-                if (await options.condition?.() ?? true) {
-                    const val = await options.task();
-                    if (options.onSuccess)
-                        await options.onSuccess(val);
-                    iterations++;
-                }
-            }
-        }
-        catch (err) {
-            error("Error in recurring task:", err);
-            if (options.onError)
-                await options.onError(err);
-            if (options.abortOnError)
-                aborted = true;
-        }
-        // evaluate if task should run again
-        if (!aborted && (typeof options.maxIterations !== "number" || iterations < options.maxIterations))
-            setTimeout(runRecurringTask, options.timeout);
-    };
-    void runRecurringTask(true);
-}
 //#region resources
 /**
  * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.
@@ -3512,7 +3475,7 @@ async function getAutoLikeDialog() {
             small: true,
             verticalAlign: "top",
             renderHeader: renderHeader$3,
-            renderBody: renderBody$4,
+            renderBody: renderBody$3,
             renderFooter: renderFooter$1,
         });
         siteEvents.on("autoLikeChannelsUpdated", async () => {
@@ -3578,7 +3541,7 @@ async function renderHeader$3() {
     return headerEl;
 }
 //#region body
-async function renderBody$4() {
+async function renderBody$3() {
     const contElem = document.createElement("div");
     const descriptionEl = document.createElement("p");
     descriptionEl.classList.add("bytm-auto-like-channels-desc");
@@ -4359,7 +4322,7 @@ async function getFeatHelpDialog({ featKey, }) {
             closeOnEscPress: true,
             small: true,
             renderHeader: renderHeader$2,
-            renderBody: renderBody$3,
+            renderBody: renderBody$2,
         });
         // make config menu inert while help dialog is open
         featHelpDialog.on("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
@@ -4373,7 +4336,7 @@ async function renderHeader$2() {
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
-async function renderBody$3() {
+async function renderBody$2() {
     const contElem = document.createElement("div");
     const localeObj = locales?.[getLocale()];
     // insert sentence terminator if not present, to improve flow with screenreaders
@@ -4705,8 +4668,8 @@ async function mountCfgMenu() {
         };
         const links = [
             ["github", await getResourceUrl("img-github"), scriptInfo$1.namespace, t("open_github", scriptInfo$1.name), "github"],
-            ["greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork"],
-            ["openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs"],
+            ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork"],
+            ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs"],
         ];
         const hostLink = links.find(([name]) => name === host$1);
         const otherLinks = links.filter(([name]) => name !== host$1);
@@ -5373,23 +5336,23 @@ async function mountCfgMenu() {
                 aboutTextCont.classList.add("bytm-markdown-container");
                 const aboutTrParams = CoreUtils.pureObj({
                     scriptName: scriptInfo$1.name,
-                    scriptVersion: packageJson.version,
+                    scriptVersion: pkg.version,
                     buildNumber: buildNumber$1,
                     buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
                         dateStyle: "medium",
                     }),
                     buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber$1}`,
-                    authorName: packageJson.author.name,
-                    authorLink: packageJson.author.url,
+                    authorName: pkg.author.name,
+                    authorLink: pkg.author.url,
                     githubLink: scriptInfo$1.namespace,
-                    greasyforkLink: packageJson.hosts.greasyfork,
-                    openuserjsLink: packageJson.hosts.openuserjs,
-                    fundingLink: packageJson.funding.url,
+                    greasyforkLink: pkg.hosts.greasyfork,
+                    openuserjsLink: pkg.hosts.openuserjs,
+                    fundingLink: pkg.funding.url,
                     discordLink: "https://dc.sv443.net/",
                     currentYear: new Date().getFullYear(),
-                    licenseName: packageJson.license,
+                    licenseName: pkg.license,
                     licenseUrl: `https://github.com/${repo}/blob/${branch$1}/LICENSE.txt`,
-                    contributorsLink: packageJson.specialThanksUrl,
+                    contributorsLink: pkg.specialThanksUrl,
                 });
                 setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
                 return [aboutTextCont];
@@ -6741,8 +6704,6 @@ const getSerializerStoresFull = () => [
     lyricsCacheStore,
     resourceCacheStore,
 ];
-/** Array of IDs of all stores included in the DataStoreSerializer instance */
-const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 function getDSSerializer(full = false) {
     if (!full)
@@ -6763,7 +6724,7 @@ async function downloadData(useEncoding = true, full = false) {
     // const fileName = `BetterYTM ${packageJson.version}${full ? " full" : ""} data export ${dateStr}.json`;
     const fileName = t(`data_export_file_name${full ? "_full" : ""}`, {
         scriptName: scriptInfo$1.name,
-        version: packageJson.version,
+        version: pkg.version,
         date: new Date().toISOString(),
     });
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
@@ -6781,7 +6742,7 @@ async function getPluginListDialog() {
         destroyOnClose: true,
         small: true,
         renderHeader: renderHeader$1,
-        renderBody: renderBody$2,
+        renderBody: renderBody$1,
     });
 }
 async function renderHeader$1() {
@@ -6794,7 +6755,7 @@ async function renderHeader$1() {
     titleElem.textContent = t("plugin_list.title");
     return titleElem;
 }
-async function renderBody$2() {
+async function renderBody$1() {
     const listContainerEl = document.createElement("div");
     listContainerEl.id = "bytm-plugin-list-container";
     const registeredPlugins = getRegisteredPlugins();
@@ -6802,7 +6763,7 @@ async function renderBody$2() {
         const noPluginsEl = document.createElement("div");
         noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
         noPluginsEl.tabIndex = 0;
-        setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+        setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${pkg.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
         noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list.no_plugins_tooltip");
         listContainerEl.appendChild(noPluginsEl);
         return listContainerEl;
@@ -6871,7 +6832,7 @@ async function renderBody$2() {
             linksList.appendChild(linkEl);
         }
         const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
-        const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${devPluginName}`;
+        const devPluginIdentifier = `${pkg.namespace}+${devPluginId}/${devPluginName}`;
         const isDevPlugin = Boolean(pluginIdentifier === devPluginIdentifier
             && getPluginInfo(devPluginToken, devPluginIdentifier));
         const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
@@ -9107,7 +9068,7 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
         default: undefined,
-        click: () => UserUtils.openInNewTab(packageJson.pluginDiscoveryUrl),
+        click: () => UserUtils.openInNewTab(pkg.pluginDiscoveryUrl),
     },
 };//#region >> format version
 /** If this number is incremented, the features object data will be migrated to the new format */
@@ -9123,7 +9084,15 @@ const cfgDefaultData = CoreUtils.pureObj(Object.keys(featInfo)
     return acc;
 }, {}));
 //#region >> migrations
-/** Config data format migration dictionary */
+/**
+ * Config data format migration functions.
+ * Each key is the version to migrate *to*, and the value is a function that takes the old data as an argument and returns the new data.
+ *
+ * Some helper functions are used to make writing migration functions easier and less error-prone:
+ * - **When a new feature was added,** the migration function should use {@linkcode useNewDefaults()} to set the new feature to its default value, while keeping all other values from the old config.
+ * - **When a feature's default value was changed,** the migration function should use {@linkcode useNewDefaultsIfUnchanged()} to set the feature to its new default value, but only if the user hasn't changed it from its old default value. This way, a user's preference will be respected instead of being reset without their knowledge.
+ * - **When a feature's valid value range was changed,** the migration function should use {@linkcode useNewRanges()} to clamp the feature's value to the new valid range. This only applies to numeric features with a `min` and `max` property defined in the {@linkcode featInfo} object.
+ */
 const cfgMigrations = {
     // 1 -> 2 (<=v1.0)
     2: (oldData) => {
@@ -9325,8 +9294,8 @@ const cfgMigrations = {
  */
 function useNewDefaults(baseData, resetKeys) {
     const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
-    for (const key of resetKeys) // @ts-expect-error
-        newData[key] = featInfo?.[key]?.default; // typescript funny moments part 0x1a4
+    for (const key of resetKeys) // @ts-expect-error typescript funny moments part 0x1a4
+        newData[key] = featInfo?.[key]?.default;
     return newData;
 }
 /**
@@ -9338,10 +9307,10 @@ function useNewDefaults(baseData, resetKeys) {
 function useNewDefaultsIfUnchanged(oldData, oldDefaults) {
     const newData = structuredClone(oldData);
     for (const { key, oldDefault } of oldDefaults) {
-        // @ts-expect-error
+        // @ts-expect-error we love TS
         const defaultVal = featInfo?.[key]?.default;
         if (newData[key] === oldDefault)
-            newData[key] = defaultVal; // we love TS
+            newData[key] = defaultVal; // have you ever heard of the song "never gonna give you up" by rick astley?
     }
     return newData;
 }
@@ -9376,10 +9345,10 @@ const configStore = new CoreUtils.DataStore({
 //#region >> init
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 async function initConfig() {
-    const oldFmtVer = Number(await GM.getValue(`__ds-${configStore.id}-ver`, NaN));
+    const oldFmtVer = Number(await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-ver`, NaN));
     let oldDataHash;
     try {
-        const oldData = await GM.getValue(`__ds-${configStore.id}-dat`, "{}");
+        const oldData = await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-dat`, "{}");
         const oldDataObj = JSON.parse(oldData);
         // only show prompt if there is actual old data (not on the first initialization, resets, etc.)
         if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0)
@@ -9486,7 +9455,7 @@ async function clearConfig() {
     await configStore.deleteData();
     info("Deleted config from persistent storage");
 }const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
-const { autoPlural, NanoEmitter, pureObj } = CoreUtils__namespace;
+const { autoPlural, createRecurringTask, NanoEmitter, pureObj } = CoreUtils__namespace;
 const { getUnsafeWindow } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
@@ -9688,8 +9657,8 @@ function registerDevPlugin() {
         const { token, events } = registerPlugin({
             plugin: {
                 name: devPluginName,
-                namespace: `${packageJson.namespace}+${devPluginId}`,
-                version: packageJson.version,
+                namespace: `${pkg.namespace}+${devPluginId}`,
+                version: pkg.version,
                 description: {
                     "de-DE": "Internes Plugin, das nur im Entwicklungsmodus existiert, um das Plugin-System einfach testen zu können.",
                     "en-US": "Internal plugin that only exists in development mode to make testing the plugin system easier.",
@@ -9701,12 +9670,12 @@ function registerDevPlugin() {
                     "zh-CN": "仅在开发模式下存在的内部插件，以便更轻松地测试插件系统。",
                 },
                 homepage: {
-                    source: packageJson.homepage,
-                    changelog: `${packageJson.homepage}/blob/${branch}/changelog.md`,
-                    bug: packageJson.bugs.url,
-                    greasyfork: packageJson.hosts.greasyfork,
-                    openuserjs: packageJson.hosts.openuserjs,
-                    other: packageJson.hosts.github,
+                    source: pkg.homepage,
+                    changelog: `${pkg.homepage}/blob/${branch}/changelog.md`,
+                    bug: pkg.bugs.url,
+                    greasyfork: pkg.hosts.greasyfork,
+                    openuserjs: pkg.hosts.openuserjs,
+                    other: pkg.hosts.github,
                 },
                 iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
             },
@@ -10629,7 +10598,7 @@ async function getWelcomeDialog() {
             closeOnEscPress: true,
             destroyOnClose: true,
             renderHeader,
-            renderBody: renderBody$1,
+            renderBody,
             renderFooter,
         });
         welcomeDialog.on("render", retranslateWelcomeMenu);
@@ -10653,7 +10622,7 @@ async function renderHeader() {
     titleWrapperElem.appendChild(titleElem);
     return titleWrapperElem;
 }
-async function renderBody$1() {
+async function renderBody() {
     const contentWrapper = document.createElement("div");
     contentWrapper.id = "bytm-welcome-menu-content-wrapper";
     // locale switcher
@@ -10744,9 +10713,9 @@ function retranslateWelcomeMenu() {
         },
         "#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
         "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo$1.name)),
-        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
-        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(packageJson.funding.url))),
-        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(packageJson.bugs.url))),
+        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
+        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url))),
+        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url))),
     };
     for (const [selector, fn] of Object.entries(changes)) {
         const el = document.querySelector(selector);
@@ -10779,162 +10748,6 @@ async function renderFooter() {
     footerCont.appendChild(leftButtonsCont);
     footerCont.appendChild(closeBtnElem);
     return footerCont;
-}let allDataExImDialog;
-/** Creates and/or returns the AllDataExIm dialog */
-async function getAllDataExImDialog() {
-    if (!allDataExImDialog) {
-        const eximOpts = {
-            id: "all-data-exim",
-            width: 800,
-            height: 1000,
-            closeBtnEnabled: true,
-            closeOnBgClick: true,
-            closeOnEscPress: true,
-            destroyOnClose: true,
-            removeListenersOnDestroy: false,
-            small: true,
-            verticalAlign: "top",
-            title: () => t("all_data_exim_title"),
-            descExport: () => t("all_data_exim_export_desc"),
-            descImport: () => t("all_data_exim_import_desc"),
-            exportData: async () => await getDSSerializer().serialize(),
-            onImport,
-        };
-        allDataExImDialog = new ExImDialog({
-            ...eximOpts,
-            renderBody: async () => await renderBody(eximOpts),
-        });
-    }
-    return allDataExImDialog;
-}
-/** Called when data is imported */
-async function onImport(data) {
-    try {
-        const serializer = getDSSerializer();
-        await serializer.deserialize(data);
-        showToast(t("import_success"));
-    }
-    catch (err) {
-        error(err);
-        showToast(t("import_error"));
-    }
-}
-async function renderBody(opts) {
-    const panesCont = document.createElement("div");
-    panesCont.classList.add("bytm-all-data-exim-dialog-panes-cont");
-    //#region export
-    const exportPane = document.createElement("div");
-    exportPane.classList.add("bytm-all-data-exim-dialog-pane", "export");
-    {
-        const descEl = document.createElement("p");
-        descEl.classList.add("bytm-all-data-exim-dialog-desc");
-        descEl.role = "note";
-        descEl.tabIndex = 0;
-        descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descExport);
-        const exportPartsCont = document.createElement("div");
-        exportPartsCont.classList.add("bytm-all-data-exim-dialog-export-parts-cont");
-        const dataEl = document.createElement("textarea");
-        dataEl.classList.add("bytm-all-data-exim-dialog-data");
-        dataEl.readOnly = true;
-        dataEl.tabIndex = 0;
-        dataEl.value = t("click_to_reveal");
-        for (const id of getSerializerStoresIds()) {
-            const rowEl = document.createElement("div");
-            rowEl.classList.add("bytm-all-data-exim-dialog-export-part-row");
-            rowEl.title = t(`data_stores.disable.${id}`);
-            const chkEl = document.createElement("input");
-            chkEl.type = "checkbox";
-            chkEl.id = `bytm-all-data-exim-dialog-export-part-${id}`;
-            chkEl.dataset.storeId = id;
-            chkEl.checked = true;
-            chkEl.title = t(`data_stores.disable.${id}`);
-            chkEl.addEventListener("change", async () => {
-                const kwd = chkEl.checked ? "disable" : "enable";
-                rowEl.title = t(`data_stores.${kwd}.${id}`);
-                chkEl.title = t(`data_stores.${kwd}.${id}`);
-                lblEl.textContent = t(`data_stores.${kwd}.${id}`);
-                if (dataEl.classList.contains("revealed"))
-                    dataEl.value = filter(await CoreUtils.consumeStringGen(opts.exportData));
-            });
-            const lblEl = document.createElement("label");
-            lblEl.htmlFor = chkEl.id;
-            lblEl.textContent = t(`data_stores.disable.${id}`);
-            rowEl.append(chkEl, lblEl);
-            exportPartsCont.appendChild(rowEl);
-        }
-        /** Filters out all data stores that are not checked */
-        const filter = (data) => {
-            const exportIds = [];
-            for (const chkEl of exportPartsCont.querySelectorAll("input[type=checkbox]"))
-                chkEl.checked && chkEl.dataset.storeId && exportIds.push(chkEl.dataset.storeId);
-            return JSON.stringify(JSON.parse(data)
-                .filter(({ id }) => exportIds.includes(id)), undefined, 2);
-        };
-        onInteraction(dataEl, async () => {
-            dataEl.classList.add("revealed");
-            dataEl.value = filter(await CoreUtils.consumeStringGen(opts.exportData));
-            dataEl.setSelectionRange(0, dataEl.value.length);
-        });
-        const exportCenterBtnCont = document.createElement("div");
-        exportCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-        const cpBtn = await createLongBtn({
-            title: t("copy_to_clipboard"),
-            text: t("copy"),
-            resourceName: "icon-copy",
-            ripple: true,
-            async onClick({ shiftKey }) {
-                const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-                copyToClipboard(filter(await CoreUtils.consumeStringGen(copyData)));
-                await showToast({ message: t("copied_to_clipboard") });
-            },
-        });
-        const dlBtn = await createLongBtn({
-            title: t("download_file"),
-            text: t("download"),
-            resourceName: "icon-arrow_down",
-            ripple: true,
-            async onClick({ shiftKey }) {
-                const dlData = filter(await CoreUtils.consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
-                copyToClipboard(dlData);
-                const pad = (num, len = 2) => String(num).padStart(len, "0");
-                const d = new Date();
-                const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
-                const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
-                downloadFile(fileName, dlData, "application/json");
-                await showToast({ message: t("downloaded_file_hint") });
-            },
-        });
-        exportCenterBtnCont.append(cpBtn, dlBtn);
-        exportPane.append(descEl, dataEl, exportPartsCont, exportCenterBtnCont);
-    }
-    //#region import
-    const importPane = document.createElement("div");
-    importPane.classList.add("bytm-all-data-exim-dialog-pane", "import");
-    {
-        // TODO: file upload field
-        // TODO: select which stores to import
-        const descEl = document.createElement("p");
-        descEl.classList.add("bytm-all-data-exim-dialog-desc");
-        descEl.role = "note";
-        descEl.tabIndex = 0;
-        descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descImport);
-        const dataEl = document.createElement("textarea");
-        dataEl.classList.add("bytm-all-data-exim-dialog-data");
-        dataEl.tabIndex = 0;
-        const importCenterBtnCont = document.createElement("div");
-        importCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-        const importBtn = await createLongBtn({
-            title: t("start_import_tooltip"),
-            text: t("import"),
-            resourceName: "icon-upload",
-            ripple: true,
-            onClick: () => opts.onImport(dataEl.value),
-        });
-        importCenterBtnCont.appendChild(importBtn);
-        importPane.append(descEl, dataEl, importCenterBtnCont);
-    }
-    panesCont.append(exportPane, importPane);
-    return panesCont;
 }//#region cns. watermark
 {
     // console watermark with sexy gradient
@@ -11307,7 +11120,6 @@ function registerDevCommands() {
         const decodeError = (key, err) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
         for (const key of keys) {
             try {
-                // TODO: when switching to new engine-based DataStores, change these key prefixes:
                 const isEncoded = key.startsWith("__ds-")
                     ? String(await GM.getValue(`__ds-${key.substring(5)}-enf`, "null")) !== "null"
                     : false;
@@ -11323,7 +11135,6 @@ function registerDevCommands() {
         }
         for (const [key, finalVal] of Object.entries(values)) {
             try {
-                // TODO: when switching to new engine-based DataStores, change these key prefixes:
                 const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
                 const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
                 dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
@@ -11462,7 +11273,18 @@ function registerDevCommands() {
 async function runDevTreatments() {
     if (mode$1 !== "development" || !await GM.getValue("bytm-dev-treatments", false))
         return;
-    const dlg = await getAllDataExImDialog();
-    await dlg.open();
+    // const dlg = await getAllDataExImDialog();
+    // await dlg.open();
+    let i = 0;
+    CoreUtils.createRecurringTask({
+        timeout: 1000,
+        task: () => {
+            console.log(">>> re", i);
+            i++;
+        },
+        condition: () => i < 5,
+        immediate: true,
+        maxIterations: 10,
+    });
 }
 preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
