@@ -80,7 +80,7 @@
   "clear_list_confirm": "リストをクリアして、現在再生中の曲のみにしてもよろしいですか？",
   "scroll_to_playing": "現在再生中の曲までスクロール",
   "scroll_to_bottom": "クリックして一番下までスクロール",
-  "volume_tooltip": "音量: %1% (感度: %2%)",
+  "volume_tooltip": "音量: ${volumePercent}%",
   "volume_shared_tooltip": "音量レベルはタブ間で共有されます - 構成メニューで無効にしてください",
   "middle_click_open_tab": "中クリックで新しいタブで開く",
   "example_toast": "例のトースト",

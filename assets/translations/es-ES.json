@@ -80,7 +80,7 @@
   "clear_list_confirm": "¿Realmente quieres borrar la lista y dejar solo la canción que se está reproduciendo actualmente?",
   "scroll_to_playing": "Desplácese hasta la canción que se está reproduciendo actualmente",
   "scroll_to_bottom": "Haga clic para desplazarse hasta el final",
-  "volume_tooltip": "Volumen: %1% (Sensibilidad: %2%)",
+  "volume_tooltip": "Volumen: ${volumePercent}%",
   "volume_shared_tooltip": "Volumen compartido entre pestañas - deshabilítelo en el menú de configuración",
   "middle_click_open_tab": "Haga clic con el botón central para abrir en una nueva pestaña",
   "example_toast": "Ejemplo de notificación",

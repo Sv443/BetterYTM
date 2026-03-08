@@ -85,7 +85,7 @@
   "clear_list_confirm": "Möchtest du wirklich die Liste leeren und nur den aktuell spielenden Song behalten?",
   "scroll_to_playing": "Zum aktiven Song scrollen",
   "scroll_to_bottom": "Zum Ende der Wiedergabeliste scrollen",
-  "volume_tooltip": "Lautstärke: %1% (Sensitivität: %2%)",
+  "volume_tooltip": "Lautstärke: ${volumePercent}%",
   "volume_shared_tooltip": "Lautstärke wird zwischen allen Tabs geteilt - deaktivieren in den Einstellungen",
   "middle_click_open_tab": "Mittel-Klick um in einem neuen Tab zu öffnen",
   "example_toast": "Beispiel-Toast",

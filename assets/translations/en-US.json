@@ -85,7 +85,7 @@
   "clear_list_confirm": "Do you really want to clear the list and leave only the currently playing song?",
   "scroll_to_playing": "Scroll to the currently playing song",
   "scroll_to_bottom": "Click to scroll to the bottom",
-  "volume_tooltip": "Volume: %1% (Sensitivity: %2%)",
+  "volume_tooltip": "Volume: ${volumePercent}%",
   "volume_shared_tooltip": "Volume level is shared between tabs - disable in the configuration menu",
   "middle_click_open_tab": "Middle-click to open in a new tab",
   "example_toast": "Example Toast",

@@ -78,7 +78,7 @@
   "clear_list_confirm": "您是否真的要清空列表并仅保留当前播放的歌曲？",
   "scroll_to_playing": "滚动到当前播放的歌曲",
   "scroll_to_bottom": "点击滚动到底部",
-  "volume_tooltip": "音量：%1%（灵敏度：%2%）",
+  "volume_tooltip": "音量：${volumePercent}%",
   "volume_shared_tooltip": "音量级别在标签页之间共享 - 在配置菜单中禁用",
   "middle_click_open_tab": "中键点击打开新标签页",
   "example_toast": "示例通知",

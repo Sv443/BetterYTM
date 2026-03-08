@@ -1,4 +1,4 @@
-import { debounce, type Stringifiable } from "@sv443-network/coreutils";
+import { clamp, debounce, type Stringifiable } from "@sv443-network/coreutils";
 import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
 import { addStyleFromResource, error, getDomain, getSessionId, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
@@ -114,12 +114,12 @@ export function initExponentialVolume() {
   Object.defineProperty(getUnsafeWindow().HTMLMediaElement.prototype, "volume", {
     get() {
       const actual = nativeGetVolume?.call(this);
-      if (typeof actual !== "number" || isNaN(actual))
+      if(typeof actual !== "number" || isNaN(actual))
         return actual;
       return expVolFnInv(actual);
     },
     set(value) {
-      if (typeof value !== "number" || isNaN(value))
+      if(typeof value !== "number" || isNaN(value))
         return nativeSetVolume?.call(this, value);
       return nativeSetVolume?.call(this, expVolFn(value));
     }
@@ -149,7 +149,7 @@ export function expVolFn(x: number) {
 
 /** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
 function expVolFnInv(y: number) {
-  switch (getFeature("volumeSliderExponential")) {
+  switch(getFeature("volumeSliderExponential")) {
   case "x^2":
     return expVolClamp(Math.pow(expVolClamp(y), 1/2));
   case "x^3": 
@@ -216,6 +216,21 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
       labelContElem.appendChild(linkIconElem);
     }
   }
+
+  /** Renders the given volume value in the range [0, 100] after adjusting for the configured exponential scaling. */
+  const getAdjustedVolValue = (val: number) => {
+    if(isNaN(val))
+      return String(val);
+    val = clamp(val, 0, 100);
+
+    const valAdjusted = (expVolFn(val / 100) * 100).toFixed(1);
+    const fixedPtVal = ["0.0", "100.0"].includes(valAdjusted)
+      ? valAdjusted.slice(0, -2)
+      : valAdjusted;
+
+    return fixedPtVal;
+  };
+
   const getLabel = (value: Stringifiable) => {
     const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
     const roundedValue = Math.round(Number(value) / step) * step;
@@ -223,11 +238,8 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
     labelContElem.classList.remove("wide");
 
-    if (getFeature("volumeSliderExponential") !== "linear") {
-      const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
-      const fixedPtVal = ["0.0", "100.0"].includes(expMapped)
-        ? expMapped.slice(0, -2)
-        : expMapped;
+    if(getFeature("volumeSliderExponential") !== "linear") {
+      const fixedPtVal = getAdjustedVolValue(Number(value));
 
       const lblType = getFeature("volumeSliderExponentialLabelType");
       if(lblType === "both") {
@@ -251,16 +263,16 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
   labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
 
-  const getLabelText = (slider: HTMLInputElement) =>
-    t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
+  const getSliderTooltip = (slider: HTMLInputElement) =>
+    t("volume_tooltip", { volumePercent: getAdjustedVolValue(Number(slider.value)) });
 
-  const labelFull = getLabelText(sliderElem);
+  const labelFull = getSliderTooltip(sliderElem);
   sliderContainer.setAttribute("title", labelFull);
   sliderElem.setAttribute("title", labelFull);
   sliderElem.setAttribute("aria-valuetext", labelFull);
 
   const updateLabel = () => {
-    const labelFull = getLabelText(sliderElem);
+    const labelFull = getSliderTooltip(sliderElem);
 
     sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);

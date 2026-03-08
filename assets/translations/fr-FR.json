@@ -80,7 +80,7 @@
   "clear_list_confirm": "Voulez-vous vraiment effacer la liste et ne laisser que la chanson en cours de lecture?",
   "scroll_to_playing": "Faites défiler jusqu'à la chanson en cours de lecture",
   "scroll_to_bottom": "Cliquez pour faire défiler vers le bas",
-  "volume_tooltip": "Volume: %1% (Sensibilité: %2%)",
+  "volume_tooltip": "Volume: ${volumePercent}%",
   "volume_shared_tooltip": "Le niveau de volume est partagé entre les onglets - désactivez-le dans le menu de configuration",
   "middle_click_open_tab": "Cliquez avec le bouton du milieu pour ouvrir dans un nouvel onglet",
   "example_toast": "Exemple de notification",

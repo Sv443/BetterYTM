@@ -78,7 +78,7 @@
   "clear_list_confirm": "Você realmente deseja limpar a lista e deixar apenas a música que está tocando atualmente?",
   "scroll_to_playing": "Rolar para a música que está tocando atualmente",
   "scroll_to_bottom": "Clique para rolar para o final",
-  "volume_tooltip": "Volume: %1% (Sensibilidade: %2%)",
+  "volume_tooltip": "Volume: ${volumePercent}%",
   "volume_shared_tooltip": "Volume compartilhado entre guias - desative no menu de configuração",
   "middle_click_open_tab": "Clique com o botão do meio para abrir em uma nova guia",
   "example_toast": "Exemplo de notificação",
