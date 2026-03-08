@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e7b0159e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4a0cdae3/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -441,8 +441,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e7b0159e",
-    buildTimestamp: "1772992449762",
+    buildNumber: "4a0cdae3",
+    buildTimestamp: "1772993436469",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1822,16 +1822,24 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
             labelContElem.appendChild(linkIconElem);
         }
     }
+    /** Renders the given volume value in the range [0, 100] after adjusting for the configured exponential scaling. */
+    const getAdjustedVolValue = (val) => {
+        if (isNaN(val))
+            return String(val);
+        val = CoreUtils.clamp(val, 0, 100);
+        const valAdjusted = (expVolFn(val / 100) * 100).toFixed(1);
+        const fixedPtVal = ["0.0", "100.0"].includes(valAdjusted)
+            ? valAdjusted.slice(0, -2)
+            : valAdjusted;
+        return fixedPtVal;
+    };
     const getLabel = (value) => {
         const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
         const roundedValue = Math.round(Number(value) / step) * step;
         let label = `${roundedValue}%`;
         labelContElem.classList.remove("wide");
         if (getFeature("volumeSliderExponential") !== "linear") {
-            const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
-            const fixedPtVal = ["0.0", "100.0"].includes(expMapped)
-                ? expMapped.slice(0, -2)
-                : expMapped;
+            const fixedPtVal = getAdjustedVolValue(Number(value));
             const lblType = getFeature("volumeSliderExponentialLabelType");
             if (lblType === "both") {
                 label += ` (${fixedPtVal}%)`;
@@ -1849,13 +1857,13 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
     // prevent video from minimizing
     labelContElem.addEventListener("click", (e) => e.stopPropagation());
     labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
-    const getLabelText = (slider) => t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
-    const labelFull = getLabelText(sliderElem);
+    const getSliderTooltip = (slider) => t("volume_tooltip", { volumePercent: getAdjustedVolValue(Number(slider.value)) });
+    const labelFull = getSliderTooltip(sliderElem);
     sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
     const updateLabel = () => {
-        const labelFull = getLabelText(sliderElem);
+        const labelFull = getSliderTooltip(sliderElem);
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
         sliderElem.setAttribute("aria-valuetext", labelFull);
