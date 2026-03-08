@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e3ee5e8f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e7b0159e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -441,8 +441,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e3ee5e8f",
-    buildTimestamp: "1772911771060",
+    buildNumber: "e7b0159e",
+    buildTimestamp: "1772992449762",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1662,8 +1662,6 @@ async function initVolumeFeatures() {
         sliderElem.setAttribute("step", "1");
         if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
             initScrollStep(volSliderCont, sliderElem);
-        if (getFeature("volumeSliderExponential") !== "linear")
-            initExponentialVolume();
         UserUtils.addParent(sliderElem, volSliderCont);
         if (getFeature("volumeSliderLabel"))
             await addVolumeSliderLabel(type, sliderElem, volSliderCont);
@@ -1696,7 +1694,7 @@ async function initVolumeFeatures() {
             return;
         listenerOnce = true;
         // the following are only run once:
-        setInitialTabVolume(sliderElem);
+        await setInitialTabVolume(sliderElem);
         if (typeof getFeature("volumeSliderSize") === "number")
             setVolSliderSize();
         if (getFeature("volumeSharedBetweenTabs"))
@@ -1723,10 +1721,15 @@ const {
 // eslint-disable-next-line @typescript-eslint/unbound-method
 get: nativeGetVolume, 
 // eslint-disable-next-line @typescript-eslint/unbound-method
-set: nativeSetVolume } = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
+set: nativeSetVolume
+// @ts-expect-error - no idea why HTMLMediaElement wouldn't exist on Window
+ } = Object.getOwnPropertyDescriptor(UserUtils.getUnsafeWindow().HTMLMediaElement.prototype, "volume") ?? {};
 /** Initializes the exponential volume scaling feature */
 function initExponentialVolume() {
-    Object.defineProperty(HTMLMediaElement.prototype, "volume", {
+    if (getDomain() !== "ytm" || getFeature("volumeSliderExponential") === "linear")
+        return;
+    // @ts-expect-error - see above
+    Object.defineProperty(UserUtils.getUnsafeWindow().HTMLMediaElement.prototype, "volume", {
         get() {
             const actual = nativeGetVolume?.call(this);
             if (typeof actual !== "number" || isNaN(actual))
@@ -1762,6 +1765,8 @@ function expVolFn(x) {
 /** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
 function expVolFnInv(y) {
     switch (getFeature("volumeSliderExponential")) {
+        case "x^2":
+            return expVolClamp(Math.pow(expVolClamp(y), 1 / 2));
         case "x^3":
             return expVolClamp(Math.pow(expVolClamp(y), 1 / 3));
         case "x^4":
@@ -1941,11 +1946,11 @@ async function checkSharedVolume() {
 //#region initial volume
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem) {
-    const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
-    GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
+    const reloadTabVol = Number(await GM.getValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, 0));
+    GM.deleteValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`).catch(() => void 0);
     if ((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
         return;
-    await waitVideoElementReady();
+    const vidElem = await waitVideoElementReady();
     const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
     if (isNaN(initialVol) || initialVol < 0 || initialVol > 100)
         return;
@@ -1955,6 +1960,7 @@ async function setInitialTabVolume(sliderElem) {
             GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
     }
     sliderElem.value = String(initialVol);
+    vidElem.volume = initialVol / 100;
     sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
     log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
 }//#region vars
@@ -2846,403 +2852,6 @@ async function fetchITunesAlbumInfo(artist, album) {
     catch (err) {
         error("Couldn't fetch iTunes album info due to an error:", err);
         return [];
-    }
-}//#region misc
-let domain;
-/**
- * Returns the current domain as a constant string representation
- * @throws Throws if script runs on an unexpected website
- */
-function getDomain() {
-    if (domain)
-        return domain;
-    if (location.hostname.match(/^music\.youtube/))
-        return domain = "ytm";
-    else if (location.hostname.match(/youtube\./))
-        return domain = "yt";
-    else
-        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-}
-/**
- * Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.
- * Note: as duplicated tabs will receive the same sessionStorage, this ID is not guaranteed to be entirely unique.
- */
-function getSessionId() {
-    try {
-        if (!sessionStorageAvailable$1)
-            throw new Error("Session storage unavailable");
-        let sesId = window.sessionStorage.getItem("_bytm-session-id");
-        if (!sesId)
-            window.sessionStorage.setItem("_bytm-session-id", sesId = CoreUtils.randomId(10, 36));
-        return sesId;
-    }
-    catch (err) {
-        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
-        return null;
-    }
-}
-let isCompressionSupported;
-/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
-async function compressionSupported() {
-    if (typeof isCompressionSupported === "boolean")
-        return isCompressionSupported;
-    try {
-        await CoreUtils.compress(".", compressionFormat$1, "string");
-        return isCompressionSupported = true;
-    }
-    catch {
-        return isCompressionSupported = false;
-    }
-}
-/** Returns the watch ID of the current video or null if not on a video page */
-function getWatchId() {
-    const { searchParams, pathname } = new URL(location.href);
-    return pathname.includes("/watch") ? searchParams.get("v") : null;
-}
-/**
- * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
- * Returns null if the current page is not a channel page or there was an error parsing the URL
- */
-function getCurrentChannelId() {
-    return parseChannelIdFromUrl(location.href);
-}
-/** Returns the channel ID from a URL or null if the URL is invalid */
-function parseChannelIdFromUrl(url) {
-    try {
-        const { pathname } = url instanceof URL ? url : new URL(url);
-        if (pathname.includes("/channel/"))
-            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
-        else if (pathname.includes("/@"))
-            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
-        else
-            return null;
-    }
-    catch {
-        return null;
-    }
-}
-/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
-function sanitizeChannelId(channelId) {
-    channelId = String(channelId).trim();
-    return isValidChannelId(channelId) || channelId.startsWith("@")
-        ? channelId
-        : `@${channelId}`;
-}
-/** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
-function isValidChannelId(channelId) {
-    return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
-}
-/** Returns the thumbnail URL for a video with either a given quality identifier or index */
-function getThumbnailUrl(videoID, qualityOrIndex = "maxresdefault") {
-    return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
-}
-/** Returns the best available thumbnail URL for a video with the given video ID */
-async function getBestThumbnailUrl(videoID) {
-    try {
-        const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
-        for (const quality of priorityList) {
-            let response;
-            const url = getThumbnailUrl(videoID, quality);
-            try {
-                response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
-            }
-            catch (err) {
-                error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
-            }
-            if (response && response.status < 300 && response.status >= 200)
-                return url;
-        }
-    }
-    catch (err) {
-        throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
-    }
-}
-/** Opens the given URL in a new tab, using GM.openInTab if available */
-function openInTab(href, background = false) {
-    try {
-        UserUtils.openInNewTab(href, background);
-    }
-    catch {
-        window.open(href, "_blank", "noopener noreferrer");
-    }
-}
-/** Tries to parse an uncompressed or compressed input string as a JSON object */
-async function tryToDecompressAndParse(input) {
-    let parsed = null;
-    const val = await CoreUtils.consumeStringGen(input);
-    try {
-        parsed = JSON.parse(val);
-    }
-    catch {
-        try {
-            parsed = JSON.parse(await CoreUtils.decompress(val, compressionFormat$1, "string"));
-        }
-        catch (err) {
-            error("Couldn't decompress and parse data.", err);
-            return null;
-        }
-    }
-    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-    await CoreUtils.pauseFor(CoreUtils.randRange(250, 500));
-    return parsed;
-}
-/** Very crude OS detection */
-function getOS() {
-    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
-        return "mac";
-    return "other";
-}
-/** Formats a number based on the config or the passed {@linkcode notation} */
-function formatNumber(num, notation) {
-    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation ?? getFeature("numbersFormat")) === "short"
-        ? {
-            notation: "compact",
-            compactDisplay: "short",
-            maximumFractionDigits: 1,
-        }
-        : {
-            style: "decimal",
-            maximumFractionDigits: 0,
-        });
-}
-/** add `time_continue` param only if current video time is greater than this value */
-const reloadTabVideoTimeThreshold = 3;
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
-async function reloadTab() {
-    const win = UserUtils.getUnsafeWindow();
-    try {
-        enableDiscardBeforeUnload();
-        if ((getVideoElement()?.readyState ?? 0) > 0) {
-            const time = await getVideoTime(0) ?? 0;
-            const volume = Math.round(getVideoElement().volume * 100);
-            const url = new URL(win.location.href);
-            if (!isNaN(time) && time > reloadTabVideoTimeThreshold)
-                url.searchParams.set("time_continue", String(time));
-            if (!isNaN(volume) && volume > 0)
-                await GM.setValue("bytm-reload-tab-volume", String(volume));
-            return win.location.replace(url);
-        }
-        win.location.reload();
-    }
-    catch (err) {
-        error("Couldn't save video time and volume before reloading tab:", err);
-        win.location.reload();
-    }
-}
-/** Scrolls to the currently playing queue item in the queue once it's available */
-function scrollToCurrentSongInQueue(evt) {
-    addSelectorListener("sidePanel", "ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]", {
-        listener(activeItem) {
-            activeItem.scrollIntoView({
-                behavior: evt?.shiftKey ? "instant" : "smooth",
-                block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
-                inline: "center",
-            });
-            log("Scrolled to active song in queue:", activeItem);
-        }
-    });
-}
-/** Makes the {@linkcode value} over- & underflow so it is always in a certain range */
-function overflowVal(value, minOrMax, max) {
-    const min = typeof max === "number" ? minOrMax : 0;
-    max = typeof max === "number" ? max : minOrMax;
-    if (min > max)
-        throw new RangeError("Parameter \"min\" can't be bigger than \"max\"");
-    if (isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max))
-        return NaN;
-    if (value >= min && value <= max)
-        return value;
-    const range = max - min + 1;
-    const wrappedValue = ((value - min) % range + range) % range + min;
-    return wrappedValue;
-}
-let verSessions;
-/** Counts the number of launched sessions per userscript version and returns the current count, to enable time-based features like the "new feature" adornment icon */
-async function initVersionSessionCounter() {
-    verSessions = JSON.parse(await GM.getValue("bytm-version-session-counter", "{}"));
-    if (typeof verSessions !== "object" || verSessions === null)
-        verSessions = {};
-    if (typeof verSessions?.[scriptInfo$1.version] !== "object" || typeof verSessions?.[scriptInfo$1.version]?.count !== "number")
-        verSessions[scriptInfo$1.version] = { count: 0 };
-    else
-        verSessions[scriptInfo$1.version].count++;
-    await GM.setValue("bytm-version-session-counter", JSON.stringify(verSessions));
-    return verSessions[scriptInfo$1.version].count;
-}
-/** Returns the number of sessions for the given version, or 0 if the version is not found in the session counter for whatever reason */
-function getVersionSessionCount(version = scriptInfo$1.version) {
-    if (!verSessions)
-        throw new Error("Version session counter not initialized yet, call initVersionSessionCounter() first");
-    if (typeof verSessions[version] !== "object" || typeof verSessions[version].count !== "number")
-        return 0;
-    return verSessions[version].count;
-}
-//#region resources
-/**
- * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.
- * Tries to fall back to a base64-encoded data: URI in GM resources if the CDN resource was not found.
- * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
- * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
- */
-async function getResourceUrl(name) {
-    const resObjOrStr = resourcesJson.resources?.[name];
-    if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-        const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
-        const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber$1;
-        if (pathName) {
-            return pathName.startsWith("http")
-                ? pathName
-                : (() => {
-                    let path = pathName;
-                    if (path.startsWith("/"))
-                        path = path.slice(1);
-                    else
-                        path = `assets/${path}`;
-                    switch (assetSource) {
-                        case "jsdelivr":
-                            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
-                        case "github":
-                            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
-                        case "local":
-                            return `http://localhost:${devServerPort}/${path}`;
-                    }
-                })();
-        }
-    }
-    warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
-    // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
-    return await GM.getResourceUrl(name, false);
-}
-/** Max age for the resource cache, after its last modification, in milliseconds */
-const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
-const resourceCacheKey = mode$1 === "development" ? scriptInfo$1.version : buildNumber$1;
-/** Cache for resources fetched via {@linkcode resourceAsString()} */
-const resourceCacheStore = new CoreUtils.DataStore({
-    id: "bytm-resource-cache",
-    formatVersion: 0,
-    engine: new UserUtils.GMStorageEngine(),
-    compressionFormat: compressionFormat$1,
-    defaultData: {
-        resources: {},
-        created: Date.now(),
-        cacheKey: resourceCacheKey,
-    },
-});
-/** Resources with these prefixes are cached in the resource cache */
-const cachedResourcePrefixes = [
-    "doc-", // random documents
-    "icon-", // SVG icons
-    "img-", // images
-    "style-", // dynamic stylesheets
-    "trans-", // translations
-];
-async function initResourceCache() {
-    await resourceCacheStore.loadData();
-}
-async function resourceCacheHas(key) {
-    if (resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
-        await resourceCacheStore.saveDefaultData();
-        return false;
-    }
-    const val = resourceCacheGet(key);
-    return val !== undefined && val !== null && val.length > 0;
-}
-function resourceCacheGet(key) {
-    return resourceCacheStore.getData().resources[key] ?? null;
-}
-async function resourceCacheSet(key, val) {
-    const data = resourceCacheStore.getData();
-    data.resources[key] = val;
-    data.created = Date.now();
-    return await resourceCacheStore.setData(data);
-}
-/**
- * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.
- * Caches the resulting string if the resource key starts with any item in {@linkcode cachedResourcePrefixes}
- */
-async function resourceAsString(resourceKey) {
-    if (typeof isCompressionSupported === "undefined")
-        await compressionSupported(); // init variable
-    if (Date.now() - resourceCacheStore.getData().created > resourceCacheTTL)
-        await resourceCacheStore.saveDefaultData();
-    else if (await resourceCacheHas(resourceKey))
-        return resourceCacheGet(resourceKey);
-    const resourceUrl = await getResourceUrl(resourceKey);
-    try {
-        if (!resourceUrl)
-            throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
-        const res = await CoreUtils.fetchAdvanced(resourceUrl);
-        if (!res.ok)
-            throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
-        const str = await res.text();
-        if (cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
-            await resourceCacheSet(resourceKey, str);
-        return str;
-    }
-    catch (err) {
-        error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
-        return null;
-    }
-}
-//#region preferred locale
-/**
- * Resolves the preferred locale code, given the browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
- * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
- */
-function getPreferredLocale() {
-    /** Trimmed & case insensitive string equality check. */
-    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
-    const allNavLangs = [...new Set([navigator.language, ...navigator.languages])]
-        .map((v) => v.replace(/_/g, "-"));
-    for (const navLang of allNavLangs) {
-        const resolvedLoc = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang)))?.[0];
-        if (resolvedLoc)
-            return resolvedLoc.trim();
-        const navLangTrimmed = navLang.split("-")[0];
-        const resolvedFallbackLang = Object.entries(locales)
-            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed)))?.[0];
-        if (resolvedFallbackLang)
-            return resolvedFallbackLang.trim();
-    }
-    return "en-US";
-}
-// #region markdown
-/**
- * Parses a markdown string using marked and turns it into an HTML string with default settings.
- * @param sanitize Sanitizes against XSS by default using DOMPurify in {@linkcode sanitizeHtml()} - set to false to disable.
- */
-async function parseMarkdown(mdString, sanitize = true) {
-    const mdHtml = await marked.marked.parse(mdString, {
-        async: true,
-        breaks: true,
-        gfm: true,
-        silent: true,
-    });
-    return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
-}
-// #region changelog
-/** Returns the content of the changelog markdown file */
-async function getChangelogMd() {
-    const clRes = await CoreUtils.fetchAdvanced(changelogUrl);
-    log("Fetched changelog:", clRes);
-    return await clRes.text();
-}
-/** Returns the changelog as HTML with a details element for each version */
-async function getChangelogHtmlWithDetails() {
-    try {
-        const changelogMd = await getChangelogMd();
-        let changelogHtml = await parseMarkdown(changelogMd);
-        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
-        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
-        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
-        for (const [fullMatch, , verStr] of h2Matches)
-            changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
-        changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
-        return changelogHtml;
-    }
-    catch (err) {
-        return `Error while preparing changelog: ${err}`;
     }
 }/**
  * Creates an element with a ripple effect on click.
@@ -6725,6 +6334,537 @@ async function downloadData(useEncoding = true, full = false) {
     });
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
     downloadFile(fileName, data, "application/json");
+}// module that facilitates inter-session (tab) communication using BroadcastChannel API
+//#region vars
+/** Random ID used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets. */
+const broadcastTxID = CoreUtils.randomId(10, 36);
+/**
+ * [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance used for inter-session communication in BYTM.
+ * The channel name is "bytm-broadcast".
+ * Use the {@linkcode BroadcastPacket} type for the packets sent through this channel.
+ */
+const broadcastChannel = new BroadcastChannel("bytm-broadcast");
+//#region init
+/** Initializes the broadcast module by setting up the necessary event listeners. */
+function initBroadcast() {
+    broadcastChannel.addEventListener("message", handleBroadcastMessage);
+    // broadcast DataStore data update packets:
+    getSerializerStoresFull().forEach(store => {
+        store.on("updateData", CoreUtils.debounce(() => {
+            emitBroadcast({
+                type: "dataStoreUpdate",
+                data: {
+                    id: store.id,
+                },
+            });
+            getFeature("logEvents") && log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
+        }, 100));
+    });
+    // receive and handle broadcast packets:
+    siteEvents.on("broadcast", handleBroadcastPacket);
+    info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
+}
+//#region handlers
+/** Called to parse and handle received broadcast packets. */
+async function handleBroadcastPacket(type, { from, to, packet }) {
+    // ignore own sent packets:
+    if (from === broadcastTxID)
+        return;
+    // ignore packets not intended for this session:
+    if (Array.isArray(to) && !to.includes(broadcastTxID))
+        return;
+    switch (type) {
+        // update local DataStore data when a "dataStoreUpdate" packet is received:
+        case "dataStoreUpdate": {
+            const data = packet.data;
+            try {
+                await getSerializerStoresFull()
+                    .find(s => s.id === data.id)
+                    ?.loadData();
+                if (data.id === configStore.id)
+                    emitSiteEvent("configChanged", configStore.getData());
+                getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
+            }
+            catch (err) {
+                log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
+            }
+            break;
+        }
+        // reload this tab
+        case "reloadTabs":
+            await reloadTab();
+            break;
+        // reply to "collectSessions" packets with a "collectSessionsReply" packet:
+        case "collectSessions":
+            emitBroadcast({
+                type: "collectSessionsReply",
+                data: {
+                    sessionId: getSessionId(),
+                },
+            }, [from]);
+            getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
+            break;
+    }
+}
+//#region emit
+/**
+ * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.
+ * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.
+ * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
+ * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
+ */
+function emitBroadcast(packet, to) {
+    broadcastChannel.postMessage({
+        from: broadcastTxID,
+        to,
+        packet,
+    });
+}
+//#region validate
+/**
+ * Validates if the given object is a valid {@linkcode BroadcastTransitPacket}.
+ * This is used in the `message` event listener of the BroadcastChannel to validate incoming packets before processing them.
+ */
+function isValidTransmitBroadcastPacket(obj) {
+    return typeof obj === "object"
+        && obj !== null
+        && typeof obj.from === "string"
+        && (obj.to === undefined || (Array.isArray(obj.to) && obj.to.every((id) => typeof id === "string")))
+        && typeof obj.packet === "object"
+        && obj.packet !== null
+        && typeof obj.packet.type === "string"
+        && ((typeof obj.packet.data === "object" && obj.packet.data !== null)
+            || obj.packet.data === undefined);
+}
+//#region handler
+/**
+ * Gets called when a message is received through the BroadcastChannel.
+ * Validates the packet and emits an internal event with the packet data for other modules to listen to.
+ */
+function handleBroadcastMessage({ data }) {
+    if (!isValidTransmitBroadcastPacket(data)) {
+        warn("Received invalid broadcast packet, ignoring:", data);
+        return;
+    }
+    // if the packet is not intended for this session, ignore it
+    if (data.from === broadcastTxID || (Array.isArray(data.to) && !data.to.includes(broadcastTxID ?? "")))
+        return;
+    if (getFeature("logEvents"))
+        log(`Received broadcast packet of type "${data.packet.type}" from session "${data.from}":`, data);
+    forceEmitSiteEvent("broadcast", data.packet.type, data);
+    forceEmitSiteEvent(`broadcast:${data.packet.type}`, data); // love dealing with TS mapped type shenanigans
+}//#region misc
+let domain;
+/**
+ * Returns the current domain as a constant string representation
+ * @throws Throws if script runs on an unexpected website
+ */
+function getDomain() {
+    if (domain)
+        return domain;
+    if (location.hostname.match(/^music\.youtube/))
+        return domain = "ytm";
+    else if (location.hostname.match(/youtube\./))
+        return domain = "yt";
+    else
+        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+}
+/**
+ * Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.
+ * Note: as duplicated tabs will receive the same sessionStorage, this ID is not guaranteed to be entirely unique.
+ */
+function getSessionId() {
+    try {
+        if (!sessionStorageAvailable$1)
+            throw new Error("Session storage unavailable");
+        let sesId = window.sessionStorage.getItem("_bytm-session-id");
+        if (!sesId)
+            window.sessionStorage.setItem("_bytm-session-id", sesId = CoreUtils.randomId(10, 36));
+        return sesId;
+    }
+    catch (err) {
+        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+        return null;
+    }
+}
+let isCompressionSupported;
+/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
+async function compressionSupported() {
+    if (typeof isCompressionSupported === "boolean")
+        return isCompressionSupported;
+    try {
+        await CoreUtils.compress(".", compressionFormat$1, "string");
+        return isCompressionSupported = true;
+    }
+    catch {
+        return isCompressionSupported = false;
+    }
+}
+/** Returns the watch ID of the current video or null if not on a video page */
+function getWatchId() {
+    const { searchParams, pathname } = new URL(location.href);
+    return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+/**
+ * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
+ * Returns null if the current page is not a channel page or there was an error parsing the URL
+ */
+function getCurrentChannelId() {
+    return parseChannelIdFromUrl(location.href);
+}
+/** Returns the channel ID from a URL or null if the URL is invalid */
+function parseChannelIdFromUrl(url) {
+    try {
+        const { pathname } = url instanceof URL ? url : new URL(url);
+        if (pathname.includes("/channel/"))
+            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
+        else if (pathname.includes("/@"))
+            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
+        else
+            return null;
+    }
+    catch {
+        return null;
+    }
+}
+/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
+function sanitizeChannelId(channelId) {
+    channelId = String(channelId).trim();
+    return isValidChannelId(channelId) || channelId.startsWith("@")
+        ? channelId
+        : `@${channelId}`;
+}
+/** Tests whether a string is a valid channel ID in the format `@User` or `UC...` */
+function isValidChannelId(channelId) {
+    return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
+}
+/** Returns the thumbnail URL for a video with either a given quality identifier or index */
+function getThumbnailUrl(videoID, qualityOrIndex = "maxresdefault") {
+    return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
+}
+/** Returns the best available thumbnail URL for a video with the given video ID */
+async function getBestThumbnailUrl(videoID) {
+    try {
+        const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
+        for (const quality of priorityList) {
+            let response;
+            const url = getThumbnailUrl(videoID, quality);
+            try {
+                response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
+            }
+            catch (err) {
+                error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
+            }
+            if (response && response.status < 300 && response.status >= 200)
+                return url;
+        }
+    }
+    catch (err) {
+        throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
+    }
+}
+/** Opens the given URL in a new tab, using GM.openInTab if available */
+function openInTab(href, background = false) {
+    try {
+        UserUtils.openInNewTab(href, background);
+    }
+    catch {
+        window.open(href, "_blank", "noopener noreferrer");
+    }
+}
+/** Tries to parse an uncompressed or compressed input string as a JSON object */
+async function tryToDecompressAndParse(input) {
+    let parsed = null;
+    const val = await CoreUtils.consumeStringGen(input);
+    try {
+        parsed = JSON.parse(val);
+    }
+    catch {
+        try {
+            parsed = JSON.parse(await CoreUtils.decompress(val, compressionFormat$1, "string"));
+        }
+        catch (err) {
+            error("Couldn't decompress and parse data.", err);
+            return null;
+        }
+    }
+    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
+    await CoreUtils.pauseFor(CoreUtils.randRange(250, 500));
+    return parsed;
+}
+/** Very crude OS detection */
+function getOS() {
+    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
+        return "mac";
+    return "other";
+}
+/** Formats a number based on the config or the passed {@linkcode notation} */
+function formatNumber(num, notation) {
+    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation ?? getFeature("numbersFormat")) === "short"
+        ? {
+            notation: "compact",
+            compactDisplay: "short",
+            maximumFractionDigits: 1,
+        }
+        : {
+            style: "decimal",
+            maximumFractionDigits: 0,
+        });
+}
+/** add `time_continue` param only if current video time is greater than this value */
+const reloadTabVideoTimeThreshold = 3;
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume-${sessionID}` in GM storage */
+async function reloadTab() {
+    const win = UserUtils.getUnsafeWindow();
+    try {
+        enableDiscardBeforeUnload();
+        if ((getVideoElement()?.readyState ?? 0) > 0) {
+            const time = await getVideoTime(0) ?? 0;
+            // read from the slider element directly - avoids the expVolFnInv getter transform giving wrong values
+            const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+            const volume = sliderElem ? Number(sliderElem.value) : Math.round(getVideoElement().volume * 100);
+            const url = new URL(win.location.href);
+            if (!isNaN(time) && time > reloadTabVideoTimeThreshold)
+                url.searchParams.set("time_continue", String(time));
+            if (!isNaN(volume) && volume > 0)
+                await GM.setValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, String(volume));
+            return win.location.replace(url);
+        }
+        win.location.reload();
+    }
+    catch (err) {
+        error("Couldn't save video time and volume before reloading tab:", err);
+        win.location.reload();
+    }
+}
+/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
+async function reloadAllTabs(reloadSelf = true) {
+    info(`Emitting broadcast to reload all tabs${reloadSelf ? ", then self-reloading" : ""}.`);
+    emitBroadcast({
+        type: "reloadTabs",
+    });
+    return reloadSelf
+        ? await (async () => {
+            await CoreUtils.pauseFor(50); // broadcast is synchronous, but we might still be working on something in our async queue
+            return await reloadTab();
+        })()
+        : undefined;
+}
+/** Scrolls to the currently playing queue item in the queue once it's available */
+function scrollToCurrentSongInQueue(evt) {
+    addSelectorListener("sidePanel", "ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]", {
+        listener(activeItem) {
+            activeItem.scrollIntoView({
+                behavior: evt?.shiftKey ? "instant" : "smooth",
+                block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
+                inline: "center",
+            });
+            log("Scrolled to active song in queue:", activeItem);
+        }
+    });
+}
+/** Makes the {@linkcode value} over- & underflow so it is always in a certain range */
+function overflowVal(value, minOrMax, max) {
+    const min = typeof max === "number" ? minOrMax : 0;
+    max = typeof max === "number" ? max : minOrMax;
+    if (min > max)
+        throw new RangeError("Parameter \"min\" can't be bigger than \"max\"");
+    if (isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max))
+        return NaN;
+    if (value >= min && value <= max)
+        return value;
+    const range = max - min + 1;
+    const wrappedValue = ((value - min) % range + range) % range + min;
+    return wrappedValue;
+}
+let verSessions;
+/** Counts the number of launched sessions per userscript version and returns the current count, to enable time-based features like the "new feature" adornment icon */
+async function initVersionSessionCounter() {
+    verSessions = JSON.parse(await GM.getValue("bytm-version-session-counter", "{}"));
+    if (typeof verSessions !== "object" || verSessions === null)
+        verSessions = {};
+    if (typeof verSessions?.[scriptInfo$1.version] !== "object" || typeof verSessions?.[scriptInfo$1.version]?.count !== "number")
+        verSessions[scriptInfo$1.version] = { count: 0 };
+    else
+        verSessions[scriptInfo$1.version].count++;
+    await GM.setValue("bytm-version-session-counter", JSON.stringify(verSessions));
+    return verSessions[scriptInfo$1.version].count;
+}
+/** Returns the number of sessions for the given version, or 0 if the version is not found in the session counter for whatever reason */
+function getVersionSessionCount(version = scriptInfo$1.version) {
+    if (!verSessions)
+        throw new Error("Version session counter not initialized yet, call initVersionSessionCounter() first");
+    if (typeof verSessions[version] !== "object" || typeof verSessions[version].count !== "number")
+        return 0;
+    return verSessions[version].count;
+}
+//#region resources
+/**
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.
+ * Tries to fall back to a base64-encoded data: URI in GM resources if the CDN resource was not found.
+ * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
+ * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
+ */
+async function getResourceUrl(name) {
+    const resObjOrStr = resourcesJson.resources?.[name];
+    if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+        const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
+        const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber$1;
+        if (pathName) {
+            return pathName.startsWith("http")
+                ? pathName
+                : (() => {
+                    let path = pathName;
+                    if (path.startsWith("/"))
+                        path = path.slice(1);
+                    else
+                        path = `assets/${path}`;
+                    switch (assetSource) {
+                        case "jsdelivr":
+                            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
+                        case "github":
+                            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
+                        case "local":
+                            return `http://localhost:${devServerPort}/${path}`;
+                    }
+                })();
+        }
+    }
+    warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
+    // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
+    return await GM.getResourceUrl(name, false);
+}
+/** Max age for the resource cache, after its last modification, in milliseconds */
+const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+const resourceCacheKey = mode$1 === "development" ? scriptInfo$1.version : buildNumber$1;
+/** Cache for resources fetched via {@linkcode resourceAsString()} */
+const resourceCacheStore = new CoreUtils.DataStore({
+    id: "bytm-resource-cache",
+    formatVersion: 0,
+    engine: new UserUtils.GMStorageEngine(),
+    compressionFormat: compressionFormat$1,
+    defaultData: {
+        resources: {},
+        created: Date.now(),
+        cacheKey: resourceCacheKey,
+    },
+});
+/** Resources with these prefixes are cached in the resource cache */
+const cachedResourcePrefixes = [
+    "doc-", // random documents
+    "icon-", // SVG icons
+    "img-", // images
+    "style-", // dynamic stylesheets
+    "trans-", // translations
+];
+async function initResourceCache() {
+    await resourceCacheStore.loadData();
+}
+async function resourceCacheHas(key) {
+    if (resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
+        await resourceCacheStore.saveDefaultData();
+        return false;
+    }
+    const val = resourceCacheGet(key);
+    return val !== undefined && val !== null && val.length > 0;
+}
+function resourceCacheGet(key) {
+    return resourceCacheStore.getData().resources[key] ?? null;
+}
+async function resourceCacheSet(key, val) {
+    const data = resourceCacheStore.getData();
+    data.resources[key] = val;
+    data.created = Date.now();
+    return await resourceCacheStore.setData(data);
+}
+/**
+ * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.
+ * Caches the resulting string if the resource key starts with any item in {@linkcode cachedResourcePrefixes}
+ */
+async function resourceAsString(resourceKey) {
+    if (typeof isCompressionSupported === "undefined")
+        await compressionSupported(); // init variable
+    if (Date.now() - resourceCacheStore.getData().created > resourceCacheTTL)
+        await resourceCacheStore.saveDefaultData();
+    else if (await resourceCacheHas(resourceKey))
+        return resourceCacheGet(resourceKey);
+    const resourceUrl = await getResourceUrl(resourceKey);
+    try {
+        if (!resourceUrl)
+            throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
+        const res = await CoreUtils.fetchAdvanced(resourceUrl);
+        if (!res.ok)
+            throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
+        const str = await res.text();
+        if (cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
+            await resourceCacheSet(resourceKey, str);
+        return str;
+    }
+    catch (err) {
+        error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
+        return null;
+    }
+}
+//#region preferred locale
+/**
+ * Resolves the preferred locale code, given the browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`
+ * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
+ */
+function getPreferredLocale() {
+    /** Trimmed & case insensitive string equality check. */
+    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
+    const allNavLangs = [...new Set([navigator.language, ...navigator.languages])]
+        .map((v) => v.replace(/_/g, "-"));
+    for (const navLang of allNavLangs) {
+        const resolvedLoc = Object.entries(locales)
+            .find(([key, { altLocales }]) => sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang)))?.[0];
+        if (resolvedLoc)
+            return resolvedLoc.trim();
+        const navLangTrimmed = navLang.split("-")[0];
+        const resolvedFallbackLang = Object.entries(locales)
+            .find(([key, { altLocales }]) => sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed)))?.[0];
+        if (resolvedFallbackLang)
+            return resolvedFallbackLang.trim();
+    }
+    return "en-US";
+}
+// #region markdown
+/**
+ * Parses a markdown string using marked and turns it into an HTML string with default settings.
+ * @param sanitize Sanitizes against XSS by default using DOMPurify in {@linkcode sanitizeHtml()} - set to false to disable.
+ */
+async function parseMarkdown(mdString, sanitize = true) {
+    const mdHtml = await marked.marked.parse(mdString, {
+        async: true,
+        breaks: true,
+        gfm: true,
+        silent: true,
+    });
+    return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
+}
+// #region changelog
+/** Returns the content of the changelog markdown file */
+async function getChangelogMd() {
+    const clRes = await CoreUtils.fetchAdvanced(changelogUrl);
+    log("Fetched changelog:", clRes);
+    return await clRes.text();
+}
+/** Returns the changelog as HTML with a details element for each version */
+async function getChangelogHtmlWithDetails() {
+    try {
+        const changelogMd = await getChangelogMd();
+        let changelogHtml = await parseMarkdown(changelogMd);
+        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
+        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+        for (const [fullMatch, , verStr] of h2Matches)
+            changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
+        changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
+        return changelogHtml;
+    }
+    catch (err) {
+        return `Error while preparing changelog: ${err}`;
+    }
 }let pluginListDialog = null;
 /** Creates and/or returns the import dialog */
 async function getPluginListDialog() {
@@ -10466,120 +10606,6 @@ function transplantElement(element, target, position = "afterend") {
     if (!inserted)
         throw new Error(`Failed to transplant element at position "${position}"`);
     return element;
-}// module that facilitates inter-session (tab) communication using BroadcastChannel API
-//#region vars
-/** Random ID used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets. */
-const broadcastTxID = CoreUtils.randomId(10, 36);
-/**
- * [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance used for inter-session communication in BYTM.
- * The channel name is "bytm-broadcast".
- * Use the {@linkcode BroadcastPacket} type for the packets sent through this channel.
- */
-const broadcastChannel = new BroadcastChannel("bytm-broadcast");
-//#region init
-/** Initializes the broadcast module by setting up the necessary event listeners. */
-function initBroadcast() {
-    broadcastChannel.addEventListener("message", handleBroadcastMessage);
-    // broadcast DataStore data update packets:
-    getSerializerStoresFull().forEach(store => {
-        store.on("updateData", CoreUtils.debounce(() => {
-            emitBroadcast({
-                type: "dataStoreUpdate",
-                data: {
-                    id: store.id,
-                },
-            });
-            getFeature("logEvents") && log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
-        }, 100));
-    });
-    // receive and handle broadcast packets:
-    siteEvents.on("broadcast", handleBroadcastPacket);
-    info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
-}
-/** Called to parse and handle received broadcast packets. */
-async function handleBroadcastPacket(type, { from, to, packet }) {
-    // ignore own sent packets:
-    if (from === broadcastTxID)
-        return;
-    // ignore packets not intended for this session:
-    if (Array.isArray(to) && !to.includes(broadcastTxID))
-        return;
-    switch (type) {
-        // update local DataStore data when a "dataStoreUpdate" packet is received:
-        case "dataStoreUpdate": {
-            const data = packet.data;
-            try {
-                await getSerializerStoresFull()
-                    .find(s => s.id === data.id)
-                    ?.loadData();
-                if (data.id === configStore.id)
-                    emitSiteEvent("configChanged", configStore.getData());
-                getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
-            }
-            catch (err) {
-                log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
-            }
-            break;
-        }
-        // reply to "collectSessions" packets with a "collectSessionsReply" packet:
-        case "collectSessions":
-            emitBroadcast({
-                type: "collectSessionsReply",
-                data: {
-                    sessionId: getSessionId(),
-                },
-            }, [from]);
-            getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
-            break;
-    }
-}
-//#region emit
-/**
- * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.
- * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.
- * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
- * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
- */
-function emitBroadcast(packet, to) {
-    broadcastChannel.postMessage({
-        from: broadcastTxID,
-        to,
-        packet,
-    });
-}
-//#region validate
-/**
- * Validates if the given object is a valid {@linkcode BroadcastTransitPacket}.
- * This is used in the `message` event listener of the BroadcastChannel to validate incoming packets before processing them.
- */
-function isValidTransmitBroadcastPacket(obj) {
-    return typeof obj === "object"
-        && obj !== null
-        && typeof obj.from === "string"
-        && (obj.to === undefined || (Array.isArray(obj.to) && obj.to.every((id) => typeof id === "string")))
-        && typeof obj.packet === "object"
-        && obj.packet !== null
-        && typeof obj.packet.type === "string"
-        && ((typeof obj.packet.data === "object" && obj.packet.data !== null)
-            || obj.packet.data === undefined);
-}
-//#region handler
-/**
- * Gets called when a message is received through the BroadcastChannel.
- * Validates the packet and emits an internal event with the packet data for other modules to listen to.
- */
-function handleBroadcastMessage({ data }) {
-    if (!isValidTransmitBroadcastPacket(data)) {
-        warn("Received invalid broadcast packet, ignoring:", data);
-        return;
-    }
-    // if the packet is not intended for this session, ignore it
-    if (data.from === broadcastTxID || (Array.isArray(data.to) && !data.to.includes(broadcastTxID ?? "")))
-        return;
-    if (getFeature("logEvents"))
-        log(`Received broadcast packet of type "${data.packet.type}" from session "${data.from}":`, data);
-    forceEmitSiteEvent("broadcast", data.packet.type, data);
-    forceEmitSiteEvent(`broadcast:${data.packet.type}`, data); // love dealing with TS mapped type shenanigans
 }let welcomeDialog = null;
 /** Creates and/or returns the import dialog */
 async function getWelcomeDialog() {
@@ -10872,6 +10898,8 @@ async function onDomLoad() {
     const ftInit = [];
     // for being able to query styles based on domain (just prefix any CSS selector with ".bytm-dom-yt " or ".bytm-dom-ytm ")
     document.body.classList.add(`bytm-dom-${domain}`);
+    // needs to run synchronously before any async volume-setting code (initVolumeFeatures) to avoid a microtask vs macrotask race condition
+    initExponentialVolume();
     // initialize DOM globals:
     try {
         setTimeout(() => {
@@ -11262,6 +11290,14 @@ function registerDevCommands() {
         emitBroadcast({
             type: "collectSessions",
         });
+    });
+    isAdv && GM.registerMenuCommand(t("menu_command.reload_all_tabs"), async () => {
+        if (await showPrompt({
+            type: "confirm",
+            message: `Reload all open ${getDomain() === "ytm" ? "music" : "www"}.youtube.com tabs running BetterYTM?`,
+            confirmBtnText: "Reload",
+        }))
+            await reloadAllTabs();
     });
     log("Registered dev menu commands");
 }
