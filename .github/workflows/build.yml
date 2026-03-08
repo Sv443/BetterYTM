@@ -22,7 +22,7 @@ jobs:
       CI: "true"
       STORE_PATH: ""
       PNPM_VERSION: 10
-      RETENTION_DAYS_PUSH: 30
+      RETENTION_DAYS_PUSH: 3
       RETENTION_DAYS_PR: 2
 
     steps:
