@@ -1,7 +1,7 @@
 import { debounce, type Stringifiable } from "@sv443-network/coreutils";
-import { addParent } from "@sv443-network/userutils";
+import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
-import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
+import { addStyleFromResource, error, getDomain, getSessionId, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import { addSelectorListener } from "../observers.js";
@@ -22,9 +22,6 @@ export async function initVolumeFeatures() {
 
     if(getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
       initScrollStep(volSliderCont, sliderElem);
-
-    if(getFeature("volumeSliderExponential") !== "linear")
-      initExponentialVolume();
 
     addParent(sliderElem, volSliderCont);
 
@@ -69,7 +66,7 @@ export async function initVolumeFeatures() {
 
     // the following are only run once:
 
-    setInitialTabVolume(sliderElem);
+    await setInitialTabVolume(sliderElem);
 
     if(typeof getFeature("volumeSliderSize") === "number")
       setVolSliderSize();
@@ -105,11 +102,16 @@ const {
   get: nativeGetVolume,
   // eslint-disable-next-line @typescript-eslint/unbound-method
   set: nativeSetVolume
-} = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
+  // @ts-expect-error - no idea why HTMLMediaElement wouldn't exist on Window
+} = Object.getOwnPropertyDescriptor(getUnsafeWindow().HTMLMediaElement.prototype, "volume") ?? {};
 
 /** Initializes the exponential volume scaling feature */
 export function initExponentialVolume() {
-  Object.defineProperty(HTMLMediaElement.prototype, "volume", {
+  if(getDomain() !== "ytm" || getFeature("volumeSliderExponential") === "linear")
+    return;
+
+  // @ts-expect-error - see above
+  Object.defineProperty(getUnsafeWindow().HTMLMediaElement.prototype, "volume", {
     get() {
       const actual = nativeGetVolume?.call(this);
       if (typeof actual !== "number" || isNaN(actual))
@@ -148,6 +150,8 @@ export function expVolFn(x: number) {
 /** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
 function expVolFnInv(y: number) {
   switch (getFeature("volumeSliderExponential")) {
+  case "x^2":
+    return expVolClamp(Math.pow(expVolClamp(y), 1/2));
   case "x^3": 
     return expVolClamp(Math.pow(expVolClamp(y), 1/3));
   case "x^4": 
@@ -155,7 +159,7 @@ function expVolFnInv(y: number) {
   case "x^5": 
     return expVolClamp(Math.pow(expVolClamp(y), 1/5));
   case "linear":
-  default: 
+  default:
     return expVolClamp(y);
   }
 }
@@ -378,13 +382,13 @@ export async function volumeSharedBetweenTabsDisabled() {
 
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {
-  const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
-  GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
+  const reloadTabVol = Number(await GM.getValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, 0));
+  GM.deleteValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`).catch(() => void 0);
 
   if((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
     return;
 
-  await waitVideoElementReady();
+  const vidElem = await waitVideoElementReady();
 
   const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
 
@@ -397,6 +401,7 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
       GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
   }
   sliderElem.value = String(initialVol);
+  vidElem.volume = initialVol / 100;
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
 
   log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);

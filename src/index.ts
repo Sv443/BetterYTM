@@ -1,6 +1,6 @@
 import { autoPlural, compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -19,7 +19,7 @@ import {
   fixHdrIssues, initShowVotes,
   initSwapLikeDislikeBtns, initWatchPageFullSize,
   // volume category:
-  initVolumeFeatures,
+  initVolumeFeatures, initExponentialVolume,
   // song lists category:
   initQueueButtons, initAboveQueueBtns,
   addTrackNumbers,
@@ -226,6 +226,9 @@ async function onDomLoad() {
 
   // for being able to query styles based on domain (just prefix any CSS selector with ".bytm-dom-yt " or ".bytm-dom-ytm ")
   document.body.classList.add(`bytm-dom-${domain}`);
+
+  // needs to run synchronously before any async volume-setting code (initVolumeFeatures) to avoid a microtask vs macrotask race condition
+  initExponentialVolume();
 
   // initialize DOM globals:
   try {
@@ -729,6 +732,15 @@ function registerDevCommands() {
     emitBroadcast({
       type: "collectSessions",
     });
+  });
+
+  isAdv && GM.registerMenuCommand(t("menu_command.reload_all_tabs"), async () => {
+    if(await showPrompt({
+      type: "confirm",
+      message: `Reload all open ${getDomain() === "ytm" ? "music" : "www"}.youtube.com tabs running BetterYTM?`,
+      confirmBtnText: "Reload",
+    }))
+      await reloadAllTabs();
   });
 
   log("Registered dev menu commands");
