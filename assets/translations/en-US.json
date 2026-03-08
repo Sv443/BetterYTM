@@ -125,6 +125,7 @@
   "menu_command.get_dev_plugin_token": "Get integrated developer plugin token",
   "menu_command.download_log_file": "Download console log file",
   "menu_command.collect_sessions": "Print all open sessions (tabs) to console",
+  "menu_command.reload_all_tabs": "Reload all open sessions (tabs)",
 
   "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
   "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",

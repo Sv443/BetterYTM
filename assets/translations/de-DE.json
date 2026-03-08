@@ -125,6 +125,7 @@
   "menu_command.get_dev_plugin_token": "Integriertes Dev-Plugin-Token anzeigen",
   "menu_command.download_log_file": "Konsolen-Logdatei herunterladen",
   "menu_command.collect_sessions": "Alle offenen Sitzungen (Tabs) in der Konsole ausgeben",
+  "menu_command.reload_all_tabs": "Alle offenen Sitzungen (Tabs) neu laden",
 
   "open_current_lyrics": "Songtext des aktuellen Songs öffnen - Shift-Klick, um in einem neuen Fenster zu öffnen oder Strg-Klick, um manuell zu suchen",
   "open_lyrics": "Songtext in einem neuen Tab öffnen - Strg-Klick, um manuell zu suchen",

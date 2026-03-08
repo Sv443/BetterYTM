@@ -5,9 +5,10 @@ import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPor
 import { enableDiscardBeforeUnload } from "../features/behavior.js";
 import { addSelectorListener } from "../observers.js";
 import { getFeature } from "../config.js";
-import { error, log, warn } from "./logging.js";
+import { error, info, log, warn } from "./logging.js";
 import { sendRequest } from "./xhr.js";
 import { getLocale, type TrLocale } from "./translations.js";
+import { emitBroadcast } from "./broadcast.js";
 import { getVideoElement, getVideoTime, sanitizeHtml } from "./dom.js";
 import type { Domain, NumberLengthFormat, ResourceKey } from "../types.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
@@ -227,7 +228,7 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
 /** add `time_continue` param only if current video time is greater than this value */
 const reloadTabVideoTimeThreshold = 3;
 
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume-${sessionID}` in GM storage */
 export async function reloadTab() {
   const win = getUnsafeWindow();
   try {
@@ -235,14 +236,16 @@ export async function reloadTab() {
 
     if((getVideoElement()?.readyState ?? 0) > 0) {
       const time = await getVideoTime(0) ?? 0;
-      const volume = Math.round(getVideoElement()!.volume * 100);
+      // read from the slider element directly - avoids the expVolFnInv getter transform giving wrong values
+      const sliderElem = document.querySelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider");
+      const volume = sliderElem ? Number(sliderElem.value) : Math.round(getVideoElement()!.volume * 100);
 
       const url = new URL(win.location.href);
 
       if(!isNaN(time) && time > reloadTabVideoTimeThreshold)
         url.searchParams.set("time_continue", String(time));
       if(!isNaN(volume) && volume > 0)
-        await GM.setValue("bytm-reload-tab-volume", String(volume));
+        await GM.setValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, String(volume));
 
       return win.location.replace(url);
     }
@@ -253,6 +256,22 @@ export async function reloadTab() {
     error("Couldn't save video time and volume before reloading tab:", err);
     win.location.reload();
   }
+}
+
+/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
+export async function reloadAllTabs(reloadSelf = true) {
+  info(`Emitting broadcast to reload all tabs${reloadSelf ? ", then self-reloading" : ""}.`);
+
+  emitBroadcast({
+    type: "reloadTabs",
+  });
+
+  return reloadSelf
+    ? await (async () => {
+      await pauseFor(50); // broadcast is synchronous, but we might still be working on something in our async queue
+      return await reloadTab();
+    })()
+    : undefined;
 }
 
 /** Checks if the passed value is a {@linkcode StringGen} */

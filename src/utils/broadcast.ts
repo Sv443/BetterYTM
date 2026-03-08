@@ -5,7 +5,7 @@ import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js"
 import { configStore, getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
 import { info, log, warn } from "./logging.js";
-import { getSessionId } from "./misc.js";
+import { getSessionId, reloadTab } from "./misc.js";
 
 //#region vars
 
@@ -16,11 +16,16 @@ export const broadcastTxID = randomId(10, 36);
 
 /** Maps a {@linkcode BroadcastPacketType} to the type of data it should contain. */
 export type BroadcastPacketDataMap = {
+  // sync
   /** Whenever any DataStore's data is changed, to trigger updates in other sessions. */
   dataStoreUpdate: {
     /** The ID of the DataStore that was updated. */
     id: string;
   };
+  /** Reloads all open tabs. */
+  reloadTabs: void;
+
+  // sessions
   /** Called to make other sessions reply with a `collectSessionsReply`, in order to collect a list of all open sessions. */
   collectSessions: void;
   /** Reply to a "collectSessions" packet. */
@@ -32,6 +37,8 @@ export type BroadcastPacketDataMap = {
      */
     sessionId: string | null;
   };
+
+  // custom
   /** Reserved for custom, non-standard BYTM packets. */
   custom: {
     /** Identifies the custom packet, used to determine how to handle it when received. */
@@ -98,6 +105,8 @@ export function initBroadcast() {
   info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
 }
 
+//#region handlers
+
 /** Called to parse and handle received broadcast packets. */
 async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, packet }: BroadcastTransitPacket) {
   // ignore own sent packets:
@@ -125,9 +134,12 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
     catch(err) {
       log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
     }
-
     break;
   }
+  // reload this tab
+  case "reloadTabs":
+    await reloadTab();
+    break;
   // reply to "collectSessions" packets with a "collectSessionsReply" packet:
   case "collectSessions":
     emitBroadcast({
