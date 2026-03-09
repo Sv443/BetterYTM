@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e453e6ff/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5ee0bf29/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -441,8 +441,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e453e6ff",
-    buildTimestamp: "1773008833042",
+    buildNumber: "5ee0bf29",
+    buildTimestamp: "1773091081130",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -750,7 +750,7 @@ let currentDialogId = null;
 const openDialogs = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 const setCurrentDialogId = (id) => currentDialogId = id;
-//#region class
+//#region BytmDialog class
 /** Creates and manages a modal dialog element */
 class BytmDialog extends CoreUtils.NanoEmitter {
     //#region constructor
@@ -920,7 +920,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         this.events.emit("destroy");
         this.options.removeListenersOnDestroy && this.unsubscribeAll();
     }
-    //#region st:initDialogs
+    //#region stat:initDialogs
     /** Initializes the dialog system */
     static initDialogs() {
         if (dialogsInitialized)
@@ -936,17 +936,17 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         else
             createContainer();
     }
-    //#region st:getCurrentDialogId
+    //#region stat:getCurrentDialogId
     /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
     static getCurrentDialogId() {
         return currentDialogId;
     }
-    //#region st:getOpenDialogs
+    //#region stat:getOpenDialogs
     /** Returns the IDs of all currently open dialogs, top-most first */
     static getOpenDialogs() {
         return openDialogs;
     }
-    //#region pr:removeBgInert
+    //#region prot:removeBgInert
     /** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
     removeBgInert() {
         // make sure the new top-most dialog is not inert
@@ -965,7 +965,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
         dialogBg?.setAttribute("inert", "true");
     }
-    //#region pr:setBgInert
+    //#region prot:setBgInert
     /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
     setBgInert() {
         // make sure all other dialogs are inert
@@ -984,7 +984,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
         dialogBg?.removeAttribute("inert");
     }
-    //#region pr:attachListeners
+    //#region prot:attachListeners
     /** Called on every {@linkcode mount()} to attach all generic event listeners */
     attachListeners(bgElem) {
         if (this.options.closeOnBgClick) {
@@ -1000,7 +1000,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
             });
         }
     }
-    //#region pr:getDialogContent
+    //#region prot:getDialogContent
     /** Returns the dialog content element and all its children */
     async getDialogContent() {
         const header = this.options.renderHeader?.();
@@ -1014,7 +1014,7 @@ class BytmDialog extends CoreUtils.NanoEmitter {
         dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
         if (this.options.verticalAlign !== "center")
             dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
-        //#region header
+        //#region >header
         const headerWrapperEl = document.createElement("div");
         headerWrapperEl.classList.add("bytm-dialog-header");
         this.options.small && headerWrapperEl.classList.add("small");
@@ -1046,14 +1046,14 @@ class BytmDialog extends CoreUtils.NanoEmitter {
             headerWrapperEl.appendChild(closeBtnEl);
         }
         dialogWrapperEl.appendChild(headerWrapperEl);
-        //#region body
+        //#region >body
         const dialogBodyElem = document.createElement("div");
         dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
         dialogBodyElem.classList.add("bytm-dialog-body");
         this.options.small && dialogBodyElem.classList.add("small");
         dialogBodyElem.appendChild(await this.options.renderBody());
         dialogWrapperEl.appendChild(dialogBodyElem);
-        //#region footer
+        //#region >footer
         if (footer) {
             const footerWrapper = document.createElement("div");
             footerWrapper.classList.add("bytm-dialog-footer-cont");
@@ -1448,6 +1448,10 @@ async function renderBody$4({ latestTag, changelogHtml, }) {
     return wrapperEl;
 }//#region PromptDialog
 let promptDialog = null;
+/**
+ * This is a custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions.
+ * It supports various customizations - see {@linkcode showPrompt()} for details.
+ */
 class PromptDialog extends BytmDialog {
     constructor(props) {
         super({
@@ -1459,12 +1463,21 @@ class PromptDialog extends BytmDialog {
             closeOnBgClick: props.type !== "prompt",
             closeOnEscPress: true,
             small: true,
+            ...props.dialogOptions,
             renderHeader: () => this.renderHeader(props),
             renderBody: () => this.renderBody(props),
             renderFooter: () => this.renderFooter(props),
         });
+        Object.defineProperty(this, "type", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.type = props.type;
         this.on("render", () => this.focusOnRender());
     }
+    /** Emits the "resolve" event with the specified value - don't call unless the dialog is about to be closed. */
     emitResolve(val) {
         this.events.emit("resolve", val);
     }
@@ -1511,10 +1524,12 @@ class PromptDialog extends BytmDialog {
         return contElem;
     }
     async renderFooter({ type, ...rest }) {
+        // wrappers for alignment and spacing:
         const buttonsWrapper = document.createElement("div");
         buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
         const buttonsCont = document.createElement("div");
         buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
+        // confirm button (only for types "confirm" & "prompt"):
         let confirmBtn;
         if (type === "confirm" || type === "prompt") {
             confirmBtn = document.createElement("button");
@@ -1530,6 +1545,7 @@ class PromptDialog extends BytmDialog {
                 promptDialog?.close();
             }, { once: true });
         }
+        // close/cancel button:
         const closeBtn = document.createElement("button");
         closeBtn.id = "bytm-prompt-dialog-close";
         closeBtn.classList.add("bytm-prompt-dialog-button");
@@ -1547,13 +1563,37 @@ class PromptDialog extends BytmDialog {
             this.emitResolve(resVals[type]);
             promptDialog?.close();
         }, { once: true });
-        confirmBtn && getOS() !== "mac" && buttonsCont.appendChild(confirmBtn);
-        buttonsCont.appendChild(closeBtn);
-        confirmBtn && getOS() === "mac" && buttonsCont.appendChild(confirmBtn);
+        // extra buttons:
+        const { extraButtons = [], extraButtonsPosition = "between" } = rest;
+        const isMac = getOS() === "mac";
+        const appendExtraButtons = async () => {
+            for (const getBtnFn of extraButtons) {
+                const btn = await getBtnFn(this);
+                if (btn instanceof HTMLButtonElement)
+                    buttonsCont.appendChild(btn);
+            }
+        };
+        if (extraButtonsPosition === "before")
+            await appendExtraButtons();
+        // adjust order for Mac vs other OSes to match native dialogs
+        if (!isMac) {
+            confirmBtn && buttonsCont.appendChild(confirmBtn);
+            if (extraButtonsPosition === "between")
+                await appendExtraButtons();
+            buttonsCont.appendChild(closeBtn);
+        }
+        else {
+            buttonsCont.appendChild(closeBtn);
+            if (extraButtonsPosition === "between")
+                await appendExtraButtons();
+            confirmBtn && buttonsCont.appendChild(confirmBtn);
+        }
+        if (extraButtonsPosition === "after")
+            await appendExtraButtons();
         buttonsWrapper.appendChild(buttonsCont);
         return buttonsWrapper;
     }
-    /** Converts a {@linkcode stringGen} (stringifiable value or sync or async function that returns a stringifiable value) to a string - uses {@linkcode fallback} as a fallback */
+    /** Converts a {@linkcode PromptStringGen} (stringifiable value or sync or async function that returns a stringifiable value) to a string - uses {@linkcode fallback} as a fallback */
     async consumePromptStringGen(curPromptType, stringGen, fallback) {
         if (typeof stringGen === "function")
             return await stringGen(curPromptType);
@@ -4314,16 +4354,26 @@ async function mountCfgMenu() {
         reloadFooterEl.textContent = t("reload_hint");
         reloadFooterEl.role = "alert";
         reloadFooterEl.ariaLive = "polite";
-        const reloadTxtEl = document.createElement("button");
-        reloadTxtEl.classList.add("bytm-btn");
-        reloadTxtEl.style.marginLeft = "10px";
-        reloadTxtEl.textContent = t("reload_now");
-        reloadTxtEl.ariaLabel = reloadTxtEl.title = t("reload_tooltip");
-        reloadTxtEl.addEventListener("click", () => {
+        const reloadEl = document.createElement("button");
+        reloadEl.classList.add("bytm-btn");
+        reloadEl.style.marginLeft = "10px";
+        reloadEl.textContent = t("reload_now");
+        reloadEl.ariaLabel = reloadEl.title = t("reload_tooltip");
+        reloadEl.addEventListener("click", () => {
             closeCfgMenu();
             reloadTab();
         });
-        reloadFooterEl.appendChild(reloadTxtEl);
+        const reloadAllEl = document.createElement("button");
+        reloadAllEl.classList.add("bytm-btn");
+        reloadAllEl.style.marginLeft = "10px";
+        reloadAllEl.textContent = t("reload_all_tabs_now");
+        reloadAllEl.ariaLabel = reloadAllEl.title = t("reload_all_tabs_tooltip", scriptInfo$1.name);
+        reloadAllEl.addEventListener("click", () => {
+            closeCfgMenu();
+            reloadAllTabs();
+        });
+        reloadFooterEl.appendChild(reloadEl);
+        reloadFooterEl.appendChild(reloadAllEl);
         leftSideFooterCont.appendChild(reloadFooterEl);
         /** For copying plain when shift-clicking the copy button or when compression is not supported */
         const exportDataSpecial = () => JSON.stringify({ formatVersion: cfgFormatVersion, data: getFeatures() });
@@ -4545,6 +4595,20 @@ async function mountCfgMenu() {
                     const initLangEmoji = locales[initLocale]?.emoji ? `${locales[initLocale].emoji}\n` : "";
                     const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
                     const isLocalesTextDifferent = t("reload_now") !== tl(initLocale, "reload_now");
+                    const getReloadAllBtn = async (dialog) => {
+                        const reloadAllBtn = document.createElement("button");
+                        reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
+                        reloadAllBtn.classList.add("bytm-prompt-dialog-button");
+                        reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_now")}` : ""}`;
+                        reloadAllBtn.ariaLabel = reloadAllBtn.title = `${t("reload_all_tabs_tooltip", scriptInfo$1.name)}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_tooltip", scriptInfo$1.name)}` : ""}`;
+                        reloadAllBtn.tabIndex = 0;
+                        reloadAllBtn.addEventListener("click", () => {
+                            dialog.emitResolve(dialog.type === "confirm" ? true : (document.querySelector("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
+                            dialog.close();
+                            reloadAllTabs();
+                        }, { once: true });
+                        return reloadAllBtn;
+                    };
                     if (await showPrompt({
                         type: "confirm",
                         message: confirmText,
@@ -4552,6 +4616,12 @@ async function mountCfgMenu() {
                         confirmBtnTooltip: () => `${t("reload_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_tooltip")}` : ""}`,
                         denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")}${isLocalesTextDifferent ? ` / ${tl(initLocale, type === "alert" ? "prompt_close" : "prompt_cancel")}` : ""}`,
                         denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}` : ""}`,
+                        extraButtons: [getReloadAllBtn],
+                        extraButtonsPosition: "between",
+                        dialogOptions: {
+                            width: 650,
+                            height: 800,
+                        },
                     })) {
                         closeCfgMenu();
                         log("Reloading tab after changing language");
@@ -6408,6 +6478,7 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
                 type: "collectSessionsReply",
                 data: {
                     sessionId: getSessionId(),
+                    title: document.title,
                 },
             }, [from]);
             getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
@@ -11285,14 +11356,17 @@ function registerDevCommands() {
     });
     isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
         const sessions = [
-            [getSessionId(), broadcastTxID],
+            [broadcastTxID, {
+                    sessionId: getSessionId(),
+                    title: document.title,
+                }],
         ];
         const unsub = siteEvents.on("broadcast:collectSessionsReply", ({ from, packet }) => {
-            sessions.push([packet.data.sessionId, from]);
+            sessions.push([from, packet.data]);
         });
         dbg("Collecting session info from open tabs...");
         setTimeout(() => {
-            dbg(`Collected session IDs and TxIDs from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([ses, tx]) => `- ${tx === broadcastTxID ? "Current Session:" : "Other Session:  "} ${ses} (TxID: ${tx})`).join("\n")}`);
+            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([txID, { sessionId, title }]) => `- ${txID === broadcastTxID ? "Current Session -" : "Other Session:  "} SessionID: "${sessionId}", TxID: "${txID}", Title: "${title}"`).join("\n")}`);
             unsub();
         }, 500);
         emitBroadcast({
