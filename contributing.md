@@ -2279,6 +2279,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   - `confirmBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the confirm button (only when using type "confirm" or "prompt")
 >   - `denyBtnText?: string | ((type: string) => string | Promise<string>)` - Text for the deny button (shows up for all types)
 >   - `denyBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the deny button (shows up for all types)
+> - for adding extra buttons to the footer:
+>   - `extraButtons?: Array<((dialog: PromptDialog) => HTMLButtonElement | Promise<HTMLButtonElement>)>` - Functions that create additional button elements to insert in the footer row alongside the built-in buttons
+>   - `extraButtonsPosition?: "before" | "between" | "after"` - Where to place the extra buttons relative to the built-in confirm/close buttons. Defaults to `"between"`. (Note: while the order of the confirm and deny buttons is OS-dependent, this setting works independent of that.)
+> - for overriding the underlying dialog options:
+>   - `dialogOptions?: object` - Partial override of the underlying `BytmDialog` options (e.g. `width`, `height`, `small`, `verticalAlign`). The `id` and render function properties cannot be overridden
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -2299,7 +2304,20 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   confirmBtnTooltip: () => "Click to confirm the deletion",
 >   // and the type parameter can be used for further customization:
 >   denyBtnTooltip: async (type: "confirm" | "alert" | "prompt") => await getText(`prompts.${type}.cancel_deletion`),
+>   // custom extra button example:
+>   extraButtons: [getHelpButton()],
+>   extraButtonsPosition: "before", // before the "confirm" and "deny" buttons (note: their exact order is OS-dependent)
 > });
+> 
+> function getHelpButton(): HTMLButtonElement {
+>   const btn = document.createElement("button");
+>   btn.textContent = "Get help";
+>   btn.title = "Click to get help with this action";
+>   btn.addEventListener("click", () => {
+>     console.log("The user needs help!");
+>   });
+>   return btn;
+> }
 > 
 > if(confirmed && itemName) {
 >   await deleteItem(itemName);

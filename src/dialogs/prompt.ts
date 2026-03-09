@@ -1,6 +1,6 @@
 import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
-import { BytmDialog } from "../components/BytmDialog.js";
+import { BytmDialog, type BytmDialogOptions } from "../components/BytmDialog.js";
 import { addSelectorListener } from "../observers.js";
 import "./prompt.css";
 
@@ -31,6 +31,9 @@ export type PromptRenderProps = BaseRenderProps & {
   defaultValue?: StringGen;
 };
 
+/** Position of extra buttons relative to the built-in confirm and close buttons */
+export type ExtraButtonsPosition = "before" | "between" | "after";
+
 /** Base props for rendering any type of prompt dialog - see {@linkcode showPrompt()} */
 export type BaseRenderProps = {
   message: PromptStringGen;
@@ -38,6 +41,16 @@ export type BaseRenderProps = {
   confirmBtnTooltip?: PromptStringGen;
   denyBtnText?: PromptStringGen;
   denyBtnTooltip?: PromptStringGen;
+  /**
+   * Array of functions that create extra button elements appended to the footer row - placement controlled by {@linkcode extraButtonsPosition}  
+   * Function gets passed the dialog instance as a parameter.  
+   * Note: these are completely unmanaged by the prompt dialog, so they won't make it resolve, and also won't close it when clicked.
+   */
+  extraButtons?: ((dialog: PromptDialog) => Promise<HTMLButtonElement> | HTMLButtonElement)[];
+  /** Where to place {@linkcode extraButtons} relative to the built-in confirm/close buttons - defaults to `"after"` */
+  extraButtonsPosition?: ExtraButtonsPosition;
+  /** Partial override of the underlying {@linkcode BytmDialog} options (except `id` and render functions) */
+  dialogOptions?: Partial<Omit<BytmDialogOptions, "id" | "renderBody" | "renderHeader" | "renderFooter">>;
 };
 
 /** Any value that can be returned by the {@linkcode showPrompt()} function */
@@ -47,7 +60,12 @@ export type PromptDialogResolveVal = boolean | string | null;
 
 let promptDialog: PromptDialog | null = null;
 
-class PromptDialog extends BytmDialog {
+/**
+ * This is a custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions.  
+ * It supports various customizations - see {@linkcode showPrompt()} for details.
+ */
+export class PromptDialog extends BytmDialog {
+  public readonly type: PromptType;
   constructor(props: PromptDialogRenderProps) {
     super({
       id: "prompt-dialog",
@@ -58,15 +76,18 @@ class PromptDialog extends BytmDialog {
       closeOnBgClick: props.type !== "prompt",
       closeOnEscPress: true,
       small: true,
+      ...props.dialogOptions,
       renderHeader: () => this.renderHeader(props),
       renderBody: () => this.renderBody(props),
       renderFooter: () => this.renderFooter(props),
     });
+    this.type = props.type;
 
     this.on("render", () => this.focusOnRender());
   }
 
-  protected emitResolve(val: PromptDialogResolveVal) {
+  /** Emits the "resolve" event with the specified value - don't call unless the dialog is about to be closed. */
+  public emitResolve(val: PromptDialogResolveVal) {
     this.events.emit("resolve", val);
   }
 
@@ -123,11 +144,15 @@ class PromptDialog extends BytmDialog {
   }
 
   protected async renderFooter({ type, ...rest }: PromptDialogRenderProps) {
+    // wrappers for alignment and spacing:
+
     const buttonsWrapper = document.createElement("div");
     buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
 
     const buttonsCont = document.createElement("div");
     buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
+
+    // confirm button (only for types "confirm" & "prompt"):
 
     let confirmBtn: HTMLButtonElement | undefined;
     if(type === "confirm" || type === "prompt") {
@@ -144,6 +169,8 @@ class PromptDialog extends BytmDialog {
         promptDialog?.close();
       }, { once: true });
     }
+
+    // close/cancel button:
 
     const closeBtn = document.createElement("button");
     closeBtn.id = "bytm-prompt-dialog-close";
@@ -163,16 +190,45 @@ class PromptDialog extends BytmDialog {
       promptDialog?.close();
     }, { once: true });
 
-    confirmBtn && getOS() !== "mac" && buttonsCont.appendChild(confirmBtn);
-    buttonsCont.appendChild(closeBtn);
-    confirmBtn && getOS() === "mac" && buttonsCont.appendChild(confirmBtn);
+    // extra buttons:
+
+    const { extraButtons = [], extraButtonsPosition = "between" } = rest;
+    const isMac = getOS() === "mac";
+
+    const appendExtraButtons = async () => {
+      for(const getBtnFn of extraButtons) {
+        const btn = await getBtnFn(this);
+        if(btn instanceof HTMLButtonElement)
+          buttonsCont.appendChild(btn);
+      }
+    };
+
+    if(extraButtonsPosition === "before")
+      await appendExtraButtons();
+
+    // adjust order for Mac vs other OSes to match native dialogs
+    if(!isMac) {
+      confirmBtn && buttonsCont.appendChild(confirmBtn);
+      if(extraButtonsPosition === "between")
+        await appendExtraButtons();
+      buttonsCont.appendChild(closeBtn);
+    }
+    else {
+      buttonsCont.appendChild(closeBtn);
+      if(extraButtonsPosition === "between")
+        await appendExtraButtons();
+      confirmBtn && buttonsCont.appendChild(confirmBtn);
+    }
+
+    if(extraButtonsPosition === "after")
+      await appendExtraButtons();
 
     buttonsWrapper.appendChild(buttonsCont);
 
     return buttonsWrapper;
   }
 
-  /** Converts a {@linkcode stringGen} (stringifiable value or sync or async function that returns a stringifiable value) to a string - uses {@linkcode fallback} as a fallback */
+  /** Converts a {@linkcode PromptStringGen} (stringifiable value or sync or async function that returns a stringifiable value) to a string - uses {@linkcode fallback} as a fallback */
   protected async consumePromptStringGen(curPromptType: PromptType, stringGen?: PromptStringGen, fallback?: Stringifiable): Promise<string> {
     if(typeof stringGen === "function")
       return await stringGen(curPromptType);

@@ -17,7 +17,6 @@
   "open_menu_tooltip": "打开 %1 的配置菜单",
   "close_menu_tooltip": "点击关闭菜单",
   "reload_hint": "请重新加载页面以应用更改",
-  "reload_now": "立即重新加载",
   "reload_tooltip": "重新加载页面",
   "feature_requires_reload": "更改此功能需要重新加载页面",
   "version_tooltip": "版本 %1 (构建 %2) - 点击打开更新日志",

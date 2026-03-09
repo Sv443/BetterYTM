@@ -67,7 +67,7 @@ export const openDialogs: string[] = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
 
-//#region class
+//#region BytmDialog class
 
 /** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
@@ -268,7 +268,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     this.options.removeListenersOnDestroy && this.unsubscribeAll();
   }
 
-  //#region st:initDialogs
+  //#region stat:initDialogs
 
   /** Initializes the dialog system */
   public static initDialogs() {
@@ -288,21 +288,21 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       createContainer();
   }
 
-  //#region st:getCurrentDialogId
+  //#region stat:getCurrentDialogId
 
   /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
   public static getCurrentDialogId() {
     return currentDialogId;
   }
 
-  //#region st:getOpenDialogs
+  //#region stat:getOpenDialogs
 
   /** Returns the IDs of all currently open dialogs, top-most first */
   public static getOpenDialogs() {
     return openDialogs;
   }
 
-  //#region pr:removeBgInert
+  //#region prot:removeBgInert
 
   /** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
   protected removeBgInert() {
@@ -325,7 +325,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBg?.setAttribute("inert", "true");
   }
 
-  //#region pr:setBgInert
+  //#region prot:setBgInert
 
   /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
   protected setBgInert() {
@@ -348,7 +348,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBg?.removeAttribute("inert");
   }
 
-  //#region pr:attachListeners
+  //#region prot:attachListeners
 
   /** Called on every {@linkcode mount()} to attach all generic event listeners */
   protected attachListeners(bgElem: HTMLElement) {
@@ -367,7 +367,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     }
   }
 
-  //#region pr:getDialogContent
+  //#region prot:getDialogContent
 
   /** Returns the dialog content element and all its children */
   protected async getDialogContent() {
@@ -385,7 +385,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     if(this.options.verticalAlign !== "center")
       dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
 
-    //#region header
+    //#region >header
 
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
@@ -423,7 +423,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     dialogWrapperEl.appendChild(headerWrapperEl);
 
-    //#region body
+    //#region >body
 
     const dialogBodyElem = document.createElement("div");
     dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
@@ -433,7 +433,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBodyElem.appendChild(await this.options.renderBody());
     dialogWrapperEl.appendChild(dialogBodyElem);
 
-    //#region footer
+    //#region >footer
 
     if(footer) {
       const footerWrapper = document.createElement("div");

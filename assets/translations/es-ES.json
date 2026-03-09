@@ -17,7 +17,6 @@
   "open_menu_tooltip": "Abra el menú de configuración de %1",
   "close_menu_tooltip": "Haga clic para cerrar el menú",
   "reload_hint": "Recargue la página para aplicar los cambios",
-  "reload_now": "Recargar ahora",
   "reload_tooltip": "Recargar la página",
   "feature_requires_reload": "Cambiar esta función requiere una recarga de la página",
   "version_tooltip": "Versión %1 (compilación %2) - haga clic para abrir el registro de cambios",
