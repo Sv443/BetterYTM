@@ -6,11 +6,11 @@ import { featInfo, groupedCategories, resolveAdornments } from "../features/inde
 import { copyToClipboard, setInnerHtml } from "../utils/dom.js";
 import { onInteraction } from "../utils/input.js";
 import { error, info, log, warn } from "../utils/logging.js";
-import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
+import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.js";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "../utils/translations.js";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
-import { showPrompt } from "../dialogs/prompt.js";
+import { showPrompt, type PromptDialog } from "../dialogs/prompt.js";
 import { getFeatHelpDialog } from "../dialogs/featHelp.js";
 import { BytmDialog, setCurrentDialogId } from "../components/BytmDialog.js";
 import { ExImDialog } from "../components/ExImDialog.js";
@@ -212,17 +212,28 @@ export async function mountCfgMenu() {
     reloadFooterEl.role = "alert";
     reloadFooterEl.ariaLive = "polite";
 
-    const reloadTxtEl = document.createElement("button");
-    reloadTxtEl.classList.add("bytm-btn");
-    reloadTxtEl.style.marginLeft = "10px";
-    reloadTxtEl.textContent = t("reload_now");
-    reloadTxtEl.ariaLabel = reloadTxtEl.title = t("reload_tooltip");
-    reloadTxtEl.addEventListener("click", () => {
+    const reloadEl = document.createElement("button");
+    reloadEl.classList.add("bytm-btn");
+    reloadEl.style.marginLeft = "10px";
+    reloadEl.textContent = t("reload_now");
+    reloadEl.ariaLabel = reloadEl.title = t("reload_tooltip");
+    reloadEl.addEventListener("click", () => {
       closeCfgMenu();
       reloadTab();
     });
 
-    reloadFooterEl.appendChild(reloadTxtEl);
+    const reloadAllEl = document.createElement("button");
+    reloadAllEl.classList.add("bytm-btn");
+    reloadAllEl.style.marginLeft = "10px";
+    reloadAllEl.textContent = t("reload_all_tabs_now");
+    reloadAllEl.ariaLabel = reloadAllEl.title = t("reload_all_tabs_tooltip", scriptInfo.name);
+    reloadAllEl.addEventListener("click", () => {
+      closeCfgMenu();
+      reloadAllTabs();
+    });
+
+    reloadFooterEl.appendChild(reloadEl);
+    reloadFooterEl.appendChild(reloadAllEl);
     leftSideFooterCont.appendChild(reloadFooterEl);
 
     /** For copying plain when shift-clicking the copy button or when compression is not supported */
@@ -507,6 +518,21 @@ export async function mountCfgMenu() {
           const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
           const isLocalesTextDifferent = t("reload_now") !== tl(initLocale!, "reload_now");
 
+          const getReloadAllBtn = async (dialog: PromptDialog): Promise<HTMLButtonElement> => {
+            const reloadAllBtn = document.createElement("button");
+            reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
+            reloadAllBtn.classList.add("bytm-prompt-dialog-button");
+            reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_all_tabs_now")}` : ""}`;
+            reloadAllBtn.ariaLabel = reloadAllBtn.title = `${t("reload_all_tabs_tooltip", scriptInfo.name)}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_all_tabs_tooltip", scriptInfo.name)}` : ""}`;
+            reloadAllBtn.tabIndex = 0;
+            reloadAllBtn.addEventListener("click", () => {
+              dialog.emitResolve(dialog.type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
+              dialog.close();
+              reloadAllTabs();
+            }, { once: true });
+            return reloadAllBtn;
+          };
+
           if(await showPrompt({
             type: "confirm",
             message: confirmText,
@@ -514,6 +540,12 @@ export async function mountCfgMenu() {
             confirmBtnTooltip: () => `${t("reload_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_tooltip")}` : ""}`,
             denyBtnText: (type) => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, type === "alert" ? "prompt_close" : "prompt_cancel")}` : ""}`,
             denyBtnTooltip: (type) => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}` : ""}`,
+            extraButtons: [getReloadAllBtn],
+            extraButtonsPosition: "between",
+            dialogOptions: {
+              width: 650,
+              height: 800,
+            },
           })) {
             closeCfgMenu();
             log("Reloading tab after changing language");
