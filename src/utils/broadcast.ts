@@ -36,6 +36,8 @@ export type BroadcastPacketDataMap = {
      * For actual unique identification, use the TxID in the `from` field of the transmitted packet instead.
      */
     sessionId: string | null;
+    /** Document title of the sender's tab for easier identification. */
+    title: string;
   };
 
   // custom
@@ -146,6 +148,7 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
       type: "collectSessionsReply",
       data: {
         sessionId: getSessionId(),
+        title: document.title,
       },
     }, [from]);
     getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);

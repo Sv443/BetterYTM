@@ -4,7 +4,7 @@ import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocale
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
-import { broadcastTxID, emitBroadcast, initBroadcast } from "./utils/broadcast.js";
+import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "./utils/broadcast.js";
 import { initSiteEvents, siteEvents } from "./siteEvents.js";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
@@ -714,18 +714,23 @@ function registerDevCommands() {
   });
 
   isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
-    const sessions: [sesId: string | null, txID: string][] = [
-      [getSessionId(), broadcastTxID],
+    const sessions: [txID: string, pktData: BroadcastPacketDataMap["collectSessionsReply"]][] = [
+      [broadcastTxID, {
+        sessionId: getSessionId(),
+        title: document.title,
+      }],
     ];
 
     const unsub = siteEvents.on("broadcast:collectSessionsReply", ({ from, packet }) => {
-      sessions.push([packet.data.sessionId, from]);
+      sessions.push([from, packet.data]);
     });
 
     dbg("Collecting session info from open tabs...");
 
     setTimeout(() => {
-      dbg(`Collected session IDs and TxIDs from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${sessions.map(([ses, tx]) => `- ${tx === broadcastTxID ? "Current Session:" : "Other Session:  "} ${ses} (TxID: ${tx})`).join("\n")}`);
+      dbg(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
+        sessions.map(([txID, { sessionId, title }]) => `- ${txID === broadcastTxID ? "Current Session -" : "Other Session:  "} SessionID: "${sessionId}", TxID: "${txID}", Title: "${title}"`).join("\n")
+      }`);
       unsub();
     }, 500);
 
