@@ -268,7 +268,7 @@ export async function reloadAllTabs(reloadSelf = true) {
 
   return reloadSelf
     ? await (async () => {
-      await pauseFor(50); // broadcast is synchronous, but we might still be working on something in our async queue
+      await pauseFor(30); // broadcast is synchronous, but we might still be working on something in our async queue
       return await reloadTab();
     })()
     : undefined;

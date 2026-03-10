@@ -6,7 +6,7 @@ import { addSelectorListener, globserversReady } from "./observers.js";
 import { FeatureConfig, type FeatureCategory } from "./types.js";
 import type { BroadcastPacketType, BroadcastTransitPacket } from "./utils/broadcast.js";
 
-/** Mapped type that creates a typed site event entry for each {@linkcode BroadcastPacketType}, e.g. `"broadcast:collectSessionsReply"` */
+/** Mapped type that creates a typed site event entry for each {@linkcode BroadcastPacketType}, e.g. `"broadcast:discoverSessionsReply"` */
 export type BroadcastSiteEventsMapped = {
   [K in BroadcastPacketType as `broadcast:${K}`]: (packet: BroadcastTransitPacket<K>) => void;
 };

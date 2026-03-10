@@ -1,4 +1,4 @@
-## BetterYTM Docs - API Reference
+## BetterYTM Docs - API
 
 > [!NOTE]
 > **THIS DOCUMENT IS A WORK IN PROGRESS**  
@@ -8,15 +8,23 @@
 - [**TODO: API Reference**](#api-reference)
   - [**Full Feature Overview**](#full-feature-overview)
     - [Meta](#meta)
-    - [BYTM-specific](#bytm-specific)
-    - [DOM](#dom)
-    - [Components](#components)
-    - [Translations](#translations)
-    - [Feature Config](#feature-config)
-    - [Lyrics](#lyrics)
-    - [Auto-Like](#auto-like)
-    - [Other](#other)
-    - [Events](#events)
+    - [Plugin Interface]
+      - [BYTM-specific](#bytm-specific)
+      - [DOM](#dom)
+      - [Components](#components)
+      - [Translations](#translations)
+      - [Feature Config](#feature-config)
+      - [Lyrics](#lyrics)
+      - [Auto-Like](#auto-like)
+      - [Other](#other)
+      - [SelectorObservers](#selectorobservers)
+      - [Events](#events)
+    - [BYTM Internals](#bytm-internals)
+      - [Domains](#domains)
+      - [Modes](#modes)
+      - [Constants](#constants)
+      - [Features](#features)
+      - [Dialogs](#dialogs)
 
 <br>
 
