@@ -34,8 +34,8 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
  * Sends a request with the specified parameters and returns the response as a Promise.  
  * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
  */
-export function sendRequest<T = any>(details: Prettify<Omit<GM.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<GM.Response<T>> {
-  return new Promise<GM.Response<T>>((resolve, reject) => {
+export function sendRequest<T = any>(details: Prettify<Omit<Tampermonkey.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<Tampermonkey.Response<T>> {
+  return new Promise<Tampermonkey.Response<T>>((resolve, reject) => {
     GM.xmlHttpRequest({
       timeout: 10_000,
       ...details,

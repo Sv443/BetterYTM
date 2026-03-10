@@ -239,6 +239,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.setValue
 // @grant             GM.deleteValue
 // @grant             GM.listValues
+// @grant             GM.addValueChangeListener
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest

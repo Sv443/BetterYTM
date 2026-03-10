@@ -167,7 +167,7 @@ export async function mountCfgMenu() {
     };
 
     const links: [name: string, ...Parameters<typeof addLink>][] = [
-      ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
+      ["github", await getResourceUrl("img-github"), pkg.homepage, t("open_github", scriptInfo.name), "github"],
       ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
       ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
     ];
@@ -1165,7 +1165,7 @@ export async function mountCfgMenu() {
       for(const [id, trKey, resourceKey] of modeItems) {
         const isSvg = resourceKey.startsWith("icon-");
 
-        const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM.info.scriptHandler ?? "(your userscript manager extension)" });
+        const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM_info.scriptHandler ?? "(your userscript manager extension)" });
 
         const modeDispWrapperEl = document.createElement("div");
         modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");

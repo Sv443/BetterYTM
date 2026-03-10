@@ -86,9 +86,9 @@ export const defaultLogLevel: LogLevel = mode === "production" ? LogLevel.Info :
 
 /** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
 export const scriptInfo = pureObj({
-  name: GM.info.script.name,
-  version: GM.info.script.version,
-  namespace: GM.info.script.namespace,
+  name: GM_info.script.name,
+  version: GM_info.script.version,
+  namespace: GM_info.script.namespace,
 } as const);
 
 /** Maximum number of sessions per user to show the "new feature" adornment in the config menu. */

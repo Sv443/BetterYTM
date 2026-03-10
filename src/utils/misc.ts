@@ -149,7 +149,7 @@ export async function getBestThumbnailUrl(videoID: string) {
     const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
 
     for(const quality of priorityList) {
-      let response: GM.Response<unknown> | undefined;
+      let response: Tampermonkey.Response<unknown> | undefined;
       const url = getThumbnailUrl(videoID, quality as ThumbQuality);
       try {
         response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });

@@ -1,11 +1,12 @@
 // module that facilitates inter-session (tab) communication using BroadcastChannel API
 
-import { debounce, randomId } from "@sv443-network/coreutils";
+import { DataStore, debounce, randomId } from "@sv443-network/coreutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { configStore, getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
-import { info, log, warn } from "./logging.js";
+import { error, info, log, warn } from "./logging.js";
 import { getSessionId, reloadTab } from "./misc.js";
+import { GMStorageEngine } from "@sv443-network/userutils";
 
 //#region vars
 
@@ -72,20 +73,45 @@ export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = Bro
   to?: string[];
   /** The actual packet to be sent. */
   packet: BroadcastPacket<TPacketType>;
+  /** Unique nonce to prevent parsing the same packet multiple times. */
+  nonce: string;
 };
 
+/** Data structure stored by {@linkcode broadcastStorage} */
+export type BroadcastStorageData = {
+  /** Last emitted packet. */
+  packet: BroadcastTransitPacket<BroadcastPacketType> | null;
+}
+
 /**
- * [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance used for inter-session communication in BYTM.  
- * The channel name is "bytm-broadcast".  
- * Use the {@linkcode BroadcastPacket} type for the packets sent through this channel.
+ * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
+ * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.
  */
-export const broadcastChannel = new BroadcastChannel("bytm-broadcast");
+export const broadcastStorage = new DataStore<BroadcastStorageData, false>({
+  id: "bytm-broadcast",
+  defaultData: {
+    packet: null,
+  },
+  engine: new GMStorageEngine(),
+  formatVersion: 0,
+  compressionFormat: null,
+  memoryCache: false,
+});
 
 //#region init
 
 /** Initializes the broadcast module by setting up the necessary event listeners. */
-export function initBroadcast() {
-  broadcastChannel.addEventListener("message", handleBroadcastMessage);
+export async function initBroadcast() {
+  await broadcastStorage.deleteData();
+
+  if("addValueChangeListener" in GM) {
+    GM.addValueChangeListener(`${broadcastStorage.keyPrefix}${broadcastStorage.id}-dat`, (_name, _oldData, newData, isRemote) => {
+      if(isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null)
+        handleBroadcastMessage(newData.packet as BroadcastTransitPacket);
+    });
+  }
+  else
+    error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
 
   // broadcast DataStore data update packets:
   getSerializerStoresFull().forEach(store => {
@@ -164,12 +190,15 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
  * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
  * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
-export function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
-  broadcastChannel.postMessage({
-    from: broadcastTxID,
-    to,
-    packet,
-  } satisfies BroadcastTransitPacket<TPacketType>);
+export async function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
+  return await broadcastStorage.setData({
+    packet: {
+      from: broadcastTxID,
+      to,
+      packet,
+      nonce: randomId(10, 36),
+    } as BroadcastTransitPacket<TPacketType>,
+  });
 }
 
 //#region validate
@@ -178,7 +207,7 @@ export function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: B
  * Validates if the given object is a valid {@linkcode BroadcastTransitPacket}.  
  * This is used in the `message` event listener of the BroadcastChannel to validate incoming packets before processing them.
  */
-function isValidTransmitBroadcastPacket(obj: any): obj is BroadcastTransitPacket {
+function isValidTransitBroadcastPacket(obj: any): obj is BroadcastTransitPacket {
   return typeof obj === "object"
     && obj !== null
     && typeof obj.from === "string"
@@ -198,19 +227,19 @@ function isValidTransmitBroadcastPacket(obj: any): obj is BroadcastTransitPacket
  * Gets called when a message is received through the BroadcastChannel.  
  * Validates the packet and emits an internal event with the packet data for other modules to listen to.
  */
-function handleBroadcastMessage({ data }: MessageEvent) {
-  if(!isValidTransmitBroadcastPacket(data)) {
-    warn("Received invalid broadcast packet, ignoring:", data);
+function handleBroadcastMessage(packet: object) {
+  if(!isValidTransitBroadcastPacket(packet)) {
+    warn("Received invalid broadcast packet, ignoring:", packet);
     return;
   }
 
   // if the packet is not intended for this session, ignore it
-  if(data.from === broadcastTxID || (Array.isArray(data.to) && !data.to.includes(broadcastTxID ?? "")))
+  if(packet.from === broadcastTxID || (Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")))
     return;
 
   if(getFeature("logEvents"))
-    log(`Received broadcast packet of type "${data.packet.type}" from session "${data.from}":`, data);
+    log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
 
-  forceEmitSiteEvent("broadcast", data.packet.type, data);
-  forceEmitSiteEvent(`broadcast:${data.packet.type}`, data as any); // love dealing with TS mapped type shenanigans
+  forceEmitSiteEvent("broadcast", packet.packet.type, packet);
+  forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packet as any); // love dealing with TS mapped type shenanigans
 }

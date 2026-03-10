@@ -119,8 +119,8 @@ function measureDuration(name: LooseUnion<keyof InitTimings & FeatureKey>): () =
 
 //#region preInit
 
-/** Stuff that needs to be called ASAP, before anything async happens */
-function preInit() {
+/** Stuff that needs to be called ASAP */
+async function preInit() {
   try {
     initTimings.start = Date.now();
 
@@ -128,16 +128,12 @@ function preInit() {
       "FireMonkey",
     ];
 
-    if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? ""))
-      return showPrompt({
-        type: "alert",
-        message: `BetterYTM does not work when using ${GM?.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`,
-        denyBtnText: "Close",
-      }); // (translations not loaded yet)
+    if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "")) // (translations not loaded yet)
+      return alert(`BetterYTM does not work when using ${GM?.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
 
     setLogLevel(defaultLogLevel);
 
-    initBroadcast();
+    await initBroadcast();
 
     initInterface();
     preInitPlugins();
@@ -728,8 +724,9 @@ function registerDevCommands() {
     dbg("Collecting session info from open tabs...");
 
     setTimeout(() => {
+      sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
       dbg(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
-        sessions.map(([txID, { sessionId, title }]) => `- ${txID === broadcastTxID ? "Current Session -" : "Other Session:  "} SessionID: "${sessionId}", TxID: "${txID}", Title: "${title}"`).join("\n")
+        sessions.map(([txID, { sessionId, title }]) => `- ${txID === broadcastTxID ? "Current Session:" : "Other Session:  "} SessionID: "${sessionId}", TxID: "${txID}", Title: "${title}"`).join("\n")
       }`);
       unsub();
     }, 500);
