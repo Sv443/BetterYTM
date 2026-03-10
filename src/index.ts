@@ -727,7 +727,7 @@ function registerDevCommands() {
     setTimeout(() => {
       sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
       dbg(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
-        sessions.map(([txID, { sessionId, title, domain }], i) => `- [${i}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Title: "${title}"`).join("\n")
+        sessions.map(([txID, { sessionId, title, domain }], i) => `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Title: "${title}"`).join("\n")
       }`);
       unsub();
     }, 500);

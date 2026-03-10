@@ -80,7 +80,7 @@ export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = Bro
   nonce: number;
 };
 
-/** Data structure stored by {@linkcode broadcastStorage} */
+/** Data structure stored by {@linkcode broadcastStore} */
 export type BroadcastStorageData = {
   /** Last emitted packet. */
   packet: BroadcastTransitPacket<BroadcastPacketType> | null;
@@ -90,7 +90,7 @@ export type BroadcastStorageData = {
  * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
  * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.
  */
-export const broadcastStorage = new DataStore<BroadcastStorageData, false>({
+export const broadcastStore = new DataStore<BroadcastStorageData, false>({
   id: "bytm-broadcast",
   defaultData: {
     packet: null,
@@ -111,7 +111,7 @@ export function initBroadcast() {
   if("addValueChangeListener" in GM) {
     // sadly only supported by TM and VM
     // see also https://violentmonkey.github.io/api/gm/#gm_addvaluechangelistener
-    GM.addValueChangeListener(`${broadcastStorage.keyPrefix}${broadcastStorage.id}-dat`, (_name, _oldData, newData, isRemote) => {
+    GM.addValueChangeListener(`${broadcastStore.keyPrefix}${broadcastStore.id}-dat`, (_name, _oldData, newData, isRemote) => {
       try {
         if(typeof newData === "string")
           newData = JSON.parse(newData);
@@ -208,7 +208,7 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
 export async function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
   // use the 6 least significant Date.now bytes plus random floating point number for truly unique random nonces:
   const nonce = Date.now() % 0xFFFFFF + Math.random();
-  return await broadcastStorage.setData({
+  return await broadcastStore.setData({
     packet: {
       from: broadcastTxID,
       to,
