@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9e9f8b77/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1b86870d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "9e9f8b77",
-    buildTimestamp: "1773171057764",
+    buildNumber: "1b86870d",
+    buildTimestamp: "1773176174076",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5352,7 +5352,6 @@ async function addWatermark() {
     watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo$1.name);
     watermarkEl.tabIndex = 0;
     (async () => {
-        await improveLogo();
         bytmLogoUrl = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
         UserUtils.preloadImages([bytmLogoUrl]);
         const watermarkOpenMenu = (e) => {
@@ -5365,9 +5364,11 @@ async function addWatermark() {
         // TODO:FIXME: space and enter dont work fsr
         onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
         addSelectorListener("navBar", "ytmusic-logo a", {
-            listener: (logoElem) => logoElem.appendChild(watermarkEl),
+            listener(logoElem) {
+                logoElem.appendChild(watermarkEl);
+                log("Added watermark element");
+            },
         });
-        log("Added watermark element");
     })();
 }
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
@@ -5391,8 +5392,10 @@ async function improveLogo() {
         error("Couldn't improve logo due to an error:", err);
     }
 }
-/** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
+/** Exchanges the default YTM logo into BetterYTM's logo with a sick ash animation */
 function exchangeLogo() {
+    if (logoExchanged)
+        return;
     addSelectorListener("navBar", ".bytm-mod-logo", {
         listener: async (logoElem) => {
             if (logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl)
@@ -5446,7 +5449,6 @@ async function addConfigMenuOptionYTM(container) {
     cfgOptItemElem.appendChild(cfgOptTextElem);
     cfgOptElem.appendChild(cfgOptItemElem);
     container.appendChild(cfgOptElem);
-    improveLogo();
     log("Added BYTM-Configuration button to menu popover");
 }
 /** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
@@ -11051,8 +11053,11 @@ async function onDomLoad() {
         await initVersionSessionCounter();
         if (domain === "ytm") {
             //#region (ytm) layout
-            if (feats.watermarkEnabled)
-                ftInit.push(["addWatermark", addWatermark()]);
+            ftInit.push(["addWatermark", (async () => {
+                    await improveLogo();
+                    if (feats.watermarkEnabled)
+                        await addWatermark();
+                })()]);
             if (feats.fixSpacing)
                 ftInit.push(["fixSpacing", fixSpacing()]);
             ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
