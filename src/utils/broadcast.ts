@@ -256,6 +256,12 @@ function handleBroadcastMessage(packet: object) {
   if(receivedNonces.has(packet.nonce))
     return warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
 
+  // remove oldest entry to prevent any potential memory leaks
+  if(receivedNonces.size >= 10) {
+    const oldestNonce = receivedNonces.values().next().value;
+    oldestNonce && receivedNonces.delete(oldestNonce);
+  }
+
   receivedNonces.add(packet.nonce);
 
   // if packet is not intended for this session, ignore it
