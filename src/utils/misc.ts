@@ -555,11 +555,11 @@ export async function getChangelogMd() {
 export async function getChangelogHtmlWithDetails() {
   try {
     const changelogMd = await getChangelogMd();
-    let changelogHtml = await parseMarkdown(changelogMd);
+    let changelogHtml = await parseMarkdown(changelogMd, false);
 
     const getVerId = (verStr: string) => verStr.trim().replace(/[._#\s-]/g, "");
 
-    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s?<\/div>(\s+)?\n?(\s+)?<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
 
     const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
     for(const [fullMatch, , verStr] of h2Matches)
@@ -567,9 +567,10 @@ export async function getChangelogHtmlWithDetails() {
 
     changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
 
-    return changelogHtml;
+    return sanitizeHtml(changelogHtml);
   }
   catch(err) {
+    error("Couldn't fetch or parse changelog:", err);
     return `Error while preparing changelog: ${err}`;
   }
 }
