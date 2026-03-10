@@ -43,6 +43,8 @@ import {
   initVersionCheck,
   // cfg menu:
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
+  // misc:
+  improveLogo,
 } from "./features/index.js";
 import resourcesJson from "../assets/resources.json" with { type: "json" };
 import { LogLevel, type FeatureKey, type ResourceKey } from "./types.js";
@@ -265,8 +267,11 @@ async function onDomLoad() {
     if(domain === "ytm") {
       //#region (ytm) layout
 
-      if(feats.watermarkEnabled)
-        ftInit.push(["addWatermark", addWatermark()]);
+      ftInit.push(["addWatermark", (async () => {
+        await improveLogo();
+        if(feats.watermarkEnabled)
+          await addWatermark();
+      })()]);
 
       if(feats.fixSpacing)
         ftInit.push(["fixSpacing", fixSpacing()]);

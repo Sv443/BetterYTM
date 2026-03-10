@@ -34,7 +34,6 @@ export async function addWatermark() {
   watermarkEl.tabIndex = 0;
 
   (async () => {
-    await improveLogo();
     bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
     preloadImages([bytmLogoUrl]);
 
@@ -51,10 +50,11 @@ export async function addWatermark() {
     onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
 
     addSelectorListener("navBar", "ytmusic-logo a", {
-      listener: (logoElem) => logoElem.appendChild(watermarkEl),
+      listener(logoElem) {
+        logoElem.appendChild(watermarkEl);
+        log("Added watermark element");
+      },
     });
-
-    log("Added watermark element");
   })();
 }
 
@@ -83,8 +83,11 @@ export async function improveLogo() {
   }
 }
 
-/** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
+/** Exchanges the default YTM logo into BetterYTM's logo with a sick ash animation */
 function exchangeLogo() {
+  if(logoExchanged)
+    return;
+
   addSelectorListener("navBar", ".bytm-mod-logo", {
     listener: async (logoElem) => {
       if(logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl)
@@ -153,8 +156,6 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   cfgOptElem.appendChild(cfgOptItemElem);
 
   container.appendChild(cfgOptElem);
-
-  improveLogo();
 
   log("Added BYTM-Configuration button to menu popover");
 }
