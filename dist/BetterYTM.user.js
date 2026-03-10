@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1b86870d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ca4b57e1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "1b86870d",
-    buildTimestamp: "1773176174076",
+    buildNumber: "ca4b57e1",
+    buildTimestamp: "1773181218152",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -474,6 +474,8 @@ const changelogUrl = assetSource === "local"
     : `https://raw.githubusercontent.com/${repo}/${mode$1 === "development" ? "develop" : "main"}/changelog.md?build=${buildNumber$1}`;
 /** The URL search parameters at the earliest possible time */
 const initialParams$1 = new URL(location.href).searchParams;
+/** Timestamp of when the script was initialized. */
+const initTime = Date.now();
 /** Names of platforms by key of {@linkcode host} */
 const platformNames = CoreUtils.pureObj({
     github: "GitHub",
@@ -507,7 +509,7 @@ const scriptInfo$1 = CoreUtils.pureObj({
     namespace: GM_info.script.namespace,
 });
 /** Maximum number of sessions per user to show the "new feature" adornment in the config menu. */
-const newFeatureAdornmentMaxSessionCount = 20;var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,newFeatureAdornmentMaxSessionCount:newFeatureAdornmentMaxSessionCount,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});const lyricsCacheStore = new CoreUtils.DataStore({
+const newFeatureAdornmentMaxSessionCount = 20;var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initTime:initTime,initialParams:initialParams$1,mode:mode$1,newFeatureAdornmentMaxSessionCount:newFeatureAdornmentMaxSessionCount,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});const lyricsCacheStore = new CoreUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
         cache: [],
@@ -5372,25 +5374,28 @@ async function addWatermark() {
     })();
 }
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
-async function improveLogo() {
-    try {
-        if (improveLogoCalled)
-            return;
-        improveLogoCalled = true;
-        const res = await CoreUtils.fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
-        const svg = await res.text();
-        addSelectorListener("navBar", "ytmusic-logo > a", {
-            listener: (logoElem) => {
-                logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-                setInnerHtml(logoElem, svg);
-                logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
-                log("Swapped logo to inline SVG");
-            },
-        });
-    }
-    catch (err) {
-        error("Couldn't improve logo due to an error:", err);
-    }
+function improveLogo() {
+    return new Promise(async (resolve) => {
+        try {
+            if (improveLogoCalled)
+                return;
+            improveLogoCalled = true;
+            const res = await CoreUtils.fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
+            const svg = await res.text();
+            addSelectorListener("navBar", "ytmusic-logo > a", {
+                listener: (logoElem) => {
+                    logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
+                    setInnerHtml(logoElem, svg);
+                    logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
+                    log("Swapped logo to inline SVG");
+                    resolve();
+                },
+            });
+        }
+        catch (err) {
+            error("Couldn't improve logo due to an error:", err);
+        }
+    });
 }
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ash animation */
 function exchangeLogo() {
@@ -6422,6 +6427,7 @@ const broadcastTxID = CoreUtils.randomId(10, 36);
 /**
  * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.
  * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.
+ * Doesn't need to be read from, as the packets are captured via `GM.addValueChangeListener`.
  */
 const broadcastStore = new CoreUtils.DataStore({
     id: "bytm-broadcast",
@@ -6443,7 +6449,7 @@ function initBroadcast() {
         // see also https://violentmonkey.github.io/api/gm/#gm_addvaluechangelistener
         GM.addValueChangeListener(`${broadcastStore.keyPrefix}${broadcastStore.id}-dat`, (_name, _oldData, newData, isRemote) => {
             try {
-                if (typeof newData === "string")
+                if (typeof newData === "string" && newData.trim().startsWith("{") && newData.trim().endsWith("}"))
                     newData = JSON.parse(newData);
             }
             catch (e) {
@@ -6501,17 +6507,18 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
         case "reloadTabs":
             await reloadTab();
             break;
-        // reply to "collectSessions" packets with a "collectSessionsReply" packet:
-        case "collectSessions":
+        // reply to "discoverSessions" packets with a "discoverSessionsReply" packet:
+        case "discoverSessions":
             emitBroadcast({
-                type: "collectSessionsReply",
+                type: "discoverSessionsReply",
                 data: {
                     sessionId: getSessionId(),
                     title: document.title,
                     domain: getDomain(),
+                    initTime,
                 },
             }, [from]);
-            getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
+            getFeature("logEvents") && log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
             break;
     }
 }
@@ -6771,7 +6778,7 @@ async function reloadAllTabs(reloadSelf = true) {
     });
     return reloadSelf
         ? await (async () => {
-            await CoreUtils.pauseFor(50); // broadcast is synchronous, but we might still be working on something in our async queue
+            await CoreUtils.pauseFor(30); // broadcast is synchronous, but we might still be working on something in our async queue
             return await reloadTab();
         })()
         : undefined;
@@ -11407,19 +11414,23 @@ function registerDevCommands() {
                     sessionId: getSessionId(),
                     title: document.title,
                     domain: getDomain(),
+                    initTime,
                 }],
         ];
-        const unsub = siteEvents.on("broadcast:collectSessionsReply", ({ from, packet }) => {
+        const unsub = siteEvents.on("broadcast:discoverSessionsReply", ({ from, packet }) => {
             sessions.push([from, packet.data]);
         });
         dbg("Collecting session info from open tabs...");
         setTimeout(() => {
             sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
-            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([txID, { sessionId, title, domain }], i) => `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Title: "${title}"`).join("\n")}`);
+            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
+                const initSince = CoreUtils.secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
+                return `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Init: ${initSince} ago, Title: "${title}"`;
+            }).join("\n")}`);
             unsub();
         }, 500);
         emitBroadcast({
-            type: "collectSessions",
+            type: "discoverSessions",
         });
     });
     isAdv && GM.registerMenuCommand(t("menu_command.reload_all_tabs"), async () => {
