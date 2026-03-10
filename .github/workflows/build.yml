@@ -56,6 +56,7 @@ jobs:
         run: pnpm install
 
       - name: Get version info
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
         id: get_version_info
         run: |
           BYTM_VERSION=$(node src/tools/get-pkg-prop.mjs version)
@@ -67,6 +68,7 @@ jobs:
         run: pnpm run build-prod
 
       - name: Upload artifacts
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v6
         with:
           name: "BetterYTM v${{ steps.get_version_info.outputs.BYTM_VERSION }} (${{ steps.get_version_info.outputs.GIT_SHA_SHORT }}) [${{ github.run_number }}]"
