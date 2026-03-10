@@ -1,8 +1,8 @@
-import { autoPlural, compress, decompress, pauseFor, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { autoPlural, compress, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
-import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
+import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "./utils/broadcast.js";
 import { initSiteEvents, siteEvents } from "./siteEvents.js";
@@ -720,6 +720,7 @@ function registerDevCommands() {
         sessionId: getSessionId(),
         title: document.title,
         domain: getDomain(),
+        initTime,
       }],
     ];
 
@@ -732,7 +733,10 @@ function registerDevCommands() {
     setTimeout(() => {
       sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
       dbg(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
-        sessions.map(([txID, { sessionId, title, domain }], i) => `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Title: "${title}"`).join("\n")
+        sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
+          const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
+          return `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Init: ${initSince} ago, Title: "${title}"`;
+        }).join("\n")
       }`);
       unsub();
     }, 500);

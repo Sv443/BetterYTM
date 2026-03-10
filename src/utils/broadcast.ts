@@ -1,12 +1,13 @@
 // module that facilitates inter-session (tab) communication via broadcast packets
 
 import { DataStore, debounce, randomId } from "@sv443-network/coreutils";
+import { GMStorageEngine } from "@sv443-network/userutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
+import { initTime } from "../constants.js";
 import { configStore, getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
 import { error, info, log, warn } from "./logging.js";
 import { getDomain, getSessionId, reloadTab } from "./misc.js";
-import { GMStorageEngine } from "@sv443-network/userutils";
 import type { Domain } from "../types.js";
 
 //#region vars
@@ -42,6 +43,8 @@ export type BroadcastPacketDataMap = {
     title: string;
     /** Which domain the session is on ("yt" or "ytm"). */
     domain: Domain;
+    /** Timestamp of when the session was initialized. */
+    initTime: number;
   };
 
   // custom
@@ -191,6 +194,7 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
         sessionId: getSessionId(),
         title: document.title,
         domain: getDomain(),
+        initTime,
       },
     }, [from]);
     getFeature("logEvents") && log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);

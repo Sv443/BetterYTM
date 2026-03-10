@@ -59,28 +59,31 @@ export async function addWatermark() {
 }
 
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
-export async function improveLogo() {
-  try {
-    if(improveLogoCalled)
-      return;
-    improveLogoCalled = true;
+export function improveLogo() {
+  return new Promise<void>(async (resolve) => {
+    try {
+      if(improveLogoCalled)
+        return;
+      improveLogoCalled = true;
 
-    const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
-    const svg = await res.text();
+      const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
+      const svg = await res.text();
 
-    addSelectorListener("navBar", "ytmusic-logo > a", {
-      listener: (logoElem) => {
-        logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-        setInnerHtml(logoElem, svg);
+      addSelectorListener("navBar", "ytmusic-logo > a", {
+        listener: (logoElem) => {
+          logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
+          setInnerHtml(logoElem, svg);
+          logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
 
-        logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
-        log("Swapped logo to inline SVG");
-      },
-    });
-  }
-  catch(err) {
-    error("Couldn't improve logo due to an error:", err);
-  }
+          log("Swapped logo to inline SVG");
+          resolve();
+        },
+      });
+    }
+    catch(err) {
+      error("Couldn't improve logo due to an error:", err);
+    }
+  });
 }
 
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ash animation */

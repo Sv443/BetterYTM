@@ -53,6 +53,9 @@ export const changelogUrl = assetSource === "local"
 /** The URL search parameters at the earliest possible time */
 export const initialParams = new URL(location.href).searchParams;
 
+/** Timestamp of when the script was initialized. */
+export const initTime = Date.now();
+
 /** Names of platforms by key of {@linkcode host} */
 export const platformNames = pureObj({
   github: "GitHub",
