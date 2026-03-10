@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cd72c482/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9e9f8b77/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "cd72c482",
-    buildTimestamp: "1773170250262",
+    buildNumber: "9e9f8b77",
+    buildTimestamp: "1773171057764",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -471,7 +471,7 @@ const devServerPort = Number(getConst("devServerPort", 8710));
 /** URL to the changelog file */
 const changelogUrl = assetSource === "local"
     ? `http://localhost:${devServerPort}/changelog.md?build=${buildNumber$1}`
-    : `https://raw.githubusercontent.com/${repo}/main/changelog.md?build=${buildNumber$1}`;
+    : `https://raw.githubusercontent.com/${repo}/${mode$1 === "development" ? "develop" : "main"}/changelog.md?build=${buildNumber$1}`;
 /** The URL search parameters at the earliest possible time */
 const initialParams$1 = new URL(location.href).searchParams;
 /** Names of platforms by key of {@linkcode host} */
@@ -6977,16 +6977,17 @@ async function getChangelogMd() {
 async function getChangelogHtmlWithDetails() {
     try {
         const changelogMd = await getChangelogMd();
-        let changelogHtml = await parseMarkdown(changelogMd);
+        let changelogHtml = await parseMarkdown(changelogMd, false);
         const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
-        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s?<\/div>(\s+)?\n?(\s+)?<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
         const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
         for (const [fullMatch, , verStr] of h2Matches)
             changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
         changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
-        return changelogHtml;
+        return sanitizeHtml(changelogHtml);
     }
     catch (err) {
+        error("Couldn't fetch or parse changelog:", err);
         return `Error while preparing changelog: ${err}`;
     }
 }let pluginListDialog = null;
