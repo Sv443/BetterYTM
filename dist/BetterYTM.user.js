@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5ee0bf29/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cd72c482/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -61,6 +61,7 @@
 // @grant             GM.setValue
 // @grant             GM.deleteValue
 // @grant             GM.listValues
+// @grant             GM.addValueChangeListener
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
@@ -441,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "5ee0bf29",
-    buildTimestamp: "1773091081130",
+    buildNumber: "cd72c482",
+    buildTimestamp: "1773170250262",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -501,9 +502,9 @@ const sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function"
 const defaultLogLevel = mode$1 === "production" ? LogLevel.Info : LogLevel.Debug;
 /** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
 const scriptInfo$1 = CoreUtils.pureObj({
-    name: GM.info.script.name,
-    version: GM.info.script.version,
-    namespace: GM.info.script.namespace,
+    name: GM_info.script.name,
+    version: GM_info.script.version,
+    namespace: GM_info.script.namespace,
 });
 /** Maximum number of sessions per user to show the "new feature" adornment in the config menu. */
 const newFeatureAdornmentMaxSessionCount = 20;var constants=/*#__PURE__*/Object.freeze({__proto__:null,assetSource:assetSource,branch:branch$1,buildNumber:buildNumber$1,buildTimestamp:buildTimestamp,changelogUrl:changelogUrl,compressionFormat:compressionFormat$1,defaultLogLevel:defaultLogLevel,devServerPort:devServerPort,host:host$1,initialParams:initialParams$1,mode:mode$1,newFeatureAdornmentMaxSessionCount:newFeatureAdornmentMaxSessionCount,platformNames:platformNames,repo:repo,scriptInfo:scriptInfo$1,sessionStorageAvailable:sessionStorageAvailable$1});const lyricsCacheStore = new CoreUtils.DataStore({
@@ -4320,7 +4321,7 @@ async function mountCfgMenu() {
             linksCont.appendChild(anchorElem);
         };
         const links = [
-            ["github", await getResourceUrl("img-github"), scriptInfo$1.namespace, t("open_github", scriptInfo$1.name), "github"],
+            ["github", await getResourceUrl("img-github"), pkg.homepage, t("open_github", scriptInfo$1.name), "github"],
             ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork"],
             ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs"],
         ];
@@ -5129,7 +5130,7 @@ async function mountCfgMenu() {
             modeDisplayCont.id = "bytm-menu-mode-display-cont";
             for (const [id, trKey, resourceKey] of modeItems) {
                 const isSvg = resourceKey.startsWith("icon-");
-                const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM.info.scriptHandler ?? "(your userscript manager extension)" });
+                const modeElTooltip = t(`active_mode_tooltip_${trKey}`, { scriptHandler: GM_info.scriptHandler ?? "(your userscript manager extension)" });
                 const modeDispWrapperEl = document.createElement("div");
                 modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
                 modeDispWrapperEl.title = modeDispWrapperEl.ariaLabel = modeElTooltip;
@@ -6412,20 +6413,46 @@ async function downloadData(useEncoding = true, full = false) {
     });
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
     downloadFile(fileName, data, "application/json");
-}// module that facilitates inter-session (tab) communication using BroadcastChannel API
+}// module that facilitates inter-session (tab) communication via broadcast packets
 //#region vars
-/** Random ID used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets. */
+/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
 const broadcastTxID = CoreUtils.randomId(10, 36);
 /**
- * [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance used for inter-session communication in BYTM.
- * The channel name is "bytm-broadcast".
- * Use the {@linkcode BroadcastPacket} type for the packets sent through this channel.
+ * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.
+ * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.
  */
-const broadcastChannel = new BroadcastChannel("bytm-broadcast");
+const broadcastStore = new CoreUtils.DataStore({
+    id: "bytm-broadcast",
+    defaultData: {
+        packet: null,
+    },
+    engine: new UserUtils.GMStorageEngine(),
+    formatVersion: 0,
+    compressionFormat: null,
+    memoryCache: false,
+});
+/** Which packets have already been received and processed. */
+const receivedNonces = new Set();
 //#region init
 /** Initializes the broadcast module by setting up the necessary event listeners. */
 function initBroadcast() {
-    broadcastChannel.addEventListener("message", handleBroadcastMessage);
+    if ("addValueChangeListener" in GM) {
+        // sadly only supported by TM and VM
+        // see also https://violentmonkey.github.io/api/gm/#gm_addvaluechangelistener
+        GM.addValueChangeListener(`${broadcastStore.keyPrefix}${broadcastStore.id}-dat`, (_name, _oldData, newData, isRemote) => {
+            try {
+                if (typeof newData === "string")
+                    newData = JSON.parse(newData);
+            }
+            catch (e) {
+                warn("Failed to parse broadcast packet as object:", newData, e);
+            }
+            if (isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null)
+                handleBroadcastMessage(newData.packet);
+        });
+    }
+    else
+        error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
     // broadcast DataStore data update packets:
     getSerializerStoresFull().forEach(store => {
         store.on("updateData", CoreUtils.debounce(() => {
@@ -6479,6 +6506,7 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
                 data: {
                     sessionId: getSessionId(),
                     title: document.title,
+                    domain: getDomain(),
                 },
             }, [from]);
             getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
@@ -6487,51 +6515,68 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
 }
 //#region emit
 /**
- * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.
+ * Emits a packet through BYTM's broadcast system to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.
  * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.
  * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
  * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
-function emitBroadcast(packet, to) {
-    broadcastChannel.postMessage({
-        from: broadcastTxID,
-        to,
-        packet,
+async function emitBroadcast(packet, to) {
+    // use the 6 least significant Date.now bytes plus random floating point number for truly unique random nonces:
+    const nonce = Date.now() % 0xFFFFFF + Math.random();
+    return await broadcastStore.setData({
+        packet: {
+            from: broadcastTxID,
+            to,
+            packet,
+            nonce,
+        },
     });
 }
 //#region validate
-/**
- * Validates if the given object is a valid {@linkcode BroadcastTransitPacket}.
- * This is used in the `message` event listener of the BroadcastChannel to validate incoming packets before processing them.
- */
-function isValidTransmitBroadcastPacket(obj) {
+/** Validates if the given object is a valid {@linkcode BroadcastTransitPacket} */
+function isValidTransitBroadcastPacket(obj) {
     return typeof obj === "object"
         && obj !== null
+        // from
         && typeof obj.from === "string"
+        // to
         && (obj.to === undefined || (Array.isArray(obj.to) && obj.to.every((id) => typeof id === "string")))
+        // packet
         && typeof obj.packet === "object"
         && obj.packet !== null
+        // packet.type
         && typeof obj.packet.type === "string"
-        && ((typeof obj.packet.data === "object" && obj.packet.data !== null)
-            || obj.packet.data === undefined);
+        && (
+        // packet.data
+        (typeof obj.packet.data === "object" && obj.packet.data !== null)
+            || obj.packet.data === undefined)
+        // nonce
+        && typeof obj.nonce === "number";
 }
 //#region handler
 /**
- * Gets called when a message is received through the BroadcastChannel.
+ * Gets called when a broadcast message is received.
  * Validates the packet and emits an internal event with the packet data for other modules to listen to.
  */
-function handleBroadcastMessage({ data }) {
-    if (!isValidTransmitBroadcastPacket(data)) {
-        warn("Received invalid broadcast packet, ignoring:", data);
-        return;
+function handleBroadcastMessage(packet) {
+    if (!isValidTransitBroadcastPacket(packet))
+        return warn("Received invalid broadcast packet, ignoring:", packet);
+    // if packet was already processed, ignore it
+    if (receivedNonces.has(packet.nonce))
+        return warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
+    // remove oldest entry to prevent any potential memory leaks
+    if (receivedNonces.size >= 10) {
+        const oldestNonce = receivedNonces.values().next().value;
+        oldestNonce && receivedNonces.delete(oldestNonce);
     }
-    // if the packet is not intended for this session, ignore it
-    if (data.from === broadcastTxID || (Array.isArray(data.to) && !data.to.includes(broadcastTxID ?? "")))
+    receivedNonces.add(packet.nonce);
+    // if packet is not intended for this session, ignore it
+    if (packet.from === broadcastTxID || (Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")))
         return;
     if (getFeature("logEvents"))
-        log(`Received broadcast packet of type "${data.packet.type}" from session "${data.from}":`, data);
-    forceEmitSiteEvent("broadcast", data.packet.type, data);
-    forceEmitSiteEvent(`broadcast:${data.packet.type}`, data); // love dealing with TS mapped type shenanigans
+        log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
+    forceEmitSiteEvent("broadcast", packet.packet.type, packet);
+    forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packet); // love dealing with TS mapped type shenanigans
 }//#region misc
 let domain;
 /**
@@ -10893,19 +10938,15 @@ function measureDuration(name) {
     };
 }
 //#region preInit
-/** Stuff that needs to be called ASAP, before anything async happens */
+/** Stuff that needs to be called ASAP */
 function preInit() {
     try {
         initTimings.start = Date.now();
         const unsupportedHandlers = [
             "FireMonkey",
         ];
-        if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? ""))
-            return showPrompt({
-                type: "alert",
-                message: `BetterYTM does not work when using ${GM?.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`,
-                denyBtnText: "Close",
-            }); // (translations not loaded yet)
+        if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "")) // (translations not loaded yet)
+            return alert(`BetterYTM does not work when using ${GM?.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
         setLogLevel(defaultLogLevel);
         initBroadcast();
         initInterface();
@@ -11359,6 +11400,7 @@ function registerDevCommands() {
             [broadcastTxID, {
                     sessionId: getSessionId(),
                     title: document.title,
+                    domain: getDomain(),
                 }],
         ];
         const unsub = siteEvents.on("broadcast:collectSessionsReply", ({ from, packet }) => {
@@ -11366,7 +11408,8 @@ function registerDevCommands() {
         });
         dbg("Collecting session info from open tabs...");
         setTimeout(() => {
-            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([txID, { sessionId, title }]) => `- ${txID === broadcastTxID ? "Current Session -" : "Other Session:  "} SessionID: "${sessionId}", TxID: "${txID}", Title: "${title}"`).join("\n")}`);
+            sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
+            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([txID, { sessionId, title, domain }], i) => `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Title: "${title}"`).join("\n")}`);
             unsub();
         }, 500);
         emitBroadcast({
