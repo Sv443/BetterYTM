@@ -1,16 +1,17 @@
-// module that facilitates inter-session (tab) communication using BroadcastChannel API
+// module that facilitates inter-session (tab) communication via broadcast packets
 
 import { DataStore, debounce, randomId } from "@sv443-network/coreutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { configStore, getFeature } from "../config.js";
 import { getSerializerStoresFull } from "../serializers.js";
 import { error, info, log, warn } from "./logging.js";
-import { getSessionId, reloadTab } from "./misc.js";
+import { getDomain, getSessionId, reloadTab } from "./misc.js";
 import { GMStorageEngine } from "@sv443-network/userutils";
+import type { Domain } from "../types.js";
 
 //#region vars
 
-/** Random ID used to identify the sender of packets emitted through the BroadcastChannel, and to determine which packets should be received based on the `to` field of the transmitted packets. */
+/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
 export const broadcastTxID = randomId(10, 36);
 
 // #region types
@@ -39,6 +40,8 @@ export type BroadcastPacketDataMap = {
     sessionId: string | null;
     /** Document title of the sender's tab for easier identification. */
     title: string;
+    /** Which domain the session is on ("yt" or "ytm"). */
+    domain: Domain;
   };
 
   // custom
@@ -49,10 +52,10 @@ export type BroadcastPacketDataMap = {
   } & Record<string, any>; // allow custom packets to contain any additional data they need
 };
 
-/** The type of packet sent through the BroadcastChannel. */
+/** The type of broadcast packet. */
 export type BroadcastPacketType = keyof BroadcastPacketDataMap;
 
-/** Raw object type of the packets sent through the BroadcastChannel. */
+/** Raw data object type of the broadcast packets. */
 export type BroadcastPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
   /** Used to determine how to handle the packet when received. */
   type: TPacketType;
@@ -65,7 +68,7 @@ export type BroadcastPacket<TPacketType extends BroadcastPacketType = BroadcastP
     }
 );
 
-/** Object type of the packets sent through the BroadcastChannel, including metadata about the sender and intended recipients. */
+/** Type of the packets sent via broadcast, including metadata about the sender and intended recipients. */
 export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = BroadcastPacketType> = {
   /** TxID of the sender. */
   from: string;
@@ -74,14 +77,14 @@ export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = Bro
   /** The actual packet to be sent. */
   packet: BroadcastPacket<TPacketType>;
   /** Unique nonce to prevent parsing the same packet multiple times. */
-  nonce: string;
+  nonce: number;
 };
 
 /** Data structure stored by {@linkcode broadcastStorage} */
 export type BroadcastStorageData = {
   /** Last emitted packet. */
   packet: BroadcastTransitPacket<BroadcastPacketType> | null;
-}
+};
 
 /**
  * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
@@ -98,14 +101,25 @@ export const broadcastStorage = new DataStore<BroadcastStorageData, false>({
   memoryCache: false,
 });
 
+/** Which packets have already been received and processed. */
+const receivedNonces = new Set<number>();
+
 //#region init
 
 /** Initializes the broadcast module by setting up the necessary event listeners. */
-export async function initBroadcast() {
-  await broadcastStorage.deleteData();
-
+export function initBroadcast() {
   if("addValueChangeListener" in GM) {
+    // sadly only supported by TM and VM
+    // see also https://violentmonkey.github.io/api/gm/#gm_addvaluechangelistener
     GM.addValueChangeListener(`${broadcastStorage.keyPrefix}${broadcastStorage.id}-dat`, (_name, _oldData, newData, isRemote) => {
+      try {
+        if(typeof newData === "string")
+          newData = JSON.parse(newData);
+      }
+      catch(e) {
+        warn("Failed to parse broadcast packet as object:", newData, e);
+      }
+
       if(isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null)
         handleBroadcastMessage(newData.packet as BroadcastTransitPacket);
     });
@@ -175,6 +189,7 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
       data: {
         sessionId: getSessionId(),
         title: document.title,
+        domain: getDomain(),
       },
     }, [from]);
     getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
@@ -185,55 +200,65 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
 //#region emit
 
 /**
- * Emits a packet through BYTM's [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) instance to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.  
+ * Emits a packet through BYTM's broadcast system to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.  
  * The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.  
  * @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
  * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
 export async function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
+  // use the 6 least significant Date.now bytes plus random floating point number for truly unique random nonces:
+  const nonce = Date.now() % 0xFFFFFF + Math.random();
   return await broadcastStorage.setData({
     packet: {
       from: broadcastTxID,
       to,
       packet,
-      nonce: randomId(10, 36),
+      nonce,
     } as BroadcastTransitPacket<TPacketType>,
   });
 }
 
 //#region validate
 
-/**
- * Validates if the given object is a valid {@linkcode BroadcastTransitPacket}.  
- * This is used in the `message` event listener of the BroadcastChannel to validate incoming packets before processing them.
- */
+/** Validates if the given object is a valid {@linkcode BroadcastTransitPacket} */
 function isValidTransitBroadcastPacket(obj: any): obj is BroadcastTransitPacket {
   return typeof obj === "object"
     && obj !== null
+    // from
     && typeof obj.from === "string"
+    // to
     && (obj.to === undefined || (Array.isArray(obj.to) && obj.to.every((id: any) => typeof id === "string")))
+    // packet
     && typeof obj.packet === "object"
     && obj.packet !== null
+    // packet.type
     && typeof obj.packet.type === "string"
     && (
+      // packet.data
       (typeof obj.packet.data === "object" && obj.packet.data !== null)
       || obj.packet.data === undefined
-    );
+    )
+    // nonce
+    && typeof obj.nonce === "number";
 }
 
 //#region handler
 
 /**
- * Gets called when a message is received through the BroadcastChannel.  
+ * Gets called when a broadcast message is received.  
  * Validates the packet and emits an internal event with the packet data for other modules to listen to.
  */
 function handleBroadcastMessage(packet: object) {
-  if(!isValidTransitBroadcastPacket(packet)) {
-    warn("Received invalid broadcast packet, ignoring:", packet);
-    return;
-  }
+  if(!isValidTransitBroadcastPacket(packet))
+    return warn("Received invalid broadcast packet, ignoring:", packet);
 
-  // if the packet is not intended for this session, ignore it
+  // if packet was already processed, ignore it
+  if(receivedNonces.has(packet.nonce))
+    return warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
+
+  receivedNonces.add(packet.nonce);
+
+  // if packet is not intended for this session, ignore it
   if(packet.from === broadcastTxID || (Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")))
     return;
 

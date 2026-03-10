@@ -68,7 +68,7 @@ export type SiteEventsMap = Prettify<
 
     //#region broadcast:
     /**
-     * Emitted whenever a broadcast packet is emitted through a [BroadcastChannel](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) (named `bytm-broadcast`), which is used for inter-session communication in BYTM.  
+     * Emitted whenever a broadcast packet is transmitted through the broadcast DataStore (id: `bytm-broadcast`), which is used for inter-session communication in BYTM.  
      * Contains the type and full data of the packet, including metadata about the sender and intended recipients.  
      * See `src/utils/broadcast.ts` for more info and the type definition of the packet data.
      */

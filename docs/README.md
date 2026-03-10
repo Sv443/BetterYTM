@@ -31,7 +31,7 @@ You should [start with the Getting Started guide](./getting-started.md) if you a
     - [TODO: Auto-Like](./api.md#auto-like)
     - [TODO: Other](./api.md#other)
     - [TODO: Events](./api.md#events)
-    - [TODO: Broadcast Channel](./api.md#broadcast-channel)
+    - [TODO: Broadcast](./api.md#broadcast)
 - [**Contributing**](./contributing.md)
   - [**TODO: Reporting Issues**](./contributing.md#reporting-issues)
   - [**Translations**](./contributing.md#translations)
