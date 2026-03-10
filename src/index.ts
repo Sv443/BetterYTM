@@ -120,7 +120,7 @@ function measureDuration(name: LooseUnion<keyof InitTimings & FeatureKey>): () =
 //#region preInit
 
 /** Stuff that needs to be called ASAP */
-async function preInit() {
+function preInit() {
   try {
     initTimings.start = Date.now();
 
@@ -133,7 +133,7 @@ async function preInit() {
 
     setLogLevel(defaultLogLevel);
 
-    await initBroadcast();
+    initBroadcast();
 
     initInterface();
     preInitPlugins();
@@ -714,6 +714,7 @@ function registerDevCommands() {
       [broadcastTxID, {
         sessionId: getSessionId(),
         title: document.title,
+        domain: getDomain(),
       }],
     ];
 
@@ -726,7 +727,7 @@ function registerDevCommands() {
     setTimeout(() => {
       sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
       dbg(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
-        sessions.map(([txID, { sessionId, title }]) => `- ${txID === broadcastTxID ? "Current Session:" : "Other Session:  "} SessionID: "${sessionId}", TxID: "${txID}", Title: "${title}"`).join("\n")
+        sessions.map(([txID, { sessionId, title, domain }], i) => `- [${i}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Title: "${title}"`).join("\n")
       }`);
       unsub();
     }, 500);
