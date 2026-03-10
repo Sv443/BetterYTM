@@ -28,10 +28,10 @@ export type BroadcastPacketDataMap = {
   reloadTabs: void;
 
   // sessions
-  /** Called to make other sessions reply with a `collectSessionsReply`, in order to collect a list of all open sessions. */
-  collectSessions: void;
-  /** Reply to a "collectSessions" packet. */
-  collectSessionsReply: {
+  /** Called to make other sessions reply with a `discoverSessionsReply`, in order to collect a list of all open sessions. */
+  discoverSessions: void;
+  /** Reply to a "discoverSessions" packet. */
+  discoverSessionsReply: {
     /**
      * Session ID of the sender (not the TxID).  
      * Note that this ID might not be unique across tabs, as sessionStorage can get duplicated when duplicating tabs.  
@@ -88,7 +88,8 @@ export type BroadcastStorageData = {
 
 /**
  * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
- * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.
+ * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.  
+ * Doesn't need to be read from, as the packets are captured via `GM.addValueChangeListener`.
  */
 export const broadcastStore = new DataStore<BroadcastStorageData, false>({
   id: "bytm-broadcast",
@@ -113,7 +114,7 @@ export function initBroadcast() {
     // see also https://violentmonkey.github.io/api/gm/#gm_addvaluechangelistener
     GM.addValueChangeListener(`${broadcastStore.keyPrefix}${broadcastStore.id}-dat`, (_name, _oldData, newData, isRemote) => {
       try {
-        if(typeof newData === "string")
+        if(typeof newData === "string" && newData.trim().startsWith("{") && newData.trim().endsWith("}"))
           newData = JSON.parse(newData);
       }
       catch(e) {
@@ -182,17 +183,17 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
   case "reloadTabs":
     await reloadTab();
     break;
-  // reply to "collectSessions" packets with a "collectSessionsReply" packet:
-  case "collectSessions":
+  // reply to "discoverSessions" packets with a "discoverSessionsReply" packet:
+  case "discoverSessions":
     emitBroadcast({
-      type: "collectSessionsReply",
+      type: "discoverSessionsReply",
       data: {
         sessionId: getSessionId(),
         title: document.title,
         domain: getDomain(),
       },
     }, [from]);
-    getFeature("logEvents") && log(`Replied to "collectSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
+    getFeature("logEvents") && log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
     break;
   }
 }

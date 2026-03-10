@@ -715,7 +715,7 @@ function registerDevCommands() {
   });
 
   isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
-    const sessions: [txID: string, pktData: BroadcastPacketDataMap["collectSessionsReply"]][] = [
+    const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [
       [broadcastTxID, {
         sessionId: getSessionId(),
         title: document.title,
@@ -723,7 +723,7 @@ function registerDevCommands() {
       }],
     ];
 
-    const unsub = siteEvents.on("broadcast:collectSessionsReply", ({ from, packet }) => {
+    const unsub = siteEvents.on("broadcast:discoverSessionsReply", ({ from, packet }) => {
       sessions.push([from, packet.data]);
     });
 
@@ -738,7 +738,7 @@ function registerDevCommands() {
     }, 500);
 
     emitBroadcast({
-      type: "collectSessions",
+      type: "discoverSessions",
     });
   });
 
