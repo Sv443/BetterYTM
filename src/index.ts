@@ -1,4 +1,4 @@
-import { autoPlural, compress, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
@@ -733,13 +733,23 @@ function registerDevCommands() {
     setTimeout(() => {
       sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
       dbg(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
-        sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
-          const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
-          return `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Init: ${initSince} ago, Title: "${title}"`;
-        }).join("\n")
+        createTable([
+          ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"],
+          ...sessions.map(([txID, { sessionId, title, domain, initTime }]) => {
+            const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
+            return [
+              txID === broadcastTxID ? "Yes" : "No",
+              sessionId,
+              txID,
+              domain,
+              `${initSince} ago`,
+              title,
+            ];
+          }),
+        ])
       }`);
       unsub();
-    }, 500);
+    }, 300);
 
     emitBroadcast({
       type: "discoverSessions",
