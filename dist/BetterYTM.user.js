@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2a0e4aeb/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0901975f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "2a0e4aeb",
-    buildTimestamp: "1773250950482",
+    buildNumber: "0901975f",
+    buildTimestamp: "1773264045794",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -3214,13 +3214,15 @@ async function renderBody$3() {
     searchContRightSideEl.tabIndex = 0;
     searchContRightSideEl.classList.add("right-side");
     searchCont.appendChild(searchContRightSideEl);
+    const searchbarEl = document.createElement("input");
     const updateCountElem = () => {
-        const count = autoLikeStore.getData().channels.length;
+        const count = searchbarEl.value.trim().length === 0
+            ? autoLikeStore.getData().channels.length
+            : document.querySelectorAll(".bytm-auto-like-channel-row:not(.hidden)").length;
         searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
     };
     siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
     updateCountElem();
-    const searchbarEl = document.createElement("input");
     searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
     searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
     searchbarEl.type = searchbarEl.role = "search";
@@ -3228,7 +3230,7 @@ async function renderBody$3() {
     searchbarEl.autofocus = true;
     searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
     searchbarEl.spellcheck = false;
-    searchbarEl.addEventListener("input", () => {
+    searchbarEl.addEventListener("input", CoreUtils.debounce(() => {
         const searchVal = searchbarEl.value.trim().toLowerCase();
         const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
         for (const row of rows) {
@@ -3237,7 +3239,8 @@ async function renderBody$3() {
             const id = san(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
             row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
         }
-    });
+        updateCountElem();
+    }, 300));
     searchContLeftSideEl.appendChild(searchbarEl);
     const searchClearEl = document.createElement("button");
     searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
