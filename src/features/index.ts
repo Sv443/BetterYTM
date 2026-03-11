@@ -584,9 +584,8 @@ export const featInfo = {
     since: "1.1.0",
     options: options.songListType,
     default: "everywhere",
-    advanced: true,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly, adornments.advanced],
+    adornments: [adornments.ytmOnly],
   },
   scrollToActiveSongBtn: {
     type: "toggle",
@@ -760,9 +759,8 @@ export const featInfo = {
       { value: "both", label: t("volume_label_mapped_type.both") },
     ],
     default: "valueBased",
-    advanced: true,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly, adornments.advanced],
+    adornments: [adornments.ytmOnly],
   },
   volumeSliderLabel: {
     type: "toggle",
@@ -967,9 +965,8 @@ export const featInfo = {
     step: 0.25,
     default: 2,
     unit: "s",
-    advanced: true,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly, adornments.advanced],
+    adornments: [adornments.ytmOnly],
   },
   hidePlayerBarOnIdleInFullscreen: {
     type: "toggle",
@@ -1127,8 +1124,7 @@ export const featInfo = {
     since: "3.0.0",
     default: false,
     reloadRequired: false,
-    advanced: true,
-    adornments: [adornments.ytmOnly, adornments.advanced],
+    adornments: [adornments.ytmOnly],
   },
   frameSkipAmount: {
     type: "number",
