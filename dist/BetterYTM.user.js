@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@439faf60/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2a0e4aeb/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "439faf60",
-    buildTimestamp: "1773250263233",
+    buildNumber: "2a0e4aeb",
+    buildTimestamp: "1773250950482",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -8433,9 +8433,8 @@ const featInfo = {
         since: "1.1.0",
         options: options.songListType,
         default: "everywhere",
-        advanced: true,
         reloadRequired: false,
-        adornments: [adornments.ytmOnly, adornments.advanced],
+        adornments: [adornments.ytmOnly],
     },
     scrollToActiveSongBtn: {
         type: "toggle",
@@ -8607,9 +8606,8 @@ const featInfo = {
             { value: "both", label: t("volume_label_mapped_type.both") },
         ],
         default: "valueBased",
-        advanced: true,
         reloadRequired: false,
-        adornments: [adornments.ytmOnly, adornments.advanced],
+        adornments: [adornments.ytmOnly],
     },
     volumeSliderLabel: {
         type: "toggle",
@@ -8812,9 +8810,8 @@ const featInfo = {
         step: 0.25,
         default: 2,
         unit: "s",
-        advanced: true,
         reloadRequired: false,
-        adornments: [adornments.ytmOnly, adornments.advanced],
+        adornments: [adornments.ytmOnly],
     },
     hidePlayerBarOnIdleInFullscreen: {
         type: "toggle",
@@ -8970,8 +8967,7 @@ const featInfo = {
         since: "3.0.0",
         default: false,
         reloadRequired: false,
-        advanced: true,
-        adornments: [adornments.ytmOnly, adornments.advanced],
+        adornments: [adornments.ytmOnly],
     },
     frameSkipAmount: {
         type: "number",
