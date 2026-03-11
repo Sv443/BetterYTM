@@ -522,8 +522,11 @@
   "feature_helptext.themeSongIntegration": "Si la extensión ThemeSong está instalada pero esta función está desactivada (o viceversa), es posible que notes un estilo roto en el sitio.\n\n¡Asegúrate siempre de que esta función refleje si la extensión está instalada o no!",
   "feature_desc.themeSongLightness": "¿Qué tan claro deben ser los colores de acento derivados del tema actual de ThemeSong?",
   "feature_helptext.themeSongLightness": "Dependiendo de la configuración que hayas elegido para la extensión ThemeSong, esta función te permite ajustar la claridad de los colores de acento que se derivan del tema actual.\n\nEsta función no tendrá efecto si la extensión ThemeSong no está instalada.",
+  "feature_desc.themeSongVisualizerHotkeyEnabled": "Habilitar un atajo para alternar el visualizador de ThemeSong",
+  "feature_desc.themeSongVisualizerHotkey": "Tecla de acceso rápido para alternar el visualizador de ThemeSong",
   "feature_desc.removeThumbnailRatingBar": "Eliminar la barra de calificación añadida por la extensión \"Thumbnail Rating Bar\"",
   "feature_helptext.removeThumbnailRatingBar": "Si tiene la extensión \"Thumbnail Rating Bar\" instalada, verá una barra de calificación en cada miniatura, que es muy pequeña en YT Music.\nEsta función elimina esa barra para evitar que ocupe espacio.\n\nEsta función no tiene efecto si la extensión no está instalada y se puede dejar activada.",
+
   "feature_desc.openPluginList": "Abrir la lista de plugins que tienes instalados",
   "feature_btn.openPluginList": "Abrir lista",
   "feature_btn.openPluginList_running": "Abriendo...",

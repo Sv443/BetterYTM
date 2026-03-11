@@ -241,6 +241,8 @@ export const cfgMigrations: DataMigrationsDict = {
         "likeDislikeHotkeysToggle",
         "openPluginDiscoverySite",
         "hidePlayerBarOnIdleInFullscreen",
+        "themeSongVisualizerHotkeyEnabled",
+        "themeSongVisualizerHotkey",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000

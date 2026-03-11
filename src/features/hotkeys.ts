@@ -274,7 +274,14 @@ const proxyHotkeys: ProxyHotkeys = {
         which: 32,
       }),
     },
-  ]
+  ],
+  themeSongVisualizerHotkeyEnabled: [
+    {
+      hkFeatKey: "themeSongVisualizerHotkey",
+      domains: ["ytm"],
+      onPress: () => document.querySelector<HTMLButtonElement>("#ts-visualizer-toggle")?.click(),
+    },
+  ],
 } as const;
 
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */

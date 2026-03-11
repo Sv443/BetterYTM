@@ -521,7 +521,8 @@
   "feature_helptext.themeSongIntegration": "Si l'extension ThemeSong est installée mais que cette fonctionnalité est désactivée (ou vice versa), vous pourriez remarquer des problèmes de style sur le site.\n\nAssurez-vous toujours que cette fonctionnalité reflète si l'extension est installée ou non!",
   "feature_desc.themeSongLightness": "À quel point les couleurs d'accentuation dérivées du thème actuel de ThemeSong doivent-elles être claires",
   "feature_helptext.themeSongLightness": "En fonction des paramètres que vous avez choisis pour l'extension ThemeSong, cette fonctionnalité vous permet d'ajuster la clarté des couleurs d'accentuation dérivées du thème actuel.\n\nCette fonctionnalité n'aura aucun effet si l'extension ThemeSong n'est pas installée.",
-
+  "feature_desc.themeSongVisualizerHotkeyEnabled": "Ajouter un raccourci clavier pour basculer le visualiseur ThemeSong",
+  "feature_desc.themeSongVisualizerHotkey": "Raccourci clavier pour basculer le visualiseur ThemeSong",
   "feature_desc.removeThumbnailRatingBar": "Supprimer la barre d'évaluation rouge de la vignette de la page de visualisation",
   "feature_helptext.removeThumbnailRatingBar": "La page de visualisation a une fine barre rouge en bas de la vignette de la vidéo indiquant la progression de la vidéo. Cette fonctionnalité supprime cette barre.",
 

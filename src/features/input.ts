@@ -25,7 +25,7 @@ export function isIgnoredInputElement(el = document.activeElement as Element | n
     return false;
 
   return el !== document.body && (
-    ignoreInputTagNames.includes(el.tagName.toUpperCase())
+    (ignoreInputTagNames.includes(el.tagName.toUpperCase()))
     || ignoreInputIds.includes(el.id)
     || ignoreInputClassNames.some((cls) => el.classList.contains(cls))
   );

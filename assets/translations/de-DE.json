@@ -523,6 +523,8 @@
   "feature_helptext.themeSongIntegration": "Wenn das ThemeSong Addon installiert ist, aber dieses Feature deaktiviert ist (oder umgekehrt), könntest du kaputtes Styling auf der Seite bemerken.\n\nBitte stelle immer sicher, dass dieses Feature reflektiert, ob das Addon installiert ist oder nicht!",
   "feature_desc.themeSongLightness": "Wie hell die Akzentfarben sein sollen, die vom aktuellen ThemeSong-Theme abgeleitet werden",
   "feature_helptext.themeSongLightness": "Je nach den Einstellungen, die du für das ThemeSong Addon gewählt hast, ermöglicht dir dieses Feature, die Helligkeit der Akzentfarben anzupassen, die vom aktuellen Theme abgeleitet werden.\n\nDieses Feature hat keinen Effekt, wenn das ThemeSong Addon nicht installiert ist.",
+  "feature_desc.themeSongVisualizerHotkeyEnabled": "Füge einen Hotkey hinzu, um den ThemeSong Visualizer ein- und auszuschalten",
+  "feature_desc.themeSongVisualizerHotkey": "Der Hotkey, um den ThemeSong Visualizer ein- und auszuschalten",
   "feature_desc.removeThumbnailRatingBar": "Entferne die Bewertungsskala, die von der \"Thumbnail Rating Bar\" Erweiterung hinzugefügt wird",
   "feature_helptext.removeThumbnailRatingBar": "Wenn du die \"Thumbnail Rating Bar\" Erweiterung installiert hast, wirst du eine Bewertungsskala auf jedem Song- und Video-Thumbnail sehen, die allerdings auf YT Music absolut winzig und unbrauchbar ist.\nDiese Funktion entfernt diese Bewertungsskala, um zu verhindern, dass sie Platz einnimmt und ablenkt.\n\nDieses Feature hat keine Auswirkungen, wenn die Erweiterung nicht installiert ist und kann in diesem Fall aktiviert bleiben.",
 

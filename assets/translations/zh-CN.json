@@ -512,6 +512,8 @@
   "feature_helptext.themeSongIntegration": "如果安装了 ThemeSong 扩展但此功能已关闭（反之亦然），您可能会注意到网站上的样式损坏。\n\n请始终确保此功能反映了扩展程序是否已安装！",
   "feature_desc.themeSongLightness": "从当前 ThemeSong 主题派生的强调颜色应该有多亮",
   "feature_helptext.themeSongLightness": "根据您为 ThemeSong 扩展选择的设置，此功能允许您调整从当前主题派生的强调颜色的亮度。\n\n如果未安装 ThemeSong 扩展，此功能将不起作用。",
+  "feature_desc.themeSongVisualizerHotkeyEnabled": "添加一个热键以切换 ThemeSong 可视化器",
+  "feature_desc.themeSongVisualizerHotkey": "切换 ThemeSong 可视化器的热键",
   "feature_desc.removeThumbnailRatingBar": "移除由\"Thumbnail Rating Bar\"扩展添加的评分栏",
   "feature_helptext.removeThumbnailRatingBar": "如果您安装了\"Thumbnail Rating Bar\"扩展，您会注意到每首歌曲和视频缩略图上都有一个评分栏，在 YT Music 上这些评分栏非常小。\n此功能将移除该评分栏，避免其占用空间并分散注意力。\n\n如果未安装扩展程序，此功能将没有任何效果，可以在这种情况下保持激活状态。",
 

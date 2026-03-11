@@ -518,8 +518,10 @@
   "feature_helptext.themeSongIntegration": "ThemeSong 拡張機能がインストールされている場合、この機能を有効にすると、サイトのスタイリングに問題が発生するのを防ぐためにいくつかの修正が行われます。\n\nこの機能は拡張機能がインストールされていない場合には効果がありませんので、その場合は有効にしたままにしておくことができます。",
   "feature_desc.themeSongLightness": "現在の ThemeSong テーマから派生したアクセントカラーの明るさ",
   "feature_helptext.themeSongLightness": "ThemeSong 拡張機能の設定に応じて、この機能を使用して、現在のテーマから派生したアクセントカラーの明るさを調整できます。\n\nThemeSong 拡張機能がインストールされていない場合、この機能は効果がありません。",
+  "feature_desc.themeSongVisualizerHotkeyEnabled": "テーマソングビジュアライザーをホットキーで切り替える",
+  "feature_desc.themeSongVisualizerHotkey": "テーマソングビジュアライザーを切り替えるホットキー",
   "feature_desc.removeThumbnailRatingBar": "watch ページのサムネイルから赤いレーティングバーを削除する",
-  "feature_helptext.removeThumbnailRatingBar": "The watch page has a thin red bar at the bottom of the video thumbnail indicating video progress. This feature removes it.",
+  "feature_helptext.removeThumbnailRatingBar": "watch ページのビデオサムネイルの下に、ビデオの進行状況を示す細い赤いバーがあります。この機能はそれを削除します。",
 
   "feature_desc.openPluginList": "インストールされているプラグインのリストを開く",
   "feature_btn.openPluginList": "リストを開く",

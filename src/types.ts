@@ -915,6 +915,10 @@ export interface FeatureConfig {
   themeSongIntegration: boolean;
   /** Lightness of the color used when ThemeSong is enabled */
   themeSongLightness: ColorLightnessPref;
+  /** Whether to add a hotkey to toggle the ThemeSong visualizer on and off */
+  themeSongVisualizerHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to toggle the ThemeSong visualizer on and off */
+  themeSongVisualizerHotkey: HotkeyObj;
   /** Removes all thumbnail rating bars if the extension is installed */
   removeThumbnailRatingBar: boolean;
 
