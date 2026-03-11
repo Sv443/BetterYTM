@@ -29,6 +29,9 @@ export async function initHotkeys() {
 
 /** Checks whether the given keyboard event matches the given hotkey object. */
 function hotkeyMatches(evt: KeyboardEvent, hk: HotkeyObj) {
+  if(typeof hk !== "object" || typeof hk.code !== "string")
+    return false;
+
   return evt.code === hk.code
     && evt.shiftKey === hk.shift
     && evt.ctrlKey === hk.ctrl

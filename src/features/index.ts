@@ -1500,9 +1500,9 @@ export const featInfo = {
     since: "3.1.0",
     default: {
       code: "KeyV",
-      shift: false,
-      ctrl: false,
-      alt: true,
+      shift: true,
+      ctrl: true,
+      alt: false,
     },
     reloadRequired: false,
     adornments: [adornments.ytmOnly],
