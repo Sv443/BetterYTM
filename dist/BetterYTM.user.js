@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ca4b57e1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6ed98623/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "ca4b57e1",
-    buildTimestamp: "1773181218152",
+    buildNumber: "6ed98623",
+    buildTimestamp: "1773249729420",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6424,21 +6424,17 @@ async function downloadData(useEncoding = true, full = false) {
 //#region vars
 /** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
 const broadcastTxID = CoreUtils.randomId(10, 36);
+const broadcastEngDSOpts = {
+    id: "bytm-broadcast",
+    encodeData: [null, (d) => d],
+    decodeData: [null, (d) => d],
+};
 /**
- * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.
+ * DataStoreEngine instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.
  * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.
  * Doesn't need to be read from, as the packets are captured via `GM.addValueChangeListener`.
  */
-const broadcastStore = new CoreUtils.DataStore({
-    id: "bytm-broadcast",
-    defaultData: {
-        packet: null,
-    },
-    engine: new UserUtils.GMStorageEngine(),
-    formatVersion: 0,
-    compressionFormat: null,
-    memoryCache: false,
-});
+const broadcastEng = new UserUtils.GMStorageEngine({ dataStoreOptions: broadcastEngDSOpts });
 /** Which packets have already been received and processed. */
 const receivedNonces = new Set();
 //#region init
@@ -6447,7 +6443,7 @@ function initBroadcast() {
     if ("addValueChangeListener" in GM) {
         // sadly only supported by TM and VM
         // see also https://violentmonkey.github.io/api/gm/#gm_addvaluechangelistener
-        GM.addValueChangeListener(`${broadcastStore.keyPrefix}${broadcastStore.id}-dat`, (_name, _oldData, newData, isRemote) => {
+        GM.addValueChangeListener(broadcastEngDSOpts.id, (_name, _oldData, newData, isRemote) => {
             try {
                 if (typeof newData === "string" && newData.trim().startsWith("{") && newData.trim().endsWith("}"))
                     newData = JSON.parse(newData);
@@ -6456,7 +6452,7 @@ function initBroadcast() {
                 warn("Failed to parse broadcast packet as object:", newData, e);
             }
             if (isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null)
-                handleBroadcastMessage(newData.packet);
+                relayBroadcastPacket(newData.packet);
         });
     }
     else
@@ -6532,14 +6528,14 @@ async function handleBroadcastPacket(type, { from, to, packet }) {
 async function emitBroadcast(packet, to) {
     // use the 6 least significant Date.now bytes plus random floating point number for truly unique random nonces:
     const nonce = Date.now() % 0xFFFFFF + Math.random();
-    return await broadcastStore.setData({
+    return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({
         packet: {
             from: broadcastTxID,
             to,
             packet,
             nonce,
-        },
-    });
+        }
+    }));
 }
 //#region validate
 /** Validates if the given object is a valid {@linkcode BroadcastTransitPacket} */
@@ -6562,12 +6558,9 @@ function isValidTransitBroadcastPacket(obj) {
         // nonce
         && typeof obj.nonce === "number";
 }
-//#region handler
-/**
- * Gets called when a broadcast message is received.
- * Validates the packet and emits an internal event with the packet data for other modules to listen to.
- */
-function handleBroadcastMessage(packet) {
+//#region relay packet
+/** Gets called when a broadcast packet is received to validate and relay it via {@linkcode siteEvents} */
+function relayBroadcastPacket(packet) {
     if (!isValidTransitBroadcastPacket(packet))
         return warn("Received invalid broadcast packet, ignoring:", packet);
     // if packet was already processed, ignore it
@@ -6584,8 +6577,10 @@ function handleBroadcastMessage(packet) {
         return;
     if (getFeature("logEvents"))
         log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
-    forceEmitSiteEvent("broadcast", packet.packet.type, packet);
-    forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packet); // love dealing with TS mapped type shenanigans
+    const packetClean = CoreUtils.pureObj(packet); // remove prototype chain
+    // broadcasts work like interrupts, so they are allowed to be emitted even before "bytm:ready"
+    forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
+    forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean); // love dealing with TS mapped type shenanigans
 }//#region misc
 let domain;
 /**
@@ -7163,7 +7158,7 @@ const ignoreInputClassNames = [
 function isIgnoredInputElement(el = document.activeElement) {
     if (!el)
         return false;
-    return el !== document.body && (ignoreInputTagNames.includes(el.tagName.toUpperCase())
+    return el !== document.body && ((ignoreInputTagNames.includes(el.tagName.toUpperCase()))
         || ignoreInputIds.includes(el.id)
         || ignoreInputClassNames.some((cls) => el.classList.contains(cls)));
 }
@@ -7474,7 +7469,14 @@ const proxyHotkeys = {
                 which: 32,
             }),
         },
-    ]
+    ],
+    themeSongVisualizerHotkeyEnabled: [
+        {
+            hkFeatKey: "themeSongVisualizerHotkey",
+            domains: ["ytm"],
+            onPress: () => document.querySelector("#ts-visualizer-toggle")?.click(),
+        },
+    ],
 };
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
@@ -9312,6 +9314,30 @@ const featInfo = {
         default: "darker",
         adornments: [adornments.ytmOnly, adornments.reload],
     },
+    themeSongVisualizerHotkeyEnabled: {
+        type: "toggle",
+        category: "integrations",
+        group: "themeSongVisualizerHotkey",
+        supportedSites: ["ytm"],
+        since: "3.1.0",
+        default: false,
+        adornments: [adornments.ytmOnly, adornments.reload],
+    },
+    themeSongVisualizerHotkey: {
+        type: "hotkey",
+        category: "integrations",
+        group: "themeSongVisualizerHotkey",
+        supportedSites: ["ytm"],
+        since: "3.1.0",
+        default: {
+            code: "KeyV",
+            shift: false,
+            ctrl: false,
+            alt: true,
+        },
+        reloadRequired: false,
+        adornments: [adornments.ytmOnly],
+    },
     removeThumbnailRatingBar: {
         type: "toggle",
         category: "integrations",
@@ -9544,6 +9570,8 @@ const cfgMigrations = {
             "likeDislikeHotkeysToggle",
             "openPluginDiscoverySite",
             "hidePlayerBarOnIdleInFullscreen",
+            "themeSongVisualizerHotkeyEnabled",
+            "themeSongVisualizerHotkey",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
             { key: "initTimeout", oldDefault: 8 }, // new: 5
