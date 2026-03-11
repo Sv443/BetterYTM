@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0901975f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c4a196c7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -68,8 +68,8 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.4.0/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.2.0/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.1
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "0901975f",
-    buildTimestamp: "1773264045794",
+    buildNumber: "c4a196c7",
+    buildTimestamp: "1773269666023",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -11452,12 +11452,22 @@ function registerDevCommands() {
         dbg("Collecting session info from open tabs...");
         setTimeout(() => {
             sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
-            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
-                const initSince = CoreUtils.secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
-                return `- [${i + 1}]: ${txID === broadcastTxID ? "Current Session" : "Other Session"},${txID !== broadcastTxID ? "  " : ""} SessionID: "${sessionId}", TxID: "${txID}", Domain: "${domain}",${domain === "yt" ? " " : ""} Init: ${initSince} ago, Title: "${title}"`;
-            }).join("\n")}`);
+            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${CoreUtils.createTable([
+                ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"],
+                ...sessions.map(([txID, { sessionId, title, domain, initTime }]) => {
+                    const initSince = CoreUtils.secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
+                    return [
+                        txID === broadcastTxID ? "Yes" : "No",
+                        sessionId,
+                        txID,
+                        domain,
+                        `${initSince} ago`,
+                        title,
+                    ];
+                }),
+            ])}`);
             unsub();
-        }, 500);
+        }, 300);
         emitBroadcast({
             type: "discoverSessions",
         });
