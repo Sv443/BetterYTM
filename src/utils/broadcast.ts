@@ -1,6 +1,6 @@
 // module that facilitates inter-session (tab) communication via broadcast packets
 
-import { DataStore, debounce, randomId } from "@sv443-network/coreutils";
+import { debounce, pureObj, randomId, type DataStoreEngineDSOptions } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js";
 import { initTime } from "../constants.js";
@@ -9,11 +9,6 @@ import { getSerializerStoresFull } from "../serializers.js";
 import { error, info, log, warn } from "./logging.js";
 import { getDomain, getSessionId, reloadTab } from "./misc.js";
 import type { Domain } from "../types.js";
-
-//#region vars
-
-/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
-export const broadcastTxID = randomId(10, 36);
 
 // #region types
 
@@ -83,30 +78,34 @@ export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = Bro
   nonce: number;
 };
 
-/** Data structure stored by {@linkcode broadcastStore} */
+/** Data structure stored by {@linkcode broadcastEng} */
 export type BroadcastStorageData = {
   /** Last emitted packet. */
-  packet: BroadcastTransitPacket<BroadcastPacketType> | null;
+  packet: BroadcastTransitPacket<BroadcastPacketType>;
+};
+
+
+//#region vars
+
+/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
+export const broadcastTxID = randomId(10, 36);
+
+const broadcastEngDSOpts: DataStoreEngineDSOptions = {
+  id: "bytm-broadcast",
+  encodeData: [null, (d) => d],
+  decodeData: [null, (d) => d],
 };
 
 /**
- * DataStore instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
+ * DataStoreEngine instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
  * Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.  
  * Doesn't need to be read from, as the packets are captured via `GM.addValueChangeListener`.
  */
-export const broadcastStore = new DataStore<BroadcastStorageData, false>({
-  id: "bytm-broadcast",
-  defaultData: {
-    packet: null,
-  },
-  engine: new GMStorageEngine(),
-  formatVersion: 0,
-  compressionFormat: null,
-  memoryCache: false,
-});
+export const broadcastEng = new GMStorageEngine({ dataStoreOptions: broadcastEngDSOpts });
 
 /** Which packets have already been received and processed. */
 const receivedNonces = new Set<number>();
+
 
 //#region init
 
@@ -115,7 +114,7 @@ export function initBroadcast() {
   if("addValueChangeListener" in GM) {
     // sadly only supported by TM and VM
     // see also https://violentmonkey.github.io/api/gm/#gm_addvaluechangelistener
-    GM.addValueChangeListener(`${broadcastStore.keyPrefix}${broadcastStore.id}-dat`, (_name, _oldData, newData, isRemote) => {
+    GM.addValueChangeListener(broadcastEngDSOpts.id, (_name, _oldData, newData, isRemote) => {
       try {
         if(typeof newData === "string" && newData.trim().startsWith("{") && newData.trim().endsWith("}"))
           newData = JSON.parse(newData);
@@ -125,7 +124,7 @@ export function initBroadcast() {
       }
 
       if(isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null)
-        handleBroadcastMessage(newData.packet as BroadcastTransitPacket);
+        relayBroadcastPacket(newData.packet as BroadcastTransitPacket);
     });
   }
   else
@@ -150,6 +149,7 @@ export function initBroadcast() {
 
   info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
 }
+
 
 //#region handlers
 
@@ -202,6 +202,7 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
   }
 }
 
+
 //#region emit
 
 /**
@@ -213,15 +214,16 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
 export async function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
   // use the 6 least significant Date.now bytes plus random floating point number for truly unique random nonces:
   const nonce = Date.now() % 0xFFFFFF + Math.random();
-  return await broadcastStore.setData({
+  return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({
     packet: {
       from: broadcastTxID,
       to,
       packet,
       nonce,
-    } as BroadcastTransitPacket<TPacketType>,
-  });
+    } as BroadcastTransitPacket<TPacketType>
+  }));
 }
+
 
 //#region validate
 
@@ -247,13 +249,11 @@ function isValidTransitBroadcastPacket(obj: any): obj is BroadcastTransitPacket 
     && typeof obj.nonce === "number";
 }
 
-//#region handler
 
-/**
- * Gets called when a broadcast message is received.  
- * Validates the packet and emits an internal event with the packet data for other modules to listen to.
- */
-function handleBroadcastMessage(packet: object) {
+//#region relay packet
+
+/** Gets called when a broadcast packet is received to validate and relay it via {@linkcode siteEvents} */
+function relayBroadcastPacket(packet: object) {
   if(!isValidTransitBroadcastPacket(packet))
     return warn("Received invalid broadcast packet, ignoring:", packet);
 
@@ -276,6 +276,9 @@ function handleBroadcastMessage(packet: object) {
   if(getFeature("logEvents"))
     log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
 
-  forceEmitSiteEvent("broadcast", packet.packet.type, packet);
-  forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packet as any); // love dealing with TS mapped type shenanigans
+  const packetClean = pureObj(packet); // remove prototype chain
+
+  // broadcasts work like interrupts, so they are allowed to be emitted even before "bytm:ready"
+  forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
+  forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean as any); // love dealing with TS mapped type shenanigans
 }
