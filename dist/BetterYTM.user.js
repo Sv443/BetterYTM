@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@c4a196c7/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0b3a7c26/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "c4a196c7",
-    buildTimestamp: "1773269666023",
+    buildNumber: "0b3a7c26",
+    buildTimestamp: "1773270247024",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -11451,9 +11451,14 @@ function registerDevCommands() {
         });
         dbg("Collecting session info from open tabs...");
         setTimeout(() => {
-            sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
-            dbg(`Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${CoreUtils.createTable([
-                ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"],
+            const columns = ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+            const columnStyle = "color: #db3; font-weight: bold;";
+            const resetStyle = "color: inherit; font-weight: inherit;";
+            const styles = [];
+            for (let i = 0; i < columns.length; i++)
+                styles.push(columnStyle, resetStyle);
+            console.log(`[${scriptInfo$1.name}/#DEBUG] Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${CoreUtils.createTable([
+                columns,
                 ...sessions.map(([txID, { sessionId, title, domain, initTime }]) => {
                     const initSince = CoreUtils.secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
                     return [
@@ -11465,7 +11470,12 @@ function registerDevCommands() {
                         title,
                     ];
                 }),
-            ])}`);
+            ], {
+                applyCellStyle(i) {
+                    if (i === 0)
+                        return ["%c", "%c"];
+                },
+            })}`, ...styles);
             unsub();
         }, 300);
         emitBroadcast({

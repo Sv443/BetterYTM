@@ -731,10 +731,17 @@ function registerDevCommands() {
     dbg("Collecting session info from open tabs...");
 
     setTimeout(() => {
-      sessions.sort((a, b) => (a[1].sessionId ?? "").localeCompare(b[1].sessionId ?? ""));
-      dbg(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
+      const columns = ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+
+      const columnStyle = "color: #db3; font-weight: bold;";
+      const resetStyle = "color: inherit; font-weight: inherit;";
+      const styles = [];
+      for(let i = 0; i < columns.length; i++)
+        styles.push(columnStyle, resetStyle);
+
+      console.log(`[${scriptInfo.name}/#DEBUG] Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
         createTable([
-          ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"],
+          columns,
           ...sessions.map(([txID, { sessionId, title, domain, initTime }]) => {
             const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
             return [
@@ -746,8 +753,13 @@ function registerDevCommands() {
               title,
             ];
           }),
-        ])
-      }`);
+        ], {
+          applyCellStyle(i) {
+            if(i === 0)
+              return ["%c", "%c"];
+          },
+        })
+      }`, ...styles);
       unsub();
     }, 300);
 
