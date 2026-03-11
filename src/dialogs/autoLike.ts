@@ -135,14 +135,17 @@ async function renderBody() {
   searchContRightSideEl.classList.add("right-side");
   searchCont.appendChild(searchContRightSideEl);
 
+  const searchbarEl = document.createElement("input");
+
   const updateCountElem = () => {
-    const count = autoLikeStore.getData().channels.length;
+    const count = searchbarEl.value.trim().length === 0
+      ? autoLikeStore.getData().channels.length
+      : document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row:not(.hidden)").length;
     searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
   };
   siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
   updateCountElem();
 
-  const searchbarEl = document.createElement("input");
   searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
   searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
   searchbarEl.type = searchbarEl.role = "search";
@@ -151,7 +154,7 @@ async function renderBody() {
   searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
   searchbarEl.spellcheck = false;
 
-  searchbarEl.addEventListener("input", () => {
+  searchbarEl.addEventListener("input", debounce(() => {
     const searchVal = searchbarEl.value.trim().toLowerCase();
     const rows = document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row");
     for(const row of rows) {
@@ -160,7 +163,8 @@ async function renderBody() {
       const id = san(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
       row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
     }
-  });
+    updateCountElem();
+  }, 300));
 
   searchContLeftSideEl.appendChild(searchbarEl);
 
