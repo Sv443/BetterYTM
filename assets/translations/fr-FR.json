@@ -25,7 +25,7 @@
   "bytm_config_export_import_title": "Exporter ou importer la configuration",
   "bytm_config_import_desc": "Collez la configuration que vous souhaitez importer dans le champ ci-dessous, puis cliquez sur le bouton d'importation:",
   "bytm_config_export_desc": "Copiez le texte suivant pour exporter votre configuration. Attention: il peut contenir des données sensibles.",
-  "export_import": "Export/Import",
+  "export_import": "Exportation/Importation",
   "export": "Exporter",
   "export_hint": "Copiez le texte suivant pour exporter votre configuration.\nAttention : il peut contenir des données sensibles.",
   "export_tooltip": "Exporter votre configuration actuelle",
@@ -266,7 +266,7 @@
   "plugin_list.title": "Liste des plugins",
   "plugin_list.no_plugins": "Aucun plugin n'est actuellement installé.\nVisitez ${linkOpen}cette page${linkClose} pour plus d'informations.",
   "plugin_list.no_plugins_tooltip": "Aucun plugin n'est actuellement installé.",
-  "plugin_list.permissions_header": "Permissions:",
+  "plugin_list.permissions_header": "Autorisations:",
   "plugin_list.dev_plugin_note": "Le plugin développeur a toujours un accès complet.",
 
   "plugin_link.type_source": "Dépôt",
