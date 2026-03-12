@@ -1482,7 +1482,7 @@ export const featInfo = {
   themeSongVisualizerHotkeyEnabled: {
     type: "toggle",
     category: "integrations",
-    group: "themeSongVisualizerHotkey",
+    group: "themeSongVisualizer",
     supportedSites: ["ytm"],
     since: "3.1.0",
     default: false,
@@ -1491,7 +1491,7 @@ export const featInfo = {
   themeSongVisualizerHotkey: {
     type: "hotkey",
     category: "integrations",
-    group: "themeSongVisualizerHotkey",
+    group: "themeSongVisualizer",
     supportedSites: ["ytm"],
     since: "3.1.0",
     default: {
