@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5018d750/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@51e6ccd4/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -143,6 +143,7 @@ var resources = {
 	"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
 	"css-show_votes": "styles/showVotes.css",
 	"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
+	"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
 	"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
 	"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
 	"css-vol_slider_size": "styles/volSliderSize.css",
@@ -442,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "5018d750",
-    buildTimestamp: "1773322750786",
+    buildNumber: "51e6ccd4",
+    buildTimestamp: "1773324553517",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5909,8 +5910,13 @@ async function initThumbnailOverlay() {
         };
         // TODO:FIXME: sometimes when switching videos, the cache gets bypassed and the API is called anyways
         // example: https://music.youtube.com/watch?v=Q6W6Lm3MgGA&list=PLed0zlh3c4e1jxK6QgkFnFhXgnKJswo3A
+        /** Shared AbortController - aborted whenever a new applyThumbUrl call supersedes the current one */
+        let applyThumbAc;
         /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
         const applyThumbUrl = async (videoID) => {
+            applyThumbAc?.abort();
+            const ac = new AbortController();
+            applyThumbAc = ac;
             try {
                 const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                 if (toggleBtnElem?.dataset.albumArtworkUrl?.startsWith("http")
@@ -5938,13 +5944,14 @@ async function initThumbnailOverlay() {
                     log("Applied thumbnail URL to overlay:", thumbUrl);
                 };
                 let bestNativeThumbUrl;
-                const ac = new AbortController();
                 getBestThumbnailUrl(videoID).then((url) => {
                     if (ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
                         setThumbOverlayUrl(url);
                 }).catch(() => void 0);
                 addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
                     async listener() {
+                        if (ac.signal.aborted)
+                            return;
                         const [primaryArtist, albumName] = (() => {
                             // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
                             // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
@@ -7581,6 +7588,15 @@ async function fixThemeSong() {
     }
     catch (err) {
         error("Failed to set ThemeSong integration color lightness:", err);
+    }
+}
+/** Sets the opacity of the ThemeSong visualizer according to the configured opacity value */
+async function setThemeSongVisualizerOpacity() {
+    try {
+        await addStyle(await resourceAsString("css-themesong_visualizer_opacity"), "themeSongVisualizerOpacity", (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2)));
+    }
+    catch (err) {
+        error("Failed to set ThemeSong visualizer opacity:", err);
     }
 }const songListSelector = `\
 ytmusic-playlist-shelf-renderer #contents,
@@ -9325,10 +9341,23 @@ const featInfo = {
         default: "darker",
         adornments: [adornments.ytmOnly, adornments.reload],
     },
+    themeSongVisualizerOpacity: {
+        type: "slider",
+        category: "integrations",
+        group: "themeSongVisualizer",
+        supportedSites: ["ytm"],
+        since: "3.1.0",
+        default: 100,
+        min: 0,
+        max: 100,
+        step: 5,
+        unit: "%",
+        adornments: [adornments.ytmOnly, adornments.reload],
+    },
     themeSongVisualizerHotkeyEnabled: {
         type: "toggle",
         category: "integrations",
-        group: "themeSongVisualizerHotkey",
+        group: "themeSongVisualizer",
         supportedSites: ["ytm"],
         since: "3.1.0",
         default: false,
@@ -9337,7 +9366,7 @@ const featInfo = {
     themeSongVisualizerHotkey: {
         type: "hotkey",
         category: "integrations",
-        group: "themeSongVisualizerHotkey",
+        group: "themeSongVisualizer",
         supportedSites: ["ytm"],
         since: "3.1.0",
         default: {
@@ -9581,6 +9610,7 @@ const cfgMigrations = {
             "likeDislikeHotkeysToggle",
             "openPluginDiscoverySite",
             "hidePlayerBarOnIdleInFullscreen",
+            "themeSongVisualizerOpacity",
             "themeSongVisualizerHotkeyEnabled",
             "themeSongVisualizerHotkey",
         ]), [
@@ -10652,7 +10682,7 @@ function getLikeDislikeBtns() {
 /**
  * Adds a style element to the DOM at runtime.
  * @param css The CSS stylesheet to add
- * @param ref A reference string to identify the style element - defaults to a random 5-character string
+ * @param ref A reference string to identify the style element - defaults to a random 5-character string - has to be compatible with the HTML id attribute
  * @param transform A function to transform the CSS before adding it to the DOM
  */
 async function addStyle(css, ref, transform = (c) => c) {
@@ -11142,6 +11172,8 @@ async function onDomLoad() {
             if (feats.sponsorBlockIntegration)
                 ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
             const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
+            if (feats.themeSongVisualizerOpacity !== 100)
+                ftInit.push(["themeSongVisualizerOpacity", setThemeSongVisualizerOpacity()]);
             if (feats.themeSongIntegration)
                 ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);
             else
