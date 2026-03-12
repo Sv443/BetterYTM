@@ -485,7 +485,7 @@ export async function initRemShareTrackParam() {
   const [sharePanelSel, inputSel] = (() => {
     switch(getDomain()) {
     case "ytm": return ["tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", "input#share-url"];
-    case "yt": return ["ytd-unified-share-panel-renderer", "input#share-url"];
+    case "yt": return ["yt-unified-share-panel-renderer", "input#share-url"];
     }
   })();
 
