@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@239aac52/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5018d750/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -442,8 +442,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "239aac52",
-    buildTimestamp: "1773270268655",
+    buildNumber: "5018d750",
+    buildTimestamp: "1773322750786",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2243,7 +2243,7 @@ const getLogsTxt = () => {
         if (val instanceof Element)
             return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
         if (typeof val === "function")
-            return val.name ? `[Function <${val.name}()>]` : "[function()]";
+            return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
         if (val instanceof CoreUtils.DatedError)
             return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
         if (val instanceof Error)
@@ -2268,7 +2268,7 @@ const getLogsTxt = () => {
     return sortedLogs.reduce((acc, [type, time, ...args]) => {
         if (args.length === 0)
             return acc;
-        const timestamp = (new Date(time)).toISOString();
+        const timestamp = new Date(time).toISOString();
         try {
             return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
         }
@@ -5918,7 +5918,7 @@ async function initThumbnailOverlay() {
                         && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))))
                     return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
                 /** Call to pass the YT and AM artwork URLs to the DOM elements */
-                const setOverlayUrl = (ytThumbUrl, amThumbUrl) => {
+                const setThumbOverlayUrl = (ytThumbUrl, amThumbUrl) => {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
                     const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
@@ -5941,7 +5941,7 @@ async function initThumbnailOverlay() {
                 const ac = new AbortController();
                 getBestThumbnailUrl(videoID).then((url) => {
                     if (ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
-                        setOverlayUrl(url);
+                        setThumbOverlayUrl(url);
                 }).catch(() => void 0);
                 addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
                     async listener() {
@@ -5979,8 +5979,10 @@ async function initThumbnailOverlay() {
                             ?? bestNativeThumbUrl
                             ?? await getBestThumbnailUrl(videoID);
                         if (thumbUrl) {
-                            log(`Successfully resolved artwork for '${primaryArtist} - ${albumName}'`);
-                            setOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
+                            log(`Successfully resolved artwork${albumName
+                                ? ` for '${primaryArtist} - ${albumName}'`
+                                : `. Couldn't find album name, defaulting to best available YT thumbnail: ${thumbUrl}`}`);
+                            setThumbOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
                         }
                         else
                             warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
@@ -6219,7 +6221,9 @@ async function initHideCursorOnIdle() {
                 hideTransTimer && clearTimeout(hideTransTimer);
                 hide();
             }, { capture: true });
-            vidContainer.addEventListener("click", () => {
+            vidContainer.addEventListener("click", (e) => {
+                if (e.target?.closest("#themesongControlButtonsContainer"))
+                    return;
                 show();
                 cursorHideTimerCb();
                 setTimeout(hide, 3000);
@@ -7479,7 +7483,13 @@ const proxyHotkeys = {
         {
             hkFeatKey: "themeSongVisualizerHotkey",
             domains: ["ytm"],
-            onPress: () => document.querySelector("#ts-visualizer-toggle")?.click(),
+            onPress: (e) => {
+                const toggleEl = document.querySelector("#ts-visualizer-toggle");
+                if (toggleEl) {
+                    preventBubble(e);
+                    toggleEl.click();
+                }
+            },
         },
     ],
 };
@@ -11451,7 +11461,7 @@ function registerDevCommands() {
         });
         dbg("Collecting session info from open tabs...");
         setTimeout(() => {
-            const columns = ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+            const columns = ["#", "Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
             const columnStyle = "color: #db3; font-weight: bold;";
             const resetStyle = "color: inherit; font-weight: inherit;";
             const styles = [];
@@ -11459,9 +11469,10 @@ function registerDevCommands() {
                 styles.push(columnStyle, resetStyle);
             console.log(`[${scriptInfo$1.name}/#DEBUG] Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${CoreUtils.createTable([
                 columns,
-                ...sessions.map(([txID, { sessionId, title, domain, initTime }]) => {
+                ...sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
                     const initSince = CoreUtils.secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
                     return [
+                        i + 1,
                         txID === broadcastTxID ? "Yes" : "No",
                         sessionId,
                         txID,
