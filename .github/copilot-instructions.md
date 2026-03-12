@@ -14,7 +14,9 @@ Components are written using the vanilla JS DOM API, no framework like React is 
 - Use modern (<=ES2024) features where appropriate, but avoid features that aren't in the browser baseline yet.
 - Don't add comments for the sake of comments. Code should be self-explanatory and comments reserved for explanations or important notes.
 - Respect the existing code style and the linter rules at `eslint.config.mjs` and `tsconfig.json`.
-- Don't give up on a problem and suggest adding a `// TODO: fix` comment. Realize dead ends and think about solutions or alternatives. Interject with questions if needed and speak up when there's an objectively better path.
+- Don't give up on a problem and suggest adding a `// TODO: fix` comment.
+- Realize dead ends and think about solutions or alternatives. Interject with questions if needed and speak up when there's an objectively better path.
+- Ask for new or updated context if needed instead of making assumptions.
 - In the output, instead of including unmodified members, only show the new or modified code and make use of comments like `/* existing code */`.
 
 # Libraries Summary

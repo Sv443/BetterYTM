@@ -726,14 +726,8 @@ export async function initThumbnailOverlay() {
     // TODO:FIXME: sometimes when switching videos, the cache gets bypassed and the API is called anyways
     // example: https://music.youtube.com/watch?v=Q6W6Lm3MgGA&list=PLed0zlh3c4e1jxK6QgkFnFhXgnKJswo3A
 
-    /** Shared AbortController - aborted whenever a new applyThumbUrl call supersedes the current one */
-    let applyThumbAc: AbortController | undefined;
-
     /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
     const applyThumbUrl = async (videoID: string) => {
-      applyThumbAc?.abort();
-      const ac = new AbortController();
-      applyThumbAc = ac;
       try {
         const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
         if(
@@ -772,6 +766,7 @@ export async function initThumbnailOverlay() {
         };
 
         let bestNativeThumbUrl: string | undefined;
+        const ac = new AbortController();
         getBestThumbnailUrl(videoID).then((url) => {
           if(ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
             setThumbOverlayUrl(url!);
@@ -779,7 +774,9 @@ export async function initThumbnailOverlay() {
 
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
           async listener() {
-            if(ac.signal.aborted) return;
+            if(ac.signal.aborted)
+              return;
+
             const [primaryArtist, albumName] = (() => {
               // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
               // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
