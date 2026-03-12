@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@51e6ccd4/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@acee3181/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "51e6ccd4",
-    buildTimestamp: "1773324553517",
+    buildNumber: "acee3181",
+    buildTimestamp: "1773329976637",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5721,7 +5721,7 @@ async function initRemShareTrackParam() {
     const [sharePanelSel, inputSel] = (() => {
         switch (getDomain()) {
             case "ytm": return ["tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", "input#share-url"];
-            case "yt": return ["ytd-unified-share-panel-renderer", "input#share-url"];
+            case "yt": return ["yt-unified-share-panel-renderer", "input#share-url"];
         }
     })();
     addSelectorListener("body", sharePanelSel, {
@@ -5910,13 +5910,8 @@ async function initThumbnailOverlay() {
         };
         // TODO:FIXME: sometimes when switching videos, the cache gets bypassed and the API is called anyways
         // example: https://music.youtube.com/watch?v=Q6W6Lm3MgGA&list=PLed0zlh3c4e1jxK6QgkFnFhXgnKJswo3A
-        /** Shared AbortController - aborted whenever a new applyThumbUrl call supersedes the current one */
-        let applyThumbAc;
         /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
         const applyThumbUrl = async (videoID) => {
-            applyThumbAc?.abort();
-            const ac = new AbortController();
-            applyThumbAc = ac;
             try {
                 const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                 if (toggleBtnElem?.dataset.albumArtworkUrl?.startsWith("http")
@@ -5944,6 +5939,7 @@ async function initThumbnailOverlay() {
                     log("Applied thumbnail URL to overlay:", thumbUrl);
                 };
                 let bestNativeThumbUrl;
+                const ac = new AbortController();
                 getBestThumbnailUrl(videoID).then((url) => {
                     if (ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
                         setThumbOverlayUrl(url);
