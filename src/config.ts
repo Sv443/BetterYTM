@@ -241,6 +241,7 @@ export const cfgMigrations: DataMigrationsDict = {
         "likeDislikeHotkeysToggle",
         "openPluginDiscoverySite",
         "hidePlayerBarOnIdleInFullscreen",
+        "themeSongVisualizerOpacity",
         "themeSongVisualizerHotkeyEnabled",
         "themeSongVisualizerHotkey",
       ]),

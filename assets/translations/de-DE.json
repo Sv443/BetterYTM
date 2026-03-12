@@ -524,6 +524,7 @@
   "feature_helptext.themeSongIntegration": "Wenn das ThemeSong Addon installiert ist, aber dieses Feature deaktiviert ist (oder umgekehrt), könntest du kaputtes Styling auf der Seite bemerken.\n\nBitte stelle immer sicher, dass dieses Feature reflektiert, ob das Addon installiert ist oder nicht!",
   "feature_desc.themeSongLightness": "Wie hell die Akzentfarben sein sollen, die vom aktuellen ThemeSong-Theme abgeleitet werden",
   "feature_helptext.themeSongLightness": "Je nach den Einstellungen, die du für das ThemeSong Addon gewählt hast, ermöglicht dir dieses Feature, die Helligkeit der Akzentfarben anzupassen, die vom aktuellen Theme abgeleitet werden.\n\nDieses Feature hat keinen Effekt, wenn das ThemeSong Addon nicht installiert ist.",
+  "feature_desc.themeSongVisualizerOpacity": "Die Deckkraft des ThemeSong Visualizers",
   "feature_desc.themeSongVisualizerHotkeyEnabled": "Füge einen Hotkey hinzu, um den ThemeSong Visualizer ein- und auszuschalten",
   "feature_desc.themeSongVisualizerHotkey": "Der Hotkey, um den ThemeSong Visualizer ein- und auszuschalten",
   "feature_desc.removeThumbnailRatingBar": "Entferne die Bewertungsskala, die von der \"Thumbnail Rating Bar\" Erweiterung hinzugefügt wird",

@@ -513,6 +513,7 @@
   "feature_helptext.themeSongIntegration": "如果安装了 ThemeSong 扩展但此功能已关闭（反之亦然），您可能会注意到网站上的样式损坏。\n\n请始终确保此功能反映了扩展程序是否已安装！",
   "feature_desc.themeSongLightness": "从当前 ThemeSong 主题派生的强调颜色应该有多亮",
   "feature_helptext.themeSongLightness": "根据您为 ThemeSong 扩展选择的设置，此功能允许您调整从当前主题派生的强调颜色的亮度。\n\n如果未安装 ThemeSong 扩展，此功能将不起作用。",
+  "feature_desc.themeSongVisualizerOpacity": "ThemeSong 可视化器叠加层的不透明度",
   "feature_desc.themeSongVisualizerHotkeyEnabled": "添加一个热键以切换 ThemeSong 可视化器",
   "feature_desc.themeSongVisualizerHotkey": "切换 ThemeSong 可视化器的热键",
   "feature_desc.removeThumbnailRatingBar": "移除由\"Thumbnail Rating Bar\"扩展添加的评分栏",

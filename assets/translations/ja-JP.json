@@ -521,6 +521,7 @@
   "feature_helptext.themeSongIntegration": "ThemeSong 拡張機能がインストールされている場合、この機能を有効にすると、サイトのスタイリングに問題が発生するのを防ぐためにいくつかの修正が行われます。\n\nこの機能は拡張機能がインストールされていない場合には効果がありませんので、その場合は有効にしたままにしておくことができます。",
   "feature_desc.themeSongLightness": "現在の ThemeSong テーマから派生したアクセントカラーの明るさ",
   "feature_helptext.themeSongLightness": "ThemeSong 拡張機能の設定に応じて、この機能を使用して、現在のテーマから派生したアクセントカラーの明るさを調整できます。\n\nThemeSong 拡張機能がインストールされていない場合、この機能は効果がありません。",
+  "feature_desc.themeSongVisualizerOpacity": "テーマソングビジュアライザオーバーレイの不透明度",
   "feature_desc.themeSongVisualizerHotkeyEnabled": "テーマソングビジュアライザーをホットキーで切り替える",
   "feature_desc.themeSongVisualizerHotkey": "テーマソングビジュアライザーを切り替えるホットキー",
   "feature_desc.removeThumbnailRatingBar": "watch ページのサムネイルから赤いレーティングバーを削除する",

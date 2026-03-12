@@ -915,6 +915,8 @@ export interface FeatureConfig {
   themeSongIntegration: boolean;
   /** Lightness of the color used when ThemeSong is enabled */
   themeSongLightness: ColorLightnessPref;
+  /** 0-100 value for how opaque the ThemeSong visualizer should be when it's enabled */
+  themeSongVisualizerOpacity: number;
   /** Whether to add a hotkey to toggle the ThemeSong visualizer on and off */
   themeSongVisualizerHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to toggle the ThemeSong visualizer on and off */

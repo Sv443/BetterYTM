@@ -39,6 +39,7 @@ import {
   // integrations category:
   disableDarkReader, fixSponsorBlock,
   fixPlayerPageTheming, fixThemeSong,
+  setThemeSongVisualizerOpacity,
   // general category:
   initVersionCheck,
   // cfg menu:
@@ -336,6 +337,9 @@ async function onDomLoad() {
         ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
 
       const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
+
+      if(feats.themeSongVisualizerOpacity !== 100)
+        ftInit.push(["themeSongVisualizerOpacity", setThemeSongVisualizerOpacity()]);
 
       if(feats.themeSongIntegration)
         ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);

@@ -232,7 +232,7 @@ export function getLikeDislikeBtns() {
 /**
  * Adds a style element to the DOM at runtime.
  * @param css The CSS stylesheet to add
- * @param ref A reference string to identify the style element - defaults to a random 5-character string
+ * @param ref A reference string to identify the style element - defaults to a random 5-character string - has to be compatible with the HTML id attribute
  * @param transform A function to transform the CSS before adding it to the DOM
  */
 export async function addStyle(css: StringGen, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {

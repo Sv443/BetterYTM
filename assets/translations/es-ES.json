@@ -523,6 +523,7 @@
   "feature_helptext.themeSongIntegration": "Si la extensión ThemeSong está instalada pero esta función está desactivada (o viceversa), es posible que notes un estilo roto en el sitio.\n\n¡Asegúrate siempre de que esta función refleje si la extensión está instalada o no!",
   "feature_desc.themeSongLightness": "¿Qué tan claro deben ser los colores de acento derivados del tema actual de ThemeSong?",
   "feature_helptext.themeSongLightness": "Dependiendo de la configuración que hayas elegido para la extensión ThemeSong, esta función te permite ajustar la claridad de los colores de acento que se derivan del tema actual.\n\nEsta función no tendrá efecto si la extensión ThemeSong no está instalada.",
+  "feature_desc.themeSongVisualizerOpacity": "Opacidad de la superposición del visualizador de ThemeSong",
   "feature_desc.themeSongVisualizerHotkeyEnabled": "Habilitar un atajo para alternar el visualizador de ThemeSong",
   "feature_desc.themeSongVisualizerHotkey": "Tecla de acceso rápido para alternar el visualizador de ThemeSong",
   "feature_desc.removeThumbnailRatingBar": "Eliminar la barra de calificación añadida por la extensión \"Thumbnail Rating Bar\"",

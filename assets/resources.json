@@ -15,6 +15,7 @@
     "css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
     "css-show_votes": "styles/showVotes.css",
     "css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
+    "css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
     "css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
     "css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
     "css-vol_slider_size": "styles/volSliderSize.css",
