@@ -731,7 +731,7 @@ function registerDevCommands() {
     dbg("Collecting session info from open tabs...");
 
     setTimeout(() => {
-      const columns = ["Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+      const columns = ["#", "Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
 
       const columnStyle = "color: #db3; font-weight: bold;";
       const resetStyle = "color: inherit; font-weight: inherit;";
@@ -742,9 +742,10 @@ function registerDevCommands() {
       console.log(`[${scriptInfo.name}/#DEBUG] Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
         createTable([
           columns,
-          ...sessions.map(([txID, { sessionId, title, domain, initTime }]) => {
+          ...sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
             const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
             return [
+              i + 1,
               txID === broadcastTxID ? "Yes" : "No",
               sessionId,
               txID,
