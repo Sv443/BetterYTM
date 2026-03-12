@@ -740,7 +740,7 @@ export async function initThumbnailOverlay() {
           return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
 
         /** Call to pass the YT and AM artwork URLs to the DOM elements */
-        const setOverlayUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
+        const setThumbOverlayUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
@@ -769,7 +769,7 @@ export async function initThumbnailOverlay() {
         const ac = new AbortController();
         getBestThumbnailUrl(videoID).then((url) => {
           if(ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
-            setOverlayUrl(url!);
+            setThumbOverlayUrl(url!);
         }).catch(() => void 0);
 
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
@@ -817,8 +817,11 @@ export async function initThumbnailOverlay() {
               ?? await getBestThumbnailUrl(videoID);
 
             if(thumbUrl) {
-              log(`Successfully resolved artwork for '${primaryArtist} - ${albumName}'`);
-              setOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
+              log(`Successfully resolved artwork${albumName
+                ? ` for '${primaryArtist} - ${albumName}'`
+                : `. Couldn't find album name, defaulting to best available YT thumbnail: ${thumbUrl}`
+              }`);
+              setThumbOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
             }
             else
               warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
@@ -1116,7 +1119,10 @@ export async function initHideCursorOnIdle() {
         hideTransTimer && clearTimeout(hideTransTimer);
         hide();
       }, { capture: true });
-      vidContainer.addEventListener("click", () => {
+      vidContainer.addEventListener("click", (e) => {
+        if((e.target as HTMLElement | null)?.closest("#themesongControlButtonsContainer"))
+          return;
+
         show();
         cursorHideTimerCb();
         setTimeout(hide, 3000);

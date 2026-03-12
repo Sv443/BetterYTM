@@ -18,8 +18,11 @@ let curLogLevel = LogLevel.Info;
 const consPrefix = `[${scriptInfo.name}]`;
 const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
 
+/** Tuple representing a single log line, as stored in the {@linkcode logs} array. */
+export type LogLine = [type: string, time: number, ...args: unknown[]];
+
 /** In dev mode, all logs are stored in this array for exporting */
-const logs = [] as [type: string, time: number, ...args: unknown[]][];
+const logs = [] as LogLine[];
 
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 export const getLogsTxt = () => {
@@ -34,7 +37,7 @@ export const getLogsTxt = () => {
     if(val instanceof Element)
       return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
     if(typeof val === "function")
-      return val.name ? `[Function <${val.name}()>]` : "[function()]";
+      return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
     if(val instanceof DatedError)
       return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
     if(val instanceof Error)
@@ -62,7 +65,7 @@ export const getLogsTxt = () => {
     if(args.length === 0)
       return acc;
 
-    const timestamp = (new Date(time)).toISOString();
+    const timestamp = new Date(time).toISOString();
 
     try {
       return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;

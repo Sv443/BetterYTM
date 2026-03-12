@@ -282,7 +282,13 @@ const proxyHotkeys: ProxyHotkeys = {
     {
       hkFeatKey: "themeSongVisualizerHotkey",
       domains: ["ytm"],
-      onPress: () => document.querySelector<HTMLButtonElement>("#ts-visualizer-toggle")?.click(),
+      onPress: (e) => {
+        const toggleEl = document.querySelector<HTMLButtonElement>("#ts-visualizer-toggle");
+        if(toggleEl) {
+          preventBubble(e);
+          toggleEl.click();
+        }
+      },
     },
   ],
 } as const;
