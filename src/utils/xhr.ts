@@ -1,7 +1,7 @@
 import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/coreutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
-import { error, info } from "./logging.js";
+import { error, info, log } from "./logging.js";
 
 //#region misc
 
@@ -123,14 +123,18 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
  */
 export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {
   try {
+    const url = constructUrlString("https://itunes.apple.com/search", {
+      country: "us",
+      limit: 20,
+      entity: "album",
+      term: `${artist} ${album}`,
+    });
+
+    log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
+
     const req = await sendRequest({
       method: "GET",
-      url: constructUrlString("https://itunes.apple.com/search", {
-        country: "us",
-        limit: 5,
-        entity: "album",
-        term: `${artist} ${album}`,
-      }),
+      url,
     });
     const json = JSON.parse(req.response) as ITunesAPIResponse;
 
@@ -141,7 +145,7 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
     if(json.resultCount === 0)
       return [];
 
-    return json.results
+    const filteredResults = json.results
       // filter out invalid results
       .filter((result) => {
         if(!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
@@ -156,6 +160,8 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
           collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, ""),
         } satisfies ITunesAlbumObj;
       });
+
+    return filteredResults;
   }
   catch(err) {
     error("Couldn't fetch iTunes album info due to an error:", err);

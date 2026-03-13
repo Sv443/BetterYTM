@@ -822,8 +822,8 @@ export async function initThumbnailOverlay() {
             if(thumbUrl) {
               log(`Successfully resolved artwork${albumName
                 ? ` for '${primaryArtist} - ${albumName}'`
-                : `. Couldn't find album name, defaulting to best available YT thumbnail: ${thumbUrl}`
-              }`);
+                : ". Couldn't find album name, defaulting to best available YT thumbnail"
+              }: ${thumbUrl}`);
               setThumbOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
             }
             else
