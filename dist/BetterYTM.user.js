@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@acee3181/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5006a77a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -70,9 +70,9 @@
 // @grant             unsafeWindow
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
+// @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.1
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
 // @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
 // @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "acee3181",
-    buildTimestamp: "1773329976637",
+    buildNumber: "5006a77a",
+    buildTimestamp: "1773421628446",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -672,7 +672,7 @@ async function initTranslations(locale) {
     catch (err) {
         const errStr = `Couldn't load translations for locale '${locale}'`;
         error(errStr, err);
-        throw new Error(errStr);
+        throw new Error(errStr, { cause: err });
     }
 }
 /** Fetches the JSON translations file of the passed locale. */
@@ -2014,7 +2014,8 @@ async function setInitialTabVolume(sliderElem) {
     sliderElem.value = String(initialVol);
     vidElem.volume = initialVol / 100;
     sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-    log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
+    const nonLinVol = getFeature("volumeSliderExponential") !== "linear";
+    log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
 }//#region vars
 /** Max amount of seconds a toast can be shown for */
 const maxToastDuration = 15000;
@@ -6698,7 +6699,7 @@ async function getBestThumbnailUrl(videoID) {
         }
     }
     catch (err) {
-        throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
+        throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`, { cause: err });
     }
 }
 /** Opens the given URL in a new tab, using GM.openInTab if available */
@@ -6712,7 +6713,7 @@ function openInTab(href, background = false) {
 }
 /** Tries to parse an uncompressed or compressed input string as a JSON object */
 async function tryToDecompressAndParse(input) {
-    let parsed = null;
+    let parsed;
     const val = await CoreUtils.consumeStringGen(input);
     try {
         parsed = JSON.parse(val);
@@ -6727,7 +6728,7 @@ async function tryToDecompressAndParse(input) {
         }
     }
     // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-    await CoreUtils.pauseFor(CoreUtils.randRange(250, 500));
+    await CoreUtils.pauseFor(CoreUtils.randRange(400, 800));
     return parsed;
 }
 /** Very crude OS detection */
