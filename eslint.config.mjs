@@ -1,8 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "eslint/config";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import storybookEslint from "eslint-plugin-storybook";
 import globals from "globals";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -47,10 +45,6 @@ const config = [
     "plugin:@typescript-eslint/recommended",
   ),
   {
-    plugins: {
-      "@typescript-eslint": typescriptEslint,
-      "storybook": storybookEslint,
-    },
     languageOptions: {
       globals: {
         ...globals.browser,
