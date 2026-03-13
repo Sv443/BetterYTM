@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7954bf46/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d88431e0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "7954bf46",
-    buildTimestamp: "1773422759355",
+    buildNumber: "d88431e0",
+    buildTimestamp: "1773424475301",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -617,32 +617,34 @@ let activeLocale = "en-US";
 let activeLocaleDir = "ltr";
 UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
 UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
-let devUsedTrKeysStoreLoaded = false;
-const devUsedTrKeysStore = new CoreUtils.DataStore({
-    id: "bytm-dev-used-tr-keys",
-    engine: new UserUtils.GMStorageEngine(),
-    defaultData: { keys: [] },
-    formatVersion: 0,
-    compressionFormat: null,
-});
+// let devUsedTrKeysStoreLoaded = false;
+// const devUsedTrKeysStore = new DataStore<{
+//   keys: string[];
+// }>({
+//   id: "bytm-dev-used-tr-keys",
+//   engine: new GMStorageEngine(),
+//   defaultData: { keys: [] },
+//   formatVersion: 0,
+//   compressionFormat: null,
+// });
 /** Used to check which keys are unused. */
 const devMarkTrKeyUsed = async (key) => {
-    try {
-        if (mode$1 !== "development")
-            return;
-        if (!devUsedTrKeysStoreLoaded) {
-            await devUsedTrKeysStore.loadData();
-            devUsedTrKeysStoreLoaded = true;
-        }
-        const data = devUsedTrKeysStore.getData();
-        const keysSet = new Set(data.keys);
-        keysSet.add(key);
-        data.keys = Array.from(keysSet);
-        return await devUsedTrKeysStore.setData(data);
-    }
-    catch (e) {
-        error("Failed to mark translation key as used", e);
-    }
+    // try {
+    //   if(mode !== "development")
+    //     return;
+    //   if(!devUsedTrKeysStoreLoaded) {
+    //     await devUsedTrKeysStore.loadData();
+    //     devUsedTrKeysStoreLoaded = true;
+    //   }
+    //   const data = devUsedTrKeysStore.getData();
+    //   const keysSet = new Set(data.keys);
+    //   keysSet.add(key);
+    //   data.keys = Array.from(keysSet);
+    //   return await devUsedTrKeysStore.setData(data);
+    // }
+    // catch(e) {
+    //   error("Failed to mark translation key as used", e);
+    // }
 };
 /** Initializes the translations for the given locale if they haven't been initialized yet. */
 async function initTranslations(locale) {
@@ -700,7 +702,7 @@ async function hasKey(key) {
 }
 /** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
 async function hasKeyFor(locale, key) {
-    devMarkTrKeyUsed(key);
+    devMarkTrKeyUsed();
     if (!initializedLocales.has(locale))
         await initTranslations(locale);
     return typeof UserUtils.tr.getTranslations(locale)?.[key] === "string";
@@ -723,7 +725,7 @@ function tp(key, num, ...args) {
 function tl(locale, key, ...args) {
     if (locale === "en-US")
         hasKeyFor(locale, key).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
-    devMarkTrKeyUsed(key);
+    devMarkTrKeyUsed();
     return UserUtils.tr.for(locale, key, ...args);
 }
 /**
@@ -735,7 +737,7 @@ function tlp(locale, key, num, ...args) {
     if (typeof num !== "number")
         num = num.length;
     const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
-    devMarkTrKeyUsed(tlKey);
+    devMarkTrKeyUsed();
     if (locale === "en-US")
         hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
     const trans = tl(locale, tlKey, ...args);
@@ -9624,6 +9626,11 @@ const cfgMigrations = {
             { key: "rememberSongTimeDuration", oldDefault: 60 }, // new: 180
             { key: "frameSkipAmount", oldDefault: 0.0417 }, // new: 0.0166
         ]);
+        // dont wanna make a whole new system just for this:
+        artCacheStore.deleteData().then(() => {
+            // no need to load data since artCacheStore.memoryCache === false
+            info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
+        });
         return useNewRanges(newCfg, [
             "initTimeout",
             "thumbnailOverlayITunesImgRes",
@@ -11471,19 +11478,19 @@ function registerDevCommands() {
     GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
     });
-    isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
-        const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
-        const obj = typeof data === "string" ? JSON.parse(data) : data;
-        const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
-        // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
-        const unusedKeys = [];
-        for (const key of allTrKeys) {
-            if (!obj.keys.includes(key) && key !== "meta")
-                unusedKeys.push(key);
-        }
-        if (unusedKeys.length > 0)
-            dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
-    });
+    // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
+    //   const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
+    //   const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
+    //   const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
+    //   // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
+    //   const unusedKeys = [] as string[];
+    //   for(const key of allTrKeys) {
+    //     if(!obj.keys.includes(key) && key !== "meta")
+    //       unusedKeys.push(key);
+    //   }
+    //   if(unusedKeys.length > 0)
+    //     dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+    // });
     isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
         const sessions = [
             [broadcastTxID, {
