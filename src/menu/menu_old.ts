@@ -928,6 +928,14 @@ export async function mountCfgMenu() {
             inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
 
             ctrlElem.appendChild(inputElem);
+
+            if(type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
+              const afterInputUnitEl = document.createElement("span");
+              afterInputUnitEl.classList.add("bytm-ftconf-unit");
+              afterInputUnitEl.textContent = getUnitTxt(inputElem.value);
+
+              ctrlElem.appendChild(afterInputUnitEl);
+            }
           }
           else {
             // custom input element:

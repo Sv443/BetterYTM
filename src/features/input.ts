@@ -29,7 +29,10 @@ const unIgnoreInputClassNames: string[] = [
 ];
 
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
-export function isIgnoredInputElement(el = document.activeElement as Element | null) {
+export function isIgnoredInputElement(el?: Element | null) {
+  if(!el)
+    el = document.activeElement;
+
   if(!el)
     return false;
 

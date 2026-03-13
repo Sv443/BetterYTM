@@ -166,7 +166,7 @@
 .bytm-ftconf-extra-info-category {
   padding-left: 16px;
   padding-right: 16px;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
 }
 
 #bytm-ftconf-category-changelog details summary {
@@ -417,7 +417,7 @@
   overflow: hidden;
   gap: 6px;
   cursor: help;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   width: 24px;
   height: 24px;
   clip-path: polygon(-1px 0, 25px 0, 25px 100%, -1px 100%);
@@ -502,7 +502,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   padding: 8px 16px;
   transition: background-color 0.15s ease-out;
 }
@@ -522,6 +522,10 @@
   align-items: center;
   white-space: nowrap;
   margin-left: 10px;
+}
+
+.bytm-ftconf-unit {
+  margin-left: 6px;
 }
 
 .bytm-ftconf-label {
