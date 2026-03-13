@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7974b2d9/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2b481ae1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "7974b2d9",
-    buildTimestamp: "1773425880193",
+    buildNumber: "2b481ae1",
+    buildTimestamp: "1773429211409",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4955,6 +4955,12 @@ async function mountCfgMenu() {
                         inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
                         inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
                         ctrlElem.appendChild(inputElem);
+                        if (type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
+                            const afterInputUnitEl = document.createElement("span");
+                            afterInputUnitEl.classList.add("bytm-ftconf-unit");
+                            afterInputUnitEl.textContent = getUnitTxt(inputElem.value);
+                            ctrlElem.appendChild(afterInputUnitEl);
+                        }
                     }
                     else {
                         // custom input element:
@@ -6211,7 +6217,10 @@ async function initHideCursorOnIdle() {
                 isFullscreen = fsEnabled;
                 if (!getFeature("hidePlayerBarOnIdleInFullscreen"))
                     return;
-                !fsEnabled && showPlayerBar();
+                if (!fsEnabled)
+                    showPlayerBar();
+                else if ((!lastMouseoverElement || !lastMouseoverElement.closest("ytmusic-player-bar")) && vidContainer.classList.contains("bytm-cursor-hidden"))
+                    hidePlayerBar();
             });
             const show = () => {
                 hideTransTimer && clearTimeout(hideTransTimer);
@@ -7184,7 +7193,9 @@ const unIgnoreInputClassNames = [
     "bytm-btn", // default browser style buttons used by BYTM
 ];
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
-function isIgnoredInputElement(el = document.activeElement) {
+function isIgnoredInputElement(el) {
+    if (!el)
+        el = document.activeElement;
     if (!el)
         return false;
     const isIgnored = el !== document.body && ((ignoreInputTagNames.includes(el.tagName.toUpperCase()))
