@@ -98,7 +98,7 @@ export async function initTranslations(locale: TrLocale) {
   catch(err) {
     const errStr = `Couldn't load translations for locale '${locale}'`;
     error(errStr, err);
-    throw new Error(errStr);
+    throw new Error(errStr, { cause: err });
   }
 }
 

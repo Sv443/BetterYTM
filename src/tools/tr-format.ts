@@ -84,16 +84,13 @@ for(const locale of localeKeys) {
 
   const pattern = /^\s*".*":\s+".*",?$/gm;
   const matchesAmt = localeFile.match(pattern)?.length ?? 0;
-  let match: RegExpExecArray | null = null;
-  let i = 0;
+  let i = 0, match: RegExpExecArray | null;
   while(match = pattern.exec(localeFile)) {
     const part = localeFile.substring(match.index, pattern.lastIndex);
-
     if(i === matchesAmt - 1) {
       if(part.endsWith(","))
         localeFile = localeFile.replace(part, part.substring(0, part.length - 1));
     }
-
     i++;
   }
 

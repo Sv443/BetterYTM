@@ -163,7 +163,7 @@ export async function getBestThumbnailUrl(videoID: string) {
     }
   }
   catch(err) {
-    throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
+    throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`, { cause: err });
   }
 }
 
@@ -179,7 +179,7 @@ export function openInTab(href: string, background = false) {
 
 /** Tries to parse an uncompressed or compressed input string as a JSON object */
 export async function tryToDecompressAndParse<TData = Record<string, unknown>>(input: StringGen): Promise<TData | null> {
-  let parsed: TData | null = null;
+  let parsed: TData | null;
   const val = await consumeStringGen(input);
 
   try {
@@ -196,7 +196,7 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   }
 
   // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-  await pauseFor(randRange(250, 500));
+  await pauseFor(randRange(400, 800));
 
   return parsed;
 }
