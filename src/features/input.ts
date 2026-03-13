@@ -6,17 +6,26 @@ import { addSelectorListener } from "../observers.js";
 
 //#region ignored input elements
 
+/** List of element tag names (uppercase) that, if focused, should make BYTM ignore keypresses */
 const ignoreInputTagNames: string[] = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 
+/** List of element IDs that, if focused, should make BYTM ignore keypresses. */
 const ignoreInputIds: string[] = [
   "contenteditable-root",  // comment field on YT
   "volume-slider",         // volume slider on YTM
   "bytm-cfg-menu-sidenav", // cfg menu sidenav
 ];
 
+/** List of element class names that, if focused, should make BYTM ignore keypresses. */
 const ignoreInputClassNames: string[] = [
   "bytm-ignored-input", // generic class for ignored inputs
   "cbTitleTextBox",     // dearrow title input
+];
+
+/** If an element matches {@linkcode ignoreInputTagNames}, {@linkcode ignoreInputIds} or {@linkcode ignoreInputClassNames}, but also matches {@linkcode unIgnoreInputClassNames}, BYTM will not ignore keypresses when that element is focused. */
+const unIgnoreInputClassNames: string[] = [
+  "bytm-generic-btn", // BYTM's custom rounded buttons
+  "bytm-btn",         // default browser style buttons used by BYTM
 ];
 
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
@@ -24,11 +33,15 @@ export function isIgnoredInputElement(el = document.activeElement as Element | n
   if(!el)
     return false;
 
-  return el !== document.body && (
+  const isIgnored = el !== document.body && (
     (ignoreInputTagNames.includes(el.tagName.toUpperCase()))
     || ignoreInputIds.includes(el.id)
     || ignoreInputClassNames.some((cls) => el.classList.contains(cls))
   );
+
+  const isUnignored = unIgnoreInputClassNames.some((cls) => el.classList.contains(cls));
+
+  return isIgnored && !isUnignored;
 }
 
 //#region arrow key skip
