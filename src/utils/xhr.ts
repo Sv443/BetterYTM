@@ -1,7 +1,7 @@
 import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/coreutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
-import { error, info, warn } from "./logging.js";
+import { error, info } from "./logging.js";
 
 //#region misc
 
@@ -123,19 +123,16 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
  */
 export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {
   try {
-    const res = await fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
-      country: "us",
-      limit: 5,
-      entity: "album",
-      term: `${artist} ${album}`,
-    }));
-
-    if(!res.ok) {
-      warn("Couldn't fetch iTunes album info for", artist, "-", album, "due to a request error:", res);
-      return [];
-    }
-
-    const json = await res.json().catch(warn) as ITunesAPIResponse;
+    const req = await sendRequest({
+      method: "GET",
+      url: constructUrlString("https://itunes.apple.com/search", {
+        country: "us",
+        limit: 5,
+        entity: "album",
+        term: `${artist} ${album}`,
+      }),
+    });
+    const json = JSON.parse(req.response) as ITunesAPIResponse;
 
     if(!("resultCount" in json) || !("results" in json)) {
       error("Couldn't parse iTunes album info due to an error:", json);
@@ -144,12 +141,21 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
     if(json.resultCount === 0)
       return [];
 
-    return json.results.filter((result) => {
-      if(!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
-        return false;
+    return json.results
+      // filter out invalid results
+      .filter((result) => {
+        if(!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
+          return false;
 
-      return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
-    });
+        return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+      })
+      // trim album name (" - Single", " - EP", etc.)
+      .map((result) => {
+        return {
+          ...result,
+          collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, ""),
+        } satisfies ITunesAlbumObj;
+      });
   }
   catch(err) {
     error("Couldn't fetch iTunes album info due to an error:", err);

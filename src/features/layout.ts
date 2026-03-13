@@ -993,7 +993,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
         url: match.artworkUrl100,
         created: Date.now(),
       });
-      log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
+      log(`Added album artwork template URL for '${artist} - ${albumRaw}' (or video with ID '${videoId}') to cache:`, match.artworkUrl100);
       await artCacheStore.setData({ entries });
     }
   }
