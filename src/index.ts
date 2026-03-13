@@ -1,6 +1,6 @@
 import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, downloadFile, errorNoToast, fetchLocaleJson, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
+import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.js";
 import { clearConfig, getFeature, getFeatures, initConfig } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -699,24 +699,24 @@ function registerDevCommands() {
     downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
   });
 
-  isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
-    const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
-    const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
+  // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
+  //   const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
+  //   const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
 
-    const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
+  //   const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
 
-    // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
+  //   // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
 
-    const unusedKeys = [] as string[];
+  //   const unusedKeys = [] as string[];
 
-    for(const key of allTrKeys) {
-      if(!obj.keys.includes(key) && key !== "meta")
-        unusedKeys.push(key);
-    }
+  //   for(const key of allTrKeys) {
+  //     if(!obj.keys.includes(key) && key !== "meta")
+  //       unusedKeys.push(key);
+  //   }
 
-    if(unusedKeys.length > 0)
-      dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
-  });
+  //   if(unusedKeys.length > 0)
+  //     dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+  // });
 
   isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
     const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [

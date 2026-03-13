@@ -1,9 +1,8 @@
-import { DataStore, fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
-import { GMStorageEngine, tr } from "@sv443-network/userutils";
+import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
+import { tr } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, warn } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
 import { getFeature } from "../config.js";
-import { mode } from "../constants.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import tr_enUS from "../../assets/translations/en-US.json" with { type: "json" };
 
@@ -27,37 +26,38 @@ tr.addTransform(tr.transforms.percent);
 tr.addTransform(tr.transforms.templateLiteral);
 
 
-let devUsedTrKeysStoreLoaded = false;
-const devUsedTrKeysStore = new DataStore<{
-  keys: string[];
-}>({
-  id: "bytm-dev-used-tr-keys",
-  engine: new GMStorageEngine(),
-  defaultData: { keys: [] },
-  formatVersion: 0,
-  compressionFormat: null,
-});
+// let devUsedTrKeysStoreLoaded = false;
+// const devUsedTrKeysStore = new DataStore<{
+//   keys: string[];
+// }>({
+//   id: "bytm-dev-used-tr-keys",
+//   engine: new GMStorageEngine(),
+//   defaultData: { keys: [] },
+//   formatVersion: 0,
+//   compressionFormat: null,
+// });
 
 /** Used to check which keys are unused. */
 const devMarkTrKeyUsed = async (key: string) => {
-  try {
-    if(mode !== "development")
-      return;
+  void ["noop for now", key];
+  // try {
+  //   if(mode !== "development")
+  //     return;
 
-    if(!devUsedTrKeysStoreLoaded) {
-      await devUsedTrKeysStore.loadData();
-      devUsedTrKeysStoreLoaded = true;
-    }
+  //   if(!devUsedTrKeysStoreLoaded) {
+  //     await devUsedTrKeysStore.loadData();
+  //     devUsedTrKeysStoreLoaded = true;
+  //   }
 
-    const data = devUsedTrKeysStore.getData();
-    const keysSet = new Set(data.keys);
-    keysSet.add(key);
-    data.keys = Array.from(keysSet);
-    return await devUsedTrKeysStore.setData(data);
-  }
-  catch(e) {
-    error("Failed to mark translation key as used", e);
-  }
+  //   const data = devUsedTrKeysStore.getData();
+  //   const keysSet = new Set(data.keys);
+  //   keysSet.add(key);
+  //   data.keys = Array.from(keysSet);
+  //   return await devUsedTrKeysStore.setData(data);
+  // }
+  // catch(e) {
+  //   error("Failed to mark translation key as used", e);
+  // }
 };
 
 
