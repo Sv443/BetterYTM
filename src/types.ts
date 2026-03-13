@@ -784,8 +784,6 @@ export interface FeatureConfig {
   lyricsCacheTTL: number;
   /** Button to clear lyrics cache */
   clearLyricsCache: undefined;
-  // /** Whether to use advanced filtering when searching for lyrics (exact, exact-ish) */
-  // advancedLyricsFilter: boolean;
 
   //#region volume
   /** Use exponential scaling for the volume slider */
