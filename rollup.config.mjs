@@ -48,6 +48,9 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
   const pluginTypeScriptOptions = {
     typescript,
     sourceMap: mode === "development",
+    compilerOptions: {
+      outDir: outputDir,
+    },
   };
 
   /** @type {import("rollup").RollupOptions} */
