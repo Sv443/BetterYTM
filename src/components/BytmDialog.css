@@ -321,7 +321,7 @@ select.bytm-ftconf-input {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   line-height: 20px;
 }
 

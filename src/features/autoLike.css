@@ -42,7 +42,7 @@
   align-items: center;
   gap: 5px;
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   color: #bbb;
 }
 
@@ -93,7 +93,7 @@
 
 :root .bytm-auto-like-channel-id.bytm-link {
   font-family: var(--bytm-font-monospace);
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   color: #999 !important;
   margin-left: 10px;
 }

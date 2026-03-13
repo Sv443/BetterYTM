@@ -90,7 +90,7 @@
 }
 
 .bytm-plugin-list-row-links-list {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   margin-top: 4px;
   white-space: pre;
 }
@@ -124,7 +124,7 @@
   position: sticky;
   top: 0;
   background-color: var(--bytm-dialog-bg);
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   font-weight: bold;
   padding-bottom: 5px;
 }
