@@ -646,7 +646,7 @@ export async function mountCfgMenu() {
 
           const groupHeader = document.createElement("h3");
           groupHeader.id = `bytm-ftconf-group-${currentGroup}-header`;
-          groupHeader.classList.add("bytm-ftconf-group-header", "bytm-no-select");
+          groupHeader.classList.add("bytm-ftconf-group-header");
           groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`);
           groupHeader.tabIndex = 0;
           groupHeader.role = "heading";

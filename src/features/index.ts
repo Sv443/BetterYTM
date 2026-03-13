@@ -461,8 +461,8 @@ export const featInfo = {
     since: "3.1.0",
     default: 2000,
     min: 500,
-    max: 10_000,
-    step: 250,
+    max: 25_000,
+    step: 500,
     unit: (val: number) => ` ${tp("unit_entries", val)}`,
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     reloadRequired: false,
@@ -829,7 +829,7 @@ export const featInfo = {
       : [adornments.ytmOnly, adornments.reload],
   },
   initialTabVolumeLevel: {
-    type: "slider",
+    type: "number",
     category: "volume",
     group: "initialTabVolume",
     supportedSites: ["ytm"],
@@ -838,6 +838,7 @@ export const featInfo = {
     max: 100,
     step: 1,
     default: 100,
+    unit: "%",
     renderValue: (value) => {
       if(getFeature("volumeSliderExponential") !== "linear") {
         const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
@@ -1136,6 +1137,7 @@ export const featInfo = {
     max: 1,
     step: 0.0001,
     default: 0.0166,
+    unit: "s",
     reloadRequired: false,
     advanced: true,
     adornments: [adornments.ytmOnly, adornments.advanced],
@@ -1167,8 +1169,8 @@ export const featInfo = {
     since: "3.1.0",
     default: 0,
     min: 0,
-    max: 1500,
-    step: 50,
+    max: 2000,
+    step: 100,
     renderValue: (value) => String(
       Number(value) === 0
         ? t("toggled_off")
@@ -1480,7 +1482,7 @@ export const featInfo = {
     adornments: [adornments.ytmOnly, adornments.reload],
   },
   themeSongVisualizerOpacity: {
-    type: "slider",
+    type: "number",
     category: "integrations",
     group: "themeSongVisualizer",
     supportedSites: ["ytm"],
@@ -1488,7 +1490,7 @@ export const featInfo = {
     default: 100,
     min: 0,
     max: 100,
-    step: 5,
+    step: 1,
     unit: "%",
     adornments: [adornments.ytmOnly, adornments.reload],
   },
