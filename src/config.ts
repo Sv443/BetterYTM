@@ -1,6 +1,6 @@
 import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
-import { enableDiscardBeforeUnload, featInfo } from "./features/index.js";
+import { artCacheStore, enableDiscardBeforeUnload, featInfo } from "./features/index.js";
 import { error, info, log, reloadTab, t, warn, type TrLocale } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
@@ -253,6 +253,12 @@ export const cfgMigrations: DataMigrationsDict = {
       ],
     );
 
+    // dont wanna make a whole new system just for this:
+    artCacheStore.deleteData().then(() => {
+      // no need to load data since artCacheStore.memoryCache === false
+      info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
+    });
+
     return useNewRanges(newCfg, [
       "initTimeout",
       "thumbnailOverlayITunesImgRes",
@@ -314,7 +320,7 @@ function clampNewRange(config: FeatureConfig, key: FeatKeysOfType<number>): numb
   const info = featInfo[key] as FeatureConfig[typeof key] extends number ? { min: number; max: number } : never;
   return clamp(val as number, info.min, info.max);
 }
-  
+
 //#region >> store
 
 export const configStore = new DataStore<FeatureConfig>({
