@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2b481ae1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@86e0e03d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "2b481ae1",
-    buildTimestamp: "1773429211409",
+    buildNumber: "86e0e03d",
+    buildTimestamp: "1773430741291",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2881,14 +2881,16 @@ async function fetchVideoVotes(videoID) {
  */
 async function fetchITunesAlbumInfo(artist, album) {
     try {
+        const url = constructUrlString("https://itunes.apple.com/search", {
+            country: "us",
+            limit: 20,
+            entity: "album",
+            term: `${artist} ${album}`,
+        });
+        log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
         const req = await sendRequest({
             method: "GET",
-            url: constructUrlString("https://itunes.apple.com/search", {
-                country: "us",
-                limit: 5,
-                entity: "album",
-                term: `${artist} ${album}`,
-            }),
+            url,
         });
         const json = JSON.parse(req.response);
         if (!("resultCount" in json) || !("results" in json)) {
@@ -2897,7 +2899,7 @@ async function fetchITunesAlbumInfo(artist, album) {
         }
         if (json.resultCount === 0)
             return [];
-        return json.results
+        const filteredResults = json.results
             // filter out invalid results
             .filter((result) => {
             if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
@@ -2911,6 +2913,7 @@ async function fetchITunesAlbumInfo(artist, album) {
                 collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, ""),
             };
         });
+        return filteredResults;
     }
     catch (err) {
         error("Couldn't fetch iTunes album info due to an error:", err);
@@ -6001,7 +6004,7 @@ async function initThumbnailOverlay() {
                         if (thumbUrl) {
                             log(`Successfully resolved artwork${albumName
                                 ? ` for '${primaryArtist} - ${albumName}'`
-                                : `. Couldn't find album name, defaulting to best available YT thumbnail: ${thumbUrl}`}`);
+                                : ". Couldn't find album name, defaulting to best available YT thumbnail"}: ${thumbUrl}`);
                             setThumbOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
                         }
                         else
