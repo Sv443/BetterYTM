@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@89ec8836/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b1d4fc1f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "89ec8836",
-    buildTimestamp: "1773431044063",
+    buildNumber: "b1d4fc1f",
+    buildTimestamp: "1773434163271",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4586,6 +4586,10 @@ async function mountCfgMenu() {
         const onCfgChange = async (key, initialVal, newVal) => {
             const ftInfo = featInfo?.[key];
             const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
+            // clamp newVal to min/max if those exist for this feature:
+            if (["number", "slider"].includes(ftInfo.type) && ("min" in ftInfo || "max" in ftInfo)) {
+                newVal = CoreUtils.clamp(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
+            }
             try {
                 const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
                 info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
@@ -4727,7 +4731,7 @@ async function mountCfgMenu() {
                     groupCont.dataset.group = currentGroup;
                     const groupHeader = document.createElement("h3");
                     groupHeader.id = `bytm-ftconf-group-${currentGroup}-header`;
-                    groupHeader.classList.add("bytm-ftconf-group-header", "bytm-no-select");
+                    groupHeader.classList.add("bytm-ftconf-group-header");
                     groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`);
                     groupHeader.tabIndex = 0;
                     groupHeader.role = "heading";
@@ -4957,6 +4961,19 @@ async function mountCfgMenu() {
                         }
                         inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
                         inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
+                        // after input, clamp the value between min and max
+                        if (type === "number" && ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number")) {
+                            inputElem.addEventListener("blur", () => {
+                                let v = Number(inputElem.value);
+                                if (isNaN(v))
+                                    return;
+                                if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min)
+                                    v = ftInfo.min;
+                                if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max)
+                                    v = ftInfo.max;
+                                inputElem.value = String(v);
+                            });
+                        }
                         ctrlElem.appendChild(inputElem);
                         if (type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
                             const afterInputUnitEl = document.createElement("span");
@@ -8215,7 +8232,7 @@ const featInfo = {
         since: "2.1.0",
         min: mode$1 === "development" ? 0.1 : 3,
         max: 10,
-        default: 5,
+        default: 3,
         step: 0.1,
         unit: "s",
         advanced: true,
@@ -8371,8 +8388,8 @@ const featInfo = {
         since: "3.1.0",
         default: 2000,
         min: 500,
-        max: 10000,
-        step: 250,
+        max: 25000,
+        step: 500,
         unit: (val) => ` ${tp("unit_entries", val)}`,
         renderValue: (val) => formatNumber(Number(val), "long"),
         reloadRequired: false,
@@ -8736,7 +8753,7 @@ const featInfo = {
             : [adornments.ytmOnly, adornments.reload],
     },
     initialTabVolumeLevel: {
-        type: "slider",
+        type: "number",
         category: "volume",
         group: "initialTabVolume",
         supportedSites: ["ytm"],
@@ -8745,6 +8762,7 @@ const featInfo = {
         max: 100,
         step: 1,
         default: 100,
+        unit: "%",
         renderValue: (value) => {
             if (getFeature("volumeSliderExponential") !== "linear") {
                 const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
@@ -9039,6 +9057,7 @@ const featInfo = {
         max: 1,
         step: 0.0001,
         default: 0.0166,
+        unit: "s",
         reloadRequired: false,
         advanced: true,
         adornments: [adornments.ytmOnly, adornments.advanced],
@@ -9070,8 +9089,8 @@ const featInfo = {
         since: "3.1.0",
         default: 0,
         min: 0,
-        max: 1500,
-        step: 50,
+        max: 2000,
+        step: 100,
         renderValue: (value) => String(Number(value) === 0
             ? t("toggled_off")
             : `${value}ms`),
@@ -9373,7 +9392,7 @@ const featInfo = {
         adornments: [adornments.ytmOnly, adornments.reload],
     },
     themeSongVisualizerOpacity: {
-        type: "slider",
+        type: "number",
         category: "integrations",
         group: "themeSongVisualizer",
         supportedSites: ["ytm"],
@@ -9381,7 +9400,7 @@ const featInfo = {
         default: 100,
         min: 0,
         max: 100,
-        step: 5,
+        step: 1,
         unit: "%",
         adornments: [adornments.ytmOnly, adornments.reload],
     },
@@ -9646,7 +9665,7 @@ const cfgMigrations = {
             "themeSongVisualizerHotkey",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
-            { key: "initTimeout", oldDefault: 8 }, // new: 5
+            { key: "initTimeout", oldDefault: 8 }, // new: 3
             { key: "rememberSongTimeDuration", oldDefault: 60 }, // new: 180
             { key: "frameSkipAmount", oldDefault: 0.0417 }, // new: 0.0166
         ]);
