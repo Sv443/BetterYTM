@@ -1092,7 +1092,10 @@ export async function initHideCursorOnIdle() {
         if(!getFeature("hidePlayerBarOnIdleInFullscreen"))
           return;
 
-        !fsEnabled && showPlayerBar();
+        if(!fsEnabled)
+          showPlayerBar();
+        else if((!lastMouseoverElement || !lastMouseoverElement.closest("ytmusic-player-bar")) && vidContainer.classList.contains("bytm-cursor-hidden"))
+          hidePlayerBar();
       });
 
       const show = () => {
