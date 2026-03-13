@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d88431e0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7974b2d9/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "d88431e0",
-    buildTimestamp: "1773424475301",
+    buildNumber: "7974b2d9",
+    buildTimestamp: "1773425880193",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -7165,23 +7165,33 @@ async function renderBody$1() {
     }
     return listContainerEl;
 }//#region ignored input elements
+/** List of element tag names (uppercase) that, if focused, should make BYTM ignore keypresses */
 const ignoreInputTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+/** List of element IDs that, if focused, should make BYTM ignore keypresses. */
 const ignoreInputIds = [
     "contenteditable-root", // comment field on YT
     "volume-slider", // volume slider on YTM
     "bytm-cfg-menu-sidenav", // cfg menu sidenav
 ];
+/** List of element class names that, if focused, should make BYTM ignore keypresses. */
 const ignoreInputClassNames = [
     "bytm-ignored-input", // generic class for ignored inputs
     "cbTitleTextBox", // dearrow title input
+];
+/** If an element matches {@linkcode ignoreInputTagNames}, {@linkcode ignoreInputIds} or {@linkcode ignoreInputClassNames}, but also matches {@linkcode unIgnoreInputClassNames}, BYTM will not ignore keypresses when that element is focused. */
+const unIgnoreInputClassNames = [
+    "bytm-generic-btn", // BYTM's custom rounded buttons
+    "bytm-btn", // default browser style buttons used by BYTM
 ];
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
 function isIgnoredInputElement(el = document.activeElement) {
     if (!el)
         return false;
-    return el !== document.body && ((ignoreInputTagNames.includes(el.tagName.toUpperCase()))
+    const isIgnored = el !== document.body && ((ignoreInputTagNames.includes(el.tagName.toUpperCase()))
         || ignoreInputIds.includes(el.id)
         || ignoreInputClassNames.some((cls) => el.classList.contains(cls)));
+    const isUnignored = unIgnoreInputClassNames.some((cls) => el.classList.contains(cls));
+    return isIgnored && !isUnignored;
 }
 //#region arrow key skip
 let sliderEl;
