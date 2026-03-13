@@ -1,4 +1,4 @@
-import { compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { clamp, compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { isScrollable, openDialogs } from "@sv443-network/userutils";
 import { type cfgDefaultData, cfgFormatVersion, getFeature, getFeatures, cfgMigrations, setFeatures } from "../config.js";
 import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, repo, scriptInfo } from "../constants.js";
@@ -476,6 +476,15 @@ export async function mountCfgMenu() {
       const ftInfo = featInfo?.[key as FeatureKey];
       const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
 
+      // clamp newVal to min/max if those exist for this feature:
+      if(["number", "slider"].includes(ftInfo.type) && ("min" in ftInfo || "max" in ftInfo)) {
+        newVal = clamp(
+          Number(newVal),
+          "min" in ftInfo ? Number(ftInfo.min) : -Infinity,
+          "max" in ftInfo ? Number(ftInfo.max) : Infinity,
+        );
+      }
+
       try {
         const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
         info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
@@ -926,6 +935,20 @@ export async function mountCfgMenu() {
 
             inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
             inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
+
+            // after input, clamp the value between min and max
+            if(type === "number" && ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number")) {
+              inputElem.addEventListener("blur", () => {
+                let v = Number(inputElem.value);
+                if(isNaN(v))
+                  return;
+                if("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min)
+                  v = ftInfo.min;
+                if("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max)
+                  v = ftInfo.max;
+                inputElem.value = String(v);
+              });
+            }
 
             ctrlElem.appendChild(inputElem);
 

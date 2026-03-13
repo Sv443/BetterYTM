@@ -304,7 +304,7 @@ export const featInfo = {
     since: "2.1.0",
     min: mode === "development" ? 0.1 : 3,
     max: 10,
-    default: 5,
+    default: 3,
     step: 0.1,
     unit: "s",
     advanced: true,
