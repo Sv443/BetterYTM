@@ -416,5 +416,7 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
   vidElem.volume = initialVol / 100;
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
 
-  log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
+  const nonLinVol = getFeature("volumeSliderExponential") !== "linear";
+
+  log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
 }
