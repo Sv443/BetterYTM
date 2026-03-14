@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b1d4fc1f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@17fa5d9e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -146,6 +146,7 @@ var resources = {
 	"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
 	"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
 	"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
+	"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
 	"css-vol_slider_size": "styles/volSliderSize.css",
 	"css-watch_page_full_size": "styles/watchPageFullSize.css",
 	"doc-license": {
@@ -443,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "b1d4fc1f",
-    buildTimestamp: "1773434163271",
+    buildNumber: "17fa5d9e",
+    buildTimestamp: "1773493570818",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6153,12 +6154,14 @@ async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
     if (match) {
         const entries = (await artCacheStore.loadData()).entries;
         if (!entries.some((e) => e.videoId === videoId)) {
-            entries.push({
+            const entry = {
                 videoId,
                 url: match.artworkUrl100,
                 created: Date.now(),
-            });
+            };
+            entries.push(entry);
             log(`Added album artwork template URL for '${artist} - ${albumRaw}' (or video with ID '${videoId}') to cache:`, match.artworkUrl100);
+            emitInterface("bytm:artworkCacheEntryAdded", { album: albumRaw, artist, entry });
             await artCacheStore.setData({ entries });
         }
     }
@@ -6429,6 +6432,14 @@ async function initWatchPageFullSize() {
         error("Couldn't load stylesheet to make watch page full size");
     else
         log("Made watch page full size");
+}
+//#region truncate player bar subtitles
+/** Truncates long subtitles in the player bar with an ellipsis */
+async function initTruncatePlayerBarSubtitles() {
+    if (!await addStyleFromResource("css-truncate_player_bar_subtitles"))
+        error("Couldn't load stylesheet to truncate player bar subtitles");
+    else
+        log("Truncated player bar subtitles");
 }/** Central serializer for all data stores */
 let serializer;
 /** Central serializer for all data stores, including the caches and other stores that have volatile enough data */
@@ -7640,12 +7651,10 @@ async function fixThemeSong() {
 }
 /** Sets the opacity of the ThemeSong visualizer according to the configured opacity value */
 async function setThemeSongVisualizerOpacity() {
-    try {
-        await addStyle(await resourceAsString("css-themesong_visualizer_opacity"), "themeSongVisualizerOpacity", (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2)));
-    }
-    catch (err) {
-        error("Failed to set ThemeSong visualizer opacity:", err);
-    }
+    if (!await addStyleFromResource("css-themesong_visualizer_opacity", (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2))))
+        error("Couldn't add ThemeSong visualizer opacity style");
+    else
+        log("Set ThemeSong visualizer opacity to " + getFeature("themeSongVisualizerOpacity") + "%");
 }const songListSelector = `\
 ytmusic-playlist-shelf-renderer #contents,
 ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
@@ -8334,12 +8343,21 @@ const featInfo = {
     fixSpacing: {
         type: "toggle",
         category: "layout",
-        group: "fixSpacing",
+        group: "fixLayout",
         supportedSites: ["ytm"],
         since: "1.0.0",
         default: true,
         advanced: true,
         adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
+    },
+    truncatePlayerBarSubtitles: {
+        type: "toggle",
+        category: "layout",
+        group: "fixLayout",
+        supportedSites: ["ytm"],
+        since: "3.1.0",
+        default: true,
+        adornments: [adornments.ytmOnly, adornments.reload],
     },
     thumbnailOverlayBehavior: {
         type: "select",
@@ -9663,6 +9681,7 @@ const cfgMigrations = {
             "themeSongVisualizerOpacity",
             "themeSongVisualizerHotkeyEnabled",
             "themeSongVisualizerHotkey",
+            "truncatePlayerBarSubtitles",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
             { key: "initTimeout", oldDefault: 8 }, // new: 3
@@ -10752,13 +10771,17 @@ async function addStyle(css, ref, transform = (c) => c) {
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
 async function addStyleFromResource(key, transform = (c) => c) {
-    const css = await fetchCss(key);
-    if (css) {
-        await addStyle(String(transform(css)), key.slice(4));
-        return true;
+    try {
+        const css = await fetchCss(key);
+        if (css) {
+            await addStyle(String(transform(css)), key.slice(4));
+            return true;
+        }
     }
-    error(`Couldn't add style from resource "${key}" - check adjacent console errors for details`);
-    return false;
+    catch (err) {
+        error(`Couldn't add style from resource "${key}":`, err);
+        return false;
+    }
 }
 /** Sets a global CSS variable on the &lt;document&gt; element with the name `--bytm-global-${name}` */
 function setGlobalCssVar(name, value) {
@@ -11191,6 +11214,8 @@ async function onDomLoad() {
                 })()]);
             if (feats.fixSpacing)
                 ftInit.push(["fixSpacing", fixSpacing()]);
+            if (feats.truncatePlayerBarSubtitles)
+                ftInit.push(["truncatePlayerBarSubtitles", initTruncatePlayerBarSubtitles()]);
             ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
             if (feats.hideCursorOnIdle)
                 ftInit.push(["hideCursorOnIdle", initHideCursorOnIdle()]);
@@ -11207,7 +11232,7 @@ async function onDomLoad() {
             //#region (ytm) song lists
             if (feats.lyricsQueueButton || feats.deleteFromQueueButton)
                 ftInit.push(["queueButtons", initQueueButtons()]);
-            ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
+            ftInit.push(["aboveQueueButtons", initAboveQueueBtns()]);
             if (feats.songListTrackNumbersEnabled)
                 ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
             //#region (ytm) behavior
