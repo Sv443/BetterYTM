@@ -124,6 +124,7 @@ Note: The 🔒 emoji means it's an authenticated function and you're *required t
         - [`bytm:lyricsLoaded`](#bytm-lyricsloaded) - lyrics for a song were loaded
         - [`bytm:lyricsCacheCleared`](#bytm-lyricscachecleared)
         - [`bytm:lyricsCacheEntryAdded`](#bytm-lyricscacheentryadded)
+        - [`bytm:artworkCacheEntryAdded`](#bytm-artworkcacheentryadded)
       - Dialogs:
         - [`bytm:dialogOpened`](#bytm-dialogopened) - a BytmDialog was opened
         - [`bytm:dialogOpened:id`](#bytm-dialogopened-id) - a BytmDialog was opened
@@ -190,6 +191,7 @@ The timings might be slightly off in each session, but this should give you a go
 - `[Both]     ` : [`bytm:siteEvent:queueChanged`](#bytm-siteevent-queuechanged) - currently playing queue changed
 - `[Both]     ` : [`bytm:siteEvent:songTitleChanged`](#bytm-siteevent-songtitlechanged) - song title changed
 - `[Interface]` : [`bytm:lyricsCacheEntryAdded`](#bytm-lyricscacheentryadded) - current lyrics URL fetched and added to cache
+- `[Interface]` : [`bytm:artworkCacheEntryAdded`](#bytm-artworkcacheentryadded) - current artwork URL fetched and added to cache
 - `[Interface]` : [`bytm:lyricsLoaded`](#bytm-lyricsloaded) - lyrics URL loaded and ready
 
 ### 3. Open and immediately close any BytmDialog dialog (not the config menu)

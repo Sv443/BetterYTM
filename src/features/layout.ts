@@ -11,6 +11,7 @@ import { error, log, warn } from "../utils/logging.js";
 import { t, tp } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
+import { emitInterface } from "../interface.js";
 import { compressionFormat, mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { showPrompt } from "../dialogs/prompt.js";
@@ -603,9 +604,13 @@ export async function initAboveQueueBtns() {
 
 //#region thumb.overlay
 
-type ArtCacheEntry = {
+/** An entry in the {@linkcode artCacheStore} */
+export type ArtCacheEntry = {
+  /** ID of the video the thumbnail belongs to */
   videoId: string;
+  /** Template URL with the default resolution 100x100 */
   url: string;
+  /** When the entry was created and added to the cache (used for TTL) */
   created: number;
 };
 
@@ -988,12 +993,14 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
   if(match) {
     const entries = (await artCacheStore.loadData()).entries;
     if(!entries.some((e) => e.videoId === videoId)) {
-      entries.push({
+      const entry: ArtCacheEntry = {
         videoId,
         url: match.artworkUrl100,
         created: Date.now(),
-      });
+      };
+      entries.push(entry);
       log(`Added album artwork template URL for '${artist} - ${albumRaw}' (or video with ID '${videoId}') to cache:`, match.artworkUrl100);
+      emitInterface("bytm:artworkCacheEntryAdded", { album: albumRaw, artist, entry });
       await artCacheStore.setData({ entries });
     }
   }

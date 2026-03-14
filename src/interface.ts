@@ -5,7 +5,7 @@ import * as constants from "./constants.js";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "./config.js";
-import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong } from "./features/index.js";
+import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "./features/index.js";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "./siteEvents.js";
 import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
@@ -93,6 +93,8 @@ export type InterfaceEvents = {
   "bytm:lyricsCacheCleared": undefined;
   /** Emitted when an entry is added to the lyrics cache - "penalized" entries get removed from cache faster because they were less related in lyrics lookups, opposite to the "best" entries */
   "bytm:lyricsCacheEntryAdded": { type: "best" | "penalized", entry: LyricsCacheEntry };
+  /** Emitted when an entry is added to the artwork cache. Note: `entry.url` will be the *template URL* with a default resolution of 100x100. Use a simple string replacement to get any other resolution */
+  "bytm:artworkCacheEntryAdded": { artist: string, album: string, entry: ArtCacheEntry };
 
   // NOTE:
   // Additionally, all events from `SiteEventsMap` in `src/siteEvents.ts`
@@ -117,6 +119,7 @@ export const allInterfaceEvents = [
   "bytm:lyricsCacheReady",
   "bytm:lyricsCacheCleared",
   "bytm:lyricsCacheEntryAdded",
+  "bytm:artworkCacheEntryAdded",
   ...allSiteEvents.map(e => `bytm:siteEvent:${e}`),
 ] as const;
 
