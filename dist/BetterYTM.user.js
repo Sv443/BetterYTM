@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           3.0.0
+// @version           3.1.0-rc.1
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@94c525fb/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@610951c0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -444,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "94c525fb",
-    buildTimestamp: "1773513521293",
+    buildNumber: "610951c0",
+    buildTimestamp: "1773514067372",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1302,7 +1302,7 @@ function runIntervalChecks() {
         emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
         lastPathname = String(location.pathname);
     }
-}var version = "3.0.0";
+}var version = "3.1.0-rc.1";
 var license = "AGPL-3.0-or-later";
 var homepage = "https://github.com/Sv443/BetterYTM";
 var namespace = "https://github.com/Sv443/BetterYTM";
@@ -5068,7 +5068,7 @@ async function mountCfgMenu() {
                     scriptName: scriptInfo$1.name,
                     scriptVersion: pkg.version,
                     buildNumber: buildNumber$1,
-                    buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
+                    buildDate: new Date(buildTimestamp).toLocaleString(getLocale(), {
                         dateStyle: "medium",
                     }),
                     buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber$1}`,
@@ -6790,7 +6790,7 @@ function getOS() {
 }
 /** Formats a number based on the config or the passed {@linkcode notation} */
 function formatNumber(num, notation) {
-    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation ?? getFeature("numbersFormat")) === "short"
+    return num.toLocaleString(getLocale(), (notation ?? getFeature("numbersFormat")) === "short"
         ? {
             notation: "compact",
             compactDisplay: "short",
@@ -6874,7 +6874,7 @@ async function initVersionSessionCounter() {
     if (typeof verSessions !== "object" || verSessions === null)
         verSessions = {};
     if (typeof verSessions?.[scriptInfo$1.version] !== "object" || typeof verSessions?.[scriptInfo$1.version]?.count !== "number")
-        verSessions[scriptInfo$1.version] = { count: 0 };
+        verSessions[scriptInfo$1.version] = { count: 1 };
     else
         verSessions[scriptInfo$1.version].count++;
     await GM.setValue("bytm-version-session-counter", JSON.stringify(verSessions));
@@ -8060,7 +8060,7 @@ async function resolveAdornments(ftInfo, featKey) {
         adorns = adorns();
     const isDev = mode$1 === "development";
     const resolvedAdorns = adorns ? [...adorns] : [];
-    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : "=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev))
+    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : ">=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev))
         resolvedAdorns.push(adornments.newFeature);
     const sortedAdorns = resolvedAdorns.sort((a, b) => {
         const aIdx = adornmentOrder.has(a) ? adornmentOrder.get(a) : 0;
