@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@17fa5d9e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@94c525fb/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -444,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "17fa5d9e",
-    buildTimestamp: "1773493570818",
+    buildNumber: "94c525fb",
+    buildTimestamp: "1773513521293",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -903,7 +903,9 @@ class BytmDialog extends CoreUtils.NanoEmitter {
             return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
         dialogBg.style.visibility = "hidden";
         dialogBg.style.display = "none";
-        openDialogs.splice(openDialogs.indexOf(this.id), 1);
+        const oidx = openDialogs.indexOf(this.id);
+        if (oidx > -1)
+            openDialogs.splice(oidx, 1);
         currentDialogId = openDialogs[0] ?? null;
         this.events.emit("close");
         emitInterface("bytm:dialogClosed", this);
@@ -5248,24 +5250,21 @@ async function mountCfgMenu() {
         isCfgMenuMounting = false;
         isCfgMenuDoneMounting = true;
         forceEmitSiteEvent("cfgMenuMounted");
-        // ensure menu is inert if BytmDialog instances stacked on top of it:
-        /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
-        const stackedOpenDialogIds = [];
+        // ensure menu container is inert when BytmDialog instances are stacked on top:
         window.addEventListener("bytm:dialogOpened", (evt) => {
-            if (!isCfgMenuOpen || !("detail" in evt))
+            if (!isCfgMenuOpen)
                 return;
             const dlg = evt?.detail;
-            if (dlg && dlg instanceof BytmDialog) {
-                stackedOpenDialogIds.push(dlg.id);
+            if (dlg instanceof BytmDialog) {
                 menuContainer.setAttribute("aria-hidden", "true");
                 menuContainer.setAttribute("inert", "true");
             }
         });
-        window.addEventListener("bytm:dialogClosed", (evt) => {
-            const idx = stackedOpenDialogIds.indexOf(evt?.detail?.id);
-            if (idx > -1)
-                stackedOpenDialogIds.splice(idx, 1);
-            if (stackedOpenDialogIds.length === 0) {
+        window.addEventListener("bytm:dialogClosed", () => {
+            if (!isCfgMenuOpen)
+                return;
+            // restore menu container once no BytmDialogs remain stacked on top
+            if (!openDialogs.some(id => id !== "cfg-menu")) {
                 menuContainer.removeAttribute("aria-hidden");
                 menuContainer.removeAttribute("inert");
             }
@@ -5319,7 +5318,7 @@ async function openCfgMenu() {
         document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-cfg-menu-bg");
         setCurrentDialogId("cfg-menu");
-        UserUtils.openDialogs.unshift("cfg-menu");
+        openDialogs.unshift("cfg-menu");
         // since this menu doesn't have a BytmDialog instance, it's undefined here
         emitInterface("bytm:dialogOpened", undefined);
         emitInterface("bytm:dialogOpened:cfg-menu", undefined);
@@ -5348,14 +5347,16 @@ function closeCfgMenu(evt, enableScroll = true) {
         return;
     isCfgMenuOpen = false;
     evt?.bubbles && evt.stopPropagation();
-    if (enableScroll) {
+    if (enableScroll && !openDialogs.some(id => id !== "cfg-menu")) {
         document.body.classList.remove("bytm-disable-scroll");
         document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     }
     const menuBg = document.querySelector("#bytm-cfg-menu-bg");
     clearTimeout(hiddenCopiedTxtTimeout);
-    UserUtils.openDialogs.splice(UserUtils.openDialogs.indexOf("cfg-menu"), 1);
-    setCurrentDialogId(UserUtils.openDialogs?.[0] ?? null);
+    const cfgIdx = openDialogs.indexOf("cfg-menu");
+    if (cfgIdx > -1)
+        openDialogs.splice(cfgIdx, 1);
+    setCurrentDialogId(openDialogs?.[0] ?? null);
     // since this menu doesn't have a BytmDialog instance, it's undefined here
     emitInterface("bytm:dialogClosed", undefined);
     emitInterface("bytm:dialogClosed:cfg-menu", undefined);
