@@ -1,7 +1,7 @@
 {
-  "name": "betterytm",
+  "name": "@sv443/betterytm",
   "userscriptName": "BetterYTM",
-  "version": "3.0.0",
+  "version": "3.1.0-rc.1",
   "description": "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
   "license": "AGPL-3.0-or-later",
   "homepage": "https://github.com/Sv443/BetterYTM",
