@@ -211,7 +211,7 @@ export function getOS() {
 /** Formats a number based on the config or the passed {@linkcode notation} */
 export function formatNumber(num: number, notation?: NumberLengthFormat): string {
   return num.toLocaleString(
-    getLocale().replace(/_/g, "-"),
+    getLocale(),
     (notation ?? getFeature("numbersFormat")) === "short"
       ? {
         notation: "compact",
@@ -336,7 +336,7 @@ export async function initVersionSessionCounter(): Promise<number> {
     verSessions = {};
 
   if(typeof verSessions?.[scriptInfo.version] !== "object" || typeof verSessions?.[scriptInfo.version]?.count !== "number")
-    verSessions![scriptInfo.version] = { count: 0 };
+    verSessions![scriptInfo.version] = { count: 1 };
   else
     verSessions![scriptInfo.version]!.count++;
 

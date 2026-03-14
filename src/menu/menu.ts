@@ -1059,7 +1059,7 @@ export async function mountCfgMenu() {
           scriptName: scriptInfo.name,
           scriptVersion: pkg.version,
           buildNumber,
-          buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
+          buildDate: new Date(buildTimestamp).toLocaleString(getLocale(), {
             dateStyle: "medium",
           }),
           buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber}`,
