@@ -5,7 +5,7 @@ import { error, info, log, reloadTab, t, warn, type TrLocale } from "./utils/ind
 import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
-import { closeCfgMenu, openCfgMenu } from "./menu/menu_old.js";
+import { closeCfgMenu, openCfgMenu } from "./menu/menu.js";
 import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 

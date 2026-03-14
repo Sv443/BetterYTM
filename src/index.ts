@@ -11,7 +11,7 @@ import { initObservers, addSelectorListener, globservers } from "./observers.js"
 import { downloadData, getDSSerializer } from "./serializers.js";
 import { getWelcomeDialog } from "./dialogs/welcome.js";
 import { showPrompt } from "./dialogs/prompt.js";
-import { mountCfgMenu } from "./menu/menu_old.js";
+import { mountCfgMenu } from "./menu/menu.js";
 import {
   // layout category:
   addWatermark, initRemShareTrackParam,

@@ -1,6 +1,6 @@
 import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "../utils/index.js";
 import { BytmDialog } from "../components/BytmDialog.js";
-import { openCfgMenu } from "../menu/menu_old.js";
+import { openCfgMenu } from "../menu/menu.js";
 import { mode, scriptInfo } from "../constants.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
 import pkg from "../../package.json" with { type: "json" };

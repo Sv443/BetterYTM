@@ -13,7 +13,7 @@ import { onInteraction } from "../utils/input.js";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
 import { emitInterface } from "../interface.js";
 import { compressionFormat, mode, scriptInfo } from "../constants.js";
-import { openCfgMenu } from "../menu/menu_old.js";
+import { openCfgMenu } from "../menu/menu.js";
 import { showPrompt } from "../dialogs/prompt.js";
 import { createRipple } from "../components/ripple.js";
 import { createCircularBtn } from "../components/circularButton.js";
