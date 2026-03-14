@@ -280,6 +280,9 @@
   "plugin_validation_error_invalid_property-1": "属性 '${property}' 的属性値 '${value}' 无效。示例属性値：${example}",
   "plugin_validation_error_invalid_property-n": "属性 '${property}' 的属性値 '${value}' 无效。示例属性値：${example}",
 
+  "dev_plugin.name": "开发者插件",
+  "dev_plugin.description": "仅在开发模式下存在的内部插件，以便更轻松地测试插件系统。",
+
   "cfg_menu_sidenav_label": "配置菜单导航",
   "cfg_menu_sidenav_top_section_label": "配置设置类别",
   "cfg_menu_sidenav_bottom_section_label": "额外信息类别",

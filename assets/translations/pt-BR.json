@@ -293,6 +293,9 @@
   "plugin_validation_error_invalid_property-1": "Propriedade '${property}' com valor '${value}' é inválida. Valor de exemplo: ${example}",
   "plugin_validation_error_invalid_property-n": "Propriedade '${property}' com valor '${value}' é inválida. Valores de exemplo: ${example}",
 
+  "dev_plugin.name": "Plugin de Desenvolvedor",
+  "dev_plugin.description": "Plugin interno que só existe no modo de desenvolvimento para facilitar o teste do sistema de plugins.",
+
   "cfg_menu_sidenav_label": "Navegação do menu de configuração",
   "cfg_menu_sidenav_top_section_label": "Categorias de configurações",
   "cfg_menu_sidenav_bottom_section_label": "Categorias de informações extras",

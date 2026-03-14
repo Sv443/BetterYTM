@@ -292,6 +292,10 @@
   "plugin_validation_error_no_property": "गुणधर्म '${property}' जिसका प्रकार '${type}' है नहीं है",
   "plugin_validation_error_invalid_property-1": "गुणधर्म '${property}' जिसका मान '${value}' अमान्य है। उदाहरण मान: ${example}",
   "plugin_validation_error_invalid_property-n": "गुणधर्म '${property}' जिसका मान '${value}' अमान्य है। उदाहरण मान: ${example}",
+
+  "dev_plugin.name": "डेवलपर प्लगइन",
+  "dev_plugin.description": "डेवलपमेंट मोड में मौजूद आंतरिक प्लगइन जो प्लगइन सिस्टम का परीक्षण करना आसान बनाता है।",
+
   "cfg_menu_sidenav_label": "कॉन्फ़िगरेशन मेनू नेविगेशन",
   "cfg_menu_sidenav_top_section_label": "कॉन्फ़िगरेशन सेटिंग्स श्रेणियाँ",
   "cfg_menu_sidenav_bottom_section_label": "अतिरिक्त जानकारी श्रेणियाँ",

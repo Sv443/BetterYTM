@@ -1,6 +1,6 @@
 import { bitSetHas } from "@sv443-network/coreutils";
 import { BytmDialog } from "../components/BytmDialog.js";
-import { devPluginId, devPluginName, devPluginToken, getPluginInfo, getRegisteredPlugins } from "../interface.js";
+import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins } from "../interface.js";
 import { getLocale, activeLocaleDir, t } from "../utils/translations.js";
 import { setInnerHtml } from "../utils/dom.js";
 import { PluginIntent } from "../types.js";
@@ -130,7 +130,7 @@ async function renderBody() {
     }
 
     const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
-    const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${devPluginName}`;
+    const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
     const isDevPlugin = Boolean(
       pluginIdentifier === devPluginIdentifier
       && getPluginInfo(devPluginToken, devPluginIdentifier)
