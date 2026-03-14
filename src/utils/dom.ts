@@ -248,13 +248,17 @@ export async function addStyle(css: StringGen, ref?: string, transform: (css: st
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
 export async function addStyleFromResource(key: StyleResourceKey, transform: (css: string) => Stringifiable = (c) => c) {
-  const css = await fetchCss(key);
-  if(css) {
-    await addStyle(String(transform(css)), key.slice(4));
-    return true;
+  try {
+    const css = await fetchCss(key);
+    if(css) {
+      await addStyle(String(transform(css)), key.slice(4));
+      return true;
+    }
   }
-  error(`Couldn't add style from resource "${key}" - check adjacent console errors for details`);
-  return false;
+  catch(err) {
+    error(`Couldn't add style from resource "${key}":`, err);
+    return false;
+  }
 }
 
 /** Sets a global CSS variable on the &lt;document&gt; element with the name `--bytm-global-${name}` */
