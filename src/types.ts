@@ -19,6 +19,7 @@ import type { createRipple } from "./components/ripple.js";
 import type { showIconToast, showToast } from "./components/toast.js";
 import resources from "../assets/resources.json" with { type: "json" };
 import locales from "../assets/locales.json" with { type: "json" };
+import type { featInfo } from "./features/index.js";
 
 void ["type imports only:", resources, locales];
 
@@ -535,6 +536,9 @@ export type InterfaceFunctions = {
 /** Feature identifier key */
 export type FeatureKey = keyof FeatureConfig;
 
+/** All feature group keys, as defined by the "group" property of each entry in the feature info list in `src/features/index.ts` */
+export type FeatureGroupKey = (typeof featInfo)[FeatureKey]["group"];
+
 /** Union of all feature identifier keys, where the value is of the specified type {@linkcode TType} */
 export type FeatKeysOfType<TType> = KeysOfType<FeatureConfig, TType>;
 
@@ -718,6 +722,8 @@ export interface FeatureConfig {
   removeShareTrackingParamSites: SiteSelection;
   /** Fix spacing issues in the layout */
   fixSpacing: boolean;
+  /** Whether to truncate the song title, artist name, album name, release year, and like/dislike ratio in the player bar using an ellipsis */
+  truncatePlayerBarSubtitles: boolean;
   /** Where to show a thumbnail overlay over the video element and whether to show it at all */
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */

@@ -15,9 +15,10 @@ import { mountCfgMenu } from "./menu/menu_old.js";
 import {
   // layout category:
   addWatermark, initRemShareTrackParam,
-  fixSpacing, initThumbnailOverlay,
-  fixHdrIssues, initShowVotes,
-  initSwapLikeDislikeBtns, initWatchPageFullSize,
+  fixSpacing, initTruncatePlayerBarSubtitles,
+  initThumbnailOverlay, fixHdrIssues,
+  initShowVotes, initSwapLikeDislikeBtns,
+  initWatchPageFullSize,
   // volume category:
   initVolumeFeatures, initExponentialVolume,
   // song lists category:
@@ -48,7 +49,7 @@ import {
   improveLogo,
 } from "./features/index.js";
 import resourcesJson from "../assets/resources.json" with { type: "json" };
-import { LogLevel, type FeatureKey, type ResourceKey } from "./types.js";
+import { LogLevel, type FeatureGroupKey, type FeatureKey, type ResourceKey } from "./types.js";
 
 //#region cns. watermark
 
@@ -221,7 +222,7 @@ async function onDomLoad() {
 
   const domain = getDomain();
   const feats = getFeatures();
-  const ftInit = [] as [string, Promise<void | unknown>][];
+  const ftInit = [] as [key: LooseUnion<FeatureKey | FeatureGroupKey>, Promise<void | unknown>][];
 
   // for being able to query styles based on domain (just prefix any CSS selector with ".bytm-dom-yt " or ".bytm-dom-ytm ")
   document.body.classList.add(`bytm-dom-${domain}`);
@@ -277,6 +278,9 @@ async function onDomLoad() {
       if(feats.fixSpacing)
         ftInit.push(["fixSpacing", fixSpacing()]);
 
+      if(feats.truncatePlayerBarSubtitles)
+        ftInit.push(["truncatePlayerBarSubtitles", initTruncatePlayerBarSubtitles()]);
+
       ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
 
       if(feats.hideCursorOnIdle)
@@ -303,7 +307,7 @@ async function onDomLoad() {
       if(feats.lyricsQueueButton || feats.deleteFromQueueButton)
         ftInit.push(["queueButtons", initQueueButtons()]);
 
-      ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
+      ftInit.push(["aboveQueueButtons", initAboveQueueBtns()]);
 
       if(feats.songListTrackNumbersEnabled)
         ftInit.push(["songListTrackNumbers", addTrackNumbers()]);

@@ -57,12 +57,6 @@ html[dark] {
   align-items: center;
 }
 
-.subtitle yt-formatted-string a,
-.subtitle yt-formatted-string span:last-of-type {
-  text-overflow: ellipsis;
-  overflow-x: hidden;
-}
-
 :root ytmusic-description-shelf-renderer[is-track-lyrics-page] {
   user-select: unset !important;
 }

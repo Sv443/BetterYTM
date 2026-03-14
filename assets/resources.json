@@ -18,6 +18,7 @@
     "css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
     "css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
     "css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
+    "css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
     "css-vol_slider_size": "styles/volSliderSize.css",
     "css-watch_page_full_size": "styles/watchPageFullSize.css",
     "doc-license": {

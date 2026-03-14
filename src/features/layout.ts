@@ -1336,3 +1336,13 @@ export async function initWatchPageFullSize() {
   else
     log("Made watch page full size");
 }
+
+//#region truncate player bar subtitles
+
+/** Truncates long subtitles in the player bar with an ellipsis */
+export async function initTruncatePlayerBarSubtitles() {
+  if(!await addStyleFromResource("css-truncate_player_bar_subtitles"))
+    error("Couldn't load stylesheet to truncate player bar subtitles");
+  else
+    log("Truncated player bar subtitles");
+}

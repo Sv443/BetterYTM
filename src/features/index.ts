@@ -407,12 +407,21 @@ export const featInfo = {
   fixSpacing: {
     type: "toggle",
     category: "layout",
-    group: "fixSpacing",
+    group: "fixLayout",
     supportedSites: ["ytm"],
     since: "1.0.0",
     default: true,
     advanced: true,
     adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
+  },
+  truncatePlayerBarSubtitles: {
+    type: "toggle",
+    category: "layout",
+    group: "fixLayout",
+    supportedSites: ["ytm"],
+    since: "3.1.0",
+    default: true,
+    adornments: [adornments.ytmOnly, adornments.reload],
   },
   thumbnailOverlayBehavior: {
     type: "select",
