@@ -106,7 +106,7 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
   const isDev = mode === "development";
   const resolvedAdorns = adorns ? [...adorns] : [];
 
-  if(feat.since && compareVer(feat.since, scriptInfo.version, isDev ? ">" : "=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev))
+  if(feat.since && compareVer(feat.since, scriptInfo.version, isDev ? ">" : ">=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev))
     resolvedAdorns.push(adornments.newFeature);
 
   const sortedAdorns = resolvedAdorns.sort((a, b) => {
