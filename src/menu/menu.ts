@@ -1,5 +1,5 @@
 import { clamp, compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
-import { isScrollable, openDialogs } from "@sv443-network/userutils";
+import { isScrollable } from "@sv443-network/userutils";
 import { type cfgDefaultData, cfgFormatVersion, getFeature, getFeatures, cfgMigrations, setFeatures } from "../config.js";
 import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, repo, scriptInfo } from "../constants.js";
 import { featInfo, groupedCategories, resolveAdornments } from "../features/index.js";
@@ -12,14 +12,14 @@ import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.js"
 import { emitInterface } from "../interface.js";
 import { showPrompt, type PromptDialog } from "../dialogs/prompt.js";
 import { getFeatHelpDialog } from "../dialogs/featHelp.js";
-import { BytmDialog, setCurrentDialogId } from "../components/BytmDialog.js";
+import { BytmDialog, openDialogs, setCurrentDialogId } from "../components/BytmDialog.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { createHotkeyInput } from "../components/hotkeyInput.js";
 import { createToggleInput } from "../components/toggleInput.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo, ResourceKey } from "../types.js";
 import pkg from "../../package.json" with { type: "json" };
 import localeMapping from "../../assets/locales.json" with { type: "json" };
-import "./menu_old.css";
+import "./menu.css";
 
 //#region >> create menu
 
@@ -1287,25 +1287,22 @@ export async function mountCfgMenu() {
     isCfgMenuDoneMounting = true;
     forceEmitSiteEvent("cfgMenuMounted");
 
-    // ensure menu is inert if BytmDialog instances stacked on top of it:
+    // ensure menu container is inert when BytmDialog instances are stacked on top:
 
-    /** IDs of all BytmDialog instances stacked on top of the config menu while it's open */
-    const stackedOpenDialogIds: string[] = [];
     window.addEventListener("bytm:dialogOpened", (evt) => {
-      if(!isCfgMenuOpen || !("detail" in evt))
+      if(!isCfgMenuOpen)
         return;
       const dlg = (evt as CustomEvent<BytmDialog>)?.detail;
-      if(dlg && dlg instanceof BytmDialog) {
-        stackedOpenDialogIds.push(dlg.id);
+      if(dlg instanceof BytmDialog) {
         menuContainer.setAttribute("aria-hidden", "true");
         menuContainer.setAttribute("inert", "true");
       }
     });
-    window.addEventListener("bytm:dialogClosed", (evt) => {
-      const idx = stackedOpenDialogIds.indexOf((evt as CustomEvent<BytmDialog>)?.detail?.id);
-      if(idx > -1)
-        stackedOpenDialogIds.splice(idx, 1);
-      if(stackedOpenDialogIds.length === 0) {
+    window.addEventListener("bytm:dialogClosed", () => {
+      if(!isCfgMenuOpen)
+        return;
+      // restore menu container once no BytmDialogs remain stacked on top
+      if(!openDialogs.some(id => id !== "cfg-menu")) {
         menuContainer.removeAttribute("aria-hidden");
         menuContainer.removeAttribute("inert");
       }
@@ -1410,7 +1407,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   evt?.bubbles && evt.stopPropagation();
 
-  if(enableScroll) {
+  if(enableScroll && !openDialogs.some(id => id !== "cfg-menu")) {
     document.body.classList.remove("bytm-disable-scroll");
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
   }
@@ -1418,7 +1415,9 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   clearTimeout(hiddenCopiedTxtTimeout);
 
-  openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
+  const cfgIdx = openDialogs.indexOf("cfg-menu");
+  if(cfgIdx > -1)
+    openDialogs.splice(cfgIdx, 1);
   setCurrentDialogId(openDialogs?.[0] ?? null);
 
   // since this menu doesn't have a BytmDialog instance, it's undefined here

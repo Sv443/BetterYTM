@@ -236,7 +236,9 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBg.style.visibility = "hidden";
     dialogBg.style.display = "none";
 
-    openDialogs.splice(openDialogs.indexOf(this.id), 1);
+    const oidx = openDialogs.indexOf(this.id);
+    if(oidx > -1)
+      openDialogs.splice(oidx, 1);
     currentDialogId = openDialogs[0] ?? null;
 
     this.events.emit("close");
