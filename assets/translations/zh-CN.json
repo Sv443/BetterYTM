@@ -521,8 +521,8 @@
   "feature_btn.openPluginDiscoverySite": "打开网站",
   "feature_btn.openPluginDiscoverySite_running": "正在打开...",
 
-  "feature_desc.initTimeout": "在考虑它们可能处于错误状态之前等待功能初始化的时间",
-  "feature_helptext.initTimeout": "这是脚本等待功能初始化的时间，以考虑它们可能处于错误状态。\n这不会对脚本的行为产生重大影响，但如果您的插件之一无法及时初始化，您应该尝试增加此值。",
+  "feature_desc.initTimeout": "等待功能初始化的时间（毫秒），超过这个时间后，功能可能被认为处于错误状态",
+  "feature_helptext.initTimeout": "这不会以显著的方式影响脚本的行为，但如果您的某个插件无法及时初始化，您应该尝试增加此值。",
   "feature_desc.defaultObserverDebounce": "文档变更的默认防抖时间（毫秒）",
   "feature_helptext.defaultObserverDebounce": "这个时间决定了脚本检查页面结构变化的频率，以及它对这些变化的反应速度。\n将其设置为较低的值可以使脚本反应更快，但也会增加 CPU 使用率。\n如果网站感觉缓慢或卡顿，请尝试增加此值。",
 

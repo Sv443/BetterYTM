@@ -532,8 +532,8 @@
   "feature_btn.openPluginDiscoverySite": "Seite öffnen",
   "feature_btn.openPluginDiscoverySite_running": "Wird geöffnet...",
 
-  "feature_desc.initTimeout": "Wie viele Sekunden gewartet werden soll, bis Features initialisiert werden, bevor angenommen wird, dass sie wahrscheinlich in einem fehlerhaften Zustand sind",
-  "feature_helptext.initTimeout": "Dies ist die Zeit in Sekunden, die das Skript wartet, bis Features initialisiert werden, bevor angenommen wird, dass sie wahrscheinlich in einem fehlerhaften Zustand sind.\nDies wird das Verhalten des Skripts nicht wesentlich beeinflussen, aber wenn eines deiner Plugins nicht rechtzeitig initialisiert werden kann, kannst du versuchen, diesen Wert zu erhöhen.",
+  "feature_desc.initTimeout": "Wie lange gewartet werden soll, bis Features initialisiert werden, bevor angenommen wird, dass sie wahrscheinlich in einem fehlerhaften Zustand sind",
+  "feature_helptext.initTimeout": "Diese Einstellung beeinflusst das Verhalten des Skripts nicht großartig, aber wenn eines deiner Plugins regelmäßig nicht rechtzeitig initialisiert werden kann, kannst du versuchen, diesen Wert zu erhöhen.",
   "feature_desc.defaultObserverDebounce": "Die Standard-Debounce-Zeit für Dokumentmutationen in Millisekunden",
   "feature_helptext.defaultObserverDebounce": "Diese Zeit bestimmt, wie oft das Skript in der Lage ist, auf Änderungen in der Struktur der Seite zu reagieren.\nWenn du diesen Wert niedriger setzt, kann das Skript schneller reagieren, aber die CPU-Auslastung wird auch erhöht.\nWenn sich die Seite langsam oder ruckelig anfühlt, kannst du versuchen, diesen Wert zu erhöhen.",
 

@@ -532,8 +532,8 @@
   "feature_btn.openPluginDiscoverySite": "Open site",
   "feature_btn.openPluginDiscoverySite_running": "Opening...",
 
-  "feature_desc.initTimeout": "How many seconds to wait for features to initialize before considering them to likely be in an errored state",
-  "feature_helptext.initTimeout": "This is the amount of time in seconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
+  "feature_desc.initTimeout": "How long to wait for features to initialize before considering them to likely be in an errored state",
+  "feature_helptext.initTimeout": "This will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
   "feature_desc.defaultObserverDebounce": "The default debounce time for document mutations in milliseconds",
   "feature_helptext.defaultObserverDebounce": "This time dictates how often the script is able to check for changes in the page's structure, and how quick it can react to them.\nSetting it to a lower value can make the script react faster, but will also increase CPU usage.\nIf the site is feeling slow or laggy, try increasing this value.",
 

@@ -529,8 +529,8 @@
   "feature_btn.openPluginDiscoverySite": "サイトを開く",
   "feature_btn.openPluginDiscoverySite_running": "開いています...",
 
-  "feature_desc.initTimeout": "機能が初期化されるまでの待機時間（エラー状態と見なされる前に）",
-  "feature_helptext.initTimeout": "これは、機能が初期化されるまでの待機時間（秒単位）です。\nこれはスクリプトの動作に大きな影響を与えませんが、プラグインの初期化に時間がかかる場合は、この値を増やしてみてください。",
+  "feature_desc.initTimeout": "機能がエラー状態にあると考える前に、機能の初期化を待つ時間",
+  "feature_helptext.initTimeout": "これにより、スクリプトの動作に大きな影響はありませんが、プラグインの1つが時間内に初期化できない場合は、この値を増やしてみてください。",
   "feature_desc.defaultObserverDebounce": "ドキュメントの変更に対するデフォルトのデバウンスタイム（ミリ秒単位）",
   "feature_helptext.defaultObserverDebounce": "この時間は、ページの構造の変更をスクリプトがどれくらい頻繁にチェックできるか、そしてそれにどれくらい迅速に反応できるかを決定します。\nこの値を低く設定すると、スクリプトがより速く反応できますが、CPU使用率も増加します。\nサイトが遅いと感じる場合は、この値を増やしてみてください。",
 

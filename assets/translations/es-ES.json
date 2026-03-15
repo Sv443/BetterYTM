@@ -531,8 +531,8 @@
   "feature_btn.openPluginDiscoverySite": "Abrir sitio",
   "feature_btn.openPluginDiscoverySite_running": "Abriendo...",
 
-  "feature_desc.initTimeout": "Cuántos segundos esperar a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error",
-  "feature_helptext.initTimeout": "Este es el tiempo en segundos que el script esperará a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error.\nEsto no afectará significativamente el comportamiento del script, pero si uno de sus complementos no puede inicializarse a tiempo, debería intentar aumentar este valor.",
+  "feature_desc.initTimeout": "Cuánto tiempo esperar a que las funciones se inicialicen antes de considerarlas probablemente en un estado de error",
+  "feature_helptext.initTimeout": "Esto no afectará el comportamiento del script de manera significativa, pero si uno de tus plugins no puede inicializarse a tiempo, deberías intentar aumentar este valor.",
   "feature_desc.defaultObserverDebounce": "El tiempo de debounce predeterminado para las mutaciones del documento en milisegundos",
   "feature_helptext.defaultObserverDebounce": "Este tiempo dicta con qué frecuencia el script puede verificar los cambios en la estructura de la página y qué tan rápido puede reaccionar a ellos.\nEstablecerlo en un valor más bajo puede hacer que el script reaccione más rápido, pero también aumentará el uso de CPU.\nSi el sitio se siente lento o con retraso, intente aumentar este valor.",
 
