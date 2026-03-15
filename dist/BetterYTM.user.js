@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@610951c0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3413eb9d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -444,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "610951c0",
-    buildTimestamp: "1773514067372",
+    buildNumber: "3413eb9d",
+    buildTimestamp: "1773581038770",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4735,7 +4735,9 @@ async function mountCfgMenu() {
                     const groupHeader = document.createElement("h3");
                     groupHeader.id = `bytm-ftconf-group-${currentGroup}-header`;
                     groupHeader.classList.add("bytm-ftconf-group-header");
-                    groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`);
+                    groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`, {
+                        scriptName: scriptInfo$1.name,
+                    });
                     groupHeader.tabIndex = 0;
                     groupHeader.role = "heading";
                     groupHeader.ariaLevel = "3";
@@ -7159,7 +7161,7 @@ async function renderBody$1() {
             linksList.appendChild(linkEl);
         }
         const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
-        const devPluginIdentifier = `${pkg.namespace}+${devPluginId}/${devPluginName}`;
+        const devPluginIdentifier = `${pkg.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
         const isDevPlugin = Boolean(pluginIdentifier === devPluginIdentifier
             && getPluginInfo(devPluginToken, devPluginIdentifier));
         const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
@@ -8173,6 +8175,34 @@ const featInfo = {
         advanced: true,
         adornments: [adornments.advanced, adornments.reload],
     },
+    initTimeout: {
+        type: "number",
+        category: "general",
+        group: "bytmInternal",
+        supportedSites: ["ytm", "yt"],
+        since: "2.1.0",
+        min: mode$1 === "development" ? 0.1 : 3,
+        max: 10,
+        default: 3,
+        step: 0.1,
+        unit: "s",
+        advanced: true,
+        adornments: [adornments.advanced, adornments.reload],
+    },
+    defaultObserverDebounce: {
+        type: "slider",
+        category: "general",
+        group: "bytmInternal",
+        supportedSites: ["ytm", "yt"],
+        since: "3.1.0",
+        min: 50,
+        default: 150,
+        max: 1000,
+        step: 25,
+        unit: "ms",
+        advanced: true,
+        adornments: [adornments.advanced, adornments.reload],
+    },
     versionCheck: {
         type: "toggle",
         category: "general",
@@ -8233,20 +8263,6 @@ const featInfo = {
         reloadRequired: false,
         adornments: [adornments.advanced],
         change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
-    },
-    initTimeout: {
-        type: "number",
-        category: "general",
-        group: "init",
-        supportedSites: ["ytm", "yt"],
-        since: "2.1.0",
-        min: mode$1 === "development" ? 0.1 : 3,
-        max: 10,
-        default: 3,
-        step: 0.1,
-        unit: "s",
-        advanced: true,
-        adornments: [adornments.advanced, adornments.reload],
     },
     resetConfig: {
         type: "button",
@@ -9935,7 +9951,7 @@ const globalFuncs = pureObj({
     createRipple,
     showToast,
     showIconToast,
-    showPrompt,
+    /*🔒*/ showPrompt: showPromptInterface,
     // other:
     formatNumber,
 });
@@ -10015,7 +10031,7 @@ function initPlugins() {
     window.addEventListener("bytm:ready", () => {
         pluginsInitialized = true;
         if (registeredPlugins.size > 0)
-            log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
+            info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
         else
             log("No plugins registered");
     }, { once: true });
@@ -10060,28 +10076,25 @@ function registerPlugin(def) {
 }
 /** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 let devPluginToken;
-const devPluginName = "BetterYTM Dev Plugin";
 const devPluginId = CoreUtils__namespace.randomId(8, 36, true, true);
 /** Registers a plugin that only exists in development mode to test the plugin system */
 function registerDevPlugin() {
     if (mode !== "development")
         return;
     try {
+        const description = [
+            "de-DE", "en-US", "es-ES", "fr-FR",
+            "hi-IN", "ja-JP", "pt-BR", "zh-CN",
+        ].reduce((acc, loc) => ({
+            ...acc,
+            [loc]: t("dev_plugin.description"),
+        }), {});
         const { token, events } = registerPlugin({
             plugin: {
-                name: devPluginName,
+                name: t("dev_plugin.name"),
                 namespace: `${pkg.namespace}+${devPluginId}`,
                 version: pkg.version,
-                description: {
-                    "de-DE": "Internes Plugin, das nur im Entwicklungsmodus existiert, um das Plugin-System einfach testen zu können.",
-                    "en-US": "Internal plugin that only exists in development mode to make testing the plugin system easier.",
-                    "es-ES": "Plugin interno que solo existe en el modo de desarrollo para facilitar la prueba del sistema de plugins.",
-                    "fr-FR": "Plugin interne qui n'existe qu'en mode développement pour faciliter les tests du système de plugins.",
-                    "hi-IN": "डेवलपमेंट मोड में मौजूद आंतरिक प्लगइन जो प्लगइन सिस्टम का परीक्षण करना आसान बनाता है।",
-                    "ja-JP": "開発モードでのみ存在する内部プラグインで、プラグインシステムのテストを容易にします。",
-                    "pt-BR": "Plugin interno que só existe no modo de desenvolvimento para facilitar o teste do sistema de plugins.",
-                    "zh-CN": "仅在开发模式下存在的内部插件，以便更轻松地测试插件系统。",
-                },
+                description,
                 homepage: {
                     source: pkg.homepage,
                     changelog: `${pkg.homepage}/blob/${branch}/changelog.md`,
@@ -10096,7 +10109,6 @@ function registerDevPlugin() {
         });
         devPluginToken = token;
         setGlobalProp("devPluginEvents", events);
-        log("Registered dev plugin");
     }
     catch (err) {
         error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
@@ -10287,6 +10299,13 @@ function getMarkdownDialog(token) {
         return;
     return MarkdownDialog;
 }
+/** Wrapper around {@linkcode showPrompt()} to check for the permission to show dialogs */
+function showPromptInterface(token, ...args) {
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+        return;
+    return showPrompt(...args);
+}
 //#region internals
 /** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
 function getInternals(token) {
@@ -10304,14 +10323,7 @@ function getInternals(token) {
         enableDiscardBeforeUnload,
         disableDiscardBeforeUnload,
     };
-}//#region globals
-/** Options that are applied to every SelectorObserver instance */
-const defaultObserverOptions = {
-    disableOnNoListeners: false, // keepalive for plugins and opportunistic features
-    enableOnAddListener: false, // important because of strict init order
-    defaultDebounce: 150,
-    defaultDebounceType: "immediate",
-};
+}//#region vars
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 const globservers = {};
 /** Whether all observers have been initialized */
@@ -10339,7 +10351,14 @@ function addSelectorListener(observerName, selector, options) {
 }
 //#region init
 /** Call after DOM load to initialize all SelectorObserver instances */
-function initObservers() {
+function initObservers(cfg) {
+    /** Options that are applied to every SelectorObserver instance */
+    const defaultObserverOptions = {
+        disableOnNoListeners: false, // keepalive for plugins and opportunistic features
+        enableOnAddListener: false, // important because of strict init order
+        defaultDebounce: cfg.defaultObserverDebounce,
+        defaultDebounceType: "immediate",
+    };
     try {
         //#region # both sites
         //#region body
@@ -11183,7 +11202,7 @@ async function onDomLoad() {
         setTimeout(() => {
             const endInitGlobalDur = measureDuration("initGlobal_decoupled");
             initGlobalCss();
-            initObservers();
+            initObservers(feats);
             Promise.allSettled([
                 injectCssBundle(),
                 initVersionCheck(),
