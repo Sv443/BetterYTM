@@ -326,7 +326,7 @@
   "feature_group_header.versionCheck": "Versions-Check:",
   "feature_group_header.numbersFormat": "Zahlenformat:",
   "feature_group_header.toasts": "Toast-Benachrichtigungen:",
-  "feature_group_header.init": "Initialisierung:",
+  "feature_group_header.bytm": "${scriptName}:",
   "feature_group_header.resetData": "Daten zurücksetzen:",
   "feature_group_header.logging": "Logging:",
   "feature_group_header.advancedMode": "Erweiterte Einstellungen:",
@@ -531,8 +531,11 @@
   "feature_desc.openPluginDiscoverySite": "Weitere Plugins zum Installieren finden",
   "feature_btn.openPluginDiscoverySite": "Seite öffnen",
   "feature_btn.openPluginDiscoverySite_running": "Wird geöffnet...",
+
   "feature_desc.initTimeout": "Wie viele Sekunden gewartet werden soll, bis Features initialisiert werden, bevor angenommen wird, dass sie wahrscheinlich in einem fehlerhaften Zustand sind",
   "feature_helptext.initTimeout": "Dies ist die Zeit in Sekunden, die das Skript wartet, bis Features initialisiert werden, bevor angenommen wird, dass sie wahrscheinlich in einem fehlerhaften Zustand sind.\nDies wird das Verhalten des Skripts nicht wesentlich beeinflussen, aber wenn eines deiner Plugins nicht rechtzeitig initialisiert werden kann, kannst du versuchen, diesen Wert zu erhöhen.",
+  "feature_desc.defaultObserverDebounce": "Die Standard-Debounce-Zeit für Dokumentmutationen in Millisekunden",
+  "feature_helptext.defaultObserverDebounce": "Diese Zeit bestimmt, wie oft das Skript in der Lage ist, auf Änderungen in der Struktur der Seite zu reagieren.\nWenn du diesen Wert niedriger setzt, kann das Skript schneller reagieren, aber die CPU-Auslastung wird auch erhöht.\nWenn sich die Seite langsam oder ruckelig anfühlt, kannst du versuchen, diesen Wert zu erhöhen.",
 
   "feature_desc.locale": "Sprache",
   "feature_desc.localeFallback": "Verwende für fehlende Übersetzungen Englisch (deaktivieren, wenn du zu Übersetzungen beiträgst)",

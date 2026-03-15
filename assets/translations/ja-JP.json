@@ -323,7 +323,7 @@
   "feature_group_header.versionCheck": "バージョンチェック:",
   "feature_group_header.numbersFormat": "数形式:",
   "feature_group_header.toasts": "トースト通知:",
-  "feature_group_header.init": "初期化タイムアウト:",
+  "feature_group_header.bytm": "${scriptName}:",
   "feature_group_header.resetData": "データリセット:",
   "feature_group_header.logging": "ログ記録:",
   "feature_group_header.advancedMode": "詳細モード:",
@@ -528,8 +528,11 @@
   "feature_desc.openPluginDiscoverySite": "利用可能なプラグインを見つけるためのプラグイン検索サイトを開く",
   "feature_btn.openPluginDiscoverySite": "サイトを開く",
   "feature_btn.openPluginDiscoverySite_running": "開いています...",
+
   "feature_desc.initTimeout": "機能が初期化されるまでの待機時間（エラー状態と見なされる前に）",
   "feature_helptext.initTimeout": "これは、機能が初期化されるまでの待機時間（秒単位）です。\nこれはスクリプトの動作に大きな影響を与えませんが、プラグインの初期化に時間がかかる場合は、この値を増やしてみてください。",
+  "feature_desc.defaultObserverDebounce": "ドキュメントの変更に対するデフォルトのデバウンスタイム（ミリ秒単位）",
+  "feature_helptext.defaultObserverDebounce": "この時間は、ページの構造の変更をスクリプトがどれくらい頻繁にチェックできるか、そしてそれにどれくらい迅速に反応できるかを決定します。\nこの値を低く設定すると、スクリプトがより速く反応できますが、CPU使用率も増加します。\nサイトが遅いと感じる場合は、この値を増やしてみてください。",
 
   "feature_desc.locale": "言語",
   "feature_desc.localeFallback": "翻訳が欠落している場合に英語をフォールバック言語として使用する（翻訳を提供している場合は無効にする）",

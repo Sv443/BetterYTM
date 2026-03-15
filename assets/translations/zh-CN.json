@@ -309,7 +309,7 @@
   "feature_group_header.versionCheck": "检查更新：",
   "feature_group_header.numbersFormat": "数字格式：",
   "feature_group_header.toasts": "提示通知：",
-  "feature_group_header.init": "初始化：",
+  "feature_group_header.bytm": "${scriptName}:",
   "feature_group_header.resetData": "重置数据：",
   "feature_group_header.logging": "日志记录：",
   "feature_group_header.advancedMode": "高级模式：",
@@ -520,8 +520,11 @@
   "feature_desc.openPluginDiscoverySite": "查找更多可安装的插件",
   "feature_btn.openPluginDiscoverySite": "打开网站",
   "feature_btn.openPluginDiscoverySite_running": "正在打开...",
+
   "feature_desc.initTimeout": "在考虑它们可能处于错误状态之前等待功能初始化的时间",
   "feature_helptext.initTimeout": "这是脚本等待功能初始化的时间，以考虑它们可能处于错误状态。\n这不会对脚本的行为产生重大影响，但如果您的插件之一无法及时初始化，您应该尝试增加此值。",
+  "feature_desc.defaultObserverDebounce": "文档变更的默认防抖时间（毫秒）",
+  "feature_helptext.defaultObserverDebounce": "这个时间决定了脚本检查页面结构变化的频率，以及它对这些变化的反应速度。\n将其设置为较低的值可以使脚本反应更快，但也会增加 CPU 使用率。\n如果网站感觉缓慢或卡顿，请尝试增加此值。",
 
   "feature_desc.locale": "语言",
   "feature_desc.localeFallback": "如果找不到翻译，请使用英语（如果您提供翻译，请禁用）。",

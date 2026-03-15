@@ -326,7 +326,7 @@
   "feature_group_header.versionCheck": "Check for Updates:",
   "feature_group_header.numbersFormat": "Number Format:",
   "feature_group_header.toasts": "Toasts:",
-  "feature_group_header.init": "Initialization:",
+  "feature_group_header.bytm": "${scriptName}:",
   "feature_group_header.resetData": "Reset Data:",
   "feature_group_header.logging": "Logging:",
   "feature_group_header.advancedMode": "Advanced Mode:",
@@ -534,6 +534,8 @@
 
   "feature_desc.initTimeout": "How many seconds to wait for features to initialize before considering them to likely be in an errored state",
   "feature_helptext.initTimeout": "This is the amount of time in seconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
+  "feature_desc.defaultObserverDebounce": "The default debounce time for document mutations in milliseconds",
+  "feature_helptext.defaultObserverDebounce": "This time dictates how often the script is able to check for changes in the page's structure, and how quick it can react to them.\nSetting it to a lower value can make the script react faster, but will also increase CPU usage.\nIf the site is feeling slow or laggy, try increasing this value.",
 
   "feature_desc.locale": "Language",
   "feature_desc.localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",

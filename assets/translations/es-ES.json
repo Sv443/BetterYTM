@@ -324,7 +324,7 @@
   "feature_group_header.versionCheck": "Buscar actualizaciones:",
   "feature_group_header.numbersFormat": "Formato de números:",
   "feature_group_header.toasts": "Notificaciones:",
-  "feature_group_header.init": "Inicialización:",
+  "feature_group_header.bytm": "${scriptName}:",
   "feature_group_header.resetData": "Restablecer datos:",
   "feature_group_header.logging": "Registro:",
   "feature_group_header.advancedMode": "Modo avanzado:",
@@ -530,8 +530,11 @@
   "feature_desc.openPluginDiscoverySite": "Encontrar más plugins para instalar",
   "feature_btn.openPluginDiscoverySite": "Abrir sitio",
   "feature_btn.openPluginDiscoverySite_running": "Abriendo...",
+
   "feature_desc.initTimeout": "Cuántos segundos esperar a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error",
   "feature_helptext.initTimeout": "Este es el tiempo en segundos que el script esperará a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error.\nEsto no afectará significativamente el comportamiento del script, pero si uno de sus complementos no puede inicializarse a tiempo, debería intentar aumentar este valor.",
+  "feature_desc.defaultObserverDebounce": "El tiempo de debounce predeterminado para las mutaciones del documento en milisegundos",
+  "feature_helptext.defaultObserverDebounce": "Este tiempo dicta con qué frecuencia el script puede verificar los cambios en la estructura de la página y qué tan rápido puede reaccionar a ellos.\nEstablecerlo en un valor más bajo puede hacer que el script reaccione más rápido, pero también aumentará el uso de CPU.\nSi el sitio se siente lento o con retraso, intente aumentar este valor.",
 
   "feature_desc.locale": "Idioma",
   "feature_desc.localeFallback": "Utilizar el inglés para las traducciones que faltan (desactivar si contribuye a las traducciones)",

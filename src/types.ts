@@ -705,6 +705,8 @@ export interface FeatureConfig {
   showToastOnGenericError: boolean;
   /** Amount of seconds until the feature initialization times out */
   initTimeout: number;
+  /** Time in milliseconds between SelectorObserver checks - lower number = faster reaction to DOM changes but also more CPU usage */
+  defaultObserverDebounce: number;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Button to reset every DataStore instance to their default values */

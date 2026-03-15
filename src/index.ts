@@ -235,7 +235,7 @@ async function onDomLoad() {
     setTimeout(() => {
       const endInitGlobalDur = measureDuration("initGlobal_decoupled");
       initGlobalCss();
-      initObservers();
+      initObservers(feats);
 
       Promise.allSettled([
         injectCssBundle(),

@@ -1,7 +1,7 @@
 import { getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import { emitInterface } from "./interface.js";
 import { error, getDomain } from "./utils/index.js";
-import type { Domain } from "./types.js";
+import type { Domain, FeatureConfig } from "./types.js";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
 // !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`.
@@ -45,15 +45,7 @@ export type YTObserverName =
   | "ytWatchFlexy"     // the main content of the /watch page
   | "ytWatchMetadata"; // the metadata section of the /watch page
 
-//#region globals
-
-/** Options that are applied to every SelectorObserver instance */
-const defaultObserverOptions: SelectorObserverOptions = {
-  disableOnNoListeners: false, // keepalive for plugins and opportunistic features
-  enableOnAddListener: false,  // important because of strict init order
-  defaultDebounce: 150,
-  defaultDebounceType: "immediate",
-};
+//#region vars
 
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 export const globservers = {} as Record<ObserverName, SelectorObserver>;
@@ -97,7 +89,15 @@ export function addSelectorListener<
 //#region init
 
 /** Call after DOM load to initialize all SelectorObserver instances */
-export function initObservers() {
+export function initObservers(cfg: FeatureConfig) {
+  /** Options that are applied to every SelectorObserver instance */
+  const defaultObserverOptions: SelectorObserverOptions = {
+    disableOnNoListeners: false, // keepalive for plugins and opportunistic features
+    enableOnAddListener: false,  // important because of strict init order
+    defaultDebounce: cfg.defaultObserverDebounce,
+    defaultDebounceType: "immediate",
+  };
+
   try {
     //#region # both sites
 
