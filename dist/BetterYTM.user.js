@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3413eb9d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cfeacffa/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -444,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3413eb9d",
-    buildTimestamp: "1773581038770",
+    buildNumber: "cfeacffa",
+    buildTimestamp: "1773581487830",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -8190,7 +8190,7 @@ const featInfo = {
         adornments: [adornments.advanced, adornments.reload],
     },
     defaultObserverDebounce: {
-        type: "slider",
+        type: "number",
         category: "general",
         group: "bytmInternal",
         supportedSites: ["ytm", "yt"],
@@ -8198,7 +8198,7 @@ const featInfo = {
         min: 50,
         default: 150,
         max: 1000,
-        step: 25,
+        step: 10,
         unit: "ms",
         advanced: true,
         adornments: [adornments.advanced, adornments.reload],
@@ -10366,7 +10366,6 @@ function initObservers(cfg) {
         //    enabled immediately
         globservers.body = new UserUtils.SelectorObserver(document.body, {
             ...defaultObserverOptions,
-            defaultDebounce: 150,
             subtree: false,
         });
         globservers.body.enable();
@@ -10376,7 +10375,7 @@ function initObservers(cfg) {
         const bytmDialogContainerSelector = "#bytm-dialog-container";
         globservers.bytmDialogContainer = new UserUtils.SelectorObserver(bytmDialogContainerSelector, {
             ...defaultObserverOptions,
-            defaultDebounce: 100,
+            defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
             subtree: true,
         });
         globservers.bytmDialogContainer.enable();
@@ -10389,7 +10388,7 @@ function initObservers(cfg) {
                 const browseResponseSelector = "ytmusic-browse-response";
                 globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, {
                     ...defaultObserverOptions,
-                    defaultDebounce: 75,
+                    defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
                     subtree: true,
                 });
                 globservers.body.addListener(browseResponseSelector, {
@@ -10458,7 +10457,6 @@ function initObservers(cfg) {
                 const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
                 globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, {
                     ...defaultObserverOptions,
-                    defaultDebounce: 200,
                 });
                 globservers.body.addListener(playerBarSelector, {
                     listener: () => {
@@ -10542,7 +10540,7 @@ function initObservers(cfg) {
                 const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
                 globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, {
                     ...defaultObserverOptions,
-                    defaultDebounce: 75,
+                    defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
                     subtree: true,
                 });
                 globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
