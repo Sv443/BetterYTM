@@ -60,8 +60,8 @@
     - ⚠️ If you use the `BytmDialog`, `ExImDialog` or `MarkdownDialog` classes directly, switch to the new authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()`. Direct access will continue to work until version 4.0.0, but to future-proof your plugin, switch to the new functions as soon as possible, and make sure to add the `CreateModalDialogs` (32) intent to your plugin definition's `intents` property.
     - ⚠️ If you were using `bytm:ready` to reliably wait until *all* features are initialized, switch to `bytm:allReady` instead.  
       The `bytm:ready` event is still emitted, but it is now only guaranteed to be emitted when the DOM is loaded and all features have *started* to initialize.
+    - ⚠️ If you were using `showPrompt()`, it will now require a plugin token as the first argument, with the `CreateModalDialogs` (32) intent granted.
     - All `NanoEmitter` subclasses and the interface-exposed `NanoEmitter` class reference now use [CoreUtils' new `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter), which grants you access to the powerful `onMulti()` method to listen to multiple events at once, with configurable behavior.
-    - The `intents` prop can now be an array of `PluginIntent` enum members.
   - **API Changes:**
     - ⚠️ **POT. BREAKING:** Plugins will no longer be able to call authenticated functions without the required intents.  
       Intents are now required to be set in the plugin definition object, though for now they will still all be granted and don't need to be explicitly allowed by the user once after installing yet.  
@@ -73,9 +73,11 @@
       - `getBytmDialog()` - `CreateModalDialogs` (32)
       - `getExImDialog()` - `CreateModalDialogs` (32)
       - `getMarkdownDialog()` - `CreateModalDialogs` (32)
+      - `showPrompt()` - `CreateModalDialogs` (32)
       - `getAutoLikeData()` - `ReadAutoLikeData` (64)
       - `saveAutoLikeData()` - `WriteAutoLikeData` (128)
       - `getInternals()` - `InternalAccess` (256)
+    - ⚠️ **POT. BREAKING:** The `showPrompt()` function is now authenticated, meaning it has a required token argument before the options argument. The grant `CreateModalDialogs` (32) is required to use it.
     - References to the dialog classes `BytmDialog`, `ExImDialog` and `MarkdownDialog` should now be obtained using the new authenticated `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()` functions, respectively.  
     Using the direct access properties will work until version 4.0.0, but it is recommended you switch to the authenticated functions as soon as possible.
     - The `PluginDef` object's `intents` property can now be either an array of `PluginIntent` values or a single number that is the bitwise OR of the intents.

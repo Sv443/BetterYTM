@@ -195,7 +195,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   createRipple,
   showToast,
   showIconToast,
-  showPrompt,
+  /*🔒*/ showPrompt: showPromptInterface,
 
   // other:
   formatNumber,
@@ -682,6 +682,14 @@ export function getMarkdownDialog(token: string | undefined) {
   if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
     return;
   return MarkdownDialog;
+}
+
+/** Wrapper around {@linkcode showPrompt()} to check for the permission to show dialogs */
+export function showPromptInterface(token: string | undefined, ...args: Parameters<typeof showPrompt>) {
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
+    return;
+  return showPrompt(...args);
 }
 
 //#region internals

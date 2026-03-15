@@ -244,7 +244,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [createRipple()](#createripple) - Creates a click ripple effect on the given element
   - [showToast()](#showtoast) - Shows a toast notification and a message string or element
   - [showIconToast()](#showicontoast) - Shows a toast notification with an icon and a message string or element
-  - [showPrompt()](#showprompt) - Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt`
+  - [showPrompt()](#showprompt) 🔒 - Promise-based styled modal dialog mimicking the browser-native [`confirm()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm), [`alert()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and [`prompt()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt)
 - Translations:
   - [setLocale()](#setlocale) 🔒 - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
@@ -2252,7 +2252,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### showPrompt()
 > Signature:  
 > ```ts
-> unsafeWindow.BYTM.showPrompt(props: ShowPromptProps): Promise<boolean>
+> unsafeWindow.BYTM.showPrompt(token: string | undefined, props: ShowPromptProps): Promise<boolean | string | undefined>
 > ```
 >   
 > Shows a prompt dialog with the specified message and type.  
@@ -2267,7 +2267,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > If the type `prompt` is used, the user can input a text value.  
 > In this case the Promise resolves with the entered text if the user confirmed and `null` if the user canceled or closed.  
 > If the user confirms with an empty text field, the Promise resolves with an empty string.  
-> Additionally, the property `defaultValue` can be used to set the preset value for the input field.  
+> Additionally, the property `defaultValue` can be used to set the initial value of the input field.  
+>   
+> ⚠️ Requires the intent `CreateModalDialogs` to be granted, else always returns `undefined`.  
 >   
 > Properties:  
 > - `message: string | ((type: string) => string | Promise<string>)` - The message to show in the prompt

@@ -4,11 +4,10 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.js";
 import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "./interface.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { isIgnoredInputElement } from "./features/input.js";
-import type { showPrompt } from "./dialogs/prompt.js";
 import type { BytmDialog } from "./components/BytmDialog.js";
 import type { ExImDialog } from "./components/ExImDialog.js";
 import type { MarkdownDialog } from "./components/MarkdownDialog.js";
@@ -524,7 +523,7 @@ export type InterfaceFunctions = {
   /** Shows a toast with the provided text and an icon */
   showIconToast: typeof showIconToast;
   /** Shows a styled confirm() or alert() dialog with the provided message */
-  showPrompt: typeof showPrompt;
+  showPrompt: typeof showPromptInterface;
 
   // other:
   /** Formats a number to a string using the configured locale and configured or passed number notation */
