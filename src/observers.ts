@@ -91,12 +91,12 @@ export function addSelectorListener<
 /** Call after DOM load to initialize all SelectorObserver instances */
 export function initObservers(cfg: FeatureConfig) {
   /** Options that are applied to every SelectorObserver instance */
-  const defaultObserverOptions: SelectorObserverOptions = {
+  const defaultObserverOptions = {
     disableOnNoListeners: false, // keepalive for plugins and opportunistic features
     enableOnAddListener: false,  // important because of strict init order
     defaultDebounce: cfg.defaultObserverDebounce,
     defaultDebounceType: "immediate",
-  };
+  } satisfies Required<Pick<SelectorObserverOptions, "disableOnNoListeners" | "enableOnAddListener" | "defaultDebounce" | "defaultDebounceType">>;
 
   try {
     //#region # both sites
@@ -106,7 +106,6 @@ export function initObservers(cfg: FeatureConfig) {
     //    enabled immediately
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
-      defaultDebounce: 150,
       subtree: false,
     });
 
@@ -118,7 +117,7 @@ export function initObservers(cfg: FeatureConfig) {
     const bytmDialogContainerSelector = "#bytm-dialog-container";
     globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
       ...defaultObserverOptions,
-      defaultDebounce: 100,
+      defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce! / 1.5),
       subtree: true,
     });
 
@@ -134,7 +133,7 @@ export function initObservers(cfg: FeatureConfig) {
       const browseResponseSelector = "ytmusic-browse-response";
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: 75,
+        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce! / 2),
         subtree: true,
       });
 
@@ -215,7 +214,6 @@ export function initObservers(cfg: FeatureConfig) {
       const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
       globservers.playerBar = new SelectorObserver(playerBarSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: 200,
       });
 
       globservers.body.addListener(playerBarSelector, {
@@ -314,7 +312,7 @@ export function initObservers(cfg: FeatureConfig) {
       const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
       globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: 75,
+        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce! / 2),
         subtree: true,
       });
 
