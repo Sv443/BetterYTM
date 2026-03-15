@@ -309,7 +309,7 @@
   "feature_group_header.versionCheck": "检查更新：",
   "feature_group_header.numbersFormat": "数字格式：",
   "feature_group_header.toasts": "提示通知：",
-  "feature_group_header.bytm": "${scriptName}:",
+  "feature_group_header.bytmInternal": "${scriptName}-内部：",
   "feature_group_header.resetData": "重置数据：",
   "feature_group_header.logging": "日志记录：",
   "feature_group_header.advancedMode": "高级模式：",

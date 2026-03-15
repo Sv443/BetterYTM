@@ -323,7 +323,7 @@
   "feature_group_header.versionCheck": "Vérifier les mises à jour:",
   "feature_group_header.numbersFormat": "Format des nombres:",
   "feature_group_header.toasts": "Notifications toast:",
-  "feature_group_header.bytm": "${scriptName}:",
+  "feature_group_header.bytmInternal": "${scriptName}-Interne:",
   "feature_group_header.resetData": "Réinitialiser les données:",
   "feature_group_header.logging": "Journalisation:",
   "feature_group_header.advancedMode": "Mode avancé:",

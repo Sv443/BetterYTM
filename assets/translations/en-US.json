@@ -326,7 +326,7 @@
   "feature_group_header.versionCheck": "Check for Updates:",
   "feature_group_header.numbersFormat": "Number Format:",
   "feature_group_header.toasts": "Toasts:",
-  "feature_group_header.bytm": "${scriptName}:",
+  "feature_group_header.bytmInternal": "${scriptName}-Internal:",
   "feature_group_header.resetData": "Reset Data:",
   "feature_group_header.logging": "Logging:",
   "feature_group_header.advancedMode": "Advanced Mode:",

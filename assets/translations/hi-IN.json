@@ -322,7 +322,7 @@
   "feature_group_header.versionCheck": "अपडेट जाँचें:",
   "feature_group_header.numbersFormat": "संख्या फ़ॉर्मेट:",
   "feature_group_header.toasts": "टोस्ट सूचनाएँ:",
-  "feature_group_header.bytm": "${scriptName}:",
+  "feature_group_header.bytmInternal": "${scriptName}-आंतरिक:",
   "feature_group_header.resetData": "डेटा रीसेट:",
   "feature_group_header.logging": "लॉगिंग:",
   "feature_group_header.advancedMode": "उन्नत मोड:",

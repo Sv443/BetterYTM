@@ -324,7 +324,7 @@
   "feature_group_header.versionCheck": "Buscar actualizaciones:",
   "feature_group_header.numbersFormat": "Formato de números:",
   "feature_group_header.toasts": "Notificaciones:",
-  "feature_group_header.bytm": "${scriptName}:",
+  "feature_group_header.bytmInternal": "${scriptName}-Interno:",
   "feature_group_header.resetData": "Restablecer datos:",
   "feature_group_header.logging": "Registro:",
   "feature_group_header.advancedMode": "Modo avanzado:",

@@ -323,7 +323,7 @@
   "feature_group_header.versionCheck": "バージョンチェック:",
   "feature_group_header.numbersFormat": "数形式:",
   "feature_group_header.toasts": "トースト通知:",
-  "feature_group_header.bytm": "${scriptName}:",
+  "feature_group_header.bytmInternal": "${scriptName}-内部:",
   "feature_group_header.resetData": "データリセット:",
   "feature_group_header.logging": "ログ記録:",
   "feature_group_header.advancedMode": "詳細モード:",
