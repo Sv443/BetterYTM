@@ -12,8 +12,11 @@ const keys = allArgs
   ? allArgs.flatMap((v) => v.split(/[,\s;]/g).map((v) => v.trim()))
   : [];
 
+/** Whether to skip en-US when removing keys. */
+const skipEnUS = false;
+
 /**
- * Removes all lines in every translation file that begins with the specified keys, except for en-US.
+ * Removes all lines in every translation file that begins with the specified keys.
  */
 async function run() {
   if(!keys.length) {
@@ -24,7 +27,7 @@ async function run() {
   const updatedTrFiles: string[] = [];
 
   for(const locale of allLocales) {
-    if(locale === "en-US")
+    if(skipEnUS && locale === "en-US")
       continue;
 
     let keyRemoved = false;
