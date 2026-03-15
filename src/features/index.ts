@@ -250,7 +250,7 @@ export const featInfo = {
     adornments: [adornments.advanced, adornments.reload],
   },
   defaultObserverDebounce: {
-    type: "slider",
+    type: "number",
     category: "general",
     group: "bytmInternal",
     supportedSites: ["ytm", "yt"],
@@ -258,7 +258,7 @@ export const featInfo = {
     min: 50,
     default: 150,
     max: 1000,
-    step: 25,
+    step: 10,
     unit: "ms",
     advanced: true,
     adornments: [adornments.advanced, adornments.reload],
