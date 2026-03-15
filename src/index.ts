@@ -395,7 +395,7 @@ async function onDomLoad() {
     emitInterface("bytm:featureInitStarted");
 
     const initStartTs = Date.now();
-    const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000;
+    const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8_000;
     const initializedFeats: string[] = [];
 
     const endFeatInitDur = measureDuration("featuresAllReady_decoupled");

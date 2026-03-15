@@ -247,8 +247,8 @@ export const cfgMigrations: DataMigrationsDict = {
         "truncatePlayerBarSubtitles",
       ]),
       [
-        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
-        { key: "initTimeout", oldDefault: 8 },                     // new: 3
+        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2_000
+        { key: "initTimeout", oldDefault: 8 },                     // new: 3_000
         { key: "rememberSongTimeDuration", oldDefault: 60 },       // new: 180
         { key: "frameSkipAmount", oldDefault: 0.0417 },            // new: 0.0166
       ],
@@ -259,6 +259,10 @@ export const cfgMigrations: DataMigrationsDict = {
       // no need to load data since artCacheStore.memoryCache === false
       info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
     });
+
+    // scale was changed from seconds to milliseconds
+    if(newCfg.initTimeout <= 10)
+      newCfg.initTimeout *= 1000;
 
     return useNewRanges(newCfg, [
       "initTimeout",
