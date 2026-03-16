@@ -40,13 +40,13 @@ export enum LogLevel {
   Info,
 }
 
-/** Which domain this script is currently running on */
+/** Which domain this script is currently running on. */
 export type Domain = "yt" | "ytm";
 
-/** A selection option between one of the supported domains, or all of them */
+/** A selection option between one of the supported domains, or all of them. */
 export type SiteSelection = Domain | "all";
 
-/** A selection option between one of the supported domains, or none of them */
+/** A selection option between one of the supported domains, or none of them. */
 export type SiteSelectionOrNone = SiteSelection | "none";
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
@@ -55,29 +55,29 @@ export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof t
 /** Key of a CSS resource in `assets/resources.json` */
 export type StyleResourceKey = ResourceKey & `css-${string}`;
 
-/** Describes a single hotkey */
+/** Describes a hotkey. */
 export type HotkeyObj = {
-  /** [`KeyboardEvent.code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) value of the key */
+  /** [`KeyboardEvent.code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) value of the key. */
   code: string,
-  /** Whether the Shift key must be held */
+  /** Whether the Shift key must be held. */
   shift: boolean,
-  /** Whether the Ctrl (or Cmd on Mac) key must be held */
+  /** Whether the Ctrl key (or Cmd key on Mac) must be held. */
   ctrl: boolean,
-  /** Whether the Alt (or Option on Mac) key must be held */
+  /** Whether the Alt key (or Option key on Mac) must be held. */
   alt: boolean,
 };
 
-/** An entry in the lyrics cache */
+/** An entry in the lyrics cache. */
 export type LyricsCacheEntry = {
-  /** Sanitized artist name */
+  /** Sanitized artist name. */
   artist: string;
-  /** Sanitized song name */
+  /** Sanitized song name. */
   song: string;
-  /** genius.com URL path, starting with a slash, e.g. `/Adele-Hello-Lyrics` */
+  /** genius.com URL path, starting with a slash, e.g. `/Adele-Hello-Lyrics`. */
   path: string;
-  /** UNIX timestamp of when this entry was last fetched */
+  /** UNIX timestamp of when this entry was last fetched. */
   viewed: number;
-  /** UNIX timestamp of when this entry was added */
+  /** UNIX timestamp of when this entry was added. */
   added: number;
 };
 
@@ -532,7 +532,7 @@ export type InterfaceFunctions = {
 
 //#region feature defs
 
-/** Feature identifier key */
+/** Feature identifier key. */
 export type FeatureKey = keyof FeatureConfig;
 
 /** All feature group keys, as defined by the "group" property of each entry in the feature info list in `src/features/index.ts` */
@@ -541,7 +541,7 @@ export type FeatureGroupKey = (typeof featInfo)[FeatureKey]["group"];
 /** Union of all feature identifier keys, where the value is of the specified type {@linkcode TType} */
 export type FeatKeysOfType<TType> = KeysOfType<FeatureConfig, TType>;
 
-/** Feature category identifier */
+/** Feature category identifier. */
 export type FeatureCategory =
   | "general"
   | "layout"
@@ -555,122 +555,197 @@ export type FeatureCategory =
   | "integrations"
   | "plugins";
 
-/** One option in a select input */
+/** One option in a select input. */
 export type SelectOption = {
   value: string | number;
   label: string;
 };
 
-/** A unit string or a function that returns a unit string for the provided value */
+/** A unit string or a function that returns a unit string for the provided value. */
 export type FeatUnit = string | ((val: number) => string);
 
+/** Contains all possible value types of the feature configuration. */
+export type FeatureConfigValue = FeatureConfig[FeatureKey];
+
 type FeatureTypeProps = ({
-    /** Custom toggle input - uses `input[type="checkbox"]` under the hood */
+    /** Custom toggle input - uses a `input[type="checkbox"]` under the hood. */
     type: "toggle";
+    /** Default checked state of the toggle */
     default: boolean;
   } & FeatureFuncProps)
   | ({
-    /** `input[type="number"]` */
+    /** Uses the default `input[type="number"]` element. */
     type: "number";
+    /** Default value of the number input. */
     default: number;
+    /** Minimum allowed value. When a number less than this is entered, the value will be set to this minimum instead. */
     min: number;
+    /** Maximum allowed value. When a number greater than this is entered, the value will be set to this maximum instead. */
     max?: number;
+    /** Granularity of the number input. Defaults to 1. */
     step?: number;
-    /** Optional unit string or function that returns a unit string for the provided value */
+    /** 
+     * String or function that returns a string to render the unit of measurement for the provided value. If unset, no unit will be rendered.  
+     * For translation purposes, specify a function instead, because translations must be loaded first.
+     */
     unit?: FeatUnit;
   } & FeatureFuncProps)
   | ({
-    /** `select` input */
+    /** Uses a default `select` element. */
     type: "select";
+    /**
+     * Default value of the select input.  
+     * - ⚠️ Must match the value of one of the options!
+     */
     default: string | number;
+    /**
+     * Array of options to populate the select input with.  
+     * For translation purposes, specify a function instead, because translations must be loaded first.
+     */
     options: SelectOption[] | (() => SelectOption[]);
   } & FeatureFuncProps)
   | ({
-    /** `input[type="range"]` */
+    /** Uses the default `input[type="range"]` element. */
     type: "slider";
+    /** Default value of the slider input. */
     default: number;
+    /** Minimum allowed value. */
     min: number;
+    /** Maximum allowed value. */
     max: number;
+    /**
+     * Granularity of the slider input. Defaults to 1.  
+     * - ⚠️ Make sure this isn't set too fine, otherwise the slider thumb will become very hard to control.  
+     *   In cases where more granularity is needed, consider using the "number" type instead.
+     */
     step?: number;
-    /** Optional unit string or function that returns a unit string for the provided value */
+    /**
+     * String or function that returns a string to render the unit of measurement for the provided value. If unset, no unit will be rendered.  
+     * For translation purposes, specify a function instead, because translations must be loaded first.
+     */
     unit?: FeatUnit;
   } & FeatureFuncProps)
   | ({
-    /** Custom hotkey input component using a `button` and listening for keydown events */
+    /** Custom hotkey input component using a `button` under the hood to enable and disable global keydown event listeners. */
     type: "hotkey";
+    /** Default value of the hotkey input, as a {@linkcode HotkeyObj} object. */
     default: HotkeyObj;
   } & FeatureFuncProps)
   | ({
-    /** `input[type="text"]` */
+    /** Uses the default `input[type="text"]` element. */
     type: "text";
+    /** Default value of the text input. */
     default: string;
-    /** Called to normalize the configured value before it gets persisted */
+    /**
+     * Called to normalize the configured value before it gets saved.  
+     * This can be used to, for example, trim whitespace from the value, enforce a certain letter case, validate the value and show an error toast, etc.
+     */
     normalize?: (val: string) => string;
   } & FeatureFuncProps)
   | {
-    /** `button` with a loading state where it sets itself to `disabled` */
+    /**
+     * `button` with a loading state that disables the button while the provided click handler is running (until the returned Promise is resolved or rejected, or after a short delay).  
+     * Use the translation keys `feature_btn.${featureKey}` to configure the button text, and `feature_btn.${featureKey}_running` for the button text while the click handler is running.
+     */
     type: "button";
-    /** Persistent value is always undefined for buttons, meaning it gets stripped out at serialization */
+    /** The value is always `undefined` for buttons, meaning it gets stripped out when serializing. */
     default?: undefined;
-    /** Called when the button is clicked - if it returns a Promise, the button will only be re-enabled after it resolves or rejects */
+    /**
+     * Called when the button is clicked.  
+     * If it returns a Promise, the button will only be re-enabled after it resolves or rejects.  
+     * If the function is synchronous, the button will be re-enabled after a short artificial delay.
+     */
     click: () => Promise<void | unknown> | void | unknown;
   }
 
 type FeatureFuncProps = (
   {
-    /** Whether the feature requires a page reload to take effect */
+    /**
+     * Whether changing the feature requires a page reload to take effect.  
+     * Prompts the user to reload the page when changing the feature value in the config menu.  
+     * When set to true, also make sure to add the `reload` adornment to the `adornments` property.
+     */
     reloadRequired: false;
-    /** Called to instantiate the feature on the page */
+    /**
+     * Called to instantiate the feature on the page.  
+     * Only use this as the feature entrypoint if the feature cleans itself up properly in the `disable` function, otherwise just register it with the others in `src/index.ts`.  
+     * Requires `reloadRequired` to be set to `true` or left undefined.
+     */
     enable?: (featCfg: FeatureConfig) => void,
   }
   | {
-    /** Whether the feature requires a page reload to take effect */
+    /**
+     * Whether changing the feature requires a page reload to take effect.  
+     * Prompts the user to reload the page when changing the feature value in the config menu.  
+     * When set to true, also make sure to add the `reload` adornment to the `adornments` property.
+     */
     reloadRequired?: true;
-    /** Called to instantiate the feature on the page */
+    /**
+     * Called to instantiate the feature on the page.  
+     * Only use this as the feature entrypoint if the feature cleans itself up properly in the `disable` function, otherwise just register it with the others in `src/index.ts`.  
+     * Requires `reloadRequired` to be set to `true` or left undefined.
+     */
     enable?: never;
   }
 ) & (
   {
-    /** Called to remove all traces of the feature from the page and memory (includes event listeners) */
+    /**
+     * Called to remove all traces of the feature from the page and memory (including *all* event listeners).  
+     * This is required if the feature is instantiated via the `enable` function, so the feature can be properly toggled and configured at runtime.  
+     * If the feature is instantiated in `src/index.ts`, the `enable` and `disable` props should not be used at all.
+     */
     disable?: (feats: FeatureConfig) => void,
   }
   | {
-    /** Called to update the feature's behavior when the config changes */
-    change?: (key: FeatureKey, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => void,
+    /**
+     * Called whenever the feature's value was changed.  
+     * This is useful for features that need special active treatment to react to config changes instead of passively reading the config on demand.  
+     *   
+     * `initialVal` is what the value of the feature was when the feature configuration was first loaded.  
+     * `newVal` is the new value of the feature after the change.
+     */
+    change?: (key: FeatureKey, initialVal: FeatureConfigValue, newVal: FeatureConfigValue) => void,
   }
 );
 
-/** Any kind of adornment function used by the feature info list in `src/features/index.ts` to render icons in the config menu */
+/** Any kind of adornment function used by the feature info list in `src/features/index.ts` to render icons in the config menu. */
 export type AdornFunc =
   | ((...args: any[]) => (Promise<string | undefined> | string | undefined))
   | Promise<string | undefined>;
 
-/** An array of adornment functions or a function that returns the array, used by the feature info list in `src/features/index.ts` to render icons in the config menu */
+/** An array of adornment functions or a function that returns the array, used by the feature info list in `src/features/index.ts` to render icons in the config menu. */
 export type FeatAdornments = AdornFunc[] | (() => AdornFunc[]);
 
-/** An entry of the feature info list in `src/features/index.ts`, containing all information necessary to construct the config menu, manage the persistent data, and instantiate the feature */
+/** An entry of the feature info list in `src/features/index.ts`, containing all information necessary to construct the config menu, manage the persistent data, and instantiate the feature. */
 export type FeatureInfoEntry = {
-    /** Feature category */
+    /** Feature category, see {@link FeatureCategory} */
     category: FeatureCategory;
-    /** Shared group name for related features - usually the name of the first feature or "main feature" (the feature that has the enable/disable toggle button) - groups features together in the config menu - don't use group names across cateogories! */
+    /**
+     * Group name for related features - groups features together in the config menu.  
+     * This is usually the name of the first feature or "main feature" (the feature that has the enable/disable toggle button) but can be any string.  
+     * - ⚠️ Don't reuse group names across multiple cateogories!
+     */
     group: string;
-    /** On which sites the feature is available */
+    /** On which sites the feature is available. */
     supportedSites: Domain[];
-    /** Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while */
+    /** Semver version since when this feature was added. Responsible for showing the "new feature" icon in the config menu. */
     since: `${number}.${number}.${number}` | `${number}.${number}.${number}-${string}`;
     /**
-     * HTML string that will be the help text for this feature  
-     * Specifying a function is useful for pluralizing or inserting values into the translation at runtime
+     * String that may contain HTML that will be the help text for this feature.  
+     * Specifying a function may be useful for pluralizing or inserting values into the translation at runtime.
      */
     helpText?: string | (() => string);
-    /** Whether the value should be hidden in the config menu and from plugins */
+    /** Whether the value should be hidden in the config menu (when of type "text") and from plugins that don't have the `SeeHiddenConfigValues` intent granted. */
     valueHidden?: boolean;
-    /** Transformation function called before the value is rendered in the config menu to modify it in fun ways */
+    /** Transformation function that will be called before the value is rendered in the config menu, to modify it in fun ways. */
     renderValue?: (value: string) => string | Promise<string>;
-    /** Array of functions returning HTML strings that are prepended to the feature's text description as icons */
+    /**
+     * Array of functions returning HTML strings that are prepended to the feature's text description in the config menu.  
+     * For a list of available adornments, search for `const adornments` in `src/features/index.ts`.
+     */
     adornments?: FeatAdornments;
 
-    /** Whether to only show this feature when advanced mode is activated (default false) */
+    /** Whether to only show this feature when advanced mode is activated (default is false). */
     advanced?: boolean;
   }
   & FeatureTypeProps;
