@@ -1,8 +1,8 @@
-[**betterytm**](../README.md)
+[**@sv443/betterytm**](../README.md)
 
 ***
 
-[betterytm](../modules.md) / constants
+[@sv443/betterytm](../modules.md) / constants
 
 # constants
 
@@ -18,6 +18,7 @@
 - [devServerPort](variables/devServerPort.md)
 - [host](variables/host.md)
 - [initialParams](variables/initialParams.md)
+- [initTime](variables/initTime.md)
 - [mode](variables/mode.md)
 - [newFeatureAdornmentMaxSessionCount](variables/newFeatureAdornmentMaxSessionCount.md)
 - [platformNames](variables/platformNames.md)

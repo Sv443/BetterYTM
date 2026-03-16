@@ -1,14 +1,14 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [types](../README.md) / BytmObject
+[@sv443/betterytm](../../modules.md) / [types](../README.md) / BytmObject
 
 # Type Alias: BytmObject
 
 > **BytmObject** = `object` & *typeof* [`scriptInfo`](../../constants/variables/scriptInfo.md) & `Pick`\<*typeof* [`constants`](../../constants/README.md), `"mode"` \| `"branch"` \| `"host"` \| `"buildNumber"` \| `"initialParams"` \| `"compressionFormat"` \| `"sessionStorageAvailable"` \| `"scriptInfo"`\> & [`InterfaceFunctions`](InterfaceFunctions.md) & `object` & `object`
 
-Defined in: [src/types.ts:202](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/types.ts#L202)
+Defined in: [src/types.ts:202](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L202)
 
 All properties of the `unsafeWindow.BYTM` object (also called "plugin interface").  
 ⚠️ Do not overwrite these properties, only call the functions or read the values!
@@ -26,6 +26,12 @@ Current BYTM locale
 > **logLevel**: [`LogLevel`](../enumerations/LogLevel.md)
 
 Current log level
+
+### sessionId
+
+> **sessionId**: `string` \| `null`
+
+Session ID (unique per tab). Is null if sessionStorage is not available.
 
 ## Type Declaration
 

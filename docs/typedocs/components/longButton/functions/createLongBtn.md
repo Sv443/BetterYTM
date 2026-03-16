@@ -1,14 +1,14 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [components/longButton](../README.md) / createLongBtn
+[@sv443/betterytm](../../../modules.md) / [components/longButton](../README.md) / createLongBtn
 
 # Function: createLongBtn()
 
 > **createLongBtn**(`__namedParameters`): `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/longButton.ts:51](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/components/longButton.ts#L51)
+Defined in: [src/components/longButton.ts:51](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/longButton.ts#L51)
 
 Creates a generic, circular, long button element with an icon and text.  
 Has classes for the enabled and disabled states for easier styling.  

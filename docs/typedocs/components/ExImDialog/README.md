@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / components/ExImDialog
+[@sv443/betterytm](../../modules.md) / components/ExImDialog
 
 # components/ExImDialog
 

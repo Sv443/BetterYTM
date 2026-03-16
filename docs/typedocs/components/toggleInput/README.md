@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / components/toggleInput
+[@sv443/betterytm](../../modules.md) / components/toggleInput
 
 # components/toggleInput
 

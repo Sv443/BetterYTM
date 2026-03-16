@@ -1,13 +1,14 @@
-[**betterytm**](../README.md)
+[**@sv443/betterytm**](../README.md)
 
 ***
 
-[betterytm](../modules.md) / siteEvents
+[@sv443/betterytm](../modules.md) / siteEvents
 
 # siteEvents
 
 ## Type Aliases
 
+- [BroadcastSiteEventsMapped](type-aliases/BroadcastSiteEventsMapped.md)
 - [SiteEventsMap](type-aliases/SiteEventsMap.md)
 - [SiteEventsMapPrefixed](type-aliases/SiteEventsMapPrefixed.md)
 

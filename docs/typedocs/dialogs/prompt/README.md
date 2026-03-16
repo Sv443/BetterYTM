@@ -1,16 +1,21 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / dialogs/prompt
+[@sv443/betterytm](../../modules.md) / dialogs/prompt
 
 # dialogs/prompt
+
+## Classes
+
+- [PromptDialog](classes/PromptDialog.md)
 
 ## Type Aliases
 
 - [AlertRenderProps](type-aliases/AlertRenderProps.md)
 - [BaseRenderProps](type-aliases/BaseRenderProps.md)
 - [ConfirmRenderProps](type-aliases/ConfirmRenderProps.md)
+- [ExtraButtonsPosition](type-aliases/ExtraButtonsPosition.md)
 - [PromptDialogRenderProps](type-aliases/PromptDialogRenderProps.md)
 - [PromptDialogResolveVal](type-aliases/PromptDialogResolveVal.md)
 - [PromptRenderProps](type-aliases/PromptRenderProps.md)

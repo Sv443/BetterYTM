@@ -1,14 +1,14 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [config](../README.md) / getFeature
+[@sv443/betterytm](../../modules.md) / [config](../README.md) / getFeature
 
 # Function: getFeature()
 
 > **getFeature**\<`TKey`\>(`key`): [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)\[`TKey`\]
 
-Defined in: [src/config.ts:400](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/config.ts#L400)
+Defined in: [src/config.ts:422](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/config.ts#L422)
 
 Returns the value of the feature with the given key from the in-memory cache, as a copy
 

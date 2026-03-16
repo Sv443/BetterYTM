@@ -1,14 +1,14 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [interface](../README.md) / getInternals
+[@sv443/betterytm](../../modules.md) / [interface](../README.md) / getInternals
 
 # Function: getInternals()
 
-> **getInternals**(`token`): \{ `addSelectorListener`: \<`TElem`, `TDomain`\>(`observerName`, `selector`, `options`) => `void`; `constants`: [`constants`](../../constants/README.md); `disableDiscardBeforeUnload`: () => `void`; `emitInterface`: \<`TEvt`, `TDetail`\>(`type`, ...`detail`) => `void`; `emitSiteEvent`: \<`TKey`\>(`key`, ...`args`) => `void`; `enableDiscardBeforeUnload`: () => `void`; `setGlobalProp`: \<`TKey`, `TValue`\>(`key`, `value`) => `void`; `showPrompt`: \{(`props`): `Promise`\<`boolean`\>; (`props`): `Promise`\<`true`\>; (`props`): `Promise`\<`string` \| `null`\>; \}; `siteEvents`: `NanoEmitter`\<[`SiteEventsMap`](../../siteEvents/type-aliases/SiteEventsMap.md)\>; \} \| `undefined`
+> **getInternals**(`token`): \{ `addSelectorListener`: \<`TElem`, `TDomain`\>(`observerName`, `selector`, `options`) => `void`; `constants`: [`constants`](../../constants/README.md); `disableDiscardBeforeUnload`: () => `void`; `emitInterface`: \<`TEvt`, `TDetail`\>(`type`, ...`detail`) => `void`; `emitSiteEvent`: \<`TKey`\>(`key`, ...`args`) => `void`; `enableDiscardBeforeUnload`: () => `void`; `setGlobalProp`: \<`TKey`, `TValue`\>(`key`, `value`) => `void`; `showPrompt`: \{(`props`): `Promise`\<`boolean`\>; (`props`): `Promise`\<`true`\>; (`props`): `Promise`\<`string` \| `null`\>; \}; `siteEvents`: `NanoEmitter`\<\{ `autoLikeChannelsUpdated`: () => `void`; `autoplayQueueChanged`: (`queueElement`) => `void`; `broadcast`: (`type`, `packet`) => `void`; `broadcast:custom`: (`packet`) => `void`; `broadcast:dataStoreUpdate`: (`packet`) => `void`; `broadcast:discoverSessions`: (`packet`) => `void`; `broadcast:discoverSessionsReply`: (`packet`) => `void`; `broadcast:reloadTabs`: (`packet`) => `void`; `cfgMenuClosed`: () => `void`; `cfgMenuMounted`: () => `void`; `configChanged`: (`newConfig`) => `void`; `configHeaderSelected`: (`name`) => `void`; `configOptionChanged`: \<`TFeatKey`\>(`key`, `oldValue`, `newValue`) => `void`; `fullscreenToggled`: (`isFullscreen`) => `void`; `hotkeyInputActive`: (`active`) => `void`; `pathChanged`: (`newPath`, `oldPath`) => `void`; `queueChanged`: (`queueElement`) => `void`; `rebuildCfgMenu`: (`newConfig`) => `void`; `recreateCfgMenu`: () => `void`; `songTitleChanged`: (`newTitle`, `oldTitle`) => `void`; `updateVolumeSliderLabel`: () => `void`; `voteLabelsAdded`: () => `void`; `watchIdChanged`: (`newId`, `oldId`) => `void`; `welcomeMenuClosed`: () => `void`; \}\>; \} \| `undefined`
 
-Defined in: [src/interface.ts:687](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/interface.ts#L687)
+Defined in: [src/interface.ts:698](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L698)
 
 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins.
 
@@ -20,7 +20,7 @@ Returns a selection of internal functions and objects that can be used by core l
 
 ## Returns
 
-\{ `addSelectorListener`: \<`TElem`, `TDomain`\>(`observerName`, `selector`, `options`) => `void`; `constants`: [`constants`](../../constants/README.md); `disableDiscardBeforeUnload`: () => `void`; `emitInterface`: \<`TEvt`, `TDetail`\>(`type`, ...`detail`) => `void`; `emitSiteEvent`: \<`TKey`\>(`key`, ...`args`) => `void`; `enableDiscardBeforeUnload`: () => `void`; `setGlobalProp`: \<`TKey`, `TValue`\>(`key`, `value`) => `void`; `showPrompt`: \{(`props`): `Promise`\<`boolean`\>; (`props`): `Promise`\<`true`\>; (`props`): `Promise`\<`string` \| `null`\>; \}; `siteEvents`: `NanoEmitter`\<[`SiteEventsMap`](../../siteEvents/type-aliases/SiteEventsMap.md)\>; \}
+\{ `addSelectorListener`: \<`TElem`, `TDomain`\>(`observerName`, `selector`, `options`) => `void`; `constants`: [`constants`](../../constants/README.md); `disableDiscardBeforeUnload`: () => `void`; `emitInterface`: \<`TEvt`, `TDetail`\>(`type`, ...`detail`) => `void`; `emitSiteEvent`: \<`TKey`\>(`key`, ...`args`) => `void`; `enableDiscardBeforeUnload`: () => `void`; `setGlobalProp`: \<`TKey`, `TValue`\>(`key`, `value`) => `void`; `showPrompt`: \{(`props`): `Promise`\<`boolean`\>; (`props`): `Promise`\<`true`\>; (`props`): `Promise`\<`string` \| `null`\>; \}; `siteEvents`: `NanoEmitter`\<\{ `autoLikeChannelsUpdated`: () => `void`; `autoplayQueueChanged`: (`queueElement`) => `void`; `broadcast`: (`type`, `packet`) => `void`; `broadcast:custom`: (`packet`) => `void`; `broadcast:dataStoreUpdate`: (`packet`) => `void`; `broadcast:discoverSessions`: (`packet`) => `void`; `broadcast:discoverSessionsReply`: (`packet`) => `void`; `broadcast:reloadTabs`: (`packet`) => `void`; `cfgMenuClosed`: () => `void`; `cfgMenuMounted`: () => `void`; `configChanged`: (`newConfig`) => `void`; `configHeaderSelected`: (`name`) => `void`; `configOptionChanged`: \<`TFeatKey`\>(`key`, `oldValue`, `newValue`) => `void`; `fullscreenToggled`: (`isFullscreen`) => `void`; `hotkeyInputActive`: (`active`) => `void`; `pathChanged`: (`newPath`, `oldPath`) => `void`; `queueChanged`: (`queueElement`) => `void`; `rebuildCfgMenu`: (`newConfig`) => `void`; `recreateCfgMenu`: () => `void`; `songTitleChanged`: (`newTitle`, `oldTitle`) => `void`; `updateVolumeSliderLabel`: () => `void`; `voteLabelsAdded`: () => `void`; `watchIdChanged`: (`newId`, `oldId`) => `void`; `welcomeMenuClosed`: () => `void`; \}\>; \}
 
 ### addSelectorListener()
 
@@ -93,13 +93,13 @@ Emits an event on the BYTM interface
 
 ##### TDetail
 
-`TDetail` *extends* `string` \| `void` \| [`BytmDialog`](../../components/BytmDialog/classes/BytmDialog.md) \| \{ `locale`: `"de-DE"` \| `"en-US"` \| `"en-GB"` \| `"es-ES"` \| `"fr-FR"` \| `"hi-IN"` \| `"ja-JP"` \| `"pt-BR"` \| `"zh-CN"`; `pluginId?`: `string`; \} \| (`pluginDef`) => [`PluginRegisterResult`](../../types/type-aliases/PluginRegisterResult.md) \| (`pluginDef`) => [`PluginRegisterResult`](../../types/type-aliases/PluginRegisterResult.md) \| \{ `artists`: `string`; `title`: `string`; `type`: `"current"` \| `"queue"`; `url`: `string`; \} \| \{ `entry`: [`LyricsCacheEntry`](../../types/type-aliases/LyricsCacheEntry.md); `type`: `"best"` \| `"penalized"`; \} \| `undefined`
+`TDetail` *extends* `string` \| `void` \| [`BytmDialog`](../../components/BytmDialog/classes/BytmDialog.md) \| \{ `locale`: `"de-DE"` \| `"en-US"` \| `"en-GB"` \| `"es-ES"` \| `"fr-FR"` \| `"hi-IN"` \| `"ja-JP"` \| `"pt-BR"` \| `"zh-CN"`; `pluginId?`: `string`; \} \| (`pluginDef`) => [`PluginRegisterResult`](../../types/type-aliases/PluginRegisterResult.md) \| (`pluginDef`) => [`PluginRegisterResult`](../../types/type-aliases/PluginRegisterResult.md) \| \{ `artists`: `string`; `title`: `string`; `type`: `"current"` \| `"queue"`; `url`: `string`; \} \| \{ `entry`: [`LyricsCacheEntry`](../../types/type-aliases/LyricsCacheEntry.md); `type`: `"best"` \| `"penalized"`; \} \| \{ `album`: `string`; `artist`: `string`; `entry`: `ArtCacheEntry`; \} \| `undefined`
 
 #### Parameters
 
 ##### type
 
-`TEvt` | `"bytm:siteEvent:recreateCfgMenu"` | `"bytm:siteEvent:configChanged"` | `"bytm:siteEvent:configHeaderSelected"` | `"bytm:siteEvent:configOptionChanged"` | `"bytm:siteEvent:rebuildCfgMenu"` | `"bytm:siteEvent:cfgMenuMounted"` | `"bytm:siteEvent:cfgMenuClosed"` | `"bytm:siteEvent:welcomeMenuClosed"` | `"bytm:siteEvent:hotkeyInputActive"` | `"bytm:siteEvent:queueChanged"` | `"bytm:siteEvent:autoplayQueueChanged"` | `"bytm:siteEvent:songTitleChanged"` | `"bytm:siteEvent:watchIdChanged"` | `"bytm:siteEvent:pathChanged"` | `"bytm:siteEvent:fullscreenToggled"` | `"bytm:siteEvent:updateVolumeSliderLabel"` | `"bytm:siteEvent:autoLikeChannelsUpdated"` | `"bytm:siteEvent:voteLabelsAdded"`
+`TEvt` | `"bytm:siteEvent:broadcast:dataStoreUpdate"` | `"bytm:siteEvent:broadcast:reloadTabs"` | `"bytm:siteEvent:broadcast:discoverSessions"` | `"bytm:siteEvent:broadcast:discoverSessionsReply"` | `"bytm:siteEvent:broadcast:custom"` | `"bytm:siteEvent:configChanged"` | `"bytm:siteEvent:configHeaderSelected"` | `"bytm:siteEvent:configOptionChanged"` | `"bytm:siteEvent:rebuildCfgMenu"` | `"bytm:siteEvent:cfgMenuMounted"` | `"bytm:siteEvent:recreateCfgMenu"` | `"bytm:siteEvent:cfgMenuClosed"` | `"bytm:siteEvent:welcomeMenuClosed"` | `"bytm:siteEvent:hotkeyInputActive"` | `"bytm:siteEvent:queueChanged"` | `"bytm:siteEvent:autoplayQueueChanged"` | `"bytm:siteEvent:songTitleChanged"` | `"bytm:siteEvent:watchIdChanged"` | `"bytm:siteEvent:pathChanged"` | `"bytm:siteEvent:fullscreenToggled"` | `"bytm:siteEvent:updateVolumeSliderLabel"` | `"bytm:siteEvent:autoLikeChannelsUpdated"` | `"bytm:siteEvent:voteLabelsAdded"` | `"bytm:siteEvent:broadcast"`
 
 ##### detail
 
@@ -119,7 +119,7 @@ Emits a site event with the given key and arguments - if `bytm:allReady` has not
 
 ##### TKey
 
-`TKey` *extends* keyof [`SiteEventsMap`](../../siteEvents/type-aliases/SiteEventsMap.md)
+`TKey` *extends* `"broadcast:dataStoreUpdate"` \| `"broadcast:reloadTabs"` \| `"broadcast:discoverSessions"` \| `"broadcast:discoverSessionsReply"` \| `"broadcast:custom"` \| `"configChanged"` \| `"configHeaderSelected"` \| `"configOptionChanged"` \| `"rebuildCfgMenu"` \| `"cfgMenuMounted"` \| `"recreateCfgMenu"` \| `"cfgMenuClosed"` \| `"welcomeMenuClosed"` \| `"hotkeyInputActive"` \| `"queueChanged"` \| `"autoplayQueueChanged"` \| `"songTitleChanged"` \| `"watchIdChanged"` \| `"pathChanged"` \| `"fullscreenToggled"` \| `"updateVolumeSliderLabel"` \| `"autoLikeChannelsUpdated"` \| `"voteLabelsAdded"` \| `"broadcast"`
 
 #### Parameters
 
@@ -129,7 +129,7 @@ Emits a site event with the given key and arguments - if `bytm:allReady` has not
 
 ##### args
 
-...`Parameters`\<[`SiteEventsMap`](../../siteEvents/type-aliases/SiteEventsMap.md)\[`TKey`\]\>
+...`Parameters`\<`object`\[`TKey`\]\>
 
 #### Returns
 
@@ -229,7 +229,7 @@ Shows a `prompt()`-like dialog with the specified message and default value and 
 
 ### siteEvents
 
-> **siteEvents**: `NanoEmitter`\<[`SiteEventsMap`](../../siteEvents/type-aliases/SiteEventsMap.md)\>
+> **siteEvents**: `NanoEmitter`\<\{ `autoLikeChannelsUpdated`: () => `void`; `autoplayQueueChanged`: (`queueElement`) => `void`; `broadcast`: (`type`, `packet`) => `void`; `broadcast:custom`: (`packet`) => `void`; `broadcast:dataStoreUpdate`: (`packet`) => `void`; `broadcast:discoverSessions`: (`packet`) => `void`; `broadcast:discoverSessionsReply`: (`packet`) => `void`; `broadcast:reloadTabs`: (`packet`) => `void`; `cfgMenuClosed`: () => `void`; `cfgMenuMounted`: () => `void`; `configChanged`: (`newConfig`) => `void`; `configHeaderSelected`: (`name`) => `void`; `configOptionChanged`: \<`TFeatKey`\>(`key`, `oldValue`, `newValue`) => `void`; `fullscreenToggled`: (`isFullscreen`) => `void`; `hotkeyInputActive`: (`active`) => `void`; `pathChanged`: (`newPath`, `oldPath`) => `void`; `queueChanged`: (`queueElement`) => `void`; `rebuildCfgMenu`: (`newConfig`) => `void`; `recreateCfgMenu`: () => `void`; `songTitleChanged`: (`newTitle`, `oldTitle`) => `void`; `updateVolumeSliderLabel`: () => `void`; `voteLabelsAdded`: () => `void`; `watchIdChanged`: (`newId`, `oldId`) => `void`; `welcomeMenuClosed`: () => `void`; \}\>
 
 EventEmitter instance that is used to detect various changes to the site and userscript
 

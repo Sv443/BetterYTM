@@ -1,14 +1,14 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [dialogs/featHelp](../README.md) / getFeatHelpDialog
+[@sv443/betterytm](../../../modules.md) / [dialogs/featHelp](../README.md) / getFeatHelpDialog
 
 # Function: getFeatHelpDialog()
 
 > **getFeatHelpDialog**(`__namedParameters`): `Promise`\<[`BytmDialog`](../../../components/BytmDialog/classes/BytmDialog.md)\>
 
-Defined in: [src/dialogs/featHelp.ts:15](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/featHelp.ts#L15)
+Defined in: [src/dialogs/featHelp.ts:15](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/featHelp.ts#L15)
 
 Creates or modifies the help dialog for a specific feature and returns it
 

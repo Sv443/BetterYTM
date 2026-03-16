@@ -1,14 +1,14 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [components/ExImDialog](../README.md) / ExImDialogOpts
+[@sv443/betterytm](../../../modules.md) / [components/ExImDialog](../README.md) / ExImDialogOpts
 
 # Type Alias: ExImDialogOpts
 
 > **ExImDialogOpts** = `Omit`\<[`BytmDialogOptions`](../../BytmDialog/type-aliases/BytmDialogOptions.md), `"renderHeader"` \| `"renderBody"` \| `"renderFooter"`\> & `object` & `Partial`\<`Pick`\<[`BytmDialogOptions`](../../BytmDialog/type-aliases/BytmDialogOptions.md), `"renderHeader"` \| `"renderBody"` \| `"renderFooter"`\>\>
 
-Defined in: [src/components/ExImDialog.ts:15](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/components/ExImDialog.ts#L15)
+Defined in: [src/components/ExImDialog.ts:15](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/ExImDialog.ts#L15)
 
 ## Type Declaration
 

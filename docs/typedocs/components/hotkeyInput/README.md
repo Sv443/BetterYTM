@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / components/hotkeyInput
+[@sv443/betterytm](../../modules.md) / components/hotkeyInput
 
 # components/hotkeyInput
 

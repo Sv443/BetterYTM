@@ -1,8 +1,8 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [components/toast](../README.md) / showToast
+[@sv443/betterytm](../../../modules.md) / [components/toast](../README.md) / showToast
 
 # Function: showToast()
 
@@ -12,7 +12,7 @@ Shows a toast message or element in the specified position (top right corner by 
 
 > **showToast**(`message`): `Promise`\<`void` \| `HTMLDivElement`\>
 
-Defined in: [src/components/toast.ts:153](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/components/toast.ts#L153)
+Defined in: [src/components/toast.ts:153](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toast.ts#L153)
 
 Shows a toast message in the top right corner of the screen by default and uses the default timeout from the config option `toastDuration`
 
@@ -30,7 +30,7 @@ Shows a toast message in the top right corner of the screen by default and uses 
 
 > **showToast**(`props`): `Promise`\<`void` \| `HTMLDivElement`\>
 
-Defined in: [src/components/toast.ts:155](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/components/toast.ts#L155)
+Defined in: [src/components/toast.ts:155](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toast.ts#L155)
 
 Shows a toast message or element in the top right corner of the screen by default and uses the default timeout from the config option `toastDuration`
 

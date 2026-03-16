@@ -1,13 +1,13 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [constants](../README.md) / sessionStorageAvailable
+[@sv443/betterytm](../../modules.md) / [constants](../README.md) / sessionStorageAvailable
 
 # Variable: sessionStorageAvailable
 
 > `const` **sessionStorageAvailable**: `boolean`
 
-Defined in: [src/constants.ts:67](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/constants.ts#L67)
+Defined in: [src/constants.ts:70](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/constants.ts#L70)
 
 Whether sessionStorage is available and working

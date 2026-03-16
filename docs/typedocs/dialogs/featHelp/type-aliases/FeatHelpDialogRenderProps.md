@@ -1,14 +1,14 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [dialogs/featHelp](../README.md) / FeatHelpDialogRenderProps
+[@sv443/betterytm](../../../modules.md) / [dialogs/featHelp](../README.md) / FeatHelpDialogRenderProps
 
 # Type Alias: FeatHelpDialogRenderProps
 
 > **FeatHelpDialogRenderProps** = `object`
 
-Defined in: [src/dialogs/featHelp.ts:10](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/featHelp.ts#L10)
+Defined in: [src/dialogs/featHelp.ts:10](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/featHelp.ts#L10)
 
 ## Properties
 
@@ -16,4 +16,4 @@ Defined in: [src/dialogs/featHelp.ts:10](https://github.com/Sv443/BetterYTM/blob
 
 > **featKey**: [`FeatureKey`](../../../types/type-aliases/FeatureKey.md)
 
-Defined in: [src/dialogs/featHelp.ts:11](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/featHelp.ts#L11)
+Defined in: [src/dialogs/featHelp.ts:11](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/featHelp.ts#L11)

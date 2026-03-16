@@ -1,14 +1,14 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [siteEvents](../README.md) / emitSiteEvent
+[@sv443/betterytm](../../modules.md) / [siteEvents](../README.md) / emitSiteEvent
 
 # Function: emitSiteEvent()
 
 > **emitSiteEvent**\<`TKey`\>(`key`, ...`args`): `void`
 
-Defined in: [src/siteEvents.ts:230](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/siteEvents.ts#L230)
+Defined in: [src/siteEvents.ts:247](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/siteEvents.ts#L247)
 
 Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is
 
@@ -16,7 +16,7 @@ Emits a site event with the given key and arguments - if `bytm:allReady` has not
 
 ### TKey
 
-`TKey` *extends* keyof [`SiteEventsMap`](../type-aliases/SiteEventsMap.md)
+`TKey` *extends* `"broadcast:dataStoreUpdate"` \| `"broadcast:reloadTabs"` \| `"broadcast:discoverSessions"` \| `"broadcast:discoverSessionsReply"` \| `"broadcast:custom"` \| `"configChanged"` \| `"configHeaderSelected"` \| `"configOptionChanged"` \| `"rebuildCfgMenu"` \| `"cfgMenuMounted"` \| `"recreateCfgMenu"` \| `"cfgMenuClosed"` \| `"welcomeMenuClosed"` \| `"hotkeyInputActive"` \| `"queueChanged"` \| `"autoplayQueueChanged"` \| `"songTitleChanged"` \| `"watchIdChanged"` \| `"pathChanged"` \| `"fullscreenToggled"` \| `"updateVolumeSliderLabel"` \| `"autoLikeChannelsUpdated"` \| `"voteLabelsAdded"` \| `"broadcast"`
 
 ## Parameters
 
@@ -26,7 +26,7 @@ Emits a site event with the given key and arguments - if `bytm:allReady` has not
 
 ### args
 
-...`Parameters`\<[`SiteEventsMap`](../type-aliases/SiteEventsMap.md)\[`TKey`\]\>
+...`Parameters`\<`object`\[`TKey`\]\>
 
 ## Returns
 

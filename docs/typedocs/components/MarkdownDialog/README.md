@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / components/MarkdownDialog
+[@sv443/betterytm](../../modules.md) / components/MarkdownDialog
 
 # components/MarkdownDialog
 

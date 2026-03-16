@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / dialogs/autoLike
+[@sv443/betterytm](../../modules.md) / dialogs/autoLike
 
 # dialogs/autoLike
 

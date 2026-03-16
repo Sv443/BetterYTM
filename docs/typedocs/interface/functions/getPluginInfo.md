@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [interface](../README.md) / getPluginInfo
+[@sv443/betterytm](../../modules.md) / [interface](../README.md) / getPluginInfo
 
 # Function: getPluginInfo()
 
@@ -14,7 +14,7 @@ This is an authenticated function so you must pass the session- and plugin-uniqu
 
 > **getPluginInfo**(`token`, `name`, `namespace`): [`PluginInfo`](../../types/type-aliases/PluginInfo.md) \| `undefined`
 
-Defined in: [src/interface.ts:478](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/interface.ts#L478)
+Defined in: [src/interface.ts:481](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L481)
 
 Returns info about a registered plugin on the BYTM interface by its name and namespace properties, or undefined if the plugin isn't registered.  
 This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
@@ -42,7 +42,7 @@ This is an authenticated function so you must pass the session- and plugin-uniqu
 
 > **getPluginInfo**(`token`, `plugin`): [`PluginInfo`](../../types/type-aliases/PluginInfo.md) \| `undefined`
 
-Defined in: [src/interface.ts:484](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/interface.ts#L484)
+Defined in: [src/interface.ts:487](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L487)
 
 Returns info about a registered plugin on the BYTM interface by a resolvable definition object, or undefined if the plugin isn't registered.  
 This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
@@ -66,7 +66,7 @@ This is an authenticated function so you must pass the session- and plugin-uniqu
 
 > **getPluginInfo**(`token`, `pluginId`): [`PluginInfo`](../../types/type-aliases/PluginInfo.md) \| `undefined`
 
-Defined in: [src/interface.ts:490](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/interface.ts#L490)
+Defined in: [src/interface.ts:493](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L493)
 
 Returns info about a registered plugin on the BYTM interface by its ID (consisting of namespace and name), or undefined if the plugin isn't registered.  
 This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  

@@ -1,14 +1,14 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [components/circularButton](../README.md) / createCircularBtn
+[@sv443/betterytm](../../../modules.md) / [components/circularButton](../README.md) / createCircularBtn
 
 # Function: createCircularBtn()
 
 > **createCircularBtn**(`__namedParameters`): `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/circularButton.ts:35](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/components/circularButton.ts#L35)
+Defined in: [src/components/circularButton.ts:35](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/circularButton.ts#L35)
 
 Creates a generic, circular button element.  
 If `href` is provided, the button will be an anchor element.  

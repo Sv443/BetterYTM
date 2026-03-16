@@ -1,8 +1,8 @@
-[**betterytm**](../README.md)
+[**@sv443/betterytm**](../README.md)
 
 ***
 
-[betterytm](../modules.md) / config
+[@sv443/betterytm](../modules.md) / config
 
 # config
 

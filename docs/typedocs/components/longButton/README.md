@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / components/longButton
+[@sv443/betterytm](../../modules.md) / components/longButton
 
 # components/longButton
 

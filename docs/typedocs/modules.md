@@ -1,8 +1,8 @@
-[**betterytm**](README.md)
+[**@sv443/betterytm**](README.md)
 
 ***
 
-# betterytm
+# @sv443/betterytm
 
 ## Modules
 

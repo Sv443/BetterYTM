@@ -1,8 +1,8 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / dialogs/versionNotif
+[@sv443/betterytm](../../modules.md) / dialogs/versionNotif
 
 # dialogs/versionNotif
 

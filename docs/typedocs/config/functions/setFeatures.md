@@ -1,14 +1,14 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [config](../README.md) / setFeatures
+[@sv443/betterytm](../../modules.md) / [config](../README.md) / setFeatures
 
 # Function: setFeatures()
 
 > **setFeatures**(`featureConf`): `Promise`\<`void`\>
 
-Defined in: [src/config.ts:405](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/config.ts#L405)
+Defined in: [src/config.ts:427](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/config.ts#L427)
 
 Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage
 

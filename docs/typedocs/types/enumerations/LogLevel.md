@@ -1,12 +1,12 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [types](../README.md) / LogLevel
+[@sv443/betterytm](../../modules.md) / [types](../README.md) / LogLevel
 
 # Enumeration: LogLevel
 
-Defined in: [src/types.ts:38](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/types.ts#L38)
+Defined in: [src/types.ts:38](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L38)
 
 ## Enumeration Members
 
@@ -14,7 +14,7 @@ Defined in: [src/types.ts:38](https://github.com/Sv443/BetterYTM/blob/bd7584e75e
 
 > **Debug**: `0`
 
-Defined in: [src/types.ts:39](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/types.ts#L39)
+Defined in: [src/types.ts:39](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L39)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [src/types.ts:39](https://github.com/Sv443/BetterYTM/blob/bd7584e75e
 
 > **Info**: `1`
 
-Defined in: [src/types.ts:40](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/types.ts#L40)
+Defined in: [src/types.ts:40](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L40)

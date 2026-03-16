@@ -1,14 +1,14 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [dialogs/prompt](../README.md) / BaseRenderProps
+[@sv443/betterytm](../../../modules.md) / [dialogs/prompt](../README.md) / BaseRenderProps
 
 # Type Alias: BaseRenderProps
 
 > **BaseRenderProps** = `object`
 
-Defined in: [src/dialogs/prompt.ts:35](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/prompt.ts#L35)
+Defined in: [src/dialogs/prompt.ts:41](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L41)
 
 Base props for rendering any type of prompt dialog - see [`()`](../functions/showPrompt.md)
 
@@ -18,7 +18,7 @@ Base props for rendering any type of prompt dialog - see [`()`](../functions/sho
 
 > `optional` **confirmBtnText**: [`PromptStringGen`](PromptStringGen.md)
 
-Defined in: [src/dialogs/prompt.ts:37](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/prompt.ts#L37)
+Defined in: [src/dialogs/prompt.ts:43](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L43)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [src/dialogs/prompt.ts:37](https://github.com/Sv443/BetterYTM/blob/b
 
 > `optional` **confirmBtnTooltip**: [`PromptStringGen`](PromptStringGen.md)
 
-Defined in: [src/dialogs/prompt.ts:38](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/prompt.ts#L38)
+Defined in: [src/dialogs/prompt.ts:44](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L44)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [src/dialogs/prompt.ts:38](https://github.com/Sv443/BetterYTM/blob/b
 
 > `optional` **denyBtnText**: [`PromptStringGen`](PromptStringGen.md)
 
-Defined in: [src/dialogs/prompt.ts:39](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/prompt.ts#L39)
+Defined in: [src/dialogs/prompt.ts:45](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L45)
 
 ***
 
@@ -42,7 +42,49 @@ Defined in: [src/dialogs/prompt.ts:39](https://github.com/Sv443/BetterYTM/blob/b
 
 > `optional` **denyBtnTooltip**: [`PromptStringGen`](PromptStringGen.md)
 
-Defined in: [src/dialogs/prompt.ts:40](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/prompt.ts#L40)
+Defined in: [src/dialogs/prompt.ts:46](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L46)
+
+***
+
+### dialogOptions?
+
+> `optional` **dialogOptions**: `Partial`\<`Omit`\<[`BytmDialogOptions`](../../../components/BytmDialog/type-aliases/BytmDialogOptions.md), `"id"` \| `"renderBody"` \| `"renderHeader"` \| `"renderFooter"`\>\>
+
+Defined in: [src/dialogs/prompt.ts:56](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L56)
+
+Partial override of the underlying [`BytmDialog`](../../../components/BytmDialog/classes/BytmDialog.md) options (except `id` and render functions)
+
+***
+
+### extraButtons?
+
+> `optional` **extraButtons**: (`dialog`) => `Promise`\<`HTMLButtonElement`\> \| `HTMLButtonElement`[]
+
+Defined in: [src/dialogs/prompt.ts:52](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L52)
+
+Array of functions that create extra button elements appended to the footer row - placement controlled by [`extraButtonsPosition`](#extrabuttonsposition)  
+Function gets passed the dialog instance as a parameter.  
+Note: these are completely unmanaged by the prompt dialog, so they won't make it resolve, and also won't close it when clicked.
+
+#### Parameters
+
+##### dialog
+
+[`PromptDialog`](../classes/PromptDialog.md)
+
+#### Returns
+
+`Promise`\<`HTMLButtonElement`\> \| `HTMLButtonElement`
+
+***
+
+### extraButtonsPosition?
+
+> `optional` **extraButtonsPosition**: [`ExtraButtonsPosition`](ExtraButtonsPosition.md)
+
+Defined in: [src/dialogs/prompt.ts:54](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L54)
+
+Where to place [`extraButtons`](#extrabuttons) relative to the built-in confirm/close buttons - defaults to `"after"`
 
 ***
 
@@ -50,4 +92,4 @@ Defined in: [src/dialogs/prompt.ts:40](https://github.com/Sv443/BetterYTM/blob/b
 
 > **message**: [`PromptStringGen`](PromptStringGen.md)
 
-Defined in: [src/dialogs/prompt.ts:36](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/prompt.ts#L36)
+Defined in: [src/dialogs/prompt.ts:42](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/prompt.ts#L42)

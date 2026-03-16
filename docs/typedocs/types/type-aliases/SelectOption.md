@@ -1,16 +1,16 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [types](../README.md) / SelectOption
+[@sv443/betterytm](../../modules.md) / [types](../README.md) / SelectOption
 
 # Type Alias: SelectOption
 
 > **SelectOption** = `object`
 
-Defined in: [src/types.ts:554](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/types.ts#L554)
+Defined in: [src/types.ts:559](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L559)
 
-One option in a select input
+One option in a select input.
 
 ## Properties
 
@@ -18,7 +18,7 @@ One option in a select input
 
 > **label**: `string`
 
-Defined in: [src/types.ts:556](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/types.ts#L556)
+Defined in: [src/types.ts:561](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L561)
 
 ***
 
@@ -26,4 +26,4 @@ Defined in: [src/types.ts:556](https://github.com/Sv443/BetterYTM/blob/bd7584e75
 
 > **value**: `string` \| `number`
 
-Defined in: [src/types.ts:555](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/types.ts#L555)
+Defined in: [src/types.ts:560](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L560)

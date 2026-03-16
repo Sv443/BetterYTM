@@ -1,8 +1,8 @@
-[**betterytm**](../README.md)
+[**@sv443/betterytm**](../README.md)
 
 ***
 
-[betterytm](../modules.md) / types
+[@sv443/betterytm](../modules.md) / types
 
 # types
 
@@ -27,6 +27,8 @@
 - [FeatKeysOfType](type-aliases/FeatKeysOfType.md)
 - [FeatUnit](type-aliases/FeatUnit.md)
 - [FeatureCategory](type-aliases/FeatureCategory.md)
+- [FeatureConfigValue](type-aliases/FeatureConfigValue.md)
+- [FeatureGroupKey](type-aliases/FeatureGroupKey.md)
 - [FeatureInfo](type-aliases/FeatureInfo.md)
 - [FeatureInfoEntry](type-aliases/FeatureInfoEntry.md)
 - [FeatureKey](type-aliases/FeatureKey.md)

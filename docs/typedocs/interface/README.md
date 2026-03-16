@@ -1,8 +1,8 @@
-[**betterytm**](../README.md)
+[**@sv443/betterytm**](../README.md)
 
 ***
 
-[betterytm](../modules.md) / interface
+[@sv443/betterytm](../modules.md) / interface
 
 # interface
 
@@ -15,7 +15,6 @@
 
 - [allInterfaceEvents](variables/allInterfaceEvents.md)
 - [devPluginId](variables/devPluginId.md)
-- [devPluginName](variables/devPluginName.md)
 - [devPluginToken](variables/devPluginToken.md)
 
 ## Functions
@@ -38,3 +37,4 @@
 - [saveFeaturesInterface](functions/saveFeaturesInterface.md)
 - [setGlobalProp](functions/setGlobalProp.md)
 - [setLocaleInterface](functions/setLocaleInterface.md)
+- [showPromptInterface](functions/showPromptInterface.md)

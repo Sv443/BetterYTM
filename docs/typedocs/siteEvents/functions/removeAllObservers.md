@@ -1,14 +1,14 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [siteEvents](../README.md) / removeAllObservers
+[@sv443/betterytm](../../modules.md) / [siteEvents](../README.md) / removeAllObservers
 
 # Function: removeAllObservers()
 
 > **removeAllObservers**(): `void`
 
-Defined in: [src/siteEvents.ts:96](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/siteEvents.ts#L96)
+Defined in: [src/siteEvents.ts:115](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/siteEvents.ts#L115)
 
 Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones.
 

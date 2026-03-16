@@ -1,14 +1,14 @@
-[**betterytm**](../../../README.md)
+[**@sv443/betterytm**](../../../README.md)
 
 ***
 
-[betterytm](../../../modules.md) / [dialogs/versionNotif](../README.md) / VersionNotifDialogRenderProps
+[@sv443/betterytm](../../../modules.md) / [dialogs/versionNotif](../README.md) / VersionNotifDialogRenderProps
 
 # Type Alias: VersionNotifDialogRenderProps
 
 > **VersionNotifDialogRenderProps** = `object`
 
-Defined in: [src/dialogs/versionNotif.ts:11](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/versionNotif.ts#L11)
+Defined in: [src/dialogs/versionNotif.ts:11](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/versionNotif.ts#L11)
 
 ## Properties
 
@@ -16,4 +16,4 @@ Defined in: [src/dialogs/versionNotif.ts:11](https://github.com/Sv443/BetterYTM/
 
 > **latestTag**: `string`
 
-Defined in: [src/dialogs/versionNotif.ts:12](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/dialogs/versionNotif.ts#L12)
+Defined in: [src/dialogs/versionNotif.ts:12](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/versionNotif.ts#L12)

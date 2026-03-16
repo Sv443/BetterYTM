@@ -1,14 +1,14 @@
-[**betterytm**](../../README.md)
+[**@sv443/betterytm**](../../README.md)
 
 ***
 
-[betterytm](../../modules.md) / [config](../README.md) / clearConfig
+[@sv443/betterytm](../../modules.md) / [config](../README.md) / clearConfig
 
 # Function: clearConfig()
 
 > **clearConfig**(): `Promise`\<`void`\>
 
-Defined in: [src/config.ts:444](https://github.com/Sv443/BetterYTM/blob/bd7584e75e1976dcbc434d36313e275725fada0c/src/config.ts#L444)
+Defined in: [src/config.ts:466](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/config.ts#L466)
 
 Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload
 
