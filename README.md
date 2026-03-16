@@ -32,7 +32,7 @@ All of these can be toggled and configured in the configuration menu.
   - Auto-like songs and videos of your favorite creators on both YT and YT Music
   - Use arrow keys to skip forward or backward and control volume
   - Press number keys to skip to a percentage of the currently playing song
-  - Custom hotkeys that allow you to switch between YT and YTM, like or dislike, open the lyrics, and more
+  - Many custom hotkeys for switching between YT and YTM, liking and disliking, opening the lyrics, and more
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
 ... and these are just the notable features, there are many more smaller features, improvements and fixes!
