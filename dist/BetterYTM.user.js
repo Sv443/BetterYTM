@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@cfeacffa/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9df50087/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -444,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "cfeacffa",
-    buildTimestamp: "1773581487830",
+    buildNumber: "9df50087",
+    buildTimestamp: "1773660752705",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1510,17 +1510,24 @@ class PromptDialog extends BytmDialog {
         messageElem.textContent = String(message);
         upperContElem.appendChild(messageElem);
         if (type === "prompt") {
-            const inputElem = document.createElement("input");
+            const isTA = "textarea" in rest && rest.textarea;
+            const inputElem = document.createElement(isTA ? "textarea" : "input");
             inputElem.id = "bytm-prompt-dialog-input";
-            inputElem.type = "text";
+            if (isTA) {
+                inputElem.wrap = "off";
+                inputElem.rows = 4;
+            }
+            else
+                inputElem.type = "text";
             inputElem.autofocus = true;
             inputElem.autocomplete = "off";
             inputElem.spellcheck = false;
             inputElem.value = "defaultValue" in rest && rest.defaultValue
                 ? await CoreUtils.consumeStringGen(rest.defaultValue)
                 : "";
+            // dont ask me why intersecting the input and textarea de-narrows the gd event type
             const inputEnterListener = (e) => {
-                if (e.key === "Enter") {
+                if ("key" in e && e.key === "Enter") {
                     inputElem.removeEventListener("keydown", inputEnterListener);
                     this.emitResolve(inputElem?.value?.trim() ?? null);
                     promptDialog?.close();
@@ -8181,11 +8188,11 @@ const featInfo = {
         group: "bytmInternal",
         supportedSites: ["ytm", "yt"],
         since: "2.1.0",
-        min: mode$1 === "development" ? 0.1 : 3,
-        max: 10,
-        default: 3,
-        step: 0.1,
-        unit: "s",
+        min: mode$1 === "development" ? 100 : 1000,
+        max: 10000,
+        default: 3000,
+        step: 100,
+        unit: "ms",
         advanced: true,
         adornments: [adornments.advanced, adornments.reload],
     },
@@ -8284,7 +8291,7 @@ const featInfo = {
                 type: "confirm",
                 message: t("reset_everything_confirm"),
             })) {
-                await getDSSerializer().resetStoresData();
+                await getDSSerializer(true).resetStoresData();
                 const gmKeys = await GM.listValues();
                 await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
                 await reloadTab();
@@ -9700,8 +9707,8 @@ const cfgMigrations = {
             "themeSongVisualizerHotkey",
             "truncatePlayerBarSubtitles",
         ]), [
-            { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2000
-            { key: "initTimeout", oldDefault: 8 }, // new: 3
+            { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2_000
+            { key: "initTimeout", oldDefault: 8 }, // new: 3_000
             { key: "rememberSongTimeDuration", oldDefault: 60 }, // new: 180
             { key: "frameSkipAmount", oldDefault: 0.0417 }, // new: 0.0166
         ]);
@@ -9710,6 +9717,9 @@ const cfgMigrations = {
             // no need to load data since artCacheStore.memoryCache === false
             info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
         });
+        // scale was changed from seconds to milliseconds
+        if (newCfg.initTimeout <= 10)
+            newCfg.initTimeout *= 1000;
         return useNewRanges(newCfg, [
             "initTimeout",
             "thumbnailOverlayITunesImgRes",
@@ -11310,7 +11320,7 @@ async function onDomLoad() {
         }
         emitInterface("bytm:featureInitStarted");
         const initStartTs = Date.now();
-        const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8000;
+        const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8000;
         const initializedFeats = [];
         const endFeatInitDur = measureDuration("featuresAllReady_decoupled");
         (() => Promise.race([
@@ -11540,9 +11550,14 @@ function registerDevCommands() {
     isAny && GM.registerMenuCommand(t("menu_command.export_config"), () => downloadData(false));
     isAny && GM.registerMenuCommand(t("menu_command.export_full"), () => downloadData(false, true));
     isAny && GM.registerMenuCommand(t("menu_command.import_full"), async () => {
-        const input = await showPrompt({ type: "prompt", message: "Paste the content of the exported file to import:", confirmBtnText: "Import" });
+        const input = await showPrompt({
+            type: "prompt",
+            message: "Paste the content of the exported file to import data:",
+            confirmBtnText: "Import",
+            textarea: true,
+        });
         if (input && input.length > 0) {
-            await getDSSerializer().deserialize(input);
+            await getDSSerializer(true).deserialize(input);
             if (await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
                 await reloadTab();
         }
