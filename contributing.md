@@ -2274,8 +2274,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Properties:  
 > - `message: string | ((type: string) => string | Promise<string>)` - The message to show in the prompt
 > - `type: "confirm" | "alert" | "prompt"` - The type of the prompt. Can be "confirm", "alert" or "prompt"
-> - for type "prompt" only:
->   - `defaultValue?: string` - The default value for the input field (only has an effect when using type "prompt")
+> - for `type: "prompt"` only:
+>   - `defaultValue?: string` - The default value for the input field
+>   - `textarea?: boolean` - Whether to use a textarea instead of an input field - defaults to false
 > - for overriding button text and tooltips:
 >   - `confirmBtnText?: string | ((type: string) => string | Promise<string>)` - Text for the confirm button (only when using type "confirm" or "prompt")
 >   - `confirmBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the confirm button (only when using type "confirm" or "prompt")

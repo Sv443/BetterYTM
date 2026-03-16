@@ -28,7 +28,10 @@ export type AlertRenderProps = BaseRenderProps & {
 /** Props for rendering a `prompt()`-like dialog - see {@linkcode showPrompt()} */
 export type PromptRenderProps = BaseRenderProps & {
   type: "prompt";
+  /** Initial value of the text input field - defaults to an empty string if not provided */
   defaultValue?: StringGen;
+  /** Whether to render the text input as a textarea - defaults to false (single line input) */
+  textarea?: boolean;
 };
 
 /** Position of extra buttons relative to the built-in confirm and close buttons */
@@ -116,9 +119,15 @@ export class PromptDialog extends BytmDialog {
     upperContElem.appendChild(messageElem);
 
     if(type === "prompt") {
-      const inputElem = document.createElement("input");
+      const isTA = "textarea" in rest && rest.textarea;
+      const inputElem = document.createElement(isTA ? "textarea" : "input");
       inputElem.id = "bytm-prompt-dialog-input";
-      inputElem.type = "text";
+      if(isTA) {
+        (inputElem as HTMLTextAreaElement).wrap = "off";
+        (inputElem as HTMLTextAreaElement).rows = 4;
+      }
+      else
+        (inputElem as HTMLInputElement).type = "text";
       inputElem.autofocus = true;
       inputElem.autocomplete = "off";
       inputElem.spellcheck = false;
@@ -126,8 +135,9 @@ export class PromptDialog extends BytmDialog {
         ? await consumeStringGen(rest.defaultValue)
         : "";
 
-      const inputEnterListener = (e: KeyboardEvent) => {
-        if(e.key === "Enter") {
+      // dont ask me why intersecting the input and textarea de-narrows the gd event type
+      const inputEnterListener = (e: Event) => {
+        if("key" in e && e.key === "Enter") {
           inputElem.removeEventListener("keydown", inputEnterListener);
           this.emitResolve(inputElem?.value?.trim() ?? null);
           promptDialog?.close();

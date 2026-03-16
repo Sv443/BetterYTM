@@ -24,6 +24,12 @@
   width: 100%;
 }
 
+textarea#bytm-prompt-dialog-input {
+  resize: vertical;
+  min-height: 50px;
+  max-height: calc(max(200px, min(var(--bytm-dialog-height-max), 35vh) - 80px));
+}
+
 #bytm-prompt-dialog-button-wrapper {
   display: flex;
   flex-direction: row;

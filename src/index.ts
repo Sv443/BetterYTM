@@ -671,9 +671,14 @@ function registerDevCommands() {
   isAny && GM.registerMenuCommand(t("menu_command.export_full"), () => downloadData(false, true));
 
   isAny && GM.registerMenuCommand(t("menu_command.import_full"), async () => {
-    const input = await showPrompt({ type: "prompt", message: "Paste the content of the exported file to import:", confirmBtnText: "Import" });
+    const input = await showPrompt({
+      type: "prompt",
+      message: "Paste the content of the exported file to import data:",
+      confirmBtnText: "Import",
+      textarea: true,
+    });
     if(input && input.length > 0) {
-      await getDSSerializer().deserialize(input);
+      await getDSSerializer(true).deserialize(input);
       if(await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
         await reloadTab();
     }
