@@ -344,7 +344,7 @@ export const featInfo = {
         type: "confirm",
         message: t("reset_everything_confirm"),
       })) {
-        await getDSSerializer().resetStoresData();
+        await getDSSerializer(true).resetStoresData();
         const gmKeys = await GM.listValues();
         await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
         await reloadTab();

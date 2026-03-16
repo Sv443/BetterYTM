@@ -40,7 +40,7 @@ export async function getAllDataExImDialog() {
 /** Called when data is imported */
 async function onImport(data: string) {
   try {
-    const serializer = getDSSerializer();
+    const serializer = getDSSerializer(true);
     await serializer.deserialize(data);
 
     showToast(t("import_success"));
