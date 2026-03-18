@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@0fb05ef1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@df29ee2f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -444,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "0fb05ef1",
-    buildTimestamp: "1773698384695",
+    buildNumber: "df29ee2f",
+    buildTimestamp: "1773854813346",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2818,13 +2818,22 @@ function constructUrl(base, params) {
  */
 function sendRequest(details) {
     return new Promise((resolve, reject) => {
+        const success = (val) => {
+            getFeature("logHttp") && log(`HTTP request succeeded with status ${val.status}:`, val);
+            resolve(val);
+        };
+        const failure = (err) => {
+            const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
+            getFeature("logHttp") && error(errStr, err);
+            reject(new Error(errStr, { cause: err }));
+        };
         GM.xmlHttpRequest({
             timeout: 10000,
             ...details,
-            onload: resolve,
-            onerror: reject,
-            ontimeout: reject,
-            onabort: reject,
+            onload: success,
+            onerror: failure,
+            ontimeout: failure,
+            onabort: failure,
         });
     });
 }
@@ -8324,6 +8333,16 @@ const featInfo = {
         advanced: true,
         adornments: [adornments.advanced, adornments.reload],
     },
+    logHttp: {
+        type: "toggle",
+        category: "general",
+        group: "logging",
+        supportedSites: ["ytm", "yt"],
+        since: "3.1.0",
+        default: mode$1 === "development",
+        advanced: true,
+        adornments: [adornments.advanced, adornments.reload],
+    },
     advancedMode: {
         type: "toggle",
         category: "general",
@@ -9706,6 +9725,7 @@ const cfgMigrations = {
             "themeSongVisualizerHotkeyEnabled",
             "themeSongVisualizerHotkey",
             "truncatePlayerBarSubtitles",
+            "logHttp",
         ]), [
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2_000
             { key: "initTimeout", oldDefault: 8 }, // new: 3_000
@@ -10887,9 +10907,7 @@ function setInnerHtml(element, html) {
         html = "";
     if (!ttPolicy && trustedTypesSupported) {
         ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
-            createHTML: (dirty) => DOMPurify.sanitize(String(dirty), {
-                RETURN_TRUSTED_TYPE: true,
-            }),
+            createHTML: (html) => sanitizeHtml(html, true),
         });
     }
     element.innerHTML = ttPolicy?.createHTML(html) ?? sanitizeHtml(html, false);
