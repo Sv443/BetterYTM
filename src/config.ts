@@ -248,10 +248,15 @@ export const cfgMigrations: DataMigrationsDict = {
         "logHttp",
       ]),
       [
-        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2_000
-        { key: "initTimeout", oldDefault: 8 },                     // new: 3_000
-        { key: "rememberSongTimeDuration", oldDefault: 60 },       // new: 180
-        { key: "frameSkipAmount", oldDefault: 0.0417 },            // new: 0.0166
+        { key: "thumbnailOverlayAlbumArtCacheMaxSize", oldDefault: 2_000 }, // new: 10_000
+        { key: "thumbnailOverlayITunesImgRes", oldDefault: 1_500 },         // new: 2_000
+        { key: "thumbnailOverlayIndicatorOpacity", oldDefault: 40 },        // new: 25
+        { key: "lyricsCacheMaxSize", oldDefault: 5_000 },                   // new: 10_000
+        { key: "rememberSongTimeMinPlayTime", oldDefault: 10 },             // new: 5
+        { key: "hideCursorOnIdleDelay", oldDefault: 2 },                    // new: 3
+        { key: "initTimeout", oldDefault: 8 },                              // new: 3_000
+        { key: "rememberSongTimeDuration", oldDefault: 60 },                // new: 180
+        { key: "frameSkipAmount", oldDefault: 0.0417 },                     // new: 0.0166
       ],
     );
 

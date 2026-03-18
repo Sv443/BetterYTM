@@ -30,11 +30,16 @@
   - Made some GM menu commands usable by default without requiring to be compiled in dev mode, with more available when the advanced mode is enabled. Refer to the "internal changes" section for a full list.
   - Decreased the interval between saving the latest video/song time from 500ms to 250ms, meaning the restored time is more accurate without sacrificing much performance.
   - The "like" and "dislike" hotkeys now also work in the YT Shorts player.
-  - The values of some features (if left unchanged), will be updated to the new defaults:
-    - `initTimeout` will be changed from `8` to `5` seconds (amid initialization performance improvements).
+  - The values of some features (if left unchanged) will be updated to the new defaults:
+    - `initTimeout` will be changed from `8` to `5` seconds.
     - `rememberSongTimeDuration` will be changed from `60` to `180` seconds.
-    - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
     - `frameSkipAmount` will be changed from `0.0417` to `0.0166` seconds.
+    - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
+    - `thumbnailOverlayAlbumArtCacheMaxSize` will be changed from `2000` to `10000` entries.
+    - `thumbnailOverlayIndicatorOpacity` will be changed from `40` to `25` percent.
+    - `lyricsCacheMaxSize` will be changed from `2000` to `10000` entries.
+    - `rememberSongTimeMinPlayTime` will be changed from `10` to `5` seconds.
+    - `hideCursorOnIdleDelay` will be changed from `2` to `3` seconds.
   - If the `thumbnailOverlayITunesImgRes` value was set bigger than `3000`, it will now be set to the new maximum of `3000` pixels.
 - **Fixes:**
   - Fixed auto-like button sometimes not appearing, as well as channel name resolution on both domains.
