@@ -425,12 +425,16 @@ select.bytm-ftconf-input {
 #bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  font-size: 1.5em;
+  line-height: 1.25em;
+}
+
+#bytm-feat-help-dialog-text {
+  font-size: 1.5rem;
 }
 
 #bytm-feat-help-dialog-desc {
-  font-size: 1.65em;
-  padding-bottom: 5px;
+  font-size: 1.7rem;
+  padding-bottom: 10px;
 }
 
 .bytm-ftitem-help-btn {

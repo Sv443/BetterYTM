@@ -320,6 +320,21 @@ export function overflowVal(value: number, minOrMax: number, max?: number): numb
   return wrappedValue;
 }
 
+/** Transforms an object's own properties into getters that return the original values. */
+export function getterifyObj<TObj extends object>(obj: TObj): TObj {
+  const newObj = {} as ReturnType<typeof getterifyObj<TObj>>;
+
+  for(const key in obj) {
+    Object.defineProperty(newObj, key, {
+      get: () => obj[key],
+      enumerable: true,
+      configurable: true,
+    });
+  }
+
+  return newObj;
+}
+
 //#region version session counter
 
 type VersionSessions = Record<string, {

@@ -1,6 +1,6 @@
 import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/coreutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
-import { getResourceUrl } from "./misc.js";
+import { getResourceUrl, getterifyObj } from "./misc.js";
 import { error, info, log } from "./logging.js";
 import { getFeature } from "../config.js";
 
@@ -38,7 +38,7 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
 export function sendRequest<T = any>(details: Prettify<Omit<Tampermonkey.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<Tampermonkey.Response<T>> {
   return new Promise<Tampermonkey.Response<T>>((resolve, reject) => {
     const success = (val: Tampermonkey.Response<T>) => {
-      getFeature("logHttp") && log(`HTTP request succeeded with status ${val.status}:`, val);
+      getFeature("logHttp") && log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
       resolve(val);
     };
 
