@@ -377,6 +377,16 @@ export const featInfo = {
     advanced: true,
     adornments: [adornments.advanced, adornments.reload],
   },
+  logHttp: {
+    type: "toggle",
+    category: "general",
+    group: "logging",
+    supportedSites: ["ytm", "yt"],
+    since: "3.1.0",
+    default: mode === "development",
+    advanced: true,
+    adornments: [adornments.advanced, adornments.reload],
+  },
   advancedMode: {
     type: "toggle",
     category: "general",

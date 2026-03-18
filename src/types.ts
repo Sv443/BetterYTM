@@ -196,8 +196,8 @@ export type TSEnum<K extends string | number, V extends string | number> = Recor
 //#region global
 
 /**
- * All properties of the `unsafeWindow.BYTM` object (also called "plugin interface").  
- * ⚠️ Do not overwrite these properties, only call the functions or read the values!
+ * All properties of the `unsafeWindow.BYTM` object (major part of the plugin interface next to the events emitted on `unsafeWindow`).  
+ * - ⚠️ Do not overwrite these properties, only call the functions or read the values!
  */
 export type BytmObject =
   {
@@ -222,11 +222,11 @@ export type BytmObject =
     NanoEmitter: typeof NanoEmitter;
 
     // dialogs legacy (TODO: remove in v4)
-    /** @deprecated Please use the authenticated function {@linkcode getBytmDialog} instead. Direct access will only work until BYTM v4.0.0 */
+    /** @deprecated Please use the authenticated function `getBytmDialog()` instead. This property will be removed in BYTM v4.0.0 */
     BytmDialog: typeof BytmDialog,
-    /** @deprecated Please use the authenticated function {@linkcode getExImDialog} instead. Direct access will only work until BYTM v4.0.0 */
+    /** @deprecated Please use the authenticated function `getExImDialog()` instead. This property will be removed in BYTM v4.0.0 */
     ExImDialog: typeof ExImDialog,
-    /** @deprecated Please use the authenticated function {@linkcode getMarkdownDialog} instead. Direct access will only work until BYTM v4.0.0 */
+    /** @deprecated Please use the authenticated function `getMarkdownDialog()` instead. This property will be removed in BYTM v4.0.0 */
     MarkdownDialog: typeof MarkdownDialog,
 
     // dialogs
@@ -567,7 +567,8 @@ export type FeatUnit = string | ((val: number) => string);
 /** Contains all possible value types of the feature configuration. */
 export type FeatureConfigValue = FeatureConfig[FeatureKey];
 
-type FeatureTypeProps = ({
+type FeatureTypeProps = 
+  | ({
     /** Custom toggle input - uses a `input[type="checkbox"]` under the hood. */
     type: "toggle";
     /** Default checked state of the toggle */
@@ -659,7 +660,7 @@ type FeatureTypeProps = ({
   }
 
 type FeatureFuncProps = (
-  {
+  | {
     /**
      * Whether changing the feature requires a page reload to take effect.  
      * Prompts the user to reload the page when changing the feature value in the config menu.  
@@ -688,7 +689,7 @@ type FeatureFuncProps = (
     enable?: never;
   }
 ) & (
-  {
+  | {
     /**
      * Called to remove all traces of the feature from the page and memory (including *all* event listeners).  
      * This is required if the feature is instantiated via the `enable` function, so the feature can be properly toggled and configured at runtime.  
@@ -774,6 +775,8 @@ export interface FeatureConfig {
   logLevel: LogLevel;
   /** Whether to log interface and site events to the console */
   logEvents: boolean;
+  /** Whether to log HTTP requests sent via `GM.xmlHttpRequest` to the console */
+  logHttp: boolean;
   /** Amount of seconds to show BYTM's toasts for */
   toastDuration: number;
   /** Whether to show a toast on generic errors */

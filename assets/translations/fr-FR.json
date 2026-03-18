@@ -546,6 +546,8 @@
   "feature_helptext.logLevel": "Changer cela n'est vraiment nécessaire que pour le débogage à la suite d'un problème rencontré.\nSi vous en avez un, vous pouvez augmenter le niveau de journalisation ici, ouvrir la console JavaScript de votre navigateur (généralement avec Ctrl + Maj + K) et joindre des captures d'écran de ce journal dans un problème GitHub.",
   "feature_desc.logEvents": "Consigner les événements internes du site dans la console du navigateur",
   "feature_helptext.logEvents": "Lorsqu'activé, les événements internes déclenchés par le site seront journalisés dans la console JavaScript de votre navigateur (généralement F12 ou Ctrl+Maj+K). Cela est principalement utile pour le développement de plugins ou le débogage.",
+  "feature_desc.logHttp": "Enregistrer les requêtes HTTP dans la console",
+  "feature_helptext.logHttp": "Cela enregistrera toutes les requêtes HTTP envoyées via la fonction GM.xmlHttpRequest dans la console. Cela est utile à des fins de débogage et pour créer des plugins.",
   "feature_desc.toastDuration": "Pendant combien de secondes les notifications toast personnalisées doivent-elles être affichées - 0 pour les désactiver entièrement",
   "feature_desc.showToastOnGenericError": "Afficher une notification toast lorsqu'une erreur se produit dans le script",
   "feature_helptext.showToastOnGenericError": "Si une erreur se produit dans le script qui empêche certaines parties de fonctionner correctement, une notification sera affichée pour vous en informer.\nSi vous rencontrez souvent un problème, veuillez copier l'erreur de la console JavaScript (généralement dans le menu F12) et ouvrir un problème sur GitHub.",

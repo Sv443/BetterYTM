@@ -547,6 +547,8 @@
   "feature_helptext.logLevel": "Cambiar esto solo es necesario para depuración. Si tiene un problema, puede aumentar el nivel de registro aquí, abrir la consola de JavaScript de su navegador (usualmente con Ctrl + Shift + K) y adjuntar capturas del registro en un problema de GitHub.",
   "feature_desc.logEvents": "Registrar eventos de interfaz y del sitio en la consola",
   "feature_helptext.logEvents": "Esto registrará los eventos que ocurren en ambos sistemas de eventos internos en la consola. Útil para depuración y para crear plugins.",
+  "feature_desc.logHttp": "Registrar solicitudes HTTP en la consola",
+  "feature_helptext.logHttp": "Esto registrará todas las solicitudes HTTP enviadas a través de la función GM.xmlHttpRequest en la consola. Esto es útil para propósitos de depuración y para crear plugins.",
   "feature_desc.toastDuration": "Por cuántos segundos deben mostrarse las notificaciones personalizadas - 0 para deshabilitarlas",
   "feature_desc.showToastOnGenericError": "Mostrar una notificación cuando ocurre un error",
   "feature_helptext.showToastOnGenericError": "Si se produce un error en el script que impide que partes de él funcionen correctamente, se mostrará una notificación para informarle al respecto.\nSi encuentra un problema con frecuencia, copie el error de la consola de JavaScript (generalmente en el menú F12) y abra un problema en GitHub.",

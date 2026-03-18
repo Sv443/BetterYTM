@@ -548,6 +548,8 @@
   "feature_helptext.logLevel": "Das Ändern dieses Wertes ist wirklich nur für Debugging-Zwecke notwendig, wenn du ein Problem hast.\nSolltest du eines haben, kannst du den Log-Level hier erhöhen, die JavaScript-Konsole deines Browsers (normalerweise mit Strg + Shift + K) öffnen und Screenshots dieses Logs in einem GitHub-Issue hinzufügen.",
   "feature_desc.logEvents": "Interface- und Seitenevents in der Konsole loggen",
   "feature_helptext.logEvents": "Diese Funktion loggt Events, die in beiden internen Event-Systemen auftreten, in der Konsole. Dies ist nützlich für Debugging-Zwecke und für die Erstellung von Plugins.",
+  "feature_desc.logHttp": "HTTP-Anfragen in der Konsole loggen",
+  "feature_helptext.logHttp": "Diese Funktion loggt alle HTTP-Anfragen, die über die Funktion GM.xmlHttpRequest gesendet werden, in der Konsole. Dies ist nützlich für Debugging-Zwecke und für die Erstellung von Plugins.",
   "feature_desc.toastDuration": "Für wie viele Sekunden Toast-Benachrichtigungen angezeigt werden sollen - 0 um sie zu deaktivieren",
   "feature_desc.showToastOnGenericError": "Zeige eine Benachrichtigung, wenn ein Fehler auftritt",
   "feature_helptext.showToastOnGenericError": "Sollte ein Fehler im Skript auftreten, der Teile davon daran hindert, korrekt zu funktionieren, wird eine Benachrichtigung angezeigt, um dich darüber zu informieren.\nWenn du ein Problem häufig hast, kopiere bitte den Fehler aus der JavaScript-Konsole (normalerweise im F12-Menü) und öffne bitte ein Issue auf GitHub.",

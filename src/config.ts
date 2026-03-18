@@ -245,6 +245,7 @@ export const cfgMigrations: DataMigrationsDict = {
         "themeSongVisualizerHotkeyEnabled",
         "themeSongVisualizerHotkey",
         "truncatePlayerBarSubtitles",
+        "logHttp",
       ]),
       [
         { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2_000

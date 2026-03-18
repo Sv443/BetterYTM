@@ -351,9 +351,7 @@ export function setInnerHtml(element: HTMLElement, html?: Stringifiable | null) 
 
   if(!ttPolicy && trustedTypesSupported) {
     ttPolicy = window.trustedTypes!.createPolicy("bytm-sanitize-html", {
-      createHTML: (dirty: Stringifiable) => DOMPurify.sanitize(String(dirty), {
-        RETURN_TRUSTED_TYPE: true,
-      }) as unknown as string,
+      createHTML: (html: Stringifiable) => sanitizeHtml(html, true) as unknown as string,
     });
   }
 

@@ -537,6 +537,8 @@
   "feature_helptext.logLevel": "更改这个只是为了调试目的，因为遇到了问题。\n如果您有一个，您可以在这里增加日志级别，打开您的浏览器的 JavaScript 控制台（通常是 Ctrl + Shift + K）并在 GitHub 问题中附上那个日志的截图。",
   "feature_desc.logEvents": "将界面和网站事件记录到控制台",
   "feature_helptext.logEvents": "这将把内部事件系统中发生的事件记录到控制台中，对调试和开发插件很有用。",
+  "feature_desc.logHttp": "将 HTTP 请求记录到控制台",
+  "feature_helptext.logHttp": "这将把通过 GM.xmlHttpRequest 函数发送的所有 HTTP 请求记录到控制台中。这对于调试目的和制作插件很有用。",
   "feature_desc.toastDuration": "自定义提示通知应显示多少秒 - 0 以完全禁用它们",
   "feature_desc.showToastOnGenericError": "当发生错误时显示通知",
   "feature_helptext.showToastOnGenericError": "如果脚本中发生错误，阻止其部分工作的通知将显示给您。\n如果您经常遇到问题，请从 JavaScript 控制台（通常在 F12 菜单中）复制错误，并在 GitHub 上打开一个问题。",

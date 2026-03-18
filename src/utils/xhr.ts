@@ -2,6 +2,7 @@ import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@s
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
 import { error, info, log } from "./logging.js";
+import { getFeature } from "../config.js";
 
 //#region misc
 
@@ -36,13 +37,24 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
  */
 export function sendRequest<T = any>(details: Prettify<Omit<Tampermonkey.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<Tampermonkey.Response<T>> {
   return new Promise<Tampermonkey.Response<T>>((resolve, reject) => {
+    const success = (val: Tampermonkey.Response<T>) => {
+      getFeature("logHttp") && log(`HTTP request succeeded with status ${val.status}:`, val);
+      resolve(val);
+    };
+
+    const failure = (err?: any) => {
+      const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
+      getFeature("logHttp") && error(errStr, err);
+      reject(new Error(errStr, { cause: err }));
+    };
+
     GM.xmlHttpRequest({
       timeout: 10_000,
       ...details,
-      onload: resolve,
-      onerror: reject,
-      ontimeout: reject,
-      onabort: reject,
+      onload: success,
+      onerror: failure,
+      ontimeout: failure,
+      onabort: failure,
     });
   });
 }
