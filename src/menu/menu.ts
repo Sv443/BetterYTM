@@ -476,13 +476,17 @@ export async function mountCfgMenu() {
       const ftInfo = featInfo?.[key as FeatureKey];
       const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
 
-      // clamp newVal to min/max if those exist for this feature:
-      if(["number", "slider"].includes(ftInfo.type) && ("min" in ftInfo || "max" in ftInfo)) {
-        newVal = clamp(
-          Number(newVal),
-          "min" in ftInfo ? Number(ftInfo.min) : -Infinity,
-          "max" in ftInfo ? Number(ftInfo.max) : Infinity,
-        );
+      if(["number", "slider"].includes(ftInfo.type)) {
+        // clamp newVal to min/max if those exist for this feature:
+        if(("min" in ftInfo || "max" in ftInfo))
+          newVal = clamp(
+            Number(newVal),
+            "min" in ftInfo ? Number(ftInfo.min) : -Infinity,
+            "max" in ftInfo ? Number(ftInfo.max) : Infinity,
+          );
+        // round newVal to step if the feature has that property:
+        if("step" in ftInfo)
+          newVal = Math.round(Number(newVal) / Number(ftInfo.step)) * Number(ftInfo.step);
       }
 
       try {
