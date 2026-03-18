@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@df29ee2f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3922054/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -444,8 +444,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "df29ee2f",
-    buildTimestamp: "1773854813346",
+    buildNumber: "b3922054",
+    buildTimestamp: "1773872095968",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2819,7 +2819,7 @@ function constructUrl(base, params) {
 function sendRequest(details) {
     return new Promise((resolve, reject) => {
         const success = (val) => {
-            getFeature("logHttp") && log(`HTTP request succeeded with status ${val.status}:`, val);
+            getFeature("logHttp") && log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
             resolve(val);
         };
         const failure = (err) => {
@@ -4605,9 +4605,13 @@ async function mountCfgMenu() {
         const onCfgChange = async (key, initialVal, newVal) => {
             const ftInfo = featInfo?.[key];
             const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
-            // clamp newVal to min/max if those exist for this feature:
-            if (["number", "slider"].includes(ftInfo.type) && ("min" in ftInfo || "max" in ftInfo)) {
-                newVal = CoreUtils.clamp(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
+            if (["number", "slider"].includes(ftInfo.type)) {
+                // clamp newVal to min/max if those exist for this feature:
+                if (("min" in ftInfo || "max" in ftInfo))
+                    newVal = CoreUtils.clamp(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
+                // round newVal to step if the feature has that property:
+                if ("step" in ftInfo)
+                    newVal = Math.round(Number(newVal) / Number(ftInfo.step)) * Number(ftInfo.step);
             }
             try {
                 const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
@@ -6885,6 +6889,18 @@ function overflowVal(value, minOrMax, max) {
     const wrappedValue = ((value - min) % range + range) % range + min;
     return wrappedValue;
 }
+/** Transforms an object's own properties into getters that return the original values. */
+function getterifyObj(obj) {
+    const newObj = {};
+    for (const key in obj) {
+        Object.defineProperty(newObj, key, {
+            get: () => obj[key],
+            enumerable: true,
+            configurable: true,
+        });
+    }
+    return newObj;
+}
 let verSessions;
 /** Counts the number of launched sessions per userscript version and returns the current count, to enable time-based features like the "new feature" adornment icon */
 async function initVersionSessionCounter() {
@@ -8211,10 +8227,10 @@ const featInfo = {
         group: "bytmInternal",
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
-        min: 50,
+        min: 10,
         default: 150,
         max: 1000,
-        step: 10,
+        step: 5,
         unit: "ms",
         advanced: true,
         adornments: [adornments.advanced, adornments.reload],
@@ -8447,7 +8463,7 @@ const featInfo = {
         group: "thumbnailOverlay",
         supportedSites: ["ytm"],
         since: "3.1.0",
-        default: 2000,
+        default: 10000,
         min: 500,
         max: 25000,
         step: 500,
@@ -8491,7 +8507,7 @@ const featInfo = {
         min: 5,
         max: 100,
         step: 5,
-        default: 40,
+        default: 25,
         unit: "%",
         advanced: true,
         adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
@@ -8672,7 +8688,7 @@ const featInfo = {
         group: "lyricsCache",
         supportedSites: ["ytm"],
         since: "2.0.0",
-        default: 5000,
+        default: 10000,
         min: 1000,
         max: 25000,
         step: 500,
@@ -8864,7 +8880,7 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "2.0.0",
         min: 0.5,
-        max: 20,
+        max: 30,
         step: 0.5,
         default: 3,
         unit: "s",
@@ -8910,7 +8926,7 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "2.0.0",
         min: 0,
-        step: 0.05,
+        step: 0.01,
         default: 0.2,
         unit: "s",
         reloadRequired: false,
@@ -8921,10 +8937,10 @@ const featInfo = {
         group: "rememberSongTime",
         supportedSites: ["ytm", "yt"],
         since: "2.0.0",
-        min: 3,
+        min: 1,
         max: 30,
         step: 0.5,
-        default: 10,
+        default: 5,
         unit: "s",
         reloadRequired: false,
     },
@@ -8947,7 +8963,7 @@ const featInfo = {
         min: 0.5,
         max: 10,
         step: 0.25,
-        default: 2,
+        default: 3,
         unit: "s",
         reloadRequired: false,
         adornments: [adornments.ytmOnly],
@@ -9061,14 +9077,13 @@ const featInfo = {
         adornments: [adornments.ytmOnly],
     },
     arrowKeySkipBy: {
-        type: "slider",
+        type: "number",
         category: "input",
         group: "arrowKeySupport",
         supportedSites: ["ytm"],
         since: "1.1.0",
-        min: 0.5,
-        max: 30,
-        step: 0.5,
+        min: 0.1,
+        step: 0.1,
         default: 5,
         unit: "s",
         reloadRequired: false,
@@ -9115,7 +9130,6 @@ const featInfo = {
         supportedSites: ["ytm"],
         since: "3.0.0",
         min: 0,
-        max: 1,
         step: 0.0001,
         default: 0.0166,
         unit: "s",
@@ -9150,7 +9164,7 @@ const featInfo = {
         since: "3.1.0",
         default: 0,
         min: 0,
-        max: 2000,
+        max: 3000,
         step: 100,
         renderValue: (value) => String(Number(value) === 0
             ? t("toggled_off")
@@ -9727,7 +9741,12 @@ const cfgMigrations = {
             "truncatePlayerBarSubtitles",
             "logHttp",
         ]), [
+            { key: "thumbnailOverlayAlbumArtCacheMaxSize", oldDefault: 2000 }, // new: 10_000
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2_000
+            { key: "thumbnailOverlayIndicatorOpacity", oldDefault: 40 }, // new: 25
+            { key: "lyricsCacheMaxSize", oldDefault: 5000 }, // new: 10_000
+            { key: "rememberSongTimeMinPlayTime", oldDefault: 10 }, // new: 5
+            { key: "hideCursorOnIdleDelay", oldDefault: 2 }, // new: 3
             { key: "initTimeout", oldDefault: 8 }, // new: 3_000
             { key: "rememberSongTimeDuration", oldDefault: 60 }, // new: 180
             { key: "frameSkipAmount", oldDefault: 0.0417 }, // new: 0.0166
