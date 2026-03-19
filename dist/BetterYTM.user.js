@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b3922054/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d43a3ebf/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -49,30 +49,6 @@
 // @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @connect           api.sv443.net
-// @connect           github.com
-// @connect           raw.githubusercontent.com
-// @connect           youtube.com
-// @connect           returnyoutubedislikeapi.com
-// @noframes
-// @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
-// @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
-// @grant             GM.getValue
-// @grant             GM.setValue
-// @grant             GM.deleteValue
-// @grant             GM.listValues
-// @grant             GM.addValueChangeListener
-// @grant             GM.getResourceUrl
-// @grant             GM.setClipboard
-// @grant             GM.xmlHttpRequest
-// @grant             GM.openInTab
-// @grant             GM.registerMenuCommand
-// @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
-// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
 // @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
 // @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
 // @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
@@ -106,7 +82,30 @@
 // @antifeature:zh-TW tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
 // @antifeature:zh-HK tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
 // @antifeature:zh-SG tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-
+// @connect           api.sv443.net
+// @connect           github.com
+// @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
+// @noframes
+// @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
+// @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.listValues
+// @grant             GM.addValueChangeListener
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
+// @grant             GM.registerMenuCommand
+// @grant             unsafeWindow
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
+// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -444,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "b3922054",
-    buildTimestamp: "1773872095968",
+    buildNumber: "d43a3ebf",
+    buildTimestamp: "1773933894951",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
