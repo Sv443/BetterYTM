@@ -1,24 +1,24 @@
 import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-network/coreutils";
-import type * as consts from "./constants.js";
-import type { scriptInfo } from "./constants.js";
-import type { addSelectorListener } from "./observers.js";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.js";
-import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.js";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "./interface.js";
-import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
-import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
-import type { isIgnoredInputElement } from "./features/input.js";
-import type { BytmDialog } from "./components/BytmDialog.js";
-import type { ExImDialog } from "./components/ExImDialog.js";
-import type { MarkdownDialog } from "./components/MarkdownDialog.js";
-import type { createHotkeyInput } from "./components/hotkeyInput.js";
-import type { createToggleInput } from "./components/toggleInput.js";
-import type { createCircularBtn } from "./components/circularButton.js";
-import type { createRipple } from "./components/ripple.js";
-import type { showIconToast, showToast } from "./components/toast.js";
+import type * as consts from "./constants.ts";
+import type { scriptInfo } from "./constants.ts";
+import type { addSelectorListener } from "./observers.ts";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "./utils/index.ts";
+import type { siteEvents, SiteEventsMapPrefixed } from "./siteEvents.ts";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "./interface.ts";
+import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.ts";
+import type { getLyricsCacheEntry } from "./features/lyricsCache.ts";
+import type { isIgnoredInputElement } from "./features/input.ts";
+import type { BytmDialog } from "./components/BytmDialog.ts";
+import type { ExImDialog } from "./components/ExImDialog.ts";
+import type { MarkdownDialog } from "./components/MarkdownDialog.ts";
+import type { createHotkeyInput } from "./components/hotkeyInput.ts";
+import type { createToggleInput } from "./components/toggleInput.ts";
+import type { createCircularBtn } from "./components/circularButton.ts";
+import type { createRipple } from "./components/ripple.ts";
+import type { showIconToast, showToast } from "./components/toast.ts";
 import resources from "../assets/resources.json" with { type: "json" };
 import locales from "../assets/locales.json" with { type: "json" };
-import type { featInfo } from "./features/index.js";
+import type { featInfo } from "./features/index.ts";
 
 void ["type imports only:", resources, locales];
 
@@ -756,7 +756,7 @@ export type FeatureInfoEntry = {
  * All values are loosely typed so try to only use this via `const myObj = {} satisfies FeatureInfo;`  
  * For full type safety, use `typeof featInfo` (from `src/features/index.ts`) instead.
  */
-export type FeatureInfo = Prettify<Record<keyof FeatureConfig, FeatureInfoEntry>>;
+export type FeatureInfo = Record<keyof FeatureConfig, FeatureInfoEntry>;
 
 //#region feature config
 

@@ -15,9 +15,15 @@
     "*.env.template": "dotenv",
   },
 
-  // use installed TS version & relative import paths
-  "js/ts.preferences.importModuleSpecifier": "relative",
+  // JS and TS settings
   "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.preferences.importModuleSpecifierEnding": "js",
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.preferences.organizeImports": {
+    "caseFirst": "upper",
+    "typeOrder": "last",
+  },
 
   // custom JSON schemas
   "json.schemas": [

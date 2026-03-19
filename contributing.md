@@ -173,7 +173,7 @@ unsafeWindow.addEventListener("bytm:siteEvent:queueChanged", (event) => {
 In order for TypeScript to not throw errors while creating a plugin, you need to shim the types for BYTM.  
 To do this, create a .d.ts file (for example `bytm.d.ts`) and add the following code:
 ```ts
-import type { BytmObject, PluginDef, PluginRegisterResult } from "./bytm/src/types.js";
+import type { BytmObject, PluginDef, PluginRegisterResult } from "./bytm/src/types.ts";
 
 declare global {
   interface Window {
@@ -300,7 +300,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > // Assuming BetterYTM is added as a submodule in the "/bytm/" folder
-> import type { PluginDef, PluginIntent } from "bytm/src/types.js";
+> import type { PluginDef, PluginIntent } from "bytm/src/types.ts";
 > // Load the version of CoreUtils that's installed in BetterYTM
 > const { CoreUtils } = unsafeWindow.BYTM;
 > 

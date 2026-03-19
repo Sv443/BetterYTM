@@ -1,12 +1,12 @@
 import { fetchAdvanced } from "@sv443-network/coreutils";
-import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "../utils/index.js";
-import { emitInterface } from "../interface.js";
-import { mode, scriptInfo } from "../constants.js";
-import { getFeature } from "../config.js";
-import { addSelectorListener } from "../observers.js";
-import { showPrompt } from "../dialogs/prompt.js";
-import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.js";
-import type { LyricsCacheEntry } from "../types.js";
+import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "../utils/index.ts";
+import { emitInterface } from "../interface.ts";
+import { mode, scriptInfo } from "../constants.ts";
+import { getFeature } from "../config.ts";
+import { addSelectorListener } from "../observers.ts";
+import { showPrompt } from "../dialogs/prompt.ts";
+import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.ts";
+import type { LyricsCacheEntry } from "../types.ts";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;

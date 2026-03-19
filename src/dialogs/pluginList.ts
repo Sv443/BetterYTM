@@ -1,9 +1,9 @@
 import { bitSetHas } from "@sv443-network/coreutils";
-import { BytmDialog } from "../components/BytmDialog.js";
-import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins } from "../interface.js";
-import { getLocale, activeLocaleDir, t } from "../utils/translations.js";
-import { setInnerHtml } from "../utils/dom.js";
-import { PluginIntent } from "../types.js";
+import { BytmDialog } from "../components/BytmDialog.ts";
+import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins } from "../interface.ts";
+import { getLocale, activeLocaleDir, t } from "../utils/translations.ts";
+import { setInnerHtml } from "../utils/dom.ts";
+import { PluginIntent } from "../types.ts";
 import packageJson from "../../package.json" with { type: "json" };
 import "./pluginList.css";
 

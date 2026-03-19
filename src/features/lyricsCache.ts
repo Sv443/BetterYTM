@@ -1,10 +1,10 @@
 import { clamp, DataStore } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
-import { compressionFormat } from "../constants.js";
-import { log } from "../utils/index.js";
-import { emitInterface } from "../interface.js";
-import { getFeature } from "../config.js";
-import type { LyricsCacheEntry } from "../types.js";
+import { compressionFormat } from "../constants.ts";
+import { log } from "../utils/index.ts";
+import { emitInterface } from "../interface.ts";
+import { getFeature } from "../config.ts";
+import type { LyricsCacheEntry } from "../types.ts";
 
 export type LyricsCache = {
   cache: LyricsCacheEntry[];

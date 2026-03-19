@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
 import k from "kleur";
 import "dotenv/config";
-import type { RollupArgs } from "../types.js";
+import type { RollupArgs } from "../types.ts";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import localesJson from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };

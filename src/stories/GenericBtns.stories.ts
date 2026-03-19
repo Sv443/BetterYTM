@@ -1,7 +1,7 @@
 import type { StoryObj, Meta } from "@storybook/html";
 import { fn } from "@storybook/test";
-import { createLongBtn } from "../components/longButton.js";
-import { createCircularBtn } from "../components/circularButton.js";
+import { createLongBtn } from "../components/longButton.ts";
+import { createCircularBtn } from "../components/circularButton.ts";
 import "../features/input.css";
 import "../features/layout.css";
 

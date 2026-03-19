@@ -1,7 +1,7 @@
 import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
-import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
-import { BytmDialog, type BytmDialogOptions } from "../components/BytmDialog.js";
-import { addSelectorListener } from "../observers.js";
+import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.ts";
+import { BytmDialog, type BytmDialogOptions } from "../components/BytmDialog.ts";
+import { addSelectorListener } from "../observers.ts";
 import "./prompt.css";
 
 //#region types

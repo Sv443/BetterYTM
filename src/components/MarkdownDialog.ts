@@ -1,7 +1,7 @@
 import { marked } from "marked";
 import { consumeStringGen, type StringGen } from "@sv443-network/coreutils";
-import { setInnerHtml } from "../utils/dom.js";
-import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
+import { setInnerHtml } from "../utils/dom.ts";
+import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.ts";
 
 /** Options for the MarkdownDialog - a `body` prop is required instead of `renderBody` */
 type MarkdownDialogOptions = Omit<BytmDialogOptions, "renderBody"> & {

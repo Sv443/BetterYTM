@@ -1,15 +1,15 @@
 import { ChecksumMismatchError, DataStoreSerializer, type DataStore } from "@sv443-network/coreutils";
-import { configStore } from "./config.js";
-import { autoLikeStore } from "./features/autoLike.js";
-import { showPrompt } from "./dialogs/prompt.js";
-import { t } from "./utils/translations.js";
-import { error } from "./utils/logging.js";
-import { downloadFile } from "./utils/dom.js";
-import { reloadTab, resourceCacheStore } from "./utils/misc.js";
+import { configStore } from "./config.ts";
+import { autoLikeStore } from "./features/autoLike.ts";
+import { showPrompt } from "./dialogs/prompt.ts";
+import { t } from "./utils/translations.ts";
+import { error } from "./utils/logging.ts";
+import { downloadFile } from "./utils/dom.ts";
+import { reloadTab, resourceCacheStore } from "./utils/misc.ts";
 import packageJson from "../package.json" with { type: "json" };
-import { artCacheStore } from "./features/layout.js";
-import { lyricsCacheStore } from "./features/lyricsCache.js";
-import { scriptInfo } from "./constants.js";
+import { artCacheStore } from "./features/layout.ts";
+import { lyricsCacheStore } from "./features/lyricsCache.ts";
+import { scriptInfo } from "./constants.ts";
 
 /** Central serializer for all data stores */
 let serializer: DataStoreSerializer | undefined;

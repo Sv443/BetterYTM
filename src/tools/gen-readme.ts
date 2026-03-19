@@ -2,7 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import k from "kleur";
-import type { PluginDef } from "../types.js";
+import type { PluginDef } from "../types.ts";
 import locales from "../../assets/locales.json" with { type: "json" };
 import pluginsJson from "../../assets/plugins.json" with { type: "json" };
 import pkgJson from "../../package.json" with { type: "json" };

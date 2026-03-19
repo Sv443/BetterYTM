@@ -1,10 +1,10 @@
 import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
-import { error, getDomain, info, log, warn } from "./utils/index.js";
-import { getFeature } from "./config.js";
-import { emitInterface } from "./interface.js";
-import { addSelectorListener, globserversReady } from "./observers.js";
-import { FeatureConfig, type FeatureCategory } from "./types.js";
-import type { BroadcastPacketType, BroadcastTransitPacket } from "./utils/broadcast.js";
+import { error, getDomain, info, log, warn } from "./utils/index.ts";
+import { getFeature } from "./config.ts";
+import { emitInterface } from "./interface.ts";
+import { addSelectorListener, globserversReady } from "./observers.ts";
+import { FeatureConfig, type FeatureCategory } from "./types.ts";
+import type { BroadcastPacketType, BroadcastTransitPacket } from "./utils/broadcast.ts";
 
 /** Mapped type that creates a typed site event entry for each {@linkcode BroadcastPacketType}, e.g. `"broadcast:discoverSessionsReply"` */
 export type BroadcastSiteEventsMapped = {

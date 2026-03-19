@@ -1,13 +1,13 @@
 import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
-import { artCacheStore, enableDiscardBeforeUnload, featInfo } from "./features/index.js";
-import { error, info, log, reloadTab, t, warn, type TrLocale } from "./utils/index.js";
-import { emitSiteEvent } from "./siteEvents.js";
-import { compressionFormat } from "./constants.js";
-import { emitInterface } from "./interface.js";
-import { closeCfgMenu, openCfgMenu } from "./menu/menu.js";
-import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "./types.js";
-import { showPrompt } from "./dialogs/prompt.js";
+import { artCacheStore, enableDiscardBeforeUnload, featInfo } from "./features/index.ts";
+import { error, info, log, reloadTab, t, warn, type TrLocale } from "./utils/index.ts";
+import { emitSiteEvent } from "./siteEvents.ts";
+import { compressionFormat } from "./constants.ts";
+import { emitInterface } from "./interface.ts";
+import { closeCfgMenu, openCfgMenu } from "./menu/menu.ts";
+import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "./types.ts";
+import { showPrompt } from "./dialogs/prompt.ts";
 
 //#region >> format version
 

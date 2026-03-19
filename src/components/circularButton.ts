@@ -1,6 +1,6 @@
-import { getResourceUrl, onInteraction, resourceAsString, setInnerHtml } from "../utils/index.js";
-import { createRipple } from "./ripple.js";
-import type { ResourceKey } from "../types.js";
+import { getResourceUrl, onInteraction, resourceAsString, setInnerHtml } from "../utils/index.ts";
+import { createRipple } from "./ripple.ts";
+import type { ResourceKey } from "../types.ts";
 
 type CircularBtnOptions = {
   /** Tooltip and aria-label of the button */

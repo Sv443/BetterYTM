@@ -1,15 +1,15 @@
 import { autoPlural, pauseFor } from "@sv443-network/coreutils";
 import { preloadImages } from "@sv443-network/userutils";
-import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "../utils/index.js";
-import { siteEvents } from "../siteEvents.js";
-import { emitInterface } from "../interface.js";
-import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
-import { getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.js";
-import { addSelectorListener } from "../observers.js";
-import { createRipple } from "../components/ripple.js";
-import { showPrompt } from "../dialogs/prompt.js";
-import { getFeature } from "../config.js";
-import type { LyricsCacheEntry } from "../types.js";
+import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "../utils/index.ts";
+import { siteEvents } from "../siteEvents.ts";
+import { emitInterface } from "../interface.ts";
+import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.ts";
+import { getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.ts";
+import { addSelectorListener } from "../observers.ts";
+import { createRipple } from "../components/ripple.ts";
+import { showPrompt } from "../dialogs/prompt.ts";
+import { getFeature } from "../config.ts";
+import type { LyricsCacheEntry } from "../types.ts";
 import "./songLists.css";
 
 const songListSelector = `\

@@ -1,8 +1,8 @@
 import { clamp, valsWithin } from "@sv443-network/coreutils";
-import { info, log, warn, getDomain, getVideoElement, waitVideoElementReady, getVideoTime } from "../utils/index.js";
-import { featInfo } from "./index.js";
-import { getFeature } from "../config.js";
-import { addSelectorListener } from "../observers.js";
+import { info, log, warn, getDomain, getVideoElement, waitVideoElementReady, getVideoTime } from "../utils/index.ts";
+import { featInfo } from "./index.ts";
+import { getFeature } from "../config.ts";
+import { addSelectorListener } from "../observers.ts";
 
 //#region ignored input elements
 

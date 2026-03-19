@@ -1,9 +1,9 @@
 import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
-import { t } from "../utils/translations.js";
-import { emitInterface } from "../interface.js";
+import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.ts";
+import { t } from "../utils/translations.ts";
+import { emitInterface } from "../interface.ts";
 import "./BytmDialog.css";
 import "../dialogs/dialogs.css";
 

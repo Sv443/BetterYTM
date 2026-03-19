@@ -1,16 +1,16 @@
 import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
 import { getUnsafeWindow, GMStorageEngine, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "../constants.js";
-import { enableDiscardBeforeUnload } from "../features/behavior.js";
-import { addSelectorListener } from "../observers.js";
-import { getFeature } from "../config.js";
-import { error, info, log, warn } from "./logging.js";
-import { sendRequest } from "./xhr.js";
-import { getLocale, type TrLocale } from "./translations.js";
-import { emitBroadcast } from "./broadcast.js";
-import { getVideoElement, getVideoTime, sanitizeHtml } from "./dom.js";
-import type { Domain, NumberLengthFormat, ResourceKey } from "../types.js";
+import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "../constants.ts";
+import { enableDiscardBeforeUnload } from "../features/behavior.ts";
+import { addSelectorListener } from "../observers.ts";
+import { getFeature } from "../config.ts";
+import { error, info, log, warn } from "./logging.ts";
+import { sendRequest } from "./xhr.ts";
+import { getLocale, type TrLocale } from "./translations.ts";
+import { emitBroadcast } from "./broadcast.ts";
+import { getVideoElement, getVideoTime, sanitizeHtml } from "./dom.ts";
+import type { Domain, NumberLengthFormat, ResourceKey } from "../types.ts";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
 

@@ -1,8 +1,8 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
 import { tr } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, warn } from "./index.js";
-import { emitInterface, setGlobalProp } from "../interface.js";
-import { getFeature } from "../config.js";
+import { error, getResourceUrl, info, warn } from "./index.ts";
+import { emitInterface, setGlobalProp } from "../interface.ts";
+import { getFeature } from "../config.ts";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import tr_enUS from "../../assets/translations/en-US.json" with { type: "json" };
 

@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import k from "kleur";
-import type { TrLocale } from "../utils/index.js";
+import type { TrLocale } from "../utils/index.ts";
 import locales from "../../assets/locales.json" with { type: "json" };
 
 

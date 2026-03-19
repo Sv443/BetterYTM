@@ -1,9 +1,9 @@
 import { consumeStringGen, type SerializedDataStore } from "@sv443-network/coreutils";
-import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.js";
-import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.js";
-import { getSerializerStoresIds, getDSSerializer } from "../serializers.js";
-import { showToast } from "../components/toast.js";
-import { createLongBtn } from "../components/longButton.js";
+import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.ts";
+import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.ts";
+import { getSerializerStoresIds, getDSSerializer } from "../serializers.ts";
+import { showToast } from "../components/toast.ts";
+import { createLongBtn } from "../components/longButton.ts";
 import packageJson from "../../package.json" with { type: "json" };
 
 let allDataExImDialog: ExImDialog | undefined;

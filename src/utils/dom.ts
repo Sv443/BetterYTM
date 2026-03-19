@@ -1,11 +1,11 @@
 import { consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
 import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
-import { error, fetchCss, getDomain, t } from "./index.js";
-import { addSelectorListener } from "../observers.js";
-import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "../types.js";
-import { siteEvents } from "../siteEvents.js";
-import { showPrompt } from "../dialogs/prompt.js";
+import { error, fetchCss, getDomain, t } from "./index.ts";
+import { addSelectorListener } from "../observers.ts";
+import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "../types.ts";
+import { siteEvents } from "../siteEvents.ts";
+import { showPrompt } from "../dialogs/prompt.ts";
 
 //#region vid elem
 

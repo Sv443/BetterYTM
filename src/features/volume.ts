@@ -1,10 +1,10 @@
 import { clamp, debounce, type Stringifiable } from "@sv443-network/coreutils";
 import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
-import { getFeature } from "../config.js";
-import { addStyleFromResource, error, getDomain, getSessionId, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
-import { siteEvents } from "../siteEvents.js";
-import { featInfo } from "./index.js";
-import { addSelectorListener } from "../observers.js";
+import { getFeature } from "../config.ts";
+import { addStyleFromResource, error, getDomain, getSessionId, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.ts";
+import { siteEvents } from "../siteEvents.ts";
+import { featInfo } from "./index.ts";
+import { addSelectorListener } from "../observers.ts";
 import "./volume.css";
 
 //#region init vol features

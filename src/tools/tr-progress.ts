@@ -3,7 +3,7 @@ import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import k from "kleur";
 import type { TrObject } from "@sv443-network/userutils";
-import type { TrLocale } from "../utils/index.js";
+import type { TrLocale } from "../utils/index.ts";
 import locales from "../../assets/locales.json" with { type: "json" };
 
 const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);

@@ -1,5 +1,5 @@
 import { pureObj, randomId } from "@sv443-network/coreutils";
-import { LogLevel } from "./types.js";
+import { LogLevel } from "./types.ts";
 
 type ConstTypes = {
   mode: "production" | "development";

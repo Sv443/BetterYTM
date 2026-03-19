@@ -1,10 +1,10 @@
 import { consumeStringGen, type StringGen } from "@sv443-network/coreutils";
-import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
-import { t } from "../utils/translations.js";
-import { onInteraction } from "../utils/input.js";
-import { copyToClipboard } from "../utils/dom.js";
-import { createLongBtn } from "./longButton.js";
-import { showToast } from "./toast.js";
+import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.ts";
+import { t } from "../utils/translations.ts";
+import { onInteraction } from "../utils/input.ts";
+import { copyToClipboard } from "../utils/dom.ts";
+import { createLongBtn } from "./longButton.ts";
+import { showToast } from "./toast.ts";
 import "./ExImDialog.css";
 
 // TODO: overhaul:
