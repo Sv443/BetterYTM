@@ -1,16 +1,16 @@
 import { autoPlural, pauseFor } from "@sv443-network/coreutils";
 import { preloadImages } from "@sv443-network/userutils";
-import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "../utils/index.ts";
-import { siteEvents } from "../siteEvents.ts";
-import { emitInterface } from "../interface.ts";
-import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.ts";
-import { getLyricsCacheEntry, resolveLyricsUrl } from "./lyricsCache.ts";
-import { addSelectorListener } from "../observers.ts";
-import { createRipple } from "../components/ripple.ts";
-import { showPrompt } from "../dialogs/prompt.ts";
-import { getFeature } from "../config.ts";
-import type { LyricsCacheEntry } from "../types.ts";
-import "./songLists.css";
+import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "@util/index.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { emitInterface } from "@/interface.ts";
+import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "@feat/lyrics.ts";
+import { getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
+import { addSelectorListener } from "@/observers.ts";
+import { createRipple } from "@comp/ripple.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { getFeature } from "@/config.ts";
+import type { LyricsCacheEntry } from "@/types.ts";
+import "@feat/songLists.css";
 
 const songListSelector = `\
 ytmusic-playlist-shelf-renderer #contents,

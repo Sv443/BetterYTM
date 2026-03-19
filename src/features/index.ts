@@ -1,37 +1,37 @@
 import { consumeStringGen, DatedError, randomId, type StringGen } from "@sv443-network/coreutils";
 import { openInNewTab } from "@sv443-network/userutils";
 import { compare as compareVer } from "compare-versions";
-import { clearLyricsCache, getLyricsCache } from "./lyricsCache.ts";
-import { doVersionCheck } from "./versionCheck.ts";
-import { expVolFn } from "./volume.ts";
-import { getLocale, t, tp } from "../utils/translations.ts";
-import { formatNumber, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString } from "../utils/misc.ts";
-import { error, getErrorDialog } from "../utils/logging.ts";
-import { getFeature, promptResetConfig } from "../config.ts";
-import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.ts";
-import { emitSiteEvent, siteEvents } from "../siteEvents.ts";
-import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "../constants.ts";
-import { getDSSerializer } from "../serializers.ts";
-import { closeToast, showIconToast } from "../components/toast.ts";
-import { getAutoLikeDialog } from "../dialogs/autoLike.ts";
-import { showPrompt } from "../dialogs/prompt.ts";
-import { getPluginListDialog } from "../dialogs/pluginList.ts";
-import langMapping from "../../assets/locales.json" with { type: "json" };
-import packageJson from "../../package.json" with { type: "json" };
+import { clearLyricsCache, getLyricsCache } from "@feat/lyricsCache.ts";
+import { doVersionCheck } from "@feat/versionCheck.ts";
+import { expVolFn } from "@feat/volume.ts";
+import { getLocale, t, tp } from "@util/translations.ts";
+import { formatNumber, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString } from "@util/misc.ts";
+import { error, getErrorDialog } from "@util/logging.ts";
+import { getFeature, promptResetConfig } from "@/config.ts";
+import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "@/types.ts";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "@/constants.ts";
+import { getDSSerializer } from "@/serializers.ts";
+import { closeToast, showIconToast } from "@comp/toast.ts";
+import { getAutoLikeDialog } from "@dialog/autoLike.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { getPluginListDialog } from "@dialog/pluginList.ts";
+import langMapping from "@asset/locales.json" with { type: "json" };
+import packageJson from "@root/package.json" with { type: "json" };
 
 //#region re-exports
 
-export * from "./autoLike.js";
-export * from "./layout.js";
-export * from "./behavior.js";
-export * from "./input.js";
-export * from "./hotkeys.js";
-export * from "./integrations.js";
-export * from "./lyrics.js";
-export * from "./lyricsCache.js";
-export * from "./songLists.js";
-export * from "./versionCheck.js";
-export * from "./volume.js";
+export * from "@feat/autoLike.js";
+export * from "@feat/layout.js";
+export * from "@feat/behavior.js";
+export * from "@feat/input.js";
+export * from "@feat/hotkeys.js";
+export * from "@feat/integrations.js";
+export * from "@feat/lyrics.js";
+export * from "@feat/lyricsCache.js";
+export * from "@feat/songLists.js";
+export * from "@feat/versionCheck.js";
+export * from "@feat/volume.js";
 
 //#region misc
 

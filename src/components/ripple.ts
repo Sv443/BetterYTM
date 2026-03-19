@@ -1,5 +1,5 @@
 import type { LooseUnion } from "@sv443-network/coreutils";
-import "./ripple.css";
+import "@comp/ripple.css";
 
 type RippleProps<TElem extends HTMLElement> = {
   /** How fast should the animation be - defaults to "normal" */

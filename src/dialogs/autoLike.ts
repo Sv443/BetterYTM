@@ -1,16 +1,16 @@
 import { compress, debounce } from "@sv443-network/coreutils";
-import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "../utils/index.ts";
-import { autoLikeStore, initAutoLikeStore } from "../features/index.ts";
-import { emitSiteEvent, siteEvents } from "../siteEvents.ts";
-import { ExImDialog } from "../components/ExImDialog.ts";
-import { compressionFormat } from "../constants.ts";
-import type { AutoLikeData } from "../types.ts";
-import { showPrompt } from "./prompt.ts";
-import { BytmDialog } from "../components/BytmDialog.ts";
-import { showToast } from "../components/toast.ts";
-import { createToggleInput } from "../components/toggleInput.ts";
-import { createCircularBtn } from "../components/circularButton.ts";
-import "./autoLike.css";
+import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "@util/index.ts";
+import { autoLikeStore, initAutoLikeStore } from "@feat/index.ts";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { ExImDialog } from "@comp/ExImDialog.ts";
+import { compressionFormat } from "@/constants.ts";
+import type { AutoLikeData } from "@/types.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { showToast } from "@comp/toast.ts";
+import { createToggleInput } from "@comp/toggleInput.ts";
+import { createCircularBtn } from "@comp/circularButton.ts";
+import "@dialog/autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
 let autoLikeExImDialog: ExImDialog | null = null;

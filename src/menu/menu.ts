@@ -1,25 +1,25 @@
 import { clamp, compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { isScrollable } from "@sv443-network/userutils";
-import { type cfgDefaultData, cfgFormatVersion, getFeature, getFeatures, cfgMigrations, setFeatures } from "../config.ts";
-import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, repo, scriptInfo } from "../constants.ts";
-import { featInfo, groupedCategories, resolveAdornments } from "../features/index.ts";
-import { copyToClipboard, setInnerHtml } from "../utils/dom.ts";
-import { onInteraction } from "../utils/input.ts";
-import { error, info, log, warn } from "../utils/logging.ts";
-import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "../utils/misc.ts";
-import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "../utils/translations.ts";
-import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.ts";
-import { emitInterface } from "../interface.ts";
-import { showPrompt, type PromptDialog } from "../dialogs/prompt.ts";
-import { getFeatHelpDialog } from "../dialogs/featHelp.ts";
-import { BytmDialog, openDialogs, setCurrentDialogId } from "../components/BytmDialog.ts";
-import { ExImDialog } from "../components/ExImDialog.ts";
-import { createHotkeyInput } from "../components/hotkeyInput.ts";
-import { createToggleInput } from "../components/toggleInput.ts";
-import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo, ResourceKey } from "../types.ts";
-import pkg from "../../package.json" with { type: "json" };
-import localeMapping from "../../assets/locales.json" with { type: "json" };
-import "./menu.css";
+import { type cfgDefaultData, cfgFormatVersion, getFeature, getFeatures, cfgMigrations, setFeatures } from "@/config.ts";
+import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, repo, scriptInfo } from "@/constants.ts";
+import { featInfo, groupedCategories, resolveAdornments } from "@feat/index.ts";
+import { copyToClipboard, setInnerHtml } from "@util/dom.ts";
+import { onInteraction } from "@util/input.ts";
+import { error, info, log, warn } from "@util/logging.ts";
+import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "@util/misc.ts";
+import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "@util/translations.ts";
+import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { emitInterface } from "@/interface.ts";
+import { showPrompt, type PromptDialog } from "@dialog/prompt.ts";
+import { getFeatHelpDialog } from "@dialog/featHelp.ts";
+import { BytmDialog, openDialogs, setCurrentDialogId } from "@comp/BytmDialog.ts";
+import { ExImDialog } from "@comp/ExImDialog.ts";
+import { createHotkeyInput } from "@comp/hotkeyInput.ts";
+import { createToggleInput } from "@comp/toggleInput.ts";
+import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo, ResourceKey } from "@/types.ts";
+import pkg from "@root/package.json" with { type: "json" };
+import localeMapping from "@asset/locales.json" with { type: "json" };
+import "@menu/menu.css";
 
 //#region >> create menu
 

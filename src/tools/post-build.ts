@@ -212,7 +212,8 @@ async function getHeaders(buildNbr: string) {
   const localizedDescriptions = getLocalizedDescriptions();
   const localizedAntifeatures = await getLocalizedAntifeatures();
 
-  const header = `\
+  const header = ([
+    `\
 // ==UserScript==
 // @name              ${pkg.userscriptName}
 // @namespace         ${pkg.namespace}
@@ -225,8 +226,10 @@ async function getHeaders(buildNbr: string) {
 // @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
-// @run-at            document-start\
-${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
+// @run-at            document-start`,
+    localizedDescriptions,
+    localizedAntifeatures,
+    `\
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
@@ -245,11 +248,11 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
-// @grant             unsafeWindow\
-${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
-${requireDirectives ? "\n" + requireDirectives : ""}\
-${localizedAntifeatures ? "\n" + localizedAntifeatures : ""}\
-${devDirectives ? "\n" + devDirectives : ""}
+// @grant             unsafeWindow`,
+    resourcesDirectives,
+    requireDirectives,
+    devDirectives,
+    `\
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -266,7 +269,9 @@ You can install the latest in-development version here:
 ${pkg.devVersionUrl}
 
 */
-` as const;
+`] as const)
+    .filter(Boolean)
+    .join("\n");
 
   const greasyForkDisclaimer = `
 /*
@@ -439,7 +444,7 @@ async function getLinkedPkgs() {
     try {
       const scriptCont = String(await readFile(resolve(entry.link)));
       const trimmedScript = scriptCont
-        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, "");
+        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, ""); // remove userlibrary headers
       retStr += `\n// <link ${entry.pkgName}>\n${trimmedScript}\n// </link ${entry.pkgName}>\n\n`;
     }
     catch(err) {
@@ -476,7 +481,7 @@ function getLocalizedDescriptions() {
         }
       }
     }
-    return descriptions.join("\n") + "\n";
+    return descriptions.join("\n");
   }
   catch(err) {
     console.warn(k.yellow("No localized descriptions found:"), err);
@@ -526,7 +531,7 @@ async function getLocalizedAntifeatures() {
   }
 
   if(antifeatureDescriptions.length > 0)
-    return antifeatureDescriptions.join("\n") + "\n";
+    return antifeatureDescriptions.join("\n");
   return undefined;
 }
 

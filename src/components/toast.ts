@@ -1,8 +1,8 @@
 import { clamp, pauseFor } from "@sv443-network/coreutils";
-import { info, resourceAsString, setInnerHtml } from "../utils/index.ts";
-import { getFeature } from "../config.ts";
-import type { ResourceKey } from "../types.ts";
-import "./toast.css";
+import { info, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { getFeature } from "@/config.ts";
+import type { ResourceKey } from "@/types.ts";
+import "@comp/toast.css";
 
 //#region types
 

@@ -1,8 +1,8 @@
-import { getLocale, resourceAsString, setInnerHtml, t } from "../utils/index.ts";
-import { BytmDialog } from "../components/BytmDialog.ts";
-import { featInfo } from "../features/index.ts";
-import type { FeatureKey } from "../types.ts";
-import locales from "../../assets/locales.json" with { type: "json" };
+import { getLocale, resourceAsString, setInnerHtml, t } from "@util/index.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { featInfo } from "@feat/index.ts";
+import type { FeatureKey } from "@/types.ts";
+import locales from "@asset/locales.json" with { type: "json" };
 
 let featHelpDialog: BytmDialog | null = null;
 let curFeatKey: FeatureKey | null = null;

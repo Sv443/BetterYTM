@@ -1,17 +1,17 @@
 import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "./utils/index.ts";
-import { clearConfig, getFeature, getFeatures, initConfig } from "./config.ts";
-import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "./constants.ts";
-import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.ts";
-import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "./utils/broadcast.ts";
-import { initSiteEvents, siteEvents } from "./siteEvents.ts";
-import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "./interface.ts";
-import { initObservers, addSelectorListener, globservers } from "./observers.ts";
-import { downloadData, getDSSerializer } from "./serializers.ts";
-import { getWelcomeDialog } from "./dialogs/welcome.ts";
-import { showPrompt } from "./dialogs/prompt.ts";
-import { mountCfgMenu } from "./menu/menu.ts";
+import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "@util/index.ts";
+import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
+import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
+import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
+import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
+import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
+import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "@/interface.ts";
+import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
+import { downloadData, getDSSerializer } from "@/serializers.ts";
+import { getWelcomeDialog } from "@dialog/welcome.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { mountCfgMenu } from "@menu/menu.ts";
 import {
   // layout category:
   addWatermark, initRemShareTrackParam,
@@ -48,8 +48,8 @@ import {
   // misc:
   improveLogo,
 } from "./features/index.js";
-import resourcesJson from "../assets/resources.json" with { type: "json" };
-import { LogLevel, type FeatureGroupKey, type FeatureKey, type ResourceKey } from "./types.ts";
+import resourcesJson from "@asset/resources.json" with { type: "json" };
+import { LogLevel, type FeatureGroupKey, type FeatureKey, type ResourceKey } from "@/types.ts";
 
 //#region cns. watermark
 

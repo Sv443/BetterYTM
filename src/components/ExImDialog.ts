@@ -1,11 +1,11 @@
 import { consumeStringGen, type StringGen } from "@sv443-network/coreutils";
-import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.ts";
-import { t } from "../utils/translations.ts";
-import { onInteraction } from "../utils/input.ts";
-import { copyToClipboard } from "../utils/dom.ts";
-import { createLongBtn } from "./longButton.ts";
-import { showToast } from "./toast.ts";
-import "./ExImDialog.css";
+import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
+import { t } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
+import { copyToClipboard } from "@util/dom.ts";
+import { createLongBtn } from "@comp/longButton.ts";
+import { showToast } from "@comp/toast.ts";
+import "@comp/ExImDialog.css";
 
 // TODO: overhaul:
 // - [ ] Use file down- and upload instead of textareas, including drag and drop functionality

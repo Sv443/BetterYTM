@@ -1,8 +1,8 @@
-import { getDomain } from "../utils/misc.ts";
-import { addStyleFromResource } from "../utils/dom.ts";
-import { error, info, log } from "../utils/logging.ts";
-import { getFeature } from "../config.ts";
-import "./integrations.css";
+import { getDomain } from "@util/misc.ts";
+import { addStyleFromResource } from "@util/dom.ts";
+import { error, info, log } from "@util/logging.ts";
+import { getFeature } from "@/config.ts";
+import "@feat/integrations.css";
 
 //#region Dark Reader
 

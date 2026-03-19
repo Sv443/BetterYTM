@@ -1,6 +1,6 @@
 import { randomId } from "@sv443-network/coreutils";
-import { t } from "../utils/index.ts";
-import "./toggleInput.css";
+import { t } from "@util/index.ts";
+import "@comp/toggleInput.css";
 
 export type ToggleInputProps = {
   /** Callback function that is called when the toggle is changed */

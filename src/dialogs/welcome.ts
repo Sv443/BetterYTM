@@ -1,10 +1,10 @@
-import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "../utils/index.ts";
-import { BytmDialog } from "../components/BytmDialog.ts";
-import { openCfgMenu } from "../menu/menu.ts";
-import { mode, scriptInfo } from "../constants.ts";
-import { getFeature, getFeatures, setFeatures } from "../config.ts";
-import pkg from "../../package.json" with { type: "json" };
-import locales from "../../assets/locales.json" with { type: "json" };
+import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "@util/index.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { openCfgMenu } from "@menu/menu.ts";
+import { mode, scriptInfo } from "@/constants.ts";
+import { getFeature, getFeatures, setFeatures } from "@/config.ts";
+import pkg from "@root/package.json" with { type: "json" };
+import locales from "@asset/locales.json" with { type: "json" };
 
 let welcomeDialog: BytmDialog | null = null;
 

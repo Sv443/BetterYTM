@@ -1,12 +1,12 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
-import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "./behavior.ts";
-import { isIgnoredInputElement } from "./input.ts";
-import { getFeature } from "../config.ts";
-import { siteEvents } from "../siteEvents.ts";
-import { getLikeDislikeBtns, getVideoTime } from "../utils/dom.ts";
-import { getDomain } from "../utils/misc.ts";
-import { error, info, log, warn } from "../utils/logging.ts";
-import type { Domain, FeatKeysOfType, HotkeyObj } from "../types.ts";
+import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "@feat/behavior.ts";
+import { isIgnoredInputElement } from "@feat/input.ts";
+import { getFeature } from "@/config.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { getLikeDislikeBtns, getVideoTime } from "@util/dom.ts";
+import { getDomain } from "@util/misc.ts";
+import { error, info, log, warn } from "@util/logging.ts";
+import type { Domain, FeatKeysOfType, HotkeyObj } from "@/types.ts";
 
 //#region init
 

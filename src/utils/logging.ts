@@ -1,14 +1,14 @@
 import { clamp, DatedError, debounce } from "@sv443-network/coreutils";
-import { showIconToast } from "../components/toast.ts";
-import { MarkdownDialog } from "../components/MarkdownDialog.ts";
-import { getFeature } from "../config.ts";
-import { scriptInfo } from "../constants.ts";
-import { setGlobalProp } from "../interface.ts";
-import { t } from "./translations.ts";
-import { onInteraction } from "./input.ts";
-import { downloadFile } from "./dom.ts";
-import { LogLevel } from "../types.ts";
-import packageJson from "../../package.json" with { type: "json" };
+import { showIconToast } from "@comp/toast.ts";
+import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
+import { getFeature } from "@/config.ts";
+import { scriptInfo } from "@/constants.ts";
+import { setGlobalProp } from "@/interface.ts";
+import { t } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
+import { downloadFile } from "@util/dom.ts";
+import { LogLevel } from "@/types.ts";
+import packageJson from "@root/package.json" with { type: "json" };
 
 //#region logging fns
 

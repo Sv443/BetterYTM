@@ -1,10 +1,10 @@
 import { compare } from "compare-versions";
-import { scriptInfo } from "../constants.ts";
-import { getFeature } from "../config.ts";
-import { error, info, sendRequest, t } from "../utils/index.ts";
-import { getVersionNotifDialog } from "../dialogs/versionNotif.ts";
-import { showPrompt } from "../dialogs/prompt.ts";
-import { LogLevel } from "../types.ts";
+import { scriptInfo } from "@/constants.ts";
+import { getFeature } from "@/config.ts";
+import { error, info, sendRequest, t } from "@util/index.ts";
+import { getVersionNotifDialog } from "@dialog/versionNotif.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { LogLevel } from "@/types.ts";
 
 const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 

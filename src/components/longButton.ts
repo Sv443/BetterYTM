@@ -1,6 +1,6 @@
-import { onInteraction, resourceAsString, setInnerHtml } from "../utils/index.ts";
-import { createRipple } from "./ripple.ts";
-import type { ResourceKey } from "../types.ts";
+import { onInteraction, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { createRipple } from "@comp/ripple.ts";
+import type { ResourceKey } from "@/types.ts";
 
 type LongBtnOptions = {
   /** Button text */

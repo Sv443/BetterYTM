@@ -1,7 +1,7 @@
 import { getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
-import { emitInterface } from "./interface.ts";
-import { error, getDomain } from "./utils/index.ts";
-import type { Domain, FeatureConfig } from "./types.ts";
+import { emitInterface } from "@/interface.ts";
+import { error, getDomain } from "@util/index.ts";
+import type { Domain, FeatureConfig } from "@/types.ts";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
 // !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`.

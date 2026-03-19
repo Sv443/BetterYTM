@@ -2,13 +2,13 @@
 
 import { debounce, pureObj, randomId, type DataStoreEngineDSOptions } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
-import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "../siteEvents.ts";
-import { initTime } from "../constants.ts";
-import { configStore, getFeature } from "../config.ts";
-import { getSerializerStoresFull } from "../serializers.ts";
-import { error, info, log, warn } from "./logging.ts";
-import { getDomain, getSessionId, reloadTab } from "./misc.ts";
-import type { Domain } from "../types.ts";
+import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { initTime } from "@/constants.ts";
+import { configStore, getFeature } from "@/config.ts";
+import { getSerializerStoresFull } from "@/serializers.ts";
+import { error, info, log, warn } from "@util/logging.ts";
+import { getDomain, getSessionId, reloadTab } from "@util/misc.ts";
+import type { Domain } from "@/types.ts";
 
 // #region types
 

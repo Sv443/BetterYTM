@@ -1,7 +1,7 @@
-import { emitSiteEvent, siteEvents } from "../siteEvents.ts";
-import { getOS, hasKey, onInteraction, setInnerHtml, t } from "../utils/index.ts";
-import type { HotkeyObj } from "../types.ts";
-import "./hotkeyInput.css";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { getOS, hasKey, onInteraction, setInnerHtml, t } from "@util/index.ts";
+import type { HotkeyObj } from "@/types.ts";
+import "@comp/hotkeyInput.css";
 
 type HotkeyInputProps = {
   initialValue?: HotkeyObj;

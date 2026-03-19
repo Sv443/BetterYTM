@@ -1,19 +1,19 @@
 import { DataStore } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
-import { getFeature } from "../config.ts";
-import { addSelectorListener } from "../observers.ts";
-import { emitSiteEvent, siteEvents } from "../siteEvents.ts";
-import { compressionFormat } from "../constants.ts";
-import { getCurrentChannelId, getDomain, isValidChannelId, resourceAsString, sanitizeChannelId } from "../utils/misc.ts";
-import { addStyleFromResource, clearNode, getCurrentMediaType, getLikeDislikeBtns, setInnerHtml } from "../utils/dom.ts";
-import { error, info, log, warn } from "../utils/logging.ts";
-import { t } from "../utils/translations.ts";
-import { getAutoLikeDialog } from "../dialogs/autoLike.ts";
-import { showIconToast } from "../components/toast.ts";
-import { createLongBtn } from "../components/longButton.ts";
-import { createRipple } from "../components/ripple.ts";
-import type { AutoLikeData } from "../types.ts";
-import "./autoLike.css";
+import { getFeature } from "@/config.ts";
+import { addSelectorListener } from "@/observers.ts";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { compressionFormat } from "@/constants.ts";
+import { getCurrentChannelId, getDomain, isValidChannelId, resourceAsString, sanitizeChannelId } from "@util/misc.ts";
+import { addStyleFromResource, clearNode, getCurrentMediaType, getLikeDislikeBtns, setInnerHtml } from "@util/dom.ts";
+import { error, info, log, warn } from "@util/logging.ts";
+import { t } from "@util/translations.ts";
+import { getAutoLikeDialog } from "@dialog/autoLike.ts";
+import { showIconToast } from "@comp/toast.ts";
+import { createLongBtn } from "@comp/longButton.ts";
+import { createRipple } from "@comp/ripple.ts";
+import type { AutoLikeData } from "@/types.ts";
+import "@feat/autoLike.css";
 
 // TODO:FIXME: race condition: multiple buttons can appear on YT channel pages, with both the @ID format as well as UC... (extraneous)
 

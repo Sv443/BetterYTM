@@ -1,10 +1,10 @@
-import { host, mode, platformNames, scriptInfo } from "../constants.ts";
-import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, setInnerHtml, t } from "../utils/index.ts";
-import { BytmDialog } from "../components/BytmDialog.ts";
-import { createToggleInput } from "../components/toggleInput.ts";
-import { getFeature, getFeatures, setFeatures } from "../config.ts";
-import { emitSiteEvent } from "../siteEvents.ts";
-import pkg from "../../package.json" with { type: "json" };
+import { host, mode, platformNames, scriptInfo } from "@/constants.ts";
+import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, setInnerHtml, t } from "@util/index.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { createToggleInput } from "@comp/toggleInput.ts";
+import { getFeature, getFeatures, setFeatures } from "@/config.ts";
+import { emitSiteEvent } from "@/siteEvents.ts";
+import pkg from "@root/package.json" with { type: "json" };
 
 let verNotifDialog: BytmDialog | null = null;
 

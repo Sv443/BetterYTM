@@ -1,24 +1,24 @@
 import { DataStore, autoPlural, debounce, fetchAdvanced } from "@sv443-network/coreutils";
 import { addParent, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { getFeature, getFeatures } from "../config.ts";
-import { forceEmitSiteEvent, siteEvents } from "../siteEvents.ts";
-import { addSelectorListener } from "../observers.ts";
-import { featInfo } from "./index.ts";
-import { sanitizeArtists, sanitizeSong } from "./lyrics.ts";
-import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.ts";
-import { addStyleFromResource, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.ts";
-import { error, log, warn } from "../utils/logging.ts";
-import { t, tp } from "../utils/translations.ts";
-import { onInteraction } from "../utils/input.ts";
-import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.ts";
-import { emitInterface } from "../interface.ts";
-import { compressionFormat, mode, scriptInfo } from "../constants.ts";
-import { openCfgMenu } from "../menu/menu.ts";
-import { showPrompt } from "../dialogs/prompt.ts";
-import { createRipple } from "../components/ripple.ts";
-import { createCircularBtn } from "../components/circularButton.ts";
-import type { ITunesAlbumObj, ResourceKey, VideoVotesObj } from "../types.ts";
-import "./layout.css";
+import { getFeature, getFeatures } from "@/config.ts";
+import { forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { addSelectorListener } from "@/observers.ts";
+import { featInfo } from "@feat/index.ts";
+import { sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
+import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "@util/misc.ts";
+import { addStyleFromResource, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "@util/dom.ts";
+import { error, log, warn } from "@util/logging.ts";
+import { t, tp } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
+import { fetchITunesAlbumInfo, fetchVideoVotes } from "@util/xhr.ts";
+import { emitInterface } from "@/interface.ts";
+import { compressionFormat, mode, scriptInfo } from "@/constants.ts";
+import { openCfgMenu } from "@menu/menu.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { createRipple } from "@comp/ripple.ts";
+import { createCircularBtn } from "@comp/circularButton.ts";
+import type { ITunesAlbumObj, ResourceKey, VideoVotesObj } from "@/types.ts";
+import "@feat/layout.css";
 
 //#region cfg menu btns
 

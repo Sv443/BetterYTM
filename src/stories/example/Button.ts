@@ -1,4 +1,4 @@
-import "./button.css";
+import "@/stories/example/button.css";
 
 export type ButtonProps = {
   /** Is this the principal call to action on the page? */
