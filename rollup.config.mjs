@@ -1,13 +1,19 @@
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import pluginTypeScript from "@rollup/plugin-typescript";
 import pluginNodeResolve from "@rollup/plugin-node-resolve";
 import pluginJson from "@rollup/plugin-json";
 import pluginCss from "rollup-plugin-import-css";
 import pluginTerser from "@rollup/plugin-terser";
 import pluginExecute from "rollup-plugin-execute";
+import pluginAlias from "@rollup/plugin-alias";
 import typescript from "typescript";
 import k from "kleur";
 import "dotenv/config";
 import requireJson from "./assets/require.json" with { type: "json" };
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const res = (...p) => resolve(__dirname, ...p);
 
 const globalPkgs = requireJson.reduce((acc, pkg) => {
   acc[pkg.pkgName] = pkg.global;
@@ -44,12 +50,15 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
     extensions: [".ts", ".mts", ".json"],
   };
 
-  /** @type {import("@rollup/plugin-typescript").RollupTypescriptPluginOptions} */
+  /** @type {import("@rollup/plugin-typescript").RollupTypescriptOptions} */
   const pluginTypeScriptOptions = {
     typescript,
     sourceMap: mode === "development",
     compilerOptions: {
       outDir: outputDir,
+      noEmit: false,
+      allowImportingTsExtensions: true,
+      rewriteRelativeImportExtensions: true,
     },
   };
 
@@ -57,6 +66,19 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
   const config = {
     input: "src/index.ts",
     plugins: [
+      pluginAlias({
+        entries: [
+          { find: /^@asset\/(.*)/, replacement: res("assets/$1") },
+          { find: /^@comp\/(.*)/, replacement: res("src/components/$1") },
+          { find: /^@dialog\/(.*)/, replacement: res("src/dialogs/$1") },
+          { find: /^@feat\/(.*)/, replacement: res("src/features/$1") },
+          { find: /^@menu\/(.*)/, replacement: res("src/menu/$1") },
+          { find: /^@tool\/(.*)/, replacement: res("src/tools/$1") },
+          { find: /^@util\/(.*)/, replacement: res("src/utils/$1") },
+          { find: /^@root\/(.*)/, replacement: res("$1") },
+          { find: /^@\/(.*)/, replacement: res("src/$1") },
+        ],
+      }),
       pluginNodeResolve(pluginNodeOptions),
       pluginTypeScript(pluginTypeScriptOptions),
       pluginJson(),
@@ -93,8 +115,8 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
       globals: linkedPkgs.length > 0 ? Object.fromEntries(Object.entries(globalPkgs)) : globalPkgs,
     },
     onwarn(warning) {
-      // ignore circular dependency warnings
-      if(warning.code !== "CIRCULAR_DEPENDENCY") {
+      // ignore circular dependency warnings and TS2877 aliased non-rewritten .ts import warnings
+      if(warning.code !== "CIRCULAR_DEPENDENCY" && warning.pluginCode !== "TS2877") {
         const { message, ...rest } = warning;
         console.error(`${k.yellow("(!)")} ${message}\n`, rest);
       }
