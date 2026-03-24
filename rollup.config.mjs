@@ -43,7 +43,7 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
 
   const { host, mode, suffix } = passCliArgs;
 
-  const linkedPkgs = requireJson.filter((pkg) => typeof pkg.link === "string");
+  const linkedPkgs = requireJson.filter((pkg) => "link" in pkg && typeof pkg.link === "string");
 
   /** @type {import("@rollup/plugin-node-resolve").RollupNodeResolveOptions} */
   const pluginNodeOptions = {
