@@ -215,7 +215,7 @@ export function remTimeTryRestoreTime(force = false) {
             const doRestoreTime = async () => {
               if(!vidElem)
                 vidElem = await waitVideoElementReady();
-              const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction") ?? 0);
+              const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction", 0));
               vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
               await remTimeDeleteEntry(entry.id);
               info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);

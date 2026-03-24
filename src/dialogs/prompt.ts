@@ -50,7 +50,7 @@ export type BaseRenderProps = {
    * Note: these are completely unmanaged by the prompt dialog, so they won't make it resolve, and also won't close it when clicked.
    */
   extraButtons?: ((dialog: PromptDialog) => Promise<HTMLButtonElement> | HTMLButtonElement)[];
-  /** Where to place {@linkcode extraButtons} relative to the built-in confirm/close buttons - defaults to `"after"` */
+  /** Where to place {@linkcode extraButtons} relative to the built-in confirm/close buttons - defaults to `"between"` */
   extraButtonsPosition?: ExtraButtonsPosition;
   /** Partial override of the underlying {@linkcode BytmDialog} options (except `id` and render functions) */
   dialogOptions?: Partial<Omit<BytmDialogOptions, "id" | "renderBody" | "renderHeader" | "renderFooter">>;
@@ -259,7 +259,9 @@ export class PromptDialog extends BytmDialog {
         const closeBtn = document.querySelector<HTMLButtonElement>("#bytm-prompt-dialog-close");
 
         if(confBtn || closeBtn) {
-          confBtn?.click() ?? closeBtn?.click();
+          confBtn && "click" in confBtn
+            ? confBtn.click()
+            : closeBtn?.click();
           captureEnterKey = false;
         }
       }

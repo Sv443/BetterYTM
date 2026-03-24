@@ -11,7 +11,7 @@ let pluginListDialog: BytmDialog | null = null;
 
 /** Creates and/or returns the import dialog */
 export async function getPluginListDialog() {
-  return pluginListDialog = pluginListDialog ?? new BytmDialog({
+  return pluginListDialog ??= new BytmDialog({
     id: "plugin-list",
     width: 900,
     height: 600,

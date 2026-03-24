@@ -425,8 +425,9 @@ export function getFeatures(): FeatureConfig {
 }
 
 /** Returns the value of the feature with the given key from the in-memory cache, as a copy */
-export function getFeature<TKey extends FeatureKey>(key: TKey | "_"): FeatureConfig[TKey] {
-  return configStore.getData()[key as TKey];
+export function getFeature<TKey extends FeatureKey>(key: TKey | "_", defaultVal?: FeatureConfig[TKey]): FeatureConfig[TKey] {
+  const val = configStore.getData()[key as TKey];
+  return val !== undefined ? val : defaultVal as never;
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */

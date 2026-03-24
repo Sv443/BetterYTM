@@ -62,7 +62,7 @@ export async function initAutoLike() {
     if(getDomain() === "ytm") {
       let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("songTitleChanged", () => {
-        const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
+        const autoLikeTimeoutMs = (getFeature("autoLikeTimeout", 5)) * 1000;
         timeout && clearTimeout(timeout);
         const ytmTryAutoLike = () => {
           const artistEls = document.querySelectorAll<HTMLAnchorElement>("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
@@ -155,7 +155,7 @@ export async function initAutoLike() {
 
       let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("watchIdChanged", () => {
-        const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
+        const autoLikeTimeoutMs = (getFeature("autoLikeTimeout", 5)) * 1000;
         timeout && clearTimeout(timeout);
         if(!location.pathname.startsWith("/watch"))
           return;

@@ -816,7 +816,7 @@ export async function initThumbnailOverlay() {
               ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
               : undefined;
 
-            const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
+            const imgRes = getFeature("thumbnailOverlayITunesImgRes", featInfo.thumbnailOverlayITunesImgRes.default);
             const iTunesUrl = (iTunesAlbum?.artworkUrl100 ?? iTunesAlbum?.artworkUrl60);
             iTunesUrl && !ac.signal.aborted && ac.abort();
 

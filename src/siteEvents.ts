@@ -294,11 +294,11 @@ export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, 
 
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
 function checkVideoIdChange(newID?: string | null) {
-  const newVidID = newID ?? new URL(location.href).searchParams.get("v");
-  if(newVidID && newVidID !== lastVidId) {
-    info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newVidID}"`);
-    emitSiteEvent("watchIdChanged", newVidID, lastVidId);
-    lastVidId = newVidID;
+  newID ??= new URL(location.href).searchParams.get("v");
+  if(newID && newID !== lastVidId) {
+    info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
+    emitSiteEvent("watchIdChanged", newID, lastVidId);
+    lastVidId = newID;
   }
 }
 

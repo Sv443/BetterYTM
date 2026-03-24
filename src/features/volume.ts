@@ -232,7 +232,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
   };
 
   const getLabel = (value: Stringifiable) => {
-    const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
+    const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep", Number(sliderElem.step)));
     const roundedValue = Math.round(Number(value) / step) * step;
     let label = `${roundedValue}%`;
 

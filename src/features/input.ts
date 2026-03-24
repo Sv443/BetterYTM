@@ -75,7 +75,7 @@ export async function initArrowKeySkip() {
     evt.preventDefault();
     evt.stopImmediatePropagation();
 
-    let skipBy = getFeature("arrowKeySkipBy") ?? featInfo.arrowKeySkipBy.default;
+    let skipBy = getFeature("arrowKeySkipBy", featInfo.arrowKeySkipBy.default);
     if(evt.code === "ArrowLeft")
       skipBy *= -1;
 
@@ -104,7 +104,7 @@ function handleVolumeKeyPress(evt: KeyboardEvent) {
   const newVol = clamp(
     Number(sliderEl.value)
       + (evt.code === "ArrowUp" ? 1 : -1)
-      * clamp((getFeature("arrowKeyVolumeStep") ?? featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100),
+      * clamp((getFeature("arrowKeyVolumeStep", featInfo.arrowKeyVolumeStep.default)), isNaN(step) ? 5 : step, 100),
     0,
     100,
   );
