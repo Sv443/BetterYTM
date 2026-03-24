@@ -1,6 +1,6 @@
 import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "@util/index.ts";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
@@ -701,7 +701,19 @@ function registerDevCommands() {
     showPrompt({
       type: "alert",
       message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
-    })
+      extraButtons: [
+        (dlg) => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Copy and close";
+          btn.addEventListener("click", async () => {
+            copyToClipboard(devPluginToken ?? "");
+            dlg.close();
+          });
+          return btn;
+        },
+      ],
+      extraButtonsPosition: "before",
+    }),
   );
 
   GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
@@ -783,12 +795,11 @@ function registerDevCommands() {
   });
 
   isAdv && GM.registerMenuCommand(t("menu_command.reload_all_tabs"), async () => {
-    if(await showPrompt({
+    await showPrompt({
       type: "confirm",
-      message: `Reload all open ${getDomain() === "ytm" ? "music" : "www"}.youtube.com tabs running BetterYTM?`,
+      message: "Reload all open tabs that are running BetterYTM?",
       confirmBtnText: "Reload",
-    }))
-      await reloadAllTabs();
+    }) && await reloadAllTabs();
   });
 
   log("Registered dev menu commands");
