@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d43a3ebf/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@502d9880/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "d43a3ebf",
-    buildTimestamp: "1773933894951",
+    buildNumber: "502d9880",
+    buildTimestamp: "1774391103305",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1286,11 +1286,11 @@ function forceEmitSiteEvent(key, ...args) {
 //#region other
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
 function checkVideoIdChange(newID) {
-    const newVidID = newID ?? new URL(location.href).searchParams.get("v");
-    if (newVidID && newVidID !== lastVidId) {
-        info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newVidID}"`);
-        emitSiteEvent("watchIdChanged", newVidID, lastVidId);
-        lastVidId = newVidID;
+    newID ?? (newID = new URL(location.href).searchParams.get("v"));
+    if (newID && newID !== lastVidId) {
+        info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
+        emitSiteEvent("watchIdChanged", newID, lastVidId);
+        lastVidId = newID;
     }
 }
 /** Periodically called to check for changes in the URL and emit associated siteEvents */
@@ -1625,7 +1625,9 @@ class PromptDialog extends BytmDialog {
                 const confBtn = document.querySelector("#bytm-prompt-dialog-confirm");
                 const closeBtn = document.querySelector("#bytm-prompt-dialog-close");
                 if (confBtn || closeBtn) {
-                    confBtn?.click() ?? closeBtn?.click();
+                    confBtn && "click" in confBtn
+                        ? confBtn.click()
+                        : closeBtn?.click();
                     captureEnterKey = false;
                 }
             }
@@ -1889,7 +1891,7 @@ async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
         return fixedPtVal;
     };
     const getLabel = (value) => {
-        const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
+        const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep", Number(sliderElem.step)));
         const roundedValue = Math.round(Number(value) / step) * step;
         let label = `${roundedValue}%`;
         labelContElem.classList.remove("wide");
@@ -2575,7 +2577,7 @@ function remTimeTryRestoreTime(force = false) {
                         const doRestoreTime = async () => {
                             if (!vidElem)
                                 vidElem = await waitVideoElementReady();
-                            const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction") ?? 0);
+                            const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction", 0));
                             vidElem.currentTime = CoreUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
                             await remTimeDeleteEntry(entry.id);
                             info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
@@ -3267,9 +3269,9 @@ async function renderBody$3() {
         const searchVal = searchbarEl.value.trim().toLowerCase();
         const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
         for (const row of rows) {
-            const san = (str) => str?.trim().toLowerCase().replace(/\s/g, "");
-            const name = san(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
-            const id = san(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
+            const sanit = (str) => str?.trim().toLowerCase().replace(/\s/g, "");
+            const name = sanit(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
+            const id = sanit(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
             row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
         }
         updateCountElem();
@@ -3503,7 +3505,7 @@ async function initAutoLike() {
         if (getDomain() === "ytm") {
             let timeout;
             siteEvents.on("songTitleChanged", () => {
-                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
+                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout", 5)) * 1000;
                 timeout && clearTimeout(timeout);
                 const ytmTryAutoLike = () => {
                     const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
@@ -3577,7 +3579,7 @@ async function initAutoLike() {
             addStyleFromResource("css-auto_like");
             let timeout;
             siteEvents.on("watchIdChanged", () => {
-                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
+                const autoLikeTimeoutMs = (getFeature("autoLikeTimeout", 5)) * 1000;
                 timeout && clearTimeout(timeout);
                 if (!location.pathname.startsWith("/watch"))
                     return;
@@ -6035,7 +6037,7 @@ async function initThumbnailOverlay() {
                         const iTunesAlbum = primaryArtist && albumName
                             ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
                             : undefined;
-                        const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
+                        const imgRes = getFeature("thumbnailOverlayITunesImgRes", featInfo.thumbnailOverlayITunesImgRes.default);
                         const iTunesUrl = (iTunesAlbum?.artworkUrl100 ?? iTunesAlbum?.artworkUrl60);
                         iTunesUrl && !ac.signal.aborted && ac.abort();
                         const thumbUrl = iTunesUrl?.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)
@@ -7092,7 +7094,7 @@ async function getChangelogHtmlWithDetails() {
 }let pluginListDialog = null;
 /** Creates and/or returns the import dialog */
 async function getPluginListDialog() {
-    return pluginListDialog = pluginListDialog ?? new BytmDialog({
+    return pluginListDialog ?? (pluginListDialog = new BytmDialog({
         id: "plugin-list",
         width: 900,
         height: 600,
@@ -7103,7 +7105,7 @@ async function getPluginListDialog() {
         small: true,
         renderHeader: renderHeader$1,
         renderBody: renderBody$1,
-    });
+    }));
 }
 async function renderHeader$1() {
     const titleElem = document.createElement("h2");
@@ -7288,7 +7290,7 @@ async function initArrowKeySkip() {
             return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
         evt.preventDefault();
         evt.stopImmediatePropagation();
-        let skipBy = getFeature("arrowKeySkipBy") ?? featInfo.arrowKeySkipBy.default;
+        let skipBy = getFeature("arrowKeySkipBy", featInfo.arrowKeySkipBy.default);
         if (evt.code === "ArrowLeft")
             skipBy *= -1;
         log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
@@ -7308,7 +7310,7 @@ function handleVolumeKeyPress(evt) {
     const step = Number(sliderEl.step);
     const newVol = CoreUtils.clamp(Number(sliderEl.value)
         + (evt.code === "ArrowUp" ? 1 : -1)
-            * CoreUtils.clamp((getFeature("arrowKeyVolumeStep") ?? featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
+            * CoreUtils.clamp((getFeature("arrowKeyVolumeStep", featInfo.arrowKeyVolumeStep.default)), isNaN(step) ? 5 : step, 100), 0, 100);
     if (newVol !== Number(sliderEl.value)) {
         sliderEl.value = String(newVol);
         sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
@@ -9891,8 +9893,9 @@ function getFeatures() {
     return configStore.getData();
 }
 /** Returns the value of the feature with the given key from the in-memory cache, as a copy */
-function getFeature(key) {
-    return configStore.getData()[key];
+function getFeature(key, defaultVal) {
+    const val = configStore.getData()[key];
+    return val !== undefined ? val : defaultVal;
 }
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 function setFeatures(featureConf) {
@@ -11611,6 +11614,18 @@ function registerDevCommands() {
     isDev && GM.registerMenuCommand(t("menu_command.get_dev_plugin_token"), () => showPrompt({
         type: "alert",
         message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+        extraButtons: [
+            (dlg) => {
+                const btn = document.createElement("button");
+                btn.textContent = btn.ariaLabel = "Copy and close";
+                btn.addEventListener("click", async () => {
+                    copyToClipboard(devPluginToken ?? "");
+                    dlg.close();
+                });
+                return btn;
+            },
+        ],
+        extraButtonsPosition: "before",
     }));
     GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
@@ -11675,12 +11690,11 @@ function registerDevCommands() {
         });
     });
     isAdv && GM.registerMenuCommand(t("menu_command.reload_all_tabs"), async () => {
-        if (await showPrompt({
+        await showPrompt({
             type: "confirm",
-            message: `Reload all open ${getDomain() === "ytm" ? "music" : "www"}.youtube.com tabs running BetterYTM?`,
+            message: "Reload all open tabs that are running BetterYTM?",
             confirmBtnText: "Reload",
-        }))
-            await reloadAllTabs();
+        }) && await reloadAllTabs();
     });
     log("Registered dev menu commands");
 }
