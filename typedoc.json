@@ -1,13 +1,18 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": [
+    "assets/**/*.json",
     "src/components/*.ts",
-    "src/dialogs/*.ts",
     "src/config.ts",
     "src/constants.ts",
+    "src/dialogs/*.ts",
+    "src/features/index.ts",
     "src/interface.ts",
+    "src/observers.ts",
     "src/siteEvents.ts",
     "src/types.ts",
+    "src/utils/broadcast.ts",
+    "src/utils/index.ts",
   ],
   "excludeTags": [
     "@override",

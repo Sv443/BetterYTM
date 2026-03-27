@@ -1,0 +1,17 @@
+[**@sv443/betterytm**](../../../README.md)
+
+***
+
+[@sv443/betterytm](../../../modules.md) / [src/utils](../README.md) / getChangelogMd
+
+# Function: getChangelogMd()
+
+> **getChangelogMd**(): `Promise`\<`string`\>
+
+Defined in: [src/utils/misc.ts:563](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L563)
+
+Returns the content of the changelog markdown file
+
+## Returns
+
+`Promise`\<`string`\>
