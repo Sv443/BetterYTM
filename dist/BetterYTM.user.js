@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@502d9880/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5e24f78d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -443,8 +443,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "502d9880",
-    buildTimestamp: "1774391103305",
+    buildNumber: "5e24f78d",
+    buildTimestamp: "1774653301051",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -4900,6 +4900,7 @@ async function mountCfgMenu() {
                     advCopyHiddenCont && ctrlElem.appendChild(advCopyHiddenCont);
                     if (inputTag) {
                         // standard input element:
+                        const isNumericInput = ["number", "slider"].includes(type);
                         const inputElem = document.createElement(inputTag);
                         inputElem.classList.add("bytm-ftconf-input");
                         inputElem.id = inputElemId;
@@ -4916,7 +4917,7 @@ async function mountCfgMenu() {
                             inputElem.type = "password";
                             inputElem.autocomplete = "off";
                         }
-                        if (type === "number" || type === "slider" && step)
+                        if (isNumericInput && step)
                             inputElem.step = String(step);
                         if (type === "toggle" && typeof initialVal !== "undefined")
                             inputElem.checked = Boolean(initialVal);
@@ -4987,20 +4988,26 @@ async function mountCfgMenu() {
                         }
                         inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
                         inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
-                        // after input, clamp the value between min and max
-                        if (type === "number" && ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number")) {
+                        // after input, clamp the value between min and max and round it to step:
+                        const hasMinOrMax = ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number");
+                        const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
+                        if (isNumericInput) {
                             inputElem.addEventListener("blur", () => {
                                 let v = Number(inputElem.value);
-                                if (isNaN(v))
-                                    return;
-                                if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min)
-                                    v = ftInfo.min;
-                                if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max)
-                                    v = ftInfo.max;
-                                inputElem.value = String(v);
+                                if (hasMinOrMax && !isNaN(v)) {
+                                    if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min)
+                                        v = ftInfo.min;
+                                    if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max)
+                                        v = ftInfo.max;
+                                }
+                                if (hasStep && !isNaN(v))
+                                    v = Math.round(v / Number(ftInfo.step)) * Number(ftInfo.step);
+                                if (!isNaN(v))
+                                    inputElem.value = String(v);
                             });
                         }
                         ctrlElem.appendChild(inputElem);
+                        // add unit element for number inputs if ftInfo has a unit property:
                         if (type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
                             const afterInputUnitEl = document.createElement("span");
                             afterInputUnitEl.classList.add("bytm-ftconf-unit");
