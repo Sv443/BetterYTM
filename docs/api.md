@@ -64,7 +64,7 @@ Note: The 🔒 emoji means it's an authenticated function and you're *required t
   - [`function getCurrentMediaType()`](#function-getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
   - [`function getLikeDislikeBtns()`](#function-getlikedislikebtns) - Returns the like and dislike buttons for either domain, as well as the current like/dislike state
   - [`function isIgnoredInputElement()`](#function-isignoredinputelement) - Checks if the given element (or `document.activeElement`) is an input element that should prevent all other keypresses from being processed
-- [Site Events:](#Site events)
+- [Site Events:](#site-events)
   - [`function onSiteEvent()`](#function-onsiteevent) - Adds a site event listener
   - [`function onceSiteEvent()`](#function-oncesiteevent) - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern
   - [`function onMultiSiteEvents()`](#function-onmultisiteevents) - Adds a listener for multiple site events at once, with configurable behavior and with a shared callback function

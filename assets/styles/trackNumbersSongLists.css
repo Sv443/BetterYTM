@@ -7,9 +7,11 @@ ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
   counter-reset: section;
 }
 
+/* [page-type] > generic shelf */
 ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
   ytmusic-playlist-shelf-renderer
   ytmusic-responsive-list-item-renderer::before,
+/* [page-type] > [main-page-type] */
 ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
   ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"]
   ytmusic-shelf-renderer
@@ -17,8 +19,9 @@ ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
 ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
   ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"]
   ytmusic-shelf-renderer
-  ytmusic-responsive-list-item-renderer::before
-  ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
+  ytmusic-responsive-list-item-renderer::before,
+/* [page-type] > [page-type] */
+ytmusic-browse-response:not([page-type="MUSIC_PAGE_TYPE_ALBUM"])
   ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"]
   ytmusic-shelf-renderer
   ytmusic-responsive-list-item-renderer::before,

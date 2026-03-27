@@ -3,12 +3,12 @@
 <br>
 
 ### Images:
-- Own PNG/JPG/GIF images are stored in [`assets/images/`](./images)
-- External images are stored in [`assets/images/external/`](./images/external)
-- The BYTM logo files are in [`assets/images/logo/`](./images/logo)
-- SVG icons are stored in [`assets/icons/`](./icons)
-- CSS stylesheets are in [`assets/styles/`](./style)
-- Translations are in [`assets/translations/`](./translations)
+- Own PNG/JPG/GIF images are stored in [`assets/images/`](./images/)
+- External images are stored in [`assets/images/external/`](./images/external/)
+- The BYTM logo files are in [`assets/images/logo/`](./images/logo/)
+- SVG icons are stored in [`assets/icons/`](./icons/)
+- CSS stylesheets are in [`assets/styles/`](./styles/)
+- Translations are in [`assets/translations/`](./translations/)
 
 <br>
 

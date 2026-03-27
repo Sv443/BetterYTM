@@ -123,7 +123,7 @@
   - Moved `siteEvents` initialization to an earlier point, so that it is no longer initialized alongside features. It is now available to plugins at an earlier point in time, before any feature has started initializing, but still after plugin initialization has finished.
   - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
   - Improved script performance by refactoring the feature initialization process. As an effect of this, `bytm:ready` will now emit consistently, but also earlier, and the new event `bytm:allReady` will emit much later, once all features have been initialized or the configured timeout has been reached.
-  - Updated a boatload of translation values and translation keys. [Use this page to find all changes.](https://github.com/Sv443/BetterYTM/compare/v3.0.0...v3.1.0`)
+  - Updated a boatload of translation values and translation keys. [Use this page to find all changes.](https://github.com/Sv443/BetterYTM/compare/v3.0.0...v3.1.0)
   - Some resources are now cached in GM storage, when using the internal function `resourceAsString()` for even better feature init performance.
   - BYTM now targets [ES2020](https://en.wikipedia.org/wiki/ECMAScript_version_history#11th_Edition_%E2%80%93_ECMAScript_2020)
   - Added new GM menu commands:
