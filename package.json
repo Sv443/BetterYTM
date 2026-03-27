@@ -49,7 +49,7 @@
     "post-build": "node --no-warnings=ExperimentalWarning ./src/tools/post-build.ts",
     "build-local-base": "pnpm build-dev --config-gen-meta=false",
     "build-prod-base": "rollup -c --config-mode production --config-branch main",
-    "preview": "pnpm build-prod-gh --config-assetSource=local && pnpm serve --auto-exit-time=6",
+    "preview": "pnpm build-prod-gh --config-assetSource=local && pnpm serve -s -L -X=10",
     "serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
     "lint": "eslint . && tsc --noEmit",
     "tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",

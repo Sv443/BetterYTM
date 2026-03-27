@@ -16,9 +16,11 @@ const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Whether to log requests to the console */
-const enableLogging = env.DEV_SERVER_LOGGING?.toLowerCase() === "true" || argv.includes("--logging");
+const enableLogging = env.DEV_SERVER_LOGGING?.toLowerCase() === "true" || argv.includes("--logging") || argv.includes("-L");
 
-const autoExitRaw = Number(argv.find(arg => arg.match(/^--auto-exit-time[\s=]/))?.split(/[\s=]/)[1]);
+const silent = env.DEV_SERVER_SILENT?.toLowerCase() === "true" || argv.includes("--silent") || argv.includes("-S");
+
+const autoExitRaw = Number(argv.find(arg => arg.match(/^(--auto-exit-time|-X)=/))?.split("=")[1]);
 /** Time in milliseconds after which the process should automatically exit */
 const autoExitTime: number | undefined = !isNaN(autoExitRaw) ? autoExitRaw * 1000 : undefined;
 
@@ -33,7 +35,7 @@ enableLogging && app.use((req, _res, next) => {
 
   // set char based on method and URL path
   if(["HEAD", "OPTIONS"].includes(req.method))
-    char = styleText("gray", "H");
+    char = styleText("gray", req.method.substring(0, 1));
   else if(req.method === "GET") {
     if(req.path.startsWith("/assets/"))
       char = styleText("blue", "A");
@@ -71,36 +73,38 @@ app.use("/assets", express.static(
 ));
 
 function closeAndExit(code: number) {
-  !server && setImmediate(() => exit(code));
-  server?.close(() =>
-    setImmediate(() =>
-      exit(code)
-    )
-  );
+  const ex = () => setImmediate(() => exit(code));
+  !server && setImmediate(ex);
+  server?.close(ex);
 }
 
 try {
   server = app.listen(devServerPort, "0.0.0.0", () => {
-    console.log(`Dev server is running on port ${devServerPort}`);
-    if(enableLogging) {
-      console.log([
-        `\n${styleText("yellow", "Request logging enabled:")}`,
-        ` ${styleText("gray", "H")}  HEAD/OPTIONS`,
-        ` ${styleText("greenBright", "U")}  GET *.user.js`,
-        ` ${styleText("magenta", "C")}  GET *.css`,
-        ` ${styleText("cyan", "M")}  GET *.md`,
-        ` ${styleText("blue", "A")}  GET /assets/`,
-        ` ${styleText("green", "G")}  GET other`,
-        `${styleText("yellow", "<*>")} other methods`,
-      ].join(`\n${styleText("yellow", "|")} `));
+    if(!silent) {
+      console.log(`Dev server is running on port ${devServerPort}`);
+      if(enableLogging) {
+        console.log([
+          `\n${styleText("yellow", "Request logging enabled:")}`,
+          ` ${styleText("greenBright", "U")}  GET *.user.js`,
+          ` ${styleText("magenta", "C")}  GET *.css`,
+          ` ${styleText("cyan", "M")}  GET *.md`,
+          ` ${styleText("blue", "A")}  GET /assets/`,
+          ` ${styleText("green", "G")}  GET other`,
+          `${styleText("gray", "H/O")} HEAD/OPTIONS`,
+          `${styleText("yellow", "<*>")} other methods`,
+        ].join(`\n${styleText("yellow", "|")} `));
+      }
+      else
+        console.log(styleText("gray", "(request logging is disabled)"));
+      console.log();
     }
-    else
-      console.log(styleText("gray", "(request logging is disabled)"));
-    console.log();
 
     if(autoExitTime) {
-      console.log(`Exiting in ${autoExitTime / 1000}s...`);
-      setTimeout(() => closeAndExit(0), autoExitTime);
+      process.stdout.write(`Exiting in ${autoExitTime / 1000}s...`);
+      setTimeout(() => {
+        process.stdout.write("\n");
+        closeAndExit(0);
+      }, autoExitTime);
     }
   });
 }

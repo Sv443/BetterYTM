@@ -193,6 +193,11 @@ To edit an existing translation, please follow these steps:
   - `--keys="<keys>"` or `-k="<keys>"` - Ignores all keys except the ones specified (comma-separated)
 - **`pnpm tr-prep`**  
   Shorthand for `pnpm tr-format --prep` (see above).
+- **`pnpm serve`**  
+  Runs only the local development server without building the userscript. Can be used when `pnpm build-dev` or `pnpm dev-cdn` aren't usable because of commits that haven't been pushed yet and no recompilation via `pnpm dev` is necessary.  
+  Add the flag `-L` or `--logging` to log all requests to the console.  
+  Add the flag `-X=<seconds>` or `--auto-exit-time=<seconds>` to automatically exit the process after a certain amount of time, like when just a single or a few requests need to be sent. The `pnpm preview` command makes use of this flag to shortly allow for installing the userscript via HTTP URL.  
+  Use the additional flag `-S` or `--silent` to prevent any extra console logs, like the HTTP port and legend of incoming requests.
 - **`pnpm --silent invisible "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
