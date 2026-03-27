@@ -6,7 +6,7 @@
 
 # Interface: BytmDialogEvents
 
-Defined in: [src/components/BytmDialog.ts:43](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L43)
+Defined in: [src/components/BytmDialog.ts:43](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L43)
 
 ## Extends
 
@@ -22,7 +22,7 @@ Defined in: [src/components/BytmDialog.ts:43](https://github.com/Sv443/BetterYTM
 
 > **clear**: () => `void`
 
-Defined in: [src/components/BytmDialog.ts:51](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L51)
+Defined in: [src/components/BytmDialog.ts:51](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L51)
 
 Emitted just **after** the dialog contents are cleared
 
@@ -36,7 +36,7 @@ Emitted just **after** the dialog contents are cleared
 
 > **close**: () => `void`
 
-Defined in: [src/components/BytmDialog.ts:45](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L45)
+Defined in: [src/components/BytmDialog.ts:45](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L45)
 
 Emitted just **after** the dialog is closed
 
@@ -50,7 +50,7 @@ Emitted just **after** the dialog is closed
 
 > **destroy**: () => `void`
 
-Defined in: [src/components/BytmDialog.ts:53](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L53)
+Defined in: [src/components/BytmDialog.ts:53](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L53)
 
 Emitted just **after** the dialog is destroyed and **before** all listeners are removed
 
@@ -64,7 +64,7 @@ Emitted just **after** the dialog is destroyed and **before** all listeners are 
 
 > **open**: () => `void`
 
-Defined in: [src/components/BytmDialog.ts:47](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L47)
+Defined in: [src/components/BytmDialog.ts:47](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L47)
 
 Emitted just **after** the dialog is opened
 
@@ -78,7 +78,7 @@ Emitted just **after** the dialog is opened
 
 > **render**: () => `void`
 
-Defined in: [src/components/BytmDialog.ts:49](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L49)
+Defined in: [src/components/BytmDialog.ts:49](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L49)
 
 Emitted just **after** the dialog contents are rendered
 

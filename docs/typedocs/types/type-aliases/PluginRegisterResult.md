@@ -8,7 +8,7 @@
 
 > **PluginRegisterResult** = `object`
 
-Defined in: [src/types.ts:299](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L299)
+Defined in: [src/types.ts:299](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L299)
 
 Result of a plugin registration
 
@@ -18,7 +18,7 @@ Result of a plugin registration
 
 > **events**: `NanoEmitter`\<[`PluginEventMap`](PluginEventMap.md)\>
 
-Defined in: [src/types.ts:303](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L303)
+Defined in: [src/types.ts:303](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L303)
 
 NanoEmitter instance for plugin events - see [`PluginEventMap`](PluginEventMap.md) for a list of events
 
@@ -28,7 +28,7 @@ NanoEmitter instance for plugin events - see [`PluginEventMap`](PluginEventMap.m
 
 > **info**: [`PluginInfo`](PluginInfo.md)
 
-Defined in: [src/types.ts:301](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L301)
+Defined in: [src/types.ts:301](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L301)
 
 Public info about the registered plugin
 
@@ -38,7 +38,7 @@ Public info about the registered plugin
 
 > **permissions**: `object`
 
-Defined in: [src/types.ts:307](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L307)
+Defined in: [src/types.ts:307](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L307)
 
 Permissions granted to the plugin - this is a bitwise OR of [`PluginIntent`](../enumerations/PluginIntent.md) values under the `int` prop, or an array of them under the `array` prop
 
@@ -56,6 +56,6 @@ Permissions granted to the plugin - this is a bitwise OR of [`PluginIntent`](../
 
 > **token**: `string`
 
-Defined in: [src/types.ts:305](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L305)
+Defined in: [src/types.ts:305](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L305)
 
 Authentication token for the plugin to use in certain restricted function calls

@@ -8,7 +8,7 @@
 
 > **createCircularBtn**(`__namedParameters`): `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/circularButton.ts:35](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/circularButton.ts#L35)
+Defined in: [src/components/circularButton.ts:35](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/circularButton.ts#L35)
 
 Creates a generic, circular button element.  
 If `href` is provided, the button will be an anchor element.  

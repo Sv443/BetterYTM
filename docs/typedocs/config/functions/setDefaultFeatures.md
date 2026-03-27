@@ -8,7 +8,7 @@
 
 > **setDefaultFeatures**(): `Promise`\<`void`\>
 
-Defined in: [src/config.ts:446](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/config.ts#L446)
+Defined in: [src/config.ts:453](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/config.ts#L453)
 
 Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage
 

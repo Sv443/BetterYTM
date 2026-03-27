@@ -8,7 +8,7 @@
 
 > **setLocaleInterface**(`token`, `locale`): `void`
 
-Defined in: [src/interface.ts:609](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L609)
+Defined in: [src/interface.ts:609](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/interface.ts#L609)
 
 Sets the new locale on the BYTM interface  
 This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.

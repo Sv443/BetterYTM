@@ -8,6 +8,6 @@
 
 > **ITunesAlbumObj** = `Prettify`\<\{ `artistId`: `number`; `artistName`: `string`; `artistViewUrl`: `` `https://music.apple.com/us/artist/${string}/${number}?uo=${number}` ``; `artworkUrl100`: `` `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg` ``; `artworkUrl60`: `` `https://${string}.mzstatic.com/image/thumb/${string}/${number}x${number}bb.jpg` ``; `collectionCensoredName`: `string`; `collectionExplicitness`: `LooseUnion`\<`"explicit"` \| `"notExplicit"` \| `"cleaned"`\>; `collectionId`: `number`; `collectionName`: `string`; `collectionPrice`: `number`; `collectionType`: `LooseUnion`\<`"Album"`\>; `collectionViewUrl`: `` `https://music.apple.com/us/album/${string}/${number}?uo=${number}` ``; `contentAdvisoryRating?`: `LooseUnion`\<`"Explicit"` \| `"Clean"`\>; `copyright`: `string`; `country`: `LooseUnion`\<`"USA"`\>; `currency`: `LooseUnion`\<`"USD"`\>; `primaryGenreName`: `string`; `releaseDate`: `` `${number}-${number}-${number}T${number}:${number}:${number}Z` ``; `trackCount`: `number`; `wrapperType`: `LooseUnion`\<`"collection"`\>; \}\>
 
-Defined in: [src/types.ts:131](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L131)
+Defined in: [src/types.ts:131](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L131)
 
 One album object returned by the Apple Music / iTunes API

@@ -6,7 +6,7 @@
 
 # Interface: FeatureConfig
 
-Defined in: [src/types.ts:763](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L763)
+Defined in: [src/types.ts:764](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L764)
 
 Feature configuration object, as saved in memory and persistent storage
 
@@ -16,7 +16,7 @@ Feature configuration object, as saved in memory and persistent storage
 
 > **aboveQueueBtnsSticky**: `boolean`
 
-Defined in: [src/types.ts:848](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L848)
+Defined in: [src/types.ts:851](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L851)
 
 Whether the above queue button container should use sticky positioning
 
@@ -26,7 +26,7 @@ Whether the above queue button container should use sticky positioning
 
 > **advancedMode**: `boolean`
 
-Defined in: [src/types.ts:790](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L790)
+Defined in: [src/types.ts:793](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L793)
 
 Whether to show advanced settings in the config menu
 
@@ -36,7 +36,7 @@ Whether to show advanced settings in the config menu
 
 > **anchorImprovements**: `boolean`
 
-Defined in: [src/types.ts:941](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L941)
+Defined in: [src/types.ts:944](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L944)
 
 Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier
 
@@ -46,7 +46,7 @@ Make it so middle clicking a song to open it in a new tab (through thumbnail and
 
 > **arrowKeySkipBy**: `number`
 
-Defined in: [src/types.ts:931](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L931)
+Defined in: [src/types.ts:934](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L934)
 
 By how many seconds to skip when pressing the left/right arrow keys
 
@@ -56,7 +56,7 @@ By how many seconds to skip when pressing the left/right arrow keys
 
 > **arrowKeySupport**: `boolean`
 
-Defined in: [src/types.ts:929](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L929)
+Defined in: [src/types.ts:932](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L932)
 
 Arrow keys to skip forwards and backwards and change volume
 
@@ -66,7 +66,7 @@ Arrow keys to skip forwards and backwards and change volume
 
 > **arrowKeyVolumeStep**: `number`
 
-Defined in: [src/types.ts:933](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L933)
+Defined in: [src/types.ts:936](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L936)
 
 By how much to change the volume when pressing the up/down arrow keys
 
@@ -76,7 +76,7 @@ By how much to change the volume when pressing the up/down arrow keys
 
 > **autoCloseToasts**: `boolean`
 
-Defined in: [src/types.ts:894](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L894)
+Defined in: [src/types.ts:897](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L897)
 
 Whether to automatically close permanent toasts
 
@@ -86,7 +86,7 @@ Whether to automatically close permanent toasts
 
 > **autoLikeChannels**: `boolean`
 
-Defined in: [src/types.ts:914](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L914)
+Defined in: [src/types.ts:917](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L917)
 
 Whether to auto-like all played videos of configured channels
 
@@ -96,7 +96,7 @@ Whether to auto-like all played videos of configured channels
 
 > **autoLikeChannelToggleBtn**: `boolean`
 
-Defined in: [src/types.ts:916](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L916)
+Defined in: [src/types.ts:919](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L919)
 
 Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel
 
@@ -106,7 +106,7 @@ Whether to show toggle buttons on the channel page to enable/disable auto-liking
 
 > **autoLikeOpenMgmtDialog**: `undefined`
 
-Defined in: [src/types.ts:925](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L925)
+Defined in: [src/types.ts:928](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L928)
 
 Opens the auto-like channels management dialog
 
@@ -116,7 +116,7 @@ Opens the auto-like channels management dialog
 
 > **autoLikeShowToast**: `boolean`
 
-Defined in: [src/types.ts:923](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L923)
+Defined in: [src/types.ts:926](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L926)
 
 Whether to show a toast when a video is auto-liked
 
@@ -126,7 +126,7 @@ Whether to show a toast when a video is auto-liked
 
 > **autoLikeTimeout**: `number`
 
-Defined in: [src/types.ts:921](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L921)
+Defined in: [src/types.ts:924](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L924)
 
 How long to wait after a video has started playing to auto-like it
 
@@ -136,7 +136,7 @@ How long to wait after a video has started playing to auto-like it
 
 > **autoScrollToActiveSongMode**: `"never"` \| `"initialPageLoad"` \| `"videoChangeAll"` \| `"videoChangeManual"` \| `"videoChangeAuto"`
 
-Defined in: [src/types.ts:908](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L908)
+Defined in: [src/types.ts:911](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L911)
 
 When to automatically scroll to the active song in the queue
 
@@ -146,7 +146,7 @@ When to automatically scroll to the active song in the queue
 
 > **checkVersionNow**: `undefined`
 
-Defined in: [src/types.ts:772](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L772)
+Defined in: [src/types.ts:773](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L773)
 
 Button to check for updates
 
@@ -156,7 +156,7 @@ Button to check for updates
 
 > **clearLyricsCache**: `undefined`
 
-Defined in: [src/types.ts:868](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L868)
+Defined in: [src/types.ts:871](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L871)
 
 Button to clear lyrics cache
 
@@ -166,7 +166,7 @@ Button to clear lyrics cache
 
 > **clearQueueBtn**: `boolean`
 
-Defined in: [src/types.ts:846](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L846)
+Defined in: [src/types.ts:849](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L849)
 
 Add a button above the queue to clear it
 
@@ -176,7 +176,7 @@ Add a button above the queue to clear it
 
 > **clearSearchBarHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:977](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L977)
+Defined in: [src/types.ts:980](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L980)
 
 The hotkey that needs to be pressed to clear the search bar
 
@@ -186,7 +186,7 @@ The hotkey that needs to be pressed to clear the search bar
 
 > **clearSearchBarHotkeyEnabled**: `boolean`
 
-Defined in: [src/types.ts:975](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L975)
+Defined in: [src/types.ts:978](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L978)
 
 Add a hotkey to clear the search bar on both pages
 
@@ -196,7 +196,7 @@ Add a hotkey to clear the search bar on both pages
 
 > **closeToastsTimeout**: `number`
 
-Defined in: [src/types.ts:896](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L896)
+Defined in: [src/types.ts:899](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L899)
 
 After how many seconds to close permanent toasts
 
@@ -206,7 +206,7 @@ After how many seconds to close permanent toasts
 
 > **currentLyricsHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:965](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L965)
+Defined in: [src/types.ts:968](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L968)
 
 The hotkey that needs to be pressed to open the current song's lyrics in a new tab
 
@@ -216,7 +216,7 @@ The hotkey that needs to be pressed to open the current song's lyrics in a new t
 
 > **currentLyricsHotkeyEnabled**: `boolean`
 
-Defined in: [src/types.ts:963](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L963)
+Defined in: [src/types.ts:966](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L966)
 
 Add a hotkey to open the current song's lyrics in a new tab
 
@@ -226,7 +226,7 @@ Add a hotkey to open the current song's lyrics in a new tab
 
 > **defaultObserverDebounce**: `number`
 
-Defined in: [src/types.ts:784](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L784)
+Defined in: [src/types.ts:787](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L787)
 
 Time in milliseconds between SelectorObserver checks - lower number = faster reaction to DOM changes but also more CPU usage
 
@@ -236,7 +236,7 @@ Time in milliseconds between SelectorObserver checks - lower number = faster rea
 
 > **deleteFromQueueButton**: `boolean`
 
-Defined in: [src/types.ts:840](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L840)
+Defined in: [src/types.ts:843](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L843)
 
 Add a button to each song in the queue to quickly remove it
 
@@ -246,7 +246,7 @@ Add a button to each song in the queue to quickly remove it
 
 > **disableBeforeUnloadPopup**: `boolean`
 
-Defined in: [src/types.ts:892](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L892)
+Defined in: [src/types.ts:895](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L895)
 
 Whether to completely disable the popup that sometimes appears before leaving the site
 
@@ -256,7 +256,7 @@ Whether to completely disable the popup that sometimes appears before leaving th
 
 > **disableDarkReaderSites**: [`SiteSelectionOrNone`](../type-aliases/SiteSelectionOrNone.md)
 
-Defined in: [src/types.ts:991](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L991)
+Defined in: [src/types.ts:994](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L994)
 
 On which sites to disable Dark Reader - does nothing if the extension is not installed
 
@@ -266,7 +266,7 @@ On which sites to disable Dark Reader - does nothing if the extension is not ins
 
 > **dislikeHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:961](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L961)
+Defined in: [src/types.ts:964](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L964)
 
 The hotkey that needs to be pressed to dislike the current video/song
 
@@ -276,7 +276,7 @@ The hotkey that needs to be pressed to dislike the current video/song
 
 > **errorOnLyricsNotFound**: `boolean`
 
-Defined in: [src/types.ts:858](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L858)
+Defined in: [src/types.ts:861](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L861)
 
 Whether to show an error when no lyrics were found
 
@@ -286,7 +286,7 @@ Whether to show an error when no lyrics were found
 
 > **fixHdrIssues**: `boolean`
 
-Defined in: [src/types.ts:826](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L826)
+Defined in: [src/types.ts:829](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L829)
 
 Whether to fix various issues in the layout when HDR is supported and active
 
@@ -296,7 +296,7 @@ Whether to fix various issues in the layout when HDR is supported and active
 
 > **fixSpacing**: `boolean`
 
-Defined in: [src/types.ts:800](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L800)
+Defined in: [src/types.ts:803](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L803)
 
 Fix spacing issues in the layout
 
@@ -306,7 +306,7 @@ Fix spacing issues in the layout
 
 > **focusSearchBarHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:973](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L973)
+Defined in: [src/types.ts:976](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L976)
 
 The hotkey that needs to be pressed to focus the search bar
 
@@ -316,7 +316,7 @@ The hotkey that needs to be pressed to focus the search bar
 
 > **focusSearchBarHotkeyEnabled**: `boolean`
 
-Defined in: [src/types.ts:971](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L971)
+Defined in: [src/types.ts:974](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L974)
 
 Add a hotkey to focus the search bar on both pages
 
@@ -326,7 +326,7 @@ Add a hotkey to focus the search bar on both pages
 
 > **frameSkip**: `boolean`
 
-Defined in: [src/types.ts:935](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L935)
+Defined in: [src/types.ts:938](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L938)
 
 Use . and , keys to skip by a frame while the video is paused
 
@@ -336,7 +336,7 @@ Use . and , keys to skip by a frame while the video is paused
 
 > **frameSkipAmount**: `number`
 
-Defined in: [src/types.ts:939](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L939)
+Defined in: [src/types.ts:942](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L942)
 
 Amount of seconds to skip when pressing the . and , keys
 
@@ -346,7 +346,7 @@ Amount of seconds to skip when pressing the . and , keys
 
 > **frameSkipWhilePlaying**: `boolean`
 
-Defined in: [src/types.ts:937](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L937)
+Defined in: [src/types.ts:940](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L940)
 
 Allow frame skipping while the song is playing
 
@@ -356,7 +356,7 @@ Allow frame skipping while the song is playing
 
 > **geniUrlBase**: `string`
 
-Defined in: [src/types.ts:860](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L860)
+Defined in: [src/types.ts:863](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L863)
 
 Base URL to use for GeniURL
 
@@ -366,7 +366,7 @@ Base URL to use for GeniURL
 
 > **geniUrlToken**: `string`
 
-Defined in: [src/types.ts:862](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L862)
+Defined in: [src/types.ts:865](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L865)
 
 Token to use for GeniURL
 
@@ -376,7 +376,7 @@ Token to use for GeniURL
 
 > **geniusLyrics**: `boolean`
 
-Defined in: [src/types.ts:856](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L856)
+Defined in: [src/types.ts:859](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L859)
 
 Add a button to the media controls to open the current song's lyrics on genius.com in a new tab
 
@@ -386,7 +386,7 @@ Add a button to the media controls to open the current song's lyrics on genius.c
 
 > **hideCursorOnIdle**: `boolean`
 
-Defined in: [src/types.ts:820](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L820)
+Defined in: [src/types.ts:823](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L823)
 
 Hide the cursor when it's idling on the video element for a while
 
@@ -396,7 +396,7 @@ Hide the cursor when it's idling on the video element for a while
 
 > **hideCursorOnIdleDelay**: `number`
 
-Defined in: [src/types.ts:822](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L822)
+Defined in: [src/types.ts:825](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L825)
 
 Delay in seconds after which the cursor should be hidden
 
@@ -406,7 +406,7 @@ Delay in seconds after which the cursor should be hidden
 
 > **hidePlayerBarOnIdleInFullscreen**: `boolean`
 
-Defined in: [src/types.ts:824](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L824)
+Defined in: [src/types.ts:827](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L827)
 
 When in fullscreen and the cursor is idling according to the `hideCursorOnIdle` feature, also hide the player bar
 
@@ -416,7 +416,7 @@ When in fullscreen and the cursor is idling according to the `hideCursorOnIdle` 
 
 > **initialTabVolumeLevel**: `number`
 
-Defined in: [src/types.ts:888](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L888)
+Defined in: [src/types.ts:891](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L891)
 
 The initial volume level to set for each new session
 
@@ -426,7 +426,7 @@ The initial volume level to set for each new session
 
 > **initTimeout**: `number`
 
-Defined in: [src/types.ts:782](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L782)
+Defined in: [src/types.ts:785](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L785)
 
 Amount of seconds until the feature initialization times out
 
@@ -436,7 +436,7 @@ Amount of seconds until the feature initialization times out
 
 > **likeDislikeHotkeys**: `boolean`
 
-Defined in: [src/types.ts:955](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L955)
+Defined in: [src/types.ts:958](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L958)
 
 Add hotkeys for liking and disliking the current video/song
 
@@ -446,7 +446,7 @@ Add hotkeys for liking and disliking the current video/song
 
 > **likeDislikeHotkeysToggle**: `boolean`
 
-Defined in: [src/types.ts:957](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L957)
+Defined in: [src/types.ts:960](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L960)
 
 Whether the hotkeys should toggle the like/dislike buttons instead of only setting them
 
@@ -456,7 +456,7 @@ Whether the hotkeys should toggle the like/dislike buttons instead of only setti
 
 > **likeHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:959](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L959)
+Defined in: [src/types.ts:962](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L962)
 
 The hotkey that needs to be pressed to like the current video/song
 
@@ -466,7 +466,7 @@ The hotkey that needs to be pressed to like the current video/song
 
 > **listButtonsPlacement**: `"currentQueue"` \| `"genericLists"` \| `"everywhere"`
 
-Defined in: [src/types.ts:842](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L842)
+Defined in: [src/types.ts:845](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L845)
 
 Where to place the buttons in the queue
 
@@ -476,7 +476,7 @@ Where to place the buttons in the queue
 
 > **locale**: `"de-DE"` \| `"en-US"` \| `"en-GB"` \| `"es-ES"` \| `"fr-FR"` \| `"hi-IN"` \| `"ja-JP"` \| `"pt-BR"` \| `"zh-CN"`
 
-Defined in: [src/types.ts:766](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L766)
+Defined in: [src/types.ts:767](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L767)
 
 The locale to use for translations
 
@@ -486,7 +486,7 @@ The locale to use for translations
 
 > **localeFallback**: `boolean`
 
-Defined in: [src/types.ts:768](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L768)
+Defined in: [src/types.ts:769](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L769)
 
 Whether to default to US-English if the translation for the set locale is missing
 
@@ -496,9 +496,19 @@ Whether to default to US-English if the translation for the set locale is missin
 
 > **logEvents**: `boolean`
 
-Defined in: [src/types.ts:776](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L776)
+Defined in: [src/types.ts:777](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L777)
 
 Whether to log interface and site events to the console
+
+***
+
+### logHttp
+
+> **logHttp**: `boolean`
+
+Defined in: [src/types.ts:779](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L779)
+
+Whether to log HTTP requests sent via `GM.xmlHttpRequest` to the console
 
 ***
 
@@ -506,7 +516,7 @@ Whether to log interface and site events to the console
 
 > **logLevel**: [`LogLevel`](../enumerations/LogLevel.md)
 
-Defined in: [src/types.ts:774](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L774)
+Defined in: [src/types.ts:775](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L775)
 
 The console log level - 0 = Debug, 1 = Info
 
@@ -516,7 +526,7 @@ The console log level - 0 = Debug, 1 = Info
 
 > **lyricsCacheMaxSize**: `number`
 
-Defined in: [src/types.ts:864](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L864)
+Defined in: [src/types.ts:867](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L867)
 
 Max size of lyrics cache
 
@@ -526,7 +536,7 @@ Max size of lyrics cache
 
 > **lyricsCacheTTL**: `number`
 
-Defined in: [src/types.ts:866](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L866)
+Defined in: [src/types.ts:869](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L869)
 
 Max TTL of lyrics cache entries, in ms
 
@@ -536,7 +546,7 @@ Max TTL of lyrics cache entries, in ms
 
 > **lyricsQueueButton**: `boolean`
 
-Defined in: [src/types.ts:838](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L838)
+Defined in: [src/types.ts:841](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L841)
 
 Add a button to each song in the queue to quickly open its lyrics page
 
@@ -546,7 +556,7 @@ Add a button to each song in the queue to quickly open its lyrics page
 
 > **nextHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:981](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L981)
+Defined in: [src/types.ts:984](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L984)
 
 The hotkey that needs to be pressed to skip to the next video/song
 
@@ -556,7 +566,7 @@ The hotkey that needs to be pressed to skip to the next video/song
 
 > **numbersFormat**: [`NumberLengthFormat`](../type-aliases/NumberLengthFormat.md)
 
-Defined in: [src/types.ts:832](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L832)
+Defined in: [src/types.ts:835](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L835)
 
 Which format to use for the like/dislike ratio on the currently playing song
 
@@ -566,7 +576,7 @@ Which format to use for the like/dislike ratio on the currently playing song
 
 > **numKeysSkipToTime**: `boolean`
 
-Defined in: [src/types.ts:943](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L943)
+Defined in: [src/types.ts:946](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L946)
 
 Enable skipping to a specific time in the video by pressing a number key (0-9)
 
@@ -576,7 +586,7 @@ Enable skipping to a specific time in the video by pressing a number key (0-9)
 
 > **numKeysSkipToTimeDoublePress**: `number`
 
-Defined in: [src/types.ts:945](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L945)
+Defined in: [src/types.ts:948](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L948)
 
 Whether skipping to a specific time requires two key presses and in which time frame
 
@@ -586,7 +596,7 @@ Whether skipping to a specific time requires two key presses and in which time f
 
 > **numKeysSkipToTimeDoublePressBuffer**: `number`
 
-Defined in: [src/types.ts:947](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L947)
+Defined in: [src/types.ts:950](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L950)
 
 Whether there's a buffer for double pressing the number keys to skip to a specific time, and how long it is in seconds
 
@@ -596,7 +606,7 @@ Whether there's a buffer for double pressing the number keys to skip to a specif
 
 > **openPluginDiscoverySite**: `undefined`
 
-Defined in: [src/types.ts:1011](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L1011)
+Defined in: [src/types.ts:1014](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L1014)
 
 Button that opens the plugin discovery site
 
@@ -606,7 +616,7 @@ Button that opens the plugin discovery site
 
 > **openPluginList**: `undefined`
 
-Defined in: [src/types.ts:1009](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L1009)
+Defined in: [src/types.ts:1012](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L1012)
 
 Button that opens the plugin list dialog
 
@@ -616,7 +626,7 @@ Button that opens the plugin list dialog
 
 > **playPauseHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:987](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L987)
+Defined in: [src/types.ts:990](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L990)
 
 The hotkey that needs to be pressed to play/pause the current video/song
 
@@ -626,7 +636,7 @@ The hotkey that needs to be pressed to play/pause the current video/song
 
 > **previousHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:983](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L983)
+Defined in: [src/types.ts:986](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L986)
 
 The hotkey that needs to be pressed to skip to the previous video/song
 
@@ -636,7 +646,7 @@ The hotkey that needs to be pressed to skip to the previous video/song
 
 > **rebindNextAndPrevious**: `boolean`
 
-Defined in: [src/types.ts:979](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L979)
+Defined in: [src/types.ts:982](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L982)
 
 Whether to rebind the next [J] and previous [K] keys
 
@@ -646,7 +656,7 @@ Whether to rebind the next [J] and previous [K] keys
 
 > **rebindPlayPause**: `boolean`
 
-Defined in: [src/types.ts:985](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L985)
+Defined in: [src/types.ts:988](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L988)
 
 Whether to rebind the play/pause hotkey
 
@@ -656,7 +666,7 @@ Whether to rebind the play/pause hotkey
 
 > **rememberSongTime**: `boolean`
 
-Defined in: [src/types.ts:898](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L898)
+Defined in: [src/types.ts:901](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L901)
 
 Remember the last song's time when reloading or restoring the tab
 
@@ -666,7 +676,7 @@ Remember the last song's time when reloading or restoring the tab
 
 > **rememberSongTimeDuration**: `number`
 
-Defined in: [src/types.ts:902](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L902)
+Defined in: [src/types.ts:905](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L905)
 
 Time in seconds to remember the song time for
 
@@ -676,7 +686,7 @@ Time in seconds to remember the song time for
 
 > **rememberSongTimeMinPlayTime**: `number`
 
-Defined in: [src/types.ts:906](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L906)
+Defined in: [src/types.ts:909](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L909)
 
 Minimum time in seconds the song needs to be played before it is remembered
 
@@ -686,7 +696,7 @@ Minimum time in seconds the song needs to be played before it is remembered
 
 > **rememberSongTimeReduction**: `number`
 
-Defined in: [src/types.ts:904](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L904)
+Defined in: [src/types.ts:907](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L907)
 
 Time in seconds to subtract from the remembered song time
 
@@ -696,7 +706,7 @@ Time in seconds to subtract from the remembered song time
 
 > **rememberSongTimeSites**: [`SiteSelection`](../type-aliases/SiteSelection.md)
 
-Defined in: [src/types.ts:900](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L900)
+Defined in: [src/types.ts:903](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L903)
 
 Where to remember the song time
 
@@ -706,7 +716,7 @@ Where to remember the song time
 
 > **removeShareTrackingParam**: `boolean`
 
-Defined in: [src/types.ts:796](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L796)
+Defined in: [src/types.ts:799](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L799)
 
 Remove the "si" tracking parameter from links in the share menu?
 
@@ -716,7 +726,7 @@ Remove the "si" tracking parameter from links in the share menu?
 
 > **removeShareTrackingParamSites**: [`SiteSelection`](../type-aliases/SiteSelection.md)
 
-Defined in: [src/types.ts:798](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L798)
+Defined in: [src/types.ts:801](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L801)
 
 On which sites to remove the "si" tracking parameter from links in the share menu
 
@@ -726,7 +736,7 @@ On which sites to remove the "si" tracking parameter from links in the share men
 
 > **removeThumbnailRatingBar**: `boolean`
 
-Defined in: [src/types.ts:1005](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L1005)
+Defined in: [src/types.ts:1008](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L1008)
 
 Removes all thumbnail rating bars if the extension is installed
 
@@ -736,7 +746,7 @@ Removes all thumbnail rating bars if the extension is installed
 
 > **resetConfig**: `undefined`
 
-Defined in: [src/types.ts:786](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L786)
+Defined in: [src/types.ts:789](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L789)
 
 Button that resets the config to the default state
 
@@ -746,7 +756,7 @@ Button that resets the config to the default state
 
 > **resetEverything**: `undefined`
 
-Defined in: [src/types.ts:788](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L788)
+Defined in: [src/types.ts:791](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L791)
 
 Button to reset every DataStore instance to their default values
 
@@ -756,7 +766,7 @@ Button to reset every DataStore instance to their default values
 
 > **scrollToActiveSongBtn**: `boolean`
 
-Defined in: [src/types.ts:844](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L844)
+Defined in: [src/types.ts:847](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L847)
 
 Add a button above the queue to scroll to the currently playing song
 
@@ -766,7 +776,7 @@ Add a button above the queue to scroll to the currently playing song
 
 > **setInitialTabVolume**: `boolean`
 
-Defined in: [src/types.ts:886](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L886)
+Defined in: [src/types.ts:889](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L889)
 
 Whether to set an initial volume level for each new session
 
@@ -776,7 +786,7 @@ Whether to set an initial volume level for each new session
 
 > **showToastOnGenericError**: `boolean`
 
-Defined in: [src/types.ts:780](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L780)
+Defined in: [src/types.ts:783](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L783)
 
 Whether to show a toast on generic errors
 
@@ -786,7 +796,7 @@ Whether to show a toast on generic errors
 
 > **showVotes**: `boolean`
 
-Defined in: [src/types.ts:828](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L828)
+Defined in: [src/types.ts:831](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L831)
 
 Whether to show the like/dislike ratio on the currently playing song
 
@@ -796,7 +806,7 @@ Whether to show the like/dislike ratio on the currently playing song
 
 > **skipToRemTimeHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:969](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L969)
+Defined in: [src/types.ts:972](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L972)
 
 The hotkey that needs to be pressed to skip to the last remembered time of the current video/song
 
@@ -806,7 +816,7 @@ The hotkey that needs to be pressed to skip to the last remembered time of the c
 
 > **skipToRemTimeHotkeyEnabled**: `boolean`
 
-Defined in: [src/types.ts:967](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L967)
+Defined in: [src/types.ts:970](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L970)
 
 Add a hotkey to skip to the last remembered time of the current video/song
 
@@ -816,7 +826,7 @@ Add a hotkey to skip to the last remembered time of the current video/song
 
 > **songListTrackNumbers**: `"currentQueue"` \| `"genericLists"` \| `"everywhere"`
 
-Defined in: [src/types.ts:852](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L852)
+Defined in: [src/types.ts:855](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L855)
 
 Where to add track numbers
 
@@ -826,7 +836,7 @@ Where to add track numbers
 
 > **songListTrackNumbersEnabled**: `boolean`
 
-Defined in: [src/types.ts:850](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L850)
+Defined in: [src/types.ts:853](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L853)
 
 Add track numbers to each song list item
 
@@ -836,7 +846,7 @@ Add track numbers to each song list item
 
 > **sponsorBlockIntegration**: `boolean`
 
-Defined in: [src/types.ts:993](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L993)
+Defined in: [src/types.ts:996](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L996)
 
 Whether to fix the styling of some elements from the SponsorBlock extension - does nothing if the extension is not installed
 
@@ -846,7 +856,7 @@ Whether to fix the styling of some elements from the SponsorBlock extension - do
 
 > **swapLikeDislikeButtons**: `boolean`
 
-Defined in: [src/types.ts:830](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L830)
+Defined in: [src/types.ts:833](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L833)
 
 Whether to swap the like and dislike buttons in the media controls
 
@@ -856,7 +866,7 @@ Whether to swap the like and dislike buttons in the media controls
 
 > **switchBetweenSites**: `boolean`
 
-Defined in: [src/types.ts:951](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L951)
+Defined in: [src/types.ts:954](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L954)
 
 Add a hotkey to switch between the YT and YTM sites on a video/song
 
@@ -866,7 +876,7 @@ Add a hotkey to switch between the YT and YTM sites on a video/song
 
 > **switchSitesHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:953](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L953)
+Defined in: [src/types.ts:956](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L956)
 
 The hotkey that needs to be pressed to initiate the site switch
 
@@ -876,7 +886,7 @@ The hotkey that needs to be pressed to initiate the site switch
 
 > **themeSongIntegration**: `boolean`
 
-Defined in: [src/types.ts:995](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L995)
+Defined in: [src/types.ts:998](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L998)
 
 Whether to adjust styles so they look better when using the ThemeSong extension
 
@@ -886,7 +896,7 @@ Whether to adjust styles so they look better when using the ThemeSong extension
 
 > **themeSongLightness**: [`ColorLightnessPref`](../type-aliases/ColorLightnessPref.md)
 
-Defined in: [src/types.ts:997](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L997)
+Defined in: [src/types.ts:1000](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L1000)
 
 Lightness of the color used when ThemeSong is enabled
 
@@ -896,7 +906,7 @@ Lightness of the color used when ThemeSong is enabled
 
 > **themeSongVisualizerHotkey**: [`HotkeyObj`](../type-aliases/HotkeyObj.md)
 
-Defined in: [src/types.ts:1003](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L1003)
+Defined in: [src/types.ts:1006](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L1006)
 
 The hotkey that needs to be pressed to toggle the ThemeSong visualizer on and off
 
@@ -906,7 +916,7 @@ The hotkey that needs to be pressed to toggle the ThemeSong visualizer on and of
 
 > **themeSongVisualizerHotkeyEnabled**: `boolean`
 
-Defined in: [src/types.ts:1001](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L1001)
+Defined in: [src/types.ts:1004](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L1004)
 
 Whether to add a hotkey to toggle the ThemeSong visualizer on and off
 
@@ -916,7 +926,7 @@ Whether to add a hotkey to toggle the ThemeSong visualizer on and off
 
 > **themeSongVisualizerOpacity**: `number`
 
-Defined in: [src/types.ts:999](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L999)
+Defined in: [src/types.ts:1002](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L1002)
 
 0-100 value for how opaque the ThemeSong visualizer should be when it's enabled
 
@@ -926,7 +936,7 @@ Defined in: [src/types.ts:999](https://github.com/Sv443/BetterYTM/blob/1534dd6d6
 
 > **thumbnailOverlayAlbumArtCacheMaxSize**: `number`
 
-Defined in: [src/types.ts:812](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L812)
+Defined in: [src/types.ts:815](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L815)
 
 Maximum number of entries in the album art cache
 
@@ -936,7 +946,7 @@ Maximum number of entries in the album art cache
 
 > **thumbnailOverlayAlbumArtCacheTTL**: `number`
 
-Defined in: [src/types.ts:810](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L810)
+Defined in: [src/types.ts:813](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L813)
 
 For how long to cache the album art images fetched from the iTunes API
 
@@ -946,7 +956,7 @@ For how long to cache the album art images fetched from the iTunes API
 
 > **thumbnailOverlayBehavior**: `"never"` \| `"videosOnly"` \| `"songsOnly"` \| `"always"`
 
-Defined in: [src/types.ts:804](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L804)
+Defined in: [src/types.ts:807](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L807)
 
 Where to show a thumbnail overlay over the video element and whether to show it at all
 
@@ -956,7 +966,7 @@ Where to show a thumbnail overlay over the video element and whether to show it 
 
 > **thumbnailOverlayIndicatorOpacity**: `number`
 
-Defined in: [src/types.ts:816](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L816)
+Defined in: [src/types.ts:819](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L819)
 
 The opacity of the thumbnail overlay indicator element
 
@@ -966,7 +976,7 @@ The opacity of the thumbnail overlay indicator element
 
 > **thumbnailOverlayITunesImgRes**: `number`
 
-Defined in: [src/types.ts:808](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L808)
+Defined in: [src/types.ts:811](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L811)
 
 The width and height of the image fetched from the iTunes API
 
@@ -976,7 +986,7 @@ The width and height of the image fetched from the iTunes API
 
 > **thumbnailOverlayPreferredSource**: `"yt"` \| `"am"`
 
-Defined in: [src/types.ts:818](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L818)
+Defined in: [src/types.ts:821](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L821)
 
 Whether to prefer fetching iTunes album covers over YT thumbnails
 
@@ -986,7 +996,7 @@ Whether to prefer fetching iTunes album covers over YT thumbnails
 
 > **thumbnailOverlayShowIndicator**: `boolean`
 
-Defined in: [src/types.ts:814](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L814)
+Defined in: [src/types.ts:817](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L817)
 
 Whether to show an indicator on the thumbnail overlay when it is active
 
@@ -996,7 +1006,7 @@ Whether to show an indicator on the thumbnail overlay when it is active
 
 > **thumbnailOverlayToggleBtnShown**: `boolean`
 
-Defined in: [src/types.ts:806](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L806)
+Defined in: [src/types.ts:809](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L809)
 
 Whether to show a button to toggle the thumbnail overlay in the media controls
 
@@ -1006,7 +1016,7 @@ Whether to show a button to toggle the thumbnail overlay in the media controls
 
 > **toastDuration**: `number`
 
-Defined in: [src/types.ts:778](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L778)
+Defined in: [src/types.ts:781](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L781)
 
 Amount of seconds to show BYTM's toasts for
 
@@ -1016,7 +1026,7 @@ Amount of seconds to show BYTM's toasts for
 
 > **truncatePlayerBarSubtitles**: `boolean`
 
-Defined in: [src/types.ts:802](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L802)
+Defined in: [src/types.ts:805](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L805)
 
 Whether to truncate the song title, artist name, album name, release year, and like/dislike ratio in the player bar using an ellipsis
 
@@ -1026,7 +1036,7 @@ Whether to truncate the song title, artist name, album name, release year, and l
 
 > **versionCheck**: `boolean`
 
-Defined in: [src/types.ts:770](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L770)
+Defined in: [src/types.ts:771](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L771)
 
 Whether to check for updates to the script
 
@@ -1036,7 +1046,7 @@ Whether to check for updates to the script
 
 > **volumeSharedBetweenTabs**: `boolean`
 
-Defined in: [src/types.ts:884](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L884)
+Defined in: [src/types.ts:887](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L887)
 
 Whether the volume should be locked to the same level across all tabs (changing in one changes in all others too)
 
@@ -1046,7 +1056,7 @@ Whether the volume should be locked to the same level across all tabs (changing 
 
 > **volumeSliderExponential**: `"linear"` \| `"x^2"` \| `"x^3"` \| `"x^4"` \| `"x^5"`
 
-Defined in: [src/types.ts:872](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L872)
+Defined in: [src/types.ts:875](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L875)
 
 Use exponential scaling for the volume slider
 
@@ -1056,7 +1066,7 @@ Use exponential scaling for the volume slider
 
 > **volumeSliderExponentialLabelType**: `"positionBased"` \| `"valueBased"` \| `"both"`
 
-Defined in: [src/types.ts:874](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L874)
+Defined in: [src/types.ts:877](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L877)
 
 Type of label to show on the volume slider when using exponential scaling
 
@@ -1066,7 +1076,7 @@ Type of label to show on the volume slider when using exponential scaling
 
 > **volumeSliderLabel**: `boolean`
 
-Defined in: [src/types.ts:876](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L876)
+Defined in: [src/types.ts:879](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L879)
 
 Add a percentage label to the volume slider
 
@@ -1076,7 +1086,7 @@ Add a percentage label to the volume slider
 
 > **volumeSliderScrollStep**: `number`
 
-Defined in: [src/types.ts:882](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L882)
+Defined in: [src/types.ts:885](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L885)
 
 Volume slider scroll wheel sensitivity
 
@@ -1086,7 +1096,7 @@ Volume slider scroll wheel sensitivity
 
 > **volumeSliderSize**: `number`
 
-Defined in: [src/types.ts:878](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L878)
+Defined in: [src/types.ts:881](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L881)
 
 The width of the volume slider in pixels
 
@@ -1096,7 +1106,7 @@ The width of the volume slider in pixels
 
 > **volumeSliderStep**: `number`
 
-Defined in: [src/types.ts:880](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L880)
+Defined in: [src/types.ts:883](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L883)
 
 Volume slider sensitivity - the smaller this number, the finer the volume control
 
@@ -1106,7 +1116,7 @@ Volume slider sensitivity - the smaller this number, the finer the volume contro
 
 > **watchPageFullSize**: `boolean`
 
-Defined in: [src/types.ts:834](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L834)
+Defined in: [src/types.ts:837](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L837)
 
 Whether to remove all padding around the main content on the /watch page on YTM
 
@@ -1116,7 +1126,7 @@ Whether to remove all padding around the main content on the /watch page on YTM
 
 > **watermarkEnabled**: `boolean`
 
-Defined in: [src/types.ts:794](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L794)
+Defined in: [src/types.ts:797](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L797)
 
 Show a BetterYTM watermark under the YTM logo
 
@@ -1126,6 +1136,6 @@ Show a BetterYTM watermark under the YTM logo
 
 > **yesImStillThere**: `boolean`
 
-Defined in: [src/types.ts:910](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L910)
+Defined in: [src/types.ts:913](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L913)
 
 Whether to automatically click the "Yes" button on the "Are you still there?" popup

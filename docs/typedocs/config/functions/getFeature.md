@@ -6,9 +6,9 @@
 
 # Function: getFeature()
 
-> **getFeature**\<`TKey`\>(`key`): [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)\[`TKey`\]
+> **getFeature**\<`TKey`\>(`key`, `defaultVal?`): [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)\[`TKey`\]
 
-Defined in: [src/config.ts:422](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/config.ts#L422)
+Defined in: [src/config.ts:428](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/config.ts#L428)
 
 Returns the value of the feature with the given key from the in-memory cache, as a copy
 
@@ -23,6 +23,10 @@ Returns the value of the feature with the given key from the in-memory cache, as
 ### key
 
 `"_"` | `TKey`
+
+### defaultVal?
+
+[`FeatureConfig`](../../types/interfaces/FeatureConfig.md)\[`TKey`\]
 
 ## Returns
 

@@ -8,7 +8,7 @@
 
 > **FeatureInfoEntry** = `object` & `FeatureTypeProps`
 
-Defined in: [src/types.ts:720](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L720)
+Defined in: [src/types.ts:721](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L721)
 
 An entry of the feature info list in `src/features/index.ts`, containing all information necessary to construct the config menu, manage the persistent data, and instantiate the feature.
 

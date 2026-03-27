@@ -6,7 +6,7 @@
 
 # Enumeration: PluginIntent
 
-Defined in: [src/types.ts:275](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L275)
+Defined in: [src/types.ts:275](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L275)
 
 Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
 TODO: this feature is unfinished, but you should still specify the intents your plugin needs.  
@@ -18,7 +18,7 @@ Never request more permissions than you need, as this is a bad practice and can 
 
 > **CreateModalDialogs**: `32`
 
-Defined in: [src/types.ts:287](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L287)
+Defined in: [src/types.ts:287](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L287)
 
 Plugin can create modal dialogs
 
@@ -28,7 +28,7 @@ Plugin can create modal dialogs
 
 > **FullAccess**: `512`
 
-Defined in: [src/types.ts:295](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L295)
+Defined in: [src/types.ts:295](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L295)
 
 Grants all other intents
 
@@ -38,7 +38,7 @@ Grants all other intents
 
 > **InternalAccess**: `256`
 
-Defined in: [src/types.ts:293](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L293)
+Defined in: [src/types.ts:293](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L293)
 
 Plugin has access to deeply internal functions and instances
 
@@ -48,7 +48,7 @@ Plugin has access to deeply internal functions and instances
 
 > **ReadAutoLikeData**: `64`
 
-Defined in: [src/types.ts:289](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L289)
+Defined in: [src/types.ts:289](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L289)
 
 Plugin can read auto-like data
 
@@ -58,7 +58,7 @@ Plugin can read auto-like data
 
 > **ReadFeatureConfig**: `1`
 
-Defined in: [src/types.ts:277](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L277)
+Defined in: [src/types.ts:277](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L277)
 
 Plugin can read the feature configuration
 
@@ -68,7 +68,7 @@ Plugin can read the feature configuration
 
 > **SeeHiddenConfigValues**: `4`
 
-Defined in: [src/types.ts:281](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L281)
+Defined in: [src/types.ts:281](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L281)
 
 Plugin has access to hidden config values
 
@@ -78,7 +78,7 @@ Plugin has access to hidden config values
 
 > **WriteAutoLikeData**: `128`
 
-Defined in: [src/types.ts:291](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L291)
+Defined in: [src/types.ts:291](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L291)
 
 Plugin can write to auto-like data
 
@@ -88,7 +88,7 @@ Plugin can write to auto-like data
 
 > **WriteFeatureConfig**: `2`
 
-Defined in: [src/types.ts:279](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L279)
+Defined in: [src/types.ts:279](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L279)
 
 Plugin can write to the feature configuration
 
@@ -98,7 +98,7 @@ Plugin can write to the feature configuration
 
 > **WriteLyricsCache**: `8`
 
-Defined in: [src/types.ts:283](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L283)
+Defined in: [src/types.ts:283](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L283)
 
 Plugin can write to the lyrics cache
 
@@ -108,6 +108,6 @@ Plugin can write to the lyrics cache
 
 > **WriteTranslations**: `16`
 
-Defined in: [src/types.ts:285](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L285)
+Defined in: [src/types.ts:285](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L285)
 
 Plugin can add new translations and overwrite existing ones

@@ -8,10 +8,10 @@
 
 > **BytmObject** = `object` & *typeof* [`scriptInfo`](../../constants/variables/scriptInfo.md) & `Pick`\<*typeof* [`constants`](../../constants/README.md), `"mode"` \| `"branch"` \| `"host"` \| `"buildNumber"` \| `"initialParams"` \| `"compressionFormat"` \| `"sessionStorageAvailable"` \| `"scriptInfo"`\> & [`InterfaceFunctions`](InterfaceFunctions.md) & `object` & `object`
 
-Defined in: [src/types.ts:202](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L202)
+Defined in: [src/types.ts:202](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L202)
 
-All properties of the `unsafeWindow.BYTM` object (also called "plugin interface").  
-⚠️ Do not overwrite these properties, only call the functions or read the values!
+All properties of the `unsafeWindow.BYTM` object (major part of the plugin interface next to the events emitted on `unsafeWindow`).  
+- ⚠️ Do not overwrite these properties, only call the functions or read the values!
 
 ## Type Declaration
 
@@ -41,7 +41,7 @@ Session ID (unique per tab). Is null if sessionStorage is not available.
 
 #### Deprecated
 
-Please use the authenticated function `getBytmDialog` instead. Direct access will only work until BYTM v4.0.0
+Please use the authenticated function `getBytmDialog()` instead. This property will be removed in BYTM v4.0.0
 
 ### ~~ExImDialog~~
 
@@ -49,7 +49,7 @@ Please use the authenticated function `getBytmDialog` instead. Direct access wil
 
 #### Deprecated
 
-Please use the authenticated function `getExImDialog` instead. Direct access will only work until BYTM v4.0.0
+Please use the authenticated function `getExImDialog()` instead. This property will be removed in BYTM v4.0.0
 
 ### getBytmDialog()
 
@@ -87,7 +87,7 @@ Returns a reference to the [`MarkdownDialog`](../../components/MarkdownDialog/cl
 
 #### Deprecated
 
-Please use the authenticated function `getMarkdownDialog` instead. Direct access will only work until BYTM v4.0.0
+Please use the authenticated function `getMarkdownDialog()` instead. This property will be removed in BYTM v4.0.0
 
 ### NanoEmitter
 

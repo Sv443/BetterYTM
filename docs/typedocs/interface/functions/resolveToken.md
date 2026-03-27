@@ -8,7 +8,7 @@
 
 > **resolveToken**(`token`): `string` \| `undefined`
 
-Defined in: [src/interface.ts:596](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L596)
+Defined in: [src/interface.ts:596](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/interface.ts#L596)
 
 Checks whether the passed token is a valid auth token for any registered plugin and returns the plugin ID, else returns undefined
 

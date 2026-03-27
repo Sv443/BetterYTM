@@ -8,7 +8,7 @@
 
 > **createToggleInput**(`__namedParameters`): `Promise`\<`HTMLDivElement`\>
 
-Defined in: [src/components/toggleInput.ts:17](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toggleInput.ts#L17)
+Defined in: [src/components/toggleInput.ts:17](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/toggleInput.ts#L17)
 
 Creates a simple toggle element
 

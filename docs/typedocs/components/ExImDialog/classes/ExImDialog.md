@@ -6,7 +6,7 @@
 
 # Class: ExImDialog
 
-Defined in: [src/components/ExImDialog.ts:35](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/ExImDialog.ts#L35)
+Defined in: [src/components/ExImDialog.ts:35](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/ExImDialog.ts#L35)
 
 Generic dialog for exporting and importing any string of data
 
@@ -20,7 +20,7 @@ Generic dialog for exporting and importing any string of data
 
 > **new ExImDialog**(`options`): `ExImDialog`
 
-Defined in: [src/components/ExImDialog.ts:36](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/ExImDialog.ts#L36)
+Defined in: [src/components/ExImDialog.ts:36](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/ExImDialog.ts#L36)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: [src/components/ExImDialog.ts:36](https://github.com/Sv443/BetterYTM
 
 > `protected` **dialogMounted**: `boolean` = `false`
 
-Defined in: [src/components/BytmDialog.ts:78](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L78)
+Defined in: [src/components/BytmDialog.ts:78](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L78)
 
 #### Inherited from
 
@@ -54,7 +54,7 @@ Defined in: [src/components/BytmDialog.ts:78](https://github.com/Sv443/BetterYTM
 
 > `protected` **dialogOpen**: `boolean` = `false`
 
-Defined in: [src/components/BytmDialog.ts:77](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L77)
+Defined in: [src/components/BytmDialog.ts:77](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L77)
 
 #### Inherited from
 
@@ -102,7 +102,7 @@ Defined in: node\_modules/.pnpm/@sv443-network+coreutils@3.5.1/node\_modules/@sv
 
 > `readonly` **id**: `string`
 
-Defined in: [src/components/BytmDialog.ts:75](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L75)
+Defined in: [src/components/BytmDialog.ts:75](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L75)
 
 #### Inherited from
 
@@ -114,7 +114,7 @@ Defined in: [src/components/BytmDialog.ts:75](https://github.com/Sv443/BetterYTM
 
 > `readonly` **options**: `object`
 
-Defined in: [src/components/BytmDialog.ts:74](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L74)
+Defined in: [src/components/BytmDialog.ts:74](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L74)
 
 #### closeBtnEnabled
 
@@ -226,7 +226,7 @@ Target and max width of the dialog in pixels
 
 > `protected` **attachListeners**(`bgElem`): `void`
 
-Defined in: [src/components/BytmDialog.ts:356](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L356)
+Defined in: [src/components/BytmDialog.ts:356](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L356)
 
 Called on every [`()`](../../BytmDialog/classes/BytmDialog.md#mount) to attach all generic event listeners
 
@@ -250,7 +250,7 @@ Called on every [`()`](../../BytmDialog/classes/BytmDialog.md#mount) to attach a
 
 > **close**(`e?`): `void`
 
-Defined in: [src/components/BytmDialog.ts:223](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L223)
+Defined in: [src/components/BytmDialog.ts:223](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L223)
 
 Closes the dialog - prevents default action and immediate propagation of the passed event
 
@@ -274,7 +274,7 @@ Closes the dialog - prevents default action and immediate propagation of the pas
 
 > **destroy**(): `void`
 
-Defined in: [src/components/BytmDialog.ts:267](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L267)
+Defined in: [src/components/BytmDialog.ts:267](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L267)
 
 Clears the DOM of the dialog and removes all event listeners
 
@@ -333,7 +333,7 @@ Returns true if `publicEmit` is true and the event was emitted successfully
 
 > `protected` **getDialogContent**(): `Promise`\<`HTMLDivElement`\>
 
-Defined in: [src/components/BytmDialog.ts:375](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L375)
+Defined in: [src/components/BytmDialog.ts:375](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L375)
 
 Returns the dialog content element and all its children
 
@@ -351,7 +351,7 @@ Returns the dialog content element and all its children
 
 > **isMounted**(): `boolean`
 
-Defined in: [src/components/BytmDialog.ts:171](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L171)
+Defined in: [src/components/BytmDialog.ts:171](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L171)
 
 Returns true if the dialog is currently mounted
 
@@ -369,7 +369,7 @@ Returns true if the dialog is currently mounted
 
 > **isOpen**(): `boolean`
 
-Defined in: [src/components/BytmDialog.ts:260](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L260)
+Defined in: [src/components/BytmDialog.ts:260](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L260)
 
 Returns true if the dialog is currently open
 
@@ -387,7 +387,7 @@ Returns true if the dialog is currently open
 
 > **mount**(): `Promise`\<`void` \| `HTMLDivElement`\>
 
-Defined in: [src/components/BytmDialog.ts:104](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L104)
+Defined in: [src/components/BytmDialog.ts:104](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L104)
 
 Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM
 
@@ -568,7 +568,7 @@ Returns a function that can be called to unsubscribe all listeners created by th
 
 > **open**(`e?`): `Promise`\<`void` \| `HTMLElement`\>
 
-Defined in: [src/components/BytmDialog.ts:181](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L181)
+Defined in: [src/components/BytmDialog.ts:181](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L181)
 
 Opens the dialog - also mounts it if it hasn't been mounted yet  
 Prevents default action and immediate propagation of the passed event
@@ -593,7 +593,7 @@ Prevents default action and immediate propagation of the passed event
 
 > **remount**(): `Promise`\<`void`\>
 
-Defined in: [src/components/BytmDialog.ts:163](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L163)
+Defined in: [src/components/BytmDialog.ts:163](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L163)
 
 Clears the DOM of the dialog and then renders it again
 
@@ -611,7 +611,7 @@ Clears the DOM of the dialog and then renders it again
 
 > `protected` **removeBgInert**(): `void`
 
-Defined in: [src/components/BytmDialog.ts:310](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L310)
+Defined in: [src/components/BytmDialog.ts:310](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L310)
 
 Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert.
 
@@ -629,7 +629,7 @@ Sets this dialog and the body to be inert and makes sure the top-most dialog is 
 
 > `protected` **setBgInert**(): `void`
 
-Defined in: [src/components/BytmDialog.ts:333](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L333)
+Defined in: [src/components/BytmDialog.ts:333](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L333)
 
 Sets this dialog to be not inert and the body and all other dialogs to be inert
 
@@ -647,7 +647,7 @@ Sets this dialog to be not inert and the body and all other dialogs to be inert
 
 > **unmount**(): `void`
 
-Defined in: [src/components/BytmDialog.ts:142](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L142)
+Defined in: [src/components/BytmDialog.ts:142](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L142)
 
 Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call
 
@@ -683,7 +683,7 @@ Unsubscribes all event listeners from this instance
 
 > `static` **getCurrentDialogId**(): `string` \| `null`
 
-Defined in: [src/components/BytmDialog.ts:296](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L296)
+Defined in: [src/components/BytmDialog.ts:296](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L296)
 
 Returns the ID of the top-most dialog (the dialog that has been opened last)
 
@@ -701,7 +701,7 @@ Returns the ID of the top-most dialog (the dialog that has been opened last)
 
 > `static` **getOpenDialogs**(): `string`[]
 
-Defined in: [src/components/BytmDialog.ts:303](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L303)
+Defined in: [src/components/BytmDialog.ts:303](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L303)
 
 Returns the IDs of all currently open dialogs, top-most first
 
@@ -719,7 +719,7 @@ Returns the IDs of all currently open dialogs, top-most first
 
 > `static` **initDialogs**(): `void`
 
-Defined in: [src/components/BytmDialog.ts:276](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/BytmDialog.ts#L276)
+Defined in: [src/components/BytmDialog.ts:276](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/BytmDialog.ts#L276)
 
 Initializes the dialog system
 
@@ -737,7 +737,7 @@ Initializes the dialog system
 
 > `static` **renderBody**(`opts`): `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/ExImDialog.ts:65](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/ExImDialog.ts#L65)
+Defined in: [src/components/ExImDialog.ts:65](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/ExImDialog.ts#L65)
 
 #### Parameters
 
@@ -755,7 +755,7 @@ Defined in: [src/components/ExImDialog.ts:65](https://github.com/Sv443/BetterYTM
 
 > `static` **renderHeader**(`opts`): `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/ExImDialog.ts:52](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/ExImDialog.ts#L52)
+Defined in: [src/components/ExImDialog.ts:52](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/ExImDialog.ts#L52)
 
 #### Parameters
 

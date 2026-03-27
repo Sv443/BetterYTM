@@ -8,7 +8,7 @@
 
 > **IconToastProps** = [`ToastProps`](ToastProps.md) & `object` & \{ `icon`: [`ResourceKey`](../../../types/type-aliases/ResourceKey.md) & `` `icon-${string}` ``; `iconFill?`: `string`; \} \| \{ `iconSrc`: `string` \| `Promise`\<`string`\>; \}
 
-Defined in: [src/components/toast.ts:36](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toast.ts#L36)
+Defined in: [src/components/toast.ts:36](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/toast.ts#L36)
 
 Properties for a toast with an icon
 

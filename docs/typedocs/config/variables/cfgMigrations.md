@@ -8,7 +8,7 @@
 
 > `const` **cfgMigrations**: `DataMigrationsDict`
 
-Defined in: [src/config.ts:42](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/config.ts#L42)
+Defined in: [src/config.ts:42](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/config.ts#L42)
 
 Config data format migration functions.  
 Each key is the version to migrate *to*, and the value is a function that takes the old data as an argument and returns the new data.  

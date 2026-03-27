@@ -8,7 +8,7 @@
 
 > **getFeatures**(): [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
 
-Defined in: [src/config.ts:417](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/config.ts#L417)
+Defined in: [src/config.ts:423](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/config.ts#L423)
 
 Returns the current feature config from the in-memory cache as a copy
 

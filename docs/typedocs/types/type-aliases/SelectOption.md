@@ -8,7 +8,7 @@
 
 > **SelectOption** = `object`
 
-Defined in: [src/types.ts:559](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L559)
+Defined in: [src/types.ts:559](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L559)
 
 One option in a select input.
 
@@ -18,7 +18,7 @@ One option in a select input.
 
 > **label**: `string`
 
-Defined in: [src/types.ts:561](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L561)
+Defined in: [src/types.ts:561](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L561)
 
 ***
 
@@ -26,4 +26,4 @@ Defined in: [src/types.ts:561](https://github.com/Sv443/BetterYTM/blob/1534dd6d6
 
 > **value**: `string` \| `number`
 
-Defined in: [src/types.ts:560](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L560)
+Defined in: [src/types.ts:560](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L560)

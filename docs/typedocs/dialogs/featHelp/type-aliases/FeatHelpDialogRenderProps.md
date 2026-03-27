@@ -8,7 +8,7 @@
 
 > **FeatHelpDialogRenderProps** = `object`
 
-Defined in: [src/dialogs/featHelp.ts:10](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/featHelp.ts#L10)
+Defined in: [src/dialogs/featHelp.ts:10](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/dialogs/featHelp.ts#L10)
 
 ## Properties
 
@@ -16,4 +16,4 @@ Defined in: [src/dialogs/featHelp.ts:10](https://github.com/Sv443/BetterYTM/blob
 
 > **featKey**: [`FeatureKey`](../../../types/type-aliases/FeatureKey.md)
 
-Defined in: [src/dialogs/featHelp.ts:11](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/dialogs/featHelp.ts#L11)
+Defined in: [src/dialogs/featHelp.ts:11](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/dialogs/featHelp.ts#L11)

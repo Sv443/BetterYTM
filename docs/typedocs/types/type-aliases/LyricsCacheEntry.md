@@ -8,7 +8,7 @@
 
 > **LyricsCacheEntry** = `object`
 
-Defined in: [src/types.ts:71](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L71)
+Defined in: [src/types.ts:71](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L71)
 
 An entry in the lyrics cache.
 
@@ -18,7 +18,7 @@ An entry in the lyrics cache.
 
 > **added**: `number`
 
-Defined in: [src/types.ts:81](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L81)
+Defined in: [src/types.ts:81](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L81)
 
 UNIX timestamp of when this entry was added.
 
@@ -28,7 +28,7 @@ UNIX timestamp of when this entry was added.
 
 > **artist**: `string`
 
-Defined in: [src/types.ts:73](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L73)
+Defined in: [src/types.ts:73](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L73)
 
 Sanitized artist name.
 
@@ -38,7 +38,7 @@ Sanitized artist name.
 
 > **path**: `string`
 
-Defined in: [src/types.ts:77](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L77)
+Defined in: [src/types.ts:77](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L77)
 
 genius.com URL path, starting with a slash, e.g. `/Adele-Hello-Lyrics`.
 
@@ -48,7 +48,7 @@ genius.com URL path, starting with a slash, e.g. `/Adele-Hello-Lyrics`.
 
 > **song**: `string`
 
-Defined in: [src/types.ts:75](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L75)
+Defined in: [src/types.ts:75](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L75)
 
 Sanitized song name.
 
@@ -58,6 +58,6 @@ Sanitized song name.
 
 > **viewed**: `number`
 
-Defined in: [src/types.ts:79](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L79)
+Defined in: [src/types.ts:79](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L79)
 
 UNIX timestamp of when this entry was last fetched.

@@ -8,7 +8,7 @@
 
 > **showPromptInterface**(`token`, ...`args`): `Promise`\<`string` \| `null`\> \| `undefined`
 
-Defined in: [src/interface.ts:688](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L688)
+Defined in: [src/interface.ts:688](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/interface.ts#L688)
 
 Wrapper around [`()`](../../dialogs/prompt/functions/showPrompt.md) to check for the permission to show dialogs
 

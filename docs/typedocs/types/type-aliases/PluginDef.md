@@ -8,7 +8,7 @@
 
 > **PluginDef** = `object`
 
-Defined in: [src/types.ts:331](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L331)
+Defined in: [src/types.ts:331](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L331)
 
 An object that describes a BYTM plugin
 
@@ -18,7 +18,7 @@ An object that describes a BYTM plugin
 
 > `optional` **contributors**: `object`[]
 
-Defined in: [src/types.ts:368](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L368)
+Defined in: [src/types.ts:368](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L368)
 
 Info about the plugin contributors
 
@@ -46,7 +46,7 @@ Name of this contributor
 
 > `optional` **intents**: `number` \| [`PluginIntent`](../enumerations/PluginIntent.md)[]
 
-Defined in: [src/types.ts:366](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L366)
+Defined in: [src/types.ts:366](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L366)
 
 Intents (permissions) BYTM has to grant the plugin for it to work - use bitwise OR to combine multiple intents
 
@@ -56,7 +56,7 @@ Intents (permissions) BYTM has to grant the plugin for it to work - use bitwise 
 
 > **plugin**: [`PluginInfo`](PluginInfo.md) & `object`
 
-Defined in: [src/types.ts:332](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/types.ts#L332)
+Defined in: [src/types.ts:332](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/types.ts#L332)
 
 #### Type Declaration
 

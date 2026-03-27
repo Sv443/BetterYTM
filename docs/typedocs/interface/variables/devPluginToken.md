@@ -8,6 +8,6 @@
 
 > **devPluginToken**: `string` \| `undefined`
 
-Defined in: [src/interface.ts:369](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/interface.ts#L369)
+Defined in: [src/interface.ts:369](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/interface.ts#L369)
 
 After the dev plugin is registered, this token can be used to access anything on the plugin interface

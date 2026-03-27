@@ -8,7 +8,7 @@
 
 > **ToggleInputProps** = `object`
 
-Defined in: [src/components/toggleInput.ts:5](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toggleInput.ts#L5)
+Defined in: [src/components/toggleInput.ts:5](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/toggleInput.ts#L5)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/components/toggleInput.ts:5](https://github.com/Sv443/BetterYTM
 
 > `optional` **id**: `string`
 
-Defined in: [src/components/toggleInput.ts:11](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toggleInput.ts#L11)
+Defined in: [src/components/toggleInput.ts:11](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/toggleInput.ts#L11)
 
 Should be unique across toggle inputs. If unspecified, a random ID is generated.
 
@@ -26,7 +26,7 @@ Should be unique across toggle inputs. If unspecified, a random ID is generated.
 
 > `optional` **initialValue**: `boolean`
 
-Defined in: [src/components/toggleInput.ts:9](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toggleInput.ts#L9)
+Defined in: [src/components/toggleInput.ts:9](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/toggleInput.ts#L9)
 
 Initial value of the toggle - defaults to false
 
@@ -36,7 +36,7 @@ Initial value of the toggle - defaults to false
 
 > `optional` **labelPos**: `"off"` \| `"left"` \| `"right"`
 
-Defined in: [src/components/toggleInput.ts:13](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toggleInput.ts#L13)
+Defined in: [src/components/toggleInput.ts:13](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/toggleInput.ts#L13)
 
 Toggle label off or change position of the label relative to the toggle
 
@@ -46,7 +46,7 @@ Toggle label off or change position of the label relative to the toggle
 
 > **onChange**: (`value`) => `void`
 
-Defined in: [src/components/toggleInput.ts:7](https://github.com/Sv443/BetterYTM/blob/1534dd6d6967de070029fac61fc5a447edae890a/src/components/toggleInput.ts#L7)
+Defined in: [src/components/toggleInput.ts:7](https://github.com/Sv443/BetterYTM/blob/6955ce00e166b535e9519c862d94f5c834e79ebb/src/components/toggleInput.ts#L7)
 
 Callback function that is called when the toggle is changed
 
