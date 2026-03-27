@@ -1,5 +1,7 @@
 ---
 applyTo: "**"
+name: General Project Instructions
+description: This file describes the general project structure, base directives like coding style and libraries used in the project.
 ---
 
 # Project Outline
