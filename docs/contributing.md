@@ -44,25 +44,36 @@ Please refer to the following sections for instructions:
 <br>
 
 ### Information about locales and translations:
-- **The default locale is `en-US`.**  
-  If a string is missing in another translation, the value from `en-US` will be used as a fallback (unless turned off via the "Language" settings in advanced mode, which can be used to spot untranslated values when BYTM is set up for local development).  
-  This means that if you want to submit a translation that is not fully complete, you can just leave the untranslated keys in the file and they will be automatically filled with the English text.
-- **If a translation is based on another translation**, that means the keys from the base translation file are automatically applied if they are missing. This is used for locales that are very similar to each other, such as `en-GB` and `en-US`.  
-  This means to figure out which keys are untranslated in these cases, you will need to manually check against the base translation file.
-- **The translation progress is tracked in [the table on this page](../assets/translations/README.md)** and is automatically updated after every build of the script.
-- **To register a new locale**, it needs to be added to the file [`assets/locales.json`](../assets/locales.json).  
-  If it's just an alternative locale (same translation file as another locale, but different code, like `de-DE` and `de-AT`), it only needs to be added to the respective locale's `altLocales` array. This acts as a sort of "redirect" to the base locale and will also ensure the userscript description will exist for the new locale.  
-  If the locale has unique translations, it also needs its own translation file in the `assets/translations/` folder, following the format `language-COUNTRY.json` (e.g. `en-US.json`, `en-GB.json`, ...), which also has to be registered in [`assets/resources.json`](../assets/resources.json) to be included in the build.
-- **If you want to help with translations but don't want to set up a local development environment**, you can also just [create a fork of the repository on GitHub](https://github.com/Sv443/BetterYTM/fork) with the "Copy the main branch only" setting disabled, create a new branch originating from `develop`, edit the translation files directly in the browser, and then submit a pull request with your changes.  
-  Just make sure to select the `develop` branch when editing the files, as the `main` branch is only used for releases and will be outdated.
-- **If you want to submit a translation but don't want to use GitHub at all**, you can also just send the translated file to me directly, [see my homepage for contact info.](https://sv443.net/)  
-  Make sure to select the `develop` branch when downloading the `en-US.json` file as the base for your translation. Also make sure you add your language to the contents of [`assets/locales.json`](../assets/locales.json) and send both the translation file and the updated `locales.json` file to me.
+- **Fundamental info:**
+  - **Translation progress is tracked in [the table on this page](../assets/translations/README.md)**, which is automatically updated after every build of the script.
+  - **The default locale is `en-US`.**  
+    It will always be the most complete translation and is to be used as the source for any new translations. Any changes made to it also need to be reflected in the other translation files, either by manually editing them, or by removing all other keys using `pnpm tr-changed "comma_separated,translation_keys"`.  
+      
+    If a string is missing in another translation, the value from `en-US` will be used as a fallback (unless turned off via the "Language" settings in advanced mode, which can be used to spot untranslated values when BYTM is set up for local development).  
+    This means that if you want to submit a translation that is not fully complete, you can just leave the untranslated keys in the file and they will be automatically filled with the English text, until they will be translated.
+  - **If a translation is based on another translation**, that means the keys from the base translation file are automatically applied if they are missing. This is used for locales that are very similar to each other, such as `en-GB` and `en-US`.  
+    This means to figure out which keys are untranslated in these cases, you will need to manually check against the base translation file.
+- **Translation content info:**
+  - **Interpolation placeholders need to be exactly preserved.** Sequences like `%n` (where n is any number starting at 1) or `${somePlaceholderName}` will be replaced with dynamic values at runtime, so they need to be preserved exactly as they are in the translation file for the default locale `en-US`. They are case- and character-sensitive, so in general it's recommended to only cut and paste the placeholder to move it around in the string.  
+    Both kinds of interpolation placeholders are supported and used, but they should never be mixed in the same string to prevent inconsistencies and confusion.
+  - Since translations are stored as JSON strings, **double quotes need to be escaped.** This is done by adding a backslash before the double quote, like this: `\"`.
+  - **For adding line breaks**, use `\n` (and don't use `\r`). When a translation key indicates (usually via a `_markdown` or `_md` suffix) that its value's content is to be interpreted as [Markdown](https://www.markdownguide.org/getting-started/), additionally add two spaces after the `\n`, otherwise the line break will not be rendered.
+  - **When multiple keys can be logically grouped together**, translation keys should make use of dot notation or nested objects, i.e. `"setting.name.foo": "..."` or `"setting": { "name": { "foo": "..." } }`. This makes it easier to find related keys and allows for filtering the TS translation key union type by prefix, via `TrKey & ´setting.name.${string}´` (replace ´ with \`).
+- **Contribution info:**
+  - **To register a new locale**, it needs to be added to the file [`assets/locales.json`](../assets/locales.json).  
+    If it's just an alternative locale (same translation file as another locale, but different code, like `de-DE` and `de-AT`), it only needs to be added to the respective locale's `altLocales` array. This acts as a sort of "redirect" to the base locale and will also ensure the userscript description will exist for the new locale.  
+    If the locale has unique translations, it also needs its own translation file in the `assets/translations/` folder, following the format `language-COUNTRY.json` (e.g. `en-US.json`, `en-GB.json`, ...), which also has to be registered in [`assets/resources.json`](../assets/resources.json) to be included in the build.
+  - **If you want to help with translations but don't want to set up a local development environment**, you can also just [create a fork of the repository on GitHub](https://github.com/Sv443/BetterYTM/fork) with the "Copy the main branch only" setting disabled, create a new branch originating from `develop`, edit the translation files directly in the browser, and then submit a pull request with your changes.  
+    Just make sure to select the `develop` branch when editing the files, as the `main` branch is only used for releases and will be outdated.
+  - **If you want to submit a translation but don't want to use GitHub at all**, you can also just send the translated file to me directly, [see my homepage for contact info.](https://sv443.net/)  
+    Make sure to select the `develop` branch when downloading the `en-US.json` file as the base for your translation. Also make sure you add your language to the contents of [`assets/locales.json`](../assets/locales.json) and send both the translation file and the updated `locales.json` file to me.
 
 <br>
 
 ### Adding translations for a new language:
 > [!IMPORTANT]  
 > **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**  
+> Also please get familiar with the [information about locales and translations section](#information-about-locales-and-translations) before starting.
   
 To submit a translation, please follow these steps:
 1. Select the `develop` branch to translate for the latest version of BetterYTM.  
@@ -91,7 +102,8 @@ To submit a translation, please follow these steps:
 
 ### Editing an existing translation:
 > [!IMPORTANT]  
-> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**
+> **Please make sure you always select the `develop` branch, as the `main` branch is only used for releases and will be outdated.**  
+> Also please get familiar with the [information about locales and translations section](#information-about-locales-and-translations) before starting.
 
 To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following the instructions in [the "local development" section.](#local-development)  
