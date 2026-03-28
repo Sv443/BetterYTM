@@ -1,6 +1,6 @@
 import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn } from "@util/index.ts";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn, type TrKey } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
@@ -48,6 +48,7 @@ import {
   // misc:
   improveLogo,
 } from "./features/index.js";
+import localesJson from "@asset/locales.json" with { type: "json" };
 import resourcesJson from "@asset/resources.json" with { type: "json" };
 import { LogLevel, type FeatureGroupKey, type FeatureKey, type ResourceKey } from "@/types.ts";
 
@@ -544,14 +545,17 @@ function registerDevCommands() {
   const isAdv = getFeature("advancedMode");
   const isAny = isDev || isAdv;
 
-  GM.registerMenuCommand(t("menu_command.reset_config"), async () => {
+  const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
+  const getCmdName = (emoji: string, key: TrKey & `menu_command.${string}`) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
+
+  GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
     if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
       await clearConfig();
       await reloadTab();
     }
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_decompressed"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -589,7 +593,7 @@ function registerDevCommands() {
     }
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_raw"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -609,7 +613,7 @@ function registerDevCommands() {
     }
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.gm_storage_delete_all"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
       dbg(`Clearing ${keys.length} GM values:`);
@@ -622,18 +626,18 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand(t("menu_command.reset_install_timestamp"), async () => {
+  isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
     await GM.deleteValue("bytm-installed");
     dbg("Reset install time.");
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.reset_version_session_counter"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
     const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
     await GM.deleteValue("bytm-version-session-counter");
     dbg("Reset version session counter. Was previously:", verSesCount);
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.list_selectorobserver_listeners"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
     for(const [obsName, obs] of Object.entries(globservers)) {
@@ -650,7 +654,7 @@ function registerDevCommands() {
     dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.compress_value"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_value"), async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
@@ -658,7 +662,7 @@ function registerDevCommands() {
     }
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.decompress_value"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("📦", "menu_command.decompress_value"), async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
@@ -666,11 +670,11 @@ function registerDevCommands() {
     }
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.export_config"), () => downloadData(false));
+  isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
 
-  isAny && GM.registerMenuCommand(t("menu_command.export_full"), () => downloadData(false, true));
+  isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
 
-  isAny && GM.registerMenuCommand(t("menu_command.import_full"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
     const input = await showPrompt({
       type: "prompt",
       message: "Paste the content of the exported file to import data:",
@@ -684,20 +688,20 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand(t("menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
 
-  isAny && GM.registerMenuCommand(t("menu_command.print_init_timings"), () => {
+  isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.print_init_timings"), () => {
     info(`\n${">".repeat(64)}\n\nInit timings:\n`, initTimings);
   });
 
-  isAny && GM.registerMenuCommand(t("menu_command.toggle_dev_treatments"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
     if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
       await reloadTab();
   });
 
-  isDev && GM.registerMenuCommand(t("menu_command.get_dev_plugin_token"), () =>
+  isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () =>
     showPrompt({
       type: "alert",
       message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
@@ -716,7 +720,7 @@ function registerDevCommands() {
     }),
   );
 
-  GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
+  GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
     downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
   });
 
@@ -739,7 +743,7 @@ function registerDevCommands() {
   //     dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
   // });
 
-  isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
+  isDev && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
     const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [
       [broadcastTxID, {
         sessionId: getSessionId(),
@@ -794,7 +798,7 @@ function registerDevCommands() {
     });
   });
 
-  isAdv && GM.registerMenuCommand(t("menu_command.reload_all_tabs"), async () => {
+  isAdv && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
     await showPrompt({
       type: "confirm",
       message: "Reload all open tabs that are running BetterYTM?",
