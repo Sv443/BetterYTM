@@ -509,7 +509,7 @@ export async function mountCfgMenu() {
         await setFeatures(featConf);
 
         // @ts-expect-error
-        featInfo[key]?.change?.(key, initialVal, newVal);
+        featInfo[key]?.change?.(newVal, initialVal);
 
         if(requiresReload) {
           reloadFooterEl.classList.remove("hidden");
