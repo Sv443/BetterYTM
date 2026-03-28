@@ -187,7 +187,6 @@ export const groupedCategories: FeatureCategory[][] = [
  * | `supportedSites: Domain[]`     | On which sites the feature is active - values can be `"yt"` or `"ytm"`.                                                             |
  * | `since: string`                | Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while.                  |
  * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`.                                                       |
- * | `enable(value: unknown): void` | (required if `reloadRequired = false`) - function that will be called when the feature is enabled / initialized for the first time. |
  * <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  * 
  * 
@@ -195,8 +194,7 @@ export const groupedCategories: FeatureCategory[][] = [
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property:                                                          | Description:                                                                                                                                        |
  * | :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------|
- * | `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function.                 |
- * | `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed.                                  |
+ * | `change(key: string, prevValue: unknown, newValue: unknown): void` | Function that will be called when the value is changed - can be used for any feature type to react to value changes at runtime.                     |
  * | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked.                                                                   |
  * | `helpText: string \| () => string`                                 | If undefined, translation with key `feature_helptext.<featKey>` will be used. If set, needs to be a function that returns an HTML string or the literal string itself that will be the help text for this feature - this is useful for pluralizing or inserting values into the translation at runtime. |
  * | `adornments: AdornFunc[] \| (() => AdornFunc[])`                   | Array of functions that return HTML strings that will be prepended to the label of the feature in the config menu - used to add icons.              |
@@ -205,7 +203,7 @@ export const groupedCategories: FeatureCategory[][] = [
  * | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
  * | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
  * | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
- * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided.                        |
+ * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                     |
  * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
  * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
  * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
@@ -305,7 +303,7 @@ export const featInfo = {
     step: 0.5,
     renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
     reloadRequired: false,
-    change: (_k, _iV, newVal) => newVal === 0
+    change: (newVal) => newVal === 0
       ? closeToast()
       : showIconToast({
         message: t("example_toast"),
@@ -322,7 +320,7 @@ export const featInfo = {
     advanced: true,
     reloadRequired: false,
     adornments: [adornments.advanced],
-    change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
+    change: (newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
   },
   resetConfig: {
     type: "button",
@@ -394,7 +392,7 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     default: false,
-    change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
+    change: (newVal, initVal) => initVal !== newVal && emitSiteEvent("recreateCfgMenu"),
   },
 
   //#region cat:layout
@@ -1333,7 +1331,7 @@ export const featInfo = {
     since: "3.0.0",
     default: true,
     reloadRequired: false,
-    enable: () => !getFeature("rememberSongTime") && showIconToast({
+    change: (newVal) => newVal && !getFeature("rememberSongTime") && showIconToast({
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),

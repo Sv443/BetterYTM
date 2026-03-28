@@ -567,7 +567,8 @@ export type FeatUnit = string | ((val: number) => string);
 /** Contains all possible value types of the feature configuration. */
 export type FeatureConfigValue = FeatureConfig[FeatureKey];
 
-type FeatureTypeProps = 
+/** Feature configuration object, as a union of all possible feature types. */
+export type FeatureTypeProps = 
   | ({
     /** Custom toggle input - uses a `input[type="checkbox"]` under the hood. */
     type: "toggle";
@@ -659,55 +660,22 @@ type FeatureTypeProps =
     click: () => Promise<void | unknown> | void | unknown;
   }
 
-type FeatureFuncProps = (
-  | {
-    /**
-     * Whether changing the feature requires a page reload to take effect.  
-     * Prompts the user to reload the page when changing the feature value in the config menu.  
-     * When set to true, also make sure to add the `reload` adornment to the `adornments` property.
-     */
-    reloadRequired: false;
-    /**
-     * Called to instantiate the feature on the page.  
-     * Only use this as the feature entrypoint if the feature cleans itself up properly in the `disable` function, otherwise just register it with the others in `src/index.ts`.  
-     * Requires `reloadRequired` to be set to `true` or left undefined.
-     */
-    enable?: (featCfg: FeatureConfig) => void,
-  }
-  | {
-    /**
-     * Whether changing the feature requires a page reload to take effect.  
-     * Prompts the user to reload the page when changing the feature value in the config menu.  
-     * When set to true, also make sure to add the `reload` adornment to the `adornments` property.
-     */
-    reloadRequired?: true;
-    /**
-     * Called to instantiate the feature on the page.  
-     * Only use this as the feature entrypoint if the feature cleans itself up properly in the `disable` function, otherwise just register it with the others in `src/index.ts`.  
-     * Requires `reloadRequired` to be set to `true` or left undefined.
-     */
-    enable?: never;
-  }
-) & (
-  | {
-    /**
-     * Called to remove all traces of the feature from the page and memory (including *all* event listeners).  
-     * This is required if the feature is instantiated via the `enable` function, so the feature can be properly toggled and configured at runtime.  
-     * If the feature is instantiated in `src/index.ts`, the `enable` and `disable` props should not be used at all.
-     */
-    disable?: (feats: FeatureConfig) => void,
-  }
-  | {
-    /**
-     * Called whenever the feature's value was changed.  
-     * This is useful for features that need special active treatment to react to config changes instead of passively reading the config on demand.  
-     *   
-     * `initialVal` is what the value of the feature was when the feature configuration was first loaded.  
-     * `newVal` is the new value of the feature after the change.
-     */
-    change?: (key: FeatureKey, initialVal: FeatureConfigValue, newVal: FeatureConfigValue) => void,
-  }
-);
+/** Additional properties for "input-bearing" features (any except `button`), regardless of their type. */
+export type FeatureFuncProps = {
+  /**
+   * Whether changing the feature requires a page reload to take effect.  
+   * Prompts the user to reload the page when changing the feature value in the config menu.
+   * - ⚠️ When setting this to true, also make sure to add the `reload` adornment to the `adornments` property.
+   */
+  reloadRequired?: boolean;
+  /**
+   * Called whenever the feature's value was changed.  
+   * This is useful for features that need special active treatment to react to config changes instead of passively reading the config on demand.  
+   * @param newVal The new value of the feature after the change. May sometimes be the same as `initialVal`, when the user changes the value back and forth.
+   * @param initialVal The value of the feature when the feature configuration was *first loaded*. Effectively only updates when the session is reloaded.
+   */
+  change?: (newVal: FeatureConfigValue, initialVal: FeatureConfigValue) => void,
+};
 
 /** Any kind of adornment function used by the feature info list in `src/features/index.ts` to render icons in the config menu. */
 export type AdornFunc =
@@ -723,7 +691,7 @@ export type FeatureInfoEntry = {
     category: FeatureCategory;
     /**
      * Group name for related features - groups features together in the config menu.  
-     * This is usually the name of the first feature or "main feature" (the feature that has the enable/disable toggle button) but can be any string.  
+     * This is usually the name of the first feature or "main feature" but can be any string.  
      * - ⚠️ Don't reuse group names across multiple cateogories!
      */
     group: string;
