@@ -55,7 +55,7 @@ Firstly, here are some concepts and mechanics that are important to understand w
   Some constants are available on `unsafeWindow.BYTM` that give you some generic info about BYTM, such as its version, build number, whether session storage is available and more.
 - **DataStore:**  
   This class is currently provided by [UserUtils](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#datastore), but will soon be replaced by [CoreUtils' class of the same name.](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#datastore)  
-  It is a powerful JSON-based key-value store, that persists data in [GreaseMonkey stoarge](https://wiki.greasespot.net/GM_setValue) by default, and also supports data migrations from outdated formats, compression and bulk imports and exports including integrity check via [DataStoreSerializer.](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#datastoreserializer)  
+  It is a powerful JSON-based key-value store, that persists data in [GreaseMonkey storage](https://wiki.greasespot.net/GM_setValue) by default, and also supports data migrations from outdated formats, compression and bulk imports and exports including integrity check via [DataStoreSerializer.](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#datastoreserializer)  
   BYTM has many of these instances strewn throughout its codebase, for example to store the feature configuration, auto-like data, lyrics cache and more.
 - **Observers / SelectorObserver instances / MutationObservers:**  
   BYTM uses [UserUtils' SelectorObserver class](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#selectorobserver) to watch for changes in the DOM, so each feature can be easily initialized at just the right time.  

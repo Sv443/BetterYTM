@@ -34,9 +34,7 @@ ytmusic-player-page > .content #side-panel {
   :root ytmusic-app #main-panel {
     padding: 0 calc(39% - 47vh) !important;
   }
-}
 
-@container player-page (min-width: 840px) and (max-width: 999px) {
   :root
     ytmusic-app
     ytmusic-player-page:not([video-mode]):not([player-fullscreened])

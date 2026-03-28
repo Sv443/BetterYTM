@@ -79,11 +79,11 @@ Using npm packages via a CDN:
 | `path`     | `string`  | The path to the UMD or global var declaration bundle that should be loaded, relative to the library root dir |
 | `global`   | `string`  | The name of the global variable that the library exports                                               |
 | `baseUrl?` | `string`  | Base URL of the CDN to use - `https://cdn.jsdelivr.net/npm/` by default - package will be appended as `pkgName@versionFromPkgJson` |
-| `link?`    | `boolean` | Liked `npm link` - force-includes the library in the bundle (false by default) |
+| `link?`    | `string` | Includes the file at the given path (like to a library UMD bundle) in the final bundle via direct string injection |
 
 Using a direct URL (not recommended because of potential versioning inconsistencies):
 | Property | Type      | Description                                                                         |
 | :------- | :-------- | :---------------------------------------------------------------------------------- |
 | `url`    | `string`  | URL to the file to include                                                          |
 | `global` | `string`  | The name of the global variable that the library exports                            |
-| `link?`  | `boolean` | Liked `npm link` - force-includes the library in the bundle (false by default) |
+| `link?`  | `string` | Includes the file at the given path (like to a library UMD bundle) in the final bundle via direct string injection |

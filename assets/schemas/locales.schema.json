@@ -36,9 +36,6 @@
         "altLocales": {
           "type": "array",
           "items": {
-            "contains": {
-              "pattern": "^[a-z]{2}$"
-            },
             "type": "string",
             "pattern": "^[a-z]{2}(-[A-Z]{2,})?"
           },
@@ -58,10 +55,8 @@
           "type": "array",
           "description": "List of characters that end a sentence, e.g. \".\", \"!\" or \"?\" in English.",
           "items": {
-            "contains": {
-              "pattern": "^.{1}$"
-            },
-            "type": "string"
+            "type": "string",
+            "pattern": "^.{1}$"
           }
         }
       },

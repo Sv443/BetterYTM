@@ -8,7 +8,7 @@
 - [**TODO: API Reference**](#api-reference)
   - [**Full Feature Overview**](#full-feature-overview)
     - [Meta](#meta)
-    - [Plugin Interface]
+    - [Plugin Interface](#plugin-interface)
       - [BYTM-specific](#bytm-specific)
       - [DOM](#dom)
       - [Components](#components)
@@ -40,7 +40,7 @@ Note: The 🔒 emoji means it's an authenticated function and you're *required t
 - [Meta:](#meta)
   - [`function registerPlugin()`](#function-registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [`function getPluginInfo()`](#function-getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
-  - [`function getInternals()`](#function-getInternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
+  - [`function getInternals()`](#function-getinternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
 - [BYTM-specific:](#bytm-specific)
   - [`function getDomain()`](#function-getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [`function getResourceUrl()`](#function-getresourceurl) - Returns an `https:`, `blob:` or `data:` URI provided by the local userscript extension for the specified BYTM resource

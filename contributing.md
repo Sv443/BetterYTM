@@ -208,7 +208,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
-  - [getInternals()](#getInternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
+  - [getInternals()](#getinternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
 - BYTM-specific:
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
