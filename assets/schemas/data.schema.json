@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["formatVersion", "domains", "alerts", "selectors"],
+  "description": "Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings.",
+  "properties": {
+    "formatVersion": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Format version for future compatibility checks."
+    },
+    "domains": {
+      "type": "array",
+      "description": "List of supported domains, used for resolving hostnames to domain identifiers.",
+      "items": {
+        "type": "object",
+        "required": ["id", "hostnames"],
+        "description": "A supported domain with a unique identifier and its associated hostnames.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique short identifier of the domain. Can be \"ytm\" or \"yt\".",
+            "oneOf": [
+              {
+                "const": "ytm"
+              },
+              {
+                "const": "yt"
+              }
+            ]
+          },
+          "hostnames": {
+            "type": "array",
+            "description": "List of hostnames that map to this domain identifier.",
+            "items": {
+              "type": "string",
+              "description": "A hostname (without protocol), e.g. \"music.youtube.com\"."
+            },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "alerts": {
+      "type": "array",
+      "description": "List of alerts to potentially display to users. May be empty.",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "message", "domains"],
+        "description": "An alert that may be shown to users matching the specified criteria.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the alert.",
+            "minLength": 1
+          },
+          "title": {
+            "type": "object",
+            "description": "Localized title strings. \"en-US\" is required; other locales are optional.",
+            "required": ["en-US"],
+            "properties": {
+              "en-US": {
+                "type": "string",
+                "description": "Title in English (United States). Required."
+              }
+            },
+            "patternProperties": {
+              "^[a-z]{2}-[A-Z]{2,}$": {
+                "type": "string",
+                "description": "Title in the given locale, as defined in `locales.json`."
+              }
+            },
+            "additionalProperties": false
+          },
+          "message": {
+            "type": "object",
+            "description": "Localized message strings. Supports Markdown. \"en-US\" is required; other locales are optional.",
+            "required": ["en-US"],
+            "properties": {
+              "en-US": {
+                "type": "string",
+                "description": "Message in English (United States). Required. Supports Markdown."
+              }
+            },
+            "patternProperties": {
+              "^[a-z]{2}-[A-Z]{2,}$": {
+                "type": "string",
+                "description": "Message in the given locale. Supports Markdown."
+              }
+            },
+            "additionalProperties": false
+          },
+          "important": {
+            "type": "boolean",
+            "description": "If true, Escape and background-click don't close the dialog, and there'll be a short timer before the user can dismiss the alert. Defaults to false.",
+            "default": false
+          },
+          "domains": {
+            "type": "array",
+            "description": "List of domain identifiers on which the alert should be shown. If dismissed on one domain, it will be dismissed on all domains.",
+            "items": {
+              "type": "string",
+              "description": "Domain identifier (can be \"ytm\" or \"yt\").",
+              "oneOf": [
+                {
+                  "const": "ytm"
+                },
+                {
+                  "const": "yt"
+                }
+              ]
+            },
+            "minItems": 1
+          },
+          "versionMin": {
+            "type": "string",
+            "description": "Optional minimum BYTM version (inclusive) for which this alert applies. Must be a valid semver string.",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+          },
+          "versionMax": {
+            "type": "string",
+            "description": "Optional maximum BYTM version (inclusive) for which this alert applies. Must be a valid semver string.",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+          },
+          "dateMin": {
+            "type": "string",
+            "description": "Optional earliest date (inclusive) for which this alert applies. Must be a valid ISO 8601 date-time string.",
+            "format": "date-time"
+          },
+          "dateMax": {
+            "type": "string",
+            "description": "Optional latest date (inclusive) for which this alert applies. Must be a valid ISO 8601 date-time string.",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "selectors": {
+      "type": "object",
+      "description": "Mapping of selector identifiers to per-domain selector strings.",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_-]*$": {
+          "type": "object",
+          "description": "DOM selector strings for all domains supported by BYTM, keyed by domain identifier (can be \"ytm\" or \"yt\").",
+          "properties": {
+            "ytm": {
+              "type": "string",
+              "description": "Selector for YT Music."
+            },
+            "yt": {
+              "type": "string",
+              "description": "Selector for YT."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

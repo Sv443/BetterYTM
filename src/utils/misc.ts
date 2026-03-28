@@ -9,6 +9,7 @@ import { error, info, log, warn } from "@util/logging.ts";
 import { sendRequest } from "@util/xhr.ts";
 import { getLocale, type TrLocale } from "@util/translations.ts";
 import { emitBroadcast } from "@util/broadcast.ts";
+import { getDefaultStaticData } from "@util/data.ts";
 import { getVideoElement, getVideoTime, sanitizeHtml } from "@util/dom.ts";
 import type { Domain, NumberLengthFormat, ResourceKey } from "@/types.ts";
 import langMapping from "@asset/locales.json" with { type: "json" };
@@ -23,12 +24,13 @@ let domain: Domain;
  * @throws Throws if script runs on an unexpected website
  */
 export function getDomain(): Domain {
+  const staticData = getDefaultStaticData();
+  const staticDomainInfo = staticData.domains.find(dom => dom.hostnames.some(hn => location.hostname === hn));
+
   if(domain)
     return domain;
-  if(location.hostname.match(/^music\.youtube/))
-    return domain = "ytm";
-  else if(location.hostname.match(/youtube\./))
-    return domain = "yt";
+  else if(staticDomainInfo)
+    return domain = staticDomainInfo.id as Domain;
   else
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }

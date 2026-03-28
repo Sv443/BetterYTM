@@ -28,6 +28,10 @@
   // custom JSON schemas
   "json.schemas": [
     {
+      "fileMatch": ["assets/data.json"],
+      "url": "./assets/schemas/data.schema.json"
+    },
+    {
       "fileMatch": ["assets/locales.json"],
       "url": "./assets/schemas/locales.schema.json"
     },

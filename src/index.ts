@@ -51,6 +51,7 @@ import {
 import localesJson from "@asset/locales.json" with { type: "json" };
 import resourcesJson from "@asset/resources.json" with { type: "json" };
 import { LogLevel, type FeatureGroupKey, type FeatureKey, type ResourceKey } from "@/types.ts";
+import { getStaticData } from "@util/data.js";
 
 //#region cns. watermark
 
@@ -241,6 +242,7 @@ async function onDomLoad() {
       Promise.allSettled([
         injectCssBundle(),
         initVersionCheck(),
+        getStaticData(),
       ]).then(() => endInitGlobalDur());
 
       initSiteEvents();

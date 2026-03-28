@@ -21,6 +21,11 @@
     "css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
     "css-vol_slider_size": "styles/volSliderSize.css",
     "css-watch_page_full_size": "styles/watchPageFullSize.css",
+    "doc-data": {
+      "path": "data.json",
+      "ref": "main",
+      "integrity": false
+    },
     "doc-license": {
       "path": "/LICENSE.txt",
       "ref": "$BRANCH",

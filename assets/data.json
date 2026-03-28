@@ -1,0 +1,22 @@
+{
+  "formatVersion": 0,
+  "domains": [
+    {
+      "id": "ytm",
+      "hostnames": [
+        "music.youtube.com"
+      ]
+    },
+    {
+      "id": "yt",
+      "hostnames": [
+        "www.youtube.com",
+        "youtube.com",
+        "youtu.be",
+        "m.youtube.com"
+      ]
+    }
+  ],
+  "alerts": [],
+  "selectors": {}
+}
