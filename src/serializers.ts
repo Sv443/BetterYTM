@@ -84,12 +84,13 @@ export async function importData(blob: File | Blob) {
   }
 }
 
-/** Downloads the current data stores as a single file */
+/**
+ * Downloads the current data stores as a single file.
+ * @param useEncoding Whether to encode the data using the DataStoreSerializer's encoding method. Defaults to `true`.
+ * @param full Whether to include all stores (the list returned by {@linkcode getSerializerStoresFull()}) or just the most important ones (the list returned by {@linkcode getSerializerStores()}). Defaults to `false`.
+ */
 export async function downloadData(useEncoding = true, full = false) {
   const serializer = getDSSerializer(full);
-
-  // const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
-  // const fileName = `BetterYTM ${packageJson.version}${full ? " full" : ""} data export ${dateStr}.json`;
 
   const fileName = t(`data_export_file_name${full ? "_full" : ""}`, {
     scriptName: scriptInfo.name,
