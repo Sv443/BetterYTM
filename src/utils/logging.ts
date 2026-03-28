@@ -203,23 +203,18 @@ ${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
 
 //#region error classes
 
-export class CustomError extends Error {
-  public readonly time: number;
-  constructor(name: string, message: string, opts?: ErrorOptions) {
+/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
+export class LyricsError extends DatedError {
+  constructor(message: string, opts?: ErrorOptions) {
     super(message, opts);
-    this.name = name;
-    this.time = Date.now();
+    this.name = "LyricsError";
   }
 }
 
-export class LyricsError extends CustomError {
+/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
+export class PluginError extends DatedError {
   constructor(message: string, opts?: ErrorOptions) {
-    super("LyricsError", message, opts);
-  }
-}
-
-export class PluginError extends CustomError {
-  constructor(message: string, opts?: ErrorOptions) {
-    super("PluginError", message, opts);
+    super(message, opts);
+    this.name = "PluginError";
   }
 }
