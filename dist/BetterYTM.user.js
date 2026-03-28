@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@fd35179b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@37aaf1fa/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -148,6 +148,11 @@ var resources = {
 	"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
 	"css-vol_slider_size": "styles/volSliderSize.css",
 	"css-watch_page_full_size": "styles/watchPageFullSize.css",
+	"doc-data": {
+		path: "data.json",
+		ref: "main",
+		integrity: false
+	},
 	"doc-license": {
 		path: "/LICENSE.txt",
 		ref: "$BRANCH",
@@ -206,7 +211,7 @@ var resources = {
 var resourcesJson = {
 	preloadAssetPattern: preloadAssetPattern,
 	resources: resources
-};var locales = {
+};var localesJson = {
 	"de-DE": {
 	name: "Deutsch (Deutschland)",
 	nameEnglish: "German (Germany)",
@@ -443,8 +448,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "fd35179b",
-    buildTimestamp: "1774656387026",
+    buildNumber: "37aaf1fa",
+    buildTimestamp: "1774727819388",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -688,7 +693,7 @@ async function fetchLocaleJson(locale) {
 /** Sets the new locale to use in translations. */
 function setLocale(locale) {
     activeLocale = locale;
-    activeLocaleDir = locales[locale]?.textDir ?? "ltr";
+    activeLocaleDir = localesJson[locale]?.textDir ?? "ltr";
     setGlobalProp("locale", locale);
     emitInterface("bytm:setLocale", { locale });
 }
@@ -2395,27 +2400,18 @@ ${t("generic_error_dialog_open_console_note", pkg.bugs.url)}`,
     });
 }
 //#region error classes
-class CustomError extends Error {
-    constructor(name, message, opts) {
+/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
+class LyricsError extends CoreUtils.DatedError {
+    constructor(message, opts) {
         super(message, opts);
-        Object.defineProperty(this, "time", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.name = name;
-        this.time = Date.now();
+        this.name = "LyricsError";
     }
 }
-class LyricsError extends CustomError {
+/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
+class PluginError extends CoreUtils.DatedError {
     constructor(message, opts) {
-        super("LyricsError", message, opts);
-    }
-}
-class PluginError extends CustomError {
-    constructor(message, opts) {
-        super("PluginError", message, opts);
+        super(message, opts);
+        this.name = "PluginError";
     }
 }//#region beforeunload popup
 let discardBeforeUnloadOverride;
@@ -3892,7 +3888,7 @@ async function fetchLyricsUrls(artist, song) {
             return [cacheEntry];
         }
         const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
-            disableFuzzy: null,
+            disableFuzzy: null, // value-less param
             source: `${scriptInfo$1.name} v${scriptInfo$1.version}${mode$1 === "development" ? "-dev" : ""}`,
             q: `${artist} ${song}`,
         });
@@ -4032,7 +4028,7 @@ async function renderHeader$2() {
 }
 async function renderBody$2() {
     const contElem = document.createElement("div");
-    const localeObj = locales?.[getLocale()];
+    const localeObj = localesJson?.[getLocale()];
     // insert sentence terminator if not present, to improve flow with screenreaders
     let featText = t(`feature_desc.${curFeatKey}`);
     const isLtr = localeObj?.textDir !== "rtl";
@@ -4627,7 +4623,7 @@ async function mountCfgMenu() {
                 changedKeys.some((k) => featInfo[k]?.reloadRequired !== false);
                 await setFeatures(featConf);
                 // @ts-expect-error
-                featInfo[key]?.change?.(key, initialVal, newVal);
+                featInfo[key]?.change?.(newVal, initialVal);
                 if (requiresReload) {
                     reloadFooterEl.classList.remove("hidden");
                     reloadFooterEl.removeAttribute("aria-hidden");
@@ -4640,8 +4636,8 @@ async function mountCfgMenu() {
                     await initTranslations(featConf.locale);
                     setLocale(featConf.locale);
                     const newText = t("lang_changed_prompt_reload");
-                    const newLangEmoji = locales[featConf.locale]?.emoji ? `${locales[featConf.locale].emoji}\n` : "";
-                    const initLangEmoji = locales[initLocale]?.emoji ? `${locales[initLocale].emoji}\n` : "";
+                    const newLangEmoji = localesJson[featConf.locale]?.emoji ? `${localesJson[featConf.locale].emoji}\n` : "";
+                    const initLangEmoji = localesJson[initLocale]?.emoji ? `${localesJson[initLocale].emoji}\n` : "";
                     const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
                     const isLocalesTextDifferent = t("reload_now") !== tl(initLocale, "reload_now");
                     const getReloadAllBtn = async (dialog) => {
@@ -6500,11 +6496,13 @@ function getDSSerializer(full = false) {
             ensureIntegrity: true,
         }));
 }
-/** Downloads the current data stores as a single file */
+/**
+ * Downloads the current data stores as a single file.
+ * @param useEncoding Whether to encode the data using the DataStoreSerializer's encoding method. Defaults to `true`.
+ * @param full Whether to include all stores (the list returned by {@linkcode getSerializerStoresFull()}) or just the most important ones (the list returned by {@linkcode getSerializerStores()}). Defaults to `false`.
+ */
 async function downloadData(useEncoding = true, full = false) {
     const serializer = getDSSerializer(full);
-    // const pad = (val: Stringifiable, len = 2) => String(val).padStart(len, "0");
-    // const fileName = `BetterYTM ${packageJson.version}${full ? " full" : ""} data export ${dateStr}.json`;
     const fileName = t(`data_export_file_name${full ? "_full" : ""}`, {
         scriptName: scriptInfo$1.name,
         version: pkg.version,
@@ -6673,6 +6671,86 @@ function relayBroadcastPacket(packet) {
     // broadcasts work like interrupts, so they are allowed to be emitted even before "bytm:ready"
     forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
     forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean); // love dealing with TS mapped type shenanigans
+}var formatVersion = 0;
+var domains = [
+	{
+		id: "ytm",
+		hostnames: [
+			"music.youtube.com"
+		]
+	},
+	{
+		id: "yt",
+		hostnames: [
+			"www.youtube.com",
+			"youtube.com",
+			"youtu.be",
+			"m.youtube.com"
+		]
+	}
+];
+var alerts = [
+];
+var selectors = {
+};
+var defaultStaticData = {
+	formatVersion: formatVersion,
+	domains: domains,
+	alerts: alerts,
+	selectors: selectors
+};/** URL to the remote data JSON file on a CDN. */
+const remoteDataUrl = `https://github.com/${repo}/raw/refs/heads/main/assets/data.json`;
+/** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
+const staticDataFormatVersion = 0;
+let staticData;
+/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
+async function getStaticData() {
+    try {
+        if (staticData)
+            return staticData;
+        const res = await CoreUtils.fetchAdvanced(remoteDataUrl, {
+            timeout: 10000,
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (isStaticData(data)) {
+                info("Successfully fetched remote static data:", data);
+                return staticData = data;
+            }
+            else
+                warn("Remote static data is in an unexpected format, falling back to bundled data:", defaultStaticData);
+        }
+        return staticData = defaultStaticData;
+    }
+    catch (e) {
+        warn("Failed to fetch remote static data due to an error:", e);
+        info("Falling back to the bundled static data:", defaultStaticData);
+        return staticData = defaultStaticData;
+    }
+}
+/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
+function getDefaultStaticData() {
+    return defaultStaticData;
+}
+/** Checks whether the given data matches the expected structure of the static data JSON at `assets/data.json`. */
+function isStaticData(data) {
+    return typeof data === "object"
+        && data !== null
+        // format version
+        && "formatVersion" in data
+        && typeof data.formatVersion === "number"
+        && data.formatVersion === staticDataFormatVersion
+        // domains
+        && "domains" in data
+        && typeof data.domains === "object"
+        && Array.isArray(data.domains)
+        // selectors
+        && "selectors" in data
+        && typeof data.selectors === "object"
+        // alerts
+        && "alerts" in data
+        && typeof data.alerts === "object"
+        && Array.isArray(data.alerts);
 }//#region misc
 let domain;
 /**
@@ -6680,12 +6758,12 @@ let domain;
  * @throws Throws if script runs on an unexpected website
  */
 function getDomain() {
+    const staticData = getDefaultStaticData();
+    const staticDomainInfo = staticData.domains.find(dom => dom.hostnames.some(hn => location.hostname === hn));
     if (domain)
         return domain;
-    if (location.hostname.match(/^music\.youtube/))
-        return domain = "ytm";
-    else if (location.hostname.match(/youtube\./))
-        return domain = "yt";
+    else if (staticDomainInfo)
+        return domain = staticDomainInfo.id;
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
@@ -7048,12 +7126,12 @@ function getPreferredLocale() {
     const allNavLangs = [...new Set([navigator.language, ...navigator.languages])]
         .map((v) => v.replace(/_/g, "-"));
     for (const navLang of allNavLangs) {
-        const resolvedLoc = Object.entries(locales)
+        const resolvedLoc = Object.entries(localesJson)
             .find(([key, { altLocales }]) => sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang)))?.[0];
         if (resolvedLoc)
             return resolvedLoc.trim();
         const navLangTrimmed = navLang.split("-")[0];
-        const resolvedFallbackLang = Object.entries(locales)
+        const resolvedFallbackLang = Object.entries(localesJson)
             .find(([key, { altLocales }]) => sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed)))?.[0];
         if (resolvedFallbackLang)
             return resolvedFallbackLang.trim();
@@ -8126,7 +8204,7 @@ const options = {
         { value: "ytm", label: t("site_selection_only_ytm") },
         { value: "none", label: t("site_selection_none") },
     ],
-    locale: () => Object.entries(locales)
+    locale: () => Object.entries(localesJson)
         .reduce((a, [locale, { name, emoji }]) => ([...a, {
             value: locale,
             label: `${emoji} ${name}`,
@@ -8167,7 +8245,6 @@ const groupedCategories = [
  * | `supportedSites: Domain[]`     | On which sites the feature is active - values can be `"yt"` or `"ytm"`.                                                             |
  * | `since: string`                | Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while.                  |
  * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`.                                                       |
- * | `enable(value: unknown): void` | (required if `reloadRequired = false`) - function that will be called when the feature is enabled / initialized for the first time. |
  * <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  *
  *
@@ -8175,8 +8252,7 @@ const groupedCategories = [
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property:                                                          | Description:                                                                                                                                        |
  * | :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------|
- * | `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function.                 |
- * | `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed.                                  |
+ * | `change(key: string, prevValue: unknown, newValue: unknown): void` | Function that will be called when the value is changed - can be used for any feature type to react to value changes at runtime.                     |
  * | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked.                                                                   |
  * | `helpText: string \| () => string`                                 | If undefined, translation with key `feature_helptext.<featKey>` will be used. If set, needs to be a function that returns an HTML string or the literal string itself that will be the help text for this feature - this is useful for pluralizing or inserting values into the translation at runtime. |
  * | `adornments: AdornFunc[] \| (() => AdornFunc[])`                   | Array of functions that return HTML strings that will be prepended to the label of the feature in the config menu - used to add icons.              |
@@ -8185,7 +8261,7 @@ const groupedCategories = [
  * | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
  * | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
  * | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
- * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided.                        |
+ * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                     |
  * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
  * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
  * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
@@ -8285,7 +8361,7 @@ const featInfo = {
         step: 0.5,
         renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
         reloadRequired: false,
-        change: (_k, _iV, newVal) => newVal === 0
+        change: (newVal) => newVal === 0
             ? closeToast()
             : showIconToast({
                 message: t("example_toast"),
@@ -8302,7 +8378,7 @@ const featInfo = {
         advanced: true,
         reloadRequired: false,
         adornments: [adornments.advanced],
-        change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
+        change: (newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
     },
     resetConfig: {
         type: "button",
@@ -8374,7 +8450,7 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "2.0.0",
         default: false,
-        change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu"),
+        change: (newVal, initVal) => initVal !== newVal && emitSiteEvent("recreateCfgMenu"),
     },
     //#region cat:layout
     watermarkEnabled: {
@@ -9299,7 +9375,7 @@ const featInfo = {
         since: "3.0.0",
         default: true,
         reloadRequired: false,
-        enable: () => !getFeature("rememberSongTime") && showIconToast({
+        change: (newVal) => newVal && !getFeature("rememberSongTime") && showIconToast({
             icon: "icon-error",
             iconFill: "var(--bytm-error-col)",
             message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
@@ -11010,7 +11086,7 @@ async function renderBody() {
     localeImg.src = await getResourceUrl("icon-globe");
     const localeSelectElem = document.createElement("select");
     localeSelectElem.id = "bytm-welcome-menu-locale-select";
-    for (const [locale, { name }] of Object.entries(locales)) {
+    for (const [locale, { name }] of Object.entries(localesJson)) {
         const localeOptionElem = document.createElement("option");
         localeOptionElem.value = locale;
         localeOptionElem.textContent = name;
@@ -11260,6 +11336,7 @@ async function onDomLoad() {
             Promise.allSettled([
                 injectCssBundle(),
                 initVersionCheck(),
+                getStaticData(),
             ]).then(() => endInitGlobalDur());
             initSiteEvents();
             mountCfgMenu();
@@ -11485,13 +11562,15 @@ function registerDevCommands() {
     const isDev = mode$1 === "development";
     const isAdv = getFeature("advancedMode");
     const isAny = isDev || isAdv;
-    GM.registerMenuCommand(t("menu_command.reset_config"), async () => {
+    const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
+    const getCmdName = (emoji, key) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
+    GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
         if (await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
             await clearConfig();
             await reloadTab();
         }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_decompressed"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
         const keys = await GM.listValues();
         dbg(`GM values (${keys.length}):`);
         if (keys.length === 0)
@@ -11525,7 +11604,7 @@ function registerDevCommands() {
             }
         }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_raw"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
         const keys = await GM.listValues();
         dbg(`GM values (${keys.length}):`);
         if (keys.length === 0)
@@ -11542,7 +11621,7 @@ function registerDevCommands() {
             dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
         }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_delete_all"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
         const keys = await GM.listValues();
         if (await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
             dbg(`Clearing ${keys.length} GM values:`);
@@ -11554,16 +11633,16 @@ function registerDevCommands() {
             }
         }
     });
-    isDev && GM.registerMenuCommand(t("menu_command.reset_install_timestamp"), async () => {
+    isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
         await GM.deleteValue("bytm-installed");
         dbg("Reset install time.");
     });
-    isAny && GM.registerMenuCommand(t("menu_command.reset_version_session_counter"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
         const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
         await GM.deleteValue("bytm-version-session-counter");
         dbg("Reset version session counter. Was previously:", verSesCount);
     });
-    isAny && GM.registerMenuCommand(t("menu_command.list_selectorobserver_listeners"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
         const lines = [];
         let listenersAmt = 0;
         for (const [obsName, obs] of Object.entries(globservers)) {
@@ -11579,23 +11658,23 @@ function registerDevCommands() {
         }
         dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     });
-    isAny && GM.registerMenuCommand(t("menu_command.compress_value"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_value"), async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
         if (input && input.length > 0) {
             const compressed = await CoreUtils.compress(input, compressionFormat$1);
             dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
         }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.decompress_value"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("📦", "menu_command.decompress_value"), async () => {
         const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
         if (input && input.length > 0) {
             const decompressed = await CoreUtils.decompress(input, compressionFormat$1);
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.export_config"), () => downloadData(false));
-    isAny && GM.registerMenuCommand(t("menu_command.export_full"), () => downloadData(false, true));
-    isAny && GM.registerMenuCommand(t("menu_command.import_full"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
+    isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
+    isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
         const input = await showPrompt({
             type: "prompt",
             message: "Paste the content of the exported file to import data:",
@@ -11608,17 +11687,17 @@ function registerDevCommands() {
                 await reloadTab();
         }
     });
-    isDev && GM.registerMenuCommand(t("menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-    isAny && GM.registerMenuCommand(t("menu_command.print_init_timings"), () => {
+    isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+    isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.print_init_timings"), () => {
         info(`\n${">".repeat(64)}\n\nInit timings:\n`, initTimings);
     });
-    isAny && GM.registerMenuCommand(t("menu_command.toggle_dev_treatments"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
         const val = !await GM.getValue("bytm-dev-treatments", false);
         await GM.setValue("bytm-dev-treatments", val);
         if (await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
             await reloadTab();
     });
-    isDev && GM.registerMenuCommand(t("menu_command.get_dev_plugin_token"), () => showPrompt({
+    isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () => showPrompt({
         type: "alert",
         message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
         extraButtons: [
@@ -11634,7 +11713,7 @@ function registerDevCommands() {
         ],
         extraButtonsPosition: "before",
     }));
-    GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
+    GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
     });
     // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
@@ -11650,7 +11729,7 @@ function registerDevCommands() {
     //   if(unusedKeys.length > 0)
     //     dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
     // });
-    isDev && GM.registerMenuCommand(t("menu_command.collect_sessions"), () => {
+    isDev && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
         const sessions = [
             [broadcastTxID, {
                     sessionId: getSessionId(),
@@ -11696,7 +11775,7 @@ function registerDevCommands() {
             type: "discoverSessions",
         });
     });
-    isAdv && GM.registerMenuCommand(t("menu_command.reload_all_tabs"), async () => {
+    isAdv && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
         await showPrompt({
             type: "confirm",
             message: "Reload all open tabs that are running BetterYTM?",
