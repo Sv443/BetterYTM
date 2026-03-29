@@ -1,132 +1,3 @@
-// ==UserScript==
-// @name              BetterYTM
-// @namespace         https://github.com/Sv443/BetterYTM
-// @version           3.1.0-rc.1
-// @homepageURL       https://github.com/Sv443/BetterYTM#readme
-// @supportURL        https://github.com/Sv443/BetterYTM/issues
-// @license           AGPL-3.0-or-later
-// @author            Sv443
-// @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@37aaf1fa/assets/images/logo/logo_dev_48.png
-// @match             https://music.youtube.com/*
-// @match             https://www.youtube.com/*
-// @run-at            document-start
-// @description       Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-BE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-LI Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:de-LU Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
-// @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en    Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-CA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-AU Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-IE Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-NZ Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:en-ZA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
-// @description:es    Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
-// @description:es-MX Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
-// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr    Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-CA Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-BE Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-CH Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:fr-LU Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
-// @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
-// @description:hi    YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
-// @description:hi-NP YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
-// @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
-// @description:ja    YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
-// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
-// @description:pt    Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
-// @description:pt-PT Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
-// @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh    YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:es    tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:es-MX tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr    tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-CA tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-BE tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-CH tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-LU tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:hi    tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:hi-NP tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
-// @antifeature:ja    tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
-// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:pt    tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:pt-PT tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh    tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh-TW tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh-HK tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh-SG tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @connect           api.sv443.net
-// @connect           github.com
-// @connect           raw.githubusercontent.com
-// @connect           youtube.com
-// @connect           returnyoutubedislikeapi.com
-// @noframes
-// @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
-// @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
-// @grant             GM.getValue
-// @grant             GM.setValue
-// @grant             GM.deleteValue
-// @grant             GM.listValues
-// @grant             GM.addValueChangeListener
-// @grant             GM.getResourceUrl
-// @grant             GM.setClipboard
-// @grant             GM.xmlHttpRequest
-// @grant             GM.openInTab
-// @grant             GM.registerMenuCommand
-// @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
-// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
-// ==/UserScript==
-/*
-▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
-█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
-█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
-█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
-
-        Made with ❤️ by Sv443
-I welcome every contribution on GitHub!
-  https://github.com/Sv443/BetterYTM
-
-
-You can install the latest in-development version here:
-https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
-
-*/
-
-/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this 🖕 */
-
-
 (function(CoreUtils,UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var CoreUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(CoreUtils);var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var preloadAssetPattern = "^(icon|img)-";
 var resources = {
 	"css-above_queue_btns": "styles/aboveQueueBtns.css",
@@ -445,13 +316,13 @@ var PluginIntent;
     PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
 })(PluginIntent || (PluginIntent = {}));/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
 const rawConsts = {
-    mode: "development",
-    branch: "develop",
-    host: "github",
-    buildNumber: "37aaf1fa",
-    buildTimestamp: "1774727819388",
-    assetSource: "jsdelivr",
-    devServerPort: "8710",
+    mode: "#{{MODE}}",
+    branch: "#{{BRANCH}}",
+    host: "#{{HOST}}",
+    buildNumber: "#{{BUILD_NUMBER}}",
+    buildTimestamp: "#{{BUILD_TIMESTAMP}}",
+    assetSource: "#{{ASSET_SOURCE}}",
+    devServerPort: "#{{DEV_SERVER_PORT}}",
 };
 /** Parses a raw constant or falls back to a default value */
 const getConst = (constKey, defaultVal) => {
@@ -657,15 +528,15 @@ async function initTranslations(locale) {
         return;
     initializedLocales.add(locale);
     try {
-        const transFile = await fetchLocaleJson(locale);
+        const transFile = await fetchTranslationResource(locale);
         let fallbackTrans = {};
         if (getFeature("localeFallback")) {
             UserUtils.tr.setFallbackLanguage("en-US");
-            fallbackTrans = await fetchLocaleJson("en-US");
+            fallbackTrans = await fetchTranslationResource("en-US");
         }
         // merge with base translations if specified
         const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
-            ? await fetchLocaleJson(transFile.base)
+            ? await fetchTranslationResource(transFile.meta.base)
             : undefined;
         const translations = {
             ...(fallbackTrans ?? {}),
@@ -683,12 +554,14 @@ async function initTranslations(locale) {
     }
 }
 /** Fetches the JSON translations file of the passed locale. */
-async function fetchLocaleJson(locale) {
+async function fetchTranslationResource(locale) {
     const url = await getResourceUrl(`trans-${locale}`);
     const res = await CoreUtils.fetchAdvanced(url);
+    const bodyTxt = await res.text();
+    getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}:`, bodyTxt);
     if (res.status < 200 || res.status >= 300)
-        throw new Error(`Failed to fetch translation file for locale '${locale}'`);
-    return await res.json(); // since en-US keys are merged in, this assertion is safe
+        throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
+    return JSON.parse(bodyTxt); // since en-US keys are merged in, this assertion is safe
 }
 /** Sets the new locale to use in translations. */
 function setLocale(locale) {
@@ -6723,7 +6596,7 @@ async function getStaticData() {
         return staticData = defaultStaticData;
     }
     catch (e) {
-        warn("Failed to fetch remote static data due to an error:", e);
+        warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to an error:`, e);
         info("Falling back to the bundled static data:", defaultStaticData);
         return staticData = defaultStaticData;
     }
@@ -11287,11 +11160,9 @@ async function init() {
         endLyrCacheDur();
         // translations:
         const initLoc = features.locale ?? "en-US";
-        const locPromises = [];
-        locPromises.push(initTranslations(initLoc));
+        await initTranslations(initLoc);
         // since en-US always has the complete set of keys, it needs to always be loaded:
-        initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
-        await Promise.allSettled(locPromises);
+        initLoc !== "en-US" && await initTranslations("en-US");
         setLocale(initLoc);
         // plugins:
         try {
@@ -11580,8 +11451,12 @@ function registerDevCommands() {
         const decodeError = (key, err) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
         for (const key of keys) {
             try {
-                const isEncoded = key.startsWith("__ds-")
-                    ? String(await GM.getValue(`__ds-${key.substring(5)}-enf`, "null")) !== "null"
+                const isDatKey = key.startsWith("__ds-") && key.endsWith("-dat");
+                /** Extracted DataStore ID */
+                const dsID = isDatKey ? key.substring(5, key.length - 4) : null;
+                /** Whether a -dat key is encoded. Assumes that compressionFormat never changes. */
+                const isEncoded = isDatKey
+                    ? String(await GM.getValue(`__ds-${dsID}-enf`, "null")) !== "null"
                     : false;
                 const val = await GM.getValue(key, undefined);
                 values[key] = typeof val !== "undefined" && isEncoded
@@ -11790,4 +11665,4 @@ async function runDevTreatments() {
     // const dlg = await getAllDataExImDialog();
     // await dlg.open();
 }
-preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=BetterYTM.user.js.map
