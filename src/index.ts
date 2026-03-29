@@ -570,8 +570,12 @@ function registerDevCommands() {
 
     for(const key of keys) {
       try {
-        const isEncoded = key.startsWith("__ds-")
-          ? String(await GM.getValue(`__ds-${key.substring(5)}-enf`, "null")) !== "null"
+        const isDatKey = key.startsWith("__ds-") && key.endsWith("-dat");
+        /** Extracted DataStore ID */
+        const dsID = isDatKey ? key.substring(5, key.length - 4) : null;
+        /** Whether a -dat key is encoded. Assumes that compressionFormat never changes. */
+        const isEncoded = isDatKey
+          ? String(await GM.getValue(`__ds-${dsID}-enf`, "null")) !== "null"
           : false;
         const val = await GM.getValue(key, undefined);
         values[key] = typeof val !== "undefined" && isEncoded
