@@ -170,12 +170,12 @@ To edit an existing translation, please follow these steps:
 - **`pnpm build <arguments>`**  
   Builds the userscript with custom options  
   Arguments:  
-  - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
-  - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
-  - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
-  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`
-  - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
-  - `--config-gen-meta=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header. Can be either `true` (default) or `false`
+  - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default).
+  - `--config-branch=<value>` - The branch to target when creating various GitHub CDN URLs, like when loading resources. Can be any branch name that exists on the `repo` defined in `src/constants.ts`, but should be `main` for production and `develop` for development (default). Cannot be a ref like a tag or SHA1 hash.
+  - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`. This affects mostly only cosmetic things, as well as the update URL in the userscript header, but for `greasyfork`, all comments are stripped out to fit in the 0.5 MB limit.
+  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`.
+  - `--config-suffix=<value>` - File name suffix to add just before the `.user.js` extension. Defaults to an empty string.
+  - `--config-gen-meta=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header, to massively reduce the amount of downloaded data for version checks by the userscript manager extension via `@updateURL`. Can be either `true` (default) or `false`.
     
   Shorthand commands:
   - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
