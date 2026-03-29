@@ -181,11 +181,9 @@ async function init() {
 
     // translations:
     const initLoc = features.locale ?? "en-US";
-    const locPromises: Promise<void>[] = [];
-    locPromises.push(initTranslations(initLoc));
+    await initTranslations(initLoc);
     // since en-US always has the complete set of keys, it needs to always be loaded:
-    initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
-    await Promise.allSettled(locPromises);
+    initLoc !== "en-US" && await initTranslations("en-US");
     setLocale(initLoc);
 
     // plugins:

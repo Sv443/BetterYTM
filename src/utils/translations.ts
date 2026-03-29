@@ -1,6 +1,6 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
 import { tr } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, warn } from "@util/index.ts";
+import { error, getResourceUrl, info, log, warn } from "@util/index.ts";
 import { emitInterface, setGlobalProp } from "@/interface.ts";
 import { getFeature } from "@/config.ts";
 import langMapping from "@asset/locales.json" with { type: "json" };
@@ -69,18 +69,18 @@ export async function initTranslations(locale: TrLocale) {
   initializedLocales.add(locale);
 
   try {
-    const transFile = await fetchLocaleJson(locale);
+    const transFile = await fetchTranslationResource(locale);
 
     let fallbackTrans: Partial<typeof tr_enUS> = {};
 
     if(getFeature("localeFallback")) {
       tr.setFallbackLanguage("en-US" satisfies TrLocale);
-      fallbackTrans = await fetchLocaleJson("en-US");
+      fallbackTrans = await fetchTranslationResource("en-US");
     }
 
     // merge with base translations if specified
     const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string"
-      ? await fetchLocaleJson(transFile.base as TrLocale)
+      ? await fetchTranslationResource(transFile.meta.base as TrLocale)
       : undefined;
 
     const translations: typeof tr_enUS = {
@@ -103,13 +103,16 @@ export async function initTranslations(locale: TrLocale) {
 }
 
 /** Fetches the JSON translations file of the passed locale. */
-export async function fetchLocaleJson(locale: TrLocale) {
+export async function fetchTranslationResource(locale: TrLocale) {
   const url = await getResourceUrl(`trans-${locale}` as "_");
   const res = await fetchAdvanced(url);
+  const bodyTxt = await res.text();
+
+  getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}:`, bodyTxt);
 
   if(res.status < 200 || res.status >= 300)
-    throw new Error(`Failed to fetch translation file for locale '${locale}'`);
-  return await res.json() as { base?: TrLocale } & typeof tr_enUS; // since en-US keys are merged in, this assertion is safe
+    throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
+  return JSON.parse(bodyTxt) as { base?: TrLocale } & typeof tr_enUS; // since en-US keys are merged in, this assertion is safe
 }
 
 /** Sets the new locale to use in translations. */

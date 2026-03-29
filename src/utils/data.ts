@@ -33,7 +33,7 @@ export async function getStaticData() {
     return staticData = defaultStaticData;
   }
   catch(e) {
-    warn("Failed to fetch remote static data due to an error:", e);
+    warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to an error:`, e);
     info("Falling back to the bundled static data:", defaultStaticData);
     return staticData = defaultStaticData;
   }
