@@ -16,15 +16,15 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en-US`](./en-US.json) | `507` (default locale) |  |
-| ✅ | [`de-DE`](./de-DE.json) | `507/507` (100%) | ─ |
-|  | [`en-GB`](./en-GB.json) | `507/507` (100%) | `en-US` |
-| ✅ | [`es-ES`](./es-ES.json) | `507/507` (100%) | ─ |
-| ✅ | [`fr-FR`](./fr-FR.json) | `507/507` (100%) | ─ |
-| ✅ | [`hi-IN`](./hi-IN.json) | `507/507` (100%) | ─ |
-| ✅ | [`ja-JP`](./ja-JP.json) | `507/507` (100%) | ─ |
-| ✅ | [`pt-BR`](./pt-BR.json) | `507/507` (100%) | ─ |
-| ✅ | [`zh-CN`](./zh-CN.json) | `507/507` (100%) | ─ |
+|  | [`en-US`](./en-US.json) | `508` (default locale) |  |
+| ✅ | [`de-DE`](./de-DE.json) | `508/508` (100%) | ─ |
+|  | [`en-GB`](./en-GB.json) | `508/508` (100%) | `en-US` |
+| ✅ | [`es-ES`](./es-ES.json) | `508/508` (100%) | ─ |
+| ✅ | [`fr-FR`](./fr-FR.json) | `508/508` (100%) | ─ |
+| ✅ | [`hi-IN`](./hi-IN.json) | `508/508` (100%) | ─ |
+| ✅ | [`ja-JP`](./ja-JP.json) | `508/508` (100%) | ─ |
+| ✅ | [`pt-BR`](./pt-BR.json) | `508/508` (100%) | ─ |
+| ✅ | [`zh-CN`](./zh-CN.json) | `508/508` (100%) | ─ |
 
 <sub>
 ✅ - Fully translated

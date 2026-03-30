@@ -59,9 +59,8 @@ export const getLogsTxt = () => {
   };
 
   const longestLogType = Math.max(...logs.map(([type]) => type.length));
-  const sortedLogs = [...logs].sort((a, b) => b[1] - a[1]);
 
-  return sortedLogs.reduce((acc, [type, time, ...args]) => {
+  return logs.reduce((acc, [type, time, ...args]) => {
     if(args.length === 0)
       return acc;
 

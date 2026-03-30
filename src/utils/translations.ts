@@ -108,7 +108,7 @@ export async function fetchTranslationResource(locale: TrLocale) {
   const res = await fetchAdvanced(url);
   const bodyTxt = await res.text();
 
-  getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}:`, bodyTxt);
+  getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
 
   if(res.status < 200 || res.status >= 300)
     throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
