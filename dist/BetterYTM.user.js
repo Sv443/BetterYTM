@@ -1,3 +1,132 @@
+// ==UserScript==
+// @name              BetterYTM
+// @namespace         https://github.com/Sv443/BetterYTM
+// @version           3.1.0-rc.1
+// @homepageURL       https://github.com/Sv443/BetterYTM#readme
+// @supportURL        https://github.com/Sv443/BetterYTM/issues
+// @license           AGPL-3.0-or-later
+// @author            Sv443
+// @copyright         Sv443 (https://github.com/Sv443)
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@591b5cdf/assets/images/logo/logo_dev_48.png
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start
+// @description       Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-BE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-LI Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-LU Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en    Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-CA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-GB Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-AU Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-IE Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-NZ Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-ZA Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es    Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:es-MX Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr    Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CA Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-BE Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-CH Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:fr-LU Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi    YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:hi-NP YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:ja-JP YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:ja    YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt    Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:pt-PT Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh    YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:es    tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:es-MX tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr    tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-CA tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-BE tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-CH tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-LU tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:hi    tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:hi-NP tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
+// @antifeature:ja    tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
+// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:pt    tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:pt-PT tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh    tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-TW tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-HK tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-SG tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @connect           api.sv443.net
+// @connect           github.com
+// @connect           raw.githubusercontent.com
+// @connect           youtube.com
+// @connect           returnyoutubedislikeapi.com
+// @noframes
+// @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
+// @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.listValues
+// @grant             GM.addValueChangeListener
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
+// @grant             GM.registerMenuCommand
+// @grant             unsafeWindow
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
+// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
+// ==/UserScript==
+/*
+▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+
+
+You can install the latest in-development version here:
+https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
+
+*/
+
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+
+
 (function(CoreUtils,UserUtils,DOMPurify,marked,compareVersions){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var CoreUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(CoreUtils);var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);var preloadAssetPattern = "^(icon|img)-";
 var resources = {
 	"css-above_queue_btns": "styles/aboveQueueBtns.css",
@@ -316,13 +445,13 @@ var PluginIntent;
     PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
 })(PluginIntent || (PluginIntent = {}));/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
 const rawConsts = {
-    mode: "#{{MODE}}",
-    branch: "#{{BRANCH}}",
-    host: "#{{HOST}}",
-    buildNumber: "#{{BUILD_NUMBER}}",
-    buildTimestamp: "#{{BUILD_TIMESTAMP}}",
-    assetSource: "#{{ASSET_SOURCE}}",
-    devServerPort: "#{{DEV_SERVER_PORT}}",
+    mode: "development",
+    branch: "develop",
+    host: "github",
+    buildNumber: "591b5cdf",
+    buildTimestamp: "1774914447946",
+    assetSource: "jsdelivr",
+    devServerPort: "8710",
 };
 /** Parses a raw constant or falls back to a default value */
 const getConst = (constKey, defaultVal) => {
@@ -558,7 +687,7 @@ async function fetchTranslationResource(locale) {
     const url = await getResourceUrl(`trans-${locale}`);
     const res = await CoreUtils.fetchAdvanced(url);
     const bodyTxt = await res.text();
-    getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}:`, bodyTxt);
+    getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
     if (res.status < 200 || res.status >= 300)
         throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
     return JSON.parse(bodyTxt); // since en-US keys are merged in, this assertion is safe
@@ -622,6 +751,10 @@ function tlp(locale, key, num, ...args) {
     if (trans === key)
         return t(key, ...args);
     return trans;
+}
+/** Returns the appropriate translation for the given translatable object based on the current locale. Falls back to `en-US` */
+function resolveTranslatable(trnsl) {
+    return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
 }//#region vars
 /** Whether the dialog system has been initialized */
 let dialogsInitialized = false;
@@ -2085,6 +2218,8 @@ async function closeToast() {
         markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
         markdownEl.tabIndex = 0;
         setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
+        if (this.opts.modifyBodyElements)
+            await this.opts.modifyBodyElements(bodyEl, markdownEl);
         bodyEl.appendChild(markdownEl);
         return bodyEl;
     }
@@ -2157,8 +2292,7 @@ const getLogsTxt = () => {
         return primaryScope ? `${val}` : `"${val}"`;
     };
     const longestLogType = Math.max(...logs.map(([type]) => type.length));
-    const sortedLogs = [...logs].sort((a, b) => b[1] - a[1]);
-    return sortedLogs.reduce((acc, [type, time, ...args]) => {
+    return logs.reduce((acc, [type, time, ...args]) => {
         if (args.length === 0)
             return acc;
         const timestamp = new Date(time).toISOString();
@@ -2256,7 +2390,7 @@ function getErrorDialog(errName, args) {
         },
         renderFooter() {
             const footer = document.createElement("div");
-            footer.classList.add("bytm-dialog-footer");
+            footer.classList.add("bytm-dialog-footer", "align-right");
             const dlLogsBtn = document.createElement("button");
             dlLogsBtn.type = "button";
             dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
@@ -3896,6 +4030,7 @@ async function getFeatHelpDialog({ featKey, }) {
 async function renderHeader$2() {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-feat-help-dialog-header";
+    headerEl.classList.add("bytm-flex-row");
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
 }
@@ -6340,6 +6475,191 @@ async function initTruncatePlayerBarSubtitles() {
         error("Couldn't load stylesheet to truncate player bar subtitles");
     else
         log("Truncated player bar subtitles");
+}var formatVersion = 0;
+var domains = [
+	{
+		id: "ytm",
+		hostnames: [
+			"music.youtube.com"
+		]
+	},
+	{
+		id: "yt",
+		hostnames: [
+			"www.youtube.com",
+			"youtube.com",
+			"youtu.be",
+			"m.youtube.com"
+		]
+	}
+];
+var alerts = [
+];
+var selectors = {
+};
+var defaultStaticData = {
+	formatVersion: formatVersion,
+	domains: domains,
+	alerts: alerts,
+	selectors: selectors
+};//#region vars
+/** URL to the remote data JSON file on a CDN. */
+const remoteDataUrl = `https://github.com/${repo}/raw/refs/heads/main/assets/data.json`;
+/** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
+const staticDataFormatVersion = 0;
+let staticData;
+//#region get data
+/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
+async function getStaticData() {
+    try {
+        if (staticData)
+            return staticData;
+        const res = await CoreUtils.fetchAdvanced(remoteDataUrl, {
+            timeout: 10000,
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (isStaticData(data)) {
+                info("Successfully fetched remote static data:", data);
+                return staticData = data;
+            }
+            else
+                warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
+        }
+        return staticData = defaultStaticData;
+    }
+    catch (e) {
+        warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to an error:`, e);
+        info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
+        return staticData = defaultStaticData;
+    }
+}
+/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
+function getDefaultStaticData() {
+    return defaultStaticData;
+}
+//#region validate
+/** Checks whether the given data matches the expected structure of the static data JSON at `assets/data.json`. */
+function isStaticData(data) {
+    return typeof data === "object"
+        && data !== null
+        // format version
+        && "formatVersion" in data
+        && typeof data.formatVersion === "number"
+        && data.formatVersion === staticDataFormatVersion
+        // domains
+        && "domains" in data
+        && typeof data.domains === "object"
+        && Array.isArray(data.domains)
+        // selectors
+        && "selectors" in data
+        && typeof data.selectors === "object"
+        // alerts
+        && "alerts" in data
+        && typeof data.alerts === "object"
+        && Array.isArray(data.alerts);
+}
+const alertsStore = new CoreUtils.DataStore({
+    id: "bytm-alerts",
+    defaultData: {
+        dismissed: [],
+    },
+    formatVersion: 0,
+    engine: new UserUtils.GMStorageEngine(),
+    memoryCache: false,
+    compressionFormat: null,
+});
+/** Checks if there are active alerts and shows a prompt for each of them. */
+async function checkActiveAlerts({ alerts }, alertsData) {
+    const activeAlerts = alerts.filter(alert => isAlertActive(alert, alertsData));
+    for (const alert of activeAlerts) {
+        const dlg = createAlertDialog(alert);
+        await dlg.open();
+        await dlg.once("close");
+        alertsData = await alertsStore.loadData();
+        await alertsStore.setData({
+            dismissed: [alert.id, ...alertsData.dismissed],
+        });
+    }
+}
+/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
+function isAlertActive(alert, alertsData) {
+    // check if dismissed
+    if (alertsData.dismissed.includes(alert.id))
+        return false;
+    // check domain constraints
+    if (alert.domains.length === 0)
+        return false;
+    if (!alert.domains.includes(getDomain()))
+        return false;
+    // check version constraints
+    if (alert.versionMin && compareVersions.compareVersions(alert.versionMin, scriptInfo$1.version) > 0)
+        return false;
+    if (alert.versionMax && compareVersions.compareVersions(alert.versionMax, scriptInfo$1.version) < 0)
+        return false;
+    // check date constraints
+    const now = new Date();
+    if (alert.dateMin && new Date(alert.dateMin) > now)
+        return false;
+    if (alert.dateMax && new Date(alert.dateMax) < now)
+        return false;
+    return true;
+}
+/** Creates an alert dialog for the given alert data. */
+function createAlertDialog(alert) {
+    return new MarkdownDialog({
+        id: "static-data-alert",
+        height: 500,
+        width: 600,
+        small: true,
+        destroyOnClose: true,
+        closeOnBgClick: !alert.important,
+        closeOnEscPress: !alert.important,
+        async renderHeader() {
+            const headerEl = document.createElement("div");
+            headerEl.id = "bytm-static-data-alert-dialog-header";
+            headerEl.classList.add("bytm-flex-row");
+            setInnerHtml(headerEl, await resourceAsString("icon-alert"));
+            const header = document.createElement("h2");
+            header.classList.add("bytm-dialog-title");
+            header.role = "heading";
+            header.ariaLevel = "1";
+            header.tabIndex = 0;
+            header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
+            headerEl.appendChild(header);
+            return headerEl;
+        },
+        renderFooter() {
+            const footer = document.createElement("div");
+            footer.classList.add("bytm-dialog-footer", "align-right");
+            const closeBtn = document.createElement("button");
+            closeBtn.type = "button";
+            closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
+            onInteraction(closeBtn, () => {
+                const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
+                if (titleCloseBtn)
+                    titleCloseBtn.click();
+                else
+                    warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+            });
+            footer.appendChild(closeBtn);
+            return footer;
+        },
+        body: resolveTranslatable(alert.message),
+        modifyBodyElements(_bw, mdCont) {
+            mdCont.ariaLive = "polite";
+            mdCont.ariaAtomic = "true";
+        }
+    });
+}
+//#region use data
+/** Initializes the static data by fetching it and performing necessary checks and actions. */
+async function initStaticData() {
+    const staticData = await getStaticData();
+    const alertsData = await alertsStore.loadData();
+    await Promise.all([
+        checkActiveAlerts(staticData, alertsData),
+    ]);
 }/** Central serializer for all data stores */
 let serializer;
 /** Central serializer for all data stores, including the caches and other stores that have volatile enough data */
@@ -6348,6 +6668,7 @@ let fullSerializer;
 const getSerializerStores = () => [
     configStore,
     autoLikeStore,
+    alertsStore,
 ];
 /** Array of all data stores, including the caches and other stores that have volatile enough data */
 const getSerializerStoresFull = () => [
@@ -6544,86 +6865,6 @@ function relayBroadcastPacket(packet) {
     // broadcasts work like interrupts, so they are allowed to be emitted even before "bytm:ready"
     forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
     forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean); // love dealing with TS mapped type shenanigans
-}var formatVersion = 0;
-var domains = [
-	{
-		id: "ytm",
-		hostnames: [
-			"music.youtube.com"
-		]
-	},
-	{
-		id: "yt",
-		hostnames: [
-			"www.youtube.com",
-			"youtube.com",
-			"youtu.be",
-			"m.youtube.com"
-		]
-	}
-];
-var alerts = [
-];
-var selectors = {
-};
-var defaultStaticData = {
-	formatVersion: formatVersion,
-	domains: domains,
-	alerts: alerts,
-	selectors: selectors
-};/** URL to the remote data JSON file on a CDN. */
-const remoteDataUrl = `https://github.com/${repo}/raw/refs/heads/main/assets/data.json`;
-/** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
-const staticDataFormatVersion = 0;
-let staticData;
-/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
-async function getStaticData() {
-    try {
-        if (staticData)
-            return staticData;
-        const res = await CoreUtils.fetchAdvanced(remoteDataUrl, {
-            timeout: 10000,
-        });
-        if (res.ok) {
-            const data = await res.json();
-            if (isStaticData(data)) {
-                info("Successfully fetched remote static data:", data);
-                return staticData = data;
-            }
-            else
-                warn("Remote static data is in an unexpected format, falling back to bundled data:", defaultStaticData);
-        }
-        return staticData = defaultStaticData;
-    }
-    catch (e) {
-        warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to an error:`, e);
-        info("Falling back to the bundled static data:", defaultStaticData);
-        return staticData = defaultStaticData;
-    }
-}
-/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
-function getDefaultStaticData() {
-    return defaultStaticData;
-}
-/** Checks whether the given data matches the expected structure of the static data JSON at `assets/data.json`. */
-function isStaticData(data) {
-    return typeof data === "object"
-        && data !== null
-        // format version
-        && "formatVersion" in data
-        && typeof data.formatVersion === "number"
-        && data.formatVersion === staticDataFormatVersion
-        // domains
-        && "domains" in data
-        && typeof data.domains === "object"
-        && Array.isArray(data.domains)
-        // selectors
-        && "selectors" in data
-        && typeof data.selectors === "object"
-        // alerts
-        && "alerts" in data
-        && typeof data.alerts === "object"
-        && Array.isArray(data.alerts);
 }//#region misc
 let domain;
 /**
@@ -11200,6 +11441,7 @@ async function onDomLoad() {
     initExponentialVolume();
     // initialize DOM globals:
     try {
+        // run detached:
         setTimeout(() => {
             const endInitGlobalDur = measureDuration("initGlobal_decoupled");
             initGlobalCss();
@@ -11207,7 +11449,6 @@ async function onDomLoad() {
             Promise.allSettled([
                 injectCssBundle(),
                 initVersionCheck(),
-                getStaticData(),
             ]).then(() => endInitGlobalDur());
             initSiteEvents();
             mountCfgMenu();
@@ -11225,7 +11466,11 @@ async function onDomLoad() {
             dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo$1.version })));
             info("Showing welcome menu");
             await dlg.open();
+            await dlg.once("close");
         }
+        // initialize data.json and check for active alerts
+        const endStaticDataDur = measureDuration("staticData");
+        initStaticData().then(() => endStaticDataDur());
         await initVersionSessionCounter();
         if (domain === "ytm") {
             //#region (ytm) layout
@@ -11435,10 +11680,25 @@ function registerDevCommands() {
     const isAny = isDev || isAdv;
     const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
     const getCmdName = (emoji, key) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
+    GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
     GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
-        if (await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
-            await clearConfig();
-            await reloadTab();
+        const message = "Reset the configuration to its default values?\nThis will automatically reload the page.";
+        try {
+            if (await showPrompt({
+                type: "confirm",
+                message,
+                confirmBtnText: "Reset",
+            })) {
+                await clearConfig();
+                await reloadTab();
+            }
+        }
+        catch {
+            // fallback if DOM isn't modifiable for some reason, like a fatal error during init
+            if (confirm(message)) {
+                await clearConfig();
+                await reloadTab();
+            }
         }
     });
     isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
@@ -11665,4 +11925,4 @@ async function runDevTreatments() {
     // const dlg = await getAllDataExImDialog();
     // await dlg.open();
 }
-preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=BetterYTM.user.js.map
+preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
