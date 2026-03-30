@@ -8,6 +8,12 @@ import cors from "cors";
 import "dotenv/config";
 import { outputDir } from "../../rollup.config.mjs";
 
+/**
+ * If set to true, requests for userscript files will be logged.  
+ * If the userscript manager extension constantly fetches this file, this can be set to false to reduce log spam.
+ */
+const logUserscriptRequests = false;
+
 const { argv, env, stdout } = process;
 const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 
@@ -40,7 +46,7 @@ enableLogging && app.use((req, _res, next) => {
     if(req.path.startsWith("/assets/"))
       char = styleText("blue", "A");
     else if(req.path.endsWith(".user.js"))
-      char = styleText("greenBright", "U");
+      char = logUserscriptRequests ? styleText("greenBright", "U") : undefined;
     else if(req.path.endsWith(".md"))
       char = styleText("cyan", "M");
     else if(req.path.endsWith(".css"))
@@ -85,14 +91,16 @@ try {
       if(enableLogging) {
         console.log([
           `\n${styleText("yellow", "Request logging enabled:")}`,
-          ` ${styleText("greenBright", "U")}  GET *.user.js`,
+          logUserscriptRequests ? ` ${styleText("greenBright", "U")}  GET *.user.js` : null,
           ` ${styleText("magenta", "C")}  GET *.css`,
           ` ${styleText("cyan", "M")}  GET *.md`,
           ` ${styleText("blue", "A")}  GET /assets/`,
           ` ${styleText("green", "G")}  GET other`,
           `${styleText("gray", "H/O")} HEAD/OPTIONS`,
           `${styleText("yellow", "<*>")} other methods`,
-        ].join(`\n${styleText("yellow", "|")} `));
+        ]
+          .filter(Boolean)
+          .join(`\n${styleText("yellow", "|")} `));
       }
       else
         console.log(styleText("gray", "(request logging is disabled)"));

@@ -160,14 +160,6 @@
   fill: var(--bytm-flame-upper-col, #fff);
 }
 
-/* #region feature help dialog */
-
-#bytm-feat-help-dialog-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 /* #region welcome dialog */
 
 #bytm-welcome-menu-title-wrapper {
@@ -223,4 +215,8 @@
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0;
+}
+
+#bytm-static-data-alert-dialog-header {
+  padding: 0px 8px;
 }

@@ -214,6 +214,7 @@
 
   "prompt_confirm": "确认",
   "prompt_close": "关闭",
+  "prompt_dismiss": "忽略",
   "prompt_cancel": "取消",
 
   "click_to_confirm_tooltip": "点击以确认",

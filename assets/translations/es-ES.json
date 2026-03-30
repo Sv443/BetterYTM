@@ -214,6 +214,7 @@
 
   "prompt_confirm": "Confirmar",
   "prompt_close": "Cerrar",
+  "prompt_dismiss": "Descartar",
   "prompt_cancel": "Cancelar",
 
   "click_to_confirm_tooltip": "Haga clic para confirmar",

@@ -213,6 +213,7 @@
 
   "prompt_confirm": "Confirmer",
   "prompt_close": "Fermer",
+  "prompt_dismiss": "Ignorer",
   "prompt_cancel": "Annuler",
 
   "click_to_confirm_tooltip": "Cliquez pour confirmer",

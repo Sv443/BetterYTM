@@ -11,6 +11,7 @@
     - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
     - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
   - Require double-pressing the number keys within a configurable time frame to skip to points in the video/song time, to prevent accidental skips.
+  - Added a global alerts system to show important messages without needing the script to be updated.
 - **Improvements and Changes:**
   - Improved script initialization performance.
   - 🎵 Overhauled thumbnail overlay for better stability.
@@ -122,6 +123,7 @@
   - Made `siteEvents` system use CoreUtils' improved `NanoEmitter`, so it can now also be used to listen to multiple events using `.onMulti()`.
   - Moved `siteEvents` initialization to an earlier point, so that it is no longer initialized alongside features. It is now available to plugins at an earlier point in time, before any feature has started initializing, but still after plugin initialization has finished.
   - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
+  - Added static data fetching system, which will fetch the file at `assets/data.json` to display important alerts and selectors and domain-to-hostname mappings to respond to layout changes without requiring the script to be updated. This data is fetched once per session from the `main` branch on GitHub.
   - Improved script performance by refactoring the feature initialization process. As an effect of this, `bytm:ready` will now emit consistently, but also earlier, and the new event `bytm:allReady` will emit much later, once all features have been initialized or the configured timeout has been reached.
   - Updated a boatload of translation values and translation keys. [Use this page to find all changes.](https://github.com/Sv443/BetterYTM/compare/v3.0.0...v3.1.0)
   - Some resources are now cached in GM storage, when using the internal function `resourceAsString()` for even better feature init performance.

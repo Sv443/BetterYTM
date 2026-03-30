@@ -48,10 +48,12 @@
 .bytm-dialog-body {
   font-size: 1.5rem;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .bytm-dialog-body.small {
   padding: 15px;
+  overflow-y: auto;
 }
 
 #bytm-dialog-opts {
@@ -86,6 +88,12 @@
 }
 
 .bytm-dialog-header-pad.small {
+  min-height: 24px;
+}
+
+/* dirty fix for overflowing header text shrinking SVG icons */
+.bytm-dialog-title-wrapper svg {
+  min-width: 24px;
   min-height: 24px;
 }
 
@@ -173,6 +181,11 @@
 .bytm-dialog-footer {
   font-size: 17px;
   text-decoration: underline;
+}
+
+.bytm-dialog-footer.align-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .bytm-dialog-footer.hidden {
@@ -626,14 +639,6 @@ hr {
   fill: var(--bytm-flame-upper-col, #fff);
 }
 
-/* #region feature help dialog */
-
-#bytm-feat-help-dialog-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 /* #region welcome dialog */
 
 #bytm-welcome-menu-title-wrapper {
@@ -689,6 +694,10 @@ hr {
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0;
+}
+
+#bytm-static-data-alert-dialog-header {
+  padding: 0px 8px;
 }
 
 .bytm-toggle-wrapper {
@@ -2039,6 +2048,12 @@ html[dark] {
   white-space: normal;
 }
 
+:root ytmusic-description-shelf-renderer[is-track-lyrics-page] {
+  user-select: unset !important;
+}
+
+/* #region flex helpers */
+
 .bytm-flex-row {
   display: flex;
   flex-direction: row;
@@ -2063,10 +2078,6 @@ html[dark] {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-:root ytmusic-description-shelf-renderer[is-track-lyrics-page] {
-  user-select: unset !important;
 }
 
 /* #region generic (circular) button */

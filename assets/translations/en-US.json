@@ -216,6 +216,7 @@
 
   "prompt_confirm": "Confirm",
   "prompt_close": "Close",
+  "prompt_dismiss": "Dismiss",
   "prompt_cancel": "Cancel",
 
   "click_to_confirm_tooltip": "Click to confirm",

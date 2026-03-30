@@ -7,6 +7,8 @@ import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 type MarkdownDialogOptions = Omit<BytmDialogOptions, "renderBody"> & {
   /** The markdown to render */
   body: StringGen;
+  /** If defined, will be called to allow modification of the body wrapper and markdown container elements. */
+  modifyBodyElements?: (bodyWrapper: HTMLDivElement, markdownContainer: HTMLDivElement) => void | Promise<void>;
 };
 
 export class MarkdownDialog extends BytmDialog {
@@ -42,6 +44,9 @@ export class MarkdownDialog extends BytmDialog {
     markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
     markdownEl.tabIndex = 0;
     setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
+
+    if(this.opts.modifyBodyElements)
+      await this.opts.modifyBodyElements(bodyEl, markdownEl);
 
     bodyEl.appendChild(markdownEl);
 

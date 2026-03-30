@@ -5,6 +5,7 @@ import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
+import { initStaticData } from "@util/data.js";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
 import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "@/interface.ts";
 import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
@@ -51,7 +52,6 @@ import {
 import localesJson from "@asset/locales.json" with { type: "json" };
 import resourcesJson from "@asset/resources.json" with { type: "json" };
 import { LogLevel, type FeatureGroupKey, type FeatureKey, type ResourceKey } from "@/types.ts";
-import { getStaticData } from "@util/data.js";
 
 //#region cns. watermark
 
@@ -232,6 +232,7 @@ async function onDomLoad() {
 
   // initialize DOM globals:
   try {
+    // run detached:
     setTimeout(() => {
       const endInitGlobalDur = measureDuration("initGlobal_decoupled");
       initGlobalCss();
@@ -240,7 +241,6 @@ async function onDomLoad() {
       Promise.allSettled([
         injectCssBundle(),
         initVersionCheck(),
-        getStaticData(),
       ]).then(() => endInitGlobalDur());
 
       initSiteEvents();
@@ -263,7 +263,12 @@ async function onDomLoad() {
       dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
       info("Showing welcome menu");
       await dlg.open();
+      await dlg.once("close");
     }
+
+    // initialize data.json and check for active alerts
+    const endStaticDataDur = measureDuration("staticData");
+    initStaticData().then(() => endStaticDataDur());
 
     await initVersionSessionCounter();
 

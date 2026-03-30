@@ -31,6 +31,12 @@ html[dark] {
   white-space: normal;
 }
 
+:root ytmusic-description-shelf-renderer[is-track-lyrics-page] {
+  user-select: unset !important;
+}
+
+/* #region flex helpers */
+
 .bytm-flex-row {
   display: flex;
   flex-direction: row;
@@ -55,10 +61,6 @@ html[dark] {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-:root ytmusic-description-shelf-renderer[is-track-lyrics-page] {
-  user-select: unset !important;
 }
 
 /* #region generic (circular) button */

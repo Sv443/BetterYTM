@@ -48,10 +48,12 @@
 .bytm-dialog-body {
   font-size: 1.5rem;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .bytm-dialog-body.small {
   padding: 15px;
+  overflow-y: auto;
 }
 
 #bytm-dialog-opts {
@@ -86,6 +88,12 @@
 }
 
 .bytm-dialog-header-pad.small {
+  min-height: 24px;
+}
+
+/* dirty fix for overflowing header text shrinking SVG icons */
+.bytm-dialog-title-wrapper svg {
+  min-width: 24px;
   min-height: 24px;
 }
 
@@ -173,6 +181,11 @@
 .bytm-dialog-footer {
   font-size: 17px;
   text-decoration: underline;
+}
+
+.bytm-dialog-footer.align-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .bytm-dialog-footer.hidden {

@@ -1,15 +1,16 @@
 import { ChecksumMismatchError, DataStoreSerializer, type DataStore } from "@sv443-network/coreutils";
 import { configStore } from "@/config.ts";
+import { scriptInfo } from "@/constants.ts";
 import { autoLikeStore } from "@feat/autoLike.ts";
+import { artCacheStore } from "@feat/layout.ts";
+import { lyricsCacheStore } from "@feat/lyricsCache.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { t } from "@util/translations.ts";
 import { error } from "@util/logging.ts";
 import { downloadFile } from "@util/dom.ts";
+import { alertsStore } from "@util/data.ts";
 import { reloadTab, resourceCacheStore } from "@util/misc.ts";
 import packageJson from "@root/package.json" with { type: "json" };
-import { artCacheStore } from "@feat/layout.ts";
-import { lyricsCacheStore } from "@feat/lyricsCache.ts";
-import { scriptInfo } from "@/constants.ts";
 
 /** Central serializer for all data stores */
 let serializer: DataStoreSerializer | undefined;
@@ -21,6 +22,7 @@ let fullSerializer: DataStoreSerializer | undefined;
 export const getSerializerStores = () => [
   configStore,
   autoLikeStore,
+  alertsStore,
 ] satisfies DataStore<any, boolean>[];
 
 /** Array of all data stores, including the caches and other stores that have volatile enough data */

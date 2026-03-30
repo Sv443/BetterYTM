@@ -5,6 +5,7 @@ import { emitInterface, setGlobalProp } from "@/interface.ts";
 import { getFeature } from "@/config.ts";
 import langMapping from "@asset/locales.json" with { type: "json" };
 import tr_enUS from "@asset/translations/en-US.json" with { type: "json" };
+import type { Translatable } from "@/types.ts";
 
 void [langMapping, tr_enUS];
 
@@ -191,3 +192,8 @@ export function tlp(locale: TrLocale, key: TFuncKey, num: number | unknown[] | N
 
   return trans;
 };
+
+/** Returns the appropriate translation for the given translatable object based on the current locale. Falls back to `en-US` */
+export function resolveTranslatable(trnsl: Translatable) {
+  return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
+}

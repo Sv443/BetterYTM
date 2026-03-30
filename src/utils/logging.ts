@@ -181,7 +181,7 @@ export function getErrorDialog(errName: string, args: unknown[]) {
     },
     renderFooter() {
       const footer = document.createElement("div");
-      footer.classList.add("bytm-dialog-footer");
+      footer.classList.add("bytm-dialog-footer", "align-right");
 
       const dlLogsBtn = document.createElement("button");
       dlLogsBtn.type = "button";

@@ -214,6 +214,7 @@
 
   "prompt_confirm": "確認",
   "prompt_close": "閉じる",
+  "prompt_dismiss": "拒否",
   "prompt_cancel": "キャンセル",
 
   "click_to_confirm_tooltip": "クリックして確認",

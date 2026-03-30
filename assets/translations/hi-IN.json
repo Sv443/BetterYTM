@@ -213,6 +213,7 @@
 
   "prompt_confirm": "पुष्टि करना",
   "prompt_close": "बंद करें",
+  "prompt_dismiss": "अस्वीकार करें",
   "prompt_cancel": "रद्द करें",
 
   "click_to_confirm_tooltip": "क्लिक करने के लिए पुष्टि करें",
