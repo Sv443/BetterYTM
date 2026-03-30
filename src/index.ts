@@ -11,7 +11,7 @@ import { initObservers, addSelectorListener, globservers } from "@/observers.ts"
 import { downloadData, getDSSerializer } from "@/serializers.ts";
 import { getWelcomeDialog } from "@dialog/welcome.ts";
 import { showPrompt } from "@dialog/prompt.ts";
-import { mountCfgMenu } from "@menu/menu.ts";
+import { mountCfgMenu, openCfgMenu } from "@menu/menu.ts";
 import {
   // layout category:
   addWatermark, initRemShareTrackParam,
@@ -548,10 +548,26 @@ function registerDevCommands() {
   const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
   const getCmdName = (emoji: string, key: TrKey & `menu_command.${string}`) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
 
+  GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
+
   GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
-    if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
-      await clearConfig();
-      await reloadTab();
+    const message = "Reset the configuration to its default values?\nThis will automatically reload the page.";
+    try {
+      if(await showPrompt({
+        type: "confirm",
+        message,
+        confirmBtnText: "Reset",
+      })) {
+        await clearConfig();
+        await reloadTab();
+      }
+    }
+    catch {
+      // fallback if DOM isn't modifiable for some reason, like a fatal error during init
+      if(confirm(message)) {
+        await clearConfig();
+        await reloadTab();
+      }
     }
   });
 
