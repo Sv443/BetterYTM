@@ -38,17 +38,25 @@ export type ExtraButtonsPosition = "before" | "between" | "after";
 
 /** Base props for rendering any type of prompt dialog - see {@linkcode showPrompt()} */
 export type BaseRenderProps = {
+  /** Message to show in the dialog body. */
   message: PromptStringGen;
+  /** Text for the confirm button (only for types "confirm" and "prompt"). Defaults to the tr key "prompt_confirm" for both types if not provided. */
   confirmBtnText?: PromptStringGen;
+  /** Tooltip for the confirm button (only for types "confirm" and "prompt"). Defaults to the tr key "click_to_confirm_tooltip" for both types if not provided. */
   confirmBtnTooltip?: PromptStringGen;
+  /** Whether to show the confirm button (only for types "confirm" and "prompt") - defaults to true if not provided. */
   confirmBtnEnabled?: boolean;
+  /** Text for the close/cancel button. Defaults to the tr key "prompt_close" for type "alert" and "prompt_cancel" for type "confirm" and "prompt" if not provided. */
   denyBtnText?: PromptStringGen;
+  /** Tooltip for the close/cancel button. Defaults to the tr key "click_to_close_tooltip" for type "alert" and "click_to_cancel_tooltip" for type "confirm" and "prompt" if not provided. */
   denyBtnTooltip?: PromptStringGen;
+  /** Whether to show the close/cancel button - defaults to true if not provided. */
   denyBtnEnabled?: boolean;
   /**
    * Array of functions that create extra button elements appended to the footer row - placement controlled by {@linkcode extraButtonsPosition}  
-   * Function gets passed the dialog instance as a parameter.  
-   * Note: these are completely unmanaged by the prompt dialog, so they won't make it resolve, and also won't close it when clicked.
+   * The function gets passed the dialog instance as a parameter.  
+   * Note: these are completely unmanaged by the prompt dialog, so they won't make it resolve, and also won't close it when clicked.  
+   * - ⚠️ If custom buttons close the dialog, make sure to call the method {@linkcode PromptDialog.emitResolve()} on the passed instance to properly emit a resolve event with the final value.
    */
   extraButtons?: ((dialog: PromptDialog) => Promise<HTMLButtonElement> | HTMLButtonElement)[];
   /** Where to place {@linkcode extraButtons} relative to the built-in confirm/close buttons - defaults to `"between"` */

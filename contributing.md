@@ -2285,7 +2285,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   - `denyBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the deny button (shows up for all types)
 >   - `denyBtnEnabled?: boolean` - Whether to add a deny button. If disabled, custom buttons need to be passed via `extraButtons`.
 > - for adding extra buttons to the footer:
->   - `extraButtons?: Array<((dialog: PromptDialog) => HTMLButtonElement | Promise<HTMLButtonElement>)>` - Functions that create additional button elements to insert in the footer row alongside the built-in buttons
+>   - `extraButtons?: Array<((dialog: PromptDialog) => HTMLButtonElement | Promise<HTMLButtonElement>)>` - Functions that create additional button elements to insert in the footer row alongside the built-in buttons. ⚠️ If custom buttons close the dialog, make sure to call the method `emitResolve()` on the passed `PromptDialog` instance to properly emit a resolve event with the final value.
 >   - `extraButtonsPosition?: "before" | "between" | "after"` - Where to place the extra buttons relative to the built-in confirm/close buttons. Defaults to `"between"`. (Note: while the order of the confirm and deny buttons is OS-dependent, this setting works independent of that.)
 > - for overriding the underlying dialog options:
 >   - `dialogOptions?: object` - Partial override of the underlying `BytmDialog` options (e.g. `width`, `height`, `small`, `verticalAlign`). The `id` and render function properties cannot be overridden

@@ -701,6 +701,7 @@ function registerDevCommands() {
             btn.textContent = btn.ariaLabel = "Copy and close";
             btn.addEventListener("click", async () => {
               copyToClipboard(result);
+              dlg.emitResolve(result);
               dlg.close();
             });
             return btn;
@@ -731,13 +732,17 @@ function registerDevCommands() {
           btn.addEventListener("click", async () => {
             const val = dlg.getInputValue();
             try {
-              if(val && val.length > 0)
-                await showFinalPrompt("compress", val, await compress(val, compressionFormat));
+              if(val && val.length > 0) {
+                const result = await compress(val, compressionFormat);
+                dlg.emitResolve(result);
+                dlg.close();
+                await showFinalPrompt("compress", val, result);
+              }
             }
             catch(e) {
+              dlg.close();
               showErr("compress", e);
             }
-            dlg.close();
           });
           return btn;
         },
@@ -747,13 +752,17 @@ function registerDevCommands() {
           btn.addEventListener("click", async () => {
             const val = dlg.getInputValue();
             try {
-              if(val && val.length > 0)
-                await showFinalPrompt("decompress", val, await decompress(val, compressionFormat));
+              if(val && val.length > 0) {
+                const result = await decompress(val, compressionFormat);
+                dlg.emitResolve(result);
+                await showFinalPrompt("decompress", val, result);
+                dlg.close();
+              }
             }
             catch(e) {
+              dlg.close();
               showErr("decompress", e);
             }
-            dlg.close();
           });
           return btn;
         },
@@ -802,7 +811,8 @@ function registerDevCommands() {
           const btn = document.createElement("button");
           btn.textContent = btn.ariaLabel = "Copy and close";
           btn.addEventListener("click", async () => {
-            copyToClipboard(devPluginToken ?? "");
+            devPluginToken && copyToClipboard(devPluginToken);
+            dlg.emitResolve(devPluginToken ?? null);
             dlg.close();
           });
           return btn;
