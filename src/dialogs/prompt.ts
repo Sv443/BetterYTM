@@ -1,7 +1,6 @@
 import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "@util/index.ts";
 import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
-import { addSelectorListener } from "@/observers.ts";
 import "@dialog/prompt.css";
 
 //#region types
@@ -42,8 +41,10 @@ export type BaseRenderProps = {
   message: PromptStringGen;
   confirmBtnText?: PromptStringGen;
   confirmBtnTooltip?: PromptStringGen;
+  confirmBtnEnabled?: boolean;
   denyBtnText?: PromptStringGen;
   denyBtnTooltip?: PromptStringGen;
+  denyBtnEnabled?: boolean;
   /**
    * Array of functions that create extra button elements appended to the footer row - placement controlled by {@linkcode extraButtonsPosition}  
    * Function gets passed the dialog instance as a parameter.  
@@ -62,6 +63,7 @@ export type PromptDialogResolveVal = boolean | string | null;
 //#region PromptDialog
 
 let promptDialog: PromptDialog | null = null;
+const promptDialogId = "prompt-dialog";
 
 /**
  * This is a custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions.  
@@ -71,7 +73,7 @@ export class PromptDialog extends BytmDialog {
   public readonly type: PromptType;
   constructor(props: PromptDialogRenderProps) {
     super({
-      id: "prompt-dialog",
+      id: promptDialogId,
       width: 500,
       height: 400,
       destroyOnClose: true,
@@ -92,6 +94,13 @@ export class PromptDialog extends BytmDialog {
   /** Emits the "resolve" event with the specified value - don't call unless the dialog is about to be closed. */
   public emitResolve(val: PromptDialogResolveVal) {
     this.events.emit("resolve", val);
+  }
+
+  /** Returns the current value of the text input field if the dialog type is "prompt", or undefined for other dialog types. */
+  public getInputValue() {
+    if(this.type !== "prompt")
+      return undefined;
+    return document.querySelector<HTMLInputElement>("#bytm-dialog-container #bytm-prompt-dialog-input")?.value ?? "";
   }
 
   protected async renderHeader({ type }: PromptDialogRenderProps) {
@@ -164,9 +173,8 @@ export class PromptDialog extends BytmDialog {
 
     // confirm button (only for types "confirm" & "prompt"):
 
-    let confirmBtn: HTMLButtonElement | undefined;
-    if(type === "confirm" || type === "prompt") {
-      confirmBtn = document.createElement("button");
+    const confirmBtn = (type === "confirm" || type === "prompt") && rest.confirmBtnEnabled !== false ? document.createElement("button") : undefined;
+    if(confirmBtn) {
       confirmBtn.id = "bytm-prompt-dialog-confirm";
       confirmBtn.classList.add("bytm-prompt-dialog-button");
       confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
@@ -182,23 +190,25 @@ export class PromptDialog extends BytmDialog {
 
     // close/cancel button:
 
-    const closeBtn = document.createElement("button");
-    closeBtn.id = "bytm-prompt-dialog-close";
-    closeBtn.classList.add("bytm-prompt-dialog-button");
-    closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
-    closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
-    closeBtn.tabIndex = 0;
-    if(type === "alert")
-      closeBtn.autofocus = true;
-    closeBtn.addEventListener("click", () => {
-      const resVals: Record<PromptType, boolean | null> = {
-        alert: true,
-        confirm: false,
-        prompt: null,
-      };
-      this.emitResolve(resVals[type]);
-      promptDialog?.close();
-    }, { once: true });
+    const closeBtn = rest.denyBtnEnabled === false ? undefined : document.createElement("button");
+    if(closeBtn) {
+      closeBtn.id = "bytm-prompt-dialog-close";
+      closeBtn.classList.add("bytm-prompt-dialog-button");
+      closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
+      closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
+      closeBtn.tabIndex = 0;
+      if(type === "alert")
+        closeBtn.autofocus = true;
+      closeBtn.addEventListener("click", () => {
+        const resVals: Record<PromptType, boolean | null> = {
+          alert: true,
+          confirm: false,
+          prompt: null,
+        };
+        this.emitResolve(resVals[type]);
+        promptDialog?.close();
+      }, { once: true });
+    }
 
     // extra buttons:
 
@@ -221,10 +231,10 @@ export class PromptDialog extends BytmDialog {
       confirmBtn && buttonsCont.appendChild(confirmBtn);
       if(extraButtonsPosition === "between")
         await appendExtraButtons();
-      buttonsCont.appendChild(closeBtn);
+      closeBtn && buttonsCont.appendChild(closeBtn);
     }
     else {
-      buttonsCont.appendChild(closeBtn);
+      closeBtn && buttonsCont.appendChild(closeBtn);
       if(extraButtonsPosition === "between")
         await appendExtraButtons();
       confirmBtn && buttonsCont.appendChild(confirmBtn);
@@ -280,16 +290,13 @@ export function showPrompt(props: PromptRenderProps): Promise<string | null>;
 /** Custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions */
 export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<PromptDialogResolveVal> {
   return new Promise<PromptDialogResolveVal>((resolve) => {
-    if(BytmDialog.getOpenDialogs().includes("prompt-dialog"))
+    if(BytmDialog.getOpenDialogs().includes(promptDialogId))
       promptDialog?.close();
 
     promptDialog = new PromptDialog({ type, ...rest });
 
-    promptDialog.once("render" as "_", () => {
-      addSelectorListener<HTMLButtonElement>("bytmDialogContainer", `#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`, {
-        listener: (btn) => btn.focus(),
-      });
-    });
+    // focus on the most relevant button when the dialog opens to allow using the enter key immediately
+    promptDialog.once("open", () => document.querySelector<HTMLButtonElement>(`#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`)?.focus());
 
     // make config menu inert while prompt dialog is open
     promptDialog.once("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
