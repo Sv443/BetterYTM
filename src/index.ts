@@ -722,7 +722,7 @@ function registerDevCommands() {
 
     await showPrompt({
       type: "prompt",
-      message: "Enter text to compress or decompress it:",
+      message: "Enter text to compress or decompress:",
       textarea: true,
       confirmBtnEnabled: false,
       extraButtons: [

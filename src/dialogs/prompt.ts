@@ -14,23 +14,33 @@ export type PromptDialogRenderProps = ConfirmRenderProps | AlertRenderProps | Pr
 /** Type of prompt dialog to show - see {@linkcode showPrompt()} */
 export type PromptType = PromptDialogRenderProps["type"];
 
-/** Props for rendering a `confirm()`-like prompt dialog - see {@linkcode showPrompt()} */
-export type ConfirmRenderProps = BaseRenderProps & {
-  type: "confirm";
-};
-
 /** Props for rendering an `alert()`-like prompt dialog - see {@linkcode showPrompt()} */
 export type AlertRenderProps = BaseRenderProps & {
   type: "alert";
 };
 
+/** Props for rendering a `confirm()`-like prompt dialog - see {@linkcode showPrompt()} */
+export type ConfirmRenderProps = BaseRenderProps & ConfirmBtnProps & {
+  type: "confirm";
+};
+
 /** Props for rendering a `prompt()`-like dialog - see {@linkcode showPrompt()} */
-export type PromptRenderProps = BaseRenderProps & {
+export type PromptRenderProps = BaseRenderProps & ConfirmBtnProps & {
   type: "prompt";
   /** Initial value of the text input field - defaults to an empty string if not provided */
   defaultValue?: StringGen;
   /** Whether to render the text input as a textarea - defaults to false (single line input) */
   textarea?: boolean;
+};
+
+/** Props for all prompt dialog types with a confirm button ("confirm" and "prompt"). */
+type ConfirmBtnProps = {
+  /** Text for the confirm button (only for types "confirm" and "prompt"). Defaults to the tr key "prompt_confirm" for both types if not provided. */
+  confirmBtnText?: PromptStringGen;
+  /** Tooltip for the confirm button (only for types "confirm" and "prompt"). Defaults to the tr key "click_to_confirm_tooltip" for both types if not provided. */
+  confirmBtnTooltip?: PromptStringGen;
+  /** Whether to show the confirm button (only for types "confirm" and "prompt") - defaults to true if not provided. */
+  confirmBtnEnabled?: boolean;
 };
 
 /** Position of extra buttons relative to the built-in confirm and close buttons */
@@ -40,12 +50,6 @@ export type ExtraButtonsPosition = "before" | "between" | "after";
 export type BaseRenderProps = {
   /** Message to show in the dialog body. */
   message: PromptStringGen;
-  /** Text for the confirm button (only for types "confirm" and "prompt"). Defaults to the tr key "prompt_confirm" for both types if not provided. */
-  confirmBtnText?: PromptStringGen;
-  /** Tooltip for the confirm button (only for types "confirm" and "prompt"). Defaults to the tr key "click_to_confirm_tooltip" for both types if not provided. */
-  confirmBtnTooltip?: PromptStringGen;
-  /** Whether to show the confirm button (only for types "confirm" and "prompt") - defaults to true if not provided. */
-  confirmBtnEnabled?: boolean;
   /** Text for the close/cancel button. Defaults to the tr key "prompt_close" for type "alert" and "prompt_cancel" for type "confirm" and "prompt" if not provided. */
   denyBtnText?: PromptStringGen;
   /** Tooltip for the close/cancel button. Defaults to the tr key "click_to_close_tooltip" for type "alert" and "click_to_cancel_tooltip" for type "confirm" and "prompt" if not provided. */
@@ -104,11 +108,11 @@ export class PromptDialog extends BytmDialog {
     this.events.emit("resolve", val);
   }
 
-  /** Returns the current value of the text input field if the dialog type is "prompt", or undefined for other dialog types. */
+  /** Returns the current value of the text input field if the dialog type is "prompt", null if it's empty, and undefined for other dialog types. */
   public getInputValue() {
     if(this.type !== "prompt")
       return undefined;
-    return document.querySelector<HTMLInputElement>("#bytm-dialog-container #bytm-prompt-dialog-input")?.value ?? "";
+    return document.querySelector<HTMLInputElement>("#bytm-dialog-container #bytm-prompt-dialog-input")?.value?.trim() ?? null;
   }
 
   protected async renderHeader({ type }: PromptDialogRenderProps) {
@@ -181,8 +185,8 @@ export class PromptDialog extends BytmDialog {
 
     // confirm button (only for types "confirm" & "prompt"):
 
-    const confirmBtn = (type === "confirm" || type === "prompt") && rest.confirmBtnEnabled !== false ? document.createElement("button") : undefined;
-    if(confirmBtn) {
+    const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : document.createElement("button"));
+    if(confirmBtn && "confirmBtnEnabled" in rest) {
       confirmBtn.id = "bytm-prompt-dialog-confirm";
       confirmBtn.classList.add("bytm-prompt-dialog-button");
       confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
