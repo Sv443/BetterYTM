@@ -108,8 +108,7 @@
   "feature_is_new": "This feature was added very recently.",
 
   "menu_command.collect_sessions": "Print all open sessions (tabs) to console",
-  "menu_command.compress_value": "Compress value",
-  "menu_command.decompress_value": "Decompress value",
+  "menu_command.compress_or_decompress_text": "Compress or decompress text",
   "menu_command.download_log_file": "Download console log file",
   "menu_command.export_config": "Full configuration data export [🚧 WIP]",
   "menu_command.export_full": "Full data export including caches [🚧 WIP]",

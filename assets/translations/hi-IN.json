@@ -105,8 +105,7 @@
   "feature_is_new": "यह सुविधा हाल ही में जोड़ी गई है।",
 
   "menu_command.collect_sessions": "सभी खुले सत्र (टैब) कंसोल में प्रिंट करें",
-  "menu_command.compress_value": "मान कंप्रेस करें",
-  "menu_command.decompress_value": "मान डिकंप्रेस करें",
+  "menu_command.compress_or_decompress_text": "टेक्स्ट को संपीड़ित या डी-संपीड़ित करें",
   "menu_command.download_log_file": "कंसोल लॉग फ़ाइल डाउनलोड करें",
   "menu_command.export_config": "पूर्ण कॉन्फ़िगरेशन डेटा निर्यात [🚧 प्रगति में]",
   "menu_command.export_full": "कैश सहित पूर्ण डेटा निर्यात [🚧 प्रगति में]",

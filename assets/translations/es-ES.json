@@ -106,8 +106,7 @@
   "feature_is_new": "Esta función se añadió recientemente.",
 
   "menu_command.collect_sessions": "Imprimir todas las sesiones abiertas (pestañas) en la consola",
-  "menu_command.compress_value": "Comprimir valor",
-  "menu_command.decompress_value": "Descomprimir valor",
+  "menu_command.compress_or_decompress_text": "Comprimir o descomprimir texto",
   "menu_command.download_log_file": "Descargar archivo de registro de la consola",
   "menu_command.export_config": "Exportación completa de datos de configuración [🚧 En desarrollo]",
   "menu_command.export_full": "Exportación completa de datos incluyendo cachés [🚧 En desarrollo]",

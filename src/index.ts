@@ -690,20 +690,76 @@ function registerDevCommands() {
     dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
-  isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_value"), async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
-    if(input && input.length > 0) {
-      const compressed = await compress(input, compressionFormat);
-      dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
-    }
-  });
+  isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
+    const showFinalPrompt = async (type: "compress" | "decompress", initial: string, result: string) => {
+      await showPrompt({
+        type: "alert",
+        message: `${type === "compress" ? "Compressed" : "Decompressed"} value (${initial.length} chars -> ${result.length} chars):\n${result}`,
+        extraButtons: [
+          (dlg) => {
+            const btn = document.createElement("button");
+            btn.textContent = btn.ariaLabel = "Copy and close";
+            btn.addEventListener("click", async () => {
+              copyToClipboard(result);
+              dlg.close();
+            });
+            return btn;
+          },
+        ],
+        extraButtonsPosition: "before",
+      });
+    };
 
-  isAny && GM.registerMenuCommand(getCmdName("📦", "menu_command.decompress_value"), async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
-    if(input && input.length > 0) {
-      const decompressed = await decompress(input, compressionFormat);
-      dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
-    }
+    const showErr = async (type: "compress" | "decompress", err: unknown) => {
+      const errMsg = `Error while trying to ${type === "compress" ? "" : "de"}compress`;
+      error(errMsg, err);
+      await showPrompt({
+        type: "alert",
+        message: `${errMsg}:\n${err instanceof Error ? `${err.name}: ${err.message}` : String(err)}`,
+      });
+    };
+
+    await showPrompt({
+      type: "prompt",
+      message: "Enter text to compress or decompress it:",
+      textarea: true,
+      confirmBtnEnabled: false,
+      extraButtons: [
+        (dlg) => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Compress";
+          btn.addEventListener("click", async () => {
+            const val = dlg.getInputValue();
+            try {
+              if(val && val.length > 0)
+                await showFinalPrompt("compress", val, await compress(val, compressionFormat));
+            }
+            catch(e) {
+              showErr("compress", e);
+            }
+            dlg.close();
+          });
+          return btn;
+        },
+        (dlg) => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Decompress";
+          btn.addEventListener("click", async () => {
+            const val = dlg.getInputValue();
+            try {
+              if(val && val.length > 0)
+                await showFinalPrompt("decompress", val, await decompress(val, compressionFormat));
+            }
+            catch(e) {
+              showErr("decompress", e);
+            }
+            dlg.close();
+          });
+          return btn;
+        },
+      ],
+      extraButtonsPosition: "before",
+    });
   });
 
   isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));

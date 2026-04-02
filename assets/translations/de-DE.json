@@ -108,8 +108,7 @@
   "feature_is_new": "Dieses Feature wurde vor Kurzem hinzugefügt.",
 
   "menu_command.collect_sessions": "Alle offenen Sitzungen (Tabs) in der Konsole ausgeben",
-  "menu_command.compress_value": "Wert komprimieren",
-  "menu_command.decompress_value": "Wert dekomprimieren",
+  "menu_command.compress_or_decompress_text": "Text komprimieren oder dekomprimieren",
   "menu_command.download_log_file": "Konsolen-Logdatei herunterladen",
   "menu_command.export_config": "Konfigurationsdaten-Vollexport [🚧 WIP]",
   "menu_command.export_full": "Vollständiger Datenexport inklusive Caches [🚧 WIP]",

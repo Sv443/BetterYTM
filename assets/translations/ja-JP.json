@@ -50,8 +50,7 @@
   "feature_is_new": "新機能！",
 
   "menu_command.collect_sessions": "開いているすべてのセッション（タブ）をコンソールに出力",
-  "menu_command.compress_value": "値を圧縮",
-  "menu_command.decompress_value": "値を展開",
+  "menu_command.compress_or_decompress_text": "テキストを圧縮または展開",
   "menu_command.download_log_file": "コンソールログファイルをダウンロード",
   "menu_command.export_config": "設定データを完全にエクスポート [🚧 開発中]",
   "menu_command.export_full": "キャッシュを含む全データをエクスポート [🚧 開発中]",

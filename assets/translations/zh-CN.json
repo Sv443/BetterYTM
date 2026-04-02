@@ -105,8 +105,7 @@
   "feature_is_new": "这是新功能",
 
   "menu_command.collect_sessions": "收集会话信息",
-  "menu_command.compress_value": "压缩值",
-  "menu_command.decompress_value": "解压值",
+  "menu_command.compress_or_decompress_text": "压缩或解压文本",
   "menu_command.download_log_file": "下载日志文件",
   "menu_command.export_config": "导出配置",
   "menu_command.export_full": "导出所有数据",

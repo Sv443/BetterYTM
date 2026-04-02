@@ -105,8 +105,7 @@
   "feature_is_new": "Cette fonctionnalité a été ajoutée très récemment.",
 
   "menu_command.collect_sessions": "Afficher toutes les sessions ouvertes (onglets) dans la console",
-  "menu_command.compress_value": "Compresser une valeur",
-  "menu_command.decompress_value": "Décompresser une valeur",
+  "menu_command.compress_or_decompress_text": "Compresser ou décompresser du texte",
   "menu_command.download_log_file": "Télécharger le fichier journal de la console",
   "menu_command.export_config": "Exporter les données de configuration complètes [🚧 WIP]",
   "menu_command.export_full": "Exportation complète des données incluant les caches [🚧 WIP]",
