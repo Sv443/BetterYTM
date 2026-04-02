@@ -1,7 +1,7 @@
 import { clamp, debounce, type Stringifiable } from "@sv443-network/coreutils";
 import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
 import { getFeature } from "@/config.ts";
-import { addStyleFromResource, error, getDomain, getSessionId, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "@util/index.ts";
+import { addStyleFromResource, error, getDomain, getReloadTabData, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "@util/index.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { featInfo } from "@feat/index.ts";
 import { addSelectorListener } from "@/observers.ts";
@@ -394,8 +394,7 @@ export async function volumeSharedBetweenTabsDisabled() {
 
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {
-  const reloadTabVol = Number(await GM.getValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, 0));
-  GM.deleteValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`).catch(() => void 0);
+  const reloadTabVol = Number((await getReloadTabData())?.volume);
 
   if((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
     return;

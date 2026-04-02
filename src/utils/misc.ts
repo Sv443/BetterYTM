@@ -227,10 +227,60 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
   );
 }
 
+type ReloadTabData = {
+  entries: Array<{
+    sessionId: string | null;
+    timestamp: number;
+    volume: number | null;
+    time: number | null;
+  }>;
+};
+
+const reloadTabStore = new DataStore<ReloadTabData, false>({
+  id: "bytm-reload-tab",
+  engine: new GMStorageEngine(),
+  formatVersion: 0,
+  compressionFormat: null,
+  memoryCache: false,
+  defaultData: {
+    entries: [],
+  },
+});
+
+const reloadTabEntryMaxTTL = 1000 * 60 * 60 * 24;
+
+/** Returns the "reload tab" data for the current session, or null if there is no data for the current session or sessionStorage is unavailable. */
+export async function getReloadTabData(sessionId?: string | null, deleteAfterRead = true) {
+  try {
+    if(!sessionId)
+      sessionId = getSessionId();
+
+    const data = await reloadTabStore.loadData();
+    let entries = [...data.entries];
+    const sesEntry = entries.find(e => e.sessionId === sessionId) ?? null;
+
+    entries = data.entries.filter(e => deleteAfterRead && sesEntry ? e.sessionId !== sessionId : true);
+
+    // filter out expired and own entries
+    entries = entries.filter(e => Date.now() - e.timestamp < reloadTabEntryMaxTTL);
+
+    await reloadTabStore.setData({
+      ...data,
+      entries,
+    });
+
+    return sesEntry;
+  }
+  catch(err) {
+    error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
+    return null;
+  }
+}
+
 /** add `time_continue` param only if current video time is greater than this value */
 const reloadTabVideoTimeThreshold = 3;
 
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume-${sessionID}` in GM storage */
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the `bytm-reload-tab` DataStore */
 export async function reloadTab() {
   const win = getUnsafeWindow();
   try {
@@ -246,8 +296,18 @@ export async function reloadTab() {
 
       if(!isNaN(time) && time > reloadTabVideoTimeThreshold)
         url.searchParams.set("time_continue", String(time));
-      if(!isNaN(volume) && volume > 0)
-        await GM.setValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, String(volume));
+      if(!isNaN(volume) && volume > 0) {
+        const reloadTabData = await reloadTabStore.loadData();
+        if(reloadTabData.entries.find(e => e.sessionId === getSessionId()))
+          reloadTabData.entries = reloadTabData.entries.filter(e => e.sessionId !== getSessionId());
+        reloadTabData.entries.push({
+          sessionId: getSessionId(),
+          timestamp: Date.now(),
+          volume,
+          time: !isNaN(time) && time > reloadTabVideoTimeThreshold ? time : null,
+        });
+        await reloadTabStore.setData(reloadTabData);
+      }
 
       return win.location.replace(url);
     }
