@@ -118,10 +118,8 @@ async function main() {
       },
     );
 
-    if(mode === "production")
-      userscript = removeSourcemapComments(userscript);
-    else
-      userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
+    // this ultra custom post-build script sadly renders sourcemaps useless
+    userscript = removeSourcemapComments(userscript);
 
     // insert userscript header and final newline
     const finalUserscript = `${header}${subHeader}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
