@@ -475,6 +475,7 @@
   "feature_desc.switchBetweenSites": "Agregue una tecla de acceso rápido para cambiar entre los sitios YT y YTM en una canción",
   "feature_helptext.switchBetweenSites": "Al presionar esta tecla de acceso rápido, cambiará al otro sitio si está en YouTube o YouTube Music mientras se mantiene en el mismo video / canción.",
   "feature_desc.switchSitesHotkey": "¿Qué tecla de acceso rápido debe presionarse para cambiar de sitio?",
+  "feature_desc.switchSitesNewTabHotkey": "¿Qué tecla de acceso rápido debe presionarse para abrir el otro sitio en una nueva pestaña?",
   "feature_desc.likeDislikeHotkeys": "Agregar atajos para dar me gusta o no me gusta al video/canción que se está reproduciendo actualmente",
   "feature_desc.likeDislikeHotkeysToggle": "Permitir que los atajos alteren el estado de me gusta/no me gusta",
   "feature_helptext.likeDislikeHotkeysToggle": "Cuando está habilitado, presionar el atajo de me gusta o no me gusta de nuevo eliminará su me gusta o no me gusta del video/canción. Si está deshabilitado, solo puede activar los botones mediante el atajo.",

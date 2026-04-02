@@ -973,6 +973,8 @@ export interface FeatureConfig {
   switchBetweenSites: boolean;
   /** The hotkey that needs to be pressed to initiate the site switch */
   switchSitesHotkey: HotkeyObj;
+  /** The hotkey that initiates a site switch but opens it in a new tab instead of the current one */
+  switchSitesNewTabHotkey: HotkeyObj;
   /** Add hotkeys for liking and disliking the current video/song */
   likeDislikeHotkeys: boolean;
   /** Whether the hotkeys should toggle the like/dislike buttons instead of only setting them */

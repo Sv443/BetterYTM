@@ -476,6 +476,7 @@
   "feature_desc.switchBetweenSites": "Add a hotkey to switch between the YT and YTM sites on a video/song",
   "feature_helptext.switchBetweenSites": "Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video/song.",
   "feature_desc.switchSitesHotkey": "Hotkey to switch between the sites",
+  "feature_desc.switchSitesNewTabHotkey": "Hotkey to open the other site in a new tab",
   "feature_desc.likeDislikeHotkeys": "Add hotkeys to like and dislike the currently playing video/song",
   "feature_desc.likeDislikeHotkeysToggle": "Allow the hotkeys to toggle the like/dislike state off again",
   "feature_helptext.likeDislikeHotkeysToggle": "When enabled, pressing the like or dislike hotkey again will remove your like or dislike from the video/song. If disabled, you can only ever set the like or dislike buttons to be active via the hotkey, but not unset them.",

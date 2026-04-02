@@ -466,6 +466,7 @@
   "feature_desc.switchBetweenSites": "在视频 / 歌曲上添加一个热键，以在 YT 和 YTM 网站之间切换",
   "feature_helptext.switchBetweenSites": "按下此热键将在 YT 或 YTM 上切换到另一个站点，同时保持在同一视频 / 歌曲上。",
   "feature_desc.switchSitesHotkey": "需要按下哪个热键才能切换网站？",
+  "feature_desc.switchSitesNewTabHotkey": "需要按下哪个热键才能在新标签页中打开另一个站点？",
   "feature_desc.likeDislikeHotkeys": "添加热键以点赞或点踩当前播放的视频/歌曲",
   "feature_desc.likeHotkey": "点赞当前视频/歌曲的热键",
   "feature_desc.dislikeHotkey": "点踩当前视频/歌曲的热键",

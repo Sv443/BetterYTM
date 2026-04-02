@@ -1252,6 +1252,20 @@ export const featInfo = {
     },
     reloadRequired: false,
   },
+  switchSitesNewTabHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    group: "switchBetweenSites",
+    supportedSites: ["ytm", "yt"],
+    since: "3.1.0",
+    default: {
+      code: "F9",
+      shift: false,
+      ctrl: true,
+      alt: false,
+    },
+    reloadRequired: false,
+  },
   likeDislikeHotkeys: {
     type: "toggle",
     category: "hotkeys",

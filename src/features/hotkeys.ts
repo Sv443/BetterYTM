@@ -1,4 +1,4 @@
-import { getUnsafeWindow } from "@sv443-network/userutils";
+import { getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
 import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "@feat/behavior.ts";
 import { isIgnoredInputElement } from "@feat/input.ts";
 import { getFeature } from "@/config.ts";
@@ -58,8 +58,12 @@ export async function initSiteSwitch() {
       return;
     if(isIgnoredInputElement())
       return;
-    if(siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
-      switchSite(domain === "yt" ? "ytm" : "yt");
+    if(siteSwitchEnabled) {
+      if(hotkeyMatches(e, getFeature("switchSitesNewTabHotkey")))
+        switchSite(domain === "yt" ? "ytm" : "yt", true);
+      else if(hotkeyMatches(e, getFeature("switchSitesHotkey")))
+        switchSite(domain === "yt" ? "ytm" : "yt");
+    }
   }, { capture: true });
   siteEvents.on("hotkeyInputActive", (hkInputActive) => {
     if(!getFeature("switchBetweenSites"))
@@ -70,7 +74,7 @@ export async function initSiteSwitch() {
 }
 
 /** Switches to the other site (between YT and YTM) */
-async function switchSite(newDomain: Domain) {
+async function switchSite(newDomain: Domain, inNewTab = false) {
   try {
     if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
       return warn("Not on a supported page, so the site switch is ignored");
@@ -107,7 +111,10 @@ async function switchSite(newDomain: Domain) {
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
     info(`Switching to domain '${newDomain}' at ${newUrl}`);
-    location.assign(newUrl);
+    if(inNewTab)
+      openInNewTab(newUrl, true);
+    else
+      location.assign(newUrl);
   }
   catch(err) {
     error("Error while switching site:", err);

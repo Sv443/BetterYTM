@@ -473,6 +473,7 @@
   "feature_desc.switchBetweenSites": "ビデオ / 曲の YT と YTM サイトを切り替えるホットキーを追加する",
   "feature_helptext.switchBetweenSites": "このホットキーを押すと、同じビデオ / 曲のままで YouTube または YouTube Music のどちらかに切り替わります。",
   "feature_desc.switchSitesHotkey": "サイトを切り替えるために押す必要があるホットキーはどれですか？",
+  "feature_desc.switchSitesNewTabHotkey": "別のサイトを新しいタブで開くためのショートカットキー",
   "feature_desc.likeDislikeHotkeys": "再生中の動画/曲に「いいね」または「低評価」するためのホットキーを追加します",
   "feature_desc.likeDislikeHotkeysToggle": "ホットキーで「いいね」/「低評価」のトグルを許可する",
   "feature_helptext.likeDislikeHotkeysToggle": "有効にすると、いいね/低評価のホットキーをもう一度押すと、いいねや低評価が解除されます。無効にすると、ホットキーでアクティブにすることはできますが、解除することはできません。",

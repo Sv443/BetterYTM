@@ -476,6 +476,7 @@
   "feature_desc.switchBetweenSites": "Füge einen Hotkey hinzu, um zwischen den YT und YTM Seiten zu wechseln",
   "feature_helptext.switchBetweenSites": "Wenn du auf YouTube oder YouTube Music bist, kannst du mit diesem Hotkey zur anderen Seite wechseln, während du auf demselben Video / Song bleibst.",
   "feature_desc.switchSitesHotkey": "Der Hotkey, um zwischen den Seiten zu wechseln",
+  "feature_desc.switchSitesNewTabHotkey": "Der Hotkey, um die andere Seite in einem neuen Tab zu öffnen",
   "feature_desc.likeDislikeHotkeys": "Füge Hotkeys hinzu, um das aktuell spielende Video/Lied zu liken oder disliken",
   "feature_desc.likeDislikeHotkeysToggle": "Erlaube den Hotkeys, den Like/Dislike-Status wieder auszuschalten",
   "feature_helptext.likeDislikeHotkeysToggle": "Wenn eingeschaltet, wird das erneute Drücken des Like- oder Dislike-Hotkeys deinen Like- oder Dislike-Status wieder vom Video/Lied entfernen. Wenn ausgeschaltet, kannst du die Like- oder Dislike-Buttons über den Hotkey nur noch aktivieren und nicht mehr deaktivieren.",

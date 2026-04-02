@@ -470,6 +470,7 @@
   "feature_desc.switchBetweenSites": "Adicionar um atalho para alternar entre os sites YT e YTM em um vídeo / música",
   "feature_helptext.switchBetweenSites": "Pressionar este atalho alternará para o outro site se você estiver no YouTube ou YouTube Music, mantendo-se na mesma música / vídeo.",
   "feature_desc.switchSitesHotkey": "Qual tecla de atalho precisa ser pressionada para alternar entre os sites?",
+  "feature_desc.switchSitesNewTabHotkey": "Qual tecla de atalho precisa ser pressionada para abrir o outro site em uma nova aba?",
   "feature_desc.likeDislikeHotkeys": "Adicionar atalhos de teclado para curtir e não curtir o vídeo/música em reprodução",
   "feature_desc.likeHotkey": "O atalho para curtir o vídeo/música atual",
   "feature_desc.dislikeHotkey": "O atalho para não curtir o vídeo/música atual",

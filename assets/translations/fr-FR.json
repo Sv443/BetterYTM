@@ -474,6 +474,7 @@
   "feature_desc.switchBetweenSites": "Ajouter un raccourci pour passer d'un site à l'autre sur une vidéo / chanson",
   "feature_helptext.switchBetweenSites": "En appuyant sur ce raccourci, vous passerez à l'autre site si vous êtes sur YouTube ou YouTube Music tout en restant sur la même vidéo / chanson.",
   "feature_desc.switchSitesHotkey": "Quelle touche de raccourci doit être enfoncée pour passer d'un site à l'autre?",
+  "feature_desc.switchSitesNewTabHotkey": "Raccourci pour ouvrir l'autre site dans un nouvel onglet",
   "feature_desc.likeDislikeHotkeys": "Ajouter des raccourcis clavier pour aimer et ne pas aimer la vidéo/chanson en cours de lecture",
   "feature_desc.likeDislikeHotkeysToggle": "Permettre aux raccourcis de basculer l'état j'aime/je n'aime pas",
   "feature_helptext.likeDislikeHotkeysToggle": "Lorsqu'activé, appuyer à nouveau sur le raccourci j'aime ou je n'aime pas supprimera votre j'aime ou je n'aime pas de la vidéo/chanson. Si désactivé, vous pouvez uniquement activer les boutons j'aime ou je n'aime pas via le raccourci, mais pas les désactiver.",

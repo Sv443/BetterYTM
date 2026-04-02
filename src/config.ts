@@ -246,6 +246,7 @@ export const cfgMigrations: DataMigrationsDict = {
         "themeSongVisualizerHotkey",
         "truncatePlayerBarSubtitles",
         "logHttp",
+        "switchSitesNewTabHotkey",
       ]),
       [
         { key: "thumbnailOverlayAlbumArtCacheMaxSize", oldDefault: 2_000 }, // new: 10_000

@@ -475,6 +475,7 @@
   "feature_desc.switchBetweenSites": "वीडियो / गीत पर YT और YTM साइटों के बीच स्विच करने के लिए एक हॉटकी जोड़ें",
   "feature_helptext.switchBetweenSites": "इस हॉटकी को दबाने से आप वर्तमान में चल रहे वीडियो / गीत के बीच स्विच कर सकते हैं जब आप YT या YTM पर होते हैं।",
   "feature_desc.switchSitesHotkey": "साइटों को स्विच करने के लिए कौन सी हॉटकी दबानी चाहिए?",
+  "feature_desc.switchSitesNewTabHotkey": "दूसरी साइट को एक नए टैब में खोलने के लिए हॉटकी",
   "feature_desc.likeDislikeHotkeys": "वर्तमान में चल रहे वीडियो/गीत को पसंद और नापसंद करने के लिए हॉटकी जोड़ें",
   "feature_desc.likeDislikeHotkeysToggle": "हॉटकी से पसंद/नापसंद स्थिति टॉगल करने की अनुमति दें",
   "feature_helptext.likeDislikeHotkeysToggle": "सक्षम होने पर, पसंद/नापसंद हॉटकी को दोबारा दबाने से आपकी पसंद या नापसंद हट जाएगी। अक्षम होने पर, आप हॉटकी के माध्यम से उन्हें केवल सक्रिय कर सकते हैं, लेकिन हटा नहीं सकते।",
