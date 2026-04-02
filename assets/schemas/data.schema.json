@@ -14,7 +14,7 @@
       "description": "List of supported domains, used for resolving hostnames to domain identifiers.",
       "items": {
         "type": "object",
-        "required": ["id", "hostnames"],
+        "required": ["id", "name", "nameShort", "abbr", "hostnames"],
         "description": "A supported domain with a unique identifier and its associated hostnames.",
         "properties": {
           "id": {
@@ -28,6 +28,18 @@
                 "const": "yt"
               }
             ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name of the domain, e.g. \"YouTube Music\"."
+          },
+          "nameShort": {
+            "type": "string",
+            "description": "Short name of the domain, e.g. \"YT Music\"."
+          },
+          "abbr": {
+            "type": "string",
+            "description": "Abbreviation for the domain, e.g. \"YTM\"."
           },
           "hostnames": {
             "type": "array",

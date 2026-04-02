@@ -3,12 +3,18 @@
   "domains": [
     {
       "id": "ytm",
+      "name": "YouTube Music",
+      "nameShort": "YT Music",
+      "abbr": "YTM",
       "hostnames": [
         "music.youtube.com"
       ]
     },
     {
       "id": "yt",
+      "name": "YouTube",
+      "nameShort": "YT",
+      "abbr": "YT",
       "hostnames": [
         "www.youtube.com",
         "youtube.com",
