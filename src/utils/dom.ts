@@ -368,7 +368,12 @@ export function downloadFile(fileName: string, data: string | Blob, mimeType = "
   document.body.appendChild(a);
   a.click();
 
-  setTimeout(() => a.remove(), 1);
+  return new Promise<void>((res) => {
+    setTimeout(() => {
+      a.remove();
+      res();
+    }, 1);
+  });
 }
 
 /**

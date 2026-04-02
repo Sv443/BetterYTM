@@ -13,7 +13,7 @@ const keys = allArgs
   : [];
 
 /** Whether to skip en-US when removing keys. */
-const skipEnUS = false;
+const skipEnUS = true;
 
 /**
  * Removes all lines in every translation file that begins with the specified keys.
