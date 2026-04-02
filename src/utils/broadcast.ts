@@ -1,6 +1,6 @@
 // module that facilitates inter-session (tab) communication via broadcast packets
 
-import { debounce, pureObj, randomId, type DataStoreEngineDSOptions } from "@sv443-network/coreutils";
+import { debounce, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { initTime } from "@/constants.ts";
@@ -14,7 +14,7 @@ import type { Domain } from "@/types.ts";
 
 /** Maps a {@linkcode BroadcastPacketType} to the type of data it should contain. */
 export type BroadcastPacketDataMap = {
-  // sync
+  // DataStore sync:
   /** Whenever any DataStore's data is changed, to trigger updates in other sessions. */
   dataStoreUpdate: {
     /** The ID of the DataStore that was updated. */
@@ -23,7 +23,7 @@ export type BroadcastPacketDataMap = {
   /** Reloads all open tabs. */
   reloadTabs: void;
 
-  // sessions
+  // sessions:
   /** Called to make other sessions reply with a `discoverSessionsReply`, in order to collect a list of all open sessions. */
   discoverSessions: void;
   /** Reply to a "discoverSessions" packet. */
@@ -42,12 +42,9 @@ export type BroadcastPacketDataMap = {
     initTime: number;
   };
 
-  // custom
+  // custom:
   /** Reserved for custom, non-standard BYTM packets. */
-  custom: {
-    /** Identifies the custom packet, used to determine how to handle it when received. */
-    name: string;
-  } & Record<string, any>; // allow custom packets to contain any additional data they need
+  custom: Record<string, SerializableVal>;
 };
 
 /** The type of broadcast packet. */
