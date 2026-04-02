@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3d41a374/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d578bfeb/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -448,8 +448,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "3d41a374",
-    buildTimestamp: "1775145917279",
+    buildNumber: "d578bfeb",
+    buildTimestamp: "1775168935238",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1338,7 +1338,7 @@ var updates = {
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
-var pkg = {
+var packageJson = {
 	version: version,
 	license: license,
 	homepage: homepage,
@@ -1453,7 +1453,7 @@ async function renderBody$4({ latestTag, changelogHtml, }) {
     btnUpdate.tabIndex = 0;
     btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host$1]);
     onInteraction(btnUpdate, () => {
-        window.open(pkg.updates[host$1]);
+        window.open(packageJson.updates[host$1]);
         verNotifDialog?.close();
     });
     const btnClose = document.createElement("button");
@@ -1467,6 +1467,7 @@ async function renderBody$4({ latestTag, changelogHtml, }) {
     return wrapperEl;
 }//#region PromptDialog
 let promptDialog = null;
+const promptDialogId = "prompt-dialog";
 /**
  * This is a custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions.
  * It supports various customizations - see {@linkcode showPrompt()} for details.
@@ -1474,7 +1475,7 @@ let promptDialog = null;
 class PromptDialog extends BytmDialog {
     constructor(props) {
         super({
-            id: "prompt-dialog",
+            id: promptDialogId,
             width: 500,
             height: 400,
             destroyOnClose: true,
@@ -1499,6 +1500,12 @@ class PromptDialog extends BytmDialog {
     /** Emits the "resolve" event with the specified value - don't call unless the dialog is about to be closed. */
     emitResolve(val) {
         this.events.emit("resolve", val);
+    }
+    /** Returns the current value of the text input field if the dialog type is "prompt", or undefined for other dialog types. */
+    getInputValue() {
+        if (this.type !== "prompt")
+            return undefined;
+        return document.querySelector("#bytm-dialog-container #bytm-prompt-dialog-input")?.value ?? "";
     }
     async renderHeader({ type }) {
         const headerEl = document.createElement("div");
@@ -1556,9 +1563,8 @@ class PromptDialog extends BytmDialog {
         const buttonsCont = document.createElement("div");
         buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
         // confirm button (only for types "confirm" & "prompt"):
-        let confirmBtn;
-        if (type === "confirm" || type === "prompt") {
-            confirmBtn = document.createElement("button");
+        const confirmBtn = (type === "confirm" || type === "prompt") && rest.confirmBtnEnabled !== false ? document.createElement("button") : undefined;
+        if (confirmBtn) {
             confirmBtn.id = "bytm-prompt-dialog-confirm";
             confirmBtn.classList.add("bytm-prompt-dialog-button");
             confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
@@ -1572,23 +1578,25 @@ class PromptDialog extends BytmDialog {
             }, { once: true });
         }
         // close/cancel button:
-        const closeBtn = document.createElement("button");
-        closeBtn.id = "bytm-prompt-dialog-close";
-        closeBtn.classList.add("bytm-prompt-dialog-button");
-        closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
-        closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
-        closeBtn.tabIndex = 0;
-        if (type === "alert")
-            closeBtn.autofocus = true;
-        closeBtn.addEventListener("click", () => {
-            const resVals = {
-                alert: true,
-                confirm: false,
-                prompt: null,
-            };
-            this.emitResolve(resVals[type]);
-            promptDialog?.close();
-        }, { once: true });
+        const closeBtn = rest.denyBtnEnabled === false ? undefined : document.createElement("button");
+        if (closeBtn) {
+            closeBtn.id = "bytm-prompt-dialog-close";
+            closeBtn.classList.add("bytm-prompt-dialog-button");
+            closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
+            closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
+            closeBtn.tabIndex = 0;
+            if (type === "alert")
+                closeBtn.autofocus = true;
+            closeBtn.addEventListener("click", () => {
+                const resVals = {
+                    alert: true,
+                    confirm: false,
+                    prompt: null,
+                };
+                this.emitResolve(resVals[type]);
+                promptDialog?.close();
+            }, { once: true });
+        }
         // extra buttons:
         const { extraButtons = [], extraButtonsPosition = "between" } = rest;
         const isMac = getOS() === "mac";
@@ -1606,10 +1614,10 @@ class PromptDialog extends BytmDialog {
             confirmBtn && buttonsCont.appendChild(confirmBtn);
             if (extraButtonsPosition === "between")
                 await appendExtraButtons();
-            buttonsCont.appendChild(closeBtn);
+            closeBtn && buttonsCont.appendChild(closeBtn);
         }
         else {
-            buttonsCont.appendChild(closeBtn);
+            closeBtn && buttonsCont.appendChild(closeBtn);
             if (extraButtonsPosition === "between")
                 await appendExtraButtons();
             confirmBtn && buttonsCont.appendChild(confirmBtn);
@@ -1648,14 +1656,11 @@ class PromptDialog extends BytmDialog {
 /** Custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions */
 function showPrompt({ type, ...rest }) {
     return new Promise((resolve) => {
-        if (BytmDialog.getOpenDialogs().includes("prompt-dialog"))
+        if (BytmDialog.getOpenDialogs().includes(promptDialogId))
             promptDialog?.close();
         promptDialog = new PromptDialog({ type, ...rest });
-        promptDialog.once("render", () => {
-            addSelectorListener("bytmDialogContainer", `#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`, {
-                listener: (btn) => btn.focus(),
-            });
-        });
+        // focus on the most relevant button when the dialog opens to allow using the enter key immediately
+        promptDialog.once("open", () => document.querySelector(`#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`)?.focus());
         // make config menu inert while prompt dialog is open
         promptDialog.once("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
         promptDialog.once("close", () => document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert"));
@@ -2402,7 +2407,7 @@ function getErrorDialog(errName, args) {
         body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
   
-${t("generic_error_dialog_open_console_note", pkg.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
     });
 }
 //#region error classes
@@ -4207,11 +4212,11 @@ function getHotkeyModifiersHtml(hotkey) {
     hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
     hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
     return `\
-<div style="display: flex; align-items: center;">
+<div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">
   <span>
     ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
   </span>
-  <span style="padding: 0px 5px;">
+  <span style="padding: 0px 5px; height: 20px;">
     ${modifiers.length > 0 ? "+" : ""}
   </span>
 </div>`;
@@ -4364,9 +4369,9 @@ async function mountCfgMenu() {
             linksCont.appendChild(anchorElem);
         };
         const links = [
-            ["github", await getResourceUrl("img-github"), pkg.homepage, t("open_github", scriptInfo$1.name), "github"],
-            ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork"],
-            ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs"],
+            ["github", await getResourceUrl("img-github"), packageJson.homepage, t("open_github", scriptInfo$1.name), "github"],
+            ["greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork"],
+            ["openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs"],
         ];
         const hostLink = links.find(([name]) => name === host$1);
         const otherLinks = links.filter(([name]) => name !== host$1);
@@ -4520,8 +4525,8 @@ async function mountCfgMenu() {
                 headerElem.ariaChecked = String(selected);
                 headerElem.tabIndex = 0;
                 headerElem.ariaLevel = "2";
-                headerElem.textContent = t(`feature_category.${headerId}`, scriptInfo$1.name);
-                headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`));
+                headerElem.textContent = t(`feature_category.${headerId}`, { scriptName: scriptInfo$1.name });
+                headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`, { scriptName: scriptInfo$1.name }));
                 onInteraction(headerElem, (e) => {
                     const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
                     if (selectedHeader) {
@@ -4643,8 +4648,8 @@ async function mountCfgMenu() {
                     await initTranslations(featConf.locale);
                     setLocale(featConf.locale);
                     const newText = t("lang_changed_prompt_reload");
-                    const newLangEmoji = localesJson[featConf.locale]?.emoji ? `${localesJson[featConf.locale].emoji}\n` : "";
-                    const initLangEmoji = localesJson[initLocale]?.emoji ? `${localesJson[initLocale].emoji}\n` : "";
+                    const newLangEmoji = localesJson[featConf.locale]?.emoji ? `${localesJson[featConf.locale].emoji} ` : "";
+                    const initLangEmoji = localesJson[initLocale]?.emoji ? `${localesJson[initLocale].emoji} ` : "";
                     const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
                     const isLocalesTextDifferent = t("reload_now") !== tl(initLocale, "reload_now");
                     const getReloadAllBtn = async (dialog) => {
@@ -4720,8 +4725,8 @@ async function mountCfgMenu() {
             categoryCont.id = `bytm-ftconf-category-${category}`;
             categoryCont.classList.add("bytm-ftconf-category");
             categoryCont.tabIndex = 0;
-            categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
-            categoryCont.setAttribute("aria-label", t(`feature_category.${category}`));
+            categoryCont.setAttribute("aria-describedby", `bytm-ftconf-category-${category}-header`);
+            categoryCont.setAttribute("aria-label", t(`feature_category.${category}`, { scriptName: scriptInfo$1.name }));
             return categoryCont;
         };
         let currentGroup;
@@ -5099,23 +5104,23 @@ async function mountCfgMenu() {
                 aboutTextCont.classList.add("bytm-markdown-container");
                 const aboutTrParams = CoreUtils.pureObj({
                     scriptName: scriptInfo$1.name,
-                    scriptVersion: pkg.version,
+                    scriptVersion: packageJson.version,
                     buildNumber: buildNumber$1,
                     buildDate: new Date(buildTimestamp).toLocaleString(getLocale(), {
                         dateStyle: "medium",
                     }),
                     buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber$1}`,
-                    authorName: pkg.author.name,
-                    authorLink: pkg.author.url,
+                    authorName: packageJson.author.name,
+                    authorLink: packageJson.author.url,
                     githubLink: scriptInfo$1.namespace,
-                    greasyforkLink: pkg.hosts.greasyfork,
-                    openuserjsLink: pkg.hosts.openuserjs,
-                    fundingLink: pkg.funding.url,
+                    greasyforkLink: packageJson.hosts.greasyfork,
+                    openuserjsLink: packageJson.hosts.openuserjs,
+                    fundingLink: packageJson.funding.url,
                     discordLink: "https://dc.sv443.net/",
                     currentYear: new Date().getFullYear(),
-                    licenseName: pkg.license,
+                    licenseName: packageJson.license,
                     licenseUrl: `https://github.com/${repo}/blob/${branch$1}/LICENSE.txt`,
-                    contributorsLink: pkg.specialThanksUrl,
+                    contributorsLink: packageJson.specialThanksUrl,
                 });
                 setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
                 return [aboutTextCont];
@@ -6698,7 +6703,7 @@ async function downloadData(useEncoding = true, full = false) {
     const serializer = getDSSerializer(full);
     const fileName = t(`data_export_file_name${full ? "_full" : ""}`, {
         scriptName: scriptInfo$1.name,
-        version: pkg.version,
+        version: packageJson.version,
         date: new Date().toISOString(),
     });
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
@@ -7092,11 +7097,11 @@ async function reloadTab() {
     }
 }
 /** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
-async function reloadAllTabs(reloadSelf = true) {
-    info(`Emitting broadcast to reload all tabs${reloadSelf ? ", then self-reloading" : ""}.`);
+async function reloadAllTabs(reloadSelf = true, toTxIDs) {
+    info(`Emitting broadcast to reload ${"all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
     emitBroadcast({
         type: "reloadTabs",
-    });
+    }, toTxIDs);
     return reloadSelf
         ? await (async () => {
             await CoreUtils.pauseFor(30); // broadcast is synchronous, but we might still be working on something in our async queue
@@ -7366,7 +7371,7 @@ async function renderBody$1() {
         const noPluginsEl = document.createElement("div");
         noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
         noPluginsEl.tabIndex = 0;
-        setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${pkg.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+        setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
         noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list.no_plugins_tooltip");
         listContainerEl.appendChild(noPluginsEl);
         return listContainerEl;
@@ -7435,7 +7440,7 @@ async function renderBody$1() {
             linksList.appendChild(linkEl);
         }
         const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
-        const devPluginIdentifier = `${pkg.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
+        const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
         const isDevPlugin = Boolean(pluginIdentifier === devPluginIdentifier
             && getPluginInfo(devPluginToken, devPluginIdentifier));
         const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
@@ -7660,8 +7665,12 @@ async function initSiteSwitch() {
             return;
         if (isIgnoredInputElement())
             return;
-        if (siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
-            switchSite(domain === "yt" ? "ytm" : "yt");
+        if (siteSwitchEnabled) {
+            if (hotkeyMatches(e, getFeature("switchSitesNewTabHotkey")))
+                switchSite(domain === "yt" ? "ytm" : "yt", true);
+            else if (hotkeyMatches(e, getFeature("switchSitesHotkey")))
+                switchSite(domain === "yt" ? "ytm" : "yt");
+        }
     }, { capture: true });
     siteEvents.on("hotkeyInputActive", (hkInputActive) => {
         if (!getFeature("switchBetweenSites"))
@@ -7671,7 +7680,7 @@ async function initSiteSwitch() {
     log("Initialized site switch listener");
 }
 /** Switches to the other site (between YT and YTM) */
-async function switchSite(newDomain) {
+async function switchSite(newDomain, inNewTab = false) {
     try {
         if (!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
             return warn("Not on a supported page, so the site switch is ignored");
@@ -7698,7 +7707,10 @@ async function switchSite(newDomain) {
             : cleanSearch;
         const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
         info(`Switching to domain '${newDomain}' at ${newUrl}`);
-        location.assign(newUrl);
+        if (inNewTab)
+            UserUtils.openInNewTab(newUrl, true);
+        else
+            location.assign(newUrl);
     }
     catch (err) {
         error("Error while switching site:", err);
@@ -9452,6 +9464,20 @@ const featInfo = {
         },
         reloadRequired: false,
     },
+    switchSitesNewTabHotkey: {
+        type: "hotkey",
+        category: "hotkeys",
+        group: "switchBetweenSites",
+        supportedSites: ["ytm", "yt"],
+        since: "3.1.0",
+        default: {
+            code: "F9",
+            shift: false,
+            ctrl: true,
+            alt: false,
+        },
+        reloadRequired: false,
+    },
     likeDislikeHotkeys: {
         type: "toggle",
         category: "hotkeys",
@@ -9769,7 +9795,7 @@ const featInfo = {
         supportedSites: ["ytm", "yt"],
         since: "3.1.0",
         default: undefined,
-        click: () => UserUtils.openInNewTab(pkg.pluginDiscoveryUrl),
+        click: () => UserUtils.openInNewTab(packageJson.pluginDiscoveryUrl),
     },
 };//#region >> format version
 /** If this number is incremented, the features object data will be migrated to the new format */
@@ -9980,6 +10006,7 @@ const cfgMigrations = {
             "themeSongVisualizerHotkey",
             "truncatePlayerBarSubtitles",
             "logHttp",
+            "switchSitesNewTabHotkey",
         ]), [
             { key: "thumbnailOverlayAlbumArtCacheMaxSize", oldDefault: 2000 }, // new: 10_000
             { key: "thumbnailOverlayITunesImgRes", oldDefault: 1500 }, // new: 2_000
@@ -10382,16 +10409,16 @@ function registerDevPlugin() {
         const { token, events } = registerPlugin({
             plugin: {
                 name: t("dev_plugin.name"),
-                namespace: `${pkg.namespace}+${devPluginId}`,
-                version: pkg.version,
+                namespace: `${packageJson.namespace}+${devPluginId}`,
+                version: packageJson.version,
                 description,
                 homepage: {
-                    source: pkg.homepage,
-                    changelog: `${pkg.homepage}/blob/${branch}/changelog.md`,
-                    bug: pkg.bugs.url,
-                    greasyfork: pkg.hosts.greasyfork,
-                    openuserjs: pkg.hosts.openuserjs,
-                    other: pkg.hosts.github,
+                    source: packageJson.homepage,
+                    changelog: `${packageJson.homepage}/blob/${branch}/changelog.md`,
+                    bug: packageJson.bugs.url,
+                    greasyfork: packageJson.hosts.greasyfork,
+                    openuserjs: packageJson.hosts.openuserjs,
+                    other: packageJson.hosts.github,
                 },
                 iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
             },
@@ -11181,7 +11208,12 @@ function downloadFile(fileName, data, mimeType = "text/plain") {
     a.download = fileName;
     document.body.appendChild(a);
     a.click();
-    setTimeout(() => a.remove(), 1);
+    return new Promise((res) => {
+        setTimeout(() => {
+            a.remove();
+            res();
+        }, 1);
+    });
 }
 /**
  * Moves the given {@linkcode element} to the {@linkcode target} element with the specified {@linkcode position} (after the target element, as a sibling by default).
@@ -11321,9 +11353,9 @@ function retranslateWelcomeMenu() {
         },
         "#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
         "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo$1.name)),
-        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
-        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url))),
-        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url))),
+        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
+        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(packageJson.funding.url))),
+        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(packageJson.bugs.url))),
     };
     for (const [selector, fn] of Object.entries(changes)) {
         const el = document.querySelector(selector);
@@ -11384,15 +11416,36 @@ Build #${buildNumber$1}${mode$1 === "development" ? " (dev mode)" : ""}
 
 %c${poweredBy}`, `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`, `${styleCommon} background-color: ${gradientContBg}; padding-left: 8px; padding-right: 8px;`, "color: #fff; font-size: 1.2rem;", "padding: initial; font-size: 0.9rem;", "padding: initial; font-size: 1rem;");
 }
+//#region init timings
 const initTimings = {
+    _comments: [
+        `This is a performance report generated by ${scriptInfo$1.name} (${packageJson.homepage})`,
+        "It shows the amount of time (in ms) it took to complete various stages of the initialization process.",
+        "- The 'start' property is a 13-digit epoch timestamp representing the time at which the script started running.",
+        "- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.",
+        "- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property.",
+    ],
+    meta: {
+        version: scriptInfo$1.version,
+        domain: getDomain(),
+        userAgent: navigator.userAgent,
+        scriptHandler: GM.info?.scriptHandler ?? "unknown",
+        scriptHandlerVersion: GM.info?.version ?? "unknown",
+        isIncognito: GM.info?.isIncognito ?? undefined,
+        sandboxMode: GM.info?.sandboxMode ?? undefined,
+        // @ts-expect-error - Violentmonkey-only property
+        injectInto: GM.info?.injectInto ?? undefined,
+        isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? undefined,
+    },
     start: 0,
     durations: {},
+    featureDurations: {},
 };
 /**
  * Starts a timer for measuring the duration of a specific phase of the initialization process.
  * Returns a function that, when called, will stop the timer and save the duration in the `initTimings` object under the specified name.
  */
-function measureDuration(name) {
+function measureInitDuration(name) {
     const start = Date.now();
     return () => {
         if (typeof initTimings.durations !== "object")
@@ -11408,8 +11461,8 @@ function preInit() {
         const unsupportedHandlers = [
             "FireMonkey",
         ];
-        if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "")) // (translations not loaded yet)
-            return alert(`BetterYTM does not work when using ${GM?.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+        if (unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) // (translations not loaded yet)
+            return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
         setLogLevel(defaultLogLevel);
         initBroadcast();
         initInterface();
@@ -11428,17 +11481,17 @@ async function init() {
     try {
         const domain = getDomain();
         // feature config:
-        const endCfgDur = measureDuration("config");
+        const endCfgDur = measureInitDuration("initConfig");
         const features = await initConfig();
         endCfgDur();
         setLogLevel(features.logLevel);
         info("Session ID:", getSessionId());
         // resource cache:
-        const endResCacheDur = measureDuration("resourceCache");
+        const endResCacheDur = measureInitDuration("initResourceCache");
         await initResourceCache();
         endResCacheDur();
         // lyrics cache:
-        const endLyrCacheDur = measureDuration("lyricsCache");
+        const endLyrCacheDur = measureInitDuration("initLyricsCache");
         await initLyricsCache();
         endLyrCacheDur();
         // translations:
@@ -11485,7 +11538,7 @@ async function onDomLoad() {
     try {
         // run detached:
         setTimeout(() => {
-            const endInitGlobalDur = measureDuration("initGlobal_decoupled");
+            const endInitGlobalDur = measureInitDuration("initGlobals_deferred");
             initGlobalCss();
             initObservers(feats);
             Promise.allSettled([
@@ -11511,7 +11564,7 @@ async function onDomLoad() {
             await dlg.once("close");
         }
         // initialize data.json and check for active alerts
-        const endStaticDataDur = measureDuration("staticData");
+        const endStaticDataDur = measureInitDuration("initStaticData");
         initStaticData().then(() => endStaticDataDur());
         await initVersionSessionCounter();
         if (domain === "ytm") {
@@ -11603,7 +11656,7 @@ async function onDomLoad() {
         const initStartTs = Date.now();
         const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8000;
         const initializedFeats = [];
-        const endFeatInitDur = measureDuration("featuresAllReady_decoupled");
+        const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
         (() => Promise.race([
             CoreUtils.pauseFor(initTimeout),
             Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
@@ -11620,6 +11673,7 @@ async function onDomLoad() {
         ]).then(() => {
             endFeatInitDur();
             emitInterface("bytm:allReady");
+            initTimings.allReady = Date.now() - initStartTs;
             if (initializedFeats.length < ftInit.length) {
                 errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
             }
@@ -11835,19 +11889,74 @@ function registerDevCommands() {
         }
         dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     });
-    isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_value"), async () => {
-        const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
-        if (input && input.length > 0) {
-            const compressed = await CoreUtils.compress(input, compressionFormat$1);
-            dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
-        }
-    });
-    isAny && GM.registerMenuCommand(getCmdName("📦", "menu_command.decompress_value"), async () => {
-        const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
-        if (input && input.length > 0) {
-            const decompressed = await CoreUtils.decompress(input, compressionFormat$1);
-            dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
-        }
+    isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
+        const showFinalPrompt = async (type, initial, result) => {
+            await showPrompt({
+                type: "alert",
+                message: `${type === "compress" ? "Compressed" : "Decompressed"} value (${initial.length} chars -> ${result.length} chars):\n${result}`,
+                extraButtons: [
+                    (dlg) => {
+                        const btn = document.createElement("button");
+                        btn.textContent = btn.ariaLabel = "Copy and close";
+                        btn.addEventListener("click", async () => {
+                            copyToClipboard(result);
+                            dlg.close();
+                        });
+                        return btn;
+                    },
+                ],
+                extraButtonsPosition: "before",
+            });
+        };
+        const showErr = async (type, err) => {
+            const errMsg = `Error while trying to ${type === "compress" ? "" : "de"}compress`;
+            error(errMsg, err);
+            await showPrompt({
+                type: "alert",
+                message: `${errMsg}:\n${err instanceof Error ? `${err.name}: ${err.message}` : String(err)}`,
+            });
+        };
+        await showPrompt({
+            type: "prompt",
+            message: "Enter text to compress or decompress it:",
+            textarea: true,
+            confirmBtnEnabled: false,
+            extraButtons: [
+                (dlg) => {
+                    const btn = document.createElement("button");
+                    btn.textContent = btn.ariaLabel = "Compress";
+                    btn.addEventListener("click", async () => {
+                        const val = dlg.getInputValue();
+                        try {
+                            if (val && val.length > 0)
+                                await showFinalPrompt("compress", val, await CoreUtils.compress(val, compressionFormat$1));
+                        }
+                        catch (e) {
+                            showErr("compress", e);
+                        }
+                        dlg.close();
+                    });
+                    return btn;
+                },
+                (dlg) => {
+                    const btn = document.createElement("button");
+                    btn.textContent = btn.ariaLabel = "Decompress";
+                    btn.addEventListener("click", async () => {
+                        const val = dlg.getInputValue();
+                        try {
+                            if (val && val.length > 0)
+                                await showFinalPrompt("decompress", val, await CoreUtils.decompress(val, compressionFormat$1));
+                        }
+                        catch (e) {
+                            showErr("decompress", e);
+                        }
+                        dlg.close();
+                    });
+                    return btn;
+                },
+            ],
+            extraButtonsPosition: "before",
+        });
     });
     isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
     isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
@@ -11865,8 +11974,8 @@ function registerDevCommands() {
         }
     });
     isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-    isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.print_init_timings"), () => {
-        info(`\n${">".repeat(64)}\n\nInit timings:\n`, initTimings);
+    isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+        downloadFile(`${scriptInfo$1.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
     });
     isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
         const val = !await GM.getValue("bytm-dev-treatments", false);
