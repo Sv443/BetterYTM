@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@591b5cdf/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3d41a374/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -448,8 +448,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "591b5cdf",
-    buildTimestamp: "1774914447946",
+    buildNumber: "3d41a374",
+    buildTimestamp: "1775145917279",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2022,8 +2022,7 @@ async function checkSharedVolume() {
 //#region initial volume
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem) {
-    const reloadTabVol = Number(await GM.getValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, 0));
-    GM.deleteValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`).catch(() => void 0);
+    const reloadTabVol = Number((await getReloadTabData())?.volume);
     if ((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
         return;
     const vidElem = await waitVideoElementReady();
@@ -7023,9 +7022,42 @@ function formatNumber(num, notation) {
             maximumFractionDigits: 0,
         });
 }
+const reloadTabStore = new CoreUtils.DataStore({
+    id: "bytm-reload-tab",
+    engine: new UserUtils.GMStorageEngine(),
+    formatVersion: 0,
+    compressionFormat: null,
+    memoryCache: false,
+    defaultData: {
+        entries: [],
+    },
+});
+const reloadTabEntryMaxTTL = 1000 * 60 * 60 * 24;
+/** Returns the "reload tab" data for the current session, or null if there is no data for the current session or sessionStorage is unavailable. */
+async function getReloadTabData(sessionId, deleteAfterRead = true) {
+    try {
+        if (!sessionId)
+            sessionId = getSessionId();
+        const data = await reloadTabStore.loadData();
+        let entries = [...data.entries];
+        const sesEntry = entries.find(e => e.sessionId === sessionId) ?? null;
+        entries = data.entries.filter(e => deleteAfterRead && sesEntry ? e.sessionId !== sessionId : true);
+        // filter out expired and own entries
+        entries = entries.filter(e => Date.now() - e.timestamp < reloadTabEntryMaxTTL);
+        await reloadTabStore.setData({
+            ...data,
+            entries,
+        });
+        return sesEntry;
+    }
+    catch (err) {
+        error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
+        return null;
+    }
+}
 /** add `time_continue` param only if current video time is greater than this value */
 const reloadTabVideoTimeThreshold = 3;
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume-${sessionID}` in GM storage */
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the `bytm-reload-tab` DataStore */
 async function reloadTab() {
     const win = UserUtils.getUnsafeWindow();
     try {
@@ -7038,8 +7070,18 @@ async function reloadTab() {
             const url = new URL(win.location.href);
             if (!isNaN(time) && time > reloadTabVideoTimeThreshold)
                 url.searchParams.set("time_continue", String(time));
-            if (!isNaN(volume) && volume > 0)
-                await GM.setValue(`bytm-reload-tab-volume-${getSessionId() ?? "x"}`, String(volume));
+            if (!isNaN(volume) && volume > 0) {
+                const reloadTabData = await reloadTabStore.loadData();
+                if (reloadTabData.entries.find(e => e.sessionId === getSessionId()))
+                    reloadTabData.entries = reloadTabData.entries.filter(e => e.sessionId !== getSessionId());
+                reloadTabData.entries.push({
+                    sessionId: getSessionId(),
+                    timestamp: Date.now(),
+                    volume,
+                    time: !isNaN(time) && time > reloadTabVideoTimeThreshold ? time : null,
+                });
+                await reloadTabStore.setData(reloadTabData);
+            }
             return win.location.replace(url);
         }
         win.location.reload();
@@ -11925,4 +11967,4 @@ async function runDevTreatments() {
     // const dlg = await getAllDataExImDialog();
     // await dlg.open();
 }
-preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(CoreUtils,UserUtils,DOMPurify,marked,compareVersions);
