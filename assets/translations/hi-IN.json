@@ -117,7 +117,7 @@
   "menu_command.import_full": "पूर्ण डेटा आयात [🚧 प्रगति में]",
   "menu_command.list_selectorobserver_listeners": "कंसोल में सक्रिय SelectorObserver लिस्नर्स सूचीबद्ध करें",
   "menu_command.open_cfg_menu": "कॉन्फ़िग मेनू खोलें",
-  "menu_command.print_init_timings": "इनिशियलाइज़ेशन टाइमिंग्स कंसोल में प्रिंट करें",
+  "menu_command.get_performance_report": "परफॉर्मेंस रिपोर्ट डाउनलोड करें",
   "menu_command.reload_all_tabs": "सभी खुले सत्र (टैब) पुनः लोड करें",
   "menu_command.reset_config": "कॉन्फ़िग रीसेट करें",
   "menu_command.reset_install_timestamp": "इंस्टॉल टाइमस्टैम्प रीसेट करें",

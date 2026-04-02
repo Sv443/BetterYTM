@@ -117,7 +117,7 @@
   "menu_command.import_full": "Importação completa de dados [🚧 WIP]",
   "menu_command.list_selectorobserver_listeners": "Listar listeners ativos do SelectorObserver no console",
   "menu_command.open_cfg_menu": "Abrir menu de configuração",
-  "menu_command.print_init_timings": "Imprimir tempos de inicialização no console",
+  "menu_command.get_performance_report": "Baixar relatório de desempenho",
   "menu_command.reload_all_tabs": "Recarregar todas as sessões abertas (abas)",
   "menu_command.reset_config": "Redefinir configuração",
   "menu_command.reset_install_timestamp": "Redefinir timestamp de instalação",

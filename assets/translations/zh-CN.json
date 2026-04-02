@@ -117,7 +117,7 @@
   "menu_command.import_full": "导入所有数据",
   "menu_command.list_selectorobserver_listeners": "列出所有 SelectorObserver 监听器",
   "menu_command.open_cfg_menu": "打开配置菜单",
-  "menu_command.print_init_timings": "打印初始化耗时",
+  "menu_command.get_performance_report": "下载性能报告",
   "menu_command.reload_all_tabs": "重新加载所有标签页",
   "menu_command.reset_config": "重置配置",
   "menu_command.reset_install_timestamp": "重置安装时间戳",

@@ -120,7 +120,7 @@
   "menu_command.import_full": "Voll-Datenimport [🚧 WIP]",
   "menu_command.list_selectorobserver_listeners": "Aktive SelectorObserver-Listener in der Konsole auflisten",
   "menu_command.open_cfg_menu": "Konfigurationsmenü öffnen",
-  "menu_command.print_init_timings": "Initialisierungs-Zeiten in der Konsole ausgeben",
+  "menu_command.get_performance_report": "Performance-Bericht herunterladen",
   "menu_command.reload_all_tabs": "Alle offenen Sitzungen (Tabs) neu laden",
   "menu_command.reset_config": "Konfigurations-Einstellungen zurücksetzen",
   "menu_command.reset_install_timestamp": "Installations-Zeit zurücksetzen",

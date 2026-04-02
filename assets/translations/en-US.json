@@ -120,7 +120,7 @@
   "menu_command.import_full": "Full data import [🚧 WIP]",
   "menu_command.list_selectorobserver_listeners": "List active SelectorObserver listeners in console",
   "menu_command.open_cfg_menu": "Open config menu",
-  "menu_command.print_init_timings": "Print init timings to console",
+  "menu_command.get_performance_report": "Download performance report",
   "menu_command.reload_all_tabs": "Reload all open sessions (tabs)",
   "menu_command.reset_config": "Reset config",
   "menu_command.reset_install_timestamp": "Reset install timestamp",

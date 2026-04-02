@@ -180,6 +180,48 @@ export type ColorLightnessPref = "darker" | "normal" | "lighter";
 /** Like/dislike state identifier, as presented by the attribute `like-status` on the YTM element `ytmusic-player-bar ytmusic-like-button-renderer` */
 export type LikeDislikeState = "LIKE" | "DISLIKE" | "INDIFFERENT";
 
+/** Object for storing various timings related to the initialization process, for performance monitoring and debugging purposes. */
+export type PerformanceReport = {
+  [key: string]: unknown;
+  /** Meta information about the environment at the time of generating the report. */
+  meta: {
+    /** The domain the script ran on. */
+    domain: Domain;
+    /** BYTM's version. */
+    version: string;
+    /** The userscript manager extension's identifier (`GM.info.scriptHandler`). */
+    scriptHandler: string;
+    /** Version of the userscript manager extension (`GM.info.version`). */
+    scriptHandlerVersion: string;
+    /** User agent string of the browser. */
+    userAgent: string;
+    /** Whether the page was loaded in incognito mode, which means other extensions are probably disabled. */
+    isIncognito?: boolean;
+    /** Which kind of sandboxing the userscript manager extension uses (Tampermonkey-only prop). */
+    sandboxMode?: string;
+    /** How the script was injected into the page (Violentmonkey-only prop). */
+    injectInto?: string;
+    /** Whether first-party isolation is enabled in the browser (Tampermonkey-only prop). */
+    isFirstPartyIsolation?: boolean;
+  };
+  /** Timestamp when the script starts synchronously executing, before the call to {@linkcode preInit()}. */
+  start: number;
+  /** Contains generic durations for specific initialization phases (or just noteworthy function calls), starting from whenever that phase starts, and recorded when that phase ends. The keys are not strictly typed, but should be descriptive of the phase they measure. */
+  durations?: Record<LooseUnion<keyof PerformanceReport & FeatureKey>, number>;
+  /** For each feature identifier (not strictly typed), the time in milliseconds **since feature initialization started**, recorded when that feature's async initialization function finishes executing. */
+  featureDurations?: Record<LooseUnion<FeatureKey>, number>;
+  /** Time in milliseconds since `start`, recorded at the end of {@linkcode preInit()}. */
+  preInitEnd?: number;
+  /** Time in milliseconds since `start`, recorded when the `DOMContentLoaded` event fires. */
+  domLoaded?: number;
+  /** Time in milliseconds since `start` when the `bytm:ready` event is emitted, which signals that the bulk of BYTM is ready and all features have *started* initialization. */
+  ready?: number;
+  /** Time in milliseconds since `start` when all features have finished their async initialization functions and BYTM is fully ready. For plugins, this only factors in their deferred initialization. */
+  allReady?: number;
+  /** Time in milliseconds since `start` when the entire initialization process finishes, including any synchronous, post-ready, developer-only code. Runs very slightly after `ready`. */
+  postInitEnd?: number;
+};
+
 //#region utility
 
 /** Returns a union of all keys of {@linkcode T} whose values are of type {@linkcode U} */

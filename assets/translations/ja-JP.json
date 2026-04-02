@@ -62,7 +62,7 @@
   "menu_command.import_full": "全データをインポート [🚧 開発中]",
   "menu_command.list_selectorobserver_listeners": "有効な SelectorObserver リスナーをコンソールに一覧表示",
   "menu_command.open_cfg_menu": "構成メニューを開く",
-  "menu_command.print_init_timings": "初期化タイミングをコンソールに出力",
+  "menu_command.get_performance_report": "パフォーマンスレポートをダウンロード",
   "menu_command.reload_all_tabs": "開いているすべてのセッション（タブ）を再読み込み",
   "menu_command.reset_config": "設定をリセット",
   "menu_command.reset_install_timestamp": "インストール日時をリセット",
