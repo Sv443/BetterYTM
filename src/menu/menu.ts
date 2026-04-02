@@ -361,8 +361,8 @@ export async function mountCfgMenu() {
         headerElem.ariaChecked = String(selected);
         headerElem.tabIndex = 0;
         headerElem.ariaLevel = "2";
-        headerElem.textContent = t(`feature_category.${headerId}`, scriptInfo.name);
-        headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`));
+        headerElem.textContent = t(`feature_category.${headerId}`, { scriptName: scriptInfo.name });
+        headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`, { scriptName: scriptInfo.name }));
 
         onInteraction(headerElem, (e: MouseEvent | KeyboardEvent) => {
           const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
@@ -525,8 +525,8 @@ export async function mountCfgMenu() {
           setLocale(featConf.locale);
           const newText = t("lang_changed_prompt_reload");
 
-          const newLangEmoji = localeMapping[featConf.locale]?.emoji ? `${localeMapping[featConf.locale].emoji}\n` : "";
-          const initLangEmoji = localeMapping[initLocale!]?.emoji ? `${localeMapping[initLocale!].emoji}\n` : "";
+          const newLangEmoji = localeMapping[featConf.locale]?.emoji ? `${localeMapping[featConf.locale].emoji} ` : "";
+          const initLangEmoji = localeMapping[initLocale!]?.emoji ? `${localeMapping[initLocale!].emoji} ` : "";
 
           const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
           const isLocalesTextDifferent = t("reload_now") !== tl(initLocale!, "reload_now");
@@ -611,8 +611,8 @@ export async function mountCfgMenu() {
       categoryCont.id = `bytm-ftconf-category-${category}`;
       categoryCont.classList.add("bytm-ftconf-category");
       categoryCont.tabIndex = 0;
-      categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
-      categoryCont.setAttribute("aria-label", t(`feature_category.${category}`));
+      categoryCont.setAttribute("aria-describedby", `bytm-ftconf-category-${category}-header`);
+      categoryCont.setAttribute("aria-label", t(`feature_category.${category}`, { scriptName: scriptInfo.name }));
       return categoryCont;
     };
 

@@ -1,4 +1,4 @@
-import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
+import { autoPlural, compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
 import { getUnsafeWindow, GMStorageEngine, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "@/constants.ts";
@@ -321,12 +321,12 @@ export async function reloadTab() {
 }
 
 /** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
-export async function reloadAllTabs(reloadSelf = true) {
-  info(`Emitting broadcast to reload all tabs${reloadSelf ? ", then self-reloading" : ""}.`);
+export async function reloadAllTabs(reloadSelf = true, toTxIDs?: string[]) {
+  info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
 
   emitBroadcast({
     type: "reloadTabs",
-  });
+  }, toTxIDs);
 
   return reloadSelf
     ? await (async () => {

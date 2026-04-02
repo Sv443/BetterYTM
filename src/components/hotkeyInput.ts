@@ -193,11 +193,11 @@ function getHotkeyModifiersHtml(hotkey: HotkeyObj) {
   hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
   hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
   return `\
-<div style="display: flex; align-items: center;">
+<div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">
   <span>
     ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
   </span>
-  <span style="padding: 0px 5px;">
+  <span style="padding: 0px 5px; height: 20px;">
     ${modifiers.length > 0 ? "+" : ""}
   </span>
 </div>`;
