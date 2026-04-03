@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d578bfeb/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@66c5681f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -86,10 +86,12 @@
 // @connect           github.com
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
+// @connect           i.ytimg.com
 // @connect           returnyoutubedislikeapi.com
+// @connect           itunes.apple.com
 // @noframes
-// @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.meta.js
-// @downloadURL       https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM.user.js
+// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/refs/heads/main/dist/BetterYTM.user.js
+// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/refs/heads/main/dist/BetterYTM.user.js
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -448,8 +450,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "d578bfeb",
-    buildTimestamp: "1775168935238",
+    buildNumber: "66c5681f",
+    buildTimestamp: "1775228138046",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1318,6 +1320,7 @@ var homepage = "https://github.com/Sv443/BetterYTM";
 var namespace = "https://github.com/Sv443/BetterYTM";
 var pluginDiscoveryUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins";
 var specialThanksUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks";
+var devVersionUrl = "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen";
 var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
@@ -1345,6 +1348,7 @@ var packageJson = {
 	namespace: namespace,
 	pluginDiscoveryUrl: pluginDiscoveryUrl,
 	specialThanksUrl: specialThanksUrl,
+	devVersionUrl: devVersionUrl,
 	author: author,
 	bugs: bugs,
 	funding: funding,
@@ -1501,11 +1505,11 @@ class PromptDialog extends BytmDialog {
     emitResolve(val) {
         this.events.emit("resolve", val);
     }
-    /** Returns the current value of the text input field if the dialog type is "prompt", or undefined for other dialog types. */
+    /** Returns the current value of the text input field if the dialog type is "prompt", null if it's empty, and undefined for other dialog types. */
     getInputValue() {
         if (this.type !== "prompt")
             return undefined;
-        return document.querySelector("#bytm-dialog-container #bytm-prompt-dialog-input")?.value ?? "";
+        return document.querySelector("#bytm-dialog-container #bytm-prompt-dialog-input")?.value?.trim() ?? null;
     }
     async renderHeader({ type }) {
         const headerEl = document.createElement("div");
@@ -1563,8 +1567,8 @@ class PromptDialog extends BytmDialog {
         const buttonsCont = document.createElement("div");
         buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
         // confirm button (only for types "confirm" & "prompt"):
-        const confirmBtn = (type === "confirm" || type === "prompt") && rest.confirmBtnEnabled !== false ? document.createElement("button") : undefined;
-        if (confirmBtn) {
+        const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : document.createElement("button"));
+        if (confirmBtn && "confirmBtnEnabled" in rest) {
             confirmBtn.id = "bytm-prompt-dialog-confirm";
             confirmBtn.classList.add("bytm-prompt-dialog-button");
             confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
@@ -6483,12 +6487,18 @@ async function initTruncatePlayerBarSubtitles() {
 var domains = [
 	{
 		id: "ytm",
+		name: "YouTube Music",
+		nameShort: "YT Music",
+		abbr: "YTM",
 		hostnames: [
 			"music.youtube.com"
 		]
 	},
 	{
 		id: "yt",
+		name: "YouTube",
+		nameShort: "YT",
+		abbr: "YT",
 		hostnames: [
 			"www.youtube.com",
 			"youtube.com",
@@ -6508,7 +6518,7 @@ var defaultStaticData = {
 	selectors: selectors
 };//#region vars
 /** URL to the remote data JSON file on a CDN. */
-const remoteDataUrl = `https://github.com/${repo}/raw/refs/heads/main/assets/data.json`;
+const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json`;
 /** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
 const staticDataFormatVersion = 0;
 let staticData;
@@ -6533,7 +6543,7 @@ async function getStaticData() {
         return staticData = defaultStaticData;
     }
     catch (e) {
-        warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to an error:`, e);
+        warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
         info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
         return staticData = defaultStaticData;
     }
@@ -11521,6 +11531,15 @@ async function init() {
     }
     catch (err) {
         error("Fatal error:", err);
+        alert(`\
+${scriptInfo$1.name} encountered a fatal error during initialization and will not work correctly, if at all.
+For information on what caused this error, please refer to the JS console.
+
+${assetSource === "local"
+            ? `⚠️ The assetSource constant is set to "local", so this is likely due to the development server not running. This can be confirmed if there are NetworkErrors in the console when fetching ${scriptInfo$1.name} resources.\nPlease run "pnpm dev" or "pnpm serve" in the project directory and reload the page.`
+            : `Please report this bug using the issue tracker on GitHub:\n${packageJson.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`}${mode$1 === "development"
+            ? `\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${packageJson.devVersionUrl}`
+            : ""}`);
     }
 }
 //#region onDomLoad
@@ -11900,6 +11919,7 @@ function registerDevCommands() {
                         btn.textContent = btn.ariaLabel = "Copy and close";
                         btn.addEventListener("click", async () => {
                             copyToClipboard(result);
+                            dlg.emitResolve(result);
                             dlg.close();
                         });
                         return btn;
@@ -11918,7 +11938,7 @@ function registerDevCommands() {
         };
         await showPrompt({
             type: "prompt",
-            message: "Enter text to compress or decompress it:",
+            message: "Enter text to compress or decompress:",
             textarea: true,
             confirmBtnEnabled: false,
             extraButtons: [
@@ -11928,13 +11948,17 @@ function registerDevCommands() {
                     btn.addEventListener("click", async () => {
                         const val = dlg.getInputValue();
                         try {
-                            if (val && val.length > 0)
-                                await showFinalPrompt("compress", val, await CoreUtils.compress(val, compressionFormat$1));
+                            if (val && val.length > 0) {
+                                const result = await CoreUtils.compress(val, compressionFormat$1);
+                                dlg.emitResolve(result);
+                                dlg.close();
+                                await showFinalPrompt("compress", val, result);
+                            }
                         }
                         catch (e) {
+                            dlg.close();
                             showErr("compress", e);
                         }
-                        dlg.close();
                     });
                     return btn;
                 },
@@ -11944,13 +11968,17 @@ function registerDevCommands() {
                     btn.addEventListener("click", async () => {
                         const val = dlg.getInputValue();
                         try {
-                            if (val && val.length > 0)
-                                await showFinalPrompt("decompress", val, await CoreUtils.decompress(val, compressionFormat$1));
+                            if (val && val.length > 0) {
+                                const result = await CoreUtils.decompress(val, compressionFormat$1);
+                                dlg.emitResolve(result);
+                                await showFinalPrompt("decompress", val, result);
+                                dlg.close();
+                            }
                         }
                         catch (e) {
+                            dlg.close();
                             showErr("decompress", e);
                         }
-                        dlg.close();
                     });
                     return btn;
                 },
@@ -11991,7 +12019,8 @@ function registerDevCommands() {
                 const btn = document.createElement("button");
                 btn.textContent = btn.ariaLabel = "Copy and close";
                 btn.addEventListener("click", async () => {
-                    copyToClipboard(devPluginToken ?? "");
+                    devPluginToken && copyToClipboard(devPluginToken);
+                    dlg.emitResolve(devPluginToken ?? null);
                     dlg.close();
                 });
                 return btn;
@@ -12029,7 +12058,8 @@ function registerDevCommands() {
         });
         dbg("Collecting session info from open tabs...");
         setTimeout(() => {
-            const columns = ["#", "Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+            const columns = ["#", "Self?", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+            const columnAlign = ["left", "left", "left", "left", "left", "right", "left"];
             const columnStyle = "color: #db3; font-weight: bold;";
             const resetStyle = "color: inherit; font-weight: inherit;";
             const styles = [];
@@ -12050,6 +12080,7 @@ function registerDevCommands() {
                     ];
                 }),
             ], {
+                columnAlign,
                 applyCellStyle(i) {
                     if (i === 0)
                         return ["%c", "%c"];
