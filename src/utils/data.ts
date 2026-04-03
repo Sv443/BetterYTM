@@ -62,7 +62,7 @@ export type GlobalAlert = {
 //#region vars
 
 /** URL to the remote data JSON file on a CDN. */
-const remoteDataUrl = `https://github.com/${repo}/raw/refs/heads/main/assets/data.json`;
+const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json` as const;
 
 /** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
 const staticDataFormatVersion = 0;

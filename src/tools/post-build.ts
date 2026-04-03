@@ -79,10 +79,10 @@ const hostScriptUrl = (() => {
   switch(host) {
   case "greasyfork": return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js" as const;
   case "openuserjs": return "https://openuserjs.org/src/scripts/Sv443/BetterYTM.user.js" as const;
-  default:           return `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptDistFile}` as const;
+  default:           return `https://raw.githubusercontent.com/${repo}/refs/heads/main/dist/${userscriptDistFile}` as const;
   }
 })();
-const hostMetaUrl = `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptMetaFile}` as const;
+const hostMetaUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/dist/${userscriptDistFile}` as const;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
@@ -232,7 +232,9 @@ async function getHeaders(buildNbr: string) {
 // @connect           github.com
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
+// @connect           i.ytimg.com
 // @connect           returnyoutubedislikeapi.com
+// @connect           itunes.apple.com
 // @noframes
 // @updateURL         ${hostMetaUrl}
 // @downloadURL       ${hostScriptUrl}
