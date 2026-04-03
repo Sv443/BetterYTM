@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           3.1.0-rc.1
+// @version           3.1.0
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@93a674ca/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4ad4ea85/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -367,8 +367,8 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
     mode: "production",
     branch: "main",
     host: "greasyfork",
-    buildNumber: "93a674ca",
-    buildTimestamp: "1775247214509",
+    buildNumber: "4ad4ea85",
+    buildTimestamp: "1775247278851",
     assetSource: "jsdelivr",
     devServerPort: "8710"
   };
@@ -1063,7 +1063,7 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
       lastPathname = String(location.pathname);
     }
   }
-  var version = "3.1.0-rc.1";
+  var version = "3.1.0";
   var license = "AGPL-3.0-or-later";
   var homepage = "https://github.com/Sv443/BetterYTM";
   var namespace = "https://github.com/Sv443/BetterYTM";
