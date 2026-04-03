@@ -145,6 +145,7 @@
       - Decompress a value (using BYTM's default compression algorithm and encoding)
       - Log the script's initialization timings to the JS console
       - Toggle developer treatments (experiments that are not quite ready for production)
+  - Added error alert when the script fails to initialize, like when it tries to fetch vital assets from a local server that isn't running.
   - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN for better performance and caching.
   - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
   - The functions `sanitizeArtists()` and `sanitizeSong()` will now replace some common Unicode punctuation symbol variants with their ASCII counterparts (e.g. `‘` -> `'`).
