@@ -1,8 +1,8 @@
-import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
+import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn, type TrKey } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
-import { buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
+import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initStaticData } from "@util/data.js";
@@ -221,6 +221,17 @@ async function init() {
   }
   catch(err) {
     error("Fatal error:", err);
+    alert(`\
+${scriptInfo.name} encountered a fatal error during initialization and will not work correctly, if at all.
+For information on what caused this error, please refer to the JS console.
+
+${assetSource === "local"
+    ? `⚠️ The assetSource constant is set to "local", so this is likely due to the development server not running. This can be confirmed if there are NetworkErrors in the console when fetching ${scriptInfo.name} resources.\nPlease run "pnpm dev" or "pnpm serve" in the project directory and reload the page.`
+    : `Please report this bug using the issue tracker on GitHub:\n${packageJson.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`
+}${mode === "development"
+  ? `\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${packageJson.devVersionUrl}`
+  : ""
+}`);
   }
 }
 
@@ -862,7 +873,8 @@ function registerDevCommands() {
     dbg("Collecting session info from open tabs...");
 
     setTimeout(() => {
-      const columns = ["#", "Is Self:", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+      const columns = ["#", "Self?", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+      const columnAlign: TableColumnAlign[] = ["left", "left", "left", "left", "left", "right", "left"];
 
       const columnStyle = "color: #db3; font-weight: bold;";
       const resetStyle = "color: inherit; font-weight: inherit;";
@@ -886,6 +898,7 @@ function registerDevCommands() {
             ];
           }),
         ], {
+          columnAlign,
           applyCellStyle(i) {
             if(i === 0)
               return ["%c", "%c"];

@@ -93,7 +93,7 @@ export async function getStaticData(): Promise<StaticData> {
     return staticData = defaultStaticData as StaticData;
   }
   catch(e) {
-    warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to an error:`, e);
+    warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
     info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
     return staticData = defaultStaticData as StaticData;
   }
