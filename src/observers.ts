@@ -1,4 +1,4 @@
-import { getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import { clamp, getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import { emitInterface } from "@/interface.ts";
 import { error, getDomain } from "@util/index.ts";
 import type { Domain, FeatureConfig } from "@/types.ts";
@@ -106,6 +106,7 @@ export function initObservers(cfg: FeatureConfig) {
     //    enabled immediately
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
+      defaultDebounce: clamp(defaultObserverOptions.defaultDebounce, 100, 500),
       subtree: false,
     });
 
@@ -117,7 +118,7 @@ export function initObservers(cfg: FeatureConfig) {
     const bytmDialogContainerSelector = "#bytm-dialog-container";
     globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
       ...defaultObserverOptions,
-      defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce! / 1.5),
+      defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
       subtree: true,
     });
 
@@ -133,7 +134,7 @@ export function initObservers(cfg: FeatureConfig) {
       const browseResponseSelector = "ytmusic-browse-response";
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce! / 2),
+        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
         subtree: true,
       });
 
@@ -312,7 +313,7 @@ export function initObservers(cfg: FeatureConfig) {
       const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
       globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce! / 2),
+        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
         subtree: true,
       });
 
