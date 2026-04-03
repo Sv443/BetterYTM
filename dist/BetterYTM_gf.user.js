@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           3.0.0
+// @version           3.1.0-rc.1
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b2ba7a8/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@93a674ca/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -15,6 +15,7 @@
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de    Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-AT Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:de-BE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-CH Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-LI Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
 // @description:de-LU Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
@@ -48,38 +49,65 @@
 // @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
+// @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
+// @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
+// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:es    tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:es-MX tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
+// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr    tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-CA tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-BE tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-CH tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:fr-LU tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
+// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:hi    tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:hi-NP tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
+// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
+// @antifeature:ja    tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
+// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:pt    tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:pt-PT tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
+// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh    tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-TW tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-HK tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature:zh-SG tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
+// @connect           i.ytimg.com
 // @connect           returnyoutubedislikeapi.com
+// @connect           itunes.apple.com
 // @noframes
-// @antifeature       tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Lieder, die du hörst, protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:en-US tracking Some of the services used will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
-// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @updateURL         https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM_gf.meta.js
+// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/refs/heads/main/dist/BetterYTM_gf.user.js
 // @downloadURL       https://update.greasyfork.org/scripts/475682/BetterYTM.user.js
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
 // @grant             GM.listValues
+// @grant             GM.addValueChangeListener
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@2.0.0/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@9.4.3/dist/index.global.js
-// @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.2.7
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -90,10 +118,23 @@
         Made with ❤️ by Sv443
 I welcome every contribution on GitHub!
   https://github.com/Sv443/BetterYTM
+
+
+You can install the latest in-development version here:
+https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
+
 */
 
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
+
+/*
+  Note: The GreasyFork version has to fit within a size limit of 500kB, so comments had to be removed.
+  If you want install the full, unmodified version, please use one of these sources instead:
+    - GitHub: https://github.com/Sv443/BetterYTM
+    - OpenUserJS: https://openuserjs.org/scripts/Sv443/BetterYTM
+*/
+
 
 (function(CoreUtils, UserUtils, DOMPurify, marked, compareVersions) {
   "use strict";
@@ -120,31 +161,38 @@ I welcome every contribution on GitHub!
   var compareVersions__namespace = /*#__PURE__*/ _interopNamespaceDefault(compareVersions);
   var preloadAssetPattern = "^(icon|img)-";
   var resources = {
-    "css-above_queue_btns": "style/aboveQueueBtns.css",
-    "css-above_queue_btns_sticky": "style/aboveQueueBtnsSticky.css",
-    "css-anchor_improvements": "style/anchorImprovements.css",
-    "css-auto_like": "style/autoLike.css",
+    "css-above_queue_btns": "styles/aboveQueueBtns.css",
+    "css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
+    "css-anchor_improvements": "styles/anchorImprovements.css",
+    "css-auto_like": "styles/autoLike.css",
     "css-bundle": "/dist/BetterYTM.css",
-    "css-fix_hdr": "style/fixHDR.css",
-    "css-fix_playerpage_theming": "style/fixPlayerPageTheming.css",
-    "css-fix_spacing": "style/fixSpacing.css",
-    "css-fix_sponsorblock": "style/fixSponsorBlock.css",
-    "css-hide_themesong_logo": "style/hideThemeSongLogo.css",
-    "css-remove_thumb_rating_bar": "style/removeThumbRatingBar.css",
-    "css-show_votes": "style/showVotes.css",
-    "css-swap_like_dislike_btns": "style/swapLikeDislikeBtns.css",
-    "css-track_numbers_current_queue": "style/trackNumbersCurrentQueue.css",
-    "css-track_numbers_song_lists": "style/trackNumbersSongLists.css",
-    "css-vol_slider_size": "style/volSliderSize.css",
-    "css-watch_page_full_size": "style/watchPageFullSize.css",
+    "css-fix_hdr": "styles/fixHDR.css",
+    "css-fix_playerpage_theming": "styles/fixPlayerPageTheming.css",
+    "css-fix_spacing": "styles/fixSpacing.css",
+    "css-fix_sponsorblock": "styles/fixSponsorBlock.css",
+    "css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
+    "css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
+    "css-show_votes": "styles/showVotes.css",
+    "css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
+    "css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
+    "css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
+    "css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
+    "css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
+    "css-vol_slider_size": "styles/volSliderSize.css",
+    "css-watch_page_full_size": "styles/watchPageFullSize.css",
+    "doc-data": {
+      path: "data.json",
+      ref: "main",
+      integrity: false
+    },
     "doc-license": {
       path: "/LICENSE.txt",
       ref: "$BRANCH",
       integrity: false
     },
-    "font-cousine_ttf": "fonts/Cousine/Cousine-Regular.ttf",
-    "font-cousine_woff": "fonts/Cousine/Cousine-Regular.woff",
-    "font-cousine_woff2": "fonts/Cousine/Cousine-Regular.woff2",
+    "font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
+    "font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
+    "font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
     "icon-advanced_mode": "icons/plus_circle_small.svg",
     "icon-advanced_mode_large": "icons/plus_circle.svg",
     "icon-alert": "icons/alert.svg",
@@ -196,14 +244,14 @@ I welcome every contribution on GitHub!
     preloadAssetPattern: preloadAssetPattern,
     resources: resources
   };
-  var locales = {
+  var localesJson = {
     "de-DE": {
       name: "Deutsch (Deutschland)",
       nameEnglish: "German (Germany)",
       emoji: "🇩🇪",
       userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
       authors: [ "Sv443" ],
-      altLocales: [ "de", "de-AT", "de-CH", "de-LI", "de-LU" ],
+      altLocales: [ "de", "de-AT", "de-BE", "de-CH", "de-LI", "de-LU" ],
       textDir: "ltr",
       sentenceTerminatorNeutral: ".",
       sentenceTerminators: [ ".", "!", "?" ]
@@ -319,8 +367,8 @@ I welcome every contribution on GitHub!
     mode: "production",
     branch: "main",
     host: "greasyfork",
-    buildNumber: "b2ba7a8",
-    buildTimestamp: "1760212152570",
+    buildNumber: "93a674ca",
+    buildTimestamp: "1775247214509",
     assetSource: "jsdelivr",
     devServerPort: "8710"
   };
@@ -336,8 +384,9 @@ I welcome every contribution on GitHub!
   const buildTimestamp = Number(getConst("buildTimestamp", 0));
   const assetSource = getConst("assetSource", "jsdelivr");
   const devServerPort = Number(getConst("devServerPort", 8710));
-  const changelogUrl = assetSource === "local" ? `http://localhost:${devServerPort}/changelog.md?build=${buildNumber$1}` : `https://raw.githubusercontent.com/${repo}/main/changelog.md?build=${buildNumber$1}`;
+  const changelogUrl = assetSource === "local" ? `http://localhost:${devServerPort}/changelog.md?build=${buildNumber$1}` : `https://raw.githubusercontent.com/${repo}/${mode$1 === "development" ? "develop" : "main"}/changelog.md?build=${buildNumber$1}`;
   const initialParams$1 = new URL(location.href).searchParams;
+  const initTime = Date.now();
   const platformNames = CoreUtils.pureObj({
     github: "GitHub",
     greasyfork: "GreasyFork",
@@ -356,10 +405,11 @@ I welcome every contribution on GitHub!
   })();
   const defaultLogLevel = mode$1 === "production" ? LogLevel.Info : LogLevel.Debug;
   const scriptInfo$1 = CoreUtils.pureObj({
-    name: GM.info.script.name,
-    version: GM.info.script.version,
-    namespace: GM.info.script.namespace
+    name: GM_info.script.name,
+    version: GM_info.script.version,
+    namespace: GM_info.script.namespace
   });
+  const newFeatureAdornmentMaxSessionCount = 20;
   var constants = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     assetSource: assetSource,
@@ -371,22 +421,23 @@ I welcome every contribution on GitHub!
     defaultLogLevel: defaultLogLevel,
     devServerPort: devServerPort,
     host: host$1,
+    initTime: initTime,
     initialParams: initialParams$1,
     mode: mode$1,
+    newFeatureAdornmentMaxSessionCount: newFeatureAdornmentMaxSessionCount,
     platformNames: platformNames,
     repo: repo,
     scriptInfo: scriptInfo$1,
     sessionStorageAvailable: sessionStorageAvailable$1
   });
-  let canCompress$2 = true;
-  const lyricsCacheStore = new UserUtils.DataStore({
+  const lyricsCacheStore = new CoreUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
       cache: []
     },
     formatVersion: 2,
-    encodeData: data => canCompress$2 ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: data => canCompress$2 ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    engine: new UserUtils.GMStorageEngine,
+    compressionFormat: compressionFormat$1,
     migrations: {
       2: oldData => {
         oldData.cache = oldData.cache.map(entry => ({
@@ -401,7 +452,6 @@ I welcome every contribution on GitHub!
     }
   });
   async function initLyricsCache() {
-    canCompress$2 = await compressionSupported();
     const data = await lyricsCacheStore.loadData();
     log(`Initialized lyrics cache (${data.cache.length} entries)`);
     emitInterface("bytm:lyricsCacheReady");
@@ -480,41 +530,18 @@ I welcome every contribution on GitHub!
   let activeLocaleDir = "ltr";
   UserUtils.tr.addTransform(UserUtils.tr.transforms.percent);
   UserUtils.tr.addTransform(UserUtils.tr.transforms.templateLiteral);
-  let devUsedTrKeysStoreLoaded = false;
-  const devUsedTrKeysStore = new UserUtils.DataStore({
-    id: "bytm-dev-used-tr-keys",
-    defaultData: {
-      keys: []
-    },
-    formatVersion: 0
-  });
-  const devMarkTrKeyUsed = async key => {
-    try {
-      if (mode$1 !== "development") return;
-      if (!devUsedTrKeysStoreLoaded) {
-        await devUsedTrKeysStore.loadData();
-        devUsedTrKeysStoreLoaded = true;
-      }
-      const data = devUsedTrKeysStore.getData();
-      const keysSet = new Set(data.keys);
-      keysSet.add(key);
-      data.keys = Array.from(keysSet);
-      return await devUsedTrKeysStore.setData(data);
-    } catch (e) {
-      error("Failed to mark translation key as used", e);
-    }
-  };
+  const devMarkTrKeyUsed = async key => {};
   async function initTranslations(locale) {
     if (initializedLocales.has(locale)) return;
     initializedLocales.add(locale);
     try {
-      const transFile = await fetchLocaleJson(locale);
+      const transFile = await fetchTranslationResource(locale);
       let fallbackTrans = {};
       if (getFeature("localeFallback")) {
         UserUtils.tr.setFallbackLanguage("en-US");
-        fallbackTrans = await fetchLocaleJson("en-US");
+        fallbackTrans = await fetchTranslationResource("en-US");
       }
-      const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string" ? await fetchLocaleJson(transFile.base) : undefined;
+      const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string" ? await fetchTranslationResource(transFile.meta.base) : undefined;
       const translations = {
         ...fallbackTrans ?? {},
         ...baseTransFile ?? {},
@@ -529,18 +556,22 @@ I welcome every contribution on GitHub!
     } catch (err) {
       const errStr = `Couldn't load translations for locale '${locale}'`;
       error(errStr, err);
-      throw new Error(errStr);
+      throw new Error(errStr, {
+        cause: err
+      });
     }
   }
-  async function fetchLocaleJson(locale) {
+  async function fetchTranslationResource(locale) {
     const url = await getResourceUrl(`trans-${locale}`);
     const res = await CoreUtils.fetchAdvanced(url);
-    if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation file for locale '${locale}'`);
-    return await res.json();
+    const bodyTxt = await res.text();
+    getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
+    if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
+    return JSON.parse(bodyTxt);
   }
   function setLocale(locale) {
     activeLocale = locale;
-    activeLocaleDir = locales[locale]?.textDir ?? "ltr";
+    activeLocaleDir = localesJson[locale]?.textDir ?? "ltr";
     setGlobalProp("locale", locale);
     emitInterface("bytm:setLocale", {
       locale: locale
@@ -553,7 +584,7 @@ I welcome every contribution on GitHub!
     return await hasKeyFor(getLocale(), key);
   }
   async function hasKeyFor(locale, key) {
-    devMarkTrKeyUsed(key);
+    devMarkTrKeyUsed();
     if (!initializedLocales.has(locale)) await initTranslations(locale);
     return typeof UserUtils.tr.getTranslations(locale)?.[key] === "string";
   }
@@ -565,17 +596,20 @@ I welcome every contribution on GitHub!
   }
   function tl(locale, key, ...args) {
     if (locale === "en-US") hasKeyFor(locale, key).then(hasKey => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
-    devMarkTrKeyUsed(key);
+    devMarkTrKeyUsed();
     return UserUtils.tr.for(locale, key, ...args);
   }
   function tlp(locale, key, num, ...args) {
     if (typeof num !== "number") num = num.length;
     const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
-    devMarkTrKeyUsed(tlKey);
+    devMarkTrKeyUsed();
     if (locale === "en-US") hasKeyFor(locale, tlKey).then(hasKey => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
     const trans = tl(locale, tlKey, ...args);
     if (trans === key) return t(key, ...args);
     return trans;
+  }
+  function resolveTranslatable(trnsl) {
+    return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
   }
   let dialogsInitialized = false;
   let dialogContainer;
@@ -699,7 +733,8 @@ I welcome every contribution on GitHub!
       if (!dialogBg) return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
       dialogBg.style.visibility = "hidden";
       dialogBg.style.display = "none";
-      openDialogs.splice(openDialogs.indexOf(this.id), 1);
+      const oidx = openDialogs.indexOf(this.id);
+      if (oidx > -1) openDialogs.splice(oidx, 1);
       currentDialogId = openDialogs[0] ?? null;
       this.events.emit("close");
       emitInterface("bytm:dialogClosed", this);
@@ -825,52 +860,58 @@ I welcome every contribution on GitHub!
   }
   async function createToggleInput({onChange: onChange, initialValue: initialValue = false, id: id = CoreUtils.randomId(6, 36), labelPos: labelPos = "left"}) {
     const wrapperEl = document.createElement("div");
-    wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
+    wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
     wrapperEl.role = "switch";
     wrapperEl.tabIndex = 0;
+    wrapperEl.ariaChecked = String(initialValue);
     const labelEl = labelPos !== "off" ? document.createElement("label") : undefined;
     if (labelEl) {
-      labelEl.id = `bytm-toggle-input-label-${id}`;
-      labelEl.classList.add("bytm-toggle-input-label");
+      labelEl.id = `bytm-toggle-label-${id}`;
+      labelEl.classList.add("bytm-toggle-label");
       labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
-      if (id) labelEl.htmlFor = `bytm-toggle-input-${id}`;
+      if (id) labelEl.htmlFor = `bytm-toggle-${id}`;
       wrapperEl.setAttribute("aria-labelledby", labelEl.id);
     }
-    const toggleWrapperEl = document.createElement("div");
-    toggleWrapperEl.classList.add("bytm-toggle-input");
-    toggleWrapperEl.tabIndex = -1;
-    const toggleEl = document.createElement("input");
-    toggleEl.type = "checkbox";
-    toggleEl.checked = initialValue;
-    toggleEl.dataset.toggled = String(Boolean(initialValue));
-    toggleEl.tabIndex = -1;
-    if (id) toggleEl.id = `bytm-toggle-input-${id}`;
-    const toggleKnobEl = document.createElement("div");
-    toggleKnobEl.classList.add("bytm-toggle-input-knob");
-    setInnerHtml(toggleKnobEl, "&nbsp;");
-    const toggleElClicked = e => {
+    const toggleEl = document.createElement("label");
+    toggleEl.classList.add("bytm-toggle");
+    const checkboxEl = document.createElement("input");
+    checkboxEl.type = "checkbox";
+    checkboxEl.checked = initialValue;
+    checkboxEl.classList.add("bytm-toggle-checkbox");
+    checkboxEl.tabIndex = -1;
+    if (id) checkboxEl.id = `bytm-toggle-${id}`;
+    const toggleSwitchEl = document.createElement("div");
+    toggleSwitchEl.classList.add("bytm-toggle-switch");
+    const handleToggle = e => {
       e.preventDefault();
       e.stopPropagation();
-      onChange(toggleEl.checked);
-      toggleEl.dataset.toggled = String(Boolean(toggleEl.checked));
-      if (labelEl) labelEl.textContent = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
-      wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+      onChange(checkboxEl.checked);
+      if (labelEl) labelEl.textContent = t(`toggled_${checkboxEl.checked ? "on" : "off"}`);
+      wrapperEl.ariaChecked = String(checkboxEl.checked);
     };
-    toggleEl.addEventListener("change", toggleElClicked, {
+    checkboxEl.addEventListener("change", handleToggle, {
       capture: true
     });
     wrapperEl.addEventListener("keydown", e => {
       if ([ "Space", " ", "Enter" ].includes(e.code)) {
-        toggleEl.checked = !toggleEl.checked;
-        toggleElClicked(e);
+        e.preventDefault();
+        e.stopPropagation();
+        checkboxEl.checked = !checkboxEl.checked;
+        handleToggle(e);
       }
     }, {
       capture: true
     });
-    toggleEl.appendChild(toggleKnobEl);
-    toggleWrapperEl.appendChild(toggleEl);
+    wrapperEl.addEventListener("click", e => {
+      if (e.target !== checkboxEl) {
+        checkboxEl.checked = !checkboxEl.checked;
+        handleToggle(e);
+      }
+    });
+    toggleEl.appendChild(checkboxEl);
+    toggleEl.appendChild(toggleSwitchEl);
     labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
-    wrapperEl.appendChild(toggleWrapperEl);
+    wrapperEl.appendChild(toggleEl);
     labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
     return wrapperEl;
   }
@@ -943,29 +984,27 @@ I welcome every contribution on GitHub!
           once: true
         });
       }
-      window.addEventListener("bytm:ready", () => {
-        runIntervalChecks();
-        setInterval(runIntervalChecks, 100);
-        if (getDomain() === "ytm") {
-          addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
-            listener(el) {
-              const urlRefObs = new MutationObserver(([{target: target}]) => {
-                if (!target || !target?.href?.includes("/watch")) return;
-                const videoID = new URL(target.href).searchParams.get("v");
-                checkVideoIdChange(videoID);
-              });
-              urlRefObs.observe(el, {
-                attributeFilter: [ "href" ]
-              });
-            }
-          });
-        }
-        if (getDomain() === "ytm") {
-          setInterval(checkVideoIdChange, 250);
-          checkVideoIdChange();
-        }
-      }, {
-        once: true
+      CoreUtils.createRecurringTask({
+        timeout: 150,
+        task: runIntervalChecks
+      });
+      if (getDomain() === "ytm") {
+        addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+          listener(el) {
+            const urlRefObs = new MutationObserver(([{target: target}]) => {
+              if (!target || !target?.href?.includes("/watch")) return;
+              const videoID = new URL(target.href).searchParams.get("v");
+              checkVideoIdChange(videoID);
+            });
+            urlRefObs.observe(el, {
+              attributeFilter: [ "href" ]
+            });
+          }
+        });
+      }
+      getDomain() === "ytm" && CoreUtils.createRecurringTask({
+        timeout: 250,
+        task: () => checkVideoIdChange()
       });
     } catch (err) {
       error("Couldn't initialize site event observers due to an error:\n", err);
@@ -977,7 +1016,11 @@ I welcome every contribution on GitHub!
   });
   function emitSiteEvent(key, ...args) {
     try {
-      const logEmit = () => args.length > 0 ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${CoreUtils.autoPlural("argument", args)}:`, ...args) : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+      const logEmit = () => {
+        if (getFeature("logEvents")) {
+          args.length > 0 ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${CoreUtils.autoPlural("argument", args)}:`, ...args) : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+        }
+      };
       if (!bytmReady) {
         const startTs = Date.now();
         window.addEventListener("bytm:ready", () => {
@@ -1006,11 +1049,11 @@ I welcome every contribution on GitHub!
     }
   }
   function checkVideoIdChange(newID) {
-    const newVidID = newID ?? new URL(location.href).searchParams.get("v");
-    if (newVidID && newVidID !== lastVidId) {
-      info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newVidID}"`);
-      emitSiteEvent("watchIdChanged", newVidID, lastVidId);
-      lastVidId = newVidID;
+    newID ?? (newID = new URL(location.href).searchParams.get("v"));
+    if (newID && newID !== lastVidId) {
+      info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
+      emitSiteEvent("watchIdChanged", newID, lastVidId);
+      lastVidId = newID;
     }
   }
   function runIntervalChecks() {
@@ -1020,9 +1063,13 @@ I welcome every contribution on GitHub!
       lastPathname = String(location.pathname);
     }
   }
-  var version = "3.0.0";
+  var version = "3.1.0-rc.1";
+  var license = "AGPL-3.0-or-later";
   var homepage = "https://github.com/Sv443/BetterYTM";
   var namespace = "https://github.com/Sv443/BetterYTM";
+  var pluginDiscoveryUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins";
+  var specialThanksUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks";
+  var devVersionUrl = "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen";
   var author = {
     name: "Sv443",
     url: "https://github.com/Sv443"
@@ -1045,8 +1092,12 @@ I welcome every contribution on GitHub!
   };
   var packageJson = {
     version: version,
+    license: license,
     homepage: homepage,
     namespace: namespace,
+    pluginDiscoveryUrl: pluginDiscoveryUrl,
+    specialThanksUrl: specialThanksUrl,
+    devVersionUrl: devVersionUrl,
     author: author,
     bugs: bugs,
     funding: funding,
@@ -1069,7 +1120,7 @@ I welcome every contribution on GitHub!
         destroyOnClose: true,
         small: true,
         renderHeader: renderHeader$4,
-        renderBody: () => renderBody$5({
+        renderBody: () => renderBody$4({
           latestTag: latestTag,
           changelogHtml: changelogHtml
         })
@@ -1085,7 +1136,7 @@ I welcome every contribution on GitHub!
     return logoEl;
   }
   let disableUpdateCheck = false;
-  async function renderBody$5({latestTag: latestTag, changelogHtml: changelogHtml}) {
+  async function renderBody$4({latestTag: latestTag, changelogHtml: changelogHtml}) {
     disableUpdateCheck = false;
     const wrapperEl = document.createElement("div");
     const pEl = document.createElement("p");
@@ -1165,10 +1216,11 @@ I welcome every contribution on GitHub!
     return wrapperEl;
   }
   let promptDialog = null;
+  const promptDialogId = "prompt-dialog";
   class PromptDialog extends BytmDialog {
     constructor(props) {
       super({
-        id: "prompt-dialog",
+        id: promptDialogId,
         width: 500,
         height: 400,
         destroyOnClose: true,
@@ -1176,14 +1228,26 @@ I welcome every contribution on GitHub!
         closeOnBgClick: props.type !== "prompt",
         closeOnEscPress: true,
         small: true,
+        ...props.dialogOptions,
         renderHeader: () => this.renderHeader(props),
         renderBody: () => this.renderBody(props),
         renderFooter: () => this.renderFooter(props)
       });
+      Object.defineProperty(this, "type", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: void 0
+      });
+      this.type = props.type;
       this.on("render", () => this.focusOnRender());
     }
     emitResolve(val) {
       this.events.emit("resolve", val);
+    }
+    getInputValue() {
+      if (this.type !== "prompt") return undefined;
+      return document.querySelector("#bytm-dialog-container #bytm-prompt-dialog-input")?.value?.trim() ?? null;
     }
     async renderHeader({type: type}) {
       const headerEl = document.createElement("div");
@@ -1205,15 +1269,19 @@ I welcome every contribution on GitHub!
       messageElem.textContent = String(message);
       upperContElem.appendChild(messageElem);
       if (type === "prompt") {
-        const inputElem = document.createElement("input");
+        const isTA = "textarea" in rest && rest.textarea;
+        const inputElem = document.createElement(isTA ? "textarea" : "input");
         inputElem.id = "bytm-prompt-dialog-input";
-        inputElem.type = "text";
+        if (isTA) {
+          inputElem.wrap = "off";
+          inputElem.rows = 4;
+        } else inputElem.type = "text";
         inputElem.autofocus = true;
         inputElem.autocomplete = "off";
         inputElem.spellcheck = false;
         inputElem.value = "defaultValue" in rest && rest.defaultValue ? await CoreUtils.consumeStringGen(rest.defaultValue) : "";
         const inputEnterListener = e => {
-          if (e.key === "Enter") {
+          if ("key" in e && e.key === "Enter") {
             inputElem.removeEventListener("keydown", inputEnterListener);
             this.emitResolve(inputElem?.value?.trim() ?? null);
             promptDialog?.close();
@@ -1230,9 +1298,8 @@ I welcome every contribution on GitHub!
       buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
       const buttonsCont = document.createElement("div");
       buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
-      let confirmBtn;
-      if (type === "confirm" || type === "prompt") {
-        confirmBtn = document.createElement("button");
+      const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : document.createElement("button"));
+      if (confirmBtn && "confirmBtnEnabled" in rest) {
         confirmBtn.id = "bytm-prompt-dialog-confirm";
         confirmBtn.classList.add("bytm-prompt-dialog-button");
         confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
@@ -1246,27 +1313,45 @@ I welcome every contribution on GitHub!
           once: true
         });
       }
-      const closeBtn = document.createElement("button");
-      closeBtn.id = "bytm-prompt-dialog-close";
-      closeBtn.classList.add("bytm-prompt-dialog-button");
-      closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
-      closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
-      closeBtn.tabIndex = 0;
-      if (type === "alert") closeBtn.autofocus = true;
-      closeBtn.addEventListener("click", () => {
-        const resVals = {
-          alert: true,
-          confirm: false,
-          prompt: null
-        };
-        this.emitResolve(resVals[type]);
-        promptDialog?.close();
-      }, {
-        once: true
-      });
-      confirmBtn && getOS() !== "mac" && buttonsCont.appendChild(confirmBtn);
-      buttonsCont.appendChild(closeBtn);
-      confirmBtn && getOS() === "mac" && buttonsCont.appendChild(confirmBtn);
+      const closeBtn = rest.denyBtnEnabled === false ? undefined : document.createElement("button");
+      if (closeBtn) {
+        closeBtn.id = "bytm-prompt-dialog-close";
+        closeBtn.classList.add("bytm-prompt-dialog-button");
+        closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
+        closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
+        closeBtn.tabIndex = 0;
+        if (type === "alert") closeBtn.autofocus = true;
+        closeBtn.addEventListener("click", () => {
+          const resVals = {
+            alert: true,
+            confirm: false,
+            prompt: null
+          };
+          this.emitResolve(resVals[type]);
+          promptDialog?.close();
+        }, {
+          once: true
+        });
+      }
+      const {extraButtons: extraButtons = [], extraButtonsPosition: extraButtonsPosition = "between"} = rest;
+      const isMac = getOS() === "mac";
+      const appendExtraButtons = async () => {
+        for (const getBtnFn of extraButtons) {
+          const btn = await getBtnFn(this);
+          if (btn instanceof HTMLButtonElement) buttonsCont.appendChild(btn);
+        }
+      };
+      if (extraButtonsPosition === "before") await appendExtraButtons();
+      if (!isMac) {
+        confirmBtn && buttonsCont.appendChild(confirmBtn);
+        if (extraButtonsPosition === "between") await appendExtraButtons();
+        closeBtn && buttonsCont.appendChild(closeBtn);
+      } else {
+        closeBtn && buttonsCont.appendChild(closeBtn);
+        if (extraButtonsPosition === "between") await appendExtraButtons();
+        confirmBtn && buttonsCont.appendChild(confirmBtn);
+      }
+      if (extraButtonsPosition === "after") await appendExtraButtons();
       buttonsWrapper.appendChild(buttonsCont);
       return buttonsWrapper;
     }
@@ -1283,7 +1368,7 @@ I welcome every contribution on GitHub!
           const confBtn = document.querySelector("#bytm-prompt-dialog-confirm");
           const closeBtn = document.querySelector("#bytm-prompt-dialog-close");
           if (confBtn || closeBtn) {
-            confBtn?.click() ?? closeBtn?.click();
+            confBtn && "click" in confBtn ? confBtn.click() : closeBtn?.click();
             captureEnterKey = false;
           }
         }
@@ -1295,16 +1380,12 @@ I welcome every contribution on GitHub!
   }
   function showPrompt({type: type, ...rest}) {
     return new Promise(resolve => {
-      if (BytmDialog.getOpenDialogs().includes("prompt-dialog")) promptDialog?.close();
+      if (BytmDialog.getOpenDialogs().includes(promptDialogId)) promptDialog?.close();
       promptDialog = new PromptDialog({
         type: type,
         ...rest
       });
-      promptDialog.once("render", () => {
-        addSelectorListener("bytmDialogContainer", `#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`, {
-          listener: btn => btn.focus()
-        });
-      });
+      promptDialog.once("open", () => document.querySelector(`#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`)?.focus());
       promptDialog.once("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
       promptDialog.once("close", () => document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert"));
       let resolveVal;
@@ -1360,6 +1441,287 @@ I welcome every contribution on GitHub!
       return;
     }
     return await noNewVerFound();
+  }
+  async function initVolumeFeatures() {
+    let listenerOnce = false;
+    const onSliderElExists = async (type, sliderElem) => {
+      const volSliderCont = document.createElement("div");
+      volSliderCont.classList.add("bytm-vol-slider-cont");
+      sliderElem.setAttribute("step", "1");
+      if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default) initScrollStep(volSliderCont, sliderElem);
+      UserUtils.addParent(sliderElem, volSliderCont);
+      if (getFeature("volumeSliderLabel")) await addVolumeSliderLabel(type, sliderElem, volSliderCont);
+      const updateSliderVal = step => {
+        if (step && step > 0) {
+          const roundedValue = Math.round(Number(sliderElem.value) / step) * step;
+          if (roundedValue !== Number(sliderElem.value)) {
+            sliderElem.value = sliderElem.dataset.scrollVal = String(roundedValue);
+            sliderElem.setAttribute("aria-valuenow", String(roundedValue));
+            sliderElem.dispatchEvent(new Event("change", {
+              bubbles: true
+            }));
+            siteEvents.emit("updateVolumeSliderLabel");
+          }
+        }
+      };
+      sliderElem.addEventListener("mousedown", () => {
+        sliderElem.dataset.dragging = "true";
+      });
+      sliderElem.addEventListener("mouseup", () => {
+        delete sliderElem.dataset.dragging;
+        if (getFeature("volumeSharedBetweenTabs")) sharedVolumeChanged(Number(sliderElem.value));
+        updateSliderVal(getFeature("volumeSliderStep"));
+      });
+      sliderElem.addEventListener("scrollend", () => {
+        if (getFeature("volumeSharedBetweenTabs")) sharedVolumeChanged(Number(sliderElem.value));
+        updateSliderVal(getFeature("volumeSliderScrollStep"));
+      });
+      if (listenerOnce) return;
+      listenerOnce = true;
+      await setInitialTabVolume(sliderElem);
+      if (typeof getFeature("volumeSliderSize") === "number") setVolSliderSize();
+      if (getFeature("volumeSharedBetweenTabs")) checkSharedVolume();
+    };
+    addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+      listener: el => onSliderElExists("normal", el)
+    });
+    let sizeSmOnce = false;
+    const onResize = () => {
+      if (sizeSmOnce || window.innerWidth >= 1150) return;
+      sizeSmOnce = true;
+      addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
+        listener: el => onSliderElExists("expand", el)
+      });
+    };
+    window.addEventListener("resize", CoreUtils.debounce(onResize, Math.floor(1e3 / 6)));
+    waitVideoElementReady().then(onResize);
+    onResize();
+  }
+  const {get: nativeGetVolume, set: nativeSetVolume} = Object.getOwnPropertyDescriptor(UserUtils.getUnsafeWindow().HTMLMediaElement.prototype, "volume") ?? {};
+  function initExponentialVolume() {
+    if (getDomain() !== "ytm" || getFeature("volumeSliderExponential") === "linear") return;
+    Object.defineProperty(UserUtils.getUnsafeWindow().HTMLMediaElement.prototype, "volume", {
+      get() {
+        const actual = nativeGetVolume?.call(this);
+        if (typeof actual !== "number" || isNaN(actual)) return actual;
+        return expVolFnInv(actual);
+      },
+      set(value) {
+        if (typeof value !== "number" || isNaN(value)) return nativeSetVolume?.call(this, value);
+        return nativeSetVolume?.call(this, expVolFn(value));
+      }
+    });
+  }
+  function expVolClamp(x) {
+    return Math.min(1, Math.max(0, x));
+  }
+  function expVolFn(x) {
+    switch (getFeature("volumeSliderExponential")) {
+     case "x^2":
+      return expVolClamp(Math.pow(expVolClamp(x), 2));
+
+     case "x^3":
+      return expVolClamp(Math.pow(expVolClamp(x), 3));
+
+     case "x^4":
+      return expVolClamp(Math.pow(expVolClamp(x), 4));
+
+     case "x^5":
+      return expVolClamp(Math.pow(expVolClamp(x), 5));
+
+     case "linear":
+     default:
+      return expVolClamp(x);
+    }
+  }
+  function expVolFnInv(y) {
+    switch (getFeature("volumeSliderExponential")) {
+     case "x^2":
+      return expVolClamp(Math.pow(expVolClamp(y), 1 / 2));
+
+     case "x^3":
+      return expVolClamp(Math.pow(expVolClamp(y), 1 / 3));
+
+     case "x^4":
+      return expVolClamp(Math.pow(expVolClamp(y), 1 / 4));
+
+     case "x^5":
+      return expVolClamp(Math.pow(expVolClamp(y), 1 / 5));
+
+     case "linear":
+     default:
+      return expVolClamp(y);
+    }
+  }
+  function initScrollStep(volSliderCont, sliderElem) {
+    for (const evtName of [ "wheel", "scroll", "mousewheel", "DOMMouseScroll" ]) {
+      volSliderCont.addEventListener(evtName, e => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const delta = Number(e.deltaY ?? e?.detail ?? 1);
+        if (isNaN(delta)) return warn("Invalid scroll delta:", delta);
+        const volumeDir = -Math.sign(delta);
+        const newVolume = String(Number(sliderElem.value) + getFeature("volumeSliderScrollStep") * volumeDir);
+        sliderElem.value = newVolume;
+        sliderElem.setAttribute("aria-valuenow", newVolume);
+        sliderElem.dispatchEvent(new Event("change", {
+          bubbles: true
+        }));
+      }, {
+        capture: true
+      });
+    }
+  }
+  async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
+    const labelContElem = document.createElement("div");
+    labelContElem.classList.add("bytm-vol-slider-label");
+    labelContElem.style.display = "none";
+    labelContElem.setAttribute("aria-hidden", "true");
+    const volShared = getFeature("volumeSharedBetweenTabs");
+    if (volShared) {
+      const linkIconHtml = await resourceAsString("icon-link");
+      if (linkIconHtml) {
+        const linkIconElem = document.createElement("div");
+        linkIconElem.classList.add("bytm-vol-slider-shared");
+        setInnerHtml(linkIconElem, linkIconHtml);
+        linkIconElem.role = "alert";
+        linkIconElem.ariaLive = "polite";
+        linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
+        labelContElem.classList.add("has-icon");
+        labelContElem.appendChild(linkIconElem);
+      }
+    }
+    const getAdjustedVolValue = val => {
+      if (isNaN(val)) return String(val);
+      val = CoreUtils.clamp(val, 0, 100);
+      const valAdjusted = (expVolFn(val / 100) * 100).toFixed(1);
+      const fixedPtVal = [ "0.0", "100.0" ].includes(valAdjusted) ? valAdjusted.slice(0, -2) : valAdjusted;
+      return fixedPtVal;
+    };
+    const getLabel = value => {
+      const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep", Number(sliderElem.step)));
+      const roundedValue = Math.round(Number(value) / step) * step;
+      let label = `${roundedValue}%`;
+      labelContElem.classList.remove("wide");
+      if (getFeature("volumeSliderExponential") !== "linear") {
+        const fixedPtVal = getAdjustedVolValue(Number(value));
+        const lblType = getFeature("volumeSliderExponentialLabelType");
+        if (lblType === "both") {
+          label += ` (${fixedPtVal}%)`;
+          labelContElem.classList.add("wide");
+        } else if (lblType === "valueBased") label = `${fixedPtVal}%`;
+      }
+      return label;
+    };
+    const labelElem = document.createElement("div");
+    labelElem.classList.add("label");
+    labelElem.textContent = getLabel(sliderElem.value);
+    labelContElem.appendChild(labelElem);
+    labelContElem.addEventListener("click", e => e.stopPropagation());
+    labelContElem.addEventListener("keydown", e => [ "Enter", "Space", " " ].includes(e.key) && e.stopPropagation());
+    const getSliderTooltip = slider => t("volume_tooltip", {
+      volumePercent: getAdjustedVolValue(Number(slider.value))
+    });
+    const labelFull = getSliderTooltip(sliderElem);
+    sliderContainer.setAttribute("title", labelFull);
+    sliderElem.setAttribute("title", labelFull);
+    sliderElem.setAttribute("aria-valuetext", labelFull);
+    const updateLabel = () => {
+      const labelFull = getSliderTooltip(sliderElem);
+      sliderContainer.setAttribute("title", labelFull);
+      sliderElem.setAttribute("title", labelFull);
+      sliderElem.setAttribute("aria-valuetext", labelFull);
+      if (!isNaN(Number(sliderElem.dataset.scrollVal)) && Number(sliderElem.dataset.scrollVal) % getFeature("volumeSliderStep") !== 0) sliderElem.dataset.scrollVal = "";
+      const labelElem2 = document.querySelectorAll(".bytm-vol-slider-label div.label");
+      for (const el of labelElem2) el.textContent = getLabel(sliderElem.value);
+    };
+    sliderElem.addEventListener("change", () => updateLabel());
+    siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
+    siteEvents.on("configChanged", () => updateLabel());
+    addSelectorListener("playerBarRightControls", type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont", {
+      listener: volumeCont => volumeCont.appendChild(labelContElem)
+    });
+    let lastSliderVal = Number(sliderElem.value);
+    const setThemeSongContHidden = (hidden = true) => {
+      const contEl = document.querySelector("#ts-panel-container");
+      contEl?.classList[hidden ? "add" : "remove"]("bytm-hidden");
+    };
+    const sliderHoverObserver = new MutationObserver(() => {
+      if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
+        labelContElem.style.display = "initial";
+        labelContElem.setAttribute("aria-hidden", "false");
+        labelContElem.classList.add("bytm-visible");
+        setThemeSongContHidden();
+      } else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
+        labelContElem.addEventListener("transitionend", () => {
+          labelContElem.style.display = "none";
+          labelContElem.setAttribute("aria-hidden", "true");
+          setThemeSongContHidden(false);
+        }, {
+          once: true
+        });
+        labelContElem.classList.remove("bytm-visible");
+      }
+      if (Number(sliderElem.value) !== lastSliderVal) {
+        lastSliderVal = Number(sliderElem.value);
+        updateLabel();
+      }
+    });
+    sliderHoverObserver.observe(sliderElem, {
+      attributes: true
+    });
+  }
+  function setVolSliderSize() {
+    const size = getFeature("volumeSliderSize");
+    if (typeof size !== "number" || isNaN(Number(size))) return error("Invalid volume slider size:", size);
+    setGlobalCssVar("vol-slider-size", `${size}px`);
+    addStyleFromResource("css-vol_slider_size");
+  }
+  async function sharedVolumeChanged(vol) {
+    try {
+      await GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
+    } catch (err) {
+      error("Couldn't save shared volume level due to an error:", err);
+    }
+  }
+  let ignoreVal = -1;
+  let lastCheckedSharedVolume = -1;
+  async function checkSharedVolume() {
+    try {
+      const vol = await GM.getValue("bytm-shared-volume");
+      if (vol && lastCheckedSharedVolume !== Number(vol)) {
+        if (ignoreVal === Number(vol)) return;
+        lastCheckedSharedVolume = Number(vol);
+        const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+        if (sliderElem) {
+          sliderElem.value = String(vol);
+          sliderElem.dispatchEvent(new Event("change", {
+            bubbles: true
+          }));
+        }
+      }
+      setTimeout(checkSharedVolume, 333);
+    } catch (err) {
+      error("Couldn't check for shared volume level due to an error:", err);
+    }
+  }
+  async function setInitialTabVolume(sliderElem) {
+    const reloadTabVol = Number((await getReloadTabData())?.volume);
+    if ((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume")) return;
+    const vidElem = await waitVideoElementReady();
+    const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
+    if (isNaN(initialVol) || initialVol < 0 || initialVol > 100) return;
+    if (getFeature("volumeSharedBetweenTabs")) {
+      lastCheckedSharedVolume = ignoreVal = initialVol;
+      if (getFeature("volumeSharedBetweenTabs")) GM.setValue("bytm-shared-volume", String(initialVol)).catch(err => error("Couldn't save shared volume level due to an error:", err));
+    }
+    sliderElem.value = String(initialVol);
+    vidElem.volume = initialVol / 100;
+    sliderElem.dispatchEvent(new Event("change", {
+      bubbles: true
+    }));
+    const nonLinVol = getFeature("volumeSliderExponential") !== "linear";
+    log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
   }
   const maxToastDuration = 15e3;
   const toastQueue = [];
@@ -1519,6 +1881,7 @@ I welcome every contribution on GitHub!
       markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
       markdownEl.tabIndex = 0;
       setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
+      if (this.opts.modifyBodyElements) await this.opts.modifyBodyElements(bodyEl, markdownEl);
       bodyEl.appendChild(markdownEl);
       return bodyEl;
     }
@@ -1549,38 +1912,32 @@ I welcome every contribution on GitHub!
   const logs = [];
   const getLogsTxt = () => {
     const getVal = (val, primaryScope = true) => {
-      if (typeof val === "undefined") return "<undefined>";
-      if (val === null) return "<null>";
-      if (Array.isArray(val)) return `[Array <${val.map(v => getVal(v, false)).join(", ")}>]`;
-      if (typeof val === "function") return val.name ? `[function ${val.name}()]` : "[function()]";
+      if (typeof val === "undefined") return primaryScope ? "[undefined]" : "(undefined)";
+      if (val === null) return primaryScope ? "[null]" : "(null)";
+      if (Array.isArray(val)) return `[Array (${val.length}) <${val.map(v => getVal(v, false)).join(", ")}>]`;
+      if (val instanceof Element) return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
+      if (typeof val === "function") return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
       if (val instanceof CoreUtils.DatedError) return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
       if (val instanceof Error) return `[${val.name}: ${val.message}]`;
-      if (val instanceof Date) return `[Date: ${val.toISOString()}]`;
+      if (val instanceof Date) return `[Date <${val.toISOString()}>]`;
       if (typeof val === "object") {
         try {
           if (val.constructor?.name === "Object") return JSON.stringify(val);
-          return `[object ${val.constructor?.name ?? "Unknown"}]`;
+          return `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
         } catch {
-          return "toString" in val ? val.toString() : `[object ${val?.constructor?.name ?? "Unknown"}]`;
+          return "toString" in val ? val.toString() : `[Object <${val?.constructor?.name ?? "(unknown)"}>]`;
         }
       }
       return primaryScope ? `${val}` : `"${val}"`;
     };
     const longestLogType = Math.max(...logs.map(([type]) => type.length));
-    const sortedLogs = [ ...logs ].sort((a, b) => b[1] - a[1]);
-    return sortedLogs.reduce((acc, [type, time, ...args]) => {
+    return logs.reduce((acc, [type, time, ...args]) => {
       if (args.length === 0) return acc;
-      const dateTime = `${new Date(time).toLocaleString(undefined, {
-        dateStyle: "short"
-      })}, ${new Date(time).toLocaleString(undefined, {
-        timeStyle: "medium"
-      })}.${new Date(time).toLocaleString(undefined, {
-        fractionalSecondDigits: 3
-      })}`;
+      const timestamp = new Date(time).toISOString();
       try {
-        return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
+        return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
       } catch {
-        return `[${dateTime}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => typeof a === "object" && a && "toString" in a ? a.toString() : String(a)).join(" ")}\n${acc}`;
+        return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => typeof a === "object" && a && "toString" in a ? a.toString() : String(a)).join(" ")}\n${acc}`;
       }
     }, "");
   };
@@ -1650,7 +2007,7 @@ I welcome every contribution on GitHub!
       },
       renderFooter() {
         const footer = document.createElement("div");
-        footer.classList.add("bytm-dialog-footer");
+        footer.classList.add("bytm-dialog-footer", "align-right");
         const dlLogsBtn = document.createElement("button");
         dlLogsBtn.type = "button";
         dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
@@ -1663,41 +2020,30 @@ I welcome every contribution on GitHub!
       body: `${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  \n  \n${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`
     });
   }
-  class CustomError extends Error {
-    constructor(name, message, opts) {
+  class LyricsError extends CoreUtils.DatedError {
+    constructor(message, opts) {
       super(message, opts);
-      Object.defineProperty(this, "time", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: void 0
-      });
-      this.name = name;
-      this.time = Date.now();
+      this.name = "LyricsError";
     }
   }
-  class LyricsError extends CustomError {
+  class PluginError extends CoreUtils.DatedError {
     constructor(message, opts) {
-      super("LyricsError", message, opts);
+      super(message, opts);
+      this.name = "PluginError";
     }
   }
-  class PluginError extends CustomError {
-    constructor(message, opts) {
-      super("PluginError", message, opts);
-    }
-  }
-  let discardBeforeUnload = false;
+  let discardBeforeUnloadOverride;
   function enableDiscardBeforeUnload() {
-    discardBeforeUnload = true;
+    discardBeforeUnloadOverride = true;
     info("Disabled popup before leaving the site");
   }
   function disableDiscardBeforeUnload() {
-    discardBeforeUnload = false;
+    discardBeforeUnloadOverride = false;
     info("Enabled popup before leaving the site");
   }
   async function initBeforeUnloadHook() {
     try {
-      UserUtils.interceptWindowEvent("beforeunload", () => discardBeforeUnload);
+      UserUtils.interceptWindowEvent("beforeunload", () => typeof discardBeforeUnloadOverride !== "undefined" ? discardBeforeUnloadOverride : getFeature("disableBeforeUnloadPopup"));
     } catch (err) {
       error("Error in beforeunload hook:", err);
     }
@@ -1740,10 +2086,14 @@ I welcome every contribution on GitHub!
   let prevVidMaxTime = Infinity;
   let prevTime = -1;
   async function initAutoScrollToActiveSong() {
-    setInterval(() => {
-      prevTime = getVideoElement()?.currentTime ?? -1;
-      prevVidMaxTime = getVideoElement()?.duration ?? Infinity;
-    }, 50);
+    CoreUtils.createRecurringTask({
+      timeout: 50,
+      async task() {
+        const vidEl = await waitVideoElementReady();
+        prevTime = vidEl.currentTime ?? -1;
+        prevVidMaxTime = vidEl.duration ?? Infinity;
+      }
+    });
     siteEvents.on("watchIdChanged", (_, oldId) => {
       if (!oldId) return;
       const isManualChange = prevTime < prevVidMaxTime - 1;
@@ -1811,7 +2161,7 @@ I welcome every contribution on GitHub!
               let vidElem;
               const doRestoreTime = async () => {
                 if (!vidElem) vidElem = await waitVideoElementReady();
-                const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction") ?? 0);
+                const vidRestoreTime = entry.time - getFeature("rememberSongTimeReduction", 0);
                 vidElem.currentTime = CoreUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
                 await remTimeDeleteEntry(entry.id);
                 info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
@@ -1882,6 +2232,8 @@ I welcome every contribution on GitHub!
   document.addEventListener("mousedown", () => isDragging = true);
   document.addEventListener("mouseup", () => isDragging = false);
   document.addEventListener("click", () => lastClick = Date.now());
+  let isInFullscreen = false;
+  siteEvents.on("fullscreenToggled", val => isInFullscreen = val);
   async function initStillThere() {
     siteEvents.on("songTitleChanged", newTitle => curSongTitle = newTitle);
     let firstCheck = true;
@@ -1929,6 +2281,7 @@ I welcome every contribution on GitHub!
       }
     });
     const tryClick = () => {
+      if (isInFullscreen) return warn('Fullscreen is active - not dispatching "Are you still there?" events');
       if (isDragging || Date.now() - lastClick < lastInteractionTimeout) return warn('Click is currently held down - not dispatching "Are you still there?" events');
       const navBar = document.querySelector("ytmusic-nav-bar .center-content");
       navBar?.dispatchEvent(new MouseEvent("click", {
@@ -1960,6 +2313,7 @@ I welcome every contribution on GitHub!
       }));
     };
     const tryMove = async () => {
+      if (isInFullscreen) return warn('Fullscreen is active - not dispatching "Are you still there?" events');
       if (isDragging || Date.now() - lastClick < lastInteractionTimeout) return warn('Click is currently held down - not dispatching "Are you still there?" events');
       const incX = (Math.random() * 2 - 1) / 10, incY = (Math.random() * 2 - 1) / 10;
       const vidEl = getVideoElement();
@@ -1987,281 +2341,108 @@ I welcome every contribution on GitHub!
       await tryMove();
     }, 3e4);
   }
-  let domain;
-  function getDomain() {
-    if (domain) return domain;
-    if (location.hostname.match(/^music\.youtube/)) return domain = "ytm"; else if (location.hostname.match(/youtube\./)) return domain = "yt"; else throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+  function constructUrlString(baseUrl, params) {
+    return `${baseUrl}?${Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&")}`;
   }
-  function getSessionId() {
-    try {
-      if (!sessionStorageAvailable$1) throw new Error("Session storage unavailable");
-      let sesId = window.sessionStorage.getItem("_bytm-session-id");
-      if (!sesId) window.sessionStorage.setItem("_bytm-session-id", sesId = CoreUtils.randomId(10, 36));
-      return sesId;
-    } catch (err) {
-      warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
-      return null;
-    }
+  function constructUrl(base, params) {
+    return new URL(constructUrlString(base, params));
   }
-  let isCompressionSupported;
-  async function compressionSupported() {
-    if (typeof isCompressionSupported === "boolean") return isCompressionSupported;
-    try {
-      await CoreUtils.compress(".", compressionFormat$1, "string");
-      return isCompressionSupported = true;
-    } catch {
-      return isCompressionSupported = false;
-    }
-  }
-  function getWatchId() {
-    const {searchParams: searchParams, pathname: pathname} = new URL(location.href);
-    return pathname.includes("/watch") ? searchParams.get("v") : null;
-  }
-  function getCurrentChannelId() {
-    return parseChannelIdFromUrl(location.href);
-  }
-  function parseChannelIdFromUrl(url) {
-    try {
-      const {pathname: pathname} = url instanceof URL ? url : new URL(url);
-      if (pathname.includes("/channel/")) return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]); else if (pathname.includes("/@")) return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]); else return null;
-    } catch {
-      return null;
-    }
-  }
-  function sanitizeChannelId(channelId) {
-    channelId = String(channelId).trim();
-    return isValidChannelId(channelId) || channelId.startsWith("@") ? channelId : `@${channelId}`;
-  }
-  function isValidChannelId(channelId) {
-    return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
-  }
-  function getThumbnailUrl(videoID, qualityOrIndex = "maxresdefault") {
-    return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
-  }
-  async function getBestThumbnailUrl(videoID) {
-    try {
-      const priorityList = [ "maxresdefault", "sddefault", "hqdefault", 0 ];
-      for (const quality of priorityList) {
-        let response;
-        const url = getThumbnailUrl(videoID, quality);
-        try {
-          response = await sendRequest({
-            url: url,
-            method: "HEAD",
-            timeout: 6e3
-          });
-        } catch (err) {
-          error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
-        }
-        if (response && response.status < 300 && response.status >= 200) return url;
-      }
-    } catch (err) {
-      throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
-    }
-  }
-  function openInTab(href, background = false) {
-    try {
-      UserUtils.openInNewTab(href, background);
-    } catch {
-      window.open(href, "_blank", "noopener noreferrer");
-    }
-  }
-  async function tryToDecompressAndParse(input) {
-    let parsed = null;
-    const val = await CoreUtils.consumeStringGen(input);
-    try {
-      parsed = JSON.parse(val);
-    } catch {
-      try {
-        parsed = JSON.parse(await CoreUtils.decompress(val, compressionFormat$1, "string"));
-      } catch (err) {
-        error("Couldn't decompress and parse data.", err);
-        return null;
-      }
-    }
-    await CoreUtils.pauseFor(CoreUtils.randRange(250, 500));
-    return parsed;
-  }
-  function getOS() {
-    if (navigator.userAgent.match(/mac(\s?os|intel)/i)) return "mac";
-    return "other";
-  }
-  function formatNumber(num, notation) {
-    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation ?? getFeature("numbersFormat")) === "short" ? {
-      notation: "compact",
-      compactDisplay: "short",
-      maximumFractionDigits: 1
-    } : {
-      style: "decimal",
-      maximumFractionDigits: 0
+  function sendRequest(details) {
+    return new Promise((resolve, reject) => {
+      const success = val => {
+        getFeature("logHttp") && log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
+        resolve(val);
+      };
+      const failure = err => {
+        const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
+        getFeature("logHttp") && error(errStr, err);
+        reject(new Error(errStr, {
+          cause: err
+        }));
+      };
+      GM.xmlHttpRequest({
+        timeout: 1e4,
+        ...details,
+        onload: success,
+        onerror: failure,
+        ontimeout: failure,
+        onabort: failure
+      });
     });
   }
-  const reloadTabVideoTimeThreshold = 3;
-  async function reloadTab() {
-    const win = UserUtils.getUnsafeWindow();
+  async function fetchCss(key) {
     try {
-      enableDiscardBeforeUnload();
-      if ((getVideoElement()?.readyState ?? 0) > 0) {
-        const time = await getVideoTime(0) ?? 0;
-        const volume = Math.round(getVideoElement().volume * 100);
-        const url = new URL(win.location.href);
-        if (!isNaN(time) && time > reloadTabVideoTimeThreshold) url.searchParams.set("time_continue", String(time));
-        if (!isNaN(volume) && volume > 0) await GM.setValue("bytm-reload-tab-volume", String(volume));
-        return win.location.replace(url);
-      }
-      win.location.reload();
+      const css = await (await CoreUtils.fetchAdvanced(await getResourceUrl(key))).text();
+      return css ?? undefined;
     } catch (err) {
-      error("Couldn't save video time and volume before reloading tab:", err);
-      win.location.reload();
+      error("Couldn't fetch CSS due to an error:", err);
+      return undefined;
     }
   }
-  function scrollToCurrentSongInQueue(evt) {
-    addSelectorListener("sidePanel", 'ytmusic-player-queue ytmusic-player-queue-item[play-button-state="loading"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state="playing"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state="paused"]', {
-      listener(activeItem) {
-        activeItem.scrollIntoView({
-          behavior: evt?.shiftKey ? "instant" : "smooth",
-          block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
-          inline: "center"
-        });
-        log("Scrolled to active song in queue:", activeItem);
-      }
-    });
-  }
-  function overflowVal(value, minOrMax, max) {
-    const min = typeof max === "number" ? minOrMax : 0;
-    max = typeof max === "number" ? max : minOrMax;
-    if (min > max) throw new RangeError('Parameter "min" can\'t be bigger than "max"');
-    if (isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max)) return NaN;
-    if (value >= min && value <= max) return value;
-    const range = max - min + 1;
-    const wrappedValue = ((value - min) % range + range) % range + min;
-    return wrappedValue;
-  }
-  let verSessions;
-  async function initVersionSessionCounter() {
-    verSessions = JSON.parse(await GM.getValue("bytm-version-session-counter", "{}"));
-    if (typeof verSessions !== "object" || verSessions === null) verSessions = {};
-    if (typeof verSessions?.[scriptInfo$1.version] !== "object" || typeof verSessions?.[scriptInfo$1.version]?.count !== "number") verSessions[scriptInfo$1.version] = {
-      count: 0
-    }; else verSessions[scriptInfo$1.version].count++;
-    await GM.setValue("bytm-version-session-counter", JSON.stringify(verSessions));
-    return verSessions[scriptInfo$1.version].count;
-  }
-  function getVersionSessionCount(version = scriptInfo$1.version) {
-    if (!verSessions) throw new Error("Version session counter not initialized yet, call initVersionSessionCounter() first");
-    if (typeof verSessions[version] !== "object" || typeof verSessions[version].count !== "number") return 0;
-    return verSessions[version].count;
-  }
-  async function getResourceUrl(name) {
-    const resObjOrStr = resourcesJson.resources?.[name];
-    if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-      const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
-      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber$1;
-      if (pathName) {
-        return pathName.startsWith("http") ? pathName : (() => {
-          let path = pathName;
-          if (path.startsWith("/")) path = path.slice(1); else path = `assets/${path}`;
-          switch (assetSource) {
-           case "jsdelivr":
-            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
-
-           case "github":
-            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
-
-           case "local":
-            return `http://localhost:${devServerPort}/${path}`;
-          }
-        })();
-      }
-    }
-    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded data: URI fallback`);
-    return await GM.getResourceUrl(name, false);
-  }
-  function getPreferredLocale() {
-    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
-    const allNvLocs = [ ...new Set([ navigator.language, ...navigator.languages ]) ].map(v => v.replace(/_/g, "-"));
-    for (const nvLoc of allNvLocs) {
-      const resolvedLoc = Object.entries(locales).find(([key, {altLocales: altLocales}]) => sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc)))?.[0];
-      if (resolvedLoc) return resolvedLoc.trim();
-      const trimmedNvLoc = nvLoc.split("-")[0];
-      const resolvedFallbackLoc = Object.entries(locales).find(([key, {altLocales: altLocales}]) => sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc)))?.[0];
-      if (resolvedFallbackLoc) return resolvedFallbackLoc.trim();
-    }
-    return "en-US";
-  }
-  const resourceCacheTTL = 1e3 * 60 * 60 * 24 * 7;
-  const resourceCacheKey = mode$1 === "development" ? scriptInfo$1.version : buildNumber$1;
-  const resourceCacheStore = new UserUtils.DataStore({
-    id: "bytm-resource-cache",
-    formatVersion: 0,
-    encodeData: data => isCompressionSupported ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: data => isCompressionSupported ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
-    defaultData: {
-      resources: {},
-      created: Date.now(),
-      cacheKey: resourceCacheKey
-    }
-  });
-  const cachedResourcePrefixes = [ "doc-", "icon-", "img-", "style-", "trans-" ];
-  async function resourceCacheHas(key) {
-    if (resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
-      await resourceCacheStore.saveDefaultData();
-      return false;
-    }
-    const val = resourceCacheGet(key);
-    return val !== undefined && val !== null && val.length > 0;
-  }
-  function resourceCacheGet(key) {
-    return resourceCacheStore.getData().resources[key] ?? null;
-  }
-  async function resourceCacheSet(key, val) {
-    const data = resourceCacheStore.getData();
-    data.resources[key] = val;
-    data.created = Date.now();
-    return await resourceCacheStore.setData(data);
-  }
-  async function resourceAsString(resourceKey) {
-    if (typeof isCompressionSupported === "undefined") await compressionSupported();
-    if (Date.now() - resourceCacheStore.getData().created > resourceCacheTTL) await resourceCacheStore.saveDefaultData(); else if (await resourceCacheHas(resourceKey)) return resourceCacheGet(resourceKey);
-    const resourceUrl = await getResourceUrl(resourceKey);
+  const voteCache = new Map;
+  const voteCacheTTL = 1e3 * 60 * 60;
+  async function fetchVideoVotes(videoID) {
     try {
-      if (!resourceUrl) throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
-      const res = await CoreUtils.fetchAdvanced(resourceUrl);
-      if (!res.ok) throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
-      const str = await res.text();
-      if (cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix))) await resourceCacheSet(resourceKey, str);
-      return str;
+      if (voteCache.has(videoID)) {
+        const cached = voteCache.get(videoID);
+        if (Date.now() - cached.timestamp < voteCacheTTL) {
+          info(`Returning cached video votes for video ID '${videoID}':`, cached);
+          return cached;
+        } else voteCache.delete(videoID);
+      }
+      const votesRaw = JSON.parse((await sendRequest({
+        method: "GET",
+        url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`
+      })).response);
+      if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
+        error("Couldn't parse video votes due to an error:", votesRaw);
+        return undefined;
+      }
+      const votesObj = {
+        id: votesRaw.id,
+        likes: votesRaw.likes,
+        dislikes: votesRaw.dislikes,
+        rating: CoreUtils.roundFixed(votesRaw.rating, 3),
+        timestamp: Date.now()
+      };
+      voteCache.set(votesObj.id, votesObj);
+      info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
+      return votesObj;
     } catch (err) {
-      error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
-      return null;
+      error("Couldn't fetch video votes due to an error:", err);
+      return undefined;
     }
   }
-  async function parseMarkdown(mdString, sanitize = false) {
-    const mdHtml = await marked.marked.parse(mdString, {
-      async: true,
-      breaks: true,
-      gfm: true,
-      silent: true
-    });
-    return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
-  }
-  async function getChangelogMd() {
-    const clRes = await CoreUtils.fetchAdvanced(changelogUrl);
-    log("Fetched changelog:", clRes);
-    return await clRes.text();
-  }
-  async function getChangelogHtmlWithDetails() {
+  async function fetchITunesAlbumInfo(artist, album) {
     try {
-      const changelogMd = await getChangelogMd();
-      let changelogHtml = await parseMarkdown(changelogMd);
-      const getVerId = verStr => verStr.trim().replace(/[._#\s-]/g, "");
-      changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, '</details>\n<br>\n<details class="bytm-changelog-version-details">');
-      const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
-      for (const [fullMatch, , verStr] of h2Matches) changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
-      changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
-      return changelogHtml;
+      const url = constructUrlString("https://itunes.apple.com/search", {
+        country: "us",
+        limit: 20,
+        entity: "album",
+        term: `${artist} ${album}`
+      });
+      log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
+      const req = await sendRequest({
+        method: "GET",
+        url: url
+      });
+      const json = JSON.parse(req.response);
+      if (!("resultCount" in json) || !("results" in json)) {
+        error("Couldn't parse iTunes album info due to an error:", json);
+        return [];
+      }
+      if (json.resultCount === 0) return [];
+      const filteredResults = json.results.filter(result => {
+        if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result)) return false;
+        return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+      }).map(result => ({
+        ...result,
+        collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, "")
+      }));
+      return filteredResults;
     } catch (err) {
-      return `Error while preparing changelog: ${err}`;
+      error("Couldn't fetch iTunes album info due to an error:", err);
+      return [];
     }
   }
   function createRipple(rippleElement, properties) {
@@ -2454,7 +2635,7 @@ I welcome every contribution on GitHub!
         small: true,
         verticalAlign: "top",
         renderHeader: renderHeader$3,
-        renderBody: renderBody$4,
+        renderBody: renderBody$3,
         renderFooter: renderFooter$1
       });
       siteEvents.on("autoLikeChannelsUpdated", async () => {
@@ -2517,7 +2698,7 @@ I welcome every contribution on GitHub!
     headerEl.textContent = headerEl.ariaLabel = t("auto_like_channels_dialog_title");
     return headerEl;
   }
-  async function renderBody$4() {
+  async function renderBody$3() {
     const contElem = document.createElement("div");
     const descriptionEl = document.createElement("p");
     descriptionEl.classList.add("bytm-auto-like-channels-desc");
@@ -2534,13 +2715,13 @@ I welcome every contribution on GitHub!
     searchContRightSideEl.tabIndex = 0;
     searchContRightSideEl.classList.add("right-side");
     searchCont.appendChild(searchContRightSideEl);
+    const searchbarEl = document.createElement("input");
     const updateCountElem = () => {
-      const count = autoLikeStore.getData().channels.length;
+      const count = searchbarEl.value.trim().length === 0 ? autoLikeStore.getData().channels.length : document.querySelectorAll(".bytm-auto-like-channel-row:not(.hidden)").length;
       searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
     };
     siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
     updateCountElem();
-    const searchbarEl = document.createElement("input");
     searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
     searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
     searchbarEl.type = searchbarEl.role = "search";
@@ -2548,15 +2729,17 @@ I welcome every contribution on GitHub!
     searchbarEl.autofocus = true;
     searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
     searchbarEl.spellcheck = false;
-    searchbarEl.addEventListener("input", () => {
+    searchbarEl.addEventListener("input", CoreUtils.debounce(() => {
       const searchVal = searchbarEl.value.trim().toLowerCase();
       const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
       for (const row of rows) {
-        const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
-        const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
-        row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
+        const sanit = str => str?.trim().toLowerCase().replace(/\s/g, "");
+        const name = sanit(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
+        const id = sanit(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
+        row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
       }
-    });
+      updateCountElem();
+    }, 300));
     searchContLeftSideEl.appendChild(searchbarEl);
     const searchClearEl = document.createElement("button");
     searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
@@ -2577,7 +2760,7 @@ I welcome every contribution on GitHub!
           enabled: enabled
         } : ch)
       });
-    }, 250);
+    }, 100);
     const sortedChannels = autoLikeStore.getData().channels.sort((a, b) => a.name.localeCompare(b.name));
     for (const {name: chanName, id: chanId, enabled: enabled} of sortedChannels) {
       const rowElem = document.createElement("div");
@@ -2673,17 +2856,42 @@ I welcome every contribution on GitHub!
     addNewBtnElem.textContent = t("new_entry");
     addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
     wrapperEl.appendChild(addNewBtnElem);
+    const rightBtnsCont = document.createElement("div");
+    rightBtnsCont.classList.add("bytm-flex-row");
+    const deleteAllBtnElem = document.createElement("button");
+    deleteAllBtnElem.classList.add("bytm-btn");
+    deleteAllBtnElem.textContent = t("delete_all");
+    deleteAllBtnElem.ariaLabel = deleteAllBtnElem.title = t("auto_like_delete_all_tooltip");
+    rightBtnsCont.appendChild(deleteAllBtnElem);
     const importExportBtnElem = document.createElement("button");
     importExportBtnElem.classList.add("bytm-btn");
     importExportBtnElem.textContent = t("export_import");
     importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
-    wrapperEl.appendChild(importExportBtnElem);
+    rightBtnsCont.appendChild(importExportBtnElem);
+    wrapperEl.appendChild(rightBtnsCont);
     onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
+    onInteraction(deleteAllBtnElem, () => deleteAllAutoLikeChannelsPrompt());
     onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
     return wrapperEl;
   }
   async function openImportExportAutoLikeChannelsDialog() {
     await (autoLikeExImDialog?.open());
+  }
+  async function deleteAllAutoLikeChannelsPrompt() {
+    const confirm = await showPrompt({
+      type: "confirm",
+      message: t("auto_like_delete_all_confirm")
+    });
+    if (!confirm) return;
+    await autoLikeStore.setData({
+      channels: []
+    });
+    emitSiteEvent("autoLikeChannelsUpdated");
+    const unsub = autoLikeDialog?.on("clear", async () => {
+      unsub?.();
+      await (autoLikeDialog?.open());
+    });
+    autoLikeDialog?.unmount();
   }
   async function addAutoLikeEntryPrompts() {
     await autoLikeStore.loadData();
@@ -2737,15 +2945,14 @@ I welcome every contribution on GitHub!
     const id = (isId?.[0] || isUrl?.[1] || "").trim();
     return id.length > 0 ? id : null;
   }
-  let canCompress$1 = false;
-  const autoLikeStore = new UserUtils.DataStore({
+  const autoLikeStore = new CoreUtils.DataStore({
     id: "bytm-auto-like-channels",
     formatVersion: 2,
     defaultData: {
       channels: []
     },
-    encodeData: data => canCompress$1 ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: data => canCompress$1 ? CoreUtils.decompress(data, compressionFormat$1, "string") : data,
+    engine: new UserUtils.GMStorageEngine,
+    compressionFormat: compressionFormat$1,
     migrations: {
       2: oldData => ({
         channels: oldData.channels.map(ch => ({
@@ -2763,12 +2970,11 @@ I welcome every contribution on GitHub!
   }
   async function initAutoLike() {
     try {
-      canCompress$1 = await compressionSupported();
       await initAutoLikeStore();
       if (getDomain() === "ytm") {
         let timeout;
         siteEvents.on("songTitleChanged", () => {
-          const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1e3;
+          const autoLikeTimeoutMs = getFeature("autoLikeTimeout", 5) * 1e3;
           timeout && clearTimeout(timeout);
           const ytmTryAutoLike = () => {
             const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
@@ -2827,7 +3033,7 @@ I welcome every contribution on GitHub!
         addStyleFromResource("css-auto_like");
         let timeout;
         siteEvents.on("watchIdChanged", () => {
-          const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1e3;
+          const autoLikeTimeoutMs = getFeature("autoLikeTimeout", 5) * 1e3;
           timeout && clearTimeout(timeout);
           if (!location.pathname.startsWith("/watch")) return;
           const ytTryAutoLike = () => {
@@ -3020,23 +3226,26 @@ I welcome every contribution on GitHub!
     const thumbToggleElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
     if (thumbToggleElem) thumbToggleElem.insertAdjacentElement("afterend", lyricsBtnElem); else likeContainer.insertAdjacentElement("afterend", lyricsBtnElem);
   }
+  const parensRegex = /\(.+\)/gm;
+  const squareParensRegex = /\[.+\]/gm;
   function sanitizeSong(songName) {
     if (typeof songName !== "string") return songName;
-    const parensRegex = /\(.+\)/gim;
-    const squareParensRegex = /\[.+\]/gim;
     const sanitized = songName.replace(parensRegex, "").replace(squareParensRegex, "");
-    return sanitized.trim();
+    return sanitizeUnicode(sanitized);
   }
   function sanitizeArtists(artists) {
     artists = artists.split(/\s*\u2022\s*/gimu)[0];
     if (artists.match(/&/)) artists = artists.split(/\s*&\s*/gm)[0];
     if (artists.match(/,/)) artists = artists.split(/,\s*/gm)[0];
-    if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
-      const parensRegex = /\(.+\)/gim;
-      const squareParensRegex = /\[.+\]/gim;
-      artists = artists.replace(parensRegex, "").replace(squareParensRegex, "");
-    }
-    return artists.trim();
+    if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?\W)/i)) artists = artists.replace(parensRegex, "").replace(squareParensRegex, "");
+    return sanitizeUnicode(artists);
+  }
+  const singleQuotesRegex = /[‘’‛‹›]/gm;
+  const doubleQuotesRegex = /[“”„‟«»]/gm;
+  const commaRegex = /[,，、]/gm;
+  const periodRegex = /[.。．]/gm;
+  function sanitizeUnicode(str) {
+    return str.replace(singleQuotesRegex, "'").replace(doubleQuotesRegex, '"').replace(commaRegex, ",").replace(periodRegex, ".").trim();
   }
   async function getCurrentLyricsUrl() {
     try {
@@ -3192,94 +3401,6 @@ I welcome every contribution on GitHub!
       song: rest.join("-")
     };
   }
-  function constructUrlString(baseUrl, params) {
-    return `${baseUrl}?${Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&")}`;
-  }
-  function constructUrl(base, params) {
-    return new URL(constructUrlString(base, params));
-  }
-  function sendRequest(details) {
-    return new Promise((resolve, reject) => {
-      GM.xmlHttpRequest({
-        timeout: 1e4,
-        ...details,
-        onload: resolve,
-        onerror: reject,
-        ontimeout: reject,
-        onabort: reject
-      });
-    });
-  }
-  async function fetchCss(key) {
-    try {
-      const css = await (await CoreUtils.fetchAdvanced(await getResourceUrl(key))).text();
-      return css ?? undefined;
-    } catch (err) {
-      error("Couldn't fetch CSS due to an error:", err);
-      return undefined;
-    }
-  }
-  const voteCache = new Map;
-  const voteCacheTTL = 1e3 * 60 * 60;
-  async function fetchVideoVotes(videoID) {
-    try {
-      if (voteCache.has(videoID)) {
-        const cached = voteCache.get(videoID);
-        if (Date.now() - cached.timestamp < voteCacheTTL) {
-          info(`Returning cached video votes for video ID '${videoID}':`, cached);
-          return cached;
-        } else voteCache.delete(videoID);
-      }
-      const votesRaw = JSON.parse((await sendRequest({
-        method: "GET",
-        url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`
-      })).response);
-      if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
-        error("Couldn't parse video votes due to an error:", votesRaw);
-        return undefined;
-      }
-      const votesObj = {
-        id: votesRaw.id,
-        likes: votesRaw.likes,
-        dislikes: votesRaw.dislikes,
-        rating: CoreUtils.roundFixed(votesRaw.rating, 3),
-        timestamp: Date.now()
-      };
-      voteCache.set(votesObj.id, votesObj);
-      info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
-      return votesObj;
-    } catch (err) {
-      error("Couldn't fetch video votes due to an error:", err);
-      return undefined;
-    }
-  }
-  async function fetchITunesAlbumInfo(artist, album) {
-    try {
-      const res = await CoreUtils.fetchAdvanced(constructUrl("https://itunes.apple.com/search", {
-        country: "us",
-        limit: 5,
-        entity: "album",
-        term: `${artist} ${album}`
-      }));
-      if (!res.ok) {
-        warn("Couldn't fetch iTunes album info for", artist, "-", album, "due to a request error:", res);
-        return [];
-      }
-      const json = await res.json().catch(warn);
-      if (!("resultCount" in json) || !("results" in json)) {
-        error("Couldn't parse iTunes album info due to an error:", json);
-        return [];
-      }
-      if (json.resultCount === 0) return [];
-      return json.results.filter(result => {
-        if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result)) return false;
-        return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
-      });
-    } catch (err) {
-      error("Couldn't fetch iTunes album info due to an error:", err);
-      return [];
-    }
-  }
   let featHelpDialog = null;
   let curFeatKey = null;
   async function getFeatHelpDialog({featKey: featKey}) {
@@ -3294,7 +3415,7 @@ I welcome every contribution on GitHub!
         closeOnEscPress: true,
         small: true,
         renderHeader: renderHeader$2,
-        renderBody: renderBody$3
+        renderBody: renderBody$2
       });
       featHelpDialog.on("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
       featHelpDialog.on("close", () => document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert"));
@@ -3304,26 +3425,26 @@ I welcome every contribution on GitHub!
   async function renderHeader$2() {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-feat-help-dialog-header";
+    headerEl.classList.add("bytm-flex-row");
     setInnerHtml(headerEl, await resourceAsString("icon-help"));
     return headerEl;
   }
-  async function renderBody$3() {
+  async function renderBody$2() {
     const contElem = document.createElement("div");
-    const localeObj = locales?.[getLocale()];
+    const localeObj = localesJson?.[getLocale()];
     let featText = t(`feature_desc.${curFeatKey}`);
-    if (localeObj) {
-      if (!localeObj.sentenceTerminators.every(term => featText.endsWith(term))) featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminatorNeutral}${localeObj.textDir === "rtl" ? featText : ""}`;
-    }
+    const isLtr = localeObj?.textDir !== "rtl";
+    if (localeObj && !localeObj.sentenceTerminators.every(termChar => featText[isLtr ? "endsWith" : "startsWith"](termChar))) featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${!isLtr ? featText : ""}`;
     const featDescElem = document.createElement("h3");
     featDescElem.role = "subheading";
     featDescElem.tabIndex = 0;
-    featDescElem.textContent = featText;
+    featDescElem.textContent = featDescElem.title = featText;
     featDescElem.id = "bytm-feat-help-dialog-desc";
     const helpTextElem = document.createElement("div");
     helpTextElem.id = "bytm-feat-help-dialog-text";
     helpTextElem.tabIndex = 0;
     const helpText = featInfo[curFeatKey]?.helpText?.();
-    helpTextElem.textContent = helpText ?? t(`feature_helptext.${curFeatKey}`);
+    helpTextElem.textContent = helpTextElem.title = helpText ?? t(`feature_helptext.${curFeatKey}`);
     contElem.appendChild(featDescElem);
     contElem.appendChild(helpTextElem);
     return contElem;
@@ -3342,7 +3463,9 @@ I welcome every contribution on GitHub!
     inputElem.role = "button";
     inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
     inputElem.dataset.state = infoElem.dataset.state = "inactive";
-    inputElem.innerText = initialValue?.code ?? t("hotkey_input_click_to_change");
+    if (typeof initialValue?.code === "string") getHkInputContent(initialValue).then(content => {
+      inputElem.innerText = content;
+    }); else inputElem.innerText = t("hotkey_input_click_to_change");
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
     const resetElem = document.createElement("span");
     resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
@@ -3355,10 +3478,14 @@ I welcome every contribution on GitHub!
       emitSiteEvent("hotkeyInputActive", false);
       otherHotkeyInputActive = false;
       const curHk = currentHotkey ?? initialValue;
-      inputElem.innerText = curHk?.code ?? t("hotkey_input_click_to_change");
+      if (typeof curHk?.code === "string") {
+        getHkInputContent(curHk).then(content => {
+          inputElem.innerText = content;
+        });
+      } else inputElem.innerText = t("hotkey_input_click_to_change");
       inputElem.dataset.state = infoElem.dataset.state = "inactive";
       inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
-      setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
+      setInnerHtml(infoElem, curHk ? getHotkeyModifiersHtml(curHk) : "");
     };
     const activate = () => {
       if (otherHotkeyInputActive) return;
@@ -3368,21 +3495,25 @@ I welcome every contribution on GitHub!
       inputElem.dataset.state = infoElem.dataset.state = "active";
       inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
     };
-    window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true));
-    onInteraction(resetElem, e => {
+    const remountAC = new AbortController;
+    siteEvents.once("recreateCfgMenu", () => remountAC.abort());
+    window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true), {
+      signal: remountAC.signal
+    });
+    onInteraction(resetElem, async e => {
       e.preventDefault();
       e.stopImmediatePropagation();
       onChange(initialValue);
       currentHotkey = initialValue;
       deactivate();
-      inputElem.innerText = initialValue.code;
-      setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
+      inputElem.innerText = await getHkInputContent(initialValue);
+      setInnerHtml(infoElem, getHotkeyModifiersHtml(initialValue));
       resetElem.classList.add("bytm-hidden");
       inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
     });
-    if (initialValue) setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
+    if (initialValue) setInnerHtml(infoElem, getHotkeyModifiersHtml(initialValue));
     let lastKeyDown;
-    document.addEventListener("keypress", e => {
+    document.addEventListener("keypress", async e => {
       if (inputElem.dataset.state === "inactive") return;
       if (lastKeyDown?.code === e.code && lastKeyDown?.shift === e.shiftKey && lastKeyDown?.ctrl === e.ctrlKey && lastKeyDown?.alt === e.altKey) return;
       e.preventDefault();
@@ -3393,14 +3524,16 @@ I welcome every contribution on GitHub!
         ctrl: e.ctrlKey,
         alt: e.altKey
       };
-      inputElem.innerText = hotkey.code;
+      inputElem.innerText = await getHkInputContent(hotkey);
       inputElem.dataset.state = infoElem.dataset.state = "inactive";
-      setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
+      setInnerHtml(infoElem, getHotkeyModifiersHtml(hotkey));
       inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
       onChange(hotkey);
       currentHotkey = hotkey;
+    }, {
+      signal: remountAC.signal
     });
-    document.addEventListener("keydown", e => {
+    document.addEventListener("keydown", async e => {
       if (reservedKeys.filter(k => k !== "Tab").includes(e.code)) return;
       if (inputElem.dataset.state !== "active") return;
       if (e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
@@ -3424,36 +3557,54 @@ I welcome every contribution on GitHub!
         deactivate();
         resetElem.classList.remove("bytm-hidden");
       } else resetElem.classList.add("bytm-hidden");
-      inputElem.innerText = hotkey.code;
+      inputElem.innerText = await getHkInputContent(hotkey);
       inputElem.dataset.state = infoElem.dataset.state = "inactive";
-      setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
+      setInnerHtml(infoElem, getHotkeyModifiersHtml(hotkey));
+    }, {
+      signal: remountAC.signal
     });
-    siteEvents.on("cfgMenuClosed", deactivate);
+    const unsub = siteEvents.on("cfgMenuClosed", deactivate);
+    remountAC.signal.addEventListener("abort", () => unsub());
     inputElem.addEventListener("click", () => {
       if (inputElem.dataset.state === "inactive") activate(); else deactivate();
+    }, {
+      signal: remountAC.signal
     });
     inputElem.addEventListener("keydown", e => {
       if (reservedKeys.includes(e.code)) return;
       if (inputElem.dataset.state === "inactive") activate();
+    }, {
+      signal: remountAC.signal
     });
     wrapperElem.appendChild(resetElem);
     wrapperElem.appendChild(infoElem);
     wrapperElem.appendChild(inputElem);
     return wrapperElem;
   }
-  function getHotkeyInfoHtml(hotkey) {
+  function getHotkeyModifiersHtml(hotkey) {
     const modifiers = [];
-    hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
-    hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
-    hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
-    return `<div style="display: flex; align-items: center;">\n  <span>\n    ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}\n  </span>\n  <span style="padding: 0px 5px;">\n    ${modifiers.length > 0 ? "+" : ""}\n  </span>\n</div>`;
+    hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_ctrl")}</kbd>`);
+    hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
+    hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
+    return `<div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">\n  <span>\n    ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}\n  </span>\n  <span style="padding: 0px 5px; height: 20px;">\n    ${modifiers.length > 0 ? "+" : ""}\n  </span>\n</div>`;
   }
-  function hotkeyToString(hotkey) {
-    if (!hotkey) return t("hotkey_key_none");
+  async function getHkInputContent(hotkey) {
+    const trimCode = ({code: code}) => {
+      if (/^Key[A-Z].+$/.test(code)) return code.slice(3);
+      if (/^Digit[0-9].+$/.test(code)) return code.slice(5);
+      return code.trim();
+    };
+    const keyCodeTrKey = `key_code.${hotkey.code}`;
+    const keyStr = await hasKey(keyCodeTrKey) ? t(keyCodeTrKey) : trimCode(hotkey);
+    return keyStr;
+  }
+  function hotkeyToString(hotkey, padding = false) {
+    if (!hotkey) return t("hotkey_input_none_selected");
     let str = "";
-    if (hotkey.ctrl) str += `${t("hotkey_key_ctrl")}+`;
-    if (hotkey.shift) str += `${t("hotkey_key_shift")}+`;
-    if (hotkey.alt) str += `${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}+`;
+    const p = padding ? " " : "";
+    if (hotkey.ctrl) str += `${t("hotkey_modifier_ctrl")}${p}+${p}`;
+    if (hotkey.shift) str += `${t("hotkey_modifier_shift")}${p}+${p}`;
+    if (hotkey.alt) str += `${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}${p}+${p}`;
     str += hotkey.code;
     return str;
   }
@@ -3560,7 +3711,7 @@ I welcome every contribution on GitHub!
         anchorElem.appendChild(extendedAnchorEl);
         linksCont.appendChild(anchorElem);
       };
-      const links = [ [ "github", await getResourceUrl("img-github"), scriptInfo$1.namespace, t("open_github", scriptInfo$1.name), "github" ], [ "greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork" ], [ "openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs" ] ];
+      const links = [ [ "github", await getResourceUrl("img-github"), packageJson.homepage, t("open_github", scriptInfo$1.name), "github" ], [ "greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo$1.name), "greasyfork" ], [ "openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo$1.name), "openuserjs" ] ];
       const hostLink = links.find(([name]) => name === host$1);
       const otherLinks = links.filter(([name]) => name !== host$1);
       const reorderedLinks = hostLink ? [ hostLink, ...otherLinks ] : links;
@@ -3589,19 +3740,29 @@ I welcome every contribution on GitHub!
       reloadFooterEl.textContent = t("reload_hint");
       reloadFooterEl.role = "alert";
       reloadFooterEl.ariaLive = "polite";
-      const reloadTxtEl = document.createElement("button");
-      reloadTxtEl.classList.add("bytm-btn");
-      reloadTxtEl.style.marginLeft = "10px";
-      reloadTxtEl.textContent = t("reload_now");
-      reloadTxtEl.ariaLabel = reloadTxtEl.title = t("reload_tooltip");
-      reloadTxtEl.addEventListener("click", () => {
+      const reloadEl = document.createElement("button");
+      reloadEl.classList.add("bytm-btn");
+      reloadEl.style.marginLeft = "10px";
+      reloadEl.textContent = t("reload_now");
+      reloadEl.ariaLabel = reloadEl.title = t("reload_tooltip");
+      reloadEl.addEventListener("click", () => {
         closeCfgMenu();
         reloadTab();
       });
-      reloadFooterEl.appendChild(reloadTxtEl);
+      const reloadAllEl = document.createElement("button");
+      reloadAllEl.classList.add("bytm-btn");
+      reloadAllEl.style.marginLeft = "10px";
+      reloadAllEl.textContent = t("reload_all_tabs_now");
+      reloadAllEl.ariaLabel = reloadAllEl.title = t("reload_all_tabs_tooltip", scriptInfo$1.name);
+      reloadAllEl.addEventListener("click", () => {
+        closeCfgMenu();
+        reloadAllTabs();
+      });
+      reloadFooterEl.appendChild(reloadEl);
+      reloadFooterEl.appendChild(reloadAllEl);
       leftSideFooterCont.appendChild(reloadFooterEl);
       const exportDataSpecial = () => JSON.stringify({
-        formatVersion: formatVersion,
+        formatVersion: cfgFormatVersion,
         data: getFeatures()
       });
       const exImDlg = new ExImDialog({
@@ -3609,7 +3770,7 @@ I welcome every contribution on GitHub!
         width: 800,
         height: 600,
         exportData: async () => await compressionSupported() ? await CoreUtils.compress(JSON.stringify({
-          formatVersion: formatVersion,
+          formatVersion: cfgFormatVersion,
           data: getFeatures()
         }), compressionFormat$1, "string") : exportDataSpecial(),
         exportDataSpecial: exportDataSpecial,
@@ -3630,15 +3791,15 @@ I welcome every contribution on GitHub!
               type: "alert",
               message: t("import_error.no_data")
             });
-            if (parsed.formatVersion < formatVersion) {
-              let newData = JSON.parse(JSON.stringify(parsed.data));
-              const sortedMigrations = Object.entries(migrations).sort(([a], [b]) => Number(a) - Number(b));
+            if (parsed.formatVersion < cfgFormatVersion) {
+              let newData = structuredClone(parsed.data);
+              const sortedMigrations = Object.entries(cfgMigrations).sort(([a], [b]) => Number(a) - Number(b));
               let curFmtVer = Number(parsed.formatVersion);
               for (const [fmtVer, migrationFunc] of sortedMigrations) {
                 const ver = Number(fmtVer);
-                if (curFmtVer < formatVersion && curFmtVer < ver) {
+                if (curFmtVer < cfgFormatVersion && curFmtVer < ver) {
                   try {
-                    const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                    const migRes = structuredClone(migrationFunc(newData));
                     newData = await migRes;
                     curFmtVer = ver;
                   } catch (err) {
@@ -3648,9 +3809,9 @@ I welcome every contribution on GitHub!
               }
               parsed.formatVersion = curFmtVer;
               parsed.data = newData;
-            } else if (parsed.formatVersion !== formatVersion) return await showPrompt({
+            } else if (parsed.formatVersion !== cfgFormatVersion) return await showPrompt({
               type: "alert",
-              message: t("import_error.wrong_format_version", formatVersion, parsed.formatVersion)
+              message: t("import_error.wrong_format_version", cfgFormatVersion, parsed.formatVersion)
             });
             await setFeatures({
               ...getFeatures(),
@@ -3710,8 +3871,12 @@ I welcome every contribution on GitHub!
           headerElem.ariaChecked = String(selected);
           headerElem.tabIndex = 0;
           headerElem.ariaLevel = "2";
-          headerElem.textContent = t(`feature_category.${headerId}`, scriptInfo$1.name);
-          headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`));
+          headerElem.textContent = t(`feature_category.${headerId}`, {
+            scriptName: scriptInfo$1.name
+          });
+          headerElem.title = headerElem.ariaLabel = t(`cfg_menu_feature_category${isExtraInfoHeader ? "_info" : ""}_header_tooltip`, t(`feature_category.${headerId}`, {
+            scriptName: scriptInfo$1.name
+          }));
           onInteraction(headerElem, e => {
             const selectedHeader = sidenavCont.querySelector(".bytm-menu-sidenav-header.selected");
             if (selectedHeader) {
@@ -3791,15 +3956,21 @@ I welcome every contribution on GitHub!
       topAnchor.id = "bytm-menu-top-anchor";
       featuresCont.appendChild(topAnchor);
       const onCfgChange = async (key, initialVal, newVal) => {
+        const ftInfo = featInfo?.[key];
+        const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
+        if ([ "number", "slider" ].includes(ftInfo.type)) {
+          if ("min" in ftInfo || "max" in ftInfo) newVal = CoreUtils.clamp(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
+          if ("step" in ftInfo) newVal = Math.round(Number(newVal) / Number(ftInfo.step)) * Number(ftInfo.step);
+        }
         try {
           const fmt = val => typeof val === "object" ? JSON.stringify(val) : String(val);
-          info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
-          const featConf = JSON.parse(JSON.stringify(getFeatures()));
+          info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
+          const featConf = structuredClone(getFeatures());
           featConf[key] = newVal;
           const changedKeys = initConfig$1 ? Object.keys(featConf).filter(k => typeof featConf[k] !== "object" && featConf[k] !== initConfig$1[k]) : [];
           const requiresReload = changedKeys.some(k => featInfo[k]?.reloadRequired !== false);
           await setFeatures(featConf);
-          featInfo[key]?.change?.(key, initialVal, newVal);
+          featInfo[key]?.change?.(newVal, initialVal);
           if (requiresReload) {
             reloadFooterEl.classList.remove("hidden");
             reloadFooterEl.removeAttribute("aria-hidden");
@@ -3811,16 +3982,39 @@ I welcome every contribution on GitHub!
             await initTranslations(featConf.locale);
             setLocale(featConf.locale);
             const newText = t("lang_changed_prompt_reload");
-            const newLangEmoji = locales[featConf.locale]?.emoji ? `${locales[featConf.locale].emoji}\n` : "";
-            const initLangEmoji = locales[initLocale]?.emoji ? `${locales[initLocale].emoji}\n` : "";
+            const newLangEmoji = localesJson[featConf.locale]?.emoji ? `${localesJson[featConf.locale].emoji} ` : "";
+            const initLangEmoji = localesJson[initLocale]?.emoji ? `${localesJson[initLocale].emoji} ` : "";
             const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
+            const isLocalesTextDifferent = t("reload_now") !== tl(initLocale, "reload_now");
+            const getReloadAllBtn = async dialog => {
+              const reloadAllBtn = document.createElement("button");
+              reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
+              reloadAllBtn.classList.add("bytm-prompt-dialog-button");
+              reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_now")}` : ""}`;
+              reloadAllBtn.ariaLabel = reloadAllBtn.title = `${t("reload_all_tabs_tooltip", scriptInfo$1.name)}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_tooltip", scriptInfo$1.name)}` : ""}`;
+              reloadAllBtn.tabIndex = 0;
+              reloadAllBtn.addEventListener("click", () => {
+                dialog.emitResolve(dialog.type === "confirm" ? true : document.querySelector("#bytm-prompt-dialog-input")?.value?.trim() ?? null);
+                dialog.close();
+                reloadAllTabs();
+              }, {
+                once: true
+              });
+              return reloadAllBtn;
+            };
             if (await showPrompt({
               type: "confirm",
               message: confirmText,
-              confirmBtnText: () => `${t("prompt_confirm")} / ${tl(initLocale, "prompt_confirm")}`,
-              confirmBtnTooltip: () => `${t("click_to_confirm_tooltip")} / ${tl(initLocale, "click_to_confirm_tooltip")}`,
-              denyBtnText: type => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")} / ${tl(initLocale, type === "alert" ? "prompt_close" : "prompt_cancel")}`,
-              denyBtnTooltip: type => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")} / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}`
+              confirmBtnText: () => `${t("reload_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_now")}` : ""}`,
+              confirmBtnTooltip: () => `${t("reload_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_tooltip")}` : ""}`,
+              denyBtnText: type => `${t(type === "alert" ? "prompt_close" : "prompt_cancel")}${isLocalesTextDifferent ? ` / ${tl(initLocale, type === "alert" ? "prompt_close" : "prompt_cancel")}` : ""}`,
+              denyBtnTooltip: type => `${t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}${isLocalesTextDifferent ? ` / ${tl(initLocale, type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip")}` : ""}`,
+              extraButtons: [ getReloadAllBtn ],
+              extraButtonsPosition: "between",
+              dialogOptions: {
+                width: 650,
+                height: 800
+              }
             })) {
               closeCfgMenu();
               log("Reloading tab after changing language");
@@ -3830,7 +4024,7 @@ I welcome every contribution on GitHub!
         } catch (err) {
           error("Error while reacting to config change:", err);
         } finally {
-          emitSiteEvent("configOptionChanged", key, initialVal, newVal);
+          emitSiteEvent("configOptionChanged", ...valueHidden ? [ key, undefined, undefined ] : [ key, initialVal, newVal ]);
         }
       };
       const confChanged = CoreUtils.debounce(onCfgChange, 333);
@@ -3848,8 +4042,10 @@ I welcome every contribution on GitHub!
         categoryCont.id = `bytm-ftconf-category-${category}`;
         categoryCont.classList.add("bytm-ftconf-category");
         categoryCont.tabIndex = 0;
-        categoryCont.setAttribute("aria-labelledby", `bytm-ftconf-category-${category}-header`);
-        categoryCont.setAttribute("aria-label", t(`feature_category.${category}`));
+        categoryCont.setAttribute("aria-describedby", `bytm-ftconf-category-${category}-header`);
+        categoryCont.setAttribute("aria-label", t(`feature_category.${category}`, {
+          scriptName: scriptInfo$1.name
+        }));
         return categoryCont;
       };
       let currentGroup;
@@ -3882,8 +4078,10 @@ I welcome every contribution on GitHub!
             groupCont.dataset.group = currentGroup;
             const groupHeader = document.createElement("h3");
             groupHeader.id = `bytm-ftconf-group-${currentGroup}-header`;
-            groupHeader.classList.add("bytm-ftconf-group-header", "bytm-no-select");
-            groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`);
+            groupHeader.classList.add("bytm-ftconf-group-header");
+            groupHeader.textContent = groupHeader.ariaLabel = t(`feature_group_header.${currentGroup}`, {
+              scriptName: scriptInfo$1.name
+            });
             groupHeader.tabIndex = 0;
             groupHeader.role = "heading";
             groupHeader.ariaLevel = "3";
@@ -3904,9 +4102,9 @@ I welcome every contribution on GitHub!
               "min" in ftInfo && extraTxts.push(`min: ${ftInfo.min}`);
               "max" in ftInfo && extraTxts.push(`max: ${ftInfo.max}`);
               "step" in ftInfo && extraTxts.push(`step: ${ftInfo.step}`);
-              const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
-              const adv = ftInfo.advanced ? " (advanced feature)" : "";
-              ftConfElem.title = `[Dev] ${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
+              const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? "reload required - " : "";
+              const adv = ftInfo.advanced ? "advanced feature - " : "";
+              ftConfElem.title = `[Dev] ${ftInfo.category} > ${ftInfo.group} > ${featKey}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}\n(${rel}${adv}since v${ftInfo.since})`;
             }
             if (!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
               error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
@@ -4024,6 +4222,7 @@ I welcome every contribution on GitHub!
             }
             advCopyHiddenCont && ctrlElem.appendChild(advCopyHiddenCont);
             if (inputTag) {
+              const isNumericInput = [ "number", "slider" ].includes(type);
               const inputElem = document.createElement(inputTag);
               inputElem.classList.add("bytm-ftconf-input");
               inputElem.id = inputElemId;
@@ -4036,7 +4235,7 @@ I welcome every contribution on GitHub!
                 inputElem.type = "password";
                 inputElem.autocomplete = "off";
               }
-              if (type === "number" || type === "slider" && step) inputElem.step = String(step);
+              if (isNumericInput && step) inputElem.step = String(step);
               if (type === "toggle" && typeof initialVal !== "undefined") inputElem.checked = Boolean(initialVal);
               const getUnitTxt = val => "unit" in ftInfo && typeof ftInfo.unit === "string" ? ftInfo.unit : "unit" in ftInfo && typeof ftInfo.unit === "function" ? ftInfo.unit(Number(val)) : "";
               let labelElem;
@@ -4056,7 +4255,7 @@ I welcome every contribution on GitHub!
                 for (const {value: value, label: label} of ftOpts) {
                   const optionElem = document.createElement("option");
                   optionElem.value = String(value);
-                  optionElem.textContent = label;
+                  optionElem.textContent = `${label}${mode$1 === "development" ? ` [${value}]` : ""}`;
                   if (value === initialVal) optionElem.selected = true;
                   inputElem.appendChild(optionElem);
                 }
@@ -4090,7 +4289,26 @@ I welcome every contribution on GitHub!
               }
               inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
               inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
+              const hasMinOrMax = "min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number";
+              const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
+              if (isNumericInput) {
+                inputElem.addEventListener("blur", () => {
+                  let v = Number(inputElem.value);
+                  if (hasMinOrMax && !isNaN(v)) {
+                    if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min) v = ftInfo.min;
+                    if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max) v = ftInfo.max;
+                  }
+                  if (hasStep && !isNaN(v)) v = Math.round(v / Number(ftInfo.step)) * Number(ftInfo.step);
+                  if (!isNaN(v)) inputElem.value = String(v);
+                });
+              }
               ctrlElem.appendChild(inputElem);
+              if (type === "number" && "unit" in ftInfo && [ "function", "string" ].includes(typeof ftInfo.unit)) {
+                const afterInputUnitEl = document.createElement("span");
+                afterInputUnitEl.classList.add("bytm-ftconf-unit");
+                afterInputUnitEl.textContent = getUnitTxt(inputElem.value);
+                ctrlElem.appendChild(afterInputUnitEl);
+              }
             } else {
               let customInputEl;
               switch (type) {
@@ -4163,17 +4381,21 @@ I welcome every contribution on GitHub!
             scriptName: scriptInfo$1.name,
             scriptVersion: packageJson.version,
             buildNumber: buildNumber$1,
-            buildDate: new Date(buildTimestamp).toLocaleString(getFeature("locale"), {
-              dateStyle: "short",
-              timeStyle: "short"
+            buildDate: new Date(buildTimestamp).toLocaleString(getLocale(), {
+              dateStyle: "medium"
             }),
+            buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber$1}`,
             authorName: packageJson.author.name,
             authorLink: packageJson.author.url,
             githubLink: scriptInfo$1.namespace,
             greasyforkLink: packageJson.hosts.greasyfork,
             openuserjsLink: packageJson.hosts.openuserjs,
             fundingLink: packageJson.funding.url,
-            discordLink: "https://dc.sv443.net/"
+            discordLink: "https://dc.sv443.net/",
+            currentYear: (new Date).getFullYear(),
+            licenseName: packageJson.license,
+            licenseUrl: `https://github.com/${repo}/blob/${branch$1}/LICENSE.txt`,
+            contributorsLink: packageJson.specialThanksUrl
           });
           setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", aboutTrParams)));
           return [ aboutTextCont ];
@@ -4217,6 +4439,7 @@ I welcome every contribution on GitHub!
       });
       const scrollIndicator = document.createElement("img");
       scrollIndicator.id = "bytm-menu-scroll-indicator";
+      scrollIndicator.classList.add("bytm-no-select");
       scrollIndicator.src = await getResourceUrl("icon-arrow_down");
       scrollIndicator.role = "button";
       scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
@@ -4252,7 +4475,7 @@ I welcome every contribution on GitHub!
         for (const [id, trKey, resourceKey] of modeItems) {
           const isSvg = resourceKey.startsWith("icon-");
           const modeElTooltip = t(`active_mode_tooltip_${trKey}`, {
-            scriptHandler: GM.info.scriptHandler ?? "(your userscript manager extension)"
+            scriptHandler: GM_info.scriptHandler ?? "(your userscript manager extension)"
           });
           const modeDispWrapperEl = document.createElement("div");
           modeDispWrapperEl.classList.add("bytm-menu-mode-display-wrapper");
@@ -4286,7 +4509,7 @@ I welcome every contribution on GitHub!
           if (isSvg) {
             const modeDisplayWrapperEl = document.createElement("span");
             modeDisplayWrapperEl.id = `bytm-menu-mode-display-${id}`;
-            modeDisplayWrapperEl.classList.add("bytm-menu-mode-display");
+            modeDisplayWrapperEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
             modeDisplayWrapperEl.tabIndex = 0;
             modeDisplayWrapperEl.role = "img";
             modeDisplayWrapperEl.title = modeDisplayWrapperEl.ariaLabel = modeElTooltip;
@@ -4300,7 +4523,7 @@ I welcome every contribution on GitHub!
           } else {
             const modeDisplayEl = document.createElement("img");
             modeDisplayEl.id = `bytm-menu-mode-display-${id}`;
-            modeDisplayEl.classList.add("bytm-menu-mode-display");
+            modeDisplayEl.classList.add("bytm-menu-mode-display", "bytm-no-select");
             modeDisplayEl.tabIndex = 0;
             modeDisplayEl.role = "img";
             modeDisplayEl.title = modeDisplayEl.ariaLabel = modeDisplayEl.alt = modeElTooltip;
@@ -4327,21 +4550,18 @@ I welcome every contribution on GitHub!
       log(`Mounted config menu element in ${Date.now() - startTs}ms`);
       isCfgMenuMounting = false;
       isCfgMenuDoneMounting = true;
-      emitSiteEvent("cfgMenuMounted");
-      const stackedOpenDialogIds = [];
+      forceEmitSiteEvent("cfgMenuMounted");
       window.addEventListener("bytm:dialogOpened", evt => {
-        if (!isCfgMenuOpen || !("detail" in evt)) return;
+        if (!isCfgMenuOpen) return;
         const dlg = evt?.detail;
-        if (dlg && dlg instanceof BytmDialog) {
-          stackedOpenDialogIds.push(dlg.id);
+        if (dlg instanceof BytmDialog) {
           menuContainer.setAttribute("aria-hidden", "true");
           menuContainer.setAttribute("inert", "true");
         }
       });
-      window.addEventListener("bytm:dialogClosed", evt => {
-        const idx = stackedOpenDialogIds.indexOf(evt?.detail?.id);
-        if (idx > -1) stackedOpenDialogIds.splice(idx, 1);
-        if (stackedOpenDialogIds.length === 0) {
+      window.addEventListener("bytm:dialogClosed", () => {
+        if (!isCfgMenuOpen) return;
+        if (!openDialogs.some(id => id !== "cfg-menu")) {
           menuContainer.removeAttribute("aria-hidden");
           menuContainer.removeAttribute("inert");
         }
@@ -4391,7 +4611,7 @@ I welcome every contribution on GitHub!
       document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
       const menuBg = document.querySelector("#bytm-cfg-menu-bg");
       setCurrentDialogId("cfg-menu");
-      UserUtils.openDialogs.unshift("cfg-menu");
+      openDialogs.unshift("cfg-menu");
       emitInterface("bytm:dialogOpened", undefined);
       emitInterface("bytm:dialogOpened:cfg-menu", undefined);
       if (!menuBg) {
@@ -4415,14 +4635,15 @@ I welcome every contribution on GitHub!
     if (!isCfgMenuOpen) return;
     isCfgMenuOpen = false;
     evt?.bubbles && evt.stopPropagation();
-    if (enableScroll) {
+    if (enableScroll && !openDialogs.some(id => id !== "cfg-menu")) {
       document.body.classList.remove("bytm-disable-scroll");
       document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     }
     const menuBg = document.querySelector("#bytm-cfg-menu-bg");
     clearTimeout(hiddenCopiedTxtTimeout);
-    UserUtils.openDialogs.splice(UserUtils.openDialogs.indexOf("cfg-menu"), 1);
-    setCurrentDialogId(UserUtils.openDialogs?.[0] ?? null);
+    const cfgIdx = openDialogs.indexOf("cfg-menu");
+    if (cfgIdx > -1) openDialogs.splice(cfgIdx, 1);
+    setCurrentDialogId(openDialogs?.[0] ?? null);
     emitInterface("bytm:dialogClosed", undefined);
     emitInterface("bytm:dialogClosed:cfg-menu", undefined);
     if (!menuBg) return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
@@ -4456,7 +4677,6 @@ I welcome every contribution on GitHub!
     watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo$1.name);
     watermarkEl.tabIndex = 0;
     (async () => {
-      await improveLogo();
       bytmLogoUrl = await getResourceUrl(mode$1 === "development" ? "img-logo_dev" : "img-logo");
       UserUtils.preloadImages([ bytmLogoUrl ]);
       const watermarkOpenMenu = e => {
@@ -4470,30 +4690,36 @@ I welcome every contribution on GitHub!
         capture: true
       });
       addSelectorListener("navBar", "ytmusic-logo a", {
-        listener: logoElem => logoElem.appendChild(watermarkEl)
-      });
-      log("Added watermark element");
-    })();
-  }
-  async function improveLogo() {
-    try {
-      if (improveLogoCalled) return;
-      improveLogoCalled = true;
-      const res = await CoreUtils.fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
-      const svg = await res.text();
-      addSelectorListener("navBar", "ytmusic-logo > a", {
-        listener: logoElem => {
-          logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-          setInnerHtml(logoElem, svg);
-          logoElem.querySelectorAll("svg > g > path").forEach(el => el.classList.add("bytm-mod-logo-remove"));
-          log("Swapped logo to inline SVG");
+        listener(logoElem) {
+          logoElem.appendChild(watermarkEl);
+          log("Added watermark element");
         }
       });
-    } catch (err) {
-      error("Couldn't improve logo due to an error:", err);
-    }
+    })();
+  }
+  function improveLogo() {
+    return new Promise(async resolve => {
+      try {
+        if (improveLogoCalled) return;
+        improveLogoCalled = true;
+        const res = await CoreUtils.fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
+        const svg = await res.text();
+        addSelectorListener("navBar", "ytmusic-logo > a", {
+          listener: logoElem => {
+            logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
+            setInnerHtml(logoElem, svg);
+            logoElem.querySelectorAll("svg > g > path").forEach(el => el.classList.add("bytm-mod-logo-remove"));
+            log("Swapped logo to inline SVG");
+            resolve();
+          }
+        });
+      } catch (err) {
+        error("Couldn't improve logo due to an error:", err);
+      }
+    });
   }
   function exchangeLogo() {
+    if (logoExchanged) return;
     addSelectorListener("navBar", ".bytm-mod-logo", {
       listener: async logoElem => {
         if (logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl) return;
@@ -4542,7 +4768,6 @@ I welcome every contribution on GitHub!
     cfgOptItemElem.appendChild(cfgOptTextElem);
     cfgOptElem.appendChild(cfgOptItemElem);
     container.appendChild(cfgOptElem);
-    improveLogo();
     log("Added BYTM-Configuration button to menu popover");
   }
   async function addConfigMenuOptionYT(container) {
@@ -4680,7 +4905,7 @@ I welcome every contribution on GitHub!
           addSelectorListener("searchPage", `ytmusic-shelf-renderer #contents,\nytmusic-card-shelf-renderer .card-container`, {
             continuous: true,
             all: true,
-            debounce: 250,
+            debounce: 200,
             listener: genericSongListListener
           });
         }
@@ -4688,7 +4913,7 @@ I welcome every contribution on GitHub!
       addSelectorListener("browseResponse", `ytmusic-playlist-shelf-renderer #contents,\nytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\nytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
         continuous: true,
         all: true,
-        debounce: 250,
+        debounce: 200,
         listener: genericSongListListener
       });
     } catch (err) {
@@ -4745,7 +4970,7 @@ I welcome every contribution on GitHub!
         return [ "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", "input#share-url" ];
 
        case "yt":
-        return [ "ytd-unified-share-panel-renderer", "input#share-url" ];
+        return [ "yt-unified-share-panel-renderer", "input#share-url" ];
       }
     })();
     addSelectorListener("body", sharePanelSel, {
@@ -4830,23 +5055,25 @@ I welcome every contribution on GitHub!
       });
     }, 1);
   }
-  const albumArtCacheStore = new UserUtils.DataStore({
-    id: "album-art-cache",
+  const artCacheStore = new CoreUtils.DataStore({
+    id: "bytm-artwork-cache",
+    migrateIds: [ "album-art-cache" ],
     formatVersion: 1,
+    engine: new UserUtils.GMStorageEngine,
+    compressionFormat: compressionFormat$1,
+    memoryCache: false,
     defaultData: {
       entries: []
-    },
-    encodeData: async data => await compressionSupported() ? await CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: async data => await compressionSupported() ? await CoreUtils.decompress(data, compressionFormat$1, "string") : data
+    }
   });
   async function deleteExpiredAlbumArtCacheEntries() {
-    await albumArtCacheStore.loadData();
     const ttl = 1e3 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
-    const expiredEntries = albumArtCacheStore.getData().entries.filter(e => Date.now() - e.created > ttl);
+    const cacheData = await artCacheStore.loadData();
+    const expiredEntries = cacheData.entries.filter(e => Date.now() - e.created > ttl);
     if (expiredEntries.length > 0) {
       log(`Deleting ${expiredEntries.length} expired album art cache entries`);
-      albumArtCacheStore.setData({
-        entries: albumArtCacheStore.getData().entries.filter(en => !expiredEntries.some(ex => ex.videoId === en.videoId))
+      artCacheStore.setData({
+        entries: cacheData.entries.filter(en => !expiredEntries.some(ex => ex.videoId === en.videoId))
       });
     }
   }
@@ -4900,8 +5127,8 @@ I welcome every contribution on GitHub!
       const applyThumbUrl = async videoID => {
         try {
           const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
-          if (toggleBtnElem && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http") && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0) && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes")))) return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
-          const setOverlayUrl = (ytThumbUrl, amThumbUrl) => {
+          if (toggleBtnElem?.dataset.albumArtworkUrl?.startsWith("http") && ((!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0) && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes")))) return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
+          const setThumbOverlayUrl = (ytThumbUrl, amThumbUrl) => {
             const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
             const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
             const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
@@ -4921,10 +5148,11 @@ I welcome every contribution on GitHub!
           let bestNativeThumbUrl;
           const ac = new AbortController;
           getBestThumbnailUrl(videoID).then(url => {
-            if (ac.signal.aborted ? undefined : bestNativeThumbUrl = url) setOverlayUrl(url);
+            if (ac.signal.aborted ? undefined : bestNativeThumbUrl = url) setThumbOverlayUrl(url);
           }).catch(() => void 0);
           addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
             async listener() {
+              if (ac.signal.aborted) return;
               const [primaryArtist, albumName] = (() => {
                 const parent = document.querySelector(".content-info-wrapper .subtitle yt-formatted-string");
                 if (!parent) return [ undefined, undefined ];
@@ -4943,13 +5171,13 @@ I welcome every contribution on GitHub!
                 return [ (firstArtistLink ?? firstArtistName)?.innerText, splitList[1].find(el => el.tagName === "A")?.innerText ];
               })();
               const iTunesAlbum = primaryArtist && albumName ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName) : undefined;
-              const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
+              const imgRes = getFeature("thumbnailOverlayITunesImgRes", featInfo.thumbnailOverlayITunesImgRes.default);
               const iTunesUrl = iTunesAlbum?.artworkUrl100 ?? iTunesAlbum?.artworkUrl60;
               iTunesUrl && !ac.signal.aborted && ac.abort();
               const thumbUrl = iTunesUrl?.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`) ?? bestNativeThumbUrl ?? await getBestThumbnailUrl(videoID);
               if (thumbUrl) {
-                log(`Successfully resolved artwork for '${primaryArtist} - ${albumName}'`);
-                setOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
+                log(`Successfully resolved artwork${albumName ? ` for '${primaryArtist} - ${albumName}'` : ". Couldn't find album name, defaulting to best available YT thumbnail"}: ${thumbUrl}`);
+                setThumbOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
               } else warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
             }
           });
@@ -5037,7 +5265,7 @@ I welcome every contribution on GitHub!
   }
   async function getBestITunesAlbumMatch(videoId, artistsRaw, albumRaw) {
     if (overlayState === ThumbOvlState.AM) {
-      const cacheEntry = albumArtCacheStore.getData().entries.find(e => e.videoId === videoId);
+      const cacheEntry = (await artCacheStore.loadData()).entries.find(e => e.videoId === videoId);
       if (cacheEntry) {
         log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
         return {
@@ -5059,19 +5287,25 @@ I welcome every contribution on GitHub!
     if (!bestMatch) [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
     const match = bestMatch ?? fallback;
     if (match) {
-      const entries = albumArtCacheStore.getData().entries;
+      const entries = (await artCacheStore.loadData()).entries;
       if (!entries.some(e => e.videoId === videoId)) {
-        entries.push({
+        const entry = {
           videoId: videoId,
           url: match.artworkUrl100,
           created: Date.now()
+        };
+        entries.push(entry);
+        log(`Added album artwork template URL for '${artist} - ${albumRaw}' (or video with ID '${videoId}') to cache:`, match.artworkUrl100);
+        emitInterface("bytm:artworkCacheEntryAdded", {
+          album: albumRaw,
+          artist: artist,
+          entry: entry
         });
-        log(`Added album artwork URL for album '${artist} - ${albumRaw}' or video with ID '${videoId}' to cache:`, match.artworkUrl100);
-        await albumArtCacheStore.setData({
+        await artCacheStore.setData({
           entries: entries
         });
       }
-    } else warn("The iTunes API found no album info for", artist, "-", albumRaw);
+    } else warn(`The iTunes API yielded no album info for '${artist} - ${albumRaw}', defaulting to regular YT thumbnail`);
     return match;
   }
   async function initHideCursorOnIdle() {
@@ -5080,19 +5314,58 @@ I welcome every contribution on GitHub!
         const overlaySelector = "ytmusic-player #song-media-window";
         const overlayElem = document.querySelector(overlaySelector);
         if (!overlayElem) return warn("Couldn't find overlay element while initializing cursor hiding");
+        let lastMouseoverElement = null;
+        document.body.addEventListener("mouseover", e => {
+          const tgt = e.target;
+          if (!tgt) return;
+          lastMouseoverElement = tgt;
+        });
+        let isFullscreen = false;
         let cursorHideTimer;
         let hideTransTimer;
+        let hidePlayerBarTimer;
+        const hidePlayerBar = () => {
+          if (lastMouseoverElement && lastMouseoverElement.closest("ytmusic-player-bar")) return;
+          if (getFeature("hidePlayerBarOnIdleInFullscreen") && isFullscreen) {
+            const playerBar = document.querySelector("ytmusic-player-bar");
+            if (playerBar) {
+              hidePlayerBarTimer = setTimeout(() => {
+                if (playerBar.classList.contains("hidden")) playerBar.style.display = "none";
+                hidePlayerBarTimer = undefined;
+              }, 300);
+              playerBar.classList.add("hidden");
+            }
+          }
+        };
         const hide = () => {
           if (!getFeature("hideCursorOnIdle")) return;
           if (vidContainer.classList.contains("bytm-cursor-hidden")) return;
+          if (lastMouseoverElement && lastMouseoverElement.closest("ytmusic-player-bar")) return;
           overlayElem.style.opacity = ".000001 !important";
           hideTransTimer = setTimeout(() => {
             overlayElem.style.display = "none";
             vidContainer.style.cursor = "none";
             vidContainer.classList.add("bytm-cursor-hidden");
             hideTransTimer = undefined;
+            hidePlayerBar();
           }, 200);
         };
+        const showPlayerBar = () => {
+          const playerBar = document.querySelector("ytmusic-player-bar");
+          if (playerBar && playerBar.classList.contains("hidden")) {
+            if (hidePlayerBarTimer !== undefined) {
+              clearTimeout(hidePlayerBarTimer);
+              hidePlayerBarTimer = undefined;
+            }
+            playerBar.style.display = "";
+            playerBar.classList.remove("hidden");
+          }
+        };
+        siteEvents.on("fullscreenToggled", fsEnabled => {
+          isFullscreen = fsEnabled;
+          if (!getFeature("hidePlayerBarOnIdleInFullscreen")) return;
+          if (!fsEnabled) showPlayerBar(); else if ((!lastMouseoverElement || !lastMouseoverElement.closest("ytmusic-player-bar")) && vidContainer.classList.contains("bytm-cursor-hidden")) hidePlayerBar();
+        });
         const show = () => {
           hideTransTimer && clearTimeout(hideTransTimer);
           if (!vidContainer.classList.contains("bytm-cursor-hidden")) return;
@@ -5100,6 +5373,7 @@ I welcome every contribution on GitHub!
           vidContainer.style.cursor = "initial";
           overlayElem.style.display = "initial";
           overlayElem.style.opacity = "1 !important";
+          showPlayerBar();
         };
         const cursorHideTimerCb = () => cursorHideTimer = setTimeout(hide, getFeature("hideCursorOnIdleDelay") * 1e3);
         const onMove = () => {
@@ -5107,17 +5381,23 @@ I welcome every contribution on GitHub!
           show();
           cursorHideTimerCb();
         };
-        vidContainer.addEventListener("mouseenter", onMove);
-        vidContainer.addEventListener("mousemove", CoreUtils.debounce(onMove, 200));
+        vidContainer.addEventListener("mousemove", CoreUtils.debounce(onMove, 150), {
+          capture: true
+        });
         vidContainer.addEventListener("mouseleave", () => {
           cursorHideTimer && clearTimeout(cursorHideTimer);
           hideTransTimer && clearTimeout(hideTransTimer);
           hide();
+        }, {
+          capture: true
         });
-        vidContainer.addEventListener("click", () => {
+        vidContainer.addEventListener("click", e => {
+          if (e.target?.closest("#themesongControlButtonsContainer")) return;
           show();
           cursorHideTimerCb();
           setTimeout(hide, 3e3);
+        }, {
+          capture: true
         });
         log("Initialized cursor hiding on idle");
       }
@@ -5246,32 +5526,610 @@ I welcome every contribution on GitHub!
   async function initWatchPageFullSize() {
     if (!await addStyleFromResource("css-watch_page_full_size")) error("Couldn't load stylesheet to make watch page full size"); else log("Made watch page full size");
   }
+  async function initTruncatePlayerBarSubtitles() {
+    if (!await addStyleFromResource("css-truncate_player_bar_subtitles")) error("Couldn't load stylesheet to truncate player bar subtitles"); else log("Truncated player bar subtitles");
+  }
+  var formatVersion = 0;
+  var domains = [ {
+    id: "ytm",
+    name: "YouTube Music",
+    nameShort: "YT Music",
+    abbr: "YTM",
+    hostnames: [ "music.youtube.com" ]
+  }, {
+    id: "yt",
+    name: "YouTube",
+    nameShort: "YT",
+    abbr: "YT",
+    hostnames: [ "www.youtube.com", "youtube.com", "youtu.be", "m.youtube.com" ]
+  } ];
+  var alerts = [];
+  var selectors = {};
+  var defaultStaticData = {
+    formatVersion: formatVersion,
+    domains: domains,
+    alerts: alerts,
+    selectors: selectors
+  };
+  const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json`;
+  const staticDataFormatVersion = 0;
+  let staticData;
+  async function getStaticData() {
+    try {
+      if (staticData) return staticData;
+      const res = await CoreUtils.fetchAdvanced(remoteDataUrl, {
+        timeout: 1e4
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (isStaticData(data)) {
+          info("Successfully fetched remote static data:", data);
+          return staticData = data;
+        } else warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
+      }
+      return staticData = defaultStaticData;
+    } catch (e) {
+      warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
+      info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
+      return staticData = defaultStaticData;
+    }
+  }
+  function getDefaultStaticData() {
+    return defaultStaticData;
+  }
+  function isStaticData(data) {
+    return typeof data === "object" && data !== null && "formatVersion" in data && typeof data.formatVersion === "number" && data.formatVersion === staticDataFormatVersion && "domains" in data && typeof data.domains === "object" && Array.isArray(data.domains) && "selectors" in data && typeof data.selectors === "object" && "alerts" in data && typeof data.alerts === "object" && Array.isArray(data.alerts);
+  }
+  const alertsStore = new CoreUtils.DataStore({
+    id: "bytm-alerts",
+    defaultData: {
+      dismissed: []
+    },
+    formatVersion: 0,
+    engine: new UserUtils.GMStorageEngine,
+    memoryCache: false,
+    compressionFormat: null
+  });
+  async function checkActiveAlerts({alerts: alerts}, alertsData) {
+    const activeAlerts = alerts.filter(alert => isAlertActive(alert, alertsData));
+    for (const alert of activeAlerts) {
+      const dlg = createAlertDialog(alert);
+      await dlg.open();
+      await dlg.once("close");
+      alertsData = await alertsStore.loadData();
+      await alertsStore.setData({
+        dismissed: [ alert.id, ...alertsData.dismissed ]
+      });
+    }
+  }
+  function isAlertActive(alert, alertsData) {
+    if (alertsData.dismissed.includes(alert.id)) return false;
+    if (alert.domains.length === 0) return false;
+    if (!alert.domains.includes(getDomain())) return false;
+    if (alert.versionMin && compareVersions.compareVersions(alert.versionMin, scriptInfo$1.version) > 0) return false;
+    if (alert.versionMax && compareVersions.compareVersions(alert.versionMax, scriptInfo$1.version) < 0) return false;
+    const now = new Date;
+    if (alert.dateMin && new Date(alert.dateMin) > now) return false;
+    if (alert.dateMax && new Date(alert.dateMax) < now) return false;
+    return true;
+  }
+  function createAlertDialog(alert) {
+    return new MarkdownDialog({
+      id: "static-data-alert",
+      height: 500,
+      width: 600,
+      small: true,
+      destroyOnClose: true,
+      closeOnBgClick: !alert.important,
+      closeOnEscPress: !alert.important,
+      async renderHeader() {
+        const headerEl = document.createElement("div");
+        headerEl.id = "bytm-static-data-alert-dialog-header";
+        headerEl.classList.add("bytm-flex-row");
+        setInnerHtml(headerEl, await resourceAsString("icon-alert"));
+        const header = document.createElement("h2");
+        header.classList.add("bytm-dialog-title");
+        header.role = "heading";
+        header.ariaLevel = "1";
+        header.tabIndex = 0;
+        header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
+        headerEl.appendChild(header);
+        return headerEl;
+      },
+      renderFooter() {
+        const footer = document.createElement("div");
+        footer.classList.add("bytm-dialog-footer", "align-right");
+        const closeBtn = document.createElement("button");
+        closeBtn.type = "button";
+        closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
+        onInteraction(closeBtn, () => {
+          const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
+          if (titleCloseBtn) titleCloseBtn.click(); else warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+        });
+        footer.appendChild(closeBtn);
+        return footer;
+      },
+      body: resolveTranslatable(alert.message),
+      modifyBodyElements(_bw, mdCont) {
+        mdCont.ariaLive = "polite";
+        mdCont.ariaAtomic = "true";
+      }
+    });
+  }
+  async function initStaticData() {
+    const staticData = await getStaticData();
+    const alertsData = await alertsStore.loadData();
+    await Promise.all([ checkActiveAlerts(staticData, alertsData) ]);
+  }
   let serializer;
   let fullSerializer;
-  const getSerializerStores = () => [ configStore, autoLikeStore ];
-  const getSerializerStoresFull = () => [ ...getSerializerStores(), albumArtCacheStore, lyricsCacheStore, resourceCacheStore ];
-  const getSerializerStoresIds = () => getSerializerStores().map(store => store.id);
+  const getSerializerStores = () => [ configStore, autoLikeStore, alertsStore ];
+  const getSerializerStoresFull = () => [ ...getSerializerStores(), artCacheStore, lyricsCacheStore, resourceCacheStore ];
   function getDSSerializer(full = false) {
-    if (!full) return serializer = serializer ?? new UserUtils.DataStoreSerializer(getSerializerStores(), {
+    if (!full) return serializer ?? (serializer = new CoreUtils.DataStoreSerializer(getSerializerStores(), {
       addChecksum: true,
       ensureIntegrity: true
-    }); else return fullSerializer = fullSerializer ?? new UserUtils.DataStoreSerializer(getSerializerStoresFull(), {
+    })); else return fullSerializer ?? (fullSerializer = new CoreUtils.DataStoreSerializer(getSerializerStoresFull(), {
       addChecksum: true,
       ensureIntegrity: true
-    });
+    }));
   }
   async function downloadData(useEncoding = true, full = false) {
     const serializer = getDSSerializer(full);
     const fileName = t(`data_export_file_name${full ? "_full" : ""}`, {
+      scriptName: scriptInfo$1.name,
       version: packageJson.version,
       date: (new Date).toISOString()
     });
     const data = JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), undefined, 2);
     downloadFile(fileName, data, "application/json");
   }
+  const broadcastTxID = CoreUtils.randomId(10, 36);
+  const broadcastEngDSOpts = {
+    id: "bytm-broadcast",
+    encodeData: [ null, d => d ],
+    decodeData: [ null, d => d ]
+  };
+  const broadcastEng = new UserUtils.GMStorageEngine({
+    dataStoreOptions: broadcastEngDSOpts
+  });
+  const receivedNonces = new Set;
+  function initBroadcast() {
+    if ("addValueChangeListener" in GM) {
+      GM.addValueChangeListener(broadcastEngDSOpts.id, (_name, _oldData, newData, isRemote) => {
+        try {
+          if (typeof newData === "string" && newData.trim().startsWith("{") && newData.trim().endsWith("}")) newData = JSON.parse(newData);
+        } catch (e) {
+          warn("Failed to parse broadcast packet as object:", newData, e);
+        }
+        if (isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null) relayBroadcastPacket(newData.packet);
+      });
+    } else error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
+    getSerializerStoresFull().forEach(store => {
+      store.on("updateData", CoreUtils.debounce(() => {
+        emitBroadcast({
+          type: "dataStoreUpdate",
+          data: {
+            id: store.id
+          }
+        });
+        getFeature("logEvents") && log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
+      }, 100));
+    });
+    siteEvents.on("broadcast", handleBroadcastPacket);
+    info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
+  }
+  async function handleBroadcastPacket(type, {from: from, to: to, packet: packet}) {
+    if (from === broadcastTxID) return;
+    if (Array.isArray(to) && !to.includes(broadcastTxID)) return;
+    switch (type) {
+     case "dataStoreUpdate":
+      {
+        const data = packet.data;
+        try {
+          await (getSerializerStoresFull().find(s => s.id === data.id)?.loadData());
+          if (data.id === configStore.id) emitSiteEvent("configChanged", configStore.getData());
+          getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
+        } catch (err) {
+          log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
+        }
+        break;
+      }
+
+     case "reloadTabs":
+      await reloadTab();
+      break;
+
+     case "discoverSessions":
+      emitBroadcast({
+        type: "discoverSessionsReply",
+        data: {
+          sessionId: getSessionId(),
+          title: document.title,
+          domain: getDomain(),
+          initTime: initTime
+        }
+      }, [ from ]);
+      getFeature("logEvents") && log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
+      break;
+    }
+  }
+  async function emitBroadcast(packet, to) {
+    const nonce = Date.now() % 16777215 + Math.random();
+    return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({
+      packet: {
+        from: broadcastTxID,
+        to: to,
+        packet: packet,
+        nonce: nonce
+      }
+    }));
+  }
+  function isValidTransitBroadcastPacket(obj) {
+    return typeof obj === "object" && obj !== null && typeof obj.from === "string" && (obj.to === undefined || Array.isArray(obj.to) && obj.to.every(id => typeof id === "string")) && typeof obj.packet === "object" && obj.packet !== null && typeof obj.packet.type === "string" && (typeof obj.packet.data === "object" && obj.packet.data !== null || obj.packet.data === undefined) && typeof obj.nonce === "number";
+  }
+  function relayBroadcastPacket(packet) {
+    if (!isValidTransitBroadcastPacket(packet)) return warn("Received invalid broadcast packet, ignoring:", packet);
+    if (receivedNonces.has(packet.nonce)) return warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
+    if (receivedNonces.size >= 10) {
+      const oldestNonce = receivedNonces.values().next().value;
+      oldestNonce && receivedNonces.delete(oldestNonce);
+    }
+    receivedNonces.add(packet.nonce);
+    if (packet.from === broadcastTxID || Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")) return;
+    if (getFeature("logEvents")) log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
+    const packetClean = CoreUtils.pureObj(packet);
+    forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
+    forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean);
+  }
+  let domain;
+  function getDomain() {
+    const staticData = getDefaultStaticData();
+    const staticDomainInfo = staticData.domains.find(dom => dom.hostnames.some(hn => location.hostname === hn));
+    if (domain) return domain; else if (staticDomainInfo) return domain = staticDomainInfo.id; else throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+  }
+  function getSessionId() {
+    try {
+      if (!sessionStorageAvailable$1) throw new Error("Session storage unavailable");
+      let sesId = window.sessionStorage.getItem("_bytm-session-id");
+      if (!sesId) window.sessionStorage.setItem("_bytm-session-id", sesId = CoreUtils.randomId(10, 36));
+      return sesId;
+    } catch (err) {
+      warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+      return null;
+    }
+  }
+  let isCompressionSupported;
+  async function compressionSupported() {
+    if (typeof isCompressionSupported === "boolean") return isCompressionSupported;
+    try {
+      await CoreUtils.compress(".", compressionFormat$1, "string");
+      return isCompressionSupported = true;
+    } catch {
+      return isCompressionSupported = false;
+    }
+  }
+  function getWatchId() {
+    const {searchParams: searchParams, pathname: pathname} = new URL(location.href);
+    return pathname.includes("/watch") ? searchParams.get("v") : null;
+  }
+  function getCurrentChannelId() {
+    return parseChannelIdFromUrl(location.href);
+  }
+  function parseChannelIdFromUrl(url) {
+    try {
+      const {pathname: pathname} = url instanceof URL ? url : new URL(url);
+      if (pathname.includes("/channel/")) return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]); else if (pathname.includes("/@")) return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]); else return null;
+    } catch {
+      return null;
+    }
+  }
+  function sanitizeChannelId(channelId) {
+    channelId = String(channelId).trim();
+    return isValidChannelId(channelId) || channelId.startsWith("@") ? channelId : `@${channelId}`;
+  }
+  function isValidChannelId(channelId) {
+    return channelId.match(/^(UC|@)[a-zA-Z0-9_-]+$/) !== null;
+  }
+  function getThumbnailUrl(videoID, qualityOrIndex = "maxresdefault") {
+    return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
+  }
+  async function getBestThumbnailUrl(videoID) {
+    try {
+      const priorityList = [ "maxresdefault", "sddefault", "hqdefault", 0 ];
+      for (const quality of priorityList) {
+        let response;
+        const url = getThumbnailUrl(videoID, quality);
+        try {
+          response = await sendRequest({
+            url: url,
+            method: "HEAD",
+            timeout: 6e3
+          });
+        } catch (err) {
+          error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
+        }
+        if (response && response.status < 300 && response.status >= 200) return url;
+      }
+    } catch (err) {
+      throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`, {
+        cause: err
+      });
+    }
+  }
+  function openInTab(href, background = false) {
+    try {
+      UserUtils.openInNewTab(href, background);
+    } catch {
+      window.open(href, "_blank", "noopener noreferrer");
+    }
+  }
+  async function tryToDecompressAndParse(input) {
+    let parsed;
+    const val = await CoreUtils.consumeStringGen(input);
+    try {
+      parsed = JSON.parse(val);
+    } catch {
+      try {
+        parsed = JSON.parse(await CoreUtils.decompress(val, compressionFormat$1, "string"));
+      } catch (err) {
+        error("Couldn't decompress and parse data.", err);
+        return null;
+      }
+    }
+    await CoreUtils.pauseFor(CoreUtils.randRange(400, 800));
+    return parsed;
+  }
+  function getOS() {
+    if (navigator.userAgent.match(/mac(\s?os|intel)/i)) return "mac";
+    return "other";
+  }
+  function formatNumber(num, notation) {
+    return num.toLocaleString(getLocale(), (notation ?? getFeature("numbersFormat")) === "short" ? {
+      notation: "compact",
+      compactDisplay: "short",
+      maximumFractionDigits: 1
+    } : {
+      style: "decimal",
+      maximumFractionDigits: 0
+    });
+  }
+  const reloadTabStore = new CoreUtils.DataStore({
+    id: "bytm-reload-tab",
+    engine: new UserUtils.GMStorageEngine,
+    formatVersion: 0,
+    compressionFormat: null,
+    memoryCache: false,
+    defaultData: {
+      entries: []
+    }
+  });
+  const reloadTabEntryMaxTTL = 1e3 * 60 * 60 * 24;
+  async function getReloadTabData(sessionId, deleteAfterRead = true) {
+    try {
+      if (!sessionId) sessionId = getSessionId();
+      const data = await reloadTabStore.loadData();
+      let entries = [ ...data.entries ];
+      const sesEntry = entries.find(e => e.sessionId === sessionId) ?? null;
+      entries = data.entries.filter(e => deleteAfterRead && sesEntry ? e.sessionId !== sessionId : true);
+      entries = entries.filter(e => Date.now() - e.timestamp < reloadTabEntryMaxTTL);
+      await reloadTabStore.setData({
+        ...data,
+        entries: entries
+      });
+      return sesEntry;
+    } catch (err) {
+      error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
+      return null;
+    }
+  }
+  const reloadTabVideoTimeThreshold = 3;
+  async function reloadTab() {
+    const win = UserUtils.getUnsafeWindow();
+    try {
+      enableDiscardBeforeUnload();
+      if ((getVideoElement()?.readyState ?? 0) > 0) {
+        const time = await getVideoTime(0) ?? 0;
+        const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+        const volume = sliderElem ? Number(sliderElem.value) : Math.round(getVideoElement().volume * 100);
+        const url = new URL(win.location.href);
+        if (!isNaN(time) && time > reloadTabVideoTimeThreshold) url.searchParams.set("time_continue", String(time));
+        if (!isNaN(volume) && volume > 0) {
+          const reloadTabData = await reloadTabStore.loadData();
+          if (reloadTabData.entries.find(e => e.sessionId === getSessionId())) reloadTabData.entries = reloadTabData.entries.filter(e => e.sessionId !== getSessionId());
+          reloadTabData.entries.push({
+            sessionId: getSessionId(),
+            timestamp: Date.now(),
+            volume: volume,
+            time: !isNaN(time) && time > reloadTabVideoTimeThreshold ? time : null
+          });
+          await reloadTabStore.setData(reloadTabData);
+        }
+        return win.location.replace(url);
+      }
+      win.location.reload();
+    } catch (err) {
+      error("Couldn't save video time and volume before reloading tab:", err);
+      win.location.reload();
+    }
+  }
+  async function reloadAllTabs(reloadSelf = true, toTxIDs) {
+    info(`Emitting broadcast to reload ${"all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
+    emitBroadcast({
+      type: "reloadTabs"
+    }, toTxIDs);
+    return reloadSelf ? await (async () => {
+      await CoreUtils.pauseFor(30);
+      return await reloadTab();
+    })() : undefined;
+  }
+  function scrollToCurrentSongInQueue(evt) {
+    addSelectorListener("sidePanel", 'ytmusic-player-queue ytmusic-player-queue-item[play-button-state="loading"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state="playing"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state="paused"]', {
+      listener(activeItem) {
+        activeItem.scrollIntoView({
+          behavior: evt?.shiftKey ? "instant" : "smooth",
+          block: evt?.ctrlKey || evt?.altKey ? "start" : "center",
+          inline: "center"
+        });
+        log("Scrolled to active song in queue:", activeItem);
+      }
+    });
+  }
+  function overflowVal(value, minOrMax, max) {
+    const min = typeof max === "number" ? minOrMax : 0;
+    max = typeof max === "number" ? max : minOrMax;
+    if (min > max) throw new RangeError('Parameter "min" can\'t be bigger than "max"');
+    if (isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max)) return NaN;
+    if (value >= min && value <= max) return value;
+    const range = max - min + 1;
+    const wrappedValue = ((value - min) % range + range) % range + min;
+    return wrappedValue;
+  }
+  function getterifyObj(obj) {
+    const newObj = {};
+    for (const key in obj) {
+      Object.defineProperty(newObj, key, {
+        get: () => obj[key],
+        enumerable: true,
+        configurable: true
+      });
+    }
+    return newObj;
+  }
+  let verSessions;
+  async function initVersionSessionCounter() {
+    verSessions = JSON.parse(await GM.getValue("bytm-version-session-counter", "{}"));
+    if (typeof verSessions !== "object" || verSessions === null) verSessions = {};
+    if (typeof verSessions?.[scriptInfo$1.version] !== "object" || typeof verSessions?.[scriptInfo$1.version]?.count !== "number") verSessions[scriptInfo$1.version] = {
+      count: 1
+    }; else verSessions[scriptInfo$1.version].count++;
+    await GM.setValue("bytm-version-session-counter", JSON.stringify(verSessions));
+    return verSessions[scriptInfo$1.version].count;
+  }
+  function getVersionSessionCount(version = scriptInfo$1.version) {
+    if (!verSessions) throw new Error("Version session counter not initialized yet, call initVersionSessionCounter() first");
+    if (typeof verSessions[version] !== "object" || typeof verSessions[version].count !== "number") return 0;
+    return verSessions[version].count;
+  }
+  async function getResourceUrl(name) {
+    const resObjOrStr = resourcesJson.resources?.[name];
+    if (typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+      const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
+      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber$1;
+      if (pathName) {
+        return pathName.startsWith("http") ? pathName : (() => {
+          let path = pathName;
+          if (path.startsWith("/")) path = path.slice(1); else path = `assets/${path}`;
+          switch (assetSource) {
+           case "jsdelivr":
+            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
+
+           case "github":
+            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
+
+           case "local":
+            return `http://localhost:${devServerPort}/${path}`;
+          }
+        })();
+      }
+    }
+    warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
+    return await GM.getResourceUrl(name, false);
+  }
+  const resourceCacheTTL = 1e3 * 60 * 60 * 24 * 7;
+  const resourceCacheKey = mode$1 === "development" ? scriptInfo$1.version : buildNumber$1;
+  const resourceCacheStore = new CoreUtils.DataStore({
+    id: "bytm-resource-cache",
+    formatVersion: 0,
+    engine: new UserUtils.GMStorageEngine,
+    compressionFormat: compressionFormat$1,
+    defaultData: {
+      resources: {},
+      created: Date.now(),
+      cacheKey: resourceCacheKey
+    }
+  });
+  const cachedResourcePrefixes = [ "doc-", "icon-", "img-", "style-", "trans-" ];
+  async function initResourceCache() {
+    await resourceCacheStore.loadData();
+  }
+  async function resourceCacheHas(key) {
+    if (resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
+      await resourceCacheStore.saveDefaultData();
+      return false;
+    }
+    const val = resourceCacheGet(key);
+    return val !== undefined && val !== null && val.length > 0;
+  }
+  function resourceCacheGet(key) {
+    return resourceCacheStore.getData().resources[key] ?? null;
+  }
+  async function resourceCacheSet(key, val) {
+    const data = resourceCacheStore.getData();
+    data.resources[key] = val;
+    data.created = Date.now();
+    return await resourceCacheStore.setData(data);
+  }
+  async function resourceAsString(resourceKey) {
+    if (typeof isCompressionSupported === "undefined") await compressionSupported();
+    if (Date.now() - resourceCacheStore.getData().created > resourceCacheTTL) await resourceCacheStore.saveDefaultData(); else if (await resourceCacheHas(resourceKey)) return resourceCacheGet(resourceKey);
+    const resourceUrl = await getResourceUrl(resourceKey);
+    try {
+      if (!resourceUrl) throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
+      const res = await CoreUtils.fetchAdvanced(resourceUrl);
+      if (!res.ok) throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
+      const str = await res.text();
+      if (cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix))) await resourceCacheSet(resourceKey, str);
+      return str;
+    } catch (err) {
+      error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
+      return null;
+    }
+  }
+  function getPreferredLocale() {
+    const sanEq = (str1, str2) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
+    const allNavLangs = [ ...new Set([ navigator.language, ...navigator.languages ]) ].map(v => v.replace(/_/g, "-"));
+    for (const navLang of allNavLangs) {
+      const resolvedLoc = Object.entries(localesJson).find(([key, {altLocales: altLocales}]) => sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang)))?.[0];
+      if (resolvedLoc) return resolvedLoc.trim();
+      const navLangTrimmed = navLang.split("-")[0];
+      const resolvedFallbackLang = Object.entries(localesJson).find(([key, {altLocales: altLocales}]) => sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed)))?.[0];
+      if (resolvedFallbackLang) return resolvedFallbackLang.trim();
+    }
+    return "en-US";
+  }
+  async function parseMarkdown(mdString, sanitize = true) {
+    const mdHtml = await marked.marked.parse(mdString, {
+      async: true,
+      breaks: true,
+      gfm: true,
+      silent: true
+    });
+    return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
+  }
+  async function getChangelogMd() {
+    const clRes = await CoreUtils.fetchAdvanced(changelogUrl);
+    log("Fetched changelog:", clRes);
+    return await clRes.text();
+  }
+  async function getChangelogHtmlWithDetails() {
+    try {
+      const changelogMd = await getChangelogMd();
+      let changelogHtml = await parseMarkdown(changelogMd, false);
+      const getVerId = verStr => verStr.trim().replace(/[._#\s-]/g, "");
+      changelogHtml = changelogHtml.replace(/<div\s+class="split">\s?<\/div>(\s+)?\n?(\s+)?<br(\s\/)?>/gm, '</details>\n<br>\n<details class="bytm-changelog-version-details">');
+      const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+      for (const [fullMatch, , verStr] of h2Matches) changelogHtml = changelogHtml.replace(fullMatch, `<summary tab-index="0"><h2 id="${getVerId(verStr)}" role="subheading" aria-level="1">${verStr}</h2></summary>`);
+      changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
+      return sanitizeHtml(changelogHtml);
+    } catch (err) {
+      error("Couldn't fetch or parse changelog:", err);
+      return `Error while preparing changelog: ${err}`;
+    }
+  }
   let pluginListDialog = null;
   async function getPluginListDialog() {
-    return pluginListDialog = pluginListDialog ?? new BytmDialog({
+    return pluginListDialog ?? (pluginListDialog = new BytmDialog({
       id: "plugin-list",
       width: 900,
       height: 600,
@@ -5281,8 +6139,8 @@ I welcome every contribution on GitHub!
       destroyOnClose: true,
       small: true,
       renderHeader: renderHeader$1,
-      renderBody: renderBody$2
-    });
+      renderBody: renderBody$1
+    }));
   }
   async function renderHeader$1() {
     const titleElem = document.createElement("h2");
@@ -5294,7 +6152,7 @@ I welcome every contribution on GitHub!
     titleElem.textContent = t("plugin_list.title");
     return titleElem;
   }
-  async function renderBody$2() {
+  async function renderBody$1() {
     const listContainerEl = document.createElement("div");
     listContainerEl.id = "bytm-plugin-list-container";
     const registeredPlugins = getRegisteredPlugins();
@@ -5370,7 +6228,7 @@ I welcome every contribution on GitHub!
         linksList.appendChild(linkEl);
       }
       const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
-      const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${devPluginName}`;
+      const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
       const isDevPlugin = Boolean(pluginIdentifier === devPluginIdentifier && getPluginInfo(devPluginToken, devPluginIdentifier));
       const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
       const intentsAmount = Object.keys(PluginIntent).length / 2;
@@ -5414,9 +6272,13 @@ I welcome every contribution on GitHub!
   const ignoreInputTagNames = [ "INPUT", "TEXTAREA", "SELECT", "BUTTON", "A" ];
   const ignoreInputIds = [ "contenteditable-root", "volume-slider", "bytm-cfg-menu-sidenav" ];
   const ignoreInputClassNames = [ "bytm-ignored-input", "cbTitleTextBox" ];
-  function isIgnoredInputElement(el = document.activeElement) {
+  const unIgnoreInputClassNames = [ "bytm-generic-btn", "bytm-btn" ];
+  function isIgnoredInputElement(el) {
+    if (!el) el = document.activeElement;
     if (!el) return false;
-    return el !== document.body && (ignoreInputTagNames.includes(el.tagName.toUpperCase()) || ignoreInputIds.includes(el.id) || ignoreInputClassNames.some(cls => el.classList.contains(cls)));
+    const isIgnored = el !== document.body && (ignoreInputTagNames.includes(el.tagName.toUpperCase()) || ignoreInputIds.includes(el.id) || ignoreInputClassNames.some(cls => el.classList.contains(cls)));
+    const isUnignored = unIgnoreInputClassNames.some(cls => el.classList.contains(cls));
+    return isIgnored && !isUnignored;
   }
   let sliderEl;
   async function initArrowKeySkip() {
@@ -5431,7 +6293,7 @@ I welcome every contribution on GitHub!
       if (isIgnoredInputElement() && !allowedClasses.some(cls => document.activeElement?.classList.contains(cls))) return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
       evt.preventDefault();
       evt.stopImmediatePropagation();
-      let skipBy = getFeature("arrowKeySkipBy") ?? featInfo.arrowKeySkipBy.default;
+      let skipBy = getFeature("arrowKeySkipBy", featInfo.arrowKeySkipBy.default);
       if (evt.code === "ArrowLeft") skipBy *= -1;
       log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
       const vidElem = getVideoElement();
@@ -5445,7 +6307,7 @@ I welcome every contribution on GitHub!
     if (!getVideoElement()) return warn("Couldn't find video element, so the keypress is ignored");
     if (!sliderEl) return warn("Couldn't find volume slider element, so the keypress is ignored");
     const step = Number(sliderEl.step);
-    const newVol = CoreUtils.clamp(Number(sliderEl.value) + (evt.code === "ArrowUp" ? 1 : -1) * CoreUtils.clamp(getFeature("arrowKeyVolumeStep") ?? featInfo.arrowKeyVolumeStep.default, isNaN(step) ? 5 : step, 100), 0, 100);
+    const newVol = CoreUtils.clamp(Number(sliderEl.value) + (evt.code === "ArrowUp" ? 1 : -1) * CoreUtils.clamp(getFeature("arrowKeyVolumeStep", featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
     if (newVol !== Number(sliderEl.value)) {
       sliderEl.value = String(newVol);
       sliderEl.dispatchEvent(new Event("change", {
@@ -5516,12 +6378,13 @@ I welcome every contribution on GitHub!
     promises.push(initSearchBarHotkeys());
     return await Promise.allSettled(promises);
   }
-  function hotkeyMatches(e, hk) {
-    return e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt;
+  function hotkeyMatches(evt, hk) {
+    if (typeof hk !== "object" || typeof hk.code !== "string") return false;
+    return evt.code === hk.code && evt.shiftKey === hk.shift && evt.ctrlKey === hk.ctrl && evt.altKey === hk.alt;
   }
-  function preventBubble(e) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
+  function preventBubble(evt) {
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
   }
   const videoTimeThreshold = 3;
   let siteSwitchEnabled = true;
@@ -5530,17 +6393,19 @@ I welcome every contribution on GitHub!
     document.addEventListener("keydown", e => {
       if (!getFeature("switchBetweenSites")) return;
       if (isIgnoredInputElement()) return;
-      if (siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey"))) switchSite(domain === "yt" ? "ytm" : "yt");
+      if (siteSwitchEnabled) {
+        if (hotkeyMatches(e, getFeature("switchSitesNewTabHotkey"))) switchSite(domain === "yt" ? "ytm" : "yt", true); else if (hotkeyMatches(e, getFeature("switchSitesHotkey"))) switchSite(domain === "yt" ? "ytm" : "yt");
+      }
     }, {
       capture: true
     });
-    siteEvents.on("hotkeyInputActive", state => {
+    siteEvents.on("hotkeyInputActive", hkInputActive => {
       if (!getFeature("switchBetweenSites")) return;
-      siteSwitchEnabled = !state;
+      siteSwitchEnabled = !hkInputActive;
     });
     log("Initialized site switch listener");
   }
-  async function switchSite(newDomain) {
+  async function switchSite(newDomain, inNewTab = false) {
     try {
       if (![ "/watch", "/playlist" ].some(v => location.pathname.startsWith(v))) return warn("Not on a supported page, so the site switch is ignored");
       let subdomain;
@@ -5548,13 +6413,13 @@ I welcome every contribution on GitHub!
       if (!subdomain) throw new Error(`Unrecognized domain '${newDomain}'`);
       enableDiscardBeforeUnload();
       const {pathname: pathname, search: search, hash: hash} = new URL(location.href);
-      const vt = await getVideoTime(0);
-      log(`Found video time of ${vt} seconds`);
+      const time = await getVideoTime(0);
+      log(`Found video time of ${time} seconds`);
       const cleanSearch = search.split("&").filter(param => !param.match(/^\??(t|time_continue)=/)).join("&");
-      const newSearch = typeof vt === "number" && vt > videoTimeThreshold ? cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&time_continue=${vt}` : `?time_continue=${vt}` : cleanSearch;
+      const newSearch = typeof time === "number" && time > videoTimeThreshold ? cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&time_continue=${time}` : `?time_continue=${time}` : cleanSearch;
       const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
       info(`Switching to domain '${newDomain}' at ${newUrl}`);
-      location.assign(newUrl);
+      if (inNewTab) UserUtils.openInNewTab(newUrl, true); else location.assign(newUrl);
     } catch (err) {
       error("Error while switching site:", err);
     }
@@ -5563,13 +6428,15 @@ I welcome every contribution on GitHub!
     document.addEventListener("keydown", e => {
       if (!getFeature("likeDislikeHotkeys")) return;
       if (isIgnoredInputElement()) return;
-      const {likeBtn: likeBtn, dislikeBtn: dislikeBtn} = getLikeDislikeBtns();
+      const {likeBtn: likeBtn, dislikeBtn: dislikeBtn, likeState: likeState} = getLikeDislikeBtns();
       if (hotkeyMatches(e, getFeature("likeHotkey"))) {
+        preventBubble(e);
+        if (!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE") return;
         likeBtn?.click();
-        preventBubble(e);
       } else if (hotkeyMatches(e, getFeature("dislikeHotkey"))) {
-        dislikeBtn?.click();
         preventBubble(e);
+        if (!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE") return;
+        dislikeBtn?.click();
       }
     }, {
       capture: true
@@ -5579,7 +6446,7 @@ I welcome every contribution on GitHub!
     document.addEventListener("keydown", e => {
       if (!getFeature("currentLyricsHotkeyEnabled")) return;
       if (isIgnoredInputElement()) return;
-      if (hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
+      if (hotkeyMatches(e, getFeature("currentLyricsHotkey")) && location.pathname.startsWith("/watch")) {
         preventBubble(e);
         const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
         lyricsBtn?.click();
@@ -5627,50 +6494,52 @@ I welcome every contribution on GitHub!
     });
   }
   let lastProxyHkTime = 0;
+  const proxyHotkeys = {
+    rebindNextAndPrevious: [ {
+      hkFeatKey: "nextHotkey",
+      preventKey: "KeyJ",
+      domains: [ "ytm" ],
+      onPress: () => dispatchProxyKey({
+        code: "KeyJ",
+        key: "j",
+        keyCode: 74,
+        which: 74
+      })
+    }, {
+      hkFeatKey: "previousHotkey",
+      preventKey: "KeyK",
+      domains: [ "ytm" ],
+      onPress: () => dispatchProxyKey({
+        code: "KeyK",
+        key: "k",
+        keyCode: 75,
+        which: 75
+      })
+    } ],
+    rebindPlayPause: [ {
+      hkFeatKey: "playPauseHotkey",
+      preventKey: "Space",
+      domains: [ "ytm" ],
+      onPress: () => dispatchProxyKey({
+        code: "Space",
+        key: " ",
+        keyCode: 32,
+        which: 32
+      })
+    } ],
+    themeSongVisualizerHotkeyEnabled: [ {
+      hkFeatKey: "themeSongVisualizerHotkey",
+      domains: [ "ytm" ],
+      onPress: e => {
+        const toggleEl = document.querySelector("#ts-visualizer-toggle");
+        if (toggleEl) {
+          preventBubble(e);
+          toggleEl.click();
+        }
+      }
+    } ]
+  };
   async function initProxyHotkeys() {
-    const dispatchProxyKey = hkProps => {
-      document.body.dispatchEvent(new KeyboardEvent("keydown", {
-        ...hkProps,
-        bubbles: true,
-        cancelable: false,
-        view: UserUtils.getUnsafeWindow()
-      }));
-      log("Dispatched proxy hotkey:", hkProps);
-    };
-    const proxyHotkeys = {
-      rebindNextAndPrevious: [ {
-        hkFeatKey: "nextHotkey",
-        preventKey: "KeyJ",
-        domains: [ "ytm" ],
-        onPress: () => dispatchProxyKey({
-          code: "KeyJ",
-          key: "j",
-          keyCode: 74,
-          which: 74
-        })
-      }, {
-        hkFeatKey: "previousHotkey",
-        preventKey: "KeyK",
-        domains: [ "ytm" ],
-        onPress: () => dispatchProxyKey({
-          code: "KeyK",
-          key: "k",
-          keyCode: 75,
-          which: 75
-        })
-      } ],
-      rebindPlayPause: [ {
-        hkFeatKey: "playPauseHotkey",
-        preventKey: "Space",
-        domains: [ "ytm" ],
-        onPress: () => dispatchProxyKey({
-          code: "Space",
-          key: " ",
-          keyCode: 32,
-          which: 32
-        })
-      } ]
-    };
     document.addEventListener("keydown", e => {
       if (isIgnoredInputElement()) return;
       for (const [featKey, proxyGroup] of Object.entries(proxyHotkeys)) {
@@ -5691,6 +6560,15 @@ I welcome every contribution on GitHub!
     }, {
       capture: true
     });
+  }
+  function dispatchProxyKey(hkProps) {
+    document.body.dispatchEvent(new KeyboardEvent("keydown", {
+      ...hkProps,
+      bubbles: true,
+      cancelable: true,
+      view: UserUtils.getUnsafeWindow()
+    }));
+    log("Dispatched proxy hotkey:", hkProps);
   }
   async function disableDarkReader() {
     if (getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all") return;
@@ -5733,6 +6611,9 @@ I welcome every contribution on GitHub!
     } catch (err) {
       error("Failed to set ThemeSong integration color lightness:", err);
     }
+  }
+  async function setThemeSongVisualizerOpacity() {
+    if (!await addStyleFromResource("css-themesong_visualizer_opacity", css => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2)))) error("Couldn't add ThemeSong visualizer opacity style"); else log("Set ThemeSong visualizer opacity to " + getFeature("themeSongVisualizerOpacity") + "%");
   }
   const songListSelector = `ytmusic-playlist-shelf-renderer #contents,\nytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\nytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,\nytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`;
   let isCheckboxChecked = false;
@@ -5793,7 +6674,7 @@ I welcome every contribution on GitHub!
     };
     addSelectorListener("body", songListSelector, {
       all: true,
-      debounce: 150,
+      debounce: Math.floor(1e3 / 6),
       listener: doSongListsChecks
     });
     siteEvents.on("pathChanged", () => {
@@ -5993,268 +6874,6 @@ I welcome every contribution on GitHub!
       await Promise.allSettled(promises);
     })();
   }
-  function expVolClamp(x) {
-    return Math.min(1, Math.max(0, x));
-  }
-  function expVolFn(x) {
-    switch (getFeature("volumeSliderExponential")) {
-     case "x^3":
-      return expVolClamp(Math.pow(expVolClamp(x), 3));
-
-     case "x^4":
-      return expVolClamp(Math.pow(expVolClamp(x), 4));
-
-     case "x^5":
-      return expVolClamp(Math.pow(expVolClamp(x), 5));
-
-     case "linear":
-     default:
-      return expVolClamp(x);
-    }
-  }
-  function expVolFnInv(y) {
-    switch (getFeature("volumeSliderExponential")) {
-     case "x^3":
-      return expVolClamp(Math.pow(expVolClamp(y), 1 / 3));
-
-     case "x^4":
-      return expVolClamp(Math.pow(expVolClamp(y), 1 / 4));
-
-     case "x^5":
-      return expVolClamp(Math.pow(expVolClamp(y), 1 / 5));
-
-     case "linear":
-     default:
-      return expVolClamp(y);
-    }
-  }
-  const {get: nativeGetVolume, set: nativeSetVolume} = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "volume") ?? {};
-  async function initVolumeFeatures() {
-    let listenerOnce = false;
-    const onSliderElExists = async (type, sliderElem) => {
-      const volSliderCont = document.createElement("div");
-      volSliderCont.classList.add("bytm-vol-slider-cont");
-      sliderElem.setAttribute("step", "1");
-      if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default) initScrollStep(volSliderCont, sliderElem);
-      if (getFeature("volumeSliderExponential") !== "linear") initExponentialVolume();
-      UserUtils.addParent(sliderElem, volSliderCont);
-      if (getFeature("volumeSliderLabel")) await addVolumeSliderLabel(type, sliderElem, volSliderCont);
-      const updateSliderVal = step => {
-        if (step && step > 0) {
-          const roundedValue = Math.round(Number(sliderElem.value) / step) * step;
-          if (roundedValue !== Number(sliderElem.value)) {
-            sliderElem.value = sliderElem.dataset.scrollVal = String(roundedValue);
-            sliderElem.setAttribute("aria-valuenow", String(roundedValue));
-            sliderElem.dispatchEvent(new Event("change", {
-              bubbles: true
-            }));
-            siteEvents.emit("updateVolumeSliderLabel");
-          }
-        }
-      };
-      sliderElem.addEventListener("mousedown", () => {
-        sliderElem.dataset.dragging = "true";
-      });
-      sliderElem.addEventListener("mouseup", () => {
-        delete sliderElem.dataset.dragging;
-        if (getFeature("volumeSharedBetweenTabs")) sharedVolumeChanged(Number(sliderElem.value));
-        updateSliderVal(getFeature("volumeSliderStep"));
-      });
-      sliderElem.addEventListener("scrollend", () => {
-        if (getFeature("volumeSharedBetweenTabs")) sharedVolumeChanged(Number(sliderElem.value));
-        updateSliderVal(getFeature("volumeSliderScrollStep"));
-      });
-      if (listenerOnce) return;
-      listenerOnce = true;
-      setInitialTabVolume(sliderElem);
-      if (typeof getFeature("volumeSliderSize") === "number") setVolSliderSize();
-      if (getFeature("volumeSharedBetweenTabs")) checkSharedVolume();
-    };
-    addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-      listener: el => onSliderElExists("normal", el)
-    });
-    let sizeSmOnce = false;
-    const onResize = () => {
-      if (sizeSmOnce || window.innerWidth >= 1150) return;
-      sizeSmOnce = true;
-      addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
-        listener: el => onSliderElExists("expand", el)
-      });
-    };
-    window.addEventListener("resize", CoreUtils.debounce(onResize, 150));
-    waitVideoElementReady().then(onResize);
-    onResize();
-  }
-  function initExponentialVolume() {
-    Object.defineProperty(HTMLMediaElement.prototype, "volume", {
-      get() {
-        const actual = nativeGetVolume?.call(this);
-        if (typeof actual !== "number" || isNaN(actual)) return actual;
-        return expVolFnInv(actual);
-      },
-      set(value) {
-        if (typeof value !== "number" || isNaN(value)) return nativeSetVolume?.call(this, value);
-        return nativeSetVolume?.call(this, expVolFn(value));
-      }
-    });
-  }
-  function initScrollStep(volSliderCont, sliderElem) {
-    for (const evtName of [ "wheel", "scroll", "mousewheel", "DOMMouseScroll" ]) {
-      volSliderCont.addEventListener(evtName, e => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        const delta = Number(e.deltaY ?? e?.detail ?? 1);
-        if (isNaN(delta)) return warn("Invalid scroll delta:", delta);
-        const volumeDir = -Math.sign(delta);
-        const newVolume = String(Number(sliderElem.value) + getFeature("volumeSliderScrollStep") * volumeDir);
-        sliderElem.value = newVolume;
-        sliderElem.setAttribute("aria-valuenow", newVolume);
-        sliderElem.dispatchEvent(new Event("change", {
-          bubbles: true
-        }));
-      }, {
-        capture: true
-      });
-    }
-  }
-  async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
-    const labelContElem = document.createElement("div");
-    labelContElem.classList.add("bytm-vol-slider-label");
-    labelContElem.style.display = "none";
-    labelContElem.setAttribute("aria-hidden", "true");
-    const volShared = getFeature("volumeSharedBetweenTabs");
-    if (volShared) {
-      const linkIconHtml = await resourceAsString("icon-link");
-      if (linkIconHtml) {
-        const linkIconElem = document.createElement("div");
-        linkIconElem.classList.add("bytm-vol-slider-shared");
-        setInnerHtml(linkIconElem, linkIconHtml);
-        linkIconElem.role = "alert";
-        linkIconElem.ariaLive = "polite";
-        linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
-        labelContElem.classList.add("has-icon");
-        labelContElem.appendChild(linkIconElem);
-      }
-    }
-    const getLabel = value => {
-      const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep") ?? sliderElem.step);
-      const roundedValue = Math.round(Number(value) / step) * step;
-      let label = `${roundedValue}%`;
-      if (getFeature("volumeSliderExponential") !== "linear") {
-        const expMapped = expVolFn(Number(value) / 100) * 100;
-        const expRoundedValue = Math.round(expMapped / step) * step;
-        label += ` (${expRoundedValue}%)`;
-      }
-      return label;
-    };
-    const labelElem = document.createElement("div");
-    labelElem.classList.add("label");
-    labelElem.textContent = getLabel(sliderElem.value);
-    labelContElem.appendChild(labelElem);
-    labelContElem.addEventListener("click", e => e.stopPropagation());
-    labelContElem.addEventListener("keydown", e => [ "Enter", "Space", " " ].includes(e.key) && e.stopPropagation());
-    const getLabelText = slider => t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
-    const labelFull = getLabelText(sliderElem);
-    sliderContainer.setAttribute("title", labelFull);
-    sliderElem.setAttribute("title", labelFull);
-    sliderElem.setAttribute("aria-valuetext", labelFull);
-    const updateLabel = () => {
-      const labelFull = getLabelText(sliderElem);
-      sliderContainer.setAttribute("title", labelFull);
-      sliderElem.setAttribute("title", labelFull);
-      sliderElem.setAttribute("aria-valuetext", labelFull);
-      if (!isNaN(Number(sliderElem.dataset.scrollVal)) && Number(sliderElem.dataset.scrollVal) % getFeature("volumeSliderStep") !== 0) sliderElem.dataset.scrollVal = "";
-      const labelElem2 = document.querySelectorAll(".bytm-vol-slider-label div.label");
-      for (const el of labelElem2) el.textContent = getLabel(sliderElem.value);
-    };
-    sliderElem.addEventListener("change", () => updateLabel());
-    siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
-    siteEvents.on("configChanged", () => updateLabel());
-    addSelectorListener("playerBarRightControls", type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont", {
-      listener: volumeCont => volumeCont.appendChild(labelContElem)
-    });
-    let lastSliderVal = Number(sliderElem.value);
-    const setThemeSongContHidden = (hidden = true) => {
-      const contEl = document.querySelector("#ts-panel-container");
-      contEl?.classList[hidden ? "add" : "remove"]("bytm-hidden");
-    };
-    const sliderHoverObserver = new MutationObserver(() => {
-      if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
-        labelContElem.style.display = "initial";
-        labelContElem.setAttribute("aria-hidden", "false");
-        labelContElem.classList.add("bytm-visible");
-        setThemeSongContHidden();
-      } else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
-        labelContElem.addEventListener("transitionend", () => {
-          labelContElem.style.display = "none";
-          labelContElem.setAttribute("aria-hidden", "true");
-          setThemeSongContHidden(false);
-        }, {
-          once: true
-        });
-        labelContElem.classList.remove("bytm-visible");
-      }
-      if (Number(sliderElem.value) !== lastSliderVal) {
-        lastSliderVal = Number(sliderElem.value);
-        updateLabel();
-      }
-    });
-    sliderHoverObserver.observe(sliderElem, {
-      attributes: true
-    });
-  }
-  function setVolSliderSize() {
-    const size = getFeature("volumeSliderSize");
-    if (typeof size !== "number" || isNaN(Number(size))) return error("Invalid volume slider size:", size);
-    setGlobalCssVar("vol-slider-size", `${size}px`);
-    addStyleFromResource("css-vol_slider_size");
-  }
-  async function sharedVolumeChanged(vol) {
-    try {
-      await GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
-    } catch (err) {
-      error("Couldn't save shared volume level due to an error:", err);
-    }
-  }
-  let ignoreVal = -1;
-  let lastCheckedSharedVolume = -1;
-  async function checkSharedVolume() {
-    try {
-      const vol = await GM.getValue("bytm-shared-volume");
-      if (vol && lastCheckedSharedVolume !== Number(vol)) {
-        if (ignoreVal === Number(vol)) return;
-        lastCheckedSharedVolume = Number(vol);
-        const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
-        if (sliderElem) {
-          sliderElem.value = String(vol);
-          sliderElem.dispatchEvent(new Event("change", {
-            bubbles: true
-          }));
-        }
-      }
-      setTimeout(checkSharedVolume, 333);
-    } catch (err) {
-      error("Couldn't check for shared volume level due to an error:", err);
-    }
-  }
-  async function setInitialTabVolume(sliderElem) {
-    const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
-    GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
-    if ((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume")) return;
-    await waitVideoElementReady();
-    const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
-    if (isNaN(initialVol) || initialVol < 0 || initialVol > 100) return;
-    if (getFeature("volumeSharedBetweenTabs")) {
-      lastCheckedSharedVolume = ignoreVal = initialVol;
-      if (getFeature("volumeSharedBetweenTabs")) GM.setValue("bytm-shared-volume", String(initialVol)).catch(err => error("Couldn't save shared volume level due to an error:", err));
-    }
-    sliderElem.value = String(initialVol);
-    sliderElem.dispatchEvent(new Event("change", {
-      bubbles: true
-    }));
-    log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
-  }
-  const noop = () => void 0;
   class ExampleError extends CoreUtils.DatedError {
     constructor(message, options) {
       super(message, options);
@@ -6262,34 +6881,38 @@ I welcome every contribution on GitHub!
     }
   }
   const adornments = {
-    alert: async title => getAdornHtml("bytm-warning-icon", title, "icon-error", 'role="alert"'),
-    experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-    ytmOnly: async () => getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm"),
-    globe: async () => getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
-    reload: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
-    advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode"),
-    newFeature: async () => getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new")
+    alert: async title => await getAdornHtml("bytm-warning-icon", title, "icon-error", 'role="alert"', title),
+    experimental: async () => await getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental", undefined, t("experimental_feature")),
+    ytmOnly: async () => await getAdornHtml("bytm-ytm-only-icon", t("feature_only_works_on_ytm"), "icon-ytm", undefined, t("feature_only_works_on_ytm")),
+    globe: async () => await getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
+    reload: async () => getFeature("advancedMode") ? await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
+    advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
+    newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new"))
   };
-  const adornmentOrder = new Map;
-  adornmentOrder.set(adornments.alert, 0);
-  adornmentOrder.set(adornments.experimental, 1);
-  adornmentOrder.set(adornments.ytmOnly, 2);
-  adornmentOrder.set(adornments.globe, 3);
-  adornmentOrder.set(adornments.reload, 4);
-  adornmentOrder.set(adornments.advanced, 5);
-  adornmentOrder.set(adornments.newFeature, 6);
-  const getAdornHtml = async (className, title, resource, extraAttributes) => {
+  const adornmentOrder = new Map([ [ adornments.alert, 0 ], [ adornments.experimental, 1 ], [ adornments.ytmOnly, 2 ], [ adornments.globe, 3 ], [ adornments.reload, 4 ], [ adornments.advanced, 5 ], [ adornments.newFeature, 6 ] ]);
+  async function getAdornHtml(className, title, resource, extraAttributes, clickDialogText) {
     title = title ? await CoreUtils.consumeStringGen(title) : undefined;
     extraAttributes = extraAttributes ? await CoreUtils.consumeStringGen(extraAttributes) : undefined;
-    return `<span class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
-  };
+    const id = CoreUtils.randomId(8, 36);
+    if (clickDialogText) {
+      siteEvents.once("cfgMenuMounted", () => {
+        const elem = document.getElementById(`bytm-adornment-${id}`);
+        if (!elem) return;
+        elem.addEventListener("click", () => showPrompt({
+          type: "alert",
+          message: String(clickDialogText)
+        }));
+      });
+    }
+    return `<span id="bytm-adornment-${id}" class="${className} bytm-adorn-icon" ${title ? `title="${title}" aria-label="${title}"` : ""}${extraAttributes ? ` ${extraAttributes}` : ""}>${await resourceAsString(resource) ?? ""}</span>`;
+  }
   async function resolveAdornments(ftInfo, featKey) {
     const feat = ftInfo[featKey];
     let adorns = feat.adornments;
     if (typeof adorns === "function") adorns = adorns();
     const isDev = mode$1 === "development";
     const resolvedAdorns = adorns ? [ ...adorns ] : [];
-    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : "=") && (getVersionSessionCount() < 5 || isDev)) resolvedAdorns.push(adornments.newFeature);
+    if (feat.since && compareVersions.compare(feat.since, scriptInfo$1.version, isDev ? ">" : ">=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev)) resolvedAdorns.push(adornments.newFeature);
     const sortedAdorns = resolvedAdorns.sort((a, b) => {
       const aIdx = adornmentOrder.has(a) ? adornmentOrder.get(a) : 0;
       const bIdx = adornmentOrder.has(b) ? adornmentOrder.get(b) : 0;
@@ -6323,19 +6946,19 @@ I welcome every contribution on GitHub!
       value: "none",
       label: t("site_selection_none")
     } ],
-    locale: () => Object.entries(locales).reduce((a, [locale, {name: name, emoji: emoji}]) => [ ...a, {
+    locale: () => Object.entries(localesJson).reduce((a, [locale, {name: name, emoji: emoji}]) => [ ...a, {
       value: locale,
-      label: `${emoji} ${name}${mode$1 === "development" || getFeature("advancedMode") ? ` [${locale}]` : ""}`
+      label: `${emoji} ${name}`
     } ], []).sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
     colorLightness: () => [ {
       value: "darker",
-      label: t("color_lightness_darker")
+      label: t("color_lightness.darker")
     }, {
       value: "normal",
-      label: t("color_lightness_normal")
+      label: t("color_lightness.normal")
     }, {
       value: "lighter",
-      label: t("color_lightness_lighter")
+      label: t("color_lightness.lighter")
     } ],
     thumbOverlaySources: () => [ {
       value: "am",
@@ -6377,6 +7000,34 @@ I welcome every contribution on GitHub!
       advanced: true,
       adornments: [ adornments.advanced, adornments.reload ]
     },
+    initTimeout: {
+      type: "number",
+      category: "general",
+      group: "bytmInternal",
+      supportedSites: [ "ytm", "yt" ],
+      since: "2.1.0",
+      min: mode$1 === "development" ? 100 : 1e3,
+      max: 1e4,
+      default: 3e3,
+      step: 100,
+      unit: "ms",
+      advanced: true,
+      adornments: [ adornments.advanced, adornments.reload ]
+    },
+    defaultObserverDebounce: {
+      type: "number",
+      category: "general",
+      group: "bytmInternal",
+      supportedSites: [ "ytm", "yt" ],
+      since: "3.1.0",
+      min: 10,
+      default: 150,
+      max: 1e3,
+      step: 5,
+      unit: "ms",
+      advanced: true,
+      adornments: [ adornments.advanced, adornments.reload ]
+    },
     versionCheck: {
       type: "toggle",
       category: "general",
@@ -6408,8 +7059,7 @@ I welcome every contribution on GitHub!
         label: `${formatNumber(12345678, "short")} (${t("votes_format_short")})`
       } ],
       default: "short",
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     toastDuration: {
       type: "slider",
@@ -6423,8 +7073,7 @@ I welcome every contribution on GitHub!
       step: .5,
       renderValue: val => Number(val) === 0 ? t("toggled_off") : `${val}s`,
       reloadRequired: false,
-      enable: noop,
-      change: (_k, _iV, newVal) => newVal === 0 ? closeToast() : showIconToast({
+      change: newVal => newVal === 0 ? closeToast() : showIconToast({
         message: t("example_toast"),
         iconSrc: getResourceUrl(`img-logo${mode$1 === "development" ? "_dev" : ""}`)
       }).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0)
@@ -6438,23 +7087,8 @@ I welcome every contribution on GitHub!
       default: true,
       advanced: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.advanced ],
-      change: (_k, _iV, newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0
-    },
-    initTimeout: {
-      type: "number",
-      category: "general",
-      group: "init",
-      supportedSites: [ "ytm", "yt" ],
-      since: "2.1.0",
-      min: mode$1 === "development" ? .1 : 3,
-      max: 10,
-      default: 5,
-      step: .1,
-      unit: "s",
-      advanced: true,
-      adornments: [ adornments.advanced, adornments.reload ]
+      change: newVal => newVal ? error("Test error", new ExampleError("Example")) : void 0
     },
     resetConfig: {
       type: "button",
@@ -6476,7 +7110,7 @@ I welcome every contribution on GitHub!
           type: "confirm",
           message: t("reset_everything_confirm")
         })) {
-          await getDSSerializer().resetStoresData();
+          await getDSSerializer(true).resetStoresData();
           const gmKeys = await GM.listValues();
           await Promise.allSettled(gmKeys.map(key => GM.deleteValue(key)));
           await reloadTab();
@@ -6488,7 +7122,7 @@ I welcome every contribution on GitHub!
     logLevel: {
       type: "select",
       category: "general",
-      group: "logLevel",
+      group: "logging",
       supportedSites: [ "ytm", "yt" ],
       since: "1.0.0",
       options: () => [ {
@@ -6502,6 +7136,26 @@ I welcome every contribution on GitHub!
       advanced: true,
       adornments: [ adornments.advanced, adornments.reload ]
     },
+    logEvents: {
+      type: "toggle",
+      category: "general",
+      group: "logging",
+      supportedSites: [ "ytm", "yt" ],
+      since: "3.1.0",
+      default: mode$1 === "development",
+      advanced: true,
+      adornments: [ adornments.advanced, adornments.reload ]
+    },
+    logHttp: {
+      type: "toggle",
+      category: "general",
+      group: "logging",
+      supportedSites: [ "ytm", "yt" ],
+      since: "3.1.0",
+      default: mode$1 === "development",
+      advanced: true,
+      adornments: [ adornments.advanced, adornments.reload ]
+    },
     advancedMode: {
       type: "toggle",
       category: "general",
@@ -6509,7 +7163,7 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "2.0.0",
       default: false,
-      change: (_key, prevValue, newValue) => prevValue !== newValue && emitSiteEvent("recreateCfgMenu")
+      change: (newVal, initVal) => initVal !== newVal && emitSiteEvent("recreateCfgMenu")
     },
     watermarkEnabled: {
       type: "toggle",
@@ -6539,18 +7193,26 @@ I welcome every contribution on GitHub!
       default: "all",
       advanced: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.advanced ]
     },
     fixSpacing: {
       type: "toggle",
       category: "layout",
-      group: "fixSpacing",
+      group: "fixLayout",
       supportedSites: [ "ytm" ],
       since: "1.0.0",
       default: true,
       advanced: true,
       adornments: [ adornments.ytmOnly, adornments.advanced, adornments.reload ]
+    },
+    truncatePlayerBarSubtitles: {
+      type: "toggle",
+      category: "layout",
+      group: "fixLayout",
+      supportedSites: [ "ytm" ],
+      since: "3.1.0",
+      default: true,
+      adornments: [ adornments.ytmOnly, adornments.reload ]
     },
     thumbnailOverlayBehavior: {
       type: "select",
@@ -6573,7 +7235,6 @@ I welcome every contribution on GitHub!
       } ],
       default: "songsOnly",
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     thumbnailOverlayToggleBtnShown: {
@@ -6593,11 +7254,10 @@ I welcome every contribution on GitHub!
       since: "3.0.0",
       default: 2e3,
       min: 100,
-      max: 5e3,
+      max: 3e3,
       step: 100,
       renderValue: n => `${n}x${n}`,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     thumbnailOverlayAlbumArtCacheMaxSize: {
@@ -6606,15 +7266,14 @@ I welcome every contribution on GitHub!
       group: "thumbnailOverlay",
       supportedSites: [ "ytm" ],
       since: "3.1.0",
-      default: 2e3,
+      default: 1e4,
       min: 500,
-      max: 1e4,
-      step: 250,
+      max: 25e3,
+      step: 500,
       unit: val => ` ${tp("unit_entries", val)}`,
       renderValue: val => formatNumber(Number(val), "long"),
       reloadRequired: false,
       advanced: true,
-      enable: noop,
       adornments: [ adornments.advanced, adornments.ytmOnly ]
     },
     thumbnailOverlayAlbumArtCacheTTL: {
@@ -6631,7 +7290,6 @@ I welcome every contribution on GitHub!
       renderValue: val => formatNumber(Number(val), "long"),
       reloadRequired: false,
       advanced: true,
-      enable: noop,
       adornments: [ adornments.advanced, adornments.ytmOnly ]
     },
     thumbnailOverlayShowIndicator: {
@@ -6652,7 +7310,7 @@ I welcome every contribution on GitHub!
       min: 5,
       max: 100,
       step: 5,
-      default: 40,
+      default: 25,
       unit: "%",
       advanced: true,
       adornments: [ adornments.ytmOnly, adornments.advanced, adornments.reload ]
@@ -6666,35 +7324,7 @@ I welcome every contribution on GitHub!
       default: "am",
       options: options.thumbOverlaySources,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
-    },
-    hideCursorOnIdle: {
-      type: "toggle",
-      category: "layout",
-      group: "hideCursorOnIdle",
-      supportedSites: [ "ytm" ],
-      since: "2.0.0",
-      default: true,
-      reloadRequired: false,
-      enable: noop,
-      adornments: [ adornments.ytmOnly ]
-    },
-    hideCursorOnIdleDelay: {
-      type: "slider",
-      category: "layout",
-      group: "hideCursorOnIdle",
-      supportedSites: [ "ytm" ],
-      since: "2.0.0",
-      min: .5,
-      max: 10,
-      step: .25,
-      default: 2,
-      unit: "s",
-      advanced: true,
-      reloadRequired: false,
-      enable: noop,
-      adornments: [ adornments.ytmOnly, adornments.advanced ]
     },
     fixHdrIssues: {
       type: "toggle",
@@ -6759,10 +7389,8 @@ I welcome every contribution on GitHub!
       since: "1.1.0",
       options: options.songListType,
       default: "everywhere",
-      advanced: true,
       reloadRequired: false,
-      enable: noop,
-      adornments: [ adornments.ytmOnly, adornments.advanced ]
+      adornments: [ adornments.ytmOnly ]
     },
     scrollToActiveSongBtn: {
       type: "toggle",
@@ -6828,7 +7456,6 @@ I welcome every contribution on GitHub!
       since: "2.1.0-preview.1",
       default: false,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     geniUrlBase: {
@@ -6841,7 +7468,6 @@ I welcome every contribution on GitHub!
       normalize: val => val.trim().replace(/\/+$/, ""),
       advanced: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly, adornments.advanced ]
     },
     geniUrlToken: {
@@ -6855,7 +7481,6 @@ I welcome every contribution on GitHub!
       normalize: val => val.trim(),
       advanced: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly, adornments.advanced ]
     },
     lyricsCacheMaxSize: {
@@ -6864,7 +7489,7 @@ I welcome every contribution on GitHub!
       group: "lyricsCache",
       supportedSites: [ "ytm" ],
       since: "2.0.0",
-      default: 5e3,
+      default: 1e4,
       min: 1e3,
       max: 25e3,
       step: 500,
@@ -6872,7 +7497,6 @@ I welcome every contribution on GitHub!
       renderValue: val => formatNumber(Number(val), "long"),
       advanced: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly, adornments.advanced ]
     },
     lyricsCacheTTL: {
@@ -6889,7 +7513,6 @@ I welcome every contribution on GitHub!
       renderValue: val => formatNumber(Number(val), "long"),
       advanced: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly, adornments.advanced ]
     },
     clearLyricsCache: {
@@ -6926,19 +7549,42 @@ I welcome every contribution on GitHub!
       since: "3.1.0",
       options: () => [ {
         value: "linear",
-        label: t("volume_mapping_linear")
+        label: t("volume_mapping.linear")
+      }, {
+        value: "x^2",
+        label: t("volume_mapping.x2")
       }, {
         value: "x^3",
-        label: t("volume_mapping_x3")
+        label: t("volume_mapping.x3")
       }, {
         value: "x^4",
-        label: t("volume_mapping_x4")
+        label: t("volume_mapping.x4")
       }, {
         value: "x^5",
-        label: t("volume_mapping_x5")
+        label: t("volume_mapping.x5")
       } ],
       default: "linear",
       adornments: [ adornments.ytmOnly, adornments.reload ]
+    },
+    volumeSliderExponentialLabelType: {
+      type: "select",
+      category: "volume",
+      group: "volumeSlider",
+      supportedSites: [ "ytm" ],
+      since: "3.1.0",
+      options: () => [ {
+        value: "positionBased",
+        label: t("volume_label_mapped_type.positionBased")
+      }, {
+        value: "valueBased",
+        label: t("volume_label_mapped_type.valueBased")
+      }, {
+        value: "both",
+        label: t("volume_label_mapped_type.both")
+      } ],
+      default: "valueBased",
+      reloadRequired: false,
+      adornments: [ adornments.ytmOnly ]
     },
     volumeSliderLabel: {
       type: "toggle",
@@ -6957,7 +7603,7 @@ I welcome every contribution on GitHub!
       since: "1.0.0",
       min: 50,
       max: 500,
-      step: 5,
+      step: 1,
       default: 150,
       unit: "px",
       adornments: [ adornments.ytmOnly, adornments.reload ]
@@ -7005,7 +7651,7 @@ I welcome every contribution on GitHub!
       adornments: () => getFeature("volumeSharedBetweenTabs") ? [ adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload ] : [ adornments.ytmOnly, adornments.reload ]
     },
     initialTabVolumeLevel: {
-      type: "slider",
+      type: "number",
       category: "volume",
       group: "initialTabVolume",
       supportedSites: [ "ytm" ],
@@ -7015,9 +7661,15 @@ I welcome every contribution on GitHub!
       step: 1,
       default: 100,
       unit: "%",
-      reloadRequired: false,
-      enable: noop,
-      adornments: () => getFeature("volumeSharedBetweenTabs") ? [ adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload ] : [ adornments.ytmOnly ]
+      renderValue: value => {
+        if (getFeature("volumeSliderExponential") !== "linear") {
+          const expMapped = (expVolFn(Number(value) / 100) * 100).toFixed(1);
+          const fixedPtVal = [ "0.0", "100.0" ].includes(expMapped) ? expMapped.slice(0, -2) : expMapped;
+          return `${value}% (${fixedPtVal}%)`;
+        }
+        return `${value}%`;
+      },
+      adornments: () => getFeature("volumeSharedBetweenTabs") ? [ adornments.ytmOnly, adornments.reload, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) ] : [ adornments.ytmOnly, adornments.reload ]
     },
     disableBeforeUnloadPopup: {
       type: "toggle",
@@ -7026,7 +7678,7 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "1.0.0",
       default: false,
-      adornments: [ adornments.reload ]
+      reloadRequired: false
     },
     autoCloseToasts: {
       type: "toggle",
@@ -7035,8 +7687,7 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "3.0.0",
       default: true,
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     closeToastsTimeout: {
       type: "slider",
@@ -7045,21 +7696,11 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "2.0.0",
       min: .5,
-      max: 20,
+      max: 30,
       step: .5,
       default: 3,
       unit: "s",
-      reloadRequired: false,
-      enable: noop
-    },
-    yesImStillThere: {
-      category: "behavior",
-      group: "yesImStillThere",
-      type: "toggle",
-      supportedSites: [ "ytm" ],
-      since: "3.1.0",
-      default: true,
-      adornments: [ adornments.ytmOnly, adornments.reload ]
+      reloadRequired: false
     },
     rememberSongTime: {
       type: "toggle",
@@ -7092,8 +7733,7 @@ I welcome every contribution on GitHub!
       step: 1,
       default: 180,
       unit: "s",
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     rememberSongTimeReduction: {
       type: "number",
@@ -7102,11 +7742,10 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "2.0.0",
       min: 0,
-      step: .05,
+      step: .01,
       default: .2,
       unit: "s",
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     rememberSongTimeMinPlayTime: {
       type: "slider",
@@ -7114,13 +7753,55 @@ I welcome every contribution on GitHub!
       group: "rememberSongTime",
       supportedSites: [ "ytm", "yt" ],
       since: "2.0.0",
-      min: 3,
+      min: 1,
       max: 30,
       step: .5,
-      default: 10,
+      default: 5,
+      unit: "s",
+      reloadRequired: false
+    },
+    hideCursorOnIdle: {
+      type: "toggle",
+      category: "behavior",
+      group: "hideCursorOnIdle",
+      supportedSites: [ "ytm" ],
+      since: "2.0.0",
+      default: true,
+      reloadRequired: false,
+      adornments: [ adornments.ytmOnly ]
+    },
+    hideCursorOnIdleDelay: {
+      type: "slider",
+      category: "behavior",
+      group: "hideCursorOnIdle",
+      supportedSites: [ "ytm" ],
+      since: "2.0.0",
+      min: .5,
+      max: 10,
+      step: .25,
+      default: 3,
       unit: "s",
       reloadRequired: false,
-      enable: noop
+      adornments: [ adornments.ytmOnly ]
+    },
+    hidePlayerBarOnIdleInFullscreen: {
+      type: "toggle",
+      category: "behavior",
+      group: "hideCursorOnIdle",
+      supportedSites: [ "ytm" ],
+      since: "3.1.0",
+      default: true,
+      reloadRequired: false,
+      adornments: [ adornments.ytmOnly ]
+    },
+    yesImStillThere: {
+      category: "behavior",
+      group: "yesImStillThere",
+      type: "toggle",
+      supportedSites: [ "ytm" ],
+      since: "3.1.0",
+      default: true,
+      adornments: [ adornments.ytmOnly, adornments.reload ]
     },
     autoScrollToActiveSongMode: {
       type: "select",
@@ -7146,7 +7827,6 @@ I welcome every contribution on GitHub!
       } ],
       default: "videoChangeManual",
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     autoLikeChannels: {
@@ -7174,7 +7854,6 @@ I welcome every contribution on GitHub!
       since: "2.1.0",
       default: true,
       reloadRequired: false,
-      enable: noop,
       advanced: true,
       adornments: [ adornments.advanced ]
     },
@@ -7189,8 +7868,7 @@ I welcome every contribution on GitHub!
       step: .5,
       default: 5,
       unit: "s",
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     autoLikeShowToast: {
       type: "toggle",
@@ -7199,8 +7877,7 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "2.1.0",
       default: true,
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     arrowKeySupport: {
       type: "toggle",
@@ -7210,22 +7887,19 @@ I welcome every contribution on GitHub!
       since: "0.1.0",
       default: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     arrowKeySkipBy: {
-      type: "slider",
+      type: "number",
       category: "input",
       group: "arrowKeySupport",
       supportedSites: [ "ytm" ],
       since: "1.1.0",
-      min: .5,
-      max: 30,
-      step: .5,
+      min: .1,
+      step: .1,
       default: 5,
       unit: "s",
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     arrowKeyVolumeStep: {
@@ -7240,7 +7914,6 @@ I welcome every contribution on GitHub!
       default: 2,
       unit: "%",
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     frameSkip: {
@@ -7251,7 +7924,6 @@ I welcome every contribution on GitHub!
       since: "3.0.0",
       default: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     frameSkipWhilePlaying: {
@@ -7262,9 +7934,7 @@ I welcome every contribution on GitHub!
       since: "3.0.0",
       default: false,
       reloadRequired: false,
-      enable: noop,
-      advanced: true,
-      adornments: [ adornments.ytmOnly, adornments.advanced ]
+      adornments: [ adornments.ytmOnly ]
     },
     frameSkipAmount: {
       type: "number",
@@ -7273,11 +7943,10 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm" ],
       since: "3.0.0",
       min: 0,
-      max: 1,
       step: 1e-4,
-      default: .0417,
+      default: .0166,
+      unit: "s",
       reloadRequired: false,
-      enable: noop,
       advanced: true,
       adornments: [ adornments.ytmOnly, adornments.advanced ]
     },
@@ -7298,7 +7967,6 @@ I welcome every contribution on GitHub!
       since: "1.0.0",
       default: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     numKeysSkipToTimeDoublePress: {
@@ -7309,11 +7977,10 @@ I welcome every contribution on GitHub!
       since: "3.1.0",
       default: 0,
       min: 0,
-      max: 1500,
-      step: 50,
+      max: 3e3,
+      step: 100,
       renderValue: value => String(Number(value) === 0 ? t("toggled_off") : `${value}ms`),
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     numKeysSkipToTimeDoublePressBuffer: {
       type: "slider",
@@ -7327,7 +7994,6 @@ I welcome every contribution on GitHub!
       step: .5,
       renderValue: value => String(Number(value) === 0 ? t("toggled_off") : `${formatNumber(Number(value), "short")}s`),
       reloadRequired: false,
-      enable: noop,
       advanced: true,
       adornments: [ adornments.advanced ]
     },
@@ -7338,8 +8004,7 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "0.2.0",
       default: true,
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     switchSitesHotkey: {
       type: "hotkey",
@@ -7353,8 +8018,21 @@ I welcome every contribution on GitHub!
         ctrl: false,
         alt: false
       },
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
+    },
+    switchSitesNewTabHotkey: {
+      type: "hotkey",
+      category: "hotkeys",
+      group: "switchBetweenSites",
+      supportedSites: [ "ytm", "yt" ],
+      since: "3.1.0",
+      default: {
+        code: "F9",
+        shift: false,
+        ctrl: true,
+        alt: false
+      },
+      reloadRequired: false
     },
     likeDislikeHotkeys: {
       type: "toggle",
@@ -7363,8 +8041,16 @@ I welcome every contribution on GitHub!
       supportedSites: [ "ytm", "yt" ],
       since: "3.0.0",
       default: true,
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
+    },
+    likeDislikeHotkeysToggle: {
+      type: "toggle",
+      category: "hotkeys",
+      group: "likeDislikeHotkeys",
+      supportedSites: [ "ytm", "yt" ],
+      since: "3.1.0",
+      default: false,
+      reloadRequired: false
     },
     likeHotkey: {
       type: "hotkey",
@@ -7378,8 +8064,7 @@ I welcome every contribution on GitHub!
         ctrl: false,
         alt: false
       },
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     dislikeHotkey: {
       type: "hotkey",
@@ -7393,8 +8078,7 @@ I welcome every contribution on GitHub!
         ctrl: false,
         alt: false
       },
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     currentLyricsHotkeyEnabled: {
       type: "toggle",
@@ -7404,7 +8088,6 @@ I welcome every contribution on GitHub!
       since: "3.0.0",
       default: true,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     currentLyricsHotkey: {
@@ -7420,7 +8103,6 @@ I welcome every contribution on GitHub!
         alt: false
       },
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     skipToRemTimeHotkeyEnabled: {
@@ -7431,11 +8113,11 @@ I welcome every contribution on GitHub!
       since: "3.0.0",
       default: true,
       reloadRequired: false,
-      enable: () => !getFeature("rememberSongTime") && showIconToast({
+      change: newVal => newVal && !getFeature("rememberSongTime") && showIconToast({
         icon: "icon-error",
         iconFill: "var(--bytm-error-col)",
         message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
-        duration: 10,
+        duration: 20,
         onClick: () => getErrorDialog(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"), [ t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled") ]).open()
       }),
       adornments: () => !getFeature("rememberSongTime") ? [ () => adornments.alert(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'")) ] : []
@@ -7452,23 +8134,21 @@ I welcome every contribution on GitHub!
         ctrl: false,
         alt: true
       },
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     focusSearchBarHotkeyEnabled: {
       type: "toggle",
       category: "hotkeys",
-      group: "searchBarHotkeys",
+      group: "focusSearchBarHotkey",
       supportedSites: [ "ytm", "yt" ],
       since: "3.1.0",
       default: true,
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     focusSearchBarHotkey: {
       type: "hotkey",
       category: "hotkeys",
-      group: "searchBarHotkeys",
+      group: "focusSearchBarHotkey",
       supportedSites: [ "ytm", "yt" ],
       since: "3.1.0",
       default: {
@@ -7477,23 +8157,21 @@ I welcome every contribution on GitHub!
         ctrl: false,
         alt: false
       },
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     clearSearchBarHotkeyEnabled: {
       type: "toggle",
       category: "hotkeys",
-      group: "searchBarHotkeys",
+      group: "clearSearchBarHotkey",
       supportedSites: [ "ytm", "yt" ],
       since: "3.1.0",
       default: true,
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     clearSearchBarHotkey: {
       type: "hotkey",
       category: "hotkeys",
-      group: "searchBarHotkeys",
+      group: "clearSearchBarHotkey",
       supportedSites: [ "ytm", "yt" ],
       since: "3.1.0",
       default: {
@@ -7502,8 +8180,7 @@ I welcome every contribution on GitHub!
         ctrl: false,
         alt: false
       },
-      reloadRequired: false,
-      enable: noop
+      reloadRequired: false
     },
     rebindNextAndPrevious: {
       type: "toggle",
@@ -7513,7 +8190,6 @@ I welcome every contribution on GitHub!
       since: "3.0.0",
       default: false,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     nextHotkey: {
@@ -7529,7 +8205,6 @@ I welcome every contribution on GitHub!
         alt: false
       },
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     previousHotkey: {
@@ -7545,7 +8220,6 @@ I welcome every contribution on GitHub!
         alt: false
       },
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     rebindPlayPause: {
@@ -7556,7 +8230,6 @@ I welcome every contribution on GitHub!
       since: "3.0.0",
       default: false,
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     playPauseHotkey: {
@@ -7572,7 +8245,6 @@ I welcome every contribution on GitHub!
         alt: false
       },
       reloadRequired: false,
-      enable: noop,
       adornments: [ adornments.ytmOnly ]
     },
     disableDarkReaderSites: {
@@ -7613,6 +8285,43 @@ I welcome every contribution on GitHub!
       default: "darker",
       adornments: [ adornments.ytmOnly, adornments.reload ]
     },
+    themeSongVisualizerOpacity: {
+      type: "number",
+      category: "integrations",
+      group: "themeSongVisualizer",
+      supportedSites: [ "ytm" ],
+      since: "3.1.0",
+      default: 100,
+      min: 0,
+      max: 100,
+      step: 1,
+      unit: "%",
+      adornments: [ adornments.ytmOnly, adornments.reload ]
+    },
+    themeSongVisualizerHotkeyEnabled: {
+      type: "toggle",
+      category: "integrations",
+      group: "themeSongVisualizer",
+      supportedSites: [ "ytm" ],
+      since: "3.1.0",
+      default: false,
+      adornments: [ adornments.ytmOnly, adornments.reload ]
+    },
+    themeSongVisualizerHotkey: {
+      type: "hotkey",
+      category: "integrations",
+      group: "themeSongVisualizer",
+      supportedSites: [ "ytm" ],
+      since: "3.1.0",
+      default: {
+        code: "KeyV",
+        shift: true,
+        ctrl: true,
+        alt: false
+      },
+      reloadRequired: false,
+      adornments: [ adornments.ytmOnly ]
+    },
     removeThumbnailRatingBar: {
       type: "toggle",
       category: "integrations",
@@ -7630,16 +8339,25 @@ I welcome every contribution on GitHub!
       since: "2.1.0-preview.1",
       default: undefined,
       click: () => getPluginListDialog().then(d => d.open())
+    },
+    openPluginDiscoverySite: {
+      type: "button",
+      category: "plugins",
+      group: "pluginList",
+      supportedSites: [ "ytm", "yt" ],
+      since: "3.1.0",
+      default: undefined,
+      click: () => UserUtils.openInNewTab(packageJson.pluginDiscoveryUrl)
     }
   };
-  const formatVersion = 11;
-  const defaultData = CoreUtils.pureObj(Object.keys(featInfo).filter(ftKey => featInfo?.[ftKey]?.default !== undefined).reduce((acc, key) => {
-    acc[key] = featInfo?.[key]?.default;
+  const cfgFormatVersion = 11;
+  const cfgDefaultData = CoreUtils.pureObj(Object.keys(featInfo).filter(ftKey => featInfo?.[ftKey] && "default" in featInfo[ftKey] && featInfo[ftKey].default !== undefined).reduce((acc, key) => {
+    acc[key] = featInfo?.[key] && "default" in featInfo[key] ? featInfo?.[key]?.default : undefined;
     return acc;
   }, {}));
-  const migrations = {
+  const cfgMigrations = {
     2: oldData => {
-      if (typeof oldData !== "object" || oldData === null) return defaultData;
+      if (typeof oldData !== "object" || oldData === null) return cfgDefaultData;
       const queueBtnsEnabled = Boolean(oldData.queueButtons);
       delete oldData.queueButtons;
       return {
@@ -7709,56 +8427,87 @@ I welcome every contribution on GitHub!
       } ]);
     },
     11: oldData => {
-      const newCfg = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [ "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons", "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize", "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey", "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey", "songListTrackNumbersEnabled", "songListTrackNumbers", "yesImStillThere", "removeThumbnailRatingBar", "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer", "volumeSliderExponential" ]), [ {
+      const newCfg = useNewDefaultsIfUnchanged(useNewDefaults(oldData, [ "thumbnailOverlayPreferredSource", "swapLikeDislikeButtons", "thumbnailOverlayAlbumArtCacheTTL", "thumbnailOverlayAlbumArtCacheMaxSize", "focusSearchBarHotkeyEnabled", "focusSearchBarHotkey", "clearSearchBarHotkeyEnabled", "clearSearchBarHotkey", "songListTrackNumbersEnabled", "songListTrackNumbers", "yesImStillThere", "removeThumbnailRatingBar", "numKeysSkipToTimeDoublePress", "numKeysSkipToTimeDoublePressBuffer", "volumeSliderExponential", "volumeSliderExponentialLabelType", "likeDislikeHotkeysToggle", "openPluginDiscoverySite", "hidePlayerBarOnIdleInFullscreen", "themeSongVisualizerOpacity", "themeSongVisualizerHotkeyEnabled", "themeSongVisualizerHotkey", "truncatePlayerBarSubtitles", "logHttp", "switchSitesNewTabHotkey" ]), [ {
+        key: "thumbnailOverlayAlbumArtCacheMaxSize",
+        oldDefault: 2e3
+      }, {
         key: "thumbnailOverlayITunesImgRes",
         oldDefault: 1500
+      }, {
+        key: "thumbnailOverlayIndicatorOpacity",
+        oldDefault: 40
+      }, {
+        key: "lyricsCacheMaxSize",
+        oldDefault: 5e3
+      }, {
+        key: "rememberSongTimeMinPlayTime",
+        oldDefault: 10
+      }, {
+        key: "hideCursorOnIdleDelay",
+        oldDefault: 2
       }, {
         key: "initTimeout",
         oldDefault: 8
       }, {
         key: "rememberSongTimeDuration",
         oldDefault: 60
+      }, {
+        key: "frameSkipAmount",
+        oldDefault: .0417
       } ]);
-      if (newCfg.initTimeout > featInfo.initTimeout.max) newCfg.initTimeout = featInfo.initTimeout.max;
-      return newCfg;
+      artCacheStore.deleteData().then(() => {
+        info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
+      });
+      if (newCfg.initTimeout <= 10) newCfg.initTimeout *= 1e3;
+      return useNewRanges(newCfg, [ "initTimeout", "thumbnailOverlayITunesImgRes" ]);
     }
   };
   function useNewDefaults(baseData, resetKeys) {
     const newData = structuredClone({
-      ...defaultData,
+      ...cfgDefaultData,
       ...baseData ?? {}
     });
     for (const key of resetKeys) newData[key] = featInfo?.[key]?.default;
     return newData;
   }
-  function useNewDefaultsIfUnchanged(oldData, oldDefaultsCfg) {
+  function useNewDefaultsIfUnchanged(oldData, oldDefaults) {
     const newData = structuredClone(oldData);
-    for (const {key: key, oldDefault: oldDefault} of oldDefaultsCfg) {
+    for (const {key: key, oldDefault: oldDefault} of oldDefaults) {
       const defaultVal = featInfo?.[key]?.default;
       if (newData[key] === oldDefault) newData[key] = defaultVal;
     }
     return newData;
   }
-  let canCompress = true;
-  const configStore = new UserUtils.DataStore({
+  function useNewRanges(config, keys) {
+    const newCfg = structuredClone(config);
+    for (const key of keys) {
+      const info = featInfo[key];
+      if (info && "min" in info && "max" in info) newCfg[key] = clampNewRange(newCfg, key);
+    }
+    return newCfg;
+  }
+  function clampNewRange(config, key) {
+    const val = config[key];
+    const info = featInfo[key];
+    return CoreUtils.clamp(val, info.min, info.max);
+  }
+  const configStore = new CoreUtils.DataStore({
     id: "bytm-config",
-    formatVersion: formatVersion,
-    defaultData: defaultData,
-    migrations: migrations,
-    encodeData: data => canCompress ? CoreUtils.compress(data, compressionFormat$1, "string") : data,
-    decodeData: data => canCompress ? CoreUtils.decompress(data, compressionFormat$1, "string") : data
+    formatVersion: cfgFormatVersion,
+    engine: new UserUtils.GMStorageEngine,
+    defaultData: cfgDefaultData,
+    migrations: cfgMigrations,
+    compressionFormat: compressionFormat$1
   });
   async function initConfig() {
-    canCompress = await compressionSupported();
-    const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
+    const oldFmtVer = Number(await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-ver`, NaN));
     let oldDataHash;
     try {
-      const oldData = await GM.getValue(`_uucfg-${configStore.id}`, "{}");
+      const oldData = await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-dat`, "{}");
       const oldDataObj = JSON.parse(oldData);
       if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0) oldDataHash = await CoreUtils.computeHash(JSON.stringify(oldDataObj), "sha256");
     } catch {}
     let data = fixCfgKeys(await configStore.loadData());
-    await configStore.setData(data);
     if (oldDataHash && oldDataHash !== await CoreUtils.computeHash(JSON.stringify(data), "sha256")) {
       if (await showPrompt({
         type: "confirm",
@@ -7772,12 +8521,12 @@ I welcome every contribution on GitHub!
       });
     }
     log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
-    if (isNaN(oldFmtVer)) info("  !- Config data was initialized with default values"); else if (oldFmtVer !== configStore.formatVersion) {
+    if (isNaN(oldFmtVer)) warn("  ⚠️ - Config data was initialized with default values"); else if (oldFmtVer !== configStore.formatVersion) {
       try {
         await configStore.setData(data = fixCfgKeys(data));
-        info(`  !- Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
+        info(`  ⚠️ - Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
       } catch (err) {
-        error("  !- Config data migration failed, falling back to default data:", err);
+        error("  ⚠️ - Config data migration failed, falling back to default data:", err);
         await configStore.setData(data = configStore.defaultData);
       }
     }
@@ -7787,10 +8536,10 @@ I welcome every contribution on GitHub!
   function fixCfgKeys(cfg) {
     const newCfg = structuredClone(cfg);
     const passedKeys = Object.keys(cfg);
-    const defaultKeys = Object.keys(defaultData);
+    const defaultKeys = Object.keys(cfgDefaultData);
     const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
     if (missingKeys.length > 0) {
-      for (const key of missingKeys) newCfg[key] = defaultData[key];
+      for (const key of missingKeys) newCfg[key] = cfgDefaultData[key];
     }
     const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
     if (extraKeys.length > 0) {
@@ -7801,8 +8550,9 @@ I welcome every contribution on GitHub!
   function getFeatures() {
     return configStore.getData();
   }
-  function getFeature(key) {
-    return configStore.getData()[key];
+  function getFeature(key, defaultVal) {
+    const val = configStore.getData()[key];
+    return val !== undefined ? val : defaultVal;
   }
   function setFeatures(featureConf) {
     const res = configStore.setData(featureConf);
@@ -7878,7 +8628,7 @@ I welcome every contribution on GitHub!
     tlp: tlp,
     getFeatures: getFeaturesInterface,
     saveFeatures: saveFeaturesInterface,
-    getDefaultFeatures: () => JSON.parse(JSON.stringify(defaultData)),
+    getDefaultFeatures: () => structuredClone(cfgDefaultData),
     fetchLyricsUrlTop: fetchLyricsUrlTop,
     getLyricsCacheEntry: getLyricsCacheEntry,
     sanitizeArtists: sanitizeArtists,
@@ -7892,7 +8642,7 @@ I welcome every contribution on GitHub!
     createRipple: createRipple,
     showToast: showToast,
     showIconToast: showIconToast,
-    showPrompt: showPrompt,
+    showPrompt: showPromptInterface,
     formatNumber: formatNumber
   });
   function initInterface() {
@@ -7918,6 +8668,7 @@ I welcome every contribution on GitHub!
       compareVersions: compareVersions__namespace
     };
     for (const [key, value] of Object.entries(props)) setGlobalProp(key, value);
+    setGlobalProp("sessionId", getSessionId());
     log("Initialized BYTM interface");
   }
   function setGlobalProp(key, value) {
@@ -7931,7 +8682,9 @@ I welcome every contribution on GitHub!
         detail: detail?.[0] ?? undefined
       }));
       emitOnPlugins(type, undefined, ...detail);
-      detail.length > 0 && detail?.[0] ? log(`Emitted interface event '${type}' with data:`, ...detail) : log(`Emitted interface event '${type}' (without data)`);
+      if (getFeature("logEvents")) {
+        detail.length > 0 && detail?.[0] ? log(`Emitted interface event '${type}' with data:`, ...detail) : log(`Emitted interface event '${type}' (without data)`);
+      }
     } catch (err) {
       error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
     }
@@ -7947,7 +8700,7 @@ I welcome every contribution on GitHub!
     registerDevPlugin();
     window.addEventListener("bytm:ready", () => {
       pluginsInitialized = true;
-      if (registeredPlugins.size > 0) log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`); else log("No plugins registered");
+      if (registeredPlugins.size > 0) info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`); else log("No plugins registered");
     }, {
       once: true
     });
@@ -7987,28 +8740,23 @@ I welcome every contribution on GitHub!
     }
   }
   let devPluginToken;
-  const devPluginName = "BetterYTM Dev Plugin";
   const devPluginId = CoreUtils__namespace.randomId(8, 36, true, true);
   function registerDevPlugin() {
     if (mode !== "development") return;
     try {
-      const {token: token} = registerPlugin({
+      const description = [ "de-DE", "en-US", "es-ES", "fr-FR", "hi-IN", "ja-JP", "pt-BR", "zh-CN" ].reduce((acc, loc) => ({
+        ...acc,
+        [loc]: t("dev_plugin.description")
+      }), {});
+      const {token: token, events: events} = registerPlugin({
         plugin: {
-          name: devPluginName,
+          name: t("dev_plugin.name"),
           namespace: `${packageJson.namespace}+${devPluginId}`,
           version: packageJson.version,
-          description: {
-            "de-DE": "Internes Plugin, das nur im Entwicklungsmodus existiert, um das Plugin-System einfach testen zu können.",
-            "en-US": "Internal plugin that only exists in development mode to make testing the plugin system easier.",
-            "es-ES": "Plugin interno que solo existe en el modo de desarrollo para facilitar la prueba del sistema de plugins.",
-            "fr-FR": "Plugin interne qui n'existe qu'en mode développement pour faciliter les tests du système de plugins.",
-            "hi-IN": "डेवलपमेंट मोड में मौजूद आंतरिक प्लगइन जो प्लगइन सिस्टम का परीक्षण करना आसान बनाता है।",
-            "ja-JP": "開発モードでのみ存在する内部プラグインで、プラグインシステムのテストを容易にします。",
-            "pt-BR": "Plugin interno que só existe no modo de desenvolvimento para facilitar o teste do sistema de plugins.",
-            "zh-CN": "仅在开发模式下存在的内部插件，以便更轻松地测试插件系统。"
-          },
+          description: description,
           homepage: {
             source: packageJson.homepage,
+            changelog: `${packageJson.homepage}/blob/${branch}/changelog.md`,
             bug: packageJson.bugs.url,
             greasyfork: packageJson.hosts.greasyfork,
             openuserjs: packageJson.hosts.openuserjs,
@@ -8019,7 +8767,7 @@ I welcome every contribution on GitHub!
         intents: PluginIntent.FullAccess
       });
       devPluginToken = token;
-      log("Registered dev plugin");
+      setGlobalProp("devPluginEvents", events);
     } catch (err) {
       error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), {
         cause: err
@@ -8129,6 +8877,11 @@ I welcome every contribution on GitHub!
     if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs)) return;
     return MarkdownDialog;
   }
+  function showPromptInterface(token, ...args) {
+    const pluginId = resolveToken(token);
+    if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs)) return;
+    return showPrompt(...args);
+  }
   function getInternals(token) {
     const pluginId = resolveToken(token);
     if (pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.InternalAccess)) return undefined;
@@ -8144,12 +8897,6 @@ I welcome every contribution on GitHub!
       disableDiscardBeforeUnload: disableDiscardBeforeUnload
     };
   }
-  const defaultObserverOptions = {
-    disableOnNoListeners: false,
-    enableOnAddListener: false,
-    defaultDebounce: 150,
-    defaultDebounceType: "immediate"
-  };
   const globservers = {};
   let globserversReady = false;
   function addSelectorListener(observerName, selector, options) {
@@ -8165,18 +8912,23 @@ I welcome every contribution on GitHub!
       error(`Couldn't add listener to globserver '${observerName}':`, err);
     }
   }
-  function initObservers() {
+  function initObservers(cfg) {
+    const defaultObserverOptions = {
+      disableOnNoListeners: false,
+      enableOnAddListener: false,
+      defaultDebounce: cfg.defaultObserverDebounce,
+      defaultDebounceType: "immediate"
+    };
     try {
       globservers.body = new UserUtils.SelectorObserver(document.body, {
         ...defaultObserverOptions,
-        defaultDebounce: 150,
         subtree: false
       });
       globservers.body.enable();
       const bytmDialogContainerSelector = "#bytm-dialog-container";
       globservers.bytmDialogContainer = new UserUtils.SelectorObserver(bytmDialogContainerSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: 100,
+        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
         subtree: true
       });
       globservers.bytmDialogContainer.enable();
@@ -8186,7 +8938,7 @@ I welcome every contribution on GitHub!
           const browseResponseSelector = "ytmusic-browse-response";
           globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, {
             ...defaultObserverOptions,
-            defaultDebounce: 75,
+            defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
             subtree: true
           });
           globservers.body.addListener(browseResponseSelector, {
@@ -8236,8 +8988,7 @@ I welcome every contribution on GitHub!
           });
           const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
           globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, {
-            ...defaultObserverOptions,
-            defaultDebounce: 200
+            ...defaultObserverOptions
           });
           globservers.body.addListener(playerBarSelector, {
             listener: () => {
@@ -8301,7 +9052,7 @@ I welcome every contribution on GitHub!
           const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
           globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, {
             ...defaultObserverOptions,
-            defaultDebounce: 75,
+            defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
             subtree: true
           });
           globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
@@ -8455,6 +9206,14 @@ I welcome every contribution on GitHub!
         likeBtn = btnRenderer?.querySelector("like-button-view-model button") ?? undefined;
         dislikeBtn = btnRenderer?.querySelector("dislike-button-view-model button") ?? undefined;
         if (likeBtn?.getAttribute("aria-pressed") === "true") likeState = "LIKE"; else if (dislikeBtn?.getAttribute("aria-pressed") === "true") likeState = "DISLIKE"; else if (likeBtn || dislikeBtn) likeState = "INDIFFERENT";
+        if (!btnRenderer && !likeBtn && !dislikeBtn) {
+          btnRenderer = document.querySelector("reel-action-bar-view-model") ?? undefined;
+          likeBtn = btnRenderer?.querySelector("like-button-view-model button") ?? undefined;
+          dislikeBtn = btnRenderer?.querySelector("dislike-button-view-model button") ?? undefined;
+        }
+        const liked = likeBtn?.getAttribute("aria-pressed") === "true";
+        const disliked = dislikeBtn?.getAttribute("aria-pressed") === "true";
+        if (likeBtn && dislikeBtn) likeState = liked ? "LIKE" : disliked ? "DISLIKE" : "INDIFFERENT";
         break;
       }
     }
@@ -8472,13 +9231,16 @@ I welcome every contribution on GitHub!
     return elem;
   }
   async function addStyleFromResource(key, transform = c => c) {
-    const css = await fetchCss(key);
-    if (css) {
-      await addStyle(String(transform(css)), key.slice(4));
-      return true;
+    try {
+      const css = await fetchCss(key);
+      if (css) {
+        await addStyle(String(transform(css)), key.slice(4));
+        return true;
+      }
+    } catch (err) {
+      error(`Couldn't add style from resource "${key}":`, err);
+      return false;
     }
-    error(`Couldn't add style from resource "${key}" - check adjacent console errors for details`);
-    return false;
   }
   function setGlobalCssVar(name, value) {
     document.documentElement.style.setProperty(`--bytm-global-${name.toLowerCase().trim()}`, String(value));
@@ -8534,9 +9296,7 @@ I welcome every contribution on GitHub!
     if (!html) html = "";
     if (!ttPolicy && trustedTypesSupported) {
       ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
-        createHTML: dirty => DOMPurify.sanitize(String(dirty), {
-          RETURN_TRUSTED_TYPE: true
-        })
+        createHTML: html => sanitizeHtml(html, true)
       });
     }
     element.innerHTML = ttPolicy?.createHTML(html) ?? sanitizeHtml(html, false);
@@ -8551,7 +9311,12 @@ I welcome every contribution on GitHub!
     a.download = fileName;
     document.body.appendChild(a);
     a.click();
-    setTimeout(() => a.remove(), 1);
+    return new Promise(res => {
+      setTimeout(() => {
+        a.remove();
+        res();
+      }, 1);
+    });
   }
   function transplantElement(element, target, position = "afterend") {
     const inserted = target.insertAdjacentElement(position, element);
@@ -8570,7 +9335,7 @@ I welcome every contribution on GitHub!
         closeOnEscPress: true,
         destroyOnClose: true,
         renderHeader: renderHeader,
-        renderBody: renderBody$1,
+        renderBody: renderBody,
         renderFooter: renderFooter
       });
       welcomeDialog.on("render", retranslateWelcomeMenu);
@@ -8594,7 +9359,7 @@ I welcome every contribution on GitHub!
     titleWrapperElem.appendChild(titleElem);
     return titleWrapperElem;
   }
-  async function renderBody$1() {
+  async function renderBody() {
     const contentWrapper = document.createElement("div");
     contentWrapper.id = "bytm-welcome-menu-content-wrapper";
     const localeCont = document.createElement("div");
@@ -8605,7 +9370,7 @@ I welcome every contribution on GitHub!
     localeImg.src = await getResourceUrl("icon-globe");
     const localeSelectElem = document.createElement("select");
     localeSelectElem.id = "bytm-welcome-menu-locale-select";
-    for (const [locale, {name: name}] of Object.entries(locales)) {
+    for (const [locale, {name: name}] of Object.entries(localesJson)) {
       const localeOptionElem = document.createElement("option");
       localeOptionElem.value = locale;
       localeOptionElem.textContent = name;
@@ -8716,156 +9481,6 @@ I welcome every contribution on GitHub!
     footerCont.appendChild(closeBtnElem);
     return footerCont;
   }
-  let allDataExImDialog;
-  async function getAllDataExImDialog() {
-    if (!allDataExImDialog) {
-      const eximOpts = {
-        id: "all-data-exim",
-        width: 800,
-        height: 1e3,
-        closeBtnEnabled: true,
-        closeOnBgClick: true,
-        closeOnEscPress: true,
-        destroyOnClose: true,
-        removeListenersOnDestroy: false,
-        small: true,
-        verticalAlign: "top",
-        title: () => t("all_data_exim_title"),
-        descExport: () => t("all_data_exim_export_desc"),
-        descImport: () => t("all_data_exim_import_desc"),
-        exportData: async () => await getDSSerializer().serialize(),
-        onImport: onImport
-      };
-      allDataExImDialog = new ExImDialog({
-        ...eximOpts,
-        renderBody: async () => await renderBody(eximOpts)
-      });
-    }
-    return allDataExImDialog;
-  }
-  async function onImport(data) {
-    try {
-      const serializer = getDSSerializer();
-      await serializer.deserialize(data);
-      showToast(t("import_success"));
-    } catch (err) {
-      error(err);
-      showToast(t("import_error"));
-    }
-  }
-  async function renderBody(opts) {
-    const panesCont = document.createElement("div");
-    panesCont.classList.add("bytm-all-data-exim-dialog-panes-cont");
-    const exportPane = document.createElement("div");
-    exportPane.classList.add("bytm-all-data-exim-dialog-pane", "export");
-    {
-      const descEl = document.createElement("p");
-      descEl.classList.add("bytm-all-data-exim-dialog-desc");
-      descEl.role = "note";
-      descEl.tabIndex = 0;
-      descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descExport);
-      const exportPartsCont = document.createElement("div");
-      exportPartsCont.classList.add("bytm-all-data-exim-dialog-export-parts-cont");
-      const dataEl = document.createElement("textarea");
-      dataEl.classList.add("bytm-all-data-exim-dialog-data");
-      dataEl.readOnly = true;
-      dataEl.tabIndex = 0;
-      dataEl.value = t("click_to_reveal");
-      for (const id of getSerializerStoresIds()) {
-        const rowEl = document.createElement("div");
-        rowEl.classList.add("bytm-all-data-exim-dialog-export-part-row");
-        rowEl.title = t(`data_stores.disable.${id}`);
-        const chkEl = document.createElement("input");
-        chkEl.type = "checkbox";
-        chkEl.id = `bytm-all-data-exim-dialog-export-part-${id}`;
-        chkEl.dataset.storeId = id;
-        chkEl.checked = true;
-        chkEl.title = t(`data_stores.disable.${id}`);
-        chkEl.addEventListener("change", async () => {
-          const kwd = chkEl.checked ? "disable" : "enable";
-          rowEl.title = t(`data_stores.${kwd}.${id}`);
-          chkEl.title = t(`data_stores.${kwd}.${id}`);
-          lblEl.textContent = t(`data_stores.${kwd}.${id}`);
-          if (dataEl.classList.contains("revealed")) dataEl.value = filter(await CoreUtils.consumeStringGen(opts.exportData));
-        });
-        const lblEl = document.createElement("label");
-        lblEl.htmlFor = chkEl.id;
-        lblEl.textContent = t(`data_stores.disable.${id}`);
-        rowEl.append(chkEl, lblEl);
-        exportPartsCont.appendChild(rowEl);
-      }
-      const filter = data => {
-        const exportIds = [];
-        for (const chkEl of exportPartsCont.querySelectorAll("input[type=checkbox]")) chkEl.checked && chkEl.dataset.storeId && exportIds.push(chkEl.dataset.storeId);
-        return JSON.stringify(JSON.parse(data).filter(({id: id}) => exportIds.includes(id)), undefined, 2);
-      };
-      onInteraction(dataEl, async () => {
-        dataEl.classList.add("revealed");
-        dataEl.value = filter(await CoreUtils.consumeStringGen(opts.exportData));
-        dataEl.setSelectionRange(0, dataEl.value.length);
-      });
-      const exportCenterBtnCont = document.createElement("div");
-      exportCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-      const cpBtn = await createLongBtn({
-        title: t("copy_to_clipboard"),
-        text: t("copy"),
-        resourceName: "icon-copy",
-        ripple: true,
-        async onClick({shiftKey: shiftKey}) {
-          const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-          copyToClipboard(filter(await CoreUtils.consumeStringGen(copyData)));
-          await showToast({
-            message: t("copied_to_clipboard")
-          });
-        }
-      });
-      const dlBtn = await createLongBtn({
-        title: t("download_file"),
-        text: t("download"),
-        resourceName: "icon-arrow_down",
-        ripple: true,
-        async onClick({shiftKey: shiftKey}) {
-          const dlData = filter(await CoreUtils.consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
-          copyToClipboard(dlData);
-          const pad = (num, len = 2) => String(num).padStart(len, "0");
-          const d = new Date;
-          const dateStr = `${pad(d.getFullYear(), 4)}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}`;
-          const fileName = `BetterYTM ${packageJson.version} data export ${dateStr}.json`;
-          downloadFile(fileName, dlData, "application/json");
-          await showToast({
-            message: t("downloaded_file_hint")
-          });
-        }
-      });
-      exportCenterBtnCont.append(cpBtn, dlBtn);
-      exportPane.append(descEl, dataEl, exportPartsCont, exportCenterBtnCont);
-    }
-    const importPane = document.createElement("div");
-    importPane.classList.add("bytm-all-data-exim-dialog-pane", "import");
-    {
-      const descEl = document.createElement("p");
-      descEl.classList.add("bytm-all-data-exim-dialog-desc");
-      descEl.role = "note";
-      descEl.tabIndex = 0;
-      descEl.textContent = descEl.ariaLabel = await CoreUtils.consumeStringGen(opts.descImport);
-      const dataEl = document.createElement("textarea");
-      dataEl.classList.add("bytm-all-data-exim-dialog-data");
-      dataEl.tabIndex = 0;
-      const importCenterBtnCont = document.createElement("div");
-      importCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
-      const importBtn = await createLongBtn({
-        title: t("start_import_tooltip"),
-        text: t("import"),
-        resourceName: "icon-upload",
-        ripple: true,
-        onClick: () => opts.onImport(dataEl.value)
-      });
-      importCenterBtnCont.appendChild(importBtn);
-      importPane.append(descEl, dataEl, importCenterBtnCont);
-    }
-    panesCont.append(exportPane, importPane);
-    return panesCont;
-  }
   {
     const [styleGradient, gradientContBg] = (() => {
       switch (mode$1) {
@@ -8881,10 +9496,23 @@ I welcome every contribution on GitHub!
     console.log(`%c${scriptInfo$1.name}%cv${scriptInfo$1.version}%c • ${scriptInfo$1.namespace}%c\n\nBuild #${buildNumber$1}${mode$1 === "development" ? " (dev mode)" : ""}\n\n%c${poweredBy}`, `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`, `${styleCommon} background-color: ${gradientContBg}; padding-left: 8px; padding-right: 8px;`, "color: #fff; font-size: 1.2rem;", "padding: initial; font-size: 0.9rem;", "padding: initial; font-size: 1rem;");
   }
   const initTimings = {
+    _comments: [ `This is a performance report generated by ${scriptInfo$1.name} (${packageJson.homepage})`, "It shows the amount of time (in ms) it took to complete various stages of the initialization process.", "- The 'start' property is a 13-digit epoch timestamp representing the time at which the script started running.", "- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.", "- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property." ],
+    meta: {
+      version: scriptInfo$1.version,
+      domain: getDomain(),
+      userAgent: navigator.userAgent,
+      scriptHandler: GM.info?.scriptHandler ?? "unknown",
+      scriptHandlerVersion: GM.info?.version ?? "unknown",
+      isIncognito: GM.info?.isIncognito ?? undefined,
+      sandboxMode: GM.info?.sandboxMode ?? undefined,
+      injectInto: GM.info?.injectInto ?? undefined,
+      isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? undefined
+    },
     start: 0,
-    durations: {}
+    durations: {},
+    featureDurations: {}
   };
-  function measureDuration(name) {
+  function measureInitDuration(name) {
     const start = Date.now();
     return () => {
       if (typeof initTimings.durations !== "object") initTimings.durations = {};
@@ -8895,12 +9523,9 @@ I welcome every contribution on GitHub!
     try {
       initTimings.start = Date.now();
       const unsupportedHandlers = [ "FireMonkey" ];
-      if (unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_")) return showPrompt({
-        type: "alert",
-        message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`,
-        denyBtnText: "Close"
-      });
+      if (unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
       setLogLevel(defaultLogLevel);
+      initBroadcast();
       initInterface();
       preInitPlugins();
       if (getDomain() === "ytm") initBeforeUnloadHook();
@@ -8913,19 +9538,20 @@ I welcome every contribution on GitHub!
   async function init() {
     try {
       const domain = getDomain();
-      const endCfgDur = measureDuration("config");
+      const endCfgDur = measureInitDuration("initConfig");
       const features = await initConfig();
       endCfgDur();
       setLogLevel(features.logLevel);
       info("Session ID:", getSessionId());
-      const endLyrCacheDur = measureDuration("lyricsCache");
+      const endResCacheDur = measureInitDuration("initResourceCache");
+      await initResourceCache();
+      endResCacheDur();
+      const endLyrCacheDur = measureInitDuration("initLyricsCache");
       await initLyricsCache();
       endLyrCacheDur();
       const initLoc = features.locale ?? "en-US";
-      const locPromises = [];
-      locPromises.push(initTranslations(initLoc));
-      initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
-      await Promise.allSettled(locPromises);
+      await initTranslations(initLoc);
+      initLoc !== "en-US" && await initTranslations("en-US");
       setLocale(initLoc);
       try {
         initPlugins();
@@ -8940,6 +9566,7 @@ I welcome every contribution on GitHub!
       }); else onDomLoad();
     } catch (err) {
       error("Fatal error:", err);
+      alert(`${scriptInfo$1.name} encountered a fatal error during initialization and will not work correctly, if at all.\nFor information on what caused this error, please refer to the JS console.\n\n${assetSource === "local" ? `⚠️ The assetSource constant is set to "local", so this is likely due to the development server not running. This can be confirmed if there are NetworkErrors in the console when fetching ${scriptInfo$1.name} resources.\nPlease run "pnpm dev" or "pnpm serve" in the project directory and reload the page.` : `Please report this bug using the issue tracker on GitHub:\n${packageJson.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`}${mode$1 === "development" ? `\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${packageJson.devVersionUrl}` : ""}`);
     }
   }
   async function onDomLoad() {
@@ -8948,19 +9575,20 @@ I welcome every contribution on GitHub!
     const feats = getFeatures();
     const ftInit = [];
     document.body.classList.add(`bytm-dom-${domain}`);
+    initExponentialVolume();
     try {
       setTimeout(() => {
-        const endInitGlobalDur = measureDuration("initGlobal_decoupled");
+        const endInitGlobalDur = measureInitDuration("initGlobals_deferred");
         initGlobalCss();
-        initObservers();
+        initObservers(feats);
         Promise.allSettled([ injectCssBundle(), initVersionCheck() ]).then(() => endInitGlobalDur());
+        initSiteEvents();
+        mountCfgMenu();
       }, 0);
     } catch (err) {
       error("Encountered error in feature pre-init:", err);
     }
-    initSiteEvents();
     info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
-    mountCfgMenu();
     try {
       if (typeof await GM.getValue("bytm-installed") !== "string") {
         const dlg = await getWelcomeDialog();
@@ -8970,11 +9598,18 @@ I welcome every contribution on GitHub!
         })));
         info("Showing welcome menu");
         await dlg.open();
+        await dlg.once("close");
       }
+      const endStaticDataDur = measureInitDuration("initStaticData");
+      initStaticData().then(() => endStaticDataDur());
       await initVersionSessionCounter();
       if (domain === "ytm") {
-        if (feats.watermarkEnabled) ftInit.push([ "addWatermark", addWatermark() ]);
+        ftInit.push([ "addWatermark", (async () => {
+          await improveLogo();
+          if (feats.watermarkEnabled) await addWatermark();
+        })() ]);
         if (feats.fixSpacing) ftInit.push([ "fixSpacing", fixSpacing() ]);
+        if (feats.truncatePlayerBarSubtitles) ftInit.push([ "truncatePlayerBarSubtitles", initTruncatePlayerBarSubtitles() ]);
         ftInit.push([ "thumbnailOverlay", initThumbnailOverlay() ]);
         if (feats.hideCursorOnIdle) ftInit.push([ "hideCursorOnIdle", initHideCursorOnIdle() ]);
         if (feats.fixHdrIssues) ftInit.push([ "fixHdrIssues", fixHdrIssues() ]);
@@ -8983,7 +9618,7 @@ I welcome every contribution on GitHub!
         if (feats.watchPageFullSize) ftInit.push([ "watchPageFullSize", initWatchPageFullSize() ]);
         ftInit.push([ "volumeFeatures", initVolumeFeatures() ]);
         if (feats.lyricsQueueButton || feats.deleteFromQueueButton) ftInit.push([ "queueButtons", initQueueButtons() ]);
-        ftInit.push([ "aboveQueueBtns", initAboveQueueBtns() ]);
+        ftInit.push([ "aboveQueueButtons", initAboveQueueBtns() ]);
         if (feats.songListTrackNumbersEnabled) ftInit.push([ "songListTrackNumbers", addTrackNumbers() ]);
         if (feats.closeToastsTimeout > 0) ftInit.push([ "autoCloseToasts", initAutoCloseToasts() ]);
         ftInit.push([ "autoScrollToActiveSongMode", initAutoScrollToActiveSong() ]);
@@ -8994,6 +9629,7 @@ I welcome every contribution on GitHub!
         if (feats.geniusLyrics) ftInit.push([ "playerBarLyricsBtn", addPlayerBarLyricsBtn() ]);
         if (feats.sponsorBlockIntegration) ftInit.push([ "sponsorBlockIntegration", fixSponsorBlock() ]);
         const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
+        if (feats.themeSongVisualizerOpacity !== 100) ftInit.push([ "themeSongVisualizerOpacity", setThemeSongVisualizerOpacity() ]);
         if (feats.themeSongIntegration) ftInit.push([ "themeSongIntegration", Promise.allSettled([ fixThemeSong(), hideThemeSongLogo ]) ]); else ftInit.push([ "themeSongIntegration", Promise.allSettled([ fixPlayerPageTheming(), hideThemeSongLogo ]) ]);
         if (feats.removeThumbnailRatingBar) ftInit.push([ "removeThumbnailRatingBar", (async () => void await addStyleFromResource("css-remove_thumb_rating_bar"))() ]);
       }
@@ -9003,7 +9639,7 @@ I welcome every contribution on GitHub!
             listener: addConfigMenuOptionYTM
           });
         } else if (domain === "yt") {
-          addSelectorListener("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
+          addSelectorListener("ytGuide", "#sections ytd-guide-section-renderer:nth-child(6) #items ytd-guide-entry-renderer:nth-child(1)", {
             listener: el => el.parentElement && addConfigMenuOptionYT(el.parentElement)
           });
         }
@@ -9019,9 +9655,9 @@ I welcome every contribution on GitHub!
       }
       emitInterface("bytm:featureInitStarted");
       const initStartTs = Date.now();
-      const initTimeout = feats.initTimeout > 0 ? feats.initTimeout * 1e3 : 8e3;
+      const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8e3;
       const initializedFeats = [];
-      const endFeatInitDur = measureDuration("featuresAllReady_decoupled");
+      const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
       (() => Promise.race([ CoreUtils.pauseFor(initTimeout), Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async res => {
         const v = await prom;
         initTimings.featureDurations = {
@@ -9035,6 +9671,7 @@ I welcome every contribution on GitHub!
       }))) ]).then(() => {
         endFeatInitDur();
         emitInterface("bytm:allReady");
+        initTimings.allReady = Date.now() - initStartTs;
         if (initializedFeats.length < ftInit.length) {
           errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
         } else info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
@@ -9106,35 +9743,57 @@ I welcome every contribution on GitHub!
     const isDev = mode$1 === "development";
     const isAdv = getFeature("advancedMode");
     const isAny = isDev || isAdv;
-    GM.registerMenuCommand(t("menu_command.reset_config"), async () => {
-      if (await showPrompt({
-        type: "confirm",
-        message: "Reset the configuration to its default values?\nThis will automatically reload the page.",
-        confirmBtnText: "Reset"
-      })) {
-        await clearConfig();
-        await reloadTab();
+    const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
+    const getCmdName = (emoji, key) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
+    GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
+    GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
+      const message = "Reset the configuration to its default values?\nThis will automatically reload the page.";
+      try {
+        if (await showPrompt({
+          type: "confirm",
+          message: message,
+          confirmBtnText: "Reset"
+        })) {
+          await clearConfig();
+          await reloadTab();
+        }
+      } catch {
+        if (confirm(message)) {
+          await clearConfig();
+          await reloadTab();
+        }
       }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_decompressed"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
       const keys = await GM.listValues();
       dbg(`GM values (${keys.length}):`);
       if (keys.length === 0) dbg("  No values found.");
       const values = {};
       let longestKey = 0;
+      const decodeError = (key, err) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
       for (const key of keys) {
-        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-        const val = await GM.getValue(key, undefined);
-        values[key] = typeof val !== "undefined" && isEncoded ? await CoreUtils.decompress(val, compressionFormat$1, "string") : val;
-        longestKey = Math.max(longestKey, key.length);
+        try {
+          const isDatKey = key.startsWith("__ds-") && key.endsWith("-dat");
+          const dsID = isDatKey ? key.substring(5, key.length - 4) : null;
+          const isEncoded = isDatKey ? String(await GM.getValue(`__ds-${dsID}-enf`, "null")) !== "null" : false;
+          const val = await GM.getValue(key, undefined);
+          values[key] = typeof val !== "undefined" && isEncoded ? await CoreUtils.decompress(val, compressionFormat$1, "string") : val;
+          longestKey = Math.max(longestKey, key.length);
+        } catch (err) {
+          decodeError(key, err);
+        }
       }
       for (const [key, finalVal] of Object.entries(values)) {
-        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-        const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-        dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+        try {
+          const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
+          const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
+          dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+        } catch (err) {
+          decodeError(key, err);
+        }
       }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_list_raw"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
       const keys = await GM.listValues();
       dbg(`GM values (${keys.length}):`);
       if (keys.length === 0) dbg("  No values found.");
@@ -9150,7 +9809,7 @@ I welcome every contribution on GitHub!
         dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
       }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.gm_storage_delete_all"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
       const keys = await GM.listValues();
       if (await showPrompt({
         type: "confirm",
@@ -9165,16 +9824,16 @@ I welcome every contribution on GitHub!
         }
       }
     });
-    isDev && GM.registerMenuCommand(t("menu_command.reset_install_timestamp"), async () => {
+    isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
       await GM.deleteValue("bytm-installed");
       dbg("Reset install time.");
     });
-    isAny && GM.registerMenuCommand(t("menu_command.reset_version_session_counter"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
       const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
       await GM.deleteValue("bytm-version-session-counter");
       dbg("Reset version session counter. Was previously:", verSesCount);
     });
-    isAny && GM.registerMenuCommand(t("menu_command.list_selectorobserver_listeners"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
       const lines = [];
       let listenersAmt = 0;
       for (const [obsName, obs] of Object.entries(globservers)) {
@@ -9190,38 +9849,88 @@ I welcome every contribution on GitHub!
       }
       dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     });
-    isAny && GM.registerMenuCommand(t("menu_command.compress_value"), async () => {
-      const input = await showPrompt({
+    isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
+      const showFinalPrompt = async (type, initial, result) => {
+        await showPrompt({
+          type: "alert",
+          message: `${type === "compress" ? "Compressed" : "Decompressed"} value (${initial.length} chars -> ${result.length} chars):\n${result}`,
+          extraButtons: [ dlg => {
+            const btn = document.createElement("button");
+            btn.textContent = btn.ariaLabel = "Copy and close";
+            btn.addEventListener("click", async () => {
+              copyToClipboard(result);
+              dlg.emitResolve(result);
+              dlg.close();
+            });
+            return btn;
+          } ],
+          extraButtonsPosition: "before"
+        });
+      };
+      const showErr = async (type, err) => {
+        const errMsg = `Error while trying to ${type === "compress" ? "" : "de"}compress`;
+        error(errMsg, err);
+        await showPrompt({
+          type: "alert",
+          message: `${errMsg}:\n${err instanceof Error ? `${err.name}: ${err.message}` : String(err)}`
+        });
+      };
+      await showPrompt({
         type: "prompt",
-        message: "Enter the value to compress.\nSee console for output.",
-        confirmBtnText: "Compress"
+        message: "Enter text to compress or decompress:",
+        textarea: true,
+        confirmBtnEnabled: false,
+        extraButtons: [ dlg => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Compress";
+          btn.addEventListener("click", async () => {
+            const val = dlg.getInputValue();
+            try {
+              if (val && val.length > 0) {
+                const result = await CoreUtils.compress(val, compressionFormat$1);
+                dlg.emitResolve(result);
+                dlg.close();
+                await showFinalPrompt("compress", val, result);
+              }
+            } catch (e) {
+              dlg.close();
+              showErr("compress", e);
+            }
+          });
+          return btn;
+        }, dlg => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Decompress";
+          btn.addEventListener("click", async () => {
+            const val = dlg.getInputValue();
+            try {
+              if (val && val.length > 0) {
+                const result = await CoreUtils.decompress(val, compressionFormat$1);
+                dlg.emitResolve(result);
+                await showFinalPrompt("decompress", val, result);
+                dlg.close();
+              }
+            } catch (e) {
+              dlg.close();
+              showErr("decompress", e);
+            }
+          });
+          return btn;
+        } ],
+        extraButtonsPosition: "before"
       });
-      if (input && input.length > 0) {
-        const compressed = await CoreUtils.compress(input, compressionFormat$1);
-        dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
-      }
     });
-    isAny && GM.registerMenuCommand(t("menu_command.decompress_value"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
+    isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
+    isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
       const input = await showPrompt({
         type: "prompt",
-        message: "Enter the value to decompress.\nSee console for output.",
-        confirmBtnText: "Decompress"
+        message: "Paste the content of the exported file to import data:",
+        confirmBtnText: "Import",
+        textarea: true
       });
       if (input && input.length > 0) {
-        const decompressed = await CoreUtils.decompress(input, compressionFormat$1);
-        dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
-      }
-    });
-    isAny && GM.registerMenuCommand(t("menu_command.export_config"), () => downloadData(false));
-    isAny && GM.registerMenuCommand(t("menu_command.export_full"), () => downloadData(false, true));
-    isAny && GM.registerMenuCommand(t("menu_command.import_full"), async () => {
-      const input = await showPrompt({
-        type: "prompt",
-        message: "Paste the content of the exported file to import:",
-        confirmBtnText: "Import"
-      });
-      if (input && input.length > 0) {
-        await getDSSerializer().deserialize(input);
+        await getDSSerializer(true).deserialize(input);
         if (await showPrompt({
           type: "confirm",
           message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?",
@@ -9229,11 +9938,11 @@ I welcome every contribution on GitHub!
         })) await reloadTab();
       }
     });
-    isDev && GM.registerMenuCommand(t("menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
-    isAny && GM.registerMenuCommand(t("menu_command.print_init_timings"), () => {
-      info(`\n${">".repeat(64)}\n\nInit timings:\n`, initTimings);
+    isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+    isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+      downloadFile(`${scriptInfo$1.name} Performance Report @ ${(new Date).toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
     });
-    isAny && GM.registerMenuCommand(t("menu_command.toggle_dev_treatments"), async () => {
+    isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
       const val = !await GM.getValue("bytm-dev-treatments", false);
       await GM.setValue("bytm-dev-treatments", val);
       if (await showPrompt({
@@ -9243,29 +9952,68 @@ I welcome every contribution on GitHub!
         denyBtnText: "nothxbye"
       })) await reloadTab();
     });
-    isDev && GM.registerMenuCommand(t("menu_command.get_dev_plugin_token"), () => showPrompt({
+    isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () => showPrompt({
       type: "alert",
-      message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet."
+      message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+      extraButtons: [ dlg => {
+        const btn = document.createElement("button");
+        btn.textContent = btn.ariaLabel = "Copy and close";
+        btn.addEventListener("click", async () => {
+          devPluginToken && copyToClipboard(devPluginToken);
+          dlg.emitResolve(devPluginToken ?? null);
+          dlg.close();
+        });
+        return btn;
+      } ],
+      extraButtonsPosition: "before"
     }));
-    GM.registerMenuCommand(t("menu_command.download_log_file"), () => {
+    GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
       downloadFile(`bytm-log-${(new Date).toISOString()}.log`, getLogsTxt(), "text/plain");
     });
-    isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
-      const data = await GM.getValue("_uucfg-bytm-dev-used-tr-keys", '{"keys":[]}');
-      const obj = typeof data === "string" ? JSON.parse(data) : data;
-      const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
-      const unusedKeys = [];
-      for (const key of allTrKeys) {
-        if (!obj.keys.includes(key) && key !== "meta") unusedKeys.push(key);
-      }
-      if (unusedKeys.length > 0) dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+    isDev && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
+      const sessions = [ [ broadcastTxID, {
+        sessionId: getSessionId(),
+        title: document.title,
+        domain: getDomain(),
+        initTime: initTime
+      } ] ];
+      const unsub = siteEvents.on("broadcast:discoverSessionsReply", ({from: from, packet: packet}) => {
+        sessions.push([ from, packet.data ]);
+      });
+      dbg("Collecting session info from open tabs...");
+      setTimeout(() => {
+        const columns = [ "#", "Self?", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:" ];
+        const columnAlign = [ "left", "left", "left", "left", "left", "right", "left" ];
+        const columnStyle = "color: #db3; font-weight: bold;";
+        const resetStyle = "color: inherit; font-weight: inherit;";
+        const styles = [];
+        for (let i = 0; i < columns.length; i++) styles.push(columnStyle, resetStyle);
+        console.log(`[${scriptInfo$1.name}/#DEBUG] Collected information from ${sessions.length} open ${CoreUtils.autoPlural("tab", sessions)}:\n${CoreUtils.createTable([ columns, ...sessions.map(([txID, {sessionId: sessionId, title: title, domain: domain, initTime: initTime}], i) => {
+          const initSince = CoreUtils.secsToTimeStr(Math.floor((Date.now() - initTime) / 1e3)).padStart(5, "0");
+          return [ i + 1, txID === broadcastTxID ? "Yes" : "No", sessionId, txID, domain, `${initSince} ago`, title ];
+        }) ], {
+          columnAlign: columnAlign,
+          applyCellStyle(i) {
+            if (i === 0) return [ "%c", "%c" ];
+          }
+        })}`, ...styles);
+        unsub();
+      }, 300);
+      emitBroadcast({
+        type: "discoverSessions"
+      });
+    });
+    isAdv && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
+      await showPrompt({
+        type: "confirm",
+        message: "Reload all open tabs that are running BetterYTM?",
+        confirmBtnText: "Reload"
+      }) && await reloadAllTabs();
     });
     log("Registered dev menu commands");
   }
   async function runDevTreatments() {
     if (mode$1 !== "development" || !await GM.getValue("bytm-dev-treatments", false)) return;
-    const dlg = await getAllDataExImDialog();
-    await dlg.open();
   }
   preInit();
 })(CoreUtils, UserUtils, DOMPurify, marked, compareVersions);

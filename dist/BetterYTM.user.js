@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@66c5681f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@93a674ca/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -447,11 +447,11 @@ var PluginIntent;
     PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
 })(PluginIntent || (PluginIntent = {}));/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
 const rawConsts = {
-    mode: "development",
-    branch: "develop",
+    mode: "production",
+    branch: "main",
     host: "github",
-    buildNumber: "66c5681f",
-    buildTimestamp: "1775228138046",
+    buildNumber: "93a674ca",
+    buildTimestamp: "1775247208913",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
