@@ -49,15 +49,22 @@ export type GlobalAlert = {
   domains: Domain[];
   /** List of domain identifiers on which the alert should be shown. If dismissed on one domain, it will be dismissed on all domains. */
   important?: boolean;
-  /** Optional minimum BYTM version (inclusive) for which this alert applies. Must be a valid semver string. */
-  versionMin?: string;
-  /** Optional maximum BYTM version (inclusive) for which this alert applies. Must be a valid semver string. */
-  versionMax?: string;
   /** Optional earliest date (inclusive) for which this alert applies. Must be a valid ISO 8601 date-time string. */
   dateMin?: string;
   /** Optional latest date (inclusive) for which this alert applies. Must be a valid ISO 8601 date-time string. */
   dateMax?: string;
-};
+} & (
+  | {
+    /** Optional exact BYTM version for which this alert applies. Must be a valid semver string. If this is specified, `versionMin` and `versionMax` are ignored. */
+    version: string;
+  }
+  | {
+    /** Optional minimum BYTM version (inclusive) for which this alert applies. Must be a valid semver string. */
+    versionMin?: string;
+    /** Optional maximum BYTM version (inclusive) for which this alert applies. Must be a valid semver string. */
+    versionMax?: string;
+  }
+);
 
 //#region vars
 
@@ -173,9 +180,11 @@ function isAlertActive(alert: GlobalAlert, alertsData: AlertsStoreData): boolean
     return false;
 
   // check version constraints
-  if(alert.versionMin && compareVersions(alert.versionMin, scriptInfo.version) > 0)
+  if("version" in alert && alert.version !== scriptInfo.version)
     return false;
-  if(alert.versionMax && compareVersions(alert.versionMax, scriptInfo.version) < 0)
+  if("versionMin" in alert && alert.versionMin && compareVersions(alert.versionMin, scriptInfo.version) > 0)
+    return false;
+  if("versionMax" in alert && alert.versionMax && compareVersions(alert.versionMax, scriptInfo.version) < 0)
     return false;
 
   // check date constraints

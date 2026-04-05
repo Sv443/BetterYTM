@@ -135,6 +135,11 @@
             "description": "Optional maximum BYTM version (inclusive) for which this alert applies. Must be a valid semver string.",
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
           },
+          "version": {
+            "type": "string",
+            "description": "Optional exact BYTM version for which this alert applies. Must be a valid semver string. If this is specified, versionMin and versionMax are ignored.",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+          },
           "dateMin": {
             "type": "string",
             "description": "Optional earliest date (inclusive) for which this alert applies. Must be a valid ISO 8601 date-time string.",
