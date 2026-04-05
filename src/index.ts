@@ -253,11 +253,12 @@ async function onDomLoad() {
 
   // initialize DOM globals:
   try {
+    initObservers(feats);
+
     // run detached:
     setTimeout(() => {
       const endInitGlobalDur = measureInitDuration("initGlobals_deferred");
       initGlobalCss();
-      initObservers(feats);
 
       Promise.allSettled([
         injectCssBundle(),
@@ -270,7 +271,7 @@ async function onDomLoad() {
     }, 0);
   }
   catch(err) {
-    error("Encountered error in feature pre-init:", err);
+    error("Encountered error in pre-init:", err);
   }
 
   info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);

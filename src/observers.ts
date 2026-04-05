@@ -11,18 +11,18 @@ import type { Domain, FeatureConfig } from "@/types.ts";
 
 //#region types
 
-/** Names of all available Observer instances across all sites */
+/** Names of all available Observer instances across all sites. */
 export type ObserverName = SharedObserverName | YTMObserverName | YTObserverName;
 
-/** Observer names available to the site passed in the `TDomain` generic */
+/** Observer names available to the site passed in the `TDomain` generic. */
 export type ObserverNameByDomain<TDomain extends Domain> = SharedObserverName | (TDomain extends "ytm" ? YTMObserverName : YTObserverName);
 
-// Shared between YTM and YT
+/** Union of observer names that are available on both sites. */
 export type SharedObserverName =
   | "body"                 // the entire <body> element
   | "bytmDialogContainer"; // the container for all BytmDialog instances
 
-// YTM only
+/** Union of YTM-only observer names. */
 export type YTMObserverName =
   | "browseResponse"         // the /channel/UC... page
   | "searchPage"             // the search page
@@ -36,7 +36,7 @@ export type YTMObserverName =
   | "playerBarRightControls" // the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
   | "popupContainer";        // the container for popups (e.g. the queue popup)
 
-// YT only
+/** Union of YT-only observer names. */
 export type YTObserverName =
   | "ytMasthead"       // the masthead (title bar) at the top of the page
   | "ytGuide"          // the left sidebar menu

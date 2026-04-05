@@ -310,11 +310,11 @@ declare global {
 //#region translations
 
 /** An object containing translation strings for all supported locales. `en-US` is required, other locales are optional. */
-export type Translatable = Prettify<{
+export type Translatable = {
   "en-US": string;
 } & {
   [key in TrLocale]?: string;
-}>;
+};
 
 //#region plugins
 
