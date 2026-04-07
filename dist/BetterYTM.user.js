@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@202cab41/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@24828643/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "202cab41",
-    buildTimestamp: "1775586789519",
+    buildNumber: "24828643",
+    buildTimestamp: "1775597090123",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2281,8 +2281,8 @@ const logs = [];
 let logLines = 0;
 const maxLogLines = 2500; // prevent excessive memory usage
 /** Pushes a new line to the {@linkcode logs} array with the given type and arguments. */
-const pushLog = (type, ...args) => {
-    logs.push([type, Date.now(), ...args]);
+const pushLog = (type, time, ...args) => {
+    logs.push([type, time ?? Date.now(), ...args]);
     logLines++;
     // remove oldest line from beginning of array if above limit
     if (logs.length > maxLogLines)
@@ -5811,12 +5811,13 @@ async function initRemShareTrackParam() {
         try {
             if (getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all")
                 return;
-            if (!inputElem.value.match(/(&|\?)si=/i))
+            if (!inputElem.value.match(/(&|\?)(?:si|is)=/i))
                 return;
             const url = new URL(inputElem.value);
             url.searchParams.delete("si");
+            url.searchParams.delete("is");
             inputElem.value = String(url);
-            log(`Removed tracking parameter from share link -> ${url}`);
+            log(`Removed tracking parameter from share link: ${url}`);
         }
         catch (err) {
             warn("Couldn't remove tracking parameter from share link due to error:", err);
