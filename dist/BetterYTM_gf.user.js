@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@75666e6d/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@17d791ef/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -367,8 +367,8 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
     mode: "production",
     branch: "main",
     host: "greasyfork",
-    buildNumber: "75666e6d",
-    buildTimestamp: "1775553557593",
+    buildNumber: "17d791ef",
+    buildTimestamp: "1775570388462",
     assetSource: "jsdelivr",
     devServerPort: "8710"
   };
@@ -1299,11 +1299,12 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
       const buttonsCont = document.createElement("div");
       buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
       const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : document.createElement("button"));
-      if (confirmBtn && "confirmBtnEnabled" in rest) {
+      if (confirmBtn) {
+        const {confirmBtnText: confirmBtnText, confirmBtnTooltip: confirmBtnTooltip} = rest;
         confirmBtn.id = "bytm-prompt-dialog-confirm";
         confirmBtn.classList.add("bytm-prompt-dialog-button");
-        confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
-        confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
+        confirmBtn.textContent = await this.consumePromptStringGen(type, confirmBtnText, t("prompt_confirm"));
+        confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, confirmBtnTooltip, t("click_to_confirm_tooltip"));
         confirmBtn.tabIndex = 0;
         if (type === "confirm") confirmBtn.autofocus = true;
         confirmBtn.addEventListener("click", () => {
@@ -1911,6 +1912,13 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
   const consPrefix = `[${scriptInfo$1.name}]`;
   const consPrefixDbg = `[${scriptInfo$1.name}/#DEBUG]`;
   const logs = [];
+  let logLines = 0;
+  const maxLogLines = 2500;
+  const pushLog = (type, ...args) => {
+    logs.push([ type, Date.now(), ...args ]);
+    logLines++;
+    if (logs.length > maxLogLines) logs.shift();
+  };
   const getLogsTxt = () => {
     const getVal = (val, primaryScope = true) => {
       if (typeof val === "undefined") return primaryScope ? "[undefined]" : "(undefined)";
@@ -1922,17 +1930,19 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
       if (val instanceof Error) return `[${val.name}: ${val.message}]`;
       if (val instanceof Date) return `[Date <${val.toISOString()}>]`;
       if (typeof val === "object") {
+        const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
         try {
-          if (val.constructor?.name === "Object") return JSON.stringify(val);
-          return `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
+          if (val.constructor?.name === "Object" || val.constructor === undefined) return JSON.stringify(val);
+          return unknownObj;
         } catch {
-          return "toString" in val ? val.toString() : `[Object <${val?.constructor?.name ?? "(unknown)"}>]`;
+          return "toString" in val ? val.toString() : unknownObj;
         }
       }
       return primaryScope ? `${val}` : `"${val}"`;
     };
     const longestLogType = Math.max(...logs.map(([type]) => type.length));
-    return logs.reduce((acc, [type, time, ...args]) => {
+    const hintLines = logs.length >= maxLogLines ? `// Note: there were more than ${maxLogLines} lines, so the ${logLines} oldest lines were truncated.\n\n` : "";
+    return hintLines + logs.reduce((acc, [type, time, ...args]) => {
       if (args.length === 0) return acc;
       const timestamp = new Date(time).toISOString();
       try {
@@ -1954,16 +1964,16 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
     return LogLevel.Debug;
   }
   function log(...args) {
+    pushLog("LOG", Date.now(), ...args);
     if (curLogLevel <= getLogLevel(args)) console.log(consPrefix, ...args);
-    logs.push([ "LOG", Date.now(), ...args ]);
   }
   function info(...args) {
+    pushLog("INFO", Date.now(), ...args);
     if (curLogLevel <= getLogLevel(args)) console.info(consPrefix, ...args);
-    logs.push([ "INFO", Date.now(), ...args ]);
   }
   function warn(...args) {
+    pushLog("WARN", Date.now(), ...args);
     console.warn(consPrefix, ...args);
-    logs.push([ "WARN", Date.now(), ...args ]);
   }
   const showErrToast = CoreUtils.debounce((errName, ...args) => showIconToast({
     message: t("generic_error_toast_encountered_error_type", errName),
@@ -1973,22 +1983,22 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
     onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open()
   }), 1e3);
   function error(...args) {
+    pushLog("ERROR", Date.now(), ...args);
     console.error(consPrefix, ...args);
-    logs.push([ "ERROR", Date.now(), ...args ]);
     try {
       getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
     } catch (e) {
+      pushLog("ERROR", Date.now(), "Error while showing error toast:", e);
       console.error(consPrefix, "Error while showing error toast:", e);
-      logs.push([ "ERROR", Date.now(), "Error while showing error toast:", e ]);
     }
   }
   function errorNoToast(...args) {
+    pushLog("ERROR", Date.now(), ...args);
     console.error(consPrefix, ...args);
-    logs.push([ "ERROR", Date.now(), ...args ]);
   }
   function dbg(...args) {
+    pushLog("DBG", Date.now(), ...args);
     console.log(consPrefixDbg, ...args);
-    logs.push([ "DBG", Date.now(), ...args ]);
   }
   function getErrorDialog(errName, args) {
     return new MarkdownDialog({
@@ -9986,7 +9996,7 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
     });
     isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () => showPrompt({
       type: "alert",
-      message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+      message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
       extraButtons: [ dlg => {
         const btn = document.createElement("button");
         btn.textContent = btn.ariaLabel = "Copy and close";
