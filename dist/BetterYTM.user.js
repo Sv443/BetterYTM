@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@aaaaec6f/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@202cab41/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -447,11 +447,11 @@ var PluginIntent;
     PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
 })(PluginIntent || (PluginIntent = {}));/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
 const rawConsts = {
-    mode: "production",
-    branch: "main",
+    mode: "development",
+    branch: "develop",
     host: "github",
-    buildNumber: "aaaaec6f",
-    buildTimestamp: "1775577649721",
+    buildNumber: "202cab41",
+    buildTimestamp: "1775586789519",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -5981,12 +5981,15 @@ async function initThumbnailOverlay() {
                 overlayState = ThumbOvlState.YT;
             const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
             const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
+            const thumbBgElem = document.querySelector("#bytm-thumbnail-overlay-bg-img");
             const indicatorElem = document.querySelector("#bytm-thumbnail-overlay-indicator");
             const ovlShown = overlayState !== ThumbOvlState.Off;
             if (overlayElem)
                 overlayElem.style.display = ovlShown ? "block" : "none";
             if (thumbElem)
                 thumbElem.ariaHidden = String(!ovlShown);
+            if (thumbBgElem)
+                thumbBgElem.ariaHidden = String(!ovlShown);
             if (indicatorElem) {
                 indicatorElem.style.display = ovlShown ? "block" : "none";
                 indicatorElem.ariaHidden = String(!ovlShown);
@@ -6026,6 +6029,7 @@ async function initThumbnailOverlay() {
                 const setThumbOverlayUrl = (ytThumbUrl, amThumbUrl) => {
                     const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
                     const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
+                    const thumbImgBgElem = document.querySelector("#bytm-thumbnail-overlay-bg-img");
                     const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
                     if (toggleBtnElem) {
                         toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
@@ -6039,6 +6043,11 @@ async function initThumbnailOverlay() {
                         thumbImgElem.dataset.videoId = videoID;
                         thumbImgElem.src = thumbUrl;
                         thumbImgElem.dataset.mediaType = getCurrentMediaType();
+                    }
+                    if (thumbImgBgElem) {
+                        thumbImgBgElem.dataset.videoId = videoID;
+                        thumbImgBgElem.src = thumbUrl;
+                        thumbImgBgElem.dataset.mediaType = getCurrentMediaType();
                     }
                     log("Applied thumbnail URL to overlay:", thumbUrl);
                 };
@@ -6119,10 +6128,19 @@ async function initThumbnailOverlay() {
                     indicatorElem.style.display = "none";
                     indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
                 }
+                const thumbImgBgElem = getFeature("thumbnailOverlayBlurredDuplicateBackground") ? document.createElement("img") : undefined;
+                if (thumbImgBgElem) {
+                    thumbImgBgElem.id = "bytm-thumbnail-overlay-bg-img";
+                    thumbImgBgElem.classList.add("bytm-thumbnail-overlay-img");
+                    thumbImgBgElem.role = "presentation";
+                    thumbImgBgElem.ariaHidden = "true";
+                }
                 const thumbImgElem = document.createElement("img");
                 thumbImgElem.id = "bytm-thumbnail-overlay-img";
+                thumbImgElem.classList.add("bytm-thumbnail-overlay-img");
                 thumbImgElem.role = "presentation";
                 thumbImgElem.ariaHidden = "true";
+                thumbImgBgElem && overlayElem.appendChild(thumbImgBgElem);
                 overlayElem.appendChild(thumbImgElem);
                 playerEl.appendChild(overlayElem);
                 indicatorElem && playerEl.appendChild(indicatorElem);
@@ -8765,6 +8783,15 @@ const featInfo = {
         default: true,
         adornments: [adornments.ytmOnly, adornments.reload],
     },
+    thumbnailOverlayBlurredDuplicateBackground: {
+        type: "toggle",
+        category: "layout",
+        group: "thumbnailOverlay",
+        supportedSites: ["ytm"],
+        since: "3.2.0",
+        default: true,
+        adornments: [adornments.ytmOnly, adornments.reload],
+    },
     thumbnailOverlayITunesImgRes: {
         type: "slider",
         category: "layout",
@@ -10101,6 +10128,10 @@ const cfgMigrations = {
             "thumbnailOverlayITunesImgRes",
         ]);
     },
+    // 11 -> 12 (v3.2)
+    12: (oldData) => useNewDefaults(oldData, [
+        "thumbnailOverlayBlurredDuplicateBackground",
+    ]),
 };
 //#region migration helpers
 /**
