@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d0bfcff7/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bb94fb25/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "openuserjs",
-    buildNumber: "d0bfcff7",
-    buildTimestamp: "1775571568226",
+    buildNumber: "bb94fb25",
+    buildTimestamp: "1775572059955",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -6720,9 +6720,11 @@ function createAlertDialog(alert) {
 //#region init
 /** Initializes the static data by fetching it and performing necessary checks and actions. */
 async function initStaticData() {
-    const staticData = await getStaticData();
-    const alertsData = await alertsStore.loadData();
-    await Promise.all([
+    const [staticData, alertsData] = await Promise.all([
+        getStaticData(),
+        alertsStore.loadData(),
+    ]);
+    return await Promise.allSettled([
         checkActiveAlerts(staticData, alertsData),
     ]);
 }/** Central serializer for all data stores */

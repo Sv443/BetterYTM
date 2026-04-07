@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d0bfcff7/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bb94fb25/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -367,8 +367,8 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
     mode: "production",
     branch: "main",
     host: "greasyfork",
-    buildNumber: "d0bfcff7",
-    buildTimestamp: "1775571562550",
+    buildNumber: "bb94fb25",
+    buildTimestamp: "1775572054589",
     assetSource: "jsdelivr",
     devServerPort: "8710"
   };
@@ -5700,9 +5700,8 @@ https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
     });
   }
   async function initStaticData() {
-    const staticData = await getStaticData();
-    const alertsData = await alertsStore.loadData();
-    await Promise.all([ checkActiveAlerts(staticData, alertsData) ]);
+    const [staticData, alertsData] = await Promise.all([ getStaticData(), alertsStore.loadData() ]);
+    return await Promise.allSettled([ checkActiveAlerts(staticData, alertsData) ]);
   }
   let serializer;
   let fullSerializer;
