@@ -469,14 +469,15 @@ export async function initRemShareTrackParam() {
     try {
       if(getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all")
         return;
-      if(!inputElem.value.match(/(&|\?)si=/i))
+      if(!inputElem.value.match(/(&|\?)(?:si|is)=/i))
         return;
 
       const url = new URL(inputElem.value);
       url.searchParams.delete("si");
+      url.searchParams.delete("is");
       inputElem.value = String(url);
 
-      log(`Removed tracking parameter from share link -> ${url}`);
+      log(`Removed tracking parameter from share link: ${url}`);
     }
     catch(err) {
       warn("Couldn't remove tracking parameter from share link due to error:", err);
