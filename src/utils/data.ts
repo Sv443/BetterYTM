@@ -255,10 +255,12 @@ export function createAlertDialog(alert: GlobalAlert) {
 
 /** Initializes the static data by fetching it and performing necessary checks and actions. */
 export async function initStaticData() {
-  const staticData = await getStaticData();
-  const alertsData = await alertsStore.loadData();
+  const [staticData, alertsData] = await Promise.all([
+    getStaticData(),
+    alertsStore.loadData(),
+  ]);
 
-  await Promise.all([
+  return await Promise.allSettled([
     checkActiveAlerts(staticData, alertsData),
   ]);
 }
