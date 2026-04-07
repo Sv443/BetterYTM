@@ -1,7 +1,8 @@
+/* Applies to all BytmDialog instances */
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-menu-bg-highlight-darker: rgba(10, 10, 10, 0.6);
   --bytm-dialog-separator-color: #797979;
   --bytm-dialog-border-radius: 10px;
 }
@@ -32,6 +33,7 @@
   z-index: 3006;
   color: #fff;
   background-color: var(--bytm-dialog-bg);
+  contain: content;
 }
 
 .bytm-dialog.align-top {
@@ -47,10 +49,12 @@
 .bytm-dialog-body {
   font-size: 1.5rem;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .bytm-dialog-body.small {
   padding: 15px;
+  overflow-y: auto;
 }
 
 #bytm-dialog-opts {
@@ -85,6 +89,12 @@
 }
 
 .bytm-dialog-header-pad.small {
+  min-height: 24px;
+}
+
+/* dirty fix for overflowing header text shrinking SVG icons */
+.bytm-dialog-title-wrapper svg {
+  min-width: 24px;
   min-height: 24px;
 }
 
@@ -174,6 +184,11 @@
   text-decoration: underline;
 }
 
+.bytm-dialog-footer.align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .bytm-dialog-footer.hidden {
   display: none;
 }
@@ -224,24 +239,13 @@
   width: 32px;
   height: 32px;
   z-index: 3007;
-  background-color: var(--bytm-scroll-indicator-bg);
+  background-color: var(--bytm-menu-bg-highlight-darker);
   border-radius: 50%;
   cursor: pointer;
 }
 
 .bytm-hidden {
   visibility: hidden !important;
-}
-
-.bytm-ftconf-category-header {
-  font-size: 20px;
-  margin-top: 32px;
-  margin-bottom: 8px;
-  padding: 0px 20px;
-}
-
-.bytm-ftconf-category-header:first-of-type {
-  margin-top: 0;
 }
 
 .bytm-dialog .bytm-ftitem {
@@ -331,7 +335,7 @@ select.bytm-ftconf-input {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   line-height: 20px;
 }
 
@@ -435,12 +439,16 @@ select.bytm-ftconf-input {
 #bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  font-size: 1.5em;
+  line-height: 1.25em;
+}
+
+#bytm-feat-help-dialog-text {
+  font-size: 1.5rem;
 }
 
 #bytm-feat-help-dialog-desc {
-  font-size: 1.65em;
-  padding-bottom: 5px;
+  font-size: 1.7rem;
+  padding-bottom: 10px;
 }
 
 .bytm-ftitem-help-btn {

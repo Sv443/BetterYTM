@@ -1,5 +1,5 @@
 #bytm-plugin-list-dialog-bg {
-  --bytm-plugin-list-secondary-col: #c8c8c8;
+  --bytm-plugin-list-secondary-col: #c4c4c4;
   --bytm-plugin-list-row-padding-ver: 12px;
   --bytm-plugin-list-row-max-height: 130px;
 }
@@ -17,13 +17,12 @@
 }
 
 .bytm-plugin-list-row {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 8fr 4fr;
   align-items: flex-start;
-  justify-content: space-between;
+  gap: 20px;
   border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
   padding: var(--bytm-plugin-list-row-padding-ver) 0px;
-  gap: 20px;
 }
 
 .bytm-plugin-list-row:first-child {
@@ -91,28 +90,41 @@
 }
 
 .bytm-plugin-list-row-links-list {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   margin-top: 4px;
+  white-space: pre;
 }
 
 .bytm-plugin-list-row-links-list-bullet {
   margin: 0 5px;
 }
 
-.bytm-plugin-list-row-right {
+.bytm-plugin-list-row-right:not(.is-dev-plugin) {
   overflow-x: hidden;
-  overflow-y: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.bytm-plugin-list-row-right.is-dev-plugin {
+  display: initial;
+  flex-direction: unset;
+}
+
+.bytm-plugin-list-row-right {
+  overflow-y: auto;
   min-width: 25%;
   max-height: var(--bytm-plugin-list-row-max-height);
+}
+
+.bytm-dev-plugin-note-info-icon {
+  color: #95c2ed;
 }
 
 .bytm-plugin-list-row-permissions-header {
   position: sticky;
   top: 0;
   background-color: var(--bytm-dialog-bg);
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   font-weight: bold;
   padding-bottom: 5px;
 }

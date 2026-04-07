@@ -2,11 +2,11 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import k from "kleur";
-import type { TrLocale } from "../utils/index.js";
-import locales from "../../assets/locales.json" with { type: "json" };
 import type { TrObject } from "@sv443-network/userutils";
+import type { TrLocale } from "../utils/index.ts";
+import locales from "../../assets/locales.json" with { type: "json" };
 
-const { exit } = process;
+const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 
 const rootDir = resolve(fileURLToPath(import.meta.url), "../../../");
 const trDir = join(rootDir, "assets/translations/");
@@ -98,7 +98,8 @@ async function run() {
   const missingKeys = [] as string[];
 
   for(const [locale] of Object.entries({ "en-US": enUS, ...restLocs })) {
-    const loc = locale as TrLocale;
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // const loc = locale as TrLocale;
     const lines = [] as string[];
     // TODO:FIXME: recurse over nested objects to extract keys & turn into dot notation
     // for(const [k] of Object.entries(enUS)) {

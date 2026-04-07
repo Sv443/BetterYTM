@@ -1,6 +1,12 @@
+/// <reference types="tampermonkey" />
+
 /** Import HTML as modules - https://stackoverflow.com/a/47705264/3323672 */
 declare module "*.html" {
   /** Content of the HTML file as a string */
+  export default {} as string;
+}
+
+declare module "*.css" {
   export default {} as string;
 }
 

@@ -1,13 +1,13 @@
-import { randomId } from "@sv443-network/userutils";
-import { setInnerHtml, t } from "../utils/index.js";
-import "./toggleInput.css";
+import { randomId } from "@sv443-network/coreutils";
+import { t } from "@util/index.ts";
+import "@comp/toggleInput.css";
 
 export type ToggleInputProps = {
   /** Callback function that is called when the toggle is changed */
   onChange: (value: boolean) => void;
   /** Initial value of the toggle - defaults to false */
   initialValue?: boolean;
-  /** If unspecified, a random ID is generated */
+  /** Should be unique across toggle inputs. If unspecified, a random ID is generated. */
   id?: string;
   /** Toggle label off or change position of the label relative to the toggle */
   labelPos?: "off" | "left" | "right";
@@ -21,62 +21,69 @@ export async function createToggleInput({
   labelPos = "left",
 }: ToggleInputProps) {
   const wrapperEl = document.createElement("div");
-  wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
+  wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
   wrapperEl.role = "switch";
   wrapperEl.tabIndex = 0;
+  wrapperEl.ariaChecked = String(initialValue);
 
   const labelEl = labelPos !== "off" ? document.createElement("label") : undefined;
   if(labelEl) {
-    labelEl.id = `bytm-toggle-input-label-${id}`;
-    labelEl.classList.add("bytm-toggle-input-label");
+    labelEl.id = `bytm-toggle-label-${id}`;
+    labelEl.classList.add("bytm-toggle-label");
     labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
     if(id)
-      labelEl.htmlFor = `bytm-toggle-input-${id}`;
+      labelEl.htmlFor = `bytm-toggle-${id}`;
     wrapperEl.setAttribute("aria-labelledby", labelEl.id);
   }
 
-  const toggleWrapperEl = document.createElement("div");
-  toggleWrapperEl.classList.add("bytm-toggle-input");
-  toggleWrapperEl.tabIndex = -1;
+  const toggleEl = document.createElement("label");
+  toggleEl.classList.add("bytm-toggle");
 
-  const toggleEl = document.createElement("input");
-  toggleEl.type = "checkbox";
-  toggleEl.checked = initialValue;
-  toggleEl.dataset.toggled = String(Boolean(initialValue));
-  toggleEl.tabIndex = -1;
+  const checkboxEl = document.createElement("input");
+  checkboxEl.type = "checkbox";
+  checkboxEl.checked = initialValue;
+  checkboxEl.classList.add("bytm-toggle-checkbox");
+  checkboxEl.tabIndex = -1;
   if(id)
-    toggleEl.id = `bytm-toggle-input-${id}`;
+    checkboxEl.id = `bytm-toggle-${id}`;
 
-  const toggleKnobEl = document.createElement("div");
-  toggleKnobEl.classList.add("bytm-toggle-input-knob");
-  // TODO: this doesn't make the knob show up on Chromium
-  setInnerHtml(toggleKnobEl, "&nbsp;");
+  const toggleSwitchEl = document.createElement("div");
+  toggleSwitchEl.classList.add("bytm-toggle-switch");
 
-  const toggleElClicked = (e: Event) => {
+  const handleToggle = (e: Event) => {
     e.preventDefault();
     e.stopPropagation();
 
-    onChange(toggleEl.checked);
+    onChange(checkboxEl.checked);
 
-    toggleEl.dataset.toggled = String(Boolean(toggleEl.checked));
     if(labelEl)
-      labelEl.textContent = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
-    wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+      labelEl.textContent = t(`toggled_${checkboxEl.checked ? "on" : "off"}`);
+    wrapperEl.ariaChecked = String(checkboxEl.checked);
   };
 
-  toggleEl.addEventListener("change", toggleElClicked);
+  checkboxEl.addEventListener("change", handleToggle, { capture: true });
+  
   wrapperEl.addEventListener("keydown", (e) => {
     if(["Space", " ", "Enter"].includes(e.code)) {
-      toggleEl.checked = !toggleEl.checked;
-      toggleElClicked(e);
+      e.preventDefault();
+      e.stopPropagation();
+      checkboxEl.checked = !checkboxEl.checked;
+      handleToggle(e);
+    }
+  }, { capture: true });
+
+  wrapperEl.addEventListener("click", (e) => {
+    if(e.target !== checkboxEl) {
+      checkboxEl.checked = !checkboxEl.checked;
+      handleToggle(e);
     }
   });
 
-  toggleEl.appendChild(toggleKnobEl);
-  toggleWrapperEl.appendChild(toggleEl);
+  toggleEl.appendChild(checkboxEl);
+  toggleEl.appendChild(toggleSwitchEl);
 
   labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
-  wrapperEl.appendChild(toggleWrapperEl);
+  wrapperEl.appendChild(toggleEl);
   labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
 
   return wrapperEl;

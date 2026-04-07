@@ -1,10 +1,10 @@
 import type { StoryObj, Meta } from "@storybook/html";
 import { fn } from "@storybook/test";
-import { createRipple } from "../components/ripple.js";
-import { createCircularBtn } from "../components/circularButton.js";
-import { createLongBtn } from "../components/longButton.js";
-import "../components/ripple.css";
-import "../features/layout.css";
+import { createRipple } from "@comp/ripple.ts";
+import { createCircularBtn } from "@comp/circularButton.ts";
+import { createLongBtn } from "@comp/longButton.ts";
+import "@comp/ripple.css";
+import "@feat/layout.css";
 
 //#region meta
 

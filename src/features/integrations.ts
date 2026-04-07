@@ -1,8 +1,8 @@
-import { getDomain } from "../utils/misc.js";
-import { addStyleFromResource } from "../utils/dom.js";
-import { error, info } from "../utils/logging.js";
-import { getFeature } from "../config.js";
-import "./integrations.css";
+import { getDomain } from "@util/misc.ts";
+import { addStyleFromResource } from "@util/dom.ts";
+import { error, info, log } from "@util/logging.ts";
+import { getFeature } from "@/config.ts";
+import "@feat/integrations.css";
 
 //#region Dark Reader
 
@@ -62,4 +62,15 @@ export async function fixThemeSong() {
   catch(err) {
     error("Failed to set ThemeSong integration color lightness:", err);
   }
+}
+
+/** Sets the opacity of the ThemeSong visualizer according to the configured opacity value */
+export async function setThemeSongVisualizerOpacity() {
+  if(!await addStyleFromResource(
+    "css-themesong_visualizer_opacity",
+    (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2))
+  ))
+    error("Couldn't add ThemeSong visualizer opacity style");
+  else
+    log("Set ThemeSong visualizer opacity to " + getFeature("themeSongVisualizerOpacity") + "%");
 }

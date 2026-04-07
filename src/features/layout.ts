@@ -1,22 +1,24 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { getFeature, getFeatures } from "../config.js";
-import { siteEvents } from "../siteEvents.js";
-import { addSelectorListener } from "../observers.js";
-import { featInfo } from "./index.js";
-import { sanitizeArtists, sanitizeSong } from "./lyrics.js";
-import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, resourceAsString, scrollToCurrentSongInQueue } from "../utils/misc.js";
-import { addStyleFromResource, getCurrentMediaType, getVideoTime, setInnerHtml, waitVideoElementReady } from "../utils/dom.js";
-import { error, log, warn } from "../utils/logging.js";
-import { t, tp } from "../utils/translations.js";
-import { onInteraction } from "../utils/input.js";
-import { fetchITunesAlbumInfo, fetchVideoVotes } from "../utils/xhr.js";
-import { mode, scriptInfo } from "../constants.js";
-import { openCfgMenu } from "../menu/menu_old.js";
-import { showPrompt } from "../dialogs/prompt.js";
-import { createRipple } from "../components/ripple.js";
-import { createCircularBtn } from "../components/circularButton.js";
-import type { ResourceKey, VideoVotesObj } from "../types.js";
-import "./layout.css";
+import { DataStore, autoPlural, debounce, fetchAdvanced } from "@sv443-network/coreutils";
+import { addParent, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { getFeature, getFeatures } from "@/config.ts";
+import { forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { addSelectorListener } from "@/observers.ts";
+import { featInfo } from "@feat/index.ts";
+import { sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
+import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "@util/misc.ts";
+import { addStyleFromResource, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "@util/dom.ts";
+import { error, log, warn } from "@util/logging.ts";
+import { t, tp } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
+import { fetchITunesAlbumInfo, fetchVideoVotes } from "@util/xhr.ts";
+import { emitInterface } from "@/interface.ts";
+import { compressionFormat, mode, scriptInfo } from "@/constants.ts";
+import { openCfgMenu } from "@menu/menu.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { createRipple } from "@comp/ripple.ts";
+import { createCircularBtn } from "@comp/circularButton.ts";
+import type { ITunesAlbumObj, ResourceKey, VideoVotesObj } from "@/types.ts";
+import "@feat/layout.css";
 
 //#region cfg menu btns
 
@@ -32,55 +34,64 @@ export async function addWatermark() {
   watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo.name);
   watermarkEl.tabIndex = 0;
 
-  await improveLogo();
-  bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
-  preloadImages([bytmLogoUrl]);
+  (async () => {
+    bytmLogoUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+    preloadImages([bytmLogoUrl]);
 
-  const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
-    e.stopImmediatePropagation();
+    const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
+      e.stopImmediatePropagation();
 
-    if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
-      openCfgMenu();
-    if(!logoExchanged && (e.shiftKey || e.ctrlKey))
-      exchangeLogo();
-  };
+      if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
+        openCfgMenu();
+      if(!logoExchanged && (e.shiftKey || e.ctrlKey))
+        exchangeLogo();
+    };
 
-  onInteraction(watermarkEl, (e) => watermarkOpenMenu(e));
+    // TODO:FIXME: space and enter dont work fsr
+    onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
 
-  addSelectorListener("navBar", "ytmusic-logo a", {
-    listener: (logoElem) => logoElem.appendChild(watermarkEl),
-  });
-
-  log("Added watermark element");
+    addSelectorListener("navBar", "ytmusic-logo a", {
+      listener(logoElem) {
+        logoElem.appendChild(watermarkEl);
+        log("Added watermark element");
+      },
+    });
+  })();
 }
 
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
-export async function improveLogo() {
-  try {
-    if(improveLogoCalled)
-      return;
-    improveLogoCalled = true;
+export function improveLogo() {
+  return new Promise<void>(async (resolve) => {
+    try {
+      if(improveLogoCalled)
+        return;
+      improveLogoCalled = true;
 
-    const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
-    const svg = await res.text();
+      const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
+      const svg = await res.text();
 
-    addSelectorListener("navBar", "ytmusic-logo > a", {
-      listener: (logoElem) => {
-        logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-        setInnerHtml(logoElem, svg);
+      addSelectorListener("navBar", "ytmusic-logo > a", {
+        listener: (logoElem) => {
+          logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
+          setInnerHtml(logoElem, svg);
+          logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
 
-        logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
-        log("Swapped logo to inline SVG");
-      },
-    });
-  }
-  catch(err) {
-    error("Couldn't improve logo due to an error:", err);
-  }
+          log("Swapped logo to inline SVG");
+          resolve();
+        },
+      });
+    }
+    catch(err) {
+      error("Couldn't improve logo due to an error:", err);
+    }
+  });
 }
 
-/** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
+/** Exchanges the default YTM logo into BetterYTM's logo with a sick ash animation */
 function exchangeLogo() {
+  if(logoExchanged)
+    return;
+
   addSelectorListener("navBar", ".bytm-mod-logo", {
     listener: async (logoElem) => {
       if(logoElem.classList.contains("bytm-logo-exchanged") || !bytmLogoUrl)
@@ -95,7 +106,15 @@ function exchangeLogo() {
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
-      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => e.href = bytmLogoUrl!);
+      bytmLogoUrl && document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e, i) => {
+        if(i !== 0) {
+          e.remove();
+          return;
+        }
+        e.sizes = "48x48";
+        e.type = "image/png";
+        e.href = bytmLogoUrl!;
+      });
 
       setTimeout(() => {
         logoElem.querySelectorAll(".bytm-mod-logo-remove").forEach(e => e.remove());
@@ -142,8 +161,6 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 
   container.appendChild(cfgOptElem);
 
-  improveLogo();
-
   log("Added BYTM-Configuration button to menu popover");
 }
 
@@ -171,7 +188,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
 
   cfgOptWrapperElem.appendChild(cfgOptElem);
 
-  onInteraction(cfgOptWrapperElem, openCfgMenu);
+  onInteraction(cfgOptWrapperElem, () => openCfgMenu());
 
   const firstChild = container?.firstElementChild;
 
@@ -305,6 +322,71 @@ export async function addAnchorImprovements() {
   catch(err) {
     error("Couldn't add anchors to sidebar items due to an error:", err);
   }
+
+  //#region current song list
+
+  try {
+    const checkCurrentList = () => {
+      addSelectorListener("sidePanel", "ytmusic-player-queue #contents, ytmusic-player-queue #automix-contents", {
+        all: true,
+        listener(songLists) {
+          songLists.forEach((songListEl) => {
+            const items = songListEl.querySelectorAll<HTMLElement>("ytmusic-player-queue-item");
+            if(!items.length)
+              return;
+
+            const itemsAmt = improveSongListClickArea(items);
+            itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural("item", itemsAmt)}`);
+          });
+        },
+      });
+    };
+
+    siteEvents.on("queueChanged", () => checkCurrentList());
+    siteEvents.on("autoplayQueueChanged", () => checkCurrentList());
+
+    const genericSongListListener = (songLists: NodeListOf<HTMLElement>) => {
+      songLists.forEach((songListEl) => {
+        const items = songListEl.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer, .card-content-container");
+        if(!items.length)
+          return;
+
+        const itemsAmt = improveSongListClickArea(items);
+        itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} song list ${autoPlural("item", itemsAmt)}`);
+      });
+    };
+
+    const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
+      if(path.includes("/search")) {
+        pathChangedUnsub();
+        addSelectorListener("searchPage", `\
+ytmusic-shelf-renderer #contents,
+ytmusic-card-shelf-renderer .card-container`, {
+          continuous: true,
+          all: true,
+          debounce: 200,
+          listener: genericSongListListener,
+        });
+      }
+    });
+
+    addSelectorListener("browseResponse", `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
+      continuous: true,
+      all: true,
+      debounce: 200,
+      listener: genericSongListListener,
+    });
+  }
+  catch(err) {
+    error("Couldn't add anchors to song list items due to an error:", err);
+  }
 }
 
 const sidebarPaths = [
@@ -333,12 +415,60 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
+//#region song list click area
+
+function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
+  let itemsAmt = 0;
+
+  items.forEach((item) => {
+    if(item.classList.contains("bytm-click-area-improved"))
+      return;
+    item.classList.add("bytm-click-area-improved");
+
+    item.addEventListener("click", (e) => {
+      const tgt = e.target as HTMLElement | null;
+      if(!tgt)
+        return;
+
+      type CondFns = ((el: HTMLElement) => boolean)[];
+
+      const conditions = [
+        (el) => el.tagName.toLowerCase() === "yt-formatted-string",
+        (el) => el.classList.contains("yt-formatted-string"),
+        (el) => el.tagName.toLowerCase() === "ytmusic-player-queue-item",
+        (el) => el.classList.contains("ytmusic-player-queue-item"),
+        (el) => el.tagName.toLowerCase() === "ytmusic-responsive-list-item-renderer",
+        (el) => el.classList.contains("ytmusic-responsive-list-item-renderer"),
+        (el) => el.classList.contains("ytmusic-card-shelf-renderer"),
+      ] satisfies CondFns;
+
+      const antiConditions = [
+        (el) => el.tagName.toLowerCase() === "a",
+        (el) => Boolean(el.getAttribute("href")?.length),
+        (el) => el.classList.contains("bytm-anchor"),
+        (el) => el.classList.contains("multi-select-overlay"),
+      ] satisfies CondFns;
+
+      if(conditions.some((cnd) => cnd(tgt)) && antiConditions.every((acnd) => !acnd(tgt)))
+        item.querySelector<HTMLElement>("ytmusic-play-button-renderer")?.click();
+    });
+
+    itemsAmt++;
+  });
+
+  return itemsAmt;
+}
+
 //#region share track param
+
+// TODO:FIXME: stopped working on YT
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
   const removeSiParam = (inputElem: HTMLInputElement) => {
     try {
+      if(getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all")
+        return;
       if(!inputElem.value.match(/(&|\?)si=/i))
         return;
 
@@ -356,7 +486,7 @@ export async function initRemShareTrackParam() {
   const [sharePanelSel, inputSel] = (() => {
     switch(getDomain()) {
     case "ytm": return ["tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", "input#share-url"];
-    case "yt": return ["ytd-unified-share-panel-renderer", "input#share-url"];
+    case "yt": return ["yt-unified-share-panel-renderer", "input#share-url"];
     }
   })();
 
@@ -388,102 +518,147 @@ export async function fixSpacing() {
 //#region ab.queue btns
 
 export async function initAboveQueueBtns() {
-  const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
+  setTimeout(async () => {
+    const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
 
-  if(!await addStyleFromResource("css-above_queue_btns"))
-    error("Couldn't add CSS for above queue buttons");
-  else if(getFeature("aboveQueueBtnsSticky"))
-    addStyleFromResource("css-above_queue_btns_sticky");
+    if(!await addStyleFromResource("css-above_queue_btns"))
+      error("Couldn't add CSS for above queue buttons");
+    else if(getFeature("aboveQueueBtnsSticky"))
+      addStyleFromResource("css-above_queue_btns_sticky");
 
-  const contBtns = [
-    {
-      condition: scrollToActiveSongBtn,
-      id: "scroll-to-active",
-      resourceName: "icon-skip_to",
-      titleKey: "scroll_to_playing",
-      interaction: async (evt: KeyboardEvent | MouseEvent) => scrollToCurrentSongInQueue(evt),
-    },
-    {
-      condition: clearQueueBtn,
-      id: "clear-queue",
-      resourceName: "icon-clear_list",
-      titleKey: "clear_list",
-      async interaction(evt: KeyboardEvent | MouseEvent) {
-        try {
-          if(evt.shiftKey || await showPrompt({ type: "confirm", message: t("clear_list_confirm") })) {
-            const url = new URL(location.href);
-            url.searchParams.delete("list");
-            url.searchParams.set("time_continue", String(await getVideoTime(0)));
-            location.assign(url);
+    const contBtns = [
+      {
+        condition: scrollToActiveSongBtn,
+        id: "scroll-to-active",
+        resourceName: "icon-skip_to",
+        titleKey: "scroll_to_playing",
+        interaction: async (evt: KeyboardEvent | MouseEvent) => scrollToCurrentSongInQueue(evt),
+      },
+      {
+        condition: clearQueueBtn,
+        id: "clear-queue",
+        resourceName: "icon-clear_list",
+        titleKey: "clear_list",
+        async interaction(evt: KeyboardEvent | MouseEvent) {
+          try {
+            if(evt.shiftKey || await showPrompt({ type: "confirm", message: t("clear_list_confirm") })) {
+              const url = new URL(location.href);
+              url.searchParams.delete("list");
+              url.searchParams.set("time_continue", String(await getVideoTime(0)));
+              location.assign(url);
+            }
           }
+          catch(err) {
+            error("Couldn't clear queue due to an error:", err);
+          }
+        },
+      },
+    ];
+
+    if(!contBtns.some(b => Boolean(b.condition)))
+      return;
+
+    addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
+      async listener(rightBtnsEl) {
+        try {
+          const aboveQueueBtnCont = document.createElement("div");
+          aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
+
+          addParent(rightBtnsEl, aboveQueueBtnCont);
+
+          const headerEl = rightBtnsEl.closest<HTMLElement>("ytmusic-queue-header-renderer");
+          if(!headerEl)
+            return error("Couldn't find queue header element while adding above queue buttons");
+
+          siteEvents.on("fullscreenToggled", (isFullscreen) => {
+            headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
+          });
+
+          const wrapperElem = document.createElement("div");
+          wrapperElem.id = "bytm-above-queue-btn-wrapper";
+
+          for(const item of contBtns) {
+            if(Boolean(item.condition) === false)
+              continue;
+
+            const btnElem = await createCircularBtn({
+              resourceName: item.resourceName as ResourceKey & `icon-${string}`,
+              onClick: item.interaction,
+              title: t(item.titleKey),
+            });
+            btnElem.id = `bytm-${item.id}-btn`;
+            btnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-above-queue-btn");
+
+            wrapperElem.appendChild(btnElem);
+          }
+
+          rightBtnsEl.insertAdjacentElement("beforebegin", wrapperElem);
         }
         catch(err) {
-          error("Couldn't clear queue due to an error:", err);
+          error("Couldn't add above queue buttons due to an error:", err);
         }
       },
-    },
-  ];
-
-  if(!contBtns.some(b => Boolean(b.condition)))
-    return;
-
-  addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
-    async listener(rightBtnsEl) {
-      try {
-        const aboveQueueBtnCont = document.createElement("div");
-        aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
-
-        addParent(rightBtnsEl, aboveQueueBtnCont);
-
-        const headerEl = rightBtnsEl.closest<HTMLElement>("ytmusic-queue-header-renderer");
-        if(!headerEl)
-          return error("Couldn't find queue header element while adding above queue buttons");
-
-        siteEvents.on("fullscreenToggled", (isFullscreen) => {
-          headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
-        });
-
-        const wrapperElem = document.createElement("div");
-        wrapperElem.id = "bytm-above-queue-btn-wrapper";
-
-        for(const item of contBtns) {
-          if(Boolean(item.condition) === false)
-            continue;
-
-          const btnElem = await createCircularBtn({
-            resourceName: item.resourceName as ResourceKey & `icon-${string}`,
-            onClick: item.interaction,
-            title: t(item.titleKey),
-          });
-          btnElem.id = `bytm-${item.id}-btn`;
-          btnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-above-queue-btn");
-
-          wrapperElem.appendChild(btnElem);
-        }
-
-        rightBtnsEl.insertAdjacentElement("beforebegin", wrapperElem);
-      }
-      catch(err) {
-        error("Couldn't add above queue buttons due to an error:", err);
-      }
-    },
-  });
+    });
+  }, 1);
 }
 
 //#region thumb.overlay
 
-// TODO:FIXME: rewrite this whole chonker cause it doesn't wanna behave at all
+/** An entry in the {@linkcode artCacheStore} */
+export type ArtCacheEntry = {
+  /** ID of the video the thumbnail belongs to */
+  videoId: string;
+  /** Template URL with the default resolution 100x100 */
+  url: string;
+  /** When the entry was created and added to the cache (used for TTL) */
+  created: number;
+};
 
-/** Changed when the toggle button is pressed - used to invert the state of "showOverlay" */
-let invertOverlay = false;
+type ArtCache = {
+  entries: ArtCacheEntry[];
+};
 
-/** List of video IDs that have already been applied to the thumbnail overlay */
-const previousVideoIDs: string[] = [];
+/** Album artwork cache */
+export const artCacheStore = new DataStore({
+  id: "bytm-artwork-cache",
+  migrateIds: ["album-art-cache"],
+  formatVersion: 1,
+  engine: new GMStorageEngine(),
+  compressionFormat,
+  memoryCache: false,
+  defaultData: {
+    entries: [],
+  } as ArtCache,
+});
+
+async function deleteExpiredAlbumArtCacheEntries() {
+  const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
+
+  const cacheData = await artCacheStore.loadData();
+  const expiredEntries = cacheData.entries.filter((e) => Date.now() - e.created > ttl);
+  if(expiredEntries.length > 0) {
+    log(`Deleting ${expiredEntries.length} expired album art cache entries`);
+    artCacheStore.setData({
+      entries: cacheData.entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
+    });
+  }
+}
+
+export enum ThumbOvlState {
+  Off = 0,
+  YT = 1,
+  AM = 2,
+}
+
+/** Changed when the toggle button is pressed - used to change the state of "showOverlay" */
+let overlayState = ThumbOvlState.Off;
 
 export async function initThumbnailOverlay() {
   const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
   if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
     return;
+
+  deleteExpiredAlbumArtCacheEntries();
 
   // so the script init doesn't keep waiting until a /watch page is loaded
   waitVideoElementReady().then(() => {
@@ -494,33 +669,37 @@ export async function initThumbnailOverlay() {
       return error("Couldn't find video player element while adding thumbnail overlay");
 
     /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
-    const updateOverlayVisibility = async () => {
+    const updateOverlayVisibility = async (isManual = false) => {
       if(!isDomLoaded())
         return;
 
-      const behavior = getFeature("thumbnailOverlayBehavior");
-
-      let showOverlay = behavior === "always";
       const isVideo = getCurrentMediaType() === "video";
+      const defaultBehavior = getFeature("thumbnailOverlayBehavior");
 
-      if(behavior === "videosOnly" && isVideo)
-        showOverlay = true;
-      else if(behavior === "songsOnly" && !isVideo)
-        showOverlay = true;
+      const prefState = getFeature("thumbnailOverlayPreferredSource") === "am" ? ThumbOvlState.AM : ThumbOvlState.YT;
+      if(!isManual && overlayState === ThumbOvlState.Off)
+        overlayState = (defaultBehavior === "videosOnly" && isVideo) || (defaultBehavior === "songsOnly" && !isVideo) || (defaultBehavior === "always")
+          ? prefState
+          : ThumbOvlState.Off;
+      else if(!isManual && overlayState !== prefState)
+        overlayState = prefState;
 
-      showOverlay = invertOverlay ? !showOverlay : showOverlay;
+      if(getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+        overlayState = ThumbOvlState.YT;
 
       const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
       const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
       const indicatorElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-indicator");
 
+      const ovlShown = overlayState !== ThumbOvlState.Off;
+
       if(overlayElem)
-        overlayElem.style.display = showOverlay ? "block" : "none";
+        overlayElem.style.display = ovlShown ? "block" : "none";
       if(thumbElem)
-        thumbElem.ariaHidden = String(!showOverlay);
+        thumbElem.ariaHidden = String(!ovlShown);
       if(indicatorElem) {
-        indicatorElem.style.display = showOverlay ? "block" : "none";
-        indicatorElem.ariaHidden = String(!showOverlay);
+        indicatorElem.style.display = ovlShown ? "block" : "none";
+        indicatorElem.ariaHidden = String(!ovlShown);
       }
 
       if(getFeature("thumbnailOverlayToggleBtnShown")) {
@@ -529,32 +708,35 @@ export async function initThumbnailOverlay() {
             const toggleBtnIconElem = toggleBtnElem.querySelector<HTMLImageElement>("svg");
 
             if(toggleBtnIconElem) {
-              setInnerHtml(toggleBtnElem, await resourceAsString(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled"));
+              let key = `icon-image${
+                overlayState === ThumbOvlState.YT
+                  ? "_filled_yt"
+                  : overlayState === ThumbOvlState.AM
+                    ? "_filled_am"
+                    : ""
+              }` as "_";
+              if(getCurrentMediaType() === "video" && overlayState !== ThumbOvlState.Off)
+                key = "icon-image_filled" as "_";
+
+              setInnerHtml(toggleBtnElem, await resourceAsString(key));
               toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
             }
             if(toggleBtnElem)
-              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay.toggle_btn_tooltip-${ThumbOvlState[overlayState]}`);
           },
         });
       }
     };
 
-    const applyThumbUrl = async (videoID: string, force = false) => {
+    // TODO:FIXME: sometimes when switching videos, the cache gets bypassed and the API is called anyways
+    // example: https://music.youtube.com/watch?v=Q6W6Lm3MgGA&list=PLed0zlh3c4e1jxK6QgkFnFhXgnKJswo3A
+
+    /** Retrieves the best thumbnail URL for the given video ID and applies it to the DOM */
+    const applyThumbUrl = async (videoID: string) => {
       try {
-        if(previousVideoIDs.length > 2)
-          previousVideoIDs.splice(0, previousVideoIDs.length - 2);
-
-        if(!force) {
-          if(previousVideoIDs.find(id => id === videoID))
-            return;
-          else
-            previousVideoIDs.push(videoID);
-        }
-
         const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
         if(
-          toggleBtnElem
-          && toggleBtnElem.dataset.albumArtworkUrl && toggleBtnElem.dataset.albumArtworkUrl.startsWith("http")
+          toggleBtnElem?.dataset.albumArtworkUrl?.startsWith("http")
           && (
             (!toggleBtnElem.dataset.albumArtworkRes || toggleBtnElem.dataset.albumArtworkRes.length === 0)
             && toggleBtnElem.dataset.albumArtworkRes === String(getFeature("thumbnailOverlayITunesImgRes"))
@@ -562,10 +744,13 @@ export async function initThumbnailOverlay() {
         )
           return openInTab(toggleBtnElem.dataset.albumArtworkUrl, false);
 
-        const actuallyApplyThumbUrl = (thumbUrl: string) => {
+        /** Call to pass the YT and AM artwork URLs to the DOM elements */
+        const setThumbOverlayUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
 
+          const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
+          
           if(toggleBtnElem) {
             toggleBtnElem.dataset.albumArtworkUrl = thumbUrl;
             toggleBtnElem.dataset.albumArtworkRes = String(getFeature("thumbnailOverlayITunesImgRes"));
@@ -587,29 +772,67 @@ export async function initThumbnailOverlay() {
 
         let bestNativeThumbUrl: string | undefined;
         const ac = new AbortController();
-        getBestThumbnailUrl(videoID).then((url) =>
-          ac.signal.aborted ? undefined : (bestNativeThumbUrl = url) && actuallyApplyThumbUrl(url)
-        ).catch(() => void 0);
+        getBestThumbnailUrl(videoID).then((url) => {
+          if(ac.signal.aborted ? undefined : (bestNativeThumbUrl = url))
+            setThumbOverlayUrl(url!);
+        }).catch(() => void 0);
 
         addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
-          all: true,
-          async listener(elems) {
-            const iTunesAlbum = elems.length >= 5
-              ? await getBestITunesAlbumMatch(elems[0].innerText.trim(), elems[2].innerText.trim())
+          async listener() {
+            if(ac.signal.aborted)
+              return;
+
+            const [primaryArtist, albumName] = (() => {
+              // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
+              // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
+
+              const parent = document.querySelector<HTMLElement>(".content-info-wrapper .subtitle yt-formatted-string");
+              if(!parent)
+                return [undefined, undefined];
+
+              const children = [...parent.querySelectorAll<HTMLElement>("a, span")];
+              const splitList = children.reduce((acc, el) => {
+                if(el.tagName === "SPAN" && el.innerText.includes("•")) {
+                  acc.push([]);
+                  return acc;
+                }
+                acc[acc.length - 1].push(el);
+                return acc;
+              }, [[]] as HTMLElement[][]);
+
+              if(splitList.length < 2)
+                return [undefined, undefined];
+
+              const firstArtistLink = splitList[0].find((el) => el.tagName === "A");
+              const firstArtistName = splitList[0].find((el) => !el.innerText.match(/^\s*•\s*$/));
+
+              return [
+                (firstArtistLink ?? firstArtistName)?.innerText,
+                splitList[1].find((el) => el.tagName === "A")?.innerText,
+              ];
+            })();
+
+            const iTunesAlbum = primaryArtist && albumName
+              ? await getBestITunesAlbumMatch(videoID, primaryArtist, albumName)
               : undefined;
 
-            const imgRes = getFeature("thumbnailOverlayITunesImgRes") ?? featInfo.thumbnailOverlayITunesImgRes.default;
-            const iTunesUrl = (iTunesAlbum?.artworkUrl60 ?? iTunesAlbum?.artworkUrl100);
+            const imgRes = getFeature("thumbnailOverlayITunesImgRes", featInfo.thumbnailOverlayITunesImgRes.default);
+            const iTunesUrl = (iTunesAlbum?.artworkUrl100 ?? iTunesAlbum?.artworkUrl60);
             iTunesUrl && !ac.signal.aborted && ac.abort();
 
-            const thumbUrl = iTunesUrl
-              ?.replace(/(60x60|100x100)/, `${imgRes}x${imgRes}`)
-              ?? bestNativeThumbUrl ?? await getBestThumbnailUrl(videoID);
+            const thumbUrl = iTunesUrl?.replace(/(100x100|60x60)/, `${imgRes}x${imgRes}`)
+              ?? bestNativeThumbUrl
+              ?? await getBestThumbnailUrl(videoID);
 
-            if(thumbUrl)
-              actuallyApplyThumbUrl(thumbUrl);
+            if(thumbUrl) {
+              log(`Successfully resolved artwork${albumName
+                ? ` for '${primaryArtist} - ${albumName}'`
+                : ". Couldn't find album name, defaulting to best available YT thumbnail"
+              }: ${thumbUrl}`);
+              setThumbOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
+            }
             else
-              warn("Couldn't get thumbnail URL for album", iTunesAlbum?.collectionName, "by", iTunesAlbum?.artistName, "or video with ID", videoID);
+              warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
           },
         });
       }
@@ -617,21 +840,6 @@ export async function initThumbnailOverlay() {
         error("Couldn't apply thumbnail URL to overlay due to an error:", err);
       }
     };
-
-    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (videoID, oldVideoID) => {
-      unsubWatchIdChanged();
-      addSelectorListener("body", "#bytm-thumbnail-overlay", {
-        listener: () => {
-          const curVidIdx = previousVideoIDs.findIndex(id => id === videoID);
-          const prevVidIdx = previousVideoIDs.findIndex(id => id === oldVideoID);
-          curVidIdx > -1 && previousVideoIDs.splice(curVidIdx, 1);
-          prevVidIdx > -1 && previousVideoIDs.splice(prevVidIdx, 1);
-
-          applyThumbUrl(videoID);
-          updateOverlayVisibility();
-        },
-      });
-    });
 
     const createElements = async () => {
       try {
@@ -648,7 +856,7 @@ export async function initThumbnailOverlay() {
           indicatorElem.id = "bytm-thumbnail-overlay-indicator";
           indicatorElem.src = await getResourceUrl("icon-image");
           indicatorElem.role = "presentation";
-          indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+          indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay.indicator_tooltip");
           indicatorElem.ariaHidden = "true";
           indicatorElem.style.display = "none";
           indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
@@ -664,10 +872,12 @@ export async function initThumbnailOverlay() {
         indicatorElem && playerEl.appendChild(indicatorElem);
 
 
-        siteEvents.on("watchIdChanged", async (videoID) => {
-          invertOverlay = false;
-          applyThumbUrl(videoID);
-          updateOverlayVisibility();
+        siteEvents.on("watchIdChanged", async (videoId) => {
+          overlayState = ThumbOvlState.Off;
+          return await Promise.allSettled([
+            applyThumbUrl(videoId),
+            updateOverlayVisibility(),
+          ]);
         });
 
         const params = new URL(location.href).searchParams;
@@ -683,18 +893,22 @@ export async function initThumbnailOverlay() {
           toggleBtnElem.role = "button";
           toggleBtnElem.tabIndex = 0;
           toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+          toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
 
           onInteraction(toggleBtnElem, (e) => {
             if(e.shiftKey)
               return openInTab(toggleBtnElem.href, false);
 
-            invertOverlay = !invertOverlay;
+            const ovlMax = Object.keys(ThumbOvlState).length / 2 - 1;
+            overlayState = overflowVal(overlayState + (e.ctrlKey || e.altKey ? -1 : 1), 0, ovlMax);
 
-            const params = new URL(location.href).searchParams;
-            if(thumbImgElem.dataset.videoId !== params.get("v"))
-              applyThumbUrl(params.get("v")!, true);
+            if(getCurrentMediaType() === "video" && overlayState === ThumbOvlState.AM)
+              overlayState = ThumbOvlState.Off;
 
-            updateOverlayVisibility();
+            toggleBtnElem.dataset.state = ThumbOvlState[overlayState];
+
+            applyThumbUrl(new URL(location.href).searchParams.get("v")!);
+            updateOverlayVisibility(true);
           });
 
           setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
@@ -736,21 +950,31 @@ export async function initThumbnailOverlay() {
 }
 
 /** Resolves with the best iTunes album match for the given artist and album name (not sanitized) */
-async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
+async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albumRaw: string) {
+  if(overlayState === ThumbOvlState.AM) {
+    const cacheEntry = (await artCacheStore.loadData()).entries.find((e) => e.videoId === videoId);
+
+    if(cacheEntry) {
+      log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
+      return {
+        artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60") as ITunesAlbumObj["artworkUrl60"],
+        artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100") as ITunesAlbumObj["artworkUrl100"],
+      } satisfies Partial<ITunesAlbumObj> & Required<Pick<ITunesAlbumObj, "artworkUrl60" | "artworkUrl100">>;
+    }
+  }
+
+  /** Fetches the album info from the iTunes API and returns the best match as well as the first result as a fallback in a tuple */
   const doFetchITunesAlbum = async (artist: string, album: string) => {
     const albumObjs = await fetchITunesAlbumInfo(artist, album);
+
     if(albumObjs && albumObjs.length > 0) {
       const bestMatch = albumObjs.find((al) => (
         (
-          al.artistName === artist
-          || al.artistName.toLowerCase() === artist.toLowerCase()
-          || al.artistName === artistsRaw
-          || al.artistName.toLowerCase() === artistsRaw.toLowerCase()
+          sanitizeArtists(al.artistName).toLowerCase() === artist.toLowerCase()
+          || sanitizeArtists(al.artistName) === artistsRaw
         ) && (
-          al.collectionName === album
-          || al.collectionName.toLowerCase() === album.toLowerCase()
-          || al.collectionCensoredName === album
-          || al.collectionCensoredName.toLowerCase() === album.toLowerCase()
+          sanitizeSong(al.collectionName).toLowerCase() === sanitizeSong(album).toLowerCase()
+          || sanitizeSong(al.collectionCensoredName).toLowerCase() === sanitizeSong(album).toLowerCase()
         )
       ));
       return [bestMatch, albumObjs[0]];
@@ -762,8 +986,28 @@ async function getBestITunesAlbumMatch(artistsRaw: string, albumRaw: string) {
 
   let [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
   if(!bestMatch)
-    [bestMatch, fallback] = await doFetchITunesAlbum(artist, sanitizeSong(albumRaw));
-  return bestMatch ?? fallback;
+    [bestMatch, fallback] = await doFetchITunesAlbum(artist, albumRaw);
+
+  const match = bestMatch ?? fallback;
+
+  if(match) {
+    const entries = (await artCacheStore.loadData()).entries;
+    if(!entries.some((e) => e.videoId === videoId)) {
+      const entry: ArtCacheEntry = {
+        videoId,
+        url: match.artworkUrl100,
+        created: Date.now(),
+      };
+      entries.push(entry);
+      log(`Added album artwork template URL for '${artist} - ${albumRaw}' (or video with ID '${videoId}') to cache:`, match.artworkUrl100);
+      emitInterface("bytm:artworkCacheEntryAdded", { album: albumRaw, artist, entry });
+      await artCacheStore.setData({ entries });
+    }
+  }
+  else 
+    warn(`The iTunes API yielded no album info for '${artist} - ${albumRaw}', defaulting to regular YT thumbnail`);
+
+  return match;
 }
 
 //#region idle hide cursor
@@ -778,24 +1022,88 @@ export async function initHideCursorOnIdle() {
       if(!overlayElem)
         return warn("Couldn't find overlay element while initializing cursor hiding");
 
+      /** Last element the mouse was hovered over */
+      let lastMouseoverElement: HTMLElement | null = null;
+
+      document.body.addEventListener("mouseover", (e) => {
+        const tgt = e.target as HTMLElement | null;
+        if(!tgt)
+          return;
+
+        lastMouseoverElement = tgt;
+      });
+
+      let isFullscreen = false;
+
       /** Timer after which the cursor is hidden */
       let cursorHideTimer: ReturnType<typeof setTimeout>;
       /** Timer for the opacity transition while switching to the hidden state */
       let hideTransTimer: ReturnType<typeof setTimeout> | undefined;
+      /** Timer for the player bar slide-down animation */
+      let hidePlayerBarTimer: ReturnType<typeof setTimeout> | undefined;
+
+      const hidePlayerBar = () => {
+        // cancel hide if cursor is somewhere within playerBar
+        if(lastMouseoverElement && lastMouseoverElement.closest("ytmusic-player-bar"))
+          return;
+
+        if(getFeature("hidePlayerBarOnIdleInFullscreen") && isFullscreen) {
+          const playerBar = document.querySelector<HTMLElement>("ytmusic-player-bar");
+          if(playerBar) {
+            hidePlayerBarTimer = setTimeout(() => {
+              if(playerBar.classList.contains("hidden"))
+                playerBar.style.display = "none";
+              hidePlayerBarTimer = undefined;
+            }, 300);
+            playerBar.classList.add("hidden");
+          }
+        }
+      };
 
       const hide = () => {
         if(!getFeature("hideCursorOnIdle"))
           return;
         if(vidContainer.classList.contains("bytm-cursor-hidden"))
           return;
+        // cancel hide if cursor is somewhere within playerBar
+        if(lastMouseoverElement && lastMouseoverElement.closest("ytmusic-player-bar"))
+          return;
+
         overlayElem.style.opacity = ".000001 !important";
         hideTransTimer = setTimeout(() => {
           overlayElem.style.display = "none";
           vidContainer.style.cursor = "none";
           vidContainer.classList.add("bytm-cursor-hidden");
           hideTransTimer = undefined;
+
+          hidePlayerBar();
         }, 200);
       };
+
+      const showPlayerBar = () => {
+        const playerBar = document.querySelector<HTMLElement>("ytmusic-player-bar");
+        if(playerBar && playerBar.classList.contains("hidden")) {
+          if(hidePlayerBarTimer !== undefined) {
+            clearTimeout(hidePlayerBarTimer);
+            hidePlayerBarTimer = undefined;
+          }
+
+          playerBar.style.display = "";
+          playerBar.classList.remove("hidden");
+        }
+      };
+
+      siteEvents.on("fullscreenToggled", (fsEnabled) => {
+        isFullscreen = fsEnabled;
+
+        if(!getFeature("hidePlayerBarOnIdleInFullscreen"))
+          return;
+
+        if(!fsEnabled)
+          showPlayerBar();
+        else if((!lastMouseoverElement || !lastMouseoverElement.closest("ytmusic-player-bar")) && vidContainer.classList.contains("bytm-cursor-hidden"))
+          hidePlayerBar();
+      });
 
       const show = () => {
         hideTransTimer && clearTimeout(hideTransTimer);
@@ -805,6 +1113,8 @@ export async function initHideCursorOnIdle() {
         vidContainer.style.cursor = "initial";
         overlayElem.style.display = "initial";
         overlayElem.style.opacity = "1 !important";
+
+        showPlayerBar();
       };
 
       const cursorHideTimerCb = () =>
@@ -816,18 +1126,20 @@ export async function initHideCursorOnIdle() {
         cursorHideTimerCb();
       };
 
-      vidContainer.addEventListener("mouseenter", onMove);
-      vidContainer.addEventListener("mousemove", debounce(onMove, 200));
+      vidContainer.addEventListener("mousemove", debounce(onMove, 150), { capture: true });
       vidContainer.addEventListener("mouseleave", () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
         hideTransTimer && clearTimeout(hideTransTimer);
         hide();
-      });
-      vidContainer.addEventListener("click", () => {
+      }, { capture: true });
+      vidContainer.addEventListener("click", (e) => {
+        if((e.target as HTMLElement | null)?.closest("#themesongControlButtonsContainer"))
+          return;
+
         show();
         cursorHideTimerCb();
         setTimeout(hide, 3000);
-      });
+      }, { capture: true });
 
       log("Initialized cursor hiding on idle");
     },
@@ -909,6 +1221,15 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   if(!likeBtn || !dislikeBtn)
     return error("Couldn't find like or dislike button while adding vote numbers");
 
+  // wrap buttons in a container
+  const likeBtnCont = document.createElement("div");
+  likeBtnCont.id = "bytm-like-btn-cont";
+  addParent(likeBtn, likeBtnCont);
+
+  const dislikeBtnCont = document.createElement("div");
+  dislikeBtnCont.id = "bytm-dislike-btn-cont";
+  addParent(dislikeBtn, dislikeBtnCont);
+
   const createLabel = (amount: number, type: "likes" | "dislikes"): HTMLElement => {
     const label = document.createElement("span");
     label.classList.add("bytm-vote-label", "bytm-no-select", type);
@@ -923,6 +1244,49 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     return label;
   };
 
+  /** Called when the like/dislike state toggles to apply the adjusted numbers */
+  const updateLabels = async () => {
+    const { likeState } = getLikeDislikeBtns();
+
+    const voteObj = await fetchVideoVotes(getWatchId()!);
+
+    if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+      return error("Couldn't fetch votes from the Return YouTube Dislike API");
+
+    const likeLbl = voteCont.querySelector<HTMLElement>(".bytm-vote-label.likes");
+    const dislikeLbl = voteCont.querySelector<HTMLElement>(".bytm-vote-label.dislikes");
+
+    const likeNum = voteObj.likes + (likeState === "LIKE" ? 1 : 0);
+    const dislikeNum = voteObj.dislikes + (likeState === "DISLIKE" ? 1 : 0);
+
+    if(likeLbl) {
+      likeLbl.textContent = String(formatNumber(likeNum));
+      likeLbl.title = likeLbl.ariaLabel = tp("vote_label_likes", likeNum, formatNumber(likeNum, "long"));
+    }
+    if(dislikeLbl) {
+      dislikeLbl.textContent = String(formatNumber(dislikeNum));
+      dislikeLbl.title = dislikeLbl.ariaLabel = tp("vote_label_dislikes", dislikeNum, formatNumber(dislikeNum, "long"));
+    }
+  };
+
+  const { btnRenderer } = getLikeDislikeBtns();
+
+  if(btnRenderer) {
+    const rendererObs = new MutationObserver(() => updateLabels());
+
+    rendererObs.observe(btnRenderer, {
+      attributes: true,
+      attributeFilter: ["like-status"],
+      childList: false,
+      subtree: false,
+    });
+
+    siteEvents.on("pathChanged", () => {
+      rendererObs.disconnect();
+      updateLabels();
+    });
+  }
+
   addStyleFromResource("css-show_votes")
     .catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
 
@@ -935,6 +1299,8 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
 
   log("Added vote number labels to like and dislike buttons");
+
+  forceEmitSiteEvent("voteLabelsAdded");
 }
 
 /** Updates or inserts the labels on the native like and dislike buttons */
@@ -948,6 +1314,26 @@ function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, disl
     dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
 };
 
+//#region swap like&dislike btns
+
+/** Swaps the like and dislike buttons on the watch page */
+export async function initSwapLikeDislikeBtns() {
+  const err = (err?: unknown) => error("Couldn't initialize \"swap like and dislike buttons\" feature due to an error" + err ? ":" : "", err);
+
+  try {
+    if(!getFeature("swapLikeDislikeButtons"))
+      return;
+
+    if(await addStyleFromResource("css-swap_like_dislike_btns"))
+      log("Initialized \"swap like and dislike buttons\" feature");
+    else
+      err();
+  }
+  catch(e) {
+    err(e);
+  }
+}
+
 //#region watch page full size
 
 /** Makes the watch page full size */
@@ -956,4 +1342,14 @@ export async function initWatchPageFullSize() {
     error("Couldn't load stylesheet to make watch page full size");
   else
     log("Made watch page full size");
+}
+
+//#region truncate player bar subtitles
+
+/** Truncates long subtitles in the player bar with an ellipsis */
+export async function initTruncatePlayerBarSubtitles() {
+  if(!await addStyleFromResource("css-truncate_player_bar_subtitles"))
+    error("Couldn't load stylesheet to truncate player bar subtitles");
+  else
+    log("Truncated player bar subtitles");
 }

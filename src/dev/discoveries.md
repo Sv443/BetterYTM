@@ -27,6 +27,5 @@ I've searched far and wide but haven't been able to locate any variable I could 
 So instead I have to entirely rely on the text that's displayed to the user, which might seem like it would be enough, but as mentioned in [difference between YT and YTM songs](#difference-between-yt-songs-and-ytm-songs), it's wildly inconsistent.
   
 **Edit:**  
-Apparently there's an API for telling the OS which song is playing so this might be a better spot to grab the song data from, for the currently playing song. As a fallback, reading the DOM could still be used.  
-Whether it's worth it or not to implement this is another question.  
+There's the MediaMetadata API for telling the OS which song is playing, which can be used to grab the song title and artist name, however those values will vary wildly between localizations and execution environments.  
 [See issue #25](https://github.com/Sv443/BetterYTM/issues/25)

@@ -1,4 +1,4 @@
-name: "Build BetterYTM"
+name: Build BetterYTM
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
-    timeout-minutes: 8
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -21,15 +21,16 @@ jobs:
     env:
       CI: "true"
       STORE_PATH: ""
-      PNPM_VERSION: 9
-      RETENTION_DAYS: 2
+      PNPM_VERSION: 10
+      RETENTION_DAYS_PUSH: 3
+      RETENTION_DAYS_PR: 2
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js v${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -41,11 +42,10 @@ jobs:
 
       - name: Get pnpm store directory
         shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Setup pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -55,12 +55,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Get version info
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+        id: get_version_info
+        run: |
+          BYTM_VERSION=$(node src/tools/get-pkg-prop.mjs version)
+          echo "BYTM_VERSION=$BYTM_VERSION" >> $GITHUB_OUTPUT
+          GIT_SHA_SHORT=$(git rev-parse --short HEAD)
+          echo "GIT_SHA_SHORT=$GIT_SHA_SHORT" >> $GITHUB_OUTPUT
+
       - name: Build all for production
         run: pnpm run build-prod
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v6
         with:
-          name: dist
+          name: "BetterYTM v${{ steps.get_version_info.outputs.BYTM_VERSION }} (${{ steps.get_version_info.outputs.GIT_SHA_SHORT }}) [${{ github.run_number }}]"
           path: dist
-          retention-days: ${{ env.RETENTION_DAYS }}
+          retention-days: ${{ github.event_name == 'push' && env.RETENTION_DAYS_PUSH || env.RETENTION_DAYS_PR }}

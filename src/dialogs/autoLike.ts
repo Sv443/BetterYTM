@@ -1,19 +1,22 @@
-import { compress, debounce } from "@sv443-network/userutils";
-import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "../utils/index.js";
-import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
-import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { ExImDialog } from "../components/ExImDialog.js";
-import { compressionFormat } from "../constants.js";
-import type { AutoLikeData } from "../types.js";
-import { showPrompt } from "./prompt.js";
-import { BytmDialog } from "../components/BytmDialog.js";
-import { showToast } from "../components/toast.js";
-import { createToggleInput } from "../components/toggleInput.js";
-import { createCircularBtn } from "../components/circularButton.js";
-import "./autoLike.css";
+import { compress, debounce } from "@sv443-network/coreutils";
+import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "@util/index.ts";
+import { autoLikeStore, initAutoLikeStore } from "@feat/index.ts";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { ExImDialog } from "@comp/ExImDialog.ts";
+import { compressionFormat } from "@/constants.ts";
+import type { AutoLikeData } from "@/types.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { showToast } from "@comp/toast.ts";
+import { createToggleInput } from "@comp/toggleInput.ts";
+import { createCircularBtn } from "@comp/circularButton.ts";
+import "@dialog/autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
 let autoLikeExImDialog: ExImDialog | null = null;
+
+// TODO:FIXME: dialog isnt properly closed?
+// to reproduce: open dialog, create new entry, confirm with enter, close dialog -> cfg menu is still inert and dialog is still open for some reason
 
 /** Creates and/or returns the import dialog */
 export async function getAutoLikeDialog() {
@@ -72,9 +75,9 @@ export async function getAutoLikeDialog() {
           log("Trying to import auto-like data:", parsed);
 
           if(!parsed || typeof parsed !== "object")
-            return await showPrompt({ type: "alert", message: t("import_error_invalid") });
+            return await showPrompt({ type: "alert", message: t("import_error.invalid") });
           if(!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-            return await showPrompt({ type: "alert", message: t("import_error_no_data") });
+            return await showPrompt({ type: "alert", message: t("import_error.no_data") });
 
           await autoLikeStore.setData(parsed);
           emitSiteEvent("autoLikeChannelsUpdated");
@@ -132,14 +135,17 @@ async function renderBody() {
   searchContRightSideEl.classList.add("right-side");
   searchCont.appendChild(searchContRightSideEl);
 
+  const searchbarEl = document.createElement("input");
+
   const updateCountElem = () => {
-    const count = autoLikeStore.getData().channels.length;
+    const count = searchbarEl.value.trim().length === 0
+      ? autoLikeStore.getData().channels.length
+      : document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row:not(.hidden)").length;
     searchContRightSideEl.innerText = searchContRightSideEl.ariaLabel = tp("auto_like_channels_entries_count", count, count);
   };
   siteEvents.on("autoLikeChannelsUpdated", updateCountElem);
   updateCountElem();
 
-  const searchbarEl = document.createElement("input");
   searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
   searchbarEl.placeholder = searchbarEl.ariaDescription = t("search_placeholder");
   searchbarEl.type = searchbarEl.role = "search";
@@ -148,15 +154,17 @@ async function renderBody() {
   searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
   searchbarEl.spellcheck = false;
 
-  searchbarEl.addEventListener("input", () => {
+  searchbarEl.addEventListener("input", debounce(() => {
     const searchVal = searchbarEl.value.trim().toLowerCase();
     const rows = document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row");
     for(const row of rows) {
-      const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
-      const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
-      row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
+      const sanit = (str?: string) => str?.trim().toLowerCase().replace(/\s/g, "");
+      const name = sanit(row.querySelector(".bytm-auto-like-channel-name")?.textContent) ?? "";
+      const id = sanit(row.querySelector(".bytm-auto-like-channel-id")?.textContent) ?? "";
+      row.classList.toggle("hidden", !name.includes(searchVal) && !id.includes(searchVal));
     }
-  });
+    updateCountElem();
+  }, 300));
 
   searchContLeftSideEl.appendChild(searchbarEl);
 
@@ -183,7 +191,7 @@ async function renderBody() {
           .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
       });
     },
-    250
+    100
   );
 
   const sortedChannels = autoLikeStore
@@ -202,19 +210,25 @@ async function renderBody() {
     nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
     nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
 
+    const chanHref = (!chanId.startsWith("@") && getDomain() === "ytm")
+      ? `https://music.youtube.com/channel/${chanId}`
+      : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+
     const nameElem = document.createElement("a");
     nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
     nameElem.ariaLabel = nameElem.textContent = chanName;
-    nameElem.href = (!chanId.startsWith("@") && getDomain() === "ytm")
-      ? `https://music.youtube.com/channel/${chanId}`
-      : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+    nameElem.href = chanHref;
     nameElem.target = "_blank";
     nameElem.rel = "noopener noreferrer";
     nameElem.tabIndex = 0;
 
-    const idElem = document.createElement("span");
-    idElem.classList.add("bytm-auto-like-channel-id");
+    const idElem = document.createElement("a");
+    idElem.classList.add("bytm-auto-like-channel-id", "bytm-link");
     idElem.textContent = idElem.title = chanId;
+    idElem.href = chanHref;
+    idElem.target = "_blank";
+    idElem.rel = "noopener noreferrer";
+    idElem.tabIndex = 0;
 
     nameLabelEl.appendChild(nameElem);
     nameLabelEl.appendChild(idElem);
@@ -294,20 +308,54 @@ function renderFooter() {
   addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
   wrapperEl.appendChild(addNewBtnElem);
 
+  const rightBtnsCont = document.createElement("div");
+  rightBtnsCont.classList.add("bytm-flex-row");
+
+  const deleteAllBtnElem = document.createElement("button");
+  deleteAllBtnElem.classList.add("bytm-btn");
+  deleteAllBtnElem.textContent = t("delete_all");
+  deleteAllBtnElem.ariaLabel = deleteAllBtnElem.title = t("auto_like_delete_all_tooltip");
+  rightBtnsCont.appendChild(deleteAllBtnElem);
+
   const importExportBtnElem = document.createElement("button");
   importExportBtnElem.classList.add("bytm-btn");
   importExportBtnElem.textContent = t("export_import");
   importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
-  wrapperEl.appendChild(importExportBtnElem);
+  rightBtnsCont.appendChild(importExportBtnElem);
 
-  onInteraction(addNewBtnElem, addAutoLikeEntryPrompts);
-  onInteraction(importExportBtnElem, openImportExportAutoLikeChannelsDialog);
+  wrapperEl.appendChild(rightBtnsCont);
+  
+  onInteraction(addNewBtnElem, () => addAutoLikeEntryPrompts());
+  onInteraction(deleteAllBtnElem, () => deleteAllAutoLikeChannelsPrompt());
+  onInteraction(importExportBtnElem, () => openImportExportAutoLikeChannelsDialog());
 
   return wrapperEl;
 }
 
 async function openImportExportAutoLikeChannelsDialog() {
   await autoLikeExImDialog?.open();
+}
+
+// #region delete all prompt
+
+async function deleteAllAutoLikeChannelsPrompt() {
+  const confirm = await showPrompt({
+    type: "confirm",
+    message: t("auto_like_delete_all_confirm"),
+  });
+
+  if(!confirm)
+    return;
+
+  await autoLikeStore.setData({ channels: [] });
+  emitSiteEvent("autoLikeChannelsUpdated");
+
+  const unsub = autoLikeDialog?.on("clear", async () => {
+    unsub?.();
+    await autoLikeDialog?.open();
+  });
+
+  autoLikeDialog?.unmount();
 }
 
 //#region add prompt

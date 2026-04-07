@@ -1,7 +1,8 @@
-import { fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/userutils";
-import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "../types.js";
-import { getResourceUrl } from "./misc.js";
-import { error, info, warn } from "./logging.js";
+import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/coreutils";
+import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "@/types.ts";
+import { getResourceUrl, getterifyObj } from "@util/misc.ts";
+import { error, info, log } from "@util/logging.ts";
+import { getFeature } from "@/config.ts";
 
 //#region misc
 
@@ -15,7 +16,7 @@ export function constructUrlString(baseUrl: string, params: Record<string, Strin
   return `${baseUrl}?${
     Object.entries(params)
       .filter(([, v]) => v !== undefined)
-      .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
+      .map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`)
       .join("&")
   }`;
 }
@@ -34,15 +35,26 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
  * Sends a request with the specified parameters and returns the response as a Promise.  
  * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
  */
-export function sendRequest<T = any>(details: Prettify<Omit<GM.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<GM.Response<T>> {
-  return new Promise<GM.Response<T>>((resolve, reject) => {
+export function sendRequest<T = any>(details: Prettify<Omit<Tampermonkey.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<Tampermonkey.Response<T>> {
+  return new Promise<Tampermonkey.Response<T>>((resolve, reject) => {
+    const success = (val: Tampermonkey.Response<T>) => {
+      getFeature("logHttp") && log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
+      resolve(val);
+    };
+
+    const failure = (err?: any) => {
+      const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
+      getFeature("logHttp") && error(errStr, err);
+      reject(new Error(errStr, { cause: err }));
+    };
+
     GM.xmlHttpRequest({
       timeout: 10_000,
       ...details,
-      onload: resolve,
-      onerror: reject,
-      ontimeout: reject,
-      onabort: reject,
+      onload: success,
+      onerror: failure,
+      ontimeout: failure,
+      onabort: failure,
     });
   });
 }
@@ -66,7 +78,7 @@ export async function fetchCss(key: StyleResourceKey) {
 /** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
 const voteCache = new Map<string, VideoVotesObj>();
 /** Time-to-live for the vote cache in milliseconds */
-const voteCacheTTL = 1000 * 60 * 10;
+const voteCacheTTL = 1000 * 60 * 60;
 
 /**
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
@@ -100,7 +112,7 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
       id: votesRaw.id,
       likes: votesRaw.likes,
       dislikes: votesRaw.dislikes,
-      rating: votesRaw.rating,
+      rating: roundFixed(votesRaw.rating, 3),
       timestamp: Date.now(),
     };
     voteCache.set(votesObj.id, votesObj);
@@ -117,31 +129,51 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
 
 //#region iTunes album info
 
-/** Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG` */
+/**
+ * Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`  
+ * Never throws, just returns an empty array on failure.
+ */
 export async function fetchITunesAlbumInfo(artist: string, album: string): Promise<ITunesAlbumObj[]> {
   try {
-    const res = await fetchAdvanced(`https://itunes.apple.com/search?country=us&limit=5&entity=album&term=${encodeURIComponent(`${artist} ${album}`)}`);
-    const json = await res.json() as ITunesAPIResponse;
+    const url = constructUrlString("https://itunes.apple.com/search", {
+      country: "us",
+      limit: 20,
+      entity: "album",
+      term: `${artist} ${album}`,
+    });
 
-    if(!res.ok) {
-      error("Couldn't fetch iTunes album info due to an error:", json);
-      return [];
-    }
+    log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
+
+    const req = await sendRequest({
+      method: "GET",
+      url,
+    });
+    const json = JSON.parse(req.response) as ITunesAPIResponse;
+
     if(!("resultCount" in json) || !("results" in json)) {
       error("Couldn't parse iTunes album info due to an error:", json);
       return [];
     }
-    if(json.resultCount === 0) {
-      warn("No iTunes album info found for artist", artist, "and album", album);
+    if(json.resultCount === 0)
       return [];
-    }
 
-    return json.results.filter((result) => {
-      if(!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
-        return false;
+    const filteredResults = json.results
+      // filter out invalid results
+      .filter((result) => {
+        if(!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result))
+          return false;
 
-      return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
-    });
+        return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+      })
+      // trim album name (" - Single", " - EP", etc.)
+      .map((result) => {
+        return {
+          ...result,
+          collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, ""),
+        } satisfies ITunesAlbumObj;
+      });
+
+    return filteredResults;
   }
   catch(err) {
     error("Couldn't fetch iTunes album info due to an error:", err);

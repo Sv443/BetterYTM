@@ -1,28 +1,50 @@
-import { clamp } from "@sv443-network/userutils";
-import { info, log, warn, getDomain, getVideoElement } from "../utils/index.js";
-import { featInfo } from "./index.js";
-import { getFeature } from "../config.js";
-import { addSelectorListener } from "../observers.js";
+import { clamp, valsWithin } from "@sv443-network/coreutils";
+import { info, log, warn, getDomain, getVideoElement, waitVideoElementReady, getVideoTime } from "@util/index.ts";
+import { featInfo } from "@feat/index.ts";
+import { getFeature } from "@/config.ts";
+import { addSelectorListener } from "@/observers.ts";
 
-//#region utils
+//#region ignored input elements
 
+/** List of element tag names (uppercase) that, if focused, should make BYTM ignore keypresses */
 const ignoreInputTagNames: string[] = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+
+/** List of element IDs that, if focused, should make BYTM ignore keypresses. */
 const ignoreInputIds: string[] = [
-  "contenteditable-root", // comment field on YT
-  "volume-slider", // volume slider on YTM
+  "contenteditable-root",  // comment field on YT
+  "volume-slider",         // volume slider on YTM
+  "bytm-cfg-menu-sidenav", // cfg menu sidenav
 ];
-const ignoreInputClassNames: string[] = [];
+
+/** List of element class names that, if focused, should make BYTM ignore keypresses. */
+const ignoreInputClassNames: string[] = [
+  "bytm-ignored-input", // generic class for ignored inputs
+  "cbTitleTextBox",     // dearrow title input
+];
+
+/** If an element matches {@linkcode ignoreInputTagNames}, {@linkcode ignoreInputIds} or {@linkcode ignoreInputClassNames}, but also matches {@linkcode unIgnoreInputClassNames}, BYTM will not ignore keypresses when that element is focused. */
+const unIgnoreInputClassNames: string[] = [
+  "bytm-generic-btn", // BYTM's custom rounded buttons
+  "bytm-btn",         // default browser style buttons used by BYTM
+];
 
 /** Returns true, if the given element (`document.activeElement` by default) is an input element that should make BYTM ignore keypresses */
-export function isIgnoredInputElement(el = document.activeElement as HTMLElement | null) {
+export function isIgnoredInputElement(el?: Element | null) {
+  if(!el)
+    el = document.activeElement;
+
   if(!el)
     return false;
 
-  return document.activeElement !== document.body && (
-    ignoreInputTagNames.includes(el.tagName.toUpperCase())
-    || ignoreInputClassNames.some((cls) => el.classList.contains(cls))
+  const isIgnored = el !== document.body && (
+    (ignoreInputTagNames.includes(el.tagName.toUpperCase()))
     || ignoreInputIds.includes(el.id)
+    || ignoreInputClassNames.some((cls) => el.classList.contains(cls))
   );
+
+  const isUnignored = unIgnoreInputClassNames.some((cls) => el.classList.contains(cls));
+
+  return isIgnored && !isUnignored;
 }
 
 //#region arrow key skip
@@ -53,7 +75,7 @@ export async function initArrowKeySkip() {
     evt.preventDefault();
     evt.stopImmediatePropagation();
 
-    let skipBy = getFeature("arrowKeySkipBy") ?? featInfo.arrowKeySkipBy.default;
+    let skipBy = getFeature("arrowKeySkipBy", featInfo.arrowKeySkipBy.default);
     if(evt.code === "ArrowLeft")
       skipBy *= -1;
 
@@ -82,7 +104,7 @@ function handleVolumeKeyPress(evt: KeyboardEvent) {
   const newVol = clamp(
     Number(sliderEl.value)
       + (evt.code === "ArrowUp" ? 1 : -1)
-      * clamp((getFeature("arrowKeyVolumeStep") ?? featInfo.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100),
+      * clamp((getFeature("arrowKeyVolumeStep", featInfo.arrowKeyVolumeStep.default)), isNaN(step) ? 5 : step, 100),
     0,
     100,
   );
@@ -124,23 +146,58 @@ export async function initFrameSkip() {
 
 //#region num keys skip
 
+const lastKeyPress = [0, ""] as [time: number, key: string];
+
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
-  document.addEventListener("keydown", (e) => {
-    if(!getFeature("numKeysSkipToTime") || isIgnoredInputElement())
+  document.addEventListener("keydown", async (e) => {
+    const doublePressTime = getFeature("numKeysSkipToTimeDoublePress");
+
+    if((!getFeature("numKeysSkipToTime") && (getDomain() === "ytm" || (getDomain() === "yt" && doublePressTime === 0))) || isIgnoredInputElement())
       return;
     if(!e.key.trim().match(/^[0-9]$/))
       return;
 
-    const vidElem = getVideoElement();
+    const vidElem = await waitVideoElementReady();
+    const newVidTime = vidElem.duration / (10 / Number(e.key));
+
+    if(doublePressTime > 0) {
+      if(getDomain() === "yt") {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+
+      const videoTime = await getVideoTime();
+      const dpBuffer = getFeature("numKeysSkipToTimeDoublePressBuffer");
+      const vidTimeIsClose = dpBuffer > 0 && videoTime ? Math.abs(videoTime - newVidTime) < dpBuffer : false;
+      const vidTimeAtStartOrEnd = valsWithin(videoTime ?? -Infinity, vidElem.duration, 1) || valsWithin(videoTime ?? Infinity, 0, 1);
+
+      if(lastKeyPress[1] !== e.key || Date.now() - lastKeyPress[0] > doublePressTime) {
+        lastKeyPress[0] = Date.now();
+        lastKeyPress[1] = e.key;
+
+        if(!vidTimeIsClose && !vidTimeAtStartOrEnd)
+          return;
+      }
+
+      if(Date.now() - lastKeyPress[0] > doublePressTime) {
+        lastKeyPress[0] = Date.now();
+        lastKeyPress[1] = e.key;
+
+        if(!vidTimeIsClose && !vidTimeAtStartOrEnd)
+          return;
+      }
+    }
+    else if(getDomain() === "yt")
+      return; // no need to override default behavior if not for the double-press guard
+
     if(!vidElem || vidElem.readyState === 0)
       return warn("Could not find video element, so the keypress is ignored");
 
-    const newVidTime = vidElem.duration / (10 / Number(e.key));
     if(!isNaN(newVidTime)) {
       log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
       vidElem.currentTime = newVidTime;
     }
-  });
+  }, { capture: true });
   log("Added number key press listener");
 }

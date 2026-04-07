@@ -32,7 +32,7 @@ All of these can be toggled and configured in the configuration menu.
   - Auto-like songs and videos of your favorite creators on both YT and YT Music
   - Use arrow keys to skip forward or backward and control volume
   - Press number keys to skip to a percentage of the currently playing song
-  - Custom hotkeys that allow you to switch between YT and YTM, like or dislike, open the lyrics, and more
+  - Many custom hotkeys for switching between YT and YTM, liking and disliking, opening the lyrics, and more
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
 ... and these are just the notable features, there are many more smaller features, improvements and fixes!
@@ -50,11 +50,11 @@ If you disabled the watermark, you can still open it by clicking your avatar in 
 
 ## Installation
 Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
-1. **Install a userscript manager browser extension - I really recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)).**  
-  <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
+1. **Install a userscript manager browser extension - I highly recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)) or Tampermonkey.**  
+  <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey, Greasemonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
 
-2. **Then, [visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button on the latest release.**  
-  <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18#show_issue" target="_blank">more info here</a>).</sub>
+2. **Then, [visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button at the bottom of the latest stable release.**  
+  <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18" target="_blank">more info here</a>).</sub>
 
 <br>
   
@@ -65,12 +65,13 @@ Please make sure to manually remove and reinstall the userscript once the next r
 
 ## Integrations
 BetterYTM integrates with other extensions and tools to adjust its or their behavior and provide a smoother experience:
+- [Apple Music](https://music.apple.com/) (album artworks for thumbnail overlay)
 - [Dark Reader](https://darkreader.org/) (disabled fully or partially)
 - [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube) (BYTM respects the set theme)
 - [Return YouTube Dislike](https://returnyoutubedislike.com/) (shows approx. like and dislike counts)
 - [SponsorBlock](https://sponsor.ajay.app/) (compatibility adjustments)
 - [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) (BYTM respects the set theme)
-- [Apple Music](https://music.apple.com/) (album artworks for thumbnail overlay)
+- [Thumbnail Rating Bar for YouTube](https://github.com/elliotwaite/thumbnail-rating-bar-for-youtube) (rating bars can be removed on YTM)
   
 To find out more about these integrations, [click here](./src/dev/integrations.md)
 
@@ -108,11 +109,12 @@ Your userscript manager extension's storage API is used to store all settings an
 Open its settings to see and manage this data. Delete the userscript to automatically delete all associated data.  
   
 BetterYTM makes use of external services and APIs to provide some of its features, which may collect data about you.  
-In every case, only the bare minimum of data is sent to these services and only when necessary for the function of the script.  
+You may disable these features in the configuration menu if you don't want to use them, which will prevent any data from being sent to the services.  
   
-- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
-- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
+These are the privacy policies of the external services BetterYTM uses, and what data they collect:
 - [Apple Music - Privacy Policy](https://www.apple.com/legal/privacy/data/en/apple-music/) (album and artist names, IP address)
+- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
+- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
 
 <br><br>
 
@@ -125,10 +127,18 @@ This project is based on my extensive template for making a userscript with Type
 > [!NOTE]  
 > Each folder contains a `README.md` file with further information about the contents. If you want to know more about a specific part of the project, please refer to these files.
 
+<br>
+
+### Special Thanks
+A big thank you to these people for their contributions to this project:
+- [indierodo](https://github.com/indierodo): Track numbers feature
+- [cryeprecision](https://github.com/cryeprecision): Exponential volume slider feature
+
 <br><br>
 
 ### Attributions
 This userscript depends on these projects:
+- [@sv443-network/coreutils](https://github.com/Sv443-Network/CoreUtils)
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
 - [compare-versions](https://npmjs.org/package/compare-versions)
 - [Cousine font](https://fonts.google.com/specimen/Cousine)
@@ -148,8 +158,8 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 ### Disclaimers
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
 - I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
-- I do not intend to ever collect any data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
-  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching).
+- I do not intend to ever sell any personally identifiable data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
+  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
 - This script comes as-is, so I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the code or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
 
 <br><br><br><br>
@@ -159,6 +169,6 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 Made with ❤️ by [Sv443](https://github.com/Sv443)  
 If you like this userscript, please consider [supporting me](https://github.com/sponsors/Sv443)  
   
-© 2022 Sv443 - [AGPL-3.0](./LICENSE.txt)
+© 2022 Sv443 - [AGPL-3.0-or-later](./LICENSE.txt)
 
 </div>

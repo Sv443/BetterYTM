@@ -1,7 +1,12 @@
 [
   {
+    "pkgName": "@sv443-network/coreutils",
+    "path": "dist/CoreUtils.umd.js",
+    "global": "CoreUtils"
+  },
+  {
     "pkgName": "@sv443-network/userutils",
-    "path": "dist/index.global.js",
+    "path": "dist/UserUtils.umd.js",
     "global": "UserUtils"
   },
   {

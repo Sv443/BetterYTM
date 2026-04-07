@@ -1,11 +1,15 @@
-import { clamp, pauseFor } from "@sv443-network/userutils";
-import { info, resourceAsString, setInnerHtml } from "../utils/index.js";
-import { getFeature } from "../config.js";
-import type { ResourceKey } from "../types.js";
-import "./toast.css";
+import { clamp, pauseFor } from "@sv443-network/coreutils";
+import { info, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { getFeature } from "@/config.ts";
+import type { ResourceKey } from "@/types.ts";
+import "@comp/toast.css";
 
+//#region types
+
+/** Corner position of the toast on the screen */
 export type ToastPos = "tl" | "tr" | "bl" | "br";
 
+/** Properties for a toast */
 export type ToastProps = {
   /** Duration in milliseconds */
   duration?: number;
@@ -28,6 +32,7 @@ export type ToastProps = {
   }
 );
 
+/** Properties for a toast with an icon */
 export type IconToastProps = ToastProps & {
   /** Position of the icon relative to the message */
   iconPos?: "left" | "right";
@@ -44,22 +49,43 @@ export type IconToastProps = ToastProps & {
   }
 );
 
-/** Max amount of seconds a toast can be shown for */
-const maxToastDuration = 30_000;
+//#region vars
 
+/** Max amount of seconds a toast can be shown for */
+const maxToastDuration = 15_000;
+
+/** Queue of future toasts to be shown */
+const toastQueue: Array<() => Promise<unknown> | unknown> = [];
+/** Whether a toast is currently being shown */
+let showingToast = false;
+
+/** Timeout ID for the currently shown toast */
 let timeout: ReturnType<typeof setTimeout> | undefined;
 
-/** Shows a toast message with an icon */
+// TODO:FIXME: no workis
+
+//#region icon toast
+
+/**
+ * Shows a toast message with an icon.  
+ * @returns The toast element if it could be immediately shown, otherwise `void` (like when it was queued to be shown later)
+ */
 export async function showIconToast({
   duration,
   position = "tr",
   iconPos = "left",
   ...rest
-}: IconToastProps) {
+}: IconToastProps): Promise<HTMLDivElement | void> {
   if(typeof duration !== "number" || isNaN(duration))
     duration = getFeature("toastDuration") * 1000;
   if(duration <= 0)
     return info("Toast duration is <= 0, so it won't be shown");
+
+  if(showingToast)
+    return void toastQueue.push(() => showIconToast({ duration, position, iconPos, ...rest }));
+
+  showingToast = true;
+
   const toastWrapper = document.createElement("div");
   toastWrapper.classList.add("bytm-toast-flex-wrapper");
 
@@ -98,14 +124,30 @@ export async function showIconToast({
   toastWrapper.appendChild(toastMessage);
   iconPos === "right" && toastWrapper.appendChild(toastIcon);
 
-  return await showToast({
+  const elem = await showToast({
     duration,
     position,
     element: toastWrapper,
     title: "message" in rest ? rest.message : rest.title,
     onClick: rest.onClick,
   });
+
+  if(toastQueue.length > 0) {
+    return new Promise<void>(resolve => {
+      elem?.addEventListener("transitionend", async () => {
+        const nextToast = toastQueue.shift()!;
+        showingToast = false;
+        return resolve(void await nextToast());
+      }, { once: true });
+    });
+  }
+  else {
+    showingToast = false;
+    return elem;
+  }
 }
+
+//#region text toast
 
 /** Shows a toast message in the top right corner of the screen by default and uses the default timeout from the config option `toastDuration` */
 export async function showToast(message: string): Promise<HTMLDivElement | void>;
@@ -129,6 +171,11 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
 
   if(durationMs <= 0)
     return info("Toast duration is <= 0, so it won't be shown");
+
+  if(showingToast)
+    return void toastQueue.push(() => showToast(props));
+
+  showingToast = true;
 
   if(document.querySelector("#bytm-toast"))
     await closeToast();
@@ -164,7 +211,19 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
     }
   });
 
-  return toastElem;
+  if(toastQueue.length > 0) {
+    return new Promise<void>(resolve => {
+      toastElem?.addEventListener("transitionend", async () => {
+        const nextToast = toastQueue.shift()!;
+        showingToast = false;
+        return resolve(void await nextToast());
+      }, { once: true });
+    });
+  }
+  else {
+    showingToast = false;
+    return toastElem;
+  }
 }
 
 /** Closes the currently open toast */
@@ -174,15 +233,13 @@ export async function closeToast() {
     timeout = undefined;
   }
 
+  // query all for safety even though there should only be one at a time
   const toastEls = document.querySelectorAll("#bytm-toast");
   if(toastEls.length === 0)
     return;
 
   await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
+    toastEl.addEventListener("transitionend", async () => toastEl.remove(), { once: true });
     toastEl.classList.remove("visible");
-
-    await pauseFor(300);
-    toastEl.remove();
-    await pauseFor(100);
   }));
 }

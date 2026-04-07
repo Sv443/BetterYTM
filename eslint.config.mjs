@@ -1,11 +1,10 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import storybookEslint from "eslint-plugin-storybook";
+import { defineConfig } from "eslint/config";
 import globals from "globals";
-import tsParser from "@typescript-eslint/parser";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import tsParser from "@typescript-eslint/parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,16 +27,24 @@ const config = [
       "**/test.ts",
       ".storybook/**/*",
       "**/*.stories.ts",
+      "**/*.mjs",
+      "**/*.js",
     ],
-  }, ...compat.extends(
+  },
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  ...compat.extends(
     "eslint:recommended",
     "plugin:storybook/recommended",
     "plugin:@typescript-eslint/recommended",
-  ), {
-    plugins: {
-      "@typescript-eslint": typescriptEslint,
-      "storybook": storybookEslint,
-    },
+  ),
+  {
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -80,6 +87,9 @@ const config = [
         allowTernary: true,
         allowTaggedTemplates: true,
       }],
+      "@typescript-eslint/unbound-method": ["error", {
+        ignoreStatic: true,
+      }],
       "comma-dangle": ["error", "only-multiline"],
       "no-misleading-character-class": "off",
     },
@@ -108,4 +118,4 @@ const config = [
   },
 ];
 
-export default config;
+export default defineConfig(config);

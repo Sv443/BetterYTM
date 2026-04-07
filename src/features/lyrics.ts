@@ -1,12 +1,12 @@
-import { fetchAdvanced } from "@sv443-network/userutils";
-import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "../utils/index.js";
-import { emitInterface } from "../interface.js";
-import { mode, scriptInfo } from "../constants.js";
-import { getFeature } from "../config.js";
-import { addLyricsCacheEntryBest, getLyricsCacheEntry } from "./lyricsCache.js";
-import type { LyricsCacheEntry } from "../types.js";
-import { addSelectorListener } from "../observers.js";
-import { showPrompt } from "../dialogs/prompt.js";
+import { fetchAdvanced } from "@sv443-network/coreutils";
+import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { emitInterface } from "@/interface.ts";
+import { mode, scriptInfo } from "@/constants.ts";
+import { getFeature } from "@/config.ts";
+import { addSelectorListener } from "@/observers.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
+import type { LyricsCacheEntry } from "@/types.ts";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -48,6 +48,8 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
         currentSongTitle = newTitle;
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
+
+        lyricsBtn.dataset.state = url ? "ready" : "error";
 
         setInnerHtml(lyricsBtn, await resourceAsString("icon-lyrics"));
         lyricsBtn.querySelector("svg")?.classList.add("bytm-generic-btn-img");
@@ -108,20 +110,20 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
 
 //#region lyrics utils
 
+const parensRegex = /\(.+\)/gm;
+const squareParensRegex = /\[.+\]/gm;
+
 /** Removes everything in parentheses from the passed song name */
 export function sanitizeSong(songName: string) {
   if(typeof songName !== "string")
     return songName;
-
-  const parensRegex = /\(.+\)/gmi;
-  const squareParensRegex = /\[.+\]/gmi;
 
   // trim right after the song name:
   const sanitized = songName
     .replace(parensRegex, "")
     .replace(squareParensRegex, "");
 
-  return sanitized.trim();
+  return sanitizeUnicode(sanitized);
 }
 
 /**
@@ -137,16 +139,27 @@ export function sanitizeArtists(artists: string) {
   if(artists.match(/,/))
     artists = artists.split(/,\s*/gm)[0];
 
-  if(artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
-    const parensRegex = /\(.+\)/gmi;
-    const squareParensRegex = /\[.+\]/gmi;
-
+  if(artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?\W)/i))
     artists = artists
       .replace(parensRegex, "")
       .replace(squareParensRegex, "");
-  }
 
-  return artists.trim();
+  return sanitizeUnicode(artists);
+}
+
+const singleQuotesRegex = /[‘’‛‹›]/gm;
+const doubleQuotesRegex = /[“”„‟«»]/gm;
+const commaRegex = /[,，、]/gm;
+const periodRegex = /[.。．]/gm;
+
+function sanitizeUnicode(str: string) {
+  return str
+    // replace unicode symbols:
+    .replace(singleQuotesRegex, "'")
+    .replace(doubleQuotesRegex, "\"")
+    .replace(commaRegex, ",")
+    .replace(periodRegex, ".")
+    .trim();
 }
 
 /** Returns the lyrics URL from genius for the currently selected song */
@@ -199,7 +212,8 @@ export async function getCurrentLyricsUrl() {
 /** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
 export async function fetchLyricsUrlTop(artist: string, song: string): Promise<string | undefined> {
   try {
-    return (await fetchLyricsUrls(artist, song))?.[0]?.url;
+    const path = (await fetchLyricsUrls(artist, song))?.[0]?.path;
+    return path ? resolveLyricsUrl(path) : undefined;
   }
   catch(err) {
     getFeature("errorOnLyricsNotFound") && error("Couldn't get lyrics URL due to error:", err);
@@ -215,17 +229,17 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
   try {
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {
-      info(`Found lyrics URL in cache: ${cacheEntry.url}`);
+      info(`Found lyrics path in cache: ${cacheEntry.path}`);
       return [cacheEntry];
     }
 
     const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
-      disableFuzzy: null,
-      utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
+      disableFuzzy: null, // value-less param
+      source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
       q: `${artist} ${song}`,
     });
 
-    log("Requesting lyrics from geniURL:", fetchUrl);
+    log("Requesting lyrics from geniURL:", String(fetchUrl));
 
     const token = getFeature("geniUrlToken");
     const fetchRes = await fetchAdvanced(fetchUrl, {
@@ -237,7 +251,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     });
 
     if(fetchRes.status === 429) {
-      const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
+      const waitSeconds = Number(fetchRes.headers.get("Retry-After") ?? geniUrlRatelimitTimeframe);
       await showPrompt({ type: "alert", message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
       return undefined;
     }
@@ -255,6 +269,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     const allResults = result.all as {
       url: string;
+      path: string;
       meta: {
         title: string;
         fullTitle: string;
@@ -271,23 +286,23 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }
 
     const allResultsSan = allResults
-      .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
-      .map(({ meta, url }) => ({
+      .filter(({ meta, path }) => (meta.title || meta.fullTitle) && meta.artists && path)
+      .map(({ meta, path }) => ({
         meta: {
           ...meta,
           title: sanitizeSong(String(meta.title ?? meta.fullTitle)),
           artists: sanitizeArtists(String(meta.artists)),
         },
-        url,
+        path,
       }));
 
     const topRes = allResultsSan[0];
-    topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
+    topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.path);
 
     return allResultsSan.map(r => ({
       artist: r.meta.primaryArtist.name,
       song: r.meta.title,
-      url: r.url,
+      path: r.path,
     }));
   }
   catch(err) {
@@ -308,15 +323,16 @@ export async function addGeniusUrlToLyricsBtn(btnElem: HTMLAnchorElement, genius
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
   linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-  linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
-  if(geniusUrl)
-    linkElem.href = geniusUrl;
+  linkElem.dataset.state = geniusUrl ? "ready" : "loading";
   linkElem.role = "button";
   linkElem.target = "_blank";
   linkElem.rel = "noopener noreferrer";
   linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
   linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-
+  if(geniusUrl)
+    linkElem.href = geniusUrl;
+  linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+  
   onInteraction(linkElem, (e) => {
     const url = linkElem.href ?? geniusUrl;
     if(!url || e instanceof MouseEvent)
@@ -332,11 +348,18 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   linkElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
   onInteraction(linkElem, async (e) => {
-    if(e.ctrlKey || e.altKey) {
+    const isModKey = e.ctrlKey || e.altKey,
+      isInvState = ["error", "loading"].includes(linkElem.dataset.state ?? "");
+    if((isModKey && !isInvState) || (!(isModKey || e.shiftKey) && isInvState)) {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
+      // const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
+      const search = await showPrompt({
+        type: "prompt",
+        message: t("open_lyrics_search_prompt"),
+        defaultValue: currentSongTitle,
+      });
       if(search && search.length > 0)
         openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
     }

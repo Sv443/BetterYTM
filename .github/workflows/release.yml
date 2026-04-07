@@ -1,0 +1,94 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    env:
+      CI: "true"
+      STORE_PATH: ""
+      PNPM_VERSION: 10
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Create release PR or detect release
+        uses: changesets/action@v1
+        id: changesets
+        with:
+          version: pnpm run changeset-version
+          commit: "chore: version bump"
+          title: "Create Release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # After the release PR is merged, the version is bumped but no git tag exists yet.
+      # Regular pushes to main (without a version bump) will already have a matching tag.
+      - name: Check for new version
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        id: release_check
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v${VERSION}"
+          if git ls-remote --tags origin | grep -q "refs/tags/${TAG}$"; then
+            echo "is_new_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "is_new_release=true" >> $GITHUB_OUTPUT
+            echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub release
+        if: steps.release_check.outputs.is_new_release == 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.release_check.outputs.version }}
+          name: Release v${{ steps.release_check.outputs.version }}
+          body: "Automated release created by GitHub Actions."
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

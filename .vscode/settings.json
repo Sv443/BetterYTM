@@ -1,44 +1,63 @@
 {
-  "javascript.preferences.importModuleSpecifier": "relative",
-  "typescript.tsdk": "node_modules/typescript/lib",
+  // 2-space indents
+  "editor.tabSize": 2,
 
+  // reduce search clutter from irrelevant files
   "search.exclude": {
     "**/*.user.js": true,
     "**/BetterYTM.css": true,
+    "docs/typedocs/**/*.md": true,
   },
+
+  // fix .env and .env.template consistency
   "files.associations": {
     "*.env": "dotenv",
     "*.env.template": "dotenv",
   },
-  "editor.tabSize": 2,
 
+  // JS and TS settings
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.preferences.importModuleSpecifierEnding": "js",
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.preferences.organizeImports": {
+    "caseFirst": "upper",
+    "typeOrder": "last",
+  },
+
+  // custom JSON schemas
   "json.schemas": [
     {
-      "fileMatch": ["**/locales.json"],
-      "url": ".vscode/schemas/locales.schema.json"
+      "fileMatch": ["assets/data.json"],
+      "url": "./assets/schemas/data.schema.json"
     },
     {
-      "fileMatch": ["**/require.json"],
-      "url": ".vscode/schemas/require.schema.json"
+      "fileMatch": ["assets/locales.json"],
+      "url": "./assets/schemas/locales.schema.json"
     },
     {
-      "fileMatch": ["**/resources.json"],
-      "url": ".vscode/schemas/resources.schema.json"
+      "fileMatch": ["assets/require.json"],
+      "url": "./assets/schemas/require.schema.json"
     },
     {
-      "fileMatch": ["**/translations/*-*.json"],
-      "url": ".vscode/schemas/translation.schema.json"
+      "fileMatch": ["assets/resources.json"],
+      "url": "./assets/schemas/resources.schema.json"
+    },
+    {
+      "fileMatch": ["assets/translations/*.json"],
+      "url": "./assets/schemas/translation.schema.json"
     },
   ],
 
-  // requires extension: fabiospampinato.vscode-highlight
+  // highlight TODOs, regions, debug flags, and other important comments
+  // >>>>> requires extension: fabiospampinato.vscode-highlight <<<<<
   "highlight.regexes": {
     "(TODO(\\((\\s|\\d|\\w|[,.-_+*&])+\\))?:?)": { // TODO: or TODO or TODO(xy): but not todo or todo:
       "backgroundColor": "#ed0",
       "color": "black",
       "overviewRulerColor": "#ed0",
     },
-    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&@+#*'\"/:]+)*)": { //#region foo: (@bar):
+    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[<>\\[\\]\\(\\)\\w,.:;\\|\\-_&@$%§?!~+#*'\"/\\\\]+)*)": { //#region foo: (@bar):
       "backgroundColor": "#35b5d0",
       "color": "#000",
       "overviewRulerColor": "#35b5d0",
@@ -54,13 +73,13 @@
       "overviewRulerColor": "#ff0",
     },
     "(IMPORTANT:)": { // IMPORTANT:
-      "backgroundColor": "#a22",
+      "backgroundColor": "#a24",
       "color": "#fff",
     },
     "(FIXME:)": { // FIXME:
-      "backgroundColor": "#a22",
-      "color": "#fff",
-      "overviewRulerColor": "#752020",
+      "backgroundColor": "#f43",
+      "color": "#000",
+      "overviewRulerColor": "#f43",
     },
   },
 }

@@ -1,13 +1,19 @@
-import { compress, consumeStringGen, decompress, fetchAdvanced, getUnsafeWindow, openInNewTab, pauseFor, randomId, randRange, type Prettify, type StringGen } from "@sv443-network/userutils";
+import { autoPlural, compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
+import { getUnsafeWindow, GMStorageEngine, openInNewTab } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, repo, sessionStorageAvailable } from "../constants.js";
-import { type Domain, type NumberLengthFormat, type ResourceKey } from "../types.js";
-import { error, type TrLocale, warn, sendRequest, getLocale, log, getVideoElement, getVideoTime } from "./index.js";
-import { enableDiscardBeforeUnload } from "../features/behavior.js";
-import { getFeature } from "../config.js";
-import langMapping from "../../assets/locales.json" with { type: "json" };
-import resourcesJson from "../../assets/resources.json" with { type: "json" };
-import { addSelectorListener } from "src/observers.js";
+import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPort, mode, repo, scriptInfo, sessionStorageAvailable } from "@/constants.ts";
+import { enableDiscardBeforeUnload } from "@feat/behavior.ts";
+import { addSelectorListener } from "@/observers.ts";
+import { getFeature } from "@/config.ts";
+import { error, info, log, warn } from "@util/logging.ts";
+import { sendRequest } from "@util/xhr.ts";
+import { getLocale, type TrLocale } from "@util/translations.ts";
+import { emitBroadcast } from "@util/broadcast.ts";
+import { getDefaultStaticData } from "@util/data.ts";
+import { getVideoElement, getVideoTime, sanitizeHtml } from "@util/dom.ts";
+import type { Domain, NumberLengthFormat, ResourceKey } from "@/types.ts";
+import langMapping from "@asset/locales.json" with { type: "json" };
+import resourcesJson from "@asset/resources.json" with { type: "json" };
 
 //#region misc
 
@@ -18,17 +24,21 @@ let domain: Domain;
  * @throws Throws if script runs on an unexpected website
  */
 export function getDomain(): Domain {
+  const staticData = getDefaultStaticData();
+  const staticDomainInfo = staticData.domains.find(dom => dom.hostnames.some(hn => location.hostname === hn));
+
   if(domain)
     return domain;
-  if(location.hostname.match(/^music\.youtube/))
-    return domain = "ytm";
-  else if(location.hostname.match(/youtube\./))
-    return domain = "yt";
+  else if(staticDomainInfo)
+    return domain = staticDomainInfo.id as Domain;
   else
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
-/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
+/**
+ * Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.  
+ * Note: as duplicated tabs will receive the same sessionStorage, this ID is not guaranteed to be entirely unique.
+ */
 export function getSessionId(): string | null {
   try {
     if(!sessionStorageAvailable)
@@ -53,6 +63,7 @@ let isCompressionSupported: boolean | undefined;
 export async function compressionSupported() {
   if(typeof isCompressionSupported === "boolean")
     return isCompressionSupported;
+
   try {
     await compress(".", compressionFormat, "string");
     return isCompressionSupported = true;
@@ -120,14 +131,17 @@ export function isValidChannelId(channelId: string) {
 }
 
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
-type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq"}default` | "default";
+export type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq"}default` | "default";
+
+/** Numeric still frame thumbnail index */
+export type ThumbIndex = 0 | 1 | 2 | 3;
 
 /** Returns the thumbnail URL for a video with the given video ID and quality (defaults to "hqdefault") */
 export function getThumbnailUrl(videoID: string, quality?: ThumbQuality): string
 /** Returns the thumbnail URL for a video with the given video ID and index (0 is low quality thumbnail, 1-3 are low quality frames from the video) */
-export function getThumbnailUrl(videoID: string, index?: 0 | 1 | 2 | 3): string
+export function getThumbnailUrl(videoID: string, index?: ThumbIndex): string
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
-export function getThumbnailUrl(videoID: string, qualityOrIndex: Prettify<ThumbQuality | 0 | 1 | 2 | 3> = "maxresdefault") {
+export function getThumbnailUrl(videoID: string, qualityOrIndex: ThumbQuality | ThumbIndex = "maxresdefault") {
   return `https://img.youtube.com/vi/${videoID}/${qualityOrIndex}.jpg`;
 }
 
@@ -137,7 +151,7 @@ export async function getBestThumbnailUrl(videoID: string) {
     const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
 
     for(const quality of priorityList) {
-      let response: GM.Response<unknown> | undefined;
+      let response: Tampermonkey.Response<unknown> | undefined;
       const url = getThumbnailUrl(videoID, quality as ThumbQuality);
       try {
         response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
@@ -151,7 +165,7 @@ export async function getBestThumbnailUrl(videoID: string) {
     }
   }
   catch(err) {
-    throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`);
+    throw new Error(`Couldn't get thumbnail URL for video ID '${videoID}': ${err}`, { cause: err });
   }
 }
 
@@ -167,7 +181,7 @@ export function openInTab(href: string, background = false) {
 
 /** Tries to parse an uncompressed or compressed input string as a JSON object */
 export async function tryToDecompressAndParse<TData = Record<string, unknown>>(input: StringGen): Promise<TData | null> {
-  let parsed: TData | null = null;
+  let parsed: TData | null;
   const val = await consumeStringGen(input);
 
   try {
@@ -178,13 +192,13 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
       parsed = JSON.parse(await decompress(val, compressionFormat, "string"));
     }
     catch(err) {
-      error("Couldn't decompress and parse data due to an error:", err);
+      error("Couldn't decompress and parse data.", err);
       return null;
     }
   }
 
   // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-  await pauseFor(randRange(250, 500));
+  await pauseFor(randRange(400, 800));
 
   return parsed;
 }
@@ -199,7 +213,7 @@ export function getOS() {
 /** Formats a number based on the config or the passed {@linkcode notation} */
 export function formatNumber(num: number, notation?: NumberLengthFormat): string {
   return num.toLocaleString(
-    getLocale().replace(/_/g, "-"),
+    getLocale(),
     (notation ?? getFeature("numbersFormat")) === "short"
       ? {
         notation: "compact",
@@ -213,10 +227,60 @@ export function formatNumber(num: number, notation?: NumberLengthFormat): string
   );
 }
 
+type ReloadTabData = {
+  entries: Array<{
+    sessionId: string | null;
+    timestamp: number;
+    volume: number | null;
+    time: number | null;
+  }>;
+};
+
+const reloadTabStore = new DataStore<ReloadTabData, false>({
+  id: "bytm-reload-tab",
+  engine: new GMStorageEngine(),
+  formatVersion: 0,
+  compressionFormat: null,
+  memoryCache: false,
+  defaultData: {
+    entries: [],
+  },
+});
+
+const reloadTabEntryMaxTTL = 1000 * 60 * 60 * 24;
+
+/** Returns the "reload tab" data for the current session, or null if there is no data for the current session or sessionStorage is unavailable. */
+export async function getReloadTabData(sessionId?: string | null, deleteAfterRead = true) {
+  try {
+    if(!sessionId)
+      sessionId = getSessionId();
+
+    const data = await reloadTabStore.loadData();
+    let entries = [...data.entries];
+    const sesEntry = entries.find(e => e.sessionId === sessionId) ?? null;
+
+    entries = data.entries.filter(e => deleteAfterRead && sesEntry ? e.sessionId !== sessionId : true);
+
+    // filter out expired and own entries
+    entries = entries.filter(e => Date.now() - e.timestamp < reloadTabEntryMaxTTL);
+
+    await reloadTabStore.setData({
+      ...data,
+      entries,
+    });
+
+    return sesEntry;
+  }
+  catch(err) {
+    error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
+    return null;
+  }
+}
+
 /** add `time_continue` param only if current video time is greater than this value */
 const reloadTabVideoTimeThreshold = 3;
 
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and `bytm-reload-tab-volume` in GM storage */
+/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the `bytm-reload-tab` DataStore */
 export async function reloadTab() {
   const win = getUnsafeWindow();
   try {
@@ -224,14 +288,26 @@ export async function reloadTab() {
 
     if((getVideoElement()?.readyState ?? 0) > 0) {
       const time = await getVideoTime(0) ?? 0;
-      const volume = Math.round(getVideoElement()!.volume * 100);
+      // read from the slider element directly - avoids the expVolFnInv getter transform giving wrong values
+      const sliderElem = document.querySelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider");
+      const volume = sliderElem ? Number(sliderElem.value) : Math.round(getVideoElement()!.volume * 100);
 
       const url = new URL(win.location.href);
 
       if(!isNaN(time) && time > reloadTabVideoTimeThreshold)
         url.searchParams.set("time_continue", String(time));
-      if(!isNaN(volume) && volume > 0)
-        await GM.setValue("bytm-reload-tab-volume", String(volume));
+      if(!isNaN(volume) && volume > 0) {
+        const reloadTabData = await reloadTabStore.loadData();
+        if(reloadTabData.entries.find(e => e.sessionId === getSessionId()))
+          reloadTabData.entries = reloadTabData.entries.filter(e => e.sessionId !== getSessionId());
+        reloadTabData.entries.push({
+          sessionId: getSessionId(),
+          timestamp: Date.now(),
+          volume,
+          time: !isNaN(time) && time > reloadTabVideoTimeThreshold ? time : null,
+        });
+        await reloadTabStore.setData(reloadTabData);
+      }
 
       return win.location.replace(url);
     }
@@ -242,6 +318,22 @@ export async function reloadTab() {
     error("Couldn't save video time and volume before reloading tab:", err);
     win.location.reload();
   }
+}
+
+/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
+export async function reloadAllTabs(reloadSelf = true, toTxIDs?: string[]) {
+  info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
+
+  emitBroadcast({
+    type: "reloadTabs",
+  }, toTxIDs);
+
+  return reloadSelf
+    ? await (async () => {
+      await pauseFor(30); // broadcast is synchronous, but we might still be working on something in our async queue
+      return await reloadTab();
+    })()
+    : undefined;
 }
 
 /** Checks if the passed value is a {@linkcode StringGen} */
@@ -267,119 +359,267 @@ export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
   });
 }
 
+/** Makes the {@linkcode value} over- & underflow so it is always between {@linkcode min} and {@linkcode max}, if it's outside the range */
+export function overflowVal(value: number, min: number, max: number): number;
+/** Makes the {@linkcode value} over- & underflow so it is always between `0` and {@linkcode max}, if it's outside the range */
+export function overflowVal(value: number, max: number): number;
+/** Makes the {@linkcode value} over- & underflow so it is always in a certain range */
+export function overflowVal(value: number, minOrMax: number, max?: number): number {
+  const min = typeof max === "number" ? minOrMax : 0;
+  max = typeof max === "number" ? max : minOrMax;
+
+  if(min > max)
+    throw new RangeError("Parameter \"min\" can't be bigger than \"max\"");
+
+  if(isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max))
+    return NaN;
+
+  if(value >= min && value <= max)
+    return value;
+
+  const range = max - min + 1;
+  const wrappedValue = ((value - min) % range + range) % range + min;
+  return wrappedValue;
+}
+
+/** Transforms an object's own properties into getters that return the original values. */
+export function getterifyObj<TObj extends object>(obj: TObj): TObj {
+  const newObj = {} as ReturnType<typeof getterifyObj<TObj>>;
+
+  for(const key in obj) {
+    Object.defineProperty(newObj, key, {
+      get: () => obj[key],
+      enumerable: true,
+      configurable: true,
+    });
+  }
+
+  return newObj;
+}
+
+//#region version session counter
+
+type VersionSessions = Record<string, {
+  count: number;
+}>;
+
+let verSessions: VersionSessions | undefined;
+
+/** Counts the number of launched sessions per userscript version and returns the current count, to enable time-based features like the "new feature" adornment icon */
+export async function initVersionSessionCounter(): Promise<number> {
+  verSessions = JSON.parse(await GM.getValue("bytm-version-session-counter", "{}")) as VersionSessions | undefined;
+
+  if(typeof verSessions !== "object" || verSessions === null)
+    verSessions = {};
+
+  if(typeof verSessions?.[scriptInfo.version] !== "object" || typeof verSessions?.[scriptInfo.version]?.count !== "number")
+    verSessions![scriptInfo.version] = { count: 1 };
+  else
+    verSessions![scriptInfo.version]!.count++;
+
+  await GM.setValue("bytm-version-session-counter", JSON.stringify(verSessions));
+
+  return verSessions![scriptInfo.version]!.count;
+}
+
+/** Returns the number of sessions for the given version, or 0 if the version is not found in the session counter for whatever reason */
+export function getVersionSessionCount(version = scriptInfo.version): number {
+  if(!verSessions)
+    throw new Error("Version session counter not initialized yet, call initVersionSessionCounter() first");
+
+  if(typeof verSessions[version] !== "object" || typeof verSessions[version].count !== "number")
+    return 0;
+
+  return verSessions[version].count;
+}
+
 //#region resources
 
 /**
- * TODO: remove GM.getResourceUrl, since all resources are now fetched from the CDN  
- * Returns the blob-URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
- * Falls back to a CDN URL or base64-encoded data URI if the resource is not available in the GM resource cache  
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.  
+ * Tries to fall back to a base64-encoded data: URI in GM resources if the CDN resource was not found.  
  * @param name The name / key of the resource as defined in `assets/resources.json` - you can use `as "_"` to make TypeScript shut up if the name can not be typed as `ResourceKey`
  * @param uncached Set to true to always fetch from the CDN URL instead of the GM resource cache
  */
-export async function getResourceUrl(name: ResourceKey | "_", uncached = false) {
-  let url = !uncached && await GM.getResourceUrl(name);
+export async function getResourceUrl(name: ResourceKey | "_") {
+  const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
 
-  if(!url || url.length === 0) {
-    const resObjOrStr = resourcesJson.resources?.[name as keyof typeof resourcesJson.resources];
+  if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
+    const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
+    const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber;
 
-    if(typeof resObjOrStr === "object" || typeof resObjOrStr === "string") {
-      const pathName = typeof resObjOrStr === "object" && "path" in resObjOrStr ? resObjOrStr?.path : resObjOrStr;
-      const ghRef = typeof resObjOrStr === "object" && "ref" in resObjOrStr ? resObjOrStr?.ref : buildNumber;
-
-      if(pathName) {
-        return pathName.startsWith("http")
-          ? pathName
-          : (() => {
-            let path = pathName;
-            if(path.startsWith("/"))
-              path = path.slice(1);
-            else
-              path = `assets/${path}`;
-            switch(assetSource) {
-            case "jsdelivr":
-              return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
-            case "github":
-              return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
-            case "local":
-              return `http://localhost:${devServerPort}/${path}`;
-            }
-          })();
-      }
+    if(pathName) {
+      return pathName.startsWith("http")
+        ? pathName
+        : (() => {
+          let path = pathName;
+          if(path.startsWith("/"))
+            path = path.slice(1);
+          else
+            path = `assets/${path}`;
+          switch(assetSource) {
+          case "jsdelivr":
+            return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
+          case "github":
+            return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
+          case "local":
+            return `http://localhost:${devServerPort}/${path}`;
+          }
+        })();
     }
-
-    warn(`Couldn't get blob URL nor external URL for @resource '${name}', attempting to use base64-encoded fallback`);
-    // @ts-expect-error
-    url = await GM.getResourceUrl(name, false);
   }
 
-  return url;
+  warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
+  // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
+  return await GM.getResourceUrl(name, false);
+}
+
+type ResourceCache = {
+  resources: Partial<Record<ResourceKey | "_", string>>;
+  created: number;
+  cacheKey: string;
+}
+
+/** Max age for the resource cache, after its last modification, in milliseconds */
+const resourceCacheTTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+const resourceCacheKey = mode === "development" ? scriptInfo.version : buildNumber;
+
+/** Cache for resources fetched via {@linkcode resourceAsString()} */
+export const resourceCacheStore = new DataStore({
+  id: "bytm-resource-cache",
+  formatVersion: 0,
+  engine: new GMStorageEngine(),
+  compressionFormat,
+  defaultData: {
+    resources: {},
+    created: Date.now(),
+    cacheKey: resourceCacheKey,
+  } as ResourceCache,
+});
+
+/** Resources with these prefixes are cached in the resource cache */
+const cachedResourcePrefixes = [
+  "doc-",   // random documents
+  "icon-",  // SVG icons
+  "img-",   // images
+  "style-", // dynamic stylesheets
+  "trans-", // translations
+];
+
+export async function initResourceCache() {
+  await resourceCacheStore.loadData();
+}
+
+async function resourceCacheHas(key: ResourceKey | "_") {
+  if(resourceCacheStore.getData().cacheKey !== resourceCacheKey) {
+    await resourceCacheStore.saveDefaultData();
+    return false;
+  }
+
+  const val = resourceCacheGet(key);
+  return val !== undefined && val !== null && val.length > 0;
+}
+
+function resourceCacheGet(key: ResourceKey | "_") {
+  return resourceCacheStore.getData().resources[key] ?? null;
+}
+
+async function resourceCacheSet(key: ResourceKey | "_", val: string) {
+  const data = resourceCacheStore.getData();
+  data.resources[key] = val;
+  data.created = Date.now();
+  return await resourceCacheStore.setData(data);
 }
 
 /**
- * Resolves the preferred locale of the user given their browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
+ * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.  
+ * Caches the resulting string if the resource key starts with any item in {@linkcode cachedResourcePrefixes}
+ */
+export async function resourceAsString(resourceKey: ResourceKey | "_") {
+  if(typeof isCompressionSupported === "undefined")
+    await compressionSupported(); // init variable
+
+  if(Date.now() - resourceCacheStore.getData().created > resourceCacheTTL)
+    await resourceCacheStore.saveDefaultData();
+  else if(await resourceCacheHas(resourceKey))
+    return resourceCacheGet(resourceKey)!;
+
+  const resourceUrl = await getResourceUrl(resourceKey);
+
+  try {
+    if(!resourceUrl)
+      throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
+
+    const res = await fetchAdvanced(resourceUrl);
+    if(!res.ok)
+      throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
+
+    const str = await res.text();
+
+    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
+      await resourceCacheSet(resourceKey, str);
+
+    return str;
+  }
+  catch(err) {
+    error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
+    return null;
+  }
+}
+
+//#region preferred locale
+
+/**
+ * Resolves the preferred locale code, given the browser's language settings, as long as it is supported by the userscript directly or via the `altLocales` prop in `locales.json`  
  * Prioritizes any supported value of `navigator.language`, then `navigator.languages`, then goes over them again, trimming off the part after the hyphen, then falls back to `"en-US"`
  */
 export function getPreferredLocale(): TrLocale {
+  /** Trimmed & case insensitive string equality check. */
   const sanEq = (str1: string, str2: string) => str1.trim().toLowerCase() === str2.trim().toLowerCase();
 
-  const allNvLocs = [...new Set([navigator.language, ...navigator.languages])]
+  const allNavLangs = [...new Set([navigator.language, ...navigator.languages])]
     .map((v) => v.replace(/_/g, "-"));
 
-  for(const nvLoc of allNvLocs) {
+  for(const navLang of allNavLangs) {
     const resolvedLoc = Object.entries(langMapping)
       .find(([key, { altLocales }]) =>
-        sanEq(key, nvLoc) || altLocales.find(al => sanEq(al, nvLoc))
+        sanEq(key, navLang) || altLocales.find(altLoc => sanEq(altLoc, navLang))
       )?.[0];
     if(resolvedLoc)
       return resolvedLoc.trim() as TrLocale;
 
-    const trimmedNvLoc = nvLoc.split("-")[0];
-    const resolvedFallbackLoc = Object.entries(langMapping)
+    const navLangTrimmed = navLang.split("-")[0];
+    const resolvedFallbackLang = Object.entries(langMapping)
       .find(([key, { altLocales }]) =>
-        sanEq(key.split("-")[0], trimmedNvLoc) || altLocales.find(al => sanEq(al.split("-")[0], trimmedNvLoc))
+        sanEq(key.split("-")[0], navLangTrimmed) || altLocales.find(al => sanEq(al.split("-")[0], navLangTrimmed))
       )?.[0];
 
-    if(resolvedFallbackLoc)
-      return resolvedFallbackLoc.trim() as TrLocale;
+    if(resolvedFallbackLang)
+      return resolvedFallbackLang.trim() as TrLocale;
   }
 
   return "en-US";
 }
 
-const resourceCache = new Map<string, string>();
+// #region markdown
 
 /**
- * Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property.  
- * Caches the resulting string if the resource key starts with `icon-`
+ * Parses a markdown string using marked and turns it into an HTML string with default settings.  
+ * @param sanitize Sanitizes against XSS by default using DOMPurify in {@linkcode sanitizeHtml()} - set to false to disable.
  */
-export async function resourceAsString(resource: ResourceKey | "_") {
-  if(resourceCache.has(resource))
-    return resourceCache.get(resource)!;
-
-  const resourceUrl = await getResourceUrl(resource);
-  try {
-    if(!resourceUrl)
-      throw new Error(`Couldn't find URL for resource '${resource}'`);
-    const str = await (await fetchAdvanced(resourceUrl)).text();
-
-    // since SVG is lightweight, caching it in memory is fine
-    if(resource.startsWith("icon-"))
-      resourceCache.set(resource, str);
-    return str;
-  }
-  catch(err) {
-    error(`Couldn't fetch resource '${resource}' at URL '${resourceUrl}' due to an error:`, err);
-    return null;
-  }
-}
-
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
-export function parseMarkdown(mdString: string) {
-  return marked.parse(mdString, {
+export async function parseMarkdown(mdString: string, sanitize = true) {
+  const mdHtml = await marked.parse(mdString, {
     async: true,
+    breaks: true,
     gfm: true,
+    silent: true,
   });
+
+  return sanitize ? sanitizeHtml(mdHtml) : mdHtml;
 }
+
+// #region changelog
 
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
@@ -392,11 +632,11 @@ export async function getChangelogMd() {
 export async function getChangelogHtmlWithDetails() {
   try {
     const changelogMd = await getChangelogMd();
-    let changelogHtml = await parseMarkdown(changelogMd);
+    let changelogHtml = await parseMarkdown(changelogMd, false);
 
     const getVerId = (verStr: string) => verStr.trim().replace(/[._#\s-]/g, "");
 
-    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s?<\/div>(\s+)?\n?(\s+)?<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
 
     const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
     for(const [fullMatch, , verStr] of h2Matches)
@@ -404,9 +644,10 @@ export async function getChangelogHtmlWithDetails() {
 
     changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
 
-    return changelogHtml;
+    return sanitizeHtml(changelogHtml);
   }
   catch(err) {
+    error("Couldn't fetch or parse changelog:", err);
     return `Error while preparing changelog: ${err}`;
   }
 }

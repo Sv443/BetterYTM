@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug in BetterYTM
+about: Report a bug or issue with BetterYTM.
 title: ''
 labels: bug
 assignees: Sv443
@@ -8,20 +8,26 @@ assignees: Sv443
 ---
 
 ### Checklist:
-<!-- After submitting this issue, please click on the checkboxes to check them after you have done the respective task -->
-- [ ] I checked [here](https://github.com/Sv443/BetterYTM/issues?q=is%3Aissue+sort%3Aupdated-desc) if someone already reported the same bug
-- [ ] I am using the latest version of BetterYTM (my version matches the one on [this page](https://github.com/Sv443/BetterYTM/releases/latest))
-- [ ] I am using a recent version of my browser
-- [ ] I can reproduce the bug while <u>all</u> my other extensions and userscripts are disabled
+<!-- Please go through the following checklist before submitting your bug report. -->
+<!-- After submitting, click on the checkboxes to mark them as done. -->
+
+- [ ] I checked [on this page](https://github.com/Sv443/BetterYTM/issues?q=is%3Aissue+sort%3Aupdated-desc) if someone already reported the same bug.
+- [ ] I am using the latest version of BetterYTM (matching [the latest release](https://github.com/Sv443/BetterYTM/releases/latest)).
+- [ ] I am using a recent version of my browser.
+- [ ] I can reproduce the bug while ***all*** my other extensions and userscripts are disabled.
+- [ ] I attached the console log to this issue.
 
 
 ### Environment:
-- Browser name & version: 
-- Userscript version & build number: vX.X.X (xxxxxxx)
-- Userscript manager extension: 
+- Browser name and version: 
+- Userscript version and 7 digit build number: vX.Y.Z (#xxxxxxx)
+- Userscript manager extension name and version: 
+
 <!--
-  To view the userscript version and build number, either open the configuration menu and copy the numbers and letters below the menu title,
-  or open the JavaScript console of your browser (usually with Ctrl + Shift + K or F12) and scroll to the very top.
+  > Note:
+  To view the userscript version and build number, either open the configuration menu and copy the numbers and letters in
+  the "about" section, or open the JavaScript console of your browser (usually with Ctrl + Shift + K, or with F12). Near the
+  very top there should be a BetterYTM banner with the relevant info.
 -->
 
 
@@ -32,8 +38,16 @@ assignees: Sv443
 -->
 
 
-### Other info / screenshots:
+### Console log:
 <!--
-  It will be massively helpful if you include a screenshot of the JavaScript console (usually opened with Ctrl + Shift + K or F12).
-  After opening it, please enter "BetterYTM" into the filter, sort by errors and warnings, and make sure to expand all error messages that are collapsed by default.
+  In your userscript manager extension, there should be a list of options for BetterYTM.
+  Click the one labeled "Download console log file" and upload the file here.
+
+  Alternatively, open the JavaScript console (usually with Ctrl + Shift + K, or with F12) and filter for the term "BetterYTM".
+  Disable all kinds of logs except "warnings" and "errors". If some errors are collapsed, expand them, then take one or more
+  screenshots of them all and upload them here.
 -->
+
+
+### Additional context (optional):
+<!-- Add any other context about the problem here. -->

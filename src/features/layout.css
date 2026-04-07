@@ -31,16 +31,43 @@ html[dark] {
   white-space: normal;
 }
 
-.subtitle yt-formatted-string a,
-.subtitle yt-formatted-string span:last-of-type {
-  text-overflow: ellipsis;
-  overflow-x: hidden;
+:root ytmusic-description-shelf-renderer[is-track-lyrics-page] {
+  user-select: unset !important;
+}
+
+/* #region flex helpers */
+
+.bytm-flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.bytm-flex-row-no-gap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bytm-flex-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.bytm-flex-col-no-gap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* #region generic (circular) button */
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;
   --bytm-generic-btn-height: 36px;
+  --bytm-flash-border-color: rgba(255, 255, 255, 0.4);
 
   display: inline-flex;
   align-items: center;
@@ -80,7 +107,7 @@ html[dark] {
     border: 1px solid initial;
   }
   25% {
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--bytm-flash-border-color, rgba(255, 255, 255, 0.4));
   }
   100% {
     border: 1px solid initial;
@@ -93,6 +120,8 @@ html[dark] {
 
 .bytm-generic-btn.long {
   --bytm-generic-btn-width: calc(min(136px, fit-content));
+  --bytm-flash-border-color: #bbb;
+
   padding: 0px 14px;
   line-height: 36px;
 
@@ -105,10 +134,16 @@ html[dark] {
   margin-left: 0px;
 
   border: 1px solid #999;
+
+  transition: border-color 0.2s ease;
 }
 
 .bytm-generic-btn.long:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn.long:active {
+  animation: bytm-flash-border 0.4s ease 1;
 }
 
 .bytm-generic-btn.long .bytm-generic-btn-img.left {
@@ -129,10 +164,12 @@ html[dark] {
 }
 
 .bytm-generic-btn-img {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
 }
 
 .bytm-dom-yt .bytm-generic-btn-img path {
@@ -267,7 +304,7 @@ button[disabled].bytm-busy {
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   font-weight: 400;
   line-height: 24px;
   padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
@@ -277,7 +314,10 @@ button[disabled].bytm-busy {
 }
 
 .bytm-cfg-menu-option-item:hover {
-  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
+  background-color: var(
+    --ts-overlay-highlighted-color,
+    var(--yt-spec-badge-chip-background, #3e3e3e)
+  );
 }
 
 .bytm-cfg-menu-option-icon {
@@ -291,7 +331,7 @@ button[disabled].bytm-busy {
 }
 
 .bytm-cfg-menu-option-text {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   line-height: 2rem;
 }
 
@@ -375,6 +415,8 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 #bytm-above-queue-btn-wrapper {
+  /* ThemeSong icon color support */
+  --iron-icon-fill-color: var(--ts-secondary-icon-color, #fff);
   white-space: nowrap;
 }
 
@@ -430,12 +472,15 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   border-radius: var(--ts-songimg-border-radius, initial);
 }
 
+ytmusic-player[player-ui-state="FULLSCREEN"] #bytm-thumbnail-overlay {
+  border-radius: 0;
+}
+
 #bytm-thumbnail-overlay-img {
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  box-shadow: var(--ts-songimg-box-shadow, initial);
   object-fit: contain;
 }
 
@@ -490,7 +535,7 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   width: 100%;
   /* ...except in this case because of the ThemeSong extension: */
   background: rgba(0, 0, 0, 0.35) !important;
-  backdrop-filter: blur(10px) brightness(90%);
+  backdrop-filter: blur(4px) brightness(90%);
 }
 
 :root
@@ -523,4 +568,30 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   ytmusic-player-bar[slot="player-bar"]
   .time-info {
   color: #fff;
+}
+
+/* #region swap like/dislike buttons */
+
+.middle-controls ytmusic-like-button-renderer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+/* #region hide player bar on idle in fullscreen */
+
+:root ytmusic-app ytmusic-app-layout ytmusic-player-bar.hidden {
+  animation: player-bar-slide-down 0.3s ease-out both !important;
+}
+
+@keyframes player-bar-slide-down {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }

@@ -1,29 +1,31 @@
-import { SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
-import { emitInterface } from "./interface.js";
-import { error, getDomain } from "./utils/index.js";
-import type { Domain } from "./types.js";
+import { clamp, getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import { emitInterface } from "@/interface.ts";
+import { error, getDomain } from "@util/index.ts";
+import type { Domain, FeatureConfig } from "@/types.ts";
 
-// !> If you came here looking for which observer to use, start out by looking at the types `YTMObserverName` and `YTObserverName`
-// !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`
-// !> Just above that line, you'll find the selector to that observer's base element. Make sure all your selectors start **below** that element!
+// !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
+// !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`.
+// !> Just above that line, you'll find the selector to that observer's base element, whose children will be observed using the MutationObserver API.
+// !> **Make sure all your selectors start at a child of that base element!**
 
 
 //#region types
 
-/** Names of all available Observer instances across all sites */
+/** Names of all available Observer instances across all sites. */
 export type ObserverName = SharedObserverName | YTMObserverName | YTObserverName;
 
-/** Observer names available to the site passed in the `TDomain` generic */
+/** Observer names available to the site passed in the `TDomain` generic. */
 export type ObserverNameByDomain<TDomain extends Domain> = SharedObserverName | (TDomain extends "ytm" ? YTMObserverName : YTObserverName);
 
-// Shared between YTM and YT
+/** Union of observer names that are available on both sites. */
 export type SharedObserverName =
   | "body"                 // the entire <body> element
   | "bytmDialogContainer"; // the container for all BytmDialog instances
 
-// YTM only
+/** Union of YTM-only observer names. */
 export type YTMObserverName =
   | "browseResponse"         // the /channel/UC... page
+  | "searchPage"             // the search page
   | "navBar"                 // the navigation / title bar at the top of the page
   | "mainPanel"              // the main content panel - includes things like the video element
   | "sideBar"                // the sidebar on the left side of the page
@@ -34,7 +36,7 @@ export type YTMObserverName =
   | "playerBarRightControls" // the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
   | "popupContainer";        // the container for popups (e.g. the queue popup)
 
-// YT only
+/** Union of YT-only observer names. */
 export type YTObserverName =
   | "ytMasthead"       // the masthead (title bar) at the top of the page
   | "ytGuide"          // the left sidebar menu
@@ -43,15 +45,7 @@ export type YTObserverName =
   | "ytWatchFlexy"     // the main content of the /watch page
   | "ytWatchMetadata"; // the metadata section of the /watch page
 
-//#region globals
-
-/** Options that are applied to every SelectorObserver instance */
-const defaultObserverOptions: SelectorObserverOptions = {
-  disableOnNoListeners: false,
-  enableOnAddListener: false,
-  defaultDebounce: 150,
-  defaultDebounceType: "immediate",
-};
+//#region vars
 
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 export const globservers = {} as Record<ObserverName, SelectorObserver>;
@@ -95,16 +89,24 @@ export function addSelectorListener<
 //#region init
 
 /** Call after DOM load to initialize all SelectorObserver instances */
-export function initObservers() {
+export function initObservers(cfg: FeatureConfig) {
+  /** Options that are applied to every SelectorObserver instance */
+  const defaultObserverOptions = {
+    disableOnNoListeners: false, // keepalive for plugins and opportunistic features
+    enableOnAddListener: false,  // important because of strict init order
+    defaultDebounce: cfg.defaultObserverDebounce,
+    defaultDebounceType: "immediate",
+  } satisfies Required<Pick<SelectorObserverOptions, "disableOnNoListeners" | "enableOnAddListener" | "defaultDebounce" | "defaultDebounceType">>;
+
   try {
-    //#region both sites
+    //#region # both sites
 
     //#region body
     // -> the entire <body> element - use sparingly due to performance impacts!
     //    enabled immediately
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
-      defaultDebounce: 150,
+      defaultDebounce: clamp(defaultObserverOptions.defaultDebounce, 100, 500),
       subtree: false,
     });
 
@@ -116,7 +118,7 @@ export function initObservers() {
     const bytmDialogContainerSelector = "#bytm-dialog-container";
     globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
       ...defaultObserverOptions,
-      defaultDebounce: 100,
+      defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
       subtree: true,
     });
 
@@ -124,20 +126,33 @@ export function initObservers() {
 
     switch(getDomain()) {
     case "ytm": {
-      //#region YTM
+      //#region # YTM only
 
       //#region browseResponse
-      // -> for example the /channel/UC... page#
+      // -> for example the /channel/UC... page
       //    enabled by "body"
       const browseResponseSelector = "ytmusic-browse-response";
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: 75,
+        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
         subtree: true,
       });
 
       globservers.body.addListener(browseResponseSelector, {
         listener: () => globservers.browseResponse.enable(),
+      });
+
+      //#region searchPage
+      // -> the search page
+      //    enabled by "body"
+      const searchPageSelector = "ytmusic-search-page";
+      globservers.searchPage = new SelectorObserver(searchPageSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(searchPageSelector, {
+        listener: () => globservers.searchPage.enable(),
       });
 
       //#region navBar
@@ -200,7 +215,6 @@ export function initObservers() {
       const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
       globservers.playerBar = new SelectorObserver(playerBarSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: 200,
       });
 
       globservers.body.addListener(playerBarSelector, {
@@ -265,7 +279,7 @@ export function initObservers() {
       break;
     }
     case "yt": {
-      //#region YT
+      //#region # YT only
 
       //#region ytGuide
       // -> the left sidebar menu
@@ -296,10 +310,10 @@ export function initObservers() {
       //#region ytAppHeader
       // -> header of the page
       //    enabled by "ytdBrowse"
-      const ytAppHeaderSelector = "#header tp-yt-app-header";
+      const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
       globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: 75,
+        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
         subtree: true,
       });
 
@@ -352,6 +366,9 @@ export function initObservers() {
 
     globserversReady = true;
     emitInterface("bytm:observersReady");
+
+    //#DEBUG:
+    getUnsafeWindow().BYTM.globservers = globservers;
   }
   catch(err) {
     error("Failed to initialize observers:", err);

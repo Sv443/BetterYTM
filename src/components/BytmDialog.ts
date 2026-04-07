@@ -1,11 +1,13 @@
-// hoist the class declaration because either rollup or babel is being a hoe
-import { isDomLoaded, NanoEmitter } from "@sv443-network/userutils";
+import { NanoEmitter } from "@sv443-network/coreutils";
+import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
-import { t } from "../utils/translations.js";
-import { emitInterface } from "../interface.js";
-import "./BytmDialog.css";
-import "../dialogs/dialogs.css";
+import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "@util/index.ts";
+import { t } from "@util/translations.ts";
+import { emitInterface } from "@/interface.ts";
+import "@comp/BytmDialog.css";
+import "@dialog/dialogs.css";
+
+//#region types
 
 export type BytmDialogOptions = {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
@@ -51,6 +53,8 @@ export interface BytmDialogEvents extends EventsMap {
   destroy: () => void;
 }
 
+//#region vars
+
 /** Whether the dialog system has been initialized */
 let dialogsInitialized = false;
 /** Container element for all BytmDialog elements */
@@ -63,6 +67,8 @@ export const openDialogs: string[] = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
 
+//#region BytmDialog class
+
 /** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
   public readonly options;
@@ -70,6 +76,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
   protected dialogOpen = false;
   protected dialogMounted = false;
+
+  //#region constructor
 
   constructor(options: BytmDialogOptions) {
     super();
@@ -90,7 +98,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     this.id = options.id;
   }
 
-  //#region public
+  //#region pub:mount
 
   /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
   public async mount() {
@@ -128,6 +136,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     return bgElem;
   }
 
+  //#region pub:unmount
+
   /** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
   public unmount() {
     this.close();
@@ -147,11 +157,22 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     this.events.emit("clear");
   }
 
+  //#region pub:remount
+
   /** Clears the DOM of the dialog and then renders it again */
   public async remount() {
     this.unmount();
     await this.mount();
   }
+
+  //#region pub:isMounted
+
+  /** Returns true if the dialog is currently mounted */
+  public isMounted() {
+    return this.dialogMounted;
+  }
+
+  //#region pub:open
 
   /**
    * Opens the dialog - also mounts it if it hasn't been mounted yet  
@@ -196,6 +217,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     return dialogBg;
   }
 
+  //#region pub:close
+
   /** Closes the dialog - prevents default action and immediate propagation of the passed event */
   public close(e?: MouseEvent | KeyboardEvent) {
     e?.preventDefault();
@@ -213,10 +236,10 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBg.style.visibility = "hidden";
     dialogBg.style.display = "none";
 
-    openDialogs.splice(openDialogs.indexOf(this.id), 1);
+    const oidx = openDialogs.indexOf(this.id);
+    if(oidx > -1)
+      openDialogs.splice(oidx, 1);
     currentDialogId = openDialogs[0] ?? null;
-
-    this.removeBgInert();
 
     this.events.emit("close");
     emitInterface("bytm:dialogClosed", this as BytmDialog);
@@ -231,15 +254,14 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     this.removeBgInert();
   }
 
+  //#region pub:isOpen
+
   /** Returns true if the dialog is currently open */
   public isOpen() {
     return this.dialogOpen;
   }
 
-  /** Returns true if the dialog is currently mounted */
-  public isMounted() {
-    return this.dialogMounted;
-  }
+  //#region pub:destroy
 
   /** Clears the DOM of the dialog and removes all event listeners */
   public destroy() {
@@ -248,7 +270,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     this.options.removeListenersOnDestroy && this.unsubscribeAll();
   }
 
-  //#region static
+  //#region stat:initDialogs
 
   /** Initializes the dialog system */
   public static initDialogs() {
@@ -268,17 +290,21 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       createContainer();
   }
 
+  //#region stat:getCurrentDialogId
+
   /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
   public static getCurrentDialogId() {
     return currentDialogId;
   }
+
+  //#region stat:getOpenDialogs
 
   /** Returns the IDs of all currently open dialogs, top-most first */
   public static getOpenDialogs() {
     return openDialogs;
   }
 
-  //#region protected
+  //#region prot:removeBgInert
 
   /** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
   protected removeBgInert() {
@@ -301,6 +327,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBg?.setAttribute("inert", "true");
   }
 
+  //#region prot:setBgInert
+
   /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
   protected setBgInert() {
     // make sure all other dialogs are inert
@@ -322,6 +350,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBg?.removeAttribute("inert");
   }
 
+  //#region prot:attachListeners
+
   /** Called on every {@linkcode mount()} to attach all generic event listeners */
   protected attachListeners(bgElem: HTMLElement) {
     if(this.options.closeOnBgClick) {
@@ -339,6 +369,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     }
   }
 
+  //#region prot:getDialogContent
+
   /** Returns the dialog content element and all its children */
   protected async getDialogContent() {
     const header = this.options.renderHeader?.();
@@ -355,7 +387,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     if(this.options.verticalAlign !== "center")
       dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
 
-    //#region header
+    //#region >header
 
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
@@ -387,13 +419,13 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
       closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-      onInteraction(closeBtnEl, this.close);
+      onInteraction(closeBtnEl, (e) => this.close(e));
       headerWrapperEl.appendChild(closeBtnEl);
     }
 
     dialogWrapperEl.appendChild(headerWrapperEl);
 
-    //#region body
+    //#region >body
 
     const dialogBodyElem = document.createElement("div");
     dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
@@ -403,7 +435,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBodyElem.appendChild(await this.options.renderBody());
     dialogWrapperEl.appendChild(dialogBodyElem);
 
-    //#region footer
+    //#region >footer
 
     if(footer) {
       const footerWrapper = document.createElement("div");

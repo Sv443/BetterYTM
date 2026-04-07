@@ -1,25 +1,68 @@
-import { autoPlural, pauseFor, preloadImages } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t } from "../utils/index.js";
-import { SiteEventsMap, siteEvents } from "../siteEvents.js";
-import { emitInterface } from "../interface.js";
-import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
-import { getLyricsCacheEntry } from "./lyricsCache.js";
-import { addSelectorListener } from "../observers.js";
-import { createRipple } from "../components/ripple.js";
-import { showPrompt } from "../dialogs/prompt.js";
-import { getFeature } from "../config.js";
-import type { LyricsCacheEntry } from "../types.js";
-import "./songLists.css";
+import { autoPlural, pauseFor } from "@sv443-network/coreutils";
+import { preloadImages } from "@sv443-network/userutils";
+import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "@util/index.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { emitInterface } from "@/interface.ts";
+import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "@feat/lyrics.ts";
+import { getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
+import { addSelectorListener } from "@/observers.ts";
+import { createRipple } from "@comp/ripple.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { getFeature } from "@/config.ts";
+import type { LyricsCacheEntry } from "@/types.ts";
+import "@feat/songLists.css";
+
+const songListSelector = `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
+`;
+
+/** Whether any song list item's checkbox is currently checked */
+let isCheckboxChecked = false;
 
 //#region init queue btns
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
-  const addCurrentQueueBtns = (
-    evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
+  const multiSelectObs = new MutationObserver(() => {
+    const multiSelectEl = document.querySelector<HTMLElement>("ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]");
+    const newIsCheckboxChecked = Boolean(multiSelectEl) && !multiSelectEl?.hasAttribute("aria-hidden");
+    if(newIsCheckboxChecked === isCheckboxChecked)
+      return;
+    isCheckboxChecked = newIsCheckboxChecked;
+
+    const allSongLists = document.querySelectorAll<HTMLElement>(songListSelector);
+    allSongLists.forEach((list) => {
+      list.dataset.anyCheckboxChecked = String(isCheckboxChecked);
+    });
+  });
+
+  multiSelectObs.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributeFilter: ["dialog-type", "aria-hidden"],
+  });
+
+  /** Tries to add queue buttons to the current song queue items on the /watch page. */
+  const tryAddCurrentQueueBtns = (
+    parentSelector: string,
   ) => {
+    if(getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
+      return;
+
+    const parent = document.querySelector<HTMLElement>(parentSelector);
+    if(!parent)
+      return warn("Couldn't find current queue parent element to add queue buttons to");
+
+    const queueItems = parent.querySelectorAll<HTMLElement>("ytmusic-player-queue-item");
+
     let amt = 0;
-    for(const queueItm of evt.childNodes as NodeListOf<HTMLElement>) {
+    for(const queueItm of queueItems) {
       if(!queueItm.classList.contains("bytm-has-queue-btns")) {
         addQueueButtons(queueItm, undefined, "currentQueue");
         amt++;
@@ -31,8 +74,8 @@ export async function initQueueButtons() {
 
   // current queue
 
-  siteEvents.on("queueChanged", addCurrentQueueBtns);
-  siteEvents.on("autoplayQueueChanged", addCurrentQueueBtns);
+  siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #contents"));
+  siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #automix-contents"));
 
   const queueItems = document.querySelectorAll<HTMLElement>("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
   if(queueItems.length > 0) {
@@ -40,8 +83,8 @@ export async function initQueueButtons() {
     log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
   }
 
-  // generic lists
-  const addGenericListQueueBtns = (listElem: HTMLElement) => {
+  /** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
+  const tryAddGenericListQueueBtns = (listElem: HTMLElement) => {
     const queueItems = listElem.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer");
     if(queueItems.length === 0)
       return;
@@ -59,32 +102,46 @@ export async function initQueueButtons() {
       log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
   };
 
-  const listSelector = `\
-ytmusic-playlist-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
-`;
+  const doSongListsChecks = (songLists: NodeListOf<HTMLElement>) => {
+    for(const list of songLists) {
+      if(getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists")
+        tryAddGenericListQueueBtns(list);
+      if(getFeature("swapLikeDislikeButtons"))
+        checkSwapLikeDislikeBtns(list);
+    }
+  };
 
-  if(getFeature("listButtonsPlacement") === "everywhere") {
-    const checkAddGenericBtns = (songLists: NodeListOf<HTMLElement>) => {
-      for(const list of songLists)
-        addGenericListQueueBtns(list);
-    };
+  addSelectorListener("body", songListSelector, {
+    all: true,
+    debounce: Math.floor(1000 / 6),
+    listener: doSongListsChecks,
+  });
 
-    addSelectorListener("body", listSelector, {
-      all: true,
-      continuous: true,
-      debounce: 150,
-      listener: checkAddGenericBtns,
+  siteEvents.on("pathChanged", () => {
+    const songLists = document.querySelectorAll<HTMLElement>(songListSelector);
+    if(songLists.length > 0)
+      doSongListsChecks(songLists);
+  });
+}
+
+/** Checks if the like and dislike buttons exist in the given song list and swaps them if the feature is enabled. */
+function checkSwapLikeDislikeBtns(songList: HTMLElement) {
+  if(!getFeature("swapLikeDislikeButtons"))
+    return;
+
+  songList.querySelectorAll<HTMLElement>("ytmusic-like-button-renderer #button-shape-dislike")
+    .forEach((dislikeBtn) => {
+      const parent = dislikeBtn.parentElement;
+      if(!parent || parent.classList.contains("bytm-swapped-like-dislike"))
+        return;
+
+      const likeBtn = parent.querySelector<HTMLElement>("#button-shape-like");
+
+      if(likeBtn) {
+        parent.classList.add("bytm-swapped-like-dislike");
+        transplantElement(dislikeBtn, likeBtn);
+      }
     });
-
-    siteEvents.on("pathChanged", () => {
-      const songLists = document.querySelectorAll<HTMLElement>(listSelector);
-      if(songLists.length > 0)
-        checkAddGenericBtns(songLists);
-    });
-  }
 }
 
 //#region add queue btns
@@ -131,8 +188,10 @@ async function addQueueButtons(
     lyricsBtnElem.tabIndex = 0;
 
     onInteraction(lyricsBtnElem, async (e: MouseEvent | KeyboardEvent) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+      const thumbSrc = queueItem.querySelector<HTMLImageElement>("yt-img-shadow img")?.src;
+      const isVideo = thumbSrc ? thumbSrc.includes("ytimg.com/vi/") : true;
+
+      // TODO: if isVideo, use just the song title, not the artist name
 
       let song: string | null | undefined,
         artist: string | null | undefined;
@@ -167,6 +226,12 @@ async function addQueueButtons(
       else
         return error("Invalid list type:", listType);
 
+      // hate doing it like this but there's nothing else in the DOM indicating what format the title is in
+      if(song && isVideo && song.includes("-")) {
+        artist = song.split("-")[0]?.trim();
+        song = song.split("-").slice(1).join("-").trim();
+      }
+
       if(!song || !artist)
         return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
 
@@ -180,8 +245,11 @@ async function addQueueButtons(
         ? getLyricsCacheEntry(splitTitle.artist, splitTitle.song)
         : getLyricsCacheEntry(artistsSan, songSan);
 
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
       if(cachedLyricsEntry)
-        lyricsUrl = cachedLyricsEntry.url;
+        lyricsUrl = resolveLyricsUrl(cachedLyricsEntry.path);
       else if(!queueItem.hasAttribute("data-bytm-loading")) {
         const imgEl = lyricsBtnElem?.querySelector<HTMLImageElement | HTMLElement>("img, svg");
 
@@ -200,7 +268,10 @@ async function addQueueButtons(
           }
         }
 
-        lyricsUrl = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.url ?? await fetchLyricsUrlTop(artistsSan, songSan);
+        const cachedPath = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.path;
+        lyricsUrl = cachedPath
+          ? resolveLyricsUrl(cachedPath)
+          : await fetchLyricsUrlTop(artistsSan, songSan);
 
         if(lyricsUrl) {
           emitInterface("bytm:lyricsLoaded", {
@@ -210,6 +281,9 @@ async function addQueueButtons(
             url: lyricsUrl,
           });
         }
+
+        if(lyricsBtnElem)
+          lyricsBtnElem.dataset.state = lyricsUrl ? "ready" : "error";
 
         const resetImgElem = async () => {
           if(imgEl) {
@@ -228,7 +302,7 @@ async function addQueueButtons(
           queueItem.removeAttribute("data-bytm-loading");
 
           // so the new image doesn't "blink"
-          setTimeout(resetImgElem, 100);
+          setTimeout(() => resetImgElem(), 100);
         }
 
         if(!lyricsUrl) {
@@ -240,6 +314,8 @@ async function addQueueButtons(
       }
 
       lyricsUrl && openInTab(lyricsUrl);
+    }, {
+      capture: true,
     });
   }
 
@@ -342,4 +418,26 @@ async function addQueueButtons(
     parentEl?.after(queueBtnsCont);
 
   queueItem.classList.add("bytm-has-queue-btns");
+}
+
+//#region track numbers
+
+/** Adds track numbers to each item in every song list */
+export async function addTrackNumbers() {
+  (async () => {
+    const promises: Promise<void | unknown>[] = [];
+
+    try {
+      const where = getFeature("songListTrackNumbers");
+      if(where === "genericLists" || where === "everywhere")
+        promises.push(addStyleFromResource("css-track_numbers_song_lists"));
+      if(where === "currentQueue" || where === "everywhere")
+        promises.push(addStyleFromResource("css-track_numbers_current_queue"));
+    }
+    catch(err) {
+      error("Couldn't add track numbers style:", err);
+    }
+
+    await Promise.allSettled(promises);
+  })();
 }

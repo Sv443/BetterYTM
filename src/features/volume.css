@@ -23,7 +23,7 @@
     rgba(0, 0, 0, 0) 0%,
     var(--bytm-slider-label-bg-col) 20%
   );
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   text-align: right;
   padding: 15px;
   padding-right: 5px;
@@ -31,8 +31,16 @@
   transition: opacity 0.2s ease;
 }
 
+.bytm-vol-slider-label.wide {
+  transform: translate(calc(-50% - 34px), -50%);
+}
+
 .bytm-vol-slider-label.has-icon {
   transform: translate(calc(-50% - 25px), -50%);
+}
+
+.bytm-vol-slider-label.wide.has-icon {
+  transform: translate(calc(-50% - 34px - 25px), -50%);
 }
 
 .bytm-vol-slider-label svg {

@@ -1,12 +1,14 @@
-import { clamp, debounce } from "@sv443-network/userutils";
-import { showIconToast } from "../components/toast.js";
-import { MarkdownDialog } from "../components/MarkdownDialog.js";
-import { scriptInfo } from "../constants.js";
-import { setGlobalProp } from "../interface.js";
-import { LogLevel } from "../types.js";
-import { t } from "./translations.js";
-import { getFeature } from "../config.js";
-import packageJson from "../../package.json" with { type: "json" };
+import { clamp, DatedError, debounce } from "@sv443-network/coreutils";
+import { showIconToast } from "@comp/toast.ts";
+import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
+import { getFeature } from "@/config.ts";
+import { scriptInfo } from "@/constants.ts";
+import { setGlobalProp } from "@/interface.ts";
+import { t } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
+import { downloadFile } from "@util/dom.ts";
+import { LogLevel } from "@/types.ts";
+import packageJson from "@root/package.json" with { type: "json" };
 
 //#region logging fns
 
@@ -15,6 +17,63 @@ let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
 const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
+
+/** Tuple representing a single log line, as stored in the {@linkcode logs} array. */
+export type LogLine = [type: string, time: number, ...args: unknown[]];
+
+/** In dev mode, all logs are stored in this array for exporting */
+const logs = [] as LogLine[];
+
+/** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
+export const getLogsTxt = () => {
+  /** Converts a value to a string for logging. */
+  const getVal = (val: unknown, primaryScope = true): string => {
+    if(typeof val === "undefined")
+      return primaryScope ? "[undefined]" : "(undefined)";
+    if(val === null)
+      return primaryScope ? "[null]" : "(null)";
+    if(Array.isArray(val))
+      return `[Array (${val.length}) <${val.map((v) => getVal(v, false)).join(", ")}>]`;
+    if(val instanceof Element)
+      return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
+    if(typeof val === "function")
+      return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
+    if(val instanceof DatedError)
+      return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
+    if(val instanceof Error)
+      return `[${val.name}: ${val.message}]`;
+    if(val instanceof Date)
+      return `[Date <${val.toISOString()}>]`;
+    if(typeof val === "object") {
+      try {
+        if(val.constructor?.name === "Object")
+          return JSON.stringify(val);
+        return `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
+      }
+      catch {
+        // @ts-expect-error
+        return "toString" in val ? val.toString() : `[Object <${val?.constructor?.name ?? "(unknown)"}>]`;
+      }
+    }
+    return primaryScope ? `${val}` : `"${val}"`;
+  };
+
+  const longestLogType = Math.max(...logs.map(([type]) => type.length));
+
+  return logs.reduce((acc, [type, time, ...args]) => {
+    if(args.length === 0)
+      return acc;
+
+    const timestamp = new Date(time).toISOString();
+
+    try {
+      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
+    }
+    catch {
+      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
+    }
+  }, "");
+};
 
 /** Sets the current log level. 0 = Debug, 1 = Info */
 export function setLogLevel(level: LogLevel) {
@@ -27,7 +86,8 @@ export function setLogLevel(level: LogLevel) {
 /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
 function getLogLevel(args: unknown[]): number {
   const minLogLvl = 0, maxLogLvl = 1;
-  if(typeof args.at(-1) === "number")
+  const lastArg = args.at(-1);
+  if(typeof lastArg === "number" && lastArg >= 0 && lastArg <= (Object.keys(LogLevel).length / 2) - 1)
     return clamp(
       args.splice(args.length - 1)[0] as number,
       minLogLvl,
@@ -38,25 +98,28 @@ function getLogLevel(args: unknown[]): number {
 
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 export function log(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
     console.log(consPrefix, ...args);
+  logs.push(["LOG", Date.now(), ...args]);
 }
 
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 export function info(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
     console.info(consPrefix, ...args);
+  logs.push(["INFO", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console as a warning, no matter the log level. */
 export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
+  logs.push(["WARN", Date.now(), ...args]);
 }
 
 const showErrToast = debounce(
@@ -74,13 +137,27 @@ const showErrToast = debounce(
 /** Logs all passed values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
+  logs.push(["ERROR", Date.now(), ...args]);
 
-  getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
+  try {
+    getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
+  }
+  catch(e) {
+    console.error(consPrefix, "Error while showing error toast:", e);
+    logs.push(["ERROR", Date.now(), "Error while showing error toast:", e]);
+  }
+}
+
+/** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
+export function errorNoToast(...args: unknown[]): void {
+  console.error(consPrefix, ...args);
+  logs.push(["ERROR", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {
   console.log(consPrefixDbg, ...args);
+  logs.push(["DBG", Date.now(), ...args]);
 }
 
 //#region error dialog
@@ -99,34 +176,44 @@ export function getErrorDialog(errName: string, args: unknown[]) {
       header.ariaLevel = "1";
       header.tabIndex = 0;
       header.textContent = header.ariaLabel = errName;
+
       return header;
+    },
+    renderFooter() {
+      const footer = document.createElement("div");
+      footer.classList.add("bytm-dialog-footer", "align-right");
+
+      const dlLogsBtn = document.createElement("button");
+      dlLogsBtn.type = "button";
+      dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
+      onInteraction(dlLogsBtn, () => {
+        downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+      });
+
+      footer.appendChild(dlLogsBtn);
+      return footer;
     },
     body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
   
-${t("generic_error_dialog_open_console_note", consPrefix, packageJson.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
   });
 }
 
 //#region error classes
 
-export class CustomError extends Error {
-  public readonly time: number;
-  constructor(name: string, message: string, opts?: ErrorOptions) {
+/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
+export class LyricsError extends DatedError {
+  constructor(message: string, opts?: ErrorOptions) {
     super(message, opts);
-    this.name = name;
-    this.time = Date.now();
+    this.name = "LyricsError";
   }
 }
 
-export class LyricsError extends CustomError {
+/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
+export class PluginError extends DatedError {
   constructor(message: string, opts?: ErrorOptions) {
-    super("LyricsError", message, opts);
-  }
-}
-
-export class PluginError extends CustomError {
-  constructor(message: string, opts?: ErrorOptions) {
-    super("PluginError", message, opts);
+    super(message, opts);
+    this.name = "PluginError";
   }
 }

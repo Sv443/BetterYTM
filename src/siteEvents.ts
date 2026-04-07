@@ -1,59 +1,91 @@
-import { NanoEmitter } from "@sv443-network/userutils";
-import { error, getDomain, info } from "./utils/index.js";
-import { FeatureConfig } from "./types.js";
-import { emitInterface } from "./interface.js";
-import { addSelectorListener, globserversReady } from "./observers.js";
+import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
+import { error, getDomain, info, log, warn } from "@util/index.ts";
+import { getFeature } from "@/config.ts";
+import { emitInterface } from "@/interface.ts";
+import { addSelectorListener, globserversReady } from "@/observers.ts";
+import { FeatureConfig, type FeatureCategory } from "@/types.ts";
+import type { BroadcastPacketType, BroadcastTransitPacket } from "@util/broadcast.ts";
 
-/** Map of all site events and their arguments */
-export type SiteEventsMap = {
-  //#region misc:
-  /** Emitted whenever the feature config is changed - initialization is not counted */
-  configChanged: (newConfig: FeatureConfig) => void;
-  /** Emitted whenever a config option is changed - contains the old and new value */
-  configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
-  /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
-  rebuildCfgMenu: (newConfig: FeatureConfig) => void;
-  /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
-  recreateCfgMenu: () => void;
-  /** Emitted whenever the config menu is closed */
-  cfgMenuClosed: () => void;
-  /** Emitted when the welcome menu is closed */
-  welcomeMenuClosed: () => void;
-  /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
-  hotkeyInputActive: (active: boolean) => void;
-
-  //#region DOM:
-  /** Emitted whenever child nodes are added to or removed from the song queue */
-  queueChanged: (queueElement: HTMLElement) => void;
-  /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
-  autoplayQueueChanged: (queueElement: HTMLElement) => void;
-  /**
-   * Emitted whenever the current song title changes.  
-   * Uses the DOM element `yt-formatted-string.title` to detect changes and emit instantaneously.  
-   * If `oldTitle` is `null`, this is the first song played in the session.
-   */
-  songTitleChanged: (newTitle: string, oldTitle: string | null) => void;
-  /**
-   * Emitted whenever the current song's watch/video ID changes.  
-   * If `oldId` is `null`, this is the first song played in the session.
-   */
-  watchIdChanged: (newId: string, oldId: string | null) => void;
-  /**
-   * Emitted whenever the URL path (`location.pathname`) changes.  
-   * If `oldPath` is `null`, this is the first path in the session.
-   */
-  pathChanged: (newPath: string, oldPath: string | null) => void;
-  /** Emitted whenever the player enters or exits fullscreen mode */
-  fullscreenToggled: (isFullscreen: boolean) => void;
-
-  //#region features:
-  /** Emitted whenever a channel was added, edited or removed from the auto-like list */
-  autoLikeChannelsUpdated: () => void;
+/** Mapped type that creates a typed site event entry for each {@linkcode BroadcastPacketType}, e.g. `"broadcast:discoverSessionsReply"` */
+export type BroadcastSiteEventsMapped = {
+  [K in BroadcastPacketType as `broadcast:${K}`]: (packet: BroadcastTransitPacket<K>) => void;
 };
 
-/** Array of all site events */
+/** Map of all site events and their arguments. Doesn't include the `bytm:siteEvent:` prefix, which is added when emitting events on the `window` object. */
+export type SiteEventsMap = Prettify<
+  & {
+    //#region misc:
+    /** Emitted whenever the feature config is changed - initialization is not counted */
+    configChanged: (newConfig: FeatureConfig) => void;
+    /** Emitted whenever a config header is selected in the config menu. Gets passed its ID which is either a feature category or extra information section ID. */
+    configHeaderSelected: (name: LooseUnion<FeatureCategory>) => void;
+    /** Emitted whenever a config option is changed - contains the old and new value */
+    configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
+    /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
+    rebuildCfgMenu: (newConfig: FeatureConfig) => void;
+    /** Emitted whenever the config menu is mounted in the DOM */
+    cfgMenuMounted: () => void;
+    /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
+    recreateCfgMenu: () => void;
+    /** Emitted whenever the config menu is closed */
+    cfgMenuClosed: () => void;
+    /** Emitted when the welcome menu is closed */
+    welcomeMenuClosed: () => void;
+    /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
+    hotkeyInputActive: (active: boolean) => void;
+
+    //#region DOM:
+    /** Emitted whenever child nodes are added to or removed from the song queue */
+    queueChanged: (queueElement: HTMLElement) => void;
+    /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
+    autoplayQueueChanged: (queueElement: HTMLElement) => void;
+    /**
+     * Emitted whenever the current song title changes.  
+     * Uses the DOM element `yt-formatted-string.title` to detect changes and emit instantaneously.  
+     * If `oldTitle` is `null`, this is the first song played in the session.
+     */
+    songTitleChanged: (newTitle: string, oldTitle: string | null) => void;
+    /**
+     * Emitted whenever the current song's watch/video ID changes.  
+     * If `oldId` is `null`, this is the first song played in the session.
+     */
+    watchIdChanged: (newId: string, oldId: string | null) => void;
+    /**
+     * Emitted whenever the URL path (`location.pathname`) changes.  
+     * If `oldPath` is `null`, this is the first path in the session.
+     */
+    pathChanged: (newPath: string, oldPath: string | null) => void;
+    /** Emitted whenever the player enters or exits fullscreen mode */
+    fullscreenToggled: (isFullscreen: boolean) => void;
+    /** Call to force the volume slider label to update. Set `round` to false to allow setting values outside `volumeSliderStep`. */
+    updateVolumeSliderLabel: () => void;
+
+    //#region features:
+    /** Emitted whenever a channel was added, edited or removed from the auto-like list */
+    autoLikeChannelsUpdated: () => void;
+    /** Emitted after the Return YouTube Dislike vote labels were added to the DOM */
+    voteLabelsAdded: () => void;
+
+    //#region broadcast:
+    /**
+     * Emitted whenever a broadcast packet is transmitted through the broadcast DataStore (id: `bytm-broadcast`), which is used for inter-session communication in BYTM.  
+     * Contains the type and full data of the packet, including metadata about the sender and intended recipients.  
+     * See `src/utils/broadcast.ts` for more info and the type definition of the packet data.
+     */
+    broadcast: (type: BroadcastPacketType, packet: BroadcastTransitPacket) => void;
+  }
+  & BroadcastSiteEventsMapped
+>;
+
+/** Same as {@link SiteEventsMap} but with the prefix `bytm:siteEvent:` added to each key. */
+export type SiteEventsMapPrefixed = {
+  [K in keyof SiteEventsMap as `bytm:siteEvent:${K}`]: SiteEventsMap[K];
+};
+
+/** Array of all site events. */
 export const allSiteEvents = [
   "configChanged",
+  "configHeaderSelected",
   "configOptionChanged",
   "rebuildCfgMenu",
   "recreateCfgMenu",
@@ -66,8 +98,11 @@ export const allSiteEvents = [
   "watchIdChanged",
   "pathChanged",
   "fullscreenToggled",
+  "updateVolumeSliderLabel",
   "autoLikeChannelsUpdated",
-] as const;
+  "voteLabelsAdded",
+  "broadcast",
+] as const satisfies readonly (keyof SiteEventsMap)[];
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
 export const siteEvents = new NanoEmitter<SiteEventsMap>({
@@ -87,7 +122,7 @@ let lastPathname: string | null = null;
 let lastFullscreen: boolean;
 
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
-export async function initSiteEvents() {
+export function initSiteEvents() {
   try {
     if(getDomain() === "ytm") {
       //#region queue
@@ -158,48 +193,44 @@ export async function initSiteEvents() {
         }
       });
 
-      if(getDomain() === "ytm") {
-        const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
-          listener: (el) => {
-            playerFullscreenObs.observe(el, {
-              attributeFilter: ["player-ui-state"],
-            });
-          },
-        });
+      const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
+        listener: (el) => {
+          playerFullscreenObs.observe(el, {
+            attributeFilter: ["player-ui-state"],
+          });
+        },
+      });
 
-        if(globserversReady)
-          registerFullScreenObs();
-        else
-          window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
-      }
+      if(globserversReady)
+        registerFullScreenObs();
+      else
+        window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
     }
 
-    window.addEventListener("bytm:ready", () => {
-      runIntervalChecks();
-      setInterval(runIntervalChecks, 100);
+    createRecurringTask({
+      timeout: 150,
+      task: runIntervalChecks,
+    });
 
-      if(getDomain() === "ytm") {
-        addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
-          listener(el) {
-            const urlRefObs = new MutationObserver(([ { target } ]) => {
-              if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
-                return;
-              const videoID = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
-              checkVideoIdChange(videoID);
-            });
+    if(getDomain() === "ytm") {
+      addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+        listener(el) {
+          const urlRefObs = new MutationObserver(([ { target } ]) => {
+            if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
+              return;
+            const videoID = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
+            checkVideoIdChange(videoID);
+          });
 
-            urlRefObs.observe(el, {
-              attributeFilter: ["href"],
-            });
-          }
-        });
-      }
-      if(getDomain() === "ytm") {
-        setInterval(checkVideoIdChange, 250);
-        checkVideoIdChange();
-      }
-    }, {
-      once: true,
+          urlRefObs.observe(el, {
+            attributeFilter: ["href"],
+          });
+        }
+      });
+    }
+    getDomain() === "ytm" && createRecurringTask({
+      timeout: 250,
+      task: () => checkVideoIdChange(),
     });
   }
   catch(err) {
@@ -208,18 +239,49 @@ export async function initSiteEvents() {
 }
 
 let bytmReady = false;
-window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
+window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true });
 
-/** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
+// FIXME: not a big fan of delaying events until `bytm:allReady`, but changing it requires refactoring a lot of ugly code
+
+/** Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
+    const logEmit = () => {
+      if(getFeature("logEvents")) {
+        args.length > 0
+          ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
+          : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+      }
+    };
+
     if(!bytmReady) {
+      // log slow siteEvents that are emitted before `bytm:ready` to help identify bottlenecks in the initialization process
+      const startTs = Date.now();
       window.addEventListener("bytm:ready", () => {
         bytmReady = true;
-        emitSiteEvent(key, ...args);
+        forceEmitSiteEvent(key, ...args);
+        logEmit();
+        if(Date.now() - startTs > 500)
+          warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
       }, { once: true });
       return;
     }
+    else {
+      forceEmitSiteEvent(key, ...args);
+      logEmit();
+    }
+  }
+  catch(err) {
+    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+  }
+}
+
+/**
+ * Forcefully emits a site event with the given key and arguments, even if `bytm:allReady` has not been emitted yet.  
+ * Temporary workaround for `bytm:allReady` event queueing issues in {@linkcode emitSiteEvent()}.
+ */
+export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
+  try {
     siteEvents.emit(key, ...args);
     emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
   }
@@ -232,11 +294,11 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
 
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
 function checkVideoIdChange(newID?: string | null) {
-  const newVidID = newID ?? new URL(location.href).searchParams.get("v");
-  if(newVidID && newVidID !== lastVidId) {
-    info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newVidID}"`);
-    emitSiteEvent("watchIdChanged", newVidID, lastVidId);
-    lastVidId = newVidID;
+  newID ??= new URL(location.href).searchParams.get("v");
+  if(newID && newID !== lastVidId) {
+    info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
+    emitSiteEvent("watchIdChanged", newID, lastVidId);
+    lastVidId = newID;
   }
 }
 

@@ -1,10 +1,11 @@
-import { addParent, debounce, type Stringifiable } from "@sv443-network/userutils";
-import { getFeature } from "../config.js";
-import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "../utils/index.js";
-import { siteEvents } from "../siteEvents.js";
-import { featInfo } from "./index.js";
-import { addSelectorListener } from "../observers.js";
-import "./volume.css";
+import { clamp, debounce, type Stringifiable } from "@sv443-network/coreutils";
+import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
+import { getFeature } from "@/config.ts";
+import { addStyleFromResource, error, getDomain, getReloadTabData, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "@util/index.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { featInfo } from "@feat/index.ts";
+import { addSelectorListener } from "@/observers.ts";
+import "@feat/volume.css";
 
 //#region init vol features
 
@@ -13,9 +14,11 @@ export async function initVolumeFeatures() {
   let listenerOnce = false;
 
   // sliderElem is not technically an input element but behaves pretty much the same
-  const listener = async (type: "normal" | "expand", sliderElem: HTMLInputElement) => {
+  const onSliderElExists = async (type: "normal" | "expand", sliderElem: HTMLInputElement) => {
     const volSliderCont = document.createElement("div");
     volSliderCont.classList.add("bytm-vol-slider-cont");
+
+    sliderElem.setAttribute("step", "1");
 
     if(getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
       initScrollStep(volSliderCont, sliderElem);
@@ -25,10 +28,37 @@ export async function initVolumeFeatures() {
     if(getFeature("volumeSliderLabel"))
       await addVolumeSliderLabel(type, sliderElem, volSliderCont);
 
-    setVolSliderStep(sliderElem);
+    const updateSliderVal = (step: number) => {
+      if(step && step > 0) {
+        const roundedValue = Math.round(Number(sliderElem.value) / step) * step;
+        if(roundedValue !== Number(sliderElem.value)) {
+          sliderElem.value = sliderElem.dataset.scrollVal = String(roundedValue);
+          sliderElem.setAttribute("aria-valuenow", String(roundedValue));
+          sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+          siteEvents.emit("updateVolumeSliderLabel");
+        }
+      }
+    };
 
-    if(getFeature("volumeSharedBetweenTabs"))
-      sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
+    sliderElem.addEventListener("mousedown", () => {
+      sliderElem.dataset.dragging = "true";
+    });
+
+    sliderElem.addEventListener("mouseup", () => {
+      delete sliderElem.dataset.dragging;
+
+      if(getFeature("volumeSharedBetweenTabs"))
+        sharedVolumeChanged(Number(sliderElem.value));
+
+      updateSliderVal(getFeature("volumeSliderStep"));
+    });
+
+    sliderElem.addEventListener("scrollend", () => {
+      if(getFeature("volumeSharedBetweenTabs"))
+        sharedVolumeChanged(Number(sliderElem.value));
+
+      updateSliderVal(getFeature("volumeSliderScrollStep"));
+    });
 
     if(listenerOnce)
       return;
@@ -36,7 +66,7 @@ export async function initVolumeFeatures() {
 
     // the following are only run once:
 
-    setInitialTabVolume(sliderElem);
+    await setInitialTabVolume(sliderElem);
 
     if(typeof getFeature("volumeSliderSize") === "number")
       setVolSliderSize();
@@ -46,7 +76,7 @@ export async function initVolumeFeatures() {
   };
 
   addSelectorListener<HTMLInputElement>("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-    listener: (el) => listener("normal", el),
+    listener: (el) => onSliderElExists("normal", el),
   });
 
   let sizeSmOnce = false;
@@ -56,13 +86,82 @@ export async function initVolumeFeatures() {
     sizeSmOnce = true;
 
     addSelectorListener<HTMLInputElement>("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
-      listener: (el) => listener("expand", el),
+      listener: (el) => onSliderElExists("expand", el),
     });
   };
 
-  window.addEventListener("resize", debounce(onResize, 150));
+  window.addEventListener("resize", debounce(onResize, Math.floor(1000 / 6)));
   waitVideoElementReady().then(onResize);
   onResize();
+}
+
+//#region exponential volume
+
+const {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  get: nativeGetVolume,
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  set: nativeSetVolume
+  // @ts-expect-error - no idea why HTMLMediaElement wouldn't exist on Window
+} = Object.getOwnPropertyDescriptor(getUnsafeWindow().HTMLMediaElement.prototype, "volume") ?? {};
+
+/** Initializes the exponential volume scaling feature */
+export function initExponentialVolume() {
+  if(getDomain() !== "ytm" || getFeature("volumeSliderExponential") === "linear")
+    return;
+
+  // @ts-expect-error - see above
+  Object.defineProperty(getUnsafeWindow().HTMLMediaElement.prototype, "volume", {
+    get() {
+      const actual = nativeGetVolume?.call(this);
+      if(typeof actual !== "number" || isNaN(actual))
+        return actual;
+      return expVolFnInv(actual);
+    },
+    set(value) {
+      if(typeof value !== "number" || isNaN(value))
+        return nativeSetVolume?.call(this, value);
+      return nativeSetVolume?.call(this, expVolFn(value));
+    }
+  });
+}
+
+function expVolClamp(x: number) {
+  return Math.min(1, Math.max(0, x));
+}
+
+/** Mapping for volume scaling - Maps [0, 1] to [0, 1] */
+export function expVolFn(x: number) {
+  switch(getFeature("volumeSliderExponential")) {
+  case "x^2":
+    return expVolClamp(Math.pow(expVolClamp(x), 2));
+  case "x^3": 
+    return expVolClamp(Math.pow(expVolClamp(x), 3));
+  case "x^4": 
+    return expVolClamp(Math.pow(expVolClamp(x), 4));
+  case "x^5": 
+    return expVolClamp(Math.pow(expVolClamp(x), 5));
+  case "linear":
+  default: 
+    return expVolClamp(x);
+  }
+}
+
+/** Inverse mapping for volume scaling - Maps [0, 1] to [0, 1] */
+function expVolFnInv(y: number) {
+  switch(getFeature("volumeSliderExponential")) {
+  case "x^2":
+    return expVolClamp(Math.pow(expVolClamp(y), 1/2));
+  case "x^3": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/3));
+  case "x^4": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/4));
+  case "x^5": 
+    return expVolClamp(Math.pow(expVolClamp(y), 1/5));
+  case "linear":
+  default:
+    return expVolClamp(y);
+  }
 }
 
 //#region scroll step
@@ -118,7 +217,41 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
     }
   }
 
-  const getLabel = (value: Stringifiable) => `${value}%`;
+  /** Renders the given volume value in the range [0, 100] after adjusting for the configured exponential scaling. */
+  const getAdjustedVolValue = (val: number) => {
+    if(isNaN(val))
+      return String(val);
+    val = clamp(val, 0, 100);
+
+    const valAdjusted = (expVolFn(val / 100) * 100).toFixed(1);
+    const fixedPtVal = ["0.0", "100.0"].includes(valAdjusted)
+      ? valAdjusted.slice(0, -2)
+      : valAdjusted;
+
+    return fixedPtVal;
+  };
+
+  const getLabel = (value: Stringifiable) => {
+    const step = Number(getFeature(sliderElem.hasAttribute("pressed") ? "volumeSliderStep" : "volumeSliderScrollStep", Number(sliderElem.step)));
+    const roundedValue = Math.round(Number(value) / step) * step;
+    let label = `${roundedValue}%`;
+
+    labelContElem.classList.remove("wide");
+
+    if(getFeature("volumeSliderExponential") !== "linear") {
+      const fixedPtVal = getAdjustedVolValue(Number(value));
+
+      const lblType = getFeature("volumeSliderExponentialLabelType");
+      if(lblType === "both") {
+        label += ` (${fixedPtVal}%)`;
+        labelContElem.classList.add("wide");
+      }
+      else if(lblType === "valueBased")
+        label = `${fixedPtVal}%`;
+    }
+
+    return label;
+  };
 
   const labelElem = document.createElement("div");
   labelElem.classList.add("label");
@@ -130,28 +263,32 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
   labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
 
-  const getLabelText = (slider: HTMLInputElement) =>
-    t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
+  const getSliderTooltip = (slider: HTMLInputElement) =>
+    t("volume_tooltip", { volumePercent: getAdjustedVolValue(Number(slider.value)) });
 
-  const labelFull = getLabelText(sliderElem);
+  const labelFull = getSliderTooltip(sliderElem);
   sliderContainer.setAttribute("title", labelFull);
   sliderElem.setAttribute("title", labelFull);
   sliderElem.setAttribute("aria-valuetext", labelFull);
 
   const updateLabel = () => {
-    const labelFull = getLabelText(sliderElem);
+    const labelFull = getSliderTooltip(sliderElem);
 
     sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
+
+    if(!isNaN(Number(sliderElem.dataset.scrollVal)) && Number(sliderElem.dataset.scrollVal) % getFeature("volumeSliderStep") !== 0)
+      sliderElem.dataset.scrollVal = "";
 
     const labelElem2 = document.querySelectorAll<HTMLDivElement>(".bytm-vol-slider-label div.label");
     for(const el of labelElem2)
       el.textContent = getLabel(sliderElem.value);
   };
 
-  sliderElem.addEventListener("change", updateLabel);
-  siteEvents.on("configChanged", updateLabel);
+  sliderElem.addEventListener("change", () => updateLabel());
+  siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
+  siteEvents.on("configChanged", () => updateLabel());
 
   addSelectorListener(
     "playerBarRightControls",
@@ -163,17 +300,25 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   let lastSliderVal = Number(sliderElem.value);
 
+  /** Hide or show the ThemeSong media controls element when the volume slider is expanded */
+  const setThemeSongContHidden = (hidden = true) => {
+    const contEl = document.querySelector<HTMLElement>("#ts-panel-container");
+    contEl?.classList[(hidden ? "add" : "remove")]("bytm-hidden");
+  };
+
   // show label if hovering over slider or slider is focused
   const sliderHoverObserver = new MutationObserver(() => {
     if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
       labelContElem.style.display = "initial";
       labelContElem.setAttribute("aria-hidden", "false");
       labelContElem.classList.add("bytm-visible");
+      setThemeSongContHidden();
     }
     else if(labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem) {
       labelContElem.addEventListener("transitionend", () => {
         labelContElem.style.display = "none";
         labelContElem.setAttribute("aria-hidden", "true");
+        setThemeSongContHidden(false);
       }, { once: true });
       labelContElem.classList.remove("bytm-visible");
     }
@@ -200,13 +345,6 @@ function setVolSliderSize() {
 
   setGlobalCssVar("vol-slider-size", `${size}px`);
   addStyleFromResource("css-vol_slider_size");
-}
-
-//#region volume slider step
-
-/** Sets the `step` attribute of the volume slider */
-function setVolSliderStep(sliderElem: HTMLInputElement) {
-  sliderElem.setAttribute("step", String(getFeature("volumeSliderStep")));
 }
 
 //#region shared volume
@@ -256,13 +394,12 @@ export async function volumeSharedBetweenTabsDisabled() {
 
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {
-  const reloadTabVol = Number(await GM.getValue("bytm-reload-tab-volume", 0));
-  GM.deleteValue("bytm-reload-tab-volume").catch(() => void 0);
+  const reloadTabVol = Number((await getReloadTabData())?.volume);
 
   if((isNaN(reloadTabVol) || reloadTabVol === 0) && !getFeature("setInitialTabVolume"))
     return;
 
-  await waitVideoElementReady();
+  const vidElem = await waitVideoElementReady();
 
   const initialVol = Math.round(!isNaN(reloadTabVol) && reloadTabVol > 0 ? reloadTabVol : getFeature("initialTabVolumeLevel"));
 
@@ -275,7 +412,10 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
       GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
   }
   sliderElem.value = String(initialVol);
+  vidElem.volume = initialVol / 100;
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
 
-  log(`Set initial tab volume to ${initialVol}%${reloadTabVol > 0 ? " (from GM storage)" : " (from configuration)"}`);
+  const nonLinVol = getFeature("volumeSliderExponential") !== "linear";
+
+  log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
 }

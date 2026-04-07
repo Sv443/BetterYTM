@@ -1,11 +1,10 @@
-import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "../utils/index.js";
-import { BytmDialog } from "../components/BytmDialog.js";
-import { openCfgMenu } from "../menu/menu_old.js";
-import { mode, scriptInfo } from "../constants.js";
-import { getFeature, getFeatures, setFeatures } from "../config.js";
-import { getChangelogDialog } from "./changelog.js";
-import pkg from "../../package.json" with { type: "json" };
-import locales from "../../assets/locales.json" with { type: "json" };
+import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "@util/index.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { openCfgMenu } from "@menu/menu.ts";
+import { mode, scriptInfo } from "@/constants.ts";
+import { getFeature, getFeatures, setFeatures } from "@/config.ts";
+import pkg from "@root/package.json" with { type: "json" };
+import locales from "@asset/locales.json" with { type: "json" };
 
 let welcomeDialog: BytmDialog | null = null;
 
@@ -158,14 +157,9 @@ function retranslateWelcomeMenu() {
 
   const changes = {
     "#bytm-welcome-menu-title": (e: HTMLElement) => e.textContent = e.ariaLabel = t("welcome_menu_title", scriptInfo.name),
-    "#bytm-welcome-menu-title-close": (e: HTMLElement) => e.ariaLabel = e.title = t("close_menu_tooltip"),
     "#bytm-welcome-menu-open-cfg": (e: HTMLElement) => {
       e.textContent = e.ariaLabel = t("config_menu");
       e.ariaLabel = e.title = t("open_config_menu_tooltip");
-    },
-    "#bytm-welcome-menu-open-changelog": (e: HTMLElement) => {
-      e.textContent = e.ariaLabel = t("open_changelog");
-      e.ariaLabel = e.title = t("open_changelog_tooltip");
     },
     "#bytm-welcome-menu-footer-close": (e: HTMLElement) => {
       e.textContent = e.ariaLabel = t("close");
@@ -201,16 +195,6 @@ async function renderFooter() {
     openCfgMenu();
   });
 
-  const openChangelogElem = document.createElement("button");
-  openChangelogElem.id = "bytm-welcome-menu-open-changelog";
-  openChangelogElem.classList.add("bytm-btn");
-  openChangelogElem.addEventListener("click", async () => {
-    const dlg = await getChangelogDialog();
-    await dlg.mount();
-    welcomeDialog?.close();
-    await dlg.open();
-  });
-
   const closeBtnElem = document.createElement("button");
   closeBtnElem.id = "bytm-welcome-menu-footer-close";
   closeBtnElem.classList.add("bytm-btn");
@@ -222,7 +206,6 @@ async function renderFooter() {
   leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
 
   leftButtonsCont.appendChild(openCfgElem);
-  leftButtonsCont.appendChild(openChangelogElem);
 
   footerCont.appendChild(leftButtonsCont);
   footerCont.appendChild(closeBtnElem);

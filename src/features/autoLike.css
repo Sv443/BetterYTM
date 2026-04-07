@@ -42,7 +42,7 @@
   align-items: center;
   gap: 5px;
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   color: #bbb;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .bytm-auto-like-channel-row:hover {
-  background-color: var(--bytm-menu-bg-highlight);
+  background-color: var(--bytm-menu-bg-highlight-2);
 }
 
 .bytm-auto-like-channel-row
@@ -86,18 +86,20 @@
 .bytm-auto-like-channel-name-label {
   display: flex;
   flex-direction: row;
-  align-items: center;
-}
-
-.bytm-auto-like-channel-id {
-  cursor: text;
-  font-family: var(--bytm-font-monospace);
-  font-size: 1.25rem;
-  color: #aaa;
-  margin-left: 10px;
+  align-items: end;
 }
 
 /* add more specificity to override the default styles */
+
+:root .bytm-auto-like-channel-id.bytm-link {
+  font-family: var(--bytm-font-monospace);
+  font-size: 1.45rem;
+  color: #999 !important;
+  margin-left: 10px;
+}
+:root .bytm-auto-like-channel-id.bytm-link:hover {
+  text-decoration: none !important;
+}
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn {
   margin-right: 8px;
@@ -112,8 +114,16 @@
   margin: 0 0 0 8px;
 }
 
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin-xl {
+  margin: 0 0 0 16px;
+}
+
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
   margin: 0 8px 0 0;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin-xl {
+  margin: 0 16px 0 0;
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {

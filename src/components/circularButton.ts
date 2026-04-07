@@ -1,6 +1,6 @@
-import { getResourceUrl, onInteraction } from "../utils/index.js";
-import { createRipple } from "./ripple.js";
-import type { ResourceKey } from "../types.js";
+import { getResourceUrl, onInteraction, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { createRipple } from "@comp/ripple.ts";
+import type { ResourceKey } from "@/types.ts";
 
 type CircularBtnOptions = {
   /** Tooltip and aria-label of the button */
@@ -47,7 +47,7 @@ export async function createCircularBtn({
   }
   else if("onClick" in rest && rest.onClick) {
     btnElem = document.createElement("div");
-    rest.onClick && onInteraction(btnElem, rest.onClick);
+    rest.onClick && onInteraction(btnElem, (e) => rest.onClick(e));
   }
   else
     throw new TypeError("Either 'href' or 'onClick' must be provided");
@@ -57,13 +57,19 @@ export async function createCircularBtn({
   btnElem.tabIndex = 0;
   btnElem.role = "button";
 
-  const imgElem = document.createElement("img");
-  imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = "src" in rest
-    ? await rest.src
-    : await getResourceUrl(rest.resourceName);
+  if("src" in rest || ("resourceName" in rest && !rest.resourceName.startsWith("icon-"))) {
+    const imgElem = document.createElement("img");
+    imgElem.classList.add("bytm-generic-btn-img");
+    imgElem.src = "src" in rest
+      ? await rest.src
+      : await getResourceUrl(rest.resourceName);
 
-  btnElem.appendChild(imgElem);
+    btnElem.appendChild(imgElem);
+  }
+  else if("resourceName" in rest && rest.resourceName.startsWith("icon-")) {
+    setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
+    btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
+  }
 
   return ripple ? createRipple(btnElem) : btnElem;
 }

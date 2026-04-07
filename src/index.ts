@@ -1,29 +1,35 @@
-import { compress, decompress, fetchAdvanced, getUnsafeWindow, isDomLoaded, pauseFor, preloadImages, setInnerHtmlUnsafe, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, getResourceUrl, reloadTab, setGlobalCssVars, warn } from "./utils/index.js";
-import { clearConfig, getFeatures, initConfig } from "./config.js";
-import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
-import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
-import { initSiteEvents } from "./siteEvents.js";
-import { emitInterface, initInterface, initPlugins } from "./interface.js";
-import { initObservers, addSelectorListener, globservers } from "./observers.js";
-import { downloadData, getStoreSerializer } from "./serializer.js";
-import { MarkdownDialog } from "./components/MarkdownDialog.js";
-import { getWelcomeDialog } from "./dialogs/welcome.js";
-import { showPrompt } from "./dialogs/prompt.js";
+import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
+import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn, type TrKey } from "@util/index.ts";
+import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
+import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
+import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
+import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
+import { initStaticData } from "@util/data.js";
+import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
+import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "@/interface.ts";
+import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
+import { downloadData, getDSSerializer } from "@/serializers.ts";
+import { getWelcomeDialog } from "@dialog/welcome.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { mountCfgMenu, openCfgMenu } from "@menu/menu.ts";
 import {
   // layout category:
   addWatermark, initRemShareTrackParam,
-  fixSpacing, initThumbnailOverlay,
-  initHideCursorOnIdle, fixHdrIssues,
-  initShowVotes, initWatchPageFullSize,
+  fixSpacing, initTruncatePlayerBarSubtitles,
+  initThumbnailOverlay, fixHdrIssues,
+  initShowVotes, initSwapLikeDislikeBtns,
+  initWatchPageFullSize,
   // volume category:
-  initVolumeFeatures,
+  initVolumeFeatures, initExponentialVolume,
   // song lists category:
   initQueueButtons, initAboveQueueBtns,
+  addTrackNumbers,
   // behavior category:
   initBeforeUnloadHook, enableDiscardBeforeUnload,
-  initAutoCloseToasts, initRememberSongTime,
-  initAutoScrollToActiveSong,
+  initAutoCloseToasts, initRememberVideoTime,
+  initAutoScrollToActiveSong, initStillThere,
+  initHideCursorOnIdle,
   // input category:
   initArrowKeySkip, initFrameSkip,
   addAnchorImprovements, initNumKeysSkip,
@@ -35,13 +41,18 @@ import {
   // integrations category:
   disableDarkReader, fixSponsorBlock,
   fixPlayerPageTheming, fixThemeSong,
+  setThemeSongVisualizerOpacity,
   // general category:
   initVersionCheck,
-  // menu:
+  // cfg menu:
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
+  // misc:
+  improveLogo,
 } from "./features/index.js";
-import resourcesJson from "../assets/resources.json" with { type: "json" };
-import type { ResourceKey } from "./types.js";
+import localesJson from "@asset/locales.json" with { type: "json" };
+import resourcesJson from "@asset/resources.json" with { type: "json" };
+import packageJson from "@root/package.json" with { type: "json" };
+import { LogLevel, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type ResourceKey } from "@/types.ts";
 
 //#region cns. watermark
 
@@ -49,8 +60,8 @@ import type { ResourceKey } from "./types.js";
   // console watermark with sexy gradient
   const [styleGradient, gradientContBg] = (() => {
     switch(mode) {
-    case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"];
-    case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(38, 160, 172) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
+    case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"] as const;
+    case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(38, 160, 172) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"] as const;
     }
   })();
   const styleCommon = "color: #fff; font-size: 1.3rem;";
@@ -58,7 +69,8 @@ import type { ResourceKey } from "./types.js";
   const poweredBy = `Powered by:
 ─ Lots of ambition and dedication
 ─ My song metadata API: https://api.sv443.net/geniurl
-─ My userscript utility library: https://github.com/Sv443-Network/UserUtils
+─ My core utility library: https://github.com/Sv443-Network/CoreUtils
+─ My DOM utility library: https://github.com/Sv443-Network/UserUtils
 ─ This library for semver comparison: https://github.com/omichelsen/compare-versions
 ─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify
 ─ This markdown parser library: https://github.com/markedjs/marked
@@ -81,24 +93,71 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
   );
 }
 
+//#region init timings
+
+const initTimings: PerformanceReport = {
+  _comments: [
+    `This is a performance report generated by ${scriptInfo.name} (${packageJson.homepage})`,
+    "It shows the amount of time (in ms) it took to complete various stages of the initialization process.",
+    "- The 'start' property is a 13-digit epoch timestamp representing the time at which the script started running.",
+    "- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.",
+    "- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property.",
+  ],
+  meta: {
+    version: scriptInfo.version,
+    domain: getDomain(),
+    userAgent: navigator.userAgent,
+    scriptHandler: GM.info?.scriptHandler ?? "unknown",
+    scriptHandlerVersion: GM.info?.version ?? "unknown",
+    isIncognito: GM.info?.isIncognito ?? undefined,
+    sandboxMode: GM.info?.sandboxMode ?? undefined,
+    // @ts-expect-error - Violentmonkey-only property
+    injectInto: GM.info?.injectInto ?? undefined,
+    isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? undefined,
+  },
+  start: 0,
+  durations: {} as PerformanceReport["durations"],
+  featureDurations: {} as PerformanceReport["featureDurations"],
+};
+
+/**
+ * Starts a timer for measuring the duration of a specific phase of the initialization process.  
+ * Returns a function that, when called, will stop the timer and save the duration in the `initTimings` object under the specified name.
+ */
+function measureInitDuration(name: LooseUnion<keyof PerformanceReport & FeatureKey>): () => void {
+  const start = Date.now();
+  return () => {
+    if(typeof initTimings.durations !== "object")
+      initTimings.durations = {} as PerformanceReport["durations"];
+    initTimings.durations![name] = Date.now() - start;
+  };
+}
+
 //#region preInit
 
-/** Stuff that needs to be called ASAP, before anything async happens */
+/** Stuff that needs to be called ASAP */
 function preInit() {
   try {
+    initTimings.start = Date.now();
+
     const unsupportedHandlers = [
       "FireMonkey",
     ];
 
-    if(unsupportedHandlers.includes(GM?.info?.scriptHandler ?? "_"))
-      return showPrompt({ type: "alert", message: `BetterYTM does not work when using ${GM.info.scriptHandler} as the userscript manager extension and will be disabled.\nI recommend using either ViolentMonkey, TamperMonkey or GreaseMonkey.`, denyBtnText: "Close" });
+    if(unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) // (translations not loaded yet)
+      return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+
+    setLogLevel(defaultLogLevel);
+
+    initBroadcast();
 
     initInterface();
-    setLogLevel(defaultLogLevel);
+    preInitPlugins();
 
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
+    initTimings.preInitEnd = Date.now() - initTimings.start;
     init();
   }
   catch(err) {
@@ -112,21 +171,32 @@ async function init() {
   try {
     const domain = getDomain();
 
+    // feature config:
+    const endCfgDur = measureInitDuration("initConfig");
     const features = await initConfig();
+    endCfgDur();
     setLogLevel(features.logLevel);
 
     info("Session ID:", getSessionId());
 
-    await initLyricsCache();
+    // resource cache:
+    const endResCacheDur = measureInitDuration("initResourceCache");
+    await initResourceCache();
+    endResCacheDur();
 
+    // lyrics cache:
+    const endLyrCacheDur = measureInitDuration("initLyricsCache");
+    await initLyricsCache();
+    endLyrCacheDur();
+
+    // translations:
     const initLoc = features.locale ?? "en-US";
-    const locPromises: Promise<void>[] = [];
-    locPromises.push(initTranslations(initLoc));
+    await initTranslations(initLoc);
     // since en-US always has the complete set of keys, it needs to always be loaded:
-    initLoc !== "en-US" && locPromises.push(initTranslations("en-US"));
-    await Promise.allSettled(locPromises);
+    initLoc !== "en-US" && await initTranslations("en-US");
     setLocale(initLoc);
 
+    // plugins:
     try {
       initPlugins();
     }
@@ -135,19 +205,33 @@ async function init() {
       emitInterface("bytm:fatalError", "Error while loading plugins");
     }
 
+    // pre-DOM-load features:
+
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       enableDiscardBeforeUnload();
 
     if(features.rememberSongTime)
-      initRememberSongTime();
+      initRememberVideoTime();
 
+    // wait for DOM load before continuing init:
     if(!isDomLoaded())
-      document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
+      document.addEventListener("DOMContentLoaded", () => onDomLoad(), { once: true });
     else
       onDomLoad();
   }
   catch(err) {
     error("Fatal error:", err);
+    alert(`\
+${scriptInfo.name} encountered a fatal error during initialization and will not work correctly, if at all.
+For information on what caused this error, please refer to the JS console.
+
+${assetSource === "local"
+    ? `⚠️ The assetSource constant is set to "local", so this is likely due to the development server not running. This can be confirmed if there are NetworkErrors in the console when fetching ${scriptInfo.name} resources.\nPlease run "pnpm dev" or "pnpm serve" in the project directory and reload the page.`
+    : `Please report this bug using the issue tracker on GitHub:\n${packageJson.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`
+}${mode === "development"
+  ? `\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${packageJson.devVersionUrl}`
+  : ""
+}`);
   }
 }
 
@@ -155,28 +239,42 @@ async function init() {
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
+  initTimings.domLoaded = Date.now() - initTimings.start;
+
   const domain = getDomain();
   const feats = getFeatures();
-  const ftInit = [] as [string, Promise<void | unknown>][];
+  const ftInit = [] as [key: LooseUnion<FeatureKey | FeatureGroupKey>, Promise<void | unknown>][];
 
-  // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
+  // for being able to query styles based on domain (just prefix any CSS selector with ".bytm-dom-yt " or ".bytm-dom-ytm ")
   document.body.classList.add(`bytm-dom-${domain}`);
 
-  try {
-    initGlobalCss();
-    initObservers();
-    initSvgSpritesheet();
+  // needs to run synchronously before any async volume-setting code (initVolumeFeatures) to avoid a microtask vs macrotask race condition
+  initExponentialVolume();
 
-    Promise.allSettled([
-      injectCssBundle(),
-      initVersionCheck(),
-    ]);
+  // initialize DOM globals:
+  try {
+    initObservers(feats);
+
+    // run detached:
+    setTimeout(() => {
+      const endInitGlobalDur = measureInitDuration("initGlobals_deferred");
+      initGlobalCss();
+
+      Promise.allSettled([
+        injectCssBundle(),
+        initVersionCheck(),
+      ]).then(() => endInitGlobalDur());
+
+      initSiteEvents();
+
+      mountCfgMenu();
+    }, 0);
   }
   catch(err) {
-    error("Encountered error in feature pre-init:", err);
+    error("Encountered error in pre-init:", err);
   }
 
-  log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
+  info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
 
   try {
     //#region welcome dlg
@@ -187,16 +285,29 @@ async function onDomLoad() {
       dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
       info("Showing welcome menu");
       await dlg.open();
+      await dlg.once("close");
     }
+
+    // initialize data.json and check for active alerts
+    const endStaticDataDur = measureInitDuration("initStaticData");
+    initStaticData().then(() => endStaticDataDur());
+
+    await initVersionSessionCounter();
 
     if(domain === "ytm") {
       //#region (ytm) layout
 
-      if(feats.watermarkEnabled)
-        ftInit.push(["addWatermark", addWatermark()]);
+      ftInit.push(["addWatermark", (async () => {
+        await improveLogo();
+        if(feats.watermarkEnabled)
+          await addWatermark();
+      })()]);
 
       if(feats.fixSpacing)
         ftInit.push(["fixSpacing", fixSpacing()]);
+
+      if(feats.truncatePlayerBarSubtitles)
+        ftInit.push(["truncatePlayerBarSubtitles", initTruncatePlayerBarSubtitles()]);
 
       ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
 
@@ -208,6 +319,9 @@ async function onDomLoad() {
 
       if(feats.showVotes)
         ftInit.push(["showVotes", initShowVotes()]);
+
+      if(feats.swapLikeDislikeButtons)
+        ftInit.push(["swapLikeDislikeBtns", initSwapLikeDislikeBtns()]);
 
       if(feats.watchPageFullSize)
         ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
@@ -221,7 +335,10 @@ async function onDomLoad() {
       if(feats.lyricsQueueButton || feats.deleteFromQueueButton)
         ftInit.push(["queueButtons", initQueueButtons()]);
 
-      ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
+      ftInit.push(["aboveQueueButtons", initAboveQueueBtns()]);
+
+      if(feats.songListTrackNumbersEnabled)
+        ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 
       //#region (ytm) behavior
 
@@ -229,6 +346,8 @@ async function onDomLoad() {
         ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
       ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
+
+      ftInit.push(["yesImStillThere", initStillThere()]);
 
       //#region (ytm) input
 
@@ -238,8 +357,6 @@ async function onDomLoad() {
 
       if(feats.anchorImprovements)
         ftInit.push(["anchorImprovements", addAnchorImprovements()]);
-
-      ftInit.push(["numKeysSkip", initNumKeysSkip()]);
 
       //#region (ytm) lyrics
 
@@ -253,10 +370,16 @@ async function onDomLoad() {
 
       const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
 
+      if(feats.themeSongVisualizerOpacity !== 100)
+        ftInit.push(["themeSongVisualizerOpacity", setThemeSongVisualizerOpacity()]);
+
       if(feats.themeSongIntegration)
         ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);
       else
         ftInit.push(["themeSongIntegration", Promise.allSettled([fixPlayerPageTheming(), hideThemeSongLogo])]);
+
+      if(feats.removeThumbnailRatingBar)
+        ftInit.push(["removeThumbnailRatingBar", (async () => void await addStyleFromResource("css-remove_thumb_rating_bar"))()]);
     }
 
     //#region (ytm+yt) cfg menu
@@ -267,7 +390,7 @@ async function onDomLoad() {
         });
       }
       else if(domain === "yt") {
-        addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
+        addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(6) #items ytd-guide-entry-renderer:nth-child(1)", {
           listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
         });
       }
@@ -277,13 +400,9 @@ async function onDomLoad() {
     }
 
     if(["ytm", "yt"].includes(domain)) {
-      //#region general
-
-      ftInit.push(["initSiteEvents", initSiteEvents()]);
-
       //#region (ytm+yt) layout
 
-      if(feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
+      if(feats.removeShareTrackingParamSites)
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
 
       //#region (ytm+yt) input
@@ -292,6 +411,8 @@ async function onDomLoad() {
 
       if(feats.autoLikeChannels)
         ftInit.push(["autoLikeChannels", initAutoLike()]);
+
+      ftInit.push(["numKeysSkip", initNumKeysSkip()]);
 
       //#region (ytm+yt) integrations
 
@@ -302,29 +423,51 @@ async function onDomLoad() {
     emitInterface("bytm:featureInitStarted");
 
     const initStartTs = Date.now();
+    const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8_000;
+    const initializedFeats: string[] = [];
 
-    // wait for feature init or timeout (in case an init function is hung up on a promise)
-    await Promise.race([
-      pauseFor(feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000),
-      Promise.allSettled(
-        ftInit.map(([name, prom]) =>
-          new Promise(async (res) => {
-            const v = await prom;
-            emitInterface("bytm:featureInitialized", name);
-            res(v);
-          })
-        )
-      ),
-    ]);
+    const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
 
-    // ensure site adjusts itself to new CSS files
+    (() =>
+      Promise.race([
+        pauseFor(initTimeout),
+        Promise.allSettled(
+          ftInit.map(([name, prom]) =>
+            new Promise(async (res) => {
+              const v = await prom;
+              initTimings.featureDurations = {
+                ...(initTimings.featureDurations ?? {}),
+                [name]: Date.now() - initStartTs,
+              } as PerformanceReport["featureDurations"];
+              initializedFeats.push(name);
+              emitInterface("bytm:featureInitialized", name);
+              emitInterface(`bytm:featureInitialized:${name}` as "bytm:featureInitialized:id");
+              res(v);
+            })
+          )
+        ),
+      ]).then(() => {
+        endFeatInitDur();
+        emitInterface("bytm:allReady");
+        initTimings.allReady = Date.now() - initStartTs;
+        if(initializedFeats.length < ftInit.length) {
+          errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${
+            ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
+          }`);
+        }
+        else
+          info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+      })
+    )();
+
+    // ensure site adjusts itself to new global CSS
     getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
 
     // preload icons
     preloadResources();
 
+    initTimings.ready = Date.now() - initTimings.start;
     emitInterface("bytm:ready");
-    info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
     try {
       registerDevCommands();
@@ -343,6 +486,9 @@ async function onDomLoad() {
   catch(err) {
     error("Feature error:", err);
     emitInterface("bytm:fatalError", "Error while initializing features");
+  }
+  finally {
+    initTimings.postInitEnd = Date.now() - initTimings.start;
   }
 }
 
@@ -419,32 +565,41 @@ async function initFonts() {
   addStyle(css, "fonts");
 }
 
-//#region svg spritesheet
-
-/** Initializes the SVG spritesheet */
-async function initSvgSpritesheet() {
-  const svgUrl = await getResourceUrl("doc-svg_spritesheet");
-  const div = document.createElement("div");
-  div.style.display = "none";
-  setInnerHtmlUnsafe(div, await (await fetchAdvanced(svgUrl)).text());
-  document.body.appendChild(div);
-}
-
 //#region dev menu cmds
 
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
-  if(mode !== "development")
-    return;
+  const isDev = mode === "development";
+  const isAdv = getFeature("advancedMode");
+  const isAny = isDev || isAdv;
 
-  GM.registerMenuCommand("Reset config", async () => {
-    if(await showPrompt({ type: "confirm", message: "Reset the configuration to its default values?\nThis will automatically reload the page.", confirmBtnText: "Reset" })) {
-      await clearConfig();
-      await reloadTab();
+  const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
+  const getCmdName = (emoji: string, key: TrKey & `menu_command.${string}`) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
+
+  GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
+
+  GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
+    const message = "Reset the configuration to its default values?\nThis will automatically reload the page.";
+    try {
+      if(await showPrompt({
+        type: "confirm",
+        message,
+        confirmBtnText: "Reset",
+      })) {
+        await clearConfig();
+        await reloadTab();
+      }
+    }
+    catch {
+      // fallback if DOM isn't modifiable for some reason, like a fatal error during init
+      if(confirm(message)) {
+        await clearConfig();
+        await reloadTab();
+      }
     }
   });
 
-  GM.registerMenuCommand("List GM values in console with decompression", async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -453,20 +608,40 @@ function registerDevCommands() {
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
 
+    const decodeError = (key: string, err: unknown) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
+
     for(const key of keys) {
-      const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-      const val = await GM.getValue(key, undefined);
-      values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, compressionFormat, "string") : val;
-      longestKey = Math.max(longestKey, key.length);
+      try {
+        const isDatKey = key.startsWith("__ds-") && key.endsWith("-dat");
+        /** Extracted DataStore ID */
+        const dsID = isDatKey ? key.substring(5, key.length - 4) : null;
+        /** Whether a -dat key is encoded. Assumes that compressionFormat never changes. */
+        const isEncoded = isDatKey
+          ? String(await GM.getValue(`__ds-${dsID}-enf`, "null")) !== "null"
+          : false;
+        const val = await GM.getValue(key, undefined);
+        values[key] = typeof val !== "undefined" && isEncoded
+          ? await decompress(val, compressionFormat, "string")
+          : val;
+        longestKey = Math.max(longestKey, key.length);
+      }
+      catch(err) {
+        decodeError(key, err);
+      }
     }
     for(const [key, finalVal] of Object.entries(values)) {
-      const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-      const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+      try {
+        const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
+        const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
+        dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+      }
+      catch(err) {
+        decodeError(key, err);
+      }
     }
   });
 
-  GM.registerMenuCommand("List GM values in console, without decompression", async () => {
+  isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
     const keys = await GM.listValues();
     dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
@@ -486,7 +661,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Delete all GM values", async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
       dbg(`Clearing ${keys.length} GM values:`);
@@ -499,31 +674,18 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-    const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.", confirmBtnText: "Delete" });
-    if(!keys)
-      return;
-    for(const key of keys?.split(",") ?? []) {
-      if(key && key.length > 0) {
-        const truncLength = 400;
-        const oldVal = await GM.getValue(key);
-        await GM.deleteValue(key);
-        dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
-      }
-    }
-  });
-
-  GM.registerMenuCommand("Reset install timestamp", async () => {
+  isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
     await GM.deleteValue("bytm-installed");
     dbg("Reset install time.");
   });
 
-  GM.registerMenuCommand("Reset version check timestamp", async () => {
-    await GM.deleteValue("bytm-version-check");
-    dbg("Reset version check time.");
+  isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
+    const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
+    await GM.deleteValue("bytm-version-session-counter");
+    dbg("Reset version session counter. Was previously:", verSesCount);
   });
 
-  GM.registerMenuCommand("List active selector listeners in console", async () => {
+  isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
     for(const [obsName, obs] of Object.entries(globservers)) {
@@ -537,59 +699,227 @@ function registerDevCommands() {
         });
       });
     }
-    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
-  GM.registerMenuCommand("Compress value", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output.", confirmBtnText: "Compress" });
-    if(input && input.length > 0) {
-      const compressed = await compress(input, compressionFormat);
-      dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
-    }
+  isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
+    const showFinalPrompt = async (type: "compress" | "decompress", initial: string, result: string) => {
+      await showPrompt({
+        type: "alert",
+        message: `${type === "compress" ? "Compressed" : "Decompressed"} value (${initial.length} chars -> ${result.length} chars):\n${result}`,
+        extraButtons: [
+          (dlg) => {
+            const btn = document.createElement("button");
+            btn.textContent = btn.ariaLabel = "Copy and close";
+            btn.addEventListener("click", async () => {
+              copyToClipboard(result);
+              dlg.emitResolve(result);
+              dlg.close();
+            });
+            return btn;
+          },
+        ],
+        extraButtonsPosition: "before",
+      });
+    };
+
+    const showErr = async (type: "compress" | "decompress", err: unknown) => {
+      const errMsg = `Error while trying to ${type === "compress" ? "" : "de"}compress`;
+      error(errMsg, err);
+      await showPrompt({
+        type: "alert",
+        message: `${errMsg}:\n${err instanceof Error ? `${err.name}: ${err.message}` : String(err)}`,
+      });
+    };
+
+    await showPrompt({
+      type: "prompt",
+      message: "Enter text to compress or decompress:",
+      textarea: true,
+      confirmBtnEnabled: false,
+      extraButtons: [
+        (dlg) => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Compress";
+          btn.addEventListener("click", async () => {
+            const val = dlg.getInputValue();
+            try {
+              if(val && val.length > 0) {
+                const result = await compress(val, compressionFormat);
+                dlg.emitResolve(result);
+                dlg.close();
+                await showFinalPrompt("compress", val, result);
+              }
+            }
+            catch(e) {
+              dlg.close();
+              showErr("compress", e);
+            }
+          });
+          return btn;
+        },
+        (dlg) => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Decompress";
+          btn.addEventListener("click", async () => {
+            const val = dlg.getInputValue();
+            try {
+              if(val && val.length > 0) {
+                const result = await decompress(val, compressionFormat);
+                dlg.emitResolve(result);
+                await showFinalPrompt("decompress", val, result);
+                dlg.close();
+              }
+            }
+            catch(e) {
+              dlg.close();
+              showErr("decompress", e);
+            }
+          });
+          return btn;
+        },
+      ],
+      extraButtonsPosition: "before",
+    });
   });
 
-  GM.registerMenuCommand("Decompress value", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output.", confirmBtnText: "Decompress" });
-    if(input && input.length > 0) {
-      const decompressed = await decompress(input, compressionFormat);
-      dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
-    }
-  });
+  isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
 
-  GM.registerMenuCommand("Download DataStoreSerializer file", () => downloadData(false));
+  isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
 
-  GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
-    const input = await showPrompt({ type: "prompt", message: "Paste the content of the export file to import:", confirmBtnText: "Import" });
+  isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
+    const input = await showPrompt({
+      type: "prompt",
+      message: "Paste the content of the exported file to import data:",
+      confirmBtnText: "Import",
+      textarea: true,
+    });
     if(input && input.length > 0) {
-      await getStoreSerializer().deserialize(input);
+      await getDSSerializer(true).deserialize(input);
       if(await showPrompt({ type: "confirm", message: "Successfully imported data using DataStoreSerializer.\nReload the page to apply changes?", confirmBtnText: "Reload" }))
         await reloadTab();
     }
   });
 
-  GM.registerMenuCommand("Throw error (toast example)", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
 
-  GM.registerMenuCommand("Example MarkdownDialog", async () => {
-    const mdDlg = new MarkdownDialog({
-      id: "example",
-      width: 500,
-      height: 400,
-      renderHeader() {
-        const header = document.createElement("h1");
-        header.textContent = "Example Markdown Dialog";
-        return header;
-      },
-      body: "## This is a test dialog\n```ts\nconsole.log(\"Hello, world!\");\n```\n\n- List item 1\n- List item 2\n- List item 3",
-    });
-
-    await mdDlg.open();
+  isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+    downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
   });
 
-  GM.registerMenuCommand("Toggle dev treatments", async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
     if(await showPrompt({ type: "confirm", message: `Dev treatments are now ${val ? "enabled" : "disabled"}.\nDo you want to reload the page?`, confirmBtnText: "Reload", denyBtnText: "nothxbye" }))
       await reloadTab();
+  });
+
+  isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () =>
+    showPrompt({
+      type: "alert",
+      message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+      extraButtons: [
+        (dlg) => {
+          const btn = document.createElement("button");
+          btn.textContent = btn.ariaLabel = "Copy and close";
+          btn.addEventListener("click", async () => {
+            devPluginToken && copyToClipboard(devPluginToken);
+            dlg.emitResolve(devPluginToken ?? null);
+            dlg.close();
+          });
+          return btn;
+        },
+      ],
+      extraButtonsPosition: "before",
+    }),
+  );
+
+  GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
+    downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+  });
+
+  // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
+  //   const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
+  //   const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
+
+  //   const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
+
+  //   // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
+
+  //   const unusedKeys = [] as string[];
+
+  //   for(const key of allTrKeys) {
+  //     if(!obj.keys.includes(key) && key !== "meta")
+  //       unusedKeys.push(key);
+  //   }
+
+  //   if(unusedKeys.length > 0)
+  //     dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+  // });
+
+  isDev && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
+    const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [
+      [broadcastTxID, {
+        sessionId: getSessionId(),
+        title: document.title,
+        domain: getDomain(),
+        initTime,
+      }],
+    ];
+
+    const unsub = siteEvents.on("broadcast:discoverSessionsReply", ({ from, packet }) => {
+      sessions.push([from, packet.data]);
+    });
+
+    dbg("Collecting session info from open tabs...");
+
+    setTimeout(() => {
+      const columns = ["#", "Self?", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
+      const columnAlign: TableColumnAlign[] = ["left", "left", "left", "left", "left", "right", "left"];
+
+      const columnStyle = "color: #db3; font-weight: bold;";
+      const resetStyle = "color: inherit; font-weight: inherit;";
+      const styles = [];
+      for(let i = 0; i < columns.length; i++)
+        styles.push(columnStyle, resetStyle);
+
+      console.log(`[${scriptInfo.name}/#DEBUG] Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
+        createTable([
+          columns,
+          ...sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
+            const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
+            return [
+              i + 1,
+              txID === broadcastTxID ? "Yes" : "No",
+              sessionId,
+              txID,
+              domain,
+              `${initSince} ago`,
+              title,
+            ];
+          }),
+        ], {
+          columnAlign,
+          applyCellStyle(i) {
+            if(i === 0)
+              return ["%c", "%c"];
+          },
+        })
+      }`, ...styles);
+      unsub();
+    }, 300);
+
+    emitBroadcast({
+      type: "discoverSessions",
+    });
+  });
+
+  isAdv && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
+    await showPrompt({
+      type: "confirm",
+      message: "Reload all open tabs that are running BetterYTM?",
+      confirmBtnText: "Reload",
+    }) && await reloadAllTabs();
   });
 
   log("Registered dev menu commands");

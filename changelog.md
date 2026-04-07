@@ -1,23 +1,168 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
-<!-- #region TODO: 3.1.0 -->
-
-## 3.1.0 - TODO
-- **Added features:**
-  - 🎵 Change which service is preferred for the thumbnail overlay (YT thumbnail / iTunes album artwork)
-- **Changes and improvements:**
+<!-- #region 3.1.0 -->
+## 3.1.0
+- **New Features:**
+  - 🎵 Show a track number in the currently playing queue and playlists (by [@indierodo](https://github.com/indierodo)).
+  - 🎵 Use exponential scaling for the volume slider ([more info](https://www.dr-lex.be/info-stuff/volumecontrols.html)) (by [@cryeprecision](https://github.com/cryeprecision)).
+  - 🎵 Swap like- and dislike buttons to match the layout on YT.
+  - New configurable hotkeys:
+    - Focus on the search bar (<kbd>Shift</kbd><kbd>F</kbd>).
+    - Clear the search bar (<kbd>Shift</kbd><kbd>Delete</kbd>).
+  - Require double-pressing the number keys within a configurable time frame to skip to points in the video/song time, to prevent accidental skips.
+  - Added a global alerts system to show important messages without needing the script to be updated.
+- **Improvements and Changes:**
+  - Improved script initialization performance.
+  - 🎵 Overhauled thumbnail overlay for better stability.
+    - Fixed album artwork being fetched with wrong parameters.
+    - Allow manually toggling between thumbnail providers.
+    - Cache resolved AM album artwork URLs similar to how lyrics URLs are currently cached.
+  - 🎵 Decoupled volume slider step and scroll step, allowing for both to work and be configured independently.
+  - 🎵 The "improve links" feature now also applies to all types of song list items.  
+    Clicking a list item anywhere will now start playing that song. This doesn't affect clicking and dragging them.  
+    I would really love to hear feedback on this change (via GitHub discussions or Discord).
+  - Improved config menu UX:
+    - Added a sidenav that displays one category at a time, for a much less overwhelming experience.
+    - Added feature groups, which further divide each categories' features into logical sections.
+    - Removed advanced mode flag from a lot of features since there's much more breathing room now.
+    - Removed the dialog title subtexts (dev / advanced mode). Instead, icons will be rendered in the footer, below the sidenav.
+    - Reordered categories and features to be grouped more logically.
+  - Made some GM menu commands usable by default without requiring to be compiled in dev mode, with more available when the advanced mode is enabled. Refer to the "internal changes" section for a full list.
+  - Decreased the interval between saving the latest video/song time from 500ms to 250ms, meaning the restored time is more accurate without sacrificing much performance.
+  - The "like" and "dislike" hotkeys now also work in the YT Shorts player.
+  - The values of some features (if left unchanged) will be updated to the new defaults:
+    - `initTimeout` will be changed from `8` to `5` seconds.
+    - `rememberSongTimeDuration` will be changed from `60` to `180` seconds.
+    - `frameSkipAmount` will be changed from `0.0417` to `0.0166` seconds.
+    - `thumbnailOverlayITunesImgRes` will be changed from `1500` to `2000` pixels.
+    - `thumbnailOverlayAlbumArtCacheMaxSize` will be changed from `2000` to `10000` entries.
+    - `thumbnailOverlayIndicatorOpacity` will be changed from `40` to `25` percent.
+    - `lyricsCacheMaxSize` will be changed from `2000` to `10000` entries.
+    - `rememberSongTimeMinPlayTime` will be changed from `10` to `5` seconds.
+    - `hideCursorOnIdleDelay` will be changed from `2` to `3` seconds.
+  - If the `thumbnailOverlayITunesImgRes` value was set bigger than `3000`, it will now be set to the new maximum of `3000` pixels.
 - **Fixes:**
+  - Fixed auto-like button sometimes not appearing, as well as channel name resolution on both domains.
+  - Fixed missing toggle input knob in Chromium-based browsers.
+  - 🎵 Fixed SyntaxError when no AM album artwork was found.
+  - Fixed Error when clicking on a BytmDialog's exit button.
+  - Fixed interactivity problems with the config menu and stacked BytmDialogs when another dialog was opened over top and then closed.
+  - 🎵 Fixed list buttons not disappearing with the native buttons in song lists.
+  - 🎵 Fixed anchor improvements feature on the search page.
+  - 🎵 Fixed rounded border in fullscreen mode when using the ThemeSong extension.
+  - Fixed changelog URL pointing to the script's build commit version instead of the latest version (this is like the 5th time I fixed this).
+  - Fixed hotkey inputs not deactivating when the config menu is closed.
+  - Fixed minor hotkey input event memory leak when the config menu is recreated.
 
-<details><summary>Click to expand internal and plugin changes</summary>
-
-- **Plugin Changes:**
+<details><summary><b><i>Click to expand plugin and internal changes</i></b></summary>
+<sup>(I did my best to order these by relevance for each section)</sup>
+  
+- **Plugin Changes:**  
+  *(also refer to **[version 3.1.0's API docs](https://github.com/Sv443/BetterYTM/blob/v3.1.0/contributing.md)**)*
+  - **Migration guide:**
+    - ⚠️ **The plugin sublicense agreement was updated to version 2** to clarify points which were worded poorly and to improve compatibility with the AGPL-3.0-or-later license, as well as local laws. [You can read it here.](https://github.com/Sv443/BetterYTM/blob/v3.1.0/license-for-plugins.txt)
+    - ⚠️ **POT. BREAKING:** Since BYTM now *requires* plugin intents to be set, make sure to add all intents required by the authenticated functions your plugin calls to the `PluginDef` object's `intents` property (which can now also be an array instead of just a bitwise-or'ed number). Read below for a list of functions and their required intents.
+    - ⚠️ If you use the `BytmDialog`, `ExImDialog` or `MarkdownDialog` classes directly, switch to the new authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()`. Direct access will continue to work until version 4.0.0, but to future-proof your plugin, switch to the new functions as soon as possible, and make sure to add the `CreateModalDialogs` (32) intent to your plugin definition's `intents` property.
+    - ⚠️ If you were using `bytm:ready` to reliably wait until *all* features are initialized, switch to `bytm:allReady` instead.  
+      The `bytm:ready` event is still emitted, but it is now only guaranteed to be emitted when the DOM is loaded and all features have *started* to initialize.
+    - ⚠️ If you were using `showPrompt()`, it will now require a plugin token as the first argument, with the `CreateModalDialogs` (32) intent granted.
+    - All `NanoEmitter` subclasses and the interface-exposed `NanoEmitter` class reference now use [CoreUtils' new `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter), which grants you access to the powerful `onMulti()` method to listen to multiple events at once, with configurable behavior.
+  - **API Changes:**
+    - ⚠️ **POT. BREAKING:** Plugins will no longer be able to call authenticated functions without the required intents.  
+      Intents are now required to be set in the plugin definition object, though for now they will still all be granted and don't need to be explicitly allowed by the user once after installing yet.  
+      The new intent `FullAccess` (512) grants all other intents, though you should only use it if your plugin truly requires all intents.  
+      These are the intents that are now required for the respective functions:
+      - `getFeatures()` - `ReadFeatureConfig` (1) and optionally `SeeHiddenConfigValues` (4)
+      - `saveFeatures()` - `WriteFeatureConfig` (2)
+      - `setLocale()` - `WriteTranslations` (16)
+      - `getBytmDialog()` - `CreateModalDialogs` (32)
+      - `getExImDialog()` - `CreateModalDialogs` (32)
+      - `getMarkdownDialog()` - `CreateModalDialogs` (32)
+      - `showPrompt()` - `CreateModalDialogs` (32)
+      - `getAutoLikeData()` - `ReadAutoLikeData` (64)
+      - `saveAutoLikeData()` - `WriteAutoLikeData` (128)
+      - `getInternals()` - `InternalAccess` (256)
+    - ⚠️ **POT. BREAKING:** The `showPrompt()` function is now authenticated, meaning it has a required token argument before the options argument. The grant `CreateModalDialogs` (32) is required to use it.
+    - References to the dialog classes `BytmDialog`, `ExImDialog` and `MarkdownDialog` should now be obtained using the new authenticated `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()` functions, respectively.  
+    Using the direct access properties will work until version 4.0.0, but it is recommended you switch to the authenticated functions as soon as possible.
+    - The `PluginDef` object's `intents` property can now be either an array of `PluginIntent` values or a single number that is the bitwise OR of the intents.
+    - Plugin auth tokens are now in the format of a UUIDv4 instead of a 16-character, 36-radix string.
+    - `registerPlugin()` now also returns a `permissions` object with the properties `int` and `array`, which contain all of the bitwise OR of the plugin's intents, as well as an array of the intents, that were actually granted to the plugin. The `int` property can be used with [CoreUtils' `bitSetHas()` function](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#function-bitsethas) to check if specific intents were granted.
+    - A URL to the plugin's changelog file can now be specified in the `PluginDef` object's `homepage.changelog` property.
+    - The function `getLikeDislikeBtns()` now also works with the buttons in the YT Shorts player.
+  - **API Additions:**
+    - Added new functions to the interface:
+      - `onSiteEvent()` - Adds a site event listener.
+      - `onceSiteEvent()` - Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern.
+      - `onMultiSiteEvents()` - Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.
+      - `resourceAsString()` - Returns a BYTM resource as a string, most of which are cached between sessions in GM storage for much better performance.
+      - 🔒 `getBytmDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `BytmDialog` class, which can be used to create new generic dialog instances.
+      - 🔒 `getExImDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `ExImDialog` class (subclass of `BytmDialog`), to export and import serializable data.
+      - 🔒 `getMarkdownDialog()` (requires intent `CreateModalDialogs` (32)) - Returns a reference to the `MarkdownDialog` class (subclass of `BytmDialog`), to render a markdown string in a modal dialog.
+      - 🔒 `getInternals()` (requires intent `InternalAccess` (256)) - returns some internal function and object references that can be used by core libraries and deeper reaching plugins.
+    - Added new events:
+      - `bytm:preInitPlugin` (no arguments) - emitted at the earliest possible point in time, even before the DOM is loaded, to allow plugins to do any immediate but superficial initialization.
+      - `bytm:allReady` (no arguments) - emitted when all features have been initialized and the interface is fully ready to use.  
+        This triggers much later than `bytm:ready`, which is emitted when the DOM is loaded and all features are *starting* to initialize.  
+        For the fastest response times, use `bytm:featureInitialized` for every feature your code depends on.
+      - `bytm:featureInitialized:id` (no arguments) - emitted when a feature with the specified key has been initialized.  
+        In TypeScript, use `"bytm:featureInitialized:myFeatureKey" as "bytm:featureInitialized:id"` to make the error go away.
+      - `bytm:siteEvent:cfgMenuMounted` (no arguments) - emitted when the config menu is invisibly mounted to the DOM (not opened yet, but modifiable).
+      - `bytm:siteEvent:configHeaderSelected: (name: LooseUnion<FeatureCategory>)` - emitted when a config header is selected in the config menu, with the name of the selected header. This is usually the feature category name, but can also be an info category name (currently just `"about"` and `"changelog"`).
+      - `bytm:siteEvent:voteLabelsAdded` (no arguments) - emitted after the Return YouTube Dislike vote labels were added to the DOM.
+      - `bytm:siteEvent:updateVolumeSliderLabel` (no arguments) - emitted to make the volume slider label update its text content.
+    - Added SelectorObserver instance `searchPage`, as the root observer for the YTM search page.
+    - Added new intents:
+      - `InternalAccess` (256) (currently only used by `getInternals()` for deep integration or future core library usage)
+      - `FullAccess` (512) (grants all intents - only use if absolutely necessary!)
 - **Internal Changes:**
+  - Added `@antifeature tracking` directive, to indicate that services temporarily log IP addresses and the currently playing song.
+  - Added [`@sv443-network/coreutils`](https://github.com/Sv443-Network/CoreUtils) as a new core library, accessible on the BYTM API via `BYTM.CoreUtils`.
+  - Updated [`@sv443-network/userutils`](https://github.com/Sv443-Network/UserUtils) to v9.4.4 to fix three bugs related to translations and the template literal placeholder format. This now allows specifying a single placeholder multiple times per translation string.
+  - Made `siteEvents` system use CoreUtils' improved `NanoEmitter`, so it can now also be used to listen to multiple events using `.onMulti()`.
+  - Moved `siteEvents` initialization to an earlier point, so that it is no longer initialized alongside features. It is now available to plugins at an earlier point in time, before any feature has started initializing, but still after plugin initialization has finished.
+  - Made plugin-specific `events` (returned by `registerPlugin()`) use CoreUtils' new `NanoEmitter` as well.
+  - Added static data fetching system, which will fetch the file at `assets/data.json` to display important alerts and selectors and domain-to-hostname mappings to respond to layout changes without requiring the script to be updated. This data is fetched once per session from the `main` branch on GitHub.
+  - Improved script performance by refactoring the feature initialization process. As an effect of this, `bytm:ready` will now emit consistently, but also earlier, and the new event `bytm:allReady` will emit much later, once all features have been initialized or the configured timeout has been reached.
+  - Updated a boatload of translation values and translation keys. [Use this page to find all changes.](https://github.com/Sv443/BetterYTM/compare/v3.0.0...v3.1.0)
+  - Some resources are now cached in GM storage, when using the internal function `resourceAsString()` for even better feature init performance.
+  - BYTM now targets [ES2020](https://en.wikipedia.org/wiki/ECMAScript_version_history#11th_Edition_%E2%80%93_ECMAScript_2020)
+  - Added new GM menu commands:
+    - These commands are now available by default:
+      - Reset the config to its default values
+      - Export all config data (WIP - don't rely on this yet!)
+      - Export all data, including caches (WIP - don't rely on this yet!)
+      - Import data from a previous export (WIP - don't rely on this yet!)
+      - Download a console log file to attach to a GitHub issue
+    - In advanced mode, you can also use these additional commands:
+      - Decompress all GM storage values and list them in the JS console
+      - List all raw GM storage values in the JS console
+      - Delete all GM storage values (full wipe of *all* the data BYTM has accumulated in any way)
+      - Reset the version session counter (makes the flame icons in the config menu reappear, nothing else for now)
+      - List active SelectorObserver listeners in the JS console
+      - Compress a value (using BYTM's default compression algorithm and encoding)
+      - Decompress a value (using BYTM's default compression algorithm and encoding)
+      - Log the script's initialization timings to the JS console
+      - Toggle developer treatments (experiments that are not quite ready for production)
+  - Added error alert when the script fails to initialize, like when it tries to fetch vital assets from a local server that isn't running.
+  - Removed `GM.getResourceUrl()` entirely in favor of fetching resources from a CDN for better performance and caching.
+  - Arguments to the translation functions can now also be an object that map a placeholder key to a string value, e.g. `{ name: "John" }` for a translation using the new placeholder syntax, e.g. `"Hello, ${name}!"`.
+  - The functions `sanitizeArtists()` and `sanitizeSong()` will now replace some common Unicode punctuation symbol variants with their ASCII counterparts (e.g. `‘` -> `'`).
+  - Moved the `general` feature category to the top of the config menu.
+  - Wrapped feature config elements in a new container element with the ID `bytm-ftconf-category-${categoryName}` to allow for the sidenav to disable all but one at a time.
+  - Added ability to render info categories in the config menu that render arbitrary elements, instead of the typical feature-list-container style rendering.  
+  Their navigation headers will be aligned to the bottom. They use the same general formatting as the new feature category containers, just with their own `categoryName` (currently they are `"about"` and `"changelog"`).
+  - Added intent checking function `pluginHasPerms()` to `interface.ts`, which will now check for the given intents (or `FullAccess`) before allowing authenticated functions to be called by the invoking plugin.
+  - Added CSS var `--bytm-menu-bg-highlight-2` (hex, opacity 1) as a secondary level of highlight to `--bytm-menu-bg-highlight`.
+  - Renamed CSS var `--bytm-dialog-height-max` to `--bytm-dialog-target-height`, but only in the config menu due to diverging logic. All `BytmDialog`s will still use `--bytm-dialog-height-max`.
+  - Improved number argument resolution of the functions in `src/utils/logging.ts` (if the last argument is a number that exceeds the range of the enum `LogLevel`, it will not be interpreted as a log level anymore, but as an actual number to be logged).
+  - Added dev menu option to print an initialization timing report to the console for debugging performance issues.
 
 </details>
 
 <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>
+  <a href="https://github.com/Sv443/BetterYTM/pull/148" rel="noopener noreferrer">Also see pull request #148</a>
 </div>
 
 <div class="split"></div>
@@ -53,7 +198,7 @@
   - Config menu will now be correctly set as inert when a BytmDialog is opened over top
   - 🎵 Fixed \"remove from queue\" button sometimes deleting playlist entries instead of queue items
 
-<details><summary>Click to expand internal and plugin changes</summary>
+<details><summary>Click to expand plugin and internal changes</summary>
 
 - **Plugin Changes:**
   - See [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for full documentation

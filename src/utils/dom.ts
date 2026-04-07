@@ -1,10 +1,11 @@
-import { addGlobalStyle, consumeStringGen, getUnsafeWindow, isDomLoaded, randomId, type StringGen, type Stringifiable, onDomLoad } from "@sv443-network/userutils";
+import { consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
+import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
-import { error, fetchCss, getDomain, t } from "./index.js";
-import { addSelectorListener } from "../observers.js";
-import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "../types.js";
-import { siteEvents } from "../siteEvents.js";
-import { showPrompt } from "../dialogs/prompt.js";
+import { error, fetchCss, getDomain, t } from "@util/index.ts";
+import { addSelectorListener } from "@/observers.ts";
+import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "@/types.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { showPrompt } from "@dialog/prompt.ts";
 
 //#region vid elem
 
@@ -107,7 +108,7 @@ function ytForceShowVideoTime() {
     return false;
 
   const defaultProps = {
-    // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
+    // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18
     view: getUnsafeWindow(),
     bubbles: true,
     cancelable: false,
@@ -144,7 +145,7 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
         await onDomLoad();
 
       const vidEl = getVideoElement();
-      if(vidEl && (vidEl?.readyState ?? 0) > 0)
+      if(vidEl && (vidEl?.readyState ?? 0) === 4)
         return res(vidEl);
 
       if(!location.pathname.startsWith("/watch"))
@@ -200,6 +201,20 @@ export function getLikeDislikeBtns() {
       likeState = "DISLIKE";
     else if(likeBtn || dislikeBtn)
       likeState = "INDIFFERENT";
+
+    // yt shorts:
+    if(!btnRenderer && !likeBtn && !dislikeBtn) {
+      btnRenderer = document.querySelector<HTMLElement>("reel-action-bar-view-model") ?? undefined;
+      likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
+      dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+    }
+
+    const liked = likeBtn?.getAttribute("aria-pressed") === "true";
+    const disliked = dislikeBtn?.getAttribute("aria-pressed") === "true";
+
+    if(likeBtn && dislikeBtn)
+      likeState = liked ? "LIKE" : disliked ? "DISLIKE" : "INDIFFERENT";
+
     break;
   }
   }
@@ -217,7 +232,7 @@ export function getLikeDislikeBtns() {
 /**
  * Adds a style element to the DOM at runtime.
  * @param css The CSS stylesheet to add
- * @param ref A reference string to identify the style element - defaults to a random 5-character string
+ * @param ref A reference string to identify the style element - defaults to a random 5-character string - has to be compatible with the HTML id attribute
  * @param transform A function to transform the CSS before adding it to the DOM
  */
 export async function addStyle(css: StringGen, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
@@ -233,12 +248,17 @@ export async function addStyle(css: StringGen, ref?: string, transform: (css: st
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
 export async function addStyleFromResource(key: StyleResourceKey, transform: (css: string) => Stringifiable = (c) => c) {
-  const css = await fetchCss(key);
-  if(css) {
-    await addStyle(String(transform(css)), key.slice(4));
-    return true;
+  try {
+    const css = await fetchCss(key);
+    if(css) {
+      await addStyle(String(transform(css)), key.slice(4));
+      return true;
+    }
   }
-  return false;
+  catch(err) {
+    error(`Couldn't add style from resource "${key}":`, err);
+    return false;
+  }
 }
 
 /** Sets a global CSS variable on the &lt;document&gt; element with the name `--bytm-global-${name}` */
@@ -291,6 +311,8 @@ export function copyToClipboard(text: Stringifiable) {
   }
 }
 
+const trustedTypesSupported = typeof window?.trustedTypes?.createPolicy === "function";
+
 let ttPolicy: TTPolicy | undefined;
 
 // workaround for supporting `target="_blank"` links without compromising security:
@@ -315,6 +337,14 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
 });
 
 /**
+ * Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links.  
+ * By default, automatically returns a TrustedHTML object if the browser supports it.
+ */
+export function sanitizeHtml(html: Stringifiable, returnTrustedType = trustedTypesSupported) {
+  return DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: returnTrustedType });
+}
+
+/**
  * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
  * If no HTML string is given, the element's innerHTML will be set to an empty string.
  */
@@ -322,16 +352,13 @@ export function setInnerHtml(element: HTMLElement, html?: Stringifiable | null) 
   if(!html)
     html = "";
 
-  if(!ttPolicy && window?.trustedTypes?.createPolicy) {
-    ttPolicy = window.trustedTypes.createPolicy("bytm-sanitize-html", {
-      createHTML: (dirty: string) => DOMPurify.sanitize(dirty, {
-        RETURN_TRUSTED_TYPE: true,
-      }) as unknown as string,
+  if(!ttPolicy && trustedTypesSupported) {
+    ttPolicy = window.trustedTypes!.createPolicy("bytm-sanitize-html", {
+      createHTML: (html: Stringifiable) => sanitizeHtml(html, true) as unknown as string,
     });
   }
 
-  element.innerHTML = ttPolicy?.createHTML(String(html))
-    ?? DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: false });
+  element.innerHTML = ttPolicy?.createHTML(html) ?? sanitizeHtml(html, false);
 }
 
 /** Creates an invisible link element and clicks it to download the provided string or Blob data as a file */
@@ -344,5 +371,24 @@ export function downloadFile(fileName: string, data: string | Blob, mimeType = "
   document.body.appendChild(a);
   a.click();
 
-  setTimeout(() => a.remove(), 1);
+  return new Promise<void>((res) => {
+    setTimeout(() => {
+      a.remove();
+      res();
+    }, 1);
+  });
+}
+
+/**
+ * Moves the given {@linkcode element} to the {@linkcode target} element with the specified {@linkcode position} (after the target element, as a sibling by default).  
+ * Doesn't mess with any attached event listeners or other properties of the element.  
+ * @returns Returns the moved element
+ */
+export function transplantElement<TElem extends Element = HTMLElement>(element: TElem, target: Element, position: InsertPosition = "afterend"): TElem {
+  const inserted = target.insertAdjacentElement(position, element);
+
+  if(!inserted)
+    throw new Error(`Failed to transplant element at position "${position}"`);
+
+  return element;
 }

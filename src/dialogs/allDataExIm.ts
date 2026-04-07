@@ -1,11 +1,10 @@
-import { consumeStringGen, type SerializedDataStore } from "@sv443-network/userutils";
-import { copyToClipboard, downloadFile, error, onInteraction, t } from "../utils/index.js";
-import { ExImDialog, type ExImDialogOpts } from "../components/ExImDialog.js";
-import { getSerializerStoresIds, getStoreSerializer } from "../serializer.js";
-import { showToast } from "../components/toast.js";
-import { createRipple } from "../components/ripple.js";
-import { createLongBtn } from "../components/longButton.js";
-import packageJson from "../../package.json" with { type: "json" };
+import { consumeStringGen, type SerializedDataStore } from "@sv443-network/coreutils";
+import { copyToClipboard, downloadFile, error, onInteraction, t } from "@util/index.ts";
+import { ExImDialog, type ExImDialogOpts } from "@comp/ExImDialog.ts";
+import { getSerializerStoresIds, getDSSerializer } from "@/serializers.ts";
+import { showToast } from "@comp/toast.ts";
+import { createLongBtn } from "@comp/longButton.ts";
+import packageJson from "@root/package.json" with { type: "json" };
 
 let allDataExImDialog: ExImDialog | undefined;
 
@@ -26,7 +25,7 @@ export async function getAllDataExImDialog() {
       title: () => t("all_data_exim_title"),
       descExport: () => t("all_data_exim_export_desc"),
       descImport: () => t("all_data_exim_import_desc"),
-      exportData: async () => await getStoreSerializer().serialize(),
+      exportData: async () => await getDSSerializer().serialize(),
       onImport,
     };
 
@@ -38,10 +37,10 @@ export async function getAllDataExImDialog() {
   return allDataExImDialog;
 }
 
-/** Creates and/or returns the AutoLikeExIm dialog */
+/** Called when data is imported */
 async function onImport(data: string) {
   try {
-    const serializer = getStoreSerializer();
+    const serializer = getDSSerializer(true);
     await serializer.deserialize(data);
 
     showToast(t("import_success"));
@@ -131,21 +130,23 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
     const exportCenterBtnCont = document.createElement("div");
     exportCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
 
-    const cpBtn = createRipple(await createLongBtn({
+    const cpBtn = await createLongBtn({
       title: t("copy_to_clipboard"),
       text: t("copy"),
       resourceName: "icon-copy",
+      ripple: true,
       async onClick({ shiftKey }) {
         const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
         copyToClipboard(filter(await consumeStringGen(copyData)));
         await showToast({ message: t("copied_to_clipboard") });
       },
-    }));
+    });
 
-    const dlBtn = createRipple(await createLongBtn({
+    const dlBtn = await createLongBtn({
       title: t("download_file"),
       text: t("download"),
       resourceName: "icon-arrow_down",
+      ripple: true,
       async onClick({ shiftKey }) {
         const dlData = filter(await consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
         copyToClipboard(dlData);
@@ -159,7 +160,7 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
         downloadFile(fileName, dlData, "application/json");
         await showToast({ message: t("downloaded_file_hint") });
       },
-    }));
+    });
 
     exportCenterBtnCont.append(cpBtn, dlBtn);
     exportPane.append(descEl, dataEl, exportPartsCont, exportCenterBtnCont);
@@ -187,12 +188,13 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
     const importCenterBtnCont = document.createElement("div");
     importCenterBtnCont.classList.add("bytm-all-data-exim-dialog-center-btn-cont");
 
-    const importBtn = createRipple(await createLongBtn({
+    const importBtn = await createLongBtn({
       title: t("start_import_tooltip"),
       text: t("import"),
       resourceName: "icon-upload",
+      ripple: true,
       onClick: () => opts.onImport(dataEl.value),
-    }));
+    });
 
     importCenterBtnCont.appendChild(importBtn);
     importPane.append(descEl, dataEl, importCenterBtnCont);

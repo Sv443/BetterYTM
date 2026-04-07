@@ -6,13 +6,15 @@ import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
 import k from "kleur";
 import "dotenv/config";
-import type { RollupArgs } from "../types.js";
+import type { RollupArgs } from "../types.ts";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import localesJson from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
+import type en_US from "../../assets/translations/en-US.json";
 import pkg from "../../package.json" with { type: "json" };
 
-const { argv, env, exit, stdout } = process;
+const { argv, env, stdout } = process;
+const exit = (...args: Parameters<typeof process.exit>) => process.exit(...args);
 
 //#region types
 
@@ -42,12 +44,13 @@ type BuildStats = {
   sizeKiB: number;
   mode: string;
   timestamp: number;
+  uid: string;
 };
 
 //#region vars
 
 const buildTs = Date.now();
-/** Used to force the browser and userscript extension to refresh resources */
+/** Random, URL-friendly string used to force the browser and userscript extension to refresh resources */
 const buildUid = randomId(12, 36);
 
 const mode = getCliArg<CliArg<"config-mode">>("mode", "development");
@@ -63,9 +66,7 @@ const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Local URL of the userscript file when served by the dev server */
 const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}` as const;
 /** Extra `@grant` directives added when `mode` is `development` */
-const devGrants = [
-  "GM.registerMenuCommand",
-] as const;
+const devGrants: string[] = [] as const;
 
 const repo = "Sv443/BetterYTM" as const;
 const userscriptDistFile = `BetterYTM${suffix}.user.js` as const;
@@ -78,16 +79,16 @@ const hostScriptUrl = (() => {
   switch(host) {
   case "greasyfork": return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js" as const;
   case "openuserjs": return "https://openuserjs.org/src/scripts/Sv443/BetterYTM.user.js" as const;
-  default:           return `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptDistFile}` as const;
+  default:           return `https://raw.githubusercontent.com/${repo}/refs/heads/main/dist/${userscriptDistFile}` as const;
   }
 })();
-const hostMetaUrl = `https://github.com/${repo}/raw/refs/heads/main/dist/${userscriptMetaFile}` as const;
+const hostMetaUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/dist/${userscriptDistFile}` as const;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
 
 /** Directives that are only added in dev mode */
-const devDirectives = mode !== "development"
+const devDirectives = mode !== "development" || devGrants.length === 0
   ? undefined
   : devGrants.map((g) => `// @grant             ${g}`).join("\n");
 
@@ -111,15 +112,14 @@ async function main() {
         BRANCH: branch,
         HOST: host,
         BUILD_NUMBER: buildNbr,
+        BUILD_TIMESTAMP: buildTs,
         ASSET_SOURCE: assetSource,
         DEV_SERVER_PORT: devServerPort,
       },
     );
 
-    if(mode === "production")
-      userscript = removeSourcemapComments(userscript);
-    else
-      userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
+    // this ultra custom post-build script sadly renders sourcemaps useless
+    userscript = removeSourcemapComments(userscript);
 
     // insert userscript header and final newline
     const finalUserscript = `${header}${subHeader}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
@@ -156,8 +156,6 @@ async function main() {
       }
     }
 
-    await createSvgSpritesheet();
-
     console.info([
       "",
       `Successfully built for ${envText} - build number (last commit SHA): ${buildNbr}`,
@@ -170,6 +168,7 @@ async function main() {
       sizeKiB,
       mode,
       timestamp: buildTs,
+      uid: buildUid,
     };
 
     const newBuildStats = [
@@ -189,11 +188,11 @@ async function main() {
 
 //#region string replacements
 
-/** Replaces tokens in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with their respective value */
-function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
+/** Replaces patterns in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with the respective stringified value. */
+function insertValues(str: string, replacements: Record<string, Stringifiable>) {
   for(const key in replacements)
-    userscript = userscript.replace(new RegExp(`(\\/\\*\\s*)?#{{${key}}}(\\s*\\*\\/)?`, "gm"), String(replacements[key]));
-  return userscript;
+    str = str.replace(new RegExp(`(\\/\\*\\s*)?#{{${key}}}(\\s*\\*\\/)?`, "gm"), String(replacements[key]));
+  return str;
 }
 
 /** Removes sourcemapping comments */
@@ -209,13 +208,14 @@ async function getHeaders(buildNbr: string) {
   const resourcesDirectives = await getResourceDirectives(buildNbr);
   const requireDirectives = await getRequireDirectives();
   const localizedDescriptions = getLocalizedDescriptions();
+  const localizedAntifeatures = await getLocalizedAntifeatures();
 
-  const header = `\
+  const header = ([
+    `\
 // ==UserScript==
 // @name              ${pkg.userscriptName}
-// @namespace         ${pkg.homepage}
+// @namespace         ${pkg.namespace}
 // @version           ${pkg.version}
-// @description       ${pkg.description}
 // @homepageURL       ${pkg.homepage}#readme
 // @supportURL        ${pkg.bugs.url}
 // @license           ${pkg.license}
@@ -224,13 +224,17 @@ async function getHeaders(buildNbr: string) {
 // @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
-// @run-at            document-start\
-${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
+// @run-at            document-start`,
+    localizedDescriptions,
+    localizedAntifeatures,
+    `\
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
 // @connect           youtube.com
+// @connect           i.ytimg.com
 // @connect           returnyoutubedislikeapi.com
+// @connect           itunes.apple.com
 // @noframes
 // @updateURL         ${hostMetaUrl}
 // @downloadURL       ${hostScriptUrl}
@@ -238,14 +242,17 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.setValue
 // @grant             GM.deleteValue
 // @grant             GM.listValues
+// @grant             GM.addValueChangeListener
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
-// @grant             unsafeWindow\
-${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
-${requireDirectives ? "\n" + requireDirectives : ""}\
-${devDirectives ? "\n" + devDirectives : ""}
+// @grant             GM.registerMenuCommand
+// @grant             unsafeWindow`,
+    resourcesDirectives,
+    requireDirectives,
+    devDirectives,
+    `\
 // ==/UserScript==
 /*
 ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -255,14 +262,32 @@ ${devDirectives ? "\n" + devDirectives : ""}
 
         Made with ❤️ by Sv443
 I welcome every contribution on GitHub!
-  https://github.com/Sv443/BetterYTM
+  ${pkg.homepage}
+
+
+You can install the latest in-development version here:
+${pkg.devVersionUrl}
+
 */
-` as const;
+`] as const)
+    .filter(Boolean)
+    .join("\n");
+
+  const greasyForkDisclaimer = `
+/*
+  Note: The GreasyFork version has to fit within a size limit of 500kB, so comments had to be removed.
+  If you want install the full, unmodified version, please use one of these sources instead:
+    - GitHub: ${pkg.hosts.github}
+    - OpenUserJS: ${pkg.hosts.openuserjs}
+*/
+`;
 
   const subHeader = `
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
+${host === "greasyfork" ? greasyForkDisclaimer : ""}
 ` as const;
+
   return [header, subHeader];
 }
 
@@ -278,7 +303,8 @@ function resolveResourceVal(value: string, buildNbr: string) {
     ["\\$BRANCH", branch],
     ["\\$HOST", host],
     ["\\$BUILD_NUMBER", buildNbr],
-    ["\\$UID", buildUid],
+    ["\\$BUILD_TIMESTAMP", String(buildTs)],
+    ["\\$BUILD_UID", buildUid],
   ] as const;
 
   return replacements.reduce((acc, [key, val]) => acc.replace(new RegExp(key, "g"), val), value);
@@ -366,36 +392,6 @@ async function getResourceDirectives(ref: string) {
   }
 }
 
-//#region @resource SVG spritesheet
-
-/** Compiles all `icon-*` assets into a single SVG spritesheet file and writes it to `assets/spritesheet.svg` */
-async function createSvgSpritesheet() {
-  try {
-    const sprites: string[] = [];
-
-    for(const [name, val] of Object.entries(resourcesJson.resources)) {
-      if(!/^icon-/.test(name))
-        continue;
-
-      const iconPath = resolveResourcePath(typeof val === "string" ? val : val.path);
-      const iconSvg = String(await readFile(iconPath)).replace(/\n/g, "");
-
-      sprites.push(`<symbol id="bytm-svg-${name}">\n    ${iconSvg}\n  </symbol>`);
-    }
-
-    const spritesheet = `\
-<svg xmlns="http://www.w3.org/2000/svg" id="bytm-svg-spritesheet" style="display: none;" inert="true">
-  ${sprites.join("\n  ")}
-</svg>`;
-
-    await writeFile(resolveResourcePath("spritesheet.svg"), spritesheet);
-  }
-  catch(err) {
-    console.error(k.red("Error while creating SVG spritesheet:"), err);
-    return schedExit(1);
-  }
-}
-
 //#region @require
 
 /** Returns the `@require` directive block for each defined package in `assets/require.json`, using the version numbers from `package.json` if found */
@@ -427,7 +423,7 @@ function getRequireEntry(entry: RequireObjPkg) {
   if(entry.pkgName in deps)
     version = deps[entry.pkgName].replace(/[^0-9.]/g, "");
   else
-    throw new Error(`Library '${entry.pkgName}', referenced in 'assets/require.json' not found in dependencies or devDependencies`);
+    throw new Error(`Library '${entry.pkgName}' (referenced in 'assets/require.json') not found in package.json's dependencies or devDependencies`);
 
   return `// @require           ${baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
 }
@@ -448,7 +444,7 @@ async function getLinkedPkgs() {
     try {
       const scriptCont = String(await readFile(resolve(entry.link)));
       const trimmedScript = scriptCont
-        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, "");
+        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, ""); // remove userlibrary headers
       retStr += `\n// <link ${entry.pkgName}>\n${trimmedScript}\n// </link ${entry.pkgName}>\n\n`;
     }
     catch(err) {
@@ -462,7 +458,7 @@ async function getLinkedPkgs() {
 
 //#region @description:localized
 
-/** Returns the @description directive block for each defined locale in `assets/locales.json` */
+/** Returns the `@description` directive block for each defined locale in `assets/locales.json` */
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
@@ -470,6 +466,10 @@ function getLocalizedDescriptions() {
       let loc = locale;
       if(loc.length < 5)
         loc += " ".repeat(5 - loc.length);
+
+      if(locale === "en-US")
+        descriptions.unshift(`// @description       ${userscriptDesc}`);
+
       descriptions.push(`// @description:${loc} ${userscriptDesc}`);
 
       if("altLocales" in rest) {
@@ -481,11 +481,58 @@ function getLocalizedDescriptions() {
         }
       }
     }
-    return descriptions.join("\n") + "\n";
+    return descriptions.join("\n");
   }
   catch(err) {
     console.warn(k.yellow("No localized descriptions found:"), err);
   }
+}
+
+//#region @antifeature
+
+/** Returns the `@antifeature` directive block for each defined antifeature, with translations. */
+async function getLocalizedAntifeatures() {
+  const antifeatures = ["tracking"] as const;
+
+  const antifeatureDescriptions: string[] = [];
+
+  for(const antifeature of antifeatures) {
+    for(const [locale, localeData] of Object.entries(localesJson)) {
+      const trFilePath = resolveResourcePath(`translations/${locale}.json`);
+      const trFile = JSON.parse(String(await readFile(trFilePath))) as typeof en_US;
+
+      if(!("meta" in trFile) || !("antifeatures" in trFile.meta) || !(antifeature in trFile.meta.antifeatures))
+        continue;
+
+      const desc = trFile.meta.antifeatures[antifeature];
+      if(!desc || desc.length === 0)
+        continue;
+
+      let loc = locale;
+      if(loc.length < 5)
+        loc += " ".repeat(5 - loc.length);
+
+      const getAntiFeatStr = (tagSuffix = "      ") => `// @antifeature${tagSuffix} ${antifeature} ${desc}`;
+
+      if(locale === "en-US")
+        antifeatureDescriptions.unshift(getAntiFeatStr());
+
+      antifeatureDescriptions.push(getAntiFeatStr(`:${loc}`));
+
+      if("altLocales" in localeData) {
+        for(const altLoc of localeData.altLocales) {
+          let alt = altLoc.replace(/_/, "-");
+          if(alt.length < 5)
+            alt += " ".repeat(5 - alt.length);
+          antifeatureDescriptions.push(getAntiFeatStr(`:${alt}`));
+        }
+      }
+    }
+  }
+
+  if(antifeatureDescriptions.length > 0)
+    return antifeatureDescriptions.join("\n");
+  return undefined;
 }
 
 //#region @resource
@@ -522,14 +569,14 @@ function resolveResourcePath(path: string): string {
 
 //#region utils/process
 
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
-/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
-  const arg = argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
-  const val = arg?.split("=")?.[1];
+/** Returns the value of a CLI argument (matching `^--arg-name[\s=]`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(argName: string, defaultVal: TReturn | (string & {})): TReturn
+/** Returns the value of a CLI argument (matching `^--arg-name[\s=]`) or undefined if it doesn't exist */
+function getCliArg<TReturn extends string = string>(argName: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
+/** Returns the value of a CLI argument (matching `^--arg-name[\s=]`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(argName: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
+  const arg = argv.find((v) => v.trim().match(new RegExp(`^(?:--)?${argName}[\\s=].+$`, "i")));
+  const val = arg?.split(/[\s=]/)?.[1];
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
 }
 

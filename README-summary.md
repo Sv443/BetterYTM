@@ -46,11 +46,11 @@ My work relies on donations, so if you like this userscript please consider [sup
 
 ## Installation
 Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
-1. **Install a userscript manager browser extension - I really recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)).**  
-  <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
+1. **Install a userscript manager browser extension - I highly recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)) or Tampermonkey.**  
+  <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey, Greasemonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
 
-2. **Then, [visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button on the latest release.**  
-  <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18#show_issue" target="_blank">more info here</a>).</sub>
+2. **Then, [visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button at the bottom of the latest stable release.**  
+  <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18" target="_blank">more info here</a>).</sub>
 
 <br>
   
@@ -61,12 +61,13 @@ Please make sure to manually remove and reinstall the userscript once the next r
 
 ## Integrations
 BetterYTM integrates with other extensions and tools to adjust their behavior and provide a smoother experience:
+- [Apple Music](https://music.apple.com/) (album artworks for thumbnail overlay)
 - [Dark Reader](https://darkreader.org/) (disabled fully or partially)
 - [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube) (BYTM respects the set theme)
 - [Return YouTube Dislike](https://returnyoutubedislike.com/) (shows approx. like and dislike counts)
 - [SponsorBlock](https://sponsor.ajay.app/) (compatibility adjustments)
 - [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) (BYTM respects the set theme)
-- [Apple Music](https://music.apple.com/) (album artworks for thumbnail overlay)
+- [Thumbnail Rating Bar for YouTube](https://github.com/elliotwaite/thumbnail-rating-bar-for-youtube) (rating bars can be removed on YTM)
   
 To find out more about these integrations, [click here](./src/dev/integrations.md)
 
@@ -108,9 +109,9 @@ In every case, only the bare minimum of data is sent to these services and only 
 This data includes the version of the userscript, your IP address, and the ID, title and author of the video you're watching.  
   
 Find more info about the privacy of these services here:
-- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md)
-- [SponsorBlock - Privacy Policy](https://gist.github.com/ajayyy/aa9f8ded2b573d4f73a3ffa0ef74f796#requests-sent-to-the-server-while-using-the-extension)
-- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en)
+- [Apple Music - Privacy Policy](https://www.apple.com/legal/privacy/data/en/apple-music/) (album and artist names, IP address)
+- [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
+- [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
 
 <br><br>
 
@@ -122,10 +123,18 @@ This project is based on my extensive template for making a userscript with Type
   
 > Note: Each folder contains a README.md file with further information about the contents. If you want to know more about a specific part of the project, please refer to these files.
 
+<br>
+
+### Special Thanks
+A big thank you to these people for their contributions to this project:
+- [indierodo](https://github.com/indierodo): Track numbers feature
+- [cryeprecision](https://github.com/cryeprecision): Exponential volume slider feature
+
 <br><br>
 
 ### Attributions
 This userscript depends on these projects:
+- [@sv443-network/coreutils](https://github.com/Sv443-Network/CoreUtils)
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
 - [compare-versions](https://npmjs.org/package/compare-versions)
 - [Cousine font](https://fonts.google.com/specimen/Cousine)
@@ -154,4 +163,4 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 Made with ❤️ by [Sv443](https://github.com/Sv443)  
 If you like this userscript, please consider [supporting me](https://github.com/sponsors/Sv443)  
   
-© 2022 Sv443 - [AGPL-3.0](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt)
+© 2022 Sv443 - [AGPL-3.0-or-later](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt)

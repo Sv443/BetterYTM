@@ -1,8 +1,8 @@
-import { getLocale, resourceAsString, setInnerHtml, t } from "../utils/index.js";
-import { BytmDialog } from "../components/BytmDialog.js";
-import { featInfo } from "../features/index.js";
-import type { FeatureKey } from "../types.js";
-import locales from "../../assets/locales.json" with { type: "json" };
+import { getLocale, resourceAsString, setInnerHtml, t } from "@util/index.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { featInfo } from "@feat/index.ts";
+import type { FeatureKey } from "@/types.ts";
+import locales from "@asset/locales.json" with { type: "json" };
 
 let featHelpDialog: BytmDialog | null = null;
 let curFeatKey: FeatureKey | null = null;
@@ -38,6 +38,8 @@ export async function getFeatHelpDialog({
 
 async function renderHeader() {
   const headerEl = document.createElement("div");
+  headerEl.id = "bytm-feat-help-dialog-header";
+  headerEl.classList.add("bytm-flex-row");
   setInnerHtml(headerEl, await resourceAsString("icon-help"));
 
   return headerEl;
@@ -49,16 +51,15 @@ async function renderBody() {
   const localeObj = locales?.[getLocale()];
 
   // insert sentence terminator if not present, to improve flow with screenreaders
-  let featText = t(`feature_desc_${curFeatKey}`);
-  if(localeObj) {
-    if(!featText.endsWith(localeObj.sentenceTerminator))
-      featText = `${localeObj.textDir !== "rtl" ? featText : ""}${localeObj.sentenceTerminator}${localeObj.textDir === "rtl" ? featText : ""}`;
-  }
+  let featText = t(`feature_desc.${curFeatKey}`);
+  const isLtr = localeObj?.textDir !== "rtl";
+  if(localeObj && !(localeObj.sentenceTerminators.every((termChar) => featText[isLtr ? "endsWith" : "startsWith"](termChar))))
+    featText = `${isLtr ? featText : ""}${localeObj.sentenceTerminatorNeutral}${!isLtr ? featText : ""}`;
 
   const featDescElem = document.createElement("h3");
   featDescElem.role = "subheading";
   featDescElem.tabIndex = 0;
-  featDescElem.textContent = featText;
+  featDescElem.textContent = featDescElem.title = featText;
   featDescElem.id = "bytm-feat-help-dialog-desc";
 
   const helpTextElem = document.createElement("div");
@@ -66,7 +67,7 @@ async function renderBody() {
   helpTextElem.tabIndex = 0;
   // @ts-expect-error
   const helpText: string | undefined = featInfo[curFeatKey!]?.helpText?.();
-  helpTextElem.textContent = helpText ?? t(`feature_helptext_${curFeatKey}`);
+  helpTextElem.textContent = helpTextElem.title = helpText ?? t(`feature_helptext.${curFeatKey}`);
 
   contElem.appendChild(featDescElem);
   contElem.appendChild(helpTextElem);

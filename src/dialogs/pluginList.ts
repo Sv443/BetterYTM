@@ -1,18 +1,19 @@
-import { BytmDialog } from "../components/BytmDialog.js";
-import { getRegisteredPlugins } from "../interface.js";
-import { getLocale, t } from "../utils/translations.js";
-import { setInnerHtml } from "../utils/dom.js";
-import { PluginIntent } from "../types.js";
-import packageJson from "../../package.json" with { type: "json" };
-import "./pluginList.css";
+import { bitSetHas } from "@sv443-network/coreutils";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins } from "@/interface.ts";
+import { getLocale, activeLocaleDir, t } from "@util/translations.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { PluginIntent } from "@/types.ts";
+import packageJson from "@root/package.json" with { type: "json" };
+import "@dialog/pluginList.css";
 
 let pluginListDialog: BytmDialog | null = null;
 
 /** Creates and/or returns the import dialog */
 export async function getPluginListDialog() {
-  return pluginListDialog = pluginListDialog ?? new BytmDialog({
+  return pluginListDialog ??= new BytmDialog({
     id: "plugin-list",
-    width: 800,
+    width: 900,
     height: 600,
     closeBtnEnabled: true,
     closeOnBgClick: true,
@@ -31,7 +32,7 @@ async function renderHeader() {
   titleElem.role = "heading";
   titleElem.ariaLevel = "1";
   titleElem.tabIndex = 0;
-  titleElem.textContent = t("plugin_list_title");
+  titleElem.textContent = t("plugin_list.title");
 
   return titleElem;
 }
@@ -46,13 +47,13 @@ async function renderBody() {
     const noPluginsEl = document.createElement("div");
     noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
     noPluginsEl.tabIndex = 0;
-    setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
-    noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
+    setInnerHtml(noPluginsEl, t("plugin_list.no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+    noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list.no_plugins_tooltip");
     listContainerEl.appendChild(noPluginsEl);
     return listContainerEl;
   }
 
-  for(const [, { def: { plugin, intents } }] of registeredPlugins) {
+  for(const [, { def: { plugin, intents: intentsRaw } }] of registeredPlugins) {
     const rowEl = document.createElement("div");
     rowEl.classList.add("bytm-plugin-list-row");
 
@@ -118,42 +119,65 @@ async function renderBody() {
       linkElCreated = true;
 
       const linkEl = document.createElement("a");
+      linkEl.id = `bytm-plugin-list-row-link-${key}`;
       linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
       linkEl.href = url;
       linkEl.tabIndex = 0;
       linkEl.target = "_blank";
       linkEl.rel = "noopener noreferrer";
-      linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
+      linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link.type_${key}`);
       linksList.appendChild(linkEl);
     }
 
-    const rightEl = document.createElement("div");
-    rightEl.classList.add("bytm-plugin-list-row-right");
-    rowEl.appendChild(rightEl);
+    const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
+    const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
+    const isDevPlugin = Boolean(
+      pluginIdentifier === devPluginIdentifier
+      && getPluginInfo(devPluginToken, devPluginIdentifier)
+    );
 
+    const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
     const intentsAmount = Object.keys(PluginIntent).length / 2;
-    const intentsArr = typeof intents === "number" && intents > 0 ? (() => {
-      const arr = [];
-      for(let i = 0; i < intentsAmount; i++)
-        if(intents & (2 ** i)) arr.push(2 ** i);
-      return arr;
-    })() : [];
+    const intentsArr = bitSetHas(intentsBitSet, PluginIntent.FullAccess)
+      ? [PluginIntent.FullAccess]
+      : (typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
+        const arr = [];
+        for(let i = 0; i < intentsAmount; i++)
+          if(intentsBitSet & (2 ** i)) arr.push(2 ** i);
+        return arr;
+      })() : []);
 
-    const permissionsHeaderEl = document.createElement("div");
-    permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
-    permissionsHeaderEl.tabIndex = 0;
-    permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
-    rightEl.appendChild(permissionsHeaderEl);
+    if(!isDevPlugin) {
+      if(intentsArr.length !== 0) {
+        const rightEl = document.createElement("div");
+        rightEl.classList.add("bytm-plugin-list-row-right");
+        rowEl.appendChild(rightEl);
 
-    for(const intent of intentsArr) {
-      const intentEl = document.createElement("div");
-      intentEl.classList.add("bytm-plugin-list-row-intent-item");
-      intentEl.tabIndex = 0;
-      intentEl.textContent = t(`plugin_intent_name_${PluginIntent[intent]}`);
-      intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
-      rightEl.appendChild(intentEl);
+        const permissionsHeaderEl = document.createElement("div");
+        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
+        permissionsHeaderEl.tabIndex = 0;
+        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list.permissions_header");
+        rightEl.appendChild(permissionsHeaderEl);
+
+        for(const intent of intentsArr) {
+          const intentEl = document.createElement("div");
+          intentEl.classList.add("bytm-plugin-list-row-intent-item");
+          intentEl.tabIndex = 0;
+          intentEl.textContent = t(`plugin_intent.name_${PluginIntent[intent]}`);
+          intentEl.title = intentEl.ariaLabel = t(`plugin_intent.description_${PluginIntent[intent]}`);
+          rightEl.appendChild(intentEl);
+        }
+      }
     }
-
+    else {
+      const devPluginNoteEl = document.createElement("div");
+      devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
+      devPluginNoteEl.tabIndex = 0;
+      devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list.dev_plugin_note");
+      const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
+      setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
+      rowEl.appendChild(devPluginNoteEl);
+    }
     listContainerEl.appendChild(rowEl);
   }
 

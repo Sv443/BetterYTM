@@ -1,7 +1,7 @@
-import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { getOS, onInteraction, setInnerHtml, t } from "../utils/index.js";
-import type { HotkeyObj } from "../types.js";
-import "./hotkeyInput.css";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { getOS, hasKey, onInteraction, setInnerHtml, t } from "@util/index.ts";
+import type { HotkeyObj } from "@/types.ts";
+import "@comp/hotkeyInput.css";
 
 type HotkeyInputProps = {
   initialValue?: HotkeyObj;
@@ -32,7 +32,12 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
   inputElem.role = "button";
   inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
   inputElem.dataset.state = infoElem.dataset.state = "inactive";
-  inputElem.innerText = initialValue?.code ?? t("hotkey_input_click_to_change");
+  if(typeof initialValue?.code === "string")
+    getHkInputContent(initialValue).then(content => {
+      inputElem.innerText = content;
+    });
+  else
+    inputElem.innerText = t("hotkey_input_click_to_change");
   inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
 
   const resetElem = document.createElement("span");
@@ -42,16 +47,22 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
   resetElem.textContent = `(${t("reset")})`;
   resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
 
-  const deactivate = () => {
-    if(!otherHotkeyInputActive)
+  const deactivate = (force = false) => {
+    if(!otherHotkeyInputActive && !force)
       return;
     emitSiteEvent("hotkeyInputActive", false);
     otherHotkeyInputActive = false;
     const curHk = currentHotkey ?? initialValue;
-    inputElem.innerText = curHk?.code ?? t("hotkey_input_click_to_change");
+    if(typeof curHk?.code === "string") {
+      getHkInputContent(curHk).then(content => {
+        inputElem.innerText = content;
+      });
+    }
+    else
+      inputElem.innerText = t("hotkey_input_click_to_change");
     inputElem.dataset.state = infoElem.dataset.state = "inactive";
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
-    setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
+    setInnerHtml(infoElem, curHk ? getHotkeyModifiersHtml(curHk) : "");
   };
 
   const activate = () => {
@@ -64,27 +75,31 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
   };
 
-  const resetClicked = (e: MouseEvent | KeyboardEvent) => {
+  // bandaid fix for the legacy config menu
+  const remountAC = new AbortController();
+  siteEvents.once("recreateCfgMenu", () => remountAC.abort());
+
+  window.addEventListener("bytm:dialogClosed:cfg-menu", () => inputElem.dataset.state === "active" && deactivate(true), { signal: remountAC.signal });
+
+  onInteraction(resetElem, async (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopImmediatePropagation();
 
     onChange(initialValue!);
     currentHotkey = initialValue!;
     deactivate();
-    inputElem.innerText = initialValue!.code;
-    setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue!));
+    inputElem.innerText = await getHkInputContent(initialValue!);
+    setInnerHtml(infoElem, getHotkeyModifiersHtml(initialValue!));
     resetElem.classList.add("bytm-hidden");
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
-  };
-
-  onInteraction(resetElem, resetClicked);
+  });
 
   if(initialValue)
-    setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
+    setInnerHtml(infoElem, getHotkeyModifiersHtml(initialValue));
 
   let lastKeyDown: HotkeyObj | undefined;
 
-  document.addEventListener("keypress", (e) => {
+  document.addEventListener("keypress", async (e) => {
     if(inputElem.dataset.state === "inactive")
       return;
     if(lastKeyDown?.code === e.code && lastKeyDown?.shift === e.shiftKey && lastKeyDown?.ctrl === e.ctrlKey && lastKeyDown?.alt === e.altKey)
@@ -99,16 +114,16 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
       alt: e.altKey,
     } satisfies HotkeyObj;
 
-    inputElem.innerText = hotkey.code;
+    inputElem.innerText = await getHkInputContent(hotkey);
     inputElem.dataset.state = infoElem.dataset.state = "inactive";
-    setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
+    setInnerHtml(infoElem, getHotkeyModifiersHtml(hotkey));
     inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
 
     onChange(hotkey);
     currentHotkey = hotkey;
-  });
+  }, { signal: remountAC.signal });
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", async (e) => {
     if(reservedKeys.filter(k => k !== "Tab").includes(e.code))
       return;
     if(inputElem.dataset.state !== "active")
@@ -143,25 +158,26 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     else
       resetElem.classList.add("bytm-hidden");
 
-    inputElem.innerText = hotkey.code;
+    inputElem.innerText = await getHkInputContent(hotkey);
     inputElem.dataset.state = infoElem.dataset.state = "inactive";
-    setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
-  });
+    setInnerHtml(infoElem, getHotkeyModifiersHtml(hotkey));
+  }, { signal: remountAC.signal });
 
-  siteEvents.on("cfgMenuClosed", deactivate);
+  const unsub = siteEvents.on("cfgMenuClosed", deactivate);
+  remountAC.signal.addEventListener("abort", () => unsub());
 
   inputElem.addEventListener("click", () => {
     if(inputElem.dataset.state === "inactive")
       activate();
     else
       deactivate();
-  });
+  }, { signal: remountAC.signal });
   inputElem.addEventListener("keydown", (e) => {
     if(reservedKeys.includes(e.code))
       return;
     if(inputElem.dataset.state === "inactive")
       activate();
-  });
+  }, { signal: remountAC.signal });
 
   wrapperElem.appendChild(resetElem);
   wrapperElem.appendChild(infoElem);
@@ -171,33 +187,51 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
 }
 
 /** Returns HTML for the hotkey modifier keys info element */
-function getHotkeyInfoHtml(hotkey: HotkeyObj) {
+function getHotkeyModifiersHtml(hotkey: HotkeyObj) {
   const modifiers = [] as string[];
-  hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
-  hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
-  hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
+  hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_ctrl")}</kbd>`);
+  hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
+  hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
   return `\
-<div style="display: flex; align-items: center;">
+<div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">
   <span>
     ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
   </span>
-  <span style="padding: 0px 5px;">
+  <span style="padding: 0px 5px; height: 20px;">
     ${modifiers.length > 0 ? "+" : ""}
   </span>
 </div>`;
 }
 
-/** Converts a hotkey object to a string */
-function hotkeyToString(hotkey: HotkeyObj | undefined) {
+async function getHkInputContent(hotkey: HotkeyObj) {
+  const trimCode = ({ code }: HotkeyObj) => {
+    if(/^Key[A-Z].+$/.test(code))
+      return code.slice(3);
+    if(/^Digit[0-9].+$/.test(code))
+      return code.slice(5);
+    return code.trim();
+  };
+
+  const keyCodeTrKey = `key_code.${hotkey.code}`;
+  const keyStr = await hasKey(keyCodeTrKey)
+    ? t(keyCodeTrKey)
+    : trimCode(hotkey);
+
+  return keyStr;
+}
+
+/** Converts a hotkey object to a string, with optional whitespace padding between symbols */
+function hotkeyToString(hotkey: HotkeyObj | undefined, padding = false) {
   if(!hotkey)
-    return t("hotkey_key_none");
+    return t("hotkey_input_none_selected");
   let str = "";
+  const p = padding ? " " : "";
   if(hotkey.ctrl)
-    str += `${t("hotkey_key_ctrl")}+`;
+    str += `${t("hotkey_modifier_ctrl")}${p}+${p}`;
   if(hotkey.shift)
-    str += `${t("hotkey_key_shift")}+`;
+    str += `${t("hotkey_modifier_shift")}${p}+${p}`;
   if(hotkey.alt)
-    str += `${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}+`;
+    str += `${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}${p}+${p}`;
   str += hotkey.code;
   return str;
 }

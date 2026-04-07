@@ -1,12 +1,12 @@
-import { getUnsafeWindow } from "@sv443-network/userutils";
-import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "./behavior.js";
-import { isIgnoredInputElement } from "./input.js";
-import { getFeature } from "../config.js";
-import { siteEvents } from "../siteEvents.js";
-import { getLikeDislikeBtns, getVideoTime } from "../utils/dom.js";
-import { getDomain } from "../utils/misc.js";
-import { error, info, log, warn } from "../utils/logging.js";
-import type { Domain, FeatKeysOfType, HotkeyObj } from "../types.js";
+import { getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
+import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "@feat/behavior.ts";
+import { isIgnoredInputElement } from "@feat/input.ts";
+import { getFeature } from "@/config.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { getLikeDislikeBtns, getVideoTime } from "@util/dom.ts";
+import { getDomain } from "@util/misc.ts";
+import { error, info, log, warn } from "@util/logging.ts";
+import type { Domain, FeatKeysOfType, HotkeyObj } from "@/types.ts";
 
 //#region init
 
@@ -20,12 +20,28 @@ export async function initHotkeys() {
   promises.push(initSiteSwitch());
   promises.push(initProxyHotkeys());
   promises.push(initSkipToRemTimeHotkey());
+  promises.push(initSearchBarHotkeys());
 
   return await Promise.allSettled(promises);
 }
 
-function hotkeyMatches(e: KeyboardEvent, hk: HotkeyObj) {
-  return e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt;
+//#region utils
+
+/** Checks whether the given keyboard event matches the given hotkey object. */
+function hotkeyMatches(evt: KeyboardEvent, hk: HotkeyObj) {
+  if(typeof hk !== "object" || typeof hk.code !== "string")
+    return false;
+
+  return evt.code === hk.code
+    && evt.shiftKey === hk.shift
+    && evt.ctrlKey === hk.ctrl
+    && evt.altKey === hk.alt;
+}
+
+/** Prevents bubbling and the default action of the given event. */
+function preventBubble(evt: Event) {
+  evt.preventDefault();
+  evt.stopImmediatePropagation();
 }
 
 //#region site switch
@@ -42,24 +58,28 @@ export async function initSiteSwitch() {
       return;
     if(isIgnoredInputElement())
       return;
-    if(siteSwitchEnabled && hotkeyMatches(e, getFeature("switchSitesHotkey")))
-      switchSite(domain === "yt" ? "ytm" : "yt");
-  });
-  siteEvents.on("hotkeyInputActive", (state) => {
+    if(siteSwitchEnabled) {
+      if(hotkeyMatches(e, getFeature("switchSitesNewTabHotkey")))
+        switchSite(domain === "yt" ? "ytm" : "yt", true);
+      else if(hotkeyMatches(e, getFeature("switchSitesHotkey")))
+        switchSite(domain === "yt" ? "ytm" : "yt");
+    }
+  }, { capture: true });
+  siteEvents.on("hotkeyInputActive", (hkInputActive) => {
     if(!getFeature("switchBetweenSites"))
       return;
-    siteSwitchEnabled = !state;
+    siteSwitchEnabled = !hkInputActive;
   });
   log("Initialized site switch listener");
 }
 
 /** Switches to the other site (between YT and YTM) */
-async function switchSite(newDomain: Domain) {
+async function switchSite(newDomain: Domain, inNewTab = false) {
   try {
     if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
       return warn("Not on a supported page, so the site switch is ignored");
 
-    let subdomain;
+    let subdomain: "music" | "www" | undefined;
     if(newDomain === "ytm")
       subdomain = "music";
     else if(newDomain === "yt")
@@ -72,26 +92,29 @@ async function switchSite(newDomain: Domain) {
 
     const { pathname, search, hash } = new URL(location.href);
 
-    const vt = await getVideoTime(0);
+    const time = await getVideoTime(0);
 
-    log(`Found video time of ${vt} seconds`);
+    log(`Found video time of ${time} seconds`);
 
     const cleanSearch = search.split("&")
       .filter((param) => !param.match(/^\??(t|time_continue)=/))
       .join("&");
 
-    const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+    const newSearch = typeof time === "number" && time > videoTimeThreshold ?
       cleanSearch.includes("?")
         ? `${cleanSearch.startsWith("?")
           ? cleanSearch
           : "?" + cleanSearch
-        }&time_continue=${vt}`
-        : `?time_continue=${vt}`
+        }&time_continue=${time}`
+        : `?time_continue=${time}`
       : cleanSearch;
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
     info(`Switching to domain '${newDomain}' at ${newUrl}`);
-    location.assign(newUrl);
+    if(inNewTab)
+      openInNewTab(newUrl, true);
+    else
+      location.assign(newUrl);
   }
   catch(err) {
     error("Error while switching site:", err);
@@ -107,13 +130,21 @@ async function initLikeDislikeHotkeys() {
     if(isIgnoredInputElement())
       return;
 
-    const { likeBtn, dislikeBtn } = getLikeDislikeBtns();
+    const { likeBtn, dislikeBtn, likeState } = getLikeDislikeBtns();
 
-    if(hotkeyMatches(e, getFeature("likeHotkey")))
+    if(hotkeyMatches(e, getFeature("likeHotkey"))) {
+      preventBubble(e);
+      if(!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE")
+        return;
       likeBtn?.click();
-    else if(hotkeyMatches(e, getFeature("dislikeHotkey")))
+    }
+    else if(hotkeyMatches(e, getFeature("dislikeHotkey"))) {
+      preventBubble(e);
+      if(!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE")
+        return;
       dislikeBtn?.click();
-  });
+    }
+  }, { capture: true });
 }
 
 //#region lyrics
@@ -125,9 +156,8 @@ async function initLyricsHotkey() {
     if(isIgnoredInputElement())
       return;
 
-    if(hotkeyMatches(e, getFeature("currentLyricsHotkey"))) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+    if(hotkeyMatches(e, getFeature("currentLyricsHotkey")) && location.pathname.startsWith("/watch")) {
+      preventBubble(e);
 
       const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
       lyricsBtn?.click();
@@ -145,22 +175,63 @@ async function initSkipToRemTimeHotkey() {
       return;
 
     if(hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+      preventBubble(e);
 
       await remTimeTryRestoreTime(true);
     }
+  }, { capture: true });
+}
+
+//#region search bar
+
+async function initSearchBarHotkeys() {
+  const getSearchBarInput = () => document.querySelector<HTMLInputElement>(
+    getDomain() === "ytm"
+      ? "ytmusic-search-box input"
+      : "yt-searchbox input"
+  );
+
+  const checkFocusHotkey = (e: KeyboardEvent) => {
+    if(isIgnoredInputElement() || !getFeature("focusSearchBarHotkeyEnabled"))
+      return;
+
+    preventBubble(e);
+
+    getSearchBarInput()?.focus();
+
+    log("Focused on the search bar");
+  };
+
+  const checkClearHotkey = (e: KeyboardEvent) => {
+    if(!getFeature("clearSearchBarHotkeyEnabled"))
+      return;
+
+    preventBubble(e);
+
+    const inputEl = getSearchBarInput();
+    if(inputEl) {
+      inputEl.value = "";
+      inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+  };
+
+  document.addEventListener("keydown", (e) => {
+    hotkeyMatches(e, getFeature("focusSearchBarHotkey")) && checkFocusHotkey(e);
+    hotkeyMatches(e, getFeature("clearSearchBarHotkey")) && checkClearHotkey(e);
+  }, {
+    capture: true, // ensure precedence over YTM's own listeners
   });
 }
 
 //#region proxy hotkeys
 
+/** Map of "proxy hotkey enable" feature keys to their respective proxy hotkey configurations */
 type ProxyHotkeys = Partial<Record<
   FeatKeysOfType<boolean>,
   Array<{
     /** The feature key that contains the hotkey object */
     hkFeatKey: FeatKeysOfType<HotkeyObj>;
-    /** Which key should have its default action and propagation prevented */
+    /** Which key should have its default action and propagation prevented (has to be a valid [`KeyboardEvent.code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code)) */
     preventKey?: string;
     /** Which domains this hotkey should be active on */
     domains: Domain[];
@@ -169,61 +240,68 @@ type ProxyHotkeys = Partial<Record<
   }>
 >>;
 
+type DispatchProxyHkOpts =
+  Required<Pick<KeyboardEventInit, "code" | "key" | "keyCode" | "which">>
+  & Pick<KeyboardEventInit, "shiftKey" | "ctrlKey" | "altKey" | "metaKey">;
+
 let lastProxyHkTime = 0;
+
+/** All proxy hotkey groups, identified by the feature key that toggles them off or on */
+const proxyHotkeys: ProxyHotkeys = {
+  rebindNextAndPrevious: [
+    {
+      hkFeatKey: "nextHotkey",
+      preventKey: "KeyJ",
+      domains: ["ytm"],
+      onPress: () => dispatchProxyKey({
+        code: "KeyJ",
+        key: "j",
+        keyCode: 74,
+        which: 74,
+      }),
+    },
+    {
+      hkFeatKey: "previousHotkey",
+      preventKey: "KeyK",
+      domains: ["ytm"],
+      onPress: () => dispatchProxyKey({
+        code: "KeyK",
+        key: "k",
+        keyCode: 75,
+        which: 75,
+      }),
+    },
+  ],
+  rebindPlayPause: [
+    {
+      hkFeatKey: "playPauseHotkey",
+      preventKey: "Space",
+      domains: ["ytm"],
+      onPress: () => dispatchProxyKey({
+        code: "Space",
+        key: " ",
+        keyCode: 32,
+        which: 32,
+      }),
+    },
+  ],
+  themeSongVisualizerHotkeyEnabled: [
+    {
+      hkFeatKey: "themeSongVisualizerHotkey",
+      domains: ["ytm"],
+      onPress: (e) => {
+        const toggleEl = document.querySelector<HTMLButtonElement>("#ts-visualizer-toggle");
+        if(toggleEl) {
+          preventBubble(e);
+          toggleEl.click();
+        }
+      },
+    },
+  ],
+} as const;
 
 /** Handles all proxy hotkeys, which trigger other hotkeys instead of their own actions */
 async function initProxyHotkeys() {
-  const dispatchProxyKey = (hkProps: Pick<KeyboardEventInit, "code" | "key" | "keyCode" | "which" | "shiftKey" | "ctrlKey" | "altKey" | "metaKey">) => {
-    document.body.dispatchEvent(new KeyboardEvent("keydown", {
-      ...hkProps,
-      bubbles: true,
-      cancelable: false,
-      view: getUnsafeWindow(),
-    }));
-    log("Dispatched proxy hotkey:", hkProps);
-  };
-
-  /** All proxy hotkey groups, identified by the feature key that toggles them off or on */
-  const proxyHotkeys: ProxyHotkeys = {
-    rebindNextAndPrevious: [
-      {
-        hkFeatKey: "nextHotkey",
-        preventKey: "KeyJ",
-        domains: ["ytm"],
-        onPress: () => dispatchProxyKey({
-          code: "KeyJ",
-          key: "j",
-          keyCode: 74,
-          which: 74,
-        }),
-      },
-      {
-        hkFeatKey: "previousHotkey",
-        preventKey: "KeyK",
-        domains: ["ytm"],
-        onPress: () => dispatchProxyKey({
-          code: "KeyK",
-          key: "k",
-          keyCode: 75,
-          which: 75,
-        }),
-      },
-    ],
-    rebindPlayPause: [
-      {
-        hkFeatKey: "playPauseHotkey",
-        preventKey: "Space",
-        domains: ["ytm"],
-        onPress: () => dispatchProxyKey({
-          code: "Space",
-          key: " ",
-          keyCode: 32,
-          which: 32,
-        }),
-      },
-    ]
-  } as const;
-
   document.addEventListener("keydown", (e) => {
     if(isIgnoredInputElement())
       return;
@@ -241,10 +319,8 @@ async function initProxyHotkeys() {
         if(nowTs - lastProxyHkTime < 15) // (holding keys makes them repeat every ~30ms, so this buffer should be adequate)
           continue;
 
-        if("preventKey" in rest && e.code === rest.preventKey) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-        }
+        if("preventKey" in rest && e.code === rest.preventKey)
+          preventBubble(e);
 
         if(hotkeyMatches(e, getFeature(hkFeatKey))) {
           lastProxyHkTime = nowTs;
@@ -255,7 +331,18 @@ async function initProxyHotkeys() {
       }
     }
   }, {
-    // ensure precedence over YTM's own listeners:
+    // ensure precedence over the page's own listeners:
     capture: true,
   });
 }
+
+function dispatchProxyKey(hkProps: DispatchProxyHkOpts) {
+  document.body.dispatchEvent(new KeyboardEvent("keydown", {
+    ...hkProps,
+    bubbles: true,
+    cancelable: true,
+    // see https://github.com/Sv443/BetterYTM/issues/18
+    view: getUnsafeWindow(),
+  }));
+  log("Dispatched proxy hotkey:", hkProps);
+};

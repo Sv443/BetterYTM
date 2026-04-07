@@ -7,14 +7,16 @@
   --bytm-error-col: #fa5b5b;
   --bytm-reload-col: #77e064;
   --bytm-ytm-only-circle-col: #f13440;
-  --bytm-ytm-only-note-col: #fff0e9;
+  --bytm-ytm-only-note-col: #fff2ec;
+  --bytm-flame-lower-col: #ffb300;
+  --bytm-flame-upper-col: #ff6f00;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg {
-  --bytm-dialog-width-max: 1200px;
-  --bytm-dialog-height-max: 900px;
+  --bytm-dialog-width-max: 1250px;
+  --bytm-dialog-target-height: 750px;
 }
 
 /* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
@@ -97,6 +99,16 @@
 
 /* #region cfg menu adornments */
 
+@keyframes svgPathFadeInOut {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
 .bytm-locale-icon svg path {
   fill: var(--bytm-locale-color, #fff);
 }
@@ -114,8 +126,14 @@
   height: 24px;
 }
 
-.bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff);
+.bytm-warning-icon svg path.circle {
+  fill: var(--bytm-error-col, #fff);
+  animation: svgPathFadeInOut 1.5s infinite;
+}
+
+.bytm-warning-icon svg path.bang {
+  fill: var(--bytm-error-col, #fff);
+  animation: svgPathFadeInOut 1.5s infinite;
 }
 
 .bytm-reload-icon svg path {
@@ -128,6 +146,18 @@
 
 .bytm-ytm-only-icon svg path.note {
   fill: var(--bytm-ytm-only-note-col, #fff);
+}
+
+.bytm-new-feature-icon svg path.outer {
+  fill: var(--bytm-new-feature-col, #fff);
+}
+
+.bytm-new-feature-icon svg path.flame-lower {
+  fill: var(--bytm-flame-lower-col, #fff);
+}
+
+.bytm-new-feature-icon svg path.flame-upper {
+  fill: var(--bytm-flame-upper-col, #fff);
 }
 
 /* #region welcome dialog */
@@ -185,4 +215,8 @@
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0;
+}
+
+#bytm-static-data-alert-dialog-header {
+  padding: 0px 8px;
 }
