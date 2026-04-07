@@ -817,7 +817,7 @@ function registerDevCommands() {
   isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () =>
     showPrompt({
       type: "alert",
-      message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+      message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
       extraButtons: [
         (dlg) => {
           const btn = document.createElement("button");
