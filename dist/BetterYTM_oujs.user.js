@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bb94fb25/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@aaaaec6f/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "openuserjs",
-    buildNumber: "bb94fb25",
-    buildTimestamp: "1775572059955",
+    buildNumber: "aaaaec6f",
+    buildTimestamp: "1775577661126",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -754,7 +754,14 @@ function tlp(locale, key, num, ...args) {
         return t(key, ...args);
     return trans;
 }
-/** Returns the appropriate translation for the given translatable object based on the current locale. Falls back to `en-US` */
+/** Creates a {@linkcode Translatable} object with the translations for the given key and arguments. */
+function createTranslatable(key, args = []) {
+    return Object.keys(localesJson).reduce((acc, locale) => {
+        acc[locale] = tl(locale, key, ...args);
+        return acc;
+    }, {});
+}
+/** Returns the appropriate translation for the given {@linkcode Translatable} object based on the current locale. Falls back to `en-US` */
 function resolveTranslatable(trnsl) {
     return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
 }//#region vars
@@ -10462,19 +10469,12 @@ function registerDevPlugin() {
     if (mode !== "development")
         return;
     try {
-        const description = [
-            "de-DE", "en-US", "es-ES", "fr-FR",
-            "hi-IN", "ja-JP", "pt-BR", "zh-CN",
-        ].reduce((acc, loc) => ({
-            ...acc,
-            [loc]: t("dev_plugin.description"),
-        }), {});
         const { token, events } = registerPlugin({
             plugin: {
                 name: t("dev_plugin.name"),
                 namespace: `${packageJson.namespace}+${devPluginId}`,
                 version: packageJson.version,
-                description,
+                description: createTranslatable("dev_plugin.description"),
                 homepage: {
                     source: packageJson.homepage,
                     changelog: `${packageJson.homepage}/blob/${branch}/changelog.md`,
