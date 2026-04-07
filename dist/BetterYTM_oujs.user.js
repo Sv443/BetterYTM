@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@17d791ef/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d0bfcff7/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "openuserjs",
-    buildNumber: "17d791ef",
-    buildTimestamp: "1775570394254",
+    buildNumber: "d0bfcff7",
+    buildTimestamp: "1775571568226",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1608,8 +1608,11 @@ class PromptDialog extends BytmDialog {
         const appendExtraButtons = async () => {
             for (const getBtnFn of extraButtons) {
                 const btn = await getBtnFn(this);
-                if (btn instanceof HTMLButtonElement)
+                if (btn instanceof HTMLElement) {
                     buttonsCont.appendChild(btn);
+                    if (btn instanceof HTMLButtonElement)
+                        btn.classList.add("bytm-prompt-dialog-button");
+                }
             }
         };
         if (extraButtonsPosition === "before")
@@ -4673,7 +4676,6 @@ async function mountCfgMenu() {
                     const getReloadAllBtn = async (dialog) => {
                         const reloadAllBtn = document.createElement("button");
                         reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
-                        reloadAllBtn.classList.add("bytm-prompt-dialog-button");
                         reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_now")}` : ""}`;
                         reloadAllBtn.ariaLabel = reloadAllBtn.title = `${t("reload_all_tabs_tooltip", scriptInfo$1.name)}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_tooltip", scriptInfo$1.name)}` : ""}`;
                         reloadAllBtn.tabIndex = 0;
@@ -12017,6 +12019,7 @@ function registerDevCommands() {
                 },
                 (dlg) => {
                     const btn = document.createElement("button");
+                    btn.classList.add("bytm-prompt-dialog-button");
                     btn.textContent = btn.ariaLabel = "Decompress";
                     btn.addEventListener("click", async () => {
                         const val = dlg.getInputValue();
