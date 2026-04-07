@@ -8,7 +8,7 @@
 
 > **getResourceUrl**(`name`): `Promise`\<`string`\>
 
-Defined in: [src/utils/misc.ts:382](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L382)
+Defined in: [src/utils/misc.ts:444](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L444)
 
 Returns the URL of a resource by its name, as defined in `assets/resources.json`, from the CDN the script was built for.  
 Tries to fall back to a base64-encoded data: URI in GM resources if the CDN resource was not found.

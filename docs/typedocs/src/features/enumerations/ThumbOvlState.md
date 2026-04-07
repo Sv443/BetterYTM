@@ -6,7 +6,7 @@
 
 # Enumeration: ThumbOvlState
 
-Defined in: [src/features/layout.ts:647](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/layout.ts#L647)
+Defined in: [src/features/layout.ts:647](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/layout.ts#L647)
 
 ## Enumeration Members
 
@@ -14,7 +14,7 @@ Defined in: [src/features/layout.ts:647](https://github.com/Sv443/BetterYTM/blob
 
 > **AM**: `2`
 
-Defined in: [src/features/layout.ts:650](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/layout.ts#L650)
+Defined in: [src/features/layout.ts:650](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/layout.ts#L650)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/features/layout.ts:650](https://github.com/Sv443/BetterYTM/blob
 
 > **Off**: `0`
 
-Defined in: [src/features/layout.ts:648](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/layout.ts#L648)
+Defined in: [src/features/layout.ts:648](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/layout.ts#L648)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [src/features/layout.ts:648](https://github.com/Sv443/BetterYTM/blob
 
 > **YT**: `1`
 
-Defined in: [src/features/layout.ts:649](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/layout.ts#L649)
+Defined in: [src/features/layout.ts:649](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/layout.ts#L649)

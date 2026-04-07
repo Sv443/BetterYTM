@@ -8,7 +8,7 @@
 
 > **getLyricsCacheEntry**(`artist`, `song`, `refreshEntry?`): [`LyricsCacheEntry`](../../types/type-aliases/LyricsCacheEntry.md) \| `undefined`
 
-Defined in: [src/features/lyricsCache.ts:61](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/lyricsCache.ts#L61)
+Defined in: [src/features/lyricsCache.ts:61](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/lyricsCache.ts#L61)
 
 Returns the cache entry for the passed artist and song, or undefined if it doesn't exist yet  
 [`artist`](#getlyricscacheentry) and [`song`](#getlyricscacheentry) need to be sanitized first!

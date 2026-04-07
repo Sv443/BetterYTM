@@ -8,7 +8,7 @@
 
 > **fixCfgKeys**(`cfg`): [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
 
-Defined in: [src/config.ts:403](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/config.ts#L403)
+Defined in: [src/config.ts:404](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/config.ts#L404)
 
 Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.  
 Returns a copy of the originally passed object if nothing needs to be fixed.

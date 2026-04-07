@@ -8,7 +8,7 @@
 
 > **addSelectorListener**\<`TElem`, `TDomain`\>(`observerName`, `selector`, `options`): `void`
 
-Defined in: [src/observers.ts:65](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/observers.ts#L65)
+Defined in: [src/observers.ts:65](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/observers.ts#L65)
 
 Interface function for adding listeners to the [`globservers`](../variables/globservers.md)  
 If the observers haven't been initialized yet, the function will queue calls until the `bytm:observersReady` event is emitted

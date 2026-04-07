@@ -8,7 +8,7 @@
 
 > **createLongBtn**(`__namedParameters`): `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/longButton.ts:51](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/longButton.ts#L51)
+Defined in: [src/components/longButton.ts:51](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/longButton.ts#L51)
 
 Creates a generic, circular, long button element with an icon and text.  
 Has classes for the enabled and disabled states for easier styling.  

@@ -8,7 +8,7 @@
 
 > **constructUrl**(`base`, `params`): `URL`
 
-Defined in: [src/utils/xhr.ts:30](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/xhr.ts#L30)
+Defined in: [src/utils/xhr.ts:30](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/xhr.ts#L30)
 
 Constructs a URL object from a base URL and a record of query parameters.  
 If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  

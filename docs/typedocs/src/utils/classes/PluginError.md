@@ -6,11 +6,13 @@
 
 # Class: PluginError
 
-Defined in: [src/utils/logging.ts:221](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/logging.ts#L221)
+Defined in: [src/utils/logging.ts:214](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/logging.ts#L214)
+
+Error class for errors thrown by the plugin interface - extends `DatedError`
 
 ## Extends
 
-- [`CustomError`](CustomError.md)
+- `DatedError`
 
 ## Constructors
 
@@ -18,7 +20,7 @@ Defined in: [src/utils/logging.ts:221](https://github.com/Sv443/BetterYTM/blob/9
 
 > **new PluginError**(`message`, `opts?`): `PluginError`
 
-Defined in: [src/utils/logging.ts:222](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/logging.ts#L222)
+Defined in: [src/utils/logging.ts:215](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/logging.ts#L215)
 
 #### Parameters
 
@@ -36,7 +38,7 @@ Defined in: [src/utils/logging.ts:222](https://github.com/Sv443/BetterYTM/blob/9
 
 #### Overrides
 
-[`CustomError`](CustomError.md).[`constructor`](CustomError.md#constructor)
+`DatedError.constructor`
 
 ## Properties
 
@@ -48,7 +50,19 @@ Defined in: node\_modules/.pnpm/typescript@5.9.3/node\_modules/typescript/lib/li
 
 #### Inherited from
 
-[`CustomError`](CustomError.md).[`cause`](CustomError.md#cause)
+`DatedError.cause`
+
+***
+
+### date
+
+> `readonly` **date**: `Date`
+
+Defined in: node\_modules/.pnpm/@sv443-network+coreutils@3.5.1/node\_modules/@sv443-network/coreutils/dist/lib/Errors.d.ts:7
+
+#### Inherited from
+
+`DatedError.date`
 
 ***
 
@@ -60,7 +74,7 @@ Defined in: node\_modules/.pnpm/typescript@5.9.3/node\_modules/typescript/lib/li
 
 #### Inherited from
 
-[`CustomError`](CustomError.md).[`message`](CustomError.md#message)
+`DatedError.message`
 
 ***
 
@@ -72,7 +86,7 @@ Defined in: node\_modules/.pnpm/typescript@5.9.3/node\_modules/typescript/lib/li
 
 #### Inherited from
 
-[`CustomError`](CustomError.md).[`name`](CustomError.md#name)
+`DatedError.name`
 
 ***
 
@@ -84,19 +98,7 @@ Defined in: node\_modules/.pnpm/typescript@5.9.3/node\_modules/typescript/lib/li
 
 #### Inherited from
 
-[`CustomError`](CustomError.md).[`stack`](CustomError.md#stack)
-
-***
-
-### time
-
-> `readonly` **time**: `number`
-
-Defined in: [src/utils/logging.ts:207](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/logging.ts#L207)
-
-#### Inherited from
-
-[`CustomError`](CustomError.md).[`time`](CustomError.md#time)
+`DatedError.stack`
 
 ***
 
@@ -118,7 +120,7 @@ not capture any frames.
 
 #### Inherited from
 
-[`CustomError`](CustomError.md).[`stackTraceLimit`](CustomError.md#stacktracelimit)
+`DatedError.stackTraceLimit`
 
 ## Methods
 
@@ -188,7 +190,7 @@ a();
 
 #### Inherited from
 
-[`CustomError`](CustomError.md).[`captureStackTrace`](CustomError.md#capturestacktrace)
+`DatedError.captureStackTrace`
 
 ***
 
@@ -214,4 +216,4 @@ Defined in: node\_modules/.pnpm/@types+node@24.12.0/node\_modules/@types/node/gl
 
 #### Inherited from
 
-[`CustomError`](CustomError.md).[`prepareStackTrace`](CustomError.md#preparestacktrace)
+`DatedError.prepareStackTrace`

@@ -8,7 +8,7 @@
 
 > **dbg**(...`args`): `void`
 
-Defined in: [src/utils/logging.ts:159](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/logging.ts#L159)
+Defined in: [src/utils/logging.ts:158](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/logging.ts#L158)
 
 Logs all passed values to the console with a debug-specific prefix
 

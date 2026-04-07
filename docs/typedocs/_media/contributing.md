@@ -208,7 +208,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
-  - [getInternals()](#getInternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
+  - [getInternals()](#getinternals) 🔒 - Returns functions and instances useful for core libraries or deeper-reaching plugins
 - BYTM-specific:
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
@@ -1930,11 +1930,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | Property | Description |
 > | :-- | :-- |
 > | `body: string \| (() => string \| Promise<string>)` | Markdown content to render in the dialog. Can be a string or a sync or async function that returns a string. |
+> | `sanitizeBody?: boolean` | Whether to sanitize the provided Markdown content with DOMPurify after converting it to HTML. Defaults to false. |
+> | `modifyBodyElements?: (bodyWrapper: HTMLDivElement, markdownContainer: HTMLDivElement) => void \| Promise<void>;` | Optional function that can be used to modify the body elements after they are created (or other tasks like adding listeners). The `bodyWrapper` is the outer wrapper element with the class `bytm-md-dialog-body` and the `markdownContainer` is the direct parent of the markdown content, with the classes `bytm-markdown-dialog-content` and `bytm-markdown-container`. |
 >   
 > Methods:  
 > The methods from the [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
-> - `static parseMd(md: string): Promise<string>`  
->   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.
+> - `static parseMd(md: string, sanitize = false): Promise<string>`  
+>   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.  
+>   If `sanitize` is set to true, the resulting HTML string will be sanitized with DOMPurify to remove any potentially XSS-causing code.
 > - `protected renderBody(): Promise<void>`  
 >   Renders the Markdown content to the dialog's body element. You can only override this method if you create a subclass of `MarkdownDialog`  
 >   If you do, you can use `parseMd()` to render a custom mixture of Markdown HTML and JavaScript-created elements to the body.
@@ -2280,10 +2283,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - for overriding button text and tooltips:
 >   - `confirmBtnText?: string | ((type: string) => string | Promise<string>)` - Text for the confirm button (only when using type "confirm" or "prompt")
 >   - `confirmBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the confirm button (only when using type "confirm" or "prompt")
+>   - `confirmBtnEnabled?: boolean` - Whether to add a confirm button. If disabled, custom buttons need to be passed via `extraButtons`.
 >   - `denyBtnText?: string | ((type: string) => string | Promise<string>)` - Text for the deny button (shows up for all types)
 >   - `denyBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the deny button (shows up for all types)
+>   - `denyBtnEnabled?: boolean` - Whether to add a deny button. If disabled, custom buttons need to be passed via `extraButtons`.
 > - for adding extra buttons to the footer:
->   - `extraButtons?: Array<((dialog: PromptDialog) => HTMLButtonElement | Promise<HTMLButtonElement>)>` - Functions that create additional button elements to insert in the footer row alongside the built-in buttons
+>   - `extraButtons?: Array<((dialog: PromptDialog) => HTMLButtonElement | Promise<HTMLButtonElement>)>` - Functions that create additional button elements to insert in the footer row alongside the built-in buttons. ⚠️ If custom buttons close the dialog, make sure to call the method `emitResolve()` on the passed `PromptDialog` instance to properly emit a resolve event with the final value.
 >   - `extraButtonsPosition?: "before" | "between" | "after"` - Where to place the extra buttons relative to the built-in confirm/close buttons. Defaults to `"between"`. (Note: while the order of the confirm and deny buttons is OS-dependent, this setting works independent of that.)
 > - for overriding the underlying dialog options:
 >   - `dialogOptions?: object` - Partial override of the underlying `BytmDialog` options (e.g. `width`, `height`, `small`, `verticalAlign`). The `id` and render function properties cannot be overridden

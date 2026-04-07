@@ -8,7 +8,7 @@
 
 > **fetchLyricsUrlTop**(`artist`, `song`): `Promise`\<`string` \| `undefined`\>
 
-Defined in: [src/features/lyrics.ts:213](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/lyrics.ts#L213)
+Defined in: [src/features/lyrics.ts:213](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/lyrics.ts#L213)
 
 Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!**
 

@@ -8,7 +8,7 @@
 
 > **BroadcastPacketDataMap** = `object`
 
-Defined in: [src/utils/broadcast.ts:16](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L16)
+Defined in: [src/utils/broadcast.ts:16](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L16)
 
 Maps a [`BroadcastPacketType`](BroadcastPacketType.md) to the type of data it should contain.
 
@@ -16,19 +16,11 @@ Maps a [`BroadcastPacketType`](BroadcastPacketType.md) to the type of data it sh
 
 ### custom
 
-> **custom**: `object` & `Record`\<`string`, `any`\>
+> **custom**: `Record`\<`string`, `SerializableVal`\>
 
-Defined in: [src/utils/broadcast.ts:47](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L47)
+Defined in: [src/utils/broadcast.ts:47](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L47)
 
 Reserved for custom, non-standard BYTM packets.
-
-#### Type Declaration
-
-##### name
-
-> **name**: `string`
-
-Identifies the custom packet, used to determine how to handle it when received.
 
 ***
 
@@ -36,7 +28,7 @@ Identifies the custom packet, used to determine how to handle it when received.
 
 > **dataStoreUpdate**: `object`
 
-Defined in: [src/utils/broadcast.ts:19](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L19)
+Defined in: [src/utils/broadcast.ts:19](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L19)
 
 Whenever any DataStore's data is changed, to trigger updates in other sessions.
 
@@ -52,7 +44,7 @@ The ID of the DataStore that was updated.
 
 > **discoverSessions**: `void`
 
-Defined in: [src/utils/broadcast.ts:28](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L28)
+Defined in: [src/utils/broadcast.ts:28](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L28)
 
 Called to make other sessions reply with a `discoverSessionsReply`, in order to collect a list of all open sessions.
 
@@ -62,7 +54,7 @@ Called to make other sessions reply with a `discoverSessionsReply`, in order to 
 
 > **discoverSessionsReply**: `object`
 
-Defined in: [src/utils/broadcast.ts:30](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L30)
+Defined in: [src/utils/broadcast.ts:30](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L30)
 
 Reply to a "discoverSessions" packet.
 
@@ -98,6 +90,6 @@ Document title of the sender's tab for easier identification.
 
 > **reloadTabs**: `void`
 
-Defined in: [src/utils/broadcast.ts:24](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L24)
+Defined in: [src/utils/broadcast.ts:24](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L24)
 
 Reloads all open tabs.

@@ -8,7 +8,7 @@
 
 > **getVideoTime**(`precision?`): `Promise`\<`number` \| `null`\>
 
-Defined in: [src/utils/dom.ts:34](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/dom.ts#L34)
+Defined in: [src/utils/dom.ts:34](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/dom.ts#L34)
 
 Returns the current video time in seconds, with the given [`precision`](#getvideotime) (2 decimal digits by default).  
 Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.  

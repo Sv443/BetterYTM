@@ -8,7 +8,7 @@
 
 > **parseChannelIdFromUrl**(`url`): `string` \| `null`
 
-Defined in: [src/utils/misc.ts:103](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L103)
+Defined in: [src/utils/misc.ts:105](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L105)
 
 Returns the channel ID from a URL or null if the URL is invalid
 

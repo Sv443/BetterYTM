@@ -6,6 +6,7 @@
 
 ## Modules
 
+- [assets/data.json](assets/data.json/README.md)
 - [assets/locales.json](assets/locales.json/README.md)
 - [assets/plugins.json](assets/plugins.json/README.md)
 - [assets/require.json](assets/require.json/README.md)

@@ -8,7 +8,7 @@
 
 > **warn**(...`args`): `void`
 
-Defined in: [src/utils/logging.ts:121](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/logging.ts#L121)
+Defined in: [src/utils/logging.ts:120](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/logging.ts#L120)
 
 Logs all passed values to the console as a warning, no matter the log level.
 

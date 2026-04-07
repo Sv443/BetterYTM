@@ -12,7 +12,7 @@ Makes the `value` over- & underflow so it is always in a certain range
 
 > **overflowVal**(`value`, `min`, `max`): `number`
 
-Defined in: [src/utils/misc.ts:301](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L301)
+Defined in: [src/utils/misc.ts:363](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L363)
 
 Makes the [`value`](#overflowval) over- & underflow so it is always between [`min`](#overflowval) and [`max`](#overflowval), if it's outside the range
 
@@ -38,7 +38,7 @@ Makes the [`value`](#overflowval) over- & underflow so it is always between [`mi
 
 > **overflowVal**(`value`, `max`): `number`
 
-Defined in: [src/utils/misc.ts:303](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L303)
+Defined in: [src/utils/misc.ts:365](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L365)
 
 Makes the [`value`](#overflowval-1) over- & underflow so it is always between `0` and [`max`](#overflowval-1), if it's outside the range
 

@@ -8,7 +8,7 @@
 
 > **setFeatures**(`featureConf`): `Promise`\<`void`\>
 
-Defined in: [src/config.ts:434](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/config.ts#L434)
+Defined in: [src/config.ts:435](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/config.ts#L435)
 
 Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage
 

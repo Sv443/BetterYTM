@@ -8,7 +8,7 @@
 
 > **BytmObject** = `object` & *typeof* [`scriptInfo`](../../constants/variables/scriptInfo.md) & `Pick`\<*typeof* [`src/constants`](../../constants/README.md), `"mode"` \| `"branch"` \| `"host"` \| `"buildNumber"` \| `"initialParams"` \| `"compressionFormat"` \| `"sessionStorageAvailable"` \| `"scriptInfo"`\> & [`InterfaceFunctions`](InterfaceFunctions.md) & `object` & `object`
 
-Defined in: [src/types.ts:202](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L202)
+Defined in: [src/types.ts:244](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L244)
 
 All properties of the `unsafeWindow.BYTM` object (major part of the plugin interface next to the events emitted on `unsafeWindow`).  
 - ⚠️ Do not overwrite these properties, only call the functions or read the values!

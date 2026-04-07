@@ -8,7 +8,7 @@
 
 > **promptResetConfig**(): `Promise`\<`void`\>
 
-Defined in: [src/config.ts:463](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/config.ts#L463)
+Defined in: [src/config.ts:464](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/config.ts#L464)
 
 Shows a confirmation prompt to reset the config
 

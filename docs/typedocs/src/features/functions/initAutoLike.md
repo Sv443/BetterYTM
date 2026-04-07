@@ -8,7 +8,7 @@
 
 > **initAutoLike**(): `Promise`\<`void`\>
 
-Defined in: [src/features/autoLike.ts:57](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/autoLike.ts#L57)
+Defined in: [src/features/autoLike.ts:57](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/autoLike.ts#L57)
 
 Initializes the auto-like feature
 

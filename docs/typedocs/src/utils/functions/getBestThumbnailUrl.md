@@ -8,7 +8,7 @@
 
 > **getBestThumbnailUrl**(`videoID`): `Promise`\<`string` \| `undefined`\>
 
-Defined in: [src/utils/misc.ts:147](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L147)
+Defined in: [src/utils/misc.ts:149](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L149)
 
 Returns the best available thumbnail URL for a video with the given video ID
 

@@ -8,7 +8,7 @@
 
 > **VersionNotifDialogRenderProps** = `object`
 
-Defined in: [src/dialogs/versionNotif.ts:11](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/dialogs/versionNotif.ts#L11)
+Defined in: [src/dialogs/versionNotif.ts:11](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/dialogs/versionNotif.ts#L11)
 
 ## Properties
 
@@ -16,4 +16,4 @@ Defined in: [src/dialogs/versionNotif.ts:11](https://github.com/Sv443/BetterYTM/
 
 > **latestTag**: `string`
 
-Defined in: [src/dialogs/versionNotif.ts:12](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/dialogs/versionNotif.ts#L12)
+Defined in: [src/dialogs/versionNotif.ts:12](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/dialogs/versionNotif.ts#L12)

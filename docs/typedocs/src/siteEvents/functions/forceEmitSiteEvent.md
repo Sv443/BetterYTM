@@ -8,7 +8,7 @@
 
 > **forceEmitSiteEvent**\<`TKey`\>(`key`, ...`args`): `void`
 
-Defined in: [src/siteEvents.ts:283](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/siteEvents.ts#L283)
+Defined in: [src/siteEvents.ts:283](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/siteEvents.ts#L283)
 
 Forcefully emits a site event with the given key and arguments, even if `bytm:allReady` has not been emitted yet.  
 Temporary workaround for `bytm:allReady` event queueing issues in [`()`](emitSiteEvent.md).

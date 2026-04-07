@@ -8,7 +8,7 @@
 
 > **emitOnPlugins**\<`TEvtKey`\>(`event`, `predicate?`, ...`data`): `void`
 
-Defined in: [src/interface.ts:439](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/interface.ts#L439)
+Defined in: [src/interface.ts:439](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/interface.ts#L439)
 
 Emits an event on all plugins that match the predicate (all plugins by default)
 

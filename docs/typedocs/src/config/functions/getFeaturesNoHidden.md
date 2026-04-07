@@ -8,7 +8,7 @@
 
 > **getFeaturesNoHidden**(`featureCfg?`): [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
 
-Defined in: [src/config.ts:442](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/config.ts#L442)
+Defined in: [src/config.ts:443](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/config.ts#L443)
 
 Returns the feature config with all hidden features removed, as a copy
 

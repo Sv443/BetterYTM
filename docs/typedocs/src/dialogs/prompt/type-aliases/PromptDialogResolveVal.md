@@ -8,6 +8,6 @@
 
 > **PromptDialogResolveVal** = `boolean` \| `string` \| `null`
 
-Defined in: [src/dialogs/prompt.ts:60](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/dialogs/prompt.ts#L60)
+Defined in: [src/dialogs/prompt.ts:73](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/dialogs/prompt.ts#L73)
 
 Any value that can be returned by the [`()`](../functions/showPrompt.md) function

@@ -8,7 +8,7 @@
 
 > **TTPolicy** = `object`
 
-Defined in: [src/types.ts:251](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L251)
+Defined in: [src/types.ts:293](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L293)
 
 [Trusted Type Policy](https://developer.mozilla.org/en-US/docs/Web/API/TrustedTypePolicy)
 
@@ -18,7 +18,7 @@ Defined in: [src/types.ts:251](https://github.com/Sv443/BetterYTM/blob/92a2ec7e0
 
 > **createHTML**: (`dirty`) => `string`
 
-Defined in: [src/types.ts:252](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L252)
+Defined in: [src/types.ts:294](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L294)
 
 #### Parameters
 

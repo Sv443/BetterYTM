@@ -8,7 +8,7 @@
 
 > **addStyle**(`css`, `ref?`, `transform?`): `Promise`\<`HTMLStyleElement`\>
 
-Defined in: [src/utils/dom.ts:238](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/dom.ts#L238)
+Defined in: [src/utils/dom.ts:238](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/dom.ts#L238)
 
 Adds a style element to the DOM at runtime.
 

@@ -6,9 +6,9 @@
 
 # Type Alias: ConfirmRenderProps
 
-> **ConfirmRenderProps** = [`BaseRenderProps`](BaseRenderProps.md) & `object`
+> **ConfirmRenderProps** = [`BaseRenderProps`](BaseRenderProps.md) & `ConfirmBtnProps` & `object`
 
-Defined in: [src/dialogs/prompt.ts:19](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/dialogs/prompt.ts#L19)
+Defined in: [src/dialogs/prompt.ts:23](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/dialogs/prompt.ts#L23)
 
 Props for rendering a `confirm()`-like prompt dialog - see [`()`](../functions/showPrompt.md)
 

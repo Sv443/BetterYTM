@@ -8,7 +8,7 @@
 
 > **LyricsCache** = `object`
 
-Defined in: [src/features/lyricsCache.ts:9](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/lyricsCache.ts#L9)
+Defined in: [src/features/lyricsCache.ts:9](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/lyricsCache.ts#L9)
 
 ## Properties
 
@@ -16,4 +16,4 @@ Defined in: [src/features/lyricsCache.ts:9](https://github.com/Sv443/BetterYTM/b
 
 > **cache**: [`LyricsCacheEntry`](../../types/type-aliases/LyricsCacheEntry.md)[]
 
-Defined in: [src/features/lyricsCache.ts:10](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/lyricsCache.ts#L10)
+Defined in: [src/features/lyricsCache.ts:10](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/lyricsCache.ts#L10)

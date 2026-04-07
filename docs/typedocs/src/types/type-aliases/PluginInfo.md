@@ -8,7 +8,7 @@
 
 > **PluginInfo** = `object`
 
-Defined in: [src/types.ts:314](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L314)
+Defined in: [src/types.ts:365](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L365)
 
 Minimal object that describes a plugin - this is all info the other installed plugins can see
 
@@ -18,7 +18,7 @@ Minimal object that describes a plugin - this is all info the other installed pl
 
 > **name**: `string`
 
-Defined in: [src/types.ts:316](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L316)
+Defined in: [src/types.ts:367](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L367)
 
 Name of the plugin
 
@@ -28,7 +28,7 @@ Name of the plugin
 
 > **namespace**: `string`
 
-Defined in: [src/types.ts:322](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L322)
+Defined in: [src/types.ts:373](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L373)
 
 Adding the namespace and the name property makes the unique identifier for a plugin.  
 If one exists with the same name and namespace as this plugin, it may be overwritten at registration.  
@@ -40,6 +40,6 @@ I recommend to set this value to a URL pointing to your homepage, or the author'
 
 > **version**: `string`
 
-Defined in: [src/types.ts:324](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L324)
+Defined in: [src/types.ts:375](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L375)
 
 Version of the plugin as a semver-compliant string

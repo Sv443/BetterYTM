@@ -8,6 +8,6 @@
 
 > **BroadcastSiteEventsMapped** = `` { [K in BroadcastPacketType as `broadcast:${K}`]: (packet: BroadcastTransitPacket<K>) => void } ``
 
-Defined in: [src/siteEvents.ts:10](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/siteEvents.ts#L10)
+Defined in: [src/siteEvents.ts:10](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/siteEvents.ts#L10)
 
 Mapped type that creates a typed site event entry for each [`BroadcastPacketType`](../../utils/broadcast/type-aliases/BroadcastPacketType.md), e.g. `"broadcast:discoverSessionsReply"`

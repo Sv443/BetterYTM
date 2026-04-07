@@ -8,7 +8,7 @@
 
 > **onInteraction**\<`TElem`\>(`elem`, `listener`, `listenerOptions?`): `void`
 
-Defined in: [src/utils/input.ts:13](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/input.ts#L13)
+Defined in: [src/utils/input.ts:13](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/input.ts#L13)
 
 Adds generic, accessible interaction listeners to the passed element.  
 All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in `interactionKeys`).

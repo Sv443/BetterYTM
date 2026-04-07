@@ -8,6 +8,6 @@
 
 > **FeatureConfigValue** = [`FeatureConfig`](../interfaces/FeatureConfig.md)\[[`FeatureKey`](FeatureKey.md)\]
 
-Defined in: [src/types.ts:568](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L568)
+Defined in: [src/types.ts:619](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L619)
 
 Contains all possible value types of the feature configuration.

@@ -8,6 +8,6 @@
 
 > `const` **artCacheStore**: `DataStore`\<`ArtCache`, `false`\>
 
-Defined in: [src/features/layout.ts:622](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/layout.ts#L622)
+Defined in: [src/features/layout.ts:622](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/layout.ts#L622)
 
 Album artwork cache

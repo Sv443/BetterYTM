@@ -8,7 +8,7 @@
 
 > **parseMarkdown**(`mdString`, `sanitize?`): `Promise`\<`string`\>
 
-Defined in: [src/utils/misc.ts:549](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L549)
+Defined in: [src/utils/misc.ts:611](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L611)
 
 Parses a markdown string using marked and turns it into an HTML string with default settings.
 

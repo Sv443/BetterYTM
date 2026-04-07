@@ -8,7 +8,7 @@
 
 > **BroadcastTransitPacket**\<`TPacketType`\> = `object`
 
-Defined in: [src/utils/broadcast.ts:70](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L70)
+Defined in: [src/utils/broadcast.ts:67](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L67)
 
 Type of the packets sent via broadcast, including metadata about the sender and intended recipients.
 
@@ -24,7 +24,7 @@ Type of the packets sent via broadcast, including metadata about the sender and 
 
 > **from**: `string`
 
-Defined in: [src/utils/broadcast.ts:72](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L72)
+Defined in: [src/utils/broadcast.ts:69](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L69)
 
 TxID of the sender.
 
@@ -34,7 +34,7 @@ TxID of the sender.
 
 > **nonce**: `number`
 
-Defined in: [src/utils/broadcast.ts:78](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L78)
+Defined in: [src/utils/broadcast.ts:75](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L75)
 
 Unique nonce to prevent parsing the same packet multiple times.
 
@@ -44,7 +44,7 @@ Unique nonce to prevent parsing the same packet multiple times.
 
 > **packet**: [`BroadcastPacket`](BroadcastPacket.md)\<`TPacketType`\>
 
-Defined in: [src/utils/broadcast.ts:76](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L76)
+Defined in: [src/utils/broadcast.ts:73](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L73)
 
 The actual packet to be sent.
 
@@ -54,6 +54,6 @@ The actual packet to be sent.
 
 > `optional` **to**: `string`[]
 
-Defined in: [src/utils/broadcast.ts:74](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L74)
+Defined in: [src/utils/broadcast.ts:71](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L71)
 
 List of TxIDs that indicates which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.

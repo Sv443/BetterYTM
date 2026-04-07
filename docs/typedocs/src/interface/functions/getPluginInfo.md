@@ -14,7 +14,7 @@ This is an authenticated function so you must pass the session- and plugin-uniqu
 
 > **getPluginInfo**(`token`, `name`, `namespace`): [`PluginInfo`](../../types/type-aliases/PluginInfo.md) \| `undefined`
 
-Defined in: [src/interface.ts:481](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/interface.ts#L481)
+Defined in: [src/interface.ts:481](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/interface.ts#L481)
 
 Returns info about a registered plugin on the BYTM interface by its name and namespace properties, or undefined if the plugin isn't registered.  
 This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
@@ -42,7 +42,7 @@ This is an authenticated function so you must pass the session- and plugin-uniqu
 
 > **getPluginInfo**(`token`, `plugin`): [`PluginInfo`](../../types/type-aliases/PluginInfo.md) \| `undefined`
 
-Defined in: [src/interface.ts:487](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/interface.ts#L487)
+Defined in: [src/interface.ts:487](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/interface.ts#L487)
 
 Returns info about a registered plugin on the BYTM interface by a resolvable definition object, or undefined if the plugin isn't registered.  
 This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
@@ -66,7 +66,7 @@ This is an authenticated function so you must pass the session- and plugin-uniqu
 
 > **getPluginInfo**(`token`, `pluginId`): [`PluginInfo`](../../types/type-aliases/PluginInfo.md) \| `undefined`
 
-Defined in: [src/interface.ts:493](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/interface.ts#L493)
+Defined in: [src/interface.ts:493](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/interface.ts#L493)
 
 Returns info about a registered plugin on the BYTM interface by its ID (consisting of namespace and name), or undefined if the plugin isn't registered.  
 This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  

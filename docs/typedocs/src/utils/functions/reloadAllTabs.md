@@ -6,9 +6,9 @@
 
 # Function: reloadAllTabs()
 
-> **reloadAllTabs**(`reloadSelf?`): `Promise`\<`void`\>
+> **reloadAllTabs**(`reloadSelf?`, `toTxIDs?`): `Promise`\<`void`\>
 
-Defined in: [src/utils/misc.ts:262](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L262)
+Defined in: [src/utils/misc.ts:324](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L324)
 
 Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default.
 
@@ -17,6 +17,10 @@ Sends a broadcast packet to all open sessions to trigger a reload in all of them
 ### reloadSelf?
 
 `boolean` = `true`
+
+### toTxIDs?
+
+`string`[]
 
 ## Returns
 

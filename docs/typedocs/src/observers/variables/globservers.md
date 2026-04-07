@@ -8,6 +8,6 @@
 
 > `const` **globservers**: `Record`\<[`ObserverName`](../type-aliases/ObserverName.md), `SelectorObserver`\>
 
-Defined in: [src/observers.ts:51](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/observers.ts#L51)
+Defined in: [src/observers.ts:51](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/observers.ts#L51)
 
 Global SelectorObserver instances usable throughout the script for improved performance

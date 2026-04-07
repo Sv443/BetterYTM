@@ -8,7 +8,7 @@
 
 > **addLyricsCacheEntryPenalized**(`artist`, `song`, `path`, `penaltyFr?`): `Promise`\<`void`\>
 
-Defined in: [src/features/lyricsCache.ts:146](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/lyricsCache.ts#L146)
+Defined in: [src/features/lyricsCache.ts:146](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/lyricsCache.ts#L146)
 
 Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage  
 Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache  

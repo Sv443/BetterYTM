@@ -8,7 +8,7 @@
 
 > **clearNode**(`element`): `void`
 
-Defined in: [src/utils/dom.ts:284](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/dom.ts#L284)
+Defined in: [src/utils/dom.ts:284](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/dom.ts#L284)
 
 Removes all child nodes of an element recursively and also removes the element itself
 

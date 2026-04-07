@@ -8,7 +8,7 @@
 
 > **BytmDialogOptions** = `object`
 
-Defined in: [src/components/BytmDialog.ts:12](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L12)
+Defined in: [src/components/BytmDialog.ts:12](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L12)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/components/BytmDialog.ts:12](https://github.com/Sv443/BetterYTM
 
 > `optional` **closeBtnEnabled**: `boolean`
 
-Defined in: [src/components/BytmDialog.ts:24](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L24)
+Defined in: [src/components/BytmDialog.ts:24](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L24)
 
 Whether the close button should be enabled - defaults to true
 
@@ -26,7 +26,7 @@ Whether the close button should be enabled - defaults to true
 
 > `optional` **closeOnBgClick**: `boolean`
 
-Defined in: [src/components/BytmDialog.ts:20](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L20)
+Defined in: [src/components/BytmDialog.ts:20](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L20)
 
 Whether the dialog should close when the background is clicked - defaults to true
 
@@ -36,7 +36,7 @@ Whether the dialog should close when the background is clicked - defaults to tru
 
 > `optional` **closeOnEscPress**: `boolean`
 
-Defined in: [src/components/BytmDialog.ts:22](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L22)
+Defined in: [src/components/BytmDialog.ts:22](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L22)
 
 Whether the dialog should close when the escape key is pressed - defaults to true
 
@@ -46,7 +46,7 @@ Whether the dialog should close when the escape key is pressed - defaults to tru
 
 > `optional` **destroyOnClose**: `boolean`
 
-Defined in: [src/components/BytmDialog.ts:26](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L26)
+Defined in: [src/components/BytmDialog.ts:26](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L26)
 
 Whether the dialog should be destroyed when it's closed - defaults to false
 
@@ -56,7 +56,7 @@ Whether the dialog should be destroyed when it's closed - defaults to false
 
 > **height**: `number`
 
-Defined in: [src/components/BytmDialog.ts:18](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L18)
+Defined in: [src/components/BytmDialog.ts:18](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L18)
 
 Target and max height of the dialog in pixels
 
@@ -66,7 +66,7 @@ Target and max height of the dialog in pixels
 
 > **id**: `string`
 
-Defined in: [src/components/BytmDialog.ts:14](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L14)
+Defined in: [src/components/BytmDialog.ts:14](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L14)
 
 ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules!
 
@@ -76,7 +76,7 @@ ID that gets added to child element IDs - has to be unique and conform to HTML I
 
 > `optional` **removeListenersOnDestroy**: `boolean`
 
-Defined in: [src/components/BytmDialog.ts:30](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L30)
+Defined in: [src/components/BytmDialog.ts:30](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L30)
 
 Whether all listeners should be removed when the dialog is destroyed - defaults to true
 
@@ -86,7 +86,7 @@ Whether all listeners should be removed when the dialog is destroyed - defaults 
 
 > **renderBody**: () => `HTMLElement` \| `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/BytmDialog.ts:36](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L36)
+Defined in: [src/components/BytmDialog.ts:36](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L36)
 
 Called to render the body of the dialog
 
@@ -100,7 +100,7 @@ Called to render the body of the dialog
 
 > `optional` **renderFooter**: () => `HTMLElement` \| `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/BytmDialog.ts:40](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L40)
+Defined in: [src/components/BytmDialog.ts:40](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L40)
 
 Called to render the footer of the dialog - leave undefined for no footer
 
@@ -114,7 +114,7 @@ Called to render the footer of the dialog - leave undefined for no footer
 
 > `optional` **renderHeader**: () => `HTMLElement` \| `Promise`\<`HTMLElement`\>
 
-Defined in: [src/components/BytmDialog.ts:38](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L38)
+Defined in: [src/components/BytmDialog.ts:38](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L38)
 
 Called to render the header of the dialog - leave undefined for a blank header
 
@@ -128,7 +128,7 @@ Called to render the header of the dialog - leave undefined for a blank header
 
 > `optional` **small**: `boolean`
 
-Defined in: [src/components/BytmDialog.ts:32](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L32)
+Defined in: [src/components/BytmDialog.ts:32](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L32)
 
 Whether the dialog should have a smaller overall appearance - defaults to false
 
@@ -138,7 +138,7 @@ Whether the dialog should have a smaller overall appearance - defaults to false
 
 > `optional` **unmountOnClose**: `boolean`
 
-Defined in: [src/components/BytmDialog.ts:28](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L28)
+Defined in: [src/components/BytmDialog.ts:28](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L28)
 
 Whether the dialog should be unmounted when it's closed - defaults to true - superseded by destroyOnClose
 
@@ -148,7 +148,7 @@ Whether the dialog should be unmounted when it's closed - defaults to true - sup
 
 > `optional` **verticalAlign**: `"top"` \| `"center"` \| `"bottom"`
 
-Defined in: [src/components/BytmDialog.ts:34](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L34)
+Defined in: [src/components/BytmDialog.ts:34](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L34)
 
 Where to align or anchor the dialog vertically - defaults to "center"
 
@@ -158,6 +158,6 @@ Where to align or anchor the dialog vertically - defaults to "center"
 
 > **width**: `number`
 
-Defined in: [src/components/BytmDialog.ts:16](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/BytmDialog.ts#L16)
+Defined in: [src/components/BytmDialog.ts:16](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/BytmDialog.ts#L16)
 
 Target and max width of the dialog in pixels

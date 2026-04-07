@@ -8,7 +8,7 @@
 
 > **initBroadcast**(): `void`
 
-Defined in: [src/utils/broadcast.ts:113](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L113)
+Defined in: [src/utils/broadcast.ts:110](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L110)
 
 Initializes the broadcast module by setting up the necessary event listeners.
 

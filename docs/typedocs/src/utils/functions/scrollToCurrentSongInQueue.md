@@ -8,7 +8,7 @@
 
 > **scrollToCurrentSongInQueue**(`evt?`): `void`
 
-Defined in: [src/utils/misc.ts:286](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L286)
+Defined in: [src/utils/misc.ts:348](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L348)
 
 Scrolls to the currently playing queue item in the queue once it's available
 

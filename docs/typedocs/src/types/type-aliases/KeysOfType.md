@@ -8,7 +8,7 @@
 
 > **KeysOfType**\<`T`, `U`\> = `{ [K in keyof T]: T[K] extends U ? K : never }`\[keyof `T`\]
 
-Defined in: [src/types.ts:186](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L186)
+Defined in: [src/types.ts:228](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L228)
 
 Returns a union of all keys of [`T`](#t) whose values are of type [`U`](#u)
 

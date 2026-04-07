@@ -8,7 +8,7 @@
 
 > **getErrorDialog**(`errName`, `args`): [`MarkdownDialog`](../../components/MarkdownDialog/classes/MarkdownDialog.md)
 
-Defined in: [src/utils/logging.ts:166](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/logging.ts#L166)
+Defined in: [src/utils/logging.ts:165](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/logging.ts#L165)
 
 ## Parameters
 

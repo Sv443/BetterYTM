@@ -8,7 +8,7 @@
 
 > `const` **featInfo**: `object`
 
-Defined in: [src/features/index.ts:216](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/index.ts#L216)
+Defined in: [src/features/index.ts:214](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/index.ts#L214)
 
 Contains all possible features with their default values and other configuration.  
   
@@ -22,15 +22,13 @@ Contains all possible features with their default values and other configuration
 | `supportedSites: Domain[]`     | On which sites the feature is active - values can be `"yt"` or `"ytm"`.                                                             |
 | `since: string`                | Semver version since when this feature key was added - adds a "new" adornment to the config menu item for a while.                  |
 | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`.                                                       |
-| `enable(value: unknown): void` | (required if `reloadRequired = false`) - function that will be called when the feature is enabled / initialized for the first time. |
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
 **Optional props:**
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 | Property:                                                          | Description:                                                                                                                                        |
 | :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function.                 |
-| `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed.                                  |
+| `change(key: string, prevValue: unknown, newValue: unknown): void` | Function that will be called when the value is changed - can be used for any feature type to react to value changes at runtime.                     |
 | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked.                                                                   |
 | `helpText: string \| () => string`                                 | If undefined, translation with key `feature_helptext.<featKey>` will be used. If set, needs to be a function that returns an HTML string or the literal string itself that will be the help text for this feature - this is useful for pluralizing or inserting values into the translation at runtime. |
 | `adornments: AdornFunc[] \| (() => AdornFunc[])`                   | Array of functions that return HTML strings that will be prepended to the label of the feature in the config menu - used to add icons.              |
@@ -39,7 +37,7 @@ Contains all possible features with their default values and other configuration
 | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
 | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
 | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
-| `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided.                        |
+| `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                     |
 | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
 | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
 | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
@@ -95,19 +93,15 @@ Contains all possible features with their default values and other configuration
 
 #### advancedMode.change()
 
-> `readonly` **change**: (`_key`, `prevValue`, `newValue`) => `false` \| `void`
+> `readonly` **change**: (`newVal`, `initVal`) => `false` \| `void`
 
 ##### Parameters
 
-###### \_key
-
-keyof [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
-
-###### prevValue
+###### newVal
 
 [`FeatureConfigValue`](../../types/type-aliases/FeatureConfigValue.md)
 
-###### newValue
+###### initVal
 
 [`FeatureConfigValue`](../../types/type-aliases/FeatureConfigValue.md)
 
@@ -3321,17 +3315,9 @@ Shows a confirmation prompt to reset the config
 
 #### showToastOnGenericError.change()
 
-> `readonly` **change**: (`_k`, `_iV`, `newVal`) => `void`
+> `readonly` **change**: (`newVal`) => `void`
 
 ##### Parameters
-
-###### \_k
-
-keyof [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
-
-###### \_iV
-
-[`FeatureConfigValue`](../../types/type-aliases/FeatureConfigValue.md)
 
 ###### newVal
 
@@ -3461,17 +3447,23 @@ keyof [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
 
 > `readonly` **category**: `"hotkeys"` = `"hotkeys"`
 
-#### skipToRemTimeHotkeyEnabled.default
+#### skipToRemTimeHotkeyEnabled.change()
 
-> `readonly` **default**: `true` = `true`
+> `readonly` **change**: (`newVal`) => `false` \| `""` \| `0` \| `Promise`\<`void` \| `HTMLDivElement`\> \| `undefined`
 
-#### skipToRemTimeHotkeyEnabled.enable()
+##### Parameters
 
-> `readonly` **enable**: () => `false` \| `Promise`\<`void` \| `HTMLDivElement`\>
+###### newVal
+
+[`FeatureConfigValue`](../../types/type-aliases/FeatureConfigValue.md)
 
 ##### Returns
 
-`false` \| `Promise`\<`void` \| `HTMLDivElement`\>
+`false` \| `""` \| `0` \| `Promise`\<`void` \| `HTMLDivElement`\> \| `undefined`
+
+#### skipToRemTimeHotkeyEnabled.default
+
+> `readonly` **default**: `true` = `true`
 
 #### skipToRemTimeHotkeyEnabled.group
 
@@ -3706,6 +3698,54 @@ keyof [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
 > `readonly` **supportedSites**: \[`"ytm"`, `"yt"`\]
 
 #### switchSitesHotkey.type
+
+> `readonly` **type**: `"hotkey"` = `"hotkey"`
+
+### switchSitesNewTabHotkey
+
+> `readonly` **switchSitesNewTabHotkey**: `object`
+
+#### switchSitesNewTabHotkey.category
+
+> `readonly` **category**: `"hotkeys"` = `"hotkeys"`
+
+#### switchSitesNewTabHotkey.default
+
+> `readonly` **default**: `object`
+
+#### switchSitesNewTabHotkey.default.alt
+
+> `readonly` **alt**: `false` = `false`
+
+#### switchSitesNewTabHotkey.default.code
+
+> `readonly` **code**: `"F9"` = `"F9"`
+
+#### switchSitesNewTabHotkey.default.ctrl
+
+> `readonly` **ctrl**: `true` = `true`
+
+#### switchSitesNewTabHotkey.default.shift
+
+> `readonly` **shift**: `false` = `false`
+
+#### switchSitesNewTabHotkey.group
+
+> `readonly` **group**: `"switchBetweenSites"` = `"switchBetweenSites"`
+
+#### switchSitesNewTabHotkey.reloadRequired
+
+> `readonly` **reloadRequired**: `false` = `false`
+
+#### switchSitesNewTabHotkey.since
+
+> `readonly` **since**: `"3.1.0"` = `"3.1.0"`
+
+#### switchSitesNewTabHotkey.supportedSites
+
+> `readonly` **supportedSites**: \[`"ytm"`, `"yt"`\]
+
+#### switchSitesNewTabHotkey.type
 
 > `readonly` **type**: `"hotkey"` = `"hotkey"`
 
@@ -4349,17 +4389,9 @@ keyof [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
 
 #### toastDuration.change()
 
-> `readonly` **change**: (`_k`, `_iV`, `newVal`) => `Promise`\<`void`\>
+> `readonly` **change**: (`newVal`) => `Promise`\<`void`\>
 
 ##### Parameters
-
-###### \_k
-
-keyof [`FeatureConfig`](../../types/interfaces/FeatureConfig.md)
-
-###### \_iV
-
-[`FeatureConfigValue`](../../types/type-aliases/FeatureConfigValue.md)
 
 ###### newVal
 

@@ -8,7 +8,7 @@
 
 > **getLikeDislikeBtns**(): `object`
 
-Defined in: [src/utils/dom.ts:176](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/dom.ts#L176)
+Defined in: [src/utils/dom.ts:176](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/dom.ts#L176)
 
 Returns the like/dislike button elements based on the current domain and the current like state ("LIKE" / "DISLIKE" / "INDIFFERENT").  
 The btnRenderer element is a parent of both buttons.

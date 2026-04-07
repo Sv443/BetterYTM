@@ -8,6 +8,6 @@
 
 > **FeatUnit** = `string` \| (`val`) => `string`
 
-Defined in: [src/types.ts:565](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L565)
+Defined in: [src/types.ts:616](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L616)
 
 A unit string or a function that returns a unit string for the provided value.

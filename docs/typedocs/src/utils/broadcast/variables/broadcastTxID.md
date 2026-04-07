@@ -8,6 +8,6 @@
 
 > `const` **broadcastTxID**: `string`
 
-Defined in: [src/utils/broadcast.ts:91](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L91)
+Defined in: [src/utils/broadcast.ts:88](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L88)
 
 Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets.

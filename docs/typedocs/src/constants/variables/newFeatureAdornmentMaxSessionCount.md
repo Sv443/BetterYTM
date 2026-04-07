@@ -8,6 +8,6 @@
 
 > `const` **newFeatureAdornmentMaxSessionCount**: `20` = `20`
 
-Defined in: [src/constants.ts:98](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/constants.ts#L98)
+Defined in: [src/constants.ts:98](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/constants.ts#L98)
 
 Maximum number of sessions per user to show the "new feature" adornment in the config menu.

@@ -8,7 +8,7 @@
 
 > **info**(...`args`): `void`
 
-Defined in: [src/utils/logging.ts:114](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/logging.ts#L114)
+Defined in: [src/utils/logging.ts:113](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/logging.ts#L113)
 
 Logs all passed values to the console as info, as long as the log level is sufficient.
 

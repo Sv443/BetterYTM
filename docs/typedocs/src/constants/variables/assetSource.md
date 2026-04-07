@@ -8,6 +8,6 @@
 
 > `const` **assetSource**: `"jsdelivr"` \| `"github"` \| `"local"`
 
-Defined in: [src/constants.ts:44](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/constants.ts#L44)
+Defined in: [src/constants.ts:44](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/constants.ts#L44)
 
 The source of the assets - github, jsdelivr or local

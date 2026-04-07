@@ -8,6 +8,6 @@
 
 > **RollupArgs** = `Partial`\<\{ `config-assetSource`: `"local"` \| `"github"` \| `"jsdelivr"`; `config-branch`: `"main"` \| `"develop"`; `config-gen-meta`: `"true"` \| `"false"`; `config-host`: `"greasyfork"` \| `"github"` \| `"openuserjs"`; `config-mode`: `"development"` \| `"production"`; `config-suffix`: `string`; \}\>
 
-Defined in: [src/types.ts:28](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L28)
+Defined in: [src/types.ts:28](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L28)
 
 Custom CLI args passed to rollup

@@ -6,9 +6,9 @@
 
 # Type Alias: FeatureInfoEntry
 
-> **FeatureInfoEntry** = `object` & `FeatureTypeProps`
+> **FeatureInfoEntry** = `object` & [`FeatureTypeProps`](FeatureTypeProps.md)
 
-Defined in: [src/types.ts:721](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L721)
+Defined in: [src/types.ts:740](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L740)
 
 An entry of the feature info list in `src/features/index.ts`, containing all information necessary to construct the config menu, manage the persistent data, and instantiate the feature.
 
@@ -38,7 +38,7 @@ Feature category, see [FeatureCategory](FeatureCategory.md)
 > **group**: `string`
 
 Group name for related features - groups features together in the config menu.  
-This is usually the name of the first feature or "main feature" (the feature that has the enable/disable toggle button) but can be any string.  
+This is usually the name of the first feature or "main feature" but can be any string.  
 - ⚠️ Don't reuse group names across multiple cateogories!
 
 ### helpText?

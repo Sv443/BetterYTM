@@ -8,7 +8,6 @@
 
 ## Classes
 
-- [CustomError](classes/CustomError.md)
 - [LyricsError](classes/LyricsError.md)
 - [PluginError](classes/PluginError.md)
 
@@ -43,7 +42,7 @@
 - [errorNoToast](functions/errorNoToast.md)
 - [fetchCss](functions/fetchCss.md)
 - [fetchITunesAlbumInfo](functions/fetchITunesAlbumInfo.md)
-- [fetchLocaleJson](functions/fetchLocaleJson.md)
+- [fetchTranslationResource](functions/fetchTranslationResource.md)
 - [fetchVideoVotes](functions/fetchVideoVotes.md)
 - [formatNumber](functions/formatNumber.md)
 - [getBestThumbnailUrl](functions/getBestThumbnailUrl.md)
@@ -58,6 +57,7 @@
 - [getLogsTxt](functions/getLogsTxt.md)
 - [getOS](functions/getOS.md)
 - [getPreferredLocale](functions/getPreferredLocale.md)
+- [getReloadTabData](functions/getReloadTabData.md)
 - [getResourceUrl](functions/getResourceUrl.md)
 - [getSessionId](functions/getSessionId.md)
 - [getterifyObj](functions/getterifyObj.md)
@@ -83,6 +83,7 @@
 - [parseMarkdown](functions/parseMarkdown.md)
 - [reloadAllTabs](functions/reloadAllTabs.md)
 - [reloadTab](functions/reloadTab.md)
+- [resolveTranslatable](functions/resolveTranslatable.md)
 - [resourceAsString](functions/resourceAsString.md)
 - [sanitizeChannelId](functions/sanitizeChannelId.md)
 - [sanitizeHtml](functions/sanitizeHtml.md)

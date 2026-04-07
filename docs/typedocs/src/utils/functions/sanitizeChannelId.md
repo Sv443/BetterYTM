@@ -8,7 +8,7 @@
 
 > **sanitizeChannelId**(`channelId`): `string`
 
-Defined in: [src/utils/misc.ts:119](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/misc.ts#L119)
+Defined in: [src/utils/misc.ts:121](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/misc.ts#L121)
 
 Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...`
 

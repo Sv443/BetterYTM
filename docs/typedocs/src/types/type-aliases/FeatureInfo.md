@@ -8,7 +8,7 @@
 
 > **FeatureInfo** = `Record`\<keyof [`FeatureConfig`](../interfaces/FeatureConfig.md), [`FeatureInfoEntry`](FeatureInfoEntry.md)\>
 
-Defined in: [src/types.ts:759](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L759)
+Defined in: [src/types.ts:778](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L778)
 
 The feature info object that contains all properties necessary to construct the config menu and the feature config object.  
 All values are loosely typed so try to only use this via `const myObj = {} satisfies FeatureInfo;`  

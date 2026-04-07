@@ -8,7 +8,7 @@
 
 > **transplantElement**\<`TElem`\>(`element`, `target`, `position?`): `TElem`
 
-Defined in: [src/utils/dom.ts:379](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/dom.ts#L379)
+Defined in: [src/utils/dom.ts:387](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/dom.ts#L387)
 
 Moves the given [`element`](#transplantelement) to the [`target`](#transplantelement) element with the specified [`position`](#transplantelement) (after the target element, as a sibling by default).  
 Doesn't mess with any attached event listeners or other properties of the element.

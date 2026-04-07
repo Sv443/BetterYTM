@@ -16,7 +16,7 @@ If passed, this element will be modified to have the ripple effect. Otherwise, a
 
 > **createRipple**\<`TElem`\>(`rippleElement`, `properties?`): `TElem`
 
-Defined in: [src/components/ripple.ts:18](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/ripple.ts#L18)
+Defined in: [src/components/ripple.ts:18](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/ripple.ts#L18)
 
 Creates an element with a ripple effect on click.
 
@@ -48,7 +48,7 @@ The passed element or the newly created element with the ripple effect.
 
 > **createRipple**(`rippleElement?`, `properties?`): `HTMLDivElement`
 
-Defined in: [src/components/ripple.ts:24](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/components/ripple.ts#L24)
+Defined in: [src/components/ripple.ts:24](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/components/ripple.ts#L24)
 
 Creates an element with a ripple effect on click.
 

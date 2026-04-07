@@ -8,7 +8,7 @@
 
 > **RYDVotesObj** = `object`
 
-Defined in: [src/types.ts:96](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L96)
+Defined in: [src/types.ts:96](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L96)
 
 Object returned by the [Return YouTube Dislike API](https://returnyoutubedislike.com/docs)
 
@@ -18,7 +18,7 @@ Object returned by the [Return YouTube Dislike API](https://returnyoutubedislike
 
 > **dateCreated**: `string`
 
-Defined in: [src/types.ts:100](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L100)
+Defined in: [src/types.ts:100](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L100)
 
 ISO 8601 timestamp of when the video was uploaded
 
@@ -28,7 +28,7 @@ ISO 8601 timestamp of when the video was uploaded
 
 > **deleted**: `boolean`
 
-Defined in: [src/types.ts:110](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L110)
+Defined in: [src/types.ts:110](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L110)
 
 Whether the video was deleted
 
@@ -38,7 +38,7 @@ Whether the video was deleted
 
 > **dislikes**: `number`
 
-Defined in: [src/types.ts:104](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L104)
+Defined in: [src/types.ts:104](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L104)
 
 Amount of dislikes
 
@@ -48,7 +48,7 @@ Amount of dislikes
 
 > **id**: `string`
 
-Defined in: [src/types.ts:98](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L98)
+Defined in: [src/types.ts:98](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L98)
 
 The watch ID of the video
 
@@ -58,7 +58,7 @@ The watch ID of the video
 
 > **likes**: `number`
 
-Defined in: [src/types.ts:102](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L102)
+Defined in: [src/types.ts:102](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L102)
 
 Amount of likes
 
@@ -68,7 +68,7 @@ Amount of likes
 
 > **rating**: `number`
 
-Defined in: [src/types.ts:106](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L106)
+Defined in: [src/types.ts:106](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L106)
 
 Like to dislike ratio from 0.0 to 5.0
 
@@ -78,6 +78,6 @@ Like to dislike ratio from 0.0 to 5.0
 
 > **viewCount**: `number`
 
-Defined in: [src/types.ts:108](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/types.ts#L108)
+Defined in: [src/types.ts:108](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/types.ts#L108)
 
 Amount of views

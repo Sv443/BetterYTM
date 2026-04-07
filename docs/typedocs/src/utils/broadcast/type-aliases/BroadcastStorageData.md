@@ -8,7 +8,7 @@
 
 > **BroadcastStorageData** = `object`
 
-Defined in: [src/utils/broadcast.ts:82](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L82)
+Defined in: [src/utils/broadcast.ts:79](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L79)
 
 Data structure stored by [`broadcastEng`](../variables/broadcastEng.md)
 
@@ -18,6 +18,6 @@ Data structure stored by [`broadcastEng`](../variables/broadcastEng.md)
 
 > **packet**: [`BroadcastTransitPacket`](BroadcastTransitPacket.md)\<[`BroadcastPacketType`](BroadcastPacketType.md)\>
 
-Defined in: [src/utils/broadcast.ts:84](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/utils/broadcast.ts#L84)
+Defined in: [src/utils/broadcast.ts:81](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/utils/broadcast.ts#L81)
 
 Last emitted packet.

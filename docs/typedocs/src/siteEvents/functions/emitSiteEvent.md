@@ -8,7 +8,7 @@
 
 > **emitSiteEvent**\<`TKey`\>(`key`, ...`args`): `void`
 
-Defined in: [src/siteEvents.ts:247](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/siteEvents.ts#L247)
+Defined in: [src/siteEvents.ts:247](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/siteEvents.ts#L247)
 
 Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is
 

@@ -8,7 +8,7 @@
 
 > **remTimeTryRestoreTime**(`force?`): `Promise`\<`boolean`\>
 
-Defined in: [src/features/behavior.ts:179](https://github.com/Sv443/BetterYTM/blob/92a2ec7e038170d4d6561a403514e746eb18bf10/src/features/behavior.ts#L179)
+Defined in: [src/features/behavior.ts:179](https://github.com/Sv443/BetterYTM/blob/3cbe26faf20a275f47c79e6afeb522f79d4b924d/src/features/behavior.ts#L179)
 
 Tries to restore the time of the currently playing video. Resolves to a boolean. Only rejects on caught error
 
