@@ -309,7 +309,7 @@ declare global {
 
 //#region translations
 
-/** An object containing translation strings for all supported locales. `en-US` is required, other locales are optional. */
+/** An object containing translation strings for any supported locales. `en-US` is always required, all other locales are optional. */
 export type Translatable = {
   "en-US": string;
 } & {
