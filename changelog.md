@@ -1,6 +1,18 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
+<!-- #region 3.2.0 -->
+## 3.2.0
+- **New Features:**
+  - 🎵 Added a feature to show a second, blurred duplicate of the thumbnail image in the thumbnail overlay as a background.
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">Also see pull request #TODO</a>
+</div>
+
+<div class="split"></div>
+<br>
+
 <!-- #region 3.1.0 -->
 ## 3.1.0
 - **New Features:**

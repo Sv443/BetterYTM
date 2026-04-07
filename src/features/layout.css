@@ -476,21 +476,37 @@ ytmusic-player[player-ui-state="FULLSCREEN"] #bytm-thumbnail-overlay {
   border-radius: 0;
 }
 
-#bytm-thumbnail-overlay-img {
+.bytm-thumbnail-overlay-img {
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: inherit;
   object-fit: contain;
+  filter: drop-shadow(0 0 1.25rem rgba(0, 0, 0, 0.7));
 }
 
-#bytm-thumbnail-overlay-img[data-media-type="song"] {
+:root #bytm-thumbnail-overlay-img[data-media-type="song"] {
   object-fit: cover;
 }
 
 ytmusic-player[player-ui-state="FULLSCREEN"]
   #bytm-thumbnail-overlay-img[data-media-type="song"] {
   object-fit: contain;
+}
+
+:root #bytm-thumbnail-overlay-bg-img {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  object-fit: cover;
+  filter: blur(12px) brightness(75%) contrast(85%);
+}
+
+ytmusic-player[player-ui-state="FULLSCREEN"]
+  #bytm-thumbnail-overlay-bg-img[data-media-type="song"] {
+  display: inline-block;
 }
 
 #bytm-thumbnail-overlay-indicator {

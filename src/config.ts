@@ -276,6 +276,11 @@ export const cfgMigrations: DataMigrationsDict = {
       "thumbnailOverlayITunesImgRes",
     ]);
   },
+
+  // 11 -> 12 (v3.2)
+  12: (oldData: FeatureConfig) => useNewDefaults(oldData, [
+    "thumbnailOverlayBlurredDuplicateBackground",
+  ]),
 } as const satisfies DataMigrationsDict;
 
 //#region migration helpers

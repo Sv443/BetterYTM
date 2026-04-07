@@ -689,6 +689,7 @@ export async function initThumbnailOverlay() {
 
       const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
       const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
+      const thumbBgElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-bg-img");
       const indicatorElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-indicator");
 
       const ovlShown = overlayState !== ThumbOvlState.Off;
@@ -697,6 +698,8 @@ export async function initThumbnailOverlay() {
         overlayElem.style.display = ovlShown ? "block" : "none";
       if(thumbElem)
         thumbElem.ariaHidden = String(!ovlShown);
+      if(thumbBgElem)
+        thumbBgElem.ariaHidden = String(!ovlShown);
       if(indicatorElem) {
         indicatorElem.style.display = ovlShown ? "block" : "none";
         indicatorElem.ariaHidden = String(!ovlShown);
@@ -748,6 +751,7 @@ export async function initThumbnailOverlay() {
         const setThumbOverlayUrl = (ytThumbUrl: string, amThumbUrl?: string) => {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
+          const thumbImgBgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-bg-img");
 
           const thumbUrl = overlayState === ThumbOvlState.AM && amThumbUrl ? amThumbUrl : ytThumbUrl;
           
@@ -765,6 +769,11 @@ export async function initThumbnailOverlay() {
             thumbImgElem.dataset.videoId = videoID;
             thumbImgElem.src = thumbUrl;
             thumbImgElem.dataset.mediaType = getCurrentMediaType();
+          }
+          if(thumbImgBgElem) {
+            thumbImgBgElem.dataset.videoId = videoID;
+            thumbImgBgElem.src = thumbUrl;
+            thumbImgBgElem.dataset.mediaType = getCurrentMediaType();
           }
 
           log("Applied thumbnail URL to overlay:", thumbUrl);
@@ -862,11 +871,21 @@ export async function initThumbnailOverlay() {
           indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
         }
 
+        const thumbImgBgElem = getFeature("thumbnailOverlayBlurredDuplicateBackground") ? document.createElement("img") : undefined;
+        if(thumbImgBgElem) {
+          thumbImgBgElem.id = "bytm-thumbnail-overlay-bg-img";
+          thumbImgBgElem.classList.add("bytm-thumbnail-overlay-img");
+          thumbImgBgElem.role = "presentation";
+          thumbImgBgElem.ariaHidden = "true";
+        }
+
         const thumbImgElem = document.createElement("img");
         thumbImgElem.id = "bytm-thumbnail-overlay-img";
+        thumbImgElem.classList.add("bytm-thumbnail-overlay-img");
         thumbImgElem.role = "presentation";
         thumbImgElem.ariaHidden = "true";
 
+        thumbImgBgElem && overlayElem.appendChild(thumbImgBgElem);
         overlayElem.appendChild(thumbImgElem);
         playerEl.appendChild(overlayElem);
         indicatorElem && playerEl.appendChild(indicatorElem);

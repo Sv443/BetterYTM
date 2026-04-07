@@ -386,6 +386,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "The thumbnail will be shown over top of the currently playing video/song as an overlay.\nThis means you will not save any bandwidth as the video will still be loaded and played in the background!",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Add a button to the media controls to manually toggle the thumbnail",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "This button will allow you to manually toggle the thumbnail on and off. This is not affected if the thumbnail replacement option is set to \"never\".\nOnce a new video/song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Show a blurred copy of the thumbnail in the fullscreen player instead of black bars",
   "feature_desc.thumbnailOverlayITunesImgRes": "Resolution of the Apple Music / iTunes album artwork",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Maximum amount of album art entries to keep in the cache",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "The album artworks of songs you listen to are stored in a cache to reduce the amount of requests to the album art provider.\nThis feature allows you to set the maximum amount of album art entries to keep in the cache.\nWhen the limit is reached, the oldest entry will be removed to make space for any new ones.",

@@ -826,6 +826,8 @@ export interface FeatureConfig {
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */
   thumbnailOverlayToggleBtnShown: boolean;
+  /** Whether to show a duplicate of the thumbnail as the background of the thumbnail overlay, with a blur and dim effect */
+  thumbnailOverlayBlurredDuplicateBackground: boolean;
   /** The width and height of the image fetched from the iTunes API */
   thumbnailOverlayITunesImgRes: number;
   /** For how long to cache the album art images fetched from the iTunes API */
