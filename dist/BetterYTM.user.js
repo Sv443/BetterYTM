@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4ad4ea85/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@75666e6d/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "github",
-    buildNumber: "4ad4ea85",
-    buildTimestamp: "1775247273496",
+    buildNumber: "75666e6d",
+    buildTimestamp: "1775553552125",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -2210,12 +2210,13 @@ async function closeToast() {
         this.opts = options;
     }
     /** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
-    static async parseMd(md) {
-        return await marked.marked.parse(md, {
+    static async parseMd(md, sanitize = false) {
+        const parsed = await marked.marked.parse(md, {
             async: true,
             gfm: true,
             breaks: true,
         });
+        return sanitize ? sanitizeHtml(parsed) : parsed;
     }
     /** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
     async renderBody() {
@@ -2225,7 +2226,7 @@ async function closeToast() {
         const markdownEl = document.createElement("div");
         markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
         markdownEl.tabIndex = 0;
-        setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
+        setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont, this.opts.sanitizeBody));
         if (this.opts.modifyBodyElements)
             await this.opts.modifyBodyElements(bodyEl, markdownEl);
         bodyEl.appendChild(markdownEl);
@@ -6508,6 +6509,38 @@ var domains = [
 	}
 ];
 var alerts = [
+	{
+		id: "update-preview-version-hint-v3.1.0-rc.1",
+		title: {
+			"de-DE": "BetterYTM ist veraltet",
+			"en-GB": "BetterYTM is outdated",
+			"en-US": "BetterYTM is outdated",
+			"es-ES": "BetterYTM está desactualizado",
+			"fr-FR": "BetterYTM est obsolète",
+			"hi-IN": "BetterYTM पुराना है",
+			"ja-JP": "BetterYTMは古くなっています",
+			"pt-BR": "BetterYTM está desatualizado",
+			"zh-CN": "BetterYTM 已过时"
+		},
+		message: {
+			"de-DE": "Du verwendest derzeit eine veraltete Vorschauversion von BetterYTM.  \nBitte schau auf der Release-Seite nach der vollständigen Version v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"en-GB": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"en-US": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"es-ES": "Actualmente estás ejecutando una versión de vista previa obsoleta de BetterYTM.  \nPor favor, consulta la página de lanzamientos para la versión completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"fr-FR": "Vous utilisez actuellement une version de prévisualisation obsolète de BetterYTM.  \nVeuillez consulter la page des versions pour la version complète v3.1.0 :  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"hi-IN": "आप वर्तमान में BetterYTM का एक पुराना पूर्वावलोकन संस्करण चला रहे हैं।  \nकृपया पूर्ण v3.1.0 रिलीज़ के लिए रिलीज़ पृष्ठ पर जांच करें:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"ja-JP": "現在、BetterYTMの古いプレビューバージョンを実行しています。  \n完全なv3.1.0リリースについては、リリースページを確認してください:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"pt-BR": "Você está atualmente executando uma versão de visualização desatualizada do BetterYTM.  \nPor favor, verifique na página de lançamentos para a versão completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+			"zh-CN": "您当前正在运行过时的BetterYTM预览版本。  \n请在发布页面上查看完整的v3.1.0版本：  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)"
+		},
+		domains: [
+			"ytm",
+			"yt"
+		],
+		important: true,
+		version: "3.1.0-rc.1",
+		dateMax: "2026-06-01T23:59:59.999Z"
+	}
 ];
 var selectors = {
 };
@@ -6607,9 +6640,11 @@ function isAlertActive(alert, alertsData) {
     if (!alert.domains.includes(getDomain()))
         return false;
     // check version constraints
-    if (alert.versionMin && compareVersions.compareVersions(alert.versionMin, scriptInfo$1.version) > 0)
+    if ("version" in alert && alert.version !== scriptInfo$1.version)
         return false;
-    if (alert.versionMax && compareVersions.compareVersions(alert.versionMax, scriptInfo$1.version) < 0)
+    if ("versionMin" in alert && alert.versionMin && compareVersions.compareVersions(alert.versionMin, scriptInfo$1.version) > 0)
+        return false;
+    if ("versionMax" in alert && alert.versionMax && compareVersions.compareVersions(alert.versionMax, scriptInfo$1.version) < 0)
         return false;
     // check date constraints
     const now = new Date();
@@ -6660,13 +6695,14 @@ function createAlertDialog(alert) {
             return footer;
         },
         body: resolveTranslatable(alert.message),
+        sanitizeBody: true,
         modifyBodyElements(_bw, mdCont) {
             mdCont.ariaLive = "polite";
             mdCont.ariaAtomic = "true";
         }
     });
 }
-//#region use data
+//#region init
 /** Initializes the static data by fetching it and performing necessary checks and actions. */
 async function initStaticData() {
     const staticData = await getStaticData();
@@ -10693,6 +10729,7 @@ function initObservers(cfg) {
         //    enabled immediately
         globservers.body = new UserUtils.SelectorObserver(document.body, {
             ...defaultObserverOptions,
+            defaultDebounce: UserUtils.clamp(defaultObserverOptions.defaultDebounce, 100, 500),
             subtree: false,
         });
         globservers.body.enable();
@@ -11191,7 +11228,10 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
             node.setAttribute("rel", "noopener noreferrer");
     }
 });
-/** Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links */
+/**
+ * Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links.
+ * By default, automatically returns a TrustedHTML object if the browser supports it.
+ */
 function sanitizeHtml(html, returnTrustedType = trustedTypesSupported) {
     return DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: returnTrustedType });
 }
@@ -11555,11 +11595,11 @@ async function onDomLoad() {
     initExponentialVolume();
     // initialize DOM globals:
     try {
+        initObservers(feats);
         // run detached:
         setTimeout(() => {
             const endInitGlobalDur = measureInitDuration("initGlobals_deferred");
             initGlobalCss();
-            initObservers(feats);
             Promise.allSettled([
                 injectCssBundle(),
                 initVersionCheck(),
@@ -11569,7 +11609,7 @@ async function onDomLoad() {
         }, 0);
     }
     catch (err) {
-        error("Encountered error in feature pre-init:", err);
+        error("Encountered error in pre-init:", err);
     }
     info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
     try {
