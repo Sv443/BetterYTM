@@ -33,6 +33,7 @@
   z-index: 3006;
   color: #fff;
   background-color: var(--bytm-dialog-bg);
+  contain: content;
 }
 
 .bytm-dialog.align-top {

@@ -44,6 +44,7 @@
   z-index: 3006;
   color: #fff;
   background-color: var(--bytm-menu-bg);
+  contain: content;
 }
 
 .bytm-menu.top-aligned {
