@@ -243,6 +243,7 @@ export function createAlertDialog(alert: GlobalAlert) {
       return footer;
     },
     body: resolveTranslatable(alert.message),
+    sanitizeBody: true,
     modifyBodyElements(_bw, mdCont) {
       mdCont.ariaLive = "polite";
       mdCont.ariaAtomic = "true";
@@ -250,7 +251,7 @@ export function createAlertDialog(alert: GlobalAlert) {
   });
 }
 
-//#region use data
+//#region init
 
 /** Initializes the static data by fetching it and performing necessary checks and actions. */
 export async function initStaticData() {

@@ -1930,11 +1930,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | Property | Description |
 > | :-- | :-- |
 > | `body: string \| (() => string \| Promise<string>)` | Markdown content to render in the dialog. Can be a string or a sync or async function that returns a string. |
+> | `sanitizeBody?: boolean` | Whether to sanitize the provided Markdown content with DOMPurify after converting it to HTML. Defaults to false. |
+> | `modifyBodyElements?: (bodyWrapper: HTMLDivElement, markdownContainer: HTMLDivElement) => void \| Promise<void>;` | Optional function that can be used to modify the body elements after they are created (or other tasks like adding listeners). The `bodyWrapper` is the outer wrapper element with the class `bytm-md-dialog-body` and the `markdownContainer` is the direct parent of the markdown content, with the classes `bytm-markdown-dialog-content` and `bytm-markdown-container`. |
 >   
 > Methods:  
 > The methods from the [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
-> - `static parseMd(md: string): Promise<string>`  
->   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.
+> - `static parseMd(md: string, sanitize = false): Promise<string>`  
+>   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.  
+>   If `sanitize` is set to true, the resulting HTML string will be sanitized with DOMPurify to remove any potentially XSS-causing code.
 > - `protected renderBody(): Promise<void>`  
 >   Renders the Markdown content to the dialog's body element. You can only override this method if you create a subclass of `MarkdownDialog`  
 >   If you do, you can use `parseMd()` to render a custom mixture of Markdown HTML and JavaScript-created elements to the body.

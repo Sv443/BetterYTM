@@ -336,7 +336,10 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
   }
 });
 
-/** Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links */
+/**
+ * Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links.  
+ * By default, automatically returns a TrustedHTML object if the browser supports it.
+ */
 export function sanitizeHtml(html: Stringifiable, returnTrustedType = trustedTypesSupported) {
   return DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: returnTrustedType });
 }
