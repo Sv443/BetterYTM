@@ -30,9 +30,9 @@ const maxLogLines = 2_500; // prevent excessive memory usage
 /** Pushes a new line to the {@linkcode logs} array with the given type and arguments. */
 const pushLog = (type: string, ...args: unknown[]) => {
   logs.push([type, Date.now(), ...args]);
-
   logLines++;
 
+  // remove oldest line from beginning of array if above limit
   if(logs.length > maxLogLines)
     logs.shift();
 };
