@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@75666e6d/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@17d791ef/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "github",
-    buildNumber: "75666e6d",
-    buildTimestamp: "1775553552125",
+    buildNumber: "17d791ef",
+    buildTimestamp: "1775570382712",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1501,7 +1501,7 @@ class PromptDialog extends BytmDialog {
         this.type = props.type;
         this.on("render", () => this.focusOnRender());
     }
-    /** Emits the "resolve" event with the specified value - don't call unless the dialog is about to be closed. */
+    /** Emits the "resolve" event with the specified value. Should be called every time the dialog is about to be closed. */
     emitResolve(val) {
         this.events.emit("resolve", val);
     }
@@ -1568,11 +1568,12 @@ class PromptDialog extends BytmDialog {
         buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
         // confirm button (only for types "confirm" & "prompt"):
         const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : document.createElement("button"));
-        if (confirmBtn && "confirmBtnEnabled" in rest) {
+        if (confirmBtn) {
+            const { confirmBtnText, confirmBtnTooltip } = rest;
             confirmBtn.id = "bytm-prompt-dialog-confirm";
             confirmBtn.classList.add("bytm-prompt-dialog-button");
-            confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
-            confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
+            confirmBtn.textContent = await this.consumePromptStringGen(type, confirmBtnText, t("prompt_confirm"));
+            confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, confirmBtnTooltip, t("click_to_confirm_tooltip"));
             confirmBtn.tabIndex = 0;
             if (type === "confirm")
                 confirmBtn.autofocus = true;
@@ -2267,6 +2268,16 @@ const consPrefix = `[${scriptInfo$1.name}]`;
 const consPrefixDbg = `[${scriptInfo$1.name}/#DEBUG]`;
 /** In dev mode, all logs are stored in this array for exporting */
 const logs = [];
+let logLines = 0;
+const maxLogLines = 2500; // prevent excessive memory usage
+/** Pushes a new line to the {@linkcode logs} array with the given type and arguments. */
+const pushLog = (type, ...args) => {
+    logs.push([type, Date.now(), ...args]);
+    logLines++;
+    // remove oldest line from beginning of array if above limit
+    if (logs.length > maxLogLines)
+        logs.shift();
+};
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 const getLogsTxt = () => {
     /** Converts a value to a string for logging. */
@@ -2288,20 +2299,22 @@ const getLogsTxt = () => {
         if (val instanceof Date)
             return `[Date <${val.toISOString()}>]`;
         if (typeof val === "object") {
+            const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
             try {
-                if (val.constructor?.name === "Object")
+                // objects that are impure or purified (no prototype chain) and can usually be serialized
+                if (val.constructor?.name === "Object" || val.constructor === undefined)
                     return JSON.stringify(val);
-                return `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
+                return unknownObj;
             }
             catch {
-                // @ts-expect-error
-                return "toString" in val ? val.toString() : `[Object <${val?.constructor?.name ?? "(unknown)"}>]`;
+                return "toString" in val ? val.toString() : unknownObj;
             }
         }
         return primaryScope ? `${val}` : `"${val}"`;
     };
     const longestLogType = Math.max(...logs.map(([type]) => type.length));
-    return logs.reduce((acc, [type, time, ...args]) => {
+    const hintLines = (logs.length >= maxLogLines ? `// Note: there were more than ${maxLogLines} lines, so the ${logLines} oldest lines were truncated.\n\n` : "");
+    return hintLines + logs.reduce((acc, [type, time, ...args]) => {
         if (args.length === 0)
             return acc;
         const timestamp = new Date(time).toISOString();
@@ -2333,23 +2346,23 @@ function getLogLevel(args) {
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 function log(...args) {
+    pushLog("LOG", Date.now(), ...args);
     if (curLogLevel <= getLogLevel(args))
         console.log(consPrefix, ...args);
-    logs.push(["LOG", Date.now(), ...args]);
 }
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 function info(...args) {
+    pushLog("INFO", Date.now(), ...args);
     if (curLogLevel <= getLogLevel(args))
         console.info(consPrefix, ...args);
-    logs.push(["INFO", Date.now(), ...args]);
 }
 /** Logs all passed values to the console as a warning, no matter the log level. */
 function warn(...args) {
+    pushLog("WARN", Date.now(), ...args);
     console.warn(consPrefix, ...args);
-    logs.push(["WARN", Date.now(), ...args]);
 }
 const showErrToast = CoreUtils.debounce((errName, ...args) => showIconToast({
     message: t("generic_error_toast_encountered_error_type", errName),
@@ -2360,25 +2373,25 @@ const showErrToast = CoreUtils.debounce((errName, ...args) => showIconToast({
 }), 1000);
 /** Logs all passed values to the console as an error, no matter the log level. */
 function error(...args) {
+    pushLog("ERROR", Date.now(), ...args);
     console.error(consPrefix, ...args);
-    logs.push(["ERROR", Date.now(), ...args]);
     try {
         getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
     }
     catch (e) {
+        pushLog("ERROR", Date.now(), "Error while showing error toast:", e);
         console.error(consPrefix, "Error while showing error toast:", e);
-        logs.push(["ERROR", Date.now(), "Error while showing error toast:", e]);
     }
 }
 /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
 function errorNoToast(...args) {
+    pushLog("ERROR", Date.now(), ...args);
     console.error(consPrefix, ...args);
-    logs.push(["ERROR", Date.now(), ...args]);
 }
 /** Logs all passed values to the console with a debug-specific prefix */
 function dbg(...args) {
+    pushLog("DBG", Date.now(), ...args);
     console.log(consPrefixDbg, ...args);
-    logs.push(["DBG", Date.now(), ...args]);
 }
 //#region error dialog
 function getErrorDialog(errName, args) {
@@ -12053,7 +12066,7 @@ function registerDevCommands() {
     });
     isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () => showPrompt({
         type: "alert",
-        message: devPluginToken ? `Developer plugin token:\n${devPluginToken}` : "Dev plugin not registered yet.",
+        message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
         extraButtons: [
             (dlg) => {
                 const btn = document.createElement("button");
