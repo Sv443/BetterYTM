@@ -534,7 +534,6 @@ export async function mountCfgMenu() {
           const getReloadAllBtn = async (dialog: PromptDialog): Promise<HTMLButtonElement> => {
             const reloadAllBtn = document.createElement("button");
             reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
-            reloadAllBtn.classList.add("bytm-prompt-dialog-button");
             reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_all_tabs_now")}` : ""}`;
             reloadAllBtn.ariaLabel = reloadAllBtn.title = `${t("reload_all_tabs_tooltip", scriptInfo.name)}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_all_tabs_tooltip", scriptInfo.name)}` : ""}`;
             reloadAllBtn.tabIndex = 0;

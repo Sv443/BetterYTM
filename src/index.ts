@@ -760,6 +760,7 @@ function registerDevCommands() {
         },
         (dlg) => {
           const btn = document.createElement("button");
+          btn.classList.add("bytm-prompt-dialog-button");
           btn.textContent = btn.ariaLabel = "Decompress";
           btn.addEventListener("click", async () => {
             const val = dlg.getInputValue();

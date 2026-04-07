@@ -231,8 +231,11 @@ export class PromptDialog extends BytmDialog {
     const appendExtraButtons = async () => {
       for(const getBtnFn of extraButtons) {
         const btn = await getBtnFn(this);
-        if(btn instanceof HTMLButtonElement)
+        if(btn instanceof HTMLElement) {
           buttonsCont.appendChild(btn);
+          if(btn instanceof HTMLButtonElement)
+            btn.classList.add("bytm-prompt-dialog-button");
+        }
       }
     };
 

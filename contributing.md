@@ -2301,6 +2301,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   message: "Enter the name of the item to delete:",
 >   // default value for the input field:
 >   defaultValue: "My Item",
+>   // use a textarea instead of an input field:
+>   textarea: true,
 > });
 > 
 > const confirmed = itemName && await unsafeWindow.BYTM.showPrompt({
@@ -2313,11 +2315,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   // and the type parameter can be used for further customization:
 >   denyBtnTooltip: async (type: "confirm" | "alert" | "prompt") => await getText(`prompts.${type}.cancel_deletion`),
 >   // custom extra button example:
->   extraButtons: [getHelpButton()],
+>   extraButtons: [(dlg) => getHelpButton(dlg)],
 >   extraButtonsPosition: "before", // before the "confirm" and "deny" buttons (note: their exact order is OS-dependent)
 > });
 > 
-> function getHelpButton(): HTMLButtonElement {
+> function getHelpButton(_dlg: PromptDialog): HTMLButtonElement {
 >   const btn = document.createElement("button");
 >   btn.textContent = "Get help";
 >   btn.title = "Click to get help with this action";
