@@ -1,20 +1,45 @@
-## Asset formats explained
+## Assets explained
+
+<br>
+
+### Runtime:
+All contents of the subfolders of `assets/` are **not** bundled into the userscript. Instead, they need to be fetched from the CDN at runtime. This is done to massively reduce the bundle size and to extend the cache lifetime of the assets.  
+  
+- Use the functions `getResourceUrl()` or `resourceAsString()` in `src/utils/misc.ts` to fetch the URL or content.  
+- For dynamically loaded stylesheets in `assets/styles/` specifically, the `addStyleFromResource()` function in `src/utils/dom.ts` can be used to effortlessly add them to the page.  
+  Note that CSS files included via `import ".../fileName.css";` in the source code are bundled into the file at `dist/BetterYTM.css` and will be automatically loaded into the page at initialization time via `injectCssBundle()` in `src/index.ts`.
 
 <br>
 
 ### Images:
-- Own PNG/JPG/GIF images are stored in [`assets/images/`](./images/)
-- External images are stored in [`assets/images/external/`](./images/external/)
-- The BYTM logo files are in [`assets/images/logo/`](./images/logo/)
-- SVG icons are stored in [`assets/icons/`](./icons/)
-- CSS stylesheets are in [`assets/styles/`](./styles/)
-- Translations are in [`assets/translations/`](./translations/)
+| Path | Contents |
+| :-- | :-- |
+| [`assets/images/`](./images/) | Own PNG/JPG/GIF images |
+| [`assets/images/external/`](./images/external/) | External images |
+| [`assets/images/logo/`](./images/logo/) | The BYTM logo files |
+| [`assets/icons/`](./icons/) | SVG icons |
+| [`assets/styles/`](./styles/) | Dynamically loaded CSS stylesheets |
+| [`assets/translations/`](./translations/) | Translations |
 
 <br>
 
 ## JSON file formats:
 > [!NOTE]  
 > A property that's followed by a question mark means it is optional.
+
+<br>
+
+### [`data.json`](data.json)
+This file is used to serve a set of static data to the userscript, to be able to react to domain and layout changes faster and to be able to send out global announcements to users.  
+Additionally, the userscript contains a fallback version of this file from the time of the build, which is used if the runtime version fails to load for any reason (e.g. GitHub being down or unresponsive, the remote file being renamed or deleted, etc.).  
+  
+It has the following contents:
+| Property | Description |
+| :-- | :-- |
+| `formatVersion` | uint version number for the format of this file. If the runtime format doesn't match, only the bundled version of the static data will be used. |
+| `domains` | Contains information about the domains the userscript supports, like the display name variations and a hostname-to-domain-identifier mapping. |
+| `alerts` | A list of global announcements that should be shown to users in a dismissible dialog. Each announcement has a unique ID, a translatable title and message and constraints for a date or version range. The message supports markdown formatting and will be sanitized with DOMPurify to prevent potential XSS vulnerabilities. |
+| `selectors` | Contains all CSS selectors used in the userscript, as a mapping of selector identifier and domain identifier to the actual selector string. This allows to react to layout changes by just updating the selectors in this file, without needing to change the userscript code and publish a whole new version and wait for users to slowly update to it. |
 
 <br>
 
