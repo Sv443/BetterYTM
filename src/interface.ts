@@ -2,7 +2,7 @@ import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import * as constants from "@/constants.ts";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "@util/index.ts";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable } from "@util/index.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
@@ -374,20 +374,12 @@ function registerDevPlugin() {
   if(mode !== "development")
     return;
   try {
-    const description = [
-      "de-DE", "en-US", "es-ES", "fr-FR",
-      "hi-IN", "ja-JP", "pt-BR", "zh-CN",
-    ].reduce((acc, loc) => ({
-      ...acc,
-      [loc as TrLocale]: t("dev_plugin.description"),
-    }), {} as Record<TrLocale, string>);
-
     const { token, events } = registerPlugin({
       plugin: {
         name: t("dev_plugin.name"),
         namespace: `${pkgJson.namespace}+${devPluginId}`,
         version: pkgJson.version,
-        description,
+        description: createTranslatable("dev_plugin.description"),
         homepage: {
           source: pkgJson.homepage,
           changelog: `${pkgJson.homepage}/blob/${branch}/changelog.md`,

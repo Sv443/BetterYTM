@@ -191,9 +191,17 @@ export function tlp(locale: TrLocale, key: TFuncKey, num: number | unknown[] | N
     return t(key, ...args);
 
   return trans;
-};
+}
 
-/** Returns the appropriate translation for the given translatable object based on the current locale. Falls back to `en-US` */
+/** Creates a {@linkcode Translatable} object with the translations for the given key and arguments. */
+export function createTranslatable(key: TFuncKey, args: TrArg[] = []): Translatable {
+  return Object.keys(langMapping).reduce((acc, locale) => {
+    acc[locale as TrLocale] = tl(locale as TrLocale, key, ...args);
+    return acc;
+  }, {} as Translatable);
+}
+
+/** Returns the appropriate translation for the given {@linkcode Translatable} object based on the current locale. Falls back to `en-US` */
 export function resolveTranslatable(trnsl: Translatable) {
   return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
 }
