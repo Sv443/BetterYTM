@@ -28,8 +28,8 @@ let logLines = 0;
 const maxLogLines = 2_500; // prevent excessive memory usage
 
 /** Pushes a new line to the {@linkcode logs} array with the given type and arguments. */
-const pushLog = (type: string, ...args: unknown[]) => {
-  logs.push([type, Date.now(), ...args]);
+const pushLog = (type: string, time?: number, ...args: unknown[]) => {
+  logs.push([type, time ?? Date.now(), ...args]);
   logLines++;
 
   // remove oldest line from beginning of array if above limit
