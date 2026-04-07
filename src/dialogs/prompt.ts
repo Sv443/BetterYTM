@@ -103,7 +103,7 @@ export class PromptDialog extends BytmDialog {
     this.on("render", () => this.focusOnRender());
   }
 
-  /** Emits the "resolve" event with the specified value - don't call unless the dialog is about to be closed. */
+  /** Emits the "resolve" event with the specified value. Should be called every time the dialog is about to be closed. */
   public emitResolve(val: PromptDialogResolveVal) {
     this.events.emit("resolve", val);
   }
@@ -186,11 +186,12 @@ export class PromptDialog extends BytmDialog {
     // confirm button (only for types "confirm" & "prompt"):
 
     const confirmBtn = (type === "confirm" || type === "prompt") && ("confirmBtnEnabled" in rest && rest.confirmBtnEnabled === false ? undefined : document.createElement("button"));
-    if(confirmBtn && "confirmBtnEnabled" in rest) {
+    if(confirmBtn) {
+      const { confirmBtnText, confirmBtnTooltip } = rest as ConfirmBtnProps;
       confirmBtn.id = "bytm-prompt-dialog-confirm";
       confirmBtn.classList.add("bytm-prompt-dialog-button");
-      confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
-      confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
+      confirmBtn.textContent = await this.consumePromptStringGen(type, confirmBtnText, t("prompt_confirm"));
+      confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
       if(type === "confirm")
         confirmBtn.autofocus = true;
@@ -319,7 +320,7 @@ export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<
 
     let closeUnsub: (() => void) | undefined; // eslint-disable-line prefer-const
 
-    const resolveUnsub = promptDialog.on("resolve" as "_", (val: PromptDialogResolveVal) => {
+    const resolveUnsub = promptDialog.on("resolve", (val: PromptDialogResolveVal) => {
       resolveUnsub();
       if(resolveVal !== undefined)
         return;
