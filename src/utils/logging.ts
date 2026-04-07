@@ -45,14 +45,15 @@ export const getLogsTxt = () => {
     if(val instanceof Date)
       return `[Date <${val.toISOString()}>]`;
     if(typeof val === "object") {
+      const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
       try {
-        if(val.constructor?.name === "Object")
+        // objects that are impure or purified (no prototype chain) and can usually be serialized
+        if(val.constructor?.name === "Object" || val.constructor === undefined)
           return JSON.stringify(val);
-        return `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
+        return unknownObj;
       }
       catch {
-        // @ts-expect-error
-        return "toString" in val ? val.toString() : `[Object <${val?.constructor?.name ?? "(unknown)"}>]`;
+        return "toString" in val ? val.toString() : unknownObj;
       }
     }
     return primaryScope ? `${val}` : `"${val}"`;
