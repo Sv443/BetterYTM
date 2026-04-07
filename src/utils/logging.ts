@@ -23,6 +23,19 @@ export type LogLine = [type: string, time: number, ...args: unknown[]];
 
 /** In dev mode, all logs are stored in this array for exporting */
 const logs = [] as LogLine[];
+let logLines = 0;
+
+const maxLogLines = 2_500; // prevent excessive memory usage
+
+/** Pushes a new line to the {@linkcode logs} array with the given type and arguments. */
+const pushLog = (type: string, ...args: unknown[]) => {
+  logs.push([type, Date.now(), ...args]);
+
+  logLines++;
+
+  if(logs.length > maxLogLines)
+    logs.shift();
+};
 
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
 export const getLogsTxt = () => {
@@ -61,7 +74,9 @@ export const getLogsTxt = () => {
 
   const longestLogType = Math.max(...logs.map(([type]) => type.length));
 
-  return logs.reduce((acc, [type, time, ...args]) => {
+  const hintLines = (logs.length >= maxLogLines ? `// Note: there were more than ${maxLogLines} lines, so the ${logLines} oldest lines were truncated.\n\n` : "");
+
+  return hintLines + logs.reduce((acc, [type, time, ...args]) => {
     if(args.length === 0)
       return acc;
 
@@ -102,9 +117,9 @@ function getLogLevel(args: unknown[]): number {
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 export function log(...args: unknown[]): void {
+  pushLog("LOG", Date.now(), ...args);
   if(curLogLevel <= getLogLevel(args))
     console.log(consPrefix, ...args);
-  logs.push(["LOG", Date.now(), ...args]);
 }
 
 /**
@@ -112,15 +127,15 @@ export function log(...args: unknown[]): void {
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 export function info(...args: unknown[]): void {
+  pushLog("INFO", Date.now(), ...args);
   if(curLogLevel <= getLogLevel(args))
     console.info(consPrefix, ...args);
-  logs.push(["INFO", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console as a warning, no matter the log level. */
 export function warn(...args: unknown[]): void {
+  pushLog("WARN", Date.now(), ...args);
   console.warn(consPrefix, ...args);
-  logs.push(["WARN", Date.now(), ...args]);
 }
 
 const showErrToast = debounce(
@@ -137,28 +152,28 @@ const showErrToast = debounce(
 
 /** Logs all passed values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
+  pushLog("ERROR", Date.now(), ...args);
   console.error(consPrefix, ...args);
-  logs.push(["ERROR", Date.now(), ...args]);
 
   try {
     getFeature("showToastOnGenericError") && showErrToast(args.find(a => a instanceof Error)?.name ?? t("error"), ...args);
   }
   catch(e) {
+    pushLog("ERROR", Date.now(), "Error while showing error toast:", e);
     console.error(consPrefix, "Error while showing error toast:", e);
-    logs.push(["ERROR", Date.now(), "Error while showing error toast:", e]);
   }
 }
 
 /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
 export function errorNoToast(...args: unknown[]): void {
+  pushLog("ERROR", Date.now(), ...args);
   console.error(consPrefix, ...args);
-  logs.push(["ERROR", Date.now(), ...args]);
 }
 
 /** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {
+  pushLog("DBG", Date.now(), ...args);
   console.log(consPrefixDbg, ...args);
-  logs.push(["DBG", Date.now(), ...args]);
 }
 
 //#region error dialog
