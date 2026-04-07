@@ -41,8 +41,9 @@ type RequireObjPkg = {
 
 /** Build script stats, persisted in the file at {@linkcode buildStatsPath} */
 type BuildStats = {
-  sizeKiB: number;
   mode: string;
+  suffix?: string;
+  sizeKiB: number;
   timestamp: number;
   uid: string;
 };
@@ -143,7 +144,8 @@ async function main() {
       catch {}
     }
 
-    const prevBuildStats = buildStats.find((v) => v.mode === mode);
+    const prevBuildStats = buildStats.find((v) => v.mode === mode && v.suffix === suffix)
+      ?? buildStats.find((v) => v.mode === mode && !v.suffix);
 
     let sizeIndicator = "";
     if(prevBuildStats?.sizeKiB) {
@@ -165,8 +167,9 @@ async function main() {
     ].join("\n"));
 
     const curBuildStats: BuildStats = {
-      sizeKiB,
       mode,
+      suffix,
+      sizeKiB,
       timestamp: buildTs,
       uid: buildUid,
     };
