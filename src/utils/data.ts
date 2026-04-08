@@ -7,9 +7,10 @@ import { info, warn } from "@util/logging.ts";
 import { getDomain, getterifyObj, resourceAsString } from "@util/misc.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
-import type { Domain, Translatable } from "@/types.ts";
+import type { Domain, FeatureConfig, Translatable } from "@/types.ts";
 import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
+import { getFeature } from "@/config.ts";
 
 //#region types
 
@@ -153,12 +154,14 @@ export const alertsStore = new DataStore<AlertsStoreData, false>({
 });
 
 /** Checks if there are active alerts and shows a prompt for each of them. */
-async function checkActiveAlerts({ alerts }: StaticData, alertsData: AlertsStoreData): Promise<void> {
+async function checkActiveAlerts(alertMode: FeatureConfig["globalAlertMode"], { alerts }: StaticData, alertsData: AlertsStoreData): Promise<void> {
   const activeAlerts = alerts.filter(alert => isAlertActive(alert, alertsData));
 
   for(const alert of activeAlerts) {
+    if(alertMode === "importantOnly" && !alert.important)
+      continue;
     const dlg = createAlertDialog(alert);
-    await dlg.open();
+    dlg.open();
     await dlg.once("close");
     alertsData = await alertsStore.loadData();
     await alertsStore.setData({
@@ -260,7 +263,9 @@ export async function initStaticData() {
     alertsStore.loadData(),
   ]);
 
+  const alertMode = getFeature("globalAlertMode");
+
   return await Promise.allSettled([
-    checkActiveAlerts(staticData, alertsData),
+    ...(alertMode !== "off" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []),
   ]);
 }

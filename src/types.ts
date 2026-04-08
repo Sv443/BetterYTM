@@ -804,6 +804,8 @@ export interface FeatureConfig {
   initTimeout: number;
   /** Time in milliseconds between SelectorObserver checks - lower number = faster reaction to DOM changes but also more CPU usage */
   defaultObserverDebounce: number;
+  /** Whether to show global alert messages and which ones to show */
+  globalAlertMode: "off" | "all" | "importantOnly";
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Button to reset every DataStore instance to their default values */

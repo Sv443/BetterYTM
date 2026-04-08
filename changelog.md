@@ -5,6 +5,7 @@
 ## 3.2.0
 - **New Features:**
   - 🎵 Added a feature to show a second, blurred duplicate of the thumbnail image in the thumbnail overlay as a background.
+  - Added a configuration option for the global alerts system.
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">Also see pull request #TODO</a>
