@@ -404,22 +404,22 @@ export async function initConfig() {
 
 /**
  * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.  
+ * Doesn't traverse nested objects.  
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
 export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   const newCfg = structuredClone(cfg);
-  const passedKeys = Object.keys(cfg);
+  const currentKeys = Object.keys(newCfg);
   const defaultKeys = Object.keys(cfgDefaultData);
-  const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
-  if(missingKeys.length > 0) {
-    for(const key of missingKeys)
-      newCfg[key as keyof FeatureConfig] = cfgDefaultData[key as keyof FeatureConfig] as never;
-  }
-  const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
-  if(extraKeys.length > 0) {
-    for(const key of extraKeys)
-      delete newCfg[key as keyof FeatureConfig];
-  }
+
+  // add missing keys with default values:
+  for(const key of defaultKeys.filter(k => !currentKeys.includes(k)))
+    currentKeys.push(newCfg[key as keyof FeatureConfig] = cfgDefaultData[key as keyof FeatureConfig] as never);
+
+  // remove extraneous keys that are not in the default config:
+  for(const key of currentKeys.filter(k => !defaultKeys.includes(k)))
+    delete newCfg[key as keyof FeatureConfig];
+
   return newCfg as FeatureConfig;
 }
 
