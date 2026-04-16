@@ -258,18 +258,18 @@ async function getHeaders(buildNbr: string) {
     `\
 // ==/UserScript==
 /*
-▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
-█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
-█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
-█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+  ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
+  █  █ ▄▄  █   █   ▄▄  ▄ ▄█ █  █  █▀▄▀█
+  █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+  █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
-        Made with ❤️ by Sv443
-I welcome every contribution on GitHub!
-  ${pkg.homepage}
+          Made with ❤️ by Sv443
+  I welcome every contribution on GitHub!
+    ${pkg.homepage}
 
 
-You can install the latest in-development version here:
-${pkg.devVersionUrl}
+  You can install the latest in-development version here:
+  ${pkg.devVersionUrl}
 
 */
 `] as const)
