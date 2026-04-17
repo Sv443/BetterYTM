@@ -160,6 +160,10 @@
   "list_button_placement_generic_lists": "Apenas em listas de músicas genéricas",
   "list_button_placement_everywhere": "Em toda lista de músicas",
 
+  "alert_mode.never": "Nunca",
+  "alert_mode.all": "Mostrar todos os alertas",
+  "alert_mode.important_only": "Apenas alertas importantes",
+
   "site_selection_both_sites": "Ambos os sites",
   "site_selection_only_yt": "Apenas YouTube",
   "site_selection_only_ytm": "Apenas YouTube Music",
@@ -387,6 +391,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "A miniatura será exibida sobre o vídeo em reprodução como uma sobreposição.\nIsso não economiza largura de banda, pois o vídeo ainda será carregado e reproduzido em segundo plano!",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Adicionar um botão aos controles de mídia para alternar manualmente a miniatura",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "Este botão permite alternar a miniatura manualmente. Não é afetado se a substituição de miniatura estiver definida como \"nunca\".\nQuando um novo vídeo/música começa, o estado padrão é restaurado.\nSegure shift ao clicar ou pressione o botão do meio do mouse para abrir a miniatura em alta qualidade em uma nova aba.",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Mostrar uma cópia desfocada da miniatura no player em tela cheia em vez de barras pretas",
   "feature_desc.thumbnailOverlayITunesImgRes": "Resolução da capa do Apple Music / iTunes",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Quantidade máxima de entradas de capa de álbum a manter no cache",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "As capas das músicas que você ouve são armazenadas em cache para reduzir as requisições ao provedor.\nEste recurso permite definir o limite máximo de entradas no cache.\nQuando o limite é atingido, a entrada mais antiga é removida para dar espaço a novas.",
@@ -532,6 +537,8 @@
   "feature_helptext.initTimeout": "Isso não afetará o comportamento do script de maneira significativa, mas se um de seus plugins não conseguir inicializar a tempo, você deve tentar aumentar esse valor.",
   "feature_desc.defaultObserverDebounce": "O tempo de debounce padrão para mutações do documento em milissegundos",
   "feature_helptext.defaultObserverDebounce": "Este tempo dita com que frequência o script é capaz de verificar mudanças na estrutura da página e quão rápido ele pode reagir a elas.\nDefinir para um valor mais baixo pode fazer o script reagir mais rápido, mas também aumentará o uso da CPU.\nSe o site estiver lento ou travando, tente aumentar esse valor.",
+  "feature_desc.globalAlertMode": "Quando mostrar diálogos de alerta globais para notificações importantes",
+  "feature_helptext.globalAlertMode": "Diálogos de alerta globais são diálogos modais que aparecem no centro da tela e bloqueiam a interação com o restante da página até serem fechados. Eles são usados para notificações importantes que requerem atenção imediata, como vulnerabilidades de segurança críticas ou atualizações importantes.\nCom esta opção você pode escolher quando exibir esses diálogos de alerta globais.",
 
   "feature_desc.locale": "Idioma",
   "feature_desc.localeFallback": "Utilizar o inglês para traduções em falta (desativar se contribuir para traduções)",

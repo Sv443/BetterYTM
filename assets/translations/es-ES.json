@@ -161,6 +161,10 @@
   "list_button_placement_generic_lists": "Solo en listas de canciones genéricas",
   "list_button_placement_everywhere": "En todas las listas de canciones",
 
+  "alert_mode.never": "Nunca",
+  "alert_mode.all": "Mostrar todas las alertas",
+  "alert_mode.important_only": "Solo alertas importantes",
+
   "site_selection_both_sites": "Ambos sitios",
   "site_selection_only_yt": "Solo YouTube",
   "site_selection_only_ytm": "Solo YouTube Music",
@@ -389,6 +393,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "La miniatura se mostrará sobre el video o la canción que se está reproduciendo actualmente.\n¡Esto no ahorrará ancho de banda ya que el video seguirá cargándose y reproduciéndose en segundo plano!",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Agregue un botón a los controles multimedia para mostrar u ocultar manualmente la miniatura",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "Este botón le permitirá alternar manualmente la miniatura activada y desactivada. Esto no se ve afectado si la opción de reemplazo de miniaturas está configurada en \"nunca\".\nUna vez que comience a reproducir un nuevo video/canción, se restaurará el estado predeterminado.\nMantenga presionada la tecla Mayús mientras hace clic o presione el botón del medio del mouse para abrir la miniatura de la más alta calidad en una nueva pestaña.",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Mostrar una copia borrosa de la miniatura en el reproductor de pantalla completa en lugar de barras negras",
   "feature_desc.thumbnailOverlayITunesImgRes": "Resolución de la carátula del álbum de Apple Music / iTunes",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Cantidad máxima de entradas de carátulas de álbumes para mantener en la caché",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "Las carátulas de los álbumes de las canciones que escuchas se almacenan en un caché para reducir la cantidad de solicitudes al proveedor de carátulas de álbumes.\nEsta función te permite establecer la cantidad máxima de entradas de carátulas de álbumes que se guardarán en el caché.\nCuando se alcanza el límite, se eliminará la entrada más antigua para dejar espacio para las nuevas.",
@@ -537,6 +542,8 @@
   "feature_helptext.initTimeout": "Esto no afectará el comportamiento del script de manera significativa, pero si uno de tus plugins no puede inicializarse a tiempo, deberías intentar aumentar este valor.",
   "feature_desc.defaultObserverDebounce": "El tiempo de debounce predeterminado para las mutaciones del documento en milisegundos",
   "feature_helptext.defaultObserverDebounce": "Este tiempo dicta con qué frecuencia el script puede verificar los cambios en la estructura de la página y qué tan rápido puede reaccionar a ellos.\nEstablecerlo en un valor más bajo puede hacer que el script reaccione más rápido, pero también aumentará el uso de CPU.\nSi el sitio se siente lento o con retraso, intente aumentar este valor.",
+  "feature_desc.globalAlertMode": "Cuándo mostrar diálogos de alerta globales para notificaciones importantes",
+  "feature_helptext.globalAlertMode": "Los diálogos de alerta globales son diálogos modales que aparecen en el centro de la pantalla y bloquean la interacción con el resto de la página hasta que se cierran. Se utilizan para notificaciones importantes que requieren atención inmediata, como vulnerabilidades de seguridad críticas o actualizaciones importantes.\nCon esta opción puede elegir cuándo mostrar estos diálogos de alerta globales.",
 
   "feature_desc.locale": "Idioma",
   "feature_desc.localeFallback": "Utilizar el inglés para las traducciones que faltan (desactivar si contribuye a las traducciones)",

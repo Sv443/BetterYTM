@@ -160,6 +160,10 @@
   "list_button_placement_generic_lists": "Dans les listes de chansons génériques uniquement",
   "list_button_placement_everywhere": "Dans chaque liste de chansons",
 
+  "alert_mode.never": "Jamais",
+  "alert_mode.all": "Afficher toutes les alertes",
+  "alert_mode.important_only": "Alertes importantes uniquement",
+
   "site_selection_both_sites": "Les deux sites",
   "site_selection_only_yt": "Seulement YouTube",
   "site_selection_only_ytm": "Seulement YouTube Music",
@@ -388,6 +392,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "Si vous choisissez de ne jamais afficher la vignette, vous pouvez toujours la voir en cliquant sur le bouton de superposition de vignette dans les contrôles multimédias.\nSi vous choisissez de toujours afficher la vignette, vous pouvez la masquer en cliquant sur le même bouton.",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Ajouter un bouton aux contrôles multimédias pour activer ou désactiver manuellement la vignette",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "Ce bouton vous permettra de basculer manuellement la vignette activée ou désactivée. Cela n'est pas affecté si l'option de remplacement de vignette est définie sur \"jamais\".\nUne fois qu'une nouvelle vidéo/chanson commence à jouer, l'état par défaut sera restauré.\nMaintenez la touche Maj enfoncée tout en cliquant ou appuyez sur le bouton du milieu de la souris pour ouvrir la vignette de la plus haute qualité dans un nouvel onglet.",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Afficher une copie floue de la vignette dans le lecteur plein écran au lieu des barres noires",
   "feature_desc.thumbnailOverlayITunesImgRes": "Résolution de la vignette Apple Music / iTunes",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Taille maximale du cache des vignettes d'art d'album",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "Les pochettes d'album des chansons que vous écoutez sont stockées dans un cache pour réduire le nombre de demandes adressées au fournisseur de pochettes d'album.\nCette fonctionnalité vous permet de définir la quantité maximale d'entrées de pochettes d'album à conserver dans le cache.\nLorsque la limite est atteinte, l'entrée la plus ancienne sera supprimée pour faire de la place pour les nouvelles.",
@@ -536,6 +541,8 @@
   "feature_helptext.initTimeout": "Cela n'affectera pas le comportement du script de manière significative, mais si l'un de vos plugins ne peut pas s'initialiser à temps, vous devriez essayer d'augmenter cette valeur.",
   "feature_desc.defaultObserverDebounce": "Le temps de debounce par défaut pour les mutations du document en millisecondes",
   "feature_helptext.defaultObserverDebounce": "Ce temps dicte à quelle fréquence le script peut vérifier les changements dans la structure de la page, et à quelle vitesse il peut réagir à ceux-ci.\nLe régler sur une valeur plus basse peut faire réagir le script plus rapidement, mais augmentera également l'utilisation du CPU.\nSi le site semble lent ou saccadé, essayez d'augmenter cette valeur.",
+  "feature_desc.globalAlertMode": "Quand afficher les dialogues d'alerte globaux pour les notifications importantes",
+  "feature_helptext.globalAlertMode": "Les dialogues d'alerte globaux sont des dialogues modaux qui apparaissent au centre de l'écran et bloquent l'interaction avec le reste de la page jusqu'à leur fermeture. Ils sont utilisés pour les notifications importantes qui nécessitent une attention immédiate, comme les vulnérabilités de sécurité critiques ou les mises à jour importantes.\nAvec cette option, vous pouvez choisir quand afficher ces dialogues d'alerte globaux.",
 
   "feature_desc.locale": "Langue",
   "feature_desc.localeFallback": "Utiliser l'anglais pour les traductions manquantes (désactiver si vous contribuez aux traductions)",

@@ -161,6 +161,10 @@
   "list_button_placement_generic_lists": "曲リスト内のみ",
   "list_button_placement_everywhere": "すべての曲リスト",
 
+  "alert_mode.never": "表示しない",
+  "alert_mode.all": "すべてのアラートを表示",
+  "alert_mode.important_only": "重要なアラートのみ",
+
   "site_selection_both_sites": "すべてのサイト",
   "site_selection_only_yt": "YouTube のみ",
   "site_selection_only_ytm": "YouTube Music のみ",
@@ -388,6 +392,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "この機能を使用すると、ビデオ要素が自動的にサムネイルで置き換えられます。これにより、ビデオの読み込みが遅くなり、帯域幅が節約されます。\nサムネイルをクリックしてビデオを再生することもできます。",
   "feature_desc.thumbnailOverlayToggleBtnShown": "サムネイルオーバーレイを手動で切り替えるボタンを追加する",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "このボタンでサムネイルの表示/非表示を手動で切り替えることができます。サムネイルの置き換えオプションが「なし」に設定されている場合、この機能は影響を受けません。\n新しい動画/曲の再生が開始されると、デフォルトの状態に戻ります。\nShiftキーを押しながらクリックするか、マウスの中ボタンを押すと、最高画質のサムネイルが新しいタブで開きます。",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "フルスクリーンプレーヤーで黒帯の代わりにぼかしたサムネイルのコピーを表示する",
   "feature_desc.thumbnailOverlayITunesImgRes": "Apple Music / iTunes のアルバムアートワークの解像度",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "キャッシュに保存するアルバムアートの最大数",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "再生した曲のアルバムアートワークは、アルバムアートプロバイダへのリクエスト数を減らすため、キャッシュに保存されます。\nこの機能では、キャッシュに保存するアルバムアートエントリの最大数を設定できます。\n上限に達すると、新しいエントリ用のスペースを確保するために、最も古いエントリが削除されます。",
@@ -535,6 +540,8 @@
   "feature_helptext.initTimeout": "これにより、スクリプトの動作に大きな影響はありませんが、プラグインの1つが時間内に初期化できない場合は、この値を増やしてみてください。",
   "feature_desc.defaultObserverDebounce": "ドキュメントの変更に対するデフォルトのデバウンスタイム（ミリ秒単位）",
   "feature_helptext.defaultObserverDebounce": "この時間は、ページの構造の変更をスクリプトがどれくらい頻繁にチェックできるか、そしてそれにどれくらい迅速に反応できるかを決定します。\nこの値を低く設定すると、スクリプトがより速く反応できますが、CPU使用率も増加します。\nサイトが遅いと感じる場合は、この値を増やしてみてください。",
+  "feature_desc.globalAlertMode": "重要な通知のグローバルアラートダイアログを表示するタイミング",
+  "feature_helptext.globalAlertMode": "グローバルアラートダイアログは、画面中央に表示され、閉じるまでページの他の部分との操作をブロックするモーダルダイアログです。重大なセキュリティの脆弱性や重要なアップデートなど、即時対応が必要な重要な通知に使用されます。\nこのオプションで、グローバルアラートダイアログを表示するタイミングを選択できます。",
 
   "feature_desc.locale": "言語",
   "feature_desc.localeFallback": "翻訳が欠落している場合に英語をフォールバック言語として使用する（翻訳を提供している場合は無効にする）",

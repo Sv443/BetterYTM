@@ -163,6 +163,10 @@
   "list_button_placement_generic_lists": "Nur generische Songlisten",
   "list_button_placement_everywhere": "In jeder Songliste",
 
+  "alert_mode.never": "Nie",
+  "alert_mode.all": "Alle Benachrichtigungen anzeigen",
+  "alert_mode.important_only": "Nur wichtige Benachrichtigungen",
+
   "site_selection_both_sites": "Beide Seiten",
   "site_selection_only_yt": "Nur YouTube",
   "site_selection_only_ytm": "Nur YouTube Music",
@@ -386,6 +390,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "Das Thumbnail wird über dem Video oder Song angezeigt.\nDies spart keine Bandbreite, da das Video immer noch im Hintergrund geladen und abgespielt wird!",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Füge einen Knopf zu der Mediensteuerung hinzu, um das Thumbnail manuell zu aktivieren",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "Dieser Knopf ermöglicht es dir, das Thumbnail manuell ein- und auszuschalten. Dies wird nicht beeinflusst, wenn das Overlay auf \"nie gezeigt\" eingestellt ist.\nSobald ein neues Video/Lied abgespielt wird, wird der Standardzustand wiederhergestellt.\nHalte Shift beim Klicken gedrückt oder drücke die mittlere Maustaste, um das Thumbnail in höchster Qualität in einem neuen Tab zu öffnen.",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Zeige eine verschwommene Kopie des Thumbnails im Vollbildplayer anstatt schwarzer Balken",
   "feature_desc.thumbnailOverlayITunesImgRes": "Angefragte Auflösung, wenn das Apple Music / iTunes-Albumcover in einem neuen Tab geöffnet wird",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Maximale Anzahl von Albumcover-Einträgen, die im Cache behalten werden sollen",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "Die Albumcover von Songs, die du hörst, werden in einem Cache gespeichert, um die Anzahl der Anfragen an den Albumcover-Anbieter zu reduzieren.\nDiese Funktion ermöglicht es dir, die maximale Anzahl von Albumcover-Einträgen festzulegen, die im Cache behalten werden sollen.\nWenn das Limit erreicht ist, wird der älteste Eintrag entfernt, um Platz für neue zu schaffen.",
@@ -538,6 +543,8 @@
   "feature_helptext.initTimeout": "Diese Einstellung beeinflusst das Verhalten des Skripts nicht großartig, aber wenn eines deiner Plugins regelmäßig nicht rechtzeitig initialisiert werden kann, kannst du versuchen, diesen Wert zu erhöhen.",
   "feature_desc.defaultObserverDebounce": "Die Standard-Debounce-Zeit für Dokumentmutationen in Millisekunden",
   "feature_helptext.defaultObserverDebounce": "Diese Zeit bestimmt, wie oft das Skript in der Lage ist, auf Änderungen in der Struktur der Seite zu reagieren.\nWenn du diesen Wert niedriger setzt, kann das Skript schneller reagieren, aber die CPU-Auslastung wird auch erhöht.\nWenn sich die Seite langsam oder ruckelig anfühlt, kannst du versuchen, diesen Wert zu erhöhen.",
+  "feature_desc.globalAlertMode": "Wann globale Alert-Dialoge für wichtige Benachrichtigungen angezeigt werden sollen",
+  "feature_helptext.globalAlertMode": "Globale Alert-Dialoge sind modale Dialoge, die in der Mitte des Bildschirms erscheinen und die Interaktion mit dem Rest der Seite blockieren, bis sie geschlossen werden. Sie werden für wichtige Benachrichtigungen verwendet, die sofortige Aufmerksamkeit erfordern, wie kritische Sicherheitslücken oder wichtige Updates.\nMit dieser Option kannst du wählen, wann diese globalen Alert-Dialoge angezeigt werden.",
 
   "feature_desc.locale": "Sprache",
   "feature_desc.localeFallback": "Verwende für fehlende Übersetzungen Englisch (deaktivieren, wenn du zu Übersetzungen beiträgst)",

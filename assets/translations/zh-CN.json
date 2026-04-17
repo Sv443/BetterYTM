@@ -159,6 +159,11 @@
   "list_button_placement_queue_only": "仅在队列中",
   "list_button_placement_generic_lists": "在多次出现的歌曲列表中",
   "list_button_placement_everywhere": "在每首歌曲列表中",
+
+  "alert_mode.never": "从不",
+  "alert_mode.all": "显示所有提醒",
+  "alert_mode.important_only": "仅显示重要提醒",
+
   "site_selection_both_sites": "所有网站",
   "site_selection_only_yt": "仅 YouTube",
   "site_selection_only_ytm": "仅 YouTube Music",
@@ -375,6 +380,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "此功能允许您在播放视频或歌曲时自动显示缩略图。\n这将不会节省任何带宽，因为视频仍将在后台加载和播放！",
   "feature_desc.thumbnailOverlayToggleBtnShown": "在媒体控件中添加一个按钮，以手动切换缩略图",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "如果您希望能够手动切换缩略图叠加而不是自动切换，您可以禁用自动应用缩略图而启用此按钮。",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "在全屏播放器中显示模糊的缩略图副本，而不是黑条",
   "feature_desc.thumbnailOverlayITunesImgRes": "Apple Music 缩略图的分辨率（以像素为单位）",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Apple Music 封面图缓存的最大条目数",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "为减少对 Apple Music 的请求数，封面图 URL 会被缓存。该选项允许设置缓存的最大条目数。",
@@ -528,6 +534,8 @@
   "feature_helptext.initTimeout": "这不会以显著的方式影响脚本的行为，但如果您的某个插件无法及时初始化，您应该尝试增加此值。",
   "feature_desc.defaultObserverDebounce": "文档变更的默认防抖时间（毫秒）",
   "feature_helptext.defaultObserverDebounce": "这个时间决定了脚本检查页面结构变化的频率，以及它对这些变化的反应速度。\n将其设置为较低的值可以使脚本反应更快，但也会增加 CPU 使用率。\n如果网站感觉缓慢或卡顿，请尝试增加此值。",
+  "feature_desc.globalAlertMode": "何时显示全局提醒对话框以通知重要信息",
+  "feature_helptext.globalAlertMode": "全局提醒对话框是出现在屏幕中央的模态对话框，会阻止与页面其他部分的交互，直到被关闭。它们用于需要立即关注的重要通知，例如严重安全漏洞或重要更新。\n通过此选项，您可以选择何时显示这些全局提醒对话框。",
 
   "feature_desc.locale": "语言",
   "feature_desc.localeFallback": "如果找不到翻译，请使用英语（如果您提供翻译，请禁用）。",
