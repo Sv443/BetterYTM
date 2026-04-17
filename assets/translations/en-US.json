@@ -163,7 +163,7 @@
   "list_button_placement_generic_lists": "In generic song lists only",
   "list_button_placement_everywhere": "In every song list",
 
-  "alert_mode.off": "Off",
+  "alert_mode.never": "Never",
   "alert_mode.all": "Show all alerts",
   "alert_mode.important_only": "Important alerts only",
 

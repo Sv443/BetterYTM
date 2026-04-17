@@ -164,7 +164,7 @@ const options = {
     { value: "everywhere", label: t("list_button_placement_everywhere") },
   ] satisfies SelectOption<FeatureConfig["songListTrackNumbers"]>[],
   alertMode: () => [
-    { value: "off", label: t("alert_mode.off") },
+    { value: "never", label: t("alert_mode.never") },
     { value: "all", label: t("alert_mode.all") },
     { value: "importantOnly", label: t("alert_mode.important_only") },
   ] satisfies SelectOption<FeatureConfig["globalAlertMode"]>[],

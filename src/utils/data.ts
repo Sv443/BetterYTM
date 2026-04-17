@@ -263,9 +263,9 @@ export async function initStaticData() {
     alertsStore.loadData(),
   ]);
 
-  const alertMode = getFeature("globalAlertMode");
+  const alertMode = getFeature("globalAlertMode", "importantOnly");
 
   return await Promise.allSettled([
-    ...(alertMode !== "off" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []),
+    ...(alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []),
   ]);
 }
