@@ -291,7 +291,7 @@
   "cfg_menu_feature_category_header_tooltip": "配置类别\"${category}\"",
   "cfg_menu_feature_category_info_header_tooltip": "信息节\"${section}\"",
 
-  "about_bytm_content_markdown": "版本 `${scriptVersion}`（构建 [`#${buildNumber}`](${buildBrowseLink})，日期 ${buildDate}）\n\n---\n\n${scriptName} 通过添加众多功能、改进和优化来提升 YouTube Music 体验。  \n由 [${authorName}](${authorLink}) 和[贡献者](${contributorsLink})开发，可在 [GitHub](${githubLink})、[Greasy Fork](${greasyforkLink}) 和 [OpenUserJS](${openuserjsLink}) 获取。  \n如果您喜欢 ${scriptName}，[请考虑资助开发 ❤️](${fundingLink})  \n[加入 Discord 服务器](${discordLink})以接收更新通知、讨论问题或建议功能，并与成员交流。\n\n---\n\n${scriptName} **与 YouTube 或 Google 没有任何关联。**  \n版权所有 © ${currentYear} ${authorName}。根据 [${licenseName}](${licenseUrl}) 授权。",
+  "about_bytm_content_markdown": "版本 `${scriptVersion}`（构建 [`#${buildNumber}`](${buildBrowseLink})，日期 ${buildDate}）\n\n---\n\n${scriptName} 通过添加众多功能、改进和优化来提升 YouTube Music 体验。  \n由 [${authorName}](${authorLink}) 和[贡献者](${contributorsLink})开发，可在 [GitHub](${githubLink})、[Greasy Fork](${greasyforkLink}) 和 [OpenUserJS](${openuserjsLink}) 获取。  \n如果您喜欢 ${scriptName}，[请考虑资助开发 ❤️](${fundingLink})  \n  \n如果您有问题或建议，请[在问题追踪器上报告。](${issuesLink})\n  \n[加入 Discord 服务器](${discordLink})以接收更新通知、讨论问题或建议功能，并与成员交流。\n\n---\n\n${scriptName} **与 YouTube 或 Google 没有任何关联。**  \n版权所有 © ${currentYear} ${authorName}。根据 [${licenseName}](${licenseUrl}) 授权。",
 
   "feature_category.general": "一般的",
   "feature_category.layout": "布局",

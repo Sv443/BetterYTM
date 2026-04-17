@@ -317,7 +317,7 @@
   "feature_category.plugins": "プラグイン",
 
   "feature_category.about": "${scriptName} について",
-  "about_bytm_content_markdown": "## ${scriptName} v${scriptVersion}\n\n${scriptName} は [BetterYTM](${githubUrl}) (サイト: [Greasy Fork](${greasyforkUrl}), [OpenUserJS](${openuserjsUrl})) により開発されました。\n\nセットアップ、バグ報告、機能リクエストについては [GitHub](${githubUrl}) をご覧ください。\n\nディスコッドコミュニティをチェックするか、[Discord](${discordUrl}) に参加してください。\n\nこのスクリプトが気に入った場合は [Greasy Fork](${greasyforkUrl}) または [OpenUserJS](${openuserjsUrl}) で評価をお願いします\u3002\n\n作業は寄付に依存しているので、[Ko-fi](${kofiUrl}) での寄付を検討していただけると常に助かります ❤️",
+  "about_bytm_content_markdown": "バージョン `${scriptVersion}`（ビルド [`#${buildNumber}`](${buildBrowseLink}) / ${buildDate}）\n\n---\n\n${scriptName} は多くの機能追加、改善、刷新によって YouTube Music 体験を向上させます。  \n[${authorName}](${authorLink}) と [コントリビューター](${contributorsLink}) によって開発されており、[GitHub](${githubLink})、[Greasy Fork](${greasyforkLink}) および [OpenUserJS](${openuserjsLink}) で利用できます。  \n  \n${scriptName} が気に入ったら、[開発支援のためのご寄付をぜひご検討ください ❤️](${fundingLink})  \n  \n問題や提案がある場合は、[Issue Tracker へのご報告をお願いします。](${issuesLink})\n  \n[Discord サーバーに参加する](${discordLink})と、アップデート通知の受け取り、問題に関するさらなる議論、またはメンバーとのチャットができます。\n\n---\n\n${scriptName} は YouTube または Google と **一切提携していません。**  \nCopyright © ${currentYear} ${authorName}。[${licenseName}.](${licenseUrl}) のもとでライセンスされています。",
   "feature_category.changelog": "変更履歴",
 
   "feature_group_header.locale": "言語:",
