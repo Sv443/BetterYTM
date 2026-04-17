@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@24828643/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@11f99b10/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -103,25 +103,25 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.5.1/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.3.1/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.6.0/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.4.0/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
 // ==/UserScript==
 /*
-▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
-█  █ ▄▄▄ █   █   ▄█▄ ▄ ▄█ █  █  █▀▄▀█
-█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
-█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+  ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
+  █  █ ▄▄  █   █   ▄▄  ▄ ▄█ █  █  █▀▄▀█
+  █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+  █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
-        Made with ❤️ by Sv443
-I welcome every contribution on GitHub!
-  https://github.com/Sv443/BetterYTM
+          Made with ❤️ by Sv443
+  I welcome every contribution on GitHub!
+    https://github.com/Sv443/BetterYTM
 
 
-You can install the latest in-development version here:
-https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
+  You can install the latest in-development version here:
+  https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
 
 */
 
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "24828643",
-    buildTimestamp: "1775597090123",
+    buildNumber: "11f99b10",
+    buildTimestamp: "1776441606778",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -487,7 +487,7 @@ const initTime = Date.now();
 /** Names of platforms by key of {@linkcode host} */
 const platformNames = CoreUtils.pureObj({
     github: "GitHub",
-    greasyfork: "GreasyFork",
+    greasyfork: "Greasy Fork",
     openuserjs: "OpenUserJS",
 });
 /** Default compression format used throughout BYTM */
@@ -4368,7 +4368,7 @@ async function mountCfgMenu() {
         linksCont.role = "navigation";
         const linkTitlesShort = {
             github: "GitHub",
-            greasyfork: "GreasyFork",
+            greasyfork: "Greasy Fork",
             openuserjs: "OpenUserJS",
             discord: "Discord",
         };
@@ -5143,6 +5143,7 @@ async function mountCfgMenu() {
                     greasyforkLink: packageJson.hosts.greasyfork,
                     openuserjsLink: packageJson.hosts.openuserjs,
                     fundingLink: packageJson.funding.url,
+                    issuesLink: packageJson.bugs.url,
                     discordLink: "https://dc.sv443.net/",
                     currentYear: new Date().getFullYear(),
                     licenseName: packageJson.license,
@@ -6658,11 +6659,13 @@ const alertsStore = new CoreUtils.DataStore({
     compressionFormat: null,
 });
 /** Checks if there are active alerts and shows a prompt for each of them. */
-async function checkActiveAlerts({ alerts }, alertsData) {
+async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
     const activeAlerts = alerts.filter(alert => isAlertActive(alert, alertsData));
     for (const alert of activeAlerts) {
+        if (alertMode === "importantOnly" && !alert.important)
+            continue;
         const dlg = createAlertDialog(alert);
-        await dlg.open();
+        dlg.open();
         await dlg.once("close");
         alertsData = await alertsStore.loadData();
         await alertsStore.setData({
@@ -6750,8 +6753,9 @@ async function initStaticData() {
         getStaticData(),
         alertsStore.loadData(),
     ]);
+    const alertMode = getFeature("globalAlertMode", "importantOnly");
     return await Promise.allSettled([
-        checkActiveAlerts(staticData, alertsData),
+        ...(alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []),
     ]);
 }/** Central serializer for all data stores */
 let serializer;
@@ -6772,16 +6776,15 @@ const getSerializerStoresFull = () => [
 ];
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 function getDSSerializer(full = false) {
+    const dsOpts = {
+        addChecksum: true,
+        ensureIntegrity: true,
+        stringifyData: false,
+    };
     if (!full)
-        return serializer ?? (serializer = new CoreUtils.DataStoreSerializer(getSerializerStores(), {
-            addChecksum: true,
-            ensureIntegrity: true,
-        }));
+        return serializer ?? (serializer = new CoreUtils.DataStoreSerializer(getSerializerStores(), dsOpts));
     else
-        return fullSerializer ?? (fullSerializer = new CoreUtils.DataStoreSerializer(getSerializerStoresFull(), {
-            addChecksum: true,
-            ensureIntegrity: true,
-        }));
+        return fullSerializer ?? (fullSerializer = new CoreUtils.DataStoreSerializer(getSerializerStoresFull(), dsOpts));
 }
 /**
  * Downloads the current data stores as a single file.
@@ -8481,6 +8484,11 @@ const options = {
         { value: "genericLists", label: t("list_button_placement_generic_lists") },
         { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
+    alertMode: () => [
+        { value: "never", label: t("alert_mode.never") },
+        { value: "all", label: t("alert_mode.all") },
+        { value: "importantOnly", label: t("alert_mode.important_only") },
+    ],
 };
 //#region # features
 /** List of categories that are related to each other and can be grouped together in the config menu. */
@@ -8573,6 +8581,17 @@ const featInfo = {
         max: 1000,
         step: 5,
         unit: "ms",
+        advanced: true,
+        adornments: [adornments.advanced, adornments.reload],
+    },
+    globalAlertMode: {
+        type: "select",
+        category: "general",
+        group: "bytmInternal",
+        supportedSites: ["ytm", "yt"],
+        since: "3.2.0",
+        options: options.alertMode,
+        default: "all",
         advanced: true,
         adornments: [adornments.advanced, adornments.reload],
     },
@@ -10237,22 +10256,19 @@ async function initConfig() {
 //#region fix keys
 /**
  * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.
+ * Doesn't traverse nested objects.
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
 function fixCfgKeys(cfg) {
     const newCfg = structuredClone(cfg);
-    const passedKeys = Object.keys(cfg);
+    const currentKeys = Object.keys(newCfg);
     const defaultKeys = Object.keys(cfgDefaultData);
-    const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
-    if (missingKeys.length > 0) {
-        for (const key of missingKeys)
-            newCfg[key] = cfgDefaultData[key];
-    }
-    const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
-    if (extraKeys.length > 0) {
-        for (const key of extraKeys)
-            delete newCfg[key];
-    }
+    // add missing keys with default values:
+    for (const key of defaultKeys.filter(k => !currentKeys.includes(k)))
+        currentKeys.push(newCfg[key] = cfgDefaultData[key]);
+    // remove extraneous keys that are not in the default config:
+    for (const key of currentKeys.filter(k => !defaultKeys.includes(k)))
+        delete newCfg[key];
     return newCfg;
 }
 //#region feature getters/setters
