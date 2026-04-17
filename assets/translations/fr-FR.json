@@ -55,7 +55,7 @@
   "copy_hidden_tooltip": "Cliquez pour copier la valeur cachée - il s'agit de données sensibles ⚠️",
   "open_github": "Ouvrir ${scriptName} sur GitHub",
   "open_discord": "Rejoignez mon serveur Discord",
-  "open_greasyfork": "Ouvrir ${scriptName} sur GreasyFork",
+  "open_greasyfork": "Ouvrir ${scriptName} sur Greasy Fork",
   "open_openuserjs": "Ouvrir ${scriptName} sur OpenUserJS",
   "lang_changed_prompt_reload": "La langue a été modifiée.\nVoulez-vous recharger la page maintenant pour appliquer les modifications?",
   "search_placeholder": "Rechercher...",
@@ -152,7 +152,7 @@
   "feature_help_button_tooltip": "Cliquez pour obtenir plus d'informations sur la fonctionnalité suivante: \"${featureName}\"",
   "welcome_text_line_1": "Merci d'avoir installé!",
   "welcome_text_line_2": "J'espère que vous apprécierez d'utiliser ${scriptName} autant que j'ai apprécié de le faire 😃",
-  "welcome_text_line_3": "Si vous aimez ${scriptName}, laissez une note sur ${gfLinkOpen}GreasyFork${linkClose} ou ${oujsLinkOpen}OpenUserJS${linkClose2}",
+  "welcome_text_line_3": "Si vous aimez ${scriptName}, laissez une note sur ${gfLinkOpen}Greasy Fork${linkClose} ou ${oujsLinkOpen}OpenUserJS${linkClose2}",
   "welcome_text_line_4": "Mon travail repose sur des dons, alors veuillez envisager de ${donateLinkOpen}faire un don ❤️${linkClose}",
   "welcome_text_line_5": "Vous avez trouvé un bug ou souhaitez suggérer une fonctionnalité? Veuillez ${issueLinkOpen}ouvrir un problème sur GitHub${linkClose}",
 
@@ -266,7 +266,7 @@
   "plugin_link.type_changelog": "Historique des modifications",
   "plugin_link.type_other": "Page d'accueil",
   "plugin_link.type_bug": "Signaler un bug",
-  "plugin_link.type_greasyfork": "GreasyFork",
+  "plugin_link.type_greasyfork": "Greasy Fork",
   "plugin_link.type_openuserjs": "OpenUserJS",
 
   "plugin_intent.name_ReadFeatureConfig": "Lire la configuration de la fonctionnalité",

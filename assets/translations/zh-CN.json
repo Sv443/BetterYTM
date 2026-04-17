@@ -61,7 +61,7 @@
   "generic_error_dialog_open_console_note": "请打开浏览器的 JavaScript 控制台（通常使用 F12）以查看更多详情。",
   "open_github": "在 GitHub 上打开 ${scriptName}",
   "open_discord": "加入我的 Discord 服务器",
-  "open_greasyfork": "在 GreasyFork 上打开 ${scriptName}",
+  "open_greasyfork": "在 Greasy Fork 上打开 ${scriptName}",
   "open_openuserjs": "在 OpenUserJS 上打开 ${scriptName}",
   "lang_changed_prompt_reload": "语言已更改。\n您是否要重新加载页面以应用更改？",
   "search_placeholder": "搜索...",
@@ -152,7 +152,7 @@
   "feature_help_button_tooltip": "点击获取有关以下功能的更多信息：\"${featureName}\"",
   "welcome_text_line_1": "感谢您安装！",
   "welcome_text_line_2": "希望您使用 ${scriptName} 的过程中能够愉快 😃",
-  "welcome_text_line_3": "如果您喜欢 ${scriptName}，请在 ${gfLinkOpen}GreasyFork${linkClose} 或 ${oujsLinkOpen}OpenUserJS${linkClose2} 上留下评分",
+  "welcome_text_line_3": "如果您喜欢 ${scriptName}，请在 ${gfLinkOpen}Greasy Fork${linkClose} 或 ${oujsLinkOpen}OpenUserJS${linkClose2} 上留下评分",
   "welcome_text_line_4": "我的工作依赖于捐款，所以请考虑 ${donateLinkOpen}捐款 ❤️${linkClose}",
   "welcome_text_line_5": "发现了一个错误或想要建议一个功能？请 ${issueLinkOpen}在 GitHub 上打开一个问题${linkClose}",
 
@@ -254,7 +254,7 @@
   "plugin_link.type_changelog": "更新日志",
   "plugin_link.type_other": "首页",
   "plugin_link.type_bug": "报告错误",
-  "plugin_link.type_greasyfork": "GreasyFork",
+  "plugin_link.type_greasyfork": "Greasy Fork",
   "plugin_link.type_openuserjs": "OpenUserJS",
 
   "plugin_intent.name_ReadFeatureConfig": "读取功能配置",

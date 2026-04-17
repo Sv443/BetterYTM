@@ -407,7 +407,7 @@ export type PluginDef = {
       other?: string;
       /** URL to the plugin's bug tracker page, like GitHub issues. */
       bug?: string;
-      /** URL to the plugin's GreasyFork page. */
+      /** URL to the plugin's Greasy Fork page. */
       greasyfork?: string;
       /** URL to the plugin's OpenUserJS page. */
       openuserjs?: string;

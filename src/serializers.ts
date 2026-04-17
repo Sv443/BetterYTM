@@ -1,4 +1,4 @@
-import { ChecksumMismatchError, DataStoreSerializer, type DataStore } from "@sv443-network/coreutils";
+import { ChecksumMismatchError, DataStoreSerializer, type DataStore, type DataStoreSerializerOptions } from "@sv443-network/coreutils";
 import { configStore } from "@/config.ts";
 import { scriptInfo } from "@/constants.ts";
 import { autoLikeStore } from "@feat/autoLike.ts";
@@ -38,16 +38,16 @@ export const getSerializerStoresIds = () => getSerializerStores().map(store => s
 
 /** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 export function getDSSerializer(full = false): DataStoreSerializer {
+  const dsOpts: DataStoreSerializerOptions = {
+    addChecksum: true,
+    ensureIntegrity: true,
+    stringifyData: false,
+  };
+
   if(!full)
-    return serializer ??= new DataStoreSerializer(getSerializerStores() as DataStore<any, boolean>[], {
-      addChecksum: true,
-      ensureIntegrity: true,
-    });
+    return serializer ??= new DataStoreSerializer(getSerializerStores() as DataStore<any, boolean>[], dsOpts);
   else
-    return fullSerializer ??= new DataStoreSerializer(getSerializerStoresFull() as DataStore<any, boolean>[], {
-      addChecksum: true,
-      ensureIntegrity: true,
-    });
+    return fullSerializer ??= new DataStoreSerializer(getSerializerStoresFull() as DataStore<any, boolean>[], dsOpts);
 }
 
 /** Imports data from a file into all data stores */

@@ -1610,6 +1610,7 @@ body.bytm-dom-ytm
   text-decoration: none;
   color: var(--bytm-menu-subtitle-color) !important;
   white-space: pre;
+  text-wrap: nowrap;
   font-size: 1.1rem;
   transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
 }

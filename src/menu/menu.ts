@@ -133,7 +133,7 @@ export async function mountCfgMenu() {
 
     const linkTitlesShort = {
       github: "GitHub",
-      greasyfork: "GreasyFork",
+      greasyfork: "Greasy Fork",
       openuserjs: "OpenUserJS",
       discord: "Discord",
     };
@@ -1084,6 +1084,7 @@ export async function mountCfgMenu() {
           greasyforkLink: pkg.hosts.greasyfork,
           openuserjsLink: pkg.hosts.openuserjs,
           fundingLink: pkg.funding.url,
+          issuesLink: pkg.bugs.url,
           discordLink: "https://dc.sv443.net/",
           currentYear: new Date().getFullYear(),
           licenseName: pkg.license,

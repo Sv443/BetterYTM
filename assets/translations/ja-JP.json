@@ -80,7 +80,7 @@
   "copy_hidden_tooltip": "クリックして隠し値をコピーします - これは機密データです ⚠️",
   "open_github": "GitHub で ${scriptName} を開く",
   "open_discord": "Discord サーバーに参加する",
-  "open_greasyfork": "GreasyFork で ${scriptName} を開く",
+  "open_greasyfork": "Greasy Fork で ${scriptName} を開く",
   "open_openuserjs": "OpenUserJS で ${scriptName} を開く",
   "lang_changed_prompt_reload": "言語が変更されました。\n変更を適用するには今すぐページを再読み込みしますか？",
   "search_placeholder": "検索...",
@@ -153,7 +153,7 @@
   "feature_help_button_tooltip": "次の機能について詳細を表示するにはクリックしてください: \"${featureName}\"",
   "welcome_text_line_1": "ようこそ！",
   "welcome_text_line_2": "${scriptName} を使っていただきありがとうございます 😃",
-  "welcome_text_line_3": "${scriptName} がお気に入りいただけたら、${gfLinkOpen}GreasyFork${linkClose} か ${oujsLinkOpen}OpenUserJS${linkClose2} で評価をお願いします",
+  "welcome_text_line_3": "${scriptName} がお気に入りいただけたら、${gfLinkOpen}Greasy Fork${linkClose} か ${oujsLinkOpen}OpenUserJS${linkClose2} で評価をお願いします",
   "welcome_text_line_4": "私の作業は寄付に依存しているので、${donateLinkOpen}寄付${linkClose}を検討してください ❤️",
   "welcome_text_line_5": "バグを見つけた、または機能を提案したいですか？${issueLinkOpen}GitHubで問題を開いてください${linkClose}",
 
@@ -266,7 +266,7 @@
   "plugin_link.type_changelog": "更新履歴",
   "plugin_link.type_other": "ホームページ",
   "plugin_link.type_bug": "バグを報告",
-  "plugin_link.type_greasyfork": "GreasyFork",
+  "plugin_link.type_greasyfork": "Greasy Fork",
   "plugin_link.type_openuserjs": "OpenUserJS",
 
   "plugin_intent.name_ReadFeatureConfig": "機能構成の読み取り",
@@ -317,7 +317,7 @@
   "feature_category.plugins": "プラグイン",
 
   "feature_category.about": "${scriptName} について",
-  "about_bytm_content_markdown": "## ${scriptName} v${scriptVersion}\n\n${scriptName} は [BetterYTM](${githubUrl}) (サイト: [GreasyFork](${greasyforkUrl}), [OpenUserJS](${openuserjsUrl})) により開発されました。\n\nセットアップ、バグ報告、機能リクエストについては [GitHub](${githubUrl}) をご覧ください。\n\nディスコッドコミュニティをチェックするか、[Discord](${discordUrl}) に参加してください。\n\nこのスクリプトが気に入った場合は [GreasyFork](${greasyforkUrl}) または [OpenUserJS](${openuserjsUrl}) で評価をお願いします\u3002\n\n作業は寄付に依存しているので、[Ko-fi](${kofiUrl}) での寄付を検討していただけると常に助かります ❤️",
+  "about_bytm_content_markdown": "## ${scriptName} v${scriptVersion}\n\n${scriptName} は [BetterYTM](${githubUrl}) (サイト: [Greasy Fork](${greasyforkUrl}), [OpenUserJS](${openuserjsUrl})) により開発されました。\n\nセットアップ、バグ報告、機能リクエストについては [GitHub](${githubUrl}) をご覧ください。\n\nディスコッドコミュニティをチェックするか、[Discord](${discordUrl}) に参加してください。\n\nこのスクリプトが気に入った場合は [Greasy Fork](${greasyforkUrl}) または [OpenUserJS](${openuserjsUrl}) で評価をお願いします\u3002\n\n作業は寄付に依存しているので、[Ko-fi](${kofiUrl}) での寄付を検討していただけると常に助かります ❤️",
   "feature_category.changelog": "変更履歴",
 
   "feature_group_header.locale": "言語:",

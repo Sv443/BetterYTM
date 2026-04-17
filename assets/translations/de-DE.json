@@ -57,7 +57,7 @@
   "copy_hidden_tooltip": "Klicke um den versteckten Wert zu kopieren - Vorsicht, sensible Daten ⚠️",
   "open_github": "Öffne ${scriptName} auf GitHub",
   "open_discord": "Komm auf meinen Discord Server",
-  "open_greasyfork": "Öffne ${scriptName} auf GreasyFork",
+  "open_greasyfork": "Öffne ${scriptName} auf Greasy Fork",
   "open_openuserjs": "Öffne ${scriptName} auf OpenUserJS",
   "lang_changed_prompt_reload": "Die Sprache wurde geändert.\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?",
   "search_placeholder": "Suchen...",
@@ -155,7 +155,7 @@
   "feature_help_button_tooltip": "Klicke um mehr Informationen über das folgende Feature zu erhalten: \"${featureName}\"",
   "welcome_text_line_1": "Vielen Dank für die Installation!",
   "welcome_text_line_2": "Ich hoffe, du hast genauso viel Spaß mit ${scriptName} wie ich beim Erstellen hatte 😃",
-  "welcome_text_line_3": "Wenn dir ${scriptName} gefällt, hinterlasse bitte eine Bewertung auf ${gfLinkOpen}GreasyFork${linkClose} oder ${oujsLinkOpen}OpenUserJS${linkClose2}",
+  "welcome_text_line_3": "Wenn dir ${scriptName} gefällt, hinterlasse bitte eine Bewertung auf ${gfLinkOpen}Greasy Fork${linkClose} oder ${oujsLinkOpen}OpenUserJS${linkClose2}",
   "welcome_text_line_4": "Meine Arbeit hängt von ${donateLinkOpen}Spenden${linkClose} ab, also bitte denke darüber nach, ob du spenden möchtest ❤️",
   "welcome_text_line_5": "Hast du einen Fehler gefunden oder möchtest ein Feature vorschlagen? Bitte ${issueLinkOpen}öffne ein Issue auf GitHub${linkClose}",
 
@@ -269,7 +269,7 @@
   "plugin_link.type_changelog": "Änderungsprotokoll",
   "plugin_link.type_other": "Homepage",
   "plugin_link.type_bug": "Problem melden",
-  "plugin_link.type_greasyfork": "GreasyFork",
+  "plugin_link.type_greasyfork": "Greasy Fork",
   "plugin_link.type_openuserjs": "OpenUserJS",
 
   "plugin_intent.name_ReadFeatureConfig": "Konfiguration lesen",

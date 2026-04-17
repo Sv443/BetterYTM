@@ -55,7 +55,7 @@
   "copy_hidden_tooltip": "Haga clic para copiar el valor oculto: estos son datos sensibles ⚠️",
   "open_github": "Abrir ${scriptName} en GitHub",
   "open_discord": "Únete a mi servidor de Discord",
-  "open_greasyfork": "Abrir ${scriptName} en GreasyFork",
+  "open_greasyfork": "Abrir ${scriptName} en Greasy Fork",
   "open_openuserjs": "Abrir ${scriptName} en OpenUserJS",
   "lang_changed_prompt_reload": "El idioma se cambió.\n¿Quieres recargar la página ahora para aplicar los cambios?",
   "search_placeholder": "Buscar...",
@@ -153,7 +153,7 @@
   "feature_help_button_tooltip": "Haga clic para obtener más información sobre la siguiente función: \"${featureName}\"",
   "welcome_text_line_1": "¡Gracias por instalar!",
   "welcome_text_line_2": "Espero que disfrutes usando ${scriptName} tanto como yo disfruté haciéndolo 😃",
-  "welcome_text_line_3": "Si te gusta ${scriptName}, por favor deja una calificación en ${gfLinkOpen}GreasyFork${linkClose} o ${oujsLinkOpen}OpenUserJS${linkClose2}",
+  "welcome_text_line_3": "Si te gusta ${scriptName}, por favor deja una calificación en ${gfLinkOpen}Greasy Fork${linkClose} o ${oujsLinkOpen}OpenUserJS${linkClose2}",
   "welcome_text_line_4": "Mi trabajo depende de las donaciones, así que por favor considera ${donateLinkOpen}donar ❤️${linkClose}",
   "welcome_text_line_5": "¿Encontraste un error o quieres sugerir una función? Por favor ${issueLinkOpen}abre un problema en GitHub${linkClose}",
 
@@ -267,7 +267,7 @@
   "plugin_link.type_changelog": "Registro de cambios",
   "plugin_link.type_other": "Página de inicio",
   "plugin_link.type_bug": "Informar de un error",
-  "plugin_link.type_greasyfork": "GreasyFork",
+  "plugin_link.type_greasyfork": "Greasy Fork",
   "plugin_link.type_openuserjs": "OpenUserJS",
 
   "plugin_intent.name_ReadFeatureConfig": "Leer configuración de funciones",

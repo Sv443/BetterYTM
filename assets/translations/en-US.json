@@ -57,7 +57,7 @@
   "copy_hidden_tooltip": "Click to copy the hidden value - this is sensitive data ⚠️",
   "open_github": "Open ${scriptName} on GitHub",
   "open_discord": "Join my Discord server",
-  "open_greasyfork": "Open ${scriptName} on GreasyFork",
+  "open_greasyfork": "Open ${scriptName} on Greasy Fork",
   "open_openuserjs": "Open ${scriptName} on OpenUserJS",
   "lang_changed_prompt_reload": "The language was changed.\nDo you want to reload the page now to apply changes?",
   "search_placeholder": "Search...",
@@ -155,7 +155,7 @@
   "feature_help_button_tooltip": "Click to get more information about the following feature: \"${featureName}\"",
   "welcome_text_line_1": "Thank you for installing!",
   "welcome_text_line_2": "I hope you enjoy using ${scriptName} as much as I enjoyed making it 😃",
-  "welcome_text_line_3": "If you like ${scriptName}, please leave a rating on ${gfLinkOpen}GreasyFork${linkClose} or ${oujsLinkOpen}OpenUserJS${linkClose2}",
+  "welcome_text_line_3": "If you like ${scriptName}, please leave a rating on ${gfLinkOpen}Greasy Fork${linkClose} or ${oujsLinkOpen}OpenUserJS${linkClose2}",
   "welcome_text_line_4": "My work relies on donations so please consider ${donateLinkOpen}donating ❤️${linkClose}",
   "welcome_text_line_5": "Found a bug or want to suggest a feature? Please ${issueLinkOpen}open an issue on GitHub${linkClose}",
 
@@ -273,7 +273,7 @@
   "plugin_link.type_changelog": "Changelog",
   "plugin_link.type_other": "Homepage",
   "plugin_link.type_bug": "Report a bug",
-  "plugin_link.type_greasyfork": "GreasyFork",
+  "plugin_link.type_greasyfork": "Greasy Fork",
   "plugin_link.type_openuserjs": "OpenUserJS",
 
   "plugin_intent.name_ReadFeatureConfig": "Read Feature Config",
@@ -310,7 +310,7 @@
   "cfg_menu_feature_category_header_tooltip": "Configuration category \"${category}\"",
   "cfg_menu_feature_category_info_header_tooltip": "Information section \"${section}\"",
 
-  "about_bytm_content_markdown": "Version `${scriptVersion}` (build [`#${buildNumber}`](${buildBrowseLink}) from ${buildDate})\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and [contributors](${contributorsLink}) and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS.](${openuserjsLink})  \nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n[Join the Discord server](${discordLink}) to receive update notifications, to discuss issues or suggest features, and to chat with members.\n\n---\n\n${scriptName} is **not affiliated** with YouTube or Google **in any way.**  \nCopyright © ${currentYear} ${authorName}. Licensed under the [${licenseName}.](${licenseUrl})",
+  "about_bytm_content_markdown": "Version `${scriptVersion}` (build [`#${buildNumber}`](${buildBrowseLink}) from ${buildDate})\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and [contributors](${contributorsLink}) and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS.](${openuserjsLink})  \n  \nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n  \nIf you have issues or suggestions, please [report them on the issue tracker.](${issuesLink})\n  \n[Join the Discord server](${discordLink}) to receive update notifications, further discuss issues, or to chat with members.\n\n---\n\n${scriptName} is **not affiliated** with YouTube or Google **in any way.**  \nCopyright © ${currentYear} ${authorName}. Licensed under the [${licenseName}.](${licenseUrl})",
 
   "feature_category.general": "General",
   "feature_category.layout": "Layout",

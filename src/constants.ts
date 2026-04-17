@@ -59,7 +59,7 @@ export const initTime = Date.now();
 /** Names of platforms by key of {@linkcode host} */
 export const platformNames = pureObj({
   github: "GitHub",
-  greasyfork: "GreasyFork",
+  greasyfork: "Greasy Fork",
   openuserjs: "OpenUserJS",
 } as const);
 

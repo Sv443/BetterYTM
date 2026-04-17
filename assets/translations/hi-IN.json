@@ -55,7 +55,7 @@
   "copy_hidden_tooltip": "छिपा हुआ मान कॉपी करने के लिए क्लिक करें - यह संवेदनशील डेटा है ⚠️",
   "open_github": "GitHub पर खोलें",
   "open_discord": "मेरे Discord सर्वर में शामिल हों",
-  "open_greasyfork": "GreasyFork पर खोलें",
+  "open_greasyfork": "Greasy Fork पर खोलें",
   "open_openuserjs": "OpenUserJS पर खोलें",
   "lang_changed_prompt_reload": "भाषा बदल दी गई थी।\nक्या आप परिवर्तन लागू करने के लिए पृष्ठ को अब पुनः लोड करना चाहते हैं?",
   "search_placeholder": "खोजें...",
@@ -152,7 +152,7 @@
   "feature_help_button_tooltip": "निम्नलिखित सुविधा के बारे में अधिक जानकारी के लिए क्लिक करें: \"${featureName}\"",
   "welcome_text_line_1": "स्थापित करने के लिए धन्यवाद!",
   "welcome_text_line_2": "मुझे उम्मीद है कि आप ${scriptName} का उपयोग करने में उतना मज़ा लेंगे जितना मैंने इसे बनाने में लिया है 😃",
-  "welcome_text_line_3": "यदि आप ${scriptName} पसंद करते हैं, तो कृपया ${gfLinkOpen}GreasyFork${linkClose} या ${oujsLinkOpen}OpenUserJS${linkClose2} पर एक रेटिंग दें",
+  "welcome_text_line_3": "यदि आप ${scriptName} पसंद करते हैं, तो कृपया ${gfLinkOpen}Greasy Fork${linkClose} या ${oujsLinkOpen}OpenUserJS${linkClose2} पर एक रेटिंग दें",
   "welcome_text_line_4": "मेरा काम दान पर निर्भर करता है, इसलिए कृपया ${donateLinkOpen}दान करने का विचार करें ❤️${linkClose}",
   "welcome_text_line_5": "कोई बग मिला या कोई सुविधा सुझाना चाहते हैं? कृपया ${issueLinkOpen}GitHub पर इश्यू खोलें${linkClose}",
 
@@ -266,7 +266,7 @@
   "plugin_link.type_changelog": "चेंजलॉग",
   "plugin_link.type_other": "मुखपृष्ठ",
   "plugin_link.type_bug": "बग रिपोर्ट करें",
-  "plugin_link.type_greasyfork": "GreasyFork",
+  "plugin_link.type_greasyfork": "Greasy Fork",
   "plugin_link.type_openuserjs": "OpenUserJS",
 
   "plugin_intent.name_ReadFeatureConfig": "फ़ीचर कॉन्फ़िगरेशन पढ़ें",
