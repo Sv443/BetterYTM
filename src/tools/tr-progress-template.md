@@ -6,15 +6,9 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 ### Translation progress:
 <!--#{{TR_PROGRESS_TABLE}}-->
 
-<sub>
-✅ - Fully translated
-</sub><br>
-<sub>
-⚠ - Almost fully translated
-</sub><br>
-<sub>
-‼️ - Partially translated
-</sub><br>
+> <sub>✅ Fully translated</sub><br>
+> <sub>⚠ Almost fully translated</sub><br>
+> <sub>‼️ Partially translated</sub><br>
 
 <br>
 

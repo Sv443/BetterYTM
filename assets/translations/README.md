@@ -26,15 +26,9 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | ✅ | [`pt-BR`](./pt-BR.json) | `515/515` (100%) | ─ |
 | ✅ | [`zh-CN`](./zh-CN.json) | `515/515` (100%) | ─ |
 
-<sub>
-✅ - Fully translated
-</sub><br>
-<sub>
-⚠ - Almost fully translated
-</sub><br>
-<sub>
-‼️ - Partially translated
-</sub><br>
+> <sub>✅ Fully translated</sub><br>
+> <sub>⚠ Almost fully translated</sub><br>
+> <sub>‼️ Partially translated</sub><br>
 
 <br>
 
