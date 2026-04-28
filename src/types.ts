@@ -32,6 +32,7 @@ export type RollupArgs = Partial<{
   "config-assetSource": "local" | "github" | "jsdelivr";
   "config-suffix": string;
   "config-gen-meta": "true" | "false";
+  "config-compat-mode": "strict" | "loose";
 }>;
 
 // I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway

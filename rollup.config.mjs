@@ -38,10 +38,11 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
     assetSource: args["config-assetSource"] ?? "jsdelivr",
     suffix: args["config-suffix"] ?? "",
     meta: args["config-gen-meta"] ?? "false",
+    compatMode: args["config-compat-mode"] ?? "loose",
   };
   const passCliArgsStr = Object.entries(passCliArgs).map(([key, value]) => `--${key}=${value}`).join(" ");
 
-  const { host, mode, suffix } = passCliArgs;
+  const { host, mode, suffix, compatMode } = passCliArgs;
 
   const linkedPkgs = requireJson.filter((pkg) => "link" in pkg && typeof pkg.link === "string");
 
@@ -112,7 +113,7 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
       format: "iife",
       sourcemap: mode === "development",
       compact: true,
-      globals: linkedPkgs.length > 0 ? Object.fromEntries(Object.entries(globalPkgs)) : globalPkgs,
+      globals: compatMode === "strict" ? undefined : (linkedPkgs.length > 0 ? Object.fromEntries(Object.entries(globalPkgs)) : globalPkgs),
     },
     onwarn(warning) {
       // ignore circular dependency warnings and TS2877 aliased non-rewritten .ts import warnings
@@ -121,7 +122,9 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
         console.error(`${k.yellow("(!)")} ${message}\n`, rest);
       }
     },
-    external: externalPkgs,
+    ...(compatMode === "strict" ? {} : {
+      external: externalPkgs,
+    }),
   };
 
   return config;

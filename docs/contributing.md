@@ -176,6 +176,7 @@ To edit an existing translation, please follow these steps:
   - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`.
   - `--config-suffix=<value>` - File name suffix to add just before the `.user.js` extension. Defaults to an empty string.
   - `--config-gen-meta=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header, to massively reduce the amount of downloaded data for version checks by the userscript manager extension via `@updateURL`. Can be either `true` (default) or `false`.
+  - `--config-compat-mode=<value>` - Whether to build the script in strict compatibility mode, which ensures the final bundle is most compatible, sacrificing bundle size and potentially performance. Can be either `strict` or `loose` (default).
     
   Shorthand commands:
   - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
