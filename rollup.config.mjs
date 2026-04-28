@@ -106,7 +106,6 @@ export default (/**@type {import("./src/types.js").RollupArgs}*/ args) => (async
     ],
     treeshake: {
       propertyReadSideEffects: false,
-      tryCatchDeoptimization: false,
     },
     output: {
       file: `${outputDir}/${getOutputFileName(suffix)}`,
