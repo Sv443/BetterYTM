@@ -60,6 +60,7 @@ const host = getCliArg<CliArg<"config-host">>("host", "github");
 const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "jsdelivr");
 const suffix = getCliArg<CliArg<"config-suffix">>("suffix", "");
 const genMeta = getCliArg<CliArg<"config-gen-meta">>("meta", "true") === "true";
+const compatMode = getCliArg<CliArg<"config-compat-mode">>("compatMode", "loose");
 
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
@@ -253,7 +254,7 @@ async function getHeaders(buildNbr: string) {
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow`,
     resourcesDirectives,
-    requireDirectives,
+    ...(compatMode === "strict" ? [] : [requireDirectives]),
     devDirectives,
     `\
 // ==/UserScript==

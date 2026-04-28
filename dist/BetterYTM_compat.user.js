@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3eb06976/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@30f4a5d2/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -103,11 +103,6 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.6.0/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.4.0/dist/UserUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
-// @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
-// @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
 // ==/UserScript==
 /*
   ▄▄▄      ▄   ▄         ▄   ▄▄▄▄▄▄   ▄
@@ -6653,8 +6648,8 @@ const rawConsts = {
     mode: "production",
     branch: "main",
     host: "github",
-    buildNumber: "3eb06976",
-    buildTimestamp: "1777372042617",
+    buildNumber: "30f4a5d2",
+    buildTimestamp: "1777372300254",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
