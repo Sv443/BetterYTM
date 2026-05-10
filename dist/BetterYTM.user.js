@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@11f99b10/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@be95a868/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -450,8 +450,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "11f99b10",
-    buildTimestamp: "1776441606778",
+    buildNumber: "be95a868",
+    buildTimestamp: "1778376695961",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1321,22 +1321,82 @@ function runIntervalChecks() {
         emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
         lastPathname = String(location.pathname);
     }
-}var version = "3.1.0";
+}var name = "@sv443/betterytm";
+var userscriptName = "BetterYTM";
+var version = "3.1.0";
+var description = "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™";
 var license = "AGPL-3.0-or-later";
 var homepage = "https://github.com/Sv443/BetterYTM";
 var namespace = "https://github.com/Sv443/BetterYTM";
 var pluginDiscoveryUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins";
 var specialThanksUrl = "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks";
 var devVersionUrl = "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen";
+var main = "./src/index.ts";
+var type = "module";
 var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
 };
+var contributors = [
+	{
+		name: "indierodo",
+		url: "https://github.com/indierodo",
+		contributions: [
+			"Track numbers feature"
+		]
+	},
+	{
+		name: "cryeprecision",
+		url: "https://github.com/cryeprecision",
+		contributions: [
+			"Exponential volume slider feature"
+		]
+	}
+];
 var bugs = {
 	url: "https://github.com/Sv443/BetterYTM/issues"
 };
 var funding = {
+	type: "github",
 	url: "https://github.com/sponsors/Sv443"
+};
+var scripts = {
+	dev: "concurrently \"nodemon --exec pnpm build-local-base --config-assetSource=local\" \"pnpm serve -S -L\"",
+	"dev-cdn": "concurrently \"nodemon --exec pnpm build-local-base\" \"pnpm serve\"",
+	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
+	"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
+	"build-prod-gh": "pnpm build-prod-base --config-host github",
+	"build-prod-gf": "pnpm build-prod-base --config-host greasyfork --config-suffix _gf",
+	"build-prod-oujs": "pnpm build-prod-base --config-host openuserjs --config-suffix _oujs",
+	"build-prod-compat": "pnpm build-prod-base --config-host github --config-compat-mode strict --config-suffix _compat",
+	"post-build": "node --no-warnings=ExperimentalWarning ./src/tools/post-build.ts",
+	"build-local-base": "pnpm build-dev --config-gen-meta=false",
+	"build-prod-base": "rollup -c --config-mode production --config-branch main",
+	preview: "pnpm build-prod-gh --config-assetSource=local && pnpm serve -S -L -X=10",
+	serve: "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
+	lint: "eslint . && tsc --noEmit",
+	"tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
+	"tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
+	"tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
+	"tr-prep": "pnpm tr-format -p",
+	"gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
+	"alias-imports": "node --no-warnings=ExperimentalWarning ./src/tools/alias-imports.ts",
+	"node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
+	invisible: "node --no-warnings=ExperimentalWarning --enable-source-maps src/tools/run-invisible.mjs",
+	change: "changeset",
+	"changeset-version": "node src/tools/changeset-version.mjs",
+	knip: "knip",
+	typedoc: "typedoc",
+	storybook: "storybook dev -p 6006",
+	"build-storybook": "storybook build"
+};
+var engines = {
+	node: ">=22",
+	pnpm: ">=10"
+};
+var repository = {
+	type: "git",
+	url: "git+https://github.com/Sv443/BetterYTM.git"
 };
 var hosts = {
 	github: "https://github.com/Sv443/BetterYTM",
@@ -1348,19 +1408,115 @@ var updates = {
 	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
+var dependencies = {
+	"@sv443-network/coreutils": "3.6.0",
+	"@sv443-network/userutils": "10.4.0",
+	"compare-versions": "6.1.1",
+	dompurify: "3.3.3",
+	marked: "17.0.4",
+	tslib: "2.8.1"
+};
+var devDependencies = {
+	"@changesets/cli": "2.30.0",
+	"@chromatic-com/storybook": "5.0.1",
+	"@eslint/eslintrc": "3.3.5",
+	"@eslint/js": "10.0.1",
+	"@rollup/plugin-alias": "6.0.0",
+	"@rollup/plugin-json": "6.1.0",
+	"@rollup/plugin-node-resolve": "16.0.3",
+	"@rollup/plugin-terser": "1.0.0",
+	"@rollup/plugin-typescript": "12.3.0",
+	"@storybook/addon-essentials": "8.6.14",
+	"@storybook/addon-interactions": "8.6.14",
+	"@storybook/addon-links": "10.2.19",
+	"@storybook/blocks": "8.6.14",
+	"@storybook/html": "10.2.19",
+	"@storybook/html-vite": "10.2.19",
+	"@storybook/test": "8.6.15",
+	"@types/cors": "2.8.19",
+	"@types/express": "5.0.6",
+	"@types/node": "24.12.0",
+	"@types/tampermonkey": "5.0.5",
+	"@typescript-eslint/eslint-plugin": "8.57.0",
+	"@typescript-eslint/parser": "8.57.0",
+	"@typescript-eslint/utils": "8.57.0",
+	concurrently: "9.2.1",
+	cors: "2.8.6",
+	dotenv: "17.3.1",
+	eslint: "10.0.3",
+	"eslint-plugin-storybook": "10.2.19",
+	express: "5.2.1",
+	globals: "17.4.0",
+	kleur: "4.1.5",
+	knip: "5.86.0",
+	nanoevents: "9.1.0",
+	nodemon: "3.1.14",
+	pnpm: "10.32.1",
+	rollup: "4.59.0",
+	"rollup-plugin-execute": "1.1.1",
+	"rollup-plugin-import-css": "4.2.0",
+	storybook: "10.2.19",
+	"storybook-dark-mode": "5.0.0",
+	tsx: "4.21.0",
+	typedoc: "0.28.17",
+	"typedoc-plugin-markdown": "4.10.0",
+	typescript: "5.9.3",
+	"typescript-eslint": "8.57.0"
+};
+var browserslist = [
+	"last 1 version",
+	"> 1%",
+	"not dead"
+];
+var nodemonConfig = {
+	watch: [
+		"src/**",
+		"assets/**",
+		"rollup.config.mjs",
+		".env",
+		"changelog.md",
+		"package.json"
+	],
+	ext: "ts,mts,js,jsx,mjs,json,html,css,svg,png",
+	ignore: [
+		"dist/*",
+		"dev/*",
+		"*/stories/*"
+	]
+};
+var pnpm = {
+	onlyBuiltDependencies: [
+		"esbuild"
+	]
+};
 var packageJson = {
+	name: name,
+	userscriptName: userscriptName,
 	version: version,
+	description: description,
 	license: license,
 	homepage: homepage,
 	namespace: namespace,
 	pluginDiscoveryUrl: pluginDiscoveryUrl,
 	specialThanksUrl: specialThanksUrl,
 	devVersionUrl: devVersionUrl,
+	main: main,
+	type: type,
 	author: author,
+	contributors: contributors,
 	bugs: bugs,
 	funding: funding,
+	scripts: scripts,
+	engines: engines,
+	repository: repository,
 	hosts: hosts,
-	updates: updates};let verNotifDialog = null;
+	updates: updates,
+	dependencies: dependencies,
+	devDependencies: devDependencies,
+	browserslist: browserslist,
+	nodemonConfig: nodemonConfig,
+	pnpm: pnpm
+};let verNotifDialog = null;
 /** Creates and/or returns the dialog to be shown when a new version is available */
 async function getVersionNotifDialog({ latestTag, }) {
     if (!verNotifDialog) {
@@ -7062,6 +7218,7 @@ async function getBestThumbnailUrl(videoID) {
             }
             catch (err) {
                 error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
+                void err;
             }
             if (response && response.status < 300 && response.status >= 200)
                 return url;
@@ -8023,6 +8180,7 @@ async function fixThemeSong() {
                 case "lighter":
                     return "--ts-palette-lightmuted-hex";
             }
+            ;
         })();
         document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
     }
@@ -11210,6 +11368,7 @@ async function addStyle(css, ref, transform = (c) => c) {
     if (!UserUtils.isDomLoaded())
         throw new Error("DOM has not finished loading yet");
     const elem = UserUtils.addGlobalStyle(await transform(await CoreUtils.consumeStringGen(css)));
+    elem.classList.add("bytm-style");
     elem.id = `bytm-style-${ref ?? CoreUtils.randomId(6, 36)}`;
     return elem;
 }
