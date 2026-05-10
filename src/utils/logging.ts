@@ -38,15 +38,15 @@ const pushLog = (type: string, time?: number, ...args: unknown[]) => {
 };
 
 /** Returns a string representation of the {@linkcode logs}, formatted for downloading as a file */
-export const getLogsTxt = () => {
+export const serializeLogs = () => {
   /** Converts a value to a string for logging. */
-  const getVal = (val: unknown, primaryScope = true): string => {
+  const serializeLogVal = (val: unknown, primaryScope = true): string => {
     if(typeof val === "undefined")
       return primaryScope ? "[undefined]" : "(undefined)";
     if(val === null)
       return primaryScope ? "[null]" : "(null)";
     if(Array.isArray(val))
-      return `[Array (${val.length}) <${val.map((v) => getVal(v, false)).join(", ")}>]`;
+      return `[Array (${val.length}) <${val.map((v) => serializeLogVal(v, false)).join(", ")}>]`;
     if(val instanceof Element)
       return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
     if(typeof val === "function")
@@ -56,7 +56,17 @@ export const getLogsTxt = () => {
     if(val instanceof Error)
       return `[${val.name}: ${val.message}]`;
     if(val instanceof Date)
-      return `[Date <${val.toISOString()}>]`;
+      return `[Date (@ ${val.toISOString()})]`;
+    if(val instanceof Response)
+      return `[Response (${val.status})]`;
+    if(val instanceof Map)
+      return `[Map (${val.size}) <${Array.from(val.entries()).map(([k, v]) => `${serializeLogVal(k, false)} => ${serializeLogVal(v, false)}`).join(", ")}>]`;
+    if(val instanceof Set)
+      return `[Set (${val.size}) <${Array.from(val.values()).map(v => serializeLogVal(v, false)).join(", ")}>]`;
+    if(val instanceof Blob)
+      return `[Blob (${val.type}, ${val.size} bytes)]`;
+    if(val instanceof File)
+      return `[File (${val.name}, ${val.type}, ${val.size} bytes)]`;
     if(typeof val === "object") {
       const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
       try {
@@ -83,7 +93,7 @@ export const getLogsTxt = () => {
     const timestamp = new Date(time).toISOString();
 
     try {
-      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => getVal(a)).join(" ")}\n${acc}`;
+      return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => serializeLogVal(a)).join(" ")}\n${acc}`;
     }
     catch {
       return `[${timestamp}] ${`[${type}]`.padEnd(longestLogType + 2, " ")} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
@@ -203,7 +213,7 @@ export function getErrorDialog(errName: string, args: unknown[]) {
       dlLogsBtn.type = "button";
       dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
       onInteraction(dlLogsBtn, () => {
-        downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+        downloadFile(`bytm-log-${new Date().toISOString()}.log`, serializeLogs(), "text/plain");
       });
 
       footer.appendChild(dlLogsBtn);
