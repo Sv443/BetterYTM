@@ -163,6 +163,10 @@
   "list_button_placement_generic_lists": "Sadece genel şarkı listelerinde",
   "list_button_placement_everywhere": "Tüm şarkı listelerinde",
 
+  "alert_mode.never": "Asla",
+  "alert_mode.all": "Her zaman",
+  "alert_mode.important_only": "Sadece önemli uyarılar",
+
   "site_selection_both_sites": "Her ikisinde de",
   "site_selection_only_yt": "Sadece YouTube",
   "site_selection_only_ytm": "Sadece YouTube Music",
@@ -386,6 +390,7 @@
   "feature_helptext.thumbnailOverlayBehavior": "Önizleme çalan videonun/şarkının üzerinde bir katman olarak gösterilecek.\nVideo arkaplanda yükleneceği ve oynatılacağı için bu bant genişliğinden tasarruf etmeniz anlamına gelmiyor!",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Küçük resmi manuel olarak açmak/kapatmak için medya kontrollerine bir tuş ekleyin",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "Bu tuş küçük resmi manuel olarak açık ve kapalı olarak değiştirmenizi sağlar. Önizleme değiştirme seçeneği \"asla\" olarak ayarlanmışsa bu durumdan etkilenmez.\nYeni bir video veya şarkı çalmaya başladığında, varsayılan durum geri yüklenecektir.\nKüçük resmi en yüksek kalitede, yeni sekmede açmak için tıklarken shifte basılı tutun ya da fare tekerleğine tıklayın.",
+  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Tam ekran oynatıcıda siyah çubuklar yerine küçük resmin bulanık bir kopyasını göster",
   "feature_desc.thumbnailOverlayITunesImgRes": "Apple Music / iTunes albüm kapağının kalitesi",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Önbellekte tutulan maksimum albüm kapağı sayısı",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "Sağlayıcıya giden istekleri azaltmak için dinlediğiniz şarkıların albüm kapakları önbellekte depolanır.\nBu özellik, önbellekte saklanacak maksimum albüm kapağı sayısını belirlemenizi sağlar.\nSınıra ulaşıldığında; en eski girdiler, yenilerine yer açmak için silinir.",
@@ -538,6 +543,8 @@
   "feature_helptext.initTimeout": "Komutların çalışması üzerinde belirgin bir etkisi yaratmaz ama eklentilerinizden biri zamanında başlatılamıyorsa, değeri arttırmayı denemelisiniz.",
   "feature_desc.defaultObserverDebounce": "Belge değişiklikleri için varsayılan yankılanma süresi (milisaniye cinsinden)",
   "feature_helptext.defaultObserverDebounce": "Bu zaman, kodun sayfa yapısındaki değişiklikleri ne kadar sık kontrol etmesi ve ne kadar çabuk tepki vermesi gerektiğini yönetir.\nDüşük değer atamak kodun daha hızlı çalışmasını sağlayabilir fakat CPU kullanımını arttırır.\nEğer sayfa yavaş ya da takılıyormuş gibi geliyorsa, değeri arttırmayı deneyin.",
+  "feature_desc.globalAlertMode": "Önemli bildirimler için global uyarı diyaloglarını ne zaman göstermeli",
+  "feature_helptext.globalAlertMode": "Küresel uyarı iletişim kutuları, ekranın ortasında görünen ve kapatılana kadar sayfanın geri kalanıyla etkileşimi engelleyen modal iletişim kutularıdır. Kritik güvenlik açıkları veya önemli güncellemeler gibi acil dikkat gerektiren önemli bildirimler için kullanılırlar.\nBu seçenekle, bu küresel uyarı iletişim kutularının ne zaman gösterileceğini seçebilirsiniz.",
 
   "feature_desc.locale": "Dil",
   "feature_desc.localeFallback": "Eksik çeviriler için İngilizce geridönüt kullan (çevirilere yardım ediyorsanız devre dışı bırakın)",
