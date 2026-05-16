@@ -1,0 +1,6 @@
+packages:
+  - .
+  - src/**
+
+# only allow 14+ day old package releases - helps somewhat against supply chain attacks
+minimumReleaseAge: 20160
