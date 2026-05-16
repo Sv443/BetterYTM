@@ -24,6 +24,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | ✅ | [`hi-IN`](./hi-IN.json) | `515/515` (100%) | ─ |
 | ✅ | [`ja-JP`](./ja-JP.json) | `515/515` (100%) | ─ |
 | ✅ | [`pt-BR`](./pt-BR.json) | `515/515` (100%) | ─ |
+| ⚠ | [`tr-TR`](./tr-TR.json) | `509/515` (98.8%) | ─ |
 | ✅ | [`zh-CN`](./zh-CN.json) | `515/515` (100%) | ─ |
 
 > <sub>✅ Fully translated</sub><br>
@@ -38,4 +39,16 @@ This means to figure out which keys are untranslated, you will need to manually 
 <br>
 
 ### Missing keys:
-No missing keys
+
+<details><summary><code>tr-TR</code> - 6 missing keys <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `alert_mode.never` | `Never` |
+| `alert_mode.all` | `Show all alerts` |
+| `alert_mode.important_only` | `Important alerts only` |
+| `feature_desc.thumbnailOverlayBlurredDuplicateBackground` | `Show a blurred copy of the thumbnail in the fullscreen player instead of black bars` |
+| `feature_desc.globalAlertMode` | `When to show global alert dialogs for important notifications` |
+| `feature_helptext.globalAlertMode` | `Global alert dialogs are modal dialogs that appear in the center of the screen and block interaction with the rest of the page until dismissed. They are used for important notifications that require immediate attention, such as critical security vulnerabilities or important updates.\nWith this option you can choose when to show these global alert dialogs.` |
+
+<br></details>
