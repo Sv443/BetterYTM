@@ -4,3 +4,9 @@ packages:
 
 # only allow 14+ day old package releases - helps somewhat against supply chain attacks
 minimumReleaseAge: 20160
+minimumReleaseAgeExclude: [ "@sv443-network/coreutils", "@sv443-network/userutils" ]
+
+ignoreWorkspaceRootCheck: true
+
+allowBuilds:
+  esbuild: true
