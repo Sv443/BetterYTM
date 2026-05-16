@@ -79,6 +79,7 @@
     "trans-hi-IN": "translations/hi-IN.json",
     "trans-ja-JP": "translations/ja-JP.json",
     "trans-pt-BR": "translations/pt-BR.json",
+    "trans-tr-TR": "translations/tr-TR.json",
     "trans-zh-CN": "translations/zh-CN.json"
   }
 }
