@@ -20,6 +20,9 @@ Components are written using the vanilla JS DOM API, no framework like React is 
 - Realize dead ends and think about solutions or alternatives. Interject with questions if needed and speak up when there's an objectively better path.
 - Ask for new or updated context if needed instead of making assumptions.
 - In the output, instead of including unmodified members, only show the new or modified code and make use of comments like `/* existing code */`.
+- Barrel exports (re-exports from an index file) should be avoided to prevent circular dependencies and maintain clearer import paths.
+- Prefer options objects as function/method parameters when there are more than 2 parameters or when the logic is not easily inferrable from the function/method and parameter names alone.
+- When members are mentioned in TSDoc comments and also imported at the top of the file, they should be mentioned using the `{@linkcode ...}` tag.
 
 # Libraries Summary
 
