@@ -75,11 +75,12 @@ export function setLogLevel(level: LogLevel) {
     loggers.misc.log("Set the log level to", LogLevel[level]);
 }
 
-//#region log functions
+//#region legacy log functions
 
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @deprecated Use the instances in {@linkcode loggers} instead!
  */
 export function log(...args: unknown[]): void {
   loggers.uncategorized.log(...args);
@@ -88,27 +89,40 @@ export function log(...args: unknown[]): void {
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ * @deprecated Use the instances in {@linkcode loggers} instead!
  */
 export function info(...args: unknown[]): void {
   loggers.uncategorized.info(...args);
 }
 
-/** Logs all passed values to the console as a warning, no matter the log level. */
+/**
+ * Logs all passed values to the console as a warning, no matter the log level.
+ * @deprecated Use the instances in {@linkcode loggers} instead!
+ */
 export function warn(...args: unknown[]): void {
   loggers.uncategorized.warn(...args);
 }
 
-/** Logs all passed values to the console as an error, no matter the log level. */
+/**
+ * Logs all passed values to the console as an error, no matter the log level.
+ * @deprecated Use the instances in {@linkcode loggers} instead!
+ */
 export function error(...args: unknown[]): void {
   loggers.uncategorized.error(...args);
 }
 
-/** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
+/**
+ * Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast.
+ * @deprecated Use the instances in {@linkcode loggers} instead!
+ */
 export function errorNoToast(...args: unknown[]): void {
   loggers.uncategorized.errorNoToast(...args);
 }
 
-/** Logs all passed values to the console with a debug-specific prefix */
+/**
+ * Logs all passed values to the console with a debug-specific prefix.
+ * @deprecated Use the instances in {@linkcode loggers} instead!
+ */
 export function dbg(...args: unknown[]): void {
   loggers.uncategorized.dbg(...args);
 }

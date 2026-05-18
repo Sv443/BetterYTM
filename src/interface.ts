@@ -2,7 +2,8 @@ import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import * as constants from "@/constants.ts";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable } from "@util/index.ts";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable } from "@util/index.ts";
+import { loggers } from "@util/index.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
@@ -243,7 +244,7 @@ export function initInterface() {
 
   setGlobalProp("sessionId", getSessionId());
 
-  log("Initialized BYTM interface");
+  loggers.plugin.log("Initialized BYTM interface");
 }
 
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
@@ -277,12 +278,12 @@ export function emitInterface<
     emitOnPlugins(type, undefined, ...detail);
     if(getFeature("logEvents")) {
       detail.length > 0 && detail?.[0]
-        ? log(`Emitted interface event '${type}' with data:`, ...detail)
-        : log(`Emitted interface event '${type}' (without data)`);
+        ? loggers.plugin.log(`Emitted interface event '${type}' with data:`, ...detail)
+        : loggers.plugin.log(`Emitted interface event '${type}' (without data)`);
     }
   }
   catch(err) {
-    error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
+    loggers.plugin.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
   }
 }
 
@@ -310,9 +311,9 @@ export function initPlugins() {
   window.addEventListener("bytm:ready", () => {
     pluginsInitialized = true;
     if(registeredPlugins.size > 0)
-      info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
+      loggers.plugin.info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
     else
-      log("No plugins registered");
+      loggers.plugin.log("No plugins registered");
   }, { once: true });
 }
 
@@ -348,7 +349,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
       array: parseBitSetEnumArray(permissionInt, PluginIntent as unknown as BitSetTSEnum),
     };
 
-    info(`Successfully registered plugin '${plKey}'`);
+    loggers.plugin.info(`Successfully registered plugin '${plKey}'`);
 
     setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
 
@@ -360,7 +361,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     };
   }
   catch(err) {
-    error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
+    loggers.plugin.error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
     throw err;
   }
 };
@@ -397,7 +398,7 @@ function registerDevPlugin() {
     setGlobalProp("devPluginEvents", events);
   }
   catch(err) {
-    error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
+    loggers.plugin.error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
   }
 }
 

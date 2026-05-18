@@ -3,7 +3,8 @@ import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/user
 import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn, type TrKey } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
-import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
+import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
+import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initStaticData } from "@util/data.js";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
@@ -161,7 +162,7 @@ function preInit() {
     init();
   }
   catch(err) {
-    return error("Fatal pre-init error:", err);
+    return loggers.init.error("Fatal pre-init error:", err);
   }
 }
 
@@ -177,7 +178,7 @@ async function init() {
     endCfgDur();
     setLogLevel(features.logLevel);
 
-    info("Session ID:", getSessionId());
+    loggers.init.info("Session ID:", getSessionId());
 
     // resource cache:
     const endResCacheDur = measureInitDuration("initResourceCache");
@@ -201,7 +202,7 @@ async function init() {
       initPlugins();
     }
     catch(err) {
-      error("Plugin loading error:", err);
+      loggers.init.error("Plugin loading error:", err);
       emitInterface("bytm:fatalError", "Error while loading plugins");
     }
 
@@ -220,7 +221,7 @@ async function init() {
       onDomLoad();
   }
   catch(err) {
-    error("Fatal error:", err);
+    loggers.init.error("Fatal error:", err);
     alert(`\
 ${scriptInfo.name} encountered a fatal error during initialization and will not work correctly, if at all.
 For information on what caused this error, please refer to the JS console.
@@ -271,10 +272,10 @@ async function onDomLoad() {
     }, 0);
   }
   catch(err) {
-    error("Encountered error in pre-init:", err);
+    loggers.init.error("Encountered error in pre-init:", err);
   }
 
-  info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
+  loggers.init.info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
 
   try {
     //#region welcome dlg
@@ -283,7 +284,7 @@ async function onDomLoad() {
       // open welcome menu with language selector
       const dlg = await getWelcomeDialog();
       dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
-      info("Showing welcome menu");
+      loggers.init.info("Showing welcome menu");
       await dlg.open();
       await dlg.once("close");
     }
@@ -396,7 +397,7 @@ async function onDomLoad() {
       }
     }
     catch(err) {
-      error("Couldn't add config menu option:", err);
+      loggers.init.error("Couldn't add config menu option:", err);
     }
 
     if(["ytm", "yt"].includes(domain)) {
@@ -456,7 +457,7 @@ async function onDomLoad() {
           }`);
         }
         else
-          info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+          loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
       })
     )();
 
@@ -484,7 +485,7 @@ async function onDomLoad() {
     }
   }
   catch(err) {
-    error("Feature error:", err);
+    loggers.init.error("Feature error:", err);
     emitInterface("bytm:fatalError", "Error while initializing features");
   }
   finally {
@@ -502,9 +503,9 @@ async function preloadResources() {
     .map(k => getResourceUrl(k as ResourceKey));
   const urls = await Promise.all(urlPromises);
   if(urls.length > 0)
-    info("Preloading", urls.length, "resources:", urls);
+    loggers.init.info("Preloading", urls.length, "resources:", urls);
   else
-    info("No resources to preload");
+    loggers.init.info("No resources to preload");
   await preloadImages(urls);
 }
 
@@ -513,7 +514,7 @@ async function preloadResources() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 async function injectCssBundle() {
   if(!await addStyleFromResource("css-bundle"))
-    error("Couldn't inject CSS bundle due to an error");
+    loggers.init.error("Couldn't inject CSS bundle due to an error");
 }
 
 /** Initializes global CSS values */
@@ -534,7 +535,7 @@ function initGlobalCss() {
     applyVars();
   }
   catch(err) {
-    error("Couldn't initialize global CSS:", err);
+    loggers.init.error("Couldn't initialize global CSS:", err);
   }
 }
 
@@ -601,14 +602,14 @@ function registerDevCommands() {
 
   isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
     const keys = await GM.listValues();
-    dbg(`GM values (${keys.length}):`);
+    loggers.command.log(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      dbg("  No values found.");
+      loggers.command.log("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
 
-    const decodeError = (key: string, err: unknown) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
+    const decodeError = (key: string, err: unknown) => loggers.command.error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
 
     for(const key of keys) {
       try {
@@ -633,7 +634,7 @@ function registerDevCommands() {
       try {
         const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
         const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-        dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+        loggers.command.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
       }
       catch(err) {
         decodeError(key, err);
@@ -643,9 +644,9 @@ function registerDevCommands() {
 
   isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
     const keys = await GM.listValues();
-    dbg(`GM values (${keys.length}):`);
+    loggers.command.log(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      dbg("  No values found.");
+      loggers.command.log("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
@@ -657,32 +658,32 @@ function registerDevCommands() {
     }
     for(const [key, val] of Object.entries(values)) {
       const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
+      loggers.command.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
     }
   });
 
   isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
-      dbg(`Clearing ${keys.length} GM values:`);
+      loggers.command.log(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
-        dbg("  No values found.");
+        loggers.command.log("  No values found.");
       for(const key of keys) {
         await GM.deleteValue(key);
-        dbg(`  Deleted ${key}`);
+        loggers.command.log(`  Deleted ${key}`);
       }
     }
   });
 
   isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
     await GM.deleteValue("bytm-installed");
-    dbg("Reset install time.");
+    loggers.command.log("Reset install time.");
   });
 
   isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
     const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
     await GM.deleteValue("bytm-version-session-counter");
-    dbg("Reset version session counter. Was previously:", verSesCount);
+    loggers.command.log("Reset version session counter. Was previously:", verSesCount);
   });
 
   isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
@@ -699,7 +700,7 @@ function registerDevCommands() {
         });
       });
     }
-    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    loggers.command.log(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
   isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
@@ -725,7 +726,7 @@ function registerDevCommands() {
 
     const showErr = async (type: "compress" | "decompress", err: unknown) => {
       const errMsg = `Error while trying to ${type === "compress" ? "" : "de"}compress`;
-      error(errMsg, err);
+      loggers.command.error(errMsg, err);
       await showPrompt({
         type: "alert",
         message: `${errMsg}:\n${err instanceof Error ? `${err.name}: ${err.message}` : String(err)}`,
@@ -802,7 +803,7 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new SyntaxError("Test error")));
 
   isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
     downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
@@ -845,7 +846,7 @@ function registerDevCommands() {
 
   //   const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
 
-  //   // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
+  //   // loggers.command.log(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
 
   //   const unusedKeys = [] as string[];
 
@@ -855,7 +856,7 @@ function registerDevCommands() {
   //   }
 
   //   if(unusedKeys.length > 0)
-  //     dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+  //     loggers.command.log(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
   // });
 
   isDev && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
@@ -872,7 +873,7 @@ function registerDevCommands() {
       sessions.push([from, packet.data]);
     });
 
-    dbg("Collecting session info from open tabs...");
+    loggers.command.log("Collecting session info from open tabs...");
 
     setTimeout(() => {
       const columns = ["#", "Self?", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
@@ -923,7 +924,7 @@ function registerDevCommands() {
     }) && await reloadAllTabs();
   });
 
-  log("Registered dev menu commands");
+  loggers.command.log("Registered dev menu commands");
 }
 
 async function runDevTreatments() {

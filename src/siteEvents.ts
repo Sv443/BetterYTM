@@ -1,5 +1,6 @@
 import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
-import { error, getDomain, info, log, warn } from "@util/index.ts";
+import { getDomain } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/interface.ts";
 import { addSelectorListener, globserversReady } from "@/observers.ts";
@@ -129,7 +130,7 @@ export function initSiteEvents() {
       // the queue container always exists so it doesn't need an extra init function
       const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
         if(addedNodes.length > 0 || removedNodes.length > 0) {
-          info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+          loggers.siteEvent.info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
           emitSiteEvent("queueChanged", target as HTMLElement);
         }
       });
@@ -145,7 +146,7 @@ export function initSiteEvents() {
 
       const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
         if(addedNodes.length > 0 || removedNodes.length > 0) {
-          info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+          loggers.siteEvent.info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
           emitSiteEvent("autoplayQueueChanged", target as HTMLElement);
         }
       });
@@ -170,13 +171,13 @@ export function initSiteEvents() {
           if(newTitle === lastTitle || !newTitle)
             return;
           lastTitle = newTitle;
-          info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
+          loggers.siteEvent.info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
           emitSiteEvent("songTitleChanged", newTitle, oldTitle);
           runIntervalChecks();
         },
       });
 
-      info("Successfully initialized SiteEvents observers");
+      loggers.siteEvent.info("Successfully initialized SiteEvents observers");
 
       observers = observers.concat([
         queueObs,
@@ -234,7 +235,7 @@ export function initSiteEvents() {
     });
   }
   catch(err) {
-    error("Couldn't initialize site event observers due to an error:\n", err);
+    loggers.siteEvent.error("Couldn't initialize site event observers due to an error:\n", err);
   }
 }
 
@@ -249,8 +250,8 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
     const logEmit = () => {
       if(getFeature("logEvents")) {
         args.length > 0
-          ? log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
-          : log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+          ? loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
+          : loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
       }
     };
 
@@ -262,7 +263,7 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
         forceEmitSiteEvent(key, ...args);
         logEmit();
         if(Date.now() - startTs > 500)
-          warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
+          loggers.siteEvent.warn(`Slow siteEvent '${key}'! - took ${Date.now() - startTs}ms from initial emit to "bytm:ready"`);
       }, { once: true });
       return;
     }
@@ -272,7 +273,7 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
     }
   }
   catch(err) {
-    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+    loggers.siteEvent.error(`Couldn't emit site event "${key}" due to an error:\n`, err);
   }
 }
 
@@ -286,7 +287,7 @@ export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, 
     emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
   }
   catch(err) {
-    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+    loggers.siteEvent.error(`Couldn't emit site event "${key}" due to an error:\n`, err);
   }
 }
 
@@ -296,7 +297,7 @@ export function forceEmitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, 
 function checkVideoIdChange(newID?: string | null) {
   newID ??= new URL(location.href).searchParams.get("v");
   if(newID && newID !== lastVidId) {
-    info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
+    loggers.siteEvent.info(`Detected watch ID change - old ID: "${lastVidId}" - new ID: "${newID}"`);
     emitSiteEvent("watchIdChanged", newID, lastVidId);
     lastVidId = newID;
   }

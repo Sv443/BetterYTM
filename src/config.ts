@@ -1,7 +1,8 @@
 import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { artCacheStore, enableDiscardBeforeUnload, featInfo } from "@feat/index.ts";
-import { error, info, log, reloadTab, t, warn, type TrLocale } from "@util/index.ts";
+import { reloadTab, t, warn, type TrLocale } from "@util/index.ts";
+import { loggers } from "@util/logging.ts";
 import { emitSiteEvent } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/interface.ts";
@@ -264,7 +265,7 @@ export const cfgMigrations: DataMigrationsDict = {
     // dont wanna make a whole new system just for this:
     artCacheStore.deleteData().then(() => {
       // no need to load data since artCacheStore.memoryCache === false
-      info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
+      loggers.data.info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
     });
 
     // scale was changed from seconds to milliseconds
@@ -381,16 +382,16 @@ export async function initConfig() {
       window.addEventListener("bytm:allReady", () => openCfgMenu(), { once: true });
   }
 
-  log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
+  loggers.data.log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
     warn("  ⚠️ - Config data was initialized with default values");
   else if(oldFmtVer !== configStore.formatVersion) {
     try {
       await configStore.setData(data = fixCfgKeys(data));
-      info(`  ⚠️ - Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
+      loggers.data.info(`  ⚠️ - Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
     }
     catch(err) {
-      error("  ⚠️ - Config data migration failed, falling back to default data:", err);
+      loggers.data.error("  ⚠️ - Config data migration failed, falling back to default data:", err);
       await configStore.setData(data = configStore.defaultData);
     }
   }
@@ -440,7 +441,7 @@ export function getFeature<TKey extends FeatureKey>(key: TKey | "_", defaultVal?
 export function setFeatures(featureConf: FeatureConfig) {
   const res = configStore.setData(featureConf);
   emitSiteEvent("configChanged", getFeaturesNoHidden());
-  info("Saved new feature config:", getFeaturesNoHidden());
+  loggers.data.info("Saved new feature config:", getFeaturesNoHidden());
   return res;
 }
 
@@ -459,7 +460,7 @@ export function getFeaturesNoHidden(featureCfg?: FeatureConfig): FeatureConfig {
 export function setDefaultFeatures() {
   const res = configStore.saveDefaultData();
   emitSiteEvent("configChanged", getFeaturesNoHidden());
-  info("Reset feature config to its default values");
+  loggers.data.info("Reset feature config to its default values");
   return res;
 }
 
@@ -478,5 +479,5 @@ export async function promptResetConfig() {
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 export async function clearConfig() {
   await configStore.deleteData();
-  info("Deleted config from persistent storage");
+  loggers.data.info("Deleted config from persistent storage");
 }

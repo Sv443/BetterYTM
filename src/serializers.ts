@@ -6,7 +6,7 @@ import { artCacheStore } from "@feat/layout.ts";
 import { lyricsCacheStore } from "@feat/lyricsCache.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { t } from "@util/translations.ts";
-import { error } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { downloadFile } from "@util/dom.ts";
 import { alertsStore } from "@util/data.ts";
 import { reloadTab, resourceCacheStore } from "@util/misc.ts";
@@ -66,7 +66,7 @@ export async function importData(blob: File | Blob) {
       await reloadTab();
   }
   catch(err) {
-    error("Error while importing serialized DataStores:", err);
+    loggers.data.error("Error while importing serialized DataStores:", err);
 
     if(err instanceof TypeError)
       await showPrompt({
