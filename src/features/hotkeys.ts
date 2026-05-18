@@ -5,7 +5,7 @@ import { getFeature } from "@/config.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { getLikeDislikeBtns, getVideoTime } from "@util/dom.ts";
 import { getDomain } from "@util/misc.ts";
-import { error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import type { Domain, FeatKeysOfType, HotkeyObj } from "@/types.ts";
 
 //#region init
@@ -70,14 +70,14 @@ export async function initSiteSwitch() {
       return;
     siteSwitchEnabled = !hkInputActive;
   });
-  log("Initialized site switch listener");
+  loggers.hotkey.log("Initialized site switch listener");
 }
 
 /** Switches to the other site (between YT and YTM) */
 async function switchSite(newDomain: Domain, inNewTab = false) {
   try {
     if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
-      return warn("Not on a supported page, so the site switch is ignored");
+      return loggers.hotkey.warn("Not on a supported page, so the site switch is ignored");
 
     let subdomain: "music" | "www" | undefined;
     if(newDomain === "ytm")
@@ -94,7 +94,7 @@ async function switchSite(newDomain: Domain, inNewTab = false) {
 
     const time = await getVideoTime(0);
 
-    log(`Found video time of ${time} seconds`);
+    loggers.hotkey.log(`Found video time of ${time} seconds`);
 
     const cleanSearch = search.split("&")
       .filter((param) => !param.match(/^\??(t|time_continue)=/))
@@ -110,14 +110,14 @@ async function switchSite(newDomain: Domain, inNewTab = false) {
       : cleanSearch;
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
-    info(`Switching to domain '${newDomain}' at ${newUrl}`);
+    loggers.hotkey.info(`Switching to domain '${newDomain}' at ${newUrl}`);
     if(inNewTab)
       openInNewTab(newUrl, true);
     else
       location.assign(newUrl);
   }
   catch(err) {
-    error("Error while switching site:", err);
+    loggers.hotkey.error("Error while switching site:", err);
   }
 }
 
@@ -199,7 +199,7 @@ async function initSearchBarHotkeys() {
 
     getSearchBarInput()?.focus();
 
-    log("Focused on the search bar");
+    loggers.hotkey.log("Focused on the search bar");
   };
 
   const checkClearHotkey = (e: KeyboardEvent) => {
@@ -344,5 +344,5 @@ function dispatchProxyKey(hkProps: DispatchProxyHkOpts) {
     // see https://github.com/Sv443/BetterYTM/issues/18
     view: getUnsafeWindow(),
   }));
-  log("Dispatched proxy hotkey:", hkProps);
+  loggers.hotkey.log("Dispatched proxy hotkey:", hkProps);
 };

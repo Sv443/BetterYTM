@@ -1,15 +1,18 @@
 import { compress, debounce } from "@sv443-network/coreutils";
-import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tp, tryToDecompressAndParse } from "@util/index.ts";
+import { compressionSupported, getDomain, isValidChannelId, parseChannelIdFromUrl, tryToDecompressAndParse } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { t, tp } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
 import { autoLikeStore, initAutoLikeStore } from "@feat/index.ts";
-import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { ExImDialog } from "@comp/ExImDialog.ts";
-import { compressionFormat } from "@/constants.ts";
-import type { AutoLikeData } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
+import { ExImDialog } from "@comp/ExImDialog.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { showToast } from "@comp/toast.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
 import { createCircularBtn } from "@comp/circularButton.ts";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { compressionFormat } from "@/constants.ts";
+import type { AutoLikeData } from "@/types.ts";
 import "@dialog/autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
@@ -46,11 +49,11 @@ export async function getAutoLikeDialog() {
         if(autoLikeDialog?.isOpen()) {
           autoLikeDialog.unmount();
           await autoLikeDialog.open();
-          log("Auto-like channels updated, refreshed dialog");
+          loggers.dialog.log("Auto-like channels updated, refreshed dialog");
         }
       }
       catch(err) {
-        error("Couldn't refresh auto-like channels dialog:", err);
+        loggers.dialog.error("Couldn't refresh auto-like channels dialog:", err);
       }
     });
 
@@ -72,7 +75,7 @@ export async function getAutoLikeDialog() {
       async onImport(data) {
         try {
           const parsed = await tryToDecompressAndParse<AutoLikeData>(data);
-          log("Trying to import auto-like data:", parsed);
+          loggers.dialog.log("Trying to import auto-like data:", parsed);
 
           if(!parsed || typeof parsed !== "object")
             return await showPrompt({ type: "alert", message: t("import_error.invalid") });
@@ -86,7 +89,7 @@ export async function getAutoLikeDialog() {
           autoLikeExImDialog?.unmount();
         }
         catch(err) {
-          error("Couldn't import auto-like channels data:", err);
+          loggers.dialog.error("Couldn't import auto-like channels data:", err);
         }
       },
       title: () => t("auto_like_export_import_title"),

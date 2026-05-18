@@ -4,7 +4,7 @@ import { getFeature } from "@/config.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { initialParams } from "@/constants.ts";
 import { siteEvents } from "@/siteEvents.ts";
-import { dbg, error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { clearNode, getCurrentMediaType, getVideoElement, getVideoTime, waitVideoElementReady } from "@util/dom.ts";
 import { getDomain, getWatchId, scrollToCurrentSongInQueue } from "@util/misc.ts";
 import { LogLevel } from "@/types.ts";
@@ -16,13 +16,13 @@ let discardBeforeUnloadOverride: boolean | undefined;
 /** Disables the popup before leaving the site */
 export function enableDiscardBeforeUnload() {
   discardBeforeUnloadOverride = true;
-  info("Disabled popup before leaving the site");
+  loggers.behavior.info("Disabled popup before leaving the site");
 }
 
 /** (Re-)enables the popup before leaving the site */
 export function disableDiscardBeforeUnload() {
   discardBeforeUnloadOverride = false;
-  info("Enabled popup before leaving the site");
+  loggers.behavior.info("Enabled popup before leaving the site");
 }
 
 /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
@@ -31,7 +31,7 @@ export async function initBeforeUnloadHook() {
     interceptWindowEvent("beforeunload", () => typeof discardBeforeUnloadOverride !== "undefined" ? discardBeforeUnloadOverride : getFeature("disableBeforeUnloadPopup"));
   }
   catch(err) {
-    error("Error in beforeunload hook:", err);
+    loggers.behavior.error("Error in beforeunload hook:", err);
   }
 }
 
@@ -69,18 +69,18 @@ export async function initAutoCloseToasts() {
 
             if(toastElem.parentNode) {
               clearNode(toastElem);
-              log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+              loggers.behavior.log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
             }
           }, { once: true });
         }
       }
       catch(err) {
-        error("Error in automatic toast closing:", err);
+        loggers.behavior.error("Error in automatic toast closing:", err);
       }
     },
   });
 
-  log("Initialized automatic toast closing");
+  loggers.behavior.log("Initialized automatic toast closing");
 }
 
 //#region auto scroll to active
@@ -149,7 +149,7 @@ export async function initRememberVideoTime() {
     remTimeEntries = JSON.parse(String(remTimesRaw ?? "[]")) as RemTimeObj[];
   }
   catch(err) {
-    error("Error parsing stored video time data, defaulting to empty cache:", err);
+    loggers.behavior.error("Error parsing stored video time data, defaulting to empty cache:", err);
     await GM.setValue("bytm-remember-times", "[]");
     remTimeEntries = [];
   }
@@ -157,10 +157,10 @@ export async function initRememberVideoTime() {
   if(remTimeEntries.some(e => "watchID" in e)) {
     remTimeEntries = remTimeEntries.filter(e => "id" in e);
     await GM.setValue("bytm-remember-times", JSON.stringify(remTimeEntries));
-    log(`Removed ${remTimeEntries.length} ${autoPlural("entry", remTimeEntries)} with an outdated format from the video time cache`);
+    loggers.behavior.log(`Removed ${remTimeEntries.length} ${autoPlural("entry", remTimeEntries)} with an outdated format from the video time cache`);
   }
 
-  log(`Initialized video time restoring with ${remTimeEntries.length} initial ${autoPlural("entry", remTimeEntries)}:`, remTimeEntries);
+  loggers.behavior.log(`Initialized video time restoring with ${remTimeEntries.length} initial ${autoPlural("entry", remTimeEntries)}:`, remTimeEntries);
 
   await remTimeTryRestoreTime();
 
@@ -171,7 +171,7 @@ export async function initRememberVideoTime() {
       remTimeStartUpdateLoop();
   }
   catch(err) {
-    error("Error in video time remembering update loop:", err);
+    loggers.behavior.error("Error in video time remembering update loop:", err);
   }
 }
 
@@ -191,12 +191,12 @@ export function remTimeTryRestoreTime(force = false) {
         }
 
         if(!videoID) {
-          error("Could not determine the video ID of the current video - not restoring time");
+          loggers.behavior.error("Could not determine the video ID of the current video - not restoring time");
           return resolve(false);
         }
 
         if(initialParams.has("t") && !force) {
-          info("Not restoring song time because the page was loaded with the '&t' parameter", LogLevel.Info);
+          loggers.behavior.info("Not restoring song time because the page was loaded with the '&t' parameter", LogLevel.Info);
           return resolve(false);
         }
 
@@ -207,7 +207,7 @@ export function remTimeTryRestoreTime(force = false) {
             return resolve(false);
           }
           else if(isNaN(Number(entry.time)) || entry.time < 0) {
-            warn("Invalid time in remembered song time entry:", entry);
+            loggers.behavior.warn("Invalid time in remembered song time entry:", entry);
             return resolve(false);
           }
           else {
@@ -218,7 +218,7 @@ export function remTimeTryRestoreTime(force = false) {
               const vidRestoreTime = entry.time - (getFeature("rememberSongTimeReduction", 0));
               vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
               await remTimeDeleteEntry(entry.id);
-              info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+              loggers.behavior.info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
               return resolve(true);
             };
 
@@ -232,7 +232,7 @@ export function remTimeTryRestoreTime(force = false) {
       return resolve(false);
     }
     catch(err) {
-      error("Uncaught error when trying to restore video time:", err);
+      loggers.behavior.error("Uncaught error when trying to restore video time:", err);
       return reject(err);
     }
   });
@@ -337,7 +337,7 @@ export async function initStillThere() {
     const dialogCont = youThereCont.closest("tp-yt-paper-dialog");
 
     if(!dialogCont)
-      return warn("Could not find the dialog container to dismiss the \"Are you still there?\" popup");
+      return loggers.behavior.warn("Could not find the dialog container to dismiss the \"Are you still there?\" popup");
 
     const doCheck = () => {
       if(!getFeature("yesImStillThere") || !dialogCont || dialogCont.hasAttribute("aria-hidden") || getComputedStyle(dialogCont).display === "none")
@@ -346,14 +346,14 @@ export async function initStillThere() {
       const btn = youThereCont.querySelector<HTMLButtonElement>(".actions button");
 
       if(!btn)
-        return warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
+        return loggers.behavior.warn("Could not find the \"Yes\" button to dismiss the \"Are you still there?\" popup");
 
       btn.click();
       if(obs) {
         obs.disconnect();
         obs = undefined;
       }
-      info("Automatically dismissed the \"Are you still here?\" dialog on the song", curSongTitle, LogLevel.Info);
+      loggers.behavior.info("Automatically dismissed the \"Are you still here?\" dialog on the song", curSongTitle, LogLevel.Info);
     };
 
     if(firstCheck) {
@@ -371,8 +371,6 @@ export async function initStillThere() {
       subtree: true,
       attributes: true,
     });
-
-    getFeature("yesImStillThere") && dbg("Checked for \"Are you still there?\" popup and set up observer to dismiss it");
   };
 
   addSelectorListener("popupContainer", "tp-yt-paper-dialog ytmusic-you-there-renderer", {
@@ -397,9 +395,9 @@ export async function initStillThere() {
 
   const tryClick = () => {
     if(isInFullscreen)
-      return warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
+      return loggers.behavior.warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
     if(isDragging || Date.now() - lastClick < lastInteractionTimeout)
-      return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
+      return loggers.behavior.warn("Click is currently held down - not dispatching \"Are you still there?\" events");
 
     // click the navbar
     const navBar = document.querySelector<HTMLElement>("ytmusic-nav-bar .center-content");
@@ -437,9 +435,9 @@ export async function initStillThere() {
 
   const tryMove = async () => {
     if(isInFullscreen)
-      return warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
+      return loggers.behavior.warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
     if(isDragging || Date.now() - lastClick < lastInteractionTimeout)
-      return warn("Click is currently held down - not dispatching \"Are you still there?\" events");
+      return loggers.behavior.warn("Click is currently held down - not dispatching \"Are you still there?\" events");
 
     // dispatch mousemoves with random vector for a second
     const incX = (Math.random() * 2 - 1) / 10,

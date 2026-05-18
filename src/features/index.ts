@@ -6,7 +6,7 @@ import { doVersionCheck } from "@feat/versionCheck.ts";
 import { expVolFn } from "@feat/volume.ts";
 import { getLocale, t, tp } from "@util/translations.ts";
 import { formatNumber, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString } from "@util/misc.ts";
-import { error, getErrorDialog } from "@util/logging.ts";
+import { getErrorDialog, loggers } from "@util/logging.ts";
 import { getFeature, promptResetConfig } from "@/config.ts";
 import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "@/types.ts";
 import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
@@ -336,7 +336,7 @@ export const featInfo = {
     advanced: true,
     reloadRequired: false,
     adornments: [adornments.advanced],
-    change: (newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
+    change: (newVal) => newVal ? loggers.misc.error("Test error", new ExampleError("Example")) : void 0,
   },
   resetConfig: {
     type: "button",

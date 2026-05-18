@@ -1,8 +1,11 @@
-import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "@util/index.ts";
-import { BytmDialog } from "@comp/BytmDialog.ts";
+import { getResourceUrl } from "@util/misc.ts";
+import { initTranslations, setLocale, t, type TrLocale } from "@util/translations.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { loggers } from "@util/logging.ts";
 import { openCfgMenu } from "@menu/menu.ts";
-import { mode, scriptInfo } from "@/constants.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
 import { getFeature, getFeatures, setFeatures } from "@/config.ts";
+import { mode, scriptInfo } from "@/constants.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 
@@ -175,7 +178,7 @@ function retranslateWelcomeMenu() {
   for(const [selector, fn] of Object.entries(changes)) {
     const el = document.querySelector<HTMLElement>(selector);
     if(!el) {
-      warn(`Couldn't find element in welcome menu with selector '${selector}'`);
+      loggers.dialog.warn(`Couldn't find element in welcome menu with selector '${selector}'`);
       continue;
     }
 

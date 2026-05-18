@@ -5,7 +5,7 @@ import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPor
 import { enableDiscardBeforeUnload } from "@feat/behavior.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { getFeature } from "@/config.ts";
-import { error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { sendRequest } from "@util/xhr.ts";
 import { getLocale, type TrLocale } from "@util/translations.ts";
 import { emitBroadcast } from "@util/broadcast.ts";
@@ -52,7 +52,7 @@ export function getSessionId(): string | null {
     return sesId;
   }
   catch(err) {
-    warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+    loggers.misc.warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
     return null;
   }
 }
@@ -157,7 +157,7 @@ export async function getBestThumbnailUrl(videoID: string) {
         response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
       }
       catch(err) {
-        error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
+        loggers.misc.error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
         void err;
       }
       if(response && response.status < 300 && response.status >= 200)
@@ -192,7 +192,7 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
       parsed = JSON.parse(await decompress(val, compressionFormat, "string"));
     }
     catch(err) {
-      error("Couldn't decompress and parse data.", err);
+      loggers.misc.error("Couldn't decompress and parse data.", err);
       return null;
     }
   }
@@ -272,7 +272,7 @@ export async function getReloadTabData(sessionId?: string | null, deleteAfterRea
     return sesEntry;
   }
   catch(err) {
-    error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
+    loggers.misc.error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
     return null;
   }
 }
@@ -315,14 +315,14 @@ export async function reloadTab() {
     win.location.reload();
   }
   catch(err) {
-    error("Couldn't save video time and volume before reloading tab:", err);
+    loggers.misc.error("Couldn't save video time and volume before reloading tab:", err);
     win.location.reload();
   }
 }
 
 /** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
 export async function reloadAllTabs(reloadSelf = true, toTxIDs?: string[]) {
-  info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
+  loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
 
   emitBroadcast({
     type: "reloadTabs",
@@ -354,7 +354,7 @@ export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
         inline: "center",
       });
 
-      log("Scrolled to active song in queue:", activeItem);
+      loggers.misc.log("Scrolled to active song in queue:", activeItem);
     }
   });
 }
@@ -469,7 +469,7 @@ export async function getResourceUrl(name: ResourceKey | "_") {
     }
   }
 
-  warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
+  loggers.misc.warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
   // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
   return await GM.getResourceUrl(name, false);
 }
@@ -563,7 +563,7 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
     return str;
   }
   catch(err) {
-    error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
+    loggers.misc.error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
     return null;
   }
 }
@@ -624,7 +624,7 @@ export async function parseMarkdown(mdString: string, sanitize = true) {
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
   const clRes = await fetchAdvanced(changelogUrl);
-  log("Fetched changelog:", clRes);
+  loggers.misc.log("Fetched changelog:", clRes);
   return await clRes.text();
 }
 
@@ -647,7 +647,7 @@ export async function getChangelogHtmlWithDetails() {
     return sanitizeHtml(changelogHtml);
   }
   catch(err) {
-    error("Couldn't fetch or parse changelog:", err);
+    loggers.misc.error("Couldn't fetch or parse changelog:", err);
     return `Error while preparing changelog: ${err}`;
   }
 }

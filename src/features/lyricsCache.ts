@@ -1,7 +1,7 @@
 import { clamp, DataStore } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compressionFormat } from "@/constants.ts";
-import { log } from "@util/index.ts";
+import { loggers } from "@util/index.ts";
 import { emitInterface } from "@/interface.ts";
 import { getFeature } from "@/config.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
@@ -41,7 +41,7 @@ export const lyricsCacheStore = new DataStore({
 
 export async function initLyricsCache() {
   const data = await lyricsCacheStore.loadData();
-  log(`Initialized lyrics cache (${data.cache.length} entries)`);
+  loggers.lyrics.log(`Initialized lyrics cache (${data.cache.length} entries)`);
   emitInterface("bytm:lyricsCacheReady");
   return data;
 }
@@ -130,7 +130,7 @@ export async function addLyricsCacheEntryBest(artist: string, song: string, path
   // always keep the cache <= max size
   cache.splice(getFeature("lyricsCacheMaxSize"));
 
-  log("Added lyrics cache entry for best result:", entry);
+  loggers.lyrics.log("Added lyrics cache entry for best result:", entry);
 
   emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
   return lyricsCacheStore.setData({ cache });
@@ -170,7 +170,7 @@ export async function addLyricsCacheEntryPenalized(artist: string, song: string,
   // always keep the cache <= max size
   cache.splice(getFeature("lyricsCacheMaxSize"));
 
-  log(`Added penalized cache entry (with a penalty fraction of ${penaltyFr}):\n`, entry);
+  loggers.lyrics.log(`Added penalized cache entry (with a penalty fraction of ${penaltyFr}):\n`, entry);
 
   emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
   return lyricsCacheStore.setData({ cache });

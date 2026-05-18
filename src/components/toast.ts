@@ -1,5 +1,7 @@
 import { clamp, pauseFor } from "@sv443-network/coreutils";
-import { info, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { setInnerHtml } from "@util/dom.ts";
 import { getFeature } from "@/config.ts";
 import type { ResourceKey } from "@/types.ts";
 import "@comp/toast.css";
@@ -79,7 +81,7 @@ export async function showIconToast({
   if(typeof duration !== "number" || isNaN(duration))
     duration = getFeature("toastDuration") * 1000;
   if(duration <= 0)
-    return info("Toast duration is <= 0, so it won't be shown");
+    return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
 
   if(showingToast)
     return void toastQueue.push(() => showIconToast({ duration, position, iconPos, ...rest }));
@@ -170,7 +172,7 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
   } = props;
 
   if(durationMs <= 0)
-    return info("Toast duration is <= 0, so it won't be shown");
+    return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
 
   if(showingToast)
     return void toastQueue.push(() => showToast(props));

@@ -6,7 +6,7 @@ import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { initTime } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";
 import { getSerializerStoresFull } from "@/serializers.ts";
-import { error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { getDomain, getSessionId, reloadTab } from "@util/misc.ts";
 import type { Domain } from "@/types.ts";
 
@@ -117,7 +117,7 @@ export function initBroadcast() {
           newData = JSON.parse(newData);
       }
       catch(e) {
-        warn("Failed to parse broadcast packet as object:", newData, e);
+        loggers.broadcast.warn("Failed to parse broadcast packet as object:", newData, e);
       }
 
       if(isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null)
@@ -125,7 +125,7 @@ export function initBroadcast() {
     });
   }
   else
-    error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
+    loggers.broadcast.error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
 
   // broadcast DataStore data update packets:
   getSerializerStoresFull().forEach(store => {
@@ -137,14 +137,14 @@ export function initBroadcast() {
         },
       });
 
-      getFeature("logEvents") && log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
+      getFeature("logEvents") && loggers.broadcast.log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
     }, 100));
   });
 
   // receive and handle broadcast packets:
   siteEvents.on("broadcast", handleBroadcastPacket);
 
-  info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
+  loggers.broadcast.info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
 }
 
 
@@ -172,10 +172,10 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
       if(data.id === configStore.id)
         emitSiteEvent("configChanged", configStore.getData());
 
-      getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
+      getFeature("logEvents") && loggers.broadcast.log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
     }
     catch(err) {
-      log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
+      loggers.broadcast.log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
     }
     break;
   }
@@ -194,7 +194,7 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
         initTime,
       },
     }, [from]);
-    getFeature("logEvents") && log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
+    getFeature("logEvents") && loggers.broadcast.log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
     break;
   }
 }
@@ -252,11 +252,11 @@ function isValidTransitBroadcastPacket(obj: any): obj is BroadcastTransitPacket 
 /** Gets called when a broadcast packet is received to validate and relay it via {@linkcode siteEvents} */
 function relayBroadcastPacket(packet: object) {
   if(!isValidTransitBroadcastPacket(packet))
-    return warn("Received invalid broadcast packet, ignoring:", packet);
+    return loggers.broadcast.warn("Received invalid broadcast packet, ignoring:", packet);
 
   // if packet was already processed, ignore it
   if(receivedNonces.has(packet.nonce))
-    return warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
+    return loggers.broadcast.warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
 
   // remove oldest entry to prevent any potential memory leaks
   if(receivedNonces.size >= 10) {
@@ -271,7 +271,7 @@ function relayBroadcastPacket(packet: object) {
     return;
 
   if(getFeature("logEvents"))
-    log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
+    loggers.broadcast.log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
 
   const packetClean = pureObj(packet); // remove prototype chain
 

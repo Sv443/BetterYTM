@@ -1,7 +1,9 @@
 import { compare } from "compare-versions";
 import { scriptInfo } from "@/constants.ts";
 import { getFeature } from "@/config.ts";
-import { error, info, sendRequest, t } from "@util/index.ts";
+import { sendRequest } from "@util/xhr.ts";
+import { t } from "@util/translations.ts";
+import { loggers } from "@util/logging.ts";
 import { getVersionNotifDialog } from "@dialog/versionNotif.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { LogLevel } from "@/types.ts";
@@ -12,7 +14,7 @@ const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 export async function initVersionCheck() {
   try {
     if(getFeature("versionCheck") === false)
-      return info("Version check is disabled");
+      return loggers.misc.info("Version check is disabled");
 
     const lastCheck = await GM.getValue("bytm-version-check", 0);
     if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
@@ -21,7 +23,7 @@ export async function initVersionCheck() {
     await doVersionCheck(false);
   }
   catch(err) {
-    error("Version check failed:", err);
+    loggers.misc.error("Version check failed:", err);
   }
 }
 
@@ -45,7 +47,7 @@ export async function doVersionCheck(notifyNoNewVerFound = false) {
   if(!latestTag)
     return await noNewVerFound();
 
-  info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
+  loggers.misc.info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
 
   if(compare(scriptInfo.version, latestTag, "<")) {
     const dialog = await getVersionNotifDialog({ latestTag });

@@ -3,7 +3,7 @@ import { GMStorageEngine } from "@sv443-network/userutils";
 import { compareVersions } from "compare-versions";
 import { repo, scriptInfo } from "@/constants.ts";
 import { setInnerHtml } from "@util/dom.ts";
-import { info, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { getDomain, getterifyObj, resourceAsString } from "@util/misc.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
@@ -92,17 +92,17 @@ export async function getStaticData(): Promise<StaticData> {
     if(res.ok) {
       const data = await res.json();
       if(isStaticData(data)) {
-        info("Successfully fetched remote static data:", data);
+        loggers.data.info("Successfully fetched remote static data:", data);
         return staticData = data;
       }
       else
-        warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
+        loggers.data.warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
     }
     return staticData = defaultStaticData as StaticData;
   }
   catch(e) {
-    warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
-    info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
+    loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
+    loggers.data.info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
     return staticData = defaultStaticData as StaticData;
   }
 }
@@ -239,7 +239,7 @@ export function createAlertDialog(alert: GlobalAlert) {
         if(titleCloseBtn)
           titleCloseBtn.click();
         else
-          warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+          loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
       });
     
       footer.appendChild(closeBtn);

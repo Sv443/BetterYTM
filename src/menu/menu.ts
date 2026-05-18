@@ -5,7 +5,7 @@ import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, rep
 import { featInfo, groupedCategories, resolveAdornments } from "@feat/index.ts";
 import { copyToClipboard, setInnerHtml } from "@util/dom.ts";
 import { onInteraction } from "@util/input.ts";
-import { error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "@util/misc.ts";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "@util/translations.ts";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
@@ -254,7 +254,7 @@ export async function mountCfgMenu() {
             return;
 
           const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
-          log("Trying to import configuration:", parsed);
+          loggers.configMenu.log("Trying to import configuration:", parsed);
 
           if(!parsed || typeof parsed !== "object")
             return await showPrompt({ type: "alert", message: t("import_error.invalid") });
@@ -278,7 +278,7 @@ export async function mountCfgMenu() {
                   curFmtVer = ver;
                 }
                 catch(err) {
-                  error(`Error while running migration function for format version ${fmtVer}:`, err);
+                  loggers.configMenu.error(`Error while running migration function for format version ${fmtVer}:`, err);
                 }
               }
             }
@@ -291,7 +291,7 @@ export async function mountCfgMenu() {
           await setFeatures({ ...getFeatures(), ...parsed.data });
 
           if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
-            log("Reloading tab after importing configuration");
+            loggers.configMenu.log("Reloading tab after importing configuration");
             return reloadTab();
           }
 
@@ -299,7 +299,7 @@ export async function mountCfgMenu() {
           emitSiteEvent("rebuildCfgMenu", parsed.data);
         }
         catch(err) {
-          warn("Couldn't import configuration:", err);
+          loggers.configMenu.warn("Couldn't import configuration:", err);
           await showPrompt({ type: "alert", message: t("import_error.invalid") });
         }
       },
@@ -400,7 +400,7 @@ export async function mountCfgMenu() {
         return headerElem;
       }
       catch(err) {
-        error(`Error while creating sidenav header for category '${headerId}':`, err);
+        loggers.configMenu.error(`Error while creating sidenav header for category '${headerId}':`, err);
       }
     };
 
@@ -491,7 +491,7 @@ export async function mountCfgMenu() {
 
       try {
         const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
-        info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
+        loggers.configMenu.info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
 
         const featConf = structuredClone(getFeatures()) as FeatureConfig;
 
@@ -560,7 +560,7 @@ export async function mountCfgMenu() {
             },
           })) {
             closeCfgMenu();
-            log("Reloading tab after changing language");
+            loggers.configMenu.log("Reloading tab after changing language");
             await reloadTab();
           }
         }
@@ -568,7 +568,7 @@ export async function mountCfgMenu() {
           setLocale(featConf.locale);
       }
       catch(err) {
-        error("Error while reacting to config change:", err);
+        loggers.configMenu.error("Error while reacting to config change:", err);
       }
       finally {
         // @ts-expect-error
@@ -699,7 +699,7 @@ export async function mountCfgMenu() {
           }
 
           if(!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
-            error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
+            loggers.configMenu.error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
             continue;
           }
 
@@ -744,7 +744,7 @@ export async function mountCfgMenu() {
               });
             }
             else {
-              error(`Couldn't create help button SVG element for feature '${featKey}'`);
+              loggers.configMenu.error(`Couldn't create help button SVG element for feature '${featKey}'`);
             }
           }
 
@@ -1154,7 +1154,7 @@ export async function mountCfgMenu() {
         if(ftInfo.type === "slider")
           labelElem.textContent = `${fmtVal(Number(value), ftKey as FeatureKey)}${unitTxt}`;
       }
-      info("Rebuilt config menu");
+      loggers.configMenu.info("Rebuilt config menu");
     });
 
     //#region scroll indicator
@@ -1255,7 +1255,7 @@ export async function mountCfgMenu() {
 
           const svgContent = await resourceAsString(resourceKey);
           if(!svgContent) {
-            error(`Couldn't create mode display element for mode '${id}' because the resource '${resourceKey}' couldn't be loaded.`);
+            loggers.configMenu.error(`Couldn't create mode display element for mode '${id}' because the resource '${resourceKey}' couldn't be loaded.`);
             continue;
           }
           setInnerHtml(modeDisplayWrapperEl, svgContent);
@@ -1288,7 +1288,7 @@ export async function mountCfgMenu() {
 
     (document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
 
-    window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250));
+    window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250), { passive: true });
 
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
@@ -1297,7 +1297,7 @@ export async function mountCfgMenu() {
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
 
-    log(`Mounted config menu element in ${Date.now() - startTs}ms`);
+    loggers.configMenu.log(`Mounted config menu element in ${Date.now() - startTs}ms`);
 
     isCfgMenuMounting = false;
     isCfgMenuDoneMounting = true;
@@ -1329,7 +1329,7 @@ export async function mountCfgMenu() {
     siteEvents.once("recreateCfgMenu", async () => {
       const bgElem = document.querySelector("#bytm-cfg-menu-bg");
       if(!bgElem) {
-        error("Couldn't remount config menu because the background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+        loggers.configMenu.error("Couldn't remount config menu because the background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
         return;
       }
 
@@ -1358,7 +1358,7 @@ export async function mountCfgMenu() {
     });
   }
   catch(err) {
-    error("Error while creating and mounting config menu:", err);
+    loggers.configMenu.error("Error while creating and mounting config menu:", err);
     closeCfgMenu();
   }
 }
@@ -1392,7 +1392,7 @@ export async function openCfgMenu() {
     emitInterface("bytm:dialogOpened:cfg-menu" as "bytm:dialogOpened:id", undefined as unknown as BytmDialog);
 
     if(!menuBg) {
-      warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+      loggers.configMenu.warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
       closeCfgMenu();
       return;
     }
@@ -1409,7 +1409,7 @@ export async function openCfgMenu() {
     }
   }
   catch(err) {
-    error("Error while opening config menu:", err);
+    loggers.configMenu.error("Error while opening config menu:", err);
   }
 }
 
@@ -1441,7 +1441,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", undefined as unknown as BytmDialog);
 
   if(!menuBg)
-    return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+    return loggers.configMenu.warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
 
   menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
 

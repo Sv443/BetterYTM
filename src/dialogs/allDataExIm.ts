@@ -1,7 +1,10 @@
 import { consumeStringGen, type SerializedDataStore } from "@sv443-network/coreutils";
-import { copyToClipboard, downloadFile, error, onInteraction, t } from "@util/index.ts";
-import { ExImDialog, type ExImDialogOpts } from "@comp/ExImDialog.ts";
+import { copyToClipboard, downloadFile } from "@util/dom.ts";
+import { t } from "@util/translations.ts";
+import { loggers } from "@util/logging.ts";
+import { onInteraction } from "@util/input.ts";
 import { getSerializerStoresIds, getDSSerializer } from "@/serializers.ts";
+import { ExImDialog, type ExImDialogOpts } from "@comp/ExImDialog.ts";
 import { showToast } from "@comp/toast.ts";
 import { createLongBtn } from "@comp/longButton.ts";
 import packageJson from "@root/package.json" with { type: "json" };
@@ -46,7 +49,7 @@ async function onImport(data: string) {
     showToast(t("import_success"));
   }
   catch(err) {
-    error(err);
+    loggers.dialog.error(err);
     showToast(t("import_error"));
   }
 }

@@ -1,7 +1,11 @@
 import { clamp, debounce, type Stringifiable } from "@sv443-network/coreutils";
 import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
 import { getFeature } from "@/config.ts";
-import { addStyleFromResource, error, getDomain, getReloadTabData, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "@util/index.ts";
+import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from "@util/dom.ts";
+import { t } from "@util/translations.ts";
+import { waitVideoElementReady } from "@util/dom.ts";
+import { loggers } from "@util/logging.ts";
+import { getDomain, getReloadTabData, resourceAsString } from "@util/misc.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { featInfo } from "@feat/index.ts";
 import { addSelectorListener } from "@/observers.ts";
@@ -90,7 +94,7 @@ export async function initVolumeFeatures() {
     });
   };
 
-  window.addEventListener("resize", debounce(onResize, Math.floor(1000 / 6)));
+  window.addEventListener("resize", debounce(onResize, Math.floor(1000 / 6)), { passive: true });
   waitVideoElementReady().then(onResize);
   onResize();
 }
@@ -176,7 +180,7 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
 
       const delta = Number((e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>)?.detail ?? 1);
       if(isNaN(delta))
-        return warn("Invalid scroll delta:", delta);
+        return loggers.volume.warn("Invalid scroll delta:", delta);
 
       const volumeDir = -Math.sign(delta);
       const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
@@ -341,7 +345,7 @@ function setVolSliderSize() {
   const size = getFeature("volumeSliderSize");
 
   if(typeof size !== "number" || isNaN(Number(size)))
-    return error("Invalid volume slider size:", size);
+    return loggers.volume.error("Invalid volume slider size:", size);
 
   setGlobalCssVar("vol-slider-size", `${size}px`);
   addStyleFromResource("css-vol_slider_size");
@@ -355,7 +359,7 @@ async function sharedVolumeChanged(vol: number) {
     await GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
   }
   catch(err) {
-    error("Couldn't save shared volume level due to an error:", err);
+    loggers.volume.error("Couldn't save shared volume level due to an error:", err);
   }
 }
 
@@ -381,7 +385,7 @@ async function checkSharedVolume() {
     setTimeout(checkSharedVolume, 333);
   }
   catch(err) {
-    error("Couldn't check for shared volume level due to an error:", err);
+    loggers.volume.error("Couldn't check for shared volume level due to an error:", err);
   }
 }
 
@@ -409,7 +413,7 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
   if(getFeature("volumeSharedBetweenTabs")) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
     if(getFeature("volumeSharedBetweenTabs"))
-      GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
+      GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => loggers.volume.error("Couldn't save shared volume level due to an error:", err));
   }
   sliderElem.value = String(initialVol);
   vidElem.volume = initialVol / 100;
@@ -417,5 +421,5 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
 
   const nonLinVol = getFeature("volumeSliderExponential") !== "linear";
 
-  log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
+  loggers.volume.log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
 }

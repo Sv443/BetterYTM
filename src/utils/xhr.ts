@@ -1,7 +1,7 @@
 import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/coreutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "@/types.ts";
 import { getResourceUrl, getterifyObj } from "@util/misc.ts";
-import { error, info, log } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
 
 //#region misc
@@ -38,13 +38,13 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
 export function sendRequest<T = any>(details: Prettify<Omit<Tampermonkey.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<Tampermonkey.Response<T>> {
   return new Promise<Tampermonkey.Response<T>>((resolve, reject) => {
     const success = (val: Tampermonkey.Response<T>) => {
-      getFeature("logHttp") && log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
+      getFeature("logHttp") && loggers.xhr.log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
       resolve(val);
     };
 
     const failure = (err?: any) => {
       const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
-      getFeature("logHttp") && error(errStr, err);
+      getFeature("logHttp") && loggers.xhr.error(errStr, err);
       reject(new Error(errStr, { cause: err }));
     };
 
@@ -68,7 +68,7 @@ export async function fetchCss(key: StyleResourceKey) {
     return css ?? undefined;
   }
   catch(err) {
-    error("Couldn't fetch CSS due to an error:", err);
+    loggers.xhr.error("Couldn't fetch CSS due to an error:", err);
     return undefined;
   }
 }
@@ -89,7 +89,7 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
     if(voteCache.has(videoID)) {
       const cached = voteCache.get(videoID)!;
       if(Date.now() - cached.timestamp < voteCacheTTL) {
-        info(`Returning cached video votes for video ID '${videoID}':`, cached);
+        loggers.xhr.info(`Returning cached video votes for video ID '${videoID}':`, cached);
         return cached;
       }
       else
@@ -104,7 +104,7 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
     ) as RYDVotesObj;
 
     if(!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
-      error("Couldn't parse video votes due to an error:", votesRaw);
+      loggers.xhr.error("Couldn't parse video votes due to an error:", votesRaw);
       return undefined;
     }
 
@@ -117,12 +117,12 @@ export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | 
     };
     voteCache.set(votesObj.id, votesObj);
 
-    info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
+    loggers.xhr.info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
 
     return votesObj;
   }
   catch(err) {
-    error("Couldn't fetch video votes due to an error:", err);
+    loggers.xhr.error("Couldn't fetch video votes due to an error:", err);
     return undefined;
   }
 }
@@ -142,7 +142,7 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
       term: `${artist} ${album}`,
     });
 
-    log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
+    loggers.xhr.log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
 
     const req = await sendRequest({
       method: "GET",
@@ -151,7 +151,7 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
     const json = JSON.parse(req.response) as ITunesAPIResponse;
 
     if(!("resultCount" in json) || !("results" in json)) {
-      error("Couldn't parse iTunes album info due to an error:", json);
+      loggers.xhr.error("Couldn't parse iTunes album info due to an error:", json);
       return [];
     }
     if(json.resultCount === 0)
@@ -176,7 +176,7 @@ export async function fetchITunesAlbumInfo(artist: string, album: string): Promi
     return filteredResults;
   }
   catch(err) {
-    error("Couldn't fetch iTunes album info due to an error:", err);
+    loggers.xhr.error("Couldn't fetch iTunes album info due to an error:", err);
     return [];
   }
 }

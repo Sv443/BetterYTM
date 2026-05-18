@@ -1,5 +1,7 @@
 import { clamp, valsWithin } from "@sv443-network/coreutils";
-import { info, log, warn, getDomain, getVideoElement, waitVideoElementReady, getVideoTime } from "@util/index.ts";
+import { getDomain } from "@util/misc.ts";
+import { getVideoElement, waitVideoElementReady, getVideoTime } from "@util/dom.ts";
+import { loggers } from "@util/logging.ts";
 import { featInfo } from "@feat/index.ts";
 import { getFeature } from "@/config.ts";
 import { addSelectorListener } from "@/observers.ts";
@@ -70,7 +72,7 @@ export async function initArrowKeySkip() {
 
     // discard the event when a (text) input is currently active, like when editing a playlist or writing a comment
     if(isIgnoredInputElement() && !allowedClasses.some((cls) => document.activeElement?.classList.contains(cls)))
-      return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
+      return loggers.input.info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
 
     evt.preventDefault();
     evt.stopImmediatePropagation();
@@ -79,7 +81,7 @@ export async function initArrowKeySkip() {
     if(evt.code === "ArrowLeft")
       skipBy *= -1;
 
-    log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
+    loggers.input.log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
 
     const vidElem = getVideoElement();
 
@@ -87,7 +89,7 @@ export async function initArrowKeySkip() {
       vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
   });
 
-  log("Added arrow key press listener");
+  loggers.input.log("Added arrow key press listener");
 }
 
 function handleVolumeKeyPress(evt: KeyboardEvent) {
@@ -95,10 +97,10 @@ function handleVolumeKeyPress(evt: KeyboardEvent) {
   evt.stopImmediatePropagation();
 
   if(!getVideoElement())
-    return warn("Couldn't find video element, so the keypress is ignored");
+    return loggers.input.warn("Couldn't find video element, so the keypress is ignored");
 
   if(!sliderEl)
-    return warn("Couldn't find volume slider element, so the keypress is ignored");
+    return loggers.input.warn("Couldn't find volume slider element, so the keypress is ignored");
 
   const step = Number(sliderEl.step);
   const newVol = clamp(
@@ -113,7 +115,7 @@ function handleVolumeKeyPress(evt: KeyboardEvent) {
     sliderEl.value = String(newVol);
     sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
 
-    log(`Captured key '${evt.code}' - changed volume to ${newVol}%`);
+    loggers.input.log(`Captured key '${evt.code}' - changed volume to ${newVol}%`);
   }
 }
 
@@ -127,7 +129,7 @@ export async function initFrameSkip() {
 
     const vid = getVideoElement();
     if(!vid || vid.readyState === 0)
-      return warn("Could not find video element or it hasn't loaded yet, so the keypress is ignored");
+      return loggers.input.warn("Could not find video element or it hasn't loaded yet, so the keypress is ignored");
 
     if(!getFeature("frameSkipWhilePlaying") && (vid.playbackRate === 0 || !vid.paused))
       return;
@@ -138,10 +140,10 @@ export async function initFrameSkip() {
     const newTime = vid.currentTime + getFeature("frameSkipAmount") * (evt.code === "Comma" ? -1 : 1);
     vid.currentTime = clamp(newTime, 0, vid.duration);
 
-    log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);
+    loggers.input.log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1000 % 1000)}ms)`);
   });
 
-  log("Added frame skip key press listener");
+  loggers.input.log("Added frame skip key press listener");
 }
 
 //#region num keys skip
@@ -192,12 +194,12 @@ export async function initNumKeysSkip() {
       return; // no need to override default behavior if not for the double-press guard
 
     if(!vidElem || vidElem.readyState === 0)
-      return warn("Could not find video element, so the keypress is ignored");
+      return loggers.input.warn("Could not find video element, so the keypress is ignored");
 
     if(!isNaN(newVidTime)) {
-      log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
+      loggers.input.log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
       vidElem.currentTime = newVidTime;
     }
   }, { capture: true });
-  log("Added number key press listener");
+  loggers.input.log("Added number key press listener");
 }

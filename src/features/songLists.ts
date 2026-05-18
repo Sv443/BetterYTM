@@ -1,6 +1,10 @@
 import { autoPlural, pauseFor } from "@sv443-network/coreutils";
 import { preloadImages } from "@sv443-network/userutils";
-import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "@util/index.ts";
+import { addStyleFromResource, clearInner, setInnerHtml, transplantElement } from "@util/dom.ts";
+import { getResourceUrl, openInTab, resourceAsString } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { onInteraction } from "@util/input.ts";
+import { t } from "@util/translations.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/interface.ts";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "@feat/lyrics.ts";
@@ -57,7 +61,7 @@ export async function initQueueButtons() {
 
     const parent = document.querySelector<HTMLElement>(parentSelector);
     if(!parent)
-      return warn("Couldn't find current queue parent element to add queue buttons to");
+      return loggers.layout.warn("Couldn't find current queue parent element to add queue buttons to");
 
     const queueItems = parent.querySelectorAll<HTMLElement>("ytmusic-player-queue-item");
 
@@ -69,7 +73,7 @@ export async function initQueueButtons() {
       }
     }
     if(amt > 0)
-      log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
+      loggers.layout.log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
   };
 
   // current queue
@@ -80,7 +84,7 @@ export async function initQueueButtons() {
   const queueItems = document.querySelectorAll<HTMLElement>("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
   if(queueItems.length > 0) {
     queueItems.forEach(itm => addQueueButtons(itm, undefined, "currentQueue"));
-    log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
+    loggers.layout.log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
   }
 
   /** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
@@ -99,7 +103,7 @@ export async function initQueueButtons() {
     });
 
     addedBtnsCount > 0 &&
-      log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
+      loggers.layout.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
   };
 
   const doSongListsChecks = (songLists: NodeListOf<HTMLElement>) => {
@@ -199,7 +203,7 @@ async function addQueueButtons(
       if(listType === "currentQueue") {
         const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
         if(!songInfo)
-          return error("Couldn't find song info element in queue item", queueItem);
+          return loggers.layout.error("Couldn't find song info element in queue item", queueItem);
 
         const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
         song = songEl?.textContent;
@@ -224,7 +228,7 @@ async function addQueueButtons(
         }
       }
       else
-        return error("Invalid list type:", listType);
+        return loggers.layout.error("Invalid list type:", listType);
 
       // hate doing it like this but there's nothing else in the DOM indicating what format the title is in
       if(song && isVideo && song.includes("-")) {
@@ -233,7 +237,7 @@ async function addQueueButtons(
       }
 
       if(!song || !artist)
-        return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
+        return loggers.layout.error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
 
       let lyricsUrl: string | undefined;
 
@@ -354,7 +358,7 @@ async function addQueueButtons(
           dotsBtnElem.click();
         }
         else {
-          info("Couldn't find three dots button in queue item, trying to open the context menu manually");
+          loggers.layout.info("Couldn't find three dots button in queue item, trying to open the context menu manually");
           queueItem.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: false }));
         }
 
@@ -388,7 +392,7 @@ async function addQueueButtons(
         }
 
         if(!removeFromQueueBtn) {
-          error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
+          loggers.layout.error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
           dotsBtnElem?.click();
           delImgElem.src = await getResourceUrl("icon-error");
           if(deleteBtnElem)
@@ -396,7 +400,7 @@ async function addQueueButtons(
         }
       }
       catch(err) {
-        error("Couldn't remove song from queue due to error:", err);
+        loggers.layout.error("Couldn't remove song from queue due to error:", err);
       }
       finally {
         queuePopupCont?.removeAttribute("data-bytm-hidden");
@@ -435,7 +439,7 @@ export async function addTrackNumbers() {
         promises.push(addStyleFromResource("css-track_numbers_current_queue"));
     }
     catch(err) {
-      error("Couldn't add track numbers style:", err);
+      loggers.layout.error("Couldn't add track numbers style:", err);
     }
 
     await Promise.allSettled(promises);

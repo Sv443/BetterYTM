@@ -1,6 +1,7 @@
 import { clamp, getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import { emitInterface } from "@/interface.ts";
-import { error, getDomain } from "@util/index.ts";
+import { getDomain } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
 import type { Domain, FeatureConfig } from "@/types.ts";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
@@ -82,8 +83,16 @@ export function addSelectorListener<
     globservers[observerName].addListener(selector, options);
   }
   catch(err) {
-    error(`Couldn't add listener to globserver '${observerName}':`, err);
+    loggers.selectorObserver.error(`Couldn't add listener to globserver '${observerName}':`, err);
   }
+}
+
+/** Returns a proxy function that enables and bootstraps the SelectorObserver instance. */
+function getEnableFn(observer: SelectorObserver): () => void {
+  return () => {
+    observer.enable();
+    loggers.selectorObserver.log("Enabled observer for base element:", observer.baseElement);
+  };
 }
 
 //#region init
@@ -97,6 +106,9 @@ export function initObservers(cfg: FeatureConfig) {
     defaultDebounce: cfg.defaultObserverDebounce,
     defaultDebounceType: "immediate",
   } satisfies Required<Pick<SelectorObserverOptions, "disableOnNoListeners" | "enableOnAddListener" | "defaultDebounce" | "defaultDebounceType">>;
+
+  for(const observer of Object.values(globservers))
+    observer.on("enabled", () => loggers.selectorObserver.info("Observer enabled for base element", observer.baseElement));
 
   try {
     //#region # both sites
@@ -139,7 +151,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(browseResponseSelector, {
-        listener: () => globservers.browseResponse.enable(),
+        listener: getEnableFn(globservers.browseResponse),
       });
 
       //#region searchPage
@@ -152,7 +164,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(searchPageSelector, {
-        listener: () => globservers.searchPage.enable(),
+        listener: getEnableFn(globservers.searchPage),
       });
 
       //#region navBar
@@ -165,7 +177,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(navBarSelector, {
-        listener: () => globservers.navBar.enable(),
+        listener: getEnableFn(globservers.navBar),
       });
 
       //#region mainPanel
@@ -178,7 +190,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(mainPanelSelector, {
-        listener: () => globservers.mainPanel.enable(),
+        listener: getEnableFn(globservers.mainPanel),
       });
 
       //#region sideBar
@@ -193,7 +205,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(sidebarSelector, {
-        listener: () => globservers.sideBar.enable(),
+        listener: getEnableFn(globservers.sideBar),
       });
 
       //#region sidePanel
@@ -206,7 +218,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(sidePanelSelector, {
-        listener: () => globservers.sidePanel.enable(),
+        listener: getEnableFn(globservers.sidePanel),
       });
 
       //#region playerBar
@@ -234,7 +246,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.playerBar.addListener(playerBarInfoSelector, {
-        listener: () => globservers.playerBarInfo.enable(),
+        listener: getEnableFn(globservers.playerBarInfo),
       });
 
       //#region playerBarMiddleButtons
@@ -247,7 +259,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
-        listener: () => globservers.playerBarMiddleButtons.enable(),
+        listener: getEnableFn(globservers.playerBarMiddleButtons),
       });
 
       //#region playerBarRightControls
@@ -260,7 +272,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.playerBar.addListener(playerBarRightControls, {
-        listener: () => globservers.playerBarRightControls.enable(),
+        listener: getEnableFn(globservers.playerBarRightControls),
       });
 
       //#region popupContainer
@@ -273,7 +285,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(popupContainerSelector, {
-        listener: () => globservers.popupContainer.enable(),
+        listener: getEnableFn(globservers.popupContainer),
       });
 
       break;
@@ -291,7 +303,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(ytGuideSelector, {
-        listener: () => globservers.ytGuide.enable(),
+        listener: getEnableFn(globservers.ytGuide),
       });
 
       //#region ytdBrowse
@@ -304,7 +316,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(ytdBrowseSelector, {
-        listener: () => globservers.ytdBrowse.enable(),
+        listener: getEnableFn(globservers.ytdBrowse),
       });
 
       //#region ytAppHeader
@@ -318,7 +330,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
-        listener: () => globservers.ytAppHeader.enable(),
+        listener: getEnableFn(globservers.ytAppHeader),
       });
 
       //#region ytWatchFlexy
@@ -331,7 +343,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(ytWatchFlexySelector, {
-        listener: () => globservers.ytWatchFlexy.enable(),
+        listener: getEnableFn(globservers.ytWatchFlexy),
       });
 
       //#region ytWatchMetadata
@@ -344,7 +356,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, {
-        listener: () => globservers.ytWatchMetadata.enable(),
+        listener: getEnableFn(globservers.ytWatchMetadata),
       });
 
       //#region ytMasthead
@@ -357,7 +369,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(mastheadSelector, {
-        listener: () => globservers.ytMasthead.enable(),
+        listener: getEnableFn(globservers.ytMasthead),
       });
     }
     }
@@ -371,6 +383,6 @@ export function initObservers(cfg: FeatureConfig) {
     getUnsafeWindow().BYTM.globservers = globservers;
   }
   catch(err) {
-    error("Failed to initialize observers:", err);
+    loggers.selectorObserver.error("Failed to initialize observers:", err);
   }
 }

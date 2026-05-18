@@ -6,7 +6,7 @@ import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
 import { getCurrentChannelId, getDomain, isValidChannelId, resourceAsString, sanitizeChannelId } from "@util/misc.ts";
 import { addStyleFromResource, clearNode, getCurrentMediaType, getLikeDislikeBtns, setInnerHtml } from "@util/dom.ts";
-import { error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
 import { getAutoLikeDialog } from "@dialog/autoLike.ts";
 import { showIconToast } from "@comp/toast.ts";
@@ -74,12 +74,12 @@ export async function initAutoLike() {
             return;
 
           if(artistEls.length === 0 || channelIds.length === 0)
-            return error("Couldn't auto-like because the artist element couldn't be found");
+            return loggers.autoLike.error("Couldn't auto-like because the artist element couldn't be found");
 
           const { likeBtn, likeState } = getLikeDislikeBtns();
 
           if(!likeBtn)
-            return error("Couldn't auto-like because the like button couldn't be found");
+            return loggers.autoLike.error("Couldn't auto-like because the like button couldn't be found");
 
           if(!likeState || likeState === "INDIFFERENT") {
             likeBtn.click();
@@ -89,12 +89,12 @@ export async function initAutoLike() {
               subtitle: t("auto_like_click_to_configure"),
               icon: "icon-auto_like",
               onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-            }).catch(e => error("Error while showing auto-like toast:", e));
+            }).catch(e => loggers.autoLike.error("Error while showing auto-like toast:", e));
 
-            info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
+            loggers.autoLike.info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
           }
           else
-            info("Skipping auto-like, because the like state is currently set to", likeState);
+            loggers.autoLike.info("Skipping auto-like, because the like state is currently set to", likeState);
         };
         timeout = setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs);
         siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs));
@@ -111,7 +111,7 @@ export async function initAutoLike() {
         }, 250);
 
         const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
-        log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+        loggers.autoLike.log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
 
         const buttonsCont = headerCont.querySelector<HTMLElement>(".buttons");
         if(buttonsCont) {
@@ -133,7 +133,7 @@ export async function initAutoLike() {
         if(getFeature("autoLikeChannelToggleBtn") && location.pathname.match(/\/channel\/.+/)) {
           const chanId = getCurrentChannelId();
           if(!chanId)
-            return error("Couldn't extract channel ID from URL");
+            return loggers.autoLike.error("Couldn't extract channel ID from URL");
 
           document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 
@@ -177,8 +177,8 @@ export async function initAutoLike() {
                       subtitle: t("auto_like_click_to_configure"),
                       icon: "icon-auto_like",
                       onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-                    }).catch(e => error("Error while showing auto-like toast:", e));
-                    log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
+                    }).catch(e => loggers.autoLike.error("Error while showing auto-like toast:", e));
+                    loggers.autoLike.log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
                   }
                 }
               });
@@ -193,7 +193,7 @@ export async function initAutoLike() {
         if(location.pathname.match(/(\/?@|\/?channel\/)\S+/)) {
           const chanId = getCurrentChannelId();
           if(!chanId)
-            return error("Couldn't extract channel ID from URL");
+            return loggers.autoLike.error("Couldn't extract channel ID from URL");
 
           document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 
@@ -208,7 +208,7 @@ export async function initAutoLike() {
             }, 350);
 
             const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string, h1 > .yt-core-attributed-string")?.textContent ?? null;
-            log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
+            loggers.autoLike.log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
 
             const buttonsCont = headerCont.querySelector<HTMLElement>("#inner-header-container #buttons, yt-flexible-actions-view-model");
             if(buttonsCont) {
@@ -233,10 +233,10 @@ export async function initAutoLike() {
       tryAddBtnYT();
     }
 
-    log("Initialized auto-like channels feature");
+    loggers.autoLike.log("Initialized auto-like channels feature");
   }
   catch(err) {
-    error("Error while auto-liking channel:", err);
+    loggers.autoLike.error("Error while auto-liking channel:", err);
   }
 }
 
@@ -246,12 +246,12 @@ export async function initAutoLike() {
 async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null, extraClasses?: string[]) {
   const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
 
-  log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
+  loggers.autoLike.log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
 
   siteEvents.on("autoLikeChannelsUpdated", async () => {
     const buttonEl = document.querySelector<HTMLElement>(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
     if(!buttonEl)
-      return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
+      return loggers.autoLike.warn("Couldn't find auto-like toggle button for channel ID:", channelId);
 
     const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
 
@@ -307,11 +307,11 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
           subtitle: t("auto_like_click_to_configure"),
           icon: `icon-auto_like${isToggled ? "_enabled" : ""}`,
           onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
-        }).catch(e => error("Error while showing auto-like toast:", e));
-        log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${isToggled ? "enabled" : "disabled"}`);
+        }).catch(e => loggers.autoLike.error("Error while showing auto-like toast:", e));
+        loggers.autoLike.log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${isToggled ? "enabled" : "disabled"}`);
       }
       catch(err) {
-        error("Error while toggling auto-like channel:", err);
+        loggers.autoLike.error("Error while toggling auto-like channel:", err);
       }
     }
   });

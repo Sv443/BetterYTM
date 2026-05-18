@@ -2,12 +2,12 @@ import { DataStore, autoPlural, debounce, fetchAdvanced } from "@sv443-network/c
 import { addParent, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "@/config.ts";
 import { forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { addSelectorListener } from "@/observers.ts";
+import { addSelectorListener, globservers } from "@/observers.ts";
 import { featInfo } from "@feat/index.ts";
 import { sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
 import { formatNumber, getBestThumbnailUrl, getDomain, getResourceUrl, getWatchId, openInTab, overflowVal, resourceAsString, scrollToCurrentSongInQueue } from "@util/misc.ts";
 import { addStyleFromResource, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "@util/dom.ts";
-import { error, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { t, tp } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "@util/xhr.ts";
@@ -53,7 +53,7 @@ export async function addWatermark() {
     addSelectorListener("navBar", "ytmusic-logo a", {
       listener(logoElem) {
         logoElem.appendChild(watermarkEl);
-        log("Added watermark element");
+        loggers.layout.log("Added watermark element");
       },
     });
   })();
@@ -76,13 +76,13 @@ export function improveLogo() {
           setInnerHtml(logoElem, svg);
           logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
 
-          log("Swapped logo to inline SVG");
+          loggers.layout.log("Swapped logo to inline SVG");
           resolve();
         },
       });
     }
     catch(err) {
-      error("Couldn't improve logo due to an error:", err);
+      loggers.layout.error("Couldn't improve logo due to an error:", err);
     }
   });
 }
@@ -161,7 +161,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 
   container.appendChild(cfgOptElem);
 
-  log("Added BYTM-Configuration button to menu popover");
+  loggers.layout.log("Added BYTM-Configuration button to menu popover");
 }
 
 /** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
@@ -195,7 +195,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
   if(firstChild)
     container.insertBefore(cfgOptWrapperElem, firstChild);
   else
-    return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
+    return loggers.layout.error("Couldn't add config menu option to YT titlebar - couldn't find container element");
 }
 
 //#region anchor improvements
@@ -206,7 +206,7 @@ export async function addAnchorImprovements() {
     await addStyleFromResource("css-anchor_improvements");
   }
   catch(err) {
-    error("Couldn't add anchor improvements CSS due to an error:", err);
+    loggers.layout.error("Couldn't add anchor improvements CSS due to an error:", err);
   }
 
   //#region carousel shelves
@@ -272,7 +272,7 @@ export async function addAnchorImprovements() {
     });
   }
   catch(err) {
-    error("Couldn't improve carousel shelf anchors due to an error:", err);
+    loggers.layout.error("Couldn't improve carousel shelf anchors due to an error:", err);
   }
 
   //#region sidebar
@@ -287,7 +287,7 @@ export async function addAnchorImprovements() {
     addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
       listener: (sidebarCont) => {
         const itemsAmt = addSidebarAnchors(sidebarCont);
-        log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
+        loggers.layout.log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
       },
     });
 
@@ -299,7 +299,7 @@ export async function addAnchorImprovements() {
           if(navBar.hasAttribute("guide-collapsed") && !navBar.classList.contains("bytm-mini-sidebar-anchors-added")) {
             miniSidebarCont = document.querySelector<HTMLElement>("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
             if(!miniSidebarCont)
-              return error("Couldn't find mini sidebar element while adding anchors");
+              return loggers.layout.error("Couldn't find mini sidebar element while adding anchors");
             improveMiniSidebarAnchors();
           }
         }, 50));
@@ -307,7 +307,7 @@ export async function addAnchorImprovements() {
         const improveMiniSidebarAnchors = () => {
           const itemsAmt = addSidebarAnchors(miniSidebarCont!);
           navBar.classList.add("bytm-mini-sidebar-anchors-added");
-          log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+          loggers.layout.log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
           mut.disconnect();
         };
         if(miniSidebarCont)
@@ -320,7 +320,7 @@ export async function addAnchorImprovements() {
     });
   }
   catch(err) {
-    error("Couldn't add anchors to sidebar items due to an error:", err);
+    loggers.layout.error("Couldn't add anchors to sidebar items due to an error:", err);
   }
 
   //#region current song list
@@ -336,7 +336,7 @@ export async function addAnchorImprovements() {
               return;
 
             const itemsAmt = improveSongListClickArea(items);
-            itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural("item", itemsAmt)}`);
+            itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural("item", itemsAmt)}`);
           });
         },
       });
@@ -352,7 +352,7 @@ export async function addAnchorImprovements() {
           return;
 
         const itemsAmt = improveSongListClickArea(items);
-        itemsAmt > 0 && log(`Improved clickable area of ${itemsAmt} song list ${autoPlural("item", itemsAmt)}`);
+        itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} song list ${autoPlural("item", itemsAmt)}`);
       });
     };
 
@@ -385,7 +385,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
     });
   }
   catch(err) {
-    error("Couldn't add anchors to song list items due to an error:", err);
+    loggers.layout.error("Couldn't add anchors to song list items due to an error:", err);
   }
 }
 
@@ -477,10 +477,10 @@ export async function initRemShareTrackParam() {
       url.searchParams.delete("is");
       inputElem.value = String(url);
 
-      log(`Removed tracking parameter from share link: ${url}`);
+      loggers.layout.log(`Removed tracking parameter from share link: ${url}`);
     }
     catch(err) {
-      warn("Couldn't remove tracking parameter from share link due to error:", err);
+      loggers.layout.warn("Couldn't remove tracking parameter from share link due to error:", err);
     }
   };
 
@@ -513,7 +513,7 @@ export async function initRemShareTrackParam() {
 /** Applies global CSS to fix various spacings */
 export async function fixSpacing() {
   if(!await addStyleFromResource("css-fix_spacing"))
-    error("Couldn't fix spacing");
+    loggers.layout.error("Couldn't fix spacing");
 }
 
 //#region ab.queue btns
@@ -523,7 +523,7 @@ export async function initAboveQueueBtns() {
     const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
 
     if(!await addStyleFromResource("css-above_queue_btns"))
-      error("Couldn't add CSS for above queue buttons");
+      loggers.layout.error("Couldn't add CSS for above queue buttons");
     else if(getFeature("aboveQueueBtnsSticky"))
       addStyleFromResource("css-above_queue_btns_sticky");
 
@@ -550,7 +550,7 @@ export async function initAboveQueueBtns() {
             }
           }
           catch(err) {
-            error("Couldn't clear queue due to an error:", err);
+            loggers.layout.error("Couldn't clear queue due to an error:", err);
           }
         },
       },
@@ -569,7 +569,7 @@ export async function initAboveQueueBtns() {
 
           const headerEl = rightBtnsEl.closest<HTMLElement>("ytmusic-queue-header-renderer");
           if(!headerEl)
-            return error("Couldn't find queue header element while adding above queue buttons");
+            return loggers.layout.error("Couldn't find queue header element while adding above queue buttons");
 
           siteEvents.on("fullscreenToggled", (isFullscreen) => {
             headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
@@ -596,7 +596,7 @@ export async function initAboveQueueBtns() {
           rightBtnsEl.insertAdjacentElement("beforebegin", wrapperElem);
         }
         catch(err) {
-          error("Couldn't add above queue buttons due to an error:", err);
+          loggers.layout.error("Couldn't add above queue buttons due to an error:", err);
         }
       },
     });
@@ -638,7 +638,7 @@ async function deleteExpiredAlbumArtCacheEntries() {
   const cacheData = await artCacheStore.loadData();
   const expiredEntries = cacheData.entries.filter((e) => Date.now() - e.created > ttl);
   if(expiredEntries.length > 0) {
-    log(`Deleting ${expiredEntries.length} expired album art cache entries`);
+    loggers.layout.log(`Deleting ${expiredEntries.length} expired album art cache entries`);
     artCacheStore.setData({
       entries: cacheData.entries.filter((en) => !expiredEntries.some((ex) => ex.videoId === en.videoId)),
     });
@@ -667,7 +667,7 @@ export async function initThumbnailOverlay() {
     const playerEl = document.querySelector<HTMLElement>(playerSelector);
 
     if(!playerEl)
-      return error("Couldn't find video player element while adding thumbnail overlay");
+      return loggers.layout.error("Couldn't find video player element while adding thumbnail overlay");
 
     /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
     const updateOverlayVisibility = async (isManual = false) => {
@@ -777,7 +777,7 @@ export async function initThumbnailOverlay() {
             thumbImgBgElem.dataset.mediaType = getCurrentMediaType();
           }
 
-          log("Applied thumbnail URL to overlay:", thumbUrl);
+          loggers.layout.log("Applied thumbnail URL to overlay:", thumbUrl);
         };
 
         let bestNativeThumbUrl: string | undefined;
@@ -835,19 +835,19 @@ export async function initThumbnailOverlay() {
               ?? await getBestThumbnailUrl(videoID);
 
             if(thumbUrl) {
-              log(`Successfully resolved artwork${albumName
+              loggers.layout.log(`Successfully resolved artwork${albumName
                 ? ` for '${primaryArtist} - ${albumName}'`
                 : ". Couldn't find album name, defaulting to best available YT thumbnail"
               }: ${thumbUrl}`);
               setThumbOverlayUrl(bestNativeThumbUrl ?? thumbUrl, thumbUrl);
             }
             else
-              warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
+              loggers.layout.warn(`Couldn't get thumbnail URL for album '${primaryArtist} - ${albumName}' or video with ID '${videoID}'`);
           },
         });
       }
       catch(err) {
-        error("Couldn't apply thumbnail URL to overlay due to an error:", err);
+        loggers.layout.error("Couldn't apply thumbnail URL to overlay due to an error:", err);
       }
     };
 
@@ -940,10 +940,10 @@ export async function initThumbnailOverlay() {
           });
         }
 
-        log("Added thumbnail overlay");
+        loggers.layout.log("Added thumbnail overlay");
       }
       catch(err) {
-        error("Couldn't create thumbnail overlay elements due to an error:", err);
+        loggers.layout.error("Couldn't create thumbnail overlay elements due to an error:", err);
       }
     };
 
@@ -975,7 +975,7 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
     const cacheEntry = (await artCacheStore.loadData()).entries.find((e) => e.videoId === videoId);
 
     if(cacheEntry) {
-      log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
+      loggers.layout.log(`Found cached album artwork for video ID ${videoId}:`, cacheEntry);
       return {
         artworkUrl60: cacheEntry.url.replace(/100x100/, "60x60") as ITunesAlbumObj["artworkUrl60"],
         artworkUrl100: cacheEntry.url.replace(/60x60/, "100x100") as ITunesAlbumObj["artworkUrl100"],
@@ -1019,13 +1019,13 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
         created: Date.now(),
       };
       entries.push(entry);
-      log(`Added album artwork template URL for '${artist} - ${albumRaw}' (or video with ID '${videoId}') to cache:`, match.artworkUrl100);
+      loggers.layout.log(`Added album artwork template URL for '${artist} - ${albumRaw}' (or video with ID '${videoId}') to cache:`, match.artworkUrl100);
       emitInterface("bytm:artworkCacheEntryAdded", { album: albumRaw, artist, entry });
       await artCacheStore.setData({ entries });
     }
   }
   else 
-    warn(`The iTunes API yielded no album info for '${artist} - ${albumRaw}', defaulting to regular YT thumbnail`);
+    loggers.layout.warn(`The iTunes API yielded no album info for '${artist} - ${albumRaw}', defaulting to regular YT thumbnail`);
 
   return match;
 }
@@ -1040,7 +1040,7 @@ export async function initHideCursorOnIdle() {
       const overlayElem = document.querySelector<HTMLElement>(overlaySelector);
 
       if(!overlayElem)
-        return warn("Couldn't find overlay element while initializing cursor hiding");
+        return loggers.layout.warn("Couldn't find overlay element while initializing cursor hiding");
 
       /** Last element the mouse was hovered over */
       let lastMouseoverElement: HTMLElement | null = null;
@@ -1161,7 +1161,7 @@ export async function initHideCursorOnIdle() {
         setTimeout(hide, 3000);
       }, { capture: true });
 
-      log("Initialized cursor hiding on idle");
+      loggers.layout.log("Initialized cursor hiding on idle");
     },
   });
 }
@@ -1171,9 +1171,9 @@ export async function initHideCursorOnIdle() {
 /** Prevents visual issues when using HDR */
 export async function fixHdrIssues() {
   if(!await addStyleFromResource("css-fix_hdr"))
-    error("Couldn't load stylesheet to fix HDR issues");
+    loggers.layout.error("Couldn't load stylesheet to fix HDR issues");
   else
-    log("Fixed HDR issues");
+    loggers.layout.log("Fixed HDR issues");
 }
 
 //#region show vote nums
@@ -1191,7 +1191,7 @@ export async function initShowVotes() {
 
         const voteObj = await fetchVideoVotes(videoID);
         if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
-          return error("Couldn't fetch votes from the Return YouTube Dislike API");
+          return loggers.layout.error("Couldn't fetch votes from the Return YouTube Dislike API");
 
         if(getFeature("showVotes")) {
           addVoteNumbers(voteCont, voteObj);
@@ -1201,14 +1201,14 @@ export async function initShowVotes() {
             const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
 
             if(!labelLikes || !labelDislikes)
-              return error("Couldn't find vote label elements while updating like and dislike counts");
+              return loggers.layout.error("Couldn't find vote label elements while updating like and dislike counts");
 
             if(labelLikes.dataset.watchId === videoID && labelDislikes.dataset.watchId === videoID)
-              return log("Vote labels already updated for this video");
+              return loggers.layout.log("Vote labels already updated for this video");
 
             const voteObj = await fetchVideoVotes(videoID);
             if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
-              return error("Couldn't fetch votes from the Return YouTube Dislike API");
+              return loggers.layout.error("Couldn't fetch votes from the Return YouTube Dislike API");
 
             const likesLabelText = tp("vote_label_likes", voteObj.likes, formatNumber(voteObj.likes, "long"));
             const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatNumber(voteObj.dislikes, "long"));
@@ -1228,7 +1228,7 @@ export async function initShowVotes() {
         }
       }
       catch(err) {
-        error("Couldn't initialize show votes feature due to an error:", err);
+        loggers.layout.error("Couldn't initialize show votes feature due to an error:", err);
       }
     }
   });
@@ -1239,7 +1239,7 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   const dislikeBtn = voteCont.querySelector<HTMLElement>("#button-shape-dislike");
 
   if(!likeBtn || !dislikeBtn)
-    return error("Couldn't find like or dislike button while adding vote numbers");
+    return loggers.layout.error("Couldn't find like or dislike button while adding vote numbers");
 
   // wrap buttons in a container
   const likeBtnCont = document.createElement("div");
@@ -1271,7 +1271,7 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     const voteObj = await fetchVideoVotes(getWatchId()!);
 
     if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
-      return error("Couldn't fetch votes from the Return YouTube Dislike API");
+      return loggers.layout.error("Couldn't fetch votes from the Return YouTube Dislike API");
 
     const likeLbl = voteCont.querySelector<HTMLElement>(".bytm-vote-label.likes");
     const dislikeLbl = voteCont.querySelector<HTMLElement>(".bytm-vote-label.dislikes");
@@ -1308,7 +1308,7 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   }
 
   addStyleFromResource("css-show_votes")
-    .catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
+    .catch((e) => loggers.layout.error("Couldn't add CSS for show votes feature due to an error:", e));
 
   const likeLblEl = createLabel(voteObj.likes, "likes");
   likeBtn.insertAdjacentElement("afterend", likeLblEl);
@@ -1318,7 +1318,7 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
 
   upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
 
-  log("Added vote number labels to like and dislike buttons");
+  loggers.layout.log("Added vote number labels to like and dislike buttons");
 
   forceEmitSiteEvent("voteLabelsAdded");
 }
@@ -1338,14 +1338,14 @@ function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, disl
 
 /** Swaps the like and dislike buttons on the watch page */
 export async function initSwapLikeDislikeBtns() {
-  const err = (err?: unknown) => error("Couldn't initialize \"swap like and dislike buttons\" feature due to an error" + err ? ":" : "", err);
+  const err = (err?: unknown) => loggers.layout.error("Couldn't initialize \"swap like and dislike buttons\" feature due to an error" + err ? ":" : "", err);
 
   try {
     if(!getFeature("swapLikeDislikeButtons"))
       return;
 
     if(await addStyleFromResource("css-swap_like_dislike_btns"))
-      log("Initialized \"swap like and dislike buttons\" feature");
+      loggers.layout.log("Initialized \"swap like and dislike buttons\" feature");
     else
       err();
   }
@@ -1358,10 +1358,26 @@ export async function initSwapLikeDislikeBtns() {
 
 /** Makes the watch page full size */
 export async function initWatchPageFullSize() {
-  if(!await addStyleFromResource("css-watch_page_full_size"))
-    error("Couldn't load stylesheet to make watch page full size");
-  else
-    log("Made watch page full size");
+  if(!await addStyleFromResource("css-watch_page_full_size")) {
+    loggers.layout.error("Couldn't load stylesheet to make watch page full size");
+    return;
+  }
+
+  globservers.mainPanel.once("enabled", () => {
+    const mainPanel = document.querySelector<HTMLElement>(globservers.mainPanel.baseElement as string);
+    loggers.layout.log("Initialized watch page full size", mainPanel);
+
+    if(mainPanel) {
+      window.addEventListener("resize", debounce(() => {
+        const headerHeight = document.querySelector<HTMLElement>("ytmusic-header-renderer")?.offsetHeight ?? 0;
+        mainPanel.style.maxHeight = `calc(100vh - ${headerHeight}px - 50px)`;
+        loggers.misc.dbg("Set main panel max height to", mainPanel.style.maxHeight);
+      }, 200), { passive: true });
+
+      // trigger initial resize to set the correct height
+      window.dispatchEvent(new Event("resize"));
+    }
+  });
 }
 
 //#region truncate player bar subtitles
@@ -1369,7 +1385,7 @@ export async function initWatchPageFullSize() {
 /** Truncates long subtitles in the player bar with an ellipsis */
 export async function initTruncatePlayerBarSubtitles() {
   if(!await addStyleFromResource("css-truncate_player_bar_subtitles"))
-    error("Couldn't load stylesheet to truncate player bar subtitles");
+    loggers.layout.error("Couldn't load stylesheet to truncate player bar subtitles");
   else
-    log("Truncated player bar subtitles");
+    loggers.layout.log("Truncated player bar subtitles");
 }

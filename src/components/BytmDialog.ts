@@ -1,7 +1,8 @@
 import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "@util/index.ts";
+import { clearInner, getDomain, getResourceUrl, onInteraction } from "@util/index.ts";
+import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
 import { emitInterface } from "@/interface.ts";
 import "@comp/BytmDialog.css";
@@ -127,7 +128,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
         document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
     }
     catch(e) {
-      return error("Failed to render dialog content:", e);
+      return loggers.dialog.error("Failed to render dialog content:", e);
     }
 
     this.attachListeners(bgElem);
@@ -202,7 +203,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
-      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+      return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
 
     dialogBg.style.visibility = "visible";
     dialogBg.style.display = "block";
@@ -231,7 +232,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
-      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+      return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
 
     dialogBg.style.visibility = "hidden";
     dialogBg.style.display = "none";

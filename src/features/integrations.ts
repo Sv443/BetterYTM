@@ -1,6 +1,6 @@
 import { getDomain } from "@util/misc.ts";
 import { addStyleFromResource } from "@util/dom.ts";
-import { error, info, log } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
 import "@feat/integrations.css";
 
@@ -16,7 +16,7 @@ export async function disableDarkReader() {
   metaElem.id = "bytm-disable-dark-reader";
   document.head.appendChild(metaElem);
 
-  info("Disabled Dark Reader");
+  loggers.integration.info("Disabled Dark Reader");
 }
 
 //#region SponsorBlock
@@ -27,7 +27,7 @@ export async function fixSponsorBlock() {
     return addStyleFromResource("css-fix_sponsorblock");
   }
   catch(err) {
-    error("Failed to fix SponsorBlock styling:", err);
+    loggers.integration.error("Failed to fix SponsorBlock styling:", err);
   }
 }
 
@@ -39,7 +39,7 @@ export async function fixPlayerPageTheming() {
     return addStyleFromResource("css-fix_playerpage_theming");
   }
   catch(err) {
-    error("Failed to fix BetterYTM player page theming:", err);
+    loggers.integration.error("Failed to fix BetterYTM player page theming:", err);
   }
 }
 
@@ -60,7 +60,7 @@ export async function fixThemeSong() {
     document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
   }
   catch(err) {
-    error("Failed to set ThemeSong integration color lightness:", err);
+    loggers.integration.error("Failed to set ThemeSong integration color lightness:", err);
   }
 }
 
@@ -70,7 +70,7 @@ export async function setThemeSongVisualizerOpacity() {
     "css-themesong_visualizer_opacity",
     (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2))
   ))
-    error("Couldn't add ThemeSong visualizer opacity style");
+    loggers.integration.error("Couldn't add ThemeSong visualizer opacity style");
   else
-    log("Set ThemeSong visualizer opacity to " + getFeature("themeSongVisualizerOpacity") + "%");
+    loggers.integration.log("Set ThemeSong visualizer opacity to " + getFeature("themeSongVisualizerOpacity") + "%");
 }
