@@ -1,3 +1,94 @@
+:root {
+  --bytm-toast-bg-color: #323232;
+  --bytm-toast-text-color: #fff;
+  --bytm-toast-offset-ver: 80px;
+  --bytm-toast-offset-hor: 25px;
+  --bytm-toast-transition-time: 0.5s;
+  --bytm-toast-transform-distance: 175px;
+}
+
+#bytm-toast {
+  position: fixed;
+  z-index: 1042069;
+  opacity: 0.000001;
+  pointer-events: none;
+  padding: 10px 16px;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  cursor: default;
+
+  background-color: var(--bytm-toast-bg-color);
+  color: var(--bytm-toast-text-color);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+
+  transition:
+    opacity var(--bytm-toast-transition-time) ease,
+    transform var(--bytm-toast-transition-time) ease;
+}
+
+#bytm-toast.clickable {
+  cursor: pointer;
+}
+
+#bytm-toast.visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+#bytm-toast.pos-tl {
+  top: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-tr {
+  top: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-br {
+  bottom: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.pos-bl {
+  bottom: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.visible.pos-tl,
+#bytm-toast.visible.pos-tr,
+#bytm-toast.visible.pos-br,
+#bytm-toast.visible.pos-bl {
+  transform: translate(0, 0);
+}
+
+.bytm-toast-flex-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-toast-icon.img,
+.bytm-toast-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-toast-icon path {
+  fill: var(--toast-icon-fill, #fff);
+}
+
+.bytm-toast-subtitle {
+  color: #ccc;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
 /* Applies to all BytmDialog instances */
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
@@ -701,6 +792,81 @@ hr {
   padding: 0px 8px;
 }
 
+#bytm-prompt-dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-prompt-dialog-header svg {
+  width: 24px;
+  height: 24px;
+}
+
+#bytm-prompt-dialog-upper-cont,
+#bytm-prompt-dialog-message {
+  font-size: 1.6rem;
+  white-space: pre-wrap;
+}
+
+.bytm-prompt-type-prompt #bytm-prompt-dialog-message {
+  margin-bottom: 15px;
+}
+
+#bytm-prompt-dialog-input {
+  font-size: 1.6rem;
+  width: 100%;
+}
+
+textarea#bytm-prompt-dialog-input {
+  resize: vertical;
+  min-height: 50px;
+  max-height: calc(max(200px, min(var(--bytm-dialog-height-max), 35vh) - 80px));
+}
+
+#bytm-prompt-dialog-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: end;
+}
+
+#bytm-prompt-dialog-buttons-cont {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+#bytm-prompt-dialog-buttons-cont button {
+  cursor: pointer;
+}
+
+.bytm-prompt-dialog-button {
+  padding: 2px 6px;
+  font-size: 1.45rem;
+}
+
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.bytm-hotkey-info[data-state="active"] {
+  display: none;
+}
+
 .bytm-toggle-wrapper {
   display: flex;
   align-items: center;
@@ -758,226 +924,6 @@ hr {
 .bytm-toggle-checkbox {
   position: absolute;
   visibility: hidden;
-}
-
-#bytm-prompt-dialog-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-prompt-dialog-header svg {
-  width: 24px;
-  height: 24px;
-}
-
-#bytm-prompt-dialog-upper-cont,
-#bytm-prompt-dialog-message {
-  font-size: 1.6rem;
-  white-space: pre-wrap;
-}
-
-.bytm-prompt-type-prompt #bytm-prompt-dialog-message {
-  margin-bottom: 15px;
-}
-
-#bytm-prompt-dialog-input {
-  font-size: 1.6rem;
-  width: 100%;
-}
-
-textarea#bytm-prompt-dialog-input {
-  resize: vertical;
-  min-height: 50px;
-  max-height: calc(max(200px, min(var(--bytm-dialog-height-max), 35vh) - 80px));
-}
-
-#bytm-prompt-dialog-button-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: end;
-}
-
-#bytm-prompt-dialog-buttons-cont {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-}
-
-#bytm-prompt-dialog-buttons-cont button {
-  cursor: pointer;
-}
-
-.bytm-prompt-dialog-button {
-  padding: 2px 6px;
-  font-size: 1.45rem;
-}
-
-/* #region volume slider */
-
-.bytm-vol-slider-cont {
-  position: relative;
-}
-
-.bytm-vol-slider-label {
-  --bytm-slider-label-bg-col: var(
-    --ytmusic-player-bar-background,
-    var(--bytm-themed-bg-col)
-  );
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 11px), -50%);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  background-color: var(--bytm-slider-label-bg-col);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-slider-label-bg-col) 20%
-  );
-  font-size: 1.45rem;
-  text-align: right;
-  padding: 15px;
-  padding-right: 5px;
-  opacity: 0.000001;
-  transition: opacity 0.2s ease;
-}
-
-.bytm-vol-slider-label.wide {
-  transform: translate(calc(-50% - 34px), -50%);
-}
-
-.bytm-vol-slider-label.has-icon {
-  transform: translate(calc(-50% - 25px), -50%);
-}
-
-.bytm-vol-slider-label.wide.has-icon {
-  transform: translate(calc(-50% - 34px - 25px), -50%);
-}
-
-.bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-.bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-.bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
-:root
-  body.bytm-dom-ytm
-  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
-  .bytm-vol-slider-label {
-  color: #fff;
-}
-
-.bytm-vol-slider-shared {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.bytm-vol-slider-shared svg {
-  width: 20px;
-  height: 20px;
-}
-
-:root {
-  --bytm-toast-bg-color: #323232;
-  --bytm-toast-text-color: #fff;
-  --bytm-toast-offset-ver: 80px;
-  --bytm-toast-offset-hor: 25px;
-  --bytm-toast-transition-time: 0.5s;
-  --bytm-toast-transform-distance: 175px;
-}
-
-#bytm-toast {
-  position: fixed;
-  z-index: 1042069;
-  opacity: 0.000001;
-  pointer-events: none;
-  padding: 10px 16px;
-  border-radius: 3px;
-  font-size: 1.5rem;
-  cursor: default;
-
-  background-color: var(--bytm-toast-bg-color);
-  color: var(--bytm-toast-text-color);
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
-
-  transition:
-    opacity var(--bytm-toast-transition-time) ease,
-    transform var(--bytm-toast-transition-time) ease;
-}
-
-#bytm-toast.clickable {
-  cursor: pointer;
-}
-
-#bytm-toast.visible {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-#bytm-toast.pos-tl {
-  top: var(--bytm-toast-offset-ver);
-  left: var(--bytm-toast-offset-hor);
-  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
-}
-
-#bytm-toast.pos-tr {
-  top: var(--bytm-toast-offset-ver);
-  right: var(--bytm-toast-offset-hor);
-  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
-}
-
-#bytm-toast.pos-br {
-  bottom: var(--bytm-toast-offset-ver);
-  right: var(--bytm-toast-offset-hor);
-  transform: translate(0, var(--bytm-toast-transform-distance));
-}
-
-#bytm-toast.pos-bl {
-  bottom: var(--bytm-toast-offset-ver);
-  left: var(--bytm-toast-offset-hor);
-  transform: translate(0, var(--bytm-toast-transform-distance));
-}
-
-#bytm-toast.visible.pos-tl,
-#bytm-toast.visible.pos-tr,
-#bytm-toast.visible.pos-br,
-#bytm-toast.visible.pos-bl {
-  transform: translate(0, 0);
-}
-
-.bytm-toast-flex-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-.bytm-toast-icon.img,
-.bytm-toast-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-toast-icon path {
-  fill: var(--toast-icon-fill, #fff);
-}
-
-.bytm-toast-subtitle {
-  color: #ccc;
-  font-size: 1.2rem;
-  font-weight: 400;
 }
 
 /* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
@@ -1065,6 +1011,81 @@ body .bytm-ripple.slowest {
 .bytm-exim-dialog-pane textarea {
   height: 120px;
   resize: none;
+}
+
+/* #region volume slider */
+
+.bytm-vol-slider-cont {
+  position: relative;
+}
+
+.bytm-vol-slider-label {
+  --bytm-slider-label-bg-col: var(
+    --ytmusic-player-bar-background,
+    var(--bytm-themed-bg-col)
+  );
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 11px), -50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  background-color: var(--bytm-slider-label-bg-col);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-slider-label-bg-col) 20%
+  );
+  font-size: 1.45rem;
+  text-align: right;
+  padding: 15px;
+  padding-right: 5px;
+  opacity: 0.000001;
+  transition: opacity 0.2s ease;
+}
+
+.bytm-vol-slider-label.wide {
+  transform: translate(calc(-50% - 34px), -50%);
+}
+
+.bytm-vol-slider-label.has-icon {
+  transform: translate(calc(-50% - 25px), -50%);
+}
+
+.bytm-vol-slider-label.wide.has-icon {
+  transform: translate(calc(-50% - 34px - 25px), -50%);
+}
+
+.bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+.bytm-vol-slider-label svg path {
+  fill: #909090;
+}
+
+.bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  .bytm-vol-slider-label {
+  color: #fff;
+}
+
+.bytm-vol-slider-shared {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bytm-vol-slider-shared svg {
+  width: 20px;
+  height: 20px;
 }
 
 .bytm-auto-like-channels-footer-wrapper {
@@ -1242,27 +1263,6 @@ body.bytm-dom-ytm
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
   .bytm-generic-long-btn-txt {
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
-}
-
-.bytm-hotkey-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
-}
-
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
-.bytm-hotkey-info[data-state="active"] {
-  display: none;
 }
 
 :root {
