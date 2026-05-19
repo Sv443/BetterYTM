@@ -68,10 +68,10 @@ export const serializeLogs = Logger.serializeLogs.bind(Logger);
 
 /** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
 export function setLogLevel(level: LogLevel) {
-  Logger.curLogLevel = level;
   setGlobalProp("logLevel", level);
   if(Logger.curLogLevel !== level)
     loggers.misc.log("Set the log level to", LogLevel[level]);
+  Logger.curLogLevel = level;
 }
 
 //#region legacy log functions

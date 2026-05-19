@@ -132,7 +132,7 @@ export class Logger {
   }
 
   /** Extracts the log level from the last item of spread args, splicing it out if found. Returns `LogLevel.Debug` if no explicit level is given. */
-  public static getLogLevel(args: unknown[]): number {
+  public static getLogLevel(args: unknown[]): LogLevel {
     const minLogLvl = 0, maxLogLvl = 1;
     const lastArg = args.at(-1);
     if(typeof lastArg === "number" && lastArg >= 0 && lastArg <= (Object.keys(LogLevel).length / 2) - 1)

@@ -3,8 +3,9 @@ import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import * as constants from "@/constants.ts";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable } from "@util/index.ts";
-import { loggers } from "@util/index.ts";
-import { addSelectorListener } from "@/observers.ts";
+import { loggers } from "@util/logging.ts";
+import { Logger } from "@util/Logger.ts";
+import { addSelectorListener, globservers } from "@/observers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
@@ -203,9 +204,10 @@ const globalFuncs: InterfaceFunctions = pureObj({
 });
 
 /** Initializes the BYTM interface */
-export function initInterface() {
+export function preInitInterface() {
   const props = {
     // constants
+    sessionId: getSessionId(),
     mode,
     branch,
     host,
@@ -221,7 +223,9 @@ export function initInterface() {
     ...globalFuncs,
 
     // classes
-    NanoEmitter,
+    NanoEmitter, // legacy (also available via CoreUtils and UserUtils now)
+    loggers,
+    Logger,
 
     // dialogs legacy (TODO: remove in v4)
     BytmDialog,
@@ -237,12 +241,10 @@ export function initInterface() {
     CoreUtils,
     UserUtils,
     compareVersions,
-  };
+  } satisfies Omit<BytmObject, "locale" | "logLevel">; // omit dynamic values set after initialization - see setGlobalProp() usages
 
   for(const [key, value] of Object.entries(props))
     setGlobalProp(key, value);
-
-  setGlobalProp("sessionId", getSessionId());
 
   loggers.plugin.log("Initialized BYTM interface");
 }
@@ -695,6 +697,7 @@ export function getInternals(token: string | undefined) {
 
   return {
     constants,
+    globservers,
     emitInterface,
     emitSiteEvent,
     siteEvents,

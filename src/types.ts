@@ -2,7 +2,7 @@ import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-ne
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener } from "@/observers.ts";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "@util/index.ts";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers } from "@util/index.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
@@ -19,6 +19,7 @@ import type { showIconToast, showToast } from "@comp/toast.ts";
 import resources from "@asset/resources.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import type { featInfo } from "@feat/index.ts";
+import type { Logger } from "@util/Logger.ts";
 
 void ["type imports only:", resources, locales];
 
@@ -263,6 +264,10 @@ export type BytmObject =
     // utility
     /** [NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#nanoemitter) class reference to create your own event emitters */
     NanoEmitter: typeof NanoEmitter;
+    /** Object of predefined Logger instances for different categories. In general, it's better to create your own Logger instances for your plugin or feature, but these can also be used when appropriate. */
+    loggers: typeof loggers;
+    /** The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system. */
+    Logger: typeof Logger;
 
     // dialogs legacy (TODO: remove in v4)
     /** @deprecated Please use the authenticated function `getBytmDialog()` instead. This property will be removed in BYTM v4.0.0 */
@@ -274,11 +279,11 @@ export type BytmObject =
 
     // dialogs
     /** Returns a reference to the {@linkcode BytmDialog} class, which can be used to create new dialogs */
-    getBytmDialog: () => typeof BytmDialog;
+    getBytmDialog: (token?: string) => typeof BytmDialog | undefined;
     /** Returns a reference to the {@linkcode ExImDialog} class, which can be used to create new export/import dialogs */
-    getExImDialog: () => typeof ExImDialog;
+    getExImDialog: (token?: string) => typeof ExImDialog | undefined;
     /** Returns a reference to the {@linkcode MarkdownDialog} class, which can be used to create new markdown rendering dialogs */
-    getMarkdownDialog: () => typeof MarkdownDialog;
+    getMarkdownDialog: (token?: string) => typeof MarkdownDialog | undefined;
   }
   // libraries
   & {

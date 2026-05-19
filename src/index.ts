@@ -8,7 +8,7 @@ import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initStaticData } from "@util/data.js";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
-import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "@/interface.ts";
+import { devPluginToken, emitInterface, preInitInterface, initPlugins, preInitPlugins } from "@/interface.ts";
 import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
 import { downloadData, getDSSerializer } from "@/serializers.ts";
 import { getWelcomeDialog } from "@dialog/welcome.ts";
@@ -152,7 +152,7 @@ function preInit() {
 
     initBroadcast();
 
-    initInterface();
+    preInitInterface();
     preInitPlugins();
 
     if(getDomain() === "ytm")
