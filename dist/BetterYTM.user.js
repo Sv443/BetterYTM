@@ -7,9 +7,11 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@76f3d65b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e0b7767b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
+// @match             https://m.youtube.com/*
+// @match             https://youtube-nocookie.com/*
 // @run-at            document-start
 // @description       Configurable layout and user experience improvements for YouTube Music™ and YouTube™
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
@@ -474,8 +476,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "76f3d65b",
-    buildTimestamp: "1779222148499",
+    buildNumber: "e0b7767b",
+    buildTimestamp: "1779223626798",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
