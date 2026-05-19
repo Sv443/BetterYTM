@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5866adb1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@76f3d65b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -474,8 +474,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "5866adb1",
-    buildTimestamp: "1779155949078",
+    buildNumber: "76f3d65b",
+    buildTimestamp: "1779222148499",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1228,34 +1228,7 @@ function onInteraction(elem, listener, listenerOptions) {
     };
     elem.addEventListener("click", proxListener, listenerOpts);
     elem.addEventListener("keydown", proxListener, listenerOpts);
-}/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
-
-
-function __classPrivateFieldGet(receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-}
-
-typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-    var e = new Error(message);
-    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};var _a, _Logger_pushLog, _Logger_serializeLogVal, _Logger_getLogLevel;
-/**
+}/**
  * Class used for all kinds of logging.
  * Each log has a category, severity, timestamp, and arguments, so that they can be filtered and displayed neatly.
  * All instances share a single static log store accessible via {@linkcode Logger.logs}.
@@ -1296,19 +1269,77 @@ class Logger {
         this.consPrefixDbg = `[${scriptInfo$1.name}/${category}/#DEBUG]`;
         this.onError = options?.onError ?? null;
     }
+    //#region static helpers
+    /** Pushes a new line to the shared {@linkcode Logger.logs} array. */
+    static pushLog(category, type, time, ...args) {
+        Logger.logs.push([category, type, time ?? Date.now(), ...args]);
+        Logger.logLines++;
+        if (Logger.logs.length > Logger.maxLogLines)
+            Logger.logs.shift();
+    }
+    /** Converts a value to a string for log serialization. */
+    static serializeLogVal(val, primaryScope = true) {
+        if (typeof val === "undefined")
+            return primaryScope ? "[undefined]" : "(undefined)";
+        if (val === null)
+            return primaryScope ? "[null]" : "(null)";
+        if (Array.isArray(val))
+            return `[Array (${val.length}) <${val.map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
+        if (val instanceof Element)
+            return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
+        if (typeof val === "function")
+            return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
+        if (val instanceof CoreUtils.DatedError)
+            return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
+        if (val instanceof Error)
+            return `[${val.name}: ${val.message}]`;
+        if (val instanceof Date)
+            return `[Date (@ ${val.toISOString()})]`;
+        if (val instanceof Response)
+            return `[Response (${val.status})]`;
+        if (val instanceof Map)
+            return `[Map (${val.size}) <${Array.from(val.entries()).map(([k, v]) => `${Logger.serializeLogVal(k, false)} => ${Logger.serializeLogVal(v, false)}`).join(", ")}>]`;
+        if (val instanceof Set)
+            return `[Set (${val.size}) <${Array.from(val.values()).map(v => Logger.serializeLogVal(v, false)).join(", ")}>]`;
+        if (val instanceof Blob)
+            return `[Blob (${val.type}, ${val.size} bytes)]`;
+        if (val instanceof File)
+            return `[File (${val.name}, ${val.type}, ${val.size} bytes)]`;
+        if (typeof val === "object") {
+            const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
+            try {
+                // objects that are impure or purified (no prototype chain) and can usually be serialized
+                if (val.constructor?.name === "Object" || val.constructor === undefined)
+                    return JSON.stringify(val);
+                return unknownObj;
+            }
+            catch {
+                return "toString" in val ? val.toString() : unknownObj;
+            }
+        }
+        return primaryScope ? `${val}` : `"${val}"`;
+    }
+    /** Extracts the log level from the last item of spread args, splicing it out if found. Returns `LogLevel.Debug` if no explicit level is given. */
+    static getLogLevel(args) {
+        const minLogLvl = 0, maxLogLvl = 1;
+        const lastArg = args.at(-1);
+        if (typeof lastArg === "number" && lastArg >= 0 && lastArg <= (Object.keys(LogLevel).length / 2) - 1)
+            return CoreUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+        return LogLevel.Debug;
+    }
     /** Returns a string representation of all logs, formatted for downloading as a file. */
     static serializeLogs() {
-        const longestLogType = Math.max(..._a.logs.map(([, type]) => type.length));
-        const hintLines = _a.logs.length >= _a.maxLogLines
-            ? `// Note: there were more than ${_a.maxLogLines} lines, so the ${_a.logLines} oldest lines were truncated.\n\n`
+        const longestLogType = Math.max(...Logger.logs.map(([, type]) => type.length));
+        const hintLines = Logger.logs.length >= Logger.maxLogLines
+            ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines} oldest lines were truncated.\n\n`
             : "";
-        return hintLines + _a.logs.reduce((acc, [category, type, time, ...args]) => {
+        return hintLines + Logger.logs.reduce((acc, [category, type, time, ...args]) => {
             if (args.length === 0)
                 return acc;
             const timestamp = new Date(time).toISOString();
             const typeTag = `[${type}]`.padEnd(longestLogType + 2, " ");
             try {
-                return `[${timestamp}] ${typeTag} [${category}] ${args.map(a => __classPrivateFieldGet(_a, _a, "m", _Logger_serializeLogVal).call(_a, a)).join(" ")}\n${acc}`;
+                return `[${timestamp}] ${typeTag} [${category}] ${args.map(a => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
             }
             catch {
                 return `[${timestamp}] ${typeTag} [${category}] ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
@@ -1321,8 +1352,8 @@ class Logger {
      * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
      */
     log(...args) {
-        __classPrivateFieldGet(_a, _a, "m", _Logger_pushLog).call(_a, this.category, "LOG", Date.now(), ...args);
-        if (_a.curLogLevel <= __classPrivateFieldGet(_a, _a, "m", _Logger_getLogLevel).call(_a, args))
+        Logger.pushLog(this.category, "LOG", Date.now(), ...args);
+        if (Logger.curLogLevel <= Logger.getLogLevel(args))
             console.log(this.consPrefix, ...args);
     }
     /**
@@ -1330,90 +1361,38 @@ class Logger {
      * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
      */
     info(...args) {
-        __classPrivateFieldGet(_a, _a, "m", _Logger_pushLog).call(_a, this.category, "INFO", Date.now(), ...args);
-        if (_a.curLogLevel <= __classPrivateFieldGet(_a, _a, "m", _Logger_getLogLevel).call(_a, args))
+        Logger.pushLog(this.category, "INFO", Date.now(), ...args);
+        if (Logger.curLogLevel <= Logger.getLogLevel(args))
             console.info(this.consPrefix, ...args);
     }
     /** Logs all passed values to the console as a warning, no matter the log level. */
     warn(...args) {
-        __classPrivateFieldGet(_a, _a, "m", _Logger_pushLog).call(_a, this.category, "WARN", Date.now(), ...args);
+        Logger.pushLog(this.category, "WARN", Date.now(), ...args);
         console.warn(this.consPrefix, ...args);
     }
     /** Logs all passed values to the console as an error, no matter the log level. */
     error(...args) {
-        __classPrivateFieldGet(_a, _a, "m", _Logger_pushLog).call(_a, this.category, "ERROR", Date.now(), ...args);
+        Logger.pushLog(this.category, "ERROR", Date.now(), ...args);
         console.error(this.consPrefix, ...args);
         try {
             this.onError?.(...args);
         }
         catch (e) {
-            __classPrivateFieldGet(_a, _a, "m", _Logger_pushLog).call(_a, this.category, "ERROR", Date.now(), "Error while showing error toast:", e);
+            Logger.pushLog(this.category, "ERROR", Date.now(), "Error while showing error toast:", e);
             console.error(this.consPrefix, "Error while showing error toast:", e);
         }
     }
     /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
     errorNoToast(...args) {
-        __classPrivateFieldGet(_a, _a, "m", _Logger_pushLog).call(_a, this.category, "ERROR", Date.now(), ...args);
+        Logger.pushLog(this.category, "ERROR", Date.now(), ...args);
         console.error(this.consPrefix, ...args);
     }
     /** Logs all passed values to the console with a debug-specific prefix. */
     dbg(...args) {
-        __classPrivateFieldGet(_a, _a, "m", _Logger_pushLog).call(_a, this.category, "DBG", Date.now(), ...args);
+        Logger.pushLog(this.category, "DBG", Date.now(), ...args);
         console.log(this.consPrefixDbg, ...args);
     }
 }
-_a = Logger, _Logger_pushLog = function _Logger_pushLog(category, type, time, ...args) {
-    _a.logs.push([category, type, time ?? Date.now(), ...args]);
-    _a.logLines++;
-    if (_a.logs.length > _a.maxLogLines)
-        _a.logs.shift();
-}, _Logger_serializeLogVal = function _Logger_serializeLogVal(val, primaryScope = true) {
-    if (typeof val === "undefined")
-        return primaryScope ? "[undefined]" : "(undefined)";
-    if (val === null)
-        return primaryScope ? "[null]" : "(null)";
-    if (Array.isArray(val))
-        return `[Array (${val.length}) <${val.map((v) => __classPrivateFieldGet(_a, _a, "m", _Logger_serializeLogVal).call(_a, v, false)).join(", ")}>]`;
-    if (val instanceof Element)
-        return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
-    if (typeof val === "function")
-        return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
-    if (val instanceof CoreUtils.DatedError)
-        return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
-    if (val instanceof Error)
-        return `[${val.name}: ${val.message}]`;
-    if (val instanceof Date)
-        return `[Date (@ ${val.toISOString()})]`;
-    if (val instanceof Response)
-        return `[Response (${val.status})]`;
-    if (val instanceof Map)
-        return `[Map (${val.size}) <${Array.from(val.entries()).map(([k, v]) => `${__classPrivateFieldGet(_a, _a, "m", _Logger_serializeLogVal).call(_a, k, false)} => ${__classPrivateFieldGet(_a, _a, "m", _Logger_serializeLogVal).call(_a, v, false)}`).join(", ")}>]`;
-    if (val instanceof Set)
-        return `[Set (${val.size}) <${Array.from(val.values()).map(v => __classPrivateFieldGet(_a, _a, "m", _Logger_serializeLogVal).call(_a, v, false)).join(", ")}>]`;
-    if (val instanceof Blob)
-        return `[Blob (${val.type}, ${val.size} bytes)]`;
-    if (val instanceof File)
-        return `[File (${val.name}, ${val.type}, ${val.size} bytes)]`;
-    if (typeof val === "object") {
-        const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
-        try {
-            // objects that are impure or purified (no prototype chain) and can usually be serialized
-            if (val.constructor?.name === "Object" || val.constructor === undefined)
-                return JSON.stringify(val);
-            return unknownObj;
-        }
-        catch {
-            return "toString" in val ? val.toString() : unknownObj;
-        }
-    }
-    return primaryScope ? `${val}` : `"${val}"`;
-}, _Logger_getLogLevel = function _Logger_getLogLevel(args) {
-    const minLogLvl = 0, maxLogLvl = 1;
-    const lastArg = args.at(-1);
-    if (typeof lastArg === "number" && lastArg >= 0 && lastArg <= (Object.keys(LogLevel).length / 2) - 1)
-        return CoreUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
-    return LogLevel.Debug;
-};
 /** Current log level applied across all Logger instances. */
 Object.defineProperty(Logger, "curLogLevel", {
     enumerable: true,
@@ -1662,7 +1641,6 @@ const loggerOpts = {
 /** Pre-instantiated Logger instances, one per category. */
 const loggers = {
     uncategorized: new Logger("Uncategorized", loggerOpts),
-    api: new Logger("API", loggerOpts),
     autoLike: new Logger("AutoLike", loggerOpts),
     behavior: new Logger("Behavior", loggerOpts),
     broadcast: new Logger("Broadcast", loggerOpts),
@@ -1690,10 +1668,10 @@ const loggers = {
 const serializeLogs = Logger.serializeLogs.bind(Logger);
 /** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
 function setLogLevel(level) {
-    Logger.curLogLevel = level;
     setGlobalProp("logLevel", level);
     if (Logger.curLogLevel !== level)
         loggers.misc.log("Set the log level to", LogLevel[level]);
+    Logger.curLogLevel = level;
 }
 /**
  * Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast.
@@ -2952,9 +2930,10 @@ const globalFuncs = pureObj({
     formatNumber,
 });
 /** Initializes the BYTM interface */
-function initInterface() {
+function preInitInterface() {
     const props = {
         // constants
+        sessionId: getSessionId(),
         mode,
         branch,
         host,
@@ -2967,7 +2946,9 @@ function initInterface() {
         // functions
         ...globalFuncs,
         // classes
-        NanoEmitter,
+        NanoEmitter, // legacy (also available via CoreUtils and UserUtils now)
+        loggers,
+        Logger,
         // dialogs legacy (TODO: remove in v4)
         BytmDialog,
         ExImDialog,
@@ -2980,10 +2961,9 @@ function initInterface() {
         CoreUtils: CoreUtils__namespace,
         UserUtils: UserUtils__namespace,
         compareVersions: compareVersions__namespace,
-    };
+    }; // omit dynamic values set after initialization - see setGlobalProp() usages
     for (const [key, value] of Object.entries(props))
         setGlobalProp(key, value);
-    setGlobalProp("sessionId", getSessionId());
     loggers.plugin.log("Initialized BYTM interface");
 }
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
@@ -3303,6 +3283,7 @@ function getInternals(token) {
         return undefined;
     return {
         constants,
+        globservers,
         emitInterface,
         emitSiteEvent,
         siteEvents,
@@ -11930,7 +11911,7 @@ function preInit() {
             return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
         setLogLevel(defaultLogLevel);
         initBroadcast();
-        initInterface();
+        preInitInterface();
         preInitPlugins();
         if (getDomain() === "ytm")
             initBeforeUnloadHook();
