@@ -39,7 +39,6 @@ const loggerOpts: LoggerOptions = {
 export const loggers = {
   uncategorized: new Logger("Uncategorized", loggerOpts),
 
-  api: new Logger("API", loggerOpts),
   autoLike: new Logger("AutoLike", loggerOpts),
   behavior: new Logger("Behavior", loggerOpts),
   broadcast: new Logger("Broadcast", loggerOpts),
