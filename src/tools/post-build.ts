@@ -228,6 +228,8 @@ async function getHeaders(buildNbr: string) {
 // @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
+// @match             https://m.youtube.com/*
+// @match             https://youtube-nocookie.com/*
 // @run-at            document-start`,
     localizedDescriptions,
     localizedAntifeatures,
