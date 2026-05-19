@@ -278,6 +278,8 @@ async function onDomLoad() {
   loggers.init.info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
 
   try {
+    await initVersionSessionCounter();
+
     //#region welcome dlg
 
     if(typeof await GM.getValue("bytm-installed") !== "string") {
@@ -292,8 +294,6 @@ async function onDomLoad() {
     // initialize data.json and check for active alerts
     const endStaticDataDur = measureInitDuration("initStaticData");
     initStaticData().then(() => endStaticDataDur());
-
-    await initVersionSessionCounter();
 
     if(domain === "ytm") {
       //#region (ytm) layout
