@@ -191,6 +191,12 @@ export type PerformanceReport = {
     domain: Domain;
     /** BYTM's version. */
     version: string;
+    /** BYTM's build number. */
+    buildNumber: typeof consts.buildNumber;
+    /** ISO timestamp of when BYTM was built. */
+    buildTime: string;
+    /** The mode BYTM was built in. Can be "development" or "production" */
+    mode: typeof consts.mode;
     /** The userscript manager extension's identifier (`GM.info.scriptHandler`). */
     scriptHandler: string;
     /** Version of the userscript manager extension (`GM.info.version`). */

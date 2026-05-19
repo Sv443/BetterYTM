@@ -2,7 +2,7 @@ import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr,
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
-import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
+import { assetSource, buildNumber, buildTimestamp, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
 import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
 import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
@@ -106,6 +106,9 @@ const initTimings: PerformanceReport = {
   ],
   meta: {
     version: scriptInfo.version,
+    buildNumber,
+    buildTime: new Date(buildTimestamp).toISOString(),
+    mode,
     domain: getDomain(),
     userAgent: navigator.userAgent,
     scriptHandler: GM.info?.scriptHandler ?? "unknown",
@@ -116,9 +119,9 @@ const initTimings: PerformanceReport = {
     injectInto: GM.info?.injectInto ?? undefined,
     isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? undefined,
   },
-  start: 0,
   durations: {} as PerformanceReport["durations"],
   featureDurations: {} as PerformanceReport["featureDurations"],
+  start: 0,
 };
 
 /**
