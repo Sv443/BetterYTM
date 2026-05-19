@@ -528,7 +528,6 @@ function resourceCacheGet(key: ResourceKey | "_") {
 async function resourceCacheSet(key: ResourceKey | "_", val: string) {
   const data = resourceCacheStore.getData();
   data.resources[key] = val;
-  data.created = Date.now();
   return await resourceCacheStore.setData(data);
 }
 
@@ -557,7 +556,7 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
 
     const str = await res.text();
 
-    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
+    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)) && !await resourceCacheHas(resourceKey))
       await resourceCacheSet(resourceKey, str);
 
     return str;

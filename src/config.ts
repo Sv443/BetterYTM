@@ -1,7 +1,7 @@
 import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { artCacheStore, enableDiscardBeforeUnload, featInfo } from "@feat/index.ts";
-import { reloadTab, t, warn, type TrLocale } from "@util/index.ts";
+import { reloadTab, t, type TrLocale } from "@util/index.ts";
 import { loggers } from "@util/logging.ts";
 import { emitSiteEvent } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
@@ -384,7 +384,7 @@ export async function initConfig() {
 
   loggers.data.log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
-    warn("  ⚠️ - Config data was initialized with default values");
+    loggers.data.warn("  ⚠️ - Config data was initialized with default values");
   else if(oldFmtVer !== configStore.formatVersion) {
     try {
       await configStore.setData(data = fixCfgKeys(data));

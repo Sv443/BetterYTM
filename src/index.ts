@@ -1,6 +1,6 @@
 import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn, type TrKey } from "@util/index.ts";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
 import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
@@ -474,14 +474,14 @@ async function onDomLoad() {
       registerDevCommands();
     }
     catch(e) {
-      warn("Couldn't register dev menu commands:", e);
+      loggers.init.warn("Couldn't register dev menu commands:", e);
     }
 
     try {
       runDevTreatments();
     }
     catch(e) {
-      warn("Couldn't run dev treatments:", e);
+      loggers.init.warn("Couldn't run dev treatments:", e);
     }
   }
   catch(err) {
