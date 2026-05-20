@@ -151,7 +151,8 @@ export class Logger {
       ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines} oldest lines were truncated.\n\n`
       : "";
 
-    return hintLines + Logger.logs.reduce((acc, [category, type, time, ...args]) => {
+    const logEntries = [...Logger.logs].reverse();
+    return hintLines + logEntries.reduce((acc, [category, type, time, ...args]) => {
       if(args.length === 0)
         return acc;
 
