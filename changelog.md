@@ -12,6 +12,8 @@
     - `loggers`: An object of predefined Logger instances of different categories.
     - `Logger`: The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system.
 - **Internal Changes:**
+  - Added `m.youtube.com` and `youtube-nocookie.com` to the list of supported domains.
+  - Improved compatibility with YT's and YTM's mobile layout for mobile browser users.
   - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
   - Refactored logging system to use new `Logger` class instances.
 
