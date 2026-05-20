@@ -129,6 +129,7 @@ This project is based on my extensive template for making a userscript with Type
 A big thank you to these people for their contributions to this project:
 - [indierodo](https://github.com/indierodo): Track numbers feature
 - [cryeprecision](https://github.com/cryeprecision): Exponential volume slider feature
+- [kcangny](https://github.com/kcangny): Turkish translations
 
 <br><br>
 
