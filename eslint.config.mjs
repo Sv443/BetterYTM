@@ -34,7 +34,9 @@ const config = [
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ["vite.config.ts"],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },

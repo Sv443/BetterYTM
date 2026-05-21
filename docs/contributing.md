@@ -149,7 +149,7 @@ To edit an existing translation, please follow these steps:
   Run once to install dependencies.
 - **`pnpm dev`**  
   This is the command you want to use to locally develop and test BetterYTM.  
-  It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager ([see the "extras" section](#extras)).  
+  It uses Vite's watch mode (`vite build --watch`) to incrementally rebuild on any file change and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager ([see the "extras" section](#extras)).  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
     
   This command uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript. Note that this also means the server needs to keep running for the userscript to work. If it's not running, you will run into weird errors because none of the necessary assets are able to be fetched.  
@@ -167,23 +167,26 @@ To edit an existing translation, please follow these steps:
   Builds the userscript for production for all hosts with their respective options already set.  
   Outputs the files using a suffix predefined in the `package.json` file.  
   Use this to build the userscript for distribution on all host/CDN platforms.
-- **`pnpm build <arguments>`**  
-  Builds the userscript with custom options  
-  Arguments:  
-  - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default).
-  - `--config-branch=<value>` - The branch to target when creating various GitHub CDN URLs, like when loading resources. Can be any branch name that exists on the `repo` defined in `src/constants.ts`, but should be `main` for production and `develop` for development (default). Cannot be a ref like a tag or SHA1 hash.
-  - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`. This affects mostly only cosmetic things, as well as the update URL in the userscript header, but for `greasyfork`, all comments are stripped out to fit in the 0.5 MB limit.
-  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`.
-  - `--config-suffix=<value>` - File name suffix to add just before the `.user.js` extension. Defaults to an empty string.
-  - `--config-gen-meta=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header, to massively reduce the amount of downloaded data for version checks by the userscript manager extension via `@updateURL`. Can be either `true` (default) or `false`.
-  - `--config-compat-mode=<value>` - Whether to build the script in strict compatibility mode, which ensures the final bundle is most compatible, sacrificing bundle size and potentially performance. Can be either `strict` or `loose` (default).
+- **`pnpm build-prod-base` / custom build with env vars**  
+  Builds the userscript with custom options by setting `BYTM_*` environment variables before the command.  
+  Variables:  
+  - `BYTM_MODE=<value>` - The mode to build in. Can be either `production` or `development` (default).
+  - `BYTM_BRANCH=<value>` - The branch to target when creating various GitHub CDN URLs, like when loading resources. Can be any branch name that exists on the `repo` defined in `src/constants.ts`, but should be `main` for production and `develop` for development (default). Cannot be a ref like a tag or SHA1 hash.
+  - `BYTM_HOST=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`. This affects mostly only cosmetic things, as well as the update URL in the userscript header, but for `greasyfork`, all comments are stripped out to fit in the 0.5 MB limit.
+  - `BYTM_ASSET_SOURCE=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`.
+  - `BYTM_SUFFIX=<value>` - File name suffix to add just before the `.user.js` extension. Defaults to an empty string.
+  - `BYTM_GEN_META=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header, to massively reduce the amount of downloaded data for version checks by the userscript manager extension via `@updateURL`. Can be either `true` (default) or `false`.
+  - `BYTM_COMPAT_MODE=<value>` - Whether to build the script in strict compatibility mode, which ensures the final bundle is most compatible, sacrificing bundle size and potentially performance. Can be either `strict` or `loose` (default).
     
+  Example (Linux/macOS): `BYTM_MODE=production BYTM_BRANCH=main vite build`  
+  Example (Windows): `cross-env BYTM_MODE=production BYTM_BRANCH=main vite build`  
+
   Shorthand commands:
   - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
-    Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=jsdelivr`
+    Sets `BYTM_MODE=production` and `BYTM_BRANCH=main` (assetSource defaults to `jsdelivr`)
   - `pnpm build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
-    Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=jsdelivr`
-  - `pnpm preview` - Same as `pnpm build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
+    Sets `BYTM_MODE=development` and `BYTM_BRANCH=develop`
+  - `pnpm preview` - Same as `pnpm build-prod-gh`, but with `BYTM_ASSET_SOURCE=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
 - **`pnpm lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
 - **`pnpm storybook`**  
@@ -268,10 +271,10 @@ If you need help with these, don't hesitate to reach out to me ([see my homepage
   2. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
   3. Add the asset to the [`assets/resources.json`](../assets/resources.json) file by following the format of the other entries.  
     If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.  
-    The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](./src/tools/post-build.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
+    The path string or all values in the object of each resource will be passed through the function `resolveResourceVal()` in [`src/tools/vite-plugin-bytm.ts`](./src/tools/vite-plugin-bytm.ts) to resolve placeholders like `$BRANCH`. View all replacements by looking up that function.
   4. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode and if the asset key matches the `externalAssetPattern` in the `assets/resources.json` file.
   5. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
-    This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
+    This needs to be done because the build plugin at `src/tools/vite-plugin-bytm.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
 - **Adding a new site event:**
   1. Add your event to the `SiteEventsMap` type in [`src/siteEvents.ts`](./src/siteEvents.ts)
   2. Dispatch the event inside `initSiteEvents` in [`src/siteEvents.ts`](./src/siteEvents.ts) or at another point where it is run *independent of the feature configuration* (the only exception being domain-specific events).  

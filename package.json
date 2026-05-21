@@ -46,18 +46,17 @@
     "url": "https://github.com/sponsors/Sv443"
   },
   "scripts": {
-    "dev": "concurrently \"nodemon --exec pnpm build-local-base --config-assetSource=local\" \"pnpm serve -S -L\"",
-    "dev-cdn": "concurrently \"nodemon --exec pnpm build-local-base\" \"pnpm serve\"",
-    "build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
+    "dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
+    "dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
+    "build-dev": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
     "build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
-    "build-prod-gh": "pnpm build-prod-base --config-host github",
-    "build-prod-gf": "pnpm build-prod-base --config-host greasyfork --config-suffix _gf",
-    "build-prod-oujs": "pnpm build-prod-base --config-host openuserjs --config-suffix _oujs",
-    "build-prod-compat": "pnpm build-prod-base --config-host github --config-compat-mode strict --config-suffix _compat",
-    "post-build": "node --no-warnings=ExperimentalWarning ./src/tools/post-build.ts",
-    "build-local-base": "pnpm build-dev --config-gen-meta=false",
-    "build-prod-base": "rollup -c --config-mode production --config-branch main",
-    "preview": "pnpm build-prod-gh --config-assetSource=local && pnpm serve -S -L -X=10",
+    "build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
+    "build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
+    "build-prod-oujs": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=openuserjs BYTM_SUFFIX=_oujs vite build",
+    "build-prod-compat": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
+    "build-local-base": "cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build",
+    "build-prod-base": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
+    "preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
     "serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
     "lint": "eslint . && tsc --noEmit",
     "tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
@@ -106,11 +105,6 @@
     "@chromatic-com/storybook": "5.0.1",
     "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "10.0.1",
-    "@rollup/plugin-alias": "6.0.0",
-    "@rollup/plugin-json": "6.1.0",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-terser": "1.0.0",
-    "@rollup/plugin-typescript": "12.3.0",
     "@storybook/addon-essentials": "8.6.14",
     "@storybook/addon-interactions": "8.6.14",
     "@storybook/addon-links": "10.2.19",
@@ -127,6 +121,7 @@
     "@typescript-eslint/utils": "8.57.0",
     "concurrently": "9.2.1",
     "cors": "2.8.6",
+    "cross-env": "7.0.3",
     "dotenv": "17.3.1",
     "eslint": "10.0.3",
     "eslint-plugin-storybook": "10.2.19",
@@ -135,40 +130,22 @@
     "kleur": "4.1.5",
     "knip": "5.86.0",
     "nanoevents": "9.1.0",
-    "nodemon": "3.1.14",
     "pnpm": "10.32.1",
-    "rollup": "4.59.0",
-    "rollup-plugin-execute": "1.1.1",
-    "rollup-plugin-import-css": "4.2.0",
     "storybook": "10.2.19",
     "storybook-dark-mode": "5.0.0",
+    "terser": "5.47.1",
     "tsx": "4.21.0",
     "typedoc": "0.28.17",
     "typedoc-plugin-markdown": "4.10.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.57.0"
+    "typescript-eslint": "8.57.0",
+    "vite": "8.0.11"
   },
   "browserslist": [
     "last 1 version",
     "> 1%",
     "not dead"
   ],
-  "nodemonConfig": {
-    "watch": [
-      "src/**",
-      "assets/**",
-      "rollup.config.mjs",
-      ".env",
-      "changelog.md",
-      "package.json"
-    ],
-    "ext": "ts,mts,js,jsx,mjs,json,html,css,svg,png",
-    "ignore": [
-      "dist/*",
-      "dev/*",
-      "*/stories/*"
-    ]
-  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"

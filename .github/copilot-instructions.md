@@ -7,7 +7,7 @@ description: This file describes the general project structure, base directives 
 # Project Outline
 
 This is a Userscript called BetterYTM, which enhances the pages YouTube Music and YouTube with tons of quality of life features, such as auto-liking, better lyrics lookup, finer volume control and tons more layout and usability improvements.  
-It is written in TypeScript, uses pnpm and ESLint, and is bundled with Rollup and a custom transformation script in `src/tools/post-build.ts`.  
+It is written in TypeScript, uses pnpm and ESLint, and is bundled with Vite 8 (Rolldown) via `vite.config.ts` with a custom plugin at `src/tools/vite-plugin-bytm.ts`.  
 Components are written using the vanilla JS DOM API, no framework like React is used.
 
 # Base Directives

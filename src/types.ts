@@ -25,17 +25,6 @@ void ["type imports only:", resources, locales];
 
 //#region other
 
-/** Custom CLI args passed to rollup */
-export type RollupArgs = Partial<{
-  "config-mode": "development" | "production";
-  "config-branch": "main" | "develop";
-  "config-host": "greasyfork" | "github" | "openuserjs";
-  "config-assetSource": "local" | "github" | "jsdelivr";
-  "config-suffix": string;
-  "config-gen-meta": "true" | "false";
-  "config-compat-mode": "strict" | "loose";
-}>;
-
 // I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 export enum LogLevel {
   Debug,
@@ -51,7 +40,7 @@ export type SiteSelection = Domain | "all";
 /** A selection option between one of the supported domains, or none of them. */
 export type SiteSelectionOrNone = SiteSelection | "none";
 
-/** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
+/** Key of a resource in `assets/resources.json` and extra keys defined by `src/tools/vite-plugin-bytm.ts` */
 export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}`;
 
 /** Key of a CSS resource in `assets/resources.json` */
