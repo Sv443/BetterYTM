@@ -120,4 +120,13 @@ const config = [
   },
 ];
 
-export default defineConfig(config);
+export default defineConfig(
+  config,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
+  },
+);
