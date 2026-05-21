@@ -88,7 +88,6 @@
   font-size: 1.2rem;
   font-weight: 400;
 }
-
 /* Applies to all BytmDialog instances */
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
@@ -568,7 +567,6 @@ hr {
   align-items: center;
   margin-right: 6px;
 }
-
 /* #region general */
 :root {
   --bytm-locale-color: #5ea2ec;
@@ -791,7 +789,6 @@ hr {
 #bytm-static-data-alert-dialog-header {
   padding: 0px 8px;
 }
-
 #bytm-prompt-dialog-header {
   display: flex;
   flex-direction: row;
@@ -845,7 +842,6 @@ textarea#bytm-prompt-dialog-input {
   padding: 2px 6px;
   font-size: 1.45rem;
 }
-
 .bytm-hotkey-wrapper {
   display: flex;
   flex-direction: row;
@@ -866,7 +862,6 @@ textarea#bytm-prompt-dialog-input {
 .bytm-hotkey-info[data-state="active"] {
   display: none;
 }
-
 .bytm-toggle-wrapper {
   display: flex;
   align-items: center;
@@ -925,7 +920,6 @@ textarea#bytm-prompt-dialog-input {
   position: absolute;
   visibility: hidden;
 }
-
 /* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
 
 /* use prefix for more specificity: */
@@ -986,7 +980,6 @@ body .bytm-ripple.slowest {
     opacity: 0;
   }
 }
-
 .bytm-exim-dialog-panes-cont {
   display: flex;
   flex-direction: row;
@@ -1012,7 +1005,6 @@ body .bytm-ripple.slowest {
   height: 120px;
   resize: none;
 }
-
 /* #region volume slider */
 
 .bytm-vol-slider-cont {
@@ -1087,13 +1079,11 @@ body .bytm-ripple.slowest {
   width: 20px;
   height: 20px;
 }
-
 .bytm-auto-like-channels-footer-wrapper {
   display: flex;
   justify-content: space-between;
   gap: 16px;
 }
-
 :root {
   --bytm-auto-like-btn-color: #bf87f0;
 }
@@ -1264,7 +1254,6 @@ body.bytm-dom-ytm
   .bytm-generic-long-btn-txt {
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
-
 :root {
   --bytm-menu-bg-highlight: #181818;
   --bytm-menu-bg-highlight-2: #252525;
@@ -2017,7 +2006,6 @@ hr {
   margin: 8px 0px 12px 0px;
   border: revert;
 }
-
 /* #region misc */
 
 :root {
@@ -2631,7 +2619,6 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
     opacity: 0;
   }
 }
-
 #bytm-plugin-list-dialog-bg {
   --bytm-plugin-list-secondary-col: #c4c4c4;
   --bytm-plugin-list-row-padding-ver: 12px;
@@ -2771,7 +2758,6 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 .bytm-plugin-list-row-intent-item {
   cursor: help;
 }
-
 :root {
   --bytm-themed-bg-col: var(--ts-playerpage-color, #030303);
 }
@@ -2791,7 +2777,6 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 #ts-panel-container.bytm-hidden {
   opacity: 0;
 }
-
 /* #region queue buttons */
 
 #side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
@@ -2903,3 +2888,4 @@ ytmusic-player-queue-item
   button {
   box-shadow: inset 0 0 1000px rgba(255, 255, 255, 0.2);
 }
+/*$vite$:1*/
