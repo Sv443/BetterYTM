@@ -204,30 +204,33 @@ export type PerformanceReport = {
     /** User agent string of the browser. */
     userAgent: string;
     /** Whether the page was loaded in incognito mode, which means other extensions are probably disabled. */
-    isIncognito?: boolean;
+    isIncognito: boolean | null;
     /** Which kind of sandboxing the userscript manager extension uses (Tampermonkey-only prop). */
-    sandboxMode?: string;
+    sandboxMode: string | null;
     /** How the script was injected into the page (Violentmonkey-only prop). */
-    injectInto?: string;
+    injectInto: string | null;
     /** Whether first-party isolation is enabled in the browser (Tampermonkey-only prop). */
-    isFirstPartyIsolation?: boolean;
+    isFirstPartyIsolation: boolean | null;
   };
-  /** Timestamp when the script starts synchronously executing, before the call to {@linkcode preInit()}. */
-  start: number;
   /** Contains generic durations for specific initialization phases (or just noteworthy function calls), starting from whenever that phase starts, and recorded when that phase ends. The keys are not strictly typed, but should be descriptive of the phase they measure. */
   durations?: Record<LooseUnion<keyof PerformanceReport & FeatureKey>, number>;
   /** For each feature identifier (not strictly typed), the time in milliseconds **since feature initialization started**, recorded when that feature's async initialization function finishes executing. */
   featureDurations?: Record<LooseUnion<FeatureKey>, number>;
-  /** Time in milliseconds since `start`, recorded at the end of {@linkcode preInit()}. */
-  preInitEnd?: number;
-  /** Time in milliseconds since `start`, recorded when the `DOMContentLoaded` event fires. */
-  domLoaded?: number;
-  /** Time in milliseconds since `start` when the `bytm:ready` event is emitted, which signals that the bulk of BYTM is ready and all features have *started* initialization. */
-  ready?: number;
-  /** Time in milliseconds since `start` when all features have finished their async initialization functions and BYTM is fully ready. For plugins, this only factors in their deferred initialization. */
-  allReady?: number;
-  /** Time in milliseconds since `start` when the entire initialization process finishes, including any synchronous, post-ready, developer-only code. Runs very slightly after `ready`. */
-  postInitEnd?: number;
+  /** Timestamp when the script starts synchronously executing, before the call to {@linkcode preInit()}. */
+  start: number;
+  /** Various general timings starting at the `start` timestamp. */
+  sinceStart: {
+    /** Time in milliseconds since `start`, recorded at the end of {@linkcode preInit()}. */
+    preInitEnd?: number;
+    /** Time in milliseconds since `start`, recorded when the `DOMContentLoaded` event fires. */
+    domLoaded?: number;
+    /** Time in milliseconds since `start` when the `bytm:ready` event is emitted, which signals that the bulk of BYTM is ready and all features have *started* initialization. */
+    ready?: number;
+    /** Time in milliseconds since `start` when all features have finished their async initialization functions and BYTM is fully ready. For plugins, this only factors in their deferred initialization. */
+    allReady?: number;
+    /** Time in milliseconds since `start` when the entire initialization process finishes, including any synchronous, post-ready, developer-only code. Runs very slightly after `ready`. */
+    postInitEnd?: number;
+  };
 };
 
 //#region utility

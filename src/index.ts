@@ -113,15 +113,16 @@ const initTimings: PerformanceReport = {
     userAgent: navigator.userAgent,
     scriptHandler: GM.info?.scriptHandler ?? "unknown",
     scriptHandlerVersion: GM.info?.version ?? "unknown",
-    isIncognito: GM.info?.isIncognito ?? undefined,
-    sandboxMode: GM.info?.sandboxMode ?? undefined,
     // @ts-expect-error - Violentmonkey-only property
-    injectInto: GM.info?.injectInto ?? undefined,
-    isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? undefined,
+    injectInto: GM.info?.injectInto ?? null,
+    isIncognito: GM.info?.isIncognito ?? null,
+    isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? null,
+    sandboxMode: GM.info?.sandboxMode ?? null,
   },
   durations: {} as PerformanceReport["durations"],
   featureDurations: {} as PerformanceReport["featureDurations"],
   start: 0,
+  sinceStart: {},
 };
 
 /**
@@ -161,7 +162,7 @@ function preInit() {
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
-    initTimings.preInitEnd = Date.now() - initTimings.start;
+    initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
     init();
   }
   catch(err) {
@@ -243,7 +244,7 @@ ${assetSource === "local"
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
-  initTimings.domLoaded = Date.now() - initTimings.start;
+  initTimings.sinceStart.domLoaded = Date.now() - initTimings.start;
 
   const domain = getDomain();
   const feats = getFeatures();
@@ -453,7 +454,7 @@ async function onDomLoad() {
       ]).then(() => {
         endFeatInitDur();
         emitInterface("bytm:allReady");
-        initTimings.allReady = Date.now() - initStartTs;
+        initTimings.sinceStart.allReady = Date.now() - initStartTs;
         if(initializedFeats.length < ftInit.length) {
           errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${
             ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
@@ -470,7 +471,7 @@ async function onDomLoad() {
     // preload icons
     preloadResources();
 
-    initTimings.ready = Date.now() - initTimings.start;
+    initTimings.sinceStart.ready = Date.now() - initTimings.start;
     emitInterface("bytm:ready");
 
     try {
@@ -492,7 +493,7 @@ async function onDomLoad() {
     emitInterface("bytm:fatalError", "Error while initializing features");
   }
   finally {
-    initTimings.postInitEnd = Date.now() - initTimings.start;
+    initTimings.sinceStart.postInitEnd = Date.now() - initTimings.start;
   }
 }
 
