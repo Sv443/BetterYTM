@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e0b7767b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b4c96196/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -476,8 +476,8 @@ const rawConsts = {
     mode: "development",
     branch: "develop",
     host: "github",
-    buildNumber: "e0b7767b",
-    buildTimestamp: "1779223626798",
+    buildNumber: "b4c96196",
+    buildTimestamp: "1779400163661",
     assetSource: "jsdelivr",
     devServerPort: "8710",
 };
@@ -1335,7 +1335,8 @@ class Logger {
         const hintLines = Logger.logs.length >= Logger.maxLogLines
             ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines} oldest lines were truncated.\n\n`
             : "";
-        return hintLines + Logger.logs.reduce((acc, [category, type, time, ...args]) => {
+        const logEntries = [...Logger.logs].reverse();
+        return hintLines + logEntries.reduce((acc, [category, type, time, ...args]) => {
             if (args.length === 0)
                 return acc;
             const timestamp = new Date(time).toISOString();
@@ -7056,7 +7057,9 @@ var domains = [
 			"www.youtube.com",
 			"youtube.com",
 			"youtu.be",
-			"m.youtube.com"
+			"m.youtube.com",
+			"youtube-nocookie.com",
+			"www.youtube-nocookie.com"
 		]
 	}
 ];
@@ -11875,19 +11878,23 @@ const initTimings = {
     ],
     meta: {
         version: scriptInfo$1.version,
+        buildNumber: buildNumber$1,
+        buildTime: new Date(buildTimestamp).toISOString(),
+        mode: mode$1,
         domain: getDomain(),
         userAgent: navigator.userAgent,
         scriptHandler: GM.info?.scriptHandler ?? "unknown",
         scriptHandlerVersion: GM.info?.version ?? "unknown",
-        isIncognito: GM.info?.isIncognito ?? undefined,
-        sandboxMode: GM.info?.sandboxMode ?? undefined,
         // @ts-expect-error - Violentmonkey-only property
-        injectInto: GM.info?.injectInto ?? undefined,
-        isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? undefined,
+        injectInto: GM.info?.injectInto ?? null,
+        isIncognito: GM.info?.isIncognito ?? null,
+        isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? null,
+        sandboxMode: GM.info?.sandboxMode ?? null,
     },
-    start: 0,
     durations: {},
     featureDurations: {},
+    start: 0,
+    sinceStart: {},
 };
 /**
  * Starts a timer for measuring the duration of a specific phase of the initialization process.
@@ -11917,7 +11924,7 @@ function preInit() {
         preInitPlugins();
         if (getDomain() === "ytm")
             initBeforeUnloadHook();
-        initTimings.preInitEnd = Date.now() - initTimings.start;
+        initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
         init();
     }
     catch (err) {
@@ -11983,7 +11990,7 @@ ${assetSource === "local"
 //#region onDomLoad
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
-    initTimings.domLoaded = Date.now() - initTimings.start;
+    initTimings.sinceStart.domLoaded = Date.now() - initTimings.start;
     const domain = getDomain();
     const feats = getFeatures();
     const ftInit = [];
@@ -12011,6 +12018,7 @@ async function onDomLoad() {
     }
     loggers.init.info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
     try {
+        await initVersionSessionCounter();
         //#region welcome dlg
         if (typeof await GM.getValue("bytm-installed") !== "string") {
             // open welcome menu with language selector
@@ -12023,7 +12031,6 @@ async function onDomLoad() {
         // initialize data.json and check for active alerts
         const endStaticDataDur = measureInitDuration("initStaticData");
         initStaticData().then(() => endStaticDataDur());
-        await initVersionSessionCounter();
         if (domain === "ytm") {
             //#region (ytm) layout
             ftInit.push(["addWatermark", (async () => {
@@ -12130,7 +12137,7 @@ async function onDomLoad() {
         ]).then(() => {
             endFeatInitDur();
             emitInterface("bytm:allReady");
-            initTimings.allReady = Date.now() - initStartTs;
+            initTimings.sinceStart.allReady = Date.now() - initStartTs;
             if (initializedFeats.length < ftInit.length) {
                 errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
             }
@@ -12141,7 +12148,7 @@ async function onDomLoad() {
         UserUtils.getUnsafeWindow().dispatchEvent(new Event("resize", { bubbles: true, cancelable: true }));
         // preload icons
         preloadResources();
-        initTimings.ready = Date.now() - initTimings.start;
+        initTimings.sinceStart.ready = Date.now() - initTimings.start;
         emitInterface("bytm:ready");
         try {
             registerDevCommands();
@@ -12161,7 +12168,7 @@ async function onDomLoad() {
         emitInterface("bytm:fatalError", "Error while initializing features");
     }
     finally {
-        initTimings.postInitEnd = Date.now() - initTimings.start;
+        initTimings.sinceStart.postInitEnd = Date.now() - initTimings.start;
     }
 }
 //#region preload icons
