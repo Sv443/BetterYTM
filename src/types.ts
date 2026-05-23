@@ -828,7 +828,9 @@ export interface FeatureConfig {
   fixSpacing: boolean;
   /** Whether to truncate the song title, artist name, album name, release year, and like/dislike ratio in the player bar using an ellipsis */
   truncatePlayerBarSubtitles: boolean;
-  /** Where to show a thumbnail overlay over the video element and whether to show it at all */
+  /** Whether the thumbnail overlay is enabled */
+  thumbnailOverlayEnabled: boolean;
+  /** When to automatically show the thumbnail overlay */
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */
   thumbnailOverlayToggleBtnShown: boolean;

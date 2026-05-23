@@ -6,6 +6,7 @@ import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVide
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
+import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
@@ -698,6 +699,8 @@ export function getInternals(token: string | undefined) {
   return {
     constants,
     globservers,
+    getSerializerStores,
+    getSerializerStoresFull,
     emitInterface,
     emitSiteEvent,
     siteEvents,

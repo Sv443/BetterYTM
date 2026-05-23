@@ -655,8 +655,7 @@ export enum ThumbOvlState {
 let overlayState = ThumbOvlState.Off;
 
 export async function initThumbnailOverlay() {
-  const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
-  if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
+  if(!getFeature("thumbnailOverlayEnabled"))
     return;
 
   deleteExpiredAlbumArtCacheEntries();
@@ -907,7 +906,7 @@ export async function initThumbnailOverlay() {
         }
 
         // toggle button
-        if(toggleBtnShown) {
+        if(getFeature("thumbnailOverlayToggleBtnShown")) {
           const toggleBtnElem = createRipple(document.createElement("a"));
           toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
           toggleBtnElem.role = "button";

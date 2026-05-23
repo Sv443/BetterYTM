@@ -461,6 +461,15 @@ export const featInfo = {
     default: true,
     adornments: [adornments.ytmOnly, adornments.reload],
   },
+  thumbnailOverlayEnabled: {
+    type: "toggle",
+    category: "layout",
+    group: "thumbnailOverlay",
+    supportedSites: ["ytm"],
+    since: "3.2.0",
+    default: true,
+    adornments: [adornments.ytmOnly, adornments.reload],
+  },
   thumbnailOverlayBehavior: {
     type: "select",
     category: "layout",
@@ -468,10 +477,10 @@ export const featInfo = {
     supportedSites: ["ytm"],
     since: "2.0.0",
     options: () => [
-      { value: "songsOnly", label: t("thumbnail_overlay.behavior_songs_only") },
-      { value: "videosOnly", label: t("thumbnail_overlay.behavior_videos_only") },
       { value: "always", label: t("thumbnail_overlay.behavior_always") },
       { value: "never", label: t("thumbnail_overlay.behavior_never") },
+      { value: "songsOnly", label: t("thumbnail_overlay.behavior_songs_only") },
+      { value: "videosOnly", label: t("thumbnail_overlay.behavior_videos_only") },
     ],
     default: "songsOnly",
     reloadRequired: false,

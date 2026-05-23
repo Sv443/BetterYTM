@@ -279,9 +279,14 @@ export const cfgMigrations: DataMigrationsDict = {
   },
 
   // 11 -> 12 (v3.2)
-  12: (oldData: FeatureConfig) => useNewDefaults(oldData, [
-    "thumbnailOverlayBlurredDuplicateBackground",
-  ]),
+  12: (oldData: FeatureConfig) => {
+    // add extra thumbnailOverlayEnabled feature instead of combining it with thumbnailOverlayBehavior:
+    oldData.thumbnailOverlayEnabled = oldData.thumbnailOverlayBehavior !== "never";
+
+    return useNewDefaults(oldData, [
+      "thumbnailOverlayBlurredDuplicateBackground",
+    ]);
+  },
 } as const satisfies DataMigrationsDict;
 
 //#region migration helpers

@@ -1,9 +1,6 @@
 import { pureObj, randomId } from "@sv443-network/coreutils";
 import { LogLevel } from "@/types.ts";
 
-// const rawConsts = {};
-// !!! rawConsts was removed in v3.2.0 - instead refer to the variables below:
-
 /** Path to the GitHub repo */
 export const repo = "Sv443/BetterYTM";
 /** The mode in which the script was built (production or development) */

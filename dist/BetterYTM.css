@@ -842,84 +842,6 @@ textarea#bytm-prompt-dialog-input {
   padding: 2px 6px;
   font-size: 1.45rem;
 }
-.bytm-hotkey-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
-}
-
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
-.bytm-hotkey-info[data-state="active"] {
-  display: none;
-}
-.bytm-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.bytm-toggle-wrapper .bytm-toggle-label {
-  cursor: pointer;
-  font-size: 1.5rem;
-  padding: 3px 12px;
-  position: relative;
-}
-
-.bytm-toggle {
-  cursor: pointer;
-  display: inline-block;
-}
-
-.bytm-toggle-switch {
-  display: inline-block;
-  background: #666;
-  border-radius: 16px;
-  width: 40px;
-  height: 20px;
-  position: relative;
-  vertical-align: middle;
-  transition: background 0.25s;
-}
-
-.bytm-toggle-switch:before {
-  content: "";
-  display: block;
-  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
-  border-radius: 50%;
-  width: 12px;
-  height: 12px;
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  transition: left 0.25s;
-}
-
-.bytm-toggle:hover .bytm-toggle-switch:before {
-  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
-}
-
-.bytm-toggle-checkbox:checked + .bytm-toggle-switch {
-  background: #3683d4;
-}
-
-.bytm-toggle-checkbox:checked + .bytm-toggle-switch:before {
-  left: 24px;
-}
-
-.bytm-toggle-checkbox {
-  position: absolute;
-  visibility: hidden;
-}
 /* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
 
 /* use prefix for more specificity: */
@@ -1005,79 +927,63 @@ body .bytm-ripple.slowest {
   height: 120px;
   resize: none;
 }
-/* #region volume slider */
+.bytm-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 
-.bytm-vol-slider-cont {
+.bytm-toggle-wrapper .bytm-toggle-label {
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 3px 12px;
   position: relative;
 }
 
-.bytm-vol-slider-label {
-  --bytm-slider-label-bg-col: var(
-    --ytmusic-player-bar-background,
-    var(--bytm-themed-bg-col)
-  );
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 11px), -50%);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  background-color: var(--bytm-slider-label-bg-col);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-slider-label-bg-col) 20%
-  );
-  font-size: 1.45rem;
-  text-align: right;
-  padding: 15px;
-  padding-right: 5px;
-  opacity: 0.000001;
-  transition: opacity 0.2s ease;
+.bytm-toggle {
+  cursor: pointer;
+  display: inline-block;
 }
 
-.bytm-vol-slider-label.wide {
-  transform: translate(calc(-50% - 34px), -50%);
-}
-
-.bytm-vol-slider-label.has-icon {
-  transform: translate(calc(-50% - 25px), -50%);
-}
-
-.bytm-vol-slider-label.wide.has-icon {
-  transform: translate(calc(-50% - 34px - 25px), -50%);
-}
-
-.bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-.bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-.bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
-:root
-  body.bytm-dom-ytm
-  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
-  .bytm-vol-slider-label {
-  color: #fff;
-}
-
-.bytm-vol-slider-shared {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.bytm-vol-slider-shared svg {
-  width: 20px;
+.bytm-toggle-switch {
+  display: inline-block;
+  background: #666;
+  border-radius: 16px;
+  width: 40px;
   height: 20px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+
+.bytm-toggle-switch:before {
+  content: "";
+  display: block;
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: left 0.25s;
+}
+
+.bytm-toggle:hover .bytm-toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+}
+
+.bytm-toggle-checkbox:checked + .bytm-toggle-switch {
+  background: #3683d4;
+}
+
+.bytm-toggle-checkbox:checked + .bytm-toggle-switch:before {
+  left: 24px;
+}
+
+.bytm-toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
 }
 .bytm-auto-like-channels-footer-wrapper {
   display: flex;
@@ -1253,6 +1159,26 @@ body.bytm-dom-ytm
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
   .bytm-generic-long-btn-txt {
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
+}
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.bytm-hotkey-info[data-state="active"] {
+  display: none;
 }
 :root {
   --bytm-menu-bg-highlight: #181818;
@@ -2618,6 +2544,80 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
     transform: translateY(100%);
     opacity: 0;
   }
+}
+/* #region volume slider */
+
+.bytm-vol-slider-cont {
+  position: relative;
+}
+
+.bytm-vol-slider-label {
+  --bytm-slider-label-bg-col: var(
+    --ytmusic-player-bar-background,
+    var(--bytm-themed-bg-col)
+  );
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 11px), -50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  background-color: var(--bytm-slider-label-bg-col);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-slider-label-bg-col) 20%
+  );
+  font-size: 1.45rem;
+  text-align: right;
+  padding: 15px;
+  padding-right: 5px;
+  opacity: 0.000001;
+  transition: opacity 0.2s ease;
+}
+
+.bytm-vol-slider-label.wide {
+  transform: translate(calc(-50% - 34px), -50%);
+}
+
+.bytm-vol-slider-label.has-icon {
+  transform: translate(calc(-50% - 25px), -50%);
+}
+
+.bytm-vol-slider-label.wide.has-icon {
+  transform: translate(calc(-50% - 34px - 25px), -50%);
+}
+
+.bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+.bytm-vol-slider-label svg path {
+  fill: #909090;
+}
+
+.bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  .bytm-vol-slider-label {
+  color: #fff;
+}
+
+.bytm-vol-slider-shared {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bytm-vol-slider-shared svg {
+  width: 20px;
+  height: 20px;
 }
 #bytm-plugin-list-dialog-bg {
   --bytm-plugin-list-secondary-col: #c4c4c4;

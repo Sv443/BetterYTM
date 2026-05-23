@@ -5,8 +5,11 @@
 ## 3.2.0
 - **New Features:**
   - 🎵 Added a feature to show a second, blurred duplicate of the thumbnail image in the thumbnail overlay as a background.
-  - Added a configuration option for the global alerts system.
   - Added Turkish translations (by [@kcangny](https://github.com/kcangny)).
+  - Added a configuration option for the global alerts system.
+  - Added an extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.
+- **Improvements and Changes:**
+  - Setting the thumbnail overlay mode to `never` will now disable only the automatic thumbnail overlay, allowing for the toggle button to be used independently.
 - **Plugin Changes:**
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.
@@ -16,6 +19,10 @@
   - Improved compatibility with YT's and YTM's mobile layout for mobile browser users.
   - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
   - Refactored logging system to use new `Logger` class instances.
+  - Added new properties to the object returned by `BYTM.getInternals()`:
+    - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
+    - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.
+    - `getSerializerStoresFull()` - Returns all `DataStore` instances, including those that are only used for caching.
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">Also see pull request #TODO</a>
