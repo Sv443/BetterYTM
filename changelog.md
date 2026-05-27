@@ -9,14 +9,17 @@
   - Added a configuration option for the global alerts system.
   - Added an extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.
 - **Improvements and Changes:**
-  - Setting the thumbnail overlay mode to `never` will now disable only the automatic thumbnail overlay, allowing for the toggle button to be used independently.
+  - Turned features that had a combined toggle and mode selection into two separate features, to allow for more flexible configuration and easier toggling:
+    - `thumbnailOverlayBehavior: "never"` - replaced with `thumbnailOverlayEnabled`.
+      - Setting the thumbnail overlay mode to `never` will now disable only the automatic thumbnail overlay, allowing for the toggle button to be used independently.
+    - `autoScrollToActiveSongMode: "never"` - replaced with `autoScrollToActiveSongEnabled`.
 - **Plugin Changes:**
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.
     - `Logger`: The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system.
 - **Internal Changes:**
   - Added `m.youtube.com` and `youtube-nocookie.com` to the list of supported domains.
-  - Improved compatibility with YT's and YTM's mobile layout for mobile browser users.
+  - TODO: Improved compatibility with YT's and YTM's mobile layout for mobile browser users.
   - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
   - Refactored logging system to use new `Logger` class instances.
   - Added new properties to the object returned by `BYTM.getInternals()`:
