@@ -251,7 +251,6 @@
   "color_lightness.normal": "Normal",
   "color_lightness.lighter": "Mais claro",
 
-  "auto_scroll_to_active_song_mode.never": "Nunca",
   "auto_scroll_to_active_song_mode.initial_page_load": "Apenas na primeira carga da página",
   "auto_scroll_to_active_song_mode.video_change_all": "Em cada mudança de vídeo",
   "auto_scroll_to_active_song_mode.video_change_manual": "Apenas ao mudar manualmente os vídeos",
@@ -352,7 +351,7 @@
   "feature_group_header.autoCloseToasts": "Fechar Toasts Automaticamente:",
   "feature_group_header.yesImStillThere": "Sim, Ainda Estou Aqui:",
   "feature_group_header.rememberSongTime": "Lembrar Tempo da Música:",
-  "feature_group_header.autoScrollToActiveSongMode": "Rolar para a Música Ativa:",
+  "feature_group_header.autoScrollToActiveSong": "Rolar para a Música Ativa:",
   "feature_group_header.autoLikeChannels": "Auto-curtir Canais:",
   "feature_group_header.arrowKeySupport": "Suporte a Teclas de Seta:",
   "feature_group_header.frameSkip": "Pular Frames:",
@@ -450,8 +449,10 @@
   "feature_desc.rememberSongTimeReduction": "Quantos segundos subtrair ao restaurar o tempo de um vídeo lembrado",
   "feature_helptext.rememberSongTimeReduction": "Ao restaurar o tempo de um vídeo lembrado, esta quantidade de segundos é subtraída do tempo lembrado para que você tenha mais contexto ao assistir a parte interrompida novamente.",
   "feature_desc.rememberSongTimeMinPlayTime": "Quantidade mínima de segundos que um vídeo precisa ser reproduzido para ter seu tempo lembrado",
-  "feature_desc.autoScrollToActiveSongMode": "Quando rolar para o vídeo em reprodução na fila",
+  "feature_desc.autoScrollToActiveSongEnabled": "Rolar automaticamente para o vídeo que está tocando na fila",
+  "feature_desc.autoScrollToActiveSongMode": "Quando rolar para o vídeo que está tocando atualmente",
   "feature_desc.yesImStillThere": "Dispensar automaticamente o popup \"Você ainda está lá?\" que aparece após alguma inatividade",
+
   "feature_desc.arrowKeySupport": "Use as teclas de seta para avançar e retroceder e para alterar o volume",
   "feature_helptext.arrowKeySupport": "Normalmente, você só pode avançar e retroceder em um intervalo fixo de 10 segundos com as teclas \"H\" e \"L\". Este recurso permite que você use as teclas de seta para avançar e retroceder e alterar o volume.\nPara alterar a quantidade de segundos para pular, use a opção abaixo.",
   "feature_desc.arrowKeySkipBy": "Por quantos segundos pular ao usar as teclas de seta",

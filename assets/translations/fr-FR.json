@@ -251,7 +251,6 @@
   "color_lightness.normal": "Normal",
   "color_lightness.lighter": "Plus clair",
 
-  "auto_scroll_to_active_song_mode.never": "Jamais",
   "auto_scroll_to_active_song_mode.initial_page_load": "Au premier chargement de la page uniquement",
   "auto_scroll_to_active_song_mode.video_change_all": "À chaque changement de vidéo",
   "auto_scroll_to_active_song_mode.video_change_manual": "Seulement lors du changement manuel de vidéos",
@@ -353,7 +352,7 @@
   "feature_group_header.autoCloseToasts": "Fermeture automatique des toasts:",
   "feature_group_header.yesImStillThere": "Oui, je suis toujours là:",
   "feature_group_header.rememberSongTime": "Mémoriser la position de la chanson:",
-  "feature_group_header.autoScrollToActiveSongMode": "Défilement auto vers la chanson active:",
+  "feature_group_header.autoScrollToActiveSong": "Défilement auto vers la chanson active:",
   "feature_group_header.autoLikeChannels": "Auto-aimer les chaînes:",
   "feature_group_header.arrowKeySupport": "Support des touches fléchées:",
   "feature_group_header.frameSkip": "Saut d'image:",
@@ -453,7 +452,8 @@
   "feature_desc.rememberSongTimeReduction": "De combien de secondes soustraire lors de la restauration de la position d'une vidéo mémorisée",
   "feature_helptext.rememberSongTimeReduction": "Lors de la restauration de la position d'une vidéo mémorisée, ce nombre de secondes sera soustrait de la position mémorisée pour que vous ayez plus de contexte lors de la réécoute de la partie qui a été interrompue.",
   "feature_desc.rememberSongTimeMinPlayTime": "Durée minimale de lecture d'une vidéo en secondes pour que sa position soit mémorisée",
-  "feature_desc.autoScrollToActiveSongMode": "Quand défiler vers la vidéo en cours de lecture dans la file d'attente",
+  "feature_desc.autoScrollToActiveSongEnabled": "Faire défiler automatiquement jusqu'à la vidéo en cours de lecture dans la file d'attente",
+  "feature_desc.autoScrollToActiveSongMode": "Quand faire défiler jusqu'à la vidéo en cours de lecture",
   "feature_desc.yesImStillThere": "Fermer automatiquement la popup \"Toujours là?\" qui apparaît après une certaine inactivité",
 
   "feature_desc.arrowKeySupport": "Utilisez les touches fléchées pour avancer et reculer et pour modifier le volume",

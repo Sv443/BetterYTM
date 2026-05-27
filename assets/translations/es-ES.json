@@ -252,7 +252,6 @@
   "color_lightness.normal": "Normal",
   "color_lightness.lighter": "Más claro",
 
-  "auto_scroll_to_active_song_mode.never": "Nunca",
   "auto_scroll_to_active_song_mode.initial_page_load": "Solo en la primera carga de la página",
   "auto_scroll_to_active_song_mode.video_change_all": "En cada cambio de video",
   "auto_scroll_to_active_song_mode.video_change_manual": "Solo al cambiar videos manualmente",
@@ -354,7 +353,7 @@
   "feature_group_header.autoCloseToasts": "Cerrar notificaciones automáticamente:",
   "feature_group_header.yesImStillThere": "Sí, sigo aquí:",
   "feature_group_header.rememberSongTime": "Recordar tiempo del video:",
-  "feature_group_header.autoScrollToActiveSongMode": "Desplazamiento automático a canción activa:",
+  "feature_group_header.autoScrollToActiveSong": "Desplazamiento automático a canción activa:",
   "feature_group_header.autoLikeChannels": "Me gusta automático a canales:",
   "feature_group_header.arrowKeySupport": "Soporte de teclas de flecha:",
   "feature_group_header.frameSkip": "Salto de frame:",
@@ -454,7 +453,8 @@
   "feature_desc.rememberSongTimeReduction": "Cuántos segundos restar al restaurar el tiempo de un video recordado",
   "feature_helptext.rememberSongTimeReduction": "Al restaurar el tiempo de un video recordado, se restará esta cantidad de segundos para que tengas más contexto al retomar la parte interrumpida.",
   "feature_desc.rememberSongTimeMinPlayTime": "Cantidad mínima de segundos que debe reproducirse un video para que se recuerde su tiempo",
-  "feature_desc.autoScrollToActiveSongMode": "Cuándo desplazarse automáticamente al video actual en la cola",
+  "feature_desc.autoScrollToActiveSongEnabled": "Desplazarse automáticamente al video que se está reproduciendo actualmente en la cola",
+  "feature_desc.autoScrollToActiveSongMode": "Cuándo desplazarse al video que se está reproduciendo actualmente",
   "feature_desc.yesImStillThere": "Descartar automáticamente el aviso \"¿Sigues ahí?\" que aparece tras inactividad",
 
   "feature_desc.arrowKeySupport": "Utilice las teclas de flecha para saltar hacia adelante y hacia atrás y para cambiar el volumen.",

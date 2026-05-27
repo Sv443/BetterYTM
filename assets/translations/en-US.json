@@ -254,7 +254,6 @@
   "color_lightness.normal": "Normal",
   "color_lightness.lighter": "Lighter",
 
-  "auto_scroll_to_active_song_mode.never": "Never",
   "auto_scroll_to_active_song_mode.initial_page_load": "On first page load only",
   "auto_scroll_to_active_song_mode.video_change_all": "On every video change",
   "auto_scroll_to_active_song_mode.video_change_manual": "Only when manually changing videos",
@@ -356,7 +355,7 @@
   "feature_group_header.autoCloseToasts": "Auto-close Toasts:",
   "feature_group_header.yesImStillThere": "Yes, I'm Still There:",
   "feature_group_header.rememberSongTime": "Remember Song Time:",
-  "feature_group_header.autoScrollToActiveSongMode": "Auto-scroll to Active Song:",
+  "feature_group_header.autoScrollToActiveSong": "Auto-scroll to Active Song:",
   "feature_group_header.autoLikeChannels": "Auto-like Channels:",
   "feature_group_header.arrowKeySupport": "Arrow Key Support:",
   "feature_group_header.frameSkip": "Frame Skip:",
@@ -450,7 +449,8 @@
   "feature_desc.rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered video",
   "feature_helptext.rememberSongTimeReduction": "When restoring the time of a video that was remembered, this amount of seconds will be subtracted from the remembered time so you have more context when watching or listening to the part that was interrupted again.",
   "feature_desc.rememberSongTimeMinPlayTime": "Minimum amount of seconds a video needs to be played for its time to be remembered",
-  "feature_desc.autoScrollToActiveSongMode": "When to scroll to the currently playing video in the queue",
+  "feature_desc.autoScrollToActiveSongEnabled": "Automatically scroll to the currently playing video in the queue",
+  "feature_desc.autoScrollToActiveSongMode": "When to scroll to the currently playing video",
   "feature_desc.yesImStillThere": "Automatically dismiss the \"Are you still there?\" popup that appears after some inactivity",
 
   "feature_desc.arrowKeySupport": "Use arrow keys to skip forwards and backwards and to change the volume",

@@ -251,7 +251,6 @@
   "color_lightness.normal": "通常",
   "color_lightness.lighter": "明るい",
 
-  "auto_scroll_to_active_song_mode.never": "しない",
   "auto_scroll_to_active_song_mode.initial_page_load": "初回のみ",
   "auto_scroll_to_active_song_mode.video_change_all": "すべてのビデオの変更時",
   "auto_scroll_to_active_song_mode.video_change_manual": "手動でビデオを変更するときのみ",
@@ -353,7 +352,7 @@
   "feature_group_header.autoCloseToasts": "自動トースト閉鎖:",
   "feature_group_header.yesImStillThere": "ポップアップ螢幕保護プレイヤー:",
   "feature_group_header.rememberSongTime": "歌再生時間記憶:",
-  "feature_group_header.autoScrollToActiveSongMode": "自動スクロール:",
+  "feature_group_header.autoScrollToActiveSong": "自動スクロール:",
   "feature_group_header.autoLikeChannels": "自動チャンネルイイネ:",
   "feature_group_header.arrowKeySupport": "矢印キーサポート:",
   "feature_group_header.frameSkip": "フレームスキップ:",
@@ -452,7 +451,8 @@
   "feature_desc.rememberSongTimeReduction": "再生位置復元時に兼れた秒数",
   "feature_helptext.rememberSongTimeReduction": "動画再生位置を復元するときに、この秒数が減算されるので、より多くのコンテキストを得ることができます。",
   "feature_desc.rememberSongTimeMinPlayTime": "再生位置を記憶するための最小再生秒数",
-  "feature_desc.autoScrollToActiveSongMode": "キューの現在再生中の曲に常にスクロールするタイミング",
+  "feature_desc.autoScrollToActiveSongEnabled": "キュー内の現在再生中の動画に自動的にスクロールする",
+  "feature_desc.autoScrollToActiveSongMode": "キュー内の現在再生中の動画にスクロールするタイミング",
   "feature_desc.yesImStillThere": "長時間の非アクティブ後に表示される \"まだ瀛りか？\" ポップアップを自動的に閉じる",
 
   "feature_desc.arrowKeySupport": "矢印キーを使用して前後にスキップしたり、音量を変更したりできます",

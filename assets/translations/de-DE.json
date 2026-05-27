@@ -254,7 +254,6 @@
   "color_lightness.normal": "Normal",
   "color_lightness.lighter": "Heller",
 
-  "auto_scroll_to_active_song_mode.never": "Nie",
   "auto_scroll_to_active_song_mode.initial_page_load": "Beim initialen Laden der Seite",
   "auto_scroll_to_active_song_mode.video_change_all": "Bei jedem Video-Wechsel",
   "auto_scroll_to_active_song_mode.video_change_manual": "Nur bei händischem Video-Wechsel",
@@ -356,7 +355,7 @@
   "feature_group_header.autoCloseToasts": "Automatisches Toast-Schließen:",
   "feature_group_header.yesImStillThere": "Ja, ich bin noch da:",
   "feature_group_header.rememberSongTime": "Video-Zeit speichern:",
-  "feature_group_header.autoScrollToActiveSongMode": "Auto-Scrollen zu aktivem Song:",
+  "feature_group_header.autoScrollToActiveSong": "Auto-Scrollen zu aktivem Song:",
   "feature_group_header.autoLikeChannels": "Auto-Like Kanäle:",
   "feature_group_header.arrowKeySupport": "Pfeiltasten-Unterstützung:",
   "feature_group_header.frameSkip": "Frame-Sprung:",
@@ -450,7 +449,8 @@
   "feature_desc.rememberSongTimeReduction": "Wie viele Sekunden subtrahiert werden sollen, wenn die Zeit wiederhergestellt wird",
   "feature_helptext.rememberSongTimeReduction": "Wenn die Videozeit wiederhergestellt wird, wird diese Anzahl von Sekunden von der Zeit abgezogen, damit du mehr Kontext hast, wenn du dir den Teil anschaust oder anhörst, der unterbrochen wurde.",
   "feature_desc.rememberSongTimeMinPlayTime": "Anzahl der Sekunden, die ein Video mindestens abgespielt werden muss, damit die Zeit gespeichert wird",
-  "feature_desc.autoScrollToActiveSongMode": "Wann automatisch zum aktuellen Video in der Warteschlange gescrollt werden soll",
+  "feature_desc.autoScrollToActiveSongEnabled": "Automatisch zum aktuellen Video in der Warteschlange scrollen",
+  "feature_desc.autoScrollToActiveSongMode": "Wann zum aktuellen Video gescrollt werden soll",
   "feature_desc.yesImStillThere": "Automatisch das \"Bist du noch da?\" Popup schließen, das nach Inaktivität erscheint",
 
   "feature_desc.arrowKeySupport": "Benutze die Pfeiltasten um vor- und zurückzuspulen und die Lautstärke zu ändern",

@@ -251,7 +251,6 @@
   "color_lightness.normal": "सामान्य",
   "color_lightness.lighter": "हल्का",
 
-  "auto_scroll_to_active_song_mode.never": "कभी नहीं",
   "auto_scroll_to_active_song_mode.initial_page_load": "पहले पृष्ठ लोड पर केवल",
   "auto_scroll_to_active_song_mode.video_change_all": "हर वीडियो पर",
   "auto_scroll_to_active_song_mode.video_change_manual": "केवल मैन्युअल वीडियो परिवर्तन पर",
@@ -352,7 +351,7 @@
   "feature_group_header.autoCloseToasts": "स्वचालित टोस्ट बंद:",
   "feature_group_header.yesImStillThere": "हाँ, मैं अभी भी यहाँ हूँ:",
   "feature_group_header.rememberSongTime": "गाने की स्थिति याद रखें:",
-  "feature_group_header.autoScrollToActiveSongMode": "सक्रिय गीत तक स्वतः स्क्रॉल:",
+  "feature_group_header.autoScrollToActiveSong": "सक्रिय गीत तक स्वतः स्क्रॉल:",
   "feature_group_header.autoLikeChannels": "ऑटो-पसंद चैनल:",
   "feature_group_header.arrowKeySupport": "एरो की समर्थन:",
   "feature_group_header.frameSkip": "फ्रेम स्किप:",
@@ -454,8 +453,9 @@
   "feature_desc.rememberSongTimeReduction": "स्थिति पुनर्स्थापित करते समय कितने सेकंड घटाएं",
   "feature_helptext.rememberSongTimeReduction": "याद किए गए समय को पुनर्स्थापित करते समय, इतने सेकंड घटाए जाएंगे ताकि आपके पास अधिक संदर्भ हो।",
   "feature_desc.rememberSongTimeMinPlayTime": "वीडियो स्थिति याद रखने के लिए न्यूनतम प्लेबैक सेकंड",
-  "feature_desc.autoScrollToActiveSongMode": "कतार में वर्तमान वीडियो तक कब स्क्रॉल करें",
-  "feature_desc.yesImStillThere": "निष्क्रियता के बाद आने वाले \u0022क्या आप अभी भी वहाँ हैं?\u0022 पॉपअप को स्वचालित रूप से बंद करें",
+  "feature_desc.autoScrollToActiveSongEnabled": "कतार में वर्तमान में चल रहे वीडियो पर स्वचालित रूप से स्क्रॉल करें",
+  "feature_desc.autoScrollToActiveSongMode": "सक्रिय गीत तक स्वचालित रूप से स्क्रॉल करने का समय",
+  "feature_desc.yesImStillThere": "निष्क्रियता के बाद आने वाले \"क्या आप अभी भी वहाँ हैं?\" पॉपअप को स्वचालित रूप से बंद करें",
 
   "feature_desc.arrowKeySupport": "आगे और पीछे जाने के लिए और वॉल्यूम बदलने के लिए एरो कीज़ का इस्तेमाल करें",
   "feature_helptext.arrowKeySupport": "आम तौर पर आप \"H\" और \"L\" कीज़ के साथ सिर्फ़ 10 सेकंड के अंतराल पर आगे और पीछे जा सकते हैं। यह सुविधा आपको एरो कीज़ का इस्तेमाल करके आगे और पीछे जाने और वॉल्यूम बदलने की अनुमति देती है.\nछोड़ने के लिए सेकंड की मात्रा बदलने के लिए, नीचे दिए गए विकल्प का इस्तेमाल करें.",

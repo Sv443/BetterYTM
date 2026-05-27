@@ -254,7 +254,6 @@
   "color_lightness.normal": "Normal",
   "color_lightness.lighter": "Daha Açık",
 
-  "auto_scroll_to_active_song_mode.never": "Asla",
   "auto_scroll_to_active_song_mode.initial_page_load": "Sadece sayfa ilk yüklendiğinde",
   "auto_scroll_to_active_song_mode.video_change_all": "Her video değişiminde",
   "auto_scroll_to_active_song_mode.video_change_manual": "Sadece manuel video değişiminde",
@@ -356,7 +355,7 @@
   "feature_group_header.autoCloseToasts": "Otomatik Kapanan Bildirimler:",
   "feature_group_header.yesImStillThere": "Evet, Hala Buradayım:",
   "feature_group_header.rememberSongTime": "Şarkı Zamanını Hatırla:",
-  "feature_group_header.autoScrollToActiveSongMode": "Çalan Şarkıya Otomatik Kaydır:",
+  "feature_group_header.autoScrollToActiveSong": "Çalan Şarkıya Otomatik Kaydır:",
   "feature_group_header.autoLikeChannels": "Otomatik Beğenilen Kanallar:",
   "feature_group_header.arrowKeySupport": "Ok Tuşları Desteği:",
   "feature_group_header.frameSkip": "Kare Atlama:",
@@ -450,7 +449,8 @@
   "feature_desc.rememberSongTimeReduction": "Kaydedilmiş bir videonun zamanını geri yüklerken kaç saniye çıkarılmalı",
   "feature_helptext.rememberSongTimeReduction": "Hatırlanan video zamanı yüklenirken bu kadar saniye çıkartılacak siz de bu sayede bölünmüş kısmı tekrar izlerken daha fazla bilgi sahibi olacaksınız.",
   "feature_desc.rememberSongTimeMinPlayTime": "Hatırlanması için videonun en az izlenme zamanı",
-  "feature_desc.autoScrollToActiveSongMode": "Kuyrukta o anda oynatılan videoya ne zaman kaydırılmalı",
+  "feature_desc.autoScrollToActiveSongEnabled": "Çalan şarkıyı sırada otomatik olarak kaydır",
+  "feature_desc.autoScrollToActiveSongMode": "Çalan videoya ne zaman kaydırılmalı",
   "feature_desc.yesImStillThere": "Biraz hareketsizlikten sonra beliren \"Hala burada mısın?\" bildirimini otomatik olarak kapat",
 
   "feature_desc.arrowKeySupport": "İleri, geri ve ses değiştirmek için ok tuşlarını kullan",

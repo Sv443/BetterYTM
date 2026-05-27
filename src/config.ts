@@ -283,6 +283,9 @@ export const cfgMigrations: DataMigrationsDict = {
     // add extra thumbnailOverlayEnabled feature instead of combining it with thumbnailOverlayBehavior:
     oldData.thumbnailOverlayEnabled = oldData.thumbnailOverlayBehavior !== "never";
 
+    // @ts-expect-error this one is also newly split:
+    oldData.autoScrollToActiveSongEnabled = oldData.autoScrollToActiveSongMode !== "never";
+
     return useNewDefaults(oldData, [
       "thumbnailOverlayBlurredDuplicateBackground",
     ]);

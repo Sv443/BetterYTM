@@ -105,7 +105,8 @@ export async function initAutoScrollToActiveSong() {
   // TODO: refactor to trigger on queue changes instead of watchID
 
   siteEvents.on("watchIdChanged", (_, oldId) => {
-    if(!oldId)
+    // only trigger on subsequent video changes (oldId is null initially):
+    if(!oldId || !getFeature("autoScrollToActiveSongEnabled"))
       return;
     const isManualChange = prevTime < prevVidMaxTime - 1;
     if(["videoChangeManual", "videoChangeAll"].includes(getFeature("autoScrollToActiveSongMode")) && isManualChange)
@@ -114,7 +115,7 @@ export async function initAutoScrollToActiveSong() {
       scrollToCurrentSongInQueue();
   });
 
-  if(getFeature("autoScrollToActiveSongMode") !== "never" && initialAutoScrollToActiveSong) {
+  if(getFeature("autoScrollToActiveSongEnabled") && initialAutoScrollToActiveSong) {
     initialAutoScrollToActiveSong = false;
     scrollToCurrentSongInQueue();
   }
@@ -123,7 +124,7 @@ export async function initAutoScrollToActiveSong() {
 //#region remember times
 
 type RemTimeObj = {
-  /** Watch ID */
+  /** Video ID */
   id: string;
   /** Time of the song/video in seconds */
   time: number;

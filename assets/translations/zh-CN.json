@@ -243,7 +243,6 @@
   "color_lightness.normal": "正常",
   "color_lightness.lighter": "更亮",
 
-  "auto_scroll_to_active_song_mode.never": "从不",
   "auto_scroll_to_active_song_mode.initial_page_load": "仅在第一次加载页面时",
   "auto_scroll_to_active_song_mode.video_change_all": "在每个视频更改时",
   "auto_scroll_to_active_song_mode.video_change_manual": "仅在手动更改视频时",
@@ -341,7 +340,7 @@
   "feature_group_header.autoCloseToasts": "自动关闭提示：",
   "feature_group_header.yesImStillThere": "是的，我还在：",
   "feature_group_header.rememberSongTime": "记忆视频时间：",
-  "feature_group_header.autoScrollToActiveSongMode": "自动滚动到当前歌曲：",
+  "feature_group_header.autoScrollToActiveSong": "自动滚动到当前歌曲：",
   "feature_group_header.autoLikeChannels": "自动点赞频道：",
   "feature_group_header.arrowKeySupport": "方向键支持：",
   "feature_group_header.frameSkip": "逐帧跳过：",
@@ -447,8 +446,10 @@
   "feature_desc.rememberSongTimeReduction": "恢复记彭的视频时间时应减去的秒数",
   "feature_helptext.rememberSongTimeReduction": "恢复记彭的视频时间时，会从目标时间点减去这个秒数，让您自然地回到中断之处。",
   "feature_desc.rememberSongTimeMinPlayTime": "视频需要播放的最少秒数才能记彭时间",
-  "feature_desc.autoScrollToActiveSongMode": "何时滚动到队列中当前播放的视频",
+  "feature_desc.autoScrollToActiveSongEnabled": "在队列中自动滚动到当前播放的视频",
+  "feature_desc.autoScrollToActiveSongMode": "何时滚动到当前播放的视频",
   "feature_desc.yesImStillThere": "自动关闭一段时间不活动后出现的\"您还在吗？\"弹窗",
+
   "feature_desc.arrowKeySupport": "使用箭头键快进和快退以及调节音量",
   "feature_helptext.arrowKeySupport": "通常情况下，您只能使用“H”和“L”键以固定的 10 秒间隔快进和快退。此功能允许您使用箭头键快进和快退以及调节音量。\n要更改跳过的秒数，请使用选项下方。",
   "feature_desc.arrowKeySkipBy": "使用箭头键跳过多少秒",

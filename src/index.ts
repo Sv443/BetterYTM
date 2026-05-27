@@ -350,7 +350,7 @@ async function onDomLoad() {
       if(feats.closeToastsTimeout > 0)
         ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
-      ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
+      ftInit.push(["autoScrollToActiveSong", initAutoScrollToActiveSong()]);
 
       ftInit.push(["yesImStillThere", initStillThere()]);
 

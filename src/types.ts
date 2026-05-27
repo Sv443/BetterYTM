@@ -936,8 +936,10 @@ export interface FeatureConfig {
   rememberSongTimeReduction: number;
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
+  /** Whether to automatically scroll to the active song in the queue */
+  autoScrollToActiveSongEnabled: boolean;
   /** When to automatically scroll to the active song in the queue */
-  autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
+  autoScrollToActiveSongMode: "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
   /** Whether to automatically click the "Yes" button on the "Are you still there?" popup */
   yesImStillThere: boolean;
 

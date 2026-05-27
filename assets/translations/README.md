@@ -19,13 +19,13 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 |  | [`en-US`](./en-US.json) | `516` (default locale) |  |
 | ✅ | [`de-DE`](./de-DE.json) | `516/516` (100%) | ─ |
 |  | [`en-GB`](./en-GB.json) | `516/516` (100%) | `en-US` |
-| ✅ | [`es-ES`](./es-ES.json) | `516/516` (100%) | ─ |
-| ✅ | [`fr-FR`](./fr-FR.json) | `516/516` (100%) | ─ |
-| ✅ | [`hi-IN`](./hi-IN.json) | `516/516` (100%) | ─ |
-| ✅ | [`ja-JP`](./ja-JP.json) | `516/516` (100%) | ─ |
-| ✅ | [`pt-BR`](./pt-BR.json) | `516/516` (100%) | ─ |
-| ✅ | [`tr-TR`](./tr-TR.json) | `516/516` (100%) | ─ |
-| ✅ | [`zh-CN`](./zh-CN.json) | `516/516` (100%) | ─ |
+| ⚠ | [`es-ES`](./es-ES.json) | `515/516` (99.8%) | ─ |
+| ⚠ | [`fr-FR`](./fr-FR.json) | `515/516` (99.8%) | ─ |
+| ⚠ | [`hi-IN`](./hi-IN.json) | `515/516` (99.8%) | ─ |
+| ⚠ | [`ja-JP`](./ja-JP.json) | `515/516` (99.8%) | ─ |
+| ⚠ | [`pt-BR`](./pt-BR.json) | `515/516` (99.8%) | ─ |
+| ⚠ | [`tr-TR`](./tr-TR.json) | `515/516` (99.8%) | ─ |
+| ⚠ | [`zh-CN`](./zh-CN.json) | `515/516` (99.8%) | ─ |
 
 > <sub>✅ Fully translated</sub><br>
 > <sub>⚠ Almost fully translated</sub><br>
@@ -39,4 +39,59 @@ This means to figure out which keys are untranslated, you will need to manually 
 <br>
 
 ### Missing keys:
-No missing keys
+
+<details><summary><code>es-ES</code> - 1 missing key <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `feature_desc.autoScrollToActiveSongEnabled` | `Automatically scroll to the currently playing video in the queue` |
+
+<br></details>
+
+<details><summary><code>fr-FR</code> - 1 missing key <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `feature_desc.autoScrollToActiveSongEnabled` | `Automatically scroll to the currently playing video in the queue` |
+
+<br></details>
+
+<details><summary><code>hi-IN</code> - 1 missing key <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `feature_desc.autoScrollToActiveSongEnabled` | `Automatically scroll to the currently playing video in the queue` |
+
+<br></details>
+
+<details><summary><code>ja-JP</code> - 1 missing key <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `feature_desc.autoScrollToActiveSongEnabled` | `Automatically scroll to the currently playing video in the queue` |
+
+<br></details>
+
+<details><summary><code>pt-BR</code> - 1 missing key <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `feature_desc.autoScrollToActiveSongEnabled` | `Automatically scroll to the currently playing video in the queue` |
+
+<br></details>
+
+<details><summary><code>tr-TR</code> - 1 missing key <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `feature_desc.autoScrollToActiveSongEnabled` | `Automatically scroll to the currently playing video in the queue` |
+
+<br></details>
+
+<details><summary><code>zh-CN</code> - 1 missing key <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `feature_desc.autoScrollToActiveSongEnabled` | `Automatically scroll to the currently playing video in the queue` |
+
+<br></details>
