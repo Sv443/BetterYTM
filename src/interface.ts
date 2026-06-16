@@ -8,7 +8,7 @@ import { Logger } from "@util/Logger.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
-import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
+import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, fuzzyFetchLyricsInfo, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
@@ -178,13 +178,15 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getDefaultFeatures: () => structuredClone(cfgDefaultData),
 
   // lyrics:
+  sanitizeArtists,
+  sanitizeSong,
   fetchLyricsUrlTop,
+  // TODO: document:
+  fuzzyFetchLyricsInfo,
   getLyricsCacheEntry,
   // TODO:
   // getLyricsCache: getLyricsCacheInterface,
   // saveLyricsCache: saveLyricsCacheInterface,
-  sanitizeArtists,
-  sanitizeSong,
 
   // auto-like:
   /*🔒*/ getAutoLikeData: getAutoLikeDataInterface,

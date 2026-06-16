@@ -382,3 +382,24 @@ export function splitVideoTitle(title: string) {
 
   return { artist, song: rest.join("-") };
 }
+
+/**
+ * Tries to rearrange the passed song and artist items until a fitting lyrics URL is fetched.  
+ * Can send quite a lot of requests, so use this sparingly and prefer not to use it in an automatic context!  
+ *   
+ * Example:  
+ * `bruteForceLyricsInfo(["Song Name (Foo Remix)"], ["Artist Name", "Alternative Artist Name"])` would get split into `[["Song Name", "(Foo Remix)"], ["Artist Name", "Alternative Artist Name"]]` and combined in these ways (in priority order):
+ * 1. `Artist Name - Song Name (Foo Remix)`
+ * 2. `Alt.Artist Name - Song Name (Foo Remix)`
+ * - if `songName` doesn't contain hyphen:
+ *   1. `Artist Name - Song Name`
+ *   2. `Alt.Artist Name - Song Name`
+ * - if `songName` contains hyphen:
+ *   1. `Song Name` (barely sanitized)
+ */
+export function fuzzyFetchLyricsInfo(songName: string, artistNames?: string | [artist: string, altArtist: string]) {
+  void ["TODO:", songName, artistNames];
+  // Note:
+  // Execute best-guess fetches in parallel first, then parallelize the rest all together if that one fails to find an adequate match.
+  // Check for matches by arranging the given items, and weigh them by taking the priority order into account, as well as how much sanitation had to be done until a match was found.
+}

@@ -5,7 +5,7 @@ import type { addSelectorListener } from "@/observers.ts";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers } from "@util/index.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
-import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
+import type { fetchLyricsUrlTop, fuzzyFetchLyricsInfo, sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
 import type { getLyricsCacheEntry } from "@feat/lyricsCache.ts";
 import type { isIgnoredInputElement } from "@feat/input.ts";
 import type { BytmDialog } from "@comp/BytmDialog.ts";
@@ -553,6 +553,8 @@ export type InterfaceFunctions = {
   sanitizeSong: typeof sanitizeSong;
   /** Fetches the lyrics URL of the top search result for the provided song and artist. Before a request is sent, the cache is checked for a match. */
   fetchLyricsUrlTop: typeof fetchLyricsUrlTop;
+  /** Tries to rearrange the passed song and artist items until a fitting lyrics URL is fetched. Can send quite a lot of requests, so use this sparingly! */
+  fuzzyFetchLyricsInfo: typeof fuzzyFetchLyricsInfo;
   /** Returns the lyrics cache entry for the provided song and artist, if there is one. Never sends a request on its own. */
   getLyricsCacheEntry: typeof getLyricsCacheEntry;
 
