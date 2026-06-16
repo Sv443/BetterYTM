@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6a075bf0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9471165e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "6a075bf0";
+	var buildNumber$1 = "9471165e";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1779883944323;
+	var buildTimestamp = 1781631476131;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -1103,9 +1103,11 @@
 	//#endregion
 	//#region src/utils/Logger.ts
 	/**
-	* Class used for all kinds of logging.  
-	* Each log has a category, severity, timestamp, and arguments, so that they can be filtered and displayed neatly.  
-	* All instances share a single static log store accessible via {@linkcode Logger.logs}.
+	* Class used for all kinds of ephemeral logging. Log data does *not* persist across sessions.  
+	* Each log has a category, severity, timestamp, and arguments, so that they can be filtered, serialized and displayed neatly.  
+	*   
+	* All instances share a single static log store accessible via {@linkcode Logger.logs}.  
+	* Custom logging infrastructure should push new log lines using the static method {@linkcode Logger.pushLog()}, so that a BYTM log download will include the custom logs as well.
 	*/
 	var Logger = class Logger {
 		category;
@@ -1115,10 +1117,13 @@
 		static logs = [];
 		/** Total log lines ever pushed (including truncated ones). */
 		static logLines = 0;
-		/** Max number of log lines kept in memory. */
+		/** Max number of log lines kept in the {@linkcode Logger.logs} memory. */
 		static maxLogLines = 2500;
-		consPrefix;
-		consPrefixDbg;
+		/** Common prefix for each console line. Allows easy filtering of log lines. */
+		conPrefix;
+		/** Common prefix for each console line of type DEBUG (using the method {@linkcode Logger.dbg()}). Allows easy filtering of debug info. */
+		conPrefixDbg;
+		/** Callback that gets called when the {@linkcode Logger.error()} method is called. This is used for showing a toast notification for each error. */
 		onError;
 		/**
 		* Class used for all kinds of logging.  
@@ -1127,11 +1132,15 @@
 		*/
 		constructor(category, options) {
 			this.category = category;
-			this.consPrefix = `[${scriptInfo$1.name}/${category}]`;
-			this.consPrefixDbg = `[${scriptInfo$1.name}/${category}/#DEBUG]`;
+			this.conPrefix = `[${scriptInfo$1.name}/${category}]`;
+			this.conPrefixDbg = `[${scriptInfo$1.name}/${category}/#DEBUG#]`;
 			this.onError = options?.onError ?? null;
 		}
-		/** Pushes a new line to the shared {@linkcode Logger.logs} array. */
+		/**  
+		* Pushes a new line to the globally shared log memory (the {@linkcode Logger.logs} array).  
+		* Also increases the log line counter {@linkcode Logger.logLines} and truncates logs if they are above {@linkcode Logger.maxLogLines}.  
+		* When adding custom logging systems, this method should be used to make BetterYTM aware of the custom logs.
+		*/
 		static pushLog(category, type, time, ...args) {
 			Logger.logs.push([
 				category,
@@ -1178,7 +1187,7 @@
 		/** Returns a string representation of all logs, formatted for downloading as a file. */
 		static serializeLogs() {
 			const longestLogType = Math.max(...Logger.logs.map(([, type]) => type.length));
-			return (Logger.logs.length >= Logger.maxLogLines ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines} oldest lines were truncated.\n\n` : "") + [...Logger.logs].reverse().reduce((acc, [category, type, time, ...args]) => {
+			return (Logger.logs.length >= Logger.maxLogLines ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines - Logger.maxLogLines} oldest lines were truncated.\n\n` : "") + [...Logger.logs].reverse().reduce((acc, [category, type, time, ...args]) => {
 				if (args.length === 0) return acc;
 				const timestamp = new Date(time).toISOString();
 				const typeTag = `[${type}]`.padEnd(longestLogType + 2, " ");
@@ -1191,45 +1200,45 @@
 		}
 		/**
 		* Logs all passed values to the console, as long as the log level is sufficient.  
-		* @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+		* @param args Last parameter is log level (0 = Debug, any other value = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert it to a string if it shouldn't be.
 		*/
 		log(...args) {
 			Logger.pushLog(this.category, "LOG", Date.now(), ...args);
-			if (Logger.curLogLevel <= Logger.getLogLevel(args)) console.log(this.consPrefix, ...args);
+			if (Logger.curLogLevel <= Logger.getLogLevel(args)) console.log(this.conPrefix, ...args);
 		}
 		/**
 		* Logs all passed values to the console as info, as long as the log level is sufficient.  
-		* @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+		* @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert it to a string if it shouldn't be.
 		*/
 		info(...args) {
 			Logger.pushLog(this.category, "INFO", Date.now(), ...args);
-			if (Logger.curLogLevel <= Logger.getLogLevel(args)) console.info(this.consPrefix, ...args);
+			if (Logger.curLogLevel <= Logger.getLogLevel(args)) console.info(this.conPrefix, ...args);
 		}
 		/** Logs all passed values to the console as a warning, no matter the log level. */
 		warn(...args) {
 			Logger.pushLog(this.category, "WARN", Date.now(), ...args);
-			console.warn(this.consPrefix, ...args);
+			console.warn(this.conPrefix, ...args);
 		}
 		/** Logs all passed values to the console as an error, no matter the log level. */
 		error(...args) {
 			Logger.pushLog(this.category, "ERROR", Date.now(), ...args);
-			console.error(this.consPrefix, ...args);
+			console.error(this.conPrefix, ...args);
 			try {
 				this.onError?.(...args);
 			} catch (e) {
 				Logger.pushLog(this.category, "ERROR", Date.now(), "Error while showing error toast:", e);
-				console.error(this.consPrefix, "Error while showing error toast:", e);
+				console.error(this.conPrefix, "Error while showing error toast:", e);
 			}
 		}
 		/** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
 		errorNoToast(...args) {
 			Logger.pushLog(this.category, "ERROR", Date.now(), ...args);
-			console.error(this.consPrefix, ...args);
+			console.error(this.conPrefix, ...args);
 		}
 		/** Logs all passed values to the console with a debug-specific prefix. */
 		dbg(...args) {
 			Logger.pushLog(this.category, "DBG", Date.now(), ...args);
-			console.log(this.consPrefixDbg, ...args);
+			console.log(this.conPrefixDbg, ...args);
 		}
 	};
 	var package_default = {
@@ -3020,6 +3029,21 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			song: rest.join("-")
 		};
 	}
+	/**
+	* Tries to rearrange the passed song and artist items until a fitting lyrics URL is fetched.  
+	* Can send quite a lot of requests, so use this sparingly and prefer not to use it in an automatic context!  
+	*   
+	* Example:  
+	* `bruteForceLyricsInfo(["Song Name (Foo Remix)"], ["Artist Name", "Alternative Artist Name"])` would get split into `[["Song Name", "(Foo Remix)"], ["Artist Name", "Alternative Artist Name"]]` and combined in these ways (in priority order):
+	* 1. `Artist Name - Song Name (Foo Remix)`
+	* 2. `Alt.Artist Name - Song Name (Foo Remix)`
+	* - if `songName` doesn't contain hyphen:
+	*   1. `Artist Name - Song Name`
+	*   2. `Alt.Artist Name - Song Name`
+	* - if `songName` contains hyphen:
+	*   1. `Song Name` (barely sanitized)
+	*/
+	function fuzzyFetchLyricsInfo(songName, artistNames) {}
 	//#endregion
 	//#region src/dialogs/featHelp.ts
 	var featHelpDialog = null;
@@ -4623,15 +4647,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		});
 		return itemsAmt;
 	}
+	var trackParams = ["si", "is"];
+	var trackParamRegex = new RegExp(`(?:&|\\?)(?:${trackParams.join("|")})=`, "i");
 	/** Removes the ?si tracking parameter from share URLs */
 	async function initRemShareTrackParam() {
 		const removeSiParam = (inputElem) => {
 			try {
 				if (getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all") return;
-				if (!inputElem.value.match(/(&|\?)(?:si|is)=/i)) return;
+				if (!inputElem.value.match(trackParamRegex)) return;
 				const url = new URL(inputElem.value);
-				url.searchParams.delete("si");
-				url.searchParams.delete("is");
+				for (const p of trackParams) url.searchParams.delete(p);
 				inputElem.value = String(url);
 				loggers.layout.log(`Removed tracking parameter from share link: ${url}`);
 			} catch (err) {
@@ -5480,10 +5505,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		getFeatures: getFeaturesInterface,
 		saveFeatures: saveFeaturesInterface,
 		getDefaultFeatures: () => structuredClone(cfgDefaultData),
-		fetchLyricsUrlTop,
-		getLyricsCacheEntry,
 		sanitizeArtists,
 		sanitizeSong,
+		fetchLyricsUrlTop,
+		fuzzyFetchLyricsInfo,
+		getLyricsCacheEntry,
 		getAutoLikeData: getAutoLikeDataInterface,
 		saveAutoLikeData: saveAutoLikeDataInterface,
 		fetchVideoVotes,
@@ -6788,15 +6814,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
 	async function fixThemeSong() {
 		try {
-			const cssVarName = (() => {
-				switch (getFeature("themeSongLightness")) {
-					default:
-					case "darker": return "--ts-palette-darkmuted-hex";
-					case "normal": return "--ts-palette-muted-hex";
-					case "lighter": return "--ts-palette-lightmuted-hex";
-				}
-			})();
-			document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
+			const varNames = {
+				darker: "--ts-palette-darkmuted-hex",
+				normal: "--ts-palette-muted-hex",
+				lighter: "--ts-palette-lightmuted-hex"
+			};
+			document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${varNames[getFeature("themeSongLightness")] ?? varNames.darker})`);
 		} catch (err) {
 			loggers.integration.error("Failed to set ThemeSong integration color lightness:", err);
 		}
@@ -6804,7 +6827,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Sets the opacity of the ThemeSong visualizer according to the configured opacity value */
 	async function setThemeSongVisualizerOpacity() {
 		if (!await addStyleFromResource("css-themesong_visualizer_opacity", (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2)))) loggers.integration.error("Couldn't add ThemeSong visualizer opacity style");
-		else loggers.integration.log("Set ThemeSong visualizer opacity to " + getFeature("themeSongVisualizerOpacity") + "%");
+		else loggers.integration.log(`Set ThemeSong visualizer opacity to ${getFeature("themeSongVisualizerOpacity")}%`);
 	}
 	//#endregion
 	//#region src/features/songLists.ts
