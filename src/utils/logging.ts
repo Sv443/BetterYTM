@@ -7,7 +7,7 @@ import { t } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { downloadFile } from "@util/dom.ts";
 import { LogLevel } from "@/types.ts";
-import { Logger, type LoggerOptions } from "@util/Logger.ts";
+import { Logger, loggerCategoryMapping, type LoggerOptions } from "@util/Logger.ts";
 import packageJson from "@root/package.json" with { type: "json" };
 
 export type { LogLine } from "@util/Logger.ts";
@@ -36,32 +36,10 @@ const loggerOpts: LoggerOptions = {
 };
 
 /** Pre-instantiated Logger instances, one per category. */
-export const loggers = {
-  uncategorized: new Logger("Uncategorized", loggerOpts),
-
-  autoLike: new Logger("AutoLike", loggerOpts),
-  behavior: new Logger("Behavior", loggerOpts),
-  broadcast: new Logger("Broadcast", loggerOpts),
-  command: new Logger("Command", loggerOpts),
-  configMenu: new Logger("ConfigMenu", loggerOpts),
-  data: new Logger("Data", loggerOpts),
-  dialog: new Logger("Dialog", loggerOpts),
-  feature: new Logger("Feature", loggerOpts),
-  hotkey: new Logger("Hotkey", loggerOpts),
-  init: new Logger("Init", loggerOpts),
-  input: new Logger("Input", loggerOpts),
-  integration: new Logger("Integration", loggerOpts),
-  layout: new Logger("Layout", loggerOpts),
-  lyrics: new Logger("Lyrics", loggerOpts),
-  misc: new Logger("Misc", loggerOpts),
-  performance: new Logger("Performance", loggerOpts),
-  plugin: new Logger("Plugin", loggerOpts),
-  selectorObserver: new Logger("SelectorObserver", loggerOpts),
-  siteEvent: new Logger("SiteEvent", loggerOpts),
-  translation: new Logger("Translation", loggerOpts),
-  volume: new Logger("Volume", loggerOpts),
-  xhr: new Logger("XHR", loggerOpts),
-} as const;
+export const loggers = Object.entries(loggerCategoryMapping).reduce((a, [catId, catName]) => ({
+  ...a,
+  [catId as keyof typeof loggerCategoryMapping]: new Logger(catName, loggerOpts),
+}), {} as Record<keyof typeof loggerCategoryMapping, Logger>);
 
 /** Returns a string representation of all logs across all Logger instances, formatted for downloading as a file. */
 export const serializeLogs = Logger.serializeLogs.bind(Logger);

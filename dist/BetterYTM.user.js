@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9471165e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@128a924e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "9471165e";
+	var buildNumber$1 = "128a924e";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1781631476131;
+	var buildTimestamp = 1781632110042;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -1102,6 +1102,32 @@
 	}
 	//#endregion
 	//#region src/utils/Logger.ts
+	/** Mapping of predefined {@linkcode LogCategory} entries. */
+	var loggerCategoryMapping = {
+		uncategorized: "Uncategorized",
+		autoLike: "AutoLike",
+		behavior: "Behavior",
+		broadcast: "Broadcast",
+		command: "Command",
+		configMenu: "ConfigMenu",
+		data: "Data",
+		dialog: "Dialog",
+		feature: "Feature",
+		hotkey: "Hotkey",
+		init: "Init",
+		input: "Input",
+		integration: "Integration",
+		layout: "Layout",
+		lyrics: "Lyrics",
+		misc: "Misc",
+		performance: "Performance",
+		plugin: "Plugin",
+		observer: "Observer",
+		siteEvent: "SiteEvent",
+		translation: "Translation",
+		volume: "Volume",
+		xhr: "XHR"
+	};
 	/**
 	* Class used for all kinds of ephemeral logging. Log data does *not* persist across sessions.  
 	* Each log has a category, severity, timestamp, and arguments, so that they can be filtered, serialized and displayed neatly.  
@@ -1191,10 +1217,12 @@
 				if (args.length === 0) return acc;
 				const timestamp = new Date(time).toISOString();
 				const typeTag = `[${type}]`.padEnd(longestLogType + 2, " ");
+				const longestCategory = Math.max(...Object.values(loggerCategoryMapping).map((v) => v.length));
+				const categoryTag = `[${category}]`.padEnd(longestCategory + 2, " ");
 				try {
-					return `[${timestamp}] ${typeTag} [${category}] ${args.map((a) => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
+					return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map((a) => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
 				} catch {
-					return `[${timestamp}] ${typeTag} [${category}] ${args.map((a) => typeof a === "object" && a && "toString" in a ? a.toString() : String(a)).join(" ")}\n${acc}`;
+					return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map((a) => typeof a === "object" && a && "toString" in a ? a.toString() : String(a)).join(" ")}\n${acc}`;
 				}
 			}, "");
 		}
@@ -1396,31 +1424,10 @@
 		if (getFeature("showToastOnGenericError")) showErrToast(args.find((a) => a instanceof Error)?.name ?? t("error"), ...args);
 	} };
 	/** Pre-instantiated Logger instances, one per category. */
-	var loggers = {
-		uncategorized: new Logger("Uncategorized", loggerOpts),
-		autoLike: new Logger("AutoLike", loggerOpts),
-		behavior: new Logger("Behavior", loggerOpts),
-		broadcast: new Logger("Broadcast", loggerOpts),
-		command: new Logger("Command", loggerOpts),
-		configMenu: new Logger("ConfigMenu", loggerOpts),
-		data: new Logger("Data", loggerOpts),
-		dialog: new Logger("Dialog", loggerOpts),
-		feature: new Logger("Feature", loggerOpts),
-		hotkey: new Logger("Hotkey", loggerOpts),
-		init: new Logger("Init", loggerOpts),
-		input: new Logger("Input", loggerOpts),
-		integration: new Logger("Integration", loggerOpts),
-		layout: new Logger("Layout", loggerOpts),
-		lyrics: new Logger("Lyrics", loggerOpts),
-		misc: new Logger("Misc", loggerOpts),
-		performance: new Logger("Performance", loggerOpts),
-		plugin: new Logger("Plugin", loggerOpts),
-		selectorObserver: new Logger("SelectorObserver", loggerOpts),
-		siteEvent: new Logger("SiteEvent", loggerOpts),
-		translation: new Logger("Translation", loggerOpts),
-		volume: new Logger("Volume", loggerOpts),
-		xhr: new Logger("XHR", loggerOpts)
-	};
+	var loggers = Object.entries(loggerCategoryMapping).reduce((a, [catId, catName]) => ({
+		...a,
+		[catId]: new Logger(catName, loggerOpts)
+	}), {});
 	/** Returns a string representation of all logs across all Logger instances, formatted for downloading as a file. */
 	var serializeLogs = Logger.serializeLogs.bind(Logger);
 	/** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
@@ -1506,14 +1513,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}
 			globservers[observerName].addListener(selector, options);
 		} catch (err) {
-			loggers.selectorObserver.error(`Couldn't add listener to globserver '${observerName}':`, err);
+			loggers.observer.error(`Couldn't add listener to globserver '${observerName}':`, err);
 		}
 	}
 	/** Returns a proxy function that enables and bootstraps the SelectorObserver instance. */
 	function getEnableFn(observer) {
 		return () => {
 			observer.enable();
-			loggers.selectorObserver.log("Enabled observer for base element:", observer.baseElement);
+			loggers.observer.log("Enabled observer for base element:", observer.baseElement);
 		};
 	}
 	/** Call after DOM load to initialize all SelectorObserver instances */
@@ -1525,7 +1532,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			defaultDebounce: cfg.defaultObserverDebounce,
 			defaultDebounceType: "immediate"
 		};
-		for (const observer of Object.values(globservers)) observer.on("enabled", () => loggers.selectorObserver.info("Observer enabled for base element", observer.baseElement));
+		for (const observer of Object.values(globservers)) observer.on("enabled", () => loggers.observer.info("Observer enabled for base element", observer.baseElement));
 		try {
 			globservers.body = new _sv443_network_userutils.SelectorObserver(document.body, {
 				...defaultObserverOptions,
@@ -1656,7 +1663,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			emitInterface("bytm:observersReady");
 			(0, _sv443_network_userutils.getUnsafeWindow)().BYTM.globservers = globservers;
 		} catch (err) {
-			loggers.selectorObserver.error("Failed to initialize observers:", err);
+			loggers.observer.error("Failed to initialize observers:", err);
 		}
 	}
 	//#endregion

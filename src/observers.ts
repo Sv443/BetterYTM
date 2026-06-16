@@ -83,7 +83,7 @@ export function addSelectorListener<
     globservers[observerName].addListener(selector, options);
   }
   catch(err) {
-    loggers.selectorObserver.error(`Couldn't add listener to globserver '${observerName}':`, err);
+    loggers.observer.error(`Couldn't add listener to globserver '${observerName}':`, err);
   }
 }
 
@@ -91,7 +91,7 @@ export function addSelectorListener<
 function getEnableFn(observer: SelectorObserver): () => void {
   return () => {
     observer.enable();
-    loggers.selectorObserver.log("Enabled observer for base element:", observer.baseElement);
+    loggers.observer.log("Enabled observer for base element:", observer.baseElement);
   };
 }
 
@@ -108,7 +108,7 @@ export function initObservers(cfg: FeatureConfig) {
   } satisfies Required<Pick<SelectorObserverOptions, "disableOnNoListeners" | "enableOnAddListener" | "defaultDebounce" | "defaultDebounceType">>;
 
   for(const observer of Object.values(globservers))
-    observer.on("enabled", () => loggers.selectorObserver.info("Observer enabled for base element", observer.baseElement));
+    observer.on("enabled", () => loggers.observer.info("Observer enabled for base element", observer.baseElement));
 
   try {
     //#region # both sites
@@ -383,6 +383,6 @@ export function initObservers(cfg: FeatureConfig) {
     getUnsafeWindow().BYTM.globservers = globservers;
   }
   catch(err) {
-    loggers.selectorObserver.error("Failed to initialize observers:", err);
+    loggers.observer.error("Failed to initialize observers:", err);
   }
 }

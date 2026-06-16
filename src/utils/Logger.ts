@@ -23,7 +23,7 @@ export type LogCategory = LooseUnion<
   | "Misc"
   | "Performance"
   | "Plugin"
-  | "SelectorObserver"
+  | "Observer"
   | "SiteEvent"
   | "Translation"
   | "Volume"
@@ -41,6 +41,33 @@ export type LoggerOptions = {
   /** Called when an error is logged via {@linkcode Logger.error}. */
   onError?: (...args: unknown[]) => void;
 };
+
+/** Mapping of predefined {@linkcode LogCategory} entries. */
+export const loggerCategoryMapping = {
+  uncategorized: "Uncategorized",
+  autoLike: "AutoLike",
+  behavior: "Behavior",
+  broadcast: "Broadcast",
+  command: "Command",
+  configMenu: "ConfigMenu",
+  data: "Data",
+  dialog: "Dialog",
+  feature: "Feature",
+  hotkey: "Hotkey",
+  init: "Init",
+  input: "Input",
+  integration: "Integration",
+  layout: "Layout",
+  lyrics: "Lyrics",
+  misc: "Misc",
+  performance: "Performance",
+  plugin: "Plugin",
+  observer: "Observer",
+  siteEvent: "SiteEvent",
+  translation: "Translation",
+  volume: "Volume",
+  xhr: "XHR",
+} as const satisfies Record<string, LogCategory>;
 
 /**
  * Class used for all kinds of ephemeral logging. Log data does *not* persist across sessions.  
@@ -168,11 +195,14 @@ export class Logger {
       const timestamp = new Date(time).toISOString();
       const typeTag = `[${type}]`.padEnd(longestLogType + 2, " ");
 
+      const longestCategory = Math.max(...Object.values(loggerCategoryMapping).map((v) => v.length));
+      const categoryTag = `[${category}]`.padEnd(longestCategory + 2, " ");
+
       try {
-        return `[${timestamp}] ${typeTag} [${category}] ${args.map(a => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
+        return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map(a => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
       }
       catch {
-        return `[${timestamp}] ${typeTag} [${category}] ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
+        return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
       }
     }, "");
   }
