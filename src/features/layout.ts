@@ -461,7 +461,12 @@ function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
 
 //#region share track param
 
-// TODO:FIXME: stopped working on YT
+const trackParams = [
+  "si",
+  "is",
+] as const satisfies string[];
+
+const trackParamRegex = new RegExp(`(?:&|\\?)(?:${trackParams.join("|")})=`, "i");
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
@@ -469,12 +474,12 @@ export async function initRemShareTrackParam() {
     try {
       if(getFeature("removeShareTrackingParamSites") !== getDomain() && getFeature("removeShareTrackingParamSites") !== "all")
         return;
-      if(!inputElem.value.match(/(&|\?)(?:si|is)=/i))
+      if(!inputElem.value.match(trackParamRegex))
         return;
 
       const url = new URL(inputElem.value);
-      url.searchParams.delete("si");
-      url.searchParams.delete("is");
+      for(const p of trackParams)
+        url.searchParams.delete(p);
       inputElem.value = String(url);
 
       loggers.layout.log(`Removed tracking parameter from share link: ${url}`);

@@ -43,9 +43,11 @@ export type LoggerOptions = {
 };
 
 /**
- * Class used for all kinds of logging.  
- * Each log has a category, severity, timestamp, and arguments, so that they can be filtered and displayed neatly.  
- * All instances share a single static log store accessible via {@linkcode Logger.logs}.
+ * Class used for all kinds of ephemeral logging. Log data does *not* persist across sessions.  
+ * Each log has a category, severity, timestamp, and arguments, so that they can be filtered, serialized and displayed neatly.  
+ *   
+ * All instances share a single static log store accessible via {@linkcode Logger.logs}.  
+ * Custom logging infrastructure should push new log lines using the static method {@linkcode Logger.pushLog()}, so that a BYTM log download will include the custom logs as well.
  */
 export class Logger {
   public readonly category: LogCategory;
@@ -59,11 +61,14 @@ export class Logger {
   /** Total log lines ever pushed (including truncated ones). */
   public static logLines = 0;
 
-  /** Max number of log lines kept in memory. */
+  /** Max number of log lines kept in the {@linkcode Logger.logs} memory. */
   public static readonly maxLogLines = 2_500;
 
-  private readonly consPrefix: string;
-  private readonly consPrefixDbg: string;
+  /** Common prefix for each console line. Allows easy filtering of log lines. */
+  private readonly conPrefix: string;
+  /** Common prefix for each console line of type DEBUG (using the method {@linkcode Logger.dbg()}). Allows easy filtering of debug info. */
+  private readonly conPrefixDbg: string;
+  /** Callback that gets called when the {@linkcode Logger.error()} method is called. This is used for showing a toast notification for each error. */
   private readonly onError: ((...args: unknown[]) => void) | null;
 
   /**
@@ -73,14 +78,18 @@ export class Logger {
    */
   constructor(category: LogCategory, options?: LoggerOptions) {
     this.category = category;
-    this.consPrefix = `[${scriptInfo.name}/${category}]`;
-    this.consPrefixDbg = `[${scriptInfo.name}/${category}/#DEBUG]`;
+    this.conPrefix = `[${scriptInfo.name}/${category}]`;
+    this.conPrefixDbg = `[${scriptInfo.name}/${category}/#DEBUG#]`;
     this.onError = options?.onError ?? null;
   }
 
   //#region static helpers
 
-  /** Pushes a new line to the shared {@linkcode Logger.logs} array. */
+  /**  
+   * Pushes a new line to the globally shared log memory (the {@linkcode Logger.logs} array).  
+   * Also increases the log line counter {@linkcode Logger.logLines} and truncates logs if they are above {@linkcode Logger.maxLogLines}.  
+   * When adding custom logging systems, this method should be used to make BetterYTM aware of the custom logs.
+   */
   public static pushLog(category: string, type: string, time?: number, ...args: unknown[]) {
     Logger.logs.push([category, type, time ?? Date.now(), ...args]);
     Logger.logLines++;
@@ -148,7 +157,7 @@ export class Logger {
   public static serializeLogs(): string {
     const longestLogType = Math.max(...Logger.logs.map(([, type]) => type.length));
     const hintLines = Logger.logs.length >= Logger.maxLogLines
-      ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines} oldest lines were truncated.\n\n`
+      ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines - Logger.maxLogLines} oldest lines were truncated.\n\n`
       : "";
 
     const logEntries = [...Logger.logs].reverse();
@@ -172,52 +181,52 @@ export class Logger {
 
   /**
    * Logs all passed values to the console, as long as the log level is sufficient.  
-   * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+   * @param args Last parameter is log level (0 = Debug, any other value = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert it to a string if it shouldn't be.
    */
   public log(...args: unknown[]): void {
     Logger.pushLog(this.category, "LOG", Date.now(), ...args);
     if(Logger.curLogLevel <= Logger.getLogLevel(args))
-      console.log(this.consPrefix, ...args);
+      console.log(this.conPrefix, ...args);
   }
 
   /**
    * Logs all passed values to the console as info, as long as the log level is sufficient.  
-   * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
+   * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert it to a string if it shouldn't be.
    */
   public info(...args: unknown[]): void {
     Logger.pushLog(this.category, "INFO", Date.now(), ...args);
     if(Logger.curLogLevel <= Logger.getLogLevel(args))
-      console.info(this.consPrefix, ...args);
+      console.info(this.conPrefix, ...args);
   }
 
   /** Logs all passed values to the console as a warning, no matter the log level. */
   public warn(...args: unknown[]): void {
     Logger.pushLog(this.category, "WARN", Date.now(), ...args);
-    console.warn(this.consPrefix, ...args);
+    console.warn(this.conPrefix, ...args);
   }
 
   /** Logs all passed values to the console as an error, no matter the log level. */
   public error(...args: unknown[]): void {
     Logger.pushLog(this.category, "ERROR", Date.now(), ...args);
-    console.error(this.consPrefix, ...args);
+    console.error(this.conPrefix, ...args);
     try {
       this.onError?.(...args);
     }
     catch(e) {
       Logger.pushLog(this.category, "ERROR", Date.now(), "Error while showing error toast:", e);
-      console.error(this.consPrefix, "Error while showing error toast:", e);
+      console.error(this.conPrefix, "Error while showing error toast:", e);
     }
   }
 
   /** Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast. */
   public errorNoToast(...args: unknown[]): void {
     Logger.pushLog(this.category, "ERROR", Date.now(), ...args);
-    console.error(this.consPrefix, ...args);
+    console.error(this.conPrefix, ...args);
   }
 
   /** Logs all passed values to the console with a debug-specific prefix. */
   public dbg(...args: unknown[]): void {
     Logger.pushLog(this.category, "DBG", Date.now(), ...args);
-    console.log(this.consPrefixDbg, ...args);
+    console.log(this.conPrefixDbg, ...args);
   }
 }
