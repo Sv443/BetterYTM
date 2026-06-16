@@ -8,5 +8,7 @@ minimumReleaseAgeExclude: [ "@sv443-network/coreutils", "@sv443-network/userutil
 
 ignoreWorkspaceRootCheck: true
 
+saveExact: true
+
 allowBuilds:
   esbuild: true
