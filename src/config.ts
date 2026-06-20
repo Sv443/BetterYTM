@@ -13,7 +13,7 @@ import { showPrompt } from "@dialog/prompt.ts";
 //#region >> format version
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const cfgFormatVersion = 11;
+export const cfgFormatVersion = 12;
 
 //#region >> default data
 
@@ -288,6 +288,7 @@ export const cfgMigrations: DataMigrationsDict = {
 
     return useNewDefaults(oldData, [
       "thumbnailOverlayBlurredDuplicateBackground",
+      "configMenuFocusContentButtonEnabled",
     ]);
   },
 } as const satisfies DataMigrationsDict;
@@ -295,28 +296,28 @@ export const cfgMigrations: DataMigrationsDict = {
 //#region migration helpers
 
 /**
- * Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values.  
+ * Uses the default config data ({@linkcode cfgDefaultData}) as the base, then overwrites all values with the passed {@linkcode config} (can be a partial object), then sets all feature values defined by {@linkcode resetKeys} to their default values.  
  * This function is basically used for migrations where new features have been introduced, or where some features absolutely NEED to be reset to their new default value, like for a breaking change.  
  * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
-function useNewDefaults(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
-  const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
+function useNewDefaults(config: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
+  const newData = structuredClone({ ...cfgDefaultData, ...(config ?? {}) });
   for(const key of resetKeys) // @ts-expect-error typescript funny moments part 0x1a4
     newData[key] = featInfo?.[key]?.default as never;
   return newData;
 }
 
 /**
- * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.  
+ * Uses {@linkcode config} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.  
  * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be set to the new default.  
  * This function is basically used for migrations where some features' default values have changed, but we don't want to upset users who have changed the value from its old default. May only be used for non-breaking changes.  
  * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
 function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
-  oldData: TConfig,
+  config: TConfig,
   oldDefaults: Array<{ key: FeatureKey, oldDefault: unknown }>,
 ): TConfig {
-  const newData = structuredClone(oldData);
+  const newData = structuredClone(config);
   for(const { key, oldDefault } of oldDefaults) {
     // @ts-expect-error we love TS
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
@@ -327,7 +328,7 @@ function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 }
 
 /**
- * Uses the passed config as the base, then clamps all numeric feature values to their defined min/max ranges.  
+ * Uses the passed config as the base, then clamps all numeric feature values defined by {@linkcode keys} to their defined min/max ranges.  
  * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
 function useNewRanges(config: FeatureConfig, keys: FeatKeysOfType<number>[]): FeatureConfig {
@@ -340,7 +341,7 @@ function useNewRanges(config: FeatureConfig, keys: FeatKeysOfType<number>[]): Fe
   return newCfg;
 }
 
-/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. **/
+/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. */
 function clampNewRange(config: FeatureConfig, key: FeatKeysOfType<number>): number {
   const val = config[key];
   const info = featInfo[key] as FeatureConfig[typeof key] extends number ? { min: number; max: number } : never;

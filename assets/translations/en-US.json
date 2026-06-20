@@ -12,6 +12,8 @@
   },
   "config_menu_option": "${scriptName} Configuration",
   "config_menu_title": "${scriptName} - Configuration",
+  "config_menu_title_logo_tooltip": "${scriptName} Logo",
+  "config_menu_focus_content_button_tooltip": "Sets focus to the content of the menu.",
   "export_menu_title": "${scriptName} - Export Configuration",
   "import_menu_title": "${scriptName} - Import Configuration",
   "open_menu_tooltip": "Open ${scriptName}'s configuration menu",
@@ -324,6 +326,7 @@
   "feature_category.changelog": "Changelog",
 
   "feature_group_header.locale": "Language:",
+  "feature_group_header.accessibility": "Accessibility:",
   "feature_group_header.versionCheck": "Check for Updates:",
   "feature_group_header.numbersFormat": "Number Format:",
   "feature_group_header.toasts": "Toasts:",
@@ -546,6 +549,7 @@
 
   "feature_desc.locale": "Language",
   "feature_desc.localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",
+  "feature_desc.configMenuFocusContentButtonEnabled": "Add a button to the config menu title to set focus to the content",
   "feature_desc.versionCheck": "Check for updates every 24 hours",
   "feature_helptext.versionCheck": "This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.",
   "feature_desc.checkVersionNow": "Manually check for a new version",

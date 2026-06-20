@@ -792,6 +792,8 @@ export interface FeatureConfig {
   locale: TrLocale;
   /** Whether to default to US-English if the translation for the set locale is missing */
   localeFallback: boolean;
+  /** Whether to show a "focus content" button in the config menu to skip the navigation */
+  configMenuFocusContentButtonEnabled: boolean;
   /** Whether to check for updates to the script */
   versionCheck: boolean;
   /** Button to check for updates */

@@ -238,6 +238,15 @@ export const featInfo = {
     advanced: true,
     adornments: [adornments.advanced, adornments.reload],
   },
+  configMenuFocusContentButtonEnabled: {
+    type: "toggle",
+    category: "general",
+    group: "accessibility",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: false,
+    adornments: [adornments.reload],
+  },
   initTimeout: {
     type: "number",
     category: "general",

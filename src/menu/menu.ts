@@ -20,6 +20,7 @@ import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo
 import pkg from "@root/package.json" with { type: "json" };
 import localeMapping from "@asset/locales.json" with { type: "json" };
 import "@menu/menu.css";
+import { createCircularBtn } from "@comp/circularButton.ts";
 
 //#region >> create menu
 
@@ -92,13 +93,29 @@ export async function mountCfgMenu() {
     titleCont.role = "heading";
     titleCont.ariaLevel = "1";
 
+    const focusContentBtn = getFeature("configMenuFocusContentButtonEnabled") ? await createCircularBtn({
+      title: t("config_menu_focus_content_button_tooltip"),
+      resourceName: "icon-arrow_down",
+      onClick() {
+        document.querySelector<HTMLElement>(".bytm-ftconf-category:not(.hidden)")?.focus();
+      },
+    }) : undefined;
+
+    if(focusContentBtn) {
+      focusContentBtn.id = "bytm-menu-focus-content";
+      focusContentBtn.role = "button";
+      focusContentBtn.tabIndex = 0;
+    }
+
     const titleLogoElem = document.createElement("img");
     const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
     titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
     titleLogoElem.tabIndex = 0;
     titleLogoElem.role = "button";
+    titleLogoElem.alt = t("config_menu_title_logo_tooltip");
     if(logoSrc)
       titleLogoElem.src = logoSrc;
+
     onInteraction(titleLogoElem, (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -126,6 +143,8 @@ export async function mountCfgMenu() {
     titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
 
     titleElem.appendChild(titleTextElem);
+
+    // title links:
 
     const linksCont = document.createElement("div");
     linksCont.id = "bytm-menu-linkscont";
@@ -181,6 +200,9 @@ export async function mountCfgMenu() {
 
     addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
 
+    const headerRightSideElem = document.createElement("div");
+    headerRightSideElem.id = "bytm-menu-header-right-side";
+
     const closeElem = document.createElement("img");
     closeElem.classList.add("bytm-menu-close");
     closeElem.role = "button";
@@ -189,13 +211,16 @@ export async function mountCfgMenu() {
     closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
     onInteraction(closeElem, (e) => closeCfgMenu(e));
 
+    headerRightSideElem.appendChild(linksCont);
+    headerRightSideElem.appendChild(closeElem);
+
     titleCont.appendChild(titleElem);
-    titleCont.appendChild(linksCont);
+    focusContentBtn && titleCont.appendChild(focusContentBtn);
 
     titleLogoHeaderCont.appendChild(titleCont);
 
     headerElem.appendChild(titleLogoHeaderCont);
-    headerElem.appendChild(closeElem);
+    headerElem.appendChild(headerRightSideElem);
 
     //#region > footer
     const footerCont = document.createElement("div");
@@ -346,8 +371,7 @@ export async function mountCfgMenu() {
     const sidenavCont = document.createElement("nav");
     sidenavCont.classList.add("bytm-menu-sidenav");
     sidenavCont.id = "bytm-cfg-menu-sidenav";
-    sidenavCont.tabIndex = 0;
-    sidenavCont.ariaLabel = t("cfg_menu_sidenav_label");
+    sidenavCont.tabIndex = -1;
 
     bodyCont.appendChild(sidenavCont);
 
@@ -408,9 +432,7 @@ export async function mountCfgMenu() {
     const sidenavTopSectionCont = document.createElement("section");
     sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
-    sidenavTopSectionCont.role = "radiogroup";
-    sidenavTopSectionCont.tabIndex = 0;
-    sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo.name });
+    sidenavTopSectionCont.tabIndex = -1;
 
     // settings category headers:
     let firstCatHeader = true;
@@ -437,9 +459,7 @@ export async function mountCfgMenu() {
     const sidenavBtmSectionCont = document.createElement("section");
     sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
-    sidenavBtmSectionCont.role = "radiogroup";
-    sidenavBtmSectionCont.tabIndex = 0;
-    sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo.name });
+    sidenavBtmSectionCont.tabIndex = -1;
 
     // extra info headers:
     const extraInfoCategoryIDs = ["about", "changelog"] as const;

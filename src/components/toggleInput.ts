@@ -33,7 +33,6 @@ export async function createToggleInput({
     labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
     if(id)
       labelEl.htmlFor = `bytm-toggle-${id}`;
-    wrapperEl.setAttribute("aria-labelledby", labelEl.id);
   }
 
   const toggleEl = document.createElement("label");

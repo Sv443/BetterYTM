@@ -224,6 +224,16 @@
   border-style: none none solid none !important;
 }
 
+#bytm-menu-focus-content {
+  margin-left: 16px;
+}
+
+#bytm-menu-header-right-side {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
 .bytm-menu-title-logo-header-cont {
   display: flex;
 }
@@ -302,7 +312,6 @@
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;
-  margin-left: 48px;
 }
 
 .bytm-menu-link {

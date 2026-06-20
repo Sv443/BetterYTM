@@ -12,6 +12,8 @@
   },
   "config_menu_option": "${scriptName} Einstellungen",
   "config_menu_title": "${scriptName} - Einstellungen",
+  "config_menu_title_logo_tooltip": "${scriptName}-Logo",
+  "config_menu_focus_content_button_tooltip": "Setzt den Fokus auf den Inhalt des Menüs.",
   "export_menu_title": "${scriptName} - Einstellungen exportieren",
   "import_menu_title": "${scriptName} - Einstellungen importieren",
   "open_menu_tooltip": "${scriptName}'s Einstellungen öffnen",
@@ -324,6 +326,7 @@
   "feature_category.changelog": "Änderungsprotokoll",
 
   "feature_group_header.locale": "Sprache:",
+  "feature_group_header.accessibility": "Barrierefreiheit:",
   "feature_group_header.versionCheck": "Versions-Check:",
   "feature_group_header.numbersFormat": "Zahlenformat:",
   "feature_group_header.toasts": "Toast-Benachrichtigungen:",
@@ -546,6 +549,7 @@
 
   "feature_desc.locale": "Sprache",
   "feature_desc.localeFallback": "Verwende für fehlende Übersetzungen Englisch (deaktivieren, wenn du zu Übersetzungen beiträgst)",
+  "feature_desc.configMenuFocusContentButtonEnabled": "Einen Button zum Konfigurationsmenü-Titel hinzufügen, um den Fokus auf den Inhalt zu setzen",
   "feature_desc.versionCheck": "Prüfe alle 24 Stunden auf Updates",
   "feature_helptext.versionCheck": "Diese Funktion prüft alle 24 Stunden auf Updates, benachrichtigt dich, wenn eine neue Version verfügbar ist und ermöglicht es dir, das Skript manuell zu aktualisieren.\nWenn dein Userscript-Manager Skripte automatisch aktualisiert, kannst du diese Funktion deaktivieren.",
   "feature_desc.checkVersionNow": "Manuell nach einer neuen Version suchen",
