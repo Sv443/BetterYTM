@@ -29,7 +29,7 @@
   "export": "Export",
   "export_hint": "Copy the following text to export your configuration.\nWarning: it may contain sensitive data.",
   "export_tooltip": "Export your current configuration",
-  "data_export_file_name": "${scriptName} ${version} data export - ${date}.json",
+  "data_export_file_name": "${scriptName} ${version} config data export - ${date}.json",
   "data_export_file_name_full": "${scriptName} ${version} full data export - ${date}.json",
   "click_to_reveal": "(click to reveal)",
   "click_to_reveal_sensitive_info": "(click to reveal sensitive information)",
@@ -303,11 +303,8 @@
   "dev_plugin.name": "Developer Plugin",
   "dev_plugin.description": "Internal plugin that only exists in development mode to make testing the plugin system easier.",
 
-  "cfg_menu_sidenav_label": "Configuration menu navigation",
-  "cfg_menu_sidenav_top_section_label": "Configuration Settings Categories",
-  "cfg_menu_sidenav_bottom_section_label": "Extra Information Categories",
-  "cfg_menu_feature_category_header_tooltip": "Configuration category \"${category}\"",
-  "cfg_menu_feature_category_info_header_tooltip": "Information section \"${section}\"",
+  "cfg_menu_feature_category_header_tooltip": "\"${category}\" Category",
+  "cfg_menu_feature_category_info_header_tooltip": "\"${section}\" Section",
 
   "about_bytm_content_markdown": "Version `${scriptVersion}` (build [`#${buildNumber}`](${buildBrowseLink}) from ${buildDate})\n\n---\n\n${scriptName} enhances the YouTube Music experience by adding many features, improvements and overhauls.  \nIt's developed by [${authorName}](${authorLink}) and [contributors](${contributorsLink}) and is available on [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) and [OpenUserJS.](${openuserjsLink})  \n  \nIf you like ${scriptName}, [please consider funding the development ❤️](${fundingLink})  \n  \nIf you have issues or suggestions, please [report them on the issue tracker.](${issuesLink})\n  \n[Join the Discord server](${discordLink}) to receive update notifications, further discuss issues, or to chat with members.\n\n---\n\n${scriptName} is **not affiliated** with YouTube or Google **in any way.**  \nCopyright © ${currentYear} ${authorName}. Licensed under the [${licenseName}.](${licenseUrl})",
 

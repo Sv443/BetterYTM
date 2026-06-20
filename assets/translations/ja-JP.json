@@ -301,11 +301,6 @@
   "dev_plugin.name": "開発者プラグイン",
   "dev_plugin.description": "開発モードでのみ存在する内部プラグインで、プラグインシステムのテストを容易にします。",
 
-  "cfg_menu_sidenav_label": "設定メニューのナビゲーション",
-  "cfg_menu_sidenav_top_section_label": "設定カテゴリ",
-  "cfg_menu_sidenav_bottom_section_label": "追加情報カテゴリ",
-  "cfg_menu_feature_category_header_tooltip": "クリックしてカテゴリを展開または折りたたみする",
-  "cfg_menu_feature_category_info_header_tooltip": "クリックして情報セクションを展開または折りたたみする",
 
   "feature_category.general": "一般的な",
   "feature_category.layout": "レイアウト",

@@ -29,7 +29,7 @@
   "export": "Exportieren",
   "export_hint": "Kopiere den folgenden Text um deine Einstellungen zu exportieren.\nWarnung: der Text kann sensible Informationen enthalten.",
   "export_tooltip": "Exportiere deine aktuellen Einstellungen",
-  "data_export_file_name": "${scriptName} ${version} Datenexport - ${date}.json",
+  "data_export_file_name": "${scriptName} ${version} Konfigurationsdaten-Export - ${date}.json",
   "data_export_file_name_full": "${scriptName} ${version} Vollständiger Datenexport - ${date}.json",
   "click_to_reveal": "(zum Anzeigen klicken)",
   "click_to_reveal_sensitive_info": "(klicke um sensible Informationen anzuzeigen)",
@@ -303,11 +303,8 @@
   "dev_plugin.name": "Entwickler-Plugin",
   "dev_plugin.description": "Internes Plugin, das nur im Entwicklungsmodus existiert, um das Plugin-System einfach testen zu können.",
 
-  "cfg_menu_sidenav_label": "Navigation des Konfigurationsmenüs",
-  "cfg_menu_sidenav_top_section_label": "Einstellungs-Kategorien",
-  "cfg_menu_sidenav_bottom_section_label": "Kategorien für zusätzliche Informationen",
-  "cfg_menu_feature_category_header_tooltip": "Einstellungs-Kategorie \"${category}\"",
-  "cfg_menu_feature_category_info_header_tooltip": "Info-Kategorie \"${section}\"",
+  "cfg_menu_feature_category_header_tooltip": "\"${category}\"-Kategorie",
+  "cfg_menu_feature_category_info_header_tooltip": "\"${section}\"-Abschnitt",
 
   "about_bytm_content_markdown": "Version `${scriptVersion}` (Build [`#${buildNumber}`](${buildBrowseLink}) vom ${buildDate})\n\n---\n\n${scriptName} verbessert die YouTube Music Erfahrung durch viele Features, Verbesserungen und Überarbeitungen.  \nEs wird von [${authorName}](${authorLink}) und [Mitwirkenden](${contributorsLink}) entwickelt und ist auf [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) und [OpenUserJS](${openuserjsLink}) verfügbar.  \nWenn dir ${scriptName} gefällt, [bitte erwäge zu spenden, um die Entwicklung zu unterstützen ❤️](${fundingLink})  \n  \nWenn du Probleme oder Vorschläge hast, bitte [melde sie im Issue-Tracker.](${issuesLink})\n  \n[Tritt dem Discord Server bei](${discordLink}), um Benachrichtigungen über Updates zu erhalten, Probleme zu diskutieren oder Features vorzuschlagen und um mit anderen Mitgliedern zu chatten.\n\n---\n\n${scriptName} ist **in keinster Weise** mit YouTube oder Google **verbunden.**  \nCopyright © ${currentYear} ${authorName}. Lizenziert unter der [${licenseName}.](${licenseUrl})",
 

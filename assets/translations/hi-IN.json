@@ -300,11 +300,6 @@
   "dev_plugin.name": "डेवलपर प्लगइन",
   "dev_plugin.description": "डेवलपमेंट मोड में मौजूद आंतरिक प्लगइन जो प्लगइन सिस्टम का परीक्षण करना आसान बनाता है।",
 
-  "cfg_menu_sidenav_label": "कॉन्फ़िगरेशन मेनू नेविगेशन",
-  "cfg_menu_sidenav_top_section_label": "कॉन्फ़िगरेशन सेटिंग्स श्रेणियाँ",
-  "cfg_menu_sidenav_bottom_section_label": "अतिरिक्त जानकारी श्रेणियाँ",
-  "cfg_menu_feature_category_header_tooltip": "कॉन्फ़िगरेशन श्रेणी \"${category}\"",
-  "cfg_menu_feature_category_info_header_tooltip": "जानकारी अनुभाग \"${section}\"",
 
   "about_bytm_content_markdown": "संस्करण `${scriptVersion}` (build [`#${buildNumber}`](${buildBrowseLink}) से ${buildDate})\n\n---\n\n${scriptName} कई सुविधाओं, सुधारों और बदलावों के साथ YouTube Music अनुभव को बेहतर बनाता है।  \nइसे [${authorName}](${authorLink}) और [योगदानकर्ताओं](${contributorsLink}) द्वारा विकसित किया गया है और [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) और [OpenUserJS](${openuserjsLink}) पर उपलब्ध है।  \nयदि आप ${scriptName} पसंद करते हैं, [विकास को फंड करने का विचार करें ❤️](${fundingLink})  \n  \nयदि आपको कोई समस्या या सुझाव है, तो कृपया [इसे Issue Tracker पर रिपोर्ट करें।](${issuesLink})\n  \n[Discord सर्वर से जुड़ें](${discordLink}) अपडेट नोटिफिकेशन प्राप्त करने, समस्याओं पर चर्चा करने या सुझाव देने और सदस्यों के साथ बातचीत करने के लिए।\n\n---\n\n${scriptName} किसी भी तरीके से YouTube या Google से **संबद्ध नहीं** है।  \nCopyright © ${currentYear} ${authorName}. [${licenseName}](${licenseUrl}) के अंतर्गत लाइसेंस.",
 

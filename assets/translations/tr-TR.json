@@ -303,11 +303,6 @@
   "dev_plugin.name": "Geliştirici Eklentisi",
   "dev_plugin.description": "Dahili eklenti eklenti sistemini test etmeyi kolaylaştırmak amacıyla sadece geliştirici modunda bulunuyor.",
 
-  "cfg_menu_sidenav_label": "Yapılandırma menüsü navigasyonu",
-  "cfg_menu_sidenav_top_section_label": "Yapılandırma Ayarları Kategorileri",
-  "cfg_menu_sidenav_bottom_section_label": "Ekstra Bilgilendirme Kategorileri",
-  "cfg_menu_feature_category_header_tooltip": "\"${category}\" yapılandırma kategorisi",
-  "cfg_menu_feature_category_info_header_tooltip": "\"${section}\" bilgilendirme bölümü",
 
   "about_bytm_content_markdown": "Sürüm `${scriptVersion}` (derleme [`#${buildNumber}`](${buildBrowseLink}) ${buildDate} tarihinden)\n\n---\n\n${scriptName}, birçok özellik, iyileştirme ve revizyon ekleyerek YouTube Music deneyimini geliştirir. \nBu, [${authorName}](${authorLink}) ve [katkıda bulunanlar](${contributorsLink}) tarafından geliştirilmiştir ve [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) ve [OpenUserJS.](${openuserjsLink}) adreslerinde mevcuttur. \n \nEğer ${scriptName}'i beğendiyseniz, [lütfen geliştirme çalışmalarına destek olmayı düşünün ❤️](${fundingLink}) \n \nSorunlarınız veya önerileriniz varsa, lütfen [sorun takipçisinde bildirin.](${issuesLink})\n \nGüncelleme bildirimleri almak, sorunları daha ayrıntılı olarak tartışmak veya üyelerle sohbet etmek için [Discord sunucusuna katılın](${discordLink}).\n\n---\n\n${scriptName} hiçbir şekilde YouTube veya Google ile **ilişkili değildir.** \nTelif Hakkı © ${currentYear} ${authorName}. [${licenseName}.](${licenseUrl}) lisansı altında lisanslanmıştır.",
 

@@ -301,11 +301,6 @@
   "dev_plugin.name": "Plugin de desarrollo",
   "dev_plugin.description": "Plugin interno que solo existe en modo de desarrollo para facilitar las pruebas del sistema de plugins.",
 
-  "cfg_menu_sidenav_label": "Menú de configuración de navegación",
-  "cfg_menu_sidenav_top_section_label": "Categorías de configuración",
-  "cfg_menu_sidenav_bottom_section_label": "Categorías de información extra",
-  "cfg_menu_feature_category_header_tooltip": "Categoría de configuración \"${category}\"",
-  "cfg_menu_feature_category_info_header_tooltip": "Sección de información \"${section}\"",
 
   "about_bytm_content_markdown": "Versión `${scriptVersion}` (compilación [`#${buildNumber}`](${buildBrowseLink}) del ${buildDate})\n\n---\n\n${scriptName} mejora la experiencia de YouTube Music añadiendo muchas funciones, mejoras y renovaciones.  \nEsta desarrollado por [${authorName}](${authorLink}) y [colaboradores](${contributorsLink}) y está disponible en [GitHub](${githubLink}), [Greasy Fork](${greasyforkLink}) y [OpenUserJS.](${openuserjsLink})  \nSi te gusta ${scriptName}, [considera apoyar el desarrollo ❤️](${fundingLink})  \n  \nSi tienes problemas o sugerencias, por favor [repórtalos en el rastreador de problemas.](${issuesLink})\n  \n[\u00danete al servidor de Discord](${discordLink}) para recibir notificaciones de actualizaciones, discutir problemas o sugerir funciones.\n\n---\n\n${scriptName} **no tiene ninguna afiliación** con YouTube o Google.  \nCopyright \u00a9 ${currentYear} ${authorName}. Bajo la licencia [${licenseName}.](${licenseUrl})",
 
