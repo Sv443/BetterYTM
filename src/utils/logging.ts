@@ -23,7 +23,7 @@ const showErrToast = debounce(
       iconFill: "var(--bytm-error-col)",
       onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
     }),
-  1000,
+  400,
 );
 
 const loggerOpts: LoggerOptions = {
@@ -57,7 +57,7 @@ export function setLogLevel(level: LogLevel) {
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
- * @deprecated Use the instances in {@linkcode loggers} instead!
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function log(...args: unknown[]): void {
   loggers.uncategorized.log(...args);
@@ -66,7 +66,7 @@ export function log(...args: unknown[]): void {
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number within `LogLevel` range as the last parameter will be stripped out! Convert to string if it shouldn't be.
- * @deprecated Use the instances in {@linkcode loggers} instead!
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function info(...args: unknown[]): void {
   loggers.uncategorized.info(...args);
@@ -74,7 +74,7 @@ export function info(...args: unknown[]): void {
 
 /**
  * Logs all passed values to the console as a warning, no matter the log level.
- * @deprecated Use the instances in {@linkcode loggers} instead!
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function warn(...args: unknown[]): void {
   loggers.uncategorized.warn(...args);
@@ -82,7 +82,7 @@ export function warn(...args: unknown[]): void {
 
 /**
  * Logs all passed values to the console as an error, no matter the log level.
- * @deprecated Use the instances in {@linkcode loggers} instead!
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function error(...args: unknown[]): void {
   loggers.uncategorized.error(...args);
@@ -90,7 +90,7 @@ export function error(...args: unknown[]): void {
 
 /**
  * Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast.
- * @deprecated Use the instances in {@linkcode loggers} instead!
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function errorNoToast(...args: unknown[]): void {
   loggers.uncategorized.errorNoToast(...args);
@@ -98,7 +98,7 @@ export function errorNoToast(...args: unknown[]): void {
 
 /**
  * Logs all passed values to the console with a debug-specific prefix.
- * @deprecated Use the instances in {@linkcode loggers} instead!
+ * @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
  */
 export function dbg(...args: unknown[]): void {
   loggers.uncategorized.dbg(...args);

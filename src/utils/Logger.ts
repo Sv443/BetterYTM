@@ -112,7 +112,7 @@ export class Logger {
 
   //#region static helpers
 
-  /**  
+  /**
    * Pushes a new line to the globally shared log memory (the {@linkcode Logger.logs} array).  
    * Also increases the log line counter {@linkcode Logger.logLines} and truncates logs if they are above {@linkcode Logger.maxLogLines}.  
    * When adding custom logging systems, this method should be used to make BetterYTM aware of the custom logs.
@@ -192,7 +192,7 @@ export class Logger {
       if(args.length === 0)
         return acc;
 
-      const timestamp = new Date(time).toISOString();
+      const timestamp = new Date(time).toISOString().replace("T", " ; ").replace("Z", "");
       const typeTag = `[${type}]`.padEnd(longestLogType + 2, " ");
 
       const longestCategory = Math.max(...Object.values(loggerCategoryMapping).map((v) => v.length));
