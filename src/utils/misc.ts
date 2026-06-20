@@ -280,7 +280,7 @@ export async function getReloadTabData(sessionId?: string | null, deleteAfterRea
 /** add `time_continue` param only if current video time is greater than this value */
 const reloadTabVideoTimeThreshold = 3;
 
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the `bytm-reload-tab` DataStore */
+/** Reloads the own tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the {@linkcode reloadTabStore} DataStore (ID `bytm-reload-tab`) */
 export async function reloadTab() {
   const win = getUnsafeWindow();
   try {
@@ -395,6 +395,11 @@ export function getterifyObj<TObj extends object>(obj: TObj): TObj {
   }
 
   return newObj;
+}
+
+/** Slices digits off the beginning of the given number {@linkcode n} */
+export function sliceNum(n: number, count: number) {
+  return n % (10 ** (String(n).length - count));
 }
 
 //#region version session counter

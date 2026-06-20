@@ -7,7 +7,7 @@ import { initTime } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";
 import { getSerializerStoresFull } from "@/serializers.ts";
 import { loggers } from "@util/logging.ts";
-import { getDomain, getSessionId, reloadTab } from "@util/misc.ts";
+import { getDomain, getSessionId, reloadTab, sliceNum } from "@util/misc.ts";
 import type { Domain } from "@/types.ts";
 
 // #region types
@@ -43,8 +43,12 @@ export type BroadcastPacketDataMap = {
   };
 
   // custom:
-  /** Reserved for custom, non-standard BYTM packets. */
-  custom: Record<string, SerializableVal>;
+  /**
+   * Reserved for custom, non-standard BYTM packets, sent by plugins or really any arbitrary script, library or API.  
+   * May contain any data serializable as JSON.  
+   * Identifying, validating and parsing the data is fully up to the receiver.
+   */
+  custom: SerializableVal | Record<PropertyKey, SerializableVal>;
 };
 
 /** The type of broadcast packet. */
@@ -209,8 +213,8 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
  * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
 export async function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
-  // use the 6 least significant Date.now bytes plus random floating point number for truly unique random nonces:
-  const nonce = Date.now() % 0xFFFFFF + Math.random();
+  // use the 9 least significant Date.now digits plus random floating point number for nice unique, sortable, random nonces:
+  const nonce = sliceNum(Date.now(), 4) + Math.random();
   return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({
     packet: {
       from: broadcastTxID,
