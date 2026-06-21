@@ -35,7 +35,7 @@ export type StaticData = {
   selectors: Record<StaticSelector, {
     /** DOM selector strings for all domains supported by BYTM, keyed by domain identifier (can be \"ytm\" or \"yt\"). */
     [domain in Domain]?: string;
-  }>;
+  } | string>;
 };
 
 /** Alert to be shown globally on the supported sites. */
