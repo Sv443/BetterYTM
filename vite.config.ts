@@ -88,7 +88,6 @@ export default defineConfig(async () => {
       __BYTM_DEV_SERVER_PORT__: JSON.stringify(devServerPort),
       __BYTM_BUILD_NUMBER__: JSON.stringify(buildNumber),
       __BYTM_BUILD_TIMESTAMP__: JSON.stringify(buildTimestamp),
-      __BYTM_BUILD_UID__: JSON.stringify(buildUid),
     },
     plugins: [
       createBytmPlugin({

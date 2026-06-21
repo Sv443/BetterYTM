@@ -12,5 +12,3 @@ declare const __BYTM_DEV_SERVER_PORT__: number;
 declare const __BYTM_BUILD_NUMBER__: string;
 /** Build UNIX timestamp injected by Vite's `define` option */
 declare const __BYTM_BUILD_TIMESTAMP__: number;
-/** Random build UID injected by Vite's `define` option */
-declare const __BYTM_BUILD_UID__: string;
