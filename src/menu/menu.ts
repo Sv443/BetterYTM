@@ -6,8 +6,9 @@ import { featInfo, groupedCategories, resolveAdornments } from "@feat/index.ts";
 import { copyToClipboard, setInnerHtml } from "@util/dom.ts";
 import { onInteraction } from "@util/input.ts";
 import { loggers } from "@util/logging.ts";
-import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "@util/misc.ts";
+import { compressionSupported, getChangelogHtmlWithDetails, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "@util/misc.ts";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "@util/translations.ts";
+import { getSelector } from "@util/data.ts";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/interface.ts";
 import { showPrompt, type PromptDialog } from "@dialog/prompt.ts";
@@ -16,11 +17,11 @@ import { BytmDialog, openDialogs, setCurrentDialogId } from "@comp/BytmDialog.ts
 import { ExImDialog } from "@comp/ExImDialog.ts";
 import { createHotkeyInput } from "@comp/hotkeyInput.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
+import { createCircularBtn } from "@comp/circularButton.ts";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo, ResourceKey } from "@/types.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import localeMapping from "@asset/locales.json" with { type: "json" };
 import "@menu/menu.css";
-import { createCircularBtn } from "@comp/circularButton.ts";
 
 //#region >> create menu
 
@@ -1313,7 +1314,7 @@ export async function mountCfgMenu() {
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+    document.querySelector(getSelector("app"))?.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
 
@@ -1401,7 +1402,7 @@ export async function openCfgMenu() {
     isCfgMenuOpen = true;
 
     document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
+    document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
     const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
     setCurrentDialogId("cfg-menu");
@@ -1445,7 +1446,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   if(enableScroll && !openDialogs.some(id => id !== "cfg-menu")) {
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+    document.querySelector(getSelector("app"))?.removeAttribute("inert");
   }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 

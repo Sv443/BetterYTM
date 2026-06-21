@@ -1,7 +1,8 @@
 import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, getDomain, getResourceUrl, onInteraction } from "@util/index.ts";
+import { clearInner, getResourceUrl, onInteraction } from "@util/index.ts";
+import { getSelector } from "@util/data.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
 import { emitInterface } from "@/interface.ts";
@@ -321,7 +322,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     // remove the scroll lock and inert attribute on the body if no dialogs are open
     if(openDialogs.length === 0) {
       document.body.classList.remove("bytm-disable-scroll");
-      document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+      document.querySelector(getSelector("app"))?.removeAttribute("inert");
     }
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
@@ -345,7 +346,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     // make sure body is inert and scroll is locked
     document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
+    document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
     dialogBg?.removeAttribute("inert");

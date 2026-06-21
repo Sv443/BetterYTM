@@ -256,6 +256,11 @@ async function onDomLoad() {
   // needs to run synchronously before any async volume-setting code (initVolumeFeatures) to avoid a microtask vs macrotask race condition
   initExponentialVolume();
 
+  // initialize data.json and check for active alerts
+  const endStaticDataDur = measureInitDuration("initStaticData");
+  await initStaticData();
+  endStaticDataDur();
+
   // initialize DOM globals:
   try {
     initObservers(feats);
@@ -294,10 +299,6 @@ async function onDomLoad() {
       await dlg.open();
       await dlg.once("close");
     }
-
-    // initialize data.json and check for active alerts
-    const endStaticDataDur = measureInitDuration("initStaticData");
-    initStaticData().then(() => endStaticDataDur());
 
     if(domain === "ytm") {
       //#region (ytm) layout

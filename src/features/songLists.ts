@@ -53,9 +53,7 @@ export async function initQueueButtons() {
   });
 
   /** Tries to add queue buttons to the current song queue items on the /watch page. */
-  const tryAddCurrentQueueBtns = (
-    parentSelector: string,
-  ) => {
+  const tryAddCurrentQueueBtns = (parentSelector: string) => {
     if(getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
       return;
 

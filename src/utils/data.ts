@@ -1,7 +1,7 @@
-import { DataStore, fetchAdvanced } from "@sv443-network/coreutils";
+import { DataStore, DatedError, fetchAdvanced } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compareVersions } from "compare-versions";
-import { repo, scriptInfo } from "@/constants.ts";
+import { mode, repo, scriptInfo } from "@/constants.ts";
 import { setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
 import { getDomain, getterifyObj, resourceAsString } from "@util/misc.ts";
@@ -16,7 +16,7 @@ import { getFeature } from "@/config.ts";
 
 // TODO: extract union type from {@linkcode defaultStaticData.selectors} keys.
 /** Union of all selector identifiers defined in the static data JSON. */
-export type StaticSelector = string;
+export type StaticSelector = keyof typeof defaultStaticData.selectors;
 
 /** Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings. */
 export type StaticData = {
@@ -85,6 +85,11 @@ export async function getStaticData(): Promise<StaticData> {
     if(staticData)
       return staticData;
 
+    if(mode === "development") {
+      loggers.data.info("Development mode is active. Initializing with static data.json:", defaultStaticData);
+      return staticData = defaultStaticData as StaticData;
+    }
+
     const res = await fetchAdvanced(remoteDataUrl, {
       timeout: 10_000,
     });
@@ -110,6 +115,46 @@ export async function getStaticData(): Promise<StaticData> {
 /** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
 export function getDefaultStaticData() {
   return defaultStaticData;
+}
+
+//#region getSelector
+
+/**
+ * Returns the selector with the given ID.  
+ * By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
+ */
+export function getSelector<TThrows extends boolean | undefined = true>(id: StaticSelector, throws?: TThrows): TThrows extends true ? string : (string | undefined) {
+  const dom = getDomain();
+  if(throws !== false) {
+    try {
+      if(typeof staticData?.selectors !== "object")
+        throw new DatedError("Static data hasn't been fetched yet.");
+      const sel = staticData.selectors[id];
+      if(!(["string", "object"].includes(typeof sel)))
+        throw new DatedError(`Selector with ID '${id}' doesn't exist or is neither a string nor an object.`);
+      if(typeof sel === "object" && !(dom in sel))
+        throw new DatedError(`Selector with ID '${id}' doesn't contain a value for the current domain '${dom}'.`);
+
+      return typeof sel === "string"
+        ? sel
+        : sel[dom] as TThrows extends true ? string : (string | undefined);
+    }
+    catch(e) {
+      loggers.data.error(`Couldn't get selector with ID '${id}' due to error:`, e);
+      throw e;
+    }
+  }
+
+  const sel = staticData?.selectors?.[id];
+
+  return typeof sel === "string"
+    ? sel
+    : sel?.[dom] as TThrows extends true ? string : (string | undefined);
+}
+
+/** Same as {@linkcode getSelector()}, but sets the `throws` parameter to false by default. */
+export function tryGetSelector(id: StaticSelector): string | undefined {
+  return getSelector(id, false);
 }
 
 //#region validate
