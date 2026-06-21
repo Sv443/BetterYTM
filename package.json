@@ -59,6 +59,7 @@
     "preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
     "serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
     "lint": "eslint . && tsc --noEmit",
+    "tr": "node --no-warnings=ExperimentalWarning ./src/tools/tr.ts",
     "tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
     "tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
     "tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
@@ -119,6 +120,7 @@
     "@typescript-eslint/eslint-plugin": "8.57.0",
     "@typescript-eslint/parser": "8.57.0",
     "@typescript-eslint/utils": "8.57.0",
+    "comment-json": "5.0.0",
     "concurrently": "9.2.1",
     "cors": "2.8.6",
     "cross-env": "7.0.3",
@@ -145,10 +147,5 @@
     "last 1 version",
     "> 1%",
     "not dead"
-  ],
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  }
+  ]
 }
