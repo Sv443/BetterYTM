@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d00d80d8/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bfbdc34a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "d00d80d8";
+	var buildNumber$1 = "bfbdc34a";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1781632208582;
+	var buildTimestamp = 1782037935634;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -1162,7 +1162,7 @@
 			this.conPrefixDbg = `[${scriptInfo$1.name}/${category}/#DEBUG#]`;
 			this.onError = options?.onError ?? null;
 		}
-		/**  
+		/**
 		* Pushes a new line to the globally shared log memory (the {@linkcode Logger.logs} array).  
 		* Also increases the log line counter {@linkcode Logger.logLines} and truncates logs if they are above {@linkcode Logger.maxLogLines}.  
 		* When adding custom logging systems, this method should be used to make BetterYTM aware of the custom logs.
@@ -1215,7 +1215,7 @@
 			const longestLogType = Math.max(...Logger.logs.map(([, type]) => type.length));
 			return (Logger.logs.length >= Logger.maxLogLines ? `// Note: there were more than ${Logger.maxLogLines} lines, so the ${Logger.logLines - Logger.maxLogLines} oldest lines were truncated.\n\n` : "") + [...Logger.logs].reverse().reduce((acc, [category, type, time, ...args]) => {
 				if (args.length === 0) return acc;
-				const timestamp = new Date(time).toISOString();
+				const timestamp = new Date(time).toISOString().replace("T", " ; ").replace("Z", "");
 				const typeTag = `[${type}]`.padEnd(longestLogType + 2, " ");
 				const longestCategory = Math.max(...Object.values(loggerCategoryMapping).map((v) => v.length));
 				const categoryTag = `[${category}]`.padEnd(longestCategory + 2, " ");
@@ -1322,6 +1322,7 @@
 			"preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
 			"serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
 			"lint": "eslint . && tsc --noEmit",
+			"tr": "node --no-warnings=ExperimentalWarning ./src/tools/tr.ts",
 			"tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
 			"tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
 			"tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
@@ -1382,6 +1383,7 @@
 			"@typescript-eslint/eslint-plugin": "8.57.0",
 			"@typescript-eslint/parser": "8.57.0",
 			"@typescript-eslint/utils": "8.57.0",
+			"comment-json": "5.0.0",
 			"concurrently": "9.2.1",
 			"cors": "2.8.6",
 			"cross-env": "7.0.3",
@@ -1408,8 +1410,7 @@
 			"last 1 version",
 			"> 1%",
 			"not dead"
-		],
-		pnpm: { "onlyBuiltDependencies": ["esbuild"] }
+		]
 	};
 	//#endregion
 	//#region src/utils/logging.ts
@@ -1419,7 +1420,7 @@
 		icon: "icon-error",
 		iconFill: "var(--bytm-error-col)",
 		onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open()
-	}), 1e3);
+	}), 400);
 	var loggerOpts = { onError(...args) {
 		if (getFeature("showToastOnGenericError")) showErrToast(args.find((a) => a instanceof Error)?.name ?? t("error"), ...args);
 	} };
@@ -1438,7 +1439,7 @@
 	}
 	/**
 	* Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast.
-	* @deprecated Use the instances in {@linkcode loggers} instead!
+	* @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
 	*/
 	function errorNoToast(...args) {
 		loggers.uncategorized.errorNoToast(...args);
@@ -1517,10 +1518,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}
 	}
 	/** Returns a proxy function that enables and bootstraps the SelectorObserver instance. */
-	function getEnableFn(observer) {
+	function getEnableFn(observerName) {
 		return () => {
+			const observer = globservers[observerName];
 			observer.enable();
-			loggers.observer.log("Enabled observer for base element:", observer.baseElement);
+			loggers.observer.log(`Enabled SelectorObserver instance '${observerName}' with base element:`, observer.baseElement);
 		};
 	}
 	/** Call after DOM load to initialize all SelectorObserver instances */
@@ -1554,25 +1556,25 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
-					globservers.body.addListener(browseResponseSelector, { listener: getEnableFn(globservers.browseResponse) });
+					globservers.body.addListener(browseResponseSelector, { listener: getEnableFn("browseResponse") });
 					const searchPageSelector = "ytmusic-search-page";
 					globservers.searchPage = new _sv443_network_userutils.SelectorObserver(searchPageSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(searchPageSelector, { listener: getEnableFn(globservers.searchPage) });
+					globservers.body.addListener(searchPageSelector, { listener: getEnableFn("searchPage") });
 					const navBarSelector = "ytmusic-nav-bar";
 					globservers.navBar = new _sv443_network_userutils.SelectorObserver(navBarSelector, {
 						...defaultObserverOptions,
 						subtree: false
 					});
-					globservers.body.addListener(navBarSelector, { listener: getEnableFn(globservers.navBar) });
+					globservers.body.addListener(navBarSelector, { listener: getEnableFn("navBar") });
 					const mainPanelSelector = "ytmusic-player-page #main-panel";
 					globservers.mainPanel = new _sv443_network_userutils.SelectorObserver(mainPanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(mainPanelSelector, { listener: getEnableFn(globservers.mainPanel) });
+					globservers.body.addListener(mainPanelSelector, { listener: getEnableFn("mainPanel") });
 					const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
 					globservers.sideBar = new _sv443_network_userutils.SelectorObserver(sidebarSelector, {
 						...defaultObserverOptions,
@@ -1580,13 +1582,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						childList: true,
 						subtree: true
 					});
-					globservers.body.addListener(sidebarSelector, { listener: getEnableFn(globservers.sideBar) });
+					globservers.body.addListener(sidebarSelector, { listener: getEnableFn("sideBar") });
 					const sidePanelSelector = "#side-panel";
 					globservers.sidePanel = new _sv443_network_userutils.SelectorObserver(sidePanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(sidePanelSelector, { listener: getEnableFn(globservers.sidePanel) });
+					globservers.body.addListener(sidePanelSelector, { listener: getEnableFn("sidePanel") });
 					const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
 					globservers.playerBar = new _sv443_network_userutils.SelectorObserver(playerBarSelector, { ...defaultObserverOptions });
 					globservers.body.addListener(playerBarSelector, { listener: () => {
@@ -1598,25 +1600,25 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						attributes: true,
 						attributeFilter: ["title"]
 					});
-					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableFn(globservers.playerBarInfo) });
+					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableFn("playerBarInfo") });
 					const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
 					globservers.playerBarMiddleButtons = new _sv443_network_userutils.SelectorObserver(playerBarMiddleButtonsSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableFn(globservers.playerBarMiddleButtons) });
+					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableFn("playerBarMiddleButtons") });
 					const playerBarRightControls = "#right-controls";
 					globservers.playerBarRightControls = new _sv443_network_userutils.SelectorObserver(playerBarRightControls, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableFn(globservers.playerBarRightControls) });
+					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableFn("playerBarRightControls") });
 					const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
 					globservers.popupContainer = new _sv443_network_userutils.SelectorObserver(popupContainerSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(popupContainerSelector, { listener: getEnableFn(globservers.popupContainer) });
+					globservers.body.addListener(popupContainerSelector, { listener: getEnableFn("popupContainer") });
 					break;
 				}
 				case "yt": {
@@ -1625,38 +1627,38 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(ytGuideSelector, { listener: getEnableFn(globservers.ytGuide) });
+					globservers.body.addListener(ytGuideSelector, { listener: getEnableFn("ytGuide") });
 					const ytdBrowseSelector = "ytd-app ytd-page-manager ytd-browse";
 					globservers.ytdBrowse = new _sv443_network_userutils.SelectorObserver(ytdBrowseSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableFn(globservers.ytdBrowse) });
+					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableFn("ytdBrowse") });
 					const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
 					globservers.ytAppHeader = new _sv443_network_userutils.SelectorObserver(ytAppHeaderSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
-					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableFn(globservers.ytAppHeader) });
+					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableFn("ytAppHeader") });
 					const ytWatchFlexySelector = "ytd-app ytd-watch-flexy";
 					globservers.ytWatchFlexy = new _sv443_network_userutils.SelectorObserver(ytWatchFlexySelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableFn(globservers.ytWatchFlexy) });
+					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableFn("ytWatchFlexy") });
 					const ytWatchMetadataSelector = "#columns #primary-inner ytd-watch-metadata";
 					globservers.ytWatchMetadata = new _sv443_network_userutils.SelectorObserver(ytWatchMetadataSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableFn(globservers.ytWatchMetadata) });
+					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableFn("ytWatchMetadata") });
 					const mastheadSelector = "#content ytd-masthead#masthead";
 					globservers.ytMasthead = new _sv443_network_userutils.SelectorObserver(mastheadSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(mastheadSelector, { listener: getEnableFn(globservers.ytMasthead) });
+					globservers.body.addListener(mastheadSelector, { listener: getEnableFn("ytMasthead") });
 				}
 			}
 			globserversReady = true;
@@ -2197,7 +2199,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			labelEl.classList.add("bytm-toggle-label");
 			labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
 			if (id) labelEl.htmlFor = `bytm-toggle-${id}`;
-			wrapperEl.setAttribute("aria-labelledby", labelEl.id);
 		}
 		const toggleEl = document.createElement("label");
 		toggleEl.classList.add("bytm-toggle");
@@ -2250,7 +2251,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	* If `onClick` is provided, the button will be a div element.  
 	* Provide either `resourceName` or `src` to specify the icon inside the button.
 	*/
-	async function createCircularBtn({ title, ripple = true, ...rest }) {
+	async function createCircularBtn({ title, ripple = true, modifyElement, ...rest }) {
 		let btnElem;
 		if ("href" in rest && rest.href) {
 			btnElem = document.createElement("a");
@@ -2275,7 +2276,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			setInnerHtml(btnElem, await resourceAsString(rest.resourceName));
 			btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 		}
-		return ripple ? createRipple(btnElem) : btnElem;
+		const rippleElem = ripple ? createRipple(btnElem) : btnElem;
+		if (modifyElement) await modifyElement(btnElem);
+		return rippleElem;
 	}
 	//#endregion
 	//#region src/dialogs/autoLike.ts
@@ -3334,11 +3337,24 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			titleCont.classList.add("bytm-menu-titlecont");
 			titleCont.role = "heading";
 			titleCont.ariaLevel = "1";
+			const focusContentBtn = getFeature("configMenuFocusContentButtonEnabled") ? await createCircularBtn({
+				title: t("config_menu_focus_content_button_tooltip"),
+				resourceName: "icon-arrow_down",
+				onClick() {
+					document.querySelector(".bytm-ftconf-category:not(.hidden)")?.focus();
+				}
+			}) : void 0;
+			if (focusContentBtn) {
+				focusContentBtn.id = "bytm-menu-focus-content";
+				focusContentBtn.role = "button";
+				focusContentBtn.tabIndex = 0;
+			}
 			const titleLogoElem = document.createElement("img");
 			const logoSrc = await getResourceUrl(`img-logo_dev`);
 			titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
 			titleLogoElem.tabIndex = 0;
 			titleLogoElem.role = "button";
+			titleLogoElem.alt = t("config_menu_title_logo_tooltip");
 			if (logoSrc) titleLogoElem.src = logoSrc;
 			onInteraction(titleLogoElem, (e) => {
 				e.preventDefault();
@@ -3422,6 +3438,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const reorderedLinks = hostLink ? [hostLink, ...otherLinks] : links;
 			for (const [, ...args] of reorderedLinks) addLink(...args);
 			addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
+			const headerRightSideElem = document.createElement("div");
+			headerRightSideElem.id = "bytm-menu-header-right-side";
 			const closeElem = document.createElement("img");
 			closeElem.classList.add("bytm-menu-close");
 			closeElem.role = "button";
@@ -3429,11 +3447,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			closeElem.src = await getResourceUrl("img-close");
 			closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
 			onInteraction(closeElem, (e) => closeCfgMenu(e));
+			headerRightSideElem.appendChild(linksCont);
+			headerRightSideElem.appendChild(closeElem);
 			titleCont.appendChild(titleElem);
-			titleCont.appendChild(linksCont);
+			focusContentBtn && titleCont.appendChild(focusContentBtn);
 			titleLogoHeaderCont.appendChild(titleCont);
 			headerElem.appendChild(titleLogoHeaderCont);
-			headerElem.appendChild(closeElem);
+			headerElem.appendChild(headerRightSideElem);
 			const footerCont = document.createElement("div");
 			footerCont.classList.add("bytm-menu-footer-cont");
 			const leftSideFooterCont = document.createElement("div");
@@ -3468,7 +3488,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			leftSideFooterCont.appendChild(reloadFooterEl);
 			/** For copying plain when shift-clicking the copy button or when compression is not supported */
 			const exportDataSpecial = () => JSON.stringify({
-				formatVersion: 11,
+				formatVersion: 12,
 				data: getFeatures()
 			});
 			const exImDlg = new ExImDialog({
@@ -3476,7 +3496,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				width: 800,
 				height: 600,
 				exportData: async () => await compressionSupported() ? await (0, _sv443_network_coreutils.compress)(JSON.stringify({
-					formatVersion: 11,
+					formatVersion: 12,
 					data: getFeatures()
 				}), compressionFormat$1, "string") : exportDataSpecial(),
 				exportDataSpecial,
@@ -3497,13 +3517,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							type: "alert",
 							message: t("import_error.no_data")
 						});
-						if (parsed.formatVersion < 11) {
+						if (parsed.formatVersion < 12) {
 							let newData = structuredClone(parsed.data);
 							const sortedMigrations = Object.entries(cfgMigrations).sort(([a], [b]) => Number(a) - Number(b));
 							let curFmtVer = Number(parsed.formatVersion);
 							for (const [fmtVer, migrationFunc] of sortedMigrations) {
 								const ver = Number(fmtVer);
-								if (curFmtVer < 11 && curFmtVer < ver) try {
+								if (curFmtVer < 12 && curFmtVer < ver) try {
 									newData = await structuredClone(migrationFunc(newData));
 									curFmtVer = ver;
 								} catch (err) {
@@ -3512,9 +3532,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							}
 							parsed.formatVersion = curFmtVer;
 							parsed.data = newData;
-						} else if (parsed.formatVersion !== 11) return await showPrompt({
+						} else if (parsed.formatVersion !== 12) return await showPrompt({
 							type: "alert",
-							message: t("import_error.wrong_format_version", 11, parsed.formatVersion)
+							message: t("import_error.wrong_format_version", 12, parsed.formatVersion)
 						});
 						await setFeatures({
 							...getFeatures(),
@@ -3561,8 +3581,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const sidenavCont = document.createElement("nav");
 			sidenavCont.classList.add("bytm-menu-sidenav");
 			sidenavCont.id = "bytm-cfg-menu-sidenav";
-			sidenavCont.tabIndex = 0;
-			sidenavCont.ariaLabel = t("cfg_menu_sidenav_label");
+			sidenavCont.tabIndex = -1;
 			bodyCont.appendChild(sidenavCont);
 			const createSidenavHeader = (headerId, selected = false, isExtraInfoHeader = false) => {
 				try {
@@ -3608,9 +3627,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const sidenavTopSectionCont = document.createElement("section");
 			sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
 			sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
-			sidenavTopSectionCont.role = "radiogroup";
-			sidenavTopSectionCont.tabIndex = 0;
-			sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo$1.name });
+			sidenavTopSectionCont.tabIndex = -1;
 			let firstCatHeader = true;
 			for (const category of Object.keys(featureCfgWithCategories)) {
 				const catGroupIdx = groupedCategories.findIndex((group) => group.includes(category));
@@ -3628,9 +3645,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const sidenavBtmSectionCont = document.createElement("section");
 			sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
 			sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
-			sidenavBtmSectionCont.role = "radiogroup";
-			sidenavBtmSectionCont.tabIndex = 0;
-			sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo$1.name });
+			sidenavBtmSectionCont.tabIndex = -1;
 			const extraInfoCategoryIDs = ["about", "changelog"];
 			for (const id of extraInfoCategoryIDs) {
 				const headerElem = createSidenavHeader(id, firstCatHeader, true);
@@ -7353,6 +7368,15 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			advanced: true,
 			adornments: [adornments.advanced, adornments.reload]
 		},
+		configMenuFocusContentButtonEnabled: {
+			type: "toggle",
+			category: "general",
+			group: "accessibility",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: false,
+			adornments: [adornments.reload]
+		},
 		initTimeout: {
 			type: "number",
 			category: "general",
@@ -9016,30 +9040,30 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		12: (oldData) => {
 			oldData.thumbnailOverlayEnabled = oldData.thumbnailOverlayBehavior !== "never";
 			oldData.autoScrollToActiveSongEnabled = oldData.autoScrollToActiveSongMode !== "never";
-			return useNewDefaults(oldData, ["thumbnailOverlayBlurredDuplicateBackground"]);
+			return useNewDefaults(oldData, ["thumbnailOverlayBlurredDuplicateBackground", "configMenuFocusContentButtonEnabled"]);
 		}
 	};
 	/**
-	* Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values.  
+	* Uses the default config data ({@linkcode cfgDefaultData}) as the base, then overwrites all values with the passed {@linkcode config} (can be a partial object), then sets all feature values defined by {@linkcode resetKeys} to their default values.  
 	* This function is basically used for migrations where new features have been introduced, or where some features absolutely NEED to be reset to their new default value, like for a breaking change.  
 	* Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
 	*/
-	function useNewDefaults(baseData, resetKeys) {
+	function useNewDefaults(config, resetKeys) {
 		const newData = structuredClone({
 			...cfgDefaultData,
-			...baseData ?? {}
+			...config ?? {}
 		});
 		for (const key of resetKeys) newData[key] = featInfo?.[key]?.default;
 		return newData;
 	}
 	/**
-	* Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.  
+	* Uses {@linkcode config} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.  
 	* This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be set to the new default.  
 	* This function is basically used for migrations where some features' default values have changed, but we don't want to upset users who have changed the value from its old default. May only be used for non-breaking changes.  
 	* Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
 	*/
-	function useNewDefaultsIfUnchanged(oldData, oldDefaults) {
-		const newData = structuredClone(oldData);
+	function useNewDefaultsIfUnchanged(config, oldDefaults) {
+		const newData = structuredClone(config);
 		for (const { key, oldDefault } of oldDefaults) {
 			const defaultVal = featInfo?.[key]?.default;
 			if (newData[key] === oldDefault) newData[key] = defaultVal;
@@ -9047,7 +9071,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		return newData;
 	}
 	/**
-	* Uses the passed config as the base, then clamps all numeric feature values to their defined min/max ranges.  
+	* Uses the passed config as the base, then clamps all numeric feature values defined by {@linkcode keys} to their defined min/max ranges.  
 	* Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
 	*/
 	function useNewRanges(config, keys) {
@@ -9058,7 +9082,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}
 		return newCfg;
 	}
-	/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. **/
+	/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. */
 	function clampNewRange(config, key) {
 		const val = config[key];
 		const info = featInfo[key];
@@ -9066,7 +9090,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	var configStore = new _sv443_network_coreutils.DataStore({
 		id: "bytm-config",
-		formatVersion: 11,
+		formatVersion: 12,
 		engine: new _sv443_network_userutils.GMStorageEngine(),
 		defaultData: cfgDefaultData,
 		migrations: cfgMigrations,
@@ -9561,7 +9585,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	* @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
 	*/
 	async function emitBroadcast(packet, to) {
-		const nonce = Date.now() % 16777215 + Math.random();
+		const nonce = sliceNum(Date.now(), 4) + Math.random();
 		return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({ packet: {
 			from: broadcastTxID,
 			to,
@@ -9760,7 +9784,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	/** add `time_continue` param only if current video time is greater than this value */
 	var reloadTabVideoTimeThreshold = 3;
-	/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the `bytm-reload-tab` DataStore */
+	/** Reloads the own tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the {@linkcode reloadTabStore} DataStore (ID `bytm-reload-tab`) */
 	async function reloadTab() {
 		const win = (0, _sv443_network_userutils.getUnsafeWindow)();
 		try {
@@ -9829,6 +9853,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			configurable: true
 		});
 		return newObj;
+	}
+	/** Slices digits off the beginning of the given number {@linkcode n} */
+	function sliceNum(n, count) {
+		return n % 10 ** (String(n).length - count);
 	}
 	var verSessions;
 	/** Counts the number of launched sessions per userscript version and returns the current count, to enable time-based features like the "new feature" adornment icon */
