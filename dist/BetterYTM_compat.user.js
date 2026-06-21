@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@37ee0d26/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4da3b251/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -7914,9 +7914,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "37ee0d26";
+	var buildNumber$1 = "4da3b251";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1782037955202;
+	var buildTimestamp = 1782057700082;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -8376,6 +8376,250 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	function resolveTranslatable(trnsl) {
 		return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
 	}
+	var data_default = {
+		formatVersion: 0,
+		domains: [{
+			"id": "ytm",
+			"name": "YouTube Music",
+			"nameShort": "YT Music",
+			"abbr": "YTM",
+			"hostnames": ["music.youtube.com"]
+		}, {
+			"id": "yt",
+			"name": "YouTube",
+			"nameShort": "YT",
+			"abbr": "YT",
+			"hostnames": [
+				"www.youtube.com",
+				"youtube.com",
+				"youtu.be",
+				"m.youtube.com",
+				"youtube-nocookie.com",
+				"www.youtube-nocookie.com"
+			]
+		}],
+		alerts: [{
+			"id": "update-preview-version-hint-v3.1.0-rc.1",
+			"title": {
+				"de-DE": "BetterYTM ist veraltet",
+				"en-GB": "BetterYTM is outdated",
+				"en-US": "BetterYTM is outdated",
+				"es-ES": "BetterYTM está desactualizado",
+				"fr-FR": "BetterYTM est obsolète",
+				"hi-IN": "BetterYTM पुराना है",
+				"ja-JP": "BetterYTMは古くなっています",
+				"pt-BR": "BetterYTM está desatualizado",
+				"zh-CN": "BetterYTM 已过时"
+			},
+			"message": {
+				"de-DE": "Du verwendest derzeit eine veraltete Vorschauversion von BetterYTM.  \nBitte schau auf der Release-Seite nach der vollständigen Version v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"en-GB": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"en-US": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"es-ES": "Actualmente estás ejecutando una versión de vista previa obsoleta de BetterYTM.  \nPor favor, consulta la página de lanzamientos para la versión completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"fr-FR": "Vous utilisez actuellement une version de prévisualisation obsolète de BetterYTM.  \nVeuillez consulter la page des versions pour la version complète v3.1.0 :  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"hi-IN": "आप वर्तमान में BetterYTM का एक पुराना पूर्वावलोकन संस्करण चला रहे हैं।  \nकृपया पूर्ण v3.1.0 रिलीज़ के लिए रिलीज़ पृष्ठ पर जांच करें:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"ja-JP": "現在、BetterYTMの古いプレビューバージョンを実行しています。  \n完全なv3.1.0リリースについては、リリースページを確認してください:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"pt-BR": "Você está atualmente executando uma versão de visualização desatualizada do BetterYTM.  \nPor favor, verifique na página de lançamentos para a versão completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
+				"zh-CN": "您当前正在运行过时的BetterYTM预览版本。  \n请在发布页面上查看完整的v3.1.0版本：  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)"
+			},
+			"domains": ["ytm", "yt"],
+			"important": true,
+			"version": "3.1.0-rc.1",
+			"dateMax": "2026-06-01T23:59:59.999Z"
+		}],
+		selectors: {
+			"app": {
+				"yt": "ytd-app",
+				"ytm": "ytmusic-app"
+			},
+			"obs-bytmDialogContainer": "#bytm-dialog-container",
+			"obs-browseResponse": { "ytm": "ytmusic-browse-response" },
+			"obs-searchPage": { "ytm": "ytmusic-search-page" },
+			"obs-navBar": { "ytm": "ytmusic-nav-bar" },
+			"obs-mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
+			"obs-sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
+			"obs-sidePanel": { "ytm": "#side-panel" },
+			"obs-playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
+			"obs-playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
+			"obs-playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
+			"obs-playerBarRightControls": { "ytm": "#right-controls" },
+			"obs-popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
+			"obs-ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
+			"obs-ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
+			"obs-ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
+			"obs-ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
+			"obs-ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
+			"obs-ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+		}
+	};
+	//#endregion
+	//#region src/utils/input.ts
+	var interactionKeys = [
+		"Enter",
+		" ",
+		"Space"
+	];
+	/**
+	* Adds generic, accessible interaction listeners to the passed element.  
+	* All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
+	* @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
+	*/
+	function onInteraction(elem, listener, listenerOptions) {
+		const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
+		const proxListener = (e) => {
+			if (e instanceof KeyboardEvent) if (interactionKeys.includes(e.key)) {
+				preventDefault && e.preventDefault();
+				stopPropagation && e.stopPropagation();
+			} else return;
+			else if (e instanceof MouseEvent) {
+				preventDefault && e.preventDefault();
+				stopPropagation && e.stopPropagation();
+			}
+			listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
+			listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
+			listener(e);
+		};
+		elem.addEventListener("click", proxListener, listenerOpts);
+		elem.addEventListener("keydown", proxListener, listenerOpts);
+	}
+	//#endregion
+	//#region src/utils/data.ts
+	/** URL to the remote data JSON file on a CDN. */
+	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json`;
+	/** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
+	var staticDataFormatVersion = 0;
+	var staticData;
+	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
+	async function getStaticData() {
+		try {
+			if (staticData) return staticData;
+			const res = await fetchAdvanced$1(remoteDataUrl, { timeout: 1e4 });
+			if (res.ok) {
+				const data = await res.json();
+				if (isStaticData(data)) {
+					loggers.data.info("Successfully fetched remote static data:", data);
+					return staticData = data;
+				} else loggers.data.warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(data_default));
+			}
+			return staticData = data_default;
+		} catch (e) {
+			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
+			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
+			return staticData = data_default;
+		}
+	}
+	/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
+	function getDefaultStaticData() {
+		return data_default;
+	}
+	/**
+	* Returns the selector with the given ID.  
+	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
+	*/
+	function getSelector(id, throws) {
+		const dom = getDomain();
+		if (throws !== false) try {
+			if (typeof staticData?.selectors !== "object") throw new DatedError$1("Static data hasn't been fetched yet.");
+			const sel = staticData.selectors[id];
+			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector with ID '${id}' doesn't exist or is neither a string nor an object.`);
+			if (typeof sel === "object" && !(dom in sel)) throw new DatedError$1(`Selector with ID '${id}' doesn't contain a value for the current domain '${dom}'.`);
+			return typeof sel === "string" ? sel : sel[dom];
+		} catch (e) {
+			loggers.data.error(`Couldn't get selector with ID '${id}' due to error:`, e);
+			throw e;
+		}
+		const sel = staticData?.selectors?.[id];
+		return typeof sel === "string" ? sel : sel?.[dom];
+	}
+	/** Checks whether the given data matches the expected structure of the static data JSON at `assets/data.json`. */
+	function isStaticData(data) {
+		return typeof data === "object" && data !== null && "formatVersion" in data && typeof data.formatVersion === "number" && data.formatVersion === staticDataFormatVersion && "domains" in data && typeof data.domains === "object" && Array.isArray(data.domains) && "selectors" in data && typeof data.selectors === "object" && "alerts" in data && typeof data.alerts === "object" && Array.isArray(data.alerts);
+	}
+	var alertsStore = new DataStore$1({
+		id: "bytm-alerts",
+		defaultData: { dismissed: [] },
+		formatVersion: 0,
+		engine: new GMStorageEngine(),
+		memoryCache: false,
+		compressionFormat: null
+	});
+	/** Checks if there are active alerts and shows a prompt for each of them. */
+	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
+		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
+		for (const alert of activeAlerts) {
+			if (alertMode === "importantOnly" && !alert.important) continue;
+			const dlg = createAlertDialog(alert);
+			dlg.open();
+			await dlg.once("close");
+			alertsData = await alertsStore.loadData();
+			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
+		}
+	}
+	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
+	function isAlertActive(alert, alertsData) {
+		if (alertsData.dismissed.includes(alert.id)) return false;
+		if (alert.domains.length === 0) return false;
+		if (!alert.domains.includes(getDomain())) return false;
+		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
+		if ("versionMin" in alert && alert.versionMin && compareVersions(alert.versionMin, scriptInfo$1.version) > 0) return false;
+		if ("versionMax" in alert && alert.versionMax && compareVersions(alert.versionMax, scriptInfo$1.version) < 0) return false;
+		const now = /* @__PURE__ */ new Date();
+		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
+		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
+		return true;
+	}
+	/** Creates an alert dialog for the given alert data. */
+	function createAlertDialog(alert) {
+		return new MarkdownDialog({
+			id: "static-data-alert",
+			height: 500,
+			width: 600,
+			small: true,
+			destroyOnClose: true,
+			closeOnBgClick: !alert.important,
+			closeOnEscPress: !alert.important,
+			async renderHeader() {
+				const headerEl = document.createElement("div");
+				headerEl.id = "bytm-static-data-alert-dialog-header";
+				headerEl.classList.add("bytm-flex-row");
+				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
+				const header = document.createElement("h2");
+				header.classList.add("bytm-dialog-title");
+				header.role = "heading";
+				header.ariaLevel = "1";
+				header.tabIndex = 0;
+				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
+				headerEl.appendChild(header);
+				return headerEl;
+			},
+			renderFooter() {
+				const footer = document.createElement("div");
+				footer.classList.add("bytm-dialog-footer", "align-right");
+				const closeBtn = document.createElement("button");
+				closeBtn.type = "button";
+				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
+				onInteraction(closeBtn, () => {
+					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
+					if (titleCloseBtn) titleCloseBtn.click();
+					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+				});
+				footer.appendChild(closeBtn);
+				return footer;
+			},
+			body: resolveTranslatable(alert.message),
+			sanitizeBody: true,
+			modifyBodyElements(_bw, mdCont) {
+				mdCont.ariaLive = "polite";
+				mdCont.ariaAtomic = "true";
+			}
+		});
+	}
+	/** Initializes the static data by fetching it and performing necessary checks and actions. */
+	async function initStaticData() {
+		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
+		const alertMode = getFeature("globalAlertMode", "importantOnly");
+		return await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
+	}
 	//#endregion
 	//#region src/components/BytmDialog.ts
 	/** Whether the dialog system has been initialized */
@@ -8540,7 +8784,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
 			if (openDialogs.length === 0) {
 				document.body.classList.remove("bytm-disable-scroll");
-				document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+				document.querySelector(getSelector("app"))?.removeAttribute("inert");
 			}
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
 		}
@@ -8549,7 +8793,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
 			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
 			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
+			document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
 		}
 		/** Called on every {@linkcode mount()} to attach all generic event listeners */
@@ -8653,36 +8897,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			return bodyEl;
 		}
 	};
-	//#endregion
-	//#region src/utils/input.ts
-	var interactionKeys = [
-		"Enter",
-		" ",
-		"Space"
-	];
-	/**
-	* Adds generic, accessible interaction listeners to the passed element.  
-	* All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
-	* @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
-	*/
-	function onInteraction(elem, listener, listenerOptions) {
-		const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
-		const proxListener = (e) => {
-			if (e instanceof KeyboardEvent) if (interactionKeys.includes(e.key)) {
-				preventDefault && e.preventDefault();
-				stopPropagation && e.stopPropagation();
-			} else return;
-			else if (e instanceof MouseEvent) {
-				preventDefault && e.preventDefault();
-				stopPropagation && e.stopPropagation();
-			}
-			listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
-			listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
-			listener(e);
-		};
-		elem.addEventListener("click", proxListener, listenerOpts);
-		elem.addEventListener("keydown", proxListener, listenerOpts);
-	}
 	//#endregion
 	//#region src/utils/Logger.ts
 	/** Mapping of predefined {@linkcode LogCategory} entries. */
@@ -9125,7 +9339,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				subtree: false
 			});
 			globservers.body.enable();
-			globservers.bytmDialogContainer = new SelectorObserver("#bytm-dialog-container", {
+			globservers.bytmDialogContainer = new SelectorObserver(getSelector("obs-bytmDialogContainer"), {
 				...defaultObserverOptions,
 				defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
 				subtree: true
@@ -9133,32 +9347,32 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			globservers.bytmDialogContainer.enable();
 			switch (getDomain()) {
 				case "ytm": {
-					const browseResponseSelector = "ytmusic-browse-response";
+					const browseResponseSelector = getSelector("obs-browseResponse");
 					globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
 					globservers.body.addListener(browseResponseSelector, { listener: getEnableFn("browseResponse") });
-					const searchPageSelector = "ytmusic-search-page";
+					const searchPageSelector = getSelector("obs-searchPage");
 					globservers.searchPage = new SelectorObserver(searchPageSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(searchPageSelector, { listener: getEnableFn("searchPage") });
-					const navBarSelector = "ytmusic-nav-bar";
+					const navBarSelector = getSelector("obs-navBar");
 					globservers.navBar = new SelectorObserver(navBarSelector, {
 						...defaultObserverOptions,
 						subtree: false
 					});
 					globservers.body.addListener(navBarSelector, { listener: getEnableFn("navBar") });
-					const mainPanelSelector = "ytmusic-player-page #main-panel";
+					const mainPanelSelector = getSelector("obs-mainPanel");
 					globservers.mainPanel = new SelectorObserver(mainPanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(mainPanelSelector, { listener: getEnableFn("mainPanel") });
-					const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
+					const sidebarSelector = getSelector("obs-sideBar");
 					globservers.sideBar = new SelectorObserver(sidebarSelector, {
 						...defaultObserverOptions,
 						attributes: true,
@@ -9166,37 +9380,37 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						subtree: true
 					});
 					globservers.body.addListener(sidebarSelector, { listener: getEnableFn("sideBar") });
-					const sidePanelSelector = "#side-panel";
+					const sidePanelSelector = getSelector("obs-sidePanel");
 					globservers.sidePanel = new SelectorObserver(sidePanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(sidePanelSelector, { listener: getEnableFn("sidePanel") });
-					const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+					const playerBarSelector = getSelector("obs-playerBar");
 					globservers.playerBar = new SelectorObserver(playerBarSelector, { ...defaultObserverOptions });
 					globservers.body.addListener(playerBarSelector, { listener: () => {
 						globservers.playerBar.enable();
 					} });
-					const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+					const playerBarInfoSelector = getSelector("obs-playerBarInfo");
 					globservers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
 						...defaultObserverOptions,
 						attributes: true,
 						attributeFilter: ["title"]
 					});
 					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableFn("playerBarInfo") });
-					const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
+					const playerBarMiddleButtonsSelector = getSelector("obs-playerBarMiddleButtons");
 					globservers.playerBarMiddleButtons = new SelectorObserver(playerBarMiddleButtonsSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableFn("playerBarMiddleButtons") });
-					const playerBarRightControls = "#right-controls";
+					const playerBarRightControls = getSelector("obs-playerBarRightControls");
 					globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableFn("playerBarRightControls") });
-					const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
+					const popupContainerSelector = getSelector("obs-popupContainer");
 					globservers.popupContainer = new SelectorObserver(popupContainerSelector, {
 						...defaultObserverOptions,
 						subtree: true
@@ -9205,38 +9419,38 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					break;
 				}
 				case "yt": {
-					const ytGuideSelector = "#content tp-yt-app-drawer#guide #guide-inner-content";
+					const ytGuideSelector = getSelector("obs-ytGuide");
 					globservers.ytGuide = new SelectorObserver(ytGuideSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytGuideSelector, { listener: getEnableFn("ytGuide") });
-					const ytdBrowseSelector = "ytd-app ytd-page-manager ytd-browse";
+					const ytdBrowseSelector = getSelector("obs-ytdBrowse");
 					globservers.ytdBrowse = new SelectorObserver(ytdBrowseSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableFn("ytdBrowse") });
-					const ytAppHeaderSelector = "#header ytd-app-header, #header ytd-tabbed-page-header";
+					const ytAppHeaderSelector = getSelector("obs-ytAppHeader");
 					globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
 					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableFn("ytAppHeader") });
-					const ytWatchFlexySelector = "ytd-app ytd-watch-flexy";
+					const ytWatchFlexySelector = getSelector("obs-ytWatchFlexy");
 					globservers.ytWatchFlexy = new SelectorObserver(ytWatchFlexySelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableFn("ytWatchFlexy") });
-					const ytWatchMetadataSelector = "#columns #primary-inner ytd-watch-metadata";
+					const ytWatchMetadataSelector = getSelector("obs-ytWatchMetadata");
 					globservers.ytWatchMetadata = new SelectorObserver(ytWatchMetadataSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableFn("ytWatchMetadata") });
-					const mastheadSelector = "#content ytd-masthead#masthead";
+					const mastheadSelector = getSelector("obs-ytMasthead");
 					globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
 						...defaultObserverOptions,
 						subtree: true
@@ -11808,7 +12022,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			window.addEventListener("resize", debounce$1(checkToggleScrollIndicator, 250), { passive: true });
 			isCfgMenuOpen = false;
 			document.body.classList.remove("bytm-disable-scroll");
-			document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+			document.querySelector(getSelector("app"))?.removeAttribute("inert");
 			backgroundElem.style.visibility = "hidden";
 			backgroundElem.style.display = "none";
 			loggers.configMenu.log(`Mounted config menu element in ${Date.now() - startTs}ms`);
@@ -11867,7 +12081,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			else await mountCfgMenu();
 			isCfgMenuOpen = true;
 			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
+			document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
 			const menuBg = document.querySelector("#bytm-cfg-menu-bg");
 			setCurrentDialogId("cfg-menu");
 			openDialogs.unshift("cfg-menu");
@@ -11897,7 +12111,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		evt?.bubbles && evt.stopPropagation();
 		if (enableScroll && !openDialogs.some((id) => id !== "cfg-menu")) {
 			document.body.classList.remove("bytm-disable-scroll");
-			document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+			document.querySelector(getSelector("app"))?.removeAttribute("inert");
 		}
 		const menuBg = document.querySelector("#bytm-cfg-menu-bg");
 		clearTimeout(hiddenCopiedTxtTimeout);
@@ -12835,178 +13049,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function initTruncatePlayerBarSubtitles() {
 		if (!await addStyleFromResource("css-truncate_player_bar_subtitles")) loggers.layout.error("Couldn't load stylesheet to truncate player bar subtitles");
 		else loggers.layout.log("Truncated player bar subtitles");
-	}
-	var data_default = {
-		formatVersion: 0,
-		domains: [{
-			"id": "ytm",
-			"name": "YouTube Music",
-			"nameShort": "YT Music",
-			"abbr": "YTM",
-			"hostnames": ["music.youtube.com"]
-		}, {
-			"id": "yt",
-			"name": "YouTube",
-			"nameShort": "YT",
-			"abbr": "YT",
-			"hostnames": [
-				"www.youtube.com",
-				"youtube.com",
-				"youtu.be",
-				"m.youtube.com",
-				"youtube-nocookie.com",
-				"www.youtube-nocookie.com"
-			]
-		}],
-		alerts: [{
-			"id": "update-preview-version-hint-v3.1.0-rc.1",
-			"title": {
-				"de-DE": "BetterYTM ist veraltet",
-				"en-GB": "BetterYTM is outdated",
-				"en-US": "BetterYTM is outdated",
-				"es-ES": "BetterYTM está desactualizado",
-				"fr-FR": "BetterYTM est obsolète",
-				"hi-IN": "BetterYTM पुराना है",
-				"ja-JP": "BetterYTMは古くなっています",
-				"pt-BR": "BetterYTM está desatualizado",
-				"zh-CN": "BetterYTM 已过时"
-			},
-			"message": {
-				"de-DE": "Du verwendest derzeit eine veraltete Vorschauversion von BetterYTM.  \nBitte schau auf der Release-Seite nach der vollständigen Version v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"en-GB": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"en-US": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"es-ES": "Actualmente estás ejecutando una versión de vista previa obsoleta de BetterYTM.  \nPor favor, consulta la página de lanzamientos para la versión completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"fr-FR": "Vous utilisez actuellement une version de prévisualisation obsolète de BetterYTM.  \nVeuillez consulter la page des versions pour la version complète v3.1.0 :  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"hi-IN": "आप वर्तमान में BetterYTM का एक पुराना पूर्वावलोकन संस्करण चला रहे हैं।  \nकृपया पूर्ण v3.1.0 रिलीज़ के लिए रिलीज़ पृष्ठ पर जांच करें:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"ja-JP": "現在、BetterYTMの古いプレビューバージョンを実行しています。  \n完全なv3.1.0リリースについては、リリースページを確認してください:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"pt-BR": "Você está atualmente executando uma versão de visualização desatualizada do BetterYTM.  \nPor favor, verifique na página de lançamentos para a versão completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"zh-CN": "您当前正在运行过时的BetterYTM预览版本。  \n请在发布页面上查看完整的v3.1.0版本：  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)"
-			},
-			"domains": ["ytm", "yt"],
-			"important": true,
-			"version": "3.1.0-rc.1",
-			"dateMax": "2026-06-01T23:59:59.999Z"
-		}],
-		selectors: {}
-	};
-	//#endregion
-	//#region src/utils/data.ts
-	/** URL to the remote data JSON file on a CDN. */
-	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json`;
-	/** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
-	var staticDataFormatVersion = 0;
-	var staticData;
-	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
-	async function getStaticData() {
-		try {
-			if (staticData) return staticData;
-			const res = await fetchAdvanced$1(remoteDataUrl, { timeout: 1e4 });
-			if (res.ok) {
-				const data = await res.json();
-				if (isStaticData(data)) {
-					loggers.data.info("Successfully fetched remote static data:", data);
-					return staticData = data;
-				} else loggers.data.warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(data_default));
-			}
-			return staticData = data_default;
-		} catch (e) {
-			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
-			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
-			return staticData = data_default;
-		}
-	}
-	/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
-	function getDefaultStaticData() {
-		return data_default;
-	}
-	/** Checks whether the given data matches the expected structure of the static data JSON at `assets/data.json`. */
-	function isStaticData(data) {
-		return typeof data === "object" && data !== null && "formatVersion" in data && typeof data.formatVersion === "number" && data.formatVersion === staticDataFormatVersion && "domains" in data && typeof data.domains === "object" && Array.isArray(data.domains) && "selectors" in data && typeof data.selectors === "object" && "alerts" in data && typeof data.alerts === "object" && Array.isArray(data.alerts);
-	}
-	var alertsStore = new DataStore$1({
-		id: "bytm-alerts",
-		defaultData: { dismissed: [] },
-		formatVersion: 0,
-		engine: new GMStorageEngine(),
-		memoryCache: false,
-		compressionFormat: null
-	});
-	/** Checks if there are active alerts and shows a prompt for each of them. */
-	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
-		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
-		for (const alert of activeAlerts) {
-			if (alertMode === "importantOnly" && !alert.important) continue;
-			const dlg = createAlertDialog(alert);
-			dlg.open();
-			await dlg.once("close");
-			alertsData = await alertsStore.loadData();
-			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
-		}
-	}
-	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
-	function isAlertActive(alert, alertsData) {
-		if (alertsData.dismissed.includes(alert.id)) return false;
-		if (alert.domains.length === 0) return false;
-		if (!alert.domains.includes(getDomain())) return false;
-		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
-		if ("versionMin" in alert && alert.versionMin && compareVersions(alert.versionMin, scriptInfo$1.version) > 0) return false;
-		if ("versionMax" in alert && alert.versionMax && compareVersions(alert.versionMax, scriptInfo$1.version) < 0) return false;
-		const now = /* @__PURE__ */ new Date();
-		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
-		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
-		return true;
-	}
-	/** Creates an alert dialog for the given alert data. */
-	function createAlertDialog(alert) {
-		return new MarkdownDialog({
-			id: "static-data-alert",
-			height: 500,
-			width: 600,
-			small: true,
-			destroyOnClose: true,
-			closeOnBgClick: !alert.important,
-			closeOnEscPress: !alert.important,
-			async renderHeader() {
-				const headerEl = document.createElement("div");
-				headerEl.id = "bytm-static-data-alert-dialog-header";
-				headerEl.classList.add("bytm-flex-row");
-				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
-				const header = document.createElement("h2");
-				header.classList.add("bytm-dialog-title");
-				header.role = "heading";
-				header.ariaLevel = "1";
-				header.tabIndex = 0;
-				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
-				headerEl.appendChild(header);
-				return headerEl;
-			},
-			renderFooter() {
-				const footer = document.createElement("div");
-				footer.classList.add("bytm-dialog-footer", "align-right");
-				const closeBtn = document.createElement("button");
-				closeBtn.type = "button";
-				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
-				onInteraction(closeBtn, () => {
-					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
-					if (titleCloseBtn) titleCloseBtn.click();
-					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
-				});
-				footer.appendChild(closeBtn);
-				return footer;
-			},
-			body: resolveTranslatable(alert.message),
-			sanitizeBody: true,
-			modifyBodyElements(_bw, mdCont) {
-				mdCont.ariaLive = "polite";
-				mdCont.ariaAtomic = "true";
-			}
-		});
-	}
-	/** Initializes the static data by fetching it and performing necessary checks and actions. */
-	async function initStaticData() {
-		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
-		const alertMode = getFeature("globalAlertMode", "importantOnly");
-		return await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
 	}
 	//#endregion
 	//#region src/serializers.ts
@@ -18279,6 +18321,9 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		const ftInit = [];
 		document.body.classList.add(`bytm-dom-${domain}`);
 		initExponentialVolume();
+		const endStaticDataDur = measureInitDuration("initStaticData");
+		await initStaticData();
+		endStaticDataDur();
 		try {
 			initObservers(feats);
 			setTimeout(() => {
@@ -18304,8 +18349,6 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				await dlg.open();
 				await dlg.once("close");
 			}
-			const endStaticDataDur = measureInitDuration("initStaticData");
-			initStaticData().then(() => endStaticDataDur());
 			if (domain === "ytm") {
 				ftInit.push(["addWatermark", (async () => {
 					await improveLogo();
@@ -18674,7 +18717,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
 			downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, serializeLogs(), "text/plain");
 		});
-		isDev && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
+		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
 				title: document.title,
@@ -18729,7 +18772,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}, 300);
 			emitBroadcast({ type: "discoverSessions" });
 		});
-		isAdv && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
+		isAny && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
 			await showPrompt({
 				type: "confirm",
 				message: "Reload all open tabs that are running BetterYTM?",
