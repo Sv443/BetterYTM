@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4da3b251/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9cf04600/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "4da3b251";
+	var buildNumber$1 = "9cf04600";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1782057703934;
+	var buildTimestamp = 1782510810193;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -815,35 +815,7 @@
 				"www.youtube-nocookie.com"
 			]
 		}],
-		alerts: [{
-			"id": "update-preview-version-hint-v3.1.0-rc.1",
-			"title": {
-				"de-DE": "BetterYTM ist veraltet",
-				"en-GB": "BetterYTM is outdated",
-				"en-US": "BetterYTM is outdated",
-				"es-ES": "BetterYTM está desactualizado",
-				"fr-FR": "BetterYTM est obsolète",
-				"hi-IN": "BetterYTM पुराना है",
-				"ja-JP": "BetterYTMは古くなっています",
-				"pt-BR": "BetterYTM está desatualizado",
-				"zh-CN": "BetterYTM 已过时"
-			},
-			"message": {
-				"de-DE": "Du verwendest derzeit eine veraltete Vorschauversion von BetterYTM.  \nBitte schau auf der Release-Seite nach der vollständigen Version v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"en-GB": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"en-US": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"es-ES": "Actualmente estás ejecutando una versión de vista previa obsoleta de BetterYTM.  \nPor favor, consulta la página de lanzamientos para la versión completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"fr-FR": "Vous utilisez actuellement une version de prévisualisation obsolète de BetterYTM.  \nVeuillez consulter la page des versions pour la version complète v3.1.0 :  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"hi-IN": "आप वर्तमान में BetterYTM का एक पुराना पूर्वावलोकन संस्करण चला रहे हैं।  \nकृपया पूर्ण v3.1.0 रिलीज़ के लिए रिलीज़ पृष्ठ पर जांच करें:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"ja-JP": "現在、BetterYTMの古いプレビューバージョンを実行しています。  \n完全なv3.1.0リリースについては、リリースページを確認してください:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"pt-BR": "Você está atualmente executando uma versão de visualização desatualizada do BetterYTM.  \nPor favor, verifique na página de lançamentos para a versão completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"zh-CN": "您当前正在运行过时的BetterYTM预览版本。  \n请在发布页面上查看完整的v3.1.0版本：  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)"
-			},
-			"domains": ["ytm", "yt"],
-			"important": true,
-			"version": "3.1.0-rc.1",
-			"dateMax": "2026-06-01T23:59:59.999Z"
-		}],
+		alerts: [],
 		selectors: {
 			"app": {
 				"yt": "ytd-app",
@@ -3219,18 +3191,22 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (isModKey && !isInvState || !(isModKey || e.shiftKey) && isInvState) {
 				e.preventDefault();
 				e.stopImmediatePropagation();
-				const search = await showPrompt({
-					type: "prompt",
-					message: t("open_lyrics_search_prompt"),
-					defaultValue: currentSongTitle
-				});
-				if (search && search.length > 0) openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+				await promptLyricsSearch();
 			}
 		}, {
 			preventDefault: false,
 			stopPropagation: false
 		});
 		return linkElem;
+	}
+	/** Prompts to search for lyrics. Uses the song/video title as the default value. */
+	async function promptLyricsSearch() {
+		const search = await showPrompt({
+			type: "prompt",
+			message: t("open_lyrics_search_prompt"),
+			defaultValue: currentSongTitle
+		});
+		if (search && search.length > 0) openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
 	}
 	/** Splits a video title that contains a hyphen into an artist and song */
 	function splitVideoTitle(title) {
@@ -3876,7 +3852,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					loggers.configMenu.info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
 					const featConf = structuredClone(getFeatures());
 					featConf[key] = newVal;
-					const requiresReload = (initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object" && featConf[k] !== initConfig$1[k]) : []).some((k) => featInfo[k]?.reloadRequired !== false);
+					const changedKeys = initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object" && featConf[k] !== initConfig$1[k]) : [];
+					const requiresReload = changedKeys.some((k) => featInfo[k]?.reloadRequired !== false);
+					const promptMenuRemount = changedKeys.some((k) => featInfo[k]?.reloadMenuPrompt === true);
 					await setFeatures(featConf);
 					featInfo[key]?.change?.(newVal, initialVal);
 					if (requiresReload) {
@@ -3886,6 +3864,12 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						reloadFooterEl.classList.add("hidden");
 						reloadFooterEl.setAttribute("aria-hidden", "true");
 					}
+					if (promptMenuRemount) await showPrompt({
+						type: "confirm",
+						message: t("feature_changed_remount_config_menu"),
+						confirmBtnText: t("reload_now"),
+						confirmBtnTooltip: t("reload_now")
+					}) && emitSiteEvent("recreateCfgMenu");
 					if (initLocale !== featConf.locale) {
 						await initTranslations(featConf.locale);
 						setLocale(featConf.locale);
@@ -4190,17 +4174,19 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							}
 							inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
 							inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
-							const hasMinOrMax = "min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number";
-							const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
-							if (isNumericInput) inputElem.addEventListener("blur", () => {
-								let v = Number(inputElem.value);
-								if (hasMinOrMax && !isNaN(v)) {
-									if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min) v = ftInfo.min;
-									if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max) v = ftInfo.max;
-								}
-								if (hasStep && !isNaN(v)) v = Math.round(v / Number(ftInfo.step)) * Number(ftInfo.step);
-								if (!isNaN(v)) inputElem.value = String(v);
-							});
+							if (isNumericInput) {
+								const hasMinOrMax = "min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number";
+								const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
+								inputElem.addEventListener("blur", () => {
+									let v = Number(inputElem.value);
+									if (hasMinOrMax && !isNaN(v)) {
+										if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min) v = ftInfo.min;
+										if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max) v = ftInfo.max;
+									}
+									if (hasStep && !isNaN(v)) v = Math.round(v / Number(ftInfo.step)) * Number(ftInfo.step);
+									if (!isNaN(v)) inputElem.value = String(v);
+								});
+							}
 							ctrlElem.appendChild(inputElem);
 							if (type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
 								const afterInputUnitEl = document.createElement("span");
@@ -6640,7 +6626,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	//#region src/features/hotkeys.ts
 	async function initHotkeys() {
 		const promises = [];
-		if (getDomain() === "ytm") promises.push(initLyricsHotkey());
+		if (getDomain() === "ytm") promises.push(initOpenLyricsHotkey());
+		promises.push(initSearchLyricsPromptHotkey());
 		promises.push(initLikeDislikeHotkeys());
 		promises.push(initSiteSwitch());
 		promises.push(initProxyHotkeys());
@@ -6716,13 +6703,23 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			}
 		}, { capture: true });
 	}
-	async function initLyricsHotkey() {
+	async function initOpenLyricsHotkey() {
 		document.addEventListener("keydown", (e) => {
 			if (!getFeature("currentLyricsHotkeyEnabled")) return;
 			if (isIgnoredInputElement()) return;
 			if (hotkeyMatches(e, getFeature("currentLyricsHotkey")) && location.pathname.startsWith("/watch")) {
 				preventBubble(e);
 				document.getElementById("bytm-player-bar-lyrics-btn")?.click();
+			}
+		}, { capture: true });
+	}
+	async function initSearchLyricsPromptHotkey() {
+		document.addEventListener("keydown", async (e) => {
+			if (!getFeature("lyricsSearchPromptHotkeyEnabled")) return;
+			if (isIgnoredInputElement()) return;
+			if (hotkeyMatches(e, getFeature("lyricsSearchPromptHotkey"))) {
+				preventBubble(e);
+				await promptLyricsSearch();
 			}
 		}, { capture: true });
 	}
@@ -7368,7 +7365,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	* | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
 	* | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
 	* | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
-	* | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                     |
+	* | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                    |
+	* | `reloadMenuPrompt: boolean`                                        | If true, when the option is modified, shows a prompt to re-render the config menu - default is undefiled (false).                                   |
 	* | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
 	* | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
 	* | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
@@ -7404,7 +7402,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "3.2.0",
 			default: false,
-			adornments: [adornments.reload]
+			reloadMenuPrompt: true
 		},
 		initTimeout: {
 			type: "number",
@@ -7580,7 +7578,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "2.0.0",
 			default: false,
-			change: (newVal, initVal) => initVal !== newVal && emitSiteEvent("recreateCfgMenu")
+			reloadMenuPrompt: true
 		},
 		watermarkEnabled: {
 			type: "toggle",
@@ -8588,6 +8586,29 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			reloadRequired: false,
 			adornments: [adornments.ytmOnly]
 		},
+		lyricsSearchPromptHotkeyEnabled: {
+			type: "toggle",
+			category: "hotkeys",
+			group: "lyricsSearchPromptHotkeyEnabled",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: true,
+			reloadRequired: false
+		},
+		lyricsSearchPromptHotkey: {
+			type: "hotkey",
+			category: "hotkeys",
+			group: "lyricsSearchPromptHotkeyEnabled",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: {
+				code: "KeyO",
+				shift: true,
+				ctrl: true,
+				alt: false
+			},
+			reloadRequired: false
+		},
 		skipToRemTimeHotkeyEnabled: {
 			type: "toggle",
 			category: "hotkeys",
@@ -8600,7 +8621,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				icon: "icon-error",
 				iconFill: "var(--bytm-error-col)",
 				message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
-				duration: 20,
+				duration: 2e4,
 				onClick: () => getErrorDialog(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"), [t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]).open()
 			}),
 			adornments: () => !getFeature("rememberSongTime") ? [() => adornments.alert(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'"))] : []
@@ -9069,7 +9090,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		12: (oldData) => {
 			oldData.thumbnailOverlayEnabled = oldData.thumbnailOverlayBehavior !== "never";
 			oldData.autoScrollToActiveSongEnabled = oldData.autoScrollToActiveSongMode !== "never";
-			return useNewDefaults(oldData, ["thumbnailOverlayBlurredDuplicateBackground", "configMenuFocusContentButtonEnabled"]);
+			return useNewDefaults(oldData, [
+				"thumbnailOverlayBlurredDuplicateBackground",
+				"configMenuFocusContentButtonEnabled",
+				"lyricsSearchPromptHotkeyEnabled",
+				"lyricsSearchPromptHotkey"
+			]);
 		}
 	};
 	/**
