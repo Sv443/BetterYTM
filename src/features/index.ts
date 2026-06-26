@@ -9,7 +9,7 @@ import { formatNumber, getPreferredLocale, getResourceUrl, getVersionSessionCoun
 import { getErrorDialog, loggers } from "@util/logging.ts";
 import { getFeature, promptResetConfig } from "@/config.ts";
 import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "@/types.ts";
-import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { siteEvents } from "@/siteEvents.ts";
 import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "@/constants.ts";
 import { getDSSerializer } from "@/serializers.ts";
 import { closeToast, showIconToast } from "@comp/toast.ts";
@@ -208,7 +208,8 @@ export const groupedCategories: FeatureCategory[][] = [
  * | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
  * | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
  * | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
- * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                     |
+ * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                    |
+ * | `reloadMenuPrompt: boolean`                                        | If true, when the option is modified, shows a prompt to re-render the config menu - default is undefiled (false).                                   |
  * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
  * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
  * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
@@ -245,7 +246,7 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "3.2.0",
     default: false,
-    adornments: [adornments.reload],
+    reloadMenuPrompt: true,
   },
   initTimeout: {
     type: "number",
@@ -417,7 +418,7 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     default: false,
-    change: (newVal, initVal) => initVal !== newVal && emitSiteEvent("recreateCfgMenu"),
+    reloadMenuPrompt: true,
   },
 
   //#region cat:layout

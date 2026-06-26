@@ -66,6 +66,7 @@
   "search_clear": "Clear search",
   "open": "Open",
   "config_data_changed_prompt_open_menu": "The configuration has been updated automatically.\nDo you want to open the configuration menu?",
+  "feature_changed_remount_config_menu": "The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.",
 
   "reset": "Reset",
   "close": "Close",

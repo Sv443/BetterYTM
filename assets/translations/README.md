@@ -16,16 +16,16 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en-US`](./en-US.json) | `517` (default locale) |  |
-| ✅ | [`de-DE`](./de-DE.json) | `517/517` (100%) | ─ |
-|  | [`en-GB`](./en-GB.json) | `517/517` (100%) | `en-US` |
-| ⚠ | [`es-ES`](./es-ES.json) | `511/517` (98.8%) | ─ |
-| ⚠ | [`fr-FR`](./fr-FR.json) | `511/517` (98.8%) | ─ |
-| ⚠ | [`hi-IN`](./hi-IN.json) | `511/517` (98.8%) | ─ |
-| ⚠ | [`ja-JP`](./ja-JP.json) | `511/517` (98.8%) | ─ |
-| ⚠ | [`pt-BR`](./pt-BR.json) | `511/517` (98.8%) | ─ |
-| ⚠ | [`tr-TR`](./tr-TR.json) | `511/517` (98.8%) | ─ |
-| ⚠ | [`zh-CN`](./zh-CN.json) | `511/517` (98.8%) | ─ |
+|  | [`en-US`](./en-US.json) | `518` (default locale) |  |
+| ✅ | [`de-DE`](./de-DE.json) | `518/518` (100%) | ─ |
+|  | [`en-GB`](./en-GB.json) | `518/518` (100%) | `en-US` |
+| ⚠ | [`es-ES`](./es-ES.json) | `511/518` (98.6%) | ─ |
+| ⚠ | [`fr-FR`](./fr-FR.json) | `511/518` (98.6%) | ─ |
+| ⚠ | [`hi-IN`](./hi-IN.json) | `511/518` (98.6%) | ─ |
+| ⚠ | [`ja-JP`](./ja-JP.json) | `511/518` (98.6%) | ─ |
+| ⚠ | [`pt-BR`](./pt-BR.json) | `511/518` (98.6%) | ─ |
+| ⚠ | [`tr-TR`](./tr-TR.json) | `511/518` (98.6%) | ─ |
+| ⚠ | [`zh-CN`](./zh-CN.json) | `511/518` (98.6%) | ─ |
 
 > <sub>✅ Fully translated</sub><br>
 > <sub>⚠ Almost fully translated</sub><br>
@@ -40,12 +40,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>es-ES</code> - 6 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es-ES</code> - 7 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `config_menu_title_logo_tooltip` | `${scriptName} Logo` |
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
+| `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
@@ -53,12 +54,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr-FR</code> - 6 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr-FR</code> - 7 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `config_menu_title_logo_tooltip` | `${scriptName} Logo` |
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
+| `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
@@ -66,12 +68,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi-IN</code> - 6 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi-IN</code> - 7 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `config_menu_title_logo_tooltip` | `${scriptName} Logo` |
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
+| `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
@@ -79,12 +82,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja-JP</code> - 6 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja-JP</code> - 7 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `config_menu_title_logo_tooltip` | `${scriptName} Logo` |
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
+| `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
@@ -92,12 +96,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt-BR</code> - 6 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt-BR</code> - 7 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `config_menu_title_logo_tooltip` | `${scriptName} Logo` |
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
+| `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
@@ -105,12 +110,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>tr-TR</code> - 6 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>tr-TR</code> - 7 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `config_menu_title_logo_tooltip` | `${scriptName} Logo` |
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
+| `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |
@@ -118,12 +124,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh-CN</code> - 6 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh-CN</code> - 7 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `config_menu_title_logo_tooltip` | `${scriptName} Logo` |
 | `config_menu_focus_content_button_tooltip` | `Sets focus to the content of the menu.` |
+| `feature_changed_remount_config_menu` | `The changes you have made also affect the configuration menu.\nDo you want to reload it now? It will close and open again automatically.` |
 | `cfg_menu_feature_category_header_tooltip` | `"${category}" Category` |
 | `cfg_menu_feature_category_info_header_tooltip` | `"${section}" Section` |
 | `feature_group_header.accessibility` | `Accessibility:` |

@@ -66,6 +66,7 @@
   "search_clear": "Suche löschen",
   "open": "Öffnen",
   "config_data_changed_prompt_open_menu": "Die Konfiguration wurde automatisch aktualisiert.\nMöchtest du das Konfigurationsmenü öffnen?",
+  "feature_changed_remount_config_menu": "Deine Änderungen beziehen sich auch auf das Konfigurationsmenü.\nMöchtest du es jetzt neu laden? Hierzu wird es sich automatisch schließen und wieder öffnen.",
 
   "reset": "Zurücksetzen",
   "close": "Schließen",

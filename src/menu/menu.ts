@@ -489,6 +489,7 @@ export async function mountCfgMenu() {
     topAnchor.id = "bytm-menu-top-anchor";
     featuresCont.appendChild(topAnchor);
 
+    //#region onCfgChange
     const onCfgChange = async (
       key: keyof typeof cfgDefaultData,
       initialVal: unknown,
@@ -523,9 +524,14 @@ export async function mountCfgMenu() {
           typeof featConf[k as FeatureKey] !== "object"
           && featConf[k as FeatureKey] !== initConfig![k as FeatureKey]
         ) : [];
+
         const requiresReload =
           // @ts-expect-error
-          changedKeys.some((k) => featInfo[k as keyof typeof featInfo]?.reloadRequired !== false);
+          changedKeys.some((k) => featInfo[k as FeatureKey]?.reloadRequired !== false);
+
+        const promptMenuRemount =
+          // @ts-expect-error
+          changedKeys.some((k) => featInfo[k as FeatureKey]?.reloadMenuPrompt === true);
 
         await setFeatures(featConf);
 
@@ -539,6 +545,15 @@ export async function mountCfgMenu() {
         else {
           reloadFooterEl.classList.add("hidden");
           reloadFooterEl.setAttribute("aria-hidden", "true");
+        }
+
+        if(promptMenuRemount) {
+          await showPrompt({
+            type: "confirm",
+            message: t("feature_changed_remount_config_menu"),
+            confirmBtnText: t("reload_now"),
+            confirmBtnTooltip: t("reload_now"),
+          }) && emitSiteEvent("recreateCfgMenu");
         }
 
         if(initLocale !== featConf.locale) {
@@ -964,11 +979,13 @@ export async function mountCfgMenu() {
             inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
             inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
 
-            // after input, clamp the value between min and max and round it to step:
-            const hasMinOrMax = ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number");
-            const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
-
             if(isNumericInput) {
+              // after unfocusing, clamp the numeric input's value between min and max, and round it to step
+              // doing it here is purely visual as the onCfgChange function already correctly constrains the value before saving
+
+              const hasMinOrMax = ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number");
+              const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
+
               inputElem.addEventListener("blur", () => {
                 let v = Number(inputElem.value);
                 if(hasMinOrMax && !isNaN(v)) {

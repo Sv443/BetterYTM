@@ -726,6 +726,13 @@ export type FeatureFuncProps = {
    */
   reloadRequired?: boolean;
   /**
+   * Whether the user should be prompted to remount the menu after the feature's value was changed.  
+   * Useful for features that influence something inside the config menu at render time.  
+   *   
+   * This option alone does not require a `reload` adornment, it should only be added when `reloadRequired` is also set to true.
+   */
+  reloadMenuPrompt?: boolean;
+  /**
    * Called whenever the feature's value was changed.  
    * This is useful for features that need special active treatment to react to config changes instead of passively reading the config on demand.  
    * @param newVal The new value of the feature after the change. May sometimes be the same as `initialVal`, when the user changes the value back and forth.
