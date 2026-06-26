@@ -247,6 +247,7 @@ export const featInfo = {
     since: "3.2.0",
     default: false,
     reloadMenuPrompt: true,
+    reloadRequired: false,
   },
   initTimeout: {
     type: "number",
@@ -419,6 +420,7 @@ export const featInfo = {
     since: "2.0.0",
     default: false,
     reloadMenuPrompt: true,
+    reloadRequired: false,
   },
 
   //#region cat:layout
