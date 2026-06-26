@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9cf04600/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f48c84fc/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "9cf04600";
+	var buildNumber$1 = "f48c84fc";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1782510810193;
+	var buildTimestamp = 1782517684808;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -7402,7 +7402,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "3.2.0",
 			default: false,
-			reloadMenuPrompt: true
+			reloadMenuPrompt: true,
+			reloadRequired: false
 		},
 		initTimeout: {
 			type: "number",
@@ -7578,7 +7579,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "2.0.0",
 			default: false,
-			reloadMenuPrompt: true
+			reloadMenuPrompt: true,
+			reloadRequired: false
 		},
 		watermarkEnabled: {
 			type: "toggle",
