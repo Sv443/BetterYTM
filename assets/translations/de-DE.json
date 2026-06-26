@@ -490,6 +490,8 @@
   "feature_desc.dislikeHotkey": "Der Hotkey, um das aktuell spielende Video/Lied zu disliken",
   "feature_desc.currentLyricsHotkeyEnabled": "Einen Hotkey hinzufügen, um den Songtext des aktuell spielenden Songs in einem neuen Tab zu öffnen",
   "feature_desc.currentLyricsHotkey": "Der Hotkey, um den Songtext des aktuellen Songs zu öffnen",
+  "feature_desc.lyricsSearchPromptHotkeyEnabled": "Einen Hotkey hinzufügen, um den Songtext-Suchdialog zu öffnen.",
+  "feature_desc.lyricsSearchPromptHotkey": "Der Hotkey, um den Songtext-Suchdialog zu öffnen.",
   "feature_desc.skipToRemTimeHotkeyEnabled": "Einen Hotkey hinzufügen, um zu der letzten gespeicherten Video-Zeit des aktuellen Videos/Lieds zu springen",
   "feature_helptext.skipToRemTimeHotkeyEnabled": "Wenn der Hotkey des unten stehenden Features aktiviert ist, wird die zuletzt gespeicherte Zeit des Videos innerhalb des konfigurierten Zeitrahmens wiederhergestellt.\nDies funktioniert nur, wenn die Funktion \"Video-Zeit speichern\" aktiviert ist.",
   "feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled": "Dieses Feature funktioniert nur, wenn die Funktion \"Video-Zeit speichern\" aktiviert ist.",

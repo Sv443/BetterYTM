@@ -1010,6 +1010,10 @@ export interface FeatureConfig {
   currentLyricsHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to open the current song's lyrics in a new tab */
   currentLyricsHotkey: HotkeyObj;
+  /** Add a hotkey to open the lyrics search prompt dialog */
+  lyricsSearchPromptHotkeyEnabled: boolean;
+  /** The hotkey to open the lyrics search prompt dialog */
+  lyricsSearchPromptHotkey: HotkeyObj;
   /** Add a hotkey to skip to the last remembered time of the current video/song */
   skipToRemTimeHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to skip to the last remembered time of the current video/song */

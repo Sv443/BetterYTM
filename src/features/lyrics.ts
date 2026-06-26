@@ -359,14 +359,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      // const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
-      const search = await showPrompt({
-        type: "prompt",
-        message: t("open_lyrics_search_prompt"),
-        defaultValue: currentSongTitle,
-      });
-      if(search && search.length > 0)
-        openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+      await promptLyricsSearch();
     }
   }, {
     preventDefault: false,
@@ -374,6 +367,18 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   });
 
   return linkElem;
+}
+
+/** Prompts to search for lyrics. Uses the song/video title as the default value. */
+export async function promptLyricsSearch() {
+  const search = await showPrompt({
+    type: "prompt",
+    message: t("open_lyrics_search_prompt"),
+    defaultValue: currentSongTitle,
+  });
+
+  if(search && search.length > 0)
+    openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
 }
 
 /** Splits a video title that contains a hyphen into an artist and song */

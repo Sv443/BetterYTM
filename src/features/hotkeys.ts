@@ -7,15 +7,17 @@ import { getLikeDislikeBtns, getVideoTime } from "@util/dom.ts";
 import { getDomain } from "@util/misc.ts";
 import { loggers } from "@util/logging.ts";
 import type { Domain, FeatKeysOfType, HotkeyObj } from "@/types.ts";
+import { promptLyricsSearch } from "@feat/lyrics.ts";
 
 //#region init
 
 export async function initHotkeys() {
   const promises: Promise<void>[] = [];
 
-  if(getDomain() === "ytm")
-    promises.push(initLyricsHotkey());
-
+  if(getDomain() === "ytm") {
+    promises.push(initOpenLyricsHotkey());
+  }
+  promises.push(initSearchLyricsPromptHotkey());
   promises.push(initLikeDislikeHotkeys());
   promises.push(initSiteSwitch());
   promises.push(initProxyHotkeys());
@@ -149,7 +151,7 @@ async function initLikeDislikeHotkeys() {
 
 //#region lyrics
 
-async function initLyricsHotkey() {
+async function initOpenLyricsHotkey() {
   document.addEventListener("keydown", (e) => {
     if(!getFeature("currentLyricsHotkeyEnabled"))
       return;
@@ -161,6 +163,21 @@ async function initLyricsHotkey() {
 
       const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
       lyricsBtn?.click();
+    }
+  }, { capture: true });
+}
+
+async function initSearchLyricsPromptHotkey() {
+  document.addEventListener("keydown", async (e) => {
+    if(!getFeature("lyricsSearchPromptHotkeyEnabled"))
+      return;
+    if(isIgnoredInputElement())
+      return;
+
+    if(hotkeyMatches(e, getFeature("lyricsSearchPromptHotkey"))) {
+      preventBubble(e);
+
+      await promptLyricsSearch();
     }
   }, { capture: true });
 }

@@ -1389,6 +1389,29 @@ export const featInfo = {
     reloadRequired: false,
     adornments: [adornments.ytmOnly],
   },
+  lyricsSearchPromptHotkeyEnabled: {
+    type: "toggle",
+    category: "hotkeys",
+    group: "lyricsSearchPromptHotkeyEnabled",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: true,
+    reloadRequired: false,
+  },
+  lyricsSearchPromptHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    group: "lyricsSearchPromptHotkeyEnabled",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: {
+      code: "KeyO",
+      shift: true,
+      ctrl: true,
+      alt: false,
+    },
+    reloadRequired: false,
+  },
   skipToRemTimeHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
@@ -1401,7 +1424,7 @@ export const featInfo = {
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
-      duration: 20,
+      duration: 20_000,
       onClick: () => getErrorDialog(
         t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
         [t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]

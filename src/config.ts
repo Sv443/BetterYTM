@@ -289,6 +289,8 @@ export const cfgMigrations: DataMigrationsDict = {
     return useNewDefaults(oldData, [
       "thumbnailOverlayBlurredDuplicateBackground",
       "configMenuFocusContentButtonEnabled",
+      "lyricsSearchPromptHotkeyEnabled",
+      "lyricsSearchPromptHotkey",
     ]);
   },
 } as const satisfies DataMigrationsDict;

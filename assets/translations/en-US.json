@@ -490,6 +490,8 @@
   "feature_desc.dislikeHotkey": "Hotkey to dislike the current video/song",
   "feature_desc.currentLyricsHotkeyEnabled": "Add a hotkey to open the current song's lyrics in a new tab",
   "feature_desc.currentLyricsHotkey": "Hotkey to open the song's lyrics",
+  "feature_desc.lyricsSearchPromptHotkeyEnabled": "Add a hotkey to open the lyrics search dialog",
+  "feature_desc.lyricsSearchPromptHotkey": "Hotkey to open the lyrics search",
   "feature_desc.skipToRemTimeHotkeyEnabled": "Add a hotkey to restore the last remembered timestamp of the current video/song",
   "feature_helptext.skipToRemTimeHotkeyEnabled": "By pressing the hotkey from the feature below, the feature restores the furthest timestamp the video was at, within the configured time frame.\nThis will only work if the \"Remember song time\" feature is enabled.",
   "feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled": "This feature will only work if the \"Remember song time\" feature is enabled.",
