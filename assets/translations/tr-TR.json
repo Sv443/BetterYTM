@@ -565,7 +565,5 @@
   "feature_desc.resetEverything": "Depolanan tüm verileri sıfırla",
   "feature_helptext.resetEverything": "Özellik yapılandırması, şarkı sözü önbelleği ve otomatik beğenilen kanallar gibi veriler varsayılana sıfırlanacak.\nTemiz bir sayfaya başlamak ya da saçma sorunlar yaşamak gibi durumlarda işe yarayabilir.",
   "feature_btn.resetEverything": "Her şeyi sıfırla",
-  "feature_btn.resetEverything_running": "Sıfırlanıyor...",
-  "feature_desc.advancedMode": "Gelişmiş ayarları göster (menüyü tekrar yükler)",
-  "feature_helptext.advancedMode": "Bunu açtıktan sonra menü tekrar yüklenir ve normalde gizli olan gelişmiş ayarları gösterir.\nEğer daha derinlemesine ayar yapmak istiyorsanız ve daha karmaşık bir menüyü umursamıyorsanız işe yarayabilir."
+  "feature_btn.resetEverything_running": "Sıfırlanıyor..."
 }

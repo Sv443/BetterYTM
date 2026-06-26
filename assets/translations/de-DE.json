@@ -575,6 +575,6 @@
   "feature_helptext.resetEverything": "Die zurückgesetzten Daten umfassen die Feature-Konfiguration, den Songtext-Cache und Auto-Like Kanäle.\nDies ist nützlich, wenn du einen sanften Reset zu einem \"gesäuberten Zustand\" durchführen möchtest, zum Beispiel wenn es seltsame Probleme gibt.",
   "feature_btn.resetEverything": "Alles zurücksetzen",
   "feature_btn.resetEverything_running": "Zurücksetzen...",
-  "feature_desc.advancedMode": "Erweiterte Einstellungen anzeigen (lädt Menü neu)",
-  "feature_helptext.advancedMode": "Nachdem du dies aktiviert hast, wird das Menü neu geladen und erweiterte Einstellungen werden angezeigt, die standardmäßig ausgeblendet sind.\nDies ist nützlich, wenn du das Verhalten des Skripts tiefer anpassen möchtest und dir ein überfülltes Menü egal ist."
+  "feature_desc.advancedMode": "Erweiterte Einstellungen anzeigen",
+  "feature_helptext.advancedMode": "Nach dem Aktivieren dieser Einstellung und einem Neuladen des Konfigurationsmenüs, werden normalerweise versteckte Funktionen angezeigt.\nDies ist nützlich, um das Skript auf einer tieferen Ebene zu konfigurieren."
 }

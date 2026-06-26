@@ -563,7 +563,5 @@
   "feature_desc.resetEverything": "Réinitialiser toutes les données stockées aux valeurs par défaut",
   "feature_helptext.resetEverything": "Cette fonctionnalité réinitialisera toutes les données stockées, y compris la configuration, les chaînes auto-aimées, le cache des paroles et toutes les autres données, aux valeurs par défaut.",
   "feature_btn.resetEverything": "Réinitialiser tout",
-  "feature_btn.resetEverything_running": "Réinitialisation...",
-  "feature_desc.advancedMode": "Afficher les paramètres avancés (cela recharge le menu)",
-  "feature_helptext.advancedMode": "Après avoir activé cela, le menu se rechargera et affichera les paramètres avancés qui sont masqués par défaut.\nCela est utile si vous souhaitez personnaliser plus en profondeur le comportement du script et que vous ne vous souciez pas d'un menu surchargé."
+  "feature_btn.resetEverything_running": "Réinitialisation..."
 }

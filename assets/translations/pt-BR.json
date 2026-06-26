@@ -560,7 +560,5 @@
   "feature_desc.resetEverything": "Redefinir todos os dados armazenados para os valores padrão",
   "feature_btn.resetEverything": "Redefinir tudo",
   "feature_btn.resetEverything_running": "Redefinindo...",
-  "feature_helptext.resetEverything": "Isso redefinirá todas as configurações para seus valores padrão e apagará todos os dados armazenados, como canais auto-curtidos, o cache de letras e outros dados de recursos.",
-  "feature_desc.advancedMode": "Mostrar configurações avançadas (isso recarrega o menu)",
-  "feature_helptext.advancedMode": "Depois de ativar isso, o menu recarregará e mostrará configurações avançadas que estão ocultas por padrão.\nIsso é útil se você deseja personalizar mais profundamente o comportamento do script e não se importa com um menu lotado."
+  "feature_helptext.resetEverything": "Isso redefinirá todas as configurações para seus valores padrão e apagará todos os dados armazenados, como canais auto-curtidos, o cache de letras e outros dados de recursos."
 }

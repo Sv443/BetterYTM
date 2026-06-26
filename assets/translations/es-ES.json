@@ -564,7 +564,5 @@
   "feature_desc.resetEverything": "Restablecer todos los datos almacenados a los valores predeterminados",
   "feature_helptext.resetEverything": "Los datos que se restablecerán incluyen la configuración de funciones, la caché de letras y los canales con me gusta automático.\nÚtil si quieres un restablecimiento limpio al experimentar problemas extraños.",
   "feature_btn.resetEverything": "Restablecer todo",
-  "feature_btn.resetEverything_running": "Restableciendo...",
-  "feature_desc.advancedMode": "Mostrar configuración avanzada (recarga el menú)",
-  "feature_helptext.advancedMode": "Después de habilitar esto, el menú se recargará y mostrará configuraciones avanzadas que están ocultas de forma predeterminada.\nEsto es útil si desea personalizar más profundamente el comportamiento del script y no le importa un menú abarrotado."
+  "feature_btn.resetEverything_running": "Restableciendo..."
 }

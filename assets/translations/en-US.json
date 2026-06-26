@@ -575,6 +575,6 @@
   "feature_helptext.resetEverything": "The data that will be reset to the defaults includes the feature configuration, the lyrics cache and auto-liked channels.\nThis is useful if you want a soft reset with a clean slate, like when you are experiencing weird problems.",
   "feature_btn.resetEverything": "Reset everything",
   "feature_btn.resetEverything_running": "Resetting...",
-  "feature_desc.advancedMode": "Show advanced settings (reloads the menu)",
-  "feature_helptext.advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu."
+  "feature_desc.advancedMode": "Show advanced settings",
+  "feature_helptext.advancedMode": "After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu."
 }

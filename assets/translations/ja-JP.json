@@ -562,7 +562,5 @@
   "feature_desc.resetEverything": "すべての保存されたデータをデフォルト値にリセットする",
   "feature_helptext.resetEverything": "これにより、構成、自動的に好きなチャンネル、歌詞キャッシュ、その他すべてのデータを含むすべての保存されたデータがデフォルト値にリセットされます。",
   "feature_btn.resetEverything": "すべてリセット",
-  "feature_btn.resetEverything_running": "リセット中...",
-  "feature_desc.advancedMode": "詳細設定を表示する（メニューを再読み込み）",
-  "feature_helptext.advancedMode": "これを有効にすると、メニューが再読み込まれ、デフォルトで非表示になっている詳細設定が表示されます。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。メニューが過密になっていることを気にしない場合に役立ちます。"
+  "feature_btn.resetEverything_running": "リセット中..."
 }

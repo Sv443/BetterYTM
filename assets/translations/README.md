@@ -19,13 +19,13 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 |  | [`en-US`](./en-US.json) | `520` (default locale) |  |
 | ✅ | [`de-DE`](./de-DE.json) | `520/520` (100%) | ─ |
 |  | [`en-GB`](./en-GB.json) | `520/520` (100%) | `en-US` |
-| ⚠ | [`es-ES`](./es-ES.json) | `511/520` (98.3%) | ─ |
-| ⚠ | [`fr-FR`](./fr-FR.json) | `511/520` (98.3%) | ─ |
-| ⚠ | [`hi-IN`](./hi-IN.json) | `511/520` (98.3%) | ─ |
-| ⚠ | [`ja-JP`](./ja-JP.json) | `511/520` (98.3%) | ─ |
-| ⚠ | [`pt-BR`](./pt-BR.json) | `511/520` (98.3%) | ─ |
-| ⚠ | [`tr-TR`](./tr-TR.json) | `511/520` (98.3%) | ─ |
-| ⚠ | [`zh-CN`](./zh-CN.json) | `511/520` (98.3%) | ─ |
+| ⚠ | [`es-ES`](./es-ES.json) | `509/520` (97.9%) | ─ |
+| ⚠ | [`fr-FR`](./fr-FR.json) | `509/520` (97.9%) | ─ |
+| ⚠ | [`hi-IN`](./hi-IN.json) | `509/520` (97.9%) | ─ |
+| ⚠ | [`ja-JP`](./ja-JP.json) | `509/520` (97.9%) | ─ |
+| ⚠ | [`pt-BR`](./pt-BR.json) | `509/520` (97.9%) | ─ |
+| ⚠ | [`tr-TR`](./tr-TR.json) | `509/520` (97.9%) | ─ |
+| ⚠ | [`zh-CN`](./zh-CN.json) | `509/520` (97.9%) | ─ |
 
 > <sub>✅ Fully translated</sub><br>
 > <sub>⚠ Almost fully translated</sub><br>
@@ -40,7 +40,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>es-ES</code> - 9 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es-ES</code> - 11 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -53,10 +53,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc.lyricsSearchPromptHotkeyEnabled` | `Add a hotkey to open the lyrics search dialog` |
 | `feature_desc.lyricsSearchPromptHotkey` | `Hotkey to open the lyrics search` |
 | `feature_desc.configMenuFocusContentButtonEnabled` | `Add a button to the config menu title to set focus to the content` |
+| `feature_desc.advancedMode` | `Show advanced settings` |
+| `feature_helptext.advancedMode` | `After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu.` |
 
 <br></details>
 
-<details><summary><code>fr-FR</code> - 9 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr-FR</code> - 11 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -69,10 +71,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc.lyricsSearchPromptHotkeyEnabled` | `Add a hotkey to open the lyrics search dialog` |
 | `feature_desc.lyricsSearchPromptHotkey` | `Hotkey to open the lyrics search` |
 | `feature_desc.configMenuFocusContentButtonEnabled` | `Add a button to the config menu title to set focus to the content` |
+| `feature_desc.advancedMode` | `Show advanced settings` |
+| `feature_helptext.advancedMode` | `After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu.` |
 
 <br></details>
 
-<details><summary><code>hi-IN</code> - 9 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi-IN</code> - 11 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -85,10 +89,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc.lyricsSearchPromptHotkeyEnabled` | `Add a hotkey to open the lyrics search dialog` |
 | `feature_desc.lyricsSearchPromptHotkey` | `Hotkey to open the lyrics search` |
 | `feature_desc.configMenuFocusContentButtonEnabled` | `Add a button to the config menu title to set focus to the content` |
+| `feature_desc.advancedMode` | `Show advanced settings` |
+| `feature_helptext.advancedMode` | `After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu.` |
 
 <br></details>
 
-<details><summary><code>ja-JP</code> - 9 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja-JP</code> - 11 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -101,10 +107,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc.lyricsSearchPromptHotkeyEnabled` | `Add a hotkey to open the lyrics search dialog` |
 | `feature_desc.lyricsSearchPromptHotkey` | `Hotkey to open the lyrics search` |
 | `feature_desc.configMenuFocusContentButtonEnabled` | `Add a button to the config menu title to set focus to the content` |
+| `feature_desc.advancedMode` | `Show advanced settings` |
+| `feature_helptext.advancedMode` | `After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu.` |
 
 <br></details>
 
-<details><summary><code>pt-BR</code> - 9 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt-BR</code> - 11 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -117,10 +125,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc.lyricsSearchPromptHotkeyEnabled` | `Add a hotkey to open the lyrics search dialog` |
 | `feature_desc.lyricsSearchPromptHotkey` | `Hotkey to open the lyrics search` |
 | `feature_desc.configMenuFocusContentButtonEnabled` | `Add a button to the config menu title to set focus to the content` |
+| `feature_desc.advancedMode` | `Show advanced settings` |
+| `feature_helptext.advancedMode` | `After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu.` |
 
 <br></details>
 
-<details><summary><code>tr-TR</code> - 9 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>tr-TR</code> - 11 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -133,10 +143,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc.lyricsSearchPromptHotkeyEnabled` | `Add a hotkey to open the lyrics search dialog` |
 | `feature_desc.lyricsSearchPromptHotkey` | `Hotkey to open the lyrics search` |
 | `feature_desc.configMenuFocusContentButtonEnabled` | `Add a button to the config menu title to set focus to the content` |
+| `feature_desc.advancedMode` | `Show advanced settings` |
+| `feature_helptext.advancedMode` | `After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu.` |
 
 <br></details>
 
-<details><summary><code>zh-CN</code> - 9 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh-CN</code> - 11 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -149,5 +161,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc.lyricsSearchPromptHotkeyEnabled` | `Add a hotkey to open the lyrics search dialog` |
 | `feature_desc.lyricsSearchPromptHotkey` | `Hotkey to open the lyrics search` |
 | `feature_desc.configMenuFocusContentButtonEnabled` | `Add a button to the config menu title to set focus to the content` |
+| `feature_desc.advancedMode` | `Show advanced settings` |
+| `feature_helptext.advancedMode` | `After enabling this and reloading the menu, advanced settings that are hidden by default will be shown.\nThis is useful if you want to customize the script's behavior more deeply and don't care about an overcrowded menu.` |
 
 <br></details>

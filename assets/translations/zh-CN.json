@@ -557,7 +557,5 @@
   "feature_desc.resetEverything": "重置所有存储的数据为默认值",
   "feature_helptext.resetEverything": "将被重置为默认值的数据包括功能配置、歌词缓存和自动点赞的频道。\n如果您想进行干净的软重置（例如遇到奇怪问题时），这将很有用。",
   "feature_btn.resetEverything": "重置所有数据",
-  "feature_btn.resetEverything_running": "正在重置...",
-  "feature_desc.advancedMode": "显示高级设置（重新加载菜单）",
-  "feature_helptext.advancedMode": "启用此功能后，菜单将重新加载并显示默认情况下隐藏的高级设置。\n如果您想更深入地定制脚本的行为并不在意过于拥挤的菜单，这将很有用。"
+  "feature_btn.resetEverything_running": "正在重置..."
 }
