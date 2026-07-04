@@ -551,8 +551,8 @@ export async function mountCfgMenu() {
           await showPrompt({
             type: "confirm",
             message: t("feature_changed_remount_config_menu"),
-            confirmBtnText: t("reload_now"),
-            confirmBtnTooltip: t("reload_now"),
+            confirmBtnText: t("reopen"),
+            confirmBtnTooltip: t("reopen"),
           }) && emitSiteEvent("recreateCfgMenu");
         }
 
@@ -1331,7 +1331,7 @@ export async function mountCfgMenu() {
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getSelector("app"))?.removeAttribute("inert");
+    document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
 
@@ -1419,7 +1419,7 @@ export async function openCfgMenu() {
     isCfgMenuOpen = true;
 
     document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
+    document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
     const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
     setCurrentDialogId("cfg-menu");
@@ -1463,7 +1463,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   if(enableScroll && !openDialogs.some(id => id !== "cfg-menu")) {
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getSelector("app"))?.removeAttribute("inert");
+    document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
   }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 

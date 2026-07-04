@@ -129,7 +129,7 @@ export function initObservers(cfg: FeatureConfig) {
     //#region bytmDialogContainer
     // -> the container for all BytmDialog instances
     //    enabled immediately
-    const bytmDialogContainerSelector = getSelector("obs-bytmDialogContainer");
+    const bytmDialogContainerSelector = getSelector("observer", "bytmDialogContainer");
     globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
       ...defaultObserverOptions,
       defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
@@ -145,7 +145,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region browseResponse
       // -> for example the /channel/UC... page
       //    enabled by "body"
-      const browseResponseSelector = getSelector("obs-browseResponse");
+      const browseResponseSelector = getSelector("observer", "browseResponse");
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
         ...defaultObserverOptions,
         defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
@@ -159,7 +159,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region searchPage
       // -> the search page
       //    enabled by "body"
-      const searchPageSelector = getSelector("obs-searchPage");
+      const searchPageSelector = getSelector("observer", "searchPage");
       globservers.searchPage = new SelectorObserver(searchPageSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -172,7 +172,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region navBar
       // -> the navigation / title bar at the top of the page
       //    enabled by "body"
-      const navBarSelector = getSelector("obs-navBar");
+      const navBarSelector = getSelector("observer", "navBar");
       globservers.navBar = new SelectorObserver(navBarSelector, {
         ...defaultObserverOptions,
         subtree: false,
@@ -185,7 +185,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region mainPanel
       // -> the main content panel - includes things like the video element
       //    enabled by "body"
-      const mainPanelSelector = getSelector("obs-mainPanel");
+      const mainPanelSelector = getSelector("observer", "mainPanel");
       globservers.mainPanel = new SelectorObserver(mainPanelSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -198,7 +198,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region sideBar
       // -> the sidebar on the left side of the page
       //    enabled by "body"
-      const sidebarSelector = getSelector("obs-sideBar");
+      const sidebarSelector = getSelector("observer", "sideBar");
       globservers.sideBar = new SelectorObserver(sidebarSelector, {
         ...defaultObserverOptions,
         attributes: true,
@@ -213,7 +213,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region sidePanel
       // -> the side panel on the right side of the /watch page
       //    enabled by "body"
-      const sidePanelSelector = getSelector("obs-sidePanel");
+      const sidePanelSelector = getSelector("observer", "sidePanel");
       globservers.sidePanel = new SelectorObserver(sidePanelSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -226,7 +226,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region playerBar
       // -> media controls bar at the bottom of the page
       //    enabled by "body"
-      const playerBarSelector = getSelector("obs-playerBar");
+      const playerBarSelector = getSelector("observer", "playerBar");
       globservers.playerBar = new SelectorObserver(playerBarSelector, {
         ...defaultObserverOptions,
       });
@@ -240,7 +240,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region playerBarInfo
       // -> song title, artist, album, etc. inside the player bar
       //    enabled by "playerBar"
-      const playerBarInfoSelector = getSelector("obs-playerBarInfo");
+      const playerBarInfoSelector = getSelector("observer", "playerBarInfo");
       globservers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
         ...defaultObserverOptions,
         attributes: true,
@@ -254,7 +254,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region playerBarMiddleButtons
       // -> the buttons inside the player bar (like, dislike, lyrics, etc.)
       //    enabled by "playerBar"
-      const playerBarMiddleButtonsSelector = getSelector("obs-playerBarMiddleButtons");
+      const playerBarMiddleButtonsSelector = getSelector("observer", "playerBarMiddleButtons");
       globservers.playerBarMiddleButtons = new SelectorObserver(playerBarMiddleButtonsSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -267,7 +267,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region playerBarRightControls
       // -> the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
       //    enabled by "playerBar"
-      const playerBarRightControls = getSelector("obs-playerBarRightControls");
+      const playerBarRightControls = getSelector("observer", "playerBarRightControls");
       globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
         ...defaultObserverOptions,
         subtree: true,
@@ -280,7 +280,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region popupContainer
       // -> the container for popups (e.g. the queue popup)
       //    enabled by "body"
-      const popupContainerSelector = getSelector("obs-popupContainer");
+      const popupContainerSelector = getSelector("observer", "popupContainer");
       globservers.popupContainer = new SelectorObserver(popupContainerSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -298,7 +298,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region ytGuide
       // -> the left sidebar menu
       //    enabled by "body"
-      const ytGuideSelector = getSelector("obs-ytGuide");
+      const ytGuideSelector = getSelector("observer", "ytGuide");
       globservers.ytGuide = new SelectorObserver(ytGuideSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -311,7 +311,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region ytdBrowse
       // -> channel pages for example
       //    enabled by "body"
-      const ytdBrowseSelector = getSelector("obs-ytdBrowse");
+      const ytdBrowseSelector = getSelector("observer", "ytdBrowse");
       globservers.ytdBrowse = new SelectorObserver(ytdBrowseSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -324,7 +324,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region ytAppHeader
       // -> header of the page
       //    enabled by "ytdBrowse"
-      const ytAppHeaderSelector = getSelector("obs-ytAppHeader");
+      const ytAppHeaderSelector = getSelector("observer", "ytAppHeader");
       globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
         defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
@@ -338,7 +338,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region ytWatchFlexy
       // -> the main content of the /watch page
       //    enabled by "body"
-      const ytWatchFlexySelector = getSelector("obs-ytWatchFlexy");
+      const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
       globservers.ytWatchFlexy = new SelectorObserver(ytWatchFlexySelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -351,7 +351,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region ytWatchMetadata
       // -> the metadata section of the /watch page (title, channel, views, description, buttons, etc. but not comments)
       //    enabled by "ytWatchFlexy"
-      const ytWatchMetadataSelector = getSelector("obs-ytWatchMetadata");
+      const ytWatchMetadataSelector = getSelector("observer", "ytWatchMetadata");
       globservers.ytWatchMetadata = new SelectorObserver(ytWatchMetadataSelector, {
         ...defaultObserverOptions,
         subtree: true,
@@ -364,7 +364,7 @@ export function initObservers(cfg: FeatureConfig) {
       //#region ytMasthead
       // -> the masthead (title bar) at the top of the page
       //    enabled by "body"
-      const mastheadSelector = getSelector("obs-ytMasthead");
+      const mastheadSelector = getSelector("observer", "ytMasthead");
       globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
         ...defaultObserverOptions,
         subtree: true,

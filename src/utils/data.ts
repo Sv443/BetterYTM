@@ -16,7 +16,10 @@ import { getFeature } from "@/config.ts";
 
 // TODO: extract union type from {@linkcode defaultStaticData.selectors} keys.
 /** Union of all selector identifiers defined in the static data JSON. */
-export type StaticSelector = keyof typeof defaultStaticData.selectors;
+export type SelectorGroup = keyof typeof defaultStaticData.selectors;
+
+/** Union of all selector identifiers defined in the static data JSON. */
+export type SelectorByGroup<TGroup extends SelectorGroup> = keyof (typeof defaultStaticData.selectors[TGroup]);
 
 /** Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings. */
 export type StaticData = {
@@ -32,7 +35,7 @@ export type StaticData = {
   /** List of alerts to potentially display to users. May be empty. */
   alerts: GlobalAlert[];
   /** Mapping of selector identifiers to per-domain selector strings. */
-  selectors: Record<StaticSelector, {
+  selectors: Record<SelectorGroup, {
     /** DOM selector strings for all domains supported by BYTM, keyed by domain identifier (can be \"ytm\" or \"yt\"). */
     [domain in Domain]?: string;
   } | string>;
@@ -123,29 +126,38 @@ export function getDefaultStaticData() {
  * Returns the selector with the given ID.  
  * By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
  */
-export function getSelector<TThrows extends boolean | undefined = true>(id: StaticSelector, throws?: TThrows): TThrows extends true ? string : (string | undefined) {
+export function getSelector<
+  TSelectorGroup extends SelectorGroup,
+  TThrows extends boolean | undefined = true,
+>(
+  group: TSelectorGroup,
+  id: SelectorByGroup<TSelectorGroup>,
+  throws?: TThrows,
+): TThrows extends true ? string : (string | undefined) {
   const dom = getDomain();
   if(throws !== false) {
     try {
       if(typeof staticData?.selectors !== "object")
         throw new DatedError("Static data hasn't been fetched yet.");
-      const sel = staticData.selectors[id];
+      // @ts-expect-error can't find a way to fix the type
+      const sel = staticData.selectors?.[group]?.[id];
       if(!(["string", "object"].includes(typeof sel)))
-        throw new DatedError(`Selector with ID '${id}' doesn't exist or is neither a string nor an object.`);
+        throw new DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
       if(typeof sel === "object" && !(dom in sel))
-        throw new DatedError(`Selector with ID '${id}' doesn't contain a value for the current domain '${dom}'.`);
+        throw new DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 
       return typeof sel === "string"
         ? sel
         : sel[dom] as TThrows extends true ? string : (string | undefined);
     }
     catch(e) {
-      loggers.data.error(`Couldn't get selector with ID '${id}' due to error:`, e);
+      loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
       throw e;
     }
   }
 
-  const sel = staticData?.selectors?.[id];
+  // @ts-expect-error ^
+  const sel = staticData?.selectors?.[group]?.[id];
 
   return typeof sel === "string"
     ? sel
@@ -153,8 +165,8 @@ export function getSelector<TThrows extends boolean | undefined = true>(id: Stat
 }
 
 /** Same as {@linkcode getSelector()}, but sets the `throws` parameter to false by default. */
-export function tryGetSelector(id: StaticSelector): string | undefined {
-  return getSelector(id, false);
+export function tryGetSelector<TSelectorGroup extends SelectorGroup>(group: TSelectorGroup, id: SelectorByGroup<TSelectorGroup>): string | undefined {
+  return getSelector(group, id, false);
 }
 
 //#region validate

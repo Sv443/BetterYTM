@@ -27,61 +27,65 @@
   ],
   "alerts": [],
   "selectors": {
-    "app": {
-      "yt": "ytd-app",
-      "ytm": "ytmusic-app"
+    "generic": {
+      "app": {
+        "yt": "ytd-app",
+        "ytm": "ytmusic-app"
+      }
     },
-    "obs-bytmDialogContainer": "#bytm-dialog-container",
-    "obs-browseResponse": {
-      "ytm": "ytmusic-browse-response"
-    },
-    "obs-searchPage": {
-      "ytm": "ytmusic-search-page"
-    },
-    "obs-navBar": {
-      "ytm": "ytmusic-nav-bar"
-    },
-    "obs-mainPanel": {
-      "ytm": "ytmusic-player-page #main-panel"
-    },
-    "obs-sideBar": {
-      "ytm": "ytmusic-app-layout tp-yt-app-drawer"
-    },
-    "obs-sidePanel": {
-      "ytm": "#side-panel"
-    },
-    "obs-playerBar": {
-      "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app"
-    },
-    "obs-playerBarInfo": {
-      "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper"
-    },
-    "obs-playerBarMiddleButtons": {
-      "ytm": ".middle-controls .middle-controls-buttons"
-    },
-    "obs-playerBarRightControls": {
-      "ytm": "#right-controls"
-    },
-    "obs-popupContainer": {
-      "ytm": "ytmusic-app ytmusic-popup-container"
-    },
-    "obs-ytGuide": {
-      "yt": "#content tp-yt-app-drawer#guide #guide-inner-content"
-    },
-    "obs-ytdBrowse": {
-      "yt": "ytd-app ytd-page-manager ytd-browse"
-    },
-    "obs-ytAppHeader": {
-      "yt": "#header ytd-app-header, #header ytd-tabbed-page-header"
-    },
-    "obs-ytWatchFlexy": {
-      "yt": "ytd-app ytd-watch-flexy"
-    },
-    "obs-ytWatchMetadata": {
-      "yt": "#columns #primary-inner ytd-watch-metadata"
-    },
-    "obs-ytMasthead": {
-      "yt": "#content ytd-masthead#masthead"
+    "observer": {
+      "bytmDialogContainer": "#bytm-dialog-container",
+      "browseResponse": {
+        "ytm": "ytmusic-browse-response"
+      },
+      "searchPage": {
+        "ytm": "ytmusic-search-page"
+      },
+      "navBar": {
+        "ytm": "ytmusic-nav-bar"
+      },
+      "mainPanel": {
+        "ytm": "ytmusic-player-page #main-panel"
+      },
+      "sideBar": {
+        "ytm": "ytmusic-app-layout tp-yt-app-drawer"
+      },
+      "sidePanel": {
+        "ytm": "#side-panel"
+      },
+      "playerBar": {
+        "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app"
+      },
+      "playerBarInfo": {
+        "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper"
+      },
+      "playerBarMiddleButtons": {
+        "ytm": ".middle-controls .middle-controls-buttons"
+      },
+      "playerBarRightControls": {
+        "ytm": "#right-controls"
+      },
+      "popupContainer": {
+        "ytm": "ytmusic-app ytmusic-popup-container"
+      },
+      "ytGuide": {
+        "yt": "#content tp-yt-app-drawer#guide #guide-inner-content"
+      },
+      "ytdBrowse": {
+        "yt": "ytd-app ytd-page-manager ytd-browse"
+      },
+      "ytAppHeader": {
+        "yt": "#header ytd-app-header, #header ytd-tabbed-page-header"
+      },
+      "ytWatchFlexy": {
+        "yt": "ytd-app ytd-watch-flexy"
+      },
+      "ytWatchMetadata": {
+        "yt": "#columns #primary-inner ytd-watch-metadata"
+      },
+      "ytMasthead": {
+        "yt": "#content ytd-masthead#masthead"
+      }
     }
   }
 }
