@@ -113,7 +113,7 @@ export async function mountCfgMenu() {
     titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
     titleLogoElem.tabIndex = 0;
     titleLogoElem.role = "button";
-    titleLogoElem.alt = t("config_menu_title_logo_tooltip");
+    titleLogoElem.alt = t("config_menu_title_logo_tooltip", { scriptName: scriptInfo.name });
     if(logoSrc)
       titleLogoElem.src = logoSrc;
 
