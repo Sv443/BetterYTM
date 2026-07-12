@@ -138,12 +138,14 @@ async function initLikeDislikeHotkeys() {
       preventBubble(e);
       if(!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE")
         return;
+      loggers.hotkey.log("Like hotkey pressed, liking the video...");
       likeBtn?.click();
     }
     else if(hotkeyMatches(e, getFeature("dislikeHotkey"))) {
       preventBubble(e);
       if(!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE")
         return;
+      loggers.hotkey.log("Dislike hotkey pressed, disliking the video...");
       dislikeBtn?.click();
     }
   }, { capture: true });
@@ -162,6 +164,7 @@ async function initOpenLyricsHotkey() {
       preventBubble(e);
 
       const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
+      loggers.hotkey.log("Open song lyrics hotkey pressed, opening page...");
       lyricsBtn?.click();
     }
   }, { capture: true });
@@ -177,6 +180,7 @@ async function initSearchLyricsPromptHotkey() {
     if(hotkeyMatches(e, getFeature("lyricsSearchPromptHotkey"))) {
       preventBubble(e);
 
+      loggers.hotkey.log("Lyrics search prompt hotkey pressed, opening dialog...");
       await promptLyricsSearch();
     }
   }, { capture: true });
@@ -194,6 +198,7 @@ async function initSkipToRemTimeHotkey() {
     if(hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
       preventBubble(e);
 
+      loggers.hotkey.log("Skip to remembered time hotkey pressed, restoring video time...");
       await remTimeTryRestoreTime(true);
     }
   }, { capture: true });
