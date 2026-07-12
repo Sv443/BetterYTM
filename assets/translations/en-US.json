@@ -365,6 +365,7 @@
   "feature_group_header.switchBetweenSites": "Switch Between Sites:",
   "feature_group_header.likeDislikeHotkeys": "Like/Dislike:",
   "feature_group_header.currentLyricsHotkeyEnabled": "Current Lyrics:",
+  "feature_group_header.lyricsSearchPromptHotkeyEnabled": "Lyrics Search Dialog:",
   "feature_group_header.skipToRemTimeHotkeyEnabled": "Skip to Remembered Time:",
   "feature_group_header.focusSearchBarHotkey": "Focus Search Bar:",
   "feature_group_header.clearSearchBarHotkey": "Clear Search Bar:",
