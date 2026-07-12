@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@f48c84fc/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3197a286/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "f48c84fc";
+	var buildNumber$1 = "3197a286";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1782517684808;
+	var buildTimestamp = 1783890810006;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -817,28 +817,30 @@
 		}],
 		alerts: [],
 		selectors: {
-			"app": {
+			"generic": { "app": {
 				"yt": "ytd-app",
 				"ytm": "ytmusic-app"
-			},
-			"obs-bytmDialogContainer": "#bytm-dialog-container",
-			"obs-browseResponse": { "ytm": "ytmusic-browse-response" },
-			"obs-searchPage": { "ytm": "ytmusic-search-page" },
-			"obs-navBar": { "ytm": "ytmusic-nav-bar" },
-			"obs-mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
-			"obs-sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
-			"obs-sidePanel": { "ytm": "#side-panel" },
-			"obs-playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
-			"obs-playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
-			"obs-playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
-			"obs-playerBarRightControls": { "ytm": "#right-controls" },
-			"obs-popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
-			"obs-ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
-			"obs-ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
-			"obs-ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
-			"obs-ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
-			"obs-ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
-			"obs-ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+			} },
+			"observer": {
+				"bytmDialogContainer": "#bytm-dialog-container",
+				"browseResponse": { "ytm": "ytmusic-browse-response" },
+				"searchPage": { "ytm": "ytmusic-search-page" },
+				"navBar": { "ytm": "ytmusic-nav-bar" },
+				"mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
+				"sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
+				"sidePanel": { "ytm": "#side-panel" },
+				"playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
+				"playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
+				"playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
+				"playerBarRightControls": { "ytm": "#right-controls" },
+				"popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
+				"ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
+				"ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
+				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
+				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
+				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
+				"ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+			}
 		}
 	};
 	//#endregion
@@ -896,19 +898,19 @@
 	* Returns the selector with the given ID.  
 	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
 	*/
-	function getSelector(id, throws) {
+	function getSelector(group, id, throws) {
 		const dom = getDomain();
 		if (throws !== false) try {
 			if (typeof staticData?.selectors !== "object") throw new _sv443_network_coreutils.DatedError("Static data hasn't been fetched yet.");
-			const sel = staticData.selectors[id];
-			if (!["string", "object"].includes(typeof sel)) throw new _sv443_network_coreutils.DatedError(`Selector with ID '${id}' doesn't exist or is neither a string nor an object.`);
-			if (typeof sel === "object" && !(dom in sel)) throw new _sv443_network_coreutils.DatedError(`Selector with ID '${id}' doesn't contain a value for the current domain '${dom}'.`);
+			const sel = staticData.selectors?.[group]?.[id];
+			if (!["string", "object"].includes(typeof sel)) throw new _sv443_network_coreutils.DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
+			if (typeof sel === "object" && !(dom in sel)) throw new _sv443_network_coreutils.DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 			return typeof sel === "string" ? sel : sel[dom];
 		} catch (e) {
-			loggers.data.error(`Couldn't get selector with ID '${id}' due to error:`, e);
+			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
 			throw e;
 		}
-		const sel = staticData?.selectors?.[id];
+		const sel = staticData?.selectors?.[group]?.[id];
 		return typeof sel === "string" ? sel : sel?.[dom];
 	}
 	var alertsStore = new _sv443_network_coreutils.DataStore({
@@ -1160,7 +1162,7 @@
 			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
 			if (openDialogs.length === 0) {
 				document.body.classList.remove("bytm-disable-scroll");
-				document.querySelector(getSelector("app"))?.removeAttribute("inert");
+				document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 			}
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
 		}
@@ -1169,7 +1171,7 @@
 			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
 			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
 			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
+			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
 		}
 		/** Called on every {@linkcode mount()} to attach all generic event listeners */
@@ -1715,7 +1717,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				subtree: false
 			});
 			globservers.body.enable();
-			globservers.bytmDialogContainer = new _sv443_network_userutils.SelectorObserver(getSelector("obs-bytmDialogContainer"), {
+			globservers.bytmDialogContainer = new _sv443_network_userutils.SelectorObserver(getSelector("observer", "bytmDialogContainer"), {
 				...defaultObserverOptions,
 				defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
 				subtree: true
@@ -1723,32 +1725,32 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			globservers.bytmDialogContainer.enable();
 			switch (getDomain()) {
 				case "ytm": {
-					const browseResponseSelector = getSelector("obs-browseResponse");
+					const browseResponseSelector = getSelector("observer", "browseResponse");
 					globservers.browseResponse = new _sv443_network_userutils.SelectorObserver(browseResponseSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
 					globservers.body.addListener(browseResponseSelector, { listener: getEnableFn("browseResponse") });
-					const searchPageSelector = getSelector("obs-searchPage");
+					const searchPageSelector = getSelector("observer", "searchPage");
 					globservers.searchPage = new _sv443_network_userutils.SelectorObserver(searchPageSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(searchPageSelector, { listener: getEnableFn("searchPage") });
-					const navBarSelector = getSelector("obs-navBar");
+					const navBarSelector = getSelector("observer", "navBar");
 					globservers.navBar = new _sv443_network_userutils.SelectorObserver(navBarSelector, {
 						...defaultObserverOptions,
 						subtree: false
 					});
 					globservers.body.addListener(navBarSelector, { listener: getEnableFn("navBar") });
-					const mainPanelSelector = getSelector("obs-mainPanel");
+					const mainPanelSelector = getSelector("observer", "mainPanel");
 					globservers.mainPanel = new _sv443_network_userutils.SelectorObserver(mainPanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(mainPanelSelector, { listener: getEnableFn("mainPanel") });
-					const sidebarSelector = getSelector("obs-sideBar");
+					const sidebarSelector = getSelector("observer", "sideBar");
 					globservers.sideBar = new _sv443_network_userutils.SelectorObserver(sidebarSelector, {
 						...defaultObserverOptions,
 						attributes: true,
@@ -1756,37 +1758,37 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						subtree: true
 					});
 					globservers.body.addListener(sidebarSelector, { listener: getEnableFn("sideBar") });
-					const sidePanelSelector = getSelector("obs-sidePanel");
+					const sidePanelSelector = getSelector("observer", "sidePanel");
 					globservers.sidePanel = new _sv443_network_userutils.SelectorObserver(sidePanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(sidePanelSelector, { listener: getEnableFn("sidePanel") });
-					const playerBarSelector = getSelector("obs-playerBar");
+					const playerBarSelector = getSelector("observer", "playerBar");
 					globservers.playerBar = new _sv443_network_userutils.SelectorObserver(playerBarSelector, { ...defaultObserverOptions });
 					globservers.body.addListener(playerBarSelector, { listener: () => {
 						globservers.playerBar.enable();
 					} });
-					const playerBarInfoSelector = getSelector("obs-playerBarInfo");
+					const playerBarInfoSelector = getSelector("observer", "playerBarInfo");
 					globservers.playerBarInfo = new _sv443_network_userutils.SelectorObserver(playerBarInfoSelector, {
 						...defaultObserverOptions,
 						attributes: true,
 						attributeFilter: ["title"]
 					});
 					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableFn("playerBarInfo") });
-					const playerBarMiddleButtonsSelector = getSelector("obs-playerBarMiddleButtons");
+					const playerBarMiddleButtonsSelector = getSelector("observer", "playerBarMiddleButtons");
 					globservers.playerBarMiddleButtons = new _sv443_network_userutils.SelectorObserver(playerBarMiddleButtonsSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableFn("playerBarMiddleButtons") });
-					const playerBarRightControls = getSelector("obs-playerBarRightControls");
+					const playerBarRightControls = getSelector("observer", "playerBarRightControls");
 					globservers.playerBarRightControls = new _sv443_network_userutils.SelectorObserver(playerBarRightControls, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableFn("playerBarRightControls") });
-					const popupContainerSelector = getSelector("obs-popupContainer");
+					const popupContainerSelector = getSelector("observer", "popupContainer");
 					globservers.popupContainer = new _sv443_network_userutils.SelectorObserver(popupContainerSelector, {
 						...defaultObserverOptions,
 						subtree: true
@@ -1795,38 +1797,38 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					break;
 				}
 				case "yt": {
-					const ytGuideSelector = getSelector("obs-ytGuide");
+					const ytGuideSelector = getSelector("observer", "ytGuide");
 					globservers.ytGuide = new _sv443_network_userutils.SelectorObserver(ytGuideSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytGuideSelector, { listener: getEnableFn("ytGuide") });
-					const ytdBrowseSelector = getSelector("obs-ytdBrowse");
+					const ytdBrowseSelector = getSelector("observer", "ytdBrowse");
 					globservers.ytdBrowse = new _sv443_network_userutils.SelectorObserver(ytdBrowseSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableFn("ytdBrowse") });
-					const ytAppHeaderSelector = getSelector("obs-ytAppHeader");
+					const ytAppHeaderSelector = getSelector("observer", "ytAppHeader");
 					globservers.ytAppHeader = new _sv443_network_userutils.SelectorObserver(ytAppHeaderSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
 					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableFn("ytAppHeader") });
-					const ytWatchFlexySelector = getSelector("obs-ytWatchFlexy");
+					const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
 					globservers.ytWatchFlexy = new _sv443_network_userutils.SelectorObserver(ytWatchFlexySelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableFn("ytWatchFlexy") });
-					const ytWatchMetadataSelector = getSelector("obs-ytWatchMetadata");
+					const ytWatchMetadataSelector = getSelector("observer", "ytWatchMetadata");
 					globservers.ytWatchMetadata = new _sv443_network_userutils.SelectorObserver(ytWatchMetadataSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableFn("ytWatchMetadata") });
-					const mastheadSelector = getSelector("obs-ytMasthead");
+					const mastheadSelector = getSelector("observer", "ytMasthead");
 					globservers.ytMasthead = new _sv443_network_userutils.SelectorObserver(mastheadSelector, {
 						...defaultObserverOptions,
 						subtree: true
@@ -3531,7 +3533,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
 			titleLogoElem.tabIndex = 0;
 			titleLogoElem.role = "button";
-			titleLogoElem.alt = t("config_menu_title_logo_tooltip");
+			titleLogoElem.alt = t("config_menu_title_logo_tooltip", { scriptName: scriptInfo$1.name });
 			if (logoSrc) titleLogoElem.src = logoSrc;
 			onInteraction(titleLogoElem, (e) => {
 				e.preventDefault();
@@ -3867,8 +3869,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					if (promptMenuRemount) await showPrompt({
 						type: "confirm",
 						message: t("feature_changed_remount_config_menu"),
-						confirmBtnText: t("reload_now"),
-						confirmBtnTooltip: t("reload_now")
+						confirmBtnText: t("reopen"),
+						confirmBtnTooltip: t("reopen")
 					}) && emitSiteEvent("recreateCfgMenu");
 					if (initLocale !== featConf.locale) {
 						await initTranslations(featConf.locale);
@@ -4427,7 +4429,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			window.addEventListener("resize", (0, _sv443_network_coreutils.debounce)(checkToggleScrollIndicator, 250), { passive: true });
 			isCfgMenuOpen = false;
 			document.body.classList.remove("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.removeAttribute("inert");
+			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 			backgroundElem.style.visibility = "hidden";
 			backgroundElem.style.display = "none";
 			loggers.configMenu.log(`Mounted config menu element in ${Date.now() - startTs}ms`);
@@ -4486,7 +4488,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			else await mountCfgMenu();
 			isCfgMenuOpen = true;
 			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
+			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 			const menuBg = document.querySelector("#bytm-cfg-menu-bg");
 			setCurrentDialogId("cfg-menu");
 			openDialogs.unshift("cfg-menu");
@@ -4516,7 +4518,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		evt?.bubbles && evt.stopPropagation();
 		if (enableScroll && !openDialogs.some((id) => id !== "cfg-menu")) {
 			document.body.classList.remove("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.removeAttribute("inert");
+			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 		}
 		const menuBg = document.querySelector("#bytm-cfg-menu-bg");
 		clearTimeout(hiddenCopiedTxtTimeout);
@@ -6695,10 +6697,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (hotkeyMatches(e, getFeature("likeHotkey"))) {
 				preventBubble(e);
 				if (!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE") return;
+				loggers.hotkey.log("Like hotkey pressed, liking the video...");
 				likeBtn?.click();
 			} else if (hotkeyMatches(e, getFeature("dislikeHotkey"))) {
 				preventBubble(e);
 				if (!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE") return;
+				loggers.hotkey.log("Dislike hotkey pressed, disliking the video...");
 				dislikeBtn?.click();
 			}
 		}, { capture: true });
@@ -6709,7 +6713,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (isIgnoredInputElement()) return;
 			if (hotkeyMatches(e, getFeature("currentLyricsHotkey")) && location.pathname.startsWith("/watch")) {
 				preventBubble(e);
-				document.getElementById("bytm-player-bar-lyrics-btn")?.click();
+				const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
+				loggers.hotkey.log("Open song lyrics hotkey pressed, opening page...");
+				lyricsBtn?.click();
 			}
 		}, { capture: true });
 	}
@@ -6719,6 +6725,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (isIgnoredInputElement()) return;
 			if (hotkeyMatches(e, getFeature("lyricsSearchPromptHotkey"))) {
 				preventBubble(e);
+				loggers.hotkey.log("Lyrics search prompt hotkey pressed, opening dialog...");
 				await promptLyricsSearch();
 			}
 		}, { capture: true });
@@ -6729,6 +6736,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (isIgnoredInputElement()) return;
 			if (hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
 				preventBubble(e);
+				loggers.hotkey.log("Skip to remembered time hotkey pressed, restoring video time...");
 				await remTimeTryRestoreTime(true);
 			}
 		}, { capture: true });
