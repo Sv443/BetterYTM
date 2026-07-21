@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4da3b251/assets/images/logo/logo_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6a1ef3da/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -7908,21 +7908,21 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Path to the GitHub repo */
 	var repo = "Sv443/BetterYTM";
 	/** The mode in which the script was built (production or development) */
-	var mode$1 = "production";
+	var mode$1 = "development";
 	/** The branch to use in various URLs that point to the GitHub repo */
-	var branch$1 = "main";
+	var branch$1 = "develop";
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "4da3b251";
+	var buildNumber$1 = "6a1ef3da";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1782057700082;
+	var buildTimestamp = 1784631779136;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
 	var devServerPort = 8710;
 	/** URL to the changelog file */
-	var changelogUrl = `https://raw.githubusercontent.com/${repo}/main/changelog.md?build=${buildNumber$1}`;
+	var changelogUrl = `https://raw.githubusercontent.com/${repo}/develop/changelog.md?build=${buildNumber$1}`;
 	/** The URL search parameters at the earliest possible time */
 	var initialParams$1 = new URL(location.href).searchParams;
 	/** Timestamp of when the script was initialized. */
@@ -7950,7 +7950,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	* Fallback and initial value of how much info should be logged to the devtools console  
 	* 0 = Debug (show everything) or 1 = Info (show only important stuff)
 	*/
-	var defaultLogLevel = LogLevel.Info;
+	var defaultLogLevel = LogLevel.Debug;
 	/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
 	var scriptInfo$1 = pureObj$2({
 		name: GM_info.script.name,
@@ -8398,58 +8398,32 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				"www.youtube-nocookie.com"
 			]
 		}],
-		alerts: [{
-			"id": "update-preview-version-hint-v3.1.0-rc.1",
-			"title": {
-				"de-DE": "BetterYTM ist veraltet",
-				"en-GB": "BetterYTM is outdated",
-				"en-US": "BetterYTM is outdated",
-				"es-ES": "BetterYTM está desactualizado",
-				"fr-FR": "BetterYTM est obsolète",
-				"hi-IN": "BetterYTM पुराना है",
-				"ja-JP": "BetterYTMは古くなっています",
-				"pt-BR": "BetterYTM está desatualizado",
-				"zh-CN": "BetterYTM 已过时"
-			},
-			"message": {
-				"de-DE": "Du verwendest derzeit eine veraltete Vorschauversion von BetterYTM.  \nBitte schau auf der Release-Seite nach der vollständigen Version v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"en-GB": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"en-US": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"es-ES": "Actualmente estás ejecutando una versión de vista previa obsoleta de BetterYTM.  \nPor favor, consulta la página de lanzamientos para la versión completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"fr-FR": "Vous utilisez actuellement une version de prévisualisation obsolète de BetterYTM.  \nVeuillez consulter la page des versions pour la version complète v3.1.0 :  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"hi-IN": "आप वर्तमान में BetterYTM का एक पुराना पूर्वावलोकन संस्करण चला रहे हैं।  \nकृपया पूर्ण v3.1.0 रिलीज़ के लिए रिलीज़ पृष्ठ पर जांच करें:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"ja-JP": "現在、BetterYTMの古いプレビューバージョンを実行しています。  \n完全なv3.1.0リリースについては、リリースページを確認してください:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"pt-BR": "Você está atualmente executando uma versão de visualização desatualizada do BetterYTM.  \nPor favor, verifique na página de lançamentos para a versão completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-				"zh-CN": "您当前正在运行过时的BetterYTM预览版本。  \n请在发布页面上查看完整的v3.1.0版本：  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)"
-			},
-			"domains": ["ytm", "yt"],
-			"important": true,
-			"version": "3.1.0-rc.1",
-			"dateMax": "2026-06-01T23:59:59.999Z"
-		}],
+		alerts: [],
 		selectors: {
-			"app": {
+			"generic": { "app": {
 				"yt": "ytd-app",
 				"ytm": "ytmusic-app"
-			},
-			"obs-bytmDialogContainer": "#bytm-dialog-container",
-			"obs-browseResponse": { "ytm": "ytmusic-browse-response" },
-			"obs-searchPage": { "ytm": "ytmusic-search-page" },
-			"obs-navBar": { "ytm": "ytmusic-nav-bar" },
-			"obs-mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
-			"obs-sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
-			"obs-sidePanel": { "ytm": "#side-panel" },
-			"obs-playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
-			"obs-playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
-			"obs-playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
-			"obs-playerBarRightControls": { "ytm": "#right-controls" },
-			"obs-popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
-			"obs-ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
-			"obs-ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
-			"obs-ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
-			"obs-ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
-			"obs-ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
-			"obs-ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+			} },
+			"observer": {
+				"bytmDialogContainer": "#bytm-dialog-container",
+				"browseResponse": { "ytm": "ytmusic-browse-response" },
+				"searchPage": { "ytm": "ytmusic-search-page" },
+				"navBar": { "ytm": "ytmusic-nav-bar" },
+				"mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
+				"sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
+				"sidePanel": { "ytm": "#side-panel" },
+				"playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
+				"playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
+				"playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
+				"playerBarRightControls": { "ytm": "#right-controls" },
+				"popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
+				"ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
+				"ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
+				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
+				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
+				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
+				"ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+			}
 		}
 	};
 	//#endregion
@@ -8486,21 +8460,12 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	//#region src/utils/data.ts
 	/** URL to the remote data JSON file on a CDN. */
 	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json`;
-	/** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
-	var staticDataFormatVersion = 0;
 	var staticData;
 	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
 	async function getStaticData() {
 		try {
 			if (staticData) return staticData;
-			const res = await fetchAdvanced$1(remoteDataUrl, { timeout: 1e4 });
-			if (res.ok) {
-				const data = await res.json();
-				if (isStaticData(data)) {
-					loggers.data.info("Successfully fetched remote static data:", data);
-					return staticData = data;
-				} else loggers.data.warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(data_default));
-			}
+			loggers.data.info("Development mode is active. Initializing with static data.json:", data_default);
 			return staticData = data_default;
 		} catch (e) {
 			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
@@ -8516,24 +8481,20 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	* Returns the selector with the given ID.  
 	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
 	*/
-	function getSelector(id, throws) {
+	function getSelector(group, id, throws) {
 		const dom = getDomain();
 		if (throws !== false) try {
 			if (typeof staticData?.selectors !== "object") throw new DatedError$1("Static data hasn't been fetched yet.");
-			const sel = staticData.selectors[id];
-			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector with ID '${id}' doesn't exist or is neither a string nor an object.`);
-			if (typeof sel === "object" && !(dom in sel)) throw new DatedError$1(`Selector with ID '${id}' doesn't contain a value for the current domain '${dom}'.`);
+			const sel = staticData.selectors?.[group]?.[id];
+			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
+			if (typeof sel === "object" && !(dom in sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 			return typeof sel === "string" ? sel : sel[dom];
 		} catch (e) {
-			loggers.data.error(`Couldn't get selector with ID '${id}' due to error:`, e);
+			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
 			throw e;
 		}
-		const sel = staticData?.selectors?.[id];
+		const sel = staticData?.selectors?.[group]?.[id];
 		return typeof sel === "string" ? sel : sel?.[dom];
-	}
-	/** Checks whether the given data matches the expected structure of the static data JSON at `assets/data.json`. */
-	function isStaticData(data) {
-		return typeof data === "object" && data !== null && "formatVersion" in data && typeof data.formatVersion === "number" && data.formatVersion === staticDataFormatVersion && "domains" in data && typeof data.domains === "object" && Array.isArray(data.domains) && "selectors" in data && typeof data.selectors === "object" && "alerts" in data && typeof data.alerts === "object" && Array.isArray(data.alerts);
 	}
 	var alertsStore = new DataStore$1({
 		id: "bytm-alerts",
@@ -8784,7 +8745,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
 			if (openDialogs.length === 0) {
 				document.body.classList.remove("bytm-disable-scroll");
-				document.querySelector(getSelector("app"))?.removeAttribute("inert");
+				document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 			}
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
 		}
@@ -8793,7 +8754,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
 			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
 			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
+			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
 		}
 		/** Called on every {@linkcode mount()} to attach all generic event listeners */
@@ -9109,6 +9070,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
 			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
 			"build-dev": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
+			"build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
 			"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
 			"build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
 			"build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
@@ -9339,7 +9301,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				subtree: false
 			});
 			globservers.body.enable();
-			globservers.bytmDialogContainer = new SelectorObserver(getSelector("obs-bytmDialogContainer"), {
+			globservers.bytmDialogContainer = new SelectorObserver(getSelector("observer", "bytmDialogContainer"), {
 				...defaultObserverOptions,
 				defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 1.5),
 				subtree: true
@@ -9347,32 +9309,32 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			globservers.bytmDialogContainer.enable();
 			switch (getDomain()) {
 				case "ytm": {
-					const browseResponseSelector = getSelector("obs-browseResponse");
+					const browseResponseSelector = getSelector("observer", "browseResponse");
 					globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
 					globservers.body.addListener(browseResponseSelector, { listener: getEnableFn("browseResponse") });
-					const searchPageSelector = getSelector("obs-searchPage");
+					const searchPageSelector = getSelector("observer", "searchPage");
 					globservers.searchPage = new SelectorObserver(searchPageSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(searchPageSelector, { listener: getEnableFn("searchPage") });
-					const navBarSelector = getSelector("obs-navBar");
+					const navBarSelector = getSelector("observer", "navBar");
 					globservers.navBar = new SelectorObserver(navBarSelector, {
 						...defaultObserverOptions,
 						subtree: false
 					});
 					globservers.body.addListener(navBarSelector, { listener: getEnableFn("navBar") });
-					const mainPanelSelector = getSelector("obs-mainPanel");
+					const mainPanelSelector = getSelector("observer", "mainPanel");
 					globservers.mainPanel = new SelectorObserver(mainPanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(mainPanelSelector, { listener: getEnableFn("mainPanel") });
-					const sidebarSelector = getSelector("obs-sideBar");
+					const sidebarSelector = getSelector("observer", "sideBar");
 					globservers.sideBar = new SelectorObserver(sidebarSelector, {
 						...defaultObserverOptions,
 						attributes: true,
@@ -9380,37 +9342,37 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						subtree: true
 					});
 					globservers.body.addListener(sidebarSelector, { listener: getEnableFn("sideBar") });
-					const sidePanelSelector = getSelector("obs-sidePanel");
+					const sidePanelSelector = getSelector("observer", "sidePanel");
 					globservers.sidePanel = new SelectorObserver(sidePanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(sidePanelSelector, { listener: getEnableFn("sidePanel") });
-					const playerBarSelector = getSelector("obs-playerBar");
+					const playerBarSelector = getSelector("observer", "playerBar");
 					globservers.playerBar = new SelectorObserver(playerBarSelector, { ...defaultObserverOptions });
 					globservers.body.addListener(playerBarSelector, { listener: () => {
 						globservers.playerBar.enable();
 					} });
-					const playerBarInfoSelector = getSelector("obs-playerBarInfo");
+					const playerBarInfoSelector = getSelector("observer", "playerBarInfo");
 					globservers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
 						...defaultObserverOptions,
 						attributes: true,
 						attributeFilter: ["title"]
 					});
 					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableFn("playerBarInfo") });
-					const playerBarMiddleButtonsSelector = getSelector("obs-playerBarMiddleButtons");
+					const playerBarMiddleButtonsSelector = getSelector("observer", "playerBarMiddleButtons");
 					globservers.playerBarMiddleButtons = new SelectorObserver(playerBarMiddleButtonsSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableFn("playerBarMiddleButtons") });
-					const playerBarRightControls = getSelector("obs-playerBarRightControls");
+					const playerBarRightControls = getSelector("observer", "playerBarRightControls");
 					globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableFn("playerBarRightControls") });
-					const popupContainerSelector = getSelector("obs-popupContainer");
+					const popupContainerSelector = getSelector("observer", "popupContainer");
 					globservers.popupContainer = new SelectorObserver(popupContainerSelector, {
 						...defaultObserverOptions,
 						subtree: true
@@ -9419,38 +9381,38 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					break;
 				}
 				case "yt": {
-					const ytGuideSelector = getSelector("obs-ytGuide");
+					const ytGuideSelector = getSelector("observer", "ytGuide");
 					globservers.ytGuide = new SelectorObserver(ytGuideSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytGuideSelector, { listener: getEnableFn("ytGuide") });
-					const ytdBrowseSelector = getSelector("obs-ytdBrowse");
+					const ytdBrowseSelector = getSelector("observer", "ytdBrowse");
 					globservers.ytdBrowse = new SelectorObserver(ytdBrowseSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableFn("ytdBrowse") });
-					const ytAppHeaderSelector = getSelector("obs-ytAppHeader");
+					const ytAppHeaderSelector = getSelector("observer", "ytAppHeader");
 					globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
 					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableFn("ytAppHeader") });
-					const ytWatchFlexySelector = getSelector("obs-ytWatchFlexy");
+					const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
 					globservers.ytWatchFlexy = new SelectorObserver(ytWatchFlexySelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableFn("ytWatchFlexy") });
-					const ytWatchMetadataSelector = getSelector("obs-ytWatchMetadata");
+					const ytWatchMetadataSelector = getSelector("observer", "ytWatchMetadata");
 					globservers.ytWatchMetadata = new SelectorObserver(ytWatchMetadataSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
 					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableFn("ytWatchMetadata") });
-					const mastheadSelector = getSelector("obs-ytMasthead");
+					const mastheadSelector = getSelector("observer", "ytMasthead");
 					globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
 						...defaultObserverOptions,
 						subtree: true
@@ -10734,7 +10696,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}
 			const fetchUrl = String(constructUrl(`${getFeature("geniUrlBase")}/search`, {
 				disableFuzzy: null,
-				source: `${scriptInfo$1.name} v${scriptInfo$1.version}`,
+				source: `${scriptInfo$1.name} v${scriptInfo$1.version}-dev`,
 				q: `${artist} ${song}`
 			}));
 			loggers.lyrics.log("Requesting lyrics from geniURL:", fetchUrl);
@@ -10815,18 +10777,22 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (isModKey && !isInvState || !(isModKey || e.shiftKey) && isInvState) {
 				e.preventDefault();
 				e.stopImmediatePropagation();
-				const search = await showPrompt({
-					type: "prompt",
-					message: t("open_lyrics_search_prompt"),
-					defaultValue: currentSongTitle
-				});
-				if (search && search.length > 0) openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+				await promptLyricsSearch();
 			}
 		}, {
 			preventDefault: false,
 			stopPropagation: false
 		});
 		return linkElem;
+	}
+	/** Prompts to search for lyrics. Uses the song/video title as the default value. */
+	async function promptLyricsSearch() {
+		const search = await showPrompt({
+			type: "prompt",
+			message: t("open_lyrics_search_prompt"),
+			defaultValue: currentSongTitle
+		});
+		if (search && search.length > 0) openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
 	}
 	/** Splits a video title that contains a hyphen into an artist and song */
 	function splitVideoTitle(title) {
@@ -11147,11 +11113,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				focusContentBtn.tabIndex = 0;
 			}
 			const titleLogoElem = document.createElement("img");
-			const logoSrc = await getResourceUrl(`img-logo`);
+			const logoSrc = await getResourceUrl(`img-logo_dev`);
 			titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
 			titleLogoElem.tabIndex = 0;
 			titleLogoElem.role = "button";
-			titleLogoElem.alt = t("config_menu_title_logo_tooltip");
+			titleLogoElem.alt = t("config_menu_title_logo_tooltip", { scriptName: scriptInfo$1.name });
 			if (logoSrc) titleLogoElem.src = logoSrc;
 			onInteraction(titleLogoElem, (e) => {
 				e.preventDefault();
@@ -11472,7 +11438,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					loggers.configMenu.info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
 					const featConf = structuredClone(getFeatures());
 					featConf[key] = newVal;
-					const requiresReload = (initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object" && featConf[k] !== initConfig$1[k]) : []).some((k) => featInfo[k]?.reloadRequired !== false);
+					const changedKeys = initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object" && featConf[k] !== initConfig$1[k]) : [];
+					const requiresReload = changedKeys.some((k) => featInfo[k]?.reloadRequired !== false);
+					const promptMenuRemount = changedKeys.some((k) => featInfo[k]?.reloadMenuPrompt === true);
 					await setFeatures(featConf);
 					featInfo[key]?.change?.(newVal, initialVal);
 					if (requiresReload) {
@@ -11482,6 +11450,12 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						reloadFooterEl.classList.add("hidden");
 						reloadFooterEl.setAttribute("aria-hidden", "true");
 					}
+					if (promptMenuRemount) await showPrompt({
+						type: "confirm",
+						message: t("feature_changed_remount_config_menu"),
+						confirmBtnText: t("reopen"),
+						confirmBtnTooltip: t("reopen")
+					}) && emitSiteEvent("recreateCfgMenu");
 					if (initLocale !== featConf.locale) {
 						await initTranslations(featConf.locale);
 						setLocale(featConf.locale);
@@ -11608,6 +11582,16 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					{
 						const featLeftSideElem = document.createElement("div");
 						featLeftSideElem.classList.add("bytm-ftitem-leftside");
+						{
+							const defVal = fmtVal(ftDefault, featKey);
+							const extraTxts = [`default: ${defVal.length === 0 ? "(undefined)" : defVal}`];
+							"min" in ftInfo && extraTxts.push(`min: ${ftInfo.min}`);
+							"max" in ftInfo && extraTxts.push(`max: ${ftInfo.max}`);
+							"step" in ftInfo && extraTxts.push(`step: ${ftInfo.step}`);
+							const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? "reload required - " : "";
+							const adv = ftInfo.advanced ? "advanced feature - " : "";
+							ftConfElem.title = `[Dev] ${ftInfo.category} > ${ftInfo.group} > ${featKey}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}\n(${rel}${adv}since v${ftInfo.since})`;
+						}
 						if (!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
 							loggers.configMenu.error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
 							continue;
@@ -11683,7 +11667,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						ctrlElem.classList.add("bytm-ftconf-ctrl");
 						ctrlElem.title = "";
 						let advCopyHiddenCont;
-						if ((getFeature("advancedMode") || false) && ftInfo.valueHidden) {
+						if (getFeature("advancedMode"), ftInfo.valueHidden) {
 							const advCopyHintElem = document.createElement("span");
 							advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
 							advCopyHintElem.textContent = t("copied");
@@ -11744,7 +11728,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 								for (const { value, label } of ftOpts) {
 									const optionElem = document.createElement("option");
 									optionElem.value = String(value);
-									optionElem.textContent = `${label}`;
+									optionElem.textContent = `${label}${` [${value}]`}`;
 									if (value === initialVal) optionElem.selected = true;
 									inputElem.appendChild(optionElem);
 								}
@@ -11776,17 +11760,19 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							}
 							inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
 							inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
-							const hasMinOrMax = "min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number";
-							const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
-							if (isNumericInput) inputElem.addEventListener("blur", () => {
-								let v = Number(inputElem.value);
-								if (hasMinOrMax && !isNaN(v)) {
-									if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min) v = ftInfo.min;
-									if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max) v = ftInfo.max;
-								}
-								if (hasStep && !isNaN(v)) v = Math.round(v / Number(ftInfo.step)) * Number(ftInfo.step);
-								if (!isNaN(v)) inputElem.value = String(v);
-							});
+							if (isNumericInput) {
+								const hasMinOrMax = "min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number";
+								const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
+								inputElem.addEventListener("blur", () => {
+									let v = Number(inputElem.value);
+									if (hasMinOrMax && !isNaN(v)) {
+										if ("min" in ftInfo && typeof ftInfo.min === "number" && v < ftInfo.min) v = ftInfo.min;
+										if ("max" in ftInfo && typeof ftInfo.max === "number" && v > ftInfo.max) v = ftInfo.max;
+									}
+									if (hasStep && !isNaN(v)) v = Math.round(v / Number(ftInfo.step)) * Number(ftInfo.step);
+									if (!isNaN(v)) inputElem.value = String(v);
+								});
+							}
 							ctrlElem.appendChild(inputElem);
 							if (type === "number" && "unit" in ftInfo && ["function", "string"].includes(typeof ftInfo.unit)) {
 								const afterInputUnitEl = document.createElement("span");
@@ -11943,6 +11929,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			menuContainer.appendChild(headerElem);
 			menuContainer.appendChild(bodyCont);
 			const modeItems = [];
+			modeItems.push([
+				"dev",
+				"dev_mode",
+				"img-logo_dev"
+			]);
 			getFeature("advancedMode") && modeItems.push([
 				"advanced",
 				"advanced_mode",
@@ -12022,7 +12013,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			window.addEventListener("resize", debounce$1(checkToggleScrollIndicator, 250), { passive: true });
 			isCfgMenuOpen = false;
 			document.body.classList.remove("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.removeAttribute("inert");
+			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 			backgroundElem.style.visibility = "hidden";
 			backgroundElem.style.display = "none";
 			loggers.configMenu.log(`Mounted config menu element in ${Date.now() - startTs}ms`);
@@ -12081,7 +12072,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			else await mountCfgMenu();
 			isCfgMenuOpen = true;
 			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.setAttribute("inert", "true");
+			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 			const menuBg = document.querySelector("#bytm-cfg-menu-bg");
 			setCurrentDialogId("cfg-menu");
 			openDialogs.unshift("cfg-menu");
@@ -12111,7 +12102,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		evt?.bubbles && evt.stopPropagation();
 		if (enableScroll && !openDialogs.some((id) => id !== "cfg-menu")) {
 			document.body.classList.remove("bytm-disable-scroll");
-			document.querySelector(getSelector("app"))?.removeAttribute("inert");
+			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 		}
 		const menuBg = document.querySelector("#bytm-cfg-menu-bg");
 		clearTimeout(hiddenCopiedTxtTimeout);
@@ -12156,7 +12147,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		watermarkEl.ariaLabel = watermarkEl.title = t("open_menu_tooltip", scriptInfo$1.name);
 		watermarkEl.tabIndex = 0;
 		(async () => {
-			bytmLogoUrl = await getResourceUrl("img-logo");
+			bytmLogoUrl = await getResourceUrl("img-logo_dev");
 			preloadImages([bytmLogoUrl]);
 			const watermarkOpenMenu = (e) => {
 				e.stopImmediatePropagation();
@@ -12234,7 +12225,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 		const cfgOptIconElem = document.createElement("img");
 		cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
-		cfgOptIconElem.src = await getResourceUrl("img-logo");
+		cfgOptIconElem.src = await getResourceUrl("img-logo_dev");
 		const cfgOptTextElem = document.createElement("div");
 		cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
 		cfgOptTextElem.textContent = t("config_menu_option", scriptInfo$1.name);
@@ -12255,7 +12246,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		cfgOptElem.classList.add("bytm-yt-cfg-menu-option-inner");
 		const cfgOptImgElem = document.createElement("img");
 		cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
-		cfgOptImgElem.src = await getResourceUrl("img-logo");
+		cfgOptImgElem.src = await getResourceUrl("img-logo_dev");
 		const cfgOptItemElem = document.createElement("div");
 		cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
 		cfgOptItemElem.textContent = scriptInfo$1.name;
@@ -13583,7 +13574,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function renderHeader$2() {
 		const logoEl = document.createElement("img");
 		logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
-		logoEl.src = await getResourceUrl("img-logo");
+		logoEl.src = await getResourceUrl("img-logo_dev");
 		logoEl.alt = "BetterYTM logo";
 		return logoEl;
 	}
@@ -14221,7 +14212,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	//#region src/features/hotkeys.ts
 	async function initHotkeys() {
 		const promises = [];
-		if (getDomain() === "ytm") promises.push(initLyricsHotkey());
+		if (getDomain() === "ytm") promises.push(initOpenLyricsHotkey());
+		promises.push(initSearchLyricsPromptHotkey());
 		promises.push(initLikeDislikeHotkeys());
 		promises.push(initSiteSwitch());
 		promises.push(initProxyHotkeys());
@@ -14289,21 +14281,36 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (hotkeyMatches(e, getFeature("likeHotkey"))) {
 				preventBubble(e);
 				if (!getFeature("likeDislikeHotkeysToggle") && likeState === "LIKE") return;
+				loggers.hotkey.log("Like hotkey pressed, liking the video...");
 				likeBtn?.click();
 			} else if (hotkeyMatches(e, getFeature("dislikeHotkey"))) {
 				preventBubble(e);
 				if (!getFeature("likeDislikeHotkeysToggle") && likeState === "DISLIKE") return;
+				loggers.hotkey.log("Dislike hotkey pressed, disliking the video...");
 				dislikeBtn?.click();
 			}
 		}, { capture: true });
 	}
-	async function initLyricsHotkey() {
+	async function initOpenLyricsHotkey() {
 		document.addEventListener("keydown", (e) => {
 			if (!getFeature("currentLyricsHotkeyEnabled")) return;
 			if (isIgnoredInputElement()) return;
 			if (hotkeyMatches(e, getFeature("currentLyricsHotkey")) && location.pathname.startsWith("/watch")) {
 				preventBubble(e);
-				document.getElementById("bytm-player-bar-lyrics-btn")?.click();
+				const lyricsBtn = document.getElementById("bytm-player-bar-lyrics-btn");
+				loggers.hotkey.log("Open song lyrics hotkey pressed, opening page...");
+				lyricsBtn?.click();
+			}
+		}, { capture: true });
+	}
+	async function initSearchLyricsPromptHotkey() {
+		document.addEventListener("keydown", async (e) => {
+			if (!getFeature("lyricsSearchPromptHotkeyEnabled")) return;
+			if (isIgnoredInputElement()) return;
+			if (hotkeyMatches(e, getFeature("lyricsSearchPromptHotkey"))) {
+				preventBubble(e);
+				loggers.hotkey.log("Lyrics search prompt hotkey pressed, opening dialog...");
+				await promptLyricsSearch();
 			}
 		}, { capture: true });
 	}
@@ -14313,6 +14320,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (isIgnoredInputElement()) return;
 			if (hotkeyMatches(e, getFeature("skipToRemTimeHotkey"))) {
 				preventBubble(e);
+				loggers.hotkey.log("Skip to remembered time hotkey pressed, restoring video time...");
 				await remTimeTryRestoreTime(true);
 			}
 		}, { capture: true });
@@ -14949,7 +14957,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	* | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
 	* | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
 	* | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
-	* | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                     |
+	* | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                    |
+	* | `reloadMenuPrompt: boolean`                                        | If true, when the option is modified, shows a prompt to re-render the config menu - default is undefiled (false).                                   |
 	* | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
 	* | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
 	* | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
@@ -14985,7 +14994,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "3.2.0",
 			default: false,
-			adornments: [adornments.reload]
+			reloadMenuPrompt: true,
+			reloadRequired: false
 		},
 		initTimeout: {
 			type: "number",
@@ -14993,7 +15003,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "bytmInternal",
 			supportedSites: ["ytm", "yt"],
 			since: "2.1.0",
-			min: 1e3,
+			min: 100,
 			max: 1e4,
 			default: 3e3,
 			step: 100,
@@ -15073,7 +15083,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			reloadRequired: false,
 			change: (newVal) => newVal === 0 ? closeToast() : showIconToast({
 				message: t("example_toast"),
-				iconSrc: getResourceUrl(`img-logo`)
+				iconSrc: getResourceUrl(`img-logo_dev`)
 			}).then(() => getFeature("toastDuration") === 0 ? closeToast() : void 0)
 		},
 		showToastOnGenericError: {
@@ -15161,7 +15171,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "2.0.0",
 			default: false,
-			change: (newVal, initVal) => initVal !== newVal && emitSiteEvent("recreateCfgMenu")
+			reloadMenuPrompt: true,
+			reloadRequired: false
 		},
 		watermarkEnabled: {
 			type: "toggle",
@@ -16169,6 +16180,29 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			reloadRequired: false,
 			adornments: [adornments.ytmOnly]
 		},
+		lyricsSearchPromptHotkeyEnabled: {
+			type: "toggle",
+			category: "hotkeys",
+			group: "lyricsSearchPromptHotkeyEnabled",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: true,
+			reloadRequired: false
+		},
+		lyricsSearchPromptHotkey: {
+			type: "hotkey",
+			category: "hotkeys",
+			group: "lyricsSearchPromptHotkeyEnabled",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: {
+				code: "KeyO",
+				shift: true,
+				ctrl: true,
+				alt: false
+			},
+			reloadRequired: false
+		},
 		skipToRemTimeHotkeyEnabled: {
 			type: "toggle",
 			category: "hotkeys",
@@ -16181,7 +16215,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				icon: "icon-error",
 				iconFill: "var(--bytm-error-col)",
 				message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
-				duration: 20,
+				duration: 2e4,
 				onClick: () => getErrorDialog(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"), [t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]).open()
 			}),
 			adornments: () => !getFeature("rememberSongTime") ? [() => adornments.alert(t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled").replace(/"/g, "'"))] : []
@@ -16650,7 +16684,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		12: (oldData) => {
 			oldData.thumbnailOverlayEnabled = oldData.thumbnailOverlayBehavior !== "never";
 			oldData.autoScrollToActiveSongEnabled = oldData.autoScrollToActiveSongMode !== "never";
-			return useNewDefaults(oldData, ["thumbnailOverlayBlurredDuplicateBackground", "configMenuFocusContentButtonEnabled"]);
+			return useNewDefaults(oldData, [
+				"thumbnailOverlayBlurredDuplicateBackground",
+				"configMenuFocusContentButtonEnabled",
+				"lyricsSearchPromptHotkeyEnabled",
+				"lyricsSearchPromptHotkey"
+			]);
 		}
 	};
 	/**
@@ -17511,7 +17550,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	/** Max age for the resource cache, after its last modification, in milliseconds */
 	var resourceCacheTTL = 1e3 * 60 * 60 * 24 * 7;
-	var resourceCacheKey = buildNumber$1;
+	var resourceCacheKey = scriptInfo$1.version;
 	/** Cache for resources fetched via {@linkcode resourceAsString()} */
 	var resourceCacheStore = new DataStore$1({
 		id: "bytm-resource-cache",
@@ -18059,7 +18098,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const titleLogoElem = document.createElement("img");
 		titleLogoElem.id = "bytm-welcome-menu-title-logo";
 		titleLogoElem.classList.add("bytm-no-select");
-		titleLogoElem.src = await getResourceUrl("img-logo");
+		titleLogoElem.src = await getResourceUrl("img-logo_dev");
 		const titleElem = document.createElement("h2");
 		titleElem.id = "bytm-welcome-menu-title";
 		titleElem.classList.add("bytm-dialog-title");
@@ -18208,7 +18247,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		console.log(`\
 %c${scriptInfo$1.name}%cv${scriptInfo$1.version}%c • ${scriptInfo$1.namespace}%c
 
-Build #${buildNumber$1}
+Build #${buildNumber$1} (dev mode)
 
 %cPowered by:
 ─ Lots of ambition and dedication
@@ -18310,7 +18349,7 @@ Build #${buildNumber$1}
 ${scriptInfo$1.name} encountered a fatal error during initialization and will not work correctly, if at all.
 For information on what caused this error, please refer to the JS console.
 
-${`Please report this bug using the issue tracker on GitHub:\n${package_default.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`}`);
+${`Please report this bug using the issue tracker on GitHub:\n${package_default.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`}${`\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${package_default.devVersionUrl}`}`);
 		}
 	}
 	/** Called when the DOM has finished loading and can be queried and altered by the userscript */
@@ -18781,7 +18820,9 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		});
 		loggers.command.log("Registered dev menu commands");
 	}
-	async function runDevTreatments() {}
+	async function runDevTreatments() {
+		if (!await GM.getValue("bytm-dev-treatments", false)) return;
+	}
 	preInit();
 	//#endregion
 })();

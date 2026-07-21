@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@3197a286/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6a1ef3da/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "3197a286";
+	var buildNumber$1 = "6a1ef3da";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1783890810006;
+	var buildTimestamp = 1784631781594;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -1487,6 +1487,7 @@
 			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
 			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
 			"build-dev": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
+			"build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
 			"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
 			"build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
 			"build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
