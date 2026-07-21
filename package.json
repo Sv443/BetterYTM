@@ -49,6 +49,7 @@
     "dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
     "dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
     "build-dev": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
+    "build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
     "build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
     "build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
     "build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
