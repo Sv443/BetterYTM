@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6a1ef3da/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6fb02e7e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -505,9 +505,9 @@
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "6a1ef3da";
+	var buildNumber$1 = "6fb02e7e";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1784631781594;
+	var buildTimestamp = 1784633056923;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -876,7 +876,7 @@
 	//#endregion
 	//#region src/utils/data.ts
 	/** URL to the remote data JSON file on a CDN. */
-	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json`;
+	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/${branch$1}/assets/data.json`;
 	var staticData;
 	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
 	async function getStaticData() {
@@ -904,7 +904,7 @@
 			if (typeof staticData?.selectors !== "object") throw new _sv443_network_coreutils.DatedError("Static data hasn't been fetched yet.");
 			const sel = staticData.selectors?.[group]?.[id];
 			if (!["string", "object"].includes(typeof sel)) throw new _sv443_network_coreutils.DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
-			if (typeof sel === "object" && !(dom in sel)) throw new _sv443_network_coreutils.DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
+			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new _sv443_network_coreutils.DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 			return typeof sel === "string" ? sel : sel[dom];
 		} catch (e) {
 			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
