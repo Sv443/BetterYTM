@@ -1,7 +1,7 @@
 import { DataStore, DatedError, fetchAdvanced } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compareVersions } from "compare-versions";
-import { mode, repo, scriptInfo } from "@/constants.ts";
+import { branch, mode, repo, scriptInfo } from "@/constants.ts";
 import { setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
 import { getDomain, getterifyObj, resourceAsString } from "@util/misc.ts";
@@ -73,10 +73,10 @@ export type GlobalAlert = {
 //#region vars
 
 /** URL to the remote data JSON file on a CDN. */
-const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json` as const;
+const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/${branch}/assets/data.json` as const;
 
 /** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
-const staticDataFormatVersion = 0;
+const staticDataFormatVersion = 1;
 
 let staticData: StaticData | undefined;
 
@@ -143,7 +143,7 @@ export function getSelector<
       const sel = staticData.selectors?.[group]?.[id];
       if(!(["string", "object"].includes(typeof sel)))
         throw new DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
-      if(typeof sel === "object" && !(dom in sel))
+      if(typeof sel === "object" && dom !== null && !(dom in sel))
         throw new DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 
       return typeof sel === "string"
