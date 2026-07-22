@@ -275,9 +275,24 @@ function buildHeader(args: HeaderArgs): string {
   I welcome every contribution on GitHub!
     ${pkg.homepage}
 
-
   You can install the latest in-development version here:
   ${pkg.devVersionUrl}
+
+  - - - - - - [ Build Info ] - - - - - -
+  Asset Source:    ${options.assetSource}
+  Build Mode:      ${options.buildMode}
+  Build Time:      ${new Date(options.buildTimestamp).toLocaleString("en-US")}
+  Build Number:    ${options.buildNumber}
+  Build UID:       ${options.buildUid}
+  Compatibility:   ${options.compatMode}
+  Target Branch:   ${options.branch}
+  Userscript Host: ${options.host}
+
+  Notes:
+    - These values are integral to how BetterYTM works. They pertain to asset loading, default configs, cache invalidation, vite build config, and more.
+    - Depending on where you installed the script and which version of it, the values might be vastly different.
+    - To modify these values yourself, edit the userscript, search for 'rawConsts' and edit the values below that line.
+      Beware that this makes it really easy to break the script, so back up the code by copying it first.
 
 */
 `,
