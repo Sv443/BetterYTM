@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6fb02e7e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6bf3b0c8/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -120,9 +120,24 @@
   I welcome every contribution on GitHub!
     https://github.com/Sv443/BetterYTM
 
-
   You can install the latest in-development version here:
   https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
+
+  - - - - - - [ Build Info ] - - - - - -
+  Asset Source:    jsdelivr
+  Build Mode:      development
+  Build Time:      7/22/2026, 9:44:28 PM
+  Build Number:    6bf3b0c8
+  Build UID:       ykGYM5NmNp88
+  Compatibility:   strict
+  Target Branch:   develop
+  Userscript Host: github
+
+  Notes:
+    - These values are integral to how BetterYTM works. They pertain to asset loading, default configs, cache invalidation, vite build config, and more.
+    - Depending on where you installed the script and which version of it, the values might be vastly different.
+    - To modify these values yourself, edit the userscript, search for 'rawConsts' and edit the values below that line.
+      Beware that this makes it really easy to break the script, so back up the code by copying it first.
 
 */
 
@@ -3274,12 +3289,12 @@ Has: ${checksum}`);
 		func.debouncer = debouncer;
 		return func;
 	}
-	var rawConsts = {
+	var rawConsts$1 = {
 		coreUtilsVersion: "3.7.1",
 		userUtilsVersion: "10.6.0"
 	};
 	function getConst(constKey, defaultVal) {
-		const val = rawConsts[constKey];
+		const val = rawConsts$1[constKey];
 		return val.match(/^#\{\{.+\}\}$/) ? defaultVal : val;
 	}
 	var versions = {
@@ -7901,10 +7916,18 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		mode: () => mode$1,
 		newFeatureAdornmentMaxSessionCount: () => 20,
 		platformNames: () => platformNames,
+		rawConsts: () => rawConsts,
 		repo: () => repo,
 		scriptInfo: () => scriptInfo$1,
 		sessionStorageAvailable: () => sessionStorageAvailable$1
 	});
+	/**
+	* Check below this variable for the constant variables used throughout BetterYTM.  
+	* Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+	* Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
+	* @deprecated This object was reworked when the build process was migrated to vite.
+	*/
+	var rawConsts = {};
 	/** Path to the GitHub repo */
 	var repo = "Sv443/BetterYTM";
 	/** The mode in which the script was built (production or development) */
@@ -7914,9 +7937,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Which host the userscript was installed from */
 	var host$1 = "github";
 	/** The build number of the userscript */
-	var buildNumber$1 = "6fb02e7e";
+	var buildNumber$1 = "6bf3b0c8";
 	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1784633055245;
+	var buildTimestamp = 1784749468736;
 	/** The source of the assets - github, jsdelivr or local */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server */
@@ -9195,13 +9218,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		setGlobalProp("logLevel", level);
 		if (Logger.curLogLevel !== level) loggers.misc.log("Set the log level to", LogLevel[level]);
 		Logger.curLogLevel = level;
-	}
-	/**
-	* Logs all passed values to the console as an error, no matter the log level. Doesn't show an error toast.
-	* @deprecated This function logs using the "Uncategorized" category. You should use the instances in {@linkcode loggers} instead!
-	*/
-	function errorNoToast(...args) {
-		loggers.uncategorized.errorNoToast(...args);
 	}
 	function getErrorDialog(errName, args) {
 		return new MarkdownDialog({
@@ -18309,6 +18325,7 @@ Build #${buildNumber$1} (dev mode)
 			preInitInterface();
 			preInitPlugins();
 			if (getDomain() === "ytm") initBeforeUnloadHook();
+			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object! (this doesn't actually break the script, but it's still something that should be fixed)");
 			initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
 			init();
 		} catch (err) {
@@ -18451,7 +18468,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				endFeatInitDur();
 				emitInterface("bytm:allReady");
 				initTimings.sinceStart.allReady = Date.now() - initStartTs;
-				if (initializedFeats.length < ftInit.length) errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
+				if (initializedFeats.length < ftInit.length) loggers.init.errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
 				else loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
 			});
 			getUnsafeWindow$1().dispatchEvent(new Event("resize", {

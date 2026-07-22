@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6fb02e7e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6bf3b0c8/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -125,8 +125,23 @@
   I welcome every contribution on GitHub!
     https://github.com/Sv443/BetterYTM
 
-
   You can install the latest in-development version here:
   https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
+
+  - - - - - - [ Build Info ] - - - - - -
+  Asset Source:    jsdelivr
+  Build Mode:      development
+  Build Time:      7/22/2026, 9:44:26 PM
+  Build Number:    6bf3b0c8
+  Build UID:       JFnXTp93vW79
+  Compatibility:   loose
+  Target Branch:   develop
+  Userscript Host: github
+
+  Notes:
+    - These values are integral to how BetterYTM works. They pertain to asset loading, default configs, cache invalidation, vite build config, and more.
+    - Depending on where you installed the script and which version of it, the values might be vastly different.
+    - To modify these values yourself, edit the userscript, search for 'rawConsts' and edit the values below that line.
+      Beware that this makes it really easy to break the script, so back up the code by copying it first.
 
 */
