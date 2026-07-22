@@ -1,6 +1,13 @@
 import { pureObj, randomId } from "@sv443-network/coreutils";
 import { LogLevel } from "@/types.ts";
 
+/**
+ * Check below this variable for the constant variables used throughout BetterYTM.  
+ * Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+ * Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
+ * @deprecated This object was reworked when the build process was migrated to vite.
+ */
+export const rawConsts = {};
 /** Path to the GitHub repo */
 export const repo = "Sv443/BetterYTM";
 /** The mode in which the script was built (production or development) */

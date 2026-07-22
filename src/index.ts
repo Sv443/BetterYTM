@@ -1,8 +1,8 @@
 import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey } from "@util/index.ts";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
-import { assetSource, buildNumber, buildTimestamp, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
+import { assetSource, buildNumber, buildTimestamp, compressionFormat, defaultLogLevel, initTime, mode, rawConsts, scriptInfo } from "@/constants.ts";
 import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
 import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
@@ -162,6 +162,10 @@ function preInit() {
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
+    // use rawConsts to make sure vite doesn't treeshake it away:
+    if(typeof rawConsts !== "object")
+      loggers.init.error("rawConsts is not an object! (this doesn't actually break the script, but it's still something that should be fixed)");
+      
     initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
     init();
   }
@@ -457,7 +461,7 @@ async function onDomLoad() {
         emitInterface("bytm:allReady");
         initTimings.sinceStart.allReady = Date.now() - initStartTs;
         if(initializedFeats.length < ftInit.length) {
-          errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${
+          loggers.init.errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${
             ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
           }`);
         }
