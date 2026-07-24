@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { exec } from "node:child_process";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createTable } from "@sv443-network/coreutils";
 import type { Plugin, PluginOption, ResolvedConfig } from "vite";
 import k from "kleur";
 import localesJson from "../../assets/locales.json" with { type: "json" };
@@ -120,19 +121,18 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
         buildNumber,
         compatMode,
         devDirectives,
+        host,
         hostMetaUrl,
         hostScriptUrl,
         options,
       });
-
-      const subHeader = buildSubHeader(host);
       const linkedPkgs = await getLinkedPkgs();
 
       generatedHeader = header;
 
       for(const [fileName, chunk] of Object.entries(bundle)) {
         if(chunk.type === "chunk" && fileName.endsWith(".user.js")) {
-          chunk.code = `${header}${subHeader}\n${linkedPkgs}${chunk.code}`;
+          chunk.code = `${header}\n${linkedPkgs}${chunk.code}`;
           finalSizeKiB = Number((Buffer.byteLength(chunk.code, "utf8") / 1024).toFixed(2));
           break;
         }
@@ -211,13 +211,40 @@ interface HeaderArgs {
   buildNumber: string;
   compatMode: BtymPluginOptions["compatMode"];
   devDirectives: string | undefined;
+  host: BtymPluginOptions["host"];
   hostMetaUrl: string;
   hostScriptUrl: string;
   options: BtymPluginOptions;
 }
 
 function buildHeader(args: HeaderArgs): string {
-  const { resourcesDirectives, requireDirectives, localizedDescriptions, localizedAntifeatures, buildMode, buildNumber, compatMode, devDirectives, hostMetaUrl, hostScriptUrl, options } = args;
+  const { resourcesDirectives, requireDirectives, localizedDescriptions, localizedAntifeatures, buildMode, buildNumber, compatMode, devDirectives, host, hostMetaUrl, hostScriptUrl, options } = args;
+
+  const buildInfoTable = createTable([
+    ["Build Mode:",    options.buildMode,   "(Affects default config values, GM menu commands, and dev tooltips)"],
+    ["Build Time:",    new Date(options.buildTimestamp).toUTCString(), "(UTC timestamp of when the script was built)"],
+    ["Build Number:",  options.buildNumber, "(8-character SHA of the previous Git commit)"],
+    ["Build UID:",     options.buildUid,    "(Random string appended to URLs to force-refresh cached assets)"],
+    ["Asset Source:",  options.assetSource, "(Where all assets like image files, styles, JSONs, etc. are loaded from)"],
+    ["Source Branch:", options.branch,      "(Branch used when targeting anything on the Git repo, like loading assets)"],
+    ["Compatibility:", options.compatMode,  "(Whether dependencies are baked into the script to improve compatibility)"],
+    ["Host Platform:", options.host,        "(The platform distributing this build - affects the config menu slightly)"],
+  ], {
+    applyLineStyle(_i, j) {
+      if(j === 0)
+        return ["  ", undefined];
+      return [];
+    },
+  });
+
+  const greasyForkDisclaimer = `
+/*
+  Note: The Greasy Fork version has to fit within a size limit of 500kB, so comments had to be removed.
+  If you want install the full, unmodified version, please use one of these sources instead:
+    - GitHub: ${pkg.hosts.github}
+    - OpenUserJS: ${pkg.hosts.openuserjs}
+*/
+`;
 
   const header = ([
     `\
@@ -278,46 +305,28 @@ function buildHeader(args: HeaderArgs): string {
   You can install the latest in-development version here:
   ${pkg.devVersionUrl}
 
-  - - - - - - [ Build Info ] - - - - - -
-  Asset Source:    ${options.assetSource}
-  Build Mode:      ${options.buildMode}
-  Build Time:      ${new Date(options.buildTimestamp).toLocaleString("en-US")}
-  Build Number:    ${options.buildNumber}
-  Build UID:       ${options.buildUid}
-  Compatibility:   ${options.compatMode}
-  Target Branch:   ${options.branch}
-  Userscript Host: ${options.host}
+
+  Build Information:
+
+${buildInfoTable}
 
   Notes:
-    - These values are integral to how BetterYTM works. They pertain to asset loading, default configs, cache invalidation, vite build config, and more.
-    - Depending on where you installed the script and which version of it, the values might be vastly different.
-    - To modify these values yourself, edit the userscript, search for 'rawConsts' and edit the values below that line.
-      Beware that this makes it really easy to break the script, so back up the code by copying it first.
-
+    - These values are integral to how BetterYTM works. They get "injected" at build time and become a permanent part of the code.
+      Depending on where you installed the script and which version of it, they might be vastly different.
+    - To modify these values yourself, edit the userscript, search for a variable named 'rawConsts' and edit the variables below that line.
+      Beware that this makes it really easy to break the script, so back up the code by copying it first. Reload any page running BetterYTM to test your changes.
+    - Refer to the file 'src/vite-env.d.ts' in BetterYTM's source code for a list of possible values.
 */
+
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+${host === "greasyfork" ? greasyForkDisclaimer : ""}
 `,
   ] as const)
     .filter(Boolean)
     .join("\n");
 
   return header;
-}
-
-function buildSubHeader(host: BtymPluginOptions["host"]): string {
-  const greasyForkDisclaimer = `
-/*
-  Note: The Greasy Fork version has to fit within a size limit of 500kB, so comments had to be removed.
-  If you want install the full, unmodified version, please use one of these sources instead:
-    - GitHub: ${pkg.hosts.github}
-    - OpenUserJS: ${pkg.hosts.openuserjs}
-*/
-`;
-
-  return `
-/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this 🖕 */
-${host === "greasyfork" ? greasyForkDisclaimer : ""}
-`;
 }
 
 //#region @resource
