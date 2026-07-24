@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6bf3b0c8/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6aee435c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -128,20 +128,35 @@
   You can install the latest in-development version here:
   https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen
 
-  - - - - - - [ Build Info ] - - - - - -
-  Asset Source:    jsdelivr
-  Build Mode:      development
-  Build Time:      7/22/2026, 9:44:26 PM
-  Build Number:    6bf3b0c8
-  Build UID:       JFnXTp93vW79
-  Compatibility:   loose
-  Target Branch:   develop
-  Userscript Host: github
+
+  Build Information:
+
+  ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
+  │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
+  ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ Build Time:    │ Fri, 24 Jul 2026 08:13:00 GMT │ (UTC timestamp of when the script was built)                               │
+  ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ Build Number:  │ 6aee435c                      │ (8-character SHA of the previous Git commit)                               │
+  ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ Build UID:     │ FfpIZs33E8O9                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
+  ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ Source Branch: │ develop                       │ (Branch used when targeting anything on the Git repo, like loading assets) │
+  ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ Compatibility: │ loose                         │ (Whether dependencies are baked into the script to improve compatibility)  │
+  ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ Host Platform: │ github                        │ (The platform distributing this build - affects the config menu slightly)  │
+  └────────────────┴───────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
 
   Notes:
-    - These values are integral to how BetterYTM works. They pertain to asset loading, default configs, cache invalidation, vite build config, and more.
-    - Depending on where you installed the script and which version of it, the values might be vastly different.
-    - To modify these values yourself, edit the userscript, search for 'rawConsts' and edit the values below that line.
-      Beware that this makes it really easy to break the script, so back up the code by copying it first.
-
+    - These values are integral to how BetterYTM works. They get "injected" at build time and become a permanent part of the code.
+      Depending on where you installed the script and which version of it, they might be vastly different.
+    - To modify these values yourself, edit the userscript, search for a variable named 'rawConsts' and edit the variables below that line.
+      Beware that this makes it really easy to break the script, so back up the code by copying it first. Reload any page running BetterYTM to test your changes.
+    - Refer to the file 'src/vite-env.d.ts' in BetterYTM's source code for a list of possible values.
 */
+
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+
