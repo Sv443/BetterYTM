@@ -1,4 +1,4 @@
-import { clamp, getUnsafeWindow, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import { clamp, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import { emitInterface } from "@/interface.ts";
 import { getDomain } from "@util/misc.ts";
 import { getSelector } from "@util/data.ts";
@@ -380,9 +380,6 @@ export function initObservers(cfg: FeatureConfig) {
 
     globserversReady = true;
     emitInterface("bytm:observersReady");
-
-    //#DEBUG:
-    getUnsafeWindow().BYTM.globservers = globservers;
   }
   catch(err) {
     loggers.observer.error("Failed to initialize observers:", err);
