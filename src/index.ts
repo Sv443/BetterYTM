@@ -872,6 +872,8 @@ function registerDevCommands() {
     const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [
       [broadcastTxID, {
         sessionId: getSessionId(),
+        buildNumber,
+        version: scriptInfo.version,
         title: document.title,
         domain: getDomain(),
         initTime,
@@ -885,29 +887,31 @@ function registerDevCommands() {
     loggers.command.log("Collecting session info from open tabs...");
 
     setTimeout(() => {
-      const columns = ["#", "Self?", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
-      const columnAlign: TableColumnAlign[] = ["left", "left", "left", "left", "left", "right", "left"];
+      const columns = ["#", "Self?", "Domain:", "Initialized:", "Session ID:", "TxID:", "Version:", "Build Number:", "Session Title:"];
+      const columnAlign: TableColumnAlign[] = ["left", "left", "left", "right", "left", "left", "left", "left", "left"];
 
-      const columnStyle = "color: #db3; font-weight: bold;";
-      const resetStyle = "color: inherit; font-weight: inherit;";
-      const styles = [];
-      for(let i = 0; i < columns.length; i++)
-        styles.push(columnStyle, resetStyle);
+      const styles = columns.reduce((a) => ([
+        ...a,
+        "color: #db3; font-weight: bold;",
+        "color: inherit; font-weight: inherit;",
+      ]), [] as string[]);
 
       console.log(`[${scriptInfo.name}/#DEBUG] Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
         createTable([
           columns,
-          ...sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
-            const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
+          ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
+            const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(4, "0");
             return [
               i + 1,
               txID === broadcastTxID ? "Yes" : "No",
-              sessionId,
-              txID,
               domain,
               `${initSince} ago`,
+              sessionId,
+              txID,
+              version,
+              buildNumber,
               title,
-            ];
+            ].map(v => String(v));
           }),
         ], {
           columnAlign,

@@ -3,7 +3,7 @@
 import { debounce, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { initTime } from "@/constants.ts";
+import { buildNumber, initTime, scriptInfo } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";
 import { getSerializerStoresFull } from "@/serializers.ts";
 import { loggers } from "@util/logging.ts";
@@ -34,6 +34,10 @@ export type BroadcastPacketDataMap = {
      * For actual unique identification, use the TxID in the `from` field of the transmitted packet instead.
      */
     sessionId: string | null;
+    /** The version of the BetterYTM build running in the session. */
+    version: string;
+    /** The build number of the BetterYTM build running in the session. */
+    buildNumber: string;
     /** Document title of the sender's tab for easier identification. */
     title: string;
     /** Which domain the session is on ("yt" or "ytm"). */
@@ -193,6 +197,8 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
       type: "discoverSessionsReply",
       data: {
         sessionId: getSessionId(),
+        buildNumber,
+        version: scriptInfo.version,
         title: document.title,
         domain: getDomain(),
         initTime,
