@@ -888,7 +888,7 @@ function registerDevCommands() {
 
     setTimeout(() => {
       const columns = ["#", "Self?", "Domain:", "Initialized:", "Session ID:", "TxID:", "Version:", "Build Number:", "Session Title:"];
-      const columnAlign: TableColumnAlign[] = ["left", "left", "left", "right", "left", "left", "left", "left", "left"];
+      const columnAlign: TableColumnAlign[] = ["right", "left", "left", "right", "left", "left", "left", "left", "left"];
 
       const styles = columns.reduce((a) => ([
         ...a,
@@ -896,7 +896,7 @@ function registerDevCommands() {
         "color: inherit; font-weight: inherit;",
       ]), [] as string[]);
 
-      console.log(`[${scriptInfo.name}/#DEBUG] Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
+      loggers.command.info(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
         createTable([
           columns,
           ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
