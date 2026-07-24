@@ -76,6 +76,7 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
   const { buildMode, host, suffix, genMeta, compatMode, devServerPort, buildNumber, buildTimestamp, buildUid } = options;
   const repo = "Sv443/BetterYTM" as const;
   const userscriptDistFile = `BetterYTM${suffix}.user.js` as const;
+  const userscriptMetaFile = `BetterYTM${suffix}.meta.js` as const;
   const devServerUserscriptUrl = `http://localhost:${devServerPort}/BetterYTM.user.js` as const;
   const ringBell = Boolean(process.env.RING_BELL && process.env.RING_BELL.trim().toLowerCase() === "true");
 
@@ -92,7 +93,7 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
     default:           return `https://raw.githubusercontent.com/${repo}/refs/heads/main/dist/${userscriptDistFile}` as const;
     }
   })();
-  const hostMetaUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/dist/${userscriptDistFile}` as const;
+  const hostMetaUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/dist/${userscriptMetaFile}` as const;
 
   // State shared between hooks
   let resolvedOutDir = "dist";
