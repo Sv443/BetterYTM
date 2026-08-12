@@ -1,5 +1,5 @@
-import { compare } from "compare-versions";
-import { scriptInfo } from "@/constants.ts";
+import { compare, validateStrict } from "compare-versions";
+import { repo, scriptInfo } from "@/constants.ts";
 import { getFeature } from "@/config.ts";
 import { sendRequest } from "@util/xhr.ts";
 import { t } from "@util/translations.ts";
@@ -7,8 +7,6 @@ import { loggers } from "@util/logging.ts";
 import { getVersionNotifDialog } from "@dialog/versionNotif.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { LogLevel } from "@/types.ts";
-
-const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 
 /** Initializes the version check feature */
 export async function initVersionCheck() {
@@ -36,18 +34,20 @@ export async function doVersionCheck(notifyNoNewVerFound = false) {
 
   const res = await sendRequest({
     method: "GET",
-    url: releaseURL,
+    url: `https://github.com/${repo}/releases/latest`,
   });
+
+  const validUrl = res.finalUrl.includes(`https://github.com/${repo}/releases/tag/`) ? res.finalUrl : undefined;
 
   // TODO: small dialog for "no update found" message?
   const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({ type: "alert", message: t("no_new_version_found") }) : undefined;
 
-  const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+  const latestTag = validUrl?.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 
-  if(!latestTag)
+  if(!latestTag || !validateStrict(latestTag))
     return await noNewVerFound();
 
-  loggers.misc.info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
+  loggers.misc.info("Version check results - current version:", scriptInfo.version, "- latest version:", latestTag, "- from URL:", res.finalUrl, LogLevel.Info);
 
   if(compare(scriptInfo.version, latestTag, "<")) {
     const dialog = await getVersionNotifDialog({ latestTag });

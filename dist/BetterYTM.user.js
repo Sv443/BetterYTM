@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5370ff5d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@01098944/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Fri, 24 Jul 2026 08:14:26 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 12 Aug 2026 19:06:06 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 5370ff5d                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 01098944                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 6T1qaPrUSHUP                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 7rEtTjO1t8Dr                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -530,21 +530,21 @@
 	* @deprecated This object was reworked when the build process was migrated to vite.
 	*/
 	var rawConsts = {};
-	/** Path to the GitHub repo */
+	/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
 	var repo = "Sv443/BetterYTM";
-	/** The mode in which the script was built (production or development) */
+	/** The mode in which the script was built (production or development). */
 	var mode$1 = "development";
-	/** The branch to use in various URLs that point to the GitHub repo */
+	/** The branch to use in various URLs that point to the GitHub repo. */
 	var branch$1 = "develop";
-	/** Which host the userscript was installed from */
+	/** Which host the userscript was installed from. */
 	var host$1 = "github";
-	/** The build number of the userscript */
-	var buildNumber$1 = "5370ff5d";
-	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1784880866007;
-	/** The source of the assets - github, jsdelivr or local */
+	/** The build number of the userscript. */
+	var buildNumber$1 = "01098944";
+	/** When the script was built, as a UNIX timestamp. */
+	var buildTimestamp = 1786561566563;
+	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
-	/** The port of the dev server */
+	/** The port of the dev server. */
 	var devServerPort = 8710;
 	/** URL to the changelog file */
 	var changelogUrl = `https://raw.githubusercontent.com/${repo}/develop/changelog.md?build=${buildNumber$1}`;
@@ -1866,7 +1866,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}
 			globserversReady = true;
 			emitInterface("bytm:observersReady");
-			(0, _sv443_network_userutils.getUnsafeWindow)().BYTM.globservers = globservers;
 		} catch (err) {
 			loggers.observer.error("Failed to initialize observers:", err);
 		}
@@ -5507,8 +5506,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
 	function getDSSerializer(full = false) {
 		const dsOpts = {
-			addChecksum: true,
-			ensureIntegrity: true,
+			addChecksum: false,
+			ensureIntegrity: false,
 			stringifyData: false
 		};
 		if (!full) return serializer ??= new _sv443_network_coreutils.DataStoreSerializer(getSerializerStores(), dsOpts);
@@ -6106,7 +6105,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	//#endregion
 	//#region src/features/versionCheck.ts
-	var releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 	/** Initializes the version check feature */
 	async function initVersionCheck() {
 		try {
@@ -6126,15 +6124,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		await GM.setValue("bytm-version-check", Date.now());
 		const res = await sendRequest({
 			method: "GET",
-			url: releaseURL
+			url: `https://github.com/${repo}/releases/latest`
 		});
+		const validUrl = res.finalUrl.includes(`https://github.com/Sv443/BetterYTM/releases/tag/`) ? res.finalUrl : void 0;
 		const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({
 			type: "alert",
 			message: t("no_new_version_found")
 		}) : void 0;
-		const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
-		if (!latestTag) return await noNewVerFound();
-		loggers.misc.info("Version check - current version:", scriptInfo$1.version, "- latest version:", latestTag, LogLevel.Info);
+		const latestTag = validUrl?.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+		if (!latestTag || !(0, compare_versions.validateStrict)(latestTag)) return await noNewVerFound();
+		loggers.misc.info("Version check results - current version:", scriptInfo$1.version, "- latest version:", latestTag, "- from URL:", res.finalUrl, LogLevel.Info);
 		if ((0, compare_versions.compare)(scriptInfo$1.version, latestTag, "<")) {
 			await (await getVersionNotifDialog({ latestTag })).open();
 			return;
@@ -9662,6 +9661,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					type: "discoverSessionsReply",
 					data: {
 						sessionId: getSessionId(),
+						buildNumber: buildNumber$1,
+						version: scriptInfo$1.version,
 						title: document.title,
 						domain: getDomain(),
 						initTime
@@ -10747,13 +10748,13 @@ Build #${buildNumber$1} (dev mode)
 	function preInit() {
 		try {
 			initTimings.start = Date.now();
-			if (["FireMonkey"].includes(GM.info?.scriptHandler ?? "")) return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+			if (["FireMonkey"].includes(GM.info?.scriptHandler ?? "")) return alert(`⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`);
 			setLogLevel(defaultLogLevel);
 			initBroadcast();
 			preInitInterface();
 			preInitPlugins();
 			if (getDomain() === "ytm") initBeforeUnloadHook();
-			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object! (this doesn't actually break the script, but it's still something that should be fixed)");
+			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object??????? (this doesn't actually break the script, but it's still funny it happened)");
 			initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
 			init();
 		} catch (err) {
@@ -11204,6 +11205,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
+				buildNumber: "01098944",
+				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
 				initTime
@@ -11216,36 +11219,43 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				const columns = [
 					"#",
 					"Self?",
-					"Session ID:",
-					"TxID:",
 					"Domain:",
 					"Initialized:",
+					"Session ID:",
+					"TxID:",
+					"Version:",
+					"Build Number:",
 					"Session Title:"
 				];
 				const columnAlign = [
-					"left",
-					"left",
-					"left",
+					"right",
 					"left",
 					"left",
 					"right",
+					"left",
+					"left",
+					"left",
+					"left",
 					"left"
 				];
-				const columnStyle = "color: #db3; font-weight: bold;";
-				const resetStyle = "color: inherit; font-weight: inherit;";
-				const styles = [];
-				for (let i = 0; i < columns.length; i++) styles.push(columnStyle, resetStyle);
-				console.log(`[${scriptInfo$1.name}/#DEBUG] Collected information from ${sessions.length} open ${(0, _sv443_network_coreutils.autoPlural)("tab", sessions)}:\n${(0, _sv443_network_coreutils.createTable)([columns, ...sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
-					const initSince = (0, _sv443_network_coreutils.secsToTimeStr)(Math.floor((Date.now() - initTime) / 1e3)).padStart(5, "0");
+				const styles = columns.reduce((a) => [
+					...a,
+					"color: #db3; font-weight: bold;",
+					"color: inherit; font-weight: inherit;"
+				], []);
+				console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${(0, _sv443_network_coreutils.autoPlural)("tab", sessions)}:\n${(0, _sv443_network_coreutils.createTable)([columns, ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
+					const initSince = (0, _sv443_network_coreutils.secsToTimeStr)(Math.floor((Date.now() - initTime) / 1e3)).padStart(4, "0");
 					return [
 						i + 1,
 						txID === broadcastTxID ? "Yes" : "No",
-						sessionId,
-						txID,
 						domain,
 						`${initSince} ago`,
+						sessionId,
+						txID,
+						version,
+						buildNumber,
 						title
-					];
+					].map((v) => String(v));
 				})], {
 					columnAlign,
 					applyCellStyle(i) {

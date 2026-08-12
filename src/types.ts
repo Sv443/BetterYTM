@@ -168,7 +168,7 @@ export type NumberLengthFormat = "short" | "long";
 /** Preferred lightness of derived colors in the UI */
 export type ColorLightnessPref = "darker" | "normal" | "lighter";
 
-/** Like/dislike state identifier, as presented by the attribute `like-status` on the YTM element `ytmusic-player-bar ytmusic-like-button-renderer` */
+/** Like/dislike state identifier, as presented by the attribute `like-status` on the YTM element `ytmusic-player-bar ytmusic-like-button-renderer`. On YT the state is resolved differently but this type's value stays the same. */
 export type LikeDislikeState = "LIKE" | "DISLIKE" | "INDIFFERENT";
 
 /** Object for storing various timings related to the initialization process, for performance monitoring and debugging purposes. */

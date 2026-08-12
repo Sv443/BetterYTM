@@ -147,7 +147,7 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
       if(genMeta)
         await writeFile(join(rootPath, resolvedOutDir, `BetterYTM${suffix}.meta.js`), generatedHeader);
 
-      const envText = (buildMode === "production" ? k.magenta : k.blue)(buildMode);
+      const modeText = k.bold().white(`${(buildMode === "production" ? k.bgMagenta : k.bgBlue)("(⭡)")}${k.bold().bgBlack(` ${buildMode} mode `)}`);
 
       let buildStats: Partial<BuildStats>[] = [];
       if(await fileExists(buildStatsPath)) {
@@ -175,8 +175,9 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
       const outFile = relative("./", join(rootPath, resolvedOutDir, userscriptDistFile));
       console.info([
         "",
-        `Successfully built for ${envText} - build number (last commit SHA): ${buildNumber}`,
-        `Outputted file '${outFile}' with a size of ${k.green(`${finalSizeKiB} KiB`)}${sizeIndicator}`,
+        `Successfully built BetterYTM in ${modeText}`,
+        `Build number (last commit SHA): ${k.green(buildNumber)}`,
+        `Generated file ${k.underline(outFile)} with a size of ${k.green(`${finalSizeKiB} KiB`)}${sizeIndicator}`,
         `Userscript URL: ${k.blue().underline(devServerUserscriptUrl)}`,
         "",
       ].join("\n"));

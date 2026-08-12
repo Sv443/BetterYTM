@@ -150,7 +150,7 @@ function preInit() {
     ];
 
     if(unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) // (translations not loaded yet)
-      return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+      return alert(`⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`);
 
     setLogLevel(defaultLogLevel);
 
@@ -162,9 +162,9 @@ function preInit() {
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
-    // use rawConsts to make sure vite doesn't treeshake it away:
+    // use rawConsts to make sure vite doesn't treeshake it away (no, I tried `void` already and it doesn't work):
     if(typeof rawConsts !== "object")
-      loggers.init.error("rawConsts is not an object! (this doesn't actually break the script, but it's still something that should be fixed)");
+      loggers.init.error("rawConsts is not an object??????? (this doesn't actually break the script, but it's still funny it happened)");
       
     initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
     init();
@@ -896,7 +896,7 @@ function registerDevCommands() {
         "color: inherit; font-weight: inherit;",
       ]), [] as string[]);
 
-      loggers.command.info(`Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
+      console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
         createTable([
           columns,
           ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {

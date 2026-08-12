@@ -8,21 +8,21 @@ import { LogLevel } from "@/types.ts";
  * @deprecated This object was reworked when the build process was migrated to vite.
  */
 export const rawConsts = {};
-/** Path to the GitHub repo */
+/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
 export const repo = "Sv443/BetterYTM";
-/** The mode in which the script was built (production or development) */
+/** The mode in which the script was built (production or development). */
 export const mode = __BYTM_MODE__;
-/** The branch to use in various URLs that point to the GitHub repo */
+/** The branch to use in various URLs that point to the GitHub repo. */
 export const branch = __BYTM_BRANCH__;
-/** Which host the userscript was installed from */
+/** Which host the userscript was installed from. */
 export const host = __BYTM_HOST__;
-/** The build number of the userscript */
+/** The build number of the userscript. */
 export const buildNumber = __BYTM_BUILD_NUMBER__;
-/** When the script was built, as a UNIX timestamp */
+/** When the script was built, as a UNIX timestamp. */
 export const buildTimestamp = __BYTM_BUILD_TIMESTAMP__;
-/** The source of the assets - github, jsdelivr or local */
+/** The source of the assets - github, jsdelivr or local. */
 export const assetSource = __BYTM_ASSET_SOURCE__;
-/** The port of the dev server */
+/** The port of the dev server. */
 export const devServerPort = __BYTM_DEV_SERVER_PORT__;
 
 /** URL to the changelog file */

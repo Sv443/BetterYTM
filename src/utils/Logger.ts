@@ -92,9 +92,11 @@ export class Logger {
   public static readonly maxLogLines = 2_500;
 
   /** Common prefix for each console line. Allows easy filtering of log lines. */
-  private readonly conPrefix: string;
+  public readonly conPrefix: string;
+
   /** Common prefix for each console line of type DEBUG (using the method {@linkcode Logger.dbg()}). Allows easy filtering of debug info. */
-  private readonly conPrefixDbg: string;
+  public readonly conPrefixDbg: string;
+
   /** Callback that gets called when the {@linkcode Logger.error()} method is called. This is used for showing a toast notification for each error. */
   private readonly onError: ((...args: unknown[]) => void) | null;
 
