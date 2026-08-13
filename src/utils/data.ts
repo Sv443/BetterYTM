@@ -208,6 +208,10 @@ export const alertsStore = new DataStore<AlertsStoreData, false>({
   engine: new GMStorageEngine(),
   memoryCache: false,
   compressionFormat: null,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 /** Checks if there are active alerts and shows a prompt for each of them. */

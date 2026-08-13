@@ -37,6 +37,10 @@ tr.addTransform(tr.transforms.templateLiteral);
 //   defaultData: { keys: [] },
 //   formatVersion: 0,
 //   compressionFormat: null,
+//   nanoEmitterOptions: {
+//     publicEmit: false,
+//     catchUpEvents: ["loadData"],
+//   },
 // });
 
 /** Used to check which keys are unused. */

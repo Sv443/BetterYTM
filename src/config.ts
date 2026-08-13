@@ -359,6 +359,10 @@ export const configStore = new DataStore<FeatureConfig>({
   defaultData: cfgDefaultData,
   migrations: cfgMigrations,
   compressionFormat,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 //#region >> init

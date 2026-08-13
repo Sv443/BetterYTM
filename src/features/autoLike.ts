@@ -39,6 +39,10 @@ export const autoLikeStore = new DataStore<AutoLikeData>({
       })),
     }),
   },
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 let autoLikeStoreLoaded = false;

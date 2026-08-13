@@ -245,6 +245,10 @@ const reloadTabStore = new DataStore<ReloadTabData, false>({
   defaultData: {
     entries: [],
   },
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 const reloadTabEntryMaxTTL = 1000 * 60 * 60 * 24;
@@ -501,6 +505,10 @@ export const resourceCacheStore = new DataStore({
     created: Date.now(),
     cacheKey: resourceCacheKey,
   } as ResourceCache,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 /** Resources with these prefixes are cached in the resource cache */

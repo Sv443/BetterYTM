@@ -635,6 +635,10 @@ export const artCacheStore = new DataStore({
   defaultData: {
     entries: [],
   } as ArtCache,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 async function deleteExpiredAlbumArtCacheEntries() {

@@ -36,7 +36,11 @@ export const lyricsCacheStore = new DataStore({
       }));
       return oldData;
     },
-  }
+  },
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 export async function initLyricsCache() {
