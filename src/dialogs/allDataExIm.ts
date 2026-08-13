@@ -79,7 +79,7 @@ async function renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
     dataEl.tabIndex = 0;
     dataEl.value = t("click_to_reveal");
 
-    for(const id of getSerializerStoresIds()) {
+    for(const id of getSerializerStoresIds(true)) {
       const rowEl = document.createElement("div");
       rowEl.classList.add("bytm-all-data-exim-dialog-export-part-row");
       rowEl.title = t(`data_stores.disable.${id}`);

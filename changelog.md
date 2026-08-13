@@ -27,6 +27,9 @@
     - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
     - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.
     - `getSerializerStoresFull()` - Returns all `DataStore` instances, including those that are only used for caching.
+  - Added new events to the plugin interface:
+    - `bytm:dataStoreSerializerLoaded` - Emitted after all memory-cached DataStore instances' data was lazy-loaded.
+  - All DataStore instances that have in-memory cached data will now be lazy-loaded after feature initialization is done. Note: lazy-loading starts after `bytm:allReady`, so it's more aimed at lowering initial data access times.
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">Also see pull request #TODO</a>

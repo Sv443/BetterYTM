@@ -99,6 +99,9 @@ export type InterfaceEvents = {
   /** Emitted when an entry is added to the artwork cache. Note: `entry.url` will be the *template URL* with a default resolution of 100x100. Use a simple string replacement to get any other resolution */
   "bytm:artworkCacheEntryAdded": { artist: string, album: string, entry: ArtCacheEntry };
 
+  /** Emitted when the full DataStoreSerializer instance (containing crucial as well as cache and misc. volatile data) was initialized and all the stores' data was loaded. */
+  "bytm:dataStoreSerializerLoaded": undefined;
+
   // NOTE:
   // Additionally, all events from `SiteEventsMap` in `src/siteEvents.ts`
   // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
@@ -123,6 +126,7 @@ export const allInterfaceEvents = [
   "bytm:lyricsCacheCleared",
   "bytm:lyricsCacheEntryAdded",
   "bytm:artworkCacheEntryAdded",
+  "bytm:dataStoreSerializerLoaded",
   ...allSiteEvents.map(e => `bytm:siteEvent:${e}`),
 ] as const;
 
