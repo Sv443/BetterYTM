@@ -201,9 +201,11 @@ export type PerformanceReport = {
     /** Whether first-party isolation is enabled in the browser (Tampermonkey-only prop). */
     isFirstPartyIsolation: boolean | null;
   };
-  /** Contains generic durations for specific initialization phases (or just noteworthy function calls), starting from whenever that phase starts, and recorded when that phase ends. The keys are not strictly typed, but should be descriptive of the phase they measure. */
+  /** Contains generic durations for specific initialization phases (or just noteworthy function calls), starting from whenever that phase starts, and recorded as soon as that phase ends. The keys are not strictly typed, but should be descriptive of the phase they measure. */
   durations?: Record<LooseUnion<keyof PerformanceReport & FeatureKey>, number>;
-  /** For each feature identifier (not strictly typed), the time in milliseconds **since feature initialization started**, recorded when that feature's async initialization function finishes executing. */
+  /** Timestamp when feature initialization started. Every entry in `featureDurations` uses this as the starting point. */
+  featureStart: number;
+  /** For each feature identifier, the time in milliseconds **since feature initialization started** (see the `featureStart` timestamp). Recorded as soon as that feature's async initialization function finishes executing. The keys are not strictly typed, but in general they will be a member of the {@linkcode FeatureKey} union. */
   featureDurations?: Record<LooseUnion<FeatureKey>, number>;
   /** Timestamp when the script starts synchronously executing, before the call to {@linkcode preInit()}. */
   start: number;
@@ -213,7 +215,7 @@ export type PerformanceReport = {
     preInitEnd?: number;
     /** Time in milliseconds since `start`, recorded when the `DOMContentLoaded` event fires. */
     domLoaded?: number;
-    /** Time in milliseconds since `start` when the `bytm:ready` event is emitted, which signals that the bulk of BYTM is ready and all features have *started* initialization. */
+    /** Time in milliseconds since `start` when the `bytm:ready` event is emitted, which signals that the bulk of BYTM is ready and all features have at least *started* initialization. */
     ready?: number;
     /** Time in milliseconds since `start` when all features have finished their async initialization functions and BYTM is fully ready. For plugins, this only factors in their deferred initialization. */
     allReady?: number;

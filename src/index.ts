@@ -120,6 +120,7 @@ const initTimings: PerformanceReport = {
     sandboxMode: GM.info?.sandboxMode ?? null,
   },
   durations: {} as PerformanceReport["durations"],
+  featureStart: 0,
   featureDurations: {} as PerformanceReport["featureDurations"],
   start: 0,
   sinceStart: {},
@@ -432,8 +433,8 @@ async function onDomLoad() {
 
     emitInterface("bytm:featureInitStarted");
 
-    const initStartTs = Date.now();
-    const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8_000;
+    const initStartTs = initTimings.featureStart = Date.now();
+    const initTimeout = (feats.initTimeout > 0 ? feats.initTimeout : 8_000);
     const initializedFeats: string[] = [];
 
     const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
@@ -466,7 +467,7 @@ async function onDomLoad() {
           }`);
         }
         else
-          loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+          loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints in ${Math.floor(Date.now() - initStartTs)}ms`, LogLevel.Info);
       })
     )();
 
