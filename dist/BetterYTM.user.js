@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@01098944/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7c1e2ea0/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 12 Aug 2026 19:06:06 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Thu, 13 Aug 2026 00:38:54 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 01098944                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 7c1e2ea0                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 7rEtTjO1t8Dr                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ IuA4xWzs2j4P                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -539,9 +539,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "01098944";
+	var buildNumber$1 = "7c1e2ea0";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1786561566563;
+	var buildTimestamp = 1786581534851;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -953,7 +953,11 @@
 		formatVersion: 0,
 		engine: new _sv443_network_userutils.GMStorageEngine(),
 		memoryCache: false,
-		compressionFormat: null
+		compressionFormat: null,
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	/** Checks if there are active alerts and shows a prompt for each of them. */
 	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
@@ -2807,7 +2811,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		migrations: { 2: (oldData) => ({ channels: oldData.channels.map((ch) => ({
 			...ch,
 			id: isValidChannelId(ch.id.trim()) ? ch.id.trim() : `@${ch.id.trim()}`
-		})) }) }
+		})) }) },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	var autoLikeStoreLoaded = false;
 	/** Inits the auto-like DataStore instance */
@@ -4998,7 +5006,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		engine: new _sv443_network_userutils.GMStorageEngine(),
 		compressionFormat: compressionFormat$1,
 		memoryCache: false,
-		defaultData: { entries: [] }
+		defaultData: { entries: [] },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	async function deleteExpiredAlbumArtCacheEntries() {
 		const ttl = 1e3 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
@@ -5490,20 +5502,35 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	var serializer;
 	/** Central serializer for all data stores, including the caches and other stores that have volatile enough data */
 	var fullSerializer;
-	/** Array of all data stores that are included in the DataStoreSerializer instance */
-	var getSerializerStores = () => [
+	/** Set of IDs of all {@linkcode DataStore} instances whose data has finished loading at least once. */
+	var loadedStores = /* @__PURE__ */ new Set();
+	/** Wraps an array of {@linkcode DataStore} instances to attach event listeners. */
+	function wrapStores(stores) {
+		for (const store of stores) store.once("loadData", () => loadedStores.add(store.id));
+		return stores;
+	}
+	/**
+	* Array of all {@linkcode DataStore} instances that are included in the crucial-data-only DataStoreSerializer instance.  
+	* Call function to lazy-load stores, as import order is all kinds of messed up.  
+	* This is only truly safe to call after `bytm:allReady`!
+	*/
+	var getSerializerStores = () => wrapStores([
 		configStore,
 		autoLikeStore,
 		alertsStore
-	];
-	/** Array of all data stores, including the caches and other stores that have volatile enough data */
-	var getSerializerStoresFull = () => [
+	]);
+	/**
+	* Array of all {@linkcode DataStore} instances, including the caches and other stores that store volatile-ish data.  
+	* Call function to lazy-load stores, as import order is all kinds of messed up.  
+	* This is only truly safe to call after `bytm:allReady`!
+	*/
+	var getSerializerStoresFull = () => wrapStores([
 		...getSerializerStores(),
 		artCacheStore,
 		lyricsCacheStore,
 		resourceCacheStore
-	];
-	/** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
+	]);
+	/** Returns the DataStoreSerializer instance for all DataStore instances that manage crucial data. Doesn't include the full list of stores (caches, etc.) by default. */
 	function getDSSerializer(full = false) {
 		const dsOpts = {
 			addChecksum: false,
@@ -5513,6 +5540,18 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		if (!full) return serializer ??= new _sv443_network_coreutils.DataStoreSerializer(getSerializerStores(), dsOpts);
 		else return fullSerializer ??= new _sv443_network_coreutils.DataStoreSerializer(getSerializerStoresFull(), dsOpts);
 	}
+	window.addEventListener("bytm:ready", async () => {
+		const promises = [];
+		const stores = getSerializerStoresFull();
+		for (const store of stores) {
+			if (loadedStores.has(store.id) || !store.memoryCache) continue;
+			loadedStores.add(store.id);
+			promises.push(store.loadData());
+		}
+		await Promise.all(promises);
+		emitInterface("bytm:dataStoreSerializerLoaded");
+		loggers.init.info(`Lazy-loaded all ${stores.length} DataStore instances.`);
+	});
 	/**
 	* Downloads the current data stores as a single file.
 	* @param useEncoding Whether to encode the data using the DataStoreSerializer's encoding method. Defaults to `true`.
@@ -5907,7 +5946,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				viewed: Math.floor(entry.viewed / 1e3)
 			}));
 			return oldData;
-		} }
+		} },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	async function initLyricsCache() {
 		const data = await lyricsCacheStore.loadData();
@@ -9186,7 +9229,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		engine: new _sv443_network_userutils.GMStorageEngine(),
 		defaultData: cfgDefaultData,
 		migrations: cfgMigrations,
-		compressionFormat: compressionFormat$1
+		compressionFormat: compressionFormat$1,
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	/** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 	async function initConfig() {
@@ -9854,7 +9901,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		formatVersion: 0,
 		compressionFormat: null,
 		memoryCache: false,
-		defaultData: { entries: [] }
+		defaultData: { entries: [] },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	var reloadTabEntryMaxTTL = 1e3 * 60 * 60 * 24;
 	/** Returns the "reload tab" data for the current session, or null if there is no data for the current session or sessionStorage is unavailable. */
@@ -10006,6 +10057,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			resources: {},
 			created: Date.now(),
 			cacheKey: resourceCacheKey
+		},
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
 		}
 	});
 	/** Resources with these prefixes are cached in the resource cache */
@@ -10729,6 +10784,7 @@ Build #${buildNumber$1} (dev mode)
 			sandboxMode: GM.info?.sandboxMode ?? null
 		},
 		durations: {},
+		featureStart: 0,
 		featureDurations: {},
 		start: 0,
 		sinceStart: {}
@@ -10879,7 +10935,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				if (feats.disableDarkReaderSites !== "none") ftInit.push(["disableDarkReaderSites", disableDarkReader()]);
 			}
 			emitInterface("bytm:featureInitStarted");
-			const initStartTs = Date.now();
+			const initStartTs = initTimings.featureStart = Date.now();
 			const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8e3;
 			const initializedFeats = [];
 			const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
@@ -10898,7 +10954,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				emitInterface("bytm:allReady");
 				initTimings.sinceStart.allReady = Date.now() - initStartTs;
 				if (initializedFeats.length < ftInit.length) loggers.init.errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
-				else loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+				else loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints in ${Math.floor(Date.now() - initStartTs)}ms`, LogLevel.Info);
 			});
 			(0, _sv443_network_userutils.getUnsafeWindow)().dispatchEvent(new Event("resize", {
 				bubbles: true,
@@ -11205,7 +11261,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "01098944",
+				buildNumber: "7c1e2ea0",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
