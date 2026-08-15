@@ -60,6 +60,8 @@ const adornments = {
   advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
   /** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
   newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new")),
+  /** Indicates a feature is privacy-sensitive as it may expose personally identifiable information about the user. */
+  privacy: async () => await getAdornHtml("bytm-privacy-icon", t("feature_is_privacy_sensitive"), "icon-shield_info", undefined, t("feature_is_privacy_sensitive"))
 } as const satisfies Record<string, AdornFunc>;
 
 /** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
@@ -71,6 +73,7 @@ const adornmentOrder = new Map<AdornFunc, number>([
   [adornments.reload, 4],
   [adornments.advanced, 5],
   [adornments.newFeature, 6],
+  [adornments.privacy, 7],
 ]);
 
 /** Creates an HTML string for the given adornment properties */
@@ -303,6 +306,7 @@ export const featInfo = {
     group: "versionCheck",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
+    default: undefined,
     click: () => doVersionCheck(true),
   },
   numbersFormat: {
@@ -355,6 +359,7 @@ export const featInfo = {
     group: "resetData",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
+    default: undefined,
     click: promptResetConfig,
     adornments: [adornments.reload],
   },
@@ -364,6 +369,7 @@ export const featInfo = {
     group: "resetData",
     supportedSites: ["ytm", "yt"],
     since: "2.2.0",
+    default: undefined,
     click: async () => {
       if(await showPrompt({
         type: "confirm",
@@ -481,7 +487,7 @@ export const featInfo = {
     since: "3.2.0",
     tags: ["privacy", "network"],
     default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
+    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
   },
   thumbnailOverlayBehavior: {
     type: "select",
@@ -615,7 +621,7 @@ export const featInfo = {
     since: "2.1.0",
     tags: ["privacy", "network"],
     default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
+    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
   },
   swapLikeDislikeButtons: {
     type: "toggle",
@@ -723,7 +729,7 @@ export const featInfo = {
     since: "0.2.0",
     tags: ["privacy", "network"],
     default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
+    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
   },
   errorOnLyricsNotFound: {
     type: "toggle",
@@ -798,6 +804,7 @@ export const featInfo = {
     group: "lyricsCache",
     supportedSites: ["ytm"],
     since: "2.0.0",
+    default: undefined,
     async click() {
       const entries = getLyricsCache().length;
       const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
@@ -1110,6 +1117,7 @@ export const featInfo = {
     group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
+    default: undefined,
     click: () => getAutoLikeDialog().then(d => d.open()),
   },
   autoLikeChannelToggleBtn: {

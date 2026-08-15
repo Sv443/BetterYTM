@@ -110,6 +110,7 @@
   "advanced_feature": "This feature can only be configured in advanced mode.",
   "feature_only_works_on_ytm": "This feature is only available on YT Music.",
   "feature_is_new": "This feature was added very recently.",
+  "feature_is_privacy_sensitive": "This feature is privacy-sensitive as it may expose personally identifiable information about you.",
 
   "menu_command.collect_sessions": "Print all open sessions (tabs) to console",
   "menu_command.compress_or_decompress_text": "Compress or decompress text",
@@ -162,6 +163,11 @@
   "welcome_text_line_3": "If you like ${scriptName}, please leave a rating on ${gfLinkOpen}Greasy Fork${linkClose} or ${oujsLinkOpen}OpenUserJS${linkClose2}",
   "welcome_text_line_4": "My work relies on donations so please consider ${donateLinkOpen}donating ❤️${linkClose}",
   "welcome_text_line_5": "Found a bug or want to suggest a feature? Please ${issueLinkOpen}open an issue on GitHub${linkClose}",
+  "welcome_menu_language_tooltip": "Change the language used throughout the script",
+  "welcome_menu_privacy_tooltip": "Choose whether to turn off all privacy-sensitive features",
+
+  "privacy_mode.default": "Standard Feature Selection",
+  "privacy_mode.enhanced": "Enhanced Privacy",
 
   "list_button_placement_queue_only": "Currently playing queue only",
   "list_button_placement_generic_lists": "In generic song lists only",

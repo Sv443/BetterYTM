@@ -7,7 +7,7 @@ import { emitSiteEvent } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/interface.ts";
 import { closeCfgMenu, openCfgMenu } from "@menu/menu.ts";
-import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "@/types.ts";
+import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, FeatureTag, FeatureTypeProps, NumberLengthFormat } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 
 //#region >> format version
@@ -321,7 +321,6 @@ function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 ): TConfig {
   const newData = structuredClone(config);
   for(const { key, oldDefault } of oldDefaults) {
-    // @ts-expect-error we love TS
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)
       newData[key] = defaultVal as never; // have you ever heard of the song "never gonna give you up" by rick astley?
@@ -495,4 +494,42 @@ export async function promptResetConfig() {
 export async function clearConfig() {
   await configStore.deleteData();
   loggers.data.info("Deleted config from persistent storage");
+}
+
+// #region privacy stuff
+
+/** Object that maps feature types to their desired value types. All props are optional by default. */
+type SetFeatureValues = {
+  [T in FeatureTypeProps["type"]]?: Extract<FeatureTypeProps, { type: T }>["default"];
+};
+
+/** Object that maps modified feature keys to the new feature value. All props are optional by default. */
+type ModifiedFeatureValues = {
+  [T in keyof typeof featInfo]?: (typeof featInfo)[T]["default"];
+};
+
+/**
+ * Sets all features in the config that match *all* the provided `tags` with the corresponding feature type value in the `setFeatureValues` object.  
+ * Returns an object that maps modified feature keys to their new values.
+ */
+export async function configSetFeatsWithTags(tags: FeatureTag[], setFeatureValues: SetFeatureValues): Promise<ModifiedFeatureValues> {
+  const modified: ModifiedFeatureValues = {};
+
+  const features = getFeatures();
+
+  for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
+    if(!("tags" in ftInfo) || ("tags" in ftInfo && !tags.every(tag => (ftInfo.tags as string[]).includes(tag))))
+      continue;
+
+    if(typeof setFeatureValues[ftInfo.type] !== "undefined") {
+      // @ts-expect-error no good way to keep these generic without having a bunch of dumb type errors
+      features[ftKey] = setFeatureValues[ftInfo.type];
+      // @ts-expect-error
+      modified[ftKey] = setFeatureValues[ftInfo.type];
+    }
+  }
+
+  await setFeatures(features);
+
+  return modified;
 }

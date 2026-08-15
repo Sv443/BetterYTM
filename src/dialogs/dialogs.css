@@ -178,21 +178,30 @@
   overflow-y: auto;
 }
 
-#bytm-welcome-menu-locale-cont {
+#bytm-welcome-menu-horizontal-segment-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 60px;
+  margin-bottom: 24px;
+}
+
+.bytm-welcome-menu-segment-cont {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
 
-#bytm-welcome-menu-locale-img {
+.bytm-welcome-menu-horizontal-segment-img {
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
 }
 
 #bytm-welcome-menu-text-cont {
-  margin-top: 16px;
+  margin-top: 24px;
 }
 
 #bytm-welcome-menu-text {
@@ -200,7 +209,7 @@
   line-height: 20px;
 }
 
-#bytm-welcome-menu-locale-select {
+.bytm-welcome-menu-select {
   font-size: 1.6rem;
 }
 

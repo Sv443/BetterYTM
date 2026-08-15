@@ -716,7 +716,7 @@ export type FeatureTypeProps =
      */
     type: "button";
     /** The value is always `undefined` for buttons, meaning it gets stripped out when serializing. */
-    default?: undefined;
+    default: undefined;
     /**
      * Called when the button is clicked.  
      * If it returns a Promise, the button will only be re-enabled after it resolves or rejects.  
