@@ -36,6 +36,13 @@
       "contributions": [
         "Turkish translations"
       ]
+    },
+    {
+      "name": "canarado",
+      "url": "https://github.com/canarado",
+      "contributions": [
+        "Version checking code"
+      ]
     }
   ],
   "bugs": {
