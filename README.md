@@ -110,9 +110,9 @@ Your userscript manager extension's storage API is used to store all settings an
 Open its settings to see and manage this data. Delete the userscript to automatically delete all associated data.  
   
 BetterYTM makes use of external services and APIs to provide some of its features, which may collect data about you.  
-You may disable these features in the configuration menu if you don't want to use them, which will prevent any data from being sent to the services.  
+You may disable these features immediately upon the first launch, or in the configuration menu, which will prevent any data from being sent to the services.  
   
-These are the privacy policies of the external services BetterYTM uses, and what data they collect:
+These are the privacy policies of the external services BetterYTM uses, and what data they may notably collect:
 - [Apple Music - Privacy Policy](https://www.apple.com/legal/privacy/data/en/apple-music/) (album and artist names, IP address)
 - [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
 - [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
