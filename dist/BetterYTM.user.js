@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7c1e2ea0/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d199e53b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -109,8 +109,8 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.7.1/dist/CoreUtils.umd.js
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@10.6.0/dist/UserUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.8.0/dist/CoreUtils.umd.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@11.0.0/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
 // @require           https://cdn.jsdelivr.net/npm/dompurify@3.3.3
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Thu, 13 Aug 2026 00:38:54 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 15 Aug 2026 23:48:14 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 7c1e2ea0                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ d199e53b                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ IuA4xWzs2j4P                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ Fs8pmYBtp8j5                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -257,6 +257,8 @@
 			"icon-new": "icons/new.svg",
 			"icon-prompt": "icons/help.svg",
 			"icon-reload": "icons/refresh.svg",
+			"icon-shield_info": "icons/shield_info.svg",
+			"icon-shield_question": "icons/shield_question.svg",
 			"icon-history": "icons/history.svg",
 			"icon-skip_to": "icons/skip_to.svg",
 			"icon-speed": "icons/speed.svg",
@@ -539,9 +541,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "7c1e2ea0";
+	var buildNumber$1 = "d199e53b";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1786581534851;
+	var buildTimestamp = 1786837694364;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -1514,6 +1516,11 @@
 				"name": "kcangny",
 				"url": "https://github.com/kcangny",
 				"contributions": ["Turkish translations"]
+			},
+			{
+				"name": "canarado",
+				"url": "https://github.com/canarado",
+				"contributions": ["Version checking code"]
 			}
 		],
 		bugs: { "url": "https://github.com/Sv443/BetterYTM/issues" },
@@ -1571,8 +1578,8 @@
 			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
 		},
 		dependencies: {
-			"@sv443-network/coreutils": "3.7.1",
-			"@sv443-network/userutils": "10.6.0",
+			"@sv443-network/coreutils": "3.8.0",
+			"@sv443-network/userutils": "11.0.0",
 			"compare-versions": "6.1.1",
 			"dompurify": "3.3.3",
 			"marked": "17.0.4",
@@ -6169,12 +6176,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			method: "GET",
 			url: `https://github.com/${repo}/releases/latest`
 		});
-		const validUrl = res.finalUrl.includes(`https://github.com/Sv443/BetterYTM/releases/tag/`) ? res.finalUrl : void 0;
 		const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({
 			type: "alert",
 			message: t("no_new_version_found")
 		}) : void 0;
-		const latestTag = validUrl?.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+		let latestTag;
+		const { hostname, pathname } = new URL(res.finalUrl);
+		if (hostname === "github.com" && pathname.startsWith(`/Sv443/BetterYTM/releases/tag/`)) latestTag = pathname.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 		if (!latestTag || !(0, compare_versions.validateStrict)(latestTag)) return await noNewVerFound();
 		loggers.misc.info("Version check results - current version:", scriptInfo$1.version, "- latest version:", latestTag, "- from URL:", res.finalUrl, LogLevel.Info);
 		if ((0, compare_versions.compare)(scriptInfo$1.version, latestTag, "<")) {
@@ -7265,7 +7273,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		/** Indicates that the feature is only configurable in advanced mode. */
 		advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", void 0, t("advanced_feature")),
 		/** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
-		newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", void 0, t("feature_is_new"))
+		newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", void 0, t("feature_is_new")),
+		/** Indicates a feature is privacy-sensitive as it may expose personally identifiable information about the user. */
+		privacy: async () => await getAdornHtml("bytm-privacy-icon", t("feature_is_privacy_sensitive"), "icon-shield_info", void 0, t("feature_is_privacy_sensitive"))
 	};
 	/** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
 	var adornmentOrder = new Map([
@@ -7275,7 +7285,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		[adornments.globe, 3],
 		[adornments.reload, 4],
 		[adornments.advanced, 5],
-		[adornments.newFeature, 6]
+		[adornments.newFeature, 6],
+		[adornments.privacy, 7]
 	]);
 	/** Creates an HTML string for the given adornment properties */
 	async function getAdornHtml(className, title, resource, extraAttributes, clickDialogText) {
@@ -7537,6 +7548,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "versionCheck",
 			supportedSites: ["ytm", "yt"],
 			since: "2.0.0",
+			default: void 0,
 			click: () => doVersionCheck(true)
 		},
 		numbersFormat: {
@@ -7590,6 +7602,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "resetData",
 			supportedSites: ["ytm", "yt"],
 			since: "3.0.0",
+			default: void 0,
 			click: promptResetConfig,
 			adornments: [adornments.reload]
 		},
@@ -7599,6 +7612,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "resetData",
 			supportedSites: ["ytm", "yt"],
 			since: "2.2.0",
+			default: void 0,
 			click: async () => {
 				if (await showPrompt({
 					type: "confirm",
@@ -7719,8 +7733,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "thumbnailOverlay",
 			supportedSites: ["ytm"],
 			since: "3.2.0",
+			tags: ["privacy", "network"],
 			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [
+				adornments.ytmOnly,
+				adornments.reload,
+				adornments.privacy
+			]
 		},
 		thumbnailOverlayBehavior: {
 			type: "select",
@@ -7872,8 +7891,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "votes",
 			supportedSites: ["ytm"],
 			since: "2.1.0",
+			tags: ["privacy", "network"],
 			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [
+				adornments.ytmOnly,
+				adornments.reload,
+				adornments.privacy
+			]
 		},
 		swapLikeDislikeButtons: {
 			type: "toggle",
@@ -7979,8 +8003,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "geniusLyrics",
 			supportedSites: ["ytm"],
 			since: "0.2.0",
+			tags: ["privacy", "network"],
 			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [
+				adornments.ytmOnly,
+				adornments.reload,
+				adornments.privacy
+			]
 		},
 		errorOnLyricsNotFound: {
 			type: "toggle",
@@ -8055,6 +8084,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "lyricsCache",
 			supportedSites: ["ytm"],
 			since: "2.0.0",
+			default: void 0,
 			async click() {
 				const entries = getLyricsCache().length;
 				if (await showPrompt({
@@ -8405,6 +8435,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "autoLikeChannels",
 			supportedSites: ["ytm", "yt"],
 			since: "2.1.0",
+			default: void 0,
 			click: () => getAutoLikeDialog().then((d) => d.open())
 		},
 		autoLikeChannelToggleBtn: {
@@ -9328,6 +9359,23 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function clearConfig() {
 		await configStore.deleteData();
 		loggers.data.info("Deleted config from persistent storage");
+	}
+	/**
+	* Sets all features in the config that match *all* the provided `tags` with the corresponding feature type value in the `setFeatureValues` object.  
+	* Returns an object that maps modified feature keys to their new values.
+	*/
+	async function configSetFeatsWithTags(tags, setFeatureValues) {
+		const modified = {};
+		const features = getFeatures();
+		for (const [ftKey, ftInfo] of Object.entries(featInfo)) {
+			if (!("tags" in ftInfo) || "tags" in ftInfo && !tags.every((tag) => ftInfo.tags.includes(tag))) continue;
+			if (typeof setFeatureValues[ftInfo.type] !== "undefined") {
+				features[ftKey] = setFeatureValues[ftInfo.type];
+				modified[ftKey] = setFeatureValues[ftInfo.type];
+			}
+		}
+		await setFeatures(features);
+		return modified;
 	}
 	//#endregion
 	//#region src/features/behavior.ts
@@ -10578,8 +10626,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		if (!welcomeDialog) {
 			welcomeDialog = new BytmDialog({
 				id: "welcome",
-				width: 700,
-				height: 500,
+				width: 800,
+				height: 600,
 				closeBtnEnabled: true,
 				closeOnBgClick: false,
 				closeOnEscPress: true,
@@ -10612,33 +10660,82 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function renderBody() {
 		const contentWrapper = document.createElement("div");
 		contentWrapper.id = "bytm-welcome-menu-content-wrapper";
-		const localeCont = document.createElement("div");
-		localeCont.id = "bytm-welcome-menu-locale-cont";
-		const localeImg = document.createElement("img");
-		localeImg.id = "bytm-welcome-menu-locale-img";
-		localeImg.classList.add("bytm-no-select");
-		localeImg.src = await getResourceUrl("icon-globe");
-		const localeSelectElem = document.createElement("select");
-		localeSelectElem.id = "bytm-welcome-menu-locale-select";
-		for (const [locale, { name }] of Object.entries(locales_default)) {
-			const localeOptionElem = document.createElement("option");
-			localeOptionElem.value = locale;
-			localeOptionElem.textContent = name;
-			localeSelectElem.appendChild(localeOptionElem);
+		const horSegmentCont = document.createElement("div");
+		horSegmentCont.id = "bytm-welcome-menu-horizontal-segment-container";
+		const getHorSegmentElements = async (imgKey) => {
+			const segCont = document.createElement("div");
+			segCont.classList.add("bytm-welcome-menu-segment-cont");
+			const segImg = document.createElement("img");
+			segImg.classList.add("bytm-welcome-menu-horizontal-segment-img", "bytm-no-select");
+			segImg.src = await getResourceUrl(imgKey);
+			return [segCont, segImg];
+		};
+		{
+			const [localeCont, localeImg] = await getHorSegmentElements("icon-globe");
+			localeImg.id = "bytm-welcome-menu-locale-img";
+			const localeSelectElem = document.createElement("select");
+			localeSelectElem.id = "bytm-welcome-menu-locale-select";
+			localeSelectElem.classList.add("bytm-welcome-menu-select");
+			for (const [locale, { name, emoji }] of Object.entries(locales_default)) {
+				const optionElem = document.createElement("option");
+				optionElem.value = locale;
+				optionElem.textContent = `${emoji} ${name}`;
+				localeSelectElem.appendChild(optionElem);
+			}
+			localeSelectElem.value = getFeature("locale");
+			localeSelectElem.addEventListener("change", async () => {
+				const selectedLocale = localeSelectElem.value;
+				const feats = Object.assign({}, getFeatures());
+				feats.locale = selectedLocale;
+				setFeatures(feats);
+				await initTranslations(selectedLocale);
+				setLocale(selectedLocale);
+				retranslateWelcomeMenu();
+			});
+			localeImg.title = localeSelectElem.title = t("welcome_menu_language_tooltip");
+			localeCont.appendChild(localeImg);
+			localeCont.appendChild(localeSelectElem);
+			horSegmentCont.appendChild(localeCont);
 		}
-		localeSelectElem.value = getFeature("locale");
-		localeSelectElem.addEventListener("change", async () => {
-			const selectedLocale = localeSelectElem.value;
-			const feats = Object.assign({}, getFeatures());
-			feats.locale = selectedLocale;
-			setFeatures(feats);
-			await initTranslations(selectedLocale);
-			setLocale(selectedLocale);
-			retranslateWelcomeMenu();
-		});
-		localeCont.appendChild(localeImg);
-		localeCont.appendChild(localeSelectElem);
-		contentWrapper.appendChild(localeCont);
+		{
+			const [privacyCont, privacyImg] = await getHorSegmentElements("icon-shield_question");
+			privacyImg.id = "bytm-welcome-menu-privacy-img";
+			const privacySelectElem = document.createElement("select");
+			privacySelectElem.id = "bytm-welcome-menu-privacy-select";
+			privacySelectElem.classList.add("bytm-welcome-menu-select");
+			privacyImg.title = privacySelectElem.title = t("welcome_menu_privacy_tooltip");
+			const options = [{
+				value: "default",
+				label: t("privacy_mode.default")
+			}, {
+				value: "enhanced",
+				label: t("privacy_mode.enhanced")
+			}];
+			for (const { value, label } of options) {
+				const optionElem = document.createElement("option");
+				optionElem.id = `bytm-welcome-menu-privacy-option-${value}`;
+				optionElem.value = value;
+				optionElem.textContent = label;
+				privacySelectElem.appendChild(optionElem);
+			}
+			privacySelectElem.value = "default";
+			privacySelectElem.addEventListener("change", async () => {
+				const isPrivacy = privacySelectElem.value === "enhanced";
+				const modifiedConf = await configSetFeatsWithTags(["privacy"], {
+					number: isPrivacy ? 0 : 1,
+					toggle: !isPrivacy
+				});
+				forceEmitSiteEvent("recreateCfgMenu");
+				loggers.init.log(`Toggled selection of privacy-sensitive features ${isPrivacy ? "off" : "on"} - modified config:`, modifiedConf, LogLevel.Info);
+			});
+			privacyCont.appendChild(privacyImg);
+			privacyCont.appendChild(privacySelectElem);
+			horSegmentCont.appendChild(privacyCont);
+		}
+		contentWrapper.appendChild(horSegmentCont);
+		const hrElem = document.createElement("hr");
+		hrElem.classList.add("bytm-hr");
+		contentWrapper.appendChild(hrElem);
 		const textCont = document.createElement("div");
 		textCont.id = "bytm-welcome-menu-text-cont";
 		const textElem = document.createElement("p");
@@ -10700,7 +10797,25 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			"#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo$1.name)),
 			"#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${package_default.hosts.greasyfork}/feedback`), ...getLink(package_default.hosts.openuserjs))),
 			"#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(package_default.funding.url))),
-			"#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(package_default.bugs.url)))
+			"#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(package_default.bugs.url))),
+			"#bytm-welcome-menu-privacy-img": (e) => {
+				e.title = t("welcome_menu_privacy_tooltip");
+			},
+			"#bytm-welcome-menu-privacy-select": (e) => {
+				e.title = t("welcome_menu_privacy_tooltip");
+			},
+			"#bytm-welcome-menu-privacy-option-default": (e) => {
+				e.textContent = t(`privacy_mode.${e.value}`);
+			},
+			"#bytm-welcome-menu-privacy-option-enhanced": (e) => {
+				e.textContent = t(`privacy_mode.${e.value}`);
+			},
+			"#bytm-welcome-menu-locale-img": (e) => {
+				e.title = t("welcome_menu_language_tooltip");
+			},
+			"#bytm-welcome-menu-locale-select": (e) => {
+				e.title = t("welcome_menu_language_tooltip");
+			}
 		};
 		for (const [selector, fn] of Object.entries(changes)) {
 			const el = document.querySelector(selector);
@@ -11261,7 +11376,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "7c1e2ea0",
+				buildNumber: "d199e53b",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),

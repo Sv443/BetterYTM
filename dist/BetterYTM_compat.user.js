@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5370ff5d/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d199e53b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Fri, 24 Jul 2026 08:14:27 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 15 Aug 2026 23:48:21 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 5370ff5d                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ d199e53b                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ ThrS331jL965                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ IzD777trNU4v                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -194,7 +194,7 @@
 		module.exports = {};
 	}));
 	//#endregion
-	//#region node_modules/.pnpm/@sv443-network+coreutils@3.7.1/node_modules/@sv443-network/coreutils/dist/CoreUtils.mjs
+	//#region node_modules/.pnpm/@sv443-network+coreutils@3.8.0/node_modules/@sv443-network/coreutils/dist/CoreUtils.mjs
 	var CoreUtils_exports = /* @__PURE__ */ __exportAll({
 		BrowserStorageEngine: () => BrowserStorageEngine$1,
 		ChecksumMismatchError: () => ChecksumMismatchError$1,
@@ -205,6 +205,7 @@
 		DatedError: () => DatedError$1,
 		Debouncer: () => Debouncer$1,
 		FileStorageEngine: () => FileStorageEngine$1,
+		IndexedDBStorageEngine: () => IndexedDBStorageEngine$1,
 		MigrationError: () => MigrationError$1,
 		NanoEmitter: () => NanoEmitter$2,
 		NetworkError: () => NetworkError$1,
@@ -631,9 +632,11 @@
 		0: "─"
 	};
 	function createProgressBar$1(percentage, barLength, chars = defaultPbChars$1) {
+		if (percentage < 0 || percentage > 100) throw new RangeError(`Percentage must be between 0 and 100, got ${percentage}`);
+		if (barLength < 0) throw new RangeError(`Bar length must be non-negative, got ${barLength}`);
 		if (percentage === 100) return chars[100].repeat(barLength);
 		const filledLength = Math.floor(percentage / 100 * barLength);
-		const remainingPercentage = percentage / 10 * barLength - filledLength;
+		const remainingPercentage = percentage / 100 * barLength - filledLength;
 		let lastBlock = "";
 		if (remainingPercentage >= .75) lastBlock = chars[75];
 		else if (remainingPercentage >= .5) lastBlock = chars[50];
@@ -1336,7 +1339,7 @@
 			if (decRes instanceof Promise) decRes = await decRes;
 			return JSON.parse(decRes ?? data);
 		}
-		/** Throws an error if the DataStoreOptions are not set or invalid */
+		/** Throws an error if the {@linkcode DataStoreOptions} are not set or invalid. Call in every method where {@linkcode DataStoreEngineDSOptions} needs to be present. */
 		ensureDataStoreOptions() {
 			if (!this.dataStoreOptions) throw new DatedError$1("DataStoreEngine must be initialized with DataStore options before use. If you are using this instance standalone, set them in the constructor or call `setDataStoreOptions()` with the DataStore options.");
 			if (!this.dataStoreOptions.id) throw new DatedError$1("DataStoreEngine must be initialized with a valid DataStore ID");
@@ -1493,10 +1496,90 @@
 			}
 		}
 	};
-	var DataStoreSerializer$1 = class _DataStoreSerializer {
+	var IndexedDBStorageEngine$1 = class extends DataStoreEngine$1 {
+		options;
+		/** Name of the IndexedDB object store that holds the key-value pairs */
+		storeName;
+		/** Cached handle to the opened database, populated lazily on the first call to {@linkcode getValue}, {@linkcode setValue} or {@linkcode deleteValue} */
+		db;
+		/** Resolves once the database has finished opening, so concurrent calls don't open it more than once */
+		dbOpenPromise;
+		/**
+		* Creates an instance of `IndexedDBStorageEngine`, a {@linkcode DataStore} storage engine that uses the [IndexedDB API.](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)  
+		* This allows even non-JSON-serializable data to be stored, like a [File](https://developer.mozilla.org/en-US/docs/Web/API/File) or [Blob.](https://developer.mozilla.org/en-US/docs/Web/API/Blob)  
+		*   
+		* - ⚠️ Requires an environment with access to the [IndexedDB API.](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)  
+		* - ⚠️ Don't reuse engine instances, always create a new one for each instance of stored data (or {@linkcode DataStore} instance).
+		*/
+		constructor(options) {
+			super(options == null ? void 0 : options.dataStoreOptions);
+			this.options = {
+				dbStoreName: "keyval",
+				dbPrefix: "__ds-",
+				...options
+			};
+			this.storeName = this.options.dbStoreName;
+		}
+		/** Fetches a value from persistent storage. */
+		async getValue(name, defaultValue) {
+			const db = await this.openDb();
+			const val = await new Promise((resolve, reject) => {
+				const req = db.transaction(this.storeName, "readonly").objectStore(this.storeName).get(name);
+				req.addEventListener("success", () => resolve(req.result));
+				req.addEventListener("error", () => reject(req.error));
+			});
+			return typeof val === "undefined" ? defaultValue : val;
+		}
+		/** Sets a value in persistent storage. */
+		async setValue(name, value) {
+			const db = await this.openDb();
+			await new Promise((resolve, reject) => {
+				const tx = db.transaction(this.storeName, "readwrite");
+				tx.objectStore(this.storeName).put(value, name);
+				tx.addEventListener("complete", () => resolve());
+				tx.addEventListener("error", () => reject(tx.error));
+				tx.addEventListener("abort", () => reject(tx.error));
+			});
+		}
+		/** Deletes a value from persistent storage. */
+		async deleteValue(name) {
+			const db = await this.openDb();
+			await new Promise((resolve, reject) => {
+				const tx = db.transaction(this.storeName, "readwrite");
+				tx.objectStore(this.storeName).delete(name);
+				tx.addEventListener("complete", () => resolve());
+				tx.addEventListener("error", () => reject(tx.error));
+				tx.addEventListener("abort", () => reject(tx.error));
+			});
+		}
+		/** Lazily opens the {@linkcode IDBDatabase} for this DataStore's ID, or returns the cached instance from a previous call. */
+		openDb() {
+			this.ensureDataStoreOptions();
+			if (this.db) return Promise.resolve(this.db);
+			if (this.dbOpenPromise) return this.dbOpenPromise;
+			if (typeof indexedDB === "undefined") throw new ScriptContextError$1("IndexedDBStorageEngine requires a DOM environment with access to the IndexedDB API", { cause: new DatedError$1("'indexedDB' is not available in the global scope") });
+			return this.dbOpenPromise = new Promise((resolve, reject) => {
+				const req = indexedDB.open(`${this.options.dbPrefix}${this.dataStoreOptions.id}`);
+				req.addEventListener("upgradeneeded", () => {
+					req.result.createObjectStore(this.storeName);
+				});
+				req.addEventListener("success", () => {
+					this.db = req.result;
+					resolve(req.result);
+				});
+				req.addEventListener("error", () => reject(req.error));
+			});
+		}
+	};
+	var DataStoreSerializer$1 = class _DataStoreSerializer extends PicoEmitter$1 {
 		stores;
 		options;
+		/** Set of IDs of loaded stores. Is kept in sync via {@linkcode bindStoreEvents()}. */
+		loadedStores = /* @__PURE__ */ new Set();
+		/** Unsubscribe functions for the event listeners bound to each contained {@linkcode DataStore} instance, keyed by store ID. */
+		storeEventUnsubs = /* @__PURE__ */ new Map();
 		constructor(stores, options = {}) {
+			super(options == null ? void 0 : options.picoEmitterOptions);
 			if (!crypto || !crypto.subtle) throw new ScriptContextError$1("DataStoreSerializer has to run in a secure context (HTTPS) or in another environment that implements the subtleCrypto API!");
 			this.stores = stores;
 			this.options = {
@@ -1504,22 +1587,46 @@
 				ensureIntegrity: true,
 				remapIds: {},
 				stringifyData: true,
+				picoEmitterOptions: {},
 				...options
 			};
+			for (const store of this.stores) this.bindStoreEvents(store);
 		}
 		/**
-		* Calculates the checksum of a string or {@linkcode DataStoreData} object. Uses {@linkcode computeHash()} with SHA-256 and digests as a hex string by default.  
-		* Override this in a subclass if a custom checksum method is needed.
+		* Subscribes to the relevant events of a single {@linkcode DataStore} instance and forwards them as this instance's own events, so that they're also emitted when a contained store is loaded, reset or deleted directly through its own instance instead of through this serializer.
 		*/
-		async calcChecksum(input) {
+		bindStoreEvents(store) {
+			this.storeEventUnsubs.set(store.id, [
+				store.on("loadData", () => {
+					this.loadedStores.add(store.id);
+					this.emitEvent("loadedStore", store);
+					if (this.stores.every((s) => this.loadedStores.has(s.id))) this.emitEvent("loadedAllStores");
+				}),
+				store.on("setDefaultData", () => this.emitEvent("resetStores", [store])),
+				store.on("deleteData", () => {
+					this.loadedStores.delete(store.id);
+					this.emitEvent("deletedStores", [store]);
+				})
+			]);
+		}
+		/** Unsubscribes from the events of all currently bound {@linkcode DataStore} instances. */
+		unbindStoreEvents() {
+			for (const unsubs of this.storeEventUnsubs.values()) for (const unsub of unsubs) unsub();
+			this.storeEventUnsubs.clear();
+		}
+		/**
+		* Calculates the checksum of a string or {@linkcode DataStoreData} object. By default, this uses {@linkcode computeHash()} with SHA-256, digested as a hex string.  
+		* Override this in a subclass if a custom checksum method is needed for some reason.
+		*/
+		async calcChecksum(input, algorithm = "SHA-256") {
 			try {
-				return computeHash$1(typeof input === "string" ? input : JSON.stringify(input), "SHA-256");
+				return computeHash$1(typeof input === "string" ? input : JSON.stringify(input), algorithm);
 			} catch (err) {
 				throw new Error(`Failed to calculate checksum: ${err.message}`, { cause: err });
 			}
 		}
 		/**
-		* Serializes only a subset of the data stores into a string.  
+		* Serializes only a subset of the {@linkcode DataStore}s into a string.  
 		* @param stores An array of store IDs or functions that take a store ID and return a boolean
 		* @param useEncoding Whether to encode the data using each DataStore's `encodeData()` method
 		* @param stringified Whether to return the result as a string or as an array of `SerializedDataStore` objects
@@ -1544,7 +1651,7 @@
 		}
 		/**
 		* Serializes the data stores into a string.  
-		* @param useEncoding Whether to encode the data using each DataStore's `encodeData()` method
+		* @param useEncoding Whether to encode the data using each {@linkcode DataStore}'s `encodeData()` method
 		* @param stringified Whether to return the result as a string or as an array of `SerializedDataStore` objects
 		*/
 		async serialize(useEncoding = true, stringified = true) {
@@ -1561,12 +1668,11 @@
 				var _a;
 				return ((_a = Object.entries(this.options.remapIds).find(([, v]) => v.includes(id))) == null ? void 0 : _a[0]) ?? id;
 			};
-			const matchesFilter = (id) => typeof stores === "function" ? stores(id) : stores.includes(id);
 			for (const storeData of deserStores) {
-				const effectiveId = resolveStoreId(storeData.id);
-				if (!matchesFilter(effectiveId)) continue;
-				const storeInst = this.stores.find((s) => s.id === effectiveId);
-				if (!storeInst) throw new DatedError$1(`Can't deserialize data because no DataStore instance with the ID "${effectiveId}" was found! Make sure to provide it in the DataStoreSerializer constructor.`);
+				const curStoreID = resolveStoreId(storeData.id);
+				if (!(typeof stores === "function" ? stores(curStoreID) : stores.includes(curStoreID))) continue;
+				const storeInst = this.stores.find((s) => s.id === curStoreID);
+				if (!storeInst) throw new DatedError$1(`Can't deserialize data because no DataStore instance with the ID "${curStoreID}" was found! Make sure to provide it in the DataStoreSerializer constructor.`);
 				if (this.options.ensureIntegrity && typeof storeData.checksum === "string") {
 					const checksum = await this.calcChecksum(storeData.data);
 					if (checksum !== storeData.checksum) throw new ChecksumMismatchError$1(`Checksum mismatch for DataStore with ID "${storeData.id}"!
@@ -1579,14 +1685,14 @@ Has: ${checksum}`);
 			}
 		}
 		/**
-		* Deserializes the data exported via {@linkcode serialize()} and imports the data into all matching DataStore instances.  
+		* Deserializes the data exported via {@linkcode serialize()} and imports the data into all matching {@linkcode DataStore} instances.  
 		* Also triggers the migration process if the data format has changed.
 		*/
 		async deserialize(data) {
 			return this.deserializePartial(this.stores.map((s) => s.id), data);
 		}
 		/**
-		* Loads the persistent data of the DataStore instances into the in-memory cache.  
+		* Loads the persistent data of the {@linkcode DataStore} instances into the in-memory cache.  
 		* Also triggers the migration process if the data format has changed.
 		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be loaded
 		* @returns Returns a PromiseSettledResult array with the results of each DataStore instance in the format `{ id: string, data: object }`
@@ -1598,31 +1704,47 @@ Has: ${checksum}`);
 			})));
 		}
 		/**
-		* Resets the persistent and in-memory data of the DataStore instances to their default values.
+		* Resets the persistent and in-memory data of the {@linkcode DataStore} instances to their default values.
 		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be affected
 		*/
 		async resetStoresData(stores) {
 			return Promise.allSettled(this.getStoresFiltered(stores).map((store) => store.saveDefaultData()));
 		}
 		/**
-		* Deletes the persistent data of the DataStore instances.  
-		* Leaves the in-memory data untouched.  
+		* Deletes the persistent data of the {@linkcode DataStore} instances.
+		* Leaves the in-memory data untouched.
 		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be affected
 		*/
 		async deleteStoresData(stores) {
 			return Promise.allSettled(this.getStoresFiltered(stores).map((store) => store.deleteData()));
 		}
-		/** Checks if a given value is an array of SerializedDataStore objects */
+		/** Returns an array of the {@linkcode DataStore} instances managed by this DataStoreSerializer. */
+		getStores() {
+			return this.stores;
+		}
+		/**
+		* Overwrites this DataStoreSerializer instance's stores.
+		* @param stores Array of new stores for this instance to manage.
+		* @param loadData Set to true to call {@linkcode DataStoreSerializer.loadStoresData()} for the overwritten stores before resolving.
+		*/
+		async setStores(stores, loadData = false) {
+			this.unbindStoreEvents();
+			this.stores = stores;
+			this.loadedStores = /* @__PURE__ */ new Set();
+			for (const store of this.stores) this.bindStoreEvents(store);
+			if (loadData) await this.loadStoresData();
+		}
+		/** Returns the {@linkcode DataStore} instances whose IDs match the provided array or function. */
+		getStoresFiltered(stores) {
+			return this.stores.filter((s) => typeof stores === "undefined" ? true : Array.isArray(stores) ? stores.includes(s.id) : stores(s.id));
+		}
+		/** Checks if a given value is an array of SerializedDataStore objects. */
 		static isSerializedDataStoreObjArray(obj) {
 			return Array.isArray(obj) && obj.every((o) => typeof o === "object" && o !== null && "id" in o && "data" in o && "formatVersion" in o && "encoded" in o);
 		}
-		/** Checks if a given value is a SerializedDataStore object */
+		/** Checks if a given value is a SerializedDataStore object. */
 		static isSerializedDataStoreObj(obj) {
 			return typeof obj === "object" && obj !== null && "id" in obj && "data" in obj && "formatVersion" in obj && "encoded" in obj;
-		}
-		/** Returns the DataStore instances whose IDs match the provided array or function */
-		getStoresFiltered(stores) {
-			return this.stores.filter((s) => typeof stores === "undefined" ? true : Array.isArray(stores) ? stores.includes(s.id) : stores(s.id));
 		}
 	};
 	var Debouncer$1 = class extends NanoEmitter$2 {
@@ -1722,7 +1844,7 @@ Has: ${checksum}`);
 		return func;
 	}
 	//#endregion
-	//#region node_modules/.pnpm/@sv443-network+userutils@10.6.0/node_modules/@sv443-network/userutils/dist/UserUtils.mjs
+	//#region node_modules/.pnpm/@sv443-network+userutils@11.0.0/node_modules/@sv443-network/userutils/dist/UserUtils.mjs
 	var UserUtils_exports = /* @__PURE__ */ __exportAll({
 		BrowserStorageEngine: () => BrowserStorageEngine,
 		ChecksumMismatchError: () => ChecksumMismatchError,
@@ -1735,6 +1857,7 @@ Has: ${checksum}`);
 		Dialog: () => Dialog,
 		FileStorageEngine: () => FileStorageEngine,
 		GMStorageEngine: () => GMStorageEngine,
+		IndexedDBStorageEngine: () => IndexedDBStorageEngine,
 		MigrationError: () => MigrationError,
 		Mixins: () => Mixins,
 		NanoEmitter: () => NanoEmitter$1,
@@ -2196,9 +2319,11 @@ Has: ${checksum}`);
 		0: "─"
 	};
 	function createProgressBar(percentage, barLength, chars = defaultPbChars) {
+		if (percentage < 0 || percentage > 100) throw new RangeError(`Percentage must be between 0 and 100, got ${percentage}`);
+		if (barLength < 0) throw new RangeError(`Bar length must be non-negative, got ${barLength}`);
 		if (percentage === 100) return chars[100].repeat(barLength);
 		const filledLength = Math.floor(percentage / 100 * barLength);
-		const remainingPercentage = percentage / 10 * barLength - filledLength;
+		const remainingPercentage = percentage / 100 * barLength - filledLength;
 		let lastBlock = "";
 		if (remainingPercentage >= .75) lastBlock = chars[75];
 		else if (remainingPercentage >= .5) lastBlock = chars[50];
@@ -2912,7 +3037,7 @@ Has: ${checksum}`);
 			if (decRes instanceof Promise) decRes = await decRes;
 			return JSON.parse(decRes != null ? decRes : data);
 		}
-		/** Throws an error if the DataStoreOptions are not set or invalid */
+		/** Throws an error if the {@linkcode DataStoreOptions} are not set or invalid. Call in every method where {@linkcode DataStoreEngineDSOptions} needs to be present. */
 		ensureDataStoreOptions() {
 			if (!this.dataStoreOptions) throw new DatedError("DataStoreEngine must be initialized with DataStore options before use. If you are using this instance standalone, set them in the constructor or call `setDataStoreOptions()` with the DataStore options.");
 			if (!this.dataStoreOptions.id) throw new DatedError("DataStoreEngine must be initialized with a valid DataStore ID");
@@ -3071,10 +3196,90 @@ Has: ${checksum}`);
 			}
 		}
 	};
-	var DataStoreSerializer = class _DataStoreSerializer {
+	var IndexedDBStorageEngine = class extends DataStoreEngine {
+		/**
+		* Creates an instance of `IndexedDBStorageEngine`, a {@linkcode DataStore} storage engine that uses the [IndexedDB API.](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)  
+		* This allows even non-JSON-serializable data to be stored, like a [File](https://developer.mozilla.org/en-US/docs/Web/API/File) or [Blob.](https://developer.mozilla.org/en-US/docs/Web/API/Blob)  
+		*   
+		* - ⚠️ Requires an environment with access to the [IndexedDB API.](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)  
+		* - ⚠️ Don't reuse engine instances, always create a new one for each instance of stored data (or {@linkcode DataStore} instance).
+		*/
+		constructor(options) {
+			super(options == null ? void 0 : options.dataStoreOptions);
+			__publicField(this, "options");
+			/** Name of the IndexedDB object store that holds the key-value pairs */
+			__publicField(this, "storeName");
+			/** Cached handle to the opened database, populated lazily on the first call to {@linkcode getValue}, {@linkcode setValue} or {@linkcode deleteValue} */
+			__publicField(this, "db");
+			/** Resolves once the database has finished opening, so concurrent calls don't open it more than once */
+			__publicField(this, "dbOpenPromise");
+			this.options = {
+				dbStoreName: "keyval",
+				dbPrefix: "__ds-",
+				...options
+			};
+			this.storeName = this.options.dbStoreName;
+		}
+		/** Fetches a value from persistent storage. */
+		async getValue(name, defaultValue) {
+			const db = await this.openDb();
+			const val = await new Promise((resolve, reject) => {
+				const req = db.transaction(this.storeName, "readonly").objectStore(this.storeName).get(name);
+				req.addEventListener("success", () => resolve(req.result));
+				req.addEventListener("error", () => reject(req.error));
+			});
+			return typeof val === "undefined" ? defaultValue : val;
+		}
+		/** Sets a value in persistent storage. */
+		async setValue(name, value) {
+			const db = await this.openDb();
+			await new Promise((resolve, reject) => {
+				const tx = db.transaction(this.storeName, "readwrite");
+				tx.objectStore(this.storeName).put(value, name);
+				tx.addEventListener("complete", () => resolve());
+				tx.addEventListener("error", () => reject(tx.error));
+				tx.addEventListener("abort", () => reject(tx.error));
+			});
+		}
+		/** Deletes a value from persistent storage. */
+		async deleteValue(name) {
+			const db = await this.openDb();
+			await new Promise((resolve, reject) => {
+				const tx = db.transaction(this.storeName, "readwrite");
+				tx.objectStore(this.storeName).delete(name);
+				tx.addEventListener("complete", () => resolve());
+				tx.addEventListener("error", () => reject(tx.error));
+				tx.addEventListener("abort", () => reject(tx.error));
+			});
+		}
+		/** Lazily opens the {@linkcode IDBDatabase} for this DataStore's ID, or returns the cached instance from a previous call. */
+		openDb() {
+			this.ensureDataStoreOptions();
+			if (this.db) return Promise.resolve(this.db);
+			if (this.dbOpenPromise) return this.dbOpenPromise;
+			if (typeof indexedDB === "undefined") throw new ScriptContextError("IndexedDBStorageEngine requires a DOM environment with access to the IndexedDB API", { cause: new DatedError("'indexedDB' is not available in the global scope") });
+			return this.dbOpenPromise = new Promise((resolve, reject) => {
+				const req = indexedDB.open(`${this.options.dbPrefix}${this.dataStoreOptions.id}`);
+				req.addEventListener("upgradeneeded", () => {
+					req.result.createObjectStore(this.storeName);
+				});
+				req.addEventListener("success", () => {
+					this.db = req.result;
+					resolve(req.result);
+				});
+				req.addEventListener("error", () => reject(req.error));
+			});
+		}
+	};
+	var DataStoreSerializer = class _DataStoreSerializer extends PicoEmitter {
 		constructor(stores, options = {}) {
+			super(options == null ? void 0 : options.picoEmitterOptions);
 			__publicField(this, "stores");
 			__publicField(this, "options");
+			/** Set of IDs of loaded stores. Is kept in sync via {@linkcode bindStoreEvents()}. */
+			__publicField(this, "loadedStores", /* @__PURE__ */ new Set());
+			/** Unsubscribe functions for the event listeners bound to each contained {@linkcode DataStore} instance, keyed by store ID. */
+			__publicField(this, "storeEventUnsubs", /* @__PURE__ */ new Map());
 			if (!crypto || !crypto.subtle) throw new ScriptContextError("DataStoreSerializer has to run in a secure context (HTTPS) or in another environment that implements the subtleCrypto API!");
 			this.stores = stores;
 			this.options = {
@@ -3082,22 +3287,46 @@ Has: ${checksum}`);
 				ensureIntegrity: true,
 				remapIds: {},
 				stringifyData: true,
+				picoEmitterOptions: {},
 				...options
 			};
+			for (const store of this.stores) this.bindStoreEvents(store);
 		}
 		/**
-		* Calculates the checksum of a string or {@linkcode DataStoreData} object. Uses {@linkcode computeHash()} with SHA-256 and digests as a hex string by default.  
-		* Override this in a subclass if a custom checksum method is needed.
+		* Subscribes to the relevant events of a single {@linkcode DataStore} instance and forwards them as this instance's own events, so that they're also emitted when a contained store is loaded, reset or deleted directly through its own instance instead of through this serializer.
 		*/
-		async calcChecksum(input) {
+		bindStoreEvents(store) {
+			this.storeEventUnsubs.set(store.id, [
+				store.on("loadData", () => {
+					this.loadedStores.add(store.id);
+					this.emitEvent("loadedStore", store);
+					if (this.stores.every((s) => this.loadedStores.has(s.id))) this.emitEvent("loadedAllStores");
+				}),
+				store.on("setDefaultData", () => this.emitEvent("resetStores", [store])),
+				store.on("deleteData", () => {
+					this.loadedStores.delete(store.id);
+					this.emitEvent("deletedStores", [store]);
+				})
+			]);
+		}
+		/** Unsubscribes from the events of all currently bound {@linkcode DataStore} instances. */
+		unbindStoreEvents() {
+			for (const unsubs of this.storeEventUnsubs.values()) for (const unsub of unsubs) unsub();
+			this.storeEventUnsubs.clear();
+		}
+		/**
+		* Calculates the checksum of a string or {@linkcode DataStoreData} object. By default, this uses {@linkcode computeHash()} with SHA-256, digested as a hex string.  
+		* Override this in a subclass if a custom checksum method is needed for some reason.
+		*/
+		async calcChecksum(input, algorithm = "SHA-256") {
 			try {
-				return computeHash(typeof input === "string" ? input : JSON.stringify(input), "SHA-256");
+				return computeHash(typeof input === "string" ? input : JSON.stringify(input), algorithm);
 			} catch (err) {
 				throw new Error(`Failed to calculate checksum: ${err.message}`, { cause: err });
 			}
 		}
 		/**
-		* Serializes only a subset of the data stores into a string.  
+		* Serializes only a subset of the {@linkcode DataStore}s into a string.  
 		* @param stores An array of store IDs or functions that take a store ID and return a boolean
 		* @param useEncoding Whether to encode the data using each DataStore's `encodeData()` method
 		* @param stringified Whether to return the result as a string or as an array of `SerializedDataStore` objects
@@ -3122,7 +3351,7 @@ Has: ${checksum}`);
 		}
 		/**
 		* Serializes the data stores into a string.  
-		* @param useEncoding Whether to encode the data using each DataStore's `encodeData()` method
+		* @param useEncoding Whether to encode the data using each {@linkcode DataStore}'s `encodeData()` method
 		* @param stringified Whether to return the result as a string or as an array of `SerializedDataStore` objects
 		*/
 		async serialize(useEncoding = true, stringified = true) {
@@ -3140,12 +3369,11 @@ Has: ${checksum}`);
 				var _a;
 				return (_a2 = (_a = Object.entries(this.options.remapIds).find(([, v]) => v.includes(id))) == null ? void 0 : _a[0]) != null ? _a2 : id;
 			};
-			const matchesFilter = (id) => typeof stores === "function" ? stores(id) : stores.includes(id);
 			for (const storeData of deserStores) {
-				const effectiveId = resolveStoreId(storeData.id);
-				if (!matchesFilter(effectiveId)) continue;
-				const storeInst = this.stores.find((s) => s.id === effectiveId);
-				if (!storeInst) throw new DatedError(`Can't deserialize data because no DataStore instance with the ID "${effectiveId}" was found! Make sure to provide it in the DataStoreSerializer constructor.`);
+				const curStoreID = resolveStoreId(storeData.id);
+				if (!(typeof stores === "function" ? stores(curStoreID) : stores.includes(curStoreID))) continue;
+				const storeInst = this.stores.find((s) => s.id === curStoreID);
+				if (!storeInst) throw new DatedError(`Can't deserialize data because no DataStore instance with the ID "${curStoreID}" was found! Make sure to provide it in the DataStoreSerializer constructor.`);
 				if (this.options.ensureIntegrity && typeof storeData.checksum === "string") {
 					const checksum = await this.calcChecksum(storeData.data);
 					if (checksum !== storeData.checksum) throw new ChecksumMismatchError(`Checksum mismatch for DataStore with ID "${storeData.id}"!
@@ -3158,14 +3386,14 @@ Has: ${checksum}`);
 			}
 		}
 		/**
-		* Deserializes the data exported via {@linkcode serialize()} and imports the data into all matching DataStore instances.  
+		* Deserializes the data exported via {@linkcode serialize()} and imports the data into all matching {@linkcode DataStore} instances.  
 		* Also triggers the migration process if the data format has changed.
 		*/
 		async deserialize(data) {
 			return this.deserializePartial(this.stores.map((s) => s.id), data);
 		}
 		/**
-		* Loads the persistent data of the DataStore instances into the in-memory cache.  
+		* Loads the persistent data of the {@linkcode DataStore} instances into the in-memory cache.  
 		* Also triggers the migration process if the data format has changed.
 		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be loaded
 		* @returns Returns a PromiseSettledResult array with the results of each DataStore instance in the format `{ id: string, data: object }`
@@ -3177,31 +3405,47 @@ Has: ${checksum}`);
 			})));
 		}
 		/**
-		* Resets the persistent and in-memory data of the DataStore instances to their default values.
+		* Resets the persistent and in-memory data of the {@linkcode DataStore} instances to their default values.
 		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be affected
 		*/
 		async resetStoresData(stores) {
 			return Promise.allSettled(this.getStoresFiltered(stores).map((store) => store.saveDefaultData()));
 		}
 		/**
-		* Deletes the persistent data of the DataStore instances.  
-		* Leaves the in-memory data untouched.  
+		* Deletes the persistent data of the {@linkcode DataStore} instances.
+		* Leaves the in-memory data untouched.
 		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be affected
 		*/
 		async deleteStoresData(stores) {
 			return Promise.allSettled(this.getStoresFiltered(stores).map((store) => store.deleteData()));
 		}
-		/** Checks if a given value is an array of SerializedDataStore objects */
+		/** Returns an array of the {@linkcode DataStore} instances managed by this DataStoreSerializer. */
+		getStores() {
+			return this.stores;
+		}
+		/**
+		* Overwrites this DataStoreSerializer instance's stores.
+		* @param stores Array of new stores for this instance to manage.
+		* @param loadData Set to true to call {@linkcode DataStoreSerializer.loadStoresData()} for the overwritten stores before resolving.
+		*/
+		async setStores(stores, loadData = false) {
+			this.unbindStoreEvents();
+			this.stores = stores;
+			this.loadedStores = /* @__PURE__ */ new Set();
+			for (const store of this.stores) this.bindStoreEvents(store);
+			if (loadData) await this.loadStoresData();
+		}
+		/** Returns the {@linkcode DataStore} instances whose IDs match the provided array or function. */
+		getStoresFiltered(stores) {
+			return this.stores.filter((s) => typeof stores === "undefined" ? true : Array.isArray(stores) ? stores.includes(s.id) : stores(s.id));
+		}
+		/** Checks if a given value is an array of SerializedDataStore objects. */
 		static isSerializedDataStoreObjArray(obj) {
 			return Array.isArray(obj) && obj.every((o) => typeof o === "object" && o !== null && "id" in o && "data" in o && "formatVersion" in o && "encoded" in o);
 		}
-		/** Checks if a given value is a SerializedDataStore object */
+		/** Checks if a given value is a SerializedDataStore object. */
 		static isSerializedDataStoreObj(obj) {
 			return typeof obj === "object" && obj !== null && "id" in obj && "data" in obj && "formatVersion" in obj && "encoded" in obj;
-		}
-		/** Returns the DataStore instances whose IDs match the provided array or function */
-		getStoresFiltered(stores) {
-			return this.stores.filter((s) => typeof stores === "undefined" ? true : Array.isArray(stores) ? stores.includes(s.id) : stores(s.id));
 		}
 	};
 	var Debouncer = class extends NanoEmitter$1 {
@@ -3301,8 +3545,8 @@ Has: ${checksum}`);
 		return func;
 	}
 	var rawConsts$1 = {
-		coreUtilsVersion: "3.7.1",
-		userUtilsVersion: "10.6.0"
+		coreUtilsVersion: "3.8.0",
+		userUtilsVersion: "11.0.0"
 	};
 	function getConst(constKey, defaultVal) {
 		const val = rawConsts$1[constKey];
@@ -3313,12 +3557,6 @@ Has: ${checksum}`);
 		CoreUtils: getConst("coreUtilsVersion", "ERR:unknown"),
 		/** Semver version string of UserUtils. */
 		UserUtils: getConst("userUtilsVersion", "ERR:unknown")
-	};
-	var PlatformError = class extends DatedError {
-		constructor(message, options) {
-			super(message, options);
-			this.name = "PlatformError";
-		}
 	};
 	function getUnsafeWindow$1() {
 		try {
@@ -3339,15 +3577,6 @@ Has: ${checksum}`);
 		setInnerHtmlUnsafe(styleElem, style);
 		document.head.appendChild(styleElem);
 		return styleElem;
-	}
-	function preloadImages(srcUrls, rejects = false) {
-		const promises = srcUrls.map((src) => new Promise((res, rej) => {
-			const image = new Image();
-			image.addEventListener("load", () => res(image), { once: true });
-			image.addEventListener("error", (evt) => rejects ? rej(evt) : res(image), { once: true });
-			image.src = src;
-		}));
-		return Promise.allSettled(promises);
 	}
 	function openInNewTab(href, background, additionalProps) {
 		try {
@@ -3376,55 +3605,6 @@ Has: ${checksum}`);
 			}, 0);
 		}
 	}
-	function interceptEvent(eventObject, eventName, predicate = () => true) {
-		var _a;
-		if (typeof window.GM === "object" && ((_a = GM == null ? void 0 : GM.info) == null ? void 0 : _a.scriptHandler) && GM.info.scriptHandler === "FireMonkey" && (eventObject === window || eventObject === getUnsafeWindow$1())) throw new PlatformError("Intercepting window events is not supported on FireMonkey due to the isolated context the userscript is forced to run in.");
-		if ("stackTraceLimit" in Error) {
-			Error.stackTraceLimit = Math.max(Number(Error.stackTraceLimit), 100);
-			if (isNaN(Number(Error.stackTraceLimit))) Error.stackTraceLimit = 100;
-		}
-		(function(original) {
-			eventObject.__proto__.addEventListener = function(...args) {
-				var _a2, _b;
-				const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a2 = args[1]) == null ? void 0 : _a2.handleEvent) != null ? _b : (() => void 0);
-				args[1] = function(...a) {
-					if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a)) return;
-					else return origListener.apply(this, a);
-				};
-				original.apply(this, args);
-			};
-		})(eventObject.__proto__.addEventListener);
-	}
-	function interceptWindowEvent(eventName, predicate = () => true) {
-		return interceptEvent(getUnsafeWindow$1(), eventName, predicate);
-	}
-	function isScrollable(element) {
-		const { overflowX, overflowY } = getComputedStyle(element);
-		return {
-			vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
-			horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
-		};
-	}
-	function observeElementProp(element, property, callback) {
-		const elementPrototype = Object.getPrototypeOf(element);
-		if (elementPrototype.hasOwnProperty(property)) {
-			const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
-			Object.defineProperty(element, property, {
-				get: function() {
-					var _a;
-					return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
-				},
-				set: function() {
-					var _a;
-					const oldValue = this[property];
-					(_a = descriptor == null ? void 0 : descriptor.set) == null || _a.apply(this, arguments);
-					const newValue = this[property];
-					if (typeof callback === "function") callback.bind(this, oldValue, newValue);
-					return newValue;
-				}
-			});
-		}
-	}
 	function getSiblingsFrame(refElement, siblingAmount, refElementAlignment = "center-top", includeRef = true) {
 		var _a, _b;
 		const siblings = [...(_b = (_a = refElement.parentNode) == null ? void 0 : _a.childNodes) != null ? _b : []];
@@ -3447,36 +3627,6 @@ Has: ${checksum}`);
 		if (!ttPolicy$1 && typeof ((_a = window == null ? void 0 : window.trustedTypes) == null ? void 0 : _a.createPolicy) === "function") ttPolicy$1 = window.trustedTypes.createPolicy("_uu_set_innerhtml_unsafe", { createHTML: (unsafeHtml) => unsafeHtml });
 		element.innerHTML = (_c = (_b = ttPolicy$1 == null ? void 0 : ttPolicy$1.createHTML) == null ? void 0 : _b.call(ttPolicy$1, html)) != null ? _c : html;
 		return element;
-	}
-	function probeElementStyle(probeStyle, element, hideOffscreen = true, parentElement = document.body) {
-		const el = element ? typeof element === "function" ? element() : element : document.createElement("span");
-		if (hideOffscreen) {
-			el.style.position = "absolute";
-			el.style.left = "-9999px";
-			el.style.top = "-9999px";
-			el.style.zIndex = "-9999";
-		}
-		el.classList.add("_uu_probe_element");
-		parentElement.appendChild(el);
-		const result = probeStyle(window.getComputedStyle(el), el);
-		setTimeout(() => el.remove(), 1);
-		return result;
-	}
-	var domReady = document.readyState !== "loading";
-	!domReady && document.addEventListener("DOMContentLoaded", () => domReady = true, { once: true });
-	function isDomLoaded() {
-		return domReady;
-	}
-	function onDomLoad$1(cb) {
-		return new Promise((res) => {
-			if (domReady) {
-				cb?.();
-				res();
-			} else document.addEventListener("DOMContentLoaded", () => {
-				cb?.();
-				res();
-			}, { once: true });
-		});
 	}
 	var defaultDialogCss = `.uu-no-select {
   user-select: none;
@@ -3862,6 +4012,100 @@ Has: ${checksum}`);
 			return dialogWrapperEl;
 		}
 	};
+	var PlatformError = class extends DatedError {
+		constructor(message, options) {
+			super(message, options);
+			this.name = "PlatformError";
+		}
+	};
+	function preloadImages(srcUrls, rejects = false) {
+		const promises = srcUrls.map((src) => new Promise((res, rej) => {
+			const image = new Image();
+			image.addEventListener("load", () => res(image), { once: true });
+			image.addEventListener("error", (evt) => rejects ? rej(evt) : res(image), { once: true });
+			image.src = src;
+		}));
+		return Promise.allSettled(promises);
+	}
+	function observeElementProp(element, property, callback) {
+		const elementPrototype = Object.getPrototypeOf(element);
+		if (elementPrototype.hasOwnProperty(property)) {
+			const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
+			Object.defineProperty(element, property, {
+				get: function() {
+					var _a;
+					return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
+				},
+				set: function() {
+					var _a;
+					const oldValue = this[property];
+					(_a = descriptor == null ? void 0 : descriptor.set) == null || _a.apply(this, arguments);
+					const newValue = this[property];
+					if (typeof callback === "function") callback.bind(this, oldValue, newValue);
+					return newValue;
+				}
+			});
+		}
+	}
+	function isScrollable(element) {
+		const { overflowX, overflowY } = getComputedStyle(element);
+		return {
+			vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
+			horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
+		};
+	}
+	function interceptEvent(eventObject, eventName, predicate = () => true) {
+		var _a;
+		if (typeof window.GM === "object" && ((_a = GM == null ? void 0 : GM.info) == null ? void 0 : _a.scriptHandler) && GM.info.scriptHandler === "FireMonkey" && (eventObject === window || eventObject === getUnsafeWindow$1())) throw new PlatformError("Intercepting window events is not supported on FireMonkey due to the isolated context the userscript is forced to run in.");
+		if ("stackTraceLimit" in Error) {
+			Error.stackTraceLimit = Math.max(Number(Error.stackTraceLimit), 100);
+			if (isNaN(Number(Error.stackTraceLimit))) Error.stackTraceLimit = 100;
+		}
+		(function(original) {
+			eventObject.__proto__.addEventListener = function(...args) {
+				var _a2, _b;
+				const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a2 = args[1]) == null ? void 0 : _a2.handleEvent) != null ? _b : (() => void 0);
+				args[1] = function(...a) {
+					if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a)) return;
+					else return origListener.apply(this, a);
+				};
+				original.apply(this, args);
+			};
+		})(eventObject.__proto__.addEventListener);
+	}
+	function interceptWindowEvent(eventName, predicate = () => true) {
+		return interceptEvent(getUnsafeWindow$1(), eventName, predicate);
+	}
+	function probeElementStyle(probeStyle, element, hideOffscreen = true, parentElement = document.body) {
+		const el = element ? typeof element === "function" ? element() : element : document.createElement("span");
+		if (hideOffscreen) {
+			el.style.position = "absolute";
+			el.style.left = "-9999px";
+			el.style.top = "-9999px";
+			el.style.zIndex = "-9999";
+		}
+		el.classList.add("_uu_probe_element");
+		parentElement.appendChild(el);
+		const result = probeStyle(window.getComputedStyle(el), el);
+		setTimeout(() => el.remove(), 1);
+		return result;
+	}
+	var domReady = document.readyState !== "loading";
+	!domReady && document.addEventListener("DOMContentLoaded", () => domReady = true, { once: true });
+	function isDomLoaded() {
+		return domReady;
+	}
+	function onDomLoad$1(cb) {
+		return new Promise((res) => {
+			if (domReady) {
+				cb?.();
+				res();
+			} else document.addEventListener("DOMContentLoaded", () => {
+				cb?.();
+				res();
+			}, { once: true });
+		});
+	}
 	var GMStorageEngine = class extends DataStoreEngine {
 		/**
 		* Creates an instance of `GMStorageEngine`.  
@@ -3902,17 +4146,6 @@ Has: ${checksum}`);
 				await globalThis.GM.deleteValue(name);
 			} catch (err) {
 				console.error(`Error deleting value for key "${name}":`, err);
-				throw err;
-			}
-		}
-		/** Deletes all values from GM storage. Use with caution! */
-		async deleteStorage() {
-			try {
-				if (!("GM" in globalThis)) throw new PlatformError("GM is not defined. Make sure to run this in a userscript environment and that the necessary grants are set.");
-				const keys = await globalThis.GM.listValues();
-				for (const key of keys) await globalThis.GM.deleteValue(key);
-			} catch (err) {
-				console.error("Error deleting storage:", err);
 				throw err;
 			}
 		}
@@ -4305,6 +4538,7 @@ Has: ${checksum}`);
 		* tr.addTranslations("en", {
 		*   hello: "Hello, %1!",
 		* });
+		* tr.addTransform(tr.transforms.percent);
 		* const t = tr.useTr("en");
 		* t("hello", "John"); // "Hello, John!"
 		* ```
@@ -7666,6 +7900,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"icon-new": "icons/new.svg",
 			"icon-prompt": "icons/help.svg",
 			"icon-reload": "icons/refresh.svg",
+			"icon-shield_info": "icons/shield_info.svg",
+			"icon-shield_question": "icons/shield_question.svg",
 			"icon-history": "icons/history.svg",
 			"icon-skip_to": "icons/skip_to.svg",
 			"icon-speed": "icons/speed.svg",
@@ -7939,21 +8175,21 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	* @deprecated This object was reworked when the build process was migrated to vite.
 	*/
 	var rawConsts = {};
-	/** Path to the GitHub repo */
+	/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
 	var repo = "Sv443/BetterYTM";
-	/** The mode in which the script was built (production or development) */
+	/** The mode in which the script was built (production or development). */
 	var mode$1 = "development";
-	/** The branch to use in various URLs that point to the GitHub repo */
+	/** The branch to use in various URLs that point to the GitHub repo. */
 	var branch$1 = "develop";
-	/** Which host the userscript was installed from */
+	/** Which host the userscript was installed from. */
 	var host$1 = "github";
-	/** The build number of the userscript */
-	var buildNumber$1 = "5370ff5d";
-	/** When the script was built, as a UNIX timestamp */
-	var buildTimestamp = 1784880867459;
-	/** The source of the assets - github, jsdelivr or local */
+	/** The build number of the userscript. */
+	var buildNumber$1 = "d199e53b";
+	/** When the script was built, as a UNIX timestamp. */
+	var buildTimestamp = 1786837701923;
+	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
-	/** The port of the dev server */
+	/** The port of the dev server. */
 	var devServerPort = 8710;
 	/** URL to the changelog file */
 	var changelogUrl = `https://raw.githubusercontent.com/${repo}/develop/changelog.md?build=${buildNumber$1}`;
@@ -8536,7 +8772,11 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		formatVersion: 0,
 		engine: new GMStorageEngine(),
 		memoryCache: false,
-		compressionFormat: null
+		compressionFormat: null,
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	/** Checks if there are active alerts and shows a prompt for each of them. */
 	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
@@ -9093,6 +9333,11 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				"name": "kcangny",
 				"url": "https://github.com/kcangny",
 				"contributions": ["Turkish translations"]
+			},
+			{
+				"name": "canarado",
+				"url": "https://github.com/canarado",
+				"contributions": ["Version checking code"]
 			}
 		],
 		bugs: { "url": "https://github.com/Sv443/BetterYTM/issues" },
@@ -9150,8 +9395,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
 		},
 		dependencies: {
-			"@sv443-network/coreutils": "3.7.1",
-			"@sv443-network/userutils": "10.6.0",
+			"@sv443-network/coreutils": "3.8.0",
+			"@sv443-network/userutils": "11.0.0",
 			"compare-versions": "6.1.1",
 			"dompurify": "3.3.3",
 			"marked": "17.0.4",
@@ -9449,7 +9694,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}
 			globserversReady = true;
 			emitInterface("bytm:observersReady");
-			getUnsafeWindow$1().BYTM.globservers = globservers;
 		} catch (err) {
 			loggers.observer.error("Failed to initialize observers:", err);
 		}
@@ -10391,7 +10635,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		migrations: { 2: (oldData) => ({ channels: oldData.channels.map((ch) => ({
 			...ch,
 			id: isValidChannelId(ch.id.trim()) ? ch.id.trim() : `@${ch.id.trim()}`
-		})) }) }
+		})) }) },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	var autoLikeStoreLoaded = false;
 	/** Inits the auto-like DataStore instance */
@@ -12582,7 +12830,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		engine: new GMStorageEngine(),
 		compressionFormat: compressionFormat$1,
 		memoryCache: false,
-		defaultData: { entries: [] }
+		defaultData: { entries: [] },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	async function deleteExpiredAlbumArtCacheEntries() {
 		const ttl = 1e3 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");
@@ -13074,29 +13326,56 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	var serializer;
 	/** Central serializer for all data stores, including the caches and other stores that have volatile enough data */
 	var fullSerializer;
-	/** Array of all data stores that are included in the DataStoreSerializer instance */
-	var getSerializerStores = () => [
+	/** Set of IDs of all {@linkcode DataStore} instances whose data has finished loading at least once. */
+	var loadedStores = /* @__PURE__ */ new Set();
+	/** Wraps an array of {@linkcode DataStore} instances to attach event listeners. */
+	function wrapStores(stores) {
+		for (const store of stores) store.once("loadData", () => loadedStores.add(store.id));
+		return stores;
+	}
+	/**
+	* Array of all {@linkcode DataStore} instances that are included in the crucial-data-only DataStoreSerializer instance.  
+	* Call function to lazy-load stores, as import order is all kinds of messed up.  
+	* This is only truly safe to call after `bytm:allReady`!
+	*/
+	var getSerializerStores = () => wrapStores([
 		configStore,
 		autoLikeStore,
 		alertsStore
-	];
-	/** Array of all data stores, including the caches and other stores that have volatile enough data */
-	var getSerializerStoresFull = () => [
+	]);
+	/**
+	* Array of all {@linkcode DataStore} instances, including the caches and other stores that store volatile-ish data.  
+	* Call function to lazy-load stores, as import order is all kinds of messed up.  
+	* This is only truly safe to call after `bytm:allReady`!
+	*/
+	var getSerializerStoresFull = () => wrapStores([
 		...getSerializerStores(),
 		artCacheStore,
 		lyricsCacheStore,
 		resourceCacheStore
-	];
-	/** Returns the serializer for all data stores. Doesn't include the full list of stores by default. */
+	]);
+	/** Returns the DataStoreSerializer instance for all DataStore instances that manage crucial data. Doesn't include the full list of stores (caches, etc.) by default. */
 	function getDSSerializer(full = false) {
 		const dsOpts = {
-			addChecksum: true,
-			ensureIntegrity: true,
+			addChecksum: false,
+			ensureIntegrity: false,
 			stringifyData: false
 		};
 		if (!full) return serializer ??= new DataStoreSerializer$1(getSerializerStores(), dsOpts);
 		else return fullSerializer ??= new DataStoreSerializer$1(getSerializerStoresFull(), dsOpts);
 	}
+	window.addEventListener("bytm:ready", async () => {
+		const promises = [];
+		const stores = getSerializerStoresFull();
+		for (const store of stores) {
+			if (loadedStores.has(store.id) || !store.memoryCache) continue;
+			loadedStores.add(store.id);
+			promises.push(store.loadData());
+		}
+		await Promise.all(promises);
+		emitInterface("bytm:dataStoreSerializerLoaded");
+		loggers.init.info(`Lazy-loaded all ${stores.length} DataStore instances.`);
+	});
 	/**
 	* Downloads the current data stores as a single file.
 	* @param useEncoding Whether to encode the data using the DataStoreSerializer's encoding method. Defaults to `true`.
@@ -13491,7 +13770,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				viewed: Math.floor(entry.viewed / 1e3)
 			}));
 			return oldData;
-		} }
+		} },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	async function initLyricsCache() {
 		const data = await lyricsCacheStore.loadData();
@@ -13689,7 +13972,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	//#endregion
 	//#region src/features/versionCheck.ts
-	var releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 	/** Initializes the version check feature */
 	async function initVersionCheck() {
 		try {
@@ -13709,15 +13991,17 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		await GM.setValue("bytm-version-check", Date.now());
 		const res = await sendRequest({
 			method: "GET",
-			url: releaseURL
+			url: `https://github.com/${repo}/releases/latest`
 		});
 		const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({
 			type: "alert",
 			message: t("no_new_version_found")
 		}) : void 0;
-		const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
-		if (!latestTag) return await noNewVerFound();
-		loggers.misc.info("Version check - current version:", scriptInfo$1.version, "- latest version:", latestTag, LogLevel.Info);
+		let latestTag;
+		const { hostname, pathname } = new URL(res.finalUrl);
+		if (hostname === "github.com" && pathname.startsWith(`/Sv443/BetterYTM/releases/tag/`)) latestTag = pathname.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+		if (!latestTag || !validateStrict(latestTag)) return await noNewVerFound();
+		loggers.misc.info("Version check results - current version:", scriptInfo$1.version, "- latest version:", latestTag, "- from URL:", res.finalUrl, LogLevel.Info);
 		if (compare(scriptInfo$1.version, latestTag, "<")) {
 			await (await getVersionNotifDialog({ latestTag })).open();
 			return;
@@ -14806,7 +15090,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		/** Indicates that the feature is only configurable in advanced mode. */
 		advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", void 0, t("advanced_feature")),
 		/** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
-		newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", void 0, t("feature_is_new"))
+		newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", void 0, t("feature_is_new")),
+		/** Indicates a feature is privacy-sensitive as it may expose personally identifiable information about the user. */
+		privacy: async () => await getAdornHtml("bytm-privacy-icon", t("feature_is_privacy_sensitive"), "icon-shield_info", void 0, t("feature_is_privacy_sensitive"))
 	};
 	/** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
 	var adornmentOrder = new Map([
@@ -14816,7 +15102,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		[adornments.globe, 3],
 		[adornments.reload, 4],
 		[adornments.advanced, 5],
-		[adornments.newFeature, 6]
+		[adornments.newFeature, 6],
+		[adornments.privacy, 7]
 	]);
 	/** Creates an HTML string for the given adornment properties */
 	async function getAdornHtml(className, title, resource, extraAttributes, clickDialogText) {
@@ -15078,6 +15365,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "versionCheck",
 			supportedSites: ["ytm", "yt"],
 			since: "2.0.0",
+			default: void 0,
 			click: () => doVersionCheck(true)
 		},
 		numbersFormat: {
@@ -15131,6 +15419,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "resetData",
 			supportedSites: ["ytm", "yt"],
 			since: "3.0.0",
+			default: void 0,
 			click: promptResetConfig,
 			adornments: [adornments.reload]
 		},
@@ -15140,6 +15429,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "resetData",
 			supportedSites: ["ytm", "yt"],
 			since: "2.2.0",
+			default: void 0,
 			click: async () => {
 				if (await showPrompt({
 					type: "confirm",
@@ -15260,8 +15550,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "thumbnailOverlay",
 			supportedSites: ["ytm"],
 			since: "3.2.0",
+			tags: ["privacy", "network"],
 			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [
+				adornments.ytmOnly,
+				adornments.reload,
+				adornments.privacy
+			]
 		},
 		thumbnailOverlayBehavior: {
 			type: "select",
@@ -15413,8 +15708,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "votes",
 			supportedSites: ["ytm"],
 			since: "2.1.0",
+			tags: ["privacy", "network"],
 			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [
+				adornments.ytmOnly,
+				adornments.reload,
+				adornments.privacy
+			]
 		},
 		swapLikeDislikeButtons: {
 			type: "toggle",
@@ -15520,8 +15820,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "geniusLyrics",
 			supportedSites: ["ytm"],
 			since: "0.2.0",
+			tags: ["privacy", "network"],
 			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [
+				adornments.ytmOnly,
+				adornments.reload,
+				adornments.privacy
+			]
 		},
 		errorOnLyricsNotFound: {
 			type: "toggle",
@@ -15596,6 +15901,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "lyricsCache",
 			supportedSites: ["ytm"],
 			since: "2.0.0",
+			default: void 0,
 			async click() {
 				const entries = getLyricsCache().length;
 				if (await showPrompt({
@@ -15946,6 +16252,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			group: "autoLikeChannels",
 			supportedSites: ["ytm", "yt"],
 			since: "2.1.0",
+			default: void 0,
 			click: () => getAutoLikeDialog().then((d) => d.open())
 		},
 		autoLikeChannelToggleBtn: {
@@ -16770,7 +17077,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		engine: new GMStorageEngine(),
 		defaultData: cfgDefaultData,
 		migrations: cfgMigrations,
-		compressionFormat: compressionFormat$1
+		compressionFormat: compressionFormat$1,
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	/** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 	async function initConfig() {
@@ -16865,6 +17176,23 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function clearConfig() {
 		await configStore.deleteData();
 		loggers.data.info("Deleted config from persistent storage");
+	}
+	/**
+	* Sets all features in the config that match *all* the provided `tags` with the corresponding feature type value in the `setFeatureValues` object.  
+	* Returns an object that maps modified feature keys to their new values.
+	*/
+	async function configSetFeatsWithTags(tags, setFeatureValues) {
+		const modified = {};
+		const features = getFeatures();
+		for (const [ftKey, ftInfo] of Object.entries(featInfo)) {
+			if (!("tags" in ftInfo) || "tags" in ftInfo && !tags.every((tag) => ftInfo.tags.includes(tag))) continue;
+			if (typeof setFeatureValues[ftInfo.type] !== "undefined") {
+				features[ftKey] = setFeatureValues[ftInfo.type];
+				modified[ftKey] = setFeatureValues[ftInfo.type];
+			}
+		}
+		await setFeatures(features);
+		return modified;
 	}
 	//#endregion
 	//#region src/features/behavior.ts
@@ -17245,6 +17573,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					type: "discoverSessionsReply",
 					data: {
 						sessionId: getSessionId(),
+						buildNumber: buildNumber$1,
+						version: scriptInfo$1.version,
 						title: document.title,
 						domain: getDomain(),
 						initTime
@@ -17436,7 +17766,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		formatVersion: 0,
 		compressionFormat: null,
 		memoryCache: false,
-		defaultData: { entries: [] }
+		defaultData: { entries: [] },
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
 	});
 	var reloadTabEntryMaxTTL = 1e3 * 60 * 60 * 24;
 	/** Returns the "reload tab" data for the current session, or null if there is no data for the current session or sessionStorage is unavailable. */
@@ -17588,6 +17922,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			resources: {},
 			created: Date.now(),
 			cacheKey: resourceCacheKey
+		},
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
 		}
 	});
 	/** Resources with these prefixes are cached in the resource cache */
@@ -18105,8 +18443,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		if (!welcomeDialog) {
 			welcomeDialog = new BytmDialog({
 				id: "welcome",
-				width: 700,
-				height: 500,
+				width: 800,
+				height: 600,
 				closeBtnEnabled: true,
 				closeOnBgClick: false,
 				closeOnEscPress: true,
@@ -18139,33 +18477,82 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function renderBody() {
 		const contentWrapper = document.createElement("div");
 		contentWrapper.id = "bytm-welcome-menu-content-wrapper";
-		const localeCont = document.createElement("div");
-		localeCont.id = "bytm-welcome-menu-locale-cont";
-		const localeImg = document.createElement("img");
-		localeImg.id = "bytm-welcome-menu-locale-img";
-		localeImg.classList.add("bytm-no-select");
-		localeImg.src = await getResourceUrl("icon-globe");
-		const localeSelectElem = document.createElement("select");
-		localeSelectElem.id = "bytm-welcome-menu-locale-select";
-		for (const [locale, { name }] of Object.entries(locales_default)) {
-			const localeOptionElem = document.createElement("option");
-			localeOptionElem.value = locale;
-			localeOptionElem.textContent = name;
-			localeSelectElem.appendChild(localeOptionElem);
+		const horSegmentCont = document.createElement("div");
+		horSegmentCont.id = "bytm-welcome-menu-horizontal-segment-container";
+		const getHorSegmentElements = async (imgKey) => {
+			const segCont = document.createElement("div");
+			segCont.classList.add("bytm-welcome-menu-segment-cont");
+			const segImg = document.createElement("img");
+			segImg.classList.add("bytm-welcome-menu-horizontal-segment-img", "bytm-no-select");
+			segImg.src = await getResourceUrl(imgKey);
+			return [segCont, segImg];
+		};
+		{
+			const [localeCont, localeImg] = await getHorSegmentElements("icon-globe");
+			localeImg.id = "bytm-welcome-menu-locale-img";
+			const localeSelectElem = document.createElement("select");
+			localeSelectElem.id = "bytm-welcome-menu-locale-select";
+			localeSelectElem.classList.add("bytm-welcome-menu-select");
+			for (const [locale, { name, emoji }] of Object.entries(locales_default)) {
+				const optionElem = document.createElement("option");
+				optionElem.value = locale;
+				optionElem.textContent = `${emoji} ${name}`;
+				localeSelectElem.appendChild(optionElem);
+			}
+			localeSelectElem.value = getFeature("locale");
+			localeSelectElem.addEventListener("change", async () => {
+				const selectedLocale = localeSelectElem.value;
+				const feats = Object.assign({}, getFeatures());
+				feats.locale = selectedLocale;
+				setFeatures(feats);
+				await initTranslations(selectedLocale);
+				setLocale(selectedLocale);
+				retranslateWelcomeMenu();
+			});
+			localeImg.title = localeSelectElem.title = t("welcome_menu_language_tooltip");
+			localeCont.appendChild(localeImg);
+			localeCont.appendChild(localeSelectElem);
+			horSegmentCont.appendChild(localeCont);
 		}
-		localeSelectElem.value = getFeature("locale");
-		localeSelectElem.addEventListener("change", async () => {
-			const selectedLocale = localeSelectElem.value;
-			const feats = Object.assign({}, getFeatures());
-			feats.locale = selectedLocale;
-			setFeatures(feats);
-			await initTranslations(selectedLocale);
-			setLocale(selectedLocale);
-			retranslateWelcomeMenu();
-		});
-		localeCont.appendChild(localeImg);
-		localeCont.appendChild(localeSelectElem);
-		contentWrapper.appendChild(localeCont);
+		{
+			const [privacyCont, privacyImg] = await getHorSegmentElements("icon-shield_question");
+			privacyImg.id = "bytm-welcome-menu-privacy-img";
+			const privacySelectElem = document.createElement("select");
+			privacySelectElem.id = "bytm-welcome-menu-privacy-select";
+			privacySelectElem.classList.add("bytm-welcome-menu-select");
+			privacyImg.title = privacySelectElem.title = t("welcome_menu_privacy_tooltip");
+			const options = [{
+				value: "default",
+				label: t("privacy_mode.default")
+			}, {
+				value: "enhanced",
+				label: t("privacy_mode.enhanced")
+			}];
+			for (const { value, label } of options) {
+				const optionElem = document.createElement("option");
+				optionElem.id = `bytm-welcome-menu-privacy-option-${value}`;
+				optionElem.value = value;
+				optionElem.textContent = label;
+				privacySelectElem.appendChild(optionElem);
+			}
+			privacySelectElem.value = "default";
+			privacySelectElem.addEventListener("change", async () => {
+				const isPrivacy = privacySelectElem.value === "enhanced";
+				const modifiedConf = await configSetFeatsWithTags(["privacy"], {
+					number: isPrivacy ? 0 : 1,
+					toggle: !isPrivacy
+				});
+				forceEmitSiteEvent("recreateCfgMenu");
+				loggers.init.log(`Toggled selection of privacy-sensitive features ${isPrivacy ? "off" : "on"} - modified config:`, modifiedConf, LogLevel.Info);
+			});
+			privacyCont.appendChild(privacyImg);
+			privacyCont.appendChild(privacySelectElem);
+			horSegmentCont.appendChild(privacyCont);
+		}
+		contentWrapper.appendChild(horSegmentCont);
+		const hrElem = document.createElement("hr");
+		hrElem.classList.add("bytm-hr");
+		contentWrapper.appendChild(hrElem);
 		const textCont = document.createElement("div");
 		textCont.id = "bytm-welcome-menu-text-cont";
 		const textElem = document.createElement("p");
@@ -18227,7 +18614,25 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			"#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo$1.name)),
 			"#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo$1.name, ...getLink(`${package_default.hosts.greasyfork}/feedback`), ...getLink(package_default.hosts.openuserjs))),
 			"#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(package_default.funding.url))),
-			"#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(package_default.bugs.url)))
+			"#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(package_default.bugs.url))),
+			"#bytm-welcome-menu-privacy-img": (e) => {
+				e.title = t("welcome_menu_privacy_tooltip");
+			},
+			"#bytm-welcome-menu-privacy-select": (e) => {
+				e.title = t("welcome_menu_privacy_tooltip");
+			},
+			"#bytm-welcome-menu-privacy-option-default": (e) => {
+				e.textContent = t(`privacy_mode.${e.value}`);
+			},
+			"#bytm-welcome-menu-privacy-option-enhanced": (e) => {
+				e.textContent = t(`privacy_mode.${e.value}`);
+			},
+			"#bytm-welcome-menu-locale-img": (e) => {
+				e.title = t("welcome_menu_language_tooltip");
+			},
+			"#bytm-welcome-menu-locale-select": (e) => {
+				e.title = t("welcome_menu_language_tooltip");
+			}
 		};
 		for (const [selector, fn] of Object.entries(changes)) {
 			const el = document.querySelector(selector);
@@ -18311,6 +18716,7 @@ Build #${buildNumber$1} (dev mode)
 			sandboxMode: GM.info?.sandboxMode ?? null
 		},
 		durations: {},
+		featureStart: 0,
 		featureDurations: {},
 		start: 0,
 		sinceStart: {}
@@ -18330,13 +18736,13 @@ Build #${buildNumber$1} (dev mode)
 	function preInit() {
 		try {
 			initTimings.start = Date.now();
-			if (["FireMonkey"].includes(GM.info?.scriptHandler ?? "")) return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+			if (["FireMonkey"].includes(GM.info?.scriptHandler ?? "")) return alert(`⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`);
 			setLogLevel(defaultLogLevel);
 			initBroadcast();
 			preInitInterface();
 			preInitPlugins();
 			if (getDomain() === "ytm") initBeforeUnloadHook();
-			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object! (this doesn't actually break the script, but it's still something that should be fixed)");
+			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object??????? (this doesn't actually break the script, but it's still funny it happened)");
 			initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
 			init();
 		} catch (err) {
@@ -18461,7 +18867,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				if (feats.disableDarkReaderSites !== "none") ftInit.push(["disableDarkReaderSites", disableDarkReader()]);
 			}
 			emitInterface("bytm:featureInitStarted");
-			const initStartTs = Date.now();
+			const initStartTs = initTimings.featureStart = Date.now();
 			const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8e3;
 			const initializedFeats = [];
 			const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
@@ -18480,7 +18886,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				emitInterface("bytm:allReady");
 				initTimings.sinceStart.allReady = Date.now() - initStartTs;
 				if (initializedFeats.length < ftInit.length) loggers.init.errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
-				else loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+				else loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints in ${Math.floor(Date.now() - initStartTs)}ms`, LogLevel.Info);
 			});
 			getUnsafeWindow$1().dispatchEvent(new Event("resize", {
 				bubbles: true,
@@ -18787,6 +19193,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
+				buildNumber: "d199e53b",
+				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
 				initTime
@@ -18799,36 +19207,43 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				const columns = [
 					"#",
 					"Self?",
-					"Session ID:",
-					"TxID:",
 					"Domain:",
 					"Initialized:",
+					"Session ID:",
+					"TxID:",
+					"Version:",
+					"Build Number:",
 					"Session Title:"
 				];
 				const columnAlign = [
-					"left",
-					"left",
-					"left",
+					"right",
 					"left",
 					"left",
 					"right",
+					"left",
+					"left",
+					"left",
+					"left",
 					"left"
 				];
-				const columnStyle = "color: #db3; font-weight: bold;";
-				const resetStyle = "color: inherit; font-weight: inherit;";
-				const styles = [];
-				for (let i = 0; i < columns.length; i++) styles.push(columnStyle, resetStyle);
-				console.log(`[${scriptInfo$1.name}/#DEBUG] Collected information from ${sessions.length} open ${autoPlural$2("tab", sessions)}:\n${createTable$1([columns, ...sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
-					const initSince = secsToTimeStr$1(Math.floor((Date.now() - initTime) / 1e3)).padStart(5, "0");
+				const styles = columns.reduce((a) => [
+					...a,
+					"color: #db3; font-weight: bold;",
+					"color: inherit; font-weight: inherit;"
+				], []);
+				console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${autoPlural$2("tab", sessions)}:\n${createTable$1([columns, ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
+					const initSince = secsToTimeStr$1(Math.floor((Date.now() - initTime) / 1e3)).padStart(4, "0");
 					return [
 						i + 1,
 						txID === broadcastTxID ? "Yes" : "No",
-						sessionId,
-						txID,
 						domain,
 						`${initSince} ago`,
+						sessionId,
+						txID,
+						version,
+						buildNumber,
 						title
-					];
+					].map((v) => String(v));
 				})], {
 					columnAlign,
 					applyCellStyle(i) {
