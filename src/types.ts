@@ -614,6 +614,12 @@ export type FeatureCategory =
   | "integrations"
   | "plugins";
 
+/** Loose list of predefined tags for features. */
+export type FeatureTag = LooseUnion<
+  | "privacy" // TODO: add option to welcome menu to turn all privacy-sensitive features off
+  | "network" // fetches remote data
+>;
+
 /** One option in a select input. */
 export type SelectOption = {
   value: string | number;
@@ -765,6 +771,8 @@ export type FeatureInfoEntry = {
     supportedSites: Domain[];
     /** Semver version since when this feature was added. Responsible for showing the "new feature" icon in the config menu. */
     since: `${number}.${number}.${number}` | `${number}.${number}.${number}-${string}`;
+    /** Array of extra tags for this feature. */
+    tags?: FeatureTag[];
     /**
      * String that may contain HTML that will be the help text for this feature.  
      * Specifying a function may be useful for pluralizing or inserting values into the translation at runtime.
