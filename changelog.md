@@ -25,6 +25,7 @@
   - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
   - Refactored logging system to use new `Logger` class instances.
   - Added "privacy-sensitive" feature adornment icon (`icon-shield_info` resource) to mark features that are tagged with the `privacy` tag.
+  - Made the "reload tab" feature adornment icon also show up when advanced mode is turned off.
   - Added new properties to the object returned by `BYTM.getInternals()`:
     - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
     - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.
