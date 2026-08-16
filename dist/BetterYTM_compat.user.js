@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@74dc800f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6a9b66ea/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 16 Aug 2026 01:17:26 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 16 Aug 2026 03:04:13 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 74dc800f                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 6a9b66ea                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 6Q9vc1PMRwNS                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 9wmTE0O7ZUn6                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -8184,9 +8184,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "74dc800f";
+	var buildNumber$1 = "6a9b66ea";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1786843046855;
+	var buildTimestamp = 1786849453801;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -12975,19 +12975,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						indicatorElem.style.display = "none";
 						indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
 					}
-					const thumbImgBgElem = getFeature("thumbnailOverlayBlurredDuplicateBackground") ? document.createElement("img") : void 0;
-					if (thumbImgBgElem) {
-						thumbImgBgElem.id = "bytm-thumbnail-overlay-bg-img";
-						thumbImgBgElem.classList.add("bytm-thumbnail-overlay-img");
-						thumbImgBgElem.role = "presentation";
-						thumbImgBgElem.ariaHidden = "true";
-					}
 					const thumbImgElem = document.createElement("img");
 					thumbImgElem.id = "bytm-thumbnail-overlay-img";
 					thumbImgElem.classList.add("bytm-thumbnail-overlay-img");
 					thumbImgElem.role = "presentation";
 					thumbImgElem.ariaHidden = "true";
-					thumbImgBgElem && overlayElem.appendChild(thumbImgBgElem);
 					overlayElem.appendChild(thumbImgElem);
 					playerEl.appendChild(overlayElem);
 					indicatorElem && playerEl.appendChild(indicatorElem);
@@ -15841,15 +15833,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			default: true,
 			adornments: [adornments.ytmOnly, adornments.reload]
 		},
-		thumbnailOverlayBlurredDuplicateBackground: {
-			type: "toggle",
-			category: "layout",
-			group: "thumbnailOverlay",
-			supportedSites: ["ytm"],
-			since: "3.2.0",
-			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
-		},
 		thumbnailOverlayITunesImgRes: {
 			type: "slider",
 			category: "layout",
@@ -17265,7 +17248,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			oldData.thumbnailOverlayEnabled = oldData.thumbnailOverlayBehavior !== "never";
 			oldData.autoScrollToActiveSongEnabled = oldData.autoScrollToActiveSongMode !== "never";
 			return useNewDefaults(oldData, [
-				"thumbnailOverlayBlurredDuplicateBackground",
 				"configMenuFocusContentButtonEnabled",
 				"lyricsSearchPromptHotkeyEnabled",
 				"lyricsSearchPromptHotkey",
@@ -19221,7 +19203,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "74dc800f",
+				buildNumber: "6a9b66ea",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
