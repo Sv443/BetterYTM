@@ -16,6 +16,8 @@ import { closeToast, showIconToast } from "@comp/toast.ts";
 import { getAutoLikeDialog } from "@dialog/autoLike.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { getPluginListDialog } from "@dialog/pluginList.ts";
+import { getWelcomeDialog } from "@dialog/welcome.ts";
+import { closeCfgMenu } from "@menu/menu.ts";
 import langMapping from "@asset/locales.json" with { type: "json" };
 import packageJson from "@root/package.json" with { type: "json" };
 
@@ -290,6 +292,18 @@ export const featInfo = {
     default: "all",
     advanced: true,
     adornments: [adornments.advanced, adornments.reload],
+  },
+  openWelcomeMenu: {
+    type: "button",
+    category: "general",
+    group: "bytmInternal",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: undefined,
+    click: async () => {
+      closeCfgMenu();
+      await (await getWelcomeDialog()).open();
+    },
   },
   versionCheck: {
     type: "toggle",

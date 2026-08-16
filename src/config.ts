@@ -291,6 +291,9 @@ export const cfgMigrations: DataMigrationsDict = {
       "configMenuFocusContentButtonEnabled",
       "lyricsSearchPromptHotkeyEnabled",
       "lyricsSearchPromptHotkey",
+      "defaultObserverDebounce",
+      "globalAlertMode",
+      "openWelcomeMenu",
     ]);
   },
 } as const satisfies DataMigrationsDict;
@@ -532,4 +535,19 @@ export async function configSetFeatsWithTags(tags: FeatureTag[], setFeatureValue
   await setFeatures(features);
 
   return modified;
+}
+
+/** Returns a subset of the feature config where all properties have *all* the given `tags`. */
+export function getFeaturesWithTags(tags: FeatureTag[]): Partial<FeatureConfig> {
+  const feats: Partial<FeatureConfig> = {};
+
+  for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
+    if(!("tags" in ftInfo) || ("tags" in ftInfo && !tags.every(tag => (ftInfo.tags as string[]).includes(tag))))
+      continue;
+
+    // @ts-expect-error
+    feats[ftKey] = getFeature(ftKey);
+  }
+
+  return feats;
 }

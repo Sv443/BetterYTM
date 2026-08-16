@@ -831,6 +831,8 @@ export interface FeatureConfig {
   defaultObserverDebounce: number;
   /** Whether to show global alert messages and which ones to show */
   globalAlertMode: "never" | "all" | "importantOnly";
+  /** Button that shows the welcome menu again. */
+  openWelcomeMenu: undefined;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Button to reset every DataStore instance to their default values */

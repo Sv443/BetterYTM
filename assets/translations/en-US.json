@@ -557,6 +557,10 @@
   "feature_helptext.defaultObserverDebounce": "This time dictates how often the script is able to check for changes in the page's structure, and how quickly it can react to them.\nSetting it to a lower value can make the script react faster, but will also increase CPU usage.\nIf the site is feeling slow or laggy, try increasing this value.",
   "feature_desc.globalAlertMode": "When to show global alert dialogs for important notifications",
   "feature_helptext.globalAlertMode": "Global alert dialogs are modal dialogs that appear in the center of the screen and block interaction with the rest of the page until dismissed. They are used for important notifications that require immediate attention, such as critical security vulnerabilities or important updates.\nWith this option you can choose when to show these global alert dialogs.",
+  "feature_desc.openWelcomeMenu": "Open the welcome menu",
+  "feature_btn.openWelcomeMenu": "Open",
+  "feature_btn.openWelcomeMenu_running": "Opening...",
+  "feature_helptext.openWelcomeMenu": "Closes the configuration menu and opens the welcome menu that was shown when you used BetterYTM for the first time.",
 
   "feature_desc.locale": "Language",
   "feature_desc.localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",
