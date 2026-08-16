@@ -287,7 +287,6 @@ export const cfgMigrations: DataMigrationsDict = {
     oldData.autoScrollToActiveSongEnabled = oldData.autoScrollToActiveSongMode !== "never";
 
     return useNewDefaults(oldData, [
-      "thumbnailOverlayBlurredDuplicateBackground",
       "configMenuFocusContentButtonEnabled",
       "lyricsSearchPromptHotkeyEnabled",
       "lyricsSearchPromptHotkey",

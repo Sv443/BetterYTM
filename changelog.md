@@ -4,7 +4,6 @@
 <!-- #region 3.2.0 -->
 ## 3.2.0
 - **New Features:**
-  - 🎵 Added a feature to show a second, blurred duplicate of the thumbnail image in the thumbnail overlay as a background.
   - Added Turkish translations (by [@kcangny](https://github.com/kcangny)).
   - Added a configuration option for the global alerts system.
   - Added an extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.

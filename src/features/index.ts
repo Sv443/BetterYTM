@@ -528,15 +528,6 @@ export const featInfo = {
     default: true,
     adornments: [adornments.ytmOnly, adornments.reload],
   },
-  thumbnailOverlayBlurredDuplicateBackground: {
-    type: "toggle",
-    category: "layout",
-    group: "thumbnailOverlay",
-    supportedSites: ["ytm"],
-    since: "3.2.0",
-    default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
-  },
   thumbnailOverlayITunesImgRes: {
     type: "slider",
     category: "layout",

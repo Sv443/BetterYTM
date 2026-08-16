@@ -880,21 +880,12 @@ export async function initThumbnailOverlay() {
           indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
         }
 
-        const thumbImgBgElem = getFeature("thumbnailOverlayBlurredDuplicateBackground") ? document.createElement("img") : undefined;
-        if(thumbImgBgElem) {
-          thumbImgBgElem.id = "bytm-thumbnail-overlay-bg-img";
-          thumbImgBgElem.classList.add("bytm-thumbnail-overlay-img");
-          thumbImgBgElem.role = "presentation";
-          thumbImgBgElem.ariaHidden = "true";
-        }
-
         const thumbImgElem = document.createElement("img");
         thumbImgElem.id = "bytm-thumbnail-overlay-img";
         thumbImgElem.classList.add("bytm-thumbnail-overlay-img");
         thumbImgElem.role = "presentation";
         thumbImgElem.ariaHidden = "true";
 
-        thumbImgBgElem && overlayElem.appendChild(thumbImgBgElem);
         overlayElem.appendChild(thumbImgElem);
         playerEl.appendChild(overlayElem);
         indicatorElem && playerEl.appendChild(indicatorElem);

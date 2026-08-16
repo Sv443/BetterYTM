@@ -386,7 +386,6 @@
   "feature_desc.thumbnailOverlayBehavior": "Video öğesini en yüksek çözünürlükteki küçük resmiyle ne zaman otomatik olarak değiştirmeli",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Küçük resmi manuel olarak açmak/kapatmak için medya kontrollerine bir tuş ekleyin",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "Bu tuş küçük resmi manuel olarak açık ve kapalı olarak değiştirmenizi sağlar. Önizleme değiştirme seçeneği \"asla\" olarak ayarlanmışsa bu durumdan etkilenmez.\nYeni bir video veya şarkı çalmaya başladığında, varsayılan durum geri yüklenecektir.\nKüçük resmi en yüksek kalitede, yeni sekmede açmak için tıklarken shifte basılı tutun ya da fare tekerleğine tıklayın.",
-  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Tam ekran oynatıcıda siyah çubuklar yerine küçük resmin bulanık bir kopyasını göster",
   "feature_desc.thumbnailOverlayITunesImgRes": "Apple Music / iTunes albüm kapağının kalitesi",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Önbellekte tutulan maksimum albüm kapağı sayısı",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "Sağlayıcıya giden istekleri azaltmak için dinlediğiniz şarkıların albüm kapakları önbellekte depolanır.\nBu özellik, önbellekte saklanacak maksimum albüm kapağı sayısını belirlemenizi sağlar.\nSınıra ulaşıldığında; en eski girdiler, yenilerine yer açmak için silinir.",

@@ -375,7 +375,6 @@
   "feature_desc.thumbnailOverlayBehavior": "何时自动用最高分辨率的缩略图替换视频元素",
   "feature_desc.thumbnailOverlayToggleBtnShown": "在媒体控件中添加一个按钮，以手动切换缩略图",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "如果您希望能够手动切换缩略图叠加而不是自动切换，您可以禁用自动应用缩略图而启用此按钮。",
-  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "在全屏播放器中显示模糊的缩略图副本，而不是黑条",
   "feature_desc.thumbnailOverlayITunesImgRes": "Apple Music 缩略图的分辨率（以像素为单位）",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Apple Music 封面图缓存的最大条目数",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "为减少对 Apple Music 的请求数，封面图 URL 会被缓存。该选项允许设置缓存的最大条目数。",

@@ -386,7 +386,6 @@
   "feature_desc.thumbnailOverlayBehavior": "Quando substituir automaticamente o elemento de vídeo pela miniatura na maior resolução",
   "feature_desc.thumbnailOverlayToggleBtnShown": "Adicionar um botão aos controles de mídia para alternar manualmente a miniatura",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "Este botão permite alternar a miniatura manualmente. Não é afetado se a substituição de miniatura estiver definida como \"nunca\".\nQuando um novo vídeo/música começa, o estado padrão é restaurado.\nSegure shift ao clicar ou pressione o botão do meio do mouse para abrir a miniatura em alta qualidade em uma nova aba.",
-  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "Mostrar uma cópia desfocada da miniatura no player em tela cheia em vez de barras pretas",
   "feature_desc.thumbnailOverlayITunesImgRes": "Resolução da capa do Apple Music / iTunes",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "Quantidade máxima de entradas de capa de álbum a manter no cache",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "As capas das músicas que você ouve são armazenadas em cache para reduzir as requisições ao provedor.\nEste recurso permite definir o limite máximo de entradas no cache.\nQuando o limite é atingido, a entrada mais antiga é removida para dar espaço a novas.",

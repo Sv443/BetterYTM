@@ -387,7 +387,6 @@
   "feature_desc.thumbnailOverlayBehavior": "最高解像度のサムネイルでビデオ要素を自動的に置き換えるタイミング",
   "feature_desc.thumbnailOverlayToggleBtnShown": "サムネイルオーバーレイを手動で切り替えるボタンを追加する",
   "feature_helptext.thumbnailOverlayToggleBtnShown": "このボタンでサムネイルの表示/非表示を手動で切り替えることができます。サムネイルの置き換えオプションが「なし」に設定されている場合、この機能は影響を受けません。\n新しい動画/曲の再生が開始されると、デフォルトの状態に戻ります。\nShiftキーを押しながらクリックするか、マウスの中ボタンを押すと、最高画質のサムネイルが新しいタブで開きます。",
-  "feature_desc.thumbnailOverlayBlurredDuplicateBackground": "フルスクリーンプレーヤーで黒帯の代わりにぼかしたサムネイルのコピーを表示する",
   "feature_desc.thumbnailOverlayITunesImgRes": "Apple Music / iTunes のアルバムアートワークの解像度",
   "feature_desc.thumbnailOverlayAlbumArtCacheMaxSize": "キャッシュに保存するアルバムアートの最大数",
   "feature_helptext.thumbnailOverlayAlbumArtCacheMaxSize": "再生した曲のアルバムアートワークは、アルバムアートプロバイダへのリクエスト数を減らすため、キャッシュに保存されます。\nこの機能では、キャッシュに保存するアルバムアートエントリの最大数を設定できます。\n上限に達すると、新しいエントリ用のスペースを確保するために、最も古いエントリが削除されます。",

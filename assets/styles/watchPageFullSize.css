@@ -7,7 +7,7 @@ ytmusic-player-page > .content #side-panel {
 }
 
 :root ytmusic-app #main-panel {
-  padding: 0 var(--bytm-padding, 50px) !important;
+  padding: 0 !important;
 }
 
 /* @container player-page (min-width: 1600px) and (max-width: 1799px) {
