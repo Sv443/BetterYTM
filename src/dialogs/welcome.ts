@@ -4,8 +4,9 @@ import { setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
 import { openCfgMenu } from "@menu/menu.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
-import { configSetFeatsWithTags, getFeature, getFeatures, setFeatures } from "@/config.ts";
+import { configSetFeatsWithTags, getFeature, getFeatures, getFeaturesWithTags, setFeatures } from "@/config.ts";
 import { mode, scriptInfo } from "@/constants.ts";
+import { featInfo } from "@feat/index.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import { LogLevel, type ResourceKey } from "@/types.ts";
@@ -31,6 +32,7 @@ export async function getWelcomeDialog() {
       renderFooter,
     });
     welcomeDialog.on("render", retranslateWelcomeMenu);
+    welcomeDialog.on("destroy", () => welcomeDialog = null);
   }
   return welcomeDialog;
 }
@@ -149,7 +151,15 @@ async function renderBody() {
       optionElem.textContent = label;
       privacySelectElem.appendChild(optionElem);
     }
-    privacySelectElem.value = "default";
+
+    let privacySelectDefaultVal = "default";
+
+    for(const [, ftInfo] of Object.entries(featInfo)) {
+      if("tags" in ftInfo && ftInfo.tags.includes("privacy") && typeof ftInfo.default === "boolean")
+        privacySelectDefaultVal = Object.values(getFeaturesWithTags(["privacy"])).filter(v => typeof v === "boolean").every(v => !v) ? "enhanced" : "default";
+    }
+
+    privacySelectElem.value = privacySelectDefaultVal;
 
     privacySelectElem.addEventListener("change", async () => {
       const isPrivacy = privacySelectElem.value === "enhanced";
