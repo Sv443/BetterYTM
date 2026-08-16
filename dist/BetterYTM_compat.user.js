@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d199e53b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a5670df2/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 15 Aug 2026 23:48:21 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 16 Aug 2026 00:17:45 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ d199e53b                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ a5670df2                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ IzD777trNU4v                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 43l0BW6co1ww                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -8184,9 +8184,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "d199e53b";
+	var buildNumber$1 = "a5670df2";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1786837701923;
+	var buildTimestamp = 1786839465998;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -15086,7 +15086,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		/** Indicates that the feature relates to language, as a language-independent way to find the translation option. */
 		globe: async () => await getAdornHtml("bytm-locale-icon", void 0, "icon-globe_small"),
 		/** Indicates that changing this feature requires a page reload to take effect. */
-		reload: async () => getFeature("advancedMode") ? await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", void 0, t("feature_requires_reload")) : void 0,
+		reload: async () => await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", void 0, t("feature_requires_reload")),
 		/** Indicates that the feature is only configurable in advanced mode. */
 		advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", void 0, t("advanced_feature")),
 		/** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
@@ -15102,8 +15102,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		[adornments.globe, 3],
 		[adornments.reload, 4],
 		[adornments.advanced, 5],
-		[adornments.newFeature, 6],
-		[adornments.privacy, 7]
+		[adornments.privacy, 6],
+		[adornments.newFeature, 999]
 	]);
 	/** Creates an HTML string for the given adornment properties */
 	async function getAdornHtml(className, title, resource, extraAttributes, clickDialogText) {
@@ -19193,7 +19193,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "d199e53b",
+				buildNumber: "a5670df2",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),

@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d199e53b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a5670df2/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 15 Aug 2026 23:48:14 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 16 Aug 2026 00:17:44 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ d199e53b                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ a5670df2                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ Fs8pmYBtp8j5                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 18KloZ90S7T7                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
