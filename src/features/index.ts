@@ -55,7 +55,7 @@ const adornments = {
   /** Indicates that the feature relates to language, as a language-independent way to find the translation option. */
   globe: async () => await getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
   /** Indicates that changing this feature requires a page reload to take effect. */
-  reload: async () => getFeature("advancedMode") ? await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
+  reload: async () => await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")),
   /** Indicates that the feature is only configurable in advanced mode. */
   advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
   /** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
@@ -72,8 +72,8 @@ const adornmentOrder = new Map<AdornFunc, number>([
   [adornments.globe, 3],
   [adornments.reload, 4],
   [adornments.advanced, 5],
-  [adornments.newFeature, 6],
-  [adornments.privacy, 7],
+  [adornments.privacy, 6],
+  [adornments.newFeature, 999],
 ]);
 
 /** Creates an HTML string for the given adornment properties */

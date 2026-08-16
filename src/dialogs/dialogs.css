@@ -10,6 +10,7 @@
   --bytm-ytm-only-note-col: #fff2ec;
   --bytm-flame-lower-col: #ffb300;
   --bytm-flame-upper-col: #ff6f00;
+  --bytm-shield-col: #4ed2e9;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
@@ -158,6 +159,14 @@
 
 .bytm-new-feature-icon svg path.flame-upper {
   fill: var(--bytm-flame-upper-col, #fff);
+}
+
+.bytm-privacy-icon svg {
+  height: 21px;
+}
+
+.bytm-privacy-icon svg path {
+  fill: var(--bytm-shield-col, #fff);
 }
 
 /* #region welcome dialog */
