@@ -145,7 +145,7 @@ export class Logger {
     if(val instanceof Date)
       return `[Date (@ ${val.toISOString()})]`;
     if(val instanceof Response)
-      return `[Response (${val.status})]`;
+      return `[Response ${val.status} (${val.url})]`;
     if(val instanceof Map)
       return `[Map (${val.size}) <${Array.from(val.entries()).map(([k, v]) => `${Logger.serializeLogVal(k, false)} => ${Logger.serializeLogVal(v, false)}`).join(", ")}>]`;
     if(val instanceof Set)

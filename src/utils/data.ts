@@ -7,7 +7,7 @@ import { loggers } from "@util/logging.ts";
 import { getDomain, getterifyObj, resourceAsString } from "@util/misc.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
-import type { Domain, FeatureConfig, Translatable } from "@/types.ts";
+import { LogLevel, type Domain, type FeatureConfig, type Translatable } from "@/types.ts";
 import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
 import { getFeature } from "@/config.ts";
@@ -89,7 +89,7 @@ export async function getStaticData(): Promise<StaticData> {
       return staticData;
 
     if(mode === "development") {
-      loggers.data.info("Development mode is active. Initializing with static data.json:", defaultStaticData);
+      loggers.data.info("Development mode is active. Initializing with static data.json:", defaultStaticData, LogLevel.Info);
       return staticData = defaultStaticData as StaticData;
     }
 

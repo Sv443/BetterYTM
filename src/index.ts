@@ -187,7 +187,8 @@ async function init() {
     endCfgDur();
     setLogLevel(features.logLevel);
 
-    loggers.init.info("Session ID:", getSessionId());
+    const sesId = getSessionId();
+    loggers.init.info("Session started with ID:", sesId === null ? "(Error: sessionStorage not available)" : sesId, LogLevel.Info);
 
     // resource cache:
     const endResCacheDur = measureInitDuration("initResourceCache");

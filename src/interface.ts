@@ -10,7 +10,7 @@ import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
 import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, fuzzyFetchLyricsInfo, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
-import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum } from "@/types.ts";
+import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum, LogLevel } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { createHotkeyInput } from "@comp/hotkeyInput.ts";
@@ -320,7 +320,7 @@ export function initPlugins() {
   window.addEventListener("bytm:ready", () => {
     pluginsInitialized = true;
     if(registeredPlugins.size > 0)
-      loggers.plugin.info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
+      loggers.plugin.info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`, LogLevel.Info);
     else
       loggers.plugin.log("No plugins registered");
   }, { once: true });
@@ -358,7 +358,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
       array: parseBitSetEnumArray(permissionInt, PluginIntent as unknown as BitSetTSEnum),
     };
 
-    loggers.plugin.info(`Successfully registered plugin '${plKey}'`);
+    loggers.plugin.info(`Successfully registered plugin '${plKey}'`, LogLevel.Info);
 
     setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
 
