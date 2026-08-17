@@ -407,7 +407,7 @@ async function getResourceDirectives(ref: string, options: BtymPluginOptions): P
         && (typeof val === "object" && "integrity" in val ? val.integrity !== false : true)
         && !pathVal.match(/^https?:\/\//)
       )
-        ? await getFileHashSha256(pathVal.replace(/\?.+/g, ""))
+        ? await getFileHash(pathVal.replace(/\?.+/g, ""))
         : undefined;
 
       resourcesHashed[name] = typeof val === "object"
@@ -427,10 +427,10 @@ async function getResourceDirectives(ref: string, options: BtymPluginOptions): P
           const res = await fetch(path);
           if(!res.ok || !res.body)
             return;
-          resourcesHashed[name] = { path: getResourceUrl(path, entryRef, options), ref: entryRef, hash: await getStreamHashSha256(res.body) };
+          resourcesHashed[name] = { path: getResourceUrl(path, entryRef, options), ref: entryRef, hash: await getStreamHash(res.body) };
           return;
         }
-        resourcesHashed[name] = { path: getResourceUrl(path, entryRef, options), ref: entryRef, hash: await getFileHashSha256(path) };
+        resourcesHashed[name] = { path: getResourceUrl(path, entryRef, options), ref: entryRef, hash: await getFileHash(path) };
       }
       catch(err) {
         console.warn(k.yellow(`Couldn't add hashed resource '${name}':`), err);
@@ -617,12 +617,12 @@ async function fileExists(path: string): Promise<boolean> {
 }
 
 /**
- * Calculates the SHA-256 hash of the file at the given path.
+ * Calculates the hash of the file at the given path using the SHA-256 algorithm by default.  
  * Uses {@linkcode resolveResourcePath} to resolve the path.
  */
-function getFileHashSha256(path: string): Promise<string> {
+function getFileHash(path: string, algorithm = "sha256"): Promise<string> {
   return new Promise((res, rej) => {
-    const hash = createHash("sha256");
+    const hash = createHash(algorithm);
     const stream = createReadStream(resolveResourcePath(path));
     stream.on("data", (data: Buffer | string) => hash.update(data));
     stream.on("end", () => res(hash.digest("base64")));
@@ -630,11 +630,11 @@ function getFileHashSha256(path: string): Promise<string> {
   });
 }
 
-/** Calculates the SHA-256 hash of a ReadableStream */
-function getStreamHashSha256(rStream: ReadableStream): Promise<string> {
+/** Calculates the hash of a ReadableStream  using the SHA-256 algorithm by default. */
+function getStreamHash(readStream: ReadableStream, algorithm = "sha256"): Promise<string> {
   return new Promise((res, rej) => {
-    const hash = createHash("sha256");
-    rStream.pipeTo(new WritableStream({
+    const hash = createHash(algorithm);
+    readStream.pipeTo(new WritableStream({
       write(chunk) {
         hash.update(chunk);
       },

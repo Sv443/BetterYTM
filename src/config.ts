@@ -498,7 +498,7 @@ export async function clearConfig() {
   loggers.data.info("Deleted config from persistent storage");
 }
 
-// #region privacy stuff
+// #region tagged features
 
 /** Object that maps feature types to their desired value types. All props are optional by default. */
 type SetFeatureValues = {
@@ -525,9 +525,7 @@ export async function configSetFeatsWithTags(tags: FeatureTag[], setFeatureValue
 
     if(typeof setFeatureValues[ftInfo.type] !== "undefined") {
       // @ts-expect-error no good way to keep these generic without having a bunch of dumb type errors
-      features[ftKey] = setFeatureValues[ftInfo.type];
-      // @ts-expect-error
-      modified[ftKey] = setFeatureValues[ftInfo.type];
+      features[ftKey] = modified[ftKey] = setFeatureValues[ftInfo.type];
     }
   }
 
@@ -536,7 +534,7 @@ export async function configSetFeatsWithTags(tags: FeatureTag[], setFeatureValue
   return modified;
 }
 
-/** Returns a subset of the feature config where all properties have *all* the given `tags`. */
+/** Returns a subset of the feature config where each property's feature has *all* the given `tags`. */
 export function getFeaturesWithTags(tags: FeatureTag[]): Partial<FeatureConfig> {
   const feats: Partial<FeatureConfig> = {};
 
