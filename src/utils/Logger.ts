@@ -134,8 +134,10 @@ export class Logger {
       return primaryScope ? "[null]" : "(null)";
     if(Array.isArray(val))
       return `[Array (${val.length}) <${val.map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
-    if(val instanceof Element)
-      return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
+    if(val instanceof Element) {
+      const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement!.childNodes].findIndex((el) => el === val);
+      return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
+    }
     if(typeof val === "function")
       return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
     if(val instanceof DatedError)

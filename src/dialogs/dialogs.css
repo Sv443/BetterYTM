@@ -161,10 +161,6 @@
   fill: var(--bytm-flame-upper-col, #fff);
 }
 
-.bytm-privacy-icon svg {
-  height: 21px;
-}
-
 .bytm-privacy-icon svg path {
   fill: var(--bytm-shield-col, #fff);
 }

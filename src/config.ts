@@ -7,7 +7,7 @@ import { emitSiteEvent } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/interface.ts";
 import { closeCfgMenu, openCfgMenu } from "@menu/menu.ts";
-import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, FeatureTag, FeatureTypeProps, NumberLengthFormat } from "@/types.ts";
+import { LogLevel, type FeatKeysOfType, type FeatureConfig, type FeatureInfo, type FeatureKey, type FeatureTag, type FeatureTypeProps, type NumberLengthFormat } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 
 //#region >> format version
@@ -265,12 +265,12 @@ export const cfgMigrations: DataMigrationsDict = {
     // dont wanna make a whole new system just for this:
     artCacheStore.deleteData().then(() => {
       // no need to load data since artCacheStore.memoryCache === false
-      loggers.data.info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
+      loggers.data.info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.", LogLevel.Info);
     });
 
     // scale was changed from seconds to milliseconds
     if(newCfg.initTimeout <= 10)
-      newCfg.initTimeout *= 1000;
+      newCfg.initTimeout = toClamped("initTimeout", newCfg.initTimeout * 1000);
 
     return useNewRanges(newCfg, [
       "initTimeout",
@@ -347,8 +347,16 @@ function useNewRanges(config: FeatureConfig, keys: FeatKeysOfType<number>[]): Fe
 /** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. */
 function clampNewRange(config: FeatureConfig, key: FeatKeysOfType<number>): number {
   const val = config[key];
-  const info = featInfo[key] as FeatureConfig[typeof key] extends number ? { min: number; max: number } : never;
-  return clamp(val as number, info.min, info.max);
+  const info = featInfo[key] as FeatureConfig[typeof key] extends number ? { min: number; max?: number } : never;
+  return clamp(val as number, info.min, "max" in info && typeof info.max === "number" ? info.max : Infinity);
+}
+
+/** Clamps the given numerical value using the given numerical feature's `min` and `max` props (see {@linkcode featInfo}) if they exist. Otherwise returns the given value as-is. */
+function toClamped(ftKey: FeatKeysOfType<number>, newValue: number) {
+  const ftInf = featInfo[ftKey];
+  if("min" in ftInf)
+    return clamp(newValue, ftInf.min, "max" in ftInf ? ftInf.max : Infinity);
+  return newValue;
 }
 
 //#region >> store

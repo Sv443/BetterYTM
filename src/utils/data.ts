@@ -12,6 +12,9 @@ import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
 import { getFeature } from "@/config.ts";
 
+// used alert IDs:
+// - update-preview-version-hint-v3.1.0-rc.1
+
 //#region types
 
 // TODO: extract union type from {@linkcode defaultStaticData.selectors} keys.
