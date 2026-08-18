@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6a9b66ea/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bcd1b56a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 16 Aug 2026 03:04:13 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Tue, 18 Aug 2026 20:19:32 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 6a9b66ea                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ bcd1b56a                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 9wmTE0O7ZUn6                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ bky7623jL3cr                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -8184,9 +8184,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "6a9b66ea";
+	var buildNumber$1 = "bcd1b56a";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1786849453801;
+	var buildTimestamp = 1787084372901;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -8453,6 +8453,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		iconPos === "left" && toastWrapper.appendChild(toastIcon);
 		toastWrapper.appendChild(toastMessage);
 		iconPos === "right" && toastWrapper.appendChild(toastIcon);
+		showingToast = false;
 		const elem = await showToast({
 			duration,
 			position,
@@ -9214,7 +9215,10 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			if (typeof val === "undefined") return primaryScope ? "[undefined]" : "(undefined)";
 			if (val === null) return primaryScope ? "[null]" : "(null)";
 			if (Array.isArray(val)) return `[Array (${val.length}) <${val.map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
-			if (val instanceof Element) return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""}>]`;
+			if (val instanceof Element) {
+				const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement.childNodes].findIndex((el) => el === val);
+				return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
+			}
 			if (typeof val === "function") return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
 			if (val instanceof DatedError$1) return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
 			if (val instanceof Error) return `[${val.name}: ${val.message}]`;
@@ -17239,9 +17243,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				}
 			]);
 			artCacheStore.deleteData().then(() => {
-				loggers.data.info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
+				loggers.data.info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.", LogLevel.Info);
 			});
-			if (newCfg.initTimeout <= 10) newCfg.initTimeout *= 1e3;
+			if (newCfg.initTimeout <= 10) newCfg.initTimeout = toClamped("initTimeout", newCfg.initTimeout * 1e3);
 			return useNewRanges(newCfg, ["initTimeout", "thumbnailOverlayITunesImgRes"]);
 		},
 		12: (oldData) => {
@@ -17300,7 +17304,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	function clampNewRange(config, key) {
 		const val = config[key];
 		const info = featInfo[key];
-		return clamp$1(val, info.min, info.max);
+		return clamp$1(val, info.min, "max" in info && typeof info.max === "number" ? info.max : Infinity);
+	}
+	/** Clamps the given numerical value using the given numerical feature's `min` and `max` props (see {@linkcode featInfo}) if they exist. Otherwise returns the given value as-is. */
+	function toClamped(ftKey, newValue) {
+		const ftInf = featInfo[ftKey];
+		if ("min" in ftInf) return clamp$1(newValue, ftInf.min, "max" in ftInf ? ftInf.max : Infinity);
+		return newValue;
 	}
 	var configStore = new DataStore$1({
 		id: "bytm-config",
@@ -17417,15 +17427,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const features = getFeatures();
 		for (const [ftKey, ftInfo] of Object.entries(featInfo)) {
 			if (!("tags" in ftInfo) || "tags" in ftInfo && !tags.every((tag) => ftInfo.tags.includes(tag))) continue;
-			if (typeof setFeatureValues[ftInfo.type] !== "undefined") {
-				features[ftKey] = setFeatureValues[ftInfo.type];
-				modified[ftKey] = setFeatureValues[ftInfo.type];
-			}
+			if (typeof setFeatureValues[ftInfo.type] !== "undefined") features[ftKey] = modified[ftKey] = setFeatureValues[ftInfo.type];
 		}
 		await setFeatures(features);
 		return modified;
 	}
-	/** Returns a subset of the feature config where all properties have *all* the given `tags`. */
+	/** Returns a subset of the feature config where each property's feature has *all* the given `tags`. */
 	function getFeaturesWithTags(tags) {
 		const feats = {};
 		for (const [ftKey, ftInfo] of Object.entries(featInfo)) {
@@ -19203,7 +19210,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "6a9b66ea",
+				buildNumber: "bcd1b56a",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
