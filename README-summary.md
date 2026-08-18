@@ -7,11 +7,11 @@
 <h4>With translations for: <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr>, <abbr title="Turkish (Turkey)">🇹🇷&nbsp;TR</abbr></h4>
 
 ---
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Special Thanks**](#special-thanks) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
 
-<br>
+<br><br>
 
 ### Features
 All of these can be toggled and configured in the configuration menu.
@@ -40,7 +40,7 @@ All of these can be toggled and configured in the configuration menu.
 To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
 If you disabled the watermark, you can still open it by clicking your avatar in the top right corner on YTM or through the left sidebar on YT.  
   
-My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
+> **My work relies on donations, so if you like this userscript please consider [supporting the development ❤️](https://github.com/sponsors/Sv443)**
 
 <br><br>
 
@@ -130,6 +130,7 @@ A big thank you to these people for their contributions to this project:
 - [indierodo](https://github.com/indierodo): Track numbers feature
 - [cryeprecision](https://github.com/cryeprecision): Exponential volume slider feature
 - [kcangny](https://github.com/kcangny): Turkish translations
+- [canarado](https://github.com/canarado): Version checking code
 
 <br><br>
 
@@ -155,13 +156,13 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 ### Disclaimers
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
 - I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
-- I do not intend to ever collect any data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
-  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching).
+- I do not intend to ever remotely collect any data about you. Everything in this script is done and stored locally on your device or on the site the script runs on.  
+  Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
 - This script comes as-is, so I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the code or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
 
 <br><br><br><br>
 
 Made with ❤️ by [Sv443](https://github.com/Sv443)  
-If you like this userscript, please consider [supporting me](https://github.com/sponsors/Sv443)  
+If you like this userscript, please consider [supporting the development](https://github.com/sponsors/Sv443)  
   
 © 2022 Sv443 - [AGPL-3.0-or-later](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt)
