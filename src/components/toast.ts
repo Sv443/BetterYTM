@@ -126,6 +126,7 @@ export async function showIconToast({
   toastWrapper.appendChild(toastMessage);
   iconPos === "right" && toastWrapper.appendChild(toastIcon);
 
+  showingToast = false;
   const elem = await showToast({
     duration,
     position,

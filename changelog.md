@@ -14,6 +14,8 @@
     - `autoScrollToActiveSongMode: "never"` - replaced with `autoScrollToActiveSongEnabled`.
   - The welcome menu now allows all privacy-sensitive features to be toggled off before the script runs for the first time.
   - Made the version check feature more resilient to stop erroneous update notifications for weird versions like `5` from showing up (by [@canarado](https://github.com/canarado)).
+- **Fixes:**
+  - Made error toasts show up again after being broken when toast queueing was overhauled.
 - **Plugin Changes:**
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.
