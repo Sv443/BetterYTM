@@ -31,6 +31,52 @@
       "app": {
         "yt": "ytd-app",
         "ytm": "ytmusic-app"
+      },
+      "pageHeaderContainer_sub_ytAppHeader": {
+        "yt": "#channel-header-container, #page-header, #page-header-container"
+      },
+      "browseResponseHeader_sub_browseResponse": {
+        "ytm": "ytmusic-browse-response #header.ytmusic-browse-response"
+      }
+    },
+    "watchPage": {
+      "channelName": {
+        "yt": "#owner ytd-channel-name yt-formatted-string a",
+        "ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
+      },
+      "likeBtn": {
+        "yt": "#actions ytd-menu-renderer like-button-view-model button"
+      }
+    },
+    "autoLike": {
+      "titleContainer": {
+        "yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
+        "ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
+      },
+      "titleContainerChannelName": {
+        "yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
+        "ytm": "yt-formatted-string, span.yt-core-attributed-string"
+      },
+      "titleContainerChannelNameAlternate": {
+        "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string"
+      },
+      "titleContainerButtonsContainer": {
+        "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model"
+      },
+      "titleContainerButtonsContainerLastButton": {
+        "ytm": "ytmusic-subscribe-button-renderer"
+      },
+      "titleContainerButtonsContainerShareButton": {
+        "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type"
+      },
+      "titleContainerOtherButtons_sub_ytAppHeader": {
+        "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction"
+      },
+      "channelName_global": {
+        "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string"
+      },
+      "channelNameFallback_global": {
+        "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]"
       }
     },
     "observer": {

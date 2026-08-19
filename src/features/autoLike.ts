@@ -12,8 +12,9 @@ import { getAutoLikeDialog } from "@dialog/autoLike.ts";
 import { showIconToast } from "@comp/toast.ts";
 import { createLongBtn } from "@comp/longButton.ts";
 import { createRipple } from "@comp/ripple.ts";
-import type { AutoLikeData } from "@/types.ts";
+import { LogLevel, type AutoLikeData } from "@/types.ts";
 import "@feat/autoLike.css";
+import { getSelector } from "@util/data.ts";
 
 // TODO:FIXME: race condition: multiple buttons can appear on YT channel pages, with both the @ID format as well as UC... (extraneous)
 
@@ -69,7 +70,7 @@ export async function initAutoLike() {
         const autoLikeTimeoutMs = (getFeature("autoLikeTimeout", 5)) * 1000;
         timeout && clearTimeout(timeout);
         const ytmTryAutoLike = () => {
-          const artistEls = document.querySelectorAll<HTMLAnchorElement>("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
+          const artistEls = document.querySelectorAll<HTMLAnchorElement>(getSelector("watchPage", "channelName"));
           const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string") as string[];
 
           const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
@@ -95,7 +96,7 @@ export async function initAutoLike() {
               onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
             }).catch(e => loggers.autoLike.error("Error while showing auto-like toast:", e));
 
-            loggers.autoLike.info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
+            loggers.autoLike.info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`, LogLevel.Info);
           }
           else
             loggers.autoLike.info("Skipping auto-like, because the like state is currently set to", likeState);
@@ -105,7 +106,7 @@ export async function initAutoLike() {
       });
 
       const recreateBtn = (headerCont: HTMLElement, chanId: string) => {
-        const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title");
+        const titleCont = headerCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainer"));
         if(!titleCont)
           return;
 
@@ -114,21 +115,21 @@ export async function initAutoLike() {
             recreateBtn(headerCont, chanId);
         }, 250);
 
-        const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
+        const chanName = titleCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainerChannelName"))?.textContent ?? null;
         loggers.autoLike.log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
 
         const buttonsCont = headerCont.querySelector<HTMLElement>(".buttons");
         if(buttonsCont) {
-          const lastBtn = buttonsCont.querySelector<HTMLElement>("ytmusic-subscribe-button-renderer");
-          const chanName = document.querySelector<HTMLElement>(".ytmusic-immersive-header-renderer > h1 > yt-formatted-string")?.textContent
-            ?? document.querySelector<HTMLElement>("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent
+          const lastBtn = buttonsCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainerButtonsContainerLastButton"));
+          const chanName = document.querySelector<HTMLElement>(getSelector("autoLike", "channelName_global"))?.textContent
+            ?? document.querySelector<HTMLElement>(getSelector("autoLike", "channelNameFallback_global"))?.textContent
             ?? null;
           lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
         }
         else {
           // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
-          const shareBtnEl = headerCont.querySelector<HTMLElement>("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
-          const chanName = headerCont.querySelector<HTMLElement>("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")?.textContent ?? null;
+          const shareBtnEl = headerCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainerButtonsContainerShareButton"));
+          const chanName = headerCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainerChannelNameAlternate"))?.textContent ?? null;
           shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName).then(checkBtn);
         }
       };
@@ -141,7 +142,7 @@ export async function initAutoLike() {
 
           document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 
-          addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
+          addSelectorListener("browseResponse", getSelector("generic", "browseResponseHeader_sub_browseResponse"), {
             listener: (el) => recreateBtn(el, chanId),
           });
         }
@@ -164,7 +165,7 @@ export async function initAutoLike() {
         if(!location.pathname.startsWith("/watch"))
           return;
         const ytTryAutoLike = () => {
-          addSelectorListener<HTMLAnchorElement, "yt">("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
+          addSelectorListener<HTMLAnchorElement, "yt">("ytWatchMetadata", getSelector("watchPage", "channelName"), {
             listener(chanElem) {
               const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
 
@@ -172,7 +173,7 @@ export async function initAutoLike() {
               if(!likeChan || !likeChan.enabled)
                 return;
 
-              addSelectorListener<0, "yt">("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
+              addSelectorListener<0, "yt">("ytWatchMetadata", getSelector("watchPage", "likeBtn"), {
                 listener(likeBtn) {
                   if(likeBtn.getAttribute("aria-pressed") !== "true") {
                     likeBtn.click();
@@ -202,7 +203,7 @@ export async function initAutoLike() {
           document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 
           const recreateBtn = (headerCont: HTMLElement) => {
-            const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model");
+            const titleCont = headerCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainer"));
             if(!titleCont)
               return;
 
@@ -211,12 +212,12 @@ export async function initAutoLike() {
                 recreateBtn(headerCont);
             }, 350);
 
-            const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string, h1 > .yt-core-attributed-string")?.textContent ?? null;
+            const chanName = titleCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainerChannelName"))?.textContent ?? null;
             loggers.autoLike.log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
 
-            const buttonsCont = headerCont.querySelector<HTMLElement>("#inner-header-container #buttons, yt-flexible-actions-view-model");
+            const buttonsCont = headerCont.querySelector<HTMLElement>(getSelector("autoLike", "titleContainerButtonsContainer"));
             if(buttonsCont) {
-              addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction", {
+              addSelectorListener<0, "yt">("ytAppHeader", getSelector("autoLike", "titleContainerOtherButtons_sub_ytAppHeader"), {
                 listener: (otherBtns) =>
                   addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn),
               });
@@ -227,7 +228,7 @@ export async function initAutoLike() {
             }
           };
 
-          addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container, #page-header, #page-header-container", {
+          addSelectorListener<0, "yt">("ytAppHeader", getSelector("generic", "pageHeaderContainer_sub_ytAppHeader"), {
             listener: recreateBtn,
           });
         }
@@ -250,7 +251,7 @@ export async function initAutoLike() {
 async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null, extraClasses?: string[]) {
   const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
 
-  loggers.autoLike.log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
+  loggers.autoLike.log(`Adding auto-like toggle button for channel with ID '${channelId}' and name '${channelName}' - current state:`, chan);
 
   siteEvents.on("autoLikeChannelsUpdated", async () => {
     const buttonEl = document.querySelector<HTMLElement>(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
