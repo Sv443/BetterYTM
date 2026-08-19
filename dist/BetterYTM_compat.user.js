@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@bcd1b56a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@88ad6616/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Tue, 18 Aug 2026 20:19:32 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 19 Aug 2026 21:43:39 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ bcd1b56a                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 88ad6616                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ bky7623jL3cr                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ Szsf3jzI1wXK                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -8184,9 +8184,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "bcd1b56a";
+	var buildNumber$1 = "88ad6616";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1787084372901;
+	var buildTimestamp = 1787175819916;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -8671,10 +8671,38 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		}],
 		alerts: [],
 		selectors: {
-			"generic": { "app": {
-				"yt": "ytd-app",
-				"ytm": "ytmusic-app"
-			} },
+			"generic": {
+				"app": {
+					"yt": "ytd-app",
+					"ytm": "ytmusic-app"
+				},
+				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
+				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" }
+			},
+			"watchPage": {
+				"channelName": {
+					"yt": "#owner ytd-channel-name yt-formatted-string a",
+					"ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
+				},
+				"likeBtn": { "yt": "#actions ytd-menu-renderer like-button-view-model button" }
+			},
+			"autoLike": {
+				"titleContainer": {
+					"yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
+					"ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
+				},
+				"titleContainerChannelName": {
+					"yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
+					"ytm": "yt-formatted-string, span.yt-core-attributed-string"
+				},
+				"titleContainerChannelNameAlternate": { "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string" },
+				"titleContainerButtonsContainer": { "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model" },
+				"titleContainerButtonsContainerLastButton": { "ytm": "ytmusic-subscribe-button-renderer" },
+				"titleContainerButtonsContainerShareButton": { "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type" },
+				"titleContainerOtherButtons_sub_ytAppHeader": { "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction" },
+				"channelName_global": { "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string" },
+				"channelNameFallback_global": { "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]" }
+			},
 			"observer": {
 				"bytmDialogContainer": "#bytm-dialog-container",
 				"browseResponse": { "ytm": "ytmusic-browse-response" },
@@ -10662,7 +10690,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					const autoLikeTimeoutMs = getFeature("autoLikeTimeout", 5) * 1e3;
 					timeout && clearTimeout(timeout);
 					const ytmTryAutoLike = () => {
-						const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
+						const artistEls = document.querySelectorAll(getSelector("watchPage", "channelName"));
 						const channelIds = [...artistEls].map((a) => a.href.split("/").pop()).filter((a) => typeof a === "string");
 						const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
 						if (!likeChan || !likeChan.enabled) return;
@@ -10677,28 +10705,28 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 								icon: "icon-auto_like",
 								onClick: () => getAutoLikeDialog().then((dlg) => dlg.open())
 							}).catch((e) => loggers.autoLike.error("Error while showing auto-like toast:", e));
-							loggers.autoLike.info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`);
+							loggers.autoLike.info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`, LogLevel.Info);
 						} else loggers.autoLike.info("Skipping auto-like, because the like state is currently set to", likeState);
 					};
 					timeout = setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs);
 					siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(() => ytmTryAutoLike(), autoLikeTimeoutMs));
 				});
 				const recreateBtn = (headerCont, chanId) => {
-					const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title");
+					const titleCont = headerCont.querySelector(getSelector("autoLike", "titleContainer"));
 					if (!titleCont) return;
 					const checkBtn = () => setTimeout(() => {
 						if (!document.querySelector(".bytm-auto-like-toggle-btn")) recreateBtn(headerCont, chanId);
 					}, 250);
-					const chanName = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
+					const chanName = titleCont.querySelector(getSelector("autoLike", "titleContainerChannelName"))?.textContent ?? null;
 					loggers.autoLike.log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
 					const buttonsCont = headerCont.querySelector(".buttons");
 					if (buttonsCont) {
-						const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
-						const chanName = document.querySelector(".ytmusic-immersive-header-renderer > h1 > yt-formatted-string")?.textContent ?? document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent ?? null;
+						const lastBtn = buttonsCont.querySelector(getSelector("autoLike", "titleContainerButtonsContainerLastButton"));
+						const chanName = document.querySelector(getSelector("autoLike", "channelName_global"))?.textContent ?? document.querySelector(getSelector("autoLike", "channelNameFallback_global"))?.textContent ?? null;
 						lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName).then(checkBtn);
 					} else {
-						const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
-						const chanName = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")?.textContent ?? null;
+						const shareBtnEl = headerCont.querySelector(getSelector("autoLike", "titleContainerButtonsContainerShareButton"));
+						const chanName = headerCont.querySelector(getSelector("autoLike", "titleContainerChannelNameAlternate"))?.textContent ?? null;
 						shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName).then(checkBtn);
 					}
 				};
@@ -10707,7 +10735,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						const chanId = getCurrentChannelId();
 						if (!chanId) return loggers.autoLike.error("Couldn't extract channel ID from URL");
 						document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-						addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", { listener: (el) => recreateBtn(el, chanId) });
+						addSelectorListener("browseResponse", getSelector("generic", "browseResponseHeader_sub_browseResponse"), { listener: (el) => recreateBtn(el, chanId) });
 					}
 				};
 				siteEvents.on("pathChanged", () => tryAddBtnYTM());
@@ -10720,11 +10748,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					timeout && clearTimeout(timeout);
 					if (!location.pathname.startsWith("/watch")) return;
 					const ytTryAutoLike = () => {
-						addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", { listener(chanElem) {
+						addSelectorListener("ytWatchMetadata", getSelector("watchPage", "channelName"), { listener(chanElem) {
 							const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
 							const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
 							if (!likeChan || !likeChan.enabled) return;
-							addSelectorListener("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", { listener(likeBtn) {
+							addSelectorListener("ytWatchMetadata", getSelector("watchPage", "likeBtn"), { listener(likeBtn) {
 								if (likeBtn.getAttribute("aria-pressed") !== "true") {
 									likeBtn.click();
 									getFeature("autoLikeShowToast") && showIconToast({
@@ -10747,20 +10775,20 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 						if (!chanId) return loggers.autoLike.error("Couldn't extract channel ID from URL");
 						document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 						const recreateBtn = (headerCont) => {
-							const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model");
+							const titleCont = headerCont.querySelector(getSelector("autoLike", "titleContainer"));
 							if (!titleCont) return;
 							const checkBtn = () => setTimeout(() => {
 								if (!document.querySelector(".bytm-auto-like-toggle-btn")) recreateBtn(headerCont);
 							}, 350);
-							const chanName = titleCont.querySelector("yt-formatted-string, h1 > .yt-core-attributed-string")?.textContent ?? null;
+							const chanName = titleCont.querySelector(getSelector("autoLike", "titleContainerChannelName"))?.textContent ?? null;
 							loggers.autoLike.log("Re-rendering auto-like toggle button for channel", chanName, "with ID", chanId);
-							if (headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model")) addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction", { listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn) });
+							if (headerCont.querySelector(getSelector("autoLike", "titleContainerButtonsContainer"))) addSelectorListener("ytAppHeader", getSelector("autoLike", "titleContainerOtherButtons_sub_ytAppHeader"), { listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]).then(checkBtn) });
 							else if (titleCont) {
 								const titleH1OrCont = titleCont.querySelector("h1") ?? titleCont;
 								addAutoLikeToggleBtn(titleH1OrCont, chanId, chanName, titleH1OrCont !== titleCont ? ["left-margin-xl"] : []).then(checkBtn);
 							}
 						};
-						addSelectorListener("ytAppHeader", "#channel-header-container, #page-header, #page-header-container", { listener: recreateBtn });
+						addSelectorListener("ytAppHeader", getSelector("generic", "pageHeaderContainer_sub_ytAppHeader"), { listener: recreateBtn });
 					}
 				};
 				siteEvents.on("pathChanged", () => tryAddBtnYT());
@@ -10774,7 +10802,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	/** Adds a toggle button to enable or disable auto-liking videos from a channel */
 	async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
 		const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
-		loggers.autoLike.log(`Adding auto-like toggle button for channel with ID '${channelId}' - current state:`, chan);
+		loggers.autoLike.log(`Adding auto-like toggle button for channel with ID '${channelId}' and name '${channelName}' - current state:`, chan);
 		siteEvents.on("autoLikeChannelsUpdated", async () => {
 			const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
 			if (!buttonEl) return loggers.autoLike.warn("Couldn't find auto-like toggle button for channel ID:", channelId);
@@ -19210,7 +19238,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "bcd1b56a",
+				buildNumber: "88ad6616",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
