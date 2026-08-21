@@ -1,6 +1,7 @@
 import { consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
 import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
+import { getSelector } from "@util/data.ts";
 import { fetchCss } from "@util/xhr.ts";
 import { getDomain } from "@util/misc.ts";
 import { loggers } from "@util/logging.ts";
@@ -14,9 +15,7 @@ import { showPrompt } from "@dialog/prompt.ts";
 
 /** Returns the video element selector string based on the current domain */
 export function getVideoSelector() {
-  return getDomain() === "ytm"
-    ? "ytmusic-player video"
-    : "#player-container ytd-player video";
+  return getSelector("generic", "video");
 }
 
 /** Returns the video element based on the current domain */
@@ -53,7 +52,7 @@ export function getVideoTime(precision = 2) {
         if(vidElem && vidElem.readyState > 0)
           return resolveWithVal(vidElem.currentTime);
 
-        addSelectorListener<HTMLProgressElement>("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+        addSelectorListener<HTMLProgressElement>("playerBar", getSelector("watchPage", "progressBar"), {
           listener: (pbEl) =>
             resolveWithVal(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
@@ -66,7 +65,7 @@ export function getVideoTime(precision = 2) {
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
         ytForceShowVideoTime();
 
-        const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+        const pbSelector = getSelector("watchPage", "progressBar");
         let videoTime = -1;
 
         const mut = new MutationObserver(() => {
@@ -106,7 +105,7 @@ export function getVideoTime(precision = 2) {
  * This only works once (for some reason), then the page needs to be reloaded!
  */
 function ytForceShowVideoTime() {
-  const player = document.querySelector("#movie_player");
+  const player = document.querySelector(getSelector("watchPage", "videoPlayer"));
   if(!player)
     return false;
 
@@ -185,18 +184,18 @@ export function getLikeDislikeBtns() {
 
   switch(getDomain()) {
   case "ytm": {
-    btnRenderer = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer") ?? undefined;
-    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-like button") ?? undefined;
-    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("#button-shape-dislike button") ?? undefined;
+    btnRenderer = document.querySelector<HTMLElement>(getSelector("watchPage", "votesRenderer")) ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "likeBtnAlternate")) ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "dislikeBtnAlternate")) ?? undefined;
 
     const likeStateRaw = btnRenderer?.getAttribute("like-status")?.toUpperCase();
     likeState = ["LIKE", "DISLIKE", "INDIFFERENT"].includes(likeStateRaw ?? "") ? likeStateRaw as LikeDislikeState : "INDIFFERENT";
     break;
   }
   case "yt": {
-    btnRenderer = document.querySelector<HTMLElement>("ytd-watch-metadata segmented-like-dislike-button-view-model") ?? undefined;
-    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
-    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+    btnRenderer = document.querySelector<HTMLElement>(getSelector("watchPage", "votesRenderer")) ?? undefined;
+    likeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "likeBtnAlternate")) ?? undefined;
+    dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "dislikeBtnAlternate")) ?? undefined;
 
     if(likeBtn?.getAttribute("aria-pressed") === "true")
       likeState = "LIKE";
@@ -207,9 +206,9 @@ export function getLikeDislikeBtns() {
 
     // yt shorts:
     if(!btnRenderer && !likeBtn && !dislikeBtn) {
-      btnRenderer = document.querySelector<HTMLElement>("reel-action-bar-view-model") ?? undefined;
-      likeBtn = btnRenderer?.querySelector<HTMLButtonElement>("like-button-view-model button") ?? undefined;
-      dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>("dislike-button-view-model button") ?? undefined;
+      btnRenderer = document.querySelector<HTMLElement>(getSelector("watchPage", "votesRendererShorts")) ?? undefined;
+      likeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "likeBtnShorts")) ?? undefined;
+      dislikeBtn = btnRenderer?.querySelector<HTMLButtonElement>(getSelector("watchPage", "dislikeBtnShorts")) ?? undefined;
     }
 
     const liked = likeBtn?.getAttribute("aria-pressed") === "true";
@@ -299,7 +298,7 @@ export function clearNode(element: Element) {
 export function getCurrentMediaType(): "video" | "song" {
   if(getDomain() === "yt")
     return "video";
-  const songImgElem = document.querySelector("ytmusic-player #song-image");
+  const songImgElem = document.querySelector(getSelector("watchPage", "songImg"));
   if(!songImgElem)
     throw new Error("Couldn't find the song image element. Use this function only after awaiting `waitVideoElementReady()`!");
   return window.getComputedStyle(songImgElem).display !== "none" ? "song" : "video";

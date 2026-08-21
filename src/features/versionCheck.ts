@@ -37,14 +37,13 @@ export async function doVersionCheck(notifyNoNewVerFound = false) {
     url: `https://github.com/${repo}/releases/latest`,
   });
 
-  // TODO: small dialog for "no update found" message?
   const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({ type: "alert", message: t("no_new_version_found") }) : undefined;
 
   let latestTag: string | undefined;
   const { hostname, pathname } = new URL(res.finalUrl);
   if(hostname === "github.com" && pathname.startsWith(`/${repo}/releases/tag/`))
     latestTag = pathname.split("/").pop()?.replace(/[a-zA-Z]/g, "");
-  
+
   if(!latestTag || !validateStrict(latestTag))
     return await noNewVerFound();
 

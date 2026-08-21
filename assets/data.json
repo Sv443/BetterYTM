@@ -32,6 +32,10 @@
         "yt": "ytd-app",
         "ytm": "ytmusic-app"
       },
+      "video": {
+        "yt": "#player-container ytd-player video",
+        "ytm": "ytmusic-player video"
+      },
       "pageHeaderContainer_sub_ytAppHeader": {
         "yt": "#channel-header-container, #page-header, #page-header-container"
       },
@@ -44,12 +48,43 @@
         "yt": "#owner ytd-channel-name yt-formatted-string a",
         "ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
       },
+      "votesRenderer": {
+        "yt": "ytd-watch-metadata segmented-like-dislike-button-view-model",
+        "ytm": ".middle-controls-buttons ytmusic-like-button-renderer"
+      },
+      "votesRendererShorts": {
+        "yt": "reel-action-bar-view-model"
+      },
       "likeBtn": {
         "yt": "#actions ytd-menu-renderer like-button-view-model button",
         "ytm": "ytmusic-like-button-renderer #button-shape-like"
       },
+      "likeBtnShorts": {
+        "yt": "like-button-view-model button"
+      },
       "dislikeBtn": {
         "ytm": "ytmusic-like-button-renderer #button-shape-dislike"
+      },
+      "dislikeBtnShorts": {
+        "yt": "dislike-button-view-model"
+      },
+      "likeBtnAlternate": {
+        "yt": "like-button-view-model button",
+        "ytm": "#button-shape-like button"
+      },
+      "dislikeBtnAlternate": {
+        "yt": "dislike-button-view-model button",
+        "ytm": "#button-shape-dislike button"
+      },
+      "progressBar": {
+        "yt": ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]",
+        "ytm": "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar"
+      },
+      "videoPlayer": {
+        "yt": "#movie_player"
+      },
+      "songImg": {
+        "ytm": "ytmusic-player #song-image"
       }
     },
     "songLists": {

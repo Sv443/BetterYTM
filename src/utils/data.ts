@@ -12,6 +12,8 @@ import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
 import { getFeature } from "@/config.ts";
 
+// TODO: expose on interface
+
 // used alert IDs:
 // - update-preview-version-hint-v3.1.0-rc.1
 
