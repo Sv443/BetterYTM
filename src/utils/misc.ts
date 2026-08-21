@@ -483,6 +483,13 @@ export async function getResourceUrl(name: ResourceKey | "_") {
   return await GM.getResourceUrl(name, false);
 }
 
+/** Collection of remote fetch attempts per resource, for inclusion in the performance report. */
+export const resourceFetches = new Map<ResourceKey | "_", number[]>();
+
+function logResourceFetch(key: ResourceKey | "_") {
+  resourceFetches.set(key, [...(resourceFetches.get(key) ?? []), Date.now()]);
+}
+
 type ResourceCache = {
   resources: Partial<Record<ResourceKey | "_", string>>;
   created: number;
@@ -563,7 +570,9 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
     if(!resourceUrl)
       throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 
+    logResourceFetch(resourceKey);
     const res = await fetchAdvanced(resourceUrl);
+
     if(!res.ok)
       throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
 

@@ -1,6 +1,6 @@
 import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey } from "@util/index.ts";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey, resourceFetches } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { assetSource, buildNumber, buildTimestamp, compressionFormat, defaultLogLevel, initTime, mode, rawConsts, scriptInfo } from "@/constants.ts";
 import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
@@ -124,6 +124,7 @@ const initTimings: PerformanceReport = {
   featureDurations: {} as PerformanceReport["featureDurations"],
   start: 0,
   sinceStart: {},
+  resources: {},
 };
 
 /**
@@ -817,6 +818,8 @@ function registerDevCommands() {
   isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new SyntaxError("Test error")));
 
   isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+    initTimings.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
+
     downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
   });
 

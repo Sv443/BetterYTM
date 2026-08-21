@@ -222,6 +222,11 @@ export type PerformanceReport = {
     /** Time in milliseconds since `start` when the entire initialization process finishes, including any synchronous, post-ready, developer-only code. Runs very slightly after `ready`. */
     postInitEnd?: number;
   };
+  /** Performance-related info regarding resources. */
+  resources: {
+    /** Amount of resources fetched from the remote CDN. */
+    fetchAttempts?: Record<ResourceKey | "_", number>;
+  };
 };
 
 //#region utility

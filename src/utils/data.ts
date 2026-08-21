@@ -105,7 +105,7 @@ export async function getStaticData(): Promise<StaticData> {
     if(res.ok) {
       const data = await res.json();
       if(isStaticData(data)) {
-        loggers.data.info("Successfully fetched remote static data:", data);
+        loggers.data.info("Successfully loaded remote static data:", data, LogLevel.Info);
         return staticData = data;
       }
       else
@@ -114,7 +114,7 @@ export async function getStaticData(): Promise<StaticData> {
     return staticData = defaultStaticData as StaticData;
   }
   catch(e) {
-    loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
+    loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
     loggers.data.info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
     return staticData = defaultStaticData as StaticData;
   }
