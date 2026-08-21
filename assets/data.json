@@ -45,7 +45,67 @@
         "ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
       },
       "likeBtn": {
-        "yt": "#actions ytd-menu-renderer like-button-view-model button"
+        "yt": "#actions ytd-menu-renderer like-button-view-model button",
+        "ytm": "ytmusic-like-button-renderer #button-shape-like"
+      },
+      "dislikeBtn": {
+        "ytm": "ytmusic-like-button-renderer #button-shape-dislike"
+      }
+    },
+    "songLists": {
+      "all": {
+        "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents"
+      },
+      "currentQueueContainer": {
+        "ytm": "ytmusic-player-queue #contents"
+      },
+      "currentQueueSongAndArtistNames": {
+        "ytm": "yt-formatted-string"
+      },
+      "autoplayQueueContainer": {
+        "ytm": "ytmusic-player-queue #automix-contents"
+      },
+      "playlistPageArtistName": {
+        "ytm": "ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a"
+      },
+      "playlistPageArtistNameAlternate": {
+        "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]"
+      },
+      "genericListArtistName": {
+        "ytm": ".secondary-flex-columns yt-formatted-string:first-child a"
+      },
+      "genericListSongName": {
+        "ytm": ".title-column yt-formatted-string a"
+      },
+      "queueItem": {
+        "ytm": "ytmusic-player-queue-item"
+      },
+      "queueItemThumbnailImg": {
+        "ytm": "yt-img-shadow img"
+      },
+      "queueItemPopoverContainer": {
+        "ytm": "ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown"
+      },
+      "queueItemPopoverRemoveFromListBtn": {
+        "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)"
+      },
+      "queueItemPopoverRemoveFromListBtnOptional": {
+        "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)"
+      },
+      "queueItemDotsBtn": {
+        "ytm": "ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button"
+      },
+      "queueMultiSelect": {
+        "ytm": "ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]"
+      },
+      "allCurrentQueueItems_global": {
+        "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item"
+      },
+      "allCurrentQueueItemsSongInfo_global": {
+        "ytm": ".song-info"
+      },
+      "allGenericListItems_sub_listContainer": {
+        "ytm": "ytmusic-responsive-list-item-renderer"
       }
     },
     "autoLike": {
