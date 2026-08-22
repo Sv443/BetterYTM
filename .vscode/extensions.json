@@ -1,12 +1,14 @@
 {
   "recommendations": [
-    "andywang.vscode-scriptmonkey",
+    "coyote-studios.monkey-wrench",
     "dbaeumer.vscode-eslint",
     "MylesMurphy.prettify-ts",
     "yoavbls.pretty-ts-errors",
     "fabiospampinato.vscode-highlight",
+    "miclo.sort-typescript-imports",
   ],
   "unwantedRecommendations": [
     "adpyke.vscode-userscript",
+    "andywang.vscode-scriptmonkey",
   ],
 }
