@@ -1177,6 +1177,8 @@ export async function fixHdrIssues() {
 
 //#region show vote nums
 
+// TODO:FIXME: error shows up on non-watch pages
+
 /** Shows the amount of likes and dislikes on the current song */
 export async function initShowVotes() {
   addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {

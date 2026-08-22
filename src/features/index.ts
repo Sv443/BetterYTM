@@ -218,6 +218,7 @@ export const groupedCategories: FeatureCategory[][] = [
  * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
  * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
  * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
+ * | `tags: LooseUnion<FeatureTag>[]`                                   | Array of extra tags for this feature. Used for bulk-editing features based on common tags, like when switching BYTM's privacy mode.                 |
  * | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations.                    |
  * | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu.                                                                                |
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -362,9 +363,7 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "2.1.0-preview.1",
     default: true,
-    advanced: true,
     reloadRequired: false,
-    adornments: [adornments.advanced],
     change: (newVal) => newVal ? loggers.misc.error("Test error", new ExampleError("Example")) : void 0,
   },
   resetConfig: {
