@@ -1,15 +1,15 @@
-import { addParent, getUnsafeWindow } from '@sv443-network/userutils';
-import { addSelectorListener } from '@/observers.ts';
-import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from '@util/dom.ts';
-import { featInfo } from '@feat/index.ts';
-import { getDomain, getReloadTabData, resourceAsString } from '@util/misc.ts';
-import { getFeature } from '@/config.ts';
-import { getSelector } from '@util/data.ts';
-import { loggers } from '@util/logging.ts';
-import { siteEvents } from '@/siteEvents.ts';
-import { t } from '@util/translations.ts';
-import { waitVideoElementReady } from '@util/dom.ts';
-import '@feat/volume.css';
+import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
+import { addSelectorListener } from "@/observers.ts";
+import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from "@util/dom.ts";
+import { featInfo } from "@feat/index.ts";
+import { getDomain, getReloadTabData, resourceAsString } from "@util/misc.ts";
+import { getFeature } from "@/config.ts";
+import { getSelector } from "@util/data.ts";
+import { loggers } from "@util/logging.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { t } from "@util/translations.ts";
+import { waitVideoElementReady } from "@util/dom.ts";
+import "@feat/volume.css";
 import { type Stringifiable, clamp, debounce } from "@sv443-network/coreutils";
 
 //#region init vol features

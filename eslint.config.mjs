@@ -5,6 +5,7 @@ import globals from "globals";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
 import tsParser from "@typescript-eslint/parser";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,10 +42,19 @@ const config = [
       },
     },
   },
+  {
+    plugins: {
+      "simple-import-sort": simpleImportSort,
+    },
+    rules: {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+    },
+  },
   ...compat.extends(
     "eslint:recommended",
     "plugin:storybook/recommended",
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended"
   ),
   {
     languageOptions: {

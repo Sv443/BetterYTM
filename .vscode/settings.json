@@ -49,10 +49,6 @@
     },
   ],
 
-  // multiline-sort import statements in TS files
-  // >>>>> requires extension: miclo.sort-typescript-imports <<<<<
-  "typescript.extension.sortImports.sortOnSave": true,
-
   // highlight TODOs, regions, debug flags, and other important comments
   // >>>>> requires extension: fabiospampinato.vscode-highlight <<<<<
   "highlight.regexes": {

@@ -99,6 +99,9 @@ importers:
       eslint:
         specifier: 10.0.3
         version: 10.0.3(jiti@2.7.0)(supports-color@8.1.1)
+      eslint-plugin-simple-import-sort:
+        specifier: 14.0.0
+        version: 14.0.0(eslint@10.0.3(jiti@2.7.0)(supports-color@8.1.1))
       eslint-plugin-storybook:
         specifier: 10.2.19
         version: 10.2.19(eslint@10.0.3(jiti@2.7.0)(supports-color@8.1.1))(storybook@10.2.19(@testing-library/dom@10.4.0)(prettier@2.8.8)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(supports-color@8.1.1)(typescript@5.9.3)
@@ -1422,6 +1425,11 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  eslint-plugin-simple-import-sort@14.0.0:
+    resolution: {integrity: sha512-NUJO0+XFCkk+o5EsAJruTgnfMEpeWrPWeJS15UVF60GgXmqz1BJ9/3hzlvG7lkL8Bubzos5cCLptThbFfPnSMQ==}
+    peerDependencies:
+      eslint: '>=5.0.0'
 
   eslint-plugin-storybook@10.2.19:
     resolution: {integrity: sha512-JwwNgG24mkwwiJp/VIwUuJ9QIXoeCZteSZ7PEpb8DUhKpzCrNxJOeg7i5ep6yLexWAVjfFLG4OnFeV8cVS2PAg==}
@@ -3881,6 +3889,10 @@ snapshots:
   escape-html@1.0.3: {}
 
   escape-string-regexp@4.0.0: {}
+
+  eslint-plugin-simple-import-sort@14.0.0(eslint@10.0.3(jiti@2.7.0)(supports-color@8.1.1)):
+    dependencies:
+      eslint: 10.0.3(jiti@2.7.0)(supports-color@8.1.1)
 
   eslint-plugin-storybook@10.2.19(eslint@10.0.3(jiti@2.7.0)(supports-color@8.1.1))(storybook@10.2.19(@testing-library/dom@10.4.0)(prettier@2.8.8)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(supports-color@8.1.1)(typescript@5.9.3):
     dependencies:
