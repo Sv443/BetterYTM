@@ -1,15 +1,16 @@
-import { clamp, debounce, type Stringifiable } from "@sv443-network/coreutils";
-import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
-import { getFeature } from "@/config.ts";
-import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from "@util/dom.ts";
-import { t } from "@util/translations.ts";
-import { waitVideoElementReady } from "@util/dom.ts";
-import { loggers } from "@util/logging.ts";
-import { getDomain, getReloadTabData, resourceAsString } from "@util/misc.ts";
-import { siteEvents } from "@/siteEvents.ts";
-import { featInfo } from "@feat/index.ts";
-import { addSelectorListener } from "@/observers.ts";
-import "@feat/volume.css";
+import { addParent, getUnsafeWindow } from '@sv443-network/userutils';
+import { addSelectorListener } from '@/observers.ts';
+import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from '@util/dom.ts';
+import { featInfo } from '@feat/index.ts';
+import { getDomain, getReloadTabData, resourceAsString } from '@util/misc.ts';
+import { getFeature } from '@/config.ts';
+import { getSelector } from '@util/data.ts';
+import { loggers } from '@util/logging.ts';
+import { siteEvents } from '@/siteEvents.ts';
+import { t } from '@util/translations.ts';
+import { waitVideoElementReady } from '@util/dom.ts';
+import '@feat/volume.css';
+import { type Stringifiable, clamp, debounce } from "@sv443-network/coreutils";
 
 //#region init vol features
 
@@ -79,7 +80,7 @@ export async function initVolumeFeatures() {
       checkSharedVolume();
   };
 
-  addSelectorListener<HTMLInputElement>("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+  addSelectorListener<HTMLInputElement>("playerBarRightControls", getSelector("volume", "volSlider_sub_playerBarRightControls"), {
     listener: (el) => onSliderElExists("normal", el),
   });
 
@@ -89,7 +90,7 @@ export async function initVolumeFeatures() {
       return;
     sizeSmOnce = true;
 
-    addSelectorListener<HTMLInputElement>("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
+    addSelectorListener<HTMLInputElement>("playerBarRightControls", getSelector("volume", "volSliderExpanded_sub_playerBarRightControls"), {
       listener: (el) => onSliderElExists("expand", el),
     });
   };
@@ -296,7 +297,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   addSelectorListener(
     "playerBarRightControls",
-    type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont",
+    getSelector("volume", type === "normal" ? "volSliderContainer_sub_playerBarRightControls" : "volSliderExpandedContainer_sub_playerBarRightControls"),
     {
       listener: (volumeCont) => volumeCont.appendChild(labelContElem),
     }
@@ -306,7 +307,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   /** Hide or show the ThemeSong media controls element when the volume slider is expanded */
   const setThemeSongContHidden = (hidden = true) => {
-    const contEl = document.querySelector<HTMLElement>("#ts-panel-container");
+    const contEl = document.querySelector<HTMLElement>(getSelector("integration", "themeSongPlayerBarControls"));
     contEl?.classList[(hidden ? "add" : "remove")]("bytm-hidden");
   };
 
@@ -375,7 +376,7 @@ async function checkSharedVolume() {
         return;
       lastCheckedSharedVolume = Number(vol);
 
-      const sliderElem = document.querySelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider");
+      const sliderElem = document.querySelector<HTMLInputElement>(getSelector("volume", "volSlider_sub_playerBarRightControls"));
       if(sliderElem) {
         sliderElem.value = String(vol);
         sliderElem.dispatchEvent(new Event("change", { bubbles: true }));

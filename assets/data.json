@@ -143,6 +143,25 @@
         "ytm": "ytmusic-responsive-list-item-renderer"
       }
     },
+    "volume": {
+      "volSlider_sub_playerBarRightControls": {
+        "ytm": "tp-yt-paper-slider#volume-slider"
+      },
+      "volSliderExpanded_sub_playerBarRightControls": {
+        "ytm": "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider"
+      },
+      "volSliderContainer_sub_playerBarRightControls": {
+        "ytm": ".bytm-vol-slider-cont"
+      },
+      "volSliderExpandedContainer_sub_playerBarRightControls": {
+        "ytm": "ytmusic-player-expanding-menu .bytm-vol-slider-cont"
+      }
+    },
+    "integration": {
+      "themeSongPlayerBarControls": {
+        "ytm": "#ts-panel-container"
+      }
+    },
     "autoLike": {
       "titleContainer": {
         "yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
