@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@88ad6616/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9579a5b4/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 19 Aug 2026 21:43:39 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 23 Aug 2026 14:43:19 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 88ad6616                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 9579a5b4                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ Szsf3jzI1wXK                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ ZSsf0tO9rgzg                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6331,6 +6331,567 @@ Has: ${checksum}`);
 	}
 	var purify = createDOMPurify();
 	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/utils.js
+	var semver = /^[v^~<>=]*?(\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+))?(?:-([\da-z\-]+(?:\.[\da-z\-]+)*))?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?)?)?$/i;
+	var validateAndParse = (version) => {
+		if (typeof version !== "string") throw new TypeError("Invalid argument expected string");
+		const match = version.match(semver);
+		if (!match) throw new Error(`Invalid argument not valid semver ('${version}' received)`);
+		match.shift();
+		return match;
+	};
+	var isWildcard = (s) => s === "*" || s === "x" || s === "X";
+	var tryParse = (v) => {
+		const n = parseInt(v, 10);
+		return isNaN(n) ? v : n;
+	};
+	var forceType = (a, b) => typeof a !== typeof b ? [String(a), String(b)] : [a, b];
+	var compareStrings = (a, b) => {
+		if (isWildcard(a) || isWildcard(b)) return 0;
+		const [ap, bp] = forceType(tryParse(a), tryParse(b));
+		if (ap > bp) return 1;
+		if (ap < bp) return -1;
+		return 0;
+	};
+	var compareSegments = (a, b) => {
+		for (let i = 0; i < Math.max(a.length, b.length); i++) {
+			const r = compareStrings(a[i] || "0", b[i] || "0");
+			if (r !== 0) return r;
+		}
+		return 0;
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compareVersions.js
+	/**
+	* Compare [semver](https://semver.org/) version strings to find greater, equal or lesser.
+	* This library supports the full semver specification, including comparing versions with different number of digits like `1.0.0`, `1.0`, `1`, and pre-release versions like `1.0.0-alpha`.
+	* @param v1 - First version to compare
+	* @param v2 - Second version to compare
+	* @returns Numeric value compatible with the [Array.sort(fn) interface](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
+	*/
+	var compareVersions = (v1, v2) => {
+		const n1 = validateAndParse(v1);
+		const n2 = validateAndParse(v2);
+		const p1 = n1.pop();
+		const p2 = n2.pop();
+		const r = compareSegments(n1, n2);
+		if (r !== 0) return r;
+		if (p1 && p2) return compareSegments(p1.split("."), p2.split("."));
+		else if (p1 || p2) return p1 ? -1 : 1;
+		return 0;
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compare.js
+	/**
+	* Compare [semver](https://semver.org/) version strings using the specified operator.
+	*
+	* @param v1 First version to compare
+	* @param v2 Second version to compare
+	* @param operator Allowed arithmetic operator to use
+	* @returns `true` if the comparison between the firstVersion and the secondVersion satisfies the operator, `false` otherwise.
+	*
+	* @example
+	* ```
+	* compare('10.1.8', '10.0.4', '>'); // return true
+	* compare('10.0.1', '10.0.1', '='); // return true
+	* compare('10.1.1', '10.2.2', '<'); // return true
+	* compare('10.1.1', '10.2.2', '<='); // return true
+	* compare('10.1.1', '10.2.2', '>='); // return false
+	* ```
+	*/
+	var compare = (v1, v2, operator) => {
+		assertValidOperator(operator);
+		const res = compareVersions(v1, v2);
+		return operatorResMap[operator].includes(res);
+	};
+	var operatorResMap = {
+		">": [1],
+		">=": [0, 1],
+		"=": [0],
+		"<=": [-1, 0],
+		"<": [-1],
+		"!=": [-1, 1]
+	};
+	var allowedOperators = Object.keys(operatorResMap);
+	var assertValidOperator = (op) => {
+		if (typeof op !== "string") throw new TypeError(`Invalid operator type, expected string but got ${typeof op}`);
+		if (allowedOperators.indexOf(op) === -1) throw new Error(`Invalid operator, expected one of ${allowedOperators.join("|")}`);
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/satisfies.js
+	/**
+	* Match [npm semver](https://docs.npmjs.com/cli/v6/using-npm/semver) version range.
+	*
+	* @param version Version number to match
+	* @param range Range pattern for version
+	* @returns `true` if the version number is within the range, `false` otherwise.
+	*
+	* @example
+	* ```
+	* satisfies('1.1.0', '^1.0.0'); // return true
+	* satisfies('1.1.0', '~1.0.0'); // return false
+	* ```
+	*/
+	var satisfies = (version, range) => {
+		range = range.replace(/([><=]+)\s+/g, "$1");
+		if (range.includes("||")) return range.split("||").some((r) => satisfies(version, r));
+		else if (range.includes(" - ")) {
+			const [a, b] = range.split(" - ", 2);
+			return satisfies(version, `>=${a} <=${b}`);
+		} else if (range.includes(" ")) return range.trim().replace(/\s{2,}/g, " ").split(" ").every((r) => satisfies(version, r));
+		const m = range.match(/^([<>=~^]+)/);
+		const op = m ? m[1] : "=";
+		if (op !== "^" && op !== "~") return compare(version, range, op);
+		const [v1, v2, v3, , vp] = validateAndParse(version);
+		const [r1, r2, r3, , rp] = validateAndParse(range);
+		const v = [
+			v1,
+			v2,
+			v3
+		];
+		const r = [
+			r1,
+			r2 !== null && r2 !== void 0 ? r2 : "x",
+			r3 !== null && r3 !== void 0 ? r3 : "x"
+		];
+		if (rp) {
+			if (!vp) return false;
+			if (compareSegments(v, r) !== 0) return false;
+			if (compareSegments(vp.split("."), rp.split(".")) === -1) return false;
+		}
+		const nonZero = r.findIndex((v) => v !== "0") + 1;
+		const i = op === "~" ? 2 : nonZero > 1 ? nonZero : 1;
+		if (compareSegments(v.slice(0, i), r.slice(0, i)) !== 0) return false;
+		if (compareSegments(v.slice(i), r.slice(i)) === -1) return false;
+		return true;
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/validate.js
+	/**
+	* Validate [semver](https://semver.org/) version strings.
+	*
+	* @param version Version number to validate
+	* @returns `true` if the version number is a valid semver version number, `false` otherwise.
+	*
+	* @example
+	* ```
+	* validate('1.0.0-rc.1'); // return true
+	* validate('1.0-rc.1'); // return false
+	* validate('foo'); // return false
+	* ```
+	*/
+	var validate = (version) => typeof version === "string" && /^[v\d]/.test(version) && semver.test(version);
+	/**
+	* Validate [semver](https://semver.org/) version strings strictly. Will not accept wildcards and version ranges.
+	*
+	* @param version Version number to validate
+	* @returns `true` if the version number is a valid semver version number `false` otherwise
+	*
+	* @example
+	* ```
+	* validate('1.0.0-rc.1'); // return true
+	* validate('1.0-rc.1'); // return false
+	* validate('foo'); // return false
+	* ```
+	*/
+	var validateStrict = (version) => typeof version === "string" && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/.test(version);
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/index.js
+	var esm_exports = /* @__PURE__ */ __exportAll({
+		compare: () => compare,
+		compareVersions: () => compareVersions,
+		satisfies: () => satisfies,
+		validate: () => validate,
+		validateStrict: () => validateStrict
+	});
+	var resources_default = {
+		externalAssetPattern: "^(css|doc|font|icon|img|trans)-",
+		preloadAssetPattern: "^(icon|img)-",
+		resources: {
+			"css-above_queue_btns": "styles/aboveQueueBtns.css",
+			"css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
+			"css-anchor_improvements": "styles/anchorImprovements.css",
+			"css-auto_like": "styles/autoLike.css",
+			"css-bundle": "/dist/BetterYTM.css",
+			"css-fix_hdr": "styles/fixHDR.css",
+			"css-fix_playerpage_theming": "styles/fixPlayerPageTheming.css",
+			"css-fix_spacing": "styles/fixSpacing.css",
+			"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
+			"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
+			"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
+			"css-show_votes": "styles/showVotes.css",
+			"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
+			"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
+			"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
+			"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
+			"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
+			"css-vol_slider_size": "styles/volSliderSize.css",
+			"css-watch_page_full_size": "styles/watchPageFullSize.css",
+			"doc-data": {
+				"path": "data.json",
+				"ref": "main",
+				"integrity": false
+			},
+			"doc-license": {
+				"path": "/LICENSE.txt",
+				"ref": "$BRANCH",
+				"integrity": false
+			},
+			"font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
+			"font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
+			"font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
+			"icon-advanced_mode": "icons/plus_circle_small.svg",
+			"icon-advanced_mode_large": "icons/plus_circle.svg",
+			"icon-alert": "icons/alert.svg",
+			"icon-arrow_down": "icons/arrow_down.svg",
+			"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
+			"icon-auto_like": "icons/auto_like.svg",
+			"icon-clear_list": "icons/clear_list.svg",
+			"icon-copy": "icons/copy.svg",
+			"icon-delete": "icons/delete.svg",
+			"icon-edit": "icons/edit.svg",
+			"icon-error": "icons/error.svg",
+			"icon-experimental": "icons/beaker_small.svg",
+			"icon-globe_small": "icons/globe_small.svg",
+			"icon-globe": "icons/globe.svg",
+			"icon-help": "icons/help.svg",
+			"icon-image_filled_am": "icons/image_filled_am.svg",
+			"icon-image_filled_yt": "icons/image_filled_yt.svg",
+			"icon-image_filled": "icons/image_filled.svg",
+			"icon-image": "icons/image.svg",
+			"icon-link": "icons/link.svg",
+			"icon-lyrics": "icons/lyrics.svg",
+			"icon-new": "icons/new.svg",
+			"icon-prompt": "icons/help.svg",
+			"icon-reload": "icons/refresh.svg",
+			"icon-shield_info": "icons/shield_info.svg",
+			"icon-shield_question": "icons/shield_question.svg",
+			"icon-history": "icons/history.svg",
+			"icon-skip_to": "icons/skip_to.svg",
+			"icon-speed": "icons/speed.svg",
+			"icon-spinner": "icons/spinner.svg",
+			"icon-upload": "icons/upload.svg",
+			"icon-ytm": "icons/ytm.svg",
+			"img-close": "images/close.png",
+			"img-discord": "images/external/discord.png",
+			"img-github": "images/external/github.png",
+			"img-greasyfork": "images/external/greasyfork.png",
+			"img-logo_dev": "images/logo/logo_dev_48.png",
+			"img-logo": "images/logo/logo_48.png",
+			"img-openuserjs": "images/external/openuserjs.png",
+			"trans-de-DE": "translations/de-DE.json",
+			"trans-en-GB": "translations/en-GB.json",
+			"trans-en-US": "translations/en-US.json",
+			"trans-es-ES": "translations/es-ES.json",
+			"trans-fr-FR": "translations/fr-FR.json",
+			"trans-hi-IN": "translations/hi-IN.json",
+			"trans-ja-JP": "translations/ja-JP.json",
+			"trans-pt-BR": "translations/pt-BR.json",
+			"trans-tr-TR": "translations/tr-TR.json",
+			"trans-zh-CN": "translations/zh-CN.json"
+		}
+	};
+	//#endregion
+	//#region assets/locales.json
+	var locales_default = {
+		"de-DE": {
+			"name": "Deutsch (Deutschland)",
+			"nameEnglish": "German (Germany)",
+			"emoji": "🇩🇪",
+			"userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"de",
+				"de-AT",
+				"de-BE",
+				"de-CH",
+				"de-LI",
+				"de-LU"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"en-US": {
+			"name": "English (United States)",
+			"nameEnglish": "English (United States)",
+			"emoji": "🇺🇸",
+			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["en", "en-CA"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"en-GB": {
+			"name": "English (Great Britain)",
+			"nameEnglish": "English (Great Britain)",
+			"emoji": "🇬🇧",
+			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"en-AU",
+				"en-IE",
+				"en-NZ",
+				"en-ZA"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"es-ES": {
+			"name": "Español (España)",
+			"nameEnglish": "Spanish (Spain)",
+			"emoji": "🇪🇸",
+			"userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["es", "es-MX"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"fr-FR": {
+			"name": "Français (France)",
+			"nameEnglish": "French (France)",
+			"emoji": "🇫🇷",
+			"userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"fr",
+				"fr-CA",
+				"fr-BE",
+				"fr-CH",
+				"fr-LU"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"hi-IN": {
+			"name": "हिंदी (भारत)",
+			"nameEnglish": "Hindi (India)",
+			"emoji": "🇮🇳",
+			"userscriptDesc": "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
+			"authors": ["Sv443"],
+			"altLocales": ["hi", "hi-NP"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "।",
+			"sentenceTerminators": [
+				"।",
+				".",
+				"!",
+				"?"
+			]
+		},
+		"ja-JP": {
+			"name": "日本語 (日本)",
+			"nameEnglish": "Japanese (Japan)",
+			"emoji": "🇯🇵",
+			"userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
+			"authors": ["Sv443"],
+			"altLocales": ["ja"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "。",
+			"sentenceTerminators": [
+				"。",
+				"！",
+				"？",
+				".",
+				"!",
+				"?"
+			]
+		},
+		"pt-BR": {
+			"name": "Português (Brasil)",
+			"nameEnglish": "Portuguese (Brazil)",
+			"emoji": "🇧🇷",
+			"userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["pt", "pt-PT"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"tr-TR": {
+			"name": "Türkçe (Türkiye)",
+			"nameEnglish": "Turkish (Turkey)",
+			"emoji": "🇹🇷",
+			"userscriptDesc": "YouTube Music™ ve YouTube™ için yapılandırılabilir sayfa düzeni ve kullanıcı deneyimi iyileştirmeleri",
+			"authors": ["kcangny"],
+			"altLocales": ["tr"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"zh-CN": {
+			"name": "中文（简化，中国）",
+			"nameEnglish": "Chinese (Simplified, China)",
+			"emoji": "🇨🇳",
+			"userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"zh",
+				"zh-TW",
+				"zh-HK",
+				"zh-SG"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "。",
+			"sentenceTerminators": [
+				"。",
+				"！",
+				"？",
+				".",
+				"!",
+				"?"
+			]
+		}
+	};
+	//#endregion
+	//#region src/types.ts
+	var LogLevel = /* @__PURE__ */ function(LogLevel) {
+		LogLevel[LogLevel["Debug"] = 0] = "Debug";
+		LogLevel[LogLevel["Info"] = 1] = "Info";
+		return LogLevel;
+	}({});
+	/**
+	* Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
+	* TODO: this feature is unfinished, but you should still specify the intents your plugin needs.  
+	* Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
+	*/
+	var PluginIntent = /* @__PURE__ */ function(PluginIntent) {
+		/** Plugin can read the feature configuration */
+		PluginIntent[PluginIntent["ReadFeatureConfig"] = 1] = "ReadFeatureConfig";
+		/** Plugin can write to the feature configuration */
+		PluginIntent[PluginIntent["WriteFeatureConfig"] = 2] = "WriteFeatureConfig";
+		/** Plugin has access to hidden config values */
+		PluginIntent[PluginIntent["SeeHiddenConfigValues"] = 4] = "SeeHiddenConfigValues";
+		/** Plugin can write to the lyrics cache */
+		PluginIntent[PluginIntent["WriteLyricsCache"] = 8] = "WriteLyricsCache";
+		/** Plugin can add new translations and overwrite existing ones */
+		PluginIntent[PluginIntent["WriteTranslations"] = 16] = "WriteTranslations";
+		/** Plugin can create modal dialogs */
+		PluginIntent[PluginIntent["CreateModalDialogs"] = 32] = "CreateModalDialogs";
+		/** Plugin can read auto-like data */
+		PluginIntent[PluginIntent["ReadAutoLikeData"] = 64] = "ReadAutoLikeData";
+		/** Plugin can write to auto-like data */
+		PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
+		/** Plugin has access to deeply internal functions and instances */
+		PluginIntent[PluginIntent["InternalAccess"] = 256] = "InternalAccess";
+		/** Grants all other intents */
+		PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
+		return PluginIntent;
+	}({});
+	//#endregion
+	//#region src/constants.ts
+	var constants_exports = /* @__PURE__ */ __exportAll({
+		assetSource: () => assetSource,
+		branch: () => branch$1,
+		buildNumber: () => buildNumber$1,
+		buildTimestamp: () => buildTimestamp,
+		changelogUrl: () => changelogUrl,
+		compressionFormat: () => compressionFormat$1,
+		defaultLogLevel: () => defaultLogLevel,
+		devServerPort: () => devServerPort,
+		host: () => host$1,
+		initTime: () => initTime,
+		initialParams: () => initialParams$1,
+		mode: () => mode$1,
+		newFeatureAdornmentMaxSessionCount: () => 20,
+		platformNames: () => platformNames,
+		rawConsts: () => rawConsts,
+		repo: () => repo,
+		scriptInfo: () => scriptInfo$1,
+		sessionStorageAvailable: () => sessionStorageAvailable$1
+	});
+	/**
+	* Check below this variable for the constant variables used throughout BetterYTM.  
+	* Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+	* Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
+	* @deprecated This object was reworked when the build process was migrated to vite.
+	*/
+	var rawConsts = {};
+	/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
+	var repo = "Sv443/BetterYTM";
+	/** The mode in which the script was built (production or development). */
+	var mode$1 = "development";
+	/** The branch to use in various URLs that point to the GitHub repo. */
+	var branch$1 = "develop";
+	/** Which host the userscript was installed from. */
+	var host$1 = "github";
+	/** The build number of the userscript. */
+	var buildNumber$1 = "9579a5b4";
+	/** When the script was built, as a UNIX timestamp. */
+	var buildTimestamp = 1787496199958;
+	/** The source of the assets - github, jsdelivr or local. */
+	var assetSource = "jsdelivr";
+	/** The port of the dev server. */
+	var devServerPort = 8710;
+	/** URL to the changelog file */
+	var changelogUrl = `https://raw.githubusercontent.com/${repo}/develop/changelog.md?build=${buildNumber$1}`;
+	/** The URL search parameters at the earliest possible time */
+	var initialParams$1 = new URL(location.href).searchParams;
+	/** Timestamp of when the script was initialized. */
+	var initTime = Date.now();
+	/** Names of platforms by key of {@linkcode host} */
+	var platformNames = pureObj$2({
+		github: "GitHub",
+		greasyfork: "Greasy Fork",
+		openuserjs: "OpenUserJS"
+	});
+	/** Default compression format used throughout BYTM */
+	var compressionFormat$1 = "deflate-raw";
+	/** Whether sessionStorage is available and working */
+	var sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function" && (() => {
+		try {
+			const key = `_bytm_test_${randomId$1(6, 36, false, true)}`;
+			sessionStorage.setItem(key, "test");
+			sessionStorage.removeItem(key);
+			return true;
+		} catch {
+			return false;
+		}
+	})();
+	/**
+	* Fallback and initial value of how much info should be logged to the devtools console  
+	* 0 = Debug (show everything) or 1 = Info (show only important stuff)
+	*/
+	var defaultLogLevel = LogLevel.Debug;
+	/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
+	var scriptInfo$1 = pureObj$2({
+		name: GM_info.script.name,
+		version: GM_info.script.version,
+		namespace: GM_info.script.namespace
+	});
+	//#endregion
 	//#region node_modules/.pnpm/marked@17.0.4/node_modules/marked/lib/marked.esm.js
 	/**
 	* marked v17.0.4 - a markdown parser
@@ -7840,1327 +8401,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	g.parseInline;
 	b.parse;
 	x.lex;
-	var resources_default = {
-		externalAssetPattern: "^(css|doc|font|icon|img|trans)-",
-		preloadAssetPattern: "^(icon|img)-",
-		resources: {
-			"css-above_queue_btns": "styles/aboveQueueBtns.css",
-			"css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
-			"css-anchor_improvements": "styles/anchorImprovements.css",
-			"css-auto_like": "styles/autoLike.css",
-			"css-bundle": "/dist/BetterYTM.css",
-			"css-fix_hdr": "styles/fixHDR.css",
-			"css-fix_playerpage_theming": "styles/fixPlayerPageTheming.css",
-			"css-fix_spacing": "styles/fixSpacing.css",
-			"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
-			"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
-			"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
-			"css-show_votes": "styles/showVotes.css",
-			"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
-			"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
-			"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
-			"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
-			"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
-			"css-vol_slider_size": "styles/volSliderSize.css",
-			"css-watch_page_full_size": "styles/watchPageFullSize.css",
-			"doc-data": {
-				"path": "data.json",
-				"ref": "main",
-				"integrity": false
-			},
-			"doc-license": {
-				"path": "/LICENSE.txt",
-				"ref": "$BRANCH",
-				"integrity": false
-			},
-			"font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
-			"font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
-			"font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
-			"icon-advanced_mode": "icons/plus_circle_small.svg",
-			"icon-advanced_mode_large": "icons/plus_circle.svg",
-			"icon-alert": "icons/alert.svg",
-			"icon-arrow_down": "icons/arrow_down.svg",
-			"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
-			"icon-auto_like": "icons/auto_like.svg",
-			"icon-clear_list": "icons/clear_list.svg",
-			"icon-copy": "icons/copy.svg",
-			"icon-delete": "icons/delete.svg",
-			"icon-edit": "icons/edit.svg",
-			"icon-error": "icons/error.svg",
-			"icon-experimental": "icons/beaker_small.svg",
-			"icon-globe_small": "icons/globe_small.svg",
-			"icon-globe": "icons/globe.svg",
-			"icon-help": "icons/help.svg",
-			"icon-image_filled_am": "icons/image_filled_am.svg",
-			"icon-image_filled_yt": "icons/image_filled_yt.svg",
-			"icon-image_filled": "icons/image_filled.svg",
-			"icon-image": "icons/image.svg",
-			"icon-link": "icons/link.svg",
-			"icon-lyrics": "icons/lyrics.svg",
-			"icon-new": "icons/new.svg",
-			"icon-prompt": "icons/help.svg",
-			"icon-reload": "icons/refresh.svg",
-			"icon-shield_info": "icons/shield_info.svg",
-			"icon-shield_question": "icons/shield_question.svg",
-			"icon-history": "icons/history.svg",
-			"icon-skip_to": "icons/skip_to.svg",
-			"icon-speed": "icons/speed.svg",
-			"icon-spinner": "icons/spinner.svg",
-			"icon-upload": "icons/upload.svg",
-			"icon-ytm": "icons/ytm.svg",
-			"img-close": "images/close.png",
-			"img-discord": "images/external/discord.png",
-			"img-github": "images/external/github.png",
-			"img-greasyfork": "images/external/greasyfork.png",
-			"img-logo_dev": "images/logo/logo_dev_48.png",
-			"img-logo": "images/logo/logo_48.png",
-			"img-openuserjs": "images/external/openuserjs.png",
-			"trans-de-DE": "translations/de-DE.json",
-			"trans-en-GB": "translations/en-GB.json",
-			"trans-en-US": "translations/en-US.json",
-			"trans-es-ES": "translations/es-ES.json",
-			"trans-fr-FR": "translations/fr-FR.json",
-			"trans-hi-IN": "translations/hi-IN.json",
-			"trans-ja-JP": "translations/ja-JP.json",
-			"trans-pt-BR": "translations/pt-BR.json",
-			"trans-tr-TR": "translations/tr-TR.json",
-			"trans-zh-CN": "translations/zh-CN.json"
-		}
-	};
-	//#endregion
-	//#region assets/locales.json
-	var locales_default = {
-		"de-DE": {
-			"name": "Deutsch (Deutschland)",
-			"nameEnglish": "German (Germany)",
-			"emoji": "🇩🇪",
-			"userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"de",
-				"de-AT",
-				"de-BE",
-				"de-CH",
-				"de-LI",
-				"de-LU"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"en-US": {
-			"name": "English (United States)",
-			"nameEnglish": "English (United States)",
-			"emoji": "🇺🇸",
-			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["en", "en-CA"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"en-GB": {
-			"name": "English (Great Britain)",
-			"nameEnglish": "English (Great Britain)",
-			"emoji": "🇬🇧",
-			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"en-AU",
-				"en-IE",
-				"en-NZ",
-				"en-ZA"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"es-ES": {
-			"name": "Español (España)",
-			"nameEnglish": "Spanish (Spain)",
-			"emoji": "🇪🇸",
-			"userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["es", "es-MX"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"fr-FR": {
-			"name": "Français (France)",
-			"nameEnglish": "French (France)",
-			"emoji": "🇫🇷",
-			"userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"fr",
-				"fr-CA",
-				"fr-BE",
-				"fr-CH",
-				"fr-LU"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"hi-IN": {
-			"name": "हिंदी (भारत)",
-			"nameEnglish": "Hindi (India)",
-			"emoji": "🇮🇳",
-			"userscriptDesc": "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
-			"authors": ["Sv443"],
-			"altLocales": ["hi", "hi-NP"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "।",
-			"sentenceTerminators": [
-				"।",
-				".",
-				"!",
-				"?"
-			]
-		},
-		"ja-JP": {
-			"name": "日本語 (日本)",
-			"nameEnglish": "Japanese (Japan)",
-			"emoji": "🇯🇵",
-			"userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
-			"authors": ["Sv443"],
-			"altLocales": ["ja"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "。",
-			"sentenceTerminators": [
-				"。",
-				"！",
-				"？",
-				".",
-				"!",
-				"?"
-			]
-		},
-		"pt-BR": {
-			"name": "Português (Brasil)",
-			"nameEnglish": "Portuguese (Brazil)",
-			"emoji": "🇧🇷",
-			"userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["pt", "pt-PT"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"tr-TR": {
-			"name": "Türkçe (Türkiye)",
-			"nameEnglish": "Turkish (Turkey)",
-			"emoji": "🇹🇷",
-			"userscriptDesc": "YouTube Music™ ve YouTube™ için yapılandırılabilir sayfa düzeni ve kullanıcı deneyimi iyileştirmeleri",
-			"authors": ["kcangny"],
-			"altLocales": ["tr"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"zh-CN": {
-			"name": "中文（简化，中国）",
-			"nameEnglish": "Chinese (Simplified, China)",
-			"emoji": "🇨🇳",
-			"userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"zh",
-				"zh-TW",
-				"zh-HK",
-				"zh-SG"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "。",
-			"sentenceTerminators": [
-				"。",
-				"！",
-				"？",
-				".",
-				"!",
-				"?"
-			]
-		}
-	};
-	//#endregion
-	//#region src/types.ts
-	var LogLevel = /* @__PURE__ */ function(LogLevel) {
-		LogLevel[LogLevel["Debug"] = 0] = "Debug";
-		LogLevel[LogLevel["Info"] = 1] = "Info";
-		return LogLevel;
-	}({});
-	/**
-	* Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
-	* TODO: this feature is unfinished, but you should still specify the intents your plugin needs.  
-	* Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
-	*/
-	var PluginIntent = /* @__PURE__ */ function(PluginIntent) {
-		/** Plugin can read the feature configuration */
-		PluginIntent[PluginIntent["ReadFeatureConfig"] = 1] = "ReadFeatureConfig";
-		/** Plugin can write to the feature configuration */
-		PluginIntent[PluginIntent["WriteFeatureConfig"] = 2] = "WriteFeatureConfig";
-		/** Plugin has access to hidden config values */
-		PluginIntent[PluginIntent["SeeHiddenConfigValues"] = 4] = "SeeHiddenConfigValues";
-		/** Plugin can write to the lyrics cache */
-		PluginIntent[PluginIntent["WriteLyricsCache"] = 8] = "WriteLyricsCache";
-		/** Plugin can add new translations and overwrite existing ones */
-		PluginIntent[PluginIntent["WriteTranslations"] = 16] = "WriteTranslations";
-		/** Plugin can create modal dialogs */
-		PluginIntent[PluginIntent["CreateModalDialogs"] = 32] = "CreateModalDialogs";
-		/** Plugin can read auto-like data */
-		PluginIntent[PluginIntent["ReadAutoLikeData"] = 64] = "ReadAutoLikeData";
-		/** Plugin can write to auto-like data */
-		PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
-		/** Plugin has access to deeply internal functions and instances */
-		PluginIntent[PluginIntent["InternalAccess"] = 256] = "InternalAccess";
-		/** Grants all other intents */
-		PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
-		return PluginIntent;
-	}({});
-	//#endregion
-	//#region src/constants.ts
-	var constants_exports = /* @__PURE__ */ __exportAll({
-		assetSource: () => assetSource,
-		branch: () => branch$1,
-		buildNumber: () => buildNumber$1,
-		buildTimestamp: () => buildTimestamp,
-		changelogUrl: () => changelogUrl,
-		compressionFormat: () => compressionFormat$1,
-		defaultLogLevel: () => defaultLogLevel,
-		devServerPort: () => devServerPort,
-		host: () => host$1,
-		initTime: () => initTime,
-		initialParams: () => initialParams$1,
-		mode: () => mode$1,
-		newFeatureAdornmentMaxSessionCount: () => 20,
-		platformNames: () => platformNames,
-		rawConsts: () => rawConsts,
-		repo: () => repo,
-		scriptInfo: () => scriptInfo$1,
-		sessionStorageAvailable: () => sessionStorageAvailable$1
-	});
-	/**
-	* Check below this variable for the constant variables used throughout BetterYTM.  
-	* Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
-	* Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
-	* @deprecated This object was reworked when the build process was migrated to vite.
-	*/
-	var rawConsts = {};
-	/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
-	var repo = "Sv443/BetterYTM";
-	/** The mode in which the script was built (production or development). */
-	var mode$1 = "development";
-	/** The branch to use in various URLs that point to the GitHub repo. */
-	var branch$1 = "develop";
-	/** Which host the userscript was installed from. */
-	var host$1 = "github";
-	/** The build number of the userscript. */
-	var buildNumber$1 = "88ad6616";
-	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1787175819916;
-	/** The source of the assets - github, jsdelivr or local. */
-	var assetSource = "jsdelivr";
-	/** The port of the dev server. */
-	var devServerPort = 8710;
-	/** URL to the changelog file */
-	var changelogUrl = `https://raw.githubusercontent.com/${repo}/develop/changelog.md?build=${buildNumber$1}`;
-	/** The URL search parameters at the earliest possible time */
-	var initialParams$1 = new URL(location.href).searchParams;
-	/** Timestamp of when the script was initialized. */
-	var initTime = Date.now();
-	/** Names of platforms by key of {@linkcode host} */
-	var platformNames = pureObj$2({
-		github: "GitHub",
-		greasyfork: "Greasy Fork",
-		openuserjs: "OpenUserJS"
-	});
-	/** Default compression format used throughout BYTM */
-	var compressionFormat$1 = "deflate-raw";
-	/** Whether sessionStorage is available and working */
-	var sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function" && (() => {
-		try {
-			const key = `_bytm_test_${randomId$1(6, 36, false, true)}`;
-			sessionStorage.setItem(key, "test");
-			sessionStorage.removeItem(key);
-			return true;
-		} catch {
-			return false;
-		}
-	})();
-	/**
-	* Fallback and initial value of how much info should be logged to the devtools console  
-	* 0 = Debug (show everything) or 1 = Info (show only important stuff)
-	*/
-	var defaultLogLevel = LogLevel.Debug;
-	/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
-	var scriptInfo$1 = pureObj$2({
-		name: GM_info.script.name,
-		version: GM_info.script.version,
-		namespace: GM_info.script.namespace
-	});
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/utils.js
-	var semver = /^[v^~<>=]*?(\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+))?(?:-([\da-z\-]+(?:\.[\da-z\-]+)*))?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?)?)?$/i;
-	var validateAndParse = (version) => {
-		if (typeof version !== "string") throw new TypeError("Invalid argument expected string");
-		const match = version.match(semver);
-		if (!match) throw new Error(`Invalid argument not valid semver ('${version}' received)`);
-		match.shift();
-		return match;
-	};
-	var isWildcard = (s) => s === "*" || s === "x" || s === "X";
-	var tryParse = (v) => {
-		const n = parseInt(v, 10);
-		return isNaN(n) ? v : n;
-	};
-	var forceType = (a, b) => typeof a !== typeof b ? [String(a), String(b)] : [a, b];
-	var compareStrings = (a, b) => {
-		if (isWildcard(a) || isWildcard(b)) return 0;
-		const [ap, bp] = forceType(tryParse(a), tryParse(b));
-		if (ap > bp) return 1;
-		if (ap < bp) return -1;
-		return 0;
-	};
-	var compareSegments = (a, b) => {
-		for (let i = 0; i < Math.max(a.length, b.length); i++) {
-			const r = compareStrings(a[i] || "0", b[i] || "0");
-			if (r !== 0) return r;
-		}
-		return 0;
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compareVersions.js
-	/**
-	* Compare [semver](https://semver.org/) version strings to find greater, equal or lesser.
-	* This library supports the full semver specification, including comparing versions with different number of digits like `1.0.0`, `1.0`, `1`, and pre-release versions like `1.0.0-alpha`.
-	* @param v1 - First version to compare
-	* @param v2 - Second version to compare
-	* @returns Numeric value compatible with the [Array.sort(fn) interface](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
-	*/
-	var compareVersions = (v1, v2) => {
-		const n1 = validateAndParse(v1);
-		const n2 = validateAndParse(v2);
-		const p1 = n1.pop();
-		const p2 = n2.pop();
-		const r = compareSegments(n1, n2);
-		if (r !== 0) return r;
-		if (p1 && p2) return compareSegments(p1.split("."), p2.split("."));
-		else if (p1 || p2) return p1 ? -1 : 1;
-		return 0;
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compare.js
-	/**
-	* Compare [semver](https://semver.org/) version strings using the specified operator.
-	*
-	* @param v1 First version to compare
-	* @param v2 Second version to compare
-	* @param operator Allowed arithmetic operator to use
-	* @returns `true` if the comparison between the firstVersion and the secondVersion satisfies the operator, `false` otherwise.
-	*
-	* @example
-	* ```
-	* compare('10.1.8', '10.0.4', '>'); // return true
-	* compare('10.0.1', '10.0.1', '='); // return true
-	* compare('10.1.1', '10.2.2', '<'); // return true
-	* compare('10.1.1', '10.2.2', '<='); // return true
-	* compare('10.1.1', '10.2.2', '>='); // return false
-	* ```
-	*/
-	var compare = (v1, v2, operator) => {
-		assertValidOperator(operator);
-		const res = compareVersions(v1, v2);
-		return operatorResMap[operator].includes(res);
-	};
-	var operatorResMap = {
-		">": [1],
-		">=": [0, 1],
-		"=": [0],
-		"<=": [-1, 0],
-		"<": [-1],
-		"!=": [-1, 1]
-	};
-	var allowedOperators = Object.keys(operatorResMap);
-	var assertValidOperator = (op) => {
-		if (typeof op !== "string") throw new TypeError(`Invalid operator type, expected string but got ${typeof op}`);
-		if (allowedOperators.indexOf(op) === -1) throw new Error(`Invalid operator, expected one of ${allowedOperators.join("|")}`);
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/satisfies.js
-	/**
-	* Match [npm semver](https://docs.npmjs.com/cli/v6/using-npm/semver) version range.
-	*
-	* @param version Version number to match
-	* @param range Range pattern for version
-	* @returns `true` if the version number is within the range, `false` otherwise.
-	*
-	* @example
-	* ```
-	* satisfies('1.1.0', '^1.0.0'); // return true
-	* satisfies('1.1.0', '~1.0.0'); // return false
-	* ```
-	*/
-	var satisfies = (version, range) => {
-		range = range.replace(/([><=]+)\s+/g, "$1");
-		if (range.includes("||")) return range.split("||").some((r) => satisfies(version, r));
-		else if (range.includes(" - ")) {
-			const [a, b] = range.split(" - ", 2);
-			return satisfies(version, `>=${a} <=${b}`);
-		} else if (range.includes(" ")) return range.trim().replace(/\s{2,}/g, " ").split(" ").every((r) => satisfies(version, r));
-		const m = range.match(/^([<>=~^]+)/);
-		const op = m ? m[1] : "=";
-		if (op !== "^" && op !== "~") return compare(version, range, op);
-		const [v1, v2, v3, , vp] = validateAndParse(version);
-		const [r1, r2, r3, , rp] = validateAndParse(range);
-		const v = [
-			v1,
-			v2,
-			v3
-		];
-		const r = [
-			r1,
-			r2 !== null && r2 !== void 0 ? r2 : "x",
-			r3 !== null && r3 !== void 0 ? r3 : "x"
-		];
-		if (rp) {
-			if (!vp) return false;
-			if (compareSegments(v, r) !== 0) return false;
-			if (compareSegments(vp.split("."), rp.split(".")) === -1) return false;
-		}
-		const nonZero = r.findIndex((v) => v !== "0") + 1;
-		const i = op === "~" ? 2 : nonZero > 1 ? nonZero : 1;
-		if (compareSegments(v.slice(0, i), r.slice(0, i)) !== 0) return false;
-		if (compareSegments(v.slice(i), r.slice(i)) === -1) return false;
-		return true;
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/validate.js
-	/**
-	* Validate [semver](https://semver.org/) version strings.
-	*
-	* @param version Version number to validate
-	* @returns `true` if the version number is a valid semver version number, `false` otherwise.
-	*
-	* @example
-	* ```
-	* validate('1.0.0-rc.1'); // return true
-	* validate('1.0-rc.1'); // return false
-	* validate('foo'); // return false
-	* ```
-	*/
-	var validate = (version) => typeof version === "string" && /^[v\d]/.test(version) && semver.test(version);
-	/**
-	* Validate [semver](https://semver.org/) version strings strictly. Will not accept wildcards and version ranges.
-	*
-	* @param version Version number to validate
-	* @returns `true` if the version number is a valid semver version number `false` otherwise
-	*
-	* @example
-	* ```
-	* validate('1.0.0-rc.1'); // return true
-	* validate('1.0-rc.1'); // return false
-	* validate('foo'); // return false
-	* ```
-	*/
-	var validateStrict = (version) => typeof version === "string" && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/.test(version);
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/index.js
-	var esm_exports = /* @__PURE__ */ __exportAll({
-		compare: () => compare,
-		compareVersions: () => compareVersions,
-		satisfies: () => satisfies,
-		validate: () => validate,
-		validateStrict: () => validateStrict
-	});
-	//#endregion
-	//#region src/components/toast.ts
-	/** Max amount of seconds a toast can be shown for */
-	var maxToastDuration = 15e3;
-	/** Queue of future toasts to be shown */
-	var toastQueue = [];
-	/** Whether a toast is currently being shown */
-	var showingToast = false;
-	/** Timeout ID for the currently shown toast */
-	var timeout;
-	/**
-	* Shows a toast message with an icon.  
-	* @returns The toast element if it could be immediately shown, otherwise `void` (like when it was queued to be shown later)
-	*/
-	async function showIconToast({ duration, position = "tr", iconPos = "left", ...rest }) {
-		if (typeof duration !== "number" || isNaN(duration)) duration = getFeature("toastDuration") * 1e3;
-		if (duration <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
-		if (showingToast) return void toastQueue.push(() => showIconToast({
-			duration,
-			position,
-			iconPos,
-			...rest
-		}));
-		showingToast = true;
-		const toastWrapper = document.createElement("div");
-		toastWrapper.classList.add("bytm-toast-flex-wrapper");
-		let toastIcon;
-		if ("iconSrc" in rest) {
-			toastIcon = document.createElement("img");
-			toastIcon.classList.add("bytm-toast-icon", "img");
-			toastIcon.src = await rest.iconSrc;
-		} else {
-			toastIcon = document.createElement("div");
-			toastIcon.classList.add("bytm-toast-icon");
-			const iconHtml = await resourceAsString(rest.icon);
-			if (iconHtml) setInnerHtml(toastIcon, iconHtml);
-			if ("iconFill" in rest && rest.iconFill) toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
-		}
-		const toastMessage = document.createElement("div");
-		toastMessage.classList.add("bytm-toast-message");
-		if ("message" in rest) {
-			toastMessage.textContent = rest.message;
-			if ("subtitle" in rest && rest.subtitle) {
-				const subtitleEl = document.createElement("div");
-				subtitleEl.classList.add("bytm-toast-subtitle");
-				subtitleEl.textContent = rest.subtitle;
-				toastMessage.appendChild(subtitleEl);
-			}
-		} else toastMessage.appendChild(rest.element);
-		iconPos === "left" && toastWrapper.appendChild(toastIcon);
-		toastWrapper.appendChild(toastMessage);
-		iconPos === "right" && toastWrapper.appendChild(toastIcon);
-		showingToast = false;
-		const elem = await showToast({
-			duration,
-			position,
-			element: toastWrapper,
-			title: "message" in rest ? rest.message : rest.title,
-			onClick: rest.onClick
-		});
-		if (toastQueue.length > 0) return new Promise((resolve) => {
-			elem?.addEventListener("transitionend", async () => {
-				const nextToast = toastQueue.shift();
-				showingToast = false;
-				return resolve(void await nextToast());
-			}, { once: true });
-		});
-		else {
-			showingToast = false;
-			return elem;
-		}
-	}
-	/** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
-	async function showToast(arg) {
-		const props = typeof arg === "string" ? {
-			message: arg,
-			duration: getFeature("toastDuration") * 1e3
-		} : arg;
-		const { duration: durationMs = getFeature("toastDuration") * 1e3, onClick, position = "tr", ...rest } = props;
-		if (durationMs <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
-		if (showingToast) return void toastQueue.push(() => showToast(props));
-		showingToast = true;
-		if (document.querySelector("#bytm-toast")) await closeToast();
-		const toastElem = document.createElement("div");
-		toastElem.classList.add(`pos-${position.toLowerCase()}`);
-		onClick && toastElem.classList.add("clickable");
-		toastElem.id = "bytm-toast";
-		toastElem.role = "alert";
-		toastElem.ariaLive = "polite";
-		toastElem.ariaAtomic = "true";
-		toastElem.addEventListener("click", async (e) => {
-			onClick?.(e);
-			await closeToast();
-		}, { once: true });
-		if ("message" in rest) toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
-		else {
-			toastElem.appendChild(rest.element);
-			toastElem.title = toastElem.ariaLabel = rest.title;
-		}
-		document.body.appendChild(toastElem);
-		pauseFor$1(100).then(() => {
-			toastElem.classList.add("visible");
-			if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
-				timeout && clearTimeout(timeout);
-				timeout = setTimeout(closeToast, clamp$1(durationMs, 250, maxToastDuration));
-			}
-		});
-		if (toastQueue.length > 0) return new Promise((resolve) => {
-			toastElem?.addEventListener("transitionend", async () => {
-				const nextToast = toastQueue.shift();
-				showingToast = false;
-				return resolve(void await nextToast());
-			}, { once: true });
-		});
-		else {
-			showingToast = false;
-			return toastElem;
-		}
-	}
-	/** Closes the currently open toast */
-	async function closeToast() {
-		if (timeout) {
-			clearTimeout(timeout);
-			timeout = void 0;
-		}
-		const toastEls = document.querySelectorAll("#bytm-toast");
-		if (toastEls.length === 0) return;
-		await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
-			toastEl.addEventListener("transitionend", async () => toastEl.remove(), { once: true });
-			toastEl.classList.remove("visible");
-		}));
-	}
-	//#endregion
-	//#region src/utils/translations.ts
-	/** Contains the identifiers of all initialized and loaded translation locales */
-	var initializedLocales = /* @__PURE__ */ new Set();
-	/** The currently active locale */
-	var activeLocale = "en-US";
-	/** The current locale's text direction */
-	var activeLocaleDir = "ltr";
-	tr.addTransform(tr.transforms.percent);
-	tr.addTransform(tr.transforms.templateLiteral);
-	/** Used to check which keys are unused. */
-	var devMarkTrKeyUsed = async (key) => {};
-	/** Initializes the translations for the given locale if they haven't been initialized yet. */
-	async function initTranslations(locale) {
-		if (initializedLocales.has(locale)) return;
-		initializedLocales.add(locale);
-		try {
-			const transFile = await fetchTranslationResource(locale);
-			let fallbackTrans = {};
-			if (getFeature("localeFallback")) {
-				tr.setFallbackLanguage("en-US");
-				fallbackTrans = await fetchTranslationResource("en-US");
-			}
-			const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string" ? await fetchTranslationResource(transFile.meta.base) : void 0;
-			const { meta: { authors: _authors, ...meta }, ...trans } = {
-				...fallbackTrans ?? {},
-				...baseTransFile ?? {},
-				...transFile
-			};
-			tr.addTranslations(locale, {
-				...meta,
-				...trans
-			});
-			loggers.translation.info(`Loaded translations for locale '${locale}'`);
-		} catch (err) {
-			const errStr = `Couldn't load translations for locale '${locale}'`;
-			loggers.translation.error(errStr, err);
-			throw new Error(errStr, { cause: err });
-		}
-	}
-	/** Fetches the JSON translations file of the passed locale. */
-	async function fetchTranslationResource(locale) {
-		const res = await fetchAdvanced$1(await getResourceUrl(`trans-${locale}`));
-		const bodyTxt = await res.text();
-		getFeature("logHttp") && loggers.translation.log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
-		if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
-		return JSON.parse(bodyTxt);
-	}
-	/** Sets the new locale to use in translations. */
-	function setLocale(locale) {
-		activeLocale = locale;
-		activeLocaleDir = locales_default[locale]?.textDir ?? "ltr";
-		setGlobalProp("locale", locale);
-		emitInterface("bytm:setLocale", { locale });
-	}
-	/** Returns the currently set locale. */
-	function getLocale() {
-		return activeLocale;
-	}
-	/** Returns whether the given translation key exists in the current locale. Loads the translations if they weren't yet. */
-	async function hasKey(key) {
-		return await hasKeyFor(getLocale(), key);
-	}
-	/** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
-	async function hasKeyFor(locale, key) {
-		devMarkTrKeyUsed(key);
-		if (!initializedLocales.has(locale)) await initTranslations(locale);
-		return typeof tr.getTranslations(locale)?.[key] === "string";
-	}
-	/**
-	* Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.
-	*/
-	function t(key, ...args) {
-		return tl(getLocale(), key, ...args);
-	}
-	/**
-	* Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}  
-	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
-	* Tries to fall back to the non-pluralized syntax if no translation was found.
-	*/
-	function tp(key, num, ...args) {
-		return tlp(getLocale(), key, num, ...args);
-	}
-	/** Returns the translated string for the given key in the specified locale, after optionally inserting positional arguments into 1-indexed `%n` placeholders. */
-	function tl(locale, key, ...args) {
-		if (locale === "en-US") hasKeyFor(locale, key).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
-		devMarkTrKeyUsed(key);
-		return tr.for(locale, key, ...args);
-	}
-	/**
-	* Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}  
-	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
-	* Tries to fall back to the non-pluralized syntax if no translation was found.
-	*/
-	function tlp(locale, key, num, ...args) {
-		if (typeof num !== "number") num = num.length;
-		const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
-		devMarkTrKeyUsed(tlKey);
-		if (locale === "en-US") hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
-		const trans = tl(locale, tlKey, ...args);
-		if (trans === key) return t(key, ...args);
-		return trans;
-	}
-	/** Creates a {@linkcode Translatable} object with the translations for the given key and arguments. */
-	function createTranslatable(key, args = []) {
-		return Object.keys(locales_default).reduce((acc, locale) => {
-			acc[locale] = tl(locale, key, ...args);
-			return acc;
-		}, {});
-	}
-	/** Returns the appropriate translation for the given {@linkcode Translatable} object based on the current locale. Falls back to `en-US` */
-	function resolveTranslatable(trnsl) {
-		return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
-	}
-	var data_default = {
-		formatVersion: 0,
-		domains: [{
-			"id": "ytm",
-			"name": "YouTube Music",
-			"nameShort": "YT Music",
-			"abbr": "YTM",
-			"hostnames": ["music.youtube.com"]
-		}, {
-			"id": "yt",
-			"name": "YouTube",
-			"nameShort": "YT",
-			"abbr": "YT",
-			"hostnames": [
-				"www.youtube.com",
-				"youtube.com",
-				"youtu.be",
-				"m.youtube.com",
-				"youtube-nocookie.com",
-				"www.youtube-nocookie.com"
-			]
-		}],
-		alerts: [],
-		selectors: {
-			"generic": {
-				"app": {
-					"yt": "ytd-app",
-					"ytm": "ytmusic-app"
-				},
-				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
-				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" }
-			},
-			"watchPage": {
-				"channelName": {
-					"yt": "#owner ytd-channel-name yt-formatted-string a",
-					"ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
-				},
-				"likeBtn": { "yt": "#actions ytd-menu-renderer like-button-view-model button" }
-			},
-			"autoLike": {
-				"titleContainer": {
-					"yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
-					"ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
-				},
-				"titleContainerChannelName": {
-					"yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
-					"ytm": "yt-formatted-string, span.yt-core-attributed-string"
-				},
-				"titleContainerChannelNameAlternate": { "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string" },
-				"titleContainerButtonsContainer": { "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model" },
-				"titleContainerButtonsContainerLastButton": { "ytm": "ytmusic-subscribe-button-renderer" },
-				"titleContainerButtonsContainerShareButton": { "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type" },
-				"titleContainerOtherButtons_sub_ytAppHeader": { "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction" },
-				"channelName_global": { "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string" },
-				"channelNameFallback_global": { "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]" }
-			},
-			"observer": {
-				"bytmDialogContainer": "#bytm-dialog-container",
-				"browseResponse": { "ytm": "ytmusic-browse-response" },
-				"searchPage": { "ytm": "ytmusic-search-page" },
-				"navBar": { "ytm": "ytmusic-nav-bar" },
-				"mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
-				"sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
-				"sidePanel": { "ytm": "#side-panel" },
-				"playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
-				"playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
-				"playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
-				"playerBarRightControls": { "ytm": "#right-controls" },
-				"popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
-				"ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
-				"ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
-				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
-				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
-				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
-				"ytMasthead": { "yt": "#content ytd-masthead#masthead" }
-			}
-		}
-	};
-	//#endregion
-	//#region src/utils/input.ts
-	var interactionKeys = [
-		"Enter",
-		" ",
-		"Space"
-	];
-	/**
-	* Adds generic, accessible interaction listeners to the passed element.  
-	* All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
-	* @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
-	*/
-	function onInteraction(elem, listener, listenerOptions) {
-		const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
-		const proxListener = (e) => {
-			if (e instanceof KeyboardEvent) if (interactionKeys.includes(e.key)) {
-				preventDefault && e.preventDefault();
-				stopPropagation && e.stopPropagation();
-			} else return;
-			else if (e instanceof MouseEvent) {
-				preventDefault && e.preventDefault();
-				stopPropagation && e.stopPropagation();
-			}
-			listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
-			listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
-			listener(e);
-		};
-		elem.addEventListener("click", proxListener, listenerOpts);
-		elem.addEventListener("keydown", proxListener, listenerOpts);
-	}
-	//#endregion
-	//#region src/utils/data.ts
-	/** URL to the remote data JSON file on a CDN. */
-	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/${branch$1}/assets/data.json`;
-	var staticData;
-	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
-	async function getStaticData() {
-		try {
-			if (staticData) return staticData;
-			loggers.data.info("Development mode is active. Initializing with static data.json:", data_default, LogLevel.Info);
-			return staticData = data_default;
-		} catch (e) {
-			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
-			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
-			return staticData = data_default;
-		}
-	}
-	/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
-	function getDefaultStaticData() {
-		return data_default;
-	}
-	/**
-	* Returns the selector with the given ID.  
-	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
-	*/
-	function getSelector(group, id, throws) {
-		const dom = getDomain();
-		if (throws !== false) try {
-			if (typeof staticData?.selectors !== "object") throw new DatedError$1("Static data hasn't been fetched yet.");
-			const sel = staticData.selectors?.[group]?.[id];
-			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
-			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
-			return typeof sel === "string" ? sel : sel[dom];
-		} catch (e) {
-			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
-			throw e;
-		}
-		const sel = staticData?.selectors?.[group]?.[id];
-		return typeof sel === "string" ? sel : sel?.[dom];
-	}
-	var alertsStore = new DataStore$1({
-		id: "bytm-alerts",
-		defaultData: { dismissed: [] },
-		formatVersion: 0,
-		engine: new GMStorageEngine(),
-		memoryCache: false,
-		compressionFormat: null,
-		nanoEmitterOptions: {
-			publicEmit: false,
-			catchUpEvents: ["loadData"]
-		}
-	});
-	/** Checks if there are active alerts and shows a prompt for each of them. */
-	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
-		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
-		for (const alert of activeAlerts) {
-			if (alertMode === "importantOnly" && !alert.important) continue;
-			const dlg = createAlertDialog(alert);
-			dlg.open();
-			await dlg.once("close");
-			alertsData = await alertsStore.loadData();
-			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
-		}
-	}
-	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
-	function isAlertActive(alert, alertsData) {
-		if (alertsData.dismissed.includes(alert.id)) return false;
-		if (alert.domains.length === 0) return false;
-		if (!alert.domains.includes(getDomain())) return false;
-		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
-		if ("versionMin" in alert && alert.versionMin && compareVersions(alert.versionMin, scriptInfo$1.version) > 0) return false;
-		if ("versionMax" in alert && alert.versionMax && compareVersions(alert.versionMax, scriptInfo$1.version) < 0) return false;
-		const now = /* @__PURE__ */ new Date();
-		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
-		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
-		return true;
-	}
-	/** Creates an alert dialog for the given alert data. */
-	function createAlertDialog(alert) {
-		return new MarkdownDialog({
-			id: "static-data-alert",
-			height: 500,
-			width: 600,
-			small: true,
-			destroyOnClose: true,
-			closeOnBgClick: !alert.important,
-			closeOnEscPress: !alert.important,
-			async renderHeader() {
-				const headerEl = document.createElement("div");
-				headerEl.id = "bytm-static-data-alert-dialog-header";
-				headerEl.classList.add("bytm-flex-row");
-				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
-				const header = document.createElement("h2");
-				header.classList.add("bytm-dialog-title");
-				header.role = "heading";
-				header.ariaLevel = "1";
-				header.tabIndex = 0;
-				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
-				headerEl.appendChild(header);
-				return headerEl;
-			},
-			renderFooter() {
-				const footer = document.createElement("div");
-				footer.classList.add("bytm-dialog-footer", "align-right");
-				const closeBtn = document.createElement("button");
-				closeBtn.type = "button";
-				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
-				onInteraction(closeBtn, () => {
-					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
-					if (titleCloseBtn) titleCloseBtn.click();
-					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
-				});
-				footer.appendChild(closeBtn);
-				return footer;
-			},
-			body: resolveTranslatable(alert.message),
-			sanitizeBody: true,
-			modifyBodyElements(_bw, mdCont) {
-				mdCont.ariaLive = "polite";
-				mdCont.ariaAtomic = "true";
-			}
-		});
-	}
-	/** Initializes the static data by fetching it and performing necessary checks and actions. */
-	async function initStaticData() {
-		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
-		const alertMode = getFeature("globalAlertMode", "importantOnly");
-		return await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
-	}
-	//#endregion
-	//#region src/components/BytmDialog.ts
-	/** Whether the dialog system has been initialized */
-	var dialogsInitialized = false;
-	/** Container element for all BytmDialog elements */
-	var dialogContainer;
-	/** ID of the last opened (top-most) dialog */
-	var currentDialogId = null;
-	/** IDs of all currently open dialogs, top-most first */
-	var openDialogs = [];
-	/** TODO: remove as soon as config menu is migrated to use BytmDialog */
-	var setCurrentDialogId = (id) => currentDialogId = id;
-	/** Creates and manages a modal dialog element */
-	var BytmDialog = class BytmDialog extends NanoEmitter$2 {
-		options;
-		id;
-		dialogOpen = false;
-		dialogMounted = false;
-		constructor(options) {
-			super();
-			BytmDialog.initDialogs();
-			this.options = {
-				closeOnBgClick: true,
-				closeOnEscPress: true,
-				closeBtnEnabled: true,
-				destroyOnClose: false,
-				unmountOnClose: true,
-				removeListenersOnDestroy: true,
-				smallHeader: false,
-				verticalAlign: "center",
-				...options
-			};
-			this.id = options.id;
-		}
-		/** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
-		async mount() {
-			if (this.dialogMounted) return;
-			this.dialogMounted = true;
-			const bgElem = document.createElement("div");
-			bgElem.id = `bytm-${this.id}-dialog-bg`;
-			bgElem.classList.add("bytm-dialog-bg");
-			if (this.options.closeOnBgClick) bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
-			bgElem.style.setProperty("--bytm-dialog-width-max", `${this.options.width}px`);
-			bgElem.style.setProperty("--bytm-dialog-height-max", `${this.options.height}px`);
-			bgElem.style.visibility = "hidden";
-			bgElem.style.display = "none";
-			bgElem.inert = true;
-			try {
-				bgElem.appendChild(await this.getDialogContent());
-				if (dialogContainer) dialogContainer.appendChild(bgElem);
-				else document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
-			} catch (e) {
-				return loggers.dialog.error("Failed to render dialog content:", e);
-			}
-			this.attachListeners(bgElem);
-			this.events.emit("render");
-			return bgElem;
-		}
-		/** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
-		unmount() {
-			this.close();
-			this.dialogMounted = false;
-			const clearSelectors = [`#bytm-${this.id}-dialog-bg`];
-			for (const sel of clearSelectors) {
-				const elem = document.querySelector(sel);
-				elem?.hasChildNodes() && clearInner(elem);
-				document.querySelector(sel)?.remove();
-			}
-			this.events.emit("clear");
-		}
-		/** Clears the DOM of the dialog and then renders it again */
-		async remount() {
-			this.unmount();
-			await this.mount();
-		}
-		/** Returns true if the dialog is currently mounted */
-		isMounted() {
-			return this.dialogMounted;
-		}
-		/**
-		* Opens the dialog - also mounts it if it hasn't been mounted yet  
-		* Prevents default action and immediate propagation of the passed event
-		*/
-		async open(e) {
-			e?.preventDefault();
-			e?.stopImmediatePropagation();
-			if (this.isOpen()) return;
-			this.dialogOpen = true;
-			if (openDialogs.includes(this.id)) {
-				openDialogs.splice(openDialogs.indexOf(this.id), 1);
-				currentDialogId = openDialogs[0] ?? null;
-				this.removeBgInert();
-				this.close();
-				throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
-			}
-			if (!this.isMounted()) await this.mount();
-			this.setBgInert();
-			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-			dialogBg.style.visibility = "visible";
-			dialogBg.style.display = "block";
-			currentDialogId = this.id;
-			openDialogs.unshift(this.id);
-			this.events.emit("open");
-			emitInterface("bytm:dialogOpened", this);
-			emitInterface(`bytm:dialogOpened:${this.id}`, this);
-			return dialogBg;
-		}
-		/** Closes the dialog - prevents default action and immediate propagation of the passed event */
-		close(e) {
-			e?.preventDefault();
-			e?.stopImmediatePropagation();
-			if (!this.isOpen()) return;
-			this.dialogOpen = false;
-			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-			dialogBg.style.visibility = "hidden";
-			dialogBg.style.display = "none";
-			const oidx = openDialogs.indexOf(this.id);
-			if (oidx > -1) openDialogs.splice(oidx, 1);
-			currentDialogId = openDialogs[0] ?? null;
-			this.events.emit("close");
-			emitInterface("bytm:dialogClosed", this);
-			emitInterface(`bytm:dialogClosed:${this.id}`, this);
-			if (this.options.destroyOnClose) this.destroy();
-			else if (this.options.unmountOnClose) this.unmount();
-			this.removeBgInert();
-		}
-		/** Returns true if the dialog is currently open */
-		isOpen() {
-			return this.dialogOpen;
-		}
-		/** Clears the DOM of the dialog and removes all event listeners */
-		destroy() {
-			this.unmount();
-			this.events.emit("destroy");
-			this.options.removeListenersOnDestroy && this.unsubscribeAll();
-		}
-		/** Initializes the dialog system */
-		static initDialogs() {
-			if (dialogsInitialized) return;
-			dialogsInitialized = true;
-			const createContainer = () => {
-				const bytmDialogCont = dialogContainer = document.createElement("div");
-				bytmDialogCont.id = "bytm-dialog-container";
-				document.body.appendChild(bytmDialogCont);
-			};
-			if (!isDomLoaded()) document.addEventListener("DOMContentLoaded", createContainer, { once: true });
-			else createContainer();
-		}
-		/** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-		static getCurrentDialogId() {
-			return currentDialogId;
-		}
-		/** Returns the IDs of all currently open dialogs, top-most first */
-		static getOpenDialogs() {
-			return openDialogs;
-		}
-		/** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
-		removeBgInert() {
-			if (currentDialogId) if (currentDialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
-			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
-			if (openDialogs.length === 0) {
-				document.body.classList.remove("bytm-disable-scroll");
-				document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
-			}
-			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
-		}
-		/** Sets this dialog to be not inert and the body and all other dialogs to be inert */
-		setBgInert() {
-			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
-			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
-			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
-			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
-		}
-		/** Called on every {@linkcode mount()} to attach all generic event listeners */
-		attachListeners(bgElem) {
-			if (this.options.closeOnBgClick) bgElem.addEventListener("click", (e) => {
-				if (this.isOpen() && e.target?.id === `bytm-${this.id}-dialog-bg`) this.close(e);
-			});
-			if (this.options.closeOnEscPress) document.body.addEventListener("keydown", (e) => {
-				if (e.key === "Escape" && this.isOpen() && BytmDialog.getCurrentDialogId() === this.id) this.close(e);
-			});
-		}
-		/** Returns the dialog content element and all its children */
-		async getDialogContent() {
-			const header = this.options.renderHeader?.();
-			const footer = this.options.renderFooter?.();
-			const dialogWrapperEl = document.createElement("div");
-			dialogWrapperEl.id = `bytm-${this.id}-dialog`;
-			dialogWrapperEl.classList.add("bytm-dialog");
-			dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
-			dialogWrapperEl.role = "dialog";
-			dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
-			dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
-			if (this.options.verticalAlign !== "center") dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
-			const headerWrapperEl = document.createElement("div");
-			headerWrapperEl.classList.add("bytm-dialog-header");
-			this.options.small && headerWrapperEl.classList.add("small");
-			if (header) {
-				const headerTitleWrapperEl = document.createElement("div");
-				headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
-				headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
-				headerTitleWrapperEl.role = "heading";
-				headerTitleWrapperEl.ariaLevel = "1";
-				headerTitleWrapperEl.appendChild(await header);
-				headerWrapperEl.appendChild(headerTitleWrapperEl);
-			} else {
-				const padEl = document.createElement("div");
-				padEl.classList.add("bytm-dialog-header-pad");
-				this.options.small && padEl.classList.add("small");
-				headerWrapperEl.appendChild(padEl);
-			}
-			if (this.options.closeBtnEnabled) {
-				const closeBtnEl = document.createElement("img");
-				closeBtnEl.classList.add("bytm-dialog-close");
-				this.options.small && closeBtnEl.classList.add("small");
-				closeBtnEl.src = await getResourceUrl("img-close");
-				closeBtnEl.role = "button";
-				closeBtnEl.tabIndex = 0;
-				closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-				onInteraction(closeBtnEl, (e) => this.close(e));
-				headerWrapperEl.appendChild(closeBtnEl);
-			}
-			dialogWrapperEl.appendChild(headerWrapperEl);
-			const dialogBodyElem = document.createElement("div");
-			dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
-			dialogBodyElem.classList.add("bytm-dialog-body");
-			this.options.small && dialogBodyElem.classList.add("small");
-			dialogBodyElem.appendChild(await this.options.renderBody());
-			dialogWrapperEl.appendChild(dialogBodyElem);
-			if (footer) {
-				const footerWrapper = document.createElement("div");
-				footerWrapper.classList.add("bytm-dialog-footer-cont");
-				this.options.small && footerWrapper.classList.add("small");
-				dialogWrapperEl.appendChild(footerWrapper);
-				footerWrapper.appendChild(await footer);
-			}
-			return dialogWrapperEl;
-		}
-	};
-	//#endregion
-	//#region src/components/MarkdownDialog.ts
-	var MarkdownDialog = class MarkdownDialog extends BytmDialog {
-		opts;
-		constructor(options) {
-			super({
-				...options,
-				id: `md-${options.id}`,
-				renderBody: () => this.renderBody()
-			});
-			this.opts = options;
-		}
-		/** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
-		static async parseMd(md, sanitize = false) {
-			const parsed = await g.parse(md, {
-				async: true,
-				gfm: true,
-				breaks: true
-			});
-			return sanitize ? sanitizeHtml(parsed) : parsed;
-		}
-		/** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
-		async renderBody() {
-			const bodyEl = document.createElement("div");
-			bodyEl.classList.add("bytm-md-dialog-body");
-			const mdCont = await consumeStringGen$1(this.opts.body);
-			const markdownEl = document.createElement("div");
-			markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
-			markdownEl.tabIndex = 0;
-			setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont, this.opts.sanitizeBody));
-			if (this.opts.modifyBodyElements) await this.opts.modifyBodyElements(bodyEl, markdownEl);
-			bodyEl.appendChild(markdownEl);
-			return bodyEl;
-		}
-	};
 	//#endregion
 	//#region src/utils/Logger.ts
 	/** Mapping of predefined {@linkcode LogCategory} entries. */
@@ -9331,228 +8571,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		dbg(...args) {
 			Logger.pushLog(this.category, "DBG", Date.now(), ...args);
 			console.log(this.conPrefixDbg, ...args);
-		}
-	};
-	var package_default = {
-		name: "@sv443/betterytm",
-		userscriptName: "BetterYTM",
-		version: "3.1.0",
-		description: "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-		license: "AGPL-3.0-or-later",
-		homepage: "https://github.com/Sv443/BetterYTM",
-		namespace: "https://github.com/Sv443/BetterYTM",
-		pluginDiscoveryUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",
-		specialThanksUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks",
-		devVersionUrl: "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen",
-		main: "./src/index.ts",
-		type: "module",
-		author: {
-			"name": "Sv443",
-			"url": "https://github.com/Sv443"
-		},
-		contributors: [
-			{
-				"name": "indierodo",
-				"url": "https://github.com/indierodo",
-				"contributions": ["Track numbers feature"]
-			},
-			{
-				"name": "cryeprecision",
-				"url": "https://github.com/cryeprecision",
-				"contributions": ["Exponential volume slider feature"]
-			},
-			{
-				"name": "kcangny",
-				"url": "https://github.com/kcangny",
-				"contributions": ["Turkish translations"]
-			},
-			{
-				"name": "canarado",
-				"url": "https://github.com/canarado",
-				"contributions": ["Version checking code"]
-			}
-		],
-		bugs: { "url": "https://github.com/Sv443/BetterYTM/issues" },
-		funding: {
-			"type": "github",
-			"url": "https://github.com/sponsors/Sv443"
-		},
-		scripts: {
-			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
-			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
-			"build-dev": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
-			"build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
-			"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
-			"build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
-			"build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
-			"build-prod-oujs": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=openuserjs BYTM_SUFFIX=_oujs vite build",
-			"build-prod-compat": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
-			"build-local-base": "cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build",
-			"build-prod-base": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
-			"preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
-			"serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
-			"lint": "eslint . && tsc --noEmit",
-			"tr": "node --no-warnings=ExperimentalWarning ./src/tools/tr.ts",
-			"tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
-			"tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
-			"tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
-			"tr-prep": "pnpm tr-format -p",
-			"gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
-			"alias-imports": "node --no-warnings=ExperimentalWarning ./src/tools/alias-imports.ts",
-			"node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
-			"invisible": "node --no-warnings=ExperimentalWarning --enable-source-maps src/tools/run-invisible.mjs",
-			"change": "changeset",
-			"changeset-version": "node src/tools/changeset-version.mjs",
-			"knip": "knip",
-			"typedoc": "typedoc",
-			"storybook": "storybook dev -p 6006",
-			"build-storybook": "storybook build"
-		},
-		engines: {
-			"node": ">=22",
-			"pnpm": ">=10"
-		},
-		repository: {
-			"type": "git",
-			"url": "git+https://github.com/Sv443/BetterYTM.git"
-		},
-		hosts: {
-			"github": "https://github.com/Sv443/BetterYTM",
-			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
-			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
-		},
-		updates: {
-			"github": "https://github.com/Sv443/BetterYTM/releases",
-			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
-			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
-		},
-		dependencies: {
-			"@sv443-network/coreutils": "3.8.0",
-			"@sv443-network/userutils": "11.0.0",
-			"compare-versions": "6.1.1",
-			"dompurify": "3.3.3",
-			"marked": "17.0.4",
-			"tslib": "2.8.1"
-		},
-		devDependencies: {
-			"@changesets/cli": "2.30.0",
-			"@chromatic-com/storybook": "5.0.1",
-			"@eslint/eslintrc": "3.3.5",
-			"@eslint/js": "10.0.1",
-			"@storybook/addon-essentials": "8.6.14",
-			"@storybook/addon-interactions": "8.6.14",
-			"@storybook/addon-links": "10.2.19",
-			"@storybook/blocks": "8.6.14",
-			"@storybook/html": "10.2.19",
-			"@storybook/html-vite": "10.2.19",
-			"@storybook/test": "8.6.15",
-			"@types/cors": "2.8.19",
-			"@types/express": "5.0.6",
-			"@types/node": "24.12.0",
-			"@types/tampermonkey": "5.0.5",
-			"@typescript-eslint/eslint-plugin": "8.57.0",
-			"@typescript-eslint/parser": "8.57.0",
-			"@typescript-eslint/utils": "8.57.0",
-			"comment-json": "5.0.0",
-			"concurrently": "9.2.1",
-			"cors": "2.8.6",
-			"cross-env": "7.0.3",
-			"dotenv": "17.3.1",
-			"eslint": "10.0.3",
-			"eslint-plugin-storybook": "10.2.19",
-			"express": "5.2.1",
-			"globals": "17.4.0",
-			"kleur": "4.1.5",
-			"knip": "5.86.0",
-			"nanoevents": "9.1.0",
-			"pnpm": "10.32.1",
-			"storybook": "10.2.19",
-			"storybook-dark-mode": "5.0.0",
-			"terser": "5.47.1",
-			"tsx": "4.21.0",
-			"typedoc": "0.28.17",
-			"typedoc-plugin-markdown": "4.10.0",
-			"typescript": "5.9.3",
-			"typescript-eslint": "8.57.0",
-			"vite": "8.0.11"
-		},
-		browserslist: [
-			"last 1 version",
-			"> 1%",
-			"not dead"
-		]
-	};
-	//#endregion
-	//#region src/utils/logging.ts
-	var showErrToast = debounce$1((errName, ...args) => showIconToast({
-		message: t("generic_error_toast_encountered_error_type", errName),
-		subtitle: t("generic_error_toast_click_for_details"),
-		icon: "icon-error",
-		iconFill: "var(--bytm-error-col)",
-		onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open()
-	}), 400);
-	var loggerOpts = { onError(...args) {
-		if (getFeature("showToastOnGenericError")) showErrToast(args.find((a) => a instanceof Error)?.name ?? t("error"), ...args);
-	} };
-	/** Pre-instantiated Logger instances, one per category. */
-	var loggers = Object.entries(loggerCategoryMapping).reduce((a, [catId, catName]) => ({
-		...a,
-		[catId]: new Logger(catName, loggerOpts)
-	}), {});
-	/** Returns a string representation of all logs across all Logger instances, formatted for downloading as a file. */
-	var serializeLogs = Logger.serializeLogs.bind(Logger);
-	/** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
-	function setLogLevel(level) {
-		setGlobalProp("logLevel", level);
-		if (Logger.curLogLevel !== level) loggers.misc.log("Set the log level to", LogLevel[level]);
-		Logger.curLogLevel = level;
-	}
-	function getErrorDialog(errName, args) {
-		return new MarkdownDialog({
-			id: "generic-error",
-			height: 400,
-			width: 500,
-			small: true,
-			destroyOnClose: true,
-			renderHeader() {
-				const header = document.createElement("h2");
-				header.classList.add("bytm-dialog-title");
-				header.role = "heading";
-				header.ariaLevel = "1";
-				header.tabIndex = 0;
-				header.textContent = header.ariaLabel = errName;
-				return header;
-			},
-			renderFooter() {
-				const footer = document.createElement("div");
-				footer.classList.add("bytm-dialog-footer", "align-right");
-				const dlLogsBtn = document.createElement("button");
-				dlLogsBtn.type = "button";
-				dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
-				onInteraction(dlLogsBtn, () => {
-					downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, Logger.serializeLogs(), "text/plain");
-				});
-				footer.appendChild(dlLogsBtn);
-				return footer;
-			},
-			body: `\
-${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-  
-${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
-		});
-	}
-	/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
-	var LyricsError = class extends DatedError$1 {
-		constructor(message, opts) {
-			super(message, opts);
-			this.name = "LyricsError";
-		}
-	};
-	/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
-	var PluginError = class extends DatedError$1 {
-		constructor(message, opts) {
-			super(message, opts);
-			this.name = "PluginError";
 		}
 	};
 	//#endregion
@@ -9881,6 +8899,392 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			lastPathname = String(location.pathname);
 		}
 	}
+	//#endregion
+	//#region src/utils/translations.ts
+	/** Contains the identifiers of all initialized and loaded translation locales */
+	var initializedLocales = /* @__PURE__ */ new Set();
+	/** The currently active locale */
+	var activeLocale = "en-US";
+	/** The current locale's text direction */
+	var activeLocaleDir = "ltr";
+	tr.addTransform(tr.transforms.percent);
+	tr.addTransform(tr.transforms.templateLiteral);
+	/** Used to check which keys are unused. */
+	var devMarkTrKeyUsed = async (key) => {};
+	/** Initializes the translations for the given locale if they haven't been initialized yet. */
+	async function initTranslations(locale) {
+		if (initializedLocales.has(locale)) return;
+		initializedLocales.add(locale);
+		try {
+			const transFile = await fetchTranslationResource(locale);
+			let fallbackTrans = {};
+			if (getFeature("localeFallback")) {
+				tr.setFallbackLanguage("en-US");
+				fallbackTrans = await fetchTranslationResource("en-US");
+			}
+			const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string" ? await fetchTranslationResource(transFile.meta.base) : void 0;
+			const { meta: { authors: _authors, ...meta }, ...trans } = {
+				...fallbackTrans ?? {},
+				...baseTransFile ?? {},
+				...transFile
+			};
+			tr.addTranslations(locale, {
+				...meta,
+				...trans
+			});
+			loggers.translation.info(`Loaded translations for locale '${locale}'`);
+		} catch (err) {
+			const errStr = `Couldn't load translations for locale '${locale}'`;
+			loggers.translation.error(errStr, err);
+			throw new Error(errStr, { cause: err });
+		}
+	}
+	/** Fetches the JSON translations file of the passed locale. */
+	async function fetchTranslationResource(locale) {
+		const res = await fetchAdvanced$1(await getResourceUrl(`trans-${locale}`));
+		const bodyTxt = await res.text();
+		getFeature("logHttp") && loggers.translation.log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
+		if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
+		return JSON.parse(bodyTxt);
+	}
+	/** Sets the new locale to use in translations. */
+	function setLocale(locale) {
+		activeLocale = locale;
+		activeLocaleDir = locales_default[locale]?.textDir ?? "ltr";
+		setGlobalProp("locale", locale);
+		emitInterface("bytm:setLocale", { locale });
+	}
+	/** Returns the currently set locale. */
+	function getLocale() {
+		return activeLocale;
+	}
+	/** Returns whether the given translation key exists in the current locale. Loads the translations if they weren't yet. */
+	async function hasKey(key) {
+		return await hasKeyFor(getLocale(), key);
+	}
+	/** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
+	async function hasKeyFor(locale, key) {
+		devMarkTrKeyUsed(key);
+		if (!initializedLocales.has(locale)) await initTranslations(locale);
+		return typeof tr.getTranslations(locale)?.[key] === "string";
+	}
+	/**
+	* Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.
+	*/
+	function t(key, ...args) {
+		return tl(getLocale(), key, ...args);
+	}
+	/**
+	* Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}  
+	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
+	* Tries to fall back to the non-pluralized syntax if no translation was found.
+	*/
+	function tp(key, num, ...args) {
+		return tlp(getLocale(), key, num, ...args);
+	}
+	/** Returns the translated string for the given key in the specified locale, after optionally inserting positional arguments into 1-indexed `%n` placeholders. */
+	function tl(locale, key, ...args) {
+		if (locale === "en-US") hasKeyFor(locale, key).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+		devMarkTrKeyUsed(key);
+		return tr.for(locale, key, ...args);
+	}
+	/**
+	* Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}  
+	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
+	* Tries to fall back to the non-pluralized syntax if no translation was found.
+	*/
+	function tlp(locale, key, num, ...args) {
+		if (typeof num !== "number") num = num.length;
+		const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
+		devMarkTrKeyUsed(tlKey);
+		if (locale === "en-US") hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+		const trans = tl(locale, tlKey, ...args);
+		if (trans === key) return t(key, ...args);
+		return trans;
+	}
+	/** Creates a {@linkcode Translatable} object with the translations for the given key and arguments. */
+	function createTranslatable(key, args = []) {
+		return Object.keys(locales_default).reduce((acc, locale) => {
+			acc[locale] = tl(locale, key, ...args);
+			return acc;
+		}, {});
+	}
+	/** Returns the appropriate translation for the given {@linkcode Translatable} object based on the current locale. Falls back to `en-US` */
+	function resolveTranslatable(trnsl) {
+		return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
+	}
+	//#endregion
+	//#region src/utils/input.ts
+	var interactionKeys = [
+		"Enter",
+		" ",
+		"Space"
+	];
+	/**
+	* Adds generic, accessible interaction listeners to the passed element.  
+	* All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
+	* @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
+	*/
+	function onInteraction(elem, listener, listenerOptions) {
+		const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
+		const proxListener = (e) => {
+			if (e instanceof KeyboardEvent) if (interactionKeys.includes(e.key)) {
+				preventDefault && e.preventDefault();
+				stopPropagation && e.stopPropagation();
+			} else return;
+			else if (e instanceof MouseEvent) {
+				preventDefault && e.preventDefault();
+				stopPropagation && e.stopPropagation();
+			}
+			listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
+			listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
+			listener(e);
+		};
+		elem.addEventListener("click", proxListener, listenerOpts);
+		elem.addEventListener("keydown", proxListener, listenerOpts);
+	}
+	//#endregion
+	//#region src/components/BytmDialog.ts
+	/** Whether the dialog system has been initialized */
+	var dialogsInitialized = false;
+	/** Container element for all BytmDialog elements */
+	var dialogContainer;
+	/** ID of the last opened (top-most) dialog */
+	var currentDialogId = null;
+	/** IDs of all currently open dialogs, top-most first */
+	var openDialogs = [];
+	/** TODO: remove as soon as config menu is migrated to use BytmDialog */
+	var setCurrentDialogId = (id) => currentDialogId = id;
+	/** Creates and manages a modal dialog element */
+	var BytmDialog = class BytmDialog extends NanoEmitter$2 {
+		options;
+		id;
+		dialogOpen = false;
+		dialogMounted = false;
+		constructor(options) {
+			super();
+			BytmDialog.initDialogs();
+			this.options = {
+				closeOnBgClick: true,
+				closeOnEscPress: true,
+				closeBtnEnabled: true,
+				destroyOnClose: false,
+				unmountOnClose: true,
+				removeListenersOnDestroy: true,
+				smallHeader: false,
+				verticalAlign: "center",
+				...options
+			};
+			this.id = options.id;
+		}
+		/** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
+		async mount() {
+			if (this.dialogMounted) return;
+			this.dialogMounted = true;
+			const bgElem = document.createElement("div");
+			bgElem.id = `bytm-${this.id}-dialog-bg`;
+			bgElem.classList.add("bytm-dialog-bg");
+			if (this.options.closeOnBgClick) bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
+			bgElem.style.setProperty("--bytm-dialog-width-max", `${this.options.width}px`);
+			bgElem.style.setProperty("--bytm-dialog-height-max", `${this.options.height}px`);
+			bgElem.style.visibility = "hidden";
+			bgElem.style.display = "none";
+			bgElem.inert = true;
+			try {
+				bgElem.appendChild(await this.getDialogContent());
+				if (dialogContainer) dialogContainer.appendChild(bgElem);
+				else document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
+			} catch (e) {
+				return loggers.dialog.error("Failed to render dialog content:", e);
+			}
+			this.attachListeners(bgElem);
+			this.events.emit("render");
+			return bgElem;
+		}
+		/** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
+		unmount() {
+			this.close();
+			this.dialogMounted = false;
+			const clearSelectors = [`#bytm-${this.id}-dialog-bg`];
+			for (const sel of clearSelectors) {
+				const elem = document.querySelector(sel);
+				elem?.hasChildNodes() && clearInner(elem);
+				document.querySelector(sel)?.remove();
+			}
+			this.events.emit("clear");
+		}
+		/** Clears the DOM of the dialog and then renders it again */
+		async remount() {
+			this.unmount();
+			await this.mount();
+		}
+		/** Returns true if the dialog is currently mounted */
+		isMounted() {
+			return this.dialogMounted;
+		}
+		/**
+		* Opens the dialog - also mounts it if it hasn't been mounted yet  
+		* Prevents default action and immediate propagation of the passed event
+		*/
+		async open(e) {
+			e?.preventDefault();
+			e?.stopImmediatePropagation();
+			if (this.isOpen()) return;
+			this.dialogOpen = true;
+			if (openDialogs.includes(this.id)) {
+				openDialogs.splice(openDialogs.indexOf(this.id), 1);
+				currentDialogId = openDialogs[0] ?? null;
+				this.removeBgInert();
+				this.close();
+				throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
+			}
+			if (!this.isMounted()) await this.mount();
+			this.setBgInert();
+			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+			dialogBg.style.visibility = "visible";
+			dialogBg.style.display = "block";
+			currentDialogId = this.id;
+			openDialogs.unshift(this.id);
+			this.events.emit("open");
+			emitInterface("bytm:dialogOpened", this);
+			emitInterface(`bytm:dialogOpened:${this.id}`, this);
+			return dialogBg;
+		}
+		/** Closes the dialog - prevents default action and immediate propagation of the passed event */
+		close(e) {
+			e?.preventDefault();
+			e?.stopImmediatePropagation();
+			if (!this.isOpen()) return;
+			this.dialogOpen = false;
+			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+			dialogBg.style.visibility = "hidden";
+			dialogBg.style.display = "none";
+			const oidx = openDialogs.indexOf(this.id);
+			if (oidx > -1) openDialogs.splice(oidx, 1);
+			currentDialogId = openDialogs[0] ?? null;
+			this.events.emit("close");
+			emitInterface("bytm:dialogClosed", this);
+			emitInterface(`bytm:dialogClosed:${this.id}`, this);
+			if (this.options.destroyOnClose) this.destroy();
+			else if (this.options.unmountOnClose) this.unmount();
+			this.removeBgInert();
+		}
+		/** Returns true if the dialog is currently open */
+		isOpen() {
+			return this.dialogOpen;
+		}
+		/** Clears the DOM of the dialog and removes all event listeners */
+		destroy() {
+			this.unmount();
+			this.events.emit("destroy");
+			this.options.removeListenersOnDestroy && this.unsubscribeAll();
+		}
+		/** Initializes the dialog system */
+		static initDialogs() {
+			if (dialogsInitialized) return;
+			dialogsInitialized = true;
+			const createContainer = () => {
+				const bytmDialogCont = dialogContainer = document.createElement("div");
+				bytmDialogCont.id = "bytm-dialog-container";
+				document.body.appendChild(bytmDialogCont);
+			};
+			if (!isDomLoaded()) document.addEventListener("DOMContentLoaded", createContainer, { once: true });
+			else createContainer();
+		}
+		/** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+		static getCurrentDialogId() {
+			return currentDialogId;
+		}
+		/** Returns the IDs of all currently open dialogs, top-most first */
+		static getOpenDialogs() {
+			return openDialogs;
+		}
+		/** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
+		removeBgInert() {
+			if (currentDialogId) if (currentDialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
+			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
+			if (openDialogs.length === 0) {
+				document.body.classList.remove("bytm-disable-scroll");
+				document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
+			}
+			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
+		}
+		/** Sets this dialog to be not inert and the body and all other dialogs to be inert */
+		setBgInert() {
+			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
+			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
+			document.body.classList.add("bytm-disable-scroll");
+			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
+			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
+		}
+		/** Called on every {@linkcode mount()} to attach all generic event listeners */
+		attachListeners(bgElem) {
+			if (this.options.closeOnBgClick) bgElem.addEventListener("click", (e) => {
+				if (this.isOpen() && e.target?.id === `bytm-${this.id}-dialog-bg`) this.close(e);
+			});
+			if (this.options.closeOnEscPress) document.body.addEventListener("keydown", (e) => {
+				if (e.key === "Escape" && this.isOpen() && BytmDialog.getCurrentDialogId() === this.id) this.close(e);
+			});
+		}
+		/** Returns the dialog content element and all its children */
+		async getDialogContent() {
+			const header = this.options.renderHeader?.();
+			const footer = this.options.renderFooter?.();
+			const dialogWrapperEl = document.createElement("div");
+			dialogWrapperEl.id = `bytm-${this.id}-dialog`;
+			dialogWrapperEl.classList.add("bytm-dialog");
+			dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
+			dialogWrapperEl.role = "dialog";
+			dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
+			dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
+			if (this.options.verticalAlign !== "center") dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
+			const headerWrapperEl = document.createElement("div");
+			headerWrapperEl.classList.add("bytm-dialog-header");
+			this.options.small && headerWrapperEl.classList.add("small");
+			if (header) {
+				const headerTitleWrapperEl = document.createElement("div");
+				headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
+				headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
+				headerTitleWrapperEl.role = "heading";
+				headerTitleWrapperEl.ariaLevel = "1";
+				headerTitleWrapperEl.appendChild(await header);
+				headerWrapperEl.appendChild(headerTitleWrapperEl);
+			} else {
+				const padEl = document.createElement("div");
+				padEl.classList.add("bytm-dialog-header-pad");
+				this.options.small && padEl.classList.add("small");
+				headerWrapperEl.appendChild(padEl);
+			}
+			if (this.options.closeBtnEnabled) {
+				const closeBtnEl = document.createElement("img");
+				closeBtnEl.classList.add("bytm-dialog-close");
+				this.options.small && closeBtnEl.classList.add("small");
+				closeBtnEl.src = await getResourceUrl("img-close");
+				closeBtnEl.role = "button";
+				closeBtnEl.tabIndex = 0;
+				closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
+				onInteraction(closeBtnEl, (e) => this.close(e));
+				headerWrapperEl.appendChild(closeBtnEl);
+			}
+			dialogWrapperEl.appendChild(headerWrapperEl);
+			const dialogBodyElem = document.createElement("div");
+			dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
+			dialogBodyElem.classList.add("bytm-dialog-body");
+			this.options.small && dialogBodyElem.classList.add("small");
+			dialogBodyElem.appendChild(await this.options.renderBody());
+			dialogWrapperEl.appendChild(dialogBodyElem);
+			if (footer) {
+				const footerWrapper = document.createElement("div");
+				footerWrapper.classList.add("bytm-dialog-footer-cont");
+				this.options.small && footerWrapper.classList.add("small");
+				dialogWrapperEl.appendChild(footerWrapper);
+				footerWrapper.appendChild(await footer);
+			}
+			return dialogWrapperEl;
+		}
+	};
 	//#endregion
 	//#region src/dialogs/prompt.ts
 	var promptDialog = null;
@@ -10857,6 +10261,137 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
 	}
 	//#endregion
+	//#region src/utils/xhr.ts
+	/**
+	* Constructs a URL from a base URL and a record of query parameters.  
+	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
+	* All values will be stringified using their `toString()` method and then URI-encoded.
+	* @returns Returns a string instead of a URL object
+	*/
+	function constructUrlString(baseUrl, params) {
+		return `${baseUrl}?${Object.entries(params).filter(([, v]) => v !== void 0).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&")}`;
+	}
+	/**
+	* Constructs a URL object from a base URL and a record of query parameters.  
+	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
+	* All values will be stringified and then URI-encoded.  
+	* @returns Returns a URL object instead of a string
+	*/
+	function constructUrl(base, params) {
+		return new URL(constructUrlString(base, params));
+	}
+	/**
+	* Sends a request with the specified parameters and returns the response as a Promise.  
+	* Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
+	*/
+	function sendRequest(details) {
+		return new Promise((resolve, reject) => {
+			const success = (val) => {
+				getFeature("logHttp") && loggers.xhr.log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
+				resolve(val);
+			};
+			const failure = (err) => {
+				const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
+				getFeature("logHttp") && loggers.xhr.error(errStr, err);
+				reject(new Error(errStr, { cause: err }));
+			};
+			GM.xmlHttpRequest({
+				timeout: 1e4,
+				...details,
+				onload: success,
+				onerror: failure,
+				ontimeout: failure,
+				onabort: failure
+			});
+		});
+	}
+	/** Fetches a CSS file from the specified resource with a key starting with `css-` */
+	async function fetchCss(key) {
+		try {
+			return await (await fetchAdvanced$1(await getResourceUrl(key))).text() ?? void 0;
+		} catch (err) {
+			loggers.xhr.error("Couldn't fetch CSS due to an error:", err);
+			return;
+		}
+	}
+	/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
+	var voteCache = /* @__PURE__ */ new Map();
+	/** Time-to-live for the vote cache in milliseconds */
+	var voteCacheTTL = 1e3 * 60 * 60;
+	/**
+	* Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
+	* @param videoID The video ID of the video
+	*/
+	async function fetchVideoVotes(videoID) {
+		try {
+			if (voteCache.has(videoID)) {
+				const cached = voteCache.get(videoID);
+				if (Date.now() - cached.timestamp < voteCacheTTL) {
+					loggers.xhr.info(`Returning cached video votes for video ID '${videoID}':`, cached);
+					return cached;
+				} else voteCache.delete(videoID);
+			}
+			const votesRaw = JSON.parse((await sendRequest({
+				method: "GET",
+				url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`
+			})).response);
+			if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
+				loggers.xhr.error("Couldn't parse video votes due to an error:", votesRaw);
+				return;
+			}
+			const votesObj = {
+				id: votesRaw.id,
+				likes: votesRaw.likes,
+				dislikes: votesRaw.dislikes,
+				rating: roundFixed$1(votesRaw.rating, 3),
+				timestamp: Date.now()
+			};
+			voteCache.set(votesObj.id, votesObj);
+			loggers.xhr.info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
+			return votesObj;
+		} catch (err) {
+			loggers.xhr.error("Couldn't fetch video votes due to an error:", err);
+			return;
+		}
+	}
+	/**
+	* Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`  
+	* Never throws, just returns an empty array on failure.
+	*/
+	async function fetchITunesAlbumInfo(artist, album) {
+		try {
+			const url = constructUrlString("https://itunes.apple.com/search", {
+				country: "us",
+				limit: 20,
+				entity: "album",
+				term: `${artist} ${album}`
+			});
+			loggers.xhr.log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
+			const req = await sendRequest({
+				method: "GET",
+				url
+			});
+			const json = JSON.parse(req.response);
+			if (!("resultCount" in json) || !("results" in json)) {
+				loggers.xhr.error("Couldn't parse iTunes album info due to an error:", json);
+				return [];
+			}
+			if (json.resultCount === 0) return [];
+			return json.results.filter((result) => {
+				if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result)) return false;
+				return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+			}).map((result) => {
+				return {
+					...result,
+					collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, "")
+				};
+			});
+		} catch (err) {
+			loggers.xhr.error("Couldn't fetch iTunes album info due to an error:", err);
+			return [];
+		}
+	}
+	//#endregion
 	//#region src/features/lyrics.ts
 	/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 	var geniUrlRatelimitTimeframe = 30;
@@ -11354,6 +10889,156 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		str += hotkey.code;
 		return str;
 	}
+	var package_default = {
+		name: "@sv443/betterytm",
+		userscriptName: "BetterYTM",
+		version: "3.1.0",
+		description: "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+		license: "AGPL-3.0-or-later",
+		homepage: "https://github.com/Sv443/BetterYTM",
+		namespace: "https://github.com/Sv443/BetterYTM",
+		pluginDiscoveryUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",
+		specialThanksUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks",
+		devVersionUrl: "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen",
+		main: "./src/index.ts",
+		type: "module",
+		author: {
+			"name": "Sv443",
+			"url": "https://github.com/Sv443"
+		},
+		contributors: [
+			{
+				"name": "indierodo",
+				"url": "https://github.com/indierodo",
+				"contributions": ["Track numbers feature"]
+			},
+			{
+				"name": "cryeprecision",
+				"url": "https://github.com/cryeprecision",
+				"contributions": ["Exponential volume slider feature"]
+			},
+			{
+				"name": "kcangny",
+				"url": "https://github.com/kcangny",
+				"contributions": ["Turkish translations"]
+			},
+			{
+				"name": "canarado",
+				"url": "https://github.com/canarado",
+				"contributions": ["Version checking code"]
+			}
+		],
+		bugs: { "url": "https://github.com/Sv443/BetterYTM/issues" },
+		funding: {
+			"type": "github",
+			"url": "https://github.com/sponsors/Sv443"
+		},
+		scripts: {
+			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
+			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
+			"build-dev": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
+			"build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
+			"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
+			"build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
+			"build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
+			"build-prod-oujs": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=openuserjs BYTM_SUFFIX=_oujs vite build",
+			"build-prod-compat": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
+			"build-local-base": "cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build",
+			"build-prod-base": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
+			"preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
+			"serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
+			"lint": "eslint . && tsc --noEmit",
+			"tr": "node --no-warnings=ExperimentalWarning ./src/tools/tr.ts",
+			"tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
+			"tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
+			"tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
+			"tr-prep": "pnpm tr-format -p",
+			"gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
+			"alias-imports": "node --no-warnings=ExperimentalWarning ./src/tools/alias-imports.ts",
+			"node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
+			"invisible": "node --no-warnings=ExperimentalWarning --enable-source-maps src/tools/run-invisible.mjs",
+			"change": "changeset",
+			"changeset-version": "node src/tools/changeset-version.mjs",
+			"knip": "knip",
+			"typedoc": "typedoc",
+			"storybook": "storybook dev -p 6006",
+			"build-storybook": "storybook build"
+		},
+		engines: {
+			"node": ">=22",
+			"pnpm": ">=10"
+		},
+		repository: {
+			"type": "git",
+			"url": "git+https://github.com/Sv443/BetterYTM.git"
+		},
+		hosts: {
+			"github": "https://github.com/Sv443/BetterYTM",
+			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
+			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
+		},
+		updates: {
+			"github": "https://github.com/Sv443/BetterYTM/releases",
+			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
+			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
+		},
+		dependencies: {
+			"@sv443-network/coreutils": "3.8.0",
+			"@sv443-network/userutils": "11.0.0",
+			"compare-versions": "6.1.1",
+			"dompurify": "3.3.3",
+			"marked": "17.0.4",
+			"tslib": "2.8.1"
+		},
+		devDependencies: {
+			"@changesets/cli": "2.30.0",
+			"@chromatic-com/storybook": "5.0.1",
+			"@eslint/eslintrc": "3.3.5",
+			"@eslint/js": "10.0.1",
+			"@storybook/addon-essentials": "8.6.14",
+			"@storybook/addon-interactions": "8.6.14",
+			"@storybook/addon-links": "10.2.19",
+			"@storybook/blocks": "8.6.14",
+			"@storybook/html": "10.2.19",
+			"@storybook/html-vite": "10.2.19",
+			"@storybook/test": "8.6.15",
+			"@types/cors": "2.8.19",
+			"@types/express": "5.0.6",
+			"@types/node": "24.12.0",
+			"@types/tampermonkey": "5.0.5",
+			"@typescript-eslint/eslint-plugin": "8.57.0",
+			"@typescript-eslint/parser": "8.57.0",
+			"@typescript-eslint/utils": "8.57.0",
+			"comment-json": "5.0.0",
+			"concurrently": "9.2.1",
+			"cors": "2.8.6",
+			"cross-env": "7.0.3",
+			"dotenv": "17.3.1",
+			"eslint": "10.0.3",
+			"eslint-plugin-simple-import-sort": "14.0.0",
+			"eslint-plugin-storybook": "10.2.19",
+			"express": "5.2.1",
+			"globals": "17.4.0",
+			"kleur": "4.1.5",
+			"knip": "5.86.0",
+			"nanoevents": "9.1.0",
+			"pnpm": "10.32.1",
+			"storybook": "10.2.19",
+			"storybook-dark-mode": "5.0.0",
+			"terser": "5.47.1",
+			"tsx": "4.21.0",
+			"typedoc": "0.28.17",
+			"typedoc-plugin-markdown": "4.10.0",
+			"typescript": "5.9.3",
+			"typescript-eslint": "8.57.0",
+			"vite": "8.0.11"
+		},
+		browserslist: [
+			"last 1 version",
+			"> 1%",
+			"not dead"
+		]
+	};
 	//#endregion
 	//#region src/menu/menu.ts
 	/** Whether the config menu has finished mounting and can be opened with {@linkcode openCfgMenu()} */
@@ -13414,6 +13099,41 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}), JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), void 0, 2), "application/json");
 	}
 	//#endregion
+	//#region src/components/MarkdownDialog.ts
+	var MarkdownDialog = class MarkdownDialog extends BytmDialog {
+		opts;
+		constructor(options) {
+			super({
+				...options,
+				id: `md-${options.id}`,
+				renderBody: () => this.renderBody()
+			});
+			this.opts = options;
+		}
+		/** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
+		static async parseMd(md, sanitize = false) {
+			const parsed = await g.parse(md, {
+				async: true,
+				gfm: true,
+				breaks: true
+			});
+			return sanitize ? sanitizeHtml(parsed) : parsed;
+		}
+		/** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
+		async renderBody() {
+			const bodyEl = document.createElement("div");
+			bodyEl.classList.add("bytm-md-dialog-body");
+			const mdCont = await consumeStringGen$1(this.opts.body);
+			const markdownEl = document.createElement("div");
+			markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
+			markdownEl.tabIndex = 0;
+			setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont, this.opts.sanitizeBody));
+			if (this.opts.modifyBodyElements) await this.opts.modifyBodyElements(bodyEl, markdownEl);
+			bodyEl.appendChild(markdownEl);
+			return bodyEl;
+		}
+	};
+	//#endregion
 	//#region src/interface.ts
 	var { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants_exports;
 	var { autoPlural, NanoEmitter, pureObj } = CoreUtils_exports;
@@ -14073,12 +13793,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (typeof getFeature("volumeSliderSize") === "number") setVolSliderSize();
 			if (getFeature("volumeSharedBetweenTabs")) checkSharedVolume();
 		};
-		addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", { listener: (el) => onSliderElExists("normal", el) });
+		addSelectorListener("playerBarRightControls", getSelector("volume", "volSlider_sub_playerBarRightControls"), { listener: (el) => onSliderElExists("normal", el) });
 		let sizeSmOnce = false;
 		const onResize = () => {
 			if (sizeSmOnce || window.innerWidth >= 1150) return;
 			sizeSmOnce = true;
-			addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", { listener: (el) => onSliderElExists("expand", el) });
+			addSelectorListener("playerBarRightControls", getSelector("volume", "volSliderExpanded_sub_playerBarRightControls"), { listener: (el) => onSliderElExists("expand", el) });
 		};
 		window.addEventListener("resize", debounce$1(onResize, Math.floor(1e3 / 6)), { passive: true });
 		waitVideoElementReady().then(onResize);
@@ -14209,11 +13929,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		sliderElem.addEventListener("change", () => updateLabel());
 		siteEvents.on("updateVolumeSliderLabel", () => updateLabel());
 		siteEvents.on("configChanged", () => updateLabel());
-		addSelectorListener("playerBarRightControls", type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont", { listener: (volumeCont) => volumeCont.appendChild(labelContElem) });
+		addSelectorListener("playerBarRightControls", getSelector("volume", type === "normal" ? "volSliderContainer_sub_playerBarRightControls" : "volSliderExpandedContainer_sub_playerBarRightControls"), { listener: (volumeCont) => volumeCont.appendChild(labelContElem) });
 		let lastSliderVal = Number(sliderElem.value);
 		/** Hide or show the ThemeSong media controls element when the volume slider is expanded */
 		const setThemeSongContHidden = (hidden = true) => {
-			document.querySelector("#ts-panel-container")?.classList[hidden ? "add" : "remove"]("bytm-hidden");
+			document.querySelector(getSelector("integration", "themeSongPlayerBarControls"))?.classList[hidden ? "add" : "remove"]("bytm-hidden");
 		};
 		new MutationObserver(() => {
 			if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem) {
@@ -14259,7 +13979,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (vol && lastCheckedSharedVolume !== Number(vol)) {
 				if (ignoreVal === Number(vol)) return;
 				lastCheckedSharedVolume = Number(vol);
-				const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+				const sliderElem = document.querySelector(getSelector("volume", "volSlider_sub_playerBarRightControls"));
 				if (sliderElem) {
 					sliderElem.value = String(vol);
 					sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
@@ -15040,25 +14760,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	//#endregion
 	//#region src/features/songLists.ts
-	var songListSelector = `\
-ytmusic-playlist-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
-`;
 	/** Whether any song list item's checkbox is currently checked */
 	var isCheckboxChecked = false;
 	/** Initializes the queue buttons */
 	async function initQueueButtons() {
 		new MutationObserver(() => {
-			const multiSelectEl = document.querySelector("ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]");
+			const multiSelectEl = document.querySelector(getSelector("songLists", "queueMultiSelect"));
 			const newIsCheckboxChecked = Boolean(multiSelectEl) && !multiSelectEl?.hasAttribute("aria-hidden");
 			if (newIsCheckboxChecked === isCheckboxChecked) return;
 			isCheckboxChecked = newIsCheckboxChecked;
-			document.querySelectorAll(songListSelector).forEach((list) => {
+			document.querySelectorAll(getSelector("songLists", "all")).forEach((list) => {
 				list.dataset.anyCheckboxChecked = String(isCheckboxChecked);
 			});
 		}).observe(document.body, {
@@ -15071,7 +14782,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere") return;
 			const parent = document.querySelector(parentSelector);
 			if (!parent) return loggers.layout.warn("Couldn't find current queue parent element to add queue buttons to");
-			const queueItems = parent.querySelectorAll("ytmusic-player-queue-item");
+			const queueItems = parent.querySelectorAll(getSelector("songLists", "queueItem"));
 			let amt = 0;
 			for (const queueItm of queueItems) if (!queueItm.classList.contains("bytm-has-queue-btns")) {
 				addQueueButtons(queueItm, void 0, "currentQueue");
@@ -15079,16 +14790,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			}
 			if (amt > 0) loggers.layout.log(`Added buttons to ${amt} new queue ${autoPlural$2("item", amt)}`);
 		};
-		siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #contents"));
-		siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #automix-contents"));
-		const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
+		siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "currentQueueContainer")));
+		siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "autoplayQueueContainer")));
+		const queueItems = document.querySelectorAll(getSelector("songLists", "allCurrentQueueItems_global"));
 		if (queueItems.length > 0) {
 			queueItems.forEach((itm) => addQueueButtons(itm, void 0, "currentQueue"));
 			loggers.layout.log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural$2("item", queueItems)}`);
 		}
 		/** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
 		const tryAddGenericListQueueBtns = (listElem) => {
-			const queueItems = listElem.querySelectorAll("ytmusic-responsive-list-item-renderer");
+			const queueItems = listElem.querySelectorAll(getSelector("songLists", "allGenericListItems_sub_listContainer"));
 			if (queueItems.length === 0) return;
 			let addedBtnsCount = 0;
 			queueItems.forEach((itm) => {
@@ -15105,23 +14816,23 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				if (getFeature("swapLikeDislikeButtons")) checkSwapLikeDislikeBtns(list);
 			}
 		};
-		addSelectorListener("body", songListSelector, {
+		addSelectorListener("body", getSelector("songLists", "all"), {
 			all: true,
 			debounce: Math.floor(1e3 / 6),
 			listener: doSongListsChecks
 		});
 		siteEvents.on("pathChanged", () => {
-			const songLists = document.querySelectorAll(songListSelector);
+			const songLists = document.querySelectorAll(getSelector("songLists", "all"));
 			if (songLists.length > 0) doSongListsChecks(songLists);
 		});
 	}
 	/** Checks if the like and dislike buttons exist in the given song list and swaps them if the feature is enabled. */
 	function checkSwapLikeDislikeBtns(songList) {
 		if (!getFeature("swapLikeDislikeButtons")) return;
-		songList.querySelectorAll("ytmusic-like-button-renderer #button-shape-dislike").forEach((dislikeBtn) => {
+		songList.querySelectorAll(getSelector("watchPage", "dislikeBtn")).forEach((dislikeBtn) => {
 			const parent = dislikeBtn.parentElement;
 			if (!parent || parent.classList.contains("bytm-swapped-like-dislike")) return;
-			const likeBtn = parent.querySelector("#button-shape-like");
+			const likeBtn = parent.querySelector(getSelector("watchPage", "likeBtn"));
 			if (likeBtn) {
 				parent.classList.add("bytm-swapped-like-dislike");
 				transplantElement(dislikeBtn, likeBtn);
@@ -15136,7 +14847,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	* @param classes Extra CSS classes to apply to the container
 	* @param insertPosition Where to insert the button container in relation to the parent element
 	*/
-	async function addQueueButtons(queueItem, containerParentSelector = ".song-info", listType = "currentQueue", classes = [], insertPosition = "child") {
+	async function addQueueButtons(queueItem, containerParentSelector = void 0, listType = "currentQueue", classes = [], insertPosition = "child") {
+		containerParentSelector ??= getSelector("songLists", "allCurrentQueueItemsSongInfo_global");
 		const queueBtnsCont = document.createElement("div");
 		queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
 		const [lyricsIconUrl, deleteIconUrl, spinnerIconUrl] = await Promise.all([
@@ -15160,24 +14872,24 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			lyricsBtnElem.role = "link";
 			lyricsBtnElem.tabIndex = 0;
 			onInteraction(lyricsBtnElem, async (e) => {
-				const thumbSrc = queueItem.querySelector("yt-img-shadow img")?.src;
+				const thumbSrc = queueItem.querySelector(getSelector("songLists", "queueItemThumbnailImg"))?.src;
 				const isVideo = thumbSrc ? thumbSrc.includes("ytimg.com/vi/") : true;
 				let song, artist;
 				if (listType === "currentQueue") {
-					const songInfo = queueItem.querySelector(".song-info");
+					const songInfo = queueItem.querySelector(getSelector("songLists", "allCurrentQueueItemsSongInfo_global"));
 					if (!songInfo) return loggers.layout.error("Couldn't find song info element in queue item", queueItem);
-					const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
+					const [songEl, artistEl] = songInfo.querySelectorAll(getSelector("songLists", "currentQueueSongAndArtistNames"));
 					song = songEl?.textContent;
 					artist = artistEl?.textContent;
 				} else if (listType === "genericList") {
-					const songEl = queueItem.querySelector(".title-column yt-formatted-string a");
+					const songEl = queueItem.querySelector(getSelector("songLists", "genericListSongName"));
 					let artistEl = null;
-					if (location.pathname.startsWith("/playlist")) artistEl = document.querySelector("ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a");
-					if (!artistEl || !artistEl.textContent) artistEl = queueItem.querySelector(".secondary-flex-columns yt-formatted-string:first-child a");
+					if (location.pathname.startsWith("/playlist")) artistEl = document.querySelector(getSelector("songLists", "playlistPageArtistName"));
+					if (!artistEl || !artistEl.textContent) artistEl = queueItem.querySelector(getSelector("songLists", "genericListArtistName"));
 					song = songEl?.textContent;
 					artist = artistEl?.textContent;
 					if (!artist) {
-						artistEl = document.querySelector("ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]");
+						artistEl = document.querySelector(getSelector("songLists", "playlistPageArtistNameAlternate"));
 						artist = artistEl?.textContent;
 					}
 				} else return loggers.layout.error("Invalid list type:", listType);
@@ -15260,9 +14972,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				e.stopImmediatePropagation();
 				delImgElem.src = spinnerIconUrl;
 				delImgElem.classList.add("bytm-spinner");
-				let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+				let queuePopupCont = document.querySelector(getSelector("songLists", "queueItemPopoverContainer"));
 				try {
-					const dotsBtnElem = queueItem.querySelector("ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button");
+					const dotsBtnElem = queueItem.querySelector(getSelector("songLists", "queueItemDotsBtn"));
 					if (dotsBtnElem) {
 						if (queuePopupCont) queuePopupCont.setAttribute("data-bytm-hidden", "true");
 						dotsBtnElem.click();
@@ -15273,13 +14985,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 							cancelable: false
 						}));
 					}
-					queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+					queuePopupCont = document.querySelector(getSelector("songLists", "queueItemPopoverContainer"));
 					queuePopupCont?.setAttribute("data-bytm-hidden", "true");
 					await pauseFor$1(15);
 					delImgElem.src = deleteIconUrl;
 					delImgElem.classList.remove("bytm-spinner");
-					const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-					const removeFromQueueBtnOptional = queuePopupCont?.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)");
+					const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector(getSelector("songLists", "queueItemPopoverRemoveFromListBtn"));
+					const removeFromQueueBtnOptional = queuePopupCont?.querySelector(getSelector("songLists", "queueItemPopoverRemoveFromListBtnOptional"));
 					let removeFromQueueBtn;
 					if (removeFromQueueBtnOptional && removeFromQueueBtnOptional?.previousElementSibling === removeFromQueueOrPlaylistBtn) removeFromQueueBtn = removeFromQueueBtnOptional;
 					else if (removeFromQueueOrPlaylistBtn) removeFromQueueBtn = removeFromQueueOrPlaylistBtn;
@@ -15534,6 +15246,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	* | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
 	* | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
 	* | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
+	* | `tags: LooseUnion<FeatureTag>[]`                                   | Array of extra tags for this feature. Used for bulk-editing features based on common tags, like when switching BYTM's privacy mode.                 |
 	* | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations.                    |
 	* | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu.                                                                                |
 	* <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -15678,9 +15391,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "2.1.0-preview.1",
 			default: true,
-			advanced: true,
 			reloadRequired: false,
-			adornments: [adornments.advanced],
 			change: (newVal) => newVal ? loggers.misc.error("Test error", new ExampleError("Example")) : void 0
 		},
 		resetConfig: {
@@ -17906,6 +17617,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		else if (staticDomainInfo) return domain = staticDomainInfo.id;
 		else throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 	}
+	var initMs = Date.now();
+	/** Returns the milliseconds since script init. */
+	function millis() {
+		return Date.now() - initMs;
+	}
 	/**
 	* Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.  
 	* Note: as duplicated tabs will receive the same sessionStorage, this ID is not guaranteed to be entirely unique.
@@ -18184,6 +17900,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		loggers.misc.warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
 		return await GM.getResourceUrl(name, false);
 	}
+	/** Collection of remote fetch attempts per resource, for inclusion in the performance report. */
+	var resourceFetches = /* @__PURE__ */ new Map();
+	function logResourceFetch(key) {
+		resourceFetches.set(key, [...resourceFetches.get(key) ?? [], millis()]);
+	}
 	/** Max age for the resource cache, after its last modification, in milliseconds */
 	var resourceCacheTTL = 1e3 * 60 * 60 * 24 * 7;
 	var resourceCacheKey = scriptInfo$1.version;
@@ -18241,6 +17962,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const resourceUrl = await getResourceUrl(resourceKey);
 		try {
 			if (!resourceUrl) throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
+			logResourceFetch(resourceKey);
 			const res = await fetchAdvanced$1(resourceUrl);
 			if (!res.ok) throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
 			const str = await res.text();
@@ -18303,141 +18025,478 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}
 	}
 	//#endregion
-	//#region src/utils/xhr.ts
+	//#region src/components/toast.ts
+	/** Max amount of seconds a toast can be shown for */
+	var maxToastDuration = 15e3;
+	/** Queue of future toasts to be shown */
+	var toastQueue = [];
+	/** Whether a toast is currently being shown */
+	var showingToast = false;
+	/** Timeout ID for the currently shown toast */
+	var timeout;
 	/**
-	* Constructs a URL from a base URL and a record of query parameters.  
-	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
-	* All values will be stringified using their `toString()` method and then URI-encoded.
-	* @returns Returns a string instead of a URL object
+	* Shows a toast message with an icon.  
+	* @returns The toast element if it could be immediately shown, otherwise `void` (like when it was queued to be shown later)
 	*/
-	function constructUrlString(baseUrl, params) {
-		return `${baseUrl}?${Object.entries(params).filter(([, v]) => v !== void 0).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&")}`;
+	async function showIconToast({ duration, position = "tr", iconPos = "left", ...rest }) {
+		if (typeof duration !== "number" || isNaN(duration)) duration = getFeature("toastDuration") * 1e3;
+		if (duration <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
+		if (showingToast) return void toastQueue.push(() => showIconToast({
+			duration,
+			position,
+			iconPos,
+			...rest
+		}));
+		showingToast = true;
+		const toastWrapper = document.createElement("div");
+		toastWrapper.classList.add("bytm-toast-flex-wrapper");
+		let toastIcon;
+		if ("iconSrc" in rest) {
+			toastIcon = document.createElement("img");
+			toastIcon.classList.add("bytm-toast-icon", "img");
+			toastIcon.src = await rest.iconSrc;
+		} else {
+			toastIcon = document.createElement("div");
+			toastIcon.classList.add("bytm-toast-icon");
+			const iconHtml = await resourceAsString(rest.icon);
+			if (iconHtml) setInnerHtml(toastIcon, iconHtml);
+			if ("iconFill" in rest && rest.iconFill) toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
+		}
+		const toastMessage = document.createElement("div");
+		toastMessage.classList.add("bytm-toast-message");
+		if ("message" in rest) {
+			toastMessage.textContent = rest.message;
+			if ("subtitle" in rest && rest.subtitle) {
+				const subtitleEl = document.createElement("div");
+				subtitleEl.classList.add("bytm-toast-subtitle");
+				subtitleEl.textContent = rest.subtitle;
+				toastMessage.appendChild(subtitleEl);
+			}
+		} else toastMessage.appendChild(rest.element);
+		iconPos === "left" && toastWrapper.appendChild(toastIcon);
+		toastWrapper.appendChild(toastMessage);
+		iconPos === "right" && toastWrapper.appendChild(toastIcon);
+		showingToast = false;
+		const elem = await showToast({
+			duration,
+			position,
+			element: toastWrapper,
+			title: "message" in rest ? rest.message : rest.title,
+			onClick: rest.onClick
+		});
+		if (toastQueue.length > 0) return new Promise((resolve) => {
+			elem?.addEventListener("transitionend", async () => {
+				const nextToast = toastQueue.shift();
+				showingToast = false;
+				return resolve(void await nextToast());
+			}, { once: true });
+		});
+		else {
+			showingToast = false;
+			return elem;
+		}
 	}
-	/**
-	* Constructs a URL object from a base URL and a record of query parameters.  
-	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
-	* All values will be stringified and then URI-encoded.  
-	* @returns Returns a URL object instead of a string
-	*/
-	function constructUrl(base, params) {
-		return new URL(constructUrlString(base, params));
+	/** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
+	async function showToast(arg) {
+		const props = typeof arg === "string" ? {
+			message: arg,
+			duration: getFeature("toastDuration") * 1e3
+		} : arg;
+		const { duration: durationMs = getFeature("toastDuration") * 1e3, onClick, position = "tr", ...rest } = props;
+		if (durationMs <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
+		if (showingToast) return void toastQueue.push(() => showToast(props));
+		showingToast = true;
+		if (document.querySelector("#bytm-toast")) await closeToast();
+		const toastElem = document.createElement("div");
+		toastElem.classList.add(`pos-${position.toLowerCase()}`);
+		onClick && toastElem.classList.add("clickable");
+		toastElem.id = "bytm-toast";
+		toastElem.role = "alert";
+		toastElem.ariaLive = "polite";
+		toastElem.ariaAtomic = "true";
+		toastElem.addEventListener("click", async (e) => {
+			onClick?.(e);
+			await closeToast();
+		}, { once: true });
+		if ("message" in rest) toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
+		else {
+			toastElem.appendChild(rest.element);
+			toastElem.title = toastElem.ariaLabel = rest.title;
+		}
+		document.body.appendChild(toastElem);
+		pauseFor$1(100).then(() => {
+			toastElem.classList.add("visible");
+			if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
+				timeout && clearTimeout(timeout);
+				timeout = setTimeout(closeToast, clamp$1(durationMs, 250, maxToastDuration));
+			}
+		});
+		if (toastQueue.length > 0) return new Promise((resolve) => {
+			toastElem?.addEventListener("transitionend", async () => {
+				const nextToast = toastQueue.shift();
+				showingToast = false;
+				return resolve(void await nextToast());
+			}, { once: true });
+		});
+		else {
+			showingToast = false;
+			return toastElem;
+		}
 	}
-	/**
-	* Sends a request with the specified parameters and returns the response as a Promise.  
-	* Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
-	*/
-	function sendRequest(details) {
-		return new Promise((resolve, reject) => {
-			const success = (val) => {
-				getFeature("logHttp") && loggers.xhr.log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
-				resolve(val);
-			};
-			const failure = (err) => {
-				const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
-				getFeature("logHttp") && loggers.xhr.error(errStr, err);
-				reject(new Error(errStr, { cause: err }));
-			};
-			GM.xmlHttpRequest({
-				timeout: 1e4,
-				...details,
-				onload: success,
-				onerror: failure,
-				ontimeout: failure,
-				onabort: failure
-			});
+	/** Closes the currently open toast */
+	async function closeToast() {
+		if (timeout) {
+			clearTimeout(timeout);
+			timeout = void 0;
+		}
+		const toastEls = document.querySelectorAll("#bytm-toast");
+		if (toastEls.length === 0) return;
+		await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
+			toastEl.addEventListener("transitionend", async () => toastEl.remove(), { once: true });
+			toastEl.classList.remove("visible");
+		}));
+	}
+	//#endregion
+	//#region src/utils/logging.ts
+	var showErrToast = debounce$1((errName, ...args) => showIconToast({
+		message: t("generic_error_toast_encountered_error_type", errName),
+		subtitle: t("generic_error_toast_click_for_details"),
+		icon: "icon-error",
+		iconFill: "var(--bytm-error-col)",
+		onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open()
+	}), 400);
+	var loggerOpts = { onError(...args) {
+		if (getFeature("showToastOnGenericError")) showErrToast(args.find((a) => a instanceof Error)?.name ?? t("error"), ...args);
+	} };
+	/** Pre-instantiated Logger instances, one per category. */
+	var loggers = Object.entries(loggerCategoryMapping).reduce((a, [catId, catName]) => ({
+		...a,
+		[catId]: new Logger(catName, loggerOpts)
+	}), {});
+	/** Returns a string representation of all logs across all Logger instances, formatted for downloading as a file. */
+	var serializeLogs = Logger.serializeLogs.bind(Logger);
+	/** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
+	function setLogLevel(level) {
+		setGlobalProp("logLevel", level);
+		if (Logger.curLogLevel !== level) loggers.misc.log("Set the log level to", LogLevel[level]);
+		Logger.curLogLevel = level;
+	}
+	function getErrorDialog(errName, args) {
+		return new MarkdownDialog({
+			id: "generic-error",
+			height: 400,
+			width: 500,
+			small: true,
+			destroyOnClose: true,
+			renderHeader() {
+				const header = document.createElement("h2");
+				header.classList.add("bytm-dialog-title");
+				header.role = "heading";
+				header.ariaLevel = "1";
+				header.tabIndex = 0;
+				header.textContent = header.ariaLabel = errName;
+				return header;
+			},
+			renderFooter() {
+				const footer = document.createElement("div");
+				footer.classList.add("bytm-dialog-footer", "align-right");
+				const dlLogsBtn = document.createElement("button");
+				dlLogsBtn.type = "button";
+				dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
+				onInteraction(dlLogsBtn, () => {
+					downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, Logger.serializeLogs(), "text/plain");
+				});
+				footer.appendChild(dlLogsBtn);
+				return footer;
+			},
+			body: `\
+${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+  
+${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 	}
-	/** Fetches a CSS file from the specified resource with a key starting with `css-` */
-	async function fetchCss(key) {
+	/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
+	var LyricsError = class extends DatedError$1 {
+		constructor(message, opts) {
+			super(message, opts);
+			this.name = "LyricsError";
+		}
+	};
+	/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
+	var PluginError = class extends DatedError$1 {
+		constructor(message, opts) {
+			super(message, opts);
+			this.name = "PluginError";
+		}
+	};
+	var data_default = {
+		formatVersion: 0,
+		domains: [{
+			"id": "ytm",
+			"name": "YouTube Music",
+			"nameShort": "YT Music",
+			"abbr": "YTM",
+			"hostnames": ["music.youtube.com"]
+		}, {
+			"id": "yt",
+			"name": "YouTube",
+			"nameShort": "YT",
+			"abbr": "YT",
+			"hostnames": [
+				"www.youtube.com",
+				"youtube.com",
+				"youtu.be",
+				"m.youtube.com",
+				"youtube-nocookie.com",
+				"www.youtube-nocookie.com"
+			]
+		}],
+		alerts: [],
+		selectors: {
+			"generic": {
+				"app": {
+					"yt": "ytd-app",
+					"ytm": "ytmusic-app"
+				},
+				"video": {
+					"yt": "#player-container ytd-player video",
+					"ytm": "ytmusic-player video"
+				},
+				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
+				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" }
+			},
+			"watchPage": {
+				"channelName": {
+					"yt": "#owner ytd-channel-name yt-formatted-string a",
+					"ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
+				},
+				"votesRenderer": {
+					"yt": "ytd-watch-metadata segmented-like-dislike-button-view-model",
+					"ytm": ".middle-controls-buttons ytmusic-like-button-renderer"
+				},
+				"votesRendererShorts": { "yt": "reel-action-bar-view-model" },
+				"likeBtn": {
+					"yt": "#actions ytd-menu-renderer like-button-view-model button",
+					"ytm": "ytmusic-like-button-renderer #button-shape-like"
+				},
+				"likeBtnShorts": { "yt": "like-button-view-model button" },
+				"dislikeBtn": { "ytm": "ytmusic-like-button-renderer #button-shape-dislike" },
+				"dislikeBtnShorts": { "yt": "dislike-button-view-model" },
+				"likeBtnAlternate": {
+					"yt": "like-button-view-model button",
+					"ytm": "#button-shape-like button"
+				},
+				"dislikeBtnAlternate": {
+					"yt": "dislike-button-view-model button",
+					"ytm": "#button-shape-dislike button"
+				},
+				"progressBar": {
+					"yt": ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]",
+					"ytm": "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar"
+				},
+				"videoPlayer": { "yt": "#movie_player" },
+				"songImg": { "ytm": "ytmusic-player #song-image" }
+			},
+			"songLists": {
+				"all": { "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents" },
+				"currentQueueContainer": { "ytm": "ytmusic-player-queue #contents" },
+				"currentQueueSongAndArtistNames": { "ytm": "yt-formatted-string" },
+				"autoplayQueueContainer": { "ytm": "ytmusic-player-queue #automix-contents" },
+				"playlistPageArtistName": { "ytm": "ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a" },
+				"playlistPageArtistNameAlternate": { "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]" },
+				"genericListArtistName": { "ytm": ".secondary-flex-columns yt-formatted-string:first-child a" },
+				"genericListSongName": { "ytm": ".title-column yt-formatted-string a" },
+				"queueItem": { "ytm": "ytmusic-player-queue-item" },
+				"queueItemThumbnailImg": { "ytm": "yt-img-shadow img" },
+				"queueItemPopoverContainer": { "ytm": "ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown" },
+				"queueItemPopoverRemoveFromListBtn": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)" },
+				"queueItemPopoverRemoveFromListBtnOptional": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)" },
+				"queueItemDotsBtn": { "ytm": "ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button" },
+				"queueMultiSelect": { "ytm": "ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]" },
+				"allCurrentQueueItems_global": { "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item" },
+				"allCurrentQueueItemsSongInfo_global": { "ytm": ".song-info" },
+				"allGenericListItems_sub_listContainer": { "ytm": "ytmusic-responsive-list-item-renderer" }
+			},
+			"volume": {
+				"volSlider_sub_playerBarRightControls": { "ytm": "tp-yt-paper-slider#volume-slider" },
+				"volSliderExpanded_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider" },
+				"volSliderContainer_sub_playerBarRightControls": { "ytm": ".bytm-vol-slider-cont" },
+				"volSliderExpandedContainer_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu .bytm-vol-slider-cont" }
+			},
+			"integration": { "themeSongPlayerBarControls": { "ytm": "#ts-panel-container" } },
+			"autoLike": {
+				"titleContainer": {
+					"yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
+					"ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
+				},
+				"titleContainerChannelName": {
+					"yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
+					"ytm": "yt-formatted-string, span.yt-core-attributed-string"
+				},
+				"titleContainerChannelNameAlternate": { "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string" },
+				"titleContainerButtonsContainer": { "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model" },
+				"titleContainerButtonsContainerLastButton": { "ytm": "ytmusic-subscribe-button-renderer" },
+				"titleContainerButtonsContainerShareButton": { "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type" },
+				"titleContainerOtherButtons_sub_ytAppHeader": { "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction" },
+				"channelName_global": { "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string" },
+				"channelNameFallback_global": { "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]" }
+			},
+			"observer": {
+				"bytmDialogContainer": "#bytm-dialog-container",
+				"browseResponse": { "ytm": "ytmusic-browse-response" },
+				"searchPage": { "ytm": "ytmusic-search-page" },
+				"navBar": { "ytm": "ytmusic-nav-bar" },
+				"mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
+				"sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
+				"sidePanel": { "ytm": "#side-panel" },
+				"playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
+				"playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
+				"playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
+				"playerBarRightControls": { "ytm": "#right-controls" },
+				"popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
+				"ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
+				"ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
+				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
+				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
+				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
+				"ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+			}
+		}
+	};
+	//#endregion
+	//#region src/utils/data.ts
+	/** URL to the remote data JSON file on a CDN. */
+	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/${branch$1}/assets/data.json`;
+	var staticData;
+	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
+	async function getStaticData() {
 		try {
-			return await (await fetchAdvanced$1(await getResourceUrl(key))).text() ?? void 0;
-		} catch (err) {
-			loggers.xhr.error("Couldn't fetch CSS due to an error:", err);
-			return;
+			if (staticData) return staticData;
+			loggers.data.info("Development mode is active. Initializing with static data.json:", data_default, LogLevel.Info);
+			return staticData = data_default;
+		} catch (e) {
+			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
+			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
+			return staticData = data_default;
 		}
 	}
-	/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
-	var voteCache = /* @__PURE__ */ new Map();
-	/** Time-to-live for the vote cache in milliseconds */
-	var voteCacheTTL = 1e3 * 60 * 60;
-	/**
-	* Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
-	* @param videoID The video ID of the video
-	*/
-	async function fetchVideoVotes(videoID) {
-		try {
-			if (voteCache.has(videoID)) {
-				const cached = voteCache.get(videoID);
-				if (Date.now() - cached.timestamp < voteCacheTTL) {
-					loggers.xhr.info(`Returning cached video votes for video ID '${videoID}':`, cached);
-					return cached;
-				} else voteCache.delete(videoID);
-			}
-			const votesRaw = JSON.parse((await sendRequest({
-				method: "GET",
-				url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`
-			})).response);
-			if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
-				loggers.xhr.error("Couldn't parse video votes due to an error:", votesRaw);
-				return;
-			}
-			const votesObj = {
-				id: votesRaw.id,
-				likes: votesRaw.likes,
-				dislikes: votesRaw.dislikes,
-				rating: roundFixed$1(votesRaw.rating, 3),
-				timestamp: Date.now()
-			};
-			voteCache.set(votesObj.id, votesObj);
-			loggers.xhr.info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
-			return votesObj;
-		} catch (err) {
-			loggers.xhr.error("Couldn't fetch video votes due to an error:", err);
-			return;
-		}
+	/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
+	function getDefaultStaticData() {
+		return data_default;
 	}
 	/**
-	* Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`  
-	* Never throws, just returns an empty array on failure.
+	* Returns the selector with the given ID.  
+	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
 	*/
-	async function fetchITunesAlbumInfo(artist, album) {
-		try {
-			const url = constructUrlString("https://itunes.apple.com/search", {
-				country: "us",
-				limit: 20,
-				entity: "album",
-				term: `${artist} ${album}`
-			});
-			loggers.xhr.log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
-			const req = await sendRequest({
-				method: "GET",
-				url
-			});
-			const json = JSON.parse(req.response);
-			if (!("resultCount" in json) || !("results" in json)) {
-				loggers.xhr.error("Couldn't parse iTunes album info due to an error:", json);
-				return [];
-			}
-			if (json.resultCount === 0) return [];
-			return json.results.filter((result) => {
-				if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result)) return false;
-				return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
-			}).map((result) => {
-				return {
-					...result,
-					collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, "")
-				};
-			});
-		} catch (err) {
-			loggers.xhr.error("Couldn't fetch iTunes album info due to an error:", err);
-			return [];
+	function getSelector(group, id, throws) {
+		const dom = getDomain();
+		if (throws !== false) try {
+			if (typeof staticData?.selectors !== "object") throw new DatedError$1("Static data hasn't been fetched yet.");
+			const sel = staticData.selectors?.[group]?.[id];
+			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
+			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
+			return typeof sel === "string" ? sel : sel[dom];
+		} catch (e) {
+			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
+			throw e;
 		}
+		const sel = staticData?.selectors?.[group]?.[id];
+		return typeof sel === "string" ? sel : sel?.[dom];
+	}
+	var alertsStore = new DataStore$1({
+		id: "bytm-alerts",
+		defaultData: { dismissed: [] },
+		formatVersion: 0,
+		engine: new GMStorageEngine(),
+		memoryCache: false,
+		compressionFormat: null,
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
+	});
+	/** Checks if there are active alerts and shows a prompt for each of them. */
+	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
+		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
+		for (const alert of activeAlerts) {
+			if (alertMode === "importantOnly" && !alert.important) continue;
+			const dlg = createAlertDialog(alert);
+			dlg.open();
+			await dlg.once("close");
+			alertsData = await alertsStore.loadData();
+			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
+		}
+	}
+	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
+	function isAlertActive(alert, alertsData) {
+		if (alertsData.dismissed.includes(alert.id)) return false;
+		if (alert.domains.length === 0) return false;
+		if (!alert.domains.includes(getDomain())) return false;
+		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
+		if ("versionMin" in alert && alert.versionMin && compareVersions(alert.versionMin, scriptInfo$1.version) > 0) return false;
+		if ("versionMax" in alert && alert.versionMax && compareVersions(alert.versionMax, scriptInfo$1.version) < 0) return false;
+		const now = /* @__PURE__ */ new Date();
+		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
+		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
+		return true;
+	}
+	/** Creates an alert dialog for the given alert data. */
+	function createAlertDialog(alert) {
+		return new MarkdownDialog({
+			id: "static-data-alert",
+			height: 500,
+			width: 600,
+			small: true,
+			destroyOnClose: true,
+			closeOnBgClick: !alert.important,
+			closeOnEscPress: !alert.important,
+			async renderHeader() {
+				const headerEl = document.createElement("div");
+				headerEl.id = "bytm-static-data-alert-dialog-header";
+				headerEl.classList.add("bytm-flex-row");
+				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
+				const header = document.createElement("h2");
+				header.classList.add("bytm-dialog-title");
+				header.role = "heading";
+				header.ariaLevel = "1";
+				header.tabIndex = 0;
+				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
+				headerEl.appendChild(header);
+				return headerEl;
+			},
+			renderFooter() {
+				const footer = document.createElement("div");
+				footer.classList.add("bytm-dialog-footer", "align-right");
+				const closeBtn = document.createElement("button");
+				closeBtn.type = "button";
+				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
+				onInteraction(closeBtn, () => {
+					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
+					if (titleCloseBtn) titleCloseBtn.click();
+					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+				});
+				footer.appendChild(closeBtn);
+				return footer;
+			},
+			body: resolveTranslatable(alert.message),
+			sanitizeBody: true,
+			modifyBodyElements(_bw, mdCont) {
+				mdCont.ariaLive = "polite";
+				mdCont.ariaAtomic = "true";
+			}
+		});
+	}
+	/** Initializes the static data by fetching it and performing necessary checks and actions. */
+	async function initStaticData() {
+		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
+		const alertMode = getFeature("globalAlertMode", "importantOnly");
+		return await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
 	}
 	//#endregion
 	//#region src/utils/dom.ts
 	/** Returns the video element selector string based on the current domain */
 	function getVideoSelector() {
-		return getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
+		return getSelector("generic", "video");
 	}
 	/** Returns the video element based on the current domain */
 	function getVideoElement() {
@@ -18461,12 +18520,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				if (getDomain() === "ytm") {
 					const vidElem = getVideoElement();
 					if (vidElem && vidElem.readyState > 0) return resolveWithVal(vidElem.currentTime);
-					addSelectorListener("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", { listener: (pbEl) => resolveWithVal(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null) });
+					addSelectorListener("playerBar", getSelector("watchPage", "progressBar"), { listener: (pbEl) => resolveWithVal(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null) });
 				} else if (getDomain() === "yt") {
 					const vidElem = getVideoElement();
 					if (vidElem && vidElem.readyState > 0) return resolveWithVal(vidElem.currentTime);
 					ytForceShowVideoTime();
-					const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+					const pbSelector = getSelector("watchPage", "progressBar");
 					let videoTime = -1;
 					const mut = new MutationObserver(() => {
 						videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
@@ -18497,7 +18556,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	* This only works once (for some reason), then the page needs to be reloaded!
 	*/
 	function ytForceShowVideoTime() {
-		const player = document.querySelector("#movie_player");
+		const player = document.querySelector(getSelector("watchPage", "videoPlayer"));
 		if (!player) return false;
 		const defaultProps = {
 			view: getUnsafeWindow$1(),
@@ -18549,9 +18608,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		let likeState;
 		switch (getDomain()) {
 			case "ytm": {
-				btnRenderer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer") ?? void 0;
-				likeBtn = btnRenderer?.querySelector("#button-shape-like button") ?? void 0;
-				dislikeBtn = btnRenderer?.querySelector("#button-shape-dislike button") ?? void 0;
+				btnRenderer = document.querySelector(getSelector("watchPage", "votesRenderer")) ?? void 0;
+				likeBtn = btnRenderer?.querySelector(getSelector("watchPage", "likeBtnAlternate")) ?? void 0;
+				dislikeBtn = btnRenderer?.querySelector(getSelector("watchPage", "dislikeBtnAlternate")) ?? void 0;
 				const likeStateRaw = btnRenderer?.getAttribute("like-status")?.toUpperCase();
 				likeState = [
 					"LIKE",
@@ -18561,16 +18620,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				break;
 			}
 			case "yt": {
-				btnRenderer = document.querySelector("ytd-watch-metadata segmented-like-dislike-button-view-model") ?? void 0;
-				likeBtn = btnRenderer?.querySelector("like-button-view-model button") ?? void 0;
-				dislikeBtn = btnRenderer?.querySelector("dislike-button-view-model button") ?? void 0;
+				btnRenderer = document.querySelector(getSelector("watchPage", "votesRenderer")) ?? void 0;
+				likeBtn = btnRenderer?.querySelector(getSelector("watchPage", "likeBtnAlternate")) ?? void 0;
+				dislikeBtn = btnRenderer?.querySelector(getSelector("watchPage", "dislikeBtnAlternate")) ?? void 0;
 				if (likeBtn?.getAttribute("aria-pressed") === "true") likeState = "LIKE";
 				else if (dislikeBtn?.getAttribute("aria-pressed") === "true") likeState = "DISLIKE";
 				else if (likeBtn || dislikeBtn) likeState = "INDIFFERENT";
 				if (!btnRenderer && !likeBtn && !dislikeBtn) {
-					btnRenderer = document.querySelector("reel-action-bar-view-model") ?? void 0;
-					likeBtn = btnRenderer?.querySelector("like-button-view-model button") ?? void 0;
-					dislikeBtn = btnRenderer?.querySelector("dislike-button-view-model button") ?? void 0;
+					btnRenderer = document.querySelector(getSelector("watchPage", "votesRendererShorts")) ?? void 0;
+					likeBtn = btnRenderer?.querySelector(getSelector("watchPage", "likeBtnShorts")) ?? void 0;
+					dislikeBtn = btnRenderer?.querySelector(getSelector("watchPage", "dislikeBtnShorts")) ?? void 0;
 				}
 				const liked = likeBtn?.getAttribute("aria-pressed") === "true";
 				const disliked = dislikeBtn?.getAttribute("aria-pressed") === "true";
@@ -18638,7 +18697,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	*/
 	function getCurrentMediaType() {
 		if (getDomain() === "yt") return "video";
-		const songImgElem = document.querySelector("ytmusic-player #song-image");
+		const songImgElem = document.querySelector(getSelector("watchPage", "songImg"));
 		if (!songImgElem) throw new Error("Couldn't find the song image element. Use this function only after awaiting `waitVideoElementReady()`!");
 		return window.getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 	}
@@ -18763,7 +18822,8 @@ Build #${buildNumber$1} (dev mode)
 		featureStart: 0,
 		featureDurations: {},
 		start: 0,
-		sinceStart: {}
+		sinceStart: {},
+		resources: {}
 	};
 	/**
 	* Starts a timer for measuring the duration of a specific phase of the initialization process.  
@@ -19205,6 +19265,10 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		});
 		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", /* @__PURE__ */ new SyntaxError("Test error")));
 		isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+			initTimings.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
+				...a,
+				[key]: vals
+			}), {});
 			downloadFile(`${scriptInfo$1.name} Performance Report @ ${(/* @__PURE__ */ new Date()).toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
 		});
 		isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
@@ -19238,7 +19302,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "88ad6616",
+				buildNumber: "9579a5b4",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
