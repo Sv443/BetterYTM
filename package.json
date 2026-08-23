@@ -134,7 +134,6 @@
     "cross-env": "7.0.3",
     "dotenv": "17.3.1",
     "eslint": "10.0.3",
-    "eslint-plugin-simple-import-sort": "14.0.0",
     "eslint-plugin-storybook": "10.2.19",
     "express": "5.2.1",
     "globals": "17.4.0",
