@@ -1,4 +1,4 @@
-import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
+import { autoPlural, compress, createTable, CustomError, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey, resourceFetches } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
@@ -815,7 +815,7 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new SyntaxError("Test error")));
+  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
 
   isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
     initTimings.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
@@ -835,13 +835,11 @@ function registerDevCommands() {
       type: "alert",
       message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
       extraButtons: [
-        (dlg) => {
+        () => {
           const btn = document.createElement("button");
-          btn.textContent = btn.ariaLabel = "Copy and close";
+          btn.textContent = btn.ariaLabel = "Copy";
           btn.addEventListener("click", async () => {
             devPluginToken && copyToClipboard(devPluginToken);
-            dlg.emitResolve(devPluginToken ?? null);
-            dlg.close();
           });
           return btn;
         },

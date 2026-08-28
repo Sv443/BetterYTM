@@ -1,5 +1,6 @@
 import { clamp, DatedError } from "@sv443-network/coreutils";
 import type { LooseUnion } from "@sv443-network/coreutils";
+import { BytmDialog } from "@comp/BytmDialog.ts";
 import { scriptInfo } from "@/constants.ts";
 import { LogLevel } from "@/types.ts";
 
@@ -156,6 +157,8 @@ export class Logger {
       return `[Blob (${val.type}, ${val.size} bytes)]`;
     if(val instanceof File)
       return `[File (${val.name}, ${val.type}, ${val.size} bytes)]`;
+    if(val instanceof BytmDialog)
+      return `[BytmDialog #${val.id}${val.isOpen() ? " (is open)" : ""}]`;
     if(typeof val === "object") {
       const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
       try {
