@@ -8,7 +8,7 @@ import { getVersionNotifDialog } from "@dialog/versionNotif.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { LogLevel } from "@/types.ts";
 
-/** Initializes the version check feature */
+/** Initializes the automatic version check feature. */
 export async function initVersionCheck() {
   try {
     if(getFeature("versionCheck") === false)

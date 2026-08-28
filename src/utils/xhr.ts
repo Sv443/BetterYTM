@@ -7,18 +7,36 @@ import { getFeature } from "@/config.ts";
 //#region misc
 
 /**
- * Constructs a URL from a base URL and a record of query parameters.  
+ * Constructs a URL from a base URL (which may already contain query parameters and/or a hash) and a record of query parameters.  
+ * The query parameters already present in {@linkcode baseUrl} are merged with {@linkcode params}, with {@linkcode params} taking precedence on key conflicts.  
  * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
  * All values will be stringified using their `toString()` method and then URI-encoded.
  * @returns Returns a string instead of a URL object
  */
 export function constructUrlString(baseUrl: string, params: Record<string, Stringifiable | null>) {
-  return `${baseUrl}?${
-    Object.entries(params)
-      .filter(([, v]) => v !== undefined)
-      .map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`)
-      .join("&")
-  }`;
+  const [baseAndQuery, hash] = baseUrl.split("#");
+  const [base, query] = baseAndQuery.split("?");
+
+  const mergedParams = new Map<string, Stringifiable | null | undefined>();
+
+  if(query) {
+    for(const part of query.split("&")) {
+      if(part.length === 0)
+        continue;
+      const [k, v] = part.split("=");
+      mergedParams.set(decodeURIComponent(k), v === undefined ? null : decodeURIComponent(v));
+    }
+  }
+
+  for(const [k, v] of Object.entries(params))
+    mergedParams.set(k, v);
+
+  const queryString = [...mergedParams.entries()]
+    .filter(([, v]) => v !== undefined)
+    .map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`)
+    .join("&");
+
+  return `${base}${queryString.length > 0 ? `?${queryString}` : ""}${hash !== undefined ? `#${hash}` : ""}`;
 }
 
 /**
@@ -33,7 +51,7 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
 
 /**
  * Sends a request with the specified parameters and returns the response as a Promise.  
- * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
+ * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to {@linkcode fetch()} and {@linkcode fetchAdvanced()}.
  */
 export function sendRequest<T = any>(details: Prettify<Omit<Tampermonkey.Request<T>, "onload" | "onerror" | "ontimeout" | "onabort">>): Promise<Tampermonkey.Response<T>> {
   return new Promise<Tampermonkey.Response<T>>((resolve, reject) => {
