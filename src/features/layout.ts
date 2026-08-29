@@ -1269,7 +1269,11 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   const updateLabels = async () => {
     const { likeState } = getLikeDislikeBtns();
 
-    const voteObj = await fetchVideoVotes(getWatchId()!);
+    const videoID = getWatchId();
+    if(!videoID)
+      return;
+
+    const voteObj = await fetchVideoVotes(videoID);
 
     if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
       return loggers.layout.error("Couldn't fetch votes from the Return YouTube Dislike API");
