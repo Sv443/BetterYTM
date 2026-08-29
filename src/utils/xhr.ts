@@ -102,8 +102,11 @@ const voteCacheTTL = 1000 * 60 * 60;
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
  * @param videoID The video ID of the video
  */
-export async function fetchVideoVotes(videoID: string): Promise<VideoVotesObj | undefined> {
+export async function fetchVideoVotes(videoID: string | null): Promise<VideoVotesObj | undefined> {
   try {
+    if(!videoID)
+      return;
+
     if(voteCache.has(videoID)) {
       const cached = voteCache.get(videoID)!;
       if(Date.now() - cached.timestamp < voteCacheTTL) {
