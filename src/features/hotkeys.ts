@@ -14,15 +14,19 @@ import { promptLyricsSearch } from "@feat/lyrics.ts";
 export async function initHotkeys() {
   const promises: Promise<void>[] = [];
 
+  // ytm only:
   if(getDomain() === "ytm") {
     promises.push(initOpenLyricsHotkey());
   }
-  promises.push(initSearchLyricsPromptHotkey());
-  promises.push(initLikeDislikeHotkeys());
-  promises.push(initSiteSwitch());
-  promises.push(initProxyHotkeys());
-  promises.push(initSkipToRemTimeHotkey());
-  promises.push(initSearchBarHotkeys());
+  // shared:
+  promises.push(
+    initSearchLyricsPromptHotkey(),
+    initLikeDislikeHotkeys(),
+    initSiteSwitchHotkey(),
+    initProxyHotkeys(),
+    initSkipToRemTimeHotkey(),
+    initSearchBarHotkeys()
+  );
 
   return await Promise.allSettled(promises);
 }
@@ -48,12 +52,13 @@ function preventBubble(evt: Event) {
 
 //#region site switch
 
-/** switch sites only if current video time is greater than this value */
+/** Switch sites only if current video time is greater than this value. */
 const videoTimeThreshold = 3;
+/** Global flag that gets turned off by active hotkey input elements. */
 let siteSwitchEnabled = true;
 
-/** Initializes the site switch feature */
-export async function initSiteSwitch() {
+/** Initializes the site switch feature. */
+export async function initSiteSwitchHotkey() {
   const domain = getDomain();
   document.addEventListener("keydown", (e) => {
     if(!getFeature("switchBetweenSites"))
@@ -61,10 +66,14 @@ export async function initSiteSwitch() {
     if(isIgnoredInputElement())
       return;
     if(siteSwitchEnabled) {
-      if(hotkeyMatches(e, getFeature("switchSitesNewTabHotkey")))
+      if(hotkeyMatches(e, getFeature("switchSitesNewTabHotkey"))) {
+        preventBubble(e);
         switchSite(domain === "yt" ? "ytm" : "yt", true);
-      else if(hotkeyMatches(e, getFeature("switchSitesHotkey")))
+      }
+      else if(hotkeyMatches(e, getFeature("switchSitesHotkey"))) {
+        preventBubble(e);
         switchSite(domain === "yt" ? "ytm" : "yt");
+      }
     }
   }, { capture: true });
   siteEvents.on("hotkeyInputActive", (hkInputActive) => {
@@ -75,7 +84,7 @@ export async function initSiteSwitch() {
   loggers.hotkey.log("Initialized site switch listener");
 }
 
-/** Switches to the other site (between YT and YTM) */
+/** Switches to the other site (between YT and YTM). */
 async function switchSite(newDomain: Domain, inNewTab = false) {
   try {
     if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
