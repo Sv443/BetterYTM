@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9579a5b4/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6e8f145e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 23 Aug 2026 14:43:19 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 30 Aug 2026 20:24:15 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 9579a5b4                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 6e8f145e                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ Fk9397pBALpv                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ dInVSH0yuMoc                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -541,9 +541,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "9579a5b4";
+	var buildNumber$1 = "6e8f145e";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1787496199078;
+	var buildTimestamp = 1788121455006;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -584,6 +584,362 @@
 		version: GM_info.script.version,
 		namespace: GM_info.script.namespace
 	});
+	//#endregion
+	//#region src/utils/translations.ts
+	/** Contains the identifiers of all initialized and loaded translation locales */
+	var initializedLocales = /* @__PURE__ */ new Set();
+	/** The currently active locale */
+	var activeLocale = "en-US";
+	/** The current locale's text direction */
+	var activeLocaleDir = "ltr";
+	_sv443_network_userutils.tr.addTransform(_sv443_network_userutils.tr.transforms.percent);
+	_sv443_network_userutils.tr.addTransform(_sv443_network_userutils.tr.transforms.templateLiteral);
+	/** Used to check which keys are unused. */
+	var devMarkTrKeyUsed = async (key) => {};
+	/** Initializes the translations for the given locale if they haven't been initialized yet. */
+	async function initTranslations(locale) {
+		if (initializedLocales.has(locale)) return;
+		initializedLocales.add(locale);
+		try {
+			const transFile = await fetchTranslationResource(locale);
+			let fallbackTrans = {};
+			if (getFeature("localeFallback")) {
+				_sv443_network_userutils.tr.setFallbackLanguage("en-US");
+				fallbackTrans = await fetchTranslationResource("en-US");
+			}
+			const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string" ? await fetchTranslationResource(transFile.meta.base) : void 0;
+			const { meta: { authors: _authors, ...meta }, ...trans } = {
+				...fallbackTrans ?? {},
+				...baseTransFile ?? {},
+				...transFile
+			};
+			_sv443_network_userutils.tr.addTranslations(locale, {
+				...meta,
+				...trans
+			});
+			loggers.translation.info(`Loaded translations for locale '${locale}'`);
+		} catch (err) {
+			const errStr = `Couldn't load translations for locale '${locale}'`;
+			loggers.translation.error(errStr, err);
+			throw new Error(errStr, { cause: err });
+		}
+	}
+	/** Fetches the JSON translations file of the passed locale. */
+	async function fetchTranslationResource(locale) {
+		const res = await (0, _sv443_network_coreutils.fetchAdvanced)(await getResourceUrl(`trans-${locale}`));
+		const bodyTxt = await res.text();
+		getFeature("logHttp") && loggers.translation.log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
+		if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
+		return JSON.parse(bodyTxt);
+	}
+	/** Sets the new locale to use in translations. */
+	function setLocale(locale) {
+		activeLocale = locale;
+		activeLocaleDir = locales_default[locale]?.textDir ?? "ltr";
+		setGlobalProp("locale", locale);
+		emitInterface("bytm:setLocale", { locale });
+	}
+	/** Returns the currently set locale. */
+	function getLocale() {
+		return activeLocale;
+	}
+	/** Returns whether the given translation key exists in the current locale. Loads the translations if they weren't yet. */
+	async function hasKey(key) {
+		return await hasKeyFor(getLocale(), key);
+	}
+	/** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
+	async function hasKeyFor(locale, key) {
+		devMarkTrKeyUsed(key);
+		if (!initializedLocales.has(locale)) await initTranslations(locale);
+		return typeof _sv443_network_userutils.tr.getTranslations(locale)?.[key] === "string";
+	}
+	/**
+	* Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.
+	*/
+	function t(key, ...args) {
+		return tl(getLocale(), key, ...args);
+	}
+	/**
+	* Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}  
+	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
+	* Tries to fall back to the non-pluralized syntax if no translation was found.
+	*/
+	function tp(key, num, ...args) {
+		return tlp(getLocale(), key, num, ...args);
+	}
+	/** Returns the translated string for the given key in the specified locale, after optionally inserting positional arguments into 1-indexed `%n` placeholders. */
+	function tl(locale, key, ...args) {
+		if (locale === "en-US") hasKeyFor(locale, key).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+		devMarkTrKeyUsed(key);
+		return _sv443_network_userutils.tr.for(locale, key, ...args);
+	}
+	/**
+	* Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}  
+	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
+	* Tries to fall back to the non-pluralized syntax if no translation was found.
+	*/
+	function tlp(locale, key, num, ...args) {
+		if (typeof num !== "number") num = num.length;
+		const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
+		devMarkTrKeyUsed(tlKey);
+		if (locale === "en-US") hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+		const trans = tl(locale, tlKey, ...args);
+		if (trans === key) return t(key, ...args);
+		return trans;
+	}
+	/** Creates a {@linkcode Translatable} object with the translations for the given key and arguments. */
+	function createTranslatable(key, args = []) {
+		return Object.keys(locales_default).reduce((acc, locale) => {
+			acc[locale] = tl(locale, key, ...args);
+			return acc;
+		}, {});
+	}
+	/** Returns the appropriate translation for the given {@linkcode Translatable} object based on the current locale. Falls back to `en-US` */
+	function resolveTranslatable(trnsl) {
+		return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
+	}
+	//#endregion
+	//#region src/components/BytmDialog.ts
+	/** Whether the dialog system has been initialized */
+	var dialogsInitialized = false;
+	/** Container element for all BytmDialog elements */
+	var dialogContainer;
+	/** ID of the last opened (top-most) dialog */
+	var currentDialogId = null;
+	/** IDs of all currently open dialogs, top-most first */
+	var openDialogs = [];
+	/** TODO: remove as soon as config menu is migrated to use BytmDialog */
+	var setCurrentDialogId = (id) => currentDialogId = id;
+	/** Creates and manages a modal dialog element */
+	var BytmDialog = class BytmDialog extends _sv443_network_coreutils.NanoEmitter {
+		options;
+		id;
+		dialogOpen = false;
+		dialogMounted = false;
+		constructor(options) {
+			super();
+			BytmDialog.initDialogs();
+			this.options = {
+				closeOnBgClick: true,
+				closeOnEscPress: true,
+				closeBtnEnabled: true,
+				destroyOnClose: false,
+				unmountOnClose: true,
+				removeListenersOnDestroy: true,
+				smallHeader: false,
+				verticalAlign: "center",
+				...options
+			};
+			this.id = options.id;
+		}
+		/** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
+		async mount() {
+			if (this.dialogMounted) return;
+			this.dialogMounted = true;
+			const bgElem = document.createElement("div");
+			bgElem.id = `bytm-${this.id}-dialog-bg`;
+			bgElem.classList.add("bytm-dialog-bg");
+			if (this.options.closeOnBgClick) bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
+			bgElem.style.setProperty("--bytm-dialog-width-max", `${this.options.width}px`);
+			bgElem.style.setProperty("--bytm-dialog-height-max", `${this.options.height}px`);
+			bgElem.style.visibility = "hidden";
+			bgElem.style.display = "none";
+			bgElem.inert = true;
+			try {
+				bgElem.appendChild(await this.getDialogContent());
+				if (dialogContainer) dialogContainer.appendChild(bgElem);
+				else document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
+			} catch (e) {
+				return loggers.dialog.error("Failed to render dialog content:", e);
+			}
+			this.attachListeners(bgElem);
+			this.events.emit("render");
+			return bgElem;
+		}
+		/** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
+		unmount() {
+			this.close();
+			this.dialogMounted = false;
+			const clearSelectors = [`#bytm-${this.id}-dialog-bg`];
+			for (const sel of clearSelectors) {
+				const elem = document.querySelector(sel);
+				elem?.hasChildNodes() && clearInner(elem);
+				document.querySelector(sel)?.remove();
+			}
+			this.events.emit("clear");
+		}
+		/** Clears the DOM of the dialog and then renders it again */
+		async remount() {
+			this.unmount();
+			await this.mount();
+		}
+		/** Returns true if the dialog is currently mounted */
+		isMounted() {
+			return this.dialogMounted;
+		}
+		/**
+		* Opens the dialog - also mounts it if it hasn't been mounted yet  
+		* Prevents default action and immediate propagation of the passed event
+		*/
+		async open(e) {
+			e?.preventDefault();
+			e?.stopImmediatePropagation();
+			if (this.isOpen()) return;
+			this.dialogOpen = true;
+			if (openDialogs.includes(this.id)) {
+				openDialogs.splice(openDialogs.indexOf(this.id), 1);
+				currentDialogId = openDialogs[0] ?? null;
+				this.removeBgInert();
+				this.close();
+				throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
+			}
+			if (!this.isMounted()) await this.mount();
+			this.setBgInert();
+			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+			dialogBg.style.visibility = "visible";
+			dialogBg.style.display = "block";
+			currentDialogId = this.id;
+			openDialogs.unshift(this.id);
+			this.events.emit("open");
+			emitInterface("bytm:dialogOpened", this);
+			emitInterface(`bytm:dialogOpened:${this.id}`, this);
+			return dialogBg;
+		}
+		/** Closes the dialog - prevents default action and immediate propagation of the passed event */
+		close(e) {
+			e?.preventDefault();
+			e?.stopImmediatePropagation();
+			if (!this.isOpen()) return;
+			this.dialogOpen = false;
+			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+			dialogBg.style.visibility = "hidden";
+			dialogBg.style.display = "none";
+			const oidx = openDialogs.indexOf(this.id);
+			if (oidx > -1) openDialogs.splice(oidx, 1);
+			currentDialogId = openDialogs[0] ?? null;
+			this.events.emit("close");
+			emitInterface("bytm:dialogClosed", this);
+			emitInterface(`bytm:dialogClosed:${this.id}`, this);
+			if (this.options.destroyOnClose) this.destroy();
+			else if (this.options.unmountOnClose) this.unmount();
+			this.removeBgInert();
+		}
+		/** Returns true if the dialog is currently open */
+		isOpen() {
+			return this.dialogOpen;
+		}
+		/** Clears the DOM of the dialog and removes all event listeners */
+		destroy() {
+			this.unmount();
+			this.events.emit("destroy");
+			this.options.removeListenersOnDestroy && this.unsubscribeAll();
+		}
+		/** Initializes the dialog system */
+		static initDialogs() {
+			if (dialogsInitialized) return;
+			dialogsInitialized = true;
+			const createContainer = () => {
+				const bytmDialogCont = dialogContainer = document.createElement("div");
+				bytmDialogCont.id = "bytm-dialog-container";
+				document.body.appendChild(bytmDialogCont);
+			};
+			if (!(0, _sv443_network_userutils.isDomLoaded)()) document.addEventListener("DOMContentLoaded", createContainer, { once: true });
+			else createContainer();
+		}
+		/** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+		static getCurrentDialogId() {
+			return currentDialogId;
+		}
+		/** Returns the IDs of all currently open dialogs, top-most first */
+		static getOpenDialogs() {
+			return openDialogs;
+		}
+		/** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
+		removeBgInert() {
+			if (currentDialogId) if (currentDialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
+			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
+			if (openDialogs.length === 0) {
+				document.body.classList.remove("bytm-disable-scroll");
+				document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
+			}
+			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
+		}
+		/** Sets this dialog to be not inert and the body and all other dialogs to be inert */
+		setBgInert() {
+			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
+			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
+			document.body.classList.add("bytm-disable-scroll");
+			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
+			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
+		}
+		/** Called on every {@linkcode mount()} to attach all generic event listeners */
+		attachListeners(bgElem) {
+			if (this.options.closeOnBgClick) bgElem.addEventListener("click", (e) => {
+				if (this.isOpen() && e.target?.id === `bytm-${this.id}-dialog-bg`) this.close(e);
+			});
+			if (this.options.closeOnEscPress) document.body.addEventListener("keydown", (e) => {
+				if (e.key === "Escape" && this.isOpen() && BytmDialog.getCurrentDialogId() === this.id) this.close(e);
+			});
+		}
+		/** Returns the dialog content element and all its children */
+		async getDialogContent() {
+			const header = this.options.renderHeader?.();
+			const footer = this.options.renderFooter?.();
+			const dialogWrapperEl = document.createElement("div");
+			dialogWrapperEl.id = `bytm-${this.id}-dialog`;
+			dialogWrapperEl.classList.add("bytm-dialog");
+			dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
+			dialogWrapperEl.role = "dialog";
+			dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
+			dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
+			if (this.options.verticalAlign !== "center") dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
+			const headerWrapperEl = document.createElement("div");
+			headerWrapperEl.classList.add("bytm-dialog-header");
+			this.options.small && headerWrapperEl.classList.add("small");
+			if (header) {
+				const headerTitleWrapperEl = document.createElement("div");
+				headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
+				headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
+				headerTitleWrapperEl.role = "heading";
+				headerTitleWrapperEl.ariaLevel = "1";
+				headerTitleWrapperEl.appendChild(await header);
+				headerWrapperEl.appendChild(headerTitleWrapperEl);
+			} else {
+				const padEl = document.createElement("div");
+				padEl.classList.add("bytm-dialog-header-pad");
+				this.options.small && padEl.classList.add("small");
+				headerWrapperEl.appendChild(padEl);
+			}
+			if (this.options.closeBtnEnabled) {
+				const closeBtnEl = document.createElement("img");
+				closeBtnEl.classList.add("bytm-dialog-close");
+				this.options.small && closeBtnEl.classList.add("small");
+				closeBtnEl.src = await getResourceUrl("img-close");
+				closeBtnEl.role = "button";
+				closeBtnEl.tabIndex = 0;
+				closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
+				onInteraction(closeBtnEl, (e) => this.close(e));
+				headerWrapperEl.appendChild(closeBtnEl);
+			}
+			dialogWrapperEl.appendChild(headerWrapperEl);
+			const dialogBodyElem = document.createElement("div");
+			dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
+			dialogBodyElem.classList.add("bytm-dialog-body");
+			this.options.small && dialogBodyElem.classList.add("small");
+			dialogBodyElem.appendChild(await this.options.renderBody());
+			dialogWrapperEl.appendChild(dialogBodyElem);
+			if (footer) {
+				const footerWrapper = document.createElement("div");
+				footerWrapper.classList.add("bytm-dialog-footer-cont");
+				this.options.small && footerWrapper.classList.add("small");
+				dialogWrapperEl.appendChild(footerWrapper);
+				footerWrapper.appendChild(await footer);
+			}
+			return dialogWrapperEl;
+		}
+	};
 	//#endregion
 	//#region src/utils/Logger.ts
 	/** Mapping of predefined {@linkcode LogCategory} entries. */
@@ -679,6 +1035,7 @@
 			if (val instanceof Set) return `[Set (${val.size}) <${Array.from(val.values()).map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
 			if (val instanceof Blob) return `[Blob (${val.type}, ${val.size} bytes)]`;
 			if (val instanceof File) return `[File (${val.name}, ${val.type}, ${val.size} bytes)]`;
+			if (val instanceof BytmDialog) return `[BytmDialog #${val.id}${val.isOpen() ? " (is open)" : ""}]`;
 			if (typeof val === "object") {
 				const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;
 				try {
@@ -1083,120 +1440,6 @@
 		}
 	}
 	//#endregion
-	//#region src/utils/translations.ts
-	/** Contains the identifiers of all initialized and loaded translation locales */
-	var initializedLocales = /* @__PURE__ */ new Set();
-	/** The currently active locale */
-	var activeLocale = "en-US";
-	/** The current locale's text direction */
-	var activeLocaleDir = "ltr";
-	_sv443_network_userutils.tr.addTransform(_sv443_network_userutils.tr.transforms.percent);
-	_sv443_network_userutils.tr.addTransform(_sv443_network_userutils.tr.transforms.templateLiteral);
-	/** Used to check which keys are unused. */
-	var devMarkTrKeyUsed = async (key) => {};
-	/** Initializes the translations for the given locale if they haven't been initialized yet. */
-	async function initTranslations(locale) {
-		if (initializedLocales.has(locale)) return;
-		initializedLocales.add(locale);
-		try {
-			const transFile = await fetchTranslationResource(locale);
-			let fallbackTrans = {};
-			if (getFeature("localeFallback")) {
-				_sv443_network_userutils.tr.setFallbackLanguage("en-US");
-				fallbackTrans = await fetchTranslationResource("en-US");
-			}
-			const baseTransFile = typeof transFile?.meta === "object" && "base" in transFile.meta && typeof transFile.meta.base === "string" ? await fetchTranslationResource(transFile.meta.base) : void 0;
-			const { meta: { authors: _authors, ...meta }, ...trans } = {
-				...fallbackTrans ?? {},
-				...baseTransFile ?? {},
-				...transFile
-			};
-			_sv443_network_userutils.tr.addTranslations(locale, {
-				...meta,
-				...trans
-			});
-			loggers.translation.info(`Loaded translations for locale '${locale}'`);
-		} catch (err) {
-			const errStr = `Couldn't load translations for locale '${locale}'`;
-			loggers.translation.error(errStr, err);
-			throw new Error(errStr, { cause: err });
-		}
-	}
-	/** Fetches the JSON translations file of the passed locale. */
-	async function fetchTranslationResource(locale) {
-		const res = await (0, _sv443_network_coreutils.fetchAdvanced)(await getResourceUrl(`trans-${locale}`));
-		const bodyTxt = await res.text();
-		getFeature("logHttp") && loggers.translation.log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
-		if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
-		return JSON.parse(bodyTxt);
-	}
-	/** Sets the new locale to use in translations. */
-	function setLocale(locale) {
-		activeLocale = locale;
-		activeLocaleDir = locales_default[locale]?.textDir ?? "ltr";
-		setGlobalProp("locale", locale);
-		emitInterface("bytm:setLocale", { locale });
-	}
-	/** Returns the currently set locale. */
-	function getLocale() {
-		return activeLocale;
-	}
-	/** Returns whether the given translation key exists in the current locale. Loads the translations if they weren't yet. */
-	async function hasKey(key) {
-		return await hasKeyFor(getLocale(), key);
-	}
-	/** Returns whether the given translation key exists in the given locale. Loads the translations if they weren't yet. */
-	async function hasKeyFor(locale, key) {
-		devMarkTrKeyUsed(key);
-		if (!initializedLocales.has(locale)) await initTranslations(locale);
-		return typeof _sv443_network_userutils.tr.getTranslations(locale)?.[key] === "string";
-	}
-	/**
-	* Returns the translated string for the given key, after optionally inserting positional arguments into 1-indexed `%n` placeholders.
-	*/
-	function t(key, ...args) {
-		return tl(getLocale(), key, ...args);
-	}
-	/**
-	* Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}  
-	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
-	* Tries to fall back to the non-pluralized syntax if no translation was found.
-	*/
-	function tp(key, num, ...args) {
-		return tlp(getLocale(), key, num, ...args);
-	}
-	/** Returns the translated string for the given key in the specified locale, after optionally inserting positional arguments into 1-indexed `%n` placeholders. */
-	function tl(locale, key, ...args) {
-		if (locale === "en-US") hasKeyFor(locale, key).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
-		devMarkTrKeyUsed(key);
-		return _sv443_network_userutils.tr.for(locale, key, ...args);
-	}
-	/**
-	* Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}  
-	* Also inserts the passed positional {@linkcode args} at the 1-indexed `%n` placeholders.  
-	* Tries to fall back to the non-pluralized syntax if no translation was found.
-	*/
-	function tlp(locale, key, num, ...args) {
-		if (typeof num !== "number") num = num.length;
-		const tlKey = `${key}-${num === 1 ? "1" : "n"}`;
-		devMarkTrKeyUsed(tlKey);
-		if (locale === "en-US") hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
-		const trans = tl(locale, tlKey, ...args);
-		if (trans === key) return t(key, ...args);
-		return trans;
-	}
-	/** Creates a {@linkcode Translatable} object with the translations for the given key and arguments. */
-	function createTranslatable(key, args = []) {
-		return Object.keys(locales_default).reduce((acc, locale) => {
-			acc[locale] = tl(locale, key, ...args);
-			return acc;
-		}, {});
-	}
-	/** Returns the appropriate translation for the given {@linkcode Translatable} object based on the current locale. Falls back to `en-US` */
-	function resolveTranslatable(trnsl) {
-		return trnsl[getLocale()] ?? trnsl["en-US"] ?? `<MISSING TRANSLATIONS: ${JSON.stringify(trnsl)}>`;
-	}
-	//#endregion
 	//#region src/utils/input.ts
 	var interactionKeys = [
 		"Enter",
@@ -1226,248 +1469,6 @@
 		elem.addEventListener("click", proxListener, listenerOpts);
 		elem.addEventListener("keydown", proxListener, listenerOpts);
 	}
-	//#endregion
-	//#region src/components/BytmDialog.ts
-	/** Whether the dialog system has been initialized */
-	var dialogsInitialized = false;
-	/** Container element for all BytmDialog elements */
-	var dialogContainer;
-	/** ID of the last opened (top-most) dialog */
-	var currentDialogId = null;
-	/** IDs of all currently open dialogs, top-most first */
-	var openDialogs = [];
-	/** TODO: remove as soon as config menu is migrated to use BytmDialog */
-	var setCurrentDialogId = (id) => currentDialogId = id;
-	/** Creates and manages a modal dialog element */
-	var BytmDialog = class BytmDialog extends _sv443_network_coreutils.NanoEmitter {
-		options;
-		id;
-		dialogOpen = false;
-		dialogMounted = false;
-		constructor(options) {
-			super();
-			BytmDialog.initDialogs();
-			this.options = {
-				closeOnBgClick: true,
-				closeOnEscPress: true,
-				closeBtnEnabled: true,
-				destroyOnClose: false,
-				unmountOnClose: true,
-				removeListenersOnDestroy: true,
-				smallHeader: false,
-				verticalAlign: "center",
-				...options
-			};
-			this.id = options.id;
-		}
-		/** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
-		async mount() {
-			if (this.dialogMounted) return;
-			this.dialogMounted = true;
-			const bgElem = document.createElement("div");
-			bgElem.id = `bytm-${this.id}-dialog-bg`;
-			bgElem.classList.add("bytm-dialog-bg");
-			if (this.options.closeOnBgClick) bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
-			bgElem.style.setProperty("--bytm-dialog-width-max", `${this.options.width}px`);
-			bgElem.style.setProperty("--bytm-dialog-height-max", `${this.options.height}px`);
-			bgElem.style.visibility = "hidden";
-			bgElem.style.display = "none";
-			bgElem.inert = true;
-			try {
-				bgElem.appendChild(await this.getDialogContent());
-				if (dialogContainer) dialogContainer.appendChild(bgElem);
-				else document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
-			} catch (e) {
-				return loggers.dialog.error("Failed to render dialog content:", e);
-			}
-			this.attachListeners(bgElem);
-			this.events.emit("render");
-			return bgElem;
-		}
-		/** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
-		unmount() {
-			this.close();
-			this.dialogMounted = false;
-			const clearSelectors = [`#bytm-${this.id}-dialog-bg`];
-			for (const sel of clearSelectors) {
-				const elem = document.querySelector(sel);
-				elem?.hasChildNodes() && clearInner(elem);
-				document.querySelector(sel)?.remove();
-			}
-			this.events.emit("clear");
-		}
-		/** Clears the DOM of the dialog and then renders it again */
-		async remount() {
-			this.unmount();
-			await this.mount();
-		}
-		/** Returns true if the dialog is currently mounted */
-		isMounted() {
-			return this.dialogMounted;
-		}
-		/**
-		* Opens the dialog - also mounts it if it hasn't been mounted yet  
-		* Prevents default action and immediate propagation of the passed event
-		*/
-		async open(e) {
-			e?.preventDefault();
-			e?.stopImmediatePropagation();
-			if (this.isOpen()) return;
-			this.dialogOpen = true;
-			if (openDialogs.includes(this.id)) {
-				openDialogs.splice(openDialogs.indexOf(this.id), 1);
-				currentDialogId = openDialogs[0] ?? null;
-				this.removeBgInert();
-				this.close();
-				throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
-			}
-			if (!this.isMounted()) await this.mount();
-			this.setBgInert();
-			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-			dialogBg.style.visibility = "visible";
-			dialogBg.style.display = "block";
-			currentDialogId = this.id;
-			openDialogs.unshift(this.id);
-			this.events.emit("open");
-			emitInterface("bytm:dialogOpened", this);
-			emitInterface(`bytm:dialogOpened:${this.id}`, this);
-			return dialogBg;
-		}
-		/** Closes the dialog - prevents default action and immediate propagation of the passed event */
-		close(e) {
-			e?.preventDefault();
-			e?.stopImmediatePropagation();
-			if (!this.isOpen()) return;
-			this.dialogOpen = false;
-			const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-			if (!dialogBg) return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-			dialogBg.style.visibility = "hidden";
-			dialogBg.style.display = "none";
-			const oidx = openDialogs.indexOf(this.id);
-			if (oidx > -1) openDialogs.splice(oidx, 1);
-			currentDialogId = openDialogs[0] ?? null;
-			this.events.emit("close");
-			emitInterface("bytm:dialogClosed", this);
-			emitInterface(`bytm:dialogClosed:${this.id}`, this);
-			if (this.options.destroyOnClose) this.destroy();
-			else if (this.options.unmountOnClose) this.unmount();
-			this.removeBgInert();
-		}
-		/** Returns true if the dialog is currently open */
-		isOpen() {
-			return this.dialogOpen;
-		}
-		/** Clears the DOM of the dialog and removes all event listeners */
-		destroy() {
-			this.unmount();
-			this.events.emit("destroy");
-			this.options.removeListenersOnDestroy && this.unsubscribeAll();
-		}
-		/** Initializes the dialog system */
-		static initDialogs() {
-			if (dialogsInitialized) return;
-			dialogsInitialized = true;
-			const createContainer = () => {
-				const bytmDialogCont = dialogContainer = document.createElement("div");
-				bytmDialogCont.id = "bytm-dialog-container";
-				document.body.appendChild(bytmDialogCont);
-			};
-			if (!(0, _sv443_network_userutils.isDomLoaded)()) document.addEventListener("DOMContentLoaded", createContainer, { once: true });
-			else createContainer();
-		}
-		/** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-		static getCurrentDialogId() {
-			return currentDialogId;
-		}
-		/** Returns the IDs of all currently open dialogs, top-most first */
-		static getOpenDialogs() {
-			return openDialogs;
-		}
-		/** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
-		removeBgInert() {
-			if (currentDialogId) if (currentDialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
-			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
-			if (openDialogs.length === 0) {
-				document.body.classList.remove("bytm-disable-scroll");
-				document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
-			}
-			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
-		}
-		/** Sets this dialog to be not inert and the body and all other dialogs to be inert */
-		setBgInert() {
-			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
-			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
-			document.body.classList.add("bytm-disable-scroll");
-			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
-			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
-		}
-		/** Called on every {@linkcode mount()} to attach all generic event listeners */
-		attachListeners(bgElem) {
-			if (this.options.closeOnBgClick) bgElem.addEventListener("click", (e) => {
-				if (this.isOpen() && e.target?.id === `bytm-${this.id}-dialog-bg`) this.close(e);
-			});
-			if (this.options.closeOnEscPress) document.body.addEventListener("keydown", (e) => {
-				if (e.key === "Escape" && this.isOpen() && BytmDialog.getCurrentDialogId() === this.id) this.close(e);
-			});
-		}
-		/** Returns the dialog content element and all its children */
-		async getDialogContent() {
-			const header = this.options.renderHeader?.();
-			const footer = this.options.renderFooter?.();
-			const dialogWrapperEl = document.createElement("div");
-			dialogWrapperEl.id = `bytm-${this.id}-dialog`;
-			dialogWrapperEl.classList.add("bytm-dialog");
-			dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
-			dialogWrapperEl.role = "dialog";
-			dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
-			dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
-			if (this.options.verticalAlign !== "center") dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
-			const headerWrapperEl = document.createElement("div");
-			headerWrapperEl.classList.add("bytm-dialog-header");
-			this.options.small && headerWrapperEl.classList.add("small");
-			if (header) {
-				const headerTitleWrapperEl = document.createElement("div");
-				headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
-				headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
-				headerTitleWrapperEl.role = "heading";
-				headerTitleWrapperEl.ariaLevel = "1";
-				headerTitleWrapperEl.appendChild(await header);
-				headerWrapperEl.appendChild(headerTitleWrapperEl);
-			} else {
-				const padEl = document.createElement("div");
-				padEl.classList.add("bytm-dialog-header-pad");
-				this.options.small && padEl.classList.add("small");
-				headerWrapperEl.appendChild(padEl);
-			}
-			if (this.options.closeBtnEnabled) {
-				const closeBtnEl = document.createElement("img");
-				closeBtnEl.classList.add("bytm-dialog-close");
-				this.options.small && closeBtnEl.classList.add("small");
-				closeBtnEl.src = await getResourceUrl("img-close");
-				closeBtnEl.role = "button";
-				closeBtnEl.tabIndex = 0;
-				closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-				onInteraction(closeBtnEl, (e) => this.close(e));
-				headerWrapperEl.appendChild(closeBtnEl);
-			}
-			dialogWrapperEl.appendChild(headerWrapperEl);
-			const dialogBodyElem = document.createElement("div");
-			dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
-			dialogBodyElem.classList.add("bytm-dialog-body");
-			this.options.small && dialogBodyElem.classList.add("small");
-			dialogBodyElem.appendChild(await this.options.renderBody());
-			dialogWrapperEl.appendChild(dialogBodyElem);
-			if (footer) {
-				const footerWrapper = document.createElement("div");
-				footerWrapper.classList.add("bytm-dialog-footer-cont");
-				this.options.small && footerWrapper.classList.add("small");
-				dialogWrapperEl.appendChild(footerWrapper);
-				footerWrapper.appendChild(await footer);
-			}
-			return dialogWrapperEl;
-		}
-	};
 	//#endregion
 	//#region src/dialogs/prompt.ts
 	var promptDialog = null;
@@ -2446,13 +2447,24 @@
 	//#endregion
 	//#region src/utils/xhr.ts
 	/**
-	* Constructs a URL from a base URL and a record of query parameters.  
+	* Constructs a URL from a base URL (which may already contain query parameters and/or a hash) and a record of query parameters.  
+	* The query parameters already present in {@linkcode baseUrl} are merged with {@linkcode params}, with {@linkcode params} taking precedence on key conflicts.  
 	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
 	* All values will be stringified using their `toString()` method and then URI-encoded.
 	* @returns Returns a string instead of a URL object
 	*/
 	function constructUrlString(baseUrl, params) {
-		return `${baseUrl}?${Object.entries(params).filter(([, v]) => v !== void 0).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&")}`;
+		const [baseAndQuery, hash] = baseUrl.split("#");
+		const [base, query] = baseAndQuery.split("?");
+		const mergedParams = /* @__PURE__ */ new Map();
+		if (query) for (const part of query.split("&")) {
+			if (part.length === 0) continue;
+			const [k, v] = part.split("=");
+			mergedParams.set(decodeURIComponent(k), v === void 0 ? null : decodeURIComponent(v));
+		}
+		for (const [k, v] of Object.entries(params)) mergedParams.set(k, v);
+		const queryString = [...mergedParams.entries()].filter(([, v]) => v !== void 0).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&");
+		return `${base}${queryString.length > 0 ? `?${queryString}` : ""}${hash !== void 0 ? `#${hash}` : ""}`;
 	}
 	/**
 	* Constructs a URL object from a base URL and a record of query parameters.  
@@ -2465,7 +2477,7 @@
 	}
 	/**
 	* Sends a request with the specified parameters and returns the response as a Promise.  
-	* Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
+	* Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to {@linkcode fetch()} and {@linkcode fetchAdvanced()}.
 	*/
 	function sendRequest(details) {
 		return new Promise((resolve, reject) => {
@@ -2507,6 +2519,7 @@
 	*/
 	async function fetchVideoVotes(videoID) {
 		try {
+			if (!videoID) return;
 			if (voteCache.has(videoID)) {
 				const cached = voteCache.get(videoID);
 				if (Date.now() - cached.timestamp < voteCacheTTL) {
@@ -3198,7 +3211,6 @@
 			"cross-env": "7.0.3",
 			"dotenv": "17.3.1",
 			"eslint": "10.0.3",
-			"eslint-plugin-simple-import-sort": "14.0.0",
 			"eslint-plugin-storybook": "10.2.19",
 			"express": "5.2.1",
 			"globals": "17.4.0",
@@ -5132,7 +5144,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		/** Called when the like/dislike state toggles to apply the adjusted numbers */
 		const updateLabels = async () => {
 			const { likeState } = getLikeDislikeBtns();
-			const voteObj = await fetchVideoVotes(getWatchId());
+			const videoID = getWatchId();
+			if (!videoID) return;
+			const voteObj = await fetchVideoVotes(videoID);
 			if (!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj)) return loggers.layout.error("Couldn't fetch votes from the Return YouTube Dislike API");
 			const likeLbl = voteCont.querySelector(".bytm-vote-label.likes");
 			const dislikeLbl = voteCont.querySelector(".bytm-vote-label.dislikes");
@@ -5899,7 +5913,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	//#endregion
 	//#region src/features/versionCheck.ts
-	/** Initializes the version check feature */
+	/** Initializes the automatic version check feature. */
 	async function initVersionCheck() {
 		try {
 			if (getFeature("versionCheck") === false) return loggers.misc.info("Version check is disabled");
@@ -6685,12 +6699,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function initHotkeys() {
 		const promises = [];
 		if (getDomain() === "ytm") promises.push(initOpenLyricsHotkey());
-		promises.push(initSearchLyricsPromptHotkey());
-		promises.push(initLikeDislikeHotkeys());
-		promises.push(initSiteSwitch());
-		promises.push(initProxyHotkeys());
-		promises.push(initSkipToRemTimeHotkey());
-		promises.push(initSearchBarHotkeys());
+		promises.push(initSearchLyricsPromptHotkey(), initLikeDislikeHotkeys(), initSiteSwitchHotkey(), initProxyHotkeys(), initSkipToRemTimeHotkey(), initSearchBarHotkeys());
 		return await Promise.allSettled(promises);
 	}
 	/** Checks whether the given keyboard event matches the given hotkey object. */
@@ -6703,18 +6712,24 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		evt.preventDefault();
 		evt.stopImmediatePropagation();
 	}
-	/** switch sites only if current video time is greater than this value */
+	/** Switch sites only if current video time is greater than this value. */
 	var videoTimeThreshold = 3;
+	/** Global flag that gets turned off by active hotkey input elements. */
 	var siteSwitchEnabled = true;
-	/** Initializes the site switch feature */
-	async function initSiteSwitch() {
+	/** Initializes the site switch feature. */
+	async function initSiteSwitchHotkey() {
 		const domain = getDomain();
 		document.addEventListener("keydown", (e) => {
 			if (!getFeature("switchBetweenSites")) return;
 			if (isIgnoredInputElement()) return;
 			if (siteSwitchEnabled) {
-				if (hotkeyMatches(e, getFeature("switchSitesNewTabHotkey"))) switchSite(domain === "yt" ? "ytm" : "yt", true);
-				else if (hotkeyMatches(e, getFeature("switchSitesHotkey"))) switchSite(domain === "yt" ? "ytm" : "yt");
+				if (hotkeyMatches(e, getFeature("switchSitesNewTabHotkey"))) {
+					preventBubble(e);
+					switchSite(domain === "yt" ? "ytm" : "yt", true);
+				} else if (hotkeyMatches(e, getFeature("switchSitesHotkey"))) {
+					preventBubble(e);
+					switchSite(domain === "yt" ? "ytm" : "yt");
+				}
 			}
 		}, { capture: true });
 		siteEvents.on("hotkeyInputActive", (hkInputActive) => {
@@ -6723,7 +6738,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		});
 		loggers.hotkey.log("Initialized site switch listener");
 	}
-	/** Switches to the other site (between YT and YTM) */
+	/** Switches to the other site (between YT and YTM). */
 	async function switchSite(newDomain, inNewTab = false) {
 		try {
 			if (!["/watch", "/playlist"].some((v) => location.pathname.startsWith(v))) return loggers.hotkey.warn("Not on a supported page, so the site switch is ignored");
@@ -11446,7 +11461,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				})) await reloadTab();
 			}
 		});
-		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", /* @__PURE__ */ new SyntaxError("Test error")));
+		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new _sv443_network_coreutils.CustomError("ExampleError", "Test error")));
 		isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
 			initTimings.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
 				...a,
@@ -11467,13 +11482,11 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () => showPrompt({
 			type: "alert",
 			message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
-			extraButtons: [(dlg) => {
+			extraButtons: [() => {
 				const btn = document.createElement("button");
-				btn.textContent = btn.ariaLabel = "Copy and close";
+				btn.textContent = btn.ariaLabel = "Copy";
 				btn.addEventListener("click", async () => {
 					devPluginToken && copyToClipboard(devPluginToken);
-					dlg.emitResolve(devPluginToken ?? null);
-					dlg.close();
 				});
 				return btn;
 			}],
@@ -11485,7 +11498,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "9579a5b4",
+				buildNumber: "6e8f145e",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
