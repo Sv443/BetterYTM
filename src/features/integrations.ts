@@ -25,7 +25,7 @@ export async function disableDarkReader() {
 /** Fixes the z-index of the SponsorBlock panel */
 export async function fixSponsorBlock() {
   try {
-    return addStyleFromResource("css-fix_sponsorblock");
+    return await addStyleFromResource("css-fix_sponsorblock");
   }
   catch(err) {
     loggers.integration.error("Failed to fix SponsorBlock styling:", err);
@@ -37,7 +37,7 @@ export async function fixSponsorBlock() {
 /** Adjust the BetterYTM styles if ThemeSong is ***not*** used */
 export async function fixPlayerPageTheming() {
   try {
-    return addStyleFromResource("css-fix_playerpage_theming");
+    return await addStyleFromResource("css-fix_playerpage_theming");
   }
   catch(err) {
     loggers.integration.error("Failed to fix BetterYTM player page theming:", err);

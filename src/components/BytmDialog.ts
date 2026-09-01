@@ -35,11 +35,11 @@ export type BytmDialogOptions = {
   /** Where to align or anchor the dialog vertically - defaults to "center" */
   verticalAlign?: "top" | "center" | "bottom";
   /** Called to render the body of the dialog */
-  renderBody: () => HTMLElement | Promise<HTMLElement>;
+  renderBody: (dialog: BytmDialog) => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
-  renderHeader?: () => HTMLElement | Promise<HTMLElement>;
+  renderHeader?: (dialog: BytmDialog) => HTMLElement | Promise<HTMLElement>;
   /** Called to render the footer of the dialog - leave undefined for no footer */
-  renderFooter?: () => HTMLElement | Promise<HTMLElement>;
+  renderFooter?: (dialog: BytmDialog) => HTMLElement | Promise<HTMLElement>;
 };
 
 export interface BytmDialogEvents extends EventsMap {
@@ -375,8 +375,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
   /** Returns the dialog content element and all its children */
   protected async getDialogContent() {
-    const header = this.options.renderHeader?.();
-    const footer = this.options.renderFooter?.();
+    const header = this.options.renderHeader?.(this);
+    const footer = this.options.renderFooter?.(this);
 
     const dialogWrapperEl = document.createElement("div");
     dialogWrapperEl.id = `bytm-${this.id}-dialog`;
@@ -434,7 +434,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBodyElem.classList.add("bytm-dialog-body");
     this.options.small && dialogBodyElem.classList.add("small");
 
-    dialogBodyElem.appendChild(await this.options.renderBody());
+    dialogBodyElem.appendChild(await this.options.renderBody(this));
     dialogWrapperEl.appendChild(dialogBodyElem);
 
     //#region >footer

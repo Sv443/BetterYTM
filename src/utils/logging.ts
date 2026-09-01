@@ -123,18 +123,23 @@ export function getErrorDialog(errName: string, args: unknown[]) {
 
       return header;
     },
-    renderFooter() {
+    renderFooter(dlg) {
       const footer = document.createElement("div");
       footer.classList.add("bytm-dialog-footer", "align-right");
 
       const dlLogsBtn = document.createElement("button");
-      dlLogsBtn.type = "button";
       dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
       onInteraction(dlLogsBtn, () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, Logger.serializeLogs(), "text/plain");
       });
 
+      const closeBtn = document.createElement("button");
+      closeBtn.textContent = t("close");
+      closeBtn.ariaLabel = t("close_menu_tooltip");
+      onInteraction(closeBtn, () => dlg.close());
+
       footer.appendChild(dlLogsBtn);
+      footer.appendChild(closeBtn);
       return footer;
     },
     body: `\

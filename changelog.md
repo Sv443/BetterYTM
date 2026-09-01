@@ -36,6 +36,7 @@
   - All DataStore instances that have in-memory cached data will now be lazy-loaded after feature initialization is done. Note: lazy-loading starts after `bytm:allReady`, so it's more aimed at lowering initial data access times.
   - Features can now have tags associated with them, which is another way of filtering them, like when using the new internal functions `configSetFeatsWithTags()` and `getFeaturesWithTags()`.
   - Updated the dependencies CoreUtils to v3.8.0 and UserUtils to v11.0.0
+  - The `BytmDialog` and `MarkdownDialog` render functions now receive the dialog instance as the sole parameter.
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">Also see pull request #TODO</a>

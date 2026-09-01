@@ -242,7 +242,7 @@ function buildHeader(args: HeaderArgs): string {
   const greasyForkDisclaimer = `
 /*
   Note: The Greasy Fork version has to fit within a size limit of 500kB, so comments had to be removed.
-  If you want install the full, unmodified version, please use one of these sources instead:
+  If you want to install the full version, please use one of these sources instead:
     - GitHub: ${pkg.hosts.github}
     - OpenUserJS: ${pkg.hosts.openuserjs}
 */
