@@ -205,11 +205,14 @@ export class Logger {
       const longestCategory = Math.max(...Object.values(loggerCategoryMapping).map((v) => v.length));
       const categoryTag = `[${category}]`.padEnd(longestCategory + 2, " ");
 
+      const hasLogLvl = Object.values(LogLevel).filter(v => typeof v === "number").includes(args.at(-1) as number);
+      const filteredArgs = hasLogLvl ? args.slice(0, args.length - 1) : args;
+
       try {
-        return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map(a => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
+        return `[${timestamp}] ${typeTag} ${categoryTag} ${filteredArgs.map(a => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
       }
       catch {
-        return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
+        return `[${timestamp}] ${typeTag} ${categoryTag} ${filteredArgs.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
       }
     }, "");
   }
