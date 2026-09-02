@@ -67,7 +67,7 @@ const adornments = {
 } as const satisfies Record<string, AdornFunc>;
 
 /** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
-const adornmentOrder = new Map<AdornFunc, number>([
+const adornOrder = new Map<AdornFunc, number>([
   [adornments.alert, 0],
   [adornments.experimental, 1],
   [adornments.ytmOnly, 2],
@@ -115,8 +115,8 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
     resolvedAdorns.push(adornments.newFeature);
 
   const sortedAdorns = resolvedAdorns.sort((a, b) => {
-    const aIdx = adornmentOrder.has(a) ? adornmentOrder.get(a)! : 0;
-    const bIdx = adornmentOrder.has(b) ? adornmentOrder.get(b)! : 0;
+    const aIdx = adornOrder.has(a) ? adornOrder.get(a)! : 0;
+    const bIdx = adornOrder.has(b) ? adornOrder.get(b)! : 0;
     return aIdx - bIdx;
   });
 
@@ -281,6 +281,17 @@ export const featInfo = {
     step: 5,
     unit: "ms",
     advanced: true,
+    adornments: [adornments.advanced, adornments.reload],
+  },
+  verboseObservers: {
+    type: "toggle",
+    category: "general",
+    group: "bytmInternal",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: false,
+    advanced: true,
+    reloadRequired: true,
     adornments: [adornments.advanced, adornments.reload],
   },
   globalAlertMode: {

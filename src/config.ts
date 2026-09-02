@@ -293,6 +293,7 @@ export const cfgMigrations: DataMigrationsDict = {
       "defaultObserverDebounce",
       "globalAlertMode",
       "openWelcomeMenu",
+      "verboseObservers",
     ]);
   },
 } as const satisfies DataMigrationsDict;

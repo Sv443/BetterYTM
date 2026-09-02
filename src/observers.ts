@@ -1,9 +1,10 @@
 import { clamp, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/interface.ts";
 import { getDomain } from "@util/misc.ts";
 import { getSelector } from "@util/data.ts";
 import { loggers } from "@util/logging.ts";
-import type { Domain, FeatureConfig } from "@/types.ts";
+import { LogLevel, type Domain, type FeatureConfig } from "@/types.ts";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
 // !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`.
@@ -377,6 +378,17 @@ export function initObservers(cfg: FeatureConfig) {
     }
 
     //#region finalize
+
+    if(getFeature("verboseObservers")) {
+      for(const obs of Object.values(globservers)) {
+        obs.on("checked", () => {
+          loggers.debug.log("SelectorObserver with base element", obs.baseElement, "is checking for elements.", LogLevel.Info);
+        });
+        obs.on("found", (data) => {
+          loggers.debug.info("SelectorObserver with base element", obs.baseElement, "found element(s):", data, LogLevel.Info);
+        });
+      }
+    }
 
     globserversReady = true;
     emitInterface("bytm:observersReady");

@@ -554,6 +554,8 @@
   "feature_helptext.initTimeout": "This will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
   "feature_desc.defaultObserverDebounce": "The default debounce time for document mutations in milliseconds",
   "feature_helptext.defaultObserverDebounce": "This time dictates how often the script is able to check for changes in the page's structure, and how quickly it can react to them.\nSetting it to a lower value can make the script react faster, but will also increase CPU usage.\nIf the site is feeling slow or laggy, try increasing this value.",
+  "feature_desc.verboseObservers": "Log to the console whenever a document observer checks for and finds elements",
+  "feature_helptext.verboseObservers": "This setting should only be enabled to debug the performance of BetterYTM features, as it will pollute the console a lot.",
   "feature_desc.globalAlertMode": "When to show global alert dialogs for important notifications",
   "feature_helptext.globalAlertMode": "Global alert dialogs are modal dialogs that appear in the center of the screen and block interaction with the rest of the page until dismissed. They are used for important notifications that require immediate attention, such as critical security vulnerabilities or important updates.\nWith this option you can choose when to show these global alert dialogs.",
   "feature_desc.openWelcomeMenu": "Open the welcome menu",

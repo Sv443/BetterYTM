@@ -834,6 +834,8 @@ export interface FeatureConfig {
   initTimeout: number;
   /** Time in milliseconds between SelectorObserver checks - lower number = faster reaction to DOM changes but also more CPU usage */
   defaultObserverDebounce: number;
+  /** Whether to log whenever a SelectorObserver checks for elements and finds a selector */
+  verboseObservers: boolean;
   /** Whether to show global alert messages and which ones to show */
   globalAlertMode: "never" | "all" | "importantOnly";
   /** Button that shows the welcome menu again. */
