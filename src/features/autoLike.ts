@@ -159,12 +159,17 @@ export async function initAutoLike() {
       addStyleFromResource("css-auto_like");
 
       let timeout: ReturnType<typeof setTimeout>;
+      let listenerActive = false;
       const checkYTAutoLike = () => {
         const autoLikeTimeoutMs = (getFeature("autoLikeTimeout", 5)) * 1000;
         timeout && clearTimeout(timeout);
         if(!location.pathname.startsWith("/watch"))
           return;
         const ytTryAutoLike = () => {
+          if(listenerActive)
+            return;
+          listenerActive = true;
+
           addSelectorListener<HTMLAnchorElement, "yt">("ytWatchMetadata", getSelector("watchPage", "channelName"), {
             listener(chanElem) {
               const chanElemId = chanElem.hasAttribute("href")
@@ -172,11 +177,14 @@ export async function initAutoLike() {
                 : getCurrentChannelId();
 
               const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
-              if(!likeChan || !likeChan.enabled)
+              if(!likeChan || !likeChan.enabled) {
+                listenerActive = false;
                 return;
+              }
 
               addSelectorListener<0, "yt">("ytWatchMetadata", getSelector("watchPage", "likeBtn"), {
                 listener(likeBtn) {
+                  listenerActive = false;
                   if(likeBtn.getAttribute("aria-pressed") !== "true") {
                     likeBtn.click();
                     getFeature("autoLikeShowToast") && showIconToast({

@@ -91,7 +91,7 @@ export function addSelectorListener<
 }
 
 /** Returns a proxy function that enables and bootstraps the SelectorObserver instance. */
-function getEnableFn(observerName: ObserverName): () => void {
+function getEnableObsFn(observerName: ObserverName): () => void {
   return () => {
     const observer = globservers[observerName];
     observer.enable();
@@ -155,7 +155,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(browseResponseSelector, {
-        listener: getEnableFn("browseResponse"),
+        listener: getEnableObsFn("browseResponse"),
       });
 
       //#region searchPage
@@ -168,7 +168,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(searchPageSelector, {
-        listener: getEnableFn("searchPage"),
+        listener: getEnableObsFn("searchPage"),
       });
 
       //#region navBar
@@ -181,7 +181,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(navBarSelector, {
-        listener: getEnableFn("navBar"),
+        listener: getEnableObsFn("navBar"),
       });
 
       //#region mainPanel
@@ -194,7 +194,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(mainPanelSelector, {
-        listener: getEnableFn("mainPanel"),
+        listener: getEnableObsFn("mainPanel"),
       });
 
       //#region sideBar
@@ -209,7 +209,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(sidebarSelector, {
-        listener: getEnableFn("sideBar"),
+        listener: getEnableObsFn("sideBar"),
       });
 
       //#region sidePanel
@@ -222,7 +222,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(sidePanelSelector, {
-        listener: getEnableFn("sidePanel"),
+        listener: getEnableObsFn("sidePanel"),
       });
 
       //#region playerBar
@@ -250,7 +250,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.playerBar.addListener(playerBarInfoSelector, {
-        listener: getEnableFn("playerBarInfo"),
+        listener: getEnableObsFn("playerBarInfo"),
       });
 
       //#region playerBarMiddleButtons
@@ -263,7 +263,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
-        listener: getEnableFn("playerBarMiddleButtons"),
+        listener: getEnableObsFn("playerBarMiddleButtons"),
       });
 
       //#region playerBarRightControls
@@ -276,7 +276,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.playerBar.addListener(playerBarRightControls, {
-        listener: getEnableFn("playerBarRightControls"),
+        listener: getEnableObsFn("playerBarRightControls"),
       });
 
       //#region popupContainer
@@ -289,7 +289,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(popupContainerSelector, {
-        listener: getEnableFn("popupContainer"),
+        listener: getEnableObsFn("popupContainer"),
       });
 
       break;
@@ -307,7 +307,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(ytGuideSelector, {
-        listener: getEnableFn("ytGuide"),
+        listener: getEnableObsFn("ytGuide"),
       });
 
       //#region ytdBrowse
@@ -320,7 +320,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(ytdBrowseSelector, {
-        listener: getEnableFn("ytdBrowse"),
+        listener: getEnableObsFn("ytdBrowse"),
       });
 
       //#region ytAppHeader
@@ -334,7 +334,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
-        listener: getEnableFn("ytAppHeader"),
+        listener: getEnableObsFn("ytAppHeader"),
       });
 
       //#region ytWatchFlexy
@@ -348,7 +348,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(ytWatchFlexySelector, {
-        listener: getEnableFn("ytWatchFlexy"),
+        listener: getEnableObsFn("ytWatchFlexy"),
       });
 
       //#region ytWatchMetadata
@@ -361,7 +361,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, {
-        listener: getEnableFn("ytWatchMetadata"),
+        listener: getEnableObsFn("ytWatchMetadata"),
       });
 
       //#region ytMasthead
@@ -374,7 +374,7 @@ export function initObservers(cfg: FeatureConfig) {
       });
 
       globservers.body.addListener(mastheadSelector, {
-        listener: getEnableFn("ytMasthead"),
+        listener: getEnableObsFn("ytMasthead"),
       });
     }
     }
@@ -391,7 +391,8 @@ export function initObservers(cfg: FeatureConfig) {
           loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
         });
         obs.on("found", (data) => {
-          loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, data, LogLevel.Info);
+          const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)).join(", ") : data.elements;
+          loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, elements, LogLevel.Info);
         });
       }
     }
