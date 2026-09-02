@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e960051f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b23af23f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 02 Sep 2026 22:33:26 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 02 Sep 2026 23:52:19 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ e960051f                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ b23af23f                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ kF77kJ29SKZO                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ T1hoSe9dEET0                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -541,9 +541,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "e960051f";
+	var buildNumber$1 = "b23af23f";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788388406281;
+	var buildTimestamp = 1788393139061;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -1143,7 +1143,7 @@
 		}
 	}
 	/** Returns a proxy function that enables and bootstraps the SelectorObserver instance. */
-	function getEnableFn(observerName) {
+	function getEnableObsFn(observerName) {
 		return () => {
 			const observer = globservers[observerName];
 			observer.enable();
@@ -1181,25 +1181,25 @@
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
-					globservers.body.addListener(browseResponseSelector, { listener: getEnableFn("browseResponse") });
+					globservers.body.addListener(browseResponseSelector, { listener: getEnableObsFn("browseResponse") });
 					const searchPageSelector = getSelector("observer", "searchPage");
 					globservers.searchPage = new _sv443_network_userutils.SelectorObserver(searchPageSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(searchPageSelector, { listener: getEnableFn("searchPage") });
+					globservers.body.addListener(searchPageSelector, { listener: getEnableObsFn("searchPage") });
 					const navBarSelector = getSelector("observer", "navBar");
 					globservers.navBar = new _sv443_network_userutils.SelectorObserver(navBarSelector, {
 						...defaultObserverOptions,
 						subtree: false
 					});
-					globservers.body.addListener(navBarSelector, { listener: getEnableFn("navBar") });
+					globservers.body.addListener(navBarSelector, { listener: getEnableObsFn("navBar") });
 					const mainPanelSelector = getSelector("observer", "mainPanel");
 					globservers.mainPanel = new _sv443_network_userutils.SelectorObserver(mainPanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(mainPanelSelector, { listener: getEnableFn("mainPanel") });
+					globservers.body.addListener(mainPanelSelector, { listener: getEnableObsFn("mainPanel") });
 					const sidebarSelector = getSelector("observer", "sideBar");
 					globservers.sideBar = new _sv443_network_userutils.SelectorObserver(sidebarSelector, {
 						...defaultObserverOptions,
@@ -1207,13 +1207,13 @@
 						childList: true,
 						subtree: true
 					});
-					globservers.body.addListener(sidebarSelector, { listener: getEnableFn("sideBar") });
+					globservers.body.addListener(sidebarSelector, { listener: getEnableObsFn("sideBar") });
 					const sidePanelSelector = getSelector("observer", "sidePanel");
 					globservers.sidePanel = new _sv443_network_userutils.SelectorObserver(sidePanelSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(sidePanelSelector, { listener: getEnableFn("sidePanel") });
+					globservers.body.addListener(sidePanelSelector, { listener: getEnableObsFn("sidePanel") });
 					const playerBarSelector = getSelector("observer", "playerBar");
 					globservers.playerBar = new _sv443_network_userutils.SelectorObserver(playerBarSelector, { ...defaultObserverOptions });
 					globservers.body.addListener(playerBarSelector, { listener: () => {
@@ -1225,25 +1225,25 @@
 						attributes: true,
 						attributeFilter: ["title"]
 					});
-					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableFn("playerBarInfo") });
+					globservers.playerBar.addListener(playerBarInfoSelector, { listener: getEnableObsFn("playerBarInfo") });
 					const playerBarMiddleButtonsSelector = getSelector("observer", "playerBarMiddleButtons");
 					globservers.playerBarMiddleButtons = new _sv443_network_userutils.SelectorObserver(playerBarMiddleButtonsSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableFn("playerBarMiddleButtons") });
+					globservers.playerBar.addListener(playerBarMiddleButtonsSelector, { listener: getEnableObsFn("playerBarMiddleButtons") });
 					const playerBarRightControls = getSelector("observer", "playerBarRightControls");
 					globservers.playerBarRightControls = new _sv443_network_userutils.SelectorObserver(playerBarRightControls, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableFn("playerBarRightControls") });
+					globservers.playerBar.addListener(playerBarRightControls, { listener: getEnableObsFn("playerBarRightControls") });
 					const popupContainerSelector = getSelector("observer", "popupContainer");
 					globservers.popupContainer = new _sv443_network_userutils.SelectorObserver(popupContainerSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(popupContainerSelector, { listener: getEnableFn("popupContainer") });
+					globservers.body.addListener(popupContainerSelector, { listener: getEnableObsFn("popupContainer") });
 					break;
 				}
 				case "yt": {
@@ -1252,39 +1252,39 @@
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(ytGuideSelector, { listener: getEnableFn("ytGuide") });
+					globservers.body.addListener(ytGuideSelector, { listener: getEnableObsFn("ytGuide") });
 					const ytdBrowseSelector = getSelector("observer", "ytdBrowse");
 					globservers.ytdBrowse = new _sv443_network_userutils.SelectorObserver(ytdBrowseSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableFn("ytdBrowse") });
+					globservers.body.addListener(ytdBrowseSelector, { listener: getEnableObsFn("ytdBrowse") });
 					const ytAppHeaderSelector = getSelector("observer", "ytAppHeader");
 					globservers.ytAppHeader = new _sv443_network_userutils.SelectorObserver(ytAppHeaderSelector, {
 						...defaultObserverOptions,
 						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
 						subtree: true
 					});
-					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableFn("ytAppHeader") });
+					globservers.ytdBrowse.addListener(ytAppHeaderSelector, { listener: getEnableObsFn("ytAppHeader") });
 					const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
 					globservers.ytWatchFlexy = new _sv443_network_userutils.SelectorObserver(ytWatchFlexySelector, {
 						...defaultObserverOptions,
 						defaultDebounce: (0, _sv443_network_userutils.clamp)(Math.floor(defaultObserverOptions.defaultDebounce * 3), 100, 300),
 						subtree: true
 					});
-					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableFn("ytWatchFlexy") });
+					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableObsFn("ytWatchFlexy") });
 					const ytWatchMetadataSelector = getSelector("observer", "ytWatchMetadata");
 					globservers.ytWatchMetadata = new _sv443_network_userutils.SelectorObserver(ytWatchMetadataSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableFn("ytWatchMetadata") });
+					globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, { listener: getEnableObsFn("ytWatchMetadata") });
 					const mastheadSelector = getSelector("observer", "ytMasthead");
 					globservers.ytMasthead = new _sv443_network_userutils.SelectorObserver(mastheadSelector, {
 						...defaultObserverOptions,
 						subtree: true
 					});
-					globservers.body.addListener(mastheadSelector, { listener: getEnableFn("ytMasthead") });
+					globservers.body.addListener(mastheadSelector, { listener: getEnableObsFn("ytMasthead") });
 				}
 			}
 			if (getFeature("verboseObservers")) for (const [name, obs] of Object.entries(globservers)) {
@@ -1293,7 +1293,8 @@
 					loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
 				});
 				obs.on("found", (data) => {
-					loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, data, LogLevel.Info);
+					const elements = data.elements instanceof NodeList ? [...data.elements].map((e) => Logger.serializeElement(e)).join(", ") : data.elements;
+					loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, elements, LogLevel.Info);
 				});
 			}
 			globserversReady = true;
@@ -2348,16 +2349,23 @@
 			} else if (getDomain() === "yt") {
 				addStyleFromResource("css-auto_like");
 				let timeout;
+				let listenerActive = false;
 				const checkYTAutoLike = () => {
 					const autoLikeTimeoutMs = getFeature("autoLikeTimeout", 5) * 1e3;
 					timeout && clearTimeout(timeout);
 					if (!location.pathname.startsWith("/watch")) return;
 					const ytTryAutoLike = () => {
+						if (listenerActive) return;
+						listenerActive = true;
 						addSelectorListener("ytWatchMetadata", getSelector("watchPage", "channelName"), { listener(chanElem) {
 							const chanElemId = chanElem.hasAttribute("href") ? chanElem.href.split("/").pop()?.split("/")[0] ?? null : getCurrentChannelId();
 							const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
-							if (!likeChan || !likeChan.enabled) return;
+							if (!likeChan || !likeChan.enabled) {
+								listenerActive = false;
+								return;
+							}
 							addSelectorListener("ytWatchMetadata", getSelector("watchPage", "likeBtn"), { listener(likeBtn) {
+								listenerActive = false;
 								if (likeBtn.getAttribute("aria-pressed") !== "true") {
 									likeBtn.click();
 									getFeature("autoLikeShowToast") && showIconToast({
@@ -11536,7 +11544,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "e960051f",
+				buildNumber: "b23af23f",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
