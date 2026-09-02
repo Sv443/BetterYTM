@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@6e8f145e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e960051f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 30 Aug 2026 20:24:15 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 02 Sep 2026 22:33:27 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 6e8f145e                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ e960051f                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 96ULdpGLii4b                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ A7QD4bzwKDcs                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6848,9 +6848,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "6e8f145e";
+	var buildNumber$1 = "e960051f";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788121455977;
+	var buildTimestamp = 1788388407430;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -8702,8 +8702,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		}
 		/** Returns the dialog content element and all its children */
 		async getDialogContent() {
-			const header = this.options.renderHeader?.();
-			const footer = this.options.renderFooter?.();
+			const header = this.options.renderHeader?.(this);
+			const footer = this.options.renderFooter?.(this);
 			const dialogWrapperEl = document.createElement("div");
 			dialogWrapperEl.id = `bytm-${this.id}-dialog`;
 			dialogWrapperEl.classList.add("bytm-dialog");
@@ -8745,7 +8745,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
 			dialogBodyElem.classList.add("bytm-dialog-body");
 			this.options.small && dialogBodyElem.classList.add("small");
-			dialogBodyElem.appendChild(await this.options.renderBody());
+			dialogBodyElem.appendChild(await this.options.renderBody(this));
 			dialogWrapperEl.appendChild(dialogBodyElem);
 			if (footer) {
 				const footerWrapper = document.createElement("div");
@@ -8768,6 +8768,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		command: "Command",
 		configMenu: "ConfigMenu",
 		data: "Data",
+		debug: "Debug",
 		dialog: "Dialog",
 		feature: "Feature",
 		hotkey: "Hotkey",
@@ -8839,10 +8840,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			if (typeof val === "undefined") return primaryScope ? "[undefined]" : "(undefined)";
 			if (val === null) return primaryScope ? "[null]" : "(null)";
 			if (Array.isArray(val)) return `[Array (${val.length}) <${val.map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
-			if (val instanceof Element) {
-				const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement.childNodes].findIndex((el) => el === val);
-				return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
-			}
+			if (val instanceof Element) return Logger.serializeElement(val);
 			if (typeof val === "function") return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
 			if (val instanceof DatedError$1) return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
 			if (val instanceof Error) return `[${val.name}: ${val.message}]`;
@@ -8880,12 +8878,18 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				const typeTag = `[${type}]`.padEnd(longestLogType + 2, " ");
 				const longestCategory = Math.max(...Object.values(loggerCategoryMapping).map((v) => v.length));
 				const categoryTag = `[${category}]`.padEnd(longestCategory + 2, " ");
+				const filteredArgs = Object.values(LogLevel).filter((v) => typeof v === "number").includes(args.at(-1)) ? args.slice(0, args.length - 1) : args;
 				try {
-					return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map((a) => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
+					return `[${timestamp}] ${typeTag} ${categoryTag} ${filteredArgs.map((a) => Logger.serializeLogVal(a)).join(" ")}\n${acc}`;
 				} catch {
-					return `[${timestamp}] ${typeTag} ${categoryTag} ${args.map((a) => typeof a === "object" && a && "toString" in a ? a.toString() : String(a)).join(" ")}\n${acc}`;
+					return `[${timestamp}] ${typeTag} ${categoryTag} ${filteredArgs.map((a) => typeof a === "object" && a && "toString" in a ? a.toString() : String(a)).join(" ")}\n${acc}`;
 				}
 			}, "");
+		}
+		/** Serializes an element in a way where it can actually be traced back on the page. */
+		static serializeElement(val) {
+			const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement.childNodes].findIndex((el) => el === val);
+			return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
 		}
 		/**
 		* Logs all passed values to the console, as long as the log level is sufficient.  
@@ -9082,6 +9086,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
 					globservers.ytWatchFlexy = new SelectorObserver(ytWatchFlexySelector, {
 						...defaultObserverOptions,
+						defaultDebounce: clamp(Math.floor(defaultObserverOptions.defaultDebounce * 3), 100, 300),
 						subtree: true
 					});
 					globservers.body.addListener(ytWatchFlexySelector, { listener: getEnableFn("ytWatchFlexy") });
@@ -9098,6 +9103,15 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					});
 					globservers.body.addListener(mastheadSelector, { listener: getEnableFn("ytMasthead") });
 				}
+			}
+			if (getFeature("verboseObservers")) for (const [name, obs] of Object.entries(globservers)) {
+				const baseElem = typeof obs.baseElement === "string" ? `'${obs.baseElement}'` : Logger.serializeElement(obs.baseElement);
+				obs.on("checked", () => {
+					loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
+				});
+				obs.on("found", (data) => {
+					loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, data, LogLevel.Info);
+				});
 			}
 			globserversReady = true;
 			emitInterface("bytm:observersReady");
@@ -9289,7 +9303,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	//#endregion
 	//#region src/dialogs/prompt.ts
 	var promptDialog = null;
-	var promptDialogId = "prompt-dialog";
+	var promptDialogId = "prompt";
 	/**
 	* This is a custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions.  
 	* It supports various customizations - see {@linkcode showPrompt()} for details.
@@ -9303,7 +9317,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				height: 400,
 				destroyOnClose: true,
 				closeBtnEnabled: true,
-				closeOnBgClick: props.type !== "prompt",
+				closeOnBgClick: true,
 				closeOnEscPress: true,
 				small: true,
 				...props.dialogOptions,
@@ -9312,7 +9326,10 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				renderFooter: () => this.renderFooter(props)
 			});
 			this.type = props.type;
-			this.on("render", () => this.focusOnRender());
+			const unsub = this.on("render", () => {
+				if (this.options.destroyOnClose) unsub();
+				setTimeout(() => this.focusOnRender(), 25);
+			});
 		}
 		/** Emits the "resolve" event with the specified value. Should be called every time the dialog is about to be closed. */
 		emitResolve(val) {
@@ -10148,13 +10165,13 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			} else if (getDomain() === "yt") {
 				addStyleFromResource("css-auto_like");
 				let timeout;
-				siteEvents.on("watchIdChanged", () => {
+				const checkYTAutoLike = () => {
 					const autoLikeTimeoutMs = getFeature("autoLikeTimeout", 5) * 1e3;
 					timeout && clearTimeout(timeout);
 					if (!location.pathname.startsWith("/watch")) return;
 					const ytTryAutoLike = () => {
 						addSelectorListener("ytWatchMetadata", getSelector("watchPage", "channelName"), { listener(chanElem) {
-							const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
+							const chanElemId = chanElem.hasAttribute("href") ? chanElem.href.split("/").pop()?.split("/")[0] ?? null : getCurrentChannelId();
 							const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
 							if (!likeChan || !likeChan.enabled) return;
 							addSelectorListener("ytWatchMetadata", getSelector("watchPage", "likeBtn"), { listener(likeBtn) {
@@ -10173,7 +10190,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					};
 					siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
 					timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
-				});
+				};
+				if (location.pathname.startsWith("/watch")) checkYTAutoLike();
+				siteEvents.on("watchIdChanged", () => checkYTAutoLike());
 				const tryAddBtnYT = () => {
 					if (location.pathname.match(/(\/?@|\/?channel\/)\S+/)) {
 						const chanId = getCurrentChannelId();
@@ -14742,7 +14761,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Fixes the z-index of the SponsorBlock panel */
 	async function fixSponsorBlock() {
 		try {
-			return addStyleFromResource("css-fix_sponsorblock");
+			return await addStyleFromResource("css-fix_sponsorblock");
 		} catch (err) {
 			loggers.integration.error("Failed to fix SponsorBlock styling:", err);
 		}
@@ -14750,7 +14769,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Adjust the BetterYTM styles if ThemeSong is ***not*** used */
 	async function fixPlayerPageTheming() {
 		try {
-			return addStyleFromResource("css-fix_playerpage_theming");
+			return await addStyleFromResource("css-fix_playerpage_theming");
 		} catch (err) {
 			loggers.integration.error("Failed to fix BetterYTM player page theming:", err);
 		}
@@ -15080,7 +15099,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		privacy: async () => await getAdornHtml("bytm-privacy-icon", t("feature_is_privacy_sensitive"), "icon-shield_info", void 0, t("feature_is_privacy_sensitive"))
 	};
 	/** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
-	var adornmentOrder = new Map([
+	var adornOrder = new Map([
 		[adornments.alert, 0],
 		[adornments.experimental, 1],
 		[adornments.ytmOnly, 2],
@@ -15117,7 +15136,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const resolvedAdorns = adorns ? [...adorns] : [];
 		if (feat.since && compare(feat.since, scriptInfo$1.version, isDev ? ">" : ">=") && (getVersionSessionCount() < 20 || isDev)) resolvedAdorns.push(adornments.newFeature);
 		const sortedAdorns = resolvedAdorns.sort((a, b) => {
-			return (adornmentOrder.has(a) ? adornmentOrder.get(a) : 0) - (adornmentOrder.has(b) ? adornmentOrder.get(b) : 0);
+			return (adornOrder.has(a) ? adornOrder.get(a) : 0) - (adornOrder.has(b) ? adornOrder.get(b) : 0);
 		});
 		return (await Promise.all(sortedAdorns.map((adorn) => typeof adorn === "function" ? adorn() : adorn))).filter(Boolean);
 	}
@@ -15323,6 +15342,17 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			step: 5,
 			unit: "ms",
 			advanced: true,
+			adornments: [adornments.advanced, adornments.reload]
+		},
+		verboseObservers: {
+			type: "toggle",
+			category: "general",
+			group: "bytmInternal",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: false,
+			advanced: true,
+			reloadRequired: true,
 			adornments: [adornments.advanced, adornments.reload]
 		},
 		globalAlertMode: {
@@ -16517,10 +16547,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			supportedSites: ["ytm", "yt"],
 			since: "3.2.0",
 			default: {
-				code: "KeyO",
-				shift: true,
-				ctrl: true,
-				alt: false
+				code: "KeyQ",
+				shift: false,
+				ctrl: false,
+				alt: true
 			},
 			reloadRequired: false
 		},
@@ -17011,7 +17041,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				"lyricsSearchPromptHotkey",
 				"defaultObserverDebounce",
 				"globalAlertMode",
-				"openWelcomeMenu"
+				"openWelcomeMenu",
+				"verboseObservers"
 			]);
 		}
 	};
@@ -17670,9 +17701,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	/**
 	* Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`  
-	* Returns null if the current page is not a channel page or there was an error parsing the URL
+	* First, tries to resolve it via `ytInitialPlayerResponse` on the domain `yt`, then tries to parse the URL (only works for channel pages on both YTM and YT).  
+	* Returns `null` if the current page is not a channel page or there was an error parsing the URL.
 	*/
 	function getCurrentChannelId() {
+		const iprID = getDomain() === "yt" && "ytInitialPlayerResponse" in getUnsafeWindow$1() ? getUnsafeWindow$1().ytInitialPlayerResponse?.videoDetails.channelId : null;
+		if (iprID) return iprID;
 		return parseChannelIdFromUrl(location.href);
 	}
 	/** Returns the channel ID from a URL or null if the URL is invalid */
@@ -18212,16 +18246,20 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				header.textContent = header.ariaLabel = errName;
 				return header;
 			},
-			renderFooter() {
+			renderFooter(dlg) {
 				const footer = document.createElement("div");
 				footer.classList.add("bytm-dialog-footer", "align-right");
 				const dlLogsBtn = document.createElement("button");
-				dlLogsBtn.type = "button";
 				dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
 				onInteraction(dlLogsBtn, () => {
 					downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, Logger.serializeLogs(), "text/plain");
 				});
+				const closeBtn = document.createElement("button");
+				closeBtn.textContent = t("close");
+				closeBtn.ariaLabel = t("close_menu_tooltip");
+				onInteraction(closeBtn, () => dlg.close());
 				footer.appendChild(dlLogsBtn);
+				footer.appendChild(closeBtn);
 				return footer;
 			},
 			body: `\
@@ -18282,7 +18320,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			},
 			"watchPage": {
 				"channelName": {
-					"yt": "#owner ytd-channel-name yt-formatted-string a",
+					"yt": "/* regular: */ #owner ytd-channel-name yt-formatted-string a, /* collab vids: */ #owner ytd-video-owner-renderer yt-attributed-string a",
 					"ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
 				},
 				"votesRenderer": {
@@ -19315,7 +19353,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "6e8f145e",
+				buildNumber: "e960051f",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
