@@ -45,7 +45,7 @@
     },
     "watchPage": {
       "channelName": {
-        "yt": "#owner ytd-channel-name yt-formatted-string a",
+        "yt": "/* regular: */ #owner ytd-channel-name yt-formatted-string a, /* collab vids: */ #owner ytd-video-owner-renderer yt-attributed-string a",
         "ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
       },
       "votesRenderer": {

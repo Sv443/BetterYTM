@@ -15,6 +15,7 @@
     - `autoScrollToActiveSongMode: "never"` - replaced with `autoScrollToActiveSongEnabled`.
   - The welcome menu now allows all privacy-sensitive features to be toggled off before the script runs for the first time.
   - Made the version check feature more resilient to stop erroneous update notifications for weird versions like `5` from showing up (by [@canarado](https://github.com/canarado)).
+  - The auto-like feature now works with collab videos, although it will only work with the first channel listed in the menu opened by clicking the channel names.
 - **Fixes:**
   - Made error toasts show up again after being broken when toast queueing was overhauled.
 - **Plugin Changes:**
@@ -39,7 +40,8 @@
   - Added an advanced-mode feature that allows SelectorObserver checks and found elements to be logged to the console for performance debugging.
   - Updated the dependencies CoreUtils to v3.8.0 and UserUtils to v11.0.0
   - The `BytmDialog` and `MarkdownDialog` render functions now receive the dialog instance as the sole parameter.
-  - Changed the ID of the `BytmDialog` returned by `showPrompt()` from `prompt-dialog` to just `prompt`
+  - Changed the ID of the `BytmDialog` returned by `showPrompt()` from `prompt-dialog` to just `prompt`.
+  - Added type `YTInitialPlayerResponse` exported by `src/types.ts`, for the global YT variable `ytInitialPlayerResponse`.
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">Also see pull request #TODO</a>

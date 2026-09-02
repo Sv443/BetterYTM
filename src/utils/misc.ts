@@ -102,9 +102,17 @@ export function getWatchId() {
 
 /**
  * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`  
- * Returns null if the current page is not a channel page or there was an error parsing the URL
+ * First, tries to resolve it via `ytInitialPlayerResponse` on the domain `yt`, then tries to parse the URL (only works for channel pages on both YTM and YT).  
+ * Returns `null` if the current page is not a channel page or there was an error parsing the URL.
  */
 export function getCurrentChannelId() {
+  const iprID = getDomain() === "yt" && "ytInitialPlayerResponse" in getUnsafeWindow()
+    ? getUnsafeWindow().ytInitialPlayerResponse?.videoDetails.channelId
+    : null;
+
+  if(iprID)
+    return iprID;
+
   return parseChannelIdFromUrl(location.href);
 }
 

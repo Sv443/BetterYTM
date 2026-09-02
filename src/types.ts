@@ -315,8 +315,108 @@ declare global {
     trustedTypes?: {
       createPolicy(name: string, policy: TTPolicy): TTPolicy;
     };
+    ytInitialPlayerResponse?: YTInitialPlayerResponse;
   }
 }
+
+//#region YT/YTM
+
+/**
+ * The `ytInitialPlayerResponse` object injected into the page by YT/YTM, containing metadata and playback info about the currently loaded video.
+ * Only the properties relevant to BYTM are narrowly typed - everything else is kept broad since it's either irrelevant or too volatile to rely on (e.g. tracking params, ad config, streaming URLs).
+ */
+export type YTInitialPlayerResponse = {
+  /** Generic metadata about the request/response itself - not relevant to BYTM. */
+  responseContext?: Record<string, unknown>;
+  /** Whether and why the video can currently be played. */
+  playabilityStatus: {
+    /** Whether the video is playable and if not, why. */
+    status: LooseUnion<"OK" | "ERROR" | "LOGIN_REQUIRED" | "UNPLAYABLE" | "LIVE_STREAM_OFFLINE" | "CONTENT_CHECK_REQUIRED" | "AGE_CHECK_REQUIRED">;
+    /** Whether the video can be played in an embedded player. */
+    playableInEmbed?: boolean;
+    /** Human-readable reason for the current status, if applicable (e.g. error or age restriction message). */
+    reason?: string;
+    [key: string]: unknown;
+  };
+  /** Contains the actual video/audio stream URLs and formats - not used by BYTM, so kept broad. */
+  streamingData?: Record<string, unknown>;
+  /** URLs YT pings to report playback progress - not relevant to BYTM. */
+  playbackTracking?: Record<string, unknown>;
+  /** Caption/subtitle track info - not currently used by BYTM. */
+  captions?: Record<string, unknown>;
+  /** Core metadata about the currently loaded video. */
+  videoDetails: {
+    /** The video ID (`v` query param / last part of the URL path). */
+    videoId: string;
+    /** The video's title. */
+    title: string;
+    /** The video's duration in seconds, as a stringified number. */
+    lengthSeconds: string;
+    /** The uploader's channel ID. */
+    channelId: string;
+    /** Whether the currently signed in account is the owner of the video. */
+    isOwnerViewing?: boolean;
+    /** The video's description. */
+    shortDescription?: string;
+    isCrawlable?: boolean;
+    /** Available thumbnail resolutions for the video. */
+    thumbnail?: {
+      thumbnails: {
+        url: string;
+        width: number;
+        height: number;
+      }[];
+    };
+    /** Whether the video can be liked/disliked. */
+    allowRatings?: boolean;
+    /** The video's view count, as a stringified number. */
+    viewCount?: string;
+    /** The uploader's channel name. */
+    author: string;
+    isPrivate?: boolean;
+    isUnpluggedCorpus?: boolean;
+    /** Whether the video is a currently active livestream. */
+    isLiveContent: boolean;
+    isTvfilmVideo?: boolean;
+    [key: string]: unknown;
+  };
+  /** Player configuration (playback rates, audio/DASH config, etc.) - not relevant to BYTM. */
+  playerConfig?: Record<string, unknown>;
+  /** Video preview storyboard (scrubbing thumbnails) info - not currently used by BYTM. */
+  storyboards?: Record<string, unknown>;
+  /** SEO-oriented metadata about the video, largely overlapping with {@linkcode videoDetails} but with some extra fields. */
+  microformat?: {
+    playerMicroformatRenderer: {
+      /** ISO 8601 timestamp of when the video was published/made public. */
+      publishDate: string;
+      /** The uploader's channel name. */
+      ownerChannelName: string;
+      /** ISO 8601 timestamp of when the video was uploaded. */
+      uploadDate: string;
+      /** The video ID (same as {@linkcode videoDetails}`.videoId`). */
+      externalVideoId: string;
+      /** The uploader's channel ID (same as {@linkcode videoDetails}`.channelId`). */
+      externalChannelId: string;
+      /** The video's duration in seconds, as a stringified number. */
+      lengthSeconds: string;
+      /** The video's like count, as a stringified number - dislikes are not exposed here. */
+      likeCount?: string;
+      /** The video's canonical, tracking-parameter-free URL. */
+      canonicalUrl?: string;
+      /** The video's category, e.g. "Gaming" or "Music". */
+      category?: string;
+      isFamilySafe?: boolean;
+      isUnlisted?: boolean;
+      [key: string]: unknown;
+    };
+  };
+  /** Legacy "info cards" data (annotations) - not relevant to BYTM. */
+  cards?: Record<string, unknown>;
+  /** Analytics tracking blob - not relevant to BYTM. */
+  trackingParams?: string;
+  frameworkUpdates?: Record<string, unknown>;
+  [key: string]: unknown;
+};
 
 //#region translations
 

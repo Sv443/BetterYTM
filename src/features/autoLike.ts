@@ -159,7 +159,7 @@ export async function initAutoLike() {
       addStyleFromResource("css-auto_like");
 
       let timeout: ReturnType<typeof setTimeout>;
-      siteEvents.on("watchIdChanged", () => {
+      const checkYTAutoLike = () => {
         const autoLikeTimeoutMs = (getFeature("autoLikeTimeout", 5)) * 1000;
         timeout && clearTimeout(timeout);
         if(!location.pathname.startsWith("/watch"))
@@ -167,7 +167,9 @@ export async function initAutoLike() {
         const ytTryAutoLike = () => {
           addSelectorListener<HTMLAnchorElement, "yt">("ytWatchMetadata", getSelector("watchPage", "channelName"), {
             listener(chanElem) {
-              const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
+              const chanElemId = chanElem.hasAttribute("href")
+                ? (chanElem.href.split("/").pop()?.split("/")[0] ?? null)
+                : getCurrentChannelId();
 
               const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
               if(!likeChan || !likeChan.enabled)
@@ -192,7 +194,11 @@ export async function initAutoLike() {
         };
         siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
         timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
-      });
+      };
+
+      if(location.pathname.startsWith("/watch"))
+        checkYTAutoLike();
+      siteEvents.on("watchIdChanged", () => checkYTAutoLike());
 
       const tryAddBtnYT = () => {
         if(location.pathname.match(/(\/?@|\/?channel\/)\S+/)) {
