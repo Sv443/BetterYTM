@@ -52,6 +52,7 @@ export const loggerCategoryMapping = {
   command: "Command",
   configMenu: "ConfigMenu",
   data: "Data",
+  debug: "Debug",
   dialog: "Dialog",
   feature: "Feature",
   hotkey: "Hotkey",
@@ -135,10 +136,8 @@ export class Logger {
       return primaryScope ? "[null]" : "(null)";
     if(Array.isArray(val))
       return `[Array (${val.length}) <${val.map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
-    if(val instanceof Element) {
-      const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement!.childNodes].findIndex((el) => el === val);
-      return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
-    }
+    if(val instanceof Element)
+      return Logger.serializeElement(val);
     if(typeof val === "function")
       return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
     if(val instanceof DatedError)
@@ -215,6 +214,14 @@ export class Logger {
         return `[${timestamp}] ${typeTag} ${categoryTag} ${filteredArgs.map(a => (typeof a === "object" && a && "toString" in a) ? a.toString() : String(a)).join(" ")}\n${acc}`;
       }
     }, "");
+  }
+
+  //#region serialize element
+
+  /** Serializes an element in a way where it can actually be traced back on the page. */
+  static serializeElement(val: Element) {
+    const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement!.childNodes].findIndex((el) => el === val);
+    return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
   }
 
   //#region instance methods

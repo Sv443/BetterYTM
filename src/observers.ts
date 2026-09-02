@@ -4,6 +4,7 @@ import { emitInterface } from "@/interface.ts";
 import { getDomain } from "@util/misc.ts";
 import { getSelector } from "@util/data.ts";
 import { loggers } from "@util/logging.ts";
+import { Logger } from "@util/Logger.ts";
 import { LogLevel, type Domain, type FeatureConfig } from "@/types.ts";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
@@ -342,6 +343,7 @@ export function initObservers(cfg: FeatureConfig) {
       const ytWatchFlexySelector = getSelector("observer", "ytWatchFlexy");
       globservers.ytWatchFlexy = new SelectorObserver(ytWatchFlexySelector, {
         ...defaultObserverOptions,
+        defaultDebounce: clamp(Math.floor(defaultObserverOptions.defaultDebounce * 3), 100, 300),
         subtree: true,
       });
 
@@ -380,12 +382,16 @@ export function initObservers(cfg: FeatureConfig) {
     //#region finalize
 
     if(getFeature("verboseObservers")) {
-      for(const obs of Object.values(globservers)) {
+      for(const [name, obs] of Object.entries(globservers)) {
+        const baseElem = typeof obs.baseElement === "string"
+          ? `'${obs.baseElement}'`
+          : Logger.serializeElement(obs.baseElement);
+
         obs.on("checked", () => {
-          loggers.debug.log("SelectorObserver with base element", obs.baseElement, "is checking for elements.", LogLevel.Info);
+          loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
         });
         obs.on("found", (data) => {
-          loggers.debug.info("SelectorObserver with base element", obs.baseElement, "found element(s):", data, LogLevel.Info);
+          loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, data, LogLevel.Info);
         });
       }
     }
