@@ -75,7 +75,7 @@ export type PromptDialogResolveVal = boolean | string | null;
 //#region PromptDialog
 
 let promptDialog: PromptDialog | null = null;
-const promptDialogId = "prompt-dialog";
+const promptDialogId = "prompt";
 
 /**
  * This is a custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions.  
@@ -90,7 +90,7 @@ export class PromptDialog extends BytmDialog {
       height: 400,
       destroyOnClose: true,
       closeBtnEnabled: true,
-      closeOnBgClick: props.type !== "prompt",
+      closeOnBgClick: true,
       closeOnEscPress: true,
       small: true,
       ...props.dialogOptions,
@@ -100,7 +100,11 @@ export class PromptDialog extends BytmDialog {
     });
     this.type = props.type;
 
-    this.on("render", () => this.focusOnRender());
+    const unsub = this.on("render", () => {
+      if(this.options.destroyOnClose)
+        unsub();
+      setTimeout(() => this.focusOnRender(), 25);
+    });
   }
 
   /** Emits the "resolve" event with the specified value. Should be called every time the dialog is about to be closed. */
