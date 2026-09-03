@@ -33,7 +33,7 @@
         "ytm": "ytmusic-app"
       },
       "video": {
-        "yt": "#player-container ytd-player video",
+        "yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
         "ytm": "ytmusic-player video"
       },
       "pageHeaderContainer_sub_ytAppHeader": {
