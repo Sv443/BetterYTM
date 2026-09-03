@@ -11,7 +11,7 @@ import { downloadFile } from "@util/dom.ts";
 import { alertsStore } from "@util/data.ts";
 import { reloadTab, resourceCacheStore } from "@util/misc.ts";
 import packageJson from "@root/package.json" with { type: "json" };
-import { emitInterface } from "@/interface.ts";
+import { emitInterface, pluginPermissionsStore } from "@/interface.ts";
 
 /** Central serializer for all data stores */
 let serializer: DataStoreSerializer | undefined;
@@ -41,6 +41,7 @@ export const getSerializerStores = () => wrapStores([
   configStore,
   autoLikeStore,
   alertsStore,
+  pluginPermissionsStore,
 ] satisfies DataStore<any, boolean>[]);
 
 /**

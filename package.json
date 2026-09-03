@@ -4,6 +4,7 @@
   "version": "3.1.0",
   "description": "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
   "license": "AGPL-3.0-or-later",
+  "licenseUrl": "https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "namespace": "https://github.com/Sv443/BetterYTM",
   "pluginDiscoveryUrl": "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",

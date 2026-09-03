@@ -284,13 +284,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### registerPlugin()
 > Signature:
 > ```ts
-> unsafeWindow.BYTM.registerPlugin(pluginDef: PluginDef): PluginRegisterResult
+> registerPlugin(pluginDef: PluginDef): PluginRegisterResult
+> // (only passed as an event listener parameter)
 > ```
 >   
 > Description:  
 > Registers a plugin with BetterYTM with the given plugin definition object.  
-> The function will be passed as an argument with the window events [`bytm:preInitPlugin`](./docs/api.md#bytm-preinitplugin) and [`bytm:registerPlugin`](./docs/api.md#bytm-registerplugin), but you can also call it manually.  
-> Note that it is time sensitive though, so registration should occur synchronously as soon as those events are emitted.  
+> The function will be passed as an argument with the window events [`bytm:preInitPlugin`](./docs/api.md#bytm-preinitplugin) and [`bytm:registerPlugin`](./docs/api.md#bytm-registerplugin),.  
+> Note that calling it is time sensitive, so registration should occur synchronously as soon as those events are emitted.  
 >   
 > Arguments:  
 > - `pluginDef` - The properties of this plugin definition object can be found by searching for `type PluginDef` in the file [`src/types.ts`](./src/types.ts)  

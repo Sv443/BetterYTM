@@ -16,7 +16,7 @@ let welcomeDialog: BytmDialog | null = null;
 
 // #region getWelcomeDialog
 
-/** Creates and/or returns the import dialog */
+/** Creates and/or returns the welcome dialog */
 export async function getWelcomeDialog() {
   if(!welcomeDialog) {
     welcomeDialog = new BytmDialog({

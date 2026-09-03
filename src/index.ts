@@ -8,7 +8,7 @@ import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initStaticData } from "@util/data.js";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
-import { devPluginToken, emitInterface, preInitInterface, initPlugins, preInitPlugins } from "@/interface.ts";
+import { devPluginToken, emitInterface, preInitInterface, initPlugins, preInitPlugins, type registerPlugin } from "@/interface.ts";
 import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
 import { downloadData, getDSSerializer } from "@/serializers.ts";
 import { getWelcomeDialog } from "@dialog/welcome.ts";
@@ -53,7 +53,8 @@ import {
 import localesJson from "@asset/locales.json" with { type: "json" };
 import resourcesJson from "@asset/resources.json" with { type: "json" };
 import packageJson from "@root/package.json" with { type: "json" };
-import { LogLevel, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type ResourceKey } from "@/types.ts";
+import { LogLevel, PluginIntent, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type PluginDef, type ResourceKey } from "@/types.ts";
+import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.js";
 
 //#region cns. watermark
 
@@ -160,6 +161,8 @@ function preInit() {
 
     preInitInterface();
     preInitPlugins();
+
+    initPermTestPlugin();
 
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
@@ -947,8 +950,48 @@ async function runDevTreatments() {
   if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
     return;
 
-  // const dlg = await getAllDataExImDialog();
-  // await dlg.open();
+  loggers.init.log("Running dev treatments.");
+}
+
+// TODO:#DEBUG#
+function initPermTestPlugin() {
+  const permTestDef = {
+    plugin: {
+      name: "PERMISSION TEST",
+      namespace: packageJson.namespace,
+      version: packageJson.version,
+      license: {
+        name: packageJson.license,
+        url: packageJson.licenseUrl
+      },
+      description: {
+        "en-US": "Dev plugin for testing plugin permissions.",
+      },
+      homepage: {
+        source: packageJson.homepage,
+      },
+    },
+    intents: [
+      PluginIntent.ReadFeatureConfig,
+      PluginIntent.WriteFeatureConfig,
+      PluginIntent.SeeHiddenConfigValues,
+      PluginIntent.CreateModalDialogs,
+      PluginIntent.WriteTranslations,
+    ],
+  } as const satisfies PluginDef;
+
+  // @ts-expect-error
+  getUnsafeWindow().addEventListener("bytm:registerPlugin", async ({ detail: register }: CustomEvent) => {
+    if(typeof register === "function") {
+      const result = (register as typeof registerPlugin)(permTestDef);
+      loggers.debug.log(">> Plugin permission test result:", result);
+
+      getUnsafeWindow().addEventListener("bytm:allReady", async () => {
+        const dlg = await getPluginPermissionsDialog(permTestDef);
+        await dlg.open();
+      });
+    }
+  });
 }
 
 preInit();

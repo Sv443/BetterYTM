@@ -298,10 +298,32 @@ export function emitInterface<
 
 //#region register plugins
 
-/** Map of plugin ID and all registered plugins */
+/**
+ * Data stored by the {@linkcode pluginPermissionsStore}.  
+ * Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
+ * At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
+ */
+type PluginPermissionsStoreData = {
+  [pluginKey: string]: [grantedPermissions: number, requestedIntents: number];
+};
+
+/**
+ * Stores information about plugins that have been registered and have had their intents granted (thus turning them into permissions).  
+ * Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
+ * At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
+ */
+export const pluginPermissionsStore = new CoreUtils.DataStore<PluginPermissionsStoreData>({
+  id: "bytm-plugin-permissions",
+  engine: new UserUtils.GMStorageEngine(),
+  defaultData: {},
+  formatVersion: 0,
+  compressionFormat: null,
+});
+
+/** Map of plugin key to all registered plugins */
 const registeredPlugins = new Map<string, PluginItem>();
 
-/** Map of plugin ID to auth token for plugins that have been registered */
+/** Map of plugin key to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map<string, string>();
 
 let pluginsInitialized = false;
@@ -327,7 +349,7 @@ export function initPlugins() {
 }
 
 /** Registers a plugin on the BYTM interface. */
-function registerPlugin(def: PluginDef): PluginRegisterResult {
+export function registerPlugin(def: PluginDef): PluginRegisterResult {
   try {
     if(pluginsInitialized)
       throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
@@ -417,12 +439,12 @@ export function getRegisteredPlugins() {
 }
 
 /** Returns the key for a given plugin definition */
-function getPluginKey(plugin: PluginDefResolvable) {
+export function getPluginKey(plugin: PluginDefResolvable) {
   return `${plugin.plugin.namespace}/${plugin.plugin.name}`;
 }
 
 /** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
-function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
+export function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
   return plugin
     ? {
       name: plugin.plugin.name,
@@ -433,7 +455,7 @@ function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
 }
 
 /** Checks whether two plugins are the same, given their resolvable definition objects */
-function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
+export function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
   return getPluginKey(def1) === getPluginKey(def2);
 }
 
@@ -553,7 +575,7 @@ export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvabl
 }
 
 /** Converts the intents from a PluginDef object into a bit set value. */
-function defToIntentsBitSet(def: PluginDef): number {
+export function defToIntentsBitSet(def: PluginDef): number {
   if(Array.isArray(def.intents))
     return def.intents.reduce((acc, intent) => acc | intent, 0);
   else if(typeof def.intents === "number")
@@ -563,7 +585,7 @@ function defToIntentsBitSet(def: PluginDef): number {
 }
 
 /** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
-function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetTSEnum): TNum[] {
+export function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetTSEnum): TNum[] {
   const result: TNum[] = [];
   for(const [, val] of Object.entries(enumRef))
     if((typeof val === "number" || typeof val === "bigint") && CoreUtils.bitSetHas(bitSet, val as TNum))
@@ -572,14 +594,14 @@ function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRe
 }
 
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
-function validatePluginDef(pluginDef: Partial<PluginDef>) {
+export function validatePluginDef(pluginDef: Partial<PluginDef>) {
   const errors = [] as string[];
 
   const addNoPropErr = (jsonPath: string, type: string) =>
-    errors.push(t("plugin_validation_error_no_property", jsonPath, type));
+    errors.push(t("plugin_validation_error.no_property", jsonPath, type));
 
   const addInvalidPropErr = (jsonPath: string, value: string, examples: string[]) =>
-    errors.push(tp("plugin_validation_error_invalid_property", examples, jsonPath, value, `'${examples.join("', '")}'`));
+    errors.push(tp("plugin_validation_error.invalid_property", examples, jsonPath, value, `'${examples.join("', '")}'`));
 
   // def.plugin and its properties:
   typeof pluginDef.plugin !== "object" && addNoPropErr("plugin", "object");

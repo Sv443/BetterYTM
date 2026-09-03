@@ -2911,4 +2911,39 @@ ytmusic-player-queue-item
   font-size: 1.2rem;
   font-weight: 400;
 }
+#bytm-plugin-perms-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+#bytm-plugin-perms-footer {
+  gap: 16px;
+}
+
+#bytm-plugin-perms-description {
+  white-space: preserve;
+}
+
+.bytm-plugin-perms-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  cursor: help;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-plugin-perms-item:hover {
+  background-color: var(--bytm-dialog-bg-highlight);
+}
+
+.bytm-plugin-perms-item-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 /*$vite$:1*/
