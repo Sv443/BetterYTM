@@ -955,7 +955,10 @@ async function runDevTreatments() {
 }
 
 // TODO:#DEBUG#
-function initPermTestPlugin() {
+async function initPermTestPlugin() {
+  if(!await GM.getValue("bytm-dev-treatments", false))
+    return;
+
   const permTestDef = {
     plugin: {
       name: "PERMISSION TEST",

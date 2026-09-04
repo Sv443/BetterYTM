@@ -279,7 +279,7 @@
   "plugin_list.dev_plugin_note": "The dev plugin always has full access.",
 
   "plugin_permissions_dialog.title": "Plugin Permissions",
-  "plugin_permissions_dialog.description": "The plugin '${pluginName}' is asking for all permissions listed below. Note that turning some of these permissions off could cause the plugin to stop working.",
+  "plugin_permissions_dialog.description": "The plugin '${pluginName}' is asking for all permissions listed below. Hover your cursor over them for an explanation.\nNote that turning some of these permissions off may cause the plugin to stop working.",
 
   "plugin_link.type_source": "Repository",
   "plugin_link.type_changelog": "Changelog",
