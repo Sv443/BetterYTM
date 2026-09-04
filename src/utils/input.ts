@@ -1,4 +1,4 @@
-const interactionKeys = ["Enter", " ", "Space"];
+export const interactionKeys = ["Enter", "NumpadEnter", " ", "Space"];
 
 type ListenerOpts = AddEventListenerOptions & {
   preventDefault?: boolean;

@@ -1,7 +1,8 @@
+import { type Stringifiable, clamp, debounce } from "@sv443-network/coreutils";
 import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
 import { addSelectorListener } from "@/observers.ts";
 import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from "@util/dom.ts";
-import { featInfo } from "@feat/index.ts";
+import { interactionKeys } from "@util/input.ts";
 import { getDomain, getReloadTabData, resourceAsString } from "@util/misc.ts";
 import { getFeature } from "@/config.ts";
 import { getSelector } from "@util/data.ts";
@@ -9,8 +10,8 @@ import { loggers } from "@util/logging.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { t } from "@util/translations.ts";
 import { waitVideoElementReady } from "@util/dom.ts";
+import { featInfo } from "@feat/index.ts";
 import "@feat/volume.css";
-import { type Stringifiable, clamp, debounce } from "@sv443-network/coreutils";
 
 //#region init vol features
 
@@ -266,7 +267,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   // prevent video from minimizing
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
-  labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
+  labelContElem.addEventListener("keydown", (e) => interactionKeys.includes(e.key) && e.stopPropagation());
 
   const getSliderTooltip = (slider: HTMLInputElement) =>
     t("volume_tooltip", { volumePercent: getAdjustedVolValue(Number(slider.value)) });

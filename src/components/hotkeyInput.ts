@@ -1,5 +1,5 @@
 import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { getOS, hasKey, onInteraction, setInnerHtml, t } from "@util/index.ts";
+import { getOS, hasKey, interactionKeys, onInteraction, setInnerHtml, t } from "@util/index.ts";
 import type { HotkeyObj } from "@/types.ts";
 import "@comp/hotkeyInput.css";
 
@@ -128,7 +128,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
       return;
     if(inputElem.dataset.state !== "active")
       return;
-    if(e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
+    if(e.code === "Tab" || e.code === "Escape" || interactionKeys.includes(e.code)) {
       deactivate();
       return;
     }

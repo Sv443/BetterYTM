@@ -162,7 +162,7 @@ export class PromptDialog extends BytmDialog {
 
       // dont ask me why intersecting the input and textarea de-narrows the gd event type
       const inputEnterListener = (e: Event) => {
-        if("key" in e && e.key === "Enter") {
+        if("code" in e && ["Enter", "NumpadEnter"].includes(e.code as string)) {
           inputElem.removeEventListener("keydown", inputEnterListener);
           this.emitResolve(inputElem?.value?.trim() ?? null);
           promptDialog?.close();
@@ -284,7 +284,7 @@ export class PromptDialog extends BytmDialog {
 
     let captureEnterKey = true;
     document.addEventListener("keydown", (e) => {
-      if(e.key === "Enter" && captureEnterKey) {
+      if(["Enter", "NumpadEnter"].includes(e.code) && captureEnterKey) {
         const confBtn = document.querySelector<HTMLButtonElement>("#bytm-prompt-dialog-confirm");
         const closeBtn = document.querySelector<HTMLButtonElement>("#bytm-prompt-dialog-close");
 

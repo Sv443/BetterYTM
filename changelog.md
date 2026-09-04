@@ -43,9 +43,10 @@
   - Changed the ID of the `BytmDialog` returned by `showPrompt()` from `prompt-dialog` to just `prompt`.
   - Added type `YTInitialPlayerResponse` exported by `src/types.ts`, for the global YT variable `ytInitialPlayerResponse`.
   - Made `getVideoElement()` work with the YT Shorts player too.
+  - The <kbd>NumpadEnter</kbd> key will now also trigger interactions like the <kbd>Enter</kbd> and <kbd>Space</kbd> keys.
 
 <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">Also see pull request #TODO</a>
+  <a href="https://github.com/Sv443/BetterYTM/pull/172" rel="noopener noreferrer">Also see pull request #172</a>
 </div>
 
 <div class="split"></div>

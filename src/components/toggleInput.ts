@@ -61,9 +61,9 @@ export async function createToggleInput({
   };
 
   checkboxEl.addEventListener("change", handleToggle, { capture: true });
-  
+
   wrapperEl.addEventListener("keydown", (e) => {
-    if(["Space", " ", "Enter"].includes(e.code)) {
+    if(["Space", " ", "Enter", "NumpadEnter"].includes(e.code)) {
       e.preventDefault();
       e.stopPropagation();
       checkboxEl.checked = !checkboxEl.checked;
