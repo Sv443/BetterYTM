@@ -115,6 +115,7 @@ async function renderFooter(permDlg: BytmDialog, plugin: PluginDefResolvable | s
   const requestedIntents = defToIntentsBitSet(def);
 
   const confirmBtn = document.createElement("button");
+  confirmBtn.classList.add("bytm-btn");
   confirmBtn.textContent = t("prompt_confirm");
   confirmBtn.title = t("click_to_confirm_tooltip");
   confirmBtn.autofocus = true;
@@ -142,6 +143,7 @@ async function renderFooter(permDlg: BytmDialog, plugin: PluginDefResolvable | s
   footerEl.appendChild(confirmBtn);
 
   const cancelBtn = document.createElement("button");
+  cancelBtn.classList.add("bytm-btn");
   cancelBtn.textContent = t("prompt_cancel");
   cancelBtn.title = t("click_to_cancel_tooltip");
   onInteraction(cancelBtn, () => permDlg.close());

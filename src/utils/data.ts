@@ -298,6 +298,7 @@ export function createAlertDialog(alert: GlobalAlert) {
       footer.classList.add("bytm-dialog-footer", "align-right");
     
       const closeBtn = document.createElement("button");
+      closeBtn.classList.add("bytm-btn");
       closeBtn.type = "button";
       closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
       onInteraction(closeBtn, () => {

@@ -128,12 +128,14 @@ export function getErrorDialog(errName: string, args: unknown[]) {
       footer.classList.add("bytm-dialog-footer", "align-right");
 
       const dlLogsBtn = document.createElement("button");
+      dlLogsBtn.classList.add("bytm-btn");
       dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
       onInteraction(dlLogsBtn, () => {
         downloadFile(`bytm-log-${new Date().toISOString()}.log`, Logger.serializeLogs(), "text/plain");
       });
 
       const closeBtn = document.createElement("button");
+      closeBtn.classList.add("bytm-btn");
       closeBtn.textContent = t("close");
       closeBtn.ariaLabel = t("close_menu_tooltip");
       onInteraction(closeBtn, () => dlg.close());

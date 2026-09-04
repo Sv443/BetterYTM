@@ -726,6 +726,7 @@ function registerDevCommands() {
         extraButtons: [
           (dlg) => {
             const btn = document.createElement("button");
+            btn.classList.add("bytm-btn");
             btn.textContent = btn.ariaLabel = "Copy and close";
             btn.addEventListener("click", async () => {
               copyToClipboard(result);
@@ -971,19 +972,17 @@ function initPermTestPlugin() {
         source: packageJson.homepage,
       },
     },
-    intents: [
-      PluginIntent.ReadFeatureConfig,
-      PluginIntent.WriteFeatureConfig,
-      PluginIntent.SeeHiddenConfigValues,
-      PluginIntent.CreateModalDialogs,
-      PluginIntent.WriteTranslations,
-    ],
+    intents: PluginIntent.ReadFeatureConfig
+      | PluginIntent.WriteFeatureConfig
+      | PluginIntent.SeeHiddenConfigValues
+      | PluginIntent.CreateModalDialogs
+      | PluginIntent.WriteTranslations,
   } as const satisfies PluginDef;
 
   // @ts-expect-error
-  getUnsafeWindow().addEventListener("bytm:registerPlugin", async ({ detail: register }: CustomEvent) => {
+  getUnsafeWindow().addEventListener("bytm:registerPlugin", async ({ detail: register }: CustomEvent<typeof registerPlugin>) => {
     if(typeof register === "function") {
-      const result = (register as typeof registerPlugin)(permTestDef);
+      const result = register(permTestDef);
       loggers.debug.log(">> Plugin permission test result:", result);
 
       getUnsafeWindow().addEventListener("bytm:allReady", async () => {

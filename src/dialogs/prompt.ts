@@ -193,7 +193,7 @@ export class PromptDialog extends BytmDialog {
     if(confirmBtn) {
       const { confirmBtnText, confirmBtnTooltip } = rest as ConfirmBtnProps;
       confirmBtn.id = "bytm-prompt-dialog-confirm";
-      confirmBtn.classList.add("bytm-prompt-dialog-button");
+      confirmBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");
       confirmBtn.textContent = await this.consumePromptStringGen(type, confirmBtnText, t("prompt_confirm"));
       confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
@@ -210,7 +210,7 @@ export class PromptDialog extends BytmDialog {
     const closeBtn = rest.denyBtnEnabled === false ? undefined : document.createElement("button");
     if(closeBtn) {
       closeBtn.id = "bytm-prompt-dialog-close";
-      closeBtn.classList.add("bytm-prompt-dialog-button");
+      closeBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");
       closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
       closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
       closeBtn.tabIndex = 0;
