@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ce7ce8ed/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@03a74015/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Fri, 04 Sep 2026 15:59:13 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Fri, 04 Sep 2026 17:24:44 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ ce7ce8ed                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 03a74015                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ WXcBghIFofsy                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ G68Ec4URWMFE                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -541,9 +541,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "ce7ce8ed";
+	var buildNumber$1 = "03a74015";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788537553167;
+	var buildTimestamp = 1788542684808;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -1458,6 +1458,7 @@
 	//#region src/utils/input.ts
 	var interactionKeys = [
 		"Enter",
+		"NumpadEnter",
 		" ",
 		"Space"
 	];
@@ -1556,7 +1557,7 @@
 				inputElem.spellcheck = false;
 				inputElem.value = "defaultValue" in rest && rest.defaultValue ? await (0, _sv443_network_coreutils.consumeStringGen)(rest.defaultValue) : "";
 				const inputEnterListener = (e) => {
-					if ("key" in e && e.key === "Enter") {
+					if ("code" in e && ["Enter", "NumpadEnter"].includes(e.code)) {
 						inputElem.removeEventListener("keydown", inputEnterListener);
 						this.emitResolve(inputElem?.value?.trim() ?? null);
 						promptDialog?.close();
@@ -1640,7 +1641,7 @@
 			if (inputElem) return inputElem.focus();
 			let captureEnterKey = true;
 			document.addEventListener("keydown", (e) => {
-				if (e.key === "Enter" && captureEnterKey) {
+				if (["Enter", "NumpadEnter"].includes(e.code) && captureEnterKey) {
 					const confBtn = document.querySelector("#bytm-prompt-dialog-confirm");
 					const closeBtn = document.querySelector("#bytm-prompt-dialog-close");
 					if (confBtn || closeBtn) {
@@ -1890,7 +1891,8 @@
 			if ([
 				"Space",
 				" ",
-				"Enter"
+				"Enter",
+				"NumpadEnter"
 			].includes(e.code)) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -3029,7 +3031,7 @@
 		document.addEventListener("keydown", async (e) => {
 			if (reservedKeys.filter((k) => k !== "Tab").includes(e.code)) return;
 			if (inputElem.dataset.state !== "active") return;
-			if (e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
+			if (e.code === "Tab" || e.code === "Escape" || interactionKeys.includes(e.code)) {
 				deactivate();
 				return;
 			}
@@ -6147,11 +6149,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		labelElem.textContent = getLabel(sliderElem.value);
 		labelContElem.appendChild(labelElem);
 		labelContElem.addEventListener("click", (e) => e.stopPropagation());
-		labelContElem.addEventListener("keydown", (e) => [
-			"Enter",
-			"Space",
-			" "
-		].includes(e.key) && e.stopPropagation());
+		labelContElem.addEventListener("keydown", (e) => interactionKeys.includes(e.key) && e.stopPropagation());
 		const getSliderTooltip = (slider) => t("volume_tooltip", { volumePercent: getAdjustedVolValue(Number(slider.value)) });
 		const labelFull = getSliderTooltip(sliderElem);
 		sliderContainer.setAttribute("title", labelFull);
@@ -11672,7 +11670,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "ce7ce8ed",
+				buildNumber: "03a74015",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -11746,7 +11744,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		if (!await GM.getValue("bytm-dev-treatments", false)) return;
 		loggers.init.log("Running dev treatments.");
 	}
-	function initPermTestPlugin() {
+	async function initPermTestPlugin() {
+		if (!await GM.getValue("bytm-dev-treatments", false)) return;
 		const permTestDef = {
 			plugin: {
 				name: "PERMISSION TEST",
