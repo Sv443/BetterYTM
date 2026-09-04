@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@b23af23f/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@ce7ce8ed/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 02 Sep 2026 23:52:19 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Fri, 04 Sep 2026 15:59:14 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ b23af23f                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ ce7ce8ed                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ xChe1g0056RI                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ H0Bf9xXcRd17                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6848,9 +6848,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "b23af23f";
+	var buildNumber$1 = "ce7ce8ed";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788393139945;
+	var buildTimestamp = 1788537554150;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -9394,7 +9394,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			if (confirmBtn) {
 				const { confirmBtnText, confirmBtnTooltip } = rest;
 				confirmBtn.id = "bytm-prompt-dialog-confirm";
-				confirmBtn.classList.add("bytm-prompt-dialog-button");
+				confirmBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");
 				confirmBtn.textContent = await this.consumePromptStringGen(type, confirmBtnText, t("prompt_confirm"));
 				confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, confirmBtnTooltip, t("click_to_confirm_tooltip"));
 				confirmBtn.tabIndex = 0;
@@ -9407,7 +9407,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			const closeBtn = rest.denyBtnEnabled === false ? void 0 : document.createElement("button");
 			if (closeBtn) {
 				closeBtn.id = "bytm-prompt-dialog-close";
-				closeBtn.classList.add("bytm-prompt-dialog-button");
+				closeBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");
 				closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
 				closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
 				closeBtn.tabIndex = 0;
@@ -9784,9 +9784,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				removeListenersOnDestroy: false,
 				small: true,
 				verticalAlign: "top",
-				renderHeader: renderHeader$4,
-				renderBody: renderBody$4,
-				renderFooter: renderFooter$1
+				renderHeader: renderHeader$5,
+				renderBody: renderBody$5,
+				renderFooter: renderFooter$2
 			});
 			siteEvents.on("autoLikeChannelsUpdated", async () => {
 				try {
@@ -9835,7 +9835,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		});
 		return autoLikeDialog;
 	}
-	async function renderHeader$4() {
+	async function renderHeader$5() {
 		const headerEl = document.createElement("h2");
 		headerEl.classList.add("bytm-dialog-title");
 		headerEl.role = "heading";
@@ -9844,7 +9844,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		headerEl.textContent = headerEl.ariaLabel = t("auto_like_channels_dialog_title");
 		return headerEl;
 	}
-	async function renderBody$4() {
+	async function renderBody$5() {
 		const contElem = document.createElement("div");
 		const descriptionEl = document.createElement("p");
 		descriptionEl.classList.add("bytm-auto-like-channels-desc");
@@ -9888,7 +9888,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		}, 300));
 		searchContLeftSideEl.appendChild(searchbarEl);
 		const searchClearEl = document.createElement("button");
-		searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
+		searchClearEl.classList.add("bytm-auto-like-channels-search-clear", "bytm-btn");
 		searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
 		searchClearEl.tabIndex = 0;
 		searchClearEl.innerText = "×";
@@ -9988,7 +9988,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		contElem.appendChild(channelListCont);
 		return contElem;
 	}
-	function renderFooter$1() {
+	function renderFooter$2() {
 		const wrapperEl = document.createElement("div");
 		wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
 		const addNewBtnElem = document.createElement("button");
@@ -10715,22 +10715,22 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				closeOnBgClick: true,
 				closeOnEscPress: true,
 				small: true,
-				renderHeader: renderHeader$3,
-				renderBody: renderBody$3
+				renderHeader: renderHeader$4,
+				renderBody: renderBody$4
 			});
 			featHelpDialog.on("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
 			featHelpDialog.on("close", () => document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert"));
 		}
 		return featHelpDialog;
 	}
-	async function renderHeader$3() {
+	async function renderHeader$4() {
 		const headerEl = document.createElement("div");
 		headerEl.id = "bytm-feat-help-dialog-header";
 		headerEl.classList.add("bytm-flex-row");
 		setInnerHtml(headerEl, await resourceAsString("icon-help"));
 		return headerEl;
 	}
-	async function renderBody$3() {
+	async function renderBody$4() {
 		const contElem = document.createElement("div");
 		const localeObj = locales_default?.[getLocale()];
 		let featText = t(`feature_desc.${curFeatKey}`);
@@ -10935,6 +10935,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		version: "3.1.0",
 		description: "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
 		license: "AGPL-3.0-or-later",
+		licenseUrl: "https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt",
 		homepage: "https://github.com/Sv443/BetterYTM",
 		namespace: "https://github.com/Sv443/BetterYTM",
 		pluginDiscoveryUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",
@@ -10976,7 +10977,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		scripts: {
 			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
 			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
-			"build-dev": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
+			"build-dev": "pnpm build-dev-base && pnpm build-dev-compat",
+			"build-dev-base": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
 			"build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
 			"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
 			"build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
@@ -11039,8 +11041,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"@storybook/addon-interactions": "8.6.14",
 			"@storybook/addon-links": "10.2.19",
 			"@storybook/blocks": "8.6.14",
-			"@storybook/html": "10.2.19",
 			"@storybook/html-vite": "10.2.19",
+			"@storybook/html": "10.2.19",
 			"@storybook/test": "8.6.15",
 			"@types/cors": "2.8.19",
 			"@types/express": "5.0.6",
@@ -11054,22 +11056,22 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"cors": "2.8.6",
 			"cross-env": "7.0.3",
 			"dotenv": "17.3.1",
-			"eslint": "10.0.3",
 			"eslint-plugin-storybook": "10.2.19",
+			"eslint": "10.0.3",
 			"express": "5.2.1",
 			"globals": "17.4.0",
 			"kleur": "4.1.5",
 			"knip": "5.86.0",
 			"nanoevents": "9.1.0",
 			"pnpm": "10.32.1",
-			"storybook": "10.2.19",
 			"storybook-dark-mode": "5.0.0",
+			"storybook": "10.2.19",
 			"terser": "5.47.1",
 			"tsx": "4.21.0",
-			"typedoc": "0.28.17",
 			"typedoc-plugin-markdown": "4.10.0",
-			"typescript": "5.9.3",
+			"typedoc": "0.28.17",
 			"typescript-eslint": "8.57.0",
+			"typescript": "5.9.3",
 			"vite": "8.0.11"
 		},
 		browserslist: [
@@ -11497,6 +11499,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 						const isLocalesTextDifferent = t("reload_now") !== tl(initLocale, "reload_now");
 						const getReloadAllBtn = async (dialog) => {
 							const reloadAllBtn = document.createElement("button");
+							reloadAllBtn.classList.add("bytm-btn");
 							reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
 							reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_now")}` : ""}`;
 							reloadAllBtn.ariaLabel = reloadAllBtn.title = `${t("reload_all_tabs_tooltip", scriptInfo$1.name)}${isLocalesTextDifferent ? ` / ${tl(initLocale, "reload_all_tabs_tooltip", scriptInfo$1.name)}` : ""}`;
@@ -13091,7 +13094,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	var getSerializerStores = () => wrapStores([
 		configStore,
 		autoLikeStore,
-		alertsStore
+		alertsStore,
+		pluginPermissionsStore
 	]);
 	/**
 	* Array of all {@linkcode DataStore} instances, including the caches and other stores that store volatile-ish data.  
@@ -13281,9 +13285,21 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			loggers.plugin.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
 		}
 	}
-	/** Map of plugin ID and all registered plugins */
+	/**
+	* Stores information about plugins that have been registered and have had their intents granted (thus turning them into permissions).  
+	* Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
+	* At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
+	*/
+	var pluginPermissionsStore = new DataStore$1({
+		id: "bytm-plugin-permissions",
+		engine: new GMStorageEngine(),
+		defaultData: {},
+		formatVersion: 0,
+		compressionFormat: null
+	});
+	/** Map of plugin key to all registered plugins */
 	var registeredPlugins = /* @__PURE__ */ new Map();
-	/** Map of plugin ID to auth token for plugins that have been registered */
+	/** Map of plugin key to auth token for plugins that have been registered */
 	var registeredPluginTokens = /* @__PURE__ */ new Map();
 	var pluginsInitialized = false;
 	/** Pre-init for eager plugins that need to be initialized as soon as physically possible */
@@ -13432,8 +13448,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 	function validatePluginDef(pluginDef) {
 		const errors = [];
-		const addNoPropErr = (jsonPath, type) => errors.push(t("plugin_validation_error_no_property", jsonPath, type));
-		const addInvalidPropErr = (jsonPath, value, examples) => errors.push(tp("plugin_validation_error_invalid_property", examples, jsonPath, value, `'${examples.join("', '")}'`));
+		const addNoPropErr = (jsonPath, type) => errors.push(t("plugin_validation_error.no_property", jsonPath, type));
+		const addInvalidPropErr = (jsonPath, value, examples) => errors.push(tp("plugin_validation_error.invalid_property", examples, jsonPath, value, `'${examples.join("', '")}'`));
 		typeof pluginDef.plugin !== "object" && addNoPropErr("plugin", "object");
 		const { plugin } = pluginDef;
 		!plugin?.name && addNoPropErr("plugin.name", "string");
@@ -13657,8 +13673,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				closeOnEscPress: true,
 				destroyOnClose: true,
 				small: true,
-				renderHeader: renderHeader$2,
-				renderBody: () => renderBody$2({
+				renderHeader: renderHeader$3,
+				renderBody: () => renderBody$3({
 					latestTag,
 					changelogHtml
 				})
@@ -13666,7 +13682,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}
 		return verNotifDialog;
 	}
-	async function renderHeader$2() {
+	async function renderHeader$3() {
 		const logoEl = document.createElement("img");
 		logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
 		logoEl.src = await getResourceUrl("img-logo_dev");
@@ -13674,7 +13690,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		return logoEl;
 	}
 	var disableUpdateCheck = false;
-	async function renderBody$2({ latestTag, changelogHtml }) {
+	async function renderBody$3({ latestTag, changelogHtml }) {
 		disableUpdateCheck = false;
 		const wrapperEl = document.createElement("div");
 		const pEl = document.createElement("p");
@@ -14051,7 +14067,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	//#endregion
 	//#region src/dialogs/pluginList.ts
 	var pluginListDialog = null;
-	/** Creates and/or returns the import dialog */
+	/** Creates and/or returns the plugin list dialog */
 	async function getPluginListDialog() {
 		return pluginListDialog ??= new BytmDialog({
 			id: "plugin-list",
@@ -14062,11 +14078,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			closeOnEscPress: true,
 			destroyOnClose: true,
 			small: true,
-			renderHeader: renderHeader$1,
-			renderBody: renderBody$1
+			renderHeader: renderHeader$2,
+			renderBody: renderBody$2
 		});
 	}
-	async function renderHeader$1() {
+	async function renderHeader$2() {
 		const titleElem = document.createElement("h2");
 		titleElem.id = "bytm-plugin-list-title";
 		titleElem.classList.add("bytm-dialog-title");
@@ -14076,7 +14092,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		titleElem.textContent = t("plugin_list.title");
 		return titleElem;
 	}
-	async function renderBody$1() {
+	async function renderBody$2() {
 		const listContainerEl = document.createElement("div");
 		listContainerEl.id = "bytm-plugin-list-container";
 		const registeredPlugins = getRegisteredPlugins();
@@ -14169,14 +14185,14 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					const permissionsHeaderEl = document.createElement("div");
 					permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
 					permissionsHeaderEl.tabIndex = 0;
-					permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list.permissions_header");
+					permissionsHeaderEl.textContent = permissionsHeaderEl.title = t("plugin_list.permissions_header");
 					rightEl.appendChild(permissionsHeaderEl);
 					for (const intent of intentsArr) {
 						const intentEl = document.createElement("div");
 						intentEl.classList.add("bytm-plugin-list-row-intent-item");
 						intentEl.tabIndex = 0;
-						intentEl.textContent = t(`plugin_intent.name_${PluginIntent[intent]}`);
-						intentEl.title = intentEl.ariaLabel = t(`plugin_intent.description_${PluginIntent[intent]}`);
+						intentEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
+						intentEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`);
 						rightEl.appendChild(intentEl);
 					}
 				}
@@ -14184,7 +14200,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				const devPluginNoteEl = document.createElement("div");
 				devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
 				devPluginNoteEl.tabIndex = 0;
-				devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list.dev_plugin_note");
+				devPluginNoteEl.title = t("plugin_list.dev_plugin_note");
 				const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
 				setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
 				rowEl.appendChild(devPluginNoteEl);
@@ -14196,7 +14212,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	//#endregion
 	//#region src/dialogs/welcome.ts
 	var welcomeDialog = null;
-	/** Creates and/or returns the import dialog */
+	/** Creates and/or returns the welcome dialog */
 	async function getWelcomeDialog() {
 		if (!welcomeDialog) {
 			welcomeDialog = new BytmDialog({
@@ -14207,16 +14223,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				closeOnBgClick: false,
 				closeOnEscPress: true,
 				destroyOnClose: true,
-				renderHeader,
-				renderBody,
-				renderFooter
+				renderHeader: renderHeader$1,
+				renderBody: renderBody$1,
+				renderFooter: renderFooter$1
 			});
 			welcomeDialog.on("render", retranslateWelcomeMenu);
 			welcomeDialog.on("destroy", () => welcomeDialog = null);
 		}
 		return welcomeDialog;
 	}
-	async function renderHeader() {
+	async function renderHeader$1() {
 		const titleWrapperElem = document.createElement("div");
 		titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
 		const titleLogoElem = document.createElement("img");
@@ -14233,7 +14249,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		titleWrapperElem.appendChild(titleElem);
 		return titleWrapperElem;
 	}
-	async function renderBody() {
+	async function renderBody$1() {
 		const contentWrapper = document.createElement("div");
 		contentWrapper.id = "bytm-welcome-menu-content-wrapper";
 		const horSegmentCont = document.createElement("div");
@@ -14404,7 +14420,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			fn(el);
 		}
 	}
-	async function renderFooter() {
+	async function renderFooter$1() {
 		const footerCont = document.createElement("div");
 		footerCont.id = "bytm-welcome-menu-footer-cont";
 		const openCfgElem = document.createElement("button");
@@ -18258,11 +18274,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				const footer = document.createElement("div");
 				footer.classList.add("bytm-dialog-footer", "align-right");
 				const dlLogsBtn = document.createElement("button");
+				dlLogsBtn.classList.add("bytm-btn");
 				dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
 				onInteraction(dlLogsBtn, () => {
 					downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, Logger.serializeLogs(), "text/plain");
 				});
 				const closeBtn = document.createElement("button");
+				closeBtn.classList.add("bytm-btn");
 				closeBtn.textContent = t("close");
 				closeBtn.ariaLabel = t("close_menu_tooltip");
 				onInteraction(closeBtn, () => dlg.close());
@@ -18320,7 +18338,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					"ytm": "ytmusic-app"
 				},
 				"video": {
-					"yt": "#player-container ytd-player video",
+					"yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
 					"ytm": "ytmusic-player video"
 				},
 				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
@@ -18529,6 +18547,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const footer = document.createElement("div");
 				footer.classList.add("bytm-dialog-footer", "align-right");
 				const closeBtn = document.createElement("button");
+				closeBtn.classList.add("bytm-btn");
 				closeBtn.type = "button";
 				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
 				onInteraction(closeBtn, () => {
@@ -18831,6 +18850,113 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return element;
 	}
 	//#endregion
+	//#region src/dialogs/pluginPermissions.ts
+	var pluginPermsDialog = null;
+	/** Creates and/or returns the plugin permissions dialog */
+	async function getPluginPermissionsDialog(plugin) {
+		return pluginPermsDialog ??= new BytmDialog({
+			id: "plugin-perms",
+			width: 450,
+			height: 700,
+			closeBtnEnabled: true,
+			closeOnBgClick: false,
+			closeOnEscPress: true,
+			destroyOnClose: true,
+			small: true,
+			renderHeader,
+			renderBody: (dlg) => renderBody(dlg, plugin),
+			renderFooter: (dlg) => renderFooter(dlg, plugin)
+		});
+	}
+	async function renderHeader() {
+		const titleElem = document.createElement("h2");
+		titleElem.id = "bytm-plugin-perms-title";
+		titleElem.classList.add("bytm-dialog-title");
+		titleElem.role = "heading";
+		titleElem.ariaLevel = "1";
+		titleElem.tabIndex = 0;
+		titleElem.textContent = t("plugin_permissions_dialog.title");
+		return titleElem;
+	}
+	async function renderBody(permDlg, plugin) {
+		const pluginKey = typeof plugin === "string" ? plugin : getPluginKey(plugin);
+		const regPl = getRegisteredPlugins().find(([key]) => key === pluginKey);
+		const permsListCont = document.createElement("div");
+		permsListCont.id = "bytm-plugin-perms-container";
+		if (!regPl) {
+			await showPrompt({
+				type: "alert",
+				message: t("plugin_error.plugin_not_registered", { pluginKey })
+			});
+			permDlg.once("open", () => permDlg.close());
+			return permsListCont;
+		}
+		const { def } = regPl[1];
+		const intents = parseBitSetEnumArray(defToIntentsBitSet(def), PluginIntent);
+		const descriptionElem = document.createElement("div");
+		descriptionElem.id = "bytm-plugin-perms-description";
+		descriptionElem.textContent = descriptionElem.title = t("plugin_permissions_dialog.description", { pluginName: def.plugin.name });
+		permsListCont.appendChild(descriptionElem);
+		const hrElem = document.createElement("hr");
+		hrElem.classList.add("bytm-hr");
+		permsListCont.appendChild(hrElem);
+		for (const intent of intents) {
+			const itemEl = document.createElement("div");
+			itemEl.classList.add("bytm-plugin-perms-item");
+			itemEl.tabIndex = 0;
+			itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}`;
+			const toggleEl = await createToggleInput({
+				id: `plugin-intent-${intent}`,
+				initialValue: true,
+				labelPos: "off",
+				onChange: () => void 0
+			});
+			const nameEl = document.createElement("div");
+			nameEl.classList.add("bytm-plugin-perms-item-name");
+			nameEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
+			itemEl.appendChild(toggleEl);
+			itemEl.appendChild(nameEl);
+			permsListCont.appendChild(itemEl);
+		}
+		return permsListCont;
+	}
+	async function renderFooter(permDlg, plugin) {
+		const pluginKey = typeof plugin === "string" ? plugin : getPluginKey(plugin);
+		const footerEl = document.createElement("div");
+		footerEl.id = "bytm-plugin-perms-footer";
+		footerEl.classList.add("bytm-dialog-footer", "align-right");
+		const regPl = getRegisteredPlugins().find(([key]) => key === pluginKey);
+		if (!regPl) throw new DatedError$1(`Couldn't render plugin permissions dialog footer because plugin ${typeof plugin === "string" ? plugin : JSON.stringify(plugin)} isn't registered yet.`);
+		const { def } = regPl[1];
+		const requestedIntents = defToIntentsBitSet(def);
+		const confirmBtn = document.createElement("button");
+		confirmBtn.classList.add("bytm-btn");
+		confirmBtn.textContent = t("prompt_confirm");
+		confirmBtn.title = t("click_to_confirm_tooltip");
+		confirmBtn.autofocus = true;
+		onInteraction(confirmBtn, async () => {
+			let grantedPerms = 0;
+			for (const [, v] of Object.entries(PluginIntent)) {
+				if (typeof v !== "number") continue;
+				const checked = document.querySelector(`#bytm-toggle-plugin-intent-${v}`)?.checked ?? false;
+				grantedPerms = grantedPerms | (checked ? v : 0);
+			}
+			const permStore = pluginPermissionsStore.getData();
+			permStore[pluginKey] = [grantedPerms, requestedIntents];
+			await pluginPermissionsStore.setData(permStore);
+			loggers.plugin.log(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms);
+			permDlg.close();
+		});
+		footerEl.appendChild(confirmBtn);
+		const cancelBtn = document.createElement("button");
+		cancelBtn.classList.add("bytm-btn");
+		cancelBtn.textContent = t("prompt_cancel");
+		cancelBtn.title = t("click_to_cancel_tooltip");
+		onInteraction(cancelBtn, () => permDlg.close());
+		footerEl.appendChild(cancelBtn);
+		return footerEl;
+	}
+	//#endregion
 	//#region src/index.ts
 	{
 		const [styleGradient, gradientContBg] = (() => {
@@ -18906,6 +19032,7 @@ Build #${buildNumber$1} (dev mode)
 			initBroadcast();
 			preInitInterface();
 			preInitPlugins();
+			initPermTestPlugin();
 			if (getDomain() === "ytm") initBeforeUnloadHook();
 			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object??????? (this doesn't actually break the script, but it's still funny it happened)");
 			initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
@@ -19241,6 +19368,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 					message: `${type === "compress" ? "Compressed" : "Decompressed"} value (${initial.length} chars -> ${result.length} chars):\n${result}`,
 					extraButtons: [(dlg) => {
 						const btn = document.createElement("button");
+						btn.classList.add("bytm-btn");
 						btn.textContent = btn.ariaLabel = "Copy and close";
 						btn.addEventListener("click", async () => {
 							copyToClipboard(result);
@@ -19361,7 +19489,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "b23af23f",
+				buildNumber: "ce7ce8ed",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -19433,6 +19561,32 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 	}
 	async function runDevTreatments() {
 		if (!await GM.getValue("bytm-dev-treatments", false)) return;
+		loggers.init.log("Running dev treatments.");
+	}
+	function initPermTestPlugin() {
+		const permTestDef = {
+			plugin: {
+				name: "PERMISSION TEST",
+				namespace: package_default.namespace,
+				version: package_default.version,
+				license: {
+					name: package_default.license,
+					url: package_default.licenseUrl
+				},
+				description: { "en-US": "Dev plugin for testing plugin permissions." },
+				homepage: { source: package_default.homepage }
+			},
+			intents: PluginIntent.ReadFeatureConfig | PluginIntent.WriteFeatureConfig | PluginIntent.SeeHiddenConfigValues | PluginIntent.CreateModalDialogs | PluginIntent.WriteTranslations
+		};
+		getUnsafeWindow$1().addEventListener("bytm:registerPlugin", async ({ detail: register }) => {
+			if (typeof register === "function") {
+				const result = register(permTestDef);
+				loggers.debug.log(">> Plugin permission test result:", result);
+				getUnsafeWindow$1().addEventListener("bytm:allReady", async () => {
+					await (await getPluginPermissionsDialog(permTestDef)).open();
+				});
+			}
+		});
 	}
 	preInit();
 	//#endregion
