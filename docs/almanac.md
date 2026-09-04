@@ -2,12 +2,12 @@
 Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
 
 - **[Internals](#internals)**
-  - [TODO: Constants](#constants)
+  - [Constants](#constants)
   - [Domains](#domains)
-  - [TODO: Features](#features)
+  - [Features](#features)
     - [Feature Info](#feature-info)
     - [Feature Key](#feature-key)
-    - [TODO: Feature Configuration](#feature-configuration)
+    - [Feature Configuration](#feature-configuration)
     - [Advanced Mode](#advanced-mode)
     - [Feature Adornments](#feature-adornments)
   - [TODO: User Interface](#user-interface)
@@ -23,6 +23,9 @@ Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
     - [Host Platform](#host-platform)
   - [TODO: Site Events](#site-events)
   - [TODO: Menu Commands](#menu-commands)
+  - [TODO: Resource Cache](#resource-cache)
+- **[Libraries](#libraries)**
+  - [DataStore](#datastore)
 - **[Plugins](#plugins)**
   - [Plugin Interface](#plugin-interface)
     - [Authenticated Interface Functions](#authenticated-interface-functions)
@@ -50,6 +53,8 @@ Contrary to the [information about plugins](#plugins), this section is only rele
 <br>
 
 ## Constants
+These are variables defined in the file [`src/constants.ts`](../src/constants.ts).  
+They include the [build info](#build-information), as well as other static values that are used by BetterYTM at runtime.
 
 <br>
 
@@ -99,7 +104,8 @@ This is a string that is used to identify each [feature.](#features)
 ### Feature Configuration
 > Also referred to as just "config(uration)".
   
-
+An object that maps [feature keys](#feature-key) to the feature's current value, as displayed in the [config menu.](#configuration-menu)  
+This data is stored in a [DataStore](#datastore)
 
 <br>
 
@@ -121,6 +127,12 @@ These are icons that show up next to the [features](#features) in the [config me
 - requires the [`advancedMode` feature](#advanced-mode) to be enabled to see the feature in the config mode.
 - is privacy-sensitive (the feature may expose information about the user, as little as the IP address is enough to count).
 - was added in the latest version (stops showing up after loading the page a certain amount of times).
+
+<br>
+
+## User Interface
+The various ways BetterYTM visually modifies the page.  
+This section touches on the [configuration menu](#configuration-menu) and the different [BytmDialog](#bytmdialog) instances for displaying modal dialogs.
 
 <br>
 
@@ -157,37 +169,75 @@ For example:
 <br>
 
 ### Build Time
-foo
+A [unix epoch](https://en.wikipedia.org/wiki/Unix_time) timestamp number of when the script was built.
 
 <br>
 
 ### Build Number
-foo
+8-character [Git commit SHA-1 hash](https://graphite.com/guides/git-hashing) of the commit before the build commit.  
+This hash is used in various URLs to target very specific versions of the codebase's assets, to ensure each version of the script remains functional well into the future.
 
 <br>
 
 ### Build UID
-foo
+12-character alphanumeric ID that is randomly generated when the script is built.  
+This ID is appended to URLs (like when fetching the changelog), to bypass any cached asset that might have become outdated after an updated version of BetterYTM was installed.
 
 <br>
 
 ### Asset Source
-foo
+Which source the asset is loaded from.  
+Can be any of the following:
+- `jsdelivr`: Preferred source, as it caches the assets longer than GitHub.  
+  Loaded from the JSDelivr CDN (URL `https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@${assetPath}`)
+- `github`: Alternative source with minimal caching, useful when fetching the latest versions is paramount.  
+  Loaded from the GitHub CDN (URL `https://raw.githubusercontent.com/Sv443/BetterYTM/${assetPath}`)
+- `local`: Loaded from a locally running dev server (`pnpm serve` command).  
+  (URL `http://localhost:8710${assetPath}?b=${buildUid}`)
 
 <br>
 
 ### Source Branch
-foo
+The [Git branch](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) that is targeted for most GitHub-repository-related actions, like fetching assets.
 
 <br>
 
 ### Compatibility Mode
-foo
+By default, a script compiled with `loose` compatibility will load its libraries using the [`@require` GreaseMonkey API](https://wiki.greasespot.net/Metadata_Block#@require).  
+With `strict` compatibility (`pnpm build-prod-compat` or `pnpm build-dev-compat`), all libraries will be included in the bundled script, significantly increasing its size, but also improving dependency-related issues with different browsers and userscript manager extensions.
 
 <br>
 
 ### Host Platform
-foo
+The platform that is intended to host the built script.  
+In general this only decides which of the three platforms (GitHub, Greasy Fork and OpenUserJS) are highlighted in user interfaces, but for Greasy Fork specifically, code comments are also stripped out to reduce the size so the script can fit in the 500kB size limit.
+
+
+<br><br>
+<hr />
+<br><br>
+
+
+<!-- #region libraries -->
+# Libraries
+BetterYTM's source code depends on the following libraries:
+
+- `@sv443-network/coreutils` - Core JavaScript utilities - exposed via `BYTM.CoreUtils`
+  - [DataStore](#datastore) - Used for persistently storing migratable data in BetterYTM
+- `@sv443-network/userutils` - Userscript and generic DOM utilities - exposed via `BYTM.UserUtils`
+- `compare-versions` - Tiny library used for comparing and validating [semver versions](https://semver.org/) - exposed via `BYTM.compareVersions`
+  
+They are exposed on the [plugin interface](#plugin-interface)
+
+<br>
+
+## DataStore
+[Click here for the full documentation.](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-datastore)  
+  
+This class belongs to the [CoreUtils library](https://github.com/Sv443-Network/CoreUtils) and is used to store all the persistent data BetterYTM needs to function.  
+It supports data migrations when a format version number is incremented, and works in a modular way using different engines, like the [GMStorageEngine](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#class-gmstorageengine) exported by the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)  
+  
+Some of the data stored this way includes the [feature configuration](#feature-configuration), a [resource cache](#resource-cache), the channels for the auto-like feature, and more.
 
 
 <br><br>
