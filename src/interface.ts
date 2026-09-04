@@ -22,7 +22,7 @@ import { ExImDialog } from "@comp/ExImDialog.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
 import pkgJson from "@root/package.json" with { type: "json" };
 
-const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
+const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants;
 const { autoPlural, NanoEmitter, pureObj } = CoreUtils;
 const { getUnsafeWindow } = UserUtils;
 
@@ -413,7 +413,7 @@ function registerDevPlugin() {
         version: pkgJson.version,
         description: createTranslatable("dev_plugin.description"),
         homepage: {
-          source: pkgJson.homepage,
+          source: `https://github.com/${repo}/blob/${branch}/docs/almanac.md#developer-plugin`,
           changelog: `${pkgJson.homepage}/blob/${branch}/changelog.md`,
           bug: pkgJson.bugs.url,
           greasyfork: pkgJson.hosts.greasyfork,
