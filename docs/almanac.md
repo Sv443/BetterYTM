@@ -11,6 +11,7 @@ Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
     - [Plugin Intents](#plugin-intents)
     - [Plugin Permissions](#plugin-permissions)
   - [Plugin List](#plugin-list)
+  - [Developer Plugin](#developer-plugin)
 
 <br><br>
 
@@ -88,3 +89,12 @@ After a [plugin script](#plugin-scripts) has [registered with BetterYTM](#plugin
 This is a menu that can be opened via the BetterYTM configuration menu.  
 It shows a list of all installed and [registered](#plugin-registration) plugins, including links to their homepage, bug tracker, etc., and the [permissions](#plugin-permissions) that were granted to them.  
 The information is taken from each plugin's [definition object.](#plugin-definition)
+
+<br>
+
+### Developer Plugin
+This plugin will be automatically created and [registered](#plugin-registration) when the script's [development mode](#development-mode) is active.  
+It's mainly used in combination with a [GM menu command](#menu-commands) to get a token with full permissions for testing the [plugin interface](#plugin-interface) and does nothing else on its own.  
+  
+The plugin has a key in the format `${bytmNamespace}+${randomId}/Developer Plugin` and the same version as BetterYTM.  
+`randomId` is an ID generated every time the plugin is registered. It's purposely random to discourage interaction with this plugin.
