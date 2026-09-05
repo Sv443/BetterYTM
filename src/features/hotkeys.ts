@@ -6,7 +6,7 @@ import { siteEvents } from "@/siteEvents.ts";
 import { getLikeDislikeBtns, getVideoTime, setInnerHtml } from "@util/dom.ts";
 import { getDomain, resourceAsString } from "@util/misc.ts";
 import { loggers } from "@util/logging.ts";
-import type { Domain, FeatKeysOfType, HotkeyObj } from "@/types.ts";
+import { LogLevel, type Domain, type FeatKeysOfType, type HotkeyObj } from "@/types.ts";
 import { promptLyricsSearch } from "@feat/lyrics.ts";
 import "./hotkeys.css";
 import { t } from "@util/translations.ts";
@@ -40,7 +40,7 @@ export async function initHotkeys() {
       loggers.hotkey.error(`Error while initializing hotkey feature '${inits[i][0]}':`, res.reason);
   });
 
-  loggers.hotkey.log("Initialized all hotkey features");
+  loggers.hotkey.info("Initialized all hotkey features", LogLevel.Info);
 
   return results;
 }
@@ -384,7 +384,7 @@ async function initInteractionLockHotkey() {
           alt: e.altKey,
           code: e.code,
         };
-        loggers.hotkey.log(`Ignoring key '${hotkeyToString(hk, true)}' because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+        loggers.hotkey.log(`Dismissing key '${hotkeyToString(hk, true)}' because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
       }
     }
     else if(ilOverlayEnabled) {
@@ -399,7 +399,7 @@ async function initInteractionLockHotkey() {
         return; // pass to other handler
 
       if(!(e.target as HTMLElement)?.closest("#bytm-interaction-lock-overlay")) {
-        loggers.hotkey.log(`Ignoring mouse button press because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+        loggers.hotkey.log(`Dismissing mouse button press because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
         preventBubble(e);
         show();
       }
