@@ -1,8 +1,9 @@
 import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
+import { broadcastTxID, emitBroadcast } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable } from "@util/index.ts";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode } from "@util/index.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
@@ -185,9 +186,8 @@ const globalFuncs: InterfaceFunctions = pureObj({
   sanitizeArtists,
   sanitizeSong,
   fetchLyricsUrlTop,
-  // TODO: document:
-  fuzzyFetchLyricsInfo,
-  getLyricsCacheEntry,
+  fuzzyFetchLyricsInfo, // TODO: docs
+  getLyricsCacheEntry, // TODO: docs
   // TODO:
   // getLyricsCache: getLyricsCacheInterface,
   // saveLyricsCache: saveLyricsCacheInterface,
@@ -208,6 +208,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
 
   // other:
   formatNumber,
+  sanitizeUnicode, // TODO: docs
 });
 
 /** Initializes the BYTM interface */
@@ -737,5 +738,7 @@ export function getInternals(token: string | undefined) {
     setGlobalProp,
     enableDiscardBeforeUnload,
     disableDiscardBeforeUnload,
+    broadcastTxID,
+    emitBroadcast,
   };
 }

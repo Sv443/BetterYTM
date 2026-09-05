@@ -20,7 +20,7 @@ export type BroadcastPacketDataMap = {
     /** The ID of the DataStore that was updated. */
     id: string;
   };
-  /** Reloads all open tabs. */
+  /** Reloads all open tabs running BetterYTM except the sender's. */
   reloadTabs: void;
 
   // sessions:
@@ -77,9 +77,14 @@ export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = Bro
   from: string;
   /** List of TxIDs that indicates which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions. */
   to?: string[];
-  /** The actual packet to be sent. */
+  /** The actual packet object, without transmission metadata. */
   packet: BroadcastPacket<TPacketType>;
-  /** Unique nonce to prevent parsing the same packet multiple times. */
+  /**
+   * Unique floating-point nonce to prevent parsing the same packet multiple times.  
+   * The integer part of the number is an incrental number derived from a few of the least-significant bits of the current millisecond-accuracy epoch timestamp.  
+   * The float part is a randomly generated number from 0 to 1. This is the actual random part of the number.  
+   * This combination makes it possible to sort packets by the nonce for a more or less chronological order.
+   */
   nonce: number;
 };
 

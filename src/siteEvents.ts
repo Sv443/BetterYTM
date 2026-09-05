@@ -12,7 +12,10 @@ export type BroadcastSiteEventsMapped = {
   [K in BroadcastPacketType as `broadcast:${K}`]: (packet: BroadcastTransitPacket<K>) => void;
 };
 
-/** Map of all site events and their arguments. Doesn't include the `bytm:siteEvent:` prefix, which is added when emitting events on the `window` object. */
+/**
+ * Map of all site events and their arguments. Doesn't include the `bytm:siteEvent:` prefix, which is added when emitting events on the `window` object.  
+ * Also relays all received broadcast packets using the prefix `broadcast:` before the packet ID.
+ */
 export type SiteEventsMap = Prettify<
   & {
     //#region misc:
@@ -73,7 +76,7 @@ export type SiteEventsMap = Prettify<
      * Contains the type and full data of the packet, including metadata about the sender and intended recipients.  
      * See `src/utils/broadcast.ts` for more info and the type definition of the packet data.
      */
-    broadcast: (type: BroadcastPacketType, packet: BroadcastTransitPacket) => void;
+    broadcast: (packetType: BroadcastPacketType, transitPacket: BroadcastTransitPacket) => void;
   }
   & BroadcastSiteEventsMapped
 >;

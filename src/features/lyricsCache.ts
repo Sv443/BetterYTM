@@ -1,9 +1,10 @@
 import { clamp, DataStore } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compressionFormat } from "@/constants.ts";
-import { loggers } from "@util/index.ts";
 import { emitInterface } from "@/interface.ts";
 import { getFeature } from "@/config.ts";
+import { loggers } from "@util/index.ts";
+import { sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 
 export type LyricsCache = {
@@ -20,7 +21,7 @@ export const lyricsCacheStore = new DataStore({
   defaultData: {
     cache: [],
   } as LyricsCache,
-  formatVersion: 2,
+  formatVersion: 3,
   engine: new GMStorageEngine(),
   compressionFormat,
   migrations: {
@@ -33,6 +34,15 @@ export const lyricsCacheStore = new DataStore({
         path: "path" in entry ? entry.path : (new URL(String("url" in entry ? entry.url : entry.path)).pathname),
         added: Math.floor(entry.added / 1000),
         viewed: Math.floor(entry.viewed / 1000),
+      }));
+      return oldData;
+    },
+    // 2 -> 3 (v3.2.0) - re-sanitize data
+    3: (oldData: LyricsCache): LyricsCache => {
+      oldData.cache = oldData.cache.map(entry => ({
+        ...entry,
+        artist: sanitizeArtists(entry.artist),
+        song: sanitizeSong(entry.song),
       }));
       return oldData;
     },

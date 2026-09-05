@@ -421,6 +421,43 @@ export function sliceNum(n: number, count: number) {
   return n % (10 ** (String(n).length - count));
 }
 
+// curly/angle/low-9 quotes, primes, turned commas and fullwidth/modifier variants used as apostrophes:
+const singleQuotesRegex = /[‘’‚‛‹›′ʼʹ＇❛❜`´]/gmu;
+// curly/angle/low-9 double quotes, double primes, fullwidth and CJK corner-bracket-style quotation marks:
+const doubleQuotesRegex = /[“”„‟«»″＂❝❞〝〞〟]/gmu;
+// fullwidth, ideographic, Arabic and small-form commas:
+const commaRegex = /[，、،﹐﹑､]/gmu;
+// fullwidth, ideographic, Arabic, small-form periods and the "one dot leader":
+const periodRegex = /[．。۔﹒｡․]/gmu;
+// non-breaking, en/em quad, en/em/three/four/six-per-em, figure, punctuation, thin, hair, narrow no-break, medium
+// mathematical and ideographic space separators, normalized to a regular space:
+const unicodeSpaceRegex = /[\u00a0\u2000-\u200a\u202f\u205f\u3000]/gmu;
+// soft hyphen, Mongolian vowel separator, Arabic letter mark, zero-width space/non-joiner/joiner, LTR/RTL marks, word joiner,
+// invisible math operators, variation selectors, interlinear annotation chars and the BOM/zero-width no-break space:
+const invisCharRegex = /[\u00ad\u180e\u061c\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufe00-\ufe0f\ufff9-\ufffb\ufeff]+/gmu;
+
+/**
+ * Replaces all sorts of wacky Unicode variants with the regular ASCII variant if possible.  
+ * Supports the following character types:
+ * - `'`: curly/angle/low-9 quotes, primes, turned commas and fullwidth/modifier variants used as apostrophes.
+ * - `"`: curly/angle/low-9 double quotes, double primes, fullwidth and CJK corner-bracket-style quotation marks.
+ * - `,`: fullwidth, ideographic, Arabic and small-form commas.
+ * - `.`: fullwidth, ideographic, Arabic, small-form periods and the "one dot leader".
+ * - ` `: non-breaking, en/em quad, en/em/three/four/six-per-em, figure, punctuation, thin, hair, narrow no-break, medium mathematical and ideographic space separators.
+ * - `(removed)`: soft hyphen, Mongolian vowel separator, Arabic letter mark, zero-width space/non-joiner/joiner, LTR/RTL marks, word joiner, invisible math operators, variation selectors, interlinear annotation chars and the BOM/zero-width no-break space.
+ */
+export function sanitizeUnicode(str: string) {
+  return str
+    // replace unicode symbols:
+    .replace(singleQuotesRegex, "'")
+    .replace(doubleQuotesRegex, "\"")
+    .replace(commaRegex, ",")
+    .replace(periodRegex, ".")
+    .replace(unicodeSpaceRegex, " ")
+    .replace(invisCharRegex, "")
+    .trim();
+}
+
 //#region version session counter
 
 type VersionSessions = Record<string, {

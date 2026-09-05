@@ -9,7 +9,7 @@ import { showPrompt } from "@dialog/prompt.ts";
 import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 import { getCurrentMediaType, setInnerHtml } from "@util/dom.ts";
-import { openInTab, resourceAsString } from "@util/misc.ts";
+import { openInTab, resourceAsString, sanitizeUnicode } from "@util/misc.ts";
 import { constructUrl } from "@util/xhr.ts";
 import { onInteraction } from "@util/input.ts";
 
@@ -150,21 +150,6 @@ export function sanitizeArtists(artists: string) {
       .replace(squareParensRegex, "");
 
   return sanitizeUnicode(artists);
-}
-
-const singleQuotesRegex = /[‘’‛‹›]/gm;
-const doubleQuotesRegex = /[“”„‟«»]/gm;
-const commaRegex = /[,，、]/gm;
-const periodRegex = /[.。．]/gm;
-
-function sanitizeUnicode(str: string) {
-  return str
-    // replace unicode symbols:
-    .replace(singleQuotesRegex, "'")
-    .replace(doubleQuotesRegex, "\"")
-    .replace(commaRegex, ",")
-    .replace(periodRegex, ".")
-    .trim();
 }
 
 /** Returns the lyrics URL from genius for the currently selected song */

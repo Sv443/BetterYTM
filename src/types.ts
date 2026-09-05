@@ -2,7 +2,7 @@ import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-ne
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener } from "@/observers.ts";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers } from "@util/index.ts";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers, sanitizeUnicode } from "@util/index.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
 import type { fetchLyricsUrlTop, fuzzyFetchLyricsInfo, sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
@@ -558,23 +558,23 @@ export type PluginItem = Prettify<
 
 //#region plugin interface
 
-/** All functions exposed by the interface on the global `BYTM` object */
+/** Most of the functions exposed by the interface via the global `BYTM` object. */
 export type InterfaceFunctions = {
   // meta:
-  /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it */
+  /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it. */
   getPluginInfo: typeof getPluginInfo;
-  /** 🔒 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins */
+  /** 🔒 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
   getInternals: typeof getInternals;
 
   // bytm-specific:
-  /** Returns the current domain as a constant string representation */
+  /** Returns the current domain as a constant string representation. */
   getDomain: typeof getDomain;
   /**
    * Returns the URL of a resource as defined in `assets/resources.json`  
    * There are also some resources like translation files that get added by `tools/post-build.ts`  
    *   
-   * The returned URL is a `blob:` URL served up by the userscript extension  
-   * This makes the resource fast to fetch and also prevents CORS issues
+   * The returned URL is a `blob:` URL served up by the userscript extension.  
+   * This makes the resource fast to fetch and also prevents CORS issues.
    */
   getResourceUrl: typeof getResourceUrl;
   /**
@@ -582,75 +582,75 @@ export type InterfaceFunctions = {
    * Uses a builtin cache to speed up subsequent calls, even across sessions.
    */
   resourceAsString: typeof resourceAsString;
-  /** Returns the unique session ID for the current tab */
+  /** Returns the unique session ID for the current tab. */
   getSessionId: typeof getSessionId;
-  /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used */
+  /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used. */
   reloadTab: typeof reloadTab;
 
   // dom:
-  /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string */
+  /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string. */
   setInnerHtml: typeof setInnerHtml;
-  /** Adds a listener to one of the already present SelectorObserver instances */
+  /** Adds a listener to one of the already present SelectorObserver instances. */
   addSelectorListener: typeof addSelectorListener;
-  /** Registers accessible interaction listeners (click, enter, space) on the provided element */
+  /** Registers accessible interaction listeners (click, enter, space) on the provided element. */
   onInteraction: typeof onInteraction;
   /**
-   * Returns the current video time (on both YT and YTM)  
-   * In case it can't be determined on YT, mouse movement is simulated to bring up the video time  
-   * In order for that edge case not to error out, the function would need to be called in response to a user interaction event (e.g. click) due to the strict autoplay policy in browsers
+   * Returns the current video time (on both YT and YTM).  
+   * In case it can't be determined on YT, mouse movement is simulated to bring up the video time.  
+   * In order for that edge case not to error out, the function would need to be called in response to a user interaction event (e.g. click) due to the strict autoplay policy in browsers.
    */
   getVideoTime: typeof getVideoTime;
-  /** Returns the thumbnail URL for the provided video ID and thumbnail quality */
+  /** Returns the thumbnail URL for the provided video ID and thumbnail quality. */
   getThumbnailUrl: typeof getThumbnailUrl;
-  /** Returns the thumbnail URL with the best quality for the provided video ID */
+  /** Returns the thumbnail URL with the best quality for the provided video ID. */
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
-  /** Fetches the Apple Music / iTunes album info objects for the given artist and album names */
+  /** Fetches the Apple Music / iTunes album info objects for the given artist and album names. */
   fetchITunesAlbumInfo: typeof fetchITunesAlbumInfo;
-  /** Resolves the returned promise when the video element is queryable in the DOM */
+  /** Resolves the returned promise when the video element is queryable in the DOM. */
   waitVideoElementReady: typeof waitVideoElementReady;
-  /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found */
+  /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found. */
   getVideoElement: typeof getVideoElement;
-  /** Returns the CSS selector to the video element for both YTM and YT */
+  /** Returns the CSS selector to the video element for both YTM and YT. */
   getVideoSelector: typeof getVideoSelector;
-  /** (On YTM only) returns the current media type (video or song) */
+  /** (On YTM only) returns the current media type (video or song). */
   getCurrentMediaType: typeof getCurrentMediaType;
-  /** Returns the like and dislike elements, as well as the current state of them as a string constant */
+  /** Returns the like and dislike elements, as well as the current state of them as a string constant. */
   getLikeDislikeBtns: typeof getLikeDislikeBtns;
-  /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored */
+  /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored. */
   isIgnoredInputElement: typeof isIgnoredInputElement;
   
   // site events:
-  /** Adds a site event listener */
+  /** Adds a site event listener. */
   onSiteEvent: typeof siteEvents.on,
-  /** Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern */
+  /** Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern. */
   onceSiteEvent: typeof siteEvents.once,
-  /** Adds a listener for multiple site events at once, with configurable behavior */
+  /** Adds a listener for multiple site events at once, with configurable behavior. */
   onMultiSiteEvents: typeof siteEvents.onMulti,
 
   // translations:
-  /** 🔒 Sets the locale for all new translations */
+  /** 🔒 Sets the locale for all new translations. */
   setLocale: typeof setLocaleInterface;
-  /** Returns the current locale */
+  /** Returns the current locale. */
   getLocale: typeof getLocale;
-  /** Returns whether a translation key exists for the set locale */
+  /** Returns whether a translation key exists for the set locale. */
   hasKey: typeof hasKey;
-  /** Returns whether a translation key exists for the provided locale */
+  /** Returns whether a translation key exists for the provided locale. */
   hasKeyFor: typeof hasKeyFor;
-  /** Returns the translation for the provided translation key and currently set locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key and currently set locale (check the files in the folder `assets/translations`). */
   t: typeof t;
-  /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`). */
   tp: typeof tp;
-  /** Returns the translation for the provided translation key and provided locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key and provided locale (check the files in the folder `assets/translations`). */
   tl: typeof tl;
-  /** Returns the translation for the provided translation key, including pluralization identifier and provided locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key, including pluralization identifier and provided locale (check the files in the folder `assets/translations`). */
   tlp: typeof tlp;
 
   // feature config:
-  /** 🔒 Returns the current feature configuration */
+  /** 🔒 Returns the current feature configuration. */
   getFeatures: typeof getFeaturesInterface;
-  /** 🔒 Overwrites the feature configuration with the provided one */
+  /** 🔒 Overwrites the feature configuration with the provided one. */
   saveFeatures: typeof saveFeaturesInterface;
-  /** Returns the default feature configuration */
+  /** Returns the default feature configuration. */
   getDefaultFeatures: () => FeatureConfig;
 
   // lyrics:
@@ -666,32 +666,34 @@ export type InterfaceFunctions = {
   getLyricsCacheEntry: typeof getLyricsCacheEntry;
 
   // auto-like:
-  /** 🔒 Returns the current auto-like data */
+  /** 🔒 Returns the current auto-like data. */
   getAutoLikeData: typeof getAutoLikeDataInterface;
-  /** 🔒 Overwrites the auto-like data */
+  /** 🔒 Overwrites the auto-like data. */
   saveAutoLikeData: typeof saveAutoLikeDataInterface;
-  /** Returns the votes for the provided video ID from the ReturnYoutubeDislike API */
+  /** Returns the votes for the provided video ID from the ReturnYoutubeDislike API. */
   fetchVideoVotes: typeof fetchVideoVotes;
 
   // components:
-  /** Creates a new hotkey input component */
+  /** Creates a new hotkey input component. */
   createHotkeyInput: typeof createHotkeyInput;
-  /** Creates a new toggle input component */
+  /** Creates a new toggle input component. */
   createToggleInput: typeof createToggleInput;
-  /** Creates a new circular button component */
+  /** Creates a new circular button component. */
   createCircularBtn: typeof createCircularBtn;
-  /** Creates a new ripple effect on the provided element or creates an empty element that has the effect */
+  /** Creates a new ripple effect on the provided element or creates an empty element that has the effect. */
   createRipple: typeof createRipple;
-  /** Shows a toast with the provided text */
+  /** Shows a toast with the provided text. */
   showToast: typeof showToast;
-  /** Shows a toast with the provided text and an icon */
+  /** Shows a toast with the provided text and an icon. */
   showIconToast: typeof showIconToast;
-  /** Shows a styled confirm() or alert() dialog with the provided message */
+  /** Shows a styled confirm() or alert() dialog with the provided message. */
   showPrompt: typeof showPromptInterface;
 
   // other:
-  /** Formats a number to a string using the configured locale and configured or passed number notation */
+  /** Formats a number to a string using the configured locale and configured or passed number notation. */
   formatNumber: typeof formatNumber;
+  /** Replaces all sorts of wacky Unicode variants with the regular ASCII variant if possible. */
+  sanitizeUnicode: typeof sanitizeUnicode;
 };
 
 //#region feature defs
