@@ -306,7 +306,6 @@ async function initInteractionLockHotkey() {
   ilMessageEl.id = "bytm-interaction-lock-overlay-message";
   ilMessageEl.ariaLive = "polite";
   ilMessageEl.tabIndex = 0;
-  setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
   ilMessageEl.title = getHotkeyParts(getFeature("interactionLockHotkey"));
   ilContainerEl.appendChild(ilMessageEl);
 
@@ -341,6 +340,7 @@ async function initInteractionLockHotkey() {
     ilOverlayEl.classList.remove("hidden");
     ilHideTimeout = setTimeout(hide, getFeature("interactionLockOverlayTimeout") * 1000);
     initial && document.querySelector<HTMLButtonElement>("#bytm-interaction-lock-overlay-message")?.focus();
+    setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
   };
 
   /** Hides the overlay without changing the locked state. */
@@ -348,6 +348,7 @@ async function initInteractionLockHotkey() {
     loggers.hotkey.log("Hiding the interaction lock overlay");
     clearTimeout(ilHideTimeout);
     ilOverlayEl.classList.add("hidden");
+    setInnerHtml(ilMessageEl, "");
   };
 
   /** Locks all page interactions outside of the overlay and shows it. */
