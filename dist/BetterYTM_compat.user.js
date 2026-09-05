@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7483ddbc/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@844aff27/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 05 Sep 2026 23:01:13 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 05 Sep 2026 23:11:30 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 7483ddbc                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 844aff27                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ PBBpxg9mk7my                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ j1Yd9BbJe2PM                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6849,9 +6849,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "7483ddbc";
+	var buildNumber$1 = "844aff27";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788649273623;
+	var buildTimestamp = 1788649890060;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -14678,7 +14678,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		results.forEach((res, i) => {
 			if (res.status === "rejected") loggers.hotkey.error(`Error while initializing hotkey feature '${inits[i][0]}':`, res.reason);
 		});
-		loggers.hotkey.log("Initialized all hotkey features");
+		loggers.hotkey.info("Initialized all hotkey features", LogLevel.Info);
 		return results;
 	}
 	/** Checks whether the given keyboard event matches the given hotkey object. */
@@ -14896,7 +14896,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						alt: e.altKey,
 						code: e.code
 					};
-					loggers.hotkey.log(`Ignoring key '${hotkeyToString(hk, true)}' because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+					loggers.hotkey.log(`Dismissing key '${hotkeyToString(hk, true)}' because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
 				}
 			} else if (ilOverlayEnabled) unlock();
 		}, { capture: true });
@@ -14904,7 +14904,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (getFeature("interactionLockHotkeyEnabled") && ilOverlayEnabled) {
 				if (e instanceof KeyboardEvent && hotkeyMatches(e, getFeature("interactionLockHotkey"))) return;
 				if (!e.target?.closest("#bytm-interaction-lock-overlay")) {
-					loggers.hotkey.log(`Ignoring mouse button press because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+					loggers.hotkey.log(`Dismissing mouse button press because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
 					preventBubble(e);
 					show();
 				}
@@ -19668,7 +19668,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "7483ddbc",
+				buildNumber: "844aff27",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
