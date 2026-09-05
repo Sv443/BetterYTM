@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@03a74015/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@7483ddbc/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Fri, 04 Sep 2026 17:24:45 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 05 Sep 2026 23:01:13 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 03a74015                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 7483ddbc                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ CQ68etkRi59j                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ PBBpxg9mk7my                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6560,6 +6560,7 @@ Has: ${checksum}`);
 			"icon-image_filled": "icons/image_filled.svg",
 			"icon-image": "icons/image.svg",
 			"icon-link": "icons/link.svg",
+			"icon-lock": "icons/lock.svg",
 			"icon-lyrics": "icons/lyrics.svg",
 			"icon-new": "icons/new.svg",
 			"icon-prompt": "icons/help.svg",
@@ -6828,7 +6829,7 @@ Has: ${checksum}`);
 		newFeatureAdornmentMaxSessionCount: () => 20,
 		platformNames: () => platformNames,
 		rawConsts: () => rawConsts,
-		repo: () => repo,
+		repo: () => repo$1,
 		scriptInfo: () => scriptInfo$1,
 		sessionStorageAvailable: () => sessionStorageAvailable$1
 	});
@@ -6840,7 +6841,7 @@ Has: ${checksum}`);
 	*/
 	var rawConsts = {};
 	/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
-	var repo = "Sv443/BetterYTM";
+	var repo$1 = "Sv443/BetterYTM";
 	/** The mode in which the script was built (production or development). */
 	var mode$1 = "development";
 	/** The branch to use in various URLs that point to the GitHub repo. */
@@ -6848,15 +6849,15 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "03a74015";
+	var buildNumber$1 = "7483ddbc";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788542685555;
+	var buildTimestamp = 1788649273623;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
 	var devServerPort = 8710;
 	/** URL to the changelog file */
-	var changelogUrl = `https://raw.githubusercontent.com/${repo}/develop/changelog.md?build=${buildNumber$1}`;
+	var changelogUrl = `https://raw.githubusercontent.com/${repo$1}/develop/changelog.md?build=${buildNumber$1}`;
 	/** The URL search parameters at the earliest possible time */
 	var initialParams$1 = new URL(location.href).searchParams;
 	/** Timestamp of when the script was initialized. */
@@ -10520,13 +10521,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?\W)/i)) artists = artists.replace(parensRegex, "").replace(squareParensRegex, "");
 		return sanitizeUnicode(artists);
 	}
-	var singleQuotesRegex = /[‘’‛‹›]/gm;
-	var doubleQuotesRegex = /[“”„‟«»]/gm;
-	var commaRegex = /[,，、]/gm;
-	var periodRegex = /[.。．]/gm;
-	function sanitizeUnicode(str) {
-		return str.replace(singleQuotesRegex, "'").replace(doubleQuotesRegex, "\"").replace(commaRegex, ",").replace(periodRegex, ".").trim();
-	}
 	/** Returns the lyrics URL from genius for the currently selected song */
 	async function getCurrentLyricsUrl() {
 		try {
@@ -10898,9 +10892,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Returns HTML for the hotkey modifier keys info element */
 	function getHotkeyModifiersHtml(hotkey) {
 		const modifiers = [];
-		hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_ctrl")}</kbd>`);
-		hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
-		hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
+		hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier.ctrl")}</kbd>`);
+		hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier.shift")}</kbd>`);
+		hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}</kbd>`);
 		return `\
 <div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">
   <span>
@@ -10925,9 +10919,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		if (!hotkey) return t("hotkey_input_none_selected");
 		let str = "";
 		const p = padding ? " " : "";
-		if (hotkey.ctrl) str += `${t("hotkey_modifier_ctrl")}${p}+${p}`;
-		if (hotkey.shift) str += `${t("hotkey_modifier_shift")}${p}+${p}`;
-		if (hotkey.alt) str += `${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}${p}+${p}`;
+		if (hotkey.ctrl) str += `${t("hotkey_modifier.ctrl")}${p}+${p}`;
+		if (hotkey.shift) str += `${t("hotkey_modifier.shift")}${p}+${p}`;
+		if (hotkey.alt) str += `${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}${p}+${p}`;
 		str += hotkey.code;
 		return str;
 	}
@@ -11889,7 +11883,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 						scriptVersion: package_default.version,
 						buildNumber: buildNumber$1,
 						buildDate: new Date(buildTimestamp).toLocaleString(getLocale(), { dateStyle: "medium" }),
-						buildBrowseLink: `https://github.com/${repo}/tree/${buildNumber$1}`,
+						buildBrowseLink: `https://github.com/${repo$1}/tree/${buildNumber$1}`,
 						authorName: package_default.author.name,
 						authorLink: package_default.author.url,
 						githubLink: scriptInfo$1.namespace,
@@ -11900,7 +11894,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 						discordLink: "https://dc.sv443.net/",
 						currentYear: (/* @__PURE__ */ new Date()).getFullYear(),
 						licenseName: package_default.license,
-						licenseUrl: `https://github.com/${repo}/blob/${branch$1}/LICENSE.txt`,
+						licenseUrl: `https://github.com/${repo$1}/blob/${branch$1}/LICENSE.txt`,
 						contributorsLink: package_default.specialThanksUrl
 					}))));
 					return [aboutTextCont];
@@ -13146,6 +13140,115 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}), JSON.stringify(JSON.parse(await serializer.serialize(useEncoding)), void 0, 2), "application/json");
 	}
 	//#endregion
+	//#region src/utils/broadcast.ts
+	/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
+	var broadcastTxID = randomId$1(10, 36);
+	var broadcastEngDSOpts = {
+		id: "bytm-broadcast",
+		encodeData: [null, (d) => d],
+		decodeData: [null, (d) => d]
+	};
+	/**
+	* DataStoreEngine instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
+	* Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.  
+	* Doesn't need to be read from, as the packets are captured via `GM.addValueChangeListener`.
+	*/
+	var broadcastEng = new GMStorageEngine({ dataStoreOptions: broadcastEngDSOpts });
+	/** Which packets have already been received and processed. */
+	var receivedNonces = /* @__PURE__ */ new Set();
+	/** Initializes the broadcast module by setting up the necessary event listeners. */
+	function initBroadcast() {
+		if ("addValueChangeListener" in GM) GM.addValueChangeListener(broadcastEngDSOpts.id, (_name, _oldData, newData, isRemote) => {
+			try {
+				if (typeof newData === "string" && newData.trim().startsWith("{") && newData.trim().endsWith("}")) newData = JSON.parse(newData);
+			} catch (e) {
+				loggers.broadcast.warn("Failed to parse broadcast packet as object:", newData, e);
+			}
+			if (isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null) relayBroadcastPacket(newData.packet);
+		});
+		else loggers.broadcast.error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
+		getSerializerStoresFull().forEach((store) => {
+			store.on("updateData", debounce$1(() => {
+				emitBroadcast({
+					type: "dataStoreUpdate",
+					data: { id: store.id }
+				});
+				getFeature("logEvents") && loggers.broadcast.log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
+			}, 100));
+		});
+		siteEvents.on("broadcast", handleBroadcastPacket);
+		loggers.broadcast.info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
+	}
+	/** Called to parse and handle received broadcast packets. */
+	async function handleBroadcastPacket(type, { from, to, packet }) {
+		if (from === broadcastTxID) return;
+		if (Array.isArray(to) && !to.includes(broadcastTxID)) return;
+		switch (type) {
+			case "dataStoreUpdate": {
+				const data = packet.data;
+				try {
+					await getSerializerStoresFull().find((s) => s.id === data.id)?.loadData();
+					if (data.id === configStore.id) emitSiteEvent("configChanged", configStore.getData());
+					getFeature("logEvents") && loggers.broadcast.log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
+				} catch (err) {
+					loggers.broadcast.log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
+				}
+				break;
+			}
+			case "reloadTabs":
+				await reloadTab();
+				break;
+			case "discoverSessions":
+				emitBroadcast({
+					type: "discoverSessionsReply",
+					data: {
+						sessionId: getSessionId(),
+						buildNumber: buildNumber$1,
+						version: scriptInfo$1.version,
+						title: document.title,
+						domain: getDomain(),
+						initTime
+					}
+				}, [from]);
+				getFeature("logEvents") && loggers.broadcast.log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
+				break;
+		}
+	}
+	/**
+	* Emits a packet through BYTM's broadcast system to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.  
+	* The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.  
+	* @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
+	* @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
+	*/
+	async function emitBroadcast(packet, to) {
+		const nonce = sliceNum(Date.now(), 4) + Math.random();
+		return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({ packet: {
+			from: broadcastTxID,
+			to,
+			packet,
+			nonce
+		} }));
+	}
+	/** Validates if the given object is a valid {@linkcode BroadcastTransitPacket} */
+	function isValidTransitBroadcastPacket(obj) {
+		return typeof obj === "object" && obj !== null && typeof obj.from === "string" && (obj.to === void 0 || Array.isArray(obj.to) && obj.to.every((id) => typeof id === "string")) && typeof obj.packet === "object" && obj.packet !== null && typeof obj.packet.type === "string" && (typeof obj.packet.data === "object" && obj.packet.data !== null || obj.packet.data === void 0) && typeof obj.nonce === "number";
+	}
+	/** Gets called when a broadcast packet is received to validate and relay it via {@linkcode siteEvents} */
+	function relayBroadcastPacket(packet) {
+		if (!isValidTransitBroadcastPacket(packet)) return loggers.broadcast.warn("Received invalid broadcast packet, ignoring:", packet);
+		if (receivedNonces.has(packet.nonce)) return loggers.broadcast.warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
+		if (receivedNonces.size >= 10) {
+			const oldestNonce = receivedNonces.values().next().value;
+			oldestNonce && receivedNonces.delete(oldestNonce);
+		}
+		receivedNonces.add(packet.nonce);
+		if (packet.from === broadcastTxID || Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")) return;
+		if (getFeature("logEvents")) loggers.broadcast.log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
+		const packetClean = pureObj$2(packet);
+		forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
+		forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean);
+	}
+	//#endregion
 	//#region src/components/MarkdownDialog.ts
 	var MarkdownDialog = class MarkdownDialog extends BytmDialog {
 		opts;
@@ -13182,7 +13285,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	};
 	//#endregion
 	//#region src/interface.ts
-	var { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants_exports;
+	var { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants_exports;
 	var { autoPlural, NanoEmitter, pureObj } = CoreUtils_exports;
 	var { getUnsafeWindow } = UserUtils_exports;
 	[...allSiteEvents.map((e) => `bytm:siteEvent:${e}`)];
@@ -13240,7 +13343,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		showToast,
 		showIconToast,
 		showPrompt: showPromptInterface,
-		formatNumber
+		formatNumber,
+		sanitizeUnicode
 	});
 	/** Initializes the BYTM interface */
 	function preInitInterface() {
@@ -13365,7 +13469,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					version: package_default.version,
 					description: createTranslatable("dev_plugin.description"),
 					homepage: {
-						source: package_default.homepage,
+						source: `https://github.com/${repo}/blob/${branch}/docs/almanac.md#developer-plugin`,
 						changelog: `${package_default.homepage}/blob/${branch}/changelog.md`,
 						bug: package_default.bugs.url,
 						greasyfork: package_default.hosts.greasyfork,
@@ -13553,7 +13657,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			showPrompt,
 			setGlobalProp,
 			enableDiscardBeforeUnload,
-			disableDiscardBeforeUnload
+			disableDiscardBeforeUnload,
+			broadcastTxID,
+			emitBroadcast
 		};
 	}
 	//#endregion
@@ -13561,19 +13667,29 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	var lyricsCacheStore = new DataStore$1({
 		id: "bytm-lyrics-cache",
 		defaultData: { cache: [] },
-		formatVersion: 2,
+		formatVersion: 3,
 		engine: new GMStorageEngine(),
 		compressionFormat: compressionFormat$1,
-		migrations: { 2: (oldData) => {
-			oldData.cache = oldData.cache.map((entry) => ({
-				artist: entry.artist,
-				song: entry.song,
-				path: "path" in entry ? entry.path : new URL(String("url" in entry ? entry.url : entry.path)).pathname,
-				added: Math.floor(entry.added / 1e3),
-				viewed: Math.floor(entry.viewed / 1e3)
-			}));
-			return oldData;
-		} },
+		migrations: {
+			2: (oldData) => {
+				oldData.cache = oldData.cache.map((entry) => ({
+					artist: entry.artist,
+					song: entry.song,
+					path: "path" in entry ? entry.path : new URL(String("url" in entry ? entry.url : entry.path)).pathname,
+					added: Math.floor(entry.added / 1e3),
+					viewed: Math.floor(entry.viewed / 1e3)
+				}));
+				return oldData;
+			},
+			3: (oldData) => {
+				oldData.cache = oldData.cache.map((entry) => ({
+					...entry,
+					artist: sanitizeArtists(entry.artist),
+					song: sanitizeSong(entry.song)
+				}));
+				return oldData;
+			}
+		},
 		nanoEmitterOptions: {
 			publicEmit: false,
 			catchUpEvents: ["loadData"]
@@ -13794,7 +13910,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		await GM.setValue("bytm-version-check", Date.now());
 		const res = await sendRequest({
 			method: "GET",
-			url: `https://github.com/${repo}/releases/latest`
+			url: `https://github.com/${repo$1}/releases/latest`
 		});
 		const noNewVerFound = () => notifyNoNewVerFound ? showPrompt({
 			type: "alert",
@@ -14555,10 +14671,15 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	//#endregion
 	//#region src/features/hotkeys.ts
 	async function initHotkeys() {
-		const promises = [];
-		if (getDomain() === "ytm") promises.push(initOpenLyricsHotkey());
-		promises.push(initSearchLyricsPromptHotkey(), initLikeDislikeHotkeys(), initSiteSwitchHotkey(), initProxyHotkeys(), initSkipToRemTimeHotkey(), initSearchBarHotkeys());
-		return await Promise.allSettled(promises);
+		const inits = [];
+		if (getDomain() === "ytm") inits.push(["initOpenLyricsHotkey", initOpenLyricsHotkey()]);
+		inits.push(["initSearchLyricsPromptHotkey", initSearchLyricsPromptHotkey()], ["initLikeDislikeHotkeys", initLikeDislikeHotkeys()], ["initSiteSwitchHotkey", initSiteSwitchHotkey()], ["initProxyHotkeys", initProxyHotkeys()], ["initSkipToRemTimeHotkey", initSkipToRemTimeHotkey()], ["initSearchBarHotkeys", initSearchBarHotkeys()], ["initInteractionLockHotkey", initInteractionLockHotkey()]);
+		const results = await Promise.allSettled(inits.map(([, promise]) => promise));
+		results.forEach((res, i) => {
+			if (res.status === "rejected") loggers.hotkey.error(`Error while initializing hotkey feature '${inits[i][0]}':`, res.reason);
+		});
+		loggers.hotkey.log("Initialized all hotkey features");
+		return results;
 	}
 	/** Checks whether the given keyboard event matches the given hotkey object. */
 	function hotkeyMatches(evt, hk) {
@@ -14691,6 +14812,105 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			hotkeyMatches(e, getFeature("focusSearchBarHotkey")) && checkFocusHotkey(e);
 			hotkeyMatches(e, getFeature("clearSearchBarHotkey")) && checkClearHotkey(e);
 		}, { capture: true });
+	}
+	async function initInteractionLockHotkey() {
+		const ilOverlayEl = document.createElement("div");
+		ilOverlayEl.id = "bytm-interaction-lock-overlay";
+		ilOverlayEl.classList.add("hidden");
+		ilOverlayEl.inert = true;
+		const ilContainerEl = document.createElement("div");
+		ilContainerEl.id = "bytm-interaction-lock-overlay-cont";
+		const ilLockEl = document.createElement("span");
+		ilLockEl.id = "bytm-interaction-lock-overlay-lock-img";
+		resourceAsString("icon-lock").then((svg) => setInnerHtml(ilLockEl, svg));
+		ilContainerEl.appendChild(ilLockEl);
+		const getHotkeyParts = (hk, asHtml = false) => {
+			const hotkeyPartsRaw = [
+				...hk.ctrl ? [t("hotkey_modifier.ctrl")] : [],
+				...hk.shift ? [t("hotkey_modifier.shift")] : [],
+				...hk.alt ? [t("hotkey_modifier.alt")] : [],
+				hk.code
+			];
+			return t("interaction_lock_message", { hotkeyParts: (asHtml ? hotkeyPartsRaw.map((p) => `<kbd class="bytm-kbd">${p}</kbd>`) : hotkeyPartsRaw).join(" + ") });
+		};
+		const ilMessageEl = document.createElement("h1");
+		ilMessageEl.id = "bytm-interaction-lock-overlay-message";
+		ilMessageEl.ariaLevel = "1";
+		ilMessageEl.tabIndex = 0;
+		setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
+		ilMessageEl.title = getHotkeyParts(getFeature("interactionLockHotkey"));
+		ilContainerEl.appendChild(ilMessageEl);
+		const ilButtonEl = document.createElement("button");
+		ilButtonEl.id = "bytm-interaction-lock-disable-btn";
+		ilButtonEl.classList.add("bytm-btn");
+		ilButtonEl.type = "button";
+		ilButtonEl.textContent = ilButtonEl.ariaLabel = t("interaction_lock_unlock_button");
+		ilContainerEl.appendChild(ilButtonEl);
+		ilOverlayEl.appendChild(ilContainerEl);
+		document.body.appendChild(ilOverlayEl);
+		let ilOverlayEnabled = false;
+		let ilHideTimeout;
+		/** Shows the overlay and (re-)starts the timer that automatically hides it again. */
+		const show = () => {
+			if (getFeature("interactionLockOverlayTimeout") === 0) return;
+			loggers.hotkey.log("Showing the interaction lock overlay");
+			clearTimeout(ilHideTimeout);
+			ilOverlayEl.classList.remove("hidden");
+			ilHideTimeout = setTimeout(hide, getFeature("interactionLockOverlayTimeout") * 1e3);
+		};
+		/** Hides the overlay without changing the locked state. */
+		const hide = () => {
+			loggers.hotkey.log("Hiding the interaction lock overlay");
+			clearTimeout(ilHideTimeout);
+			ilOverlayEl.classList.add("hidden");
+		};
+		/** Locks all page interactions outside of the overlay and shows it. */
+		const lock = () => {
+			ilOverlayEnabled = true;
+			ilOverlayEl.inert = false;
+			for (const child of Array.from(document.body.children)) if (child !== ilOverlayEl) child.inert = true;
+			loggers.hotkey.log("Locked page interactions");
+			show();
+		};
+		/** Unlocks all page interactions and hides the overlay. */
+		const unlock = () => {
+			ilOverlayEnabled = false;
+			ilOverlayEl.inert = true;
+			for (const child of Array.from(document.body.children)) if (child !== ilOverlayEl) child.inert = false;
+			loggers.hotkey.log("Unlocked page interactions");
+			hide();
+		};
+		onInteraction(ilButtonEl, () => unlock());
+		document.addEventListener("keydown", (e) => {
+			if (getFeature("interactionLockHotkeyEnabled")) {
+				if (hotkeyMatches(e, getFeature("interactionLockHotkey"))) {
+					preventBubble(e);
+					ilOverlayEnabled ? unlock() : lock();
+				} else if (ilOverlayEnabled) {
+					if (e.target?.closest("#bytm-interaction-lock-overlay")) return;
+					preventBubble(e);
+					show();
+					const hk = {
+						ctrl: e.ctrlKey,
+						shift: e.shiftKey,
+						alt: e.altKey,
+						code: e.code
+					};
+					loggers.hotkey.log(`Ignoring key '${hotkeyToString(hk, true)}' because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+				}
+			} else if (ilOverlayEnabled) unlock();
+		}, { capture: true });
+		document.addEventListener("mousedown", (e) => {
+			if (getFeature("interactionLockHotkeyEnabled") && ilOverlayEnabled) {
+				if (e instanceof KeyboardEvent && hotkeyMatches(e, getFeature("interactionLockHotkey"))) return;
+				if (!e.target?.closest("#bytm-interaction-lock-overlay")) {
+					loggers.hotkey.log(`Ignoring mouse button press because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+					preventBubble(e);
+					show();
+				}
+			}
+		}, { capture: true });
+		loggers.hotkey.log(`Initialized interaction lock hotkey (currently ${getFeature("interactionLockHotkeyEnabled") ? "enabled" : "disabled"})`);
 	}
 	var lastProxyHkTime = 0;
 	/** All proxy hotkey groups, identified by the feature key that toggles them off or on */
@@ -16653,6 +16873,42 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			},
 			reloadRequired: false
 		},
+		interactionLockHotkeyEnabled: {
+			type: "toggle",
+			category: "hotkeys",
+			group: "interactionLockHotkey",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: true,
+			reloadRequired: false
+		},
+		interactionLockHotkey: {
+			type: "hotkey",
+			category: "hotkeys",
+			group: "interactionLockHotkey",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			default: {
+				code: "Pause",
+				shift: false,
+				ctrl: false,
+				alt: true
+			},
+			reloadRequired: false
+		},
+		interactionLockOverlayTimeout: {
+			type: "slider",
+			category: "hotkeys",
+			group: "interactionLockHotkey",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			unit: "s",
+			default: 5,
+			min: 0,
+			max: 10,
+			step: .5,
+			reloadRequired: false
+		},
 		rebindNextAndPrevious: {
 			type: "toggle",
 			category: "hotkeys",
@@ -17064,7 +17320,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				"defaultObserverDebounce",
 				"globalAlertMode",
 				"openWelcomeMenu",
-				"verboseObservers"
+				"verboseObservers",
+				"interactionLockHotkeyEnabled",
+				"interactionLockHotkey",
+				"interactionLockOverlayTimeout"
 			]);
 		}
 	};
@@ -17140,7 +17399,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const oldDataObj = JSON.parse(oldData);
 			if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0) oldDataHash = await computeHash$1(JSON.stringify(oldDataObj), "sha256");
 		} catch {}
-		let data = fixCfgKeys(await configStore.loadData());
+		const rawData = await configStore.loadData();
+		let data = fixCfgKeys(rawData);
 		if (oldDataHash && oldDataHash !== await computeHash$1(JSON.stringify(data), "sha256")) {
 			if (await showPrompt({
 				type: "confirm",
@@ -17160,6 +17420,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			loggers.data.error("  ⚠️ - Config data migration failed, falling back to default data:", err);
 			await configStore.setData(data = configStore.defaultData);
 		}
+		else if (await computeHash$1(JSON.stringify(rawData), "SHA-256") !== await computeHash$1(JSON.stringify(data), "SHA-256")) {
+			await configStore.setData(data);
+			loggers.data.info("  ⚠️ - Fixed missing or extraneous config keys without a version change");
+		}
 		emitInterface("bytm:configReady");
 		return structuredClone(data);
 	}
@@ -17170,7 +17434,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	*/
 	function fixCfgKeys(cfg) {
 		const newCfg = structuredClone(cfg);
-		const currentKeys = Object.keys(newCfg);
+		const currentKeys = Object.keys(newCfg).filter((ck) => typeof cfg[ck] !== "undefined" && featInfo[ck]?.type !== "button");
 		const defaultKeys = Object.keys(cfgDefaultData);
 		for (const key of defaultKeys.filter((k) => !currentKeys.includes(k))) currentKeys.push(newCfg[key] = cfgDefaultData[key]);
 		for (const key of currentKeys.filter((k) => !defaultKeys.includes(k))) delete newCfg[key];
@@ -17564,115 +17828,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}, 3e4);
 	}
 	//#endregion
-	//#region src/utils/broadcast.ts
-	/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
-	var broadcastTxID = randomId$1(10, 36);
-	var broadcastEngDSOpts = {
-		id: "bytm-broadcast",
-		encodeData: [null, (d) => d],
-		decodeData: [null, (d) => d]
-	};
-	/**
-	* DataStoreEngine instance used to push broadcast packets to other sessions using the `GM.addValueChangeListener` API.  
-	* Refer to the {@linkcode BroadcastPacket} type for the packets sent through this channel.  
-	* Doesn't need to be read from, as the packets are captured via `GM.addValueChangeListener`.
-	*/
-	var broadcastEng = new GMStorageEngine({ dataStoreOptions: broadcastEngDSOpts });
-	/** Which packets have already been received and processed. */
-	var receivedNonces = /* @__PURE__ */ new Set();
-	/** Initializes the broadcast module by setting up the necessary event listeners. */
-	function initBroadcast() {
-		if ("addValueChangeListener" in GM) GM.addValueChangeListener(broadcastEngDSOpts.id, (_name, _oldData, newData, isRemote) => {
-			try {
-				if (typeof newData === "string" && newData.trim().startsWith("{") && newData.trim().endsWith("}")) newData = JSON.parse(newData);
-			} catch (e) {
-				loggers.broadcast.warn("Failed to parse broadcast packet as object:", newData, e);
-			}
-			if (isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null) relayBroadcastPacket(newData.packet);
-		});
-		else loggers.broadcast.error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
-		getSerializerStoresFull().forEach((store) => {
-			store.on("updateData", debounce$1(() => {
-				emitBroadcast({
-					type: "dataStoreUpdate",
-					data: { id: store.id }
-				});
-				getFeature("logEvents") && loggers.broadcast.log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
-			}, 100));
-		});
-		siteEvents.on("broadcast", handleBroadcastPacket);
-		loggers.broadcast.info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
-	}
-	/** Called to parse and handle received broadcast packets. */
-	async function handleBroadcastPacket(type, { from, to, packet }) {
-		if (from === broadcastTxID) return;
-		if (Array.isArray(to) && !to.includes(broadcastTxID)) return;
-		switch (type) {
-			case "dataStoreUpdate": {
-				const data = packet.data;
-				try {
-					await getSerializerStoresFull().find((s) => s.id === data.id)?.loadData();
-					if (data.id === configStore.id) emitSiteEvent("configChanged", configStore.getData());
-					getFeature("logEvents") && loggers.broadcast.log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
-				} catch (err) {
-					loggers.broadcast.log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
-				}
-				break;
-			}
-			case "reloadTabs":
-				await reloadTab();
-				break;
-			case "discoverSessions":
-				emitBroadcast({
-					type: "discoverSessionsReply",
-					data: {
-						sessionId: getSessionId(),
-						buildNumber: buildNumber$1,
-						version: scriptInfo$1.version,
-						title: document.title,
-						domain: getDomain(),
-						initTime
-					}
-				}, [from]);
-				getFeature("logEvents") && loggers.broadcast.log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
-				break;
-		}
-	}
-	/**
-	* Emits a packet through BYTM's broadcast system to all other sessions that might be open, or only to specific sessions if the `to` parameter is provided.  
-	* The packet will be wrapped in a {@linkcode BroadcastTransitPacket} that includes metadata about the sender and intended recipients.  
-	* @param packet The actual packet to be sent, without the metadata. Use the {@linkcode BroadcastPacket} type for this parameter.
-	* @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
-	*/
-	async function emitBroadcast(packet, to) {
-		const nonce = sliceNum(Date.now(), 4) + Math.random();
-		return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({ packet: {
-			from: broadcastTxID,
-			to,
-			packet,
-			nonce
-		} }));
-	}
-	/** Validates if the given object is a valid {@linkcode BroadcastTransitPacket} */
-	function isValidTransitBroadcastPacket(obj) {
-		return typeof obj === "object" && obj !== null && typeof obj.from === "string" && (obj.to === void 0 || Array.isArray(obj.to) && obj.to.every((id) => typeof id === "string")) && typeof obj.packet === "object" && obj.packet !== null && typeof obj.packet.type === "string" && (typeof obj.packet.data === "object" && obj.packet.data !== null || obj.packet.data === void 0) && typeof obj.nonce === "number";
-	}
-	/** Gets called when a broadcast packet is received to validate and relay it via {@linkcode siteEvents} */
-	function relayBroadcastPacket(packet) {
-		if (!isValidTransitBroadcastPacket(packet)) return loggers.broadcast.warn("Received invalid broadcast packet, ignoring:", packet);
-		if (receivedNonces.has(packet.nonce)) return loggers.broadcast.warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
-		if (receivedNonces.size >= 10) {
-			const oldestNonce = receivedNonces.values().next().value;
-			oldestNonce && receivedNonces.delete(oldestNonce);
-		}
-		receivedNonces.add(packet.nonce);
-		if (packet.from === broadcastTxID || Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")) return;
-		if (getFeature("logEvents")) loggers.broadcast.log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
-		const packetClean = pureObj$2(packet);
-		forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
-		forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean);
-	}
-	//#endregion
 	//#region src/utils/misc.ts
 	var domain;
 	/**
@@ -17930,6 +18085,25 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	function sliceNum(n, count) {
 		return n % 10 ** (String(n).length - count);
 	}
+	var singleQuotesRegex = /[‘’‚‛‹›′ʼʹ＇❛❜`´]/gmu;
+	var doubleQuotesRegex = /[“”„‟«»″＂❝❞〝〞〟]/gmu;
+	var commaRegex = /[，、،﹐﹑､]/gmu;
+	var periodRegex = /[．。۔﹒｡․]/gmu;
+	var unicodeSpaceRegex = /[\u00a0\u2000-\u200a\u202f\u205f\u3000]/gmu;
+	var invisCharRegex = /[\u00ad\u180e\u061c\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufe00-\ufe0f\ufff9-\ufffb\ufeff]+/gmu;
+	/**
+	* Replaces all sorts of wacky Unicode variants with the regular ASCII variant if possible.  
+	* Supports the following character types:
+	* - `'`: curly/angle/low-9 quotes, primes, turned commas and fullwidth/modifier variants used as apostrophes.
+	* - `"`: curly/angle/low-9 double quotes, double primes, fullwidth and CJK corner-bracket-style quotation marks.
+	* - `,`: fullwidth, ideographic, Arabic and small-form commas.
+	* - `.`: fullwidth, ideographic, Arabic, small-form periods and the "one dot leader".
+	* - ` `: non-breaking, en/em quad, en/em/three/four/six-per-em, figure, punctuation, thin, hair, narrow no-break, medium mathematical and ideographic space separators.
+	* - `(removed)`: soft hyphen, Mongolian vowel separator, Arabic letter mark, zero-width space/non-joiner/joiner, LTR/RTL marks, word joiner, invisible math operators, variation selectors, interlinear annotation chars and the BOM/zero-width no-break space.
+	*/
+	function sanitizeUnicode(str) {
+		return str.replace(singleQuotesRegex, "'").replace(doubleQuotesRegex, "\"").replace(commaRegex, ",").replace(periodRegex, ".").replace(unicodeSpaceRegex, " ").replace(invisCharRegex, "").trim();
+	}
 	var verSessions;
 	/** Counts the number of launched sessions per userscript version and returns the current count, to enable time-based features like the "new feature" adornment icon */
 	async function initVersionSessionCounter() {
@@ -17962,8 +18136,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				if (path.startsWith("/")) path = path.slice(1);
 				else path = `assets/${path}`;
 				switch (assetSource) {
-					case "jsdelivr": return `https://cdn.jsdelivr.net/gh/${repo}@${ghRef}/${path}`;
-					case "github": return `https://raw.githubusercontent.com/${repo}/${ghRef}/${path}`;
+					case "jsdelivr": return `https://cdn.jsdelivr.net/gh/${repo$1}@${ghRef}/${path}`;
+					case "github": return `https://raw.githubusercontent.com/${repo$1}/${ghRef}/${path}`;
 					case "local": return `http://localhost:${devServerPort}/${path}`;
 				}
 			})();
@@ -18443,7 +18617,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/utils/data.ts
 	/** URL to the remote data JSON file on a CDN. */
-	var remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/${branch$1}/assets/data.json`;
+	var remoteDataUrl = `https://raw.githubusercontent.com/${repo$1}/refs/heads/${branch$1}/assets/data.json`;
 	var staticData;
 	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
 	async function getStaticData() {
@@ -19025,7 +19199,12 @@ Build #${buildNumber$1} (dev mode)
 	function preInit() {
 		try {
 			initTimings.start = Date.now();
-			if (["FireMonkey"].includes(GM.info?.scriptHandler ?? "")) return alert(`⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`);
+			if (["FireMonkey"].includes(GM.info?.scriptHandler ?? "")) {
+				const msg = `⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`;
+				if (isDomLoaded()) alert(msg);
+				else onDomLoad$1().then(() => alert(msg));
+				return;
+			}
 			setLogLevel(defaultLogLevel);
 			initBroadcast();
 			preInitInterface();
@@ -19070,11 +19249,13 @@ Build #${buildNumber$1} (dev mode)
 			else onDomLoad();
 		} catch (err) {
 			loggers.init.error("Fatal error:", err);
-			alert(`\
+			const msg = `\
 ${scriptInfo$1.name} encountered a fatal error during initialization and will not work correctly, if at all.
 For information on what caused this error, please refer to the JS console.
 
-${`Please report this bug using the issue tracker on GitHub:\n${package_default.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`}${`\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${package_default.devVersionUrl}`}`);
+${`Please report this bug using the issue tracker on GitHub:\n${package_default.bugs.url}\n\nFor now, you can try reinstalling the script or downgrading to a previous version that worked for you.`}${`\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${package_default.devVersionUrl}`}`;
+			if (!isDomLoaded()) await onDomLoad$1();
+			alert(msg);
 		}
 	}
 	/** Called when the DOM has finished loading and can be queried and altered by the userscript */
@@ -19487,7 +19668,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "03a74015",
+				buildNumber: "7483ddbc",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
