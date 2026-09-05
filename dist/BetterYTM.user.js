@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@844aff27/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@50d04e73/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 05 Sep 2026 23:11:28 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 05 Sep 2026 23:51:24 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 844aff27                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 50d04e73                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 5ekZlGFasC66                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 7zD8is8o6j2j                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -542,9 +542,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "844aff27";
+	var buildNumber$1 = "50d04e73";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788649888795;
+	var buildTimestamp = 1788652284780;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -7016,17 +7016,23 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			];
 			return t("interaction_lock_message", { hotkeyParts: (asHtml ? hotkeyPartsRaw.map((p) => `<kbd class="bytm-kbd">${p}</kbd>`) : hotkeyPartsRaw).join(" + ") });
 		};
-		const ilMessageEl = document.createElement("h1");
+		const ilMessageEl = document.createElement("span");
 		ilMessageEl.id = "bytm-interaction-lock-overlay-message";
-		ilMessageEl.ariaLevel = "1";
+		ilMessageEl.ariaLive = "polite";
 		ilMessageEl.tabIndex = 0;
-		setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
 		ilMessageEl.title = getHotkeyParts(getFeature("interactionLockHotkey"));
 		ilContainerEl.appendChild(ilMessageEl);
+		/** Forces the aria-live region to (re-)announce the lock message, since toggling visibility alone doesn't count as a content update for screen readers. */
+		const announceMessage = () => {
+			const html = getHotkeyParts(getFeature("interactionLockHotkey"), true);
+			setInnerHtml(ilMessageEl, "");
+			requestAnimationFrame(() => setInnerHtml(ilMessageEl, html));
+		};
 		const ilButtonEl = document.createElement("button");
 		ilButtonEl.id = "bytm-interaction-lock-disable-btn";
 		ilButtonEl.classList.add("bytm-btn");
 		ilButtonEl.type = "button";
+		ilButtonEl.tabIndex = 0;
 		ilButtonEl.textContent = ilButtonEl.ariaLabel = t("interaction_lock_unlock_button");
 		ilContainerEl.appendChild(ilButtonEl);
 		ilOverlayEl.appendChild(ilContainerEl);
@@ -7036,16 +7042,20 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		/** Shows the overlay and (re-)starts the timer that automatically hides it again. */
 		const show = () => {
 			if (getFeature("interactionLockOverlayTimeout") === 0) return;
+			const initial = Boolean(document.querySelector("#bytm-interaction-lock-overlay.hidden"));
 			loggers.hotkey.log("Showing the interaction lock overlay");
 			clearTimeout(ilHideTimeout);
 			ilOverlayEl.classList.remove("hidden");
 			ilHideTimeout = setTimeout(hide, getFeature("interactionLockOverlayTimeout") * 1e3);
+			initial && document.querySelector("#bytm-interaction-lock-overlay-message")?.focus();
+			setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
 		};
 		/** Hides the overlay without changing the locked state. */
 		const hide = () => {
 			loggers.hotkey.log("Hiding the interaction lock overlay");
 			clearTimeout(ilHideTimeout);
 			ilOverlayEl.classList.add("hidden");
+			setInnerHtml(ilMessageEl, "");
 		};
 		/** Locks all page interactions outside of the overlay and shows it. */
 		const lock = () => {
@@ -7054,6 +7064,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			for (const child of Array.from(document.body.children)) if (child !== ilOverlayEl) child.inert = true;
 			loggers.hotkey.log("Locked page interactions");
 			show();
+			announceMessage();
+			ilMessageEl.focus();
 		};
 		/** Unlocks all page interactions and hides the overlay. */
 		const unlock = () => {
@@ -7064,6 +7076,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			hide();
 		};
 		onInteraction(ilButtonEl, () => unlock());
+		ilOverlayEl.addEventListener("focusin", () => {
+			if (ilOverlayEnabled) show();
+		});
 		document.addEventListener("keydown", (e) => {
 			if (getFeature("interactionLockHotkeyEnabled")) {
 				if (hotkeyMatches(e, getFeature("interactionLockHotkey"))) {
@@ -11851,7 +11866,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "844aff27",
+				buildNumber: "50d04e73",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
