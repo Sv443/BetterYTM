@@ -302,18 +302,26 @@ async function initInteractionLockHotkey() {
     return t("interaction_lock_message", { hotkeyParts });
   };
 
-  const ilMessageEl = document.createElement("h1");
+  const ilMessageEl = document.createElement("span");
   ilMessageEl.id = "bytm-interaction-lock-overlay-message";
-  ilMessageEl.ariaLevel = "1";
+  ilMessageEl.ariaLive = "polite";
   ilMessageEl.tabIndex = 0;
   setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
   ilMessageEl.title = getHotkeyParts(getFeature("interactionLockHotkey"));
   ilContainerEl.appendChild(ilMessageEl);
 
+  /** Forces the aria-live region to (re-)announce the lock message, since toggling visibility alone doesn't count as a content update for screen readers. */
+  const announceMessage = () => {
+    const html = getHotkeyParts(getFeature("interactionLockHotkey"), true);
+    setInnerHtml(ilMessageEl, "");
+    requestAnimationFrame(() => setInnerHtml(ilMessageEl, html));
+  };
+
   const ilButtonEl = document.createElement("button");
   ilButtonEl.id = "bytm-interaction-lock-disable-btn";
   ilButtonEl.classList.add("bytm-btn");
   ilButtonEl.type = "button";
+  ilButtonEl.tabIndex = 0;
   ilButtonEl.textContent = ilButtonEl.ariaLabel = t("interaction_lock_unlock_button");
   ilContainerEl.appendChild(ilButtonEl);
 
@@ -327,10 +335,12 @@ async function initInteractionLockHotkey() {
   const show = () => {
     if(getFeature("interactionLockOverlayTimeout") === 0)
       return;
+    const initial = Boolean(document.querySelector("#bytm-interaction-lock-overlay.hidden"));
     loggers.hotkey.log("Showing the interaction lock overlay");
     clearTimeout(ilHideTimeout);
     ilOverlayEl.classList.remove("hidden");
     ilHideTimeout = setTimeout(hide, getFeature("interactionLockOverlayTimeout") * 1000);
+    initial && document.querySelector<HTMLButtonElement>("#bytm-interaction-lock-overlay-message")?.focus();
   };
 
   /** Hides the overlay without changing the locked state. */
@@ -349,6 +359,8 @@ async function initInteractionLockHotkey() {
         (child as HTMLElement).inert = true;
     loggers.hotkey.log("Locked page interactions");
     show();
+    announceMessage();
+    ilMessageEl.focus();
   };
 
   /** Unlocks all page interactions and hides the overlay. */
@@ -363,6 +375,13 @@ async function initInteractionLockHotkey() {
   };
 
   onInteraction(ilButtonEl, () => unlock());
+
+  // reset the auto-hide timer whenever focus moves within the overlay (e.g. via Tab),
+  // so it doesn't disappear while being navigated with the keyboard:
+  ilOverlayEl.addEventListener("focusin", () => {
+    if(ilOverlayEnabled)
+      show();
+  });
 
   document.addEventListener("keydown", (e) => {
     if(getFeature("interactionLockHotkeyEnabled")) {
