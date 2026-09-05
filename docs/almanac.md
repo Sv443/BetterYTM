@@ -10,8 +10,10 @@ Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
     - [Feature Configuration](#feature-configuration)
     - [Advanced Mode](#advanced-mode)
     - [Feature Adornments](#feature-adornments)
-  - [TODO: User Interface](#user-interface)
-    - [TODO: Configuration Menu](#configuration-menu)
+  - [User Interface](#user-interface)
+    - [Configuration Menu](#configuration-menu)
+    - [Export & Import Dialog](#export--import-dialog)
+    - [Markdown Dialog](#markdown-dialog)
   - [Build Information](#build-information)
     - [Build Mode](#build-mode)
     - [Build Time](#build-time)
@@ -21,9 +23,15 @@ Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
     - [Source Branch](#source-branch)
     - [Compatibility Mode](#compatibility-mode)
     - [Host Platform](#host-platform)
-  - [TODO: Site Events](#site-events)
+  - [Site Events](#site-events)
+  - [TODO: Session ID](#session-id)
+  - [TODO: Broadcasts](#broadcasts)
+    - [TODO: Broadcast Packets](#broadcast-packets)
+    - [TODO: TxID](#txid)
   - [TODO: Menu Commands](#menu-commands)
-  - [TODO: Resource Cache](#resource-cache)
+  - [TODO: Resources](#resources)
+    - [TODO: Assets](#assets)
+    - [TODO: Resource Cache](#resource-cache)
 - **[Libraries](#libraries)**
   - [DataStore](#datastore)
 - **[Plugins](#plugins)**
@@ -136,6 +144,41 @@ This section touches on the [configuration menu](#configuration-menu) and the di
 
 <br>
 
+### Configuration Menu
+> Also referred to as just "config menu" or "config dialog".
+  
+This is the main dialog in BetterYTM.  
+It's used for configuring every single [feature](#features), as well as displaying the [changelog](../changelog.md) and some of the [build information.](#build-information)  
+  
+The config menu can be opened in multiple ways:
+- If the `watermarkEnabled` feature is on, by clicking the `BetterYTM` text under the logo on the YTM page.
+- In the profile popover menu on the YTM page. <!-- TODO: and YT too -->
+- In the left sidebar menu on the YT page.
+  
+Despite it looking similar to all other [`BytmDialog` instances](#bytmdialog), it is a fully separate implementation, as it existed way before that class was made.  
+This has some unfortunate side effects like being bloated, having all sorts of custom event hooks to make it compatible with stacked `BytmDialog`s, etc.  
+Another side effect is that the `bytm:dialogOpened[:id]` and `bytm:dialogClosed[:id]` [site events](#site-events) don't get passed an instance as the sole parameter.
+
+<br>
+
+### Export & Import Dialog
+> Also referred to as "exim menu" or "ExImDialog".
+  
+This dialog is made using the [`BytmDialog` class.](#bytmdialog) It's used for exporting any arbitrary data, as long as it's in string form.  
+Throughout BetterYTM it's used to export or import the [feature config data](#feature-configuration) and the auto-like feature's data.  
+The export & import dialog can be opened from the footer of the respective dialog.  
+  
+For exporting, two sets of data can be supplied. The regular data will be shown in the `<textarea>` element and will be what's copied by default. The special data can only be obtained by shift-clicking the copy button. Usually this is used to gain access to the un-encoded data.  
+When importing, both cases need to be implicitly covered by the implementation.
+
+<br>
+
+### Markdown Dialog
+This dialog is made using the [`BytmDialog` class.](#bytmdialog) It will render an arbitrary Markdown string as its body using the [marked library](https://marked.js.org/) and the [GitHub-flavored Markdown syntax.](https://github.github.com/gfm/)  
+It can also sanitize any interpolated HTML using DOMPurify (this prevents TrustedTypes-related errors on pages with a strict Content Security Policy).
+
+<br>
+
 ## Build Information
 > Also referred to as "static build info(rmation)", and closely related to ["constants"](#constants).
   
@@ -211,6 +254,18 @@ With `strict` compatibility (`pnpm build-prod-compat` or `pnpm build-dev-compat`
 ### Host Platform
 The platform that is intended to host the built script.  
 In general this only decides which of the three platforms (GitHub, Greasy Fork and OpenUserJS) are highlighted in user interfaces, but for Greasy Fork specifically, code comments are also stripped out to reduce the size so the script can fit in the 500kB size limit.
+
+<br>
+
+## Site Events
+This is one of the two event systems used by BetterYTM (the other one being [interface events](#interface-events)).  
+Site events either pertain to the contents of the site running BetterYTM changing, the URL path changing, or other changes of a similar nature.  
+Additionally, some features will use site events to send data to each other; for example the `showVotes` feature announces when it updates, so the `swapLikeDislikeButtons` feature can apply its changes.  
+  
+The site events can be listened to via the [plugin interface](#plugin-interface) functions `onSiteEvent()`, `onceSiteEvent()` and `onMultiSiteEvents()`.  
+The full `NanoEmitter` instance used for this system is also available via the interface function `getInternals()` when the [`InternalAccess` (256) intent](#plugin-intents) is granted. There are also the functions `emitInterface()` and `emitSiteEvent()` to emit custom or existing events from a plugin.  
+  
+For a list of all site events and their arguments, refer to the file [`src/siteEvents.ts`](../src/siteEvents.ts) and search for `type SiteEventsMap`.
 
 
 <br><br>
