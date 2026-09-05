@@ -145,10 +145,10 @@
   "hotkey_input_click_to_reset_tooltip": "Son kaydedilen tuş kombinasyonuna sıfırla",
   "hotkey_input_none_selected": "Kısayol seçilmedi",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Shift",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Shift",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "${scriptName}'ye Hoş Geldiniz!",
   "config_menu": "Yapılandırma Menüsü",
@@ -217,6 +217,8 @@
   "auto_like_import_desc": "Otomatik beğenilen kanalları içe aktarmak için aşağıdaki alana metni yapıştırın ve ardından içe aktar tuşuna tıklayın:",
   "auto_like_delete_all_tooltip": "Tüm otomatik beğenilen kanalları sil",
   "auto_like_delete_all_confirm": "Tüm otomatik beğenilen kanalları silmek istiyor musunuz?",
+
+  "interaction_lock_unlock_button": "Kilidi Aç",
 
   "prompt_confirm": "Onayla",
   "prompt_close": "Kapat",

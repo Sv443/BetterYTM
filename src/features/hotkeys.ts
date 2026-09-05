@@ -3,32 +3,46 @@ import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "@feat/behavior
 import { isIgnoredInputElement } from "@feat/input.ts";
 import { getFeature } from "@/config.ts";
 import { siteEvents } from "@/siteEvents.ts";
-import { getLikeDislikeBtns, getVideoTime } from "@util/dom.ts";
-import { getDomain } from "@util/misc.ts";
+import { getLikeDislikeBtns, getVideoTime, setInnerHtml } from "@util/dom.ts";
+import { getDomain, resourceAsString } from "@util/misc.ts";
 import { loggers } from "@util/logging.ts";
 import type { Domain, FeatKeysOfType, HotkeyObj } from "@/types.ts";
 import { promptLyricsSearch } from "@feat/lyrics.ts";
+import "./hotkeys.css";
+import { t } from "@util/translations.ts";
+import { onInteraction } from "@util/input.ts";
+import { hotkeyToString } from "@comp/hotkeyInput.ts";
 
 //#region init
 
 export async function initHotkeys() {
-  const promises: Promise<void>[] = [];
+  const inits: [name: string, promise: Promise<void>][] = [];
 
   // ytm only:
-  if(getDomain() === "ytm") {
-    promises.push(initOpenLyricsHotkey());
-  }
+  if(getDomain() === "ytm")
+    inits.push(["initOpenLyricsHotkey", initOpenLyricsHotkey()]);
+
   // shared:
-  promises.push(
-    initSearchLyricsPromptHotkey(),
-    initLikeDislikeHotkeys(),
-    initSiteSwitchHotkey(),
-    initProxyHotkeys(),
-    initSkipToRemTimeHotkey(),
-    initSearchBarHotkeys()
+  inits.push(
+    ["initSearchLyricsPromptHotkey", initSearchLyricsPromptHotkey()],
+    ["initLikeDislikeHotkeys", initLikeDislikeHotkeys()],
+    ["initSiteSwitchHotkey", initSiteSwitchHotkey()],
+    ["initProxyHotkeys", initProxyHotkeys()],
+    ["initSkipToRemTimeHotkey", initSkipToRemTimeHotkey()],
+    ["initSearchBarHotkeys", initSearchBarHotkeys()],
+    ["initInteractionLockHotkey", initInteractionLockHotkey()],
   );
 
-  return await Promise.allSettled(promises);
+  const results = await Promise.allSettled(inits.map(([, promise]) => promise));
+
+  results.forEach((res, i) => {
+    if(res.status === "rejected")
+      loggers.hotkey.error(`Error while initializing hotkey feature '${inits[i][0]}':`, res.reason);
+  });
+
+  loggers.hotkey.log("Initialized all hotkey features");
+
+  return results;
 }
 
 //#region utils
@@ -253,6 +267,146 @@ async function initSearchBarHotkeys() {
   }, {
     capture: true, // ensure precedence over YTM's own listeners
   });
+}
+
+//#region interaction lock
+
+async function initInteractionLockHotkey() {
+  const ilOverlayEl = document.createElement("div");
+  ilOverlayEl.id = "bytm-interaction-lock-overlay";
+  ilOverlayEl.classList.add("hidden");
+  ilOverlayEl.inert = true;
+
+  const ilContainerEl = document.createElement("div");
+  ilContainerEl.id = "bytm-interaction-lock-overlay-cont";
+
+  const ilLockEl = document.createElement("span");
+  ilLockEl.id = "bytm-interaction-lock-overlay-lock-img";
+  resourceAsString("icon-lock").then(svg => setInnerHtml(ilLockEl, svg));
+  ilContainerEl.appendChild(ilLockEl);
+
+  const getHotkeyParts = (hk: HotkeyObj, asHtml = false): string => {
+    const hotkeyPartsRaw = [
+      ...(hk.ctrl ? [t("hotkey_modifier.ctrl")] : []),
+      ...(hk.shift ? [t("hotkey_modifier.shift")] : []),
+      ...(hk.alt ? [t("hotkey_modifier.alt")] : []),
+      hk.code,
+    ];
+
+    const hotkeyParts = (
+      asHtml
+        ? hotkeyPartsRaw.map(p => `<kbd class="bytm-kbd">${p}</kbd>`)
+        : hotkeyPartsRaw
+    ).join(" + ");
+
+    return t("interaction_lock_message", { hotkeyParts });
+  };
+
+  const ilMessageEl = document.createElement("h1");
+  ilMessageEl.id = "bytm-interaction-lock-overlay-message";
+  ilMessageEl.ariaLevel = "1";
+  ilMessageEl.tabIndex = 0;
+  setInnerHtml(ilMessageEl, getHotkeyParts(getFeature("interactionLockHotkey"), true));
+  ilMessageEl.title = getHotkeyParts(getFeature("interactionLockHotkey"));
+  ilContainerEl.appendChild(ilMessageEl);
+
+  const ilButtonEl = document.createElement("button");
+  ilButtonEl.id = "bytm-interaction-lock-disable-btn";
+  ilButtonEl.classList.add("bytm-btn");
+  ilButtonEl.type = "button";
+  ilButtonEl.textContent = ilButtonEl.ariaLabel = t("interaction_lock_unlock_button");
+  ilContainerEl.appendChild(ilButtonEl);
+
+  ilOverlayEl.appendChild(ilContainerEl);
+  document.body.appendChild(ilOverlayEl);
+
+  let ilOverlayEnabled = false;
+  let ilHideTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  /** Shows the overlay and (re-)starts the timer that automatically hides it again. */
+  const show = () => {
+    if(getFeature("interactionLockOverlayTimeout") === 0)
+      return;
+    loggers.hotkey.log("Showing the interaction lock overlay");
+    clearTimeout(ilHideTimeout);
+    ilOverlayEl.classList.remove("hidden");
+    ilHideTimeout = setTimeout(hide, getFeature("interactionLockOverlayTimeout") * 1000);
+  };
+
+  /** Hides the overlay without changing the locked state. */
+  const hide = () => {
+    loggers.hotkey.log("Hiding the interaction lock overlay");
+    clearTimeout(ilHideTimeout);
+    ilOverlayEl.classList.add("hidden");
+  };
+
+  /** Locks all page interactions outside of the overlay and shows it. */
+  const lock = () => {
+    ilOverlayEnabled = true;
+    ilOverlayEl.inert = false;
+    for(const child of Array.from(document.body.children))
+      if(child !== ilOverlayEl)
+        (child as HTMLElement).inert = true;
+    loggers.hotkey.log("Locked page interactions");
+    show();
+  };
+
+  /** Unlocks all page interactions and hides the overlay. */
+  const unlock = () => {
+    ilOverlayEnabled = false;
+    ilOverlayEl.inert = true;
+    for(const child of Array.from(document.body.children))
+      if(child !== ilOverlayEl)
+        (child as HTMLElement).inert = false;
+    loggers.hotkey.log("Unlocked page interactions");
+    hide();
+  };
+
+  onInteraction(ilButtonEl, () => unlock());
+
+  document.addEventListener("keydown", (e) => {
+    if(getFeature("interactionLockHotkeyEnabled")) {
+      if(hotkeyMatches(e, getFeature("interactionLockHotkey"))) {
+        preventBubble(e);
+        ilOverlayEnabled ? unlock() : lock();
+      }
+      else if(ilOverlayEnabled) {
+        // allow interacting with elements inside the overlay itself (e.g. the unlock button)
+        if((e.target as HTMLElement)?.closest("#bytm-interaction-lock-overlay"))
+          return;
+        // remind the user of the hotkey and block all other keystrokes
+        preventBubble(e);
+        show();
+
+        const hk: HotkeyObj = {
+          ctrl: e.ctrlKey,
+          shift: e.shiftKey,
+          alt: e.altKey,
+          code: e.code,
+        };
+        loggers.hotkey.log(`Ignoring key '${hotkeyToString(hk, true)}' because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+      }
+    }
+    else if(ilOverlayEnabled) {
+      // feature was disabled while the page was locked, so undo the lock
+      unlock();
+    }
+  }, { capture: true });
+
+  document.addEventListener("mousedown", (e) => {
+    if(getFeature("interactionLockHotkeyEnabled") && ilOverlayEnabled) {
+      if(e instanceof KeyboardEvent && hotkeyMatches(e, getFeature("interactionLockHotkey")))
+        return; // pass to other handler
+
+      if(!(e.target as HTMLElement)?.closest("#bytm-interaction-lock-overlay")) {
+        loggers.hotkey.log(`Ignoring mouse button press because the interaction lock is engaged. Press '${hotkeyToString(getFeature("interactionLockHotkey"), true)}' to disengage it.`);
+        preventBubble(e);
+        show();
+      }
+    }
+  }, { capture: true });
+
+  loggers.hotkey.log(`Initialized interaction lock hotkey (currently ${getFeature("interactionLockHotkeyEnabled") ? "enabled" : "disabled"})`);
 }
 
 //#region proxy hotkeys

@@ -8,6 +8,7 @@
   - Added a configuration option for the global alerts system.
   - Added an extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.
   - Added a hotkey to quickly search for the lyrics of a song, anywhere on YT or YTM (<kbd>Alt</kbd><kbd>Q</kbd> by default).
+  - Added a hotkey to lock all interactions until the hotkey is pressed again (<kbd>Alt</kbd><kbd>Pause</kbd> by default).
 - **Improvements and Changes:**
   - Turned features that had a combined toggle and mode selection into two separate features, to allow for more flexible configuration and easier toggling:
     - `thumbnailOverlayBehavior: "never"` - replaced with `thumbnailOverlayEnabled`.

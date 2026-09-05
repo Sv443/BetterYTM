@@ -142,10 +142,10 @@
   "hotkey_input_click_to_reset_tooltip": "Restablecer a la última combinación de teclas guardada",
   "hotkey_input_none_selected": "Ninguna tecla de acceso rápido seleccionada",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Mayús",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Mayús",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "¡Bienvenido a ${scriptName}!",
   "config_menu": "Configuración",
@@ -214,6 +214,8 @@
   "auto_like_import_desc": "Pega los canales con me gusta automático que deseas importar en el campo a continuación, luego haz clic en el botón de importación:",
   "auto_like_delete_all_tooltip": "Eliminar todos los canales con me gusta automático",
   "auto_like_delete_all_confirm": "¿Realmente quieres eliminar todos los canales con me gusta automático?",
+
+  "interaction_lock_unlock_button": "Desbloquear",
 
   "prompt_confirm": "Confirmar",
   "prompt_close": "Cerrar",

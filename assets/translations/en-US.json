@@ -149,10 +149,10 @@
   "hotkey_input_click_to_reset_tooltip": "Reset to the last saved key combination",
   "hotkey_input_none_selected": "No hotkey selected",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Shift",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Shift",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "Welcome to ${scriptName}!",
   "config_menu": "Config Menu",
@@ -226,6 +226,9 @@
   "auto_like_import_desc": "Paste the auto-liked channels you want to import into the field below, then click the import button:",
   "auto_like_delete_all_tooltip": "Delete all auto-liked channels",
   "auto_like_delete_all_confirm": "Do you really want to delete all auto-liked channels?",
+
+  "interaction_lock_message": "All keyboard and mouse interactions are currently locked.\nTo unlock, press the hotkey ${hotkeyParts} or click the button below.",
+  "interaction_lock_unlock_button": "Unlock",
 
   "prompt_confirm": "Confirm",
   "prompt_close": "Close",
@@ -380,6 +383,7 @@
   "feature_group_header.skipToRemTimeHotkeyEnabled": "Skip to Remembered Time:",
   "feature_group_header.focusSearchBarHotkey": "Focus Search Bar:",
   "feature_group_header.clearSearchBarHotkey": "Clear Search Bar:",
+  "feature_group_header.interactionLockHotkey": "Interaction Lock:",
   "feature_group_header.rebindNextAndPrevious": "Rebind Next/Previous:",
   "feature_group_header.rebindPlayPause": "Rebind Play/Pause:",
   "feature_group_header.darkReader": "Dark Reader:",
@@ -512,6 +516,9 @@
   "feature_desc.focusSearchBarHotkey": "Hotkey to focus the search bar",
   "feature_desc.clearSearchBarHotkeyEnabled": "Add a hotkey to clear the search bar",
   "feature_desc.clearSearchBarHotkey": "Hotkey to clear the search bar",
+  "feature_desc.interactionLockHotkeyEnabled": "Add a hotkey to lock all interactions with the page",
+  "feature_desc.interactionLockHotkey": "Hotkey to lock or unlock page interactions",
+  "feature_desc.interactionLockOverlayTimeout": "How long to show the unlock hint when a key or mouse button is pressed",
   "feature_desc.rebindNextAndPrevious": "Rebind the hotkeys to skip to the next (J) or previous (K) video/song",
   "feature_desc.nextHotkey": "Hotkey to skip to the next video/song",
   "feature_desc.previousHotkey": "Hotkey to skip to the previous video/song",

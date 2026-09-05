@@ -294,6 +294,9 @@ export const cfgMigrations: DataMigrationsDict = {
       "globalAlertMode",
       "openWelcomeMenu",
       "verboseObservers",
+      "interactionLockHotkeyEnabled",
+      "interactionLockHotkey",
+      "interactionLockOverlayTimeout",
     ]);
   },
 } as const satisfies DataMigrationsDict;
@@ -391,8 +394,8 @@ export async function initConfig() {
   }
   catch { void 0; }
 
-  // remove extraneous keys (persistent save is deferred to the next setData call)
-  let data = fixCfgKeys(await configStore.loadData());
+  const rawData = await configStore.loadData();
+  let data = fixCfgKeys(rawData);
 
   // show prompt if config data was migrated
   if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
@@ -420,6 +423,12 @@ export async function initConfig() {
       await configStore.setData(data = configStore.defaultData);
     }
   }
+  // fixCfgKeys() may have added or removed keys even without a format version change
+  // (e.g. new features added to a migration step after a client already recorded that version) - persist that fix too:
+  else if(await computeHash(JSON.stringify(rawData), "SHA-256") !== await computeHash(JSON.stringify(data), "SHA-256")) {
+    await configStore.setData(data);
+    loggers.data.info("  ⚠️ - Fixed missing or extraneous config keys without a version change");
+  }
 
   emitInterface("bytm:configReady");
 
@@ -435,7 +444,7 @@ export async function initConfig() {
  */
 export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   const newCfg = structuredClone(cfg);
-  const currentKeys = Object.keys(newCfg);
+  const currentKeys = Object.keys(newCfg).filter(ck => typeof cfg[ck as keyof typeof cfg] !== "undefined" && featInfo[ck as keyof typeof featInfo]?.type !== "button");
   const defaultKeys = Object.keys(cfgDefaultData);
 
   // add missing keys with default values:

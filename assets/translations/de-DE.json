@@ -148,10 +148,10 @@
   "hotkey_input_click_to_reset_tooltip": "Zurücksetzen auf die zuletzt gespeicherte Tastenkombination",
   "hotkey_input_none_selected": "Keine Tastenkombination ausgewählt",
 
-  "hotkey_modifier_ctrl": "Strg",
-  "hotkey_modifier_shift": "Shift",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Strg",
+  "hotkey_modifier.shift": "Shift",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "Willkommen bei ${scriptName}!",
   "config_menu": "Einstellungen",
@@ -225,6 +225,8 @@
   "auto_like_import_desc": "Füge die Auto-Like Kanäle, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:",
   "auto_like_delete_all_tooltip": "Alle Auto-Like Kanäle löschen",
   "auto_like_delete_all_confirm": "Möchtest du wirklich alle Auto-Like Kanäle löschen?",
+
+  "interaction_lock_unlock_button": "Entsperren",
 
   "prompt_confirm": "Ok",
   "prompt_close": "Schließen",

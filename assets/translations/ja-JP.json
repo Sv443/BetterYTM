@@ -142,10 +142,10 @@
   "hotkey_input_click_to_reset_tooltip": "最後に保存されたキーの組み合わせにリセット",
   "hotkey_input_none_selected": "なし",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Shift",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Shift",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "${scriptName} へようこそ！",
   "config_menu": "構成メニュー",
@@ -214,6 +214,8 @@
   "auto_like_import_desc": "インポートする自動的に好きなチャンネルを以下のフィールドに貼り付け、インポートボタンをクリックしてください：",
   "auto_like_delete_all_tooltip": "すべての自動チャンネルを削除",
   "auto_like_delete_all_confirm": "本当にすべての自動チャンネルを削除しますか？",
+
+  "interaction_lock_unlock_button": "ロック解除",
 
   "prompt_confirm": "確認",
   "prompt_close": "閉じる",

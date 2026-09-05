@@ -141,10 +141,10 @@
   "hotkey_input_click_to_reset_tooltip": "अंतिम सहेजे गए कुंजी संयोजन पर रीसेट करें",
   "hotkey_input_none_selected": "कोई नहीं",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Shift",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Shift",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "${scriptName} में आपका स्वागत है!",
   "config_menu": "कॉन्फ़िगरेशन मेनू",
@@ -213,6 +213,8 @@
   "auto_like_import_desc": "निम्नलिखित क्षेत्र में आपके द्वारा आयात करना चाहिए ऑटो-पसंद किए गए चैनलों को दर्ज करें, फिर आयात बटन पर क्लिक करें:",
   "auto_like_delete_all_tooltip": "सभी ऑटो-पसंद चैनल हटाएं",
   "auto_like_delete_all_confirm": "क्या आप वाकई सभी ऑटो-पसंद चैनल हटाना चाहते हैं?",
+
+  "interaction_lock_unlock_button": "अनलॉक करें",
 
   "prompt_confirm": "पुष्टि करना",
   "prompt_close": "बंद करें",

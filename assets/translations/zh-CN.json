@@ -141,10 +141,10 @@
   "hotkey_input_click_to_reset_tooltip": "重置为上次保存的键组合",
   "hotkey_input_none_selected": "未选择热键",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Shift",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Shift",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "欢迎使用 ${scriptName}！",
   "config_menu": "配置菜单",
@@ -215,6 +215,8 @@
   "auto_like_channels_entries_count-n": "${count} 个频道",
   "auto_like_delete_all_tooltip": "删除所有自动喜欢的频道",
   "auto_like_delete_all_confirm": "您是否真的要删除所有 ${count} 个自动喜欢的频道？",
+
+  "interaction_lock_unlock_button": "解锁",
 
   "prompt_confirm": "确认",
   "prompt_close": "关闭",

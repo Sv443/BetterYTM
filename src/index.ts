@@ -1,5 +1,5 @@
 import { autoPlural, compress, createTable, CustomError, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
-import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
+import { getUnsafeWindow, isDomLoaded, onDomLoad as onDomLoadedUu, preloadImages } from "@sv443-network/userutils";
 import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey, resourceFetches } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { assetSource, buildNumber, buildTimestamp, compressionFormat, defaultLogLevel, initTime, mode, rawConsts, scriptInfo } from "@/constants.ts";
@@ -152,8 +152,15 @@ function preInit() {
       "FireMonkey",
     ];
 
-    if(unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) // (translations not loaded yet)
-      return alert(`⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`);
+    if(unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) { // (translations not loaded yet)
+      const msg = `⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`;
+      // document.body may not exist yet this early - calling alert() before it does can crash other extensions that hook into the native prompt dialog
+      if(isDomLoaded())
+        alert(msg);
+      else
+        onDomLoadedUu().then(() => alert(msg));
+      return;
+    }
 
     setLogLevel(defaultLogLevel);
 
@@ -236,7 +243,7 @@ async function init() {
   }
   catch(err) {
     loggers.init.error("Fatal error:", err);
-    alert(`\
+    const msg = `\
 ${scriptInfo.name} encountered a fatal error during initialization and will not work correctly, if at all.
 For information on what caused this error, please refer to the JS console.
 
@@ -246,7 +253,11 @@ ${assetSource === "local"
 }${mode === "development"
   ? `\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${packageJson.devVersionUrl}`
   : ""
-}`);
+}`;
+    // document.body may not exist yet this early - calling alert() before it does can crash other extensions that hook into the native prompt dialog
+    if(!isDomLoaded())
+      await onDomLoadedUu();
+    alert(msg);
   }
 }
 

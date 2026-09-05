@@ -141,10 +141,10 @@
   "hotkey_input_click_to_reset_tooltip": "Redefinir para a última combinação de teclas salva",
   "hotkey_input_none_selected": "Nenhum",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Shift",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Shift",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "Bem-vindo ao ${scriptName}!",
   "config_menu": "Menu de configuração",
@@ -213,6 +213,8 @@
   "auto_like_import_desc": "Cole os canais auto-curtidos que você deseja importar no campo abaixo e clique no botão de importação:",
   "auto_like_delete_all_tooltip": "Excluir todos os canais auto-curtidos",
   "auto_like_delete_all_confirm": "Você realmente deseja excluir todos os canais auto-curtidos?",
+
+  "interaction_lock_unlock_button": "Desbloquear",
 
   "prompt_confirm": "Confirmar",
   "prompt_close": "Fechar",

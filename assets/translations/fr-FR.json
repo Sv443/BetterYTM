@@ -141,10 +141,10 @@
   "hotkey_input_click_to_reset_tooltip": "Réinitialiser à la dernière combinaison de touches enregistrée",
   "hotkey_input_none_selected": "Aucune touche sélectionnée",
 
-  "hotkey_modifier_ctrl": "Ctrl",
-  "hotkey_modifier_shift": "Maj",
-  "hotkey_modifier_mac_option": "Option",
-  "hotkey_modifier_alt": "Alt",
+  "hotkey_modifier.ctrl": "Ctrl",
+  "hotkey_modifier.shift": "Maj",
+  "hotkey_modifier.mac_option": "Option",
+  "hotkey_modifier.alt": "Alt",
 
   "welcome_menu_title": "Bienvenue sur ${scriptName}!",
   "config_menu": "Menu de configuration",
@@ -213,6 +213,8 @@
   "auto_like_import_desc": "Collez les chaînes auto-aimées que vous souhaitez importer dans le champ ci-dessous, puis cliquez sur le bouton d'importation:",
   "auto_like_delete_all_tooltip": "Supprimer toutes les chaînes auto-aimées",
   "auto_like_delete_all_confirm": "Voulez-vous vraiment supprimer toutes les chaînes auto-aimées?",
+
+  "interaction_lock_unlock_button": "Déverrouiller",
 
   "prompt_confirm": "Confirmer",
   "prompt_close": "Fermer",

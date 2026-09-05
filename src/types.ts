@@ -774,7 +774,7 @@ export type FeatureTypeProps =
     default: string | number;
     /**
      * Array of options to populate the select input with.  
-     * For translation purposes, specify a function instead, because translations must be loaded first.
+     * For translation purposes, specify a function instead, because translations must be loaded first and are not available at variable declaration time.
      */
     options: SelectOption[] | (() => SelectOption[]);
   } & FeatureFuncProps)
@@ -1145,6 +1145,12 @@ export interface FeatureConfig {
   clearSearchBarHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to clear the search bar */
   clearSearchBarHotkey: HotkeyObj;
+  /** Add a hotkey to lock all page interactions until the hotkey is pressed again */
+  interactionLockHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to lock and unlock interaction on the page */
+  interactionLockHotkey: HotkeyObj;
+  /** For how long to show the interaction lock overlay when a key or mouse button is pressed */
+  interactionLockOverlayTimeout: number;
   /** Whether to rebind the next [J] and previous [K] keys */
   rebindNextAndPrevious: boolean;
   /** The hotkey that needs to be pressed to skip to the next video/song */
