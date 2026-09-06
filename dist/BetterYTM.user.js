@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9b55d31b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5294d576/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 06 Sep 2026 13:27:29 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 06 Sep 2026 14:34:45 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 9b55d31b                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 5294d576                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ qNVWD0X2Mvlc                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 1P27dEqtVM9c                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -542,9 +542,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "9b55d31b";
+	var buildNumber$1 = "5294d576";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788701249619;
+	var buildTimestamp = 1788705285318;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -5485,6 +5485,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		getSessionId,
 		reloadTab,
 		setInnerHtml,
+		sanitizeHtml,
 		addSelectorListener,
 		onInteraction,
 		getVideoTime,
@@ -5497,6 +5498,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		getCurrentMediaType,
 		getLikeDislikeBtns,
 		isIgnoredInputElement,
+		parseMarkdown,
 		onSiteEvent: siteEvents.on.bind(siteEvents),
 		onceSiteEvent: siteEvents.once.bind(siteEvents),
 		onMultiSiteEvents: siteEvents.onMulti.bind(siteEvents),
@@ -7509,14 +7511,17 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function addTrackNumbers() {
 		(async () => {
 			const promises = [];
+			const siteSel = getFeature("songListTrackNumbersDomains");
+			const location = getFeature("songListTrackNumbers");
+			if (siteSel !== "all" && siteSel !== getDomain()) return;
 			try {
-				const where = getFeature("songListTrackNumbers");
-				if (where === "genericLists" || where === "everywhere") promises.push(addStyleFromResource("css-track_numbers_song_lists"));
-				if (where === "currentQueue" || where === "everywhere") promises.push(addStyleFromResource("css-track_numbers_current_queue"));
+				if (location === "genericLists" || location === "everywhere") promises.push(addStyleFromResource("css-track_numbers_song_lists"));
+				if (location === "currentQueue" || location === "everywhere") promises.push(addStyleFromResource("css-track_numbers_current_queue"));
 			} catch (err) {
 				loggers.layout.error("Couldn't add track numbers style:", err);
 			}
 			await Promise.allSettled(promises);
+			loggers.layout.log("Added track numbers style - for location(s):", location);
 		})();
 	}
 	//#endregion
@@ -8264,20 +8269,30 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			type: "toggle",
 			category: "songLists",
 			group: "songListTrackNumbers",
-			supportedSites: ["ytm"],
+			supportedSites: ["ytm", "yt"],
 			since: "3.1.0",
 			default: true,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [adornments.reload]
 		},
 		songListTrackNumbers: {
 			type: "select",
 			category: "songLists",
 			group: "songListTrackNumbers",
-			supportedSites: ["ytm"],
+			supportedSites: ["ytm", "yt"],
 			since: "3.1.0",
 			options: options.songListType,
 			default: "genericLists",
-			adornments: [adornments.ytmOnly, adornments.reload]
+			adornments: [adornments.reload]
+		},
+		songListTrackNumbersDomains: {
+			type: "select",
+			category: "songLists",
+			group: "songListTrackNumbers",
+			supportedSites: ["ytm", "yt"],
+			since: "3.2.0",
+			options: options.siteSelection,
+			default: "all",
+			adornments: [adornments.reload]
 		},
 		geniusLyrics: {
 			type: "toggle",
@@ -9529,7 +9544,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				"verboseObservers",
 				"interactionLockHotkeyEnabled",
 				"interactionLockHotkey",
-				"interactionLockOverlayTimeout"
+				"interactionLockOverlayTimeout",
+				"songListTrackNumbersDomains"
 			]);
 		}
 	};
@@ -11516,7 +11532,6 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				ftInit.push(["volumeFeatures", initVolumeFeatures()]);
 				if (feats.lyricsQueueButton || feats.deleteFromQueueButton) ftInit.push(["queueButtons", initQueueButtons()]);
 				ftInit.push(["aboveQueueButtons", initAboveQueueBtns()]);
-				if (feats.songListTrackNumbersEnabled) ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 				if (feats.closeToastsTimeout > 0) ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 				ftInit.push(["autoScrollToActiveSong", initAutoScrollToActiveSong()]);
 				ftInit.push(["yesImStillThere", initStillThere()]);
@@ -11539,6 +11554,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}
 			if (["ytm", "yt"].includes(domain)) {
 				if (feats.removeShareTrackingParamSites) ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
+				if (feats.songListTrackNumbersEnabled) ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 				ftInit.push(["hotkeys", initHotkeys()]);
 				if (feats.autoLikeChannels) ftInit.push(["autoLikeChannels", initAutoLike()]);
 				ftInit.push(["numKeysSkip", initNumKeysSkip()]);
@@ -11874,7 +11890,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "9b55d31b",
+				buildNumber: "5294d576",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
