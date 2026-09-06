@@ -2,7 +2,7 @@ import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-ne
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener } from "@/observers.ts";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers, sanitizeUnicode } from "@util/index.ts";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers, sanitizeUnicode, parseMarkdown, sanitizeHtml } from "@util/index.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
 import type { fetchLyricsUrlTop, fuzzyFetchLyricsInfo, sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
@@ -590,6 +590,8 @@ export type InterfaceFunctions = {
   // dom:
   /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string. */
   setInnerHtml: typeof setInnerHtml;
+  /** Sanitizes the given HTML string using DOMPurify in a TrustedTypes-compatible way (only if supported by the browser). */
+  sanitizeHtml: typeof sanitizeHtml;
   /** Adds a listener to one of the already present SelectorObserver instances. */
   addSelectorListener: typeof addSelectorListener;
   /** Registers accessible interaction listeners (click, enter, space) on the provided element. */
@@ -618,6 +620,8 @@ export type InterfaceFunctions = {
   getLikeDislikeBtns: typeof getLikeDislikeBtns;
   /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored. */
   isIgnoredInputElement: typeof isIgnoredInputElement;
+  /** Converts a markdown string into an HTML string. Optionally and if supported, sanitizes using DOMPurify to create a TrustedHTML object. */
+  parseMarkdown: typeof parseMarkdown;
   
   // site events:
   /** Adds a site event listener. */

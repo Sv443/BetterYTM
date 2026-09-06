@@ -3,7 +3,7 @@ import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { broadcastTxID, emitBroadcast } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode } from "@util/index.ts";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode, parseMarkdown, sanitizeHtml } from "@util/index.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
@@ -149,6 +149,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
 
   // dom:
   setInnerHtml,
+  sanitizeHtml,
   addSelectorListener,
   onInteraction,
   getVideoTime,
@@ -161,6 +162,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getCurrentMediaType,
   getLikeDislikeBtns,
   isIgnoredInputElement,
+  parseMarkdown, // TODO: docs
 
   // site events:
   onSiteEvent: siteEvents.on.bind(siteEvents),
