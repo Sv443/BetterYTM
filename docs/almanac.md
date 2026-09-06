@@ -8,6 +8,7 @@ Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
     - [Feature Info](#feature-info)
     - [Feature Key](#feature-key)
     - [Feature Configuration](#feature-configuration)
+    - [Config Data Migration](#config-data-migration)
     - [Advanced Mode](#advanced-mode)
     - [Feature Adornments](#feature-adornments)
   - [User Interface](#user-interface)
@@ -31,9 +32,14 @@ Explains terms and concepts used throughout BetterYTM's codebase and plugin API.
   - [TODO: Menu Commands](#menu-commands)
   - [TODO: Resources](#resources)
     - [TODO: Assets](#assets)
+    - [TODO: Remote Static Data](#remote-static-data)
+      - [TODO: Global Alerts](#global-alerts)
+  - [TODO: Caches](#caches)
     - [TODO: Resource Cache](#resource-cache)
+    - [TODO: Lyrics Cache](#lyrics-cache)
 - **[Libraries](#libraries)**
   - [DataStore](#datastore)
+  - [DataStoreSerializer](#datastoreserializer)
 - **[Plugins](#plugins)**
   - [Plugin Interface](#plugin-interface)
     - [Authenticated Interface Functions](#authenticated-interface-functions)
@@ -82,9 +88,9 @@ Each feature has a [set of information](#feature-info) that defines the way the 
 
 ### Feature Info
 BetterYTM divides its source code into the main boilerplate, and a [modular feature system.](#features)  
-In `src/features/index.ts` the variable `featInfo` is exported, which contains a list of all of these features.  
+In [`src/features/index.ts`](../src/features/index.ts) the variable `featInfo` is exported, which contains a list of all of these features.  
   
-This list is mainly used to create all the [config menu](#configuration-menu) options, but also other parts of the script, like the [interface events.](#interface-events)  
+This list is mainly used to create all the [config menu](#configuration-menu) options, but also influences other parts of the script, like the [interface events.](#interface-events)  
   
 The `featInfo` object is keyed by a [feature key.](#feature-key)  
 Each feature's information object has to have the following properties:
@@ -105,15 +111,27 @@ These properties are optional (some may also depend on the `type` property if sp
 <br>
 
 ### Feature Key
-This is a string that is used to identify each [feature.](#features)
+This is a string that is used to identify each [feature.](#features)  
+It's written in `camelCase` and there are a few conventions:
+- Toggle features that turn a different option on or off usually end in `Enabled`
+- Hotkey features usually end in `Hotkey`
+- Feature keys are usually not edited after their initial creation, as that requires manual [config migration.](#config-data-migration)
 
 <br>
 
 ### Feature Configuration
-> Also referred to as just "config(uration)".
+> Also referred to as just "config(uration)" or just "features".
   
 An object that maps [feature keys](#feature-key) to the feature's current value, as displayed in the [config menu.](#configuration-menu)  
-This data is stored in a [DataStore](#datastore)
+This data is stored in a [DataStore](#datastore) so its data can be migrated when the format gets updated in an incompatible way, and can be easily [serialized together with all other DataStores.](#datastoreserializer)
+
+<br>
+
+### Config Data Migration
+The [feature configuration](#feature-configuration) is stored in a [DataStore](#datastore), and as such it has the ability to automatically migrate to an updated format when a provided format version integer is increased.  
+This migration process is completely invisible to the user and will ensure that their selected configuration options will be respected for years and years to come, through many BetterYTM updates.  
+  
+For more information on the actual data migration process, check out the [`DataStore` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-datastore) and [`DataMigrationsDict` type](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#type-datamigrationsdict) documentation.
 
 <br>
 
@@ -151,6 +169,7 @@ This is the main dialog in BetterYTM.
 It's used for configuring every single [feature](#features), as well as displaying the [changelog](../changelog.md) and some of the [build information.](#build-information)  
   
 The config menu can be opened in multiple ways:
+- Via your userscript manager extension's menu commands (click its icon in your browser's menu bar).
 - If the `watermarkEnabled` feature is on, by clicking the `BetterYTM` text under the logo on the YTM page.
 - In the profile popover menu on the YTM page. <!-- TODO: and YT too -->
 - In the left sidebar menu on the YT page.
@@ -275,14 +294,17 @@ For a list of all site events and their arguments, refer to the file [`src/siteE
 
 <!-- #region libraries -->
 # Libraries
-BetterYTM's source code depends on the following libraries:
+BetterYTM's source code depends on the following notable libraries:
 
 - `@sv443-network/coreutils` - Core JavaScript utilities - exposed via `BYTM.CoreUtils`
   - [DataStore](#datastore) - Used for persistently storing migratable data in BetterYTM
 - `@sv443-network/userutils` - Userscript and generic DOM utilities - exposed via `BYTM.UserUtils`
 - `compare-versions` - Tiny library used for comparing and validating [semver versions](https://semver.org/) - exposed via `BYTM.compareVersions`
+- `marked` - Used to render Markdown as HTML - available via `BYTM.parseMarkdown()`
+- `dompurify` - Used to sanitize remotely fetched HTML in a [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) compatible way, for added security - available via `BYTM.parseMarkdown()`, `BYTM.setInnerHtml()` and `BYTM.sanitizeHtml()`
+- `tslib` - Helps importing other libraries and executing them in a more efficient way at runtime
   
-They are exposed on the [plugin interface](#plugin-interface)
+Some of them are exposed via the [plugin interface](#plugin-interface), so plugins don't need to re-import the libraries as long as the required version isn't super specific.
 
 <br>
 
@@ -294,6 +316,17 @@ It supports data migrations when a format version number is incremented, and wor
   
 Some of the data stored this way includes the [feature configuration](#feature-configuration), a [resource cache](#resource-cache), the channels for the auto-like feature, and more.
 
+<br>
+
+## DataStoreSerializer
+[Click here for the full documentation.](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-datastoreserializer)  
+  
+This class belongs to the [CoreUtils library](https://github.com/Sv443-Network/CoreUtils) and is used to export and import the data of multiple [DataStore instances](#datastore) at the same time.  
+It is highly integrated in the whole DataStore ecosystem, dispatching useful events and offering extra methods that make working with multiple DataStores much easier in general.  
+  
+BetterYTM employs two global serializer instances (in [`src/serializers.ts`](../src/serializers.ts)):
+- `serializer`: Contains all user-provided data, like the [feature config](#feature-configuration), auto-like channels, dismissed [global alerts](#global-alerts) and more.
+- `fullSerializer`: Contains all DataStore instances, including all the ones with user-provided data and also ones used for caching data, like the [lyrics cache](#lyrics-cache), [resource cache](#resource-cache) and more.
 
 <br><br>
 <hr />
