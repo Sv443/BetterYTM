@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@50d04e73/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9b55d31b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 05 Sep 2026 23:51:24 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 06 Sep 2026 13:27:29 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 50d04e73                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 9b55d31b                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 7zD8is8o6j2j                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ qNVWD0X2Mvlc                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -542,9 +542,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "50d04e73";
+	var buildNumber$1 = "9b55d31b";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788652284780;
+	var buildTimestamp = 1788701249619;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -2535,7 +2535,7 @@
 		try {
 			return await (await (0, _sv443_network_coreutils.fetchAdvanced)(await getResourceUrl(key))).text() ?? void 0;
 		} catch (err) {
-			loggers.xhr.error("Couldn't fetch CSS due to an error:", err);
+			loggers.xhr.error(`Couldn't fetch CSS resource with key '${key}' due to an error:`, err);
 			return;
 		}
 	}
@@ -7079,6 +7079,14 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		ilOverlayEl.addEventListener("focusin", () => {
 			if (ilOverlayEnabled) show();
 		});
+		for (const evtName of [
+			"keydown",
+			"keyup",
+			"mousedown",
+			"click"
+		]) ilOverlayEl.addEventListener(evtName, (e) => {
+			if (ilOverlayEnabled) e.stopPropagation();
+		});
 		document.addEventListener("keydown", (e) => {
 			if (getFeature("interactionLockHotkeyEnabled")) {
 				if (hotkeyMatches(e, getFeature("interactionLockHotkey"))) {
@@ -10753,7 +10761,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				"autoplayQueueContainer": { "ytm": "ytmusic-player-queue #automix-contents" },
 				"playlistPageArtistName": { "ytm": "ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a" },
 				"playlistPageArtistNameAlternate": { "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]" },
-				"genericListArtistName": { "ytm": ".secondary-flex-columns yt-formatted-string:first-child a" },
+				"genericListArtistName": { "ytm": ".secondary-flex-columns yt-formatted-string:first-child a, .secondary-flex-columns yt-formatted-string[title]" },
 				"genericListSongName": { "ytm": ".title-column yt-formatted-string a" },
 				"queueItem": { "ytm": "ytmusic-player-queue-item" },
 				"queueItemThumbnailImg": { "ytm": "yt-img-shadow img" },
@@ -10763,7 +10771,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				"queueItemDotsBtn": { "ytm": "ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button" },
 				"queueMultiSelect": { "ytm": "ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]" },
 				"allCurrentQueueItems_global": { "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item" },
-				"allCurrentQueueItemsSongInfo_global": { "ytm": ".song-info" },
+				"allCurrentQueueItemsSongInfo_global": { "ytm": ".song-info, .flex-columns.ytmusic-responsive-list-item-renderer" },
 				"allGenericListItems_sub_listContainer": { "ytm": "ytmusic-responsive-list-item-renderer" }
 			},
 			"volume": {
@@ -11866,7 +11874,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "50d04e73",
+				buildNumber: "9b55d31b",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
