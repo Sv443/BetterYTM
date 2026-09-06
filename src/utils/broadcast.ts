@@ -115,6 +115,8 @@ export const broadcastEng = new GMStorageEngine({ dataStoreOptions: broadcastEng
 
 /** Which packets have already been received and processed. */
 const receivedNonces = new Set<number>();
+/** How many nonces should be stored in the {@linkcode receivedNonces} set. */
+const nonceCacheSize = 30;
 
 
 //#region init
@@ -274,7 +276,7 @@ function relayBroadcastPacket(packet: object) {
     return loggers.broadcast.warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
 
   // remove oldest entry to prevent any potential memory leaks
-  if(receivedNonces.size >= 10) {
+  if(receivedNonces.size >= nonceCacheSize) {
     const oldestNonce = receivedNonces.values().next().value;
     oldestNonce && receivedNonces.delete(oldestNonce);
   }

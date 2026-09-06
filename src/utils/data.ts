@@ -11,6 +11,7 @@ import { LogLevel, type Domain, type FeatureConfig, type Translatable } from "@/
 import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
 import { getFeature } from "@/config.ts";
+import { emitSiteEvent } from "@/siteEvents.ts";
 
 // TODO: expose on interface
 
@@ -332,7 +333,11 @@ export async function initStaticData() {
 
   const alertMode = getFeature("globalAlertMode", "importantOnly");
 
-  return await Promise.allSettled([
+  const result = await Promise.allSettled([
     ...(alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []),
   ]);
+
+  emitSiteEvent("staticDataInitialized");
+
+  return result;
 }

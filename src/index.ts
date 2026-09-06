@@ -220,7 +220,7 @@ async function init() {
 
     // plugins:
     try {
-      initPlugins();
+      await initPlugins();
     }
     catch(err) {
       loggers.init.error("Plugin loading error:", err);
@@ -998,12 +998,11 @@ async function initPermTestPlugin() {
   // @ts-expect-error
   getUnsafeWindow().addEventListener("bytm:registerPlugin", async ({ detail: register }: CustomEvent<typeof registerPlugin>) => {
     if(typeof register === "function") {
-      const result = register(permTestDef);
+      const result = await register(permTestDef);
       loggers.debug.log(">> Plugin permission test result:", result);
 
       getUnsafeWindow().addEventListener("bytm:allReady", async () => {
-        const dlg = await getPluginPermissionsDialog(permTestDef);
-        await dlg.open();
+        await getPluginPermissionsDialog(permTestDef).open();
       });
     }
   });

@@ -552,6 +552,7 @@ export type PluginEventMap =
 export type PluginItem = Prettify<
   & {
     def: PluginDef;
+    grantedPerms: number;
   }
   & Pick<PluginRegisterResult, "events">
 >;

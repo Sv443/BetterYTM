@@ -184,7 +184,7 @@ declare global {
   // Enter BYTM's custom events you need in here so they are available on the `window` object and typed correctly.
   // When adding new events, you can basically copy them from `type InterfaceEvents` in `src/interface.ts` after wrapping them in the `CustomEvent` type.
   interface WindowEventMap {
-    "bytm:registerPlugin": CustomEvent<(def: PluginDef) => PluginRegisterResult>;
+    "bytm:registerPlugin": CustomEvent<(def: PluginDef) => Promise<PluginRegisterResult>>;
   }
 }
 ```
@@ -284,14 +284,16 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ### registerPlugin()
 > Signature:
 > ```ts
-> registerPlugin(pluginDef: PluginDef): PluginRegisterResult
+> registerPlugin(pluginDef: PluginDef): Promise<PluginRegisterResult>
 > // (only passed as an event listener parameter)
 > ```
 >   
 > Description:  
 > Registers a plugin with BetterYTM with the given plugin definition object.  
 > The function will be passed as an argument with the window events [`bytm:preInitPlugin`](./docs/api.md#bytm-preinitplugin) and [`bytm:registerPlugin`](./docs/api.md#bytm-registerplugin),.  
-> Note that calling it is time sensitive, so registration should occur synchronously as soon as those events are emitted.  
+> Note that calling it is time sensitive, so registration should occur as soon as those events are emitted.  
+>   
+> Since v3.2.0 the function is asynchronous, to allow the permission dialog to be shown when the plugin is first installed or changes its intents down the line.  
 >   
 > Arguments:  
 > - `pluginDef` - The properties of this plugin definition object can be found by searching for `type PluginDef` in the file [`src/types.ts`](./src/types.ts)  
@@ -396,7 +398,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > unsafeWindow.addEventListener("bytm:registerPlugin", async (registerPlugin) => {
 >   try {
 >     // register the plugin
->     const { token, events, permissions } = registerPlugin(pluginDef);
+>     const { token, events, permissions } = await registerPlugin(pluginDef);
 > 
 >     // (instead of using the passed function, calling it globally is identical in behavior:)
 >     // const { token, events, permissions } = unsafeWindow.BYTM.registerPlugin(pluginDef);

@@ -1,19 +1,18 @@
 import { BytmDialog } from "@comp/BytmDialog.ts";
-import { defToIntentsBitSet, getPluginKey, getRegisteredPlugins, parseBitSetEnumArray, pluginPermissionsStore } from "@/interface.ts";
+import { defToIntentsBitSet, getPluginKey, parseBitSetEnumArray, pluginPermissionsStore } from "@/interface.ts";
 import { t } from "@util/translations.ts";
-import { PluginIntent, type BitSetTSEnum, type PluginDefResolvable } from "@/types.ts";
+import { LogLevel, PluginIntent, type BitSetTSEnum, type PluginDef } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { onInteraction } from "@util/input.ts";
 import "@dialog/pluginPermissions.css";
 import { createToggleInput } from "@comp/toggleInput.ts";
-import { DatedError } from "@sv443-network/coreutils";
 import { loggers } from "@util/logging.ts";
 import { mode } from "@/constants.ts";
 
 let pluginPermsDialog: BytmDialog | null = null;
 
 /** Creates and/or returns the plugin permissions dialog */
-export async function getPluginPermissionsDialog(plugin: PluginDefResolvable | string) {
+export function getPluginPermissionsDialog(def: PluginDef) {
   return pluginPermsDialog ??= new BytmDialog({
     id: "plugin-perms",
     width: 450,
@@ -24,8 +23,8 @@ export async function getPluginPermissionsDialog(plugin: PluginDefResolvable | s
     destroyOnClose: true,
     small: true,
     renderHeader,
-    renderBody: (dlg) => renderBody(dlg, plugin),
-    renderFooter: (dlg) => renderFooter(dlg, plugin),
+    renderBody: (dlg) => renderBody(dlg, def),
+    renderFooter: (dlg) => renderFooter(dlg, def),
   });
 }
 
@@ -41,16 +40,13 @@ async function renderHeader() {
   return titleElem;
 }
 
-async function renderBody(permDlg: BytmDialog, plugin: PluginDefResolvable | string) {
-  const pluginKey = typeof plugin === "string" ? plugin : getPluginKey(plugin);
-
-  const registeredPlugins = getRegisteredPlugins();
-  const regPl = registeredPlugins.find(([key]) => key === pluginKey);
+async function renderBody(permDlg: BytmDialog, def: PluginDef) {
+  const pluginKey = getPluginKey(def);
 
   const permsListCont = document.createElement("div");
   permsListCont.id = "bytm-plugin-perms-container";
 
-  if(!regPl) {
+  if(!def) {
     await showPrompt({
       type: "alert",
       message: t("plugin_error.plugin_not_registered", { pluginKey }),
@@ -59,7 +55,6 @@ async function renderBody(permDlg: BytmDialog, plugin: PluginDefResolvable | str
     return permsListCont;
   }
 
-  const { def } = regPl[1];
   const intentsBitSet = defToIntentsBitSet(def);
   const intents = parseBitSetEnumArray(intentsBitSet, PluginIntent as unknown as BitSetTSEnum);
 
@@ -98,20 +93,13 @@ async function renderBody(permDlg: BytmDialog, plugin: PluginDefResolvable | str
   return permsListCont;
 }
 
-async function renderFooter(permDlg: BytmDialog, plugin: PluginDefResolvable | string) {
-  const pluginKey = typeof plugin === "string" ? plugin : getPluginKey(plugin);
+async function renderFooter(permDlg: BytmDialog, def: PluginDef) {
+  const pluginKey = getPluginKey(def);
 
   const footerEl = document.createElement("div");
   footerEl.id = "bytm-plugin-perms-footer";
   footerEl.classList.add("bytm-dialog-footer", "align-right");
 
-  const registeredPlugins = getRegisteredPlugins();
-  const regPl = registeredPlugins.find(([key]) => key === pluginKey);
-
-  if(!regPl)
-    throw new DatedError(`Couldn't render plugin permissions dialog footer because plugin ${typeof plugin === "string" ? plugin : JSON.stringify(plugin)} isn't registered yet.`);
-
-  const { def } = regPl[1];
   const requestedIntents = defToIntentsBitSet(def);
 
   const confirmBtn = document.createElement("button");
@@ -120,7 +108,6 @@ async function renderFooter(permDlg: BytmDialog, plugin: PluginDefResolvable | s
   confirmBtn.title = t("click_to_confirm_tooltip");
   confirmBtn.autofocus = true;
   onInteraction(confirmBtn, async () => {
-    // TODO: read toggles, update pluginPermissionsStore
     let grantedPerms = 0;
 
     for(const [, v] of Object.entries(PluginIntent)) {
@@ -136,7 +123,7 @@ async function renderFooter(permDlg: BytmDialog, plugin: PluginDefResolvable | s
 
     await pluginPermissionsStore.setData(permStore);
 
-    loggers.plugin.log(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms);
+    loggers.plugin.log(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms, LogLevel.Info);
 
     permDlg.close();
   });

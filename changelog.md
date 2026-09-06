@@ -20,13 +20,14 @@
 - **Fixes:**
   - Made error toasts show up again after being broken when toast queueing was overhauled.
 - **Plugin Changes:**
+  - **BREAKING:** The `registerPlugin()` function passed by the events `bytm:preInitPlugin` and `bytm:registerPlugin` will now return a `Promise<PluginRegisterResult>`, so that the page can show the new plugin permission dialogs.
+  - Removed the restrictions that plugins need to be registered between `bytm:preInitPlugin` and `bytm:ready`. Now they can be registered after the latter event without throwing an error.
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.
     - `Logger`: The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system.
     - `sanitizeUnicode()`: Function that replaces all sorts of wacky Unicode characters with their ASCII counterparts if possible. This function is also used by `sanitizeArtists()` and `sanitizeSong()`.
 - **Internal Changes:**
   - Added `m.youtube.com` and `youtube-nocookie.com` to the list of supported domains.
-  - TODO: Improved compatibility with YT's and YTM's mobile layout for mobile browser users.
   - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
   - Refactored logging system to use new `Logger` class instances.
   - Added "privacy-sensitive" feature adornment icon (`icon-shield_info` resource) to mark features that are tagged with the `privacy` tag.

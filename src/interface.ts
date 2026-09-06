@@ -13,6 +13,7 @@ import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, f
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum, LogLevel } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
+import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { createHotkeyInput } from "@comp/hotkeyInput.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
@@ -46,9 +47,9 @@ export type InterfaceEvents = {
   /** Emitted whenever the locale is changed - if a plugin changed the locale, the plugin ID is provided as well */
   "bytm:setLocale": { locale: TrLocale, pluginId?: string };
   /** When this is emitted, plugins may register themselves at a much earlier stage, before things like the feature config are even loaded */
-  "bytm:preInitPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
+  "bytm:preInitPlugin": (pluginDef: PluginDef) => Promise<PluginRegisterResult>;
   /** When this is emitted, this is your call to register your plugin using the function passed as the sole argument */
-  "bytm:registerPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
+  "bytm:registerPlugin": (pluginDef: PluginDef) => Promise<PluginRegisterResult>;
   /**
    * Emitted whenever the SelectorObserver instances have been initialized and can be used to listen for DOM changes and wait for elements to be available.  
    * Use `unsafeWindow.BYTM.addObserverListener(name, selector, opts)` to add custom listener functions to the observers (see contributing guide).
@@ -323,27 +324,43 @@ export const pluginPermissionsStore = new CoreUtils.DataStore<PluginPermissionsS
   compressionFormat: null,
 });
 
+let pluginPermissionsStoreLoaded = false;
+
+/** Returns the permission integers from the {@linkcode pluginPermissionsStore} for the given plugin. */
+function getPermStorePerms(def: PluginDefResolvable): [grantedPerms: number, requestedIntents: number] | undefined {
+  if(!pluginPermissionsStoreLoaded)
+    throw new CoreUtils.DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
+  return pluginPermissionsStore.getData()?.[getPluginKey(def)];
+}
+
 /** Map of plugin key to all registered plugins */
 const registeredPlugins = new Map<string, PluginItem>();
 
 /** Map of plugin key to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map<string, string>();
 
-let pluginsInitialized = false;
-
 /** Pre-init for eager plugins that need to be initialized as soon as physically possible */
-export function preInitPlugins() {
+export async function preInitPlugins() {
+  if(!pluginPermissionsStoreLoaded) {
+    await pluginPermissionsStore.loadData();
+    pluginPermissionsStoreLoaded = true;
+  }
+
   emitInterface("bytm:preInitPlugin", registerPlugin);
 }
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
-export function initPlugins() {
+export async function initPlugins() {
+  if(!pluginPermissionsStoreLoaded) {
+    await pluginPermissionsStore.loadData();
+    pluginPermissionsStoreLoaded = true;
+  }
+
   emitInterface("bytm:registerPlugin", registerPlugin);
 
   registerDevPlugin();
 
   window.addEventListener("bytm:ready", () => {
-    pluginsInitialized = true;
     if(registeredPlugins.size > 0)
       loggers.plugin.info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`, LogLevel.Info);
     else
@@ -352,12 +369,10 @@ export function initPlugins() {
 }
 
 /** Registers a plugin on the BYTM interface. */
-export function registerPlugin(def: PluginDef): PluginRegisterResult {
+export async function registerPlugin(def: PluginDef): Promise<PluginRegisterResult> {
   try {
-    if(pluginsInitialized)
-      throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
-
     const plKey = getPluginKey(def);
+    const isDevPlugin = getPluginKey(def) === devPluginKey;
 
     if(registeredPlugins.has(plKey))
       throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
@@ -366,21 +381,32 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
     if(validationErrors)
       throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
+    const requestedIntents = defToIntentsBitSet(def);
+    const permStoreEntry = getPermStorePerms(def);
+    if(!isDevPlugin && (!permStoreEntry || permStoreEntry[1] !== requestedIntents)) {
+      await siteEvents.once("staticDataInitialized");
+
+      // show dialog
+      const permDialog = getPluginPermissionsDialog(def);
+      permDialog.open();
+      await permDialog.once("close");
+    }
+
+    const grantedPermsInt = isDevPlugin ? PluginIntent.FullAccess : getPermStorePerms(def)?.[0] ?? 0;
+
     const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
     const token = crypto.randomUUID();
 
     registeredPlugins.set(plKey, {
       def: def,
+      grantedPerms: grantedPermsInt,
       events,
     });
     registeredPluginTokens.set(plKey, token);
 
-    // TODO: check perms and ask user for initial activation
-    const permissionInt = defToIntentsBitSet(def);
-
     const permissions: PluginRegisterResult["permissions"] = {
-      int: permissionInt,
-      array: parseBitSetEnumArray(permissionInt, PluginIntent as unknown as BitSetTSEnum),
+      int: grantedPermsInt,
+      array: parseBitSetEnumArray(grantedPermsInt, PluginIntent as unknown as BitSetTSEnum),
     };
 
     loggers.plugin.info(`Successfully registered plugin '${plKey}'`, LogLevel.Info);
@@ -403,13 +429,14 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
 /** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 export let devPluginToken: string | undefined;
 export const devPluginId = CoreUtils.randomId(8, 36, true, true);
+export let devPluginKey: string | undefined;
 
 /** Registers a plugin that only exists in development mode to test the plugin system */
-function registerDevPlugin() {
+async function registerDevPlugin() {
   if(mode !== "development")
     return;
   try {
-    const { token, events } = registerPlugin({
+    const devPluginDef = {
       plugin: {
         name: t("dev_plugin.name"),
         namespace: `${pkgJson.namespace}+${devPluginId}`,
@@ -426,7 +453,9 @@ function registerDevPlugin() {
         iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
       },
       intents: PluginIntent.FullAccess,
-    });
+    } as const satisfies PluginDef;
+    devPluginKey = getPluginKey(devPluginDef);
+    const { token, events } = await registerPlugin(devPluginDef);
 
     devPluginToken = token;
     setGlobalProp("devPluginEvents", events);
@@ -572,9 +601,7 @@ export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvabl
   if(!Array.isArray(perms))
     throw new TypeError("The second argument must be an array of PluginIntent values");
 
-  const pluginIntents = defToIntentsBitSet(plugin.def);
-
-  return UserUtils.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils.bitSetHas(pluginIntents, perm));
+  return UserUtils.bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils.bitSetHas(plugin.grantedPerms, perm));
 }
 
 /** Converts the intents from a PluginDef object into a bit set value. */

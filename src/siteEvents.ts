@@ -37,6 +37,8 @@ export type SiteEventsMap = Prettify<
     welcomeMenuClosed: () => void;
     /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
     hotkeyInputActive: (active: boolean) => void;
+    /** Emitted whenever the remote static data has been initialized. */
+    staticDataInitialized: () => void;
 
     //#region DOM:
     /** Emitted whenever child nodes are added to or removed from the song queue */
@@ -106,6 +108,7 @@ export const allSiteEvents = [
   "autoLikeChannelsUpdated",
   "voteLabelsAdded",
   "broadcast",
+  "staticDataInitialized",
 ] as const satisfies readonly (keyof SiteEventsMap)[];
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
