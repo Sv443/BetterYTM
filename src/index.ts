@@ -364,9 +364,6 @@ async function onDomLoad() {
 
       ftInit.push(["aboveQueueButtons", initAboveQueueBtns()]);
 
-      if(feats.songListTrackNumbersEnabled)
-        ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
-
       //#region (ytm) behavior
 
       if(feats.closeToastsTimeout > 0)
@@ -431,6 +428,11 @@ async function onDomLoad() {
 
       if(feats.removeShareTrackingParamSites)
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
+
+      //#region (ytm+yt) song lists
+
+      if(feats.songListTrackNumbersEnabled)
+        ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 
       //#region (ytm+yt) input
 

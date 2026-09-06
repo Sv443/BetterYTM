@@ -1,7 +1,7 @@
 import { autoPlural, pauseFor } from "@sv443-network/coreutils";
 import { preloadImages } from "@sv443-network/userutils";
 import { addStyleFromResource, clearInner, setInnerHtml, transplantElement } from "@util/dom.ts";
-import { getResourceUrl, openInTab, resourceAsString } from "@util/misc.ts";
+import { getDomain, getResourceUrl, openInTab, resourceAsString } from "@util/misc.ts";
 import { loggers } from "@util/logging.ts";
 import { onInteraction } from "@util/input.ts";
 import { t } from "@util/translations.ts";
@@ -422,11 +422,16 @@ export async function addTrackNumbers() {
   (async () => {
     const promises: Promise<void | unknown>[] = [];
 
+    const siteSel = getFeature("songListTrackNumbersDomains");
+    const location = getFeature("songListTrackNumbers");
+
+    if(siteSel !== "all" && siteSel !== getDomain())
+      return;
+
     try {
-      const where = getFeature("songListTrackNumbers");
-      if(where === "genericLists" || where === "everywhere")
+      if(location === "genericLists" || location === "everywhere")
         promises.push(addStyleFromResource("css-track_numbers_song_lists"));
-      if(where === "currentQueue" || where === "everywhere")
+      if(location === "currentQueue" || location === "everywhere")
         promises.push(addStyleFromResource("css-track_numbers_current_queue"));
     }
     catch(err) {
@@ -434,5 +439,7 @@ export async function addTrackNumbers() {
     }
 
     await Promise.allSettled(promises);
+
+    loggers.layout.log("Added track numbers style - for location(s):", location);
   })();
 }

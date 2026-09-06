@@ -1014,6 +1014,8 @@ export interface FeatureConfig {
   aboveQueueBtnsSticky: boolean;
   /** Add track numbers to each song list item */
   songListTrackNumbersEnabled: boolean;
+  /** On which domains to add track numbers to song list items */
+  songListTrackNumbersDomains: SiteSelection;
   /** Where to add track numbers */
   songListTrackNumbers: "currentQueue" | "genericLists" | "everywhere";
 

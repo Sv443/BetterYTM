@@ -297,6 +297,7 @@ export const cfgMigrations: DataMigrationsDict = {
       "interactionLockHotkeyEnabled",
       "interactionLockHotkey",
       "interactionLockOverlayTimeout",
+      "songListTrackNumbersDomains",
     ]);
   },
 } as const satisfies DataMigrationsDict;
