@@ -384,6 +384,14 @@ async function initInteractionLockHotkey() {
       show();
   });
 
+  // stop events targeting the overlay from bubbling up and triggering third party listeners:
+  for(const evtName of ["keydown", "keyup", "mousedown", "click"] as const) {
+    ilOverlayEl.addEventListener(evtName, (e) => {
+      if(ilOverlayEnabled)
+        e.stopPropagation();
+    });
+  }
+
   document.addEventListener("keydown", (e) => {
     if(getFeature("interactionLockHotkeyEnabled")) {
       if(hotkeyMatches(e, getFeature("interactionLockHotkey"))) {

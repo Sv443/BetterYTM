@@ -86,7 +86,7 @@ export async function fetchCss(key: StyleResourceKey) {
     return css ?? undefined;
   }
   catch(err) {
-    loggers.xhr.error("Couldn't fetch CSS due to an error:", err);
+    loggers.xhr.error(`Couldn't fetch CSS resource with key '${key}' due to an error:`, err);
     return undefined;
   }
 }
