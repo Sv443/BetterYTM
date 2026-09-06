@@ -1,18 +1,19 @@
 import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { artCacheStore, enableDiscardBeforeUnload, featInfo } from "@feat/index.ts";
-import { error, info, log, reloadTab, t, warn, type TrLocale } from "@util/index.ts";
+import { reloadTab, t, type TrLocale } from "@util/index.ts";
+import { loggers } from "@util/logging.ts";
 import { emitSiteEvent } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/interface.ts";
 import { closeCfgMenu, openCfgMenu } from "@menu/menu.ts";
-import type { FeatKeysOfType, FeatureConfig, FeatureInfo, FeatureKey, NumberLengthFormat } from "@/types.ts";
+import { LogLevel, type FeatKeysOfType, type FeatureConfig, type FeatureInfo, type FeatureKey, type FeatureTag, type FeatureTypeProps, type NumberLengthFormat } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 
 //#region >> format version
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const cfgFormatVersion = 11;
+export const cfgFormatVersion = 12;
 
 //#region >> default data
 
@@ -264,16 +265,39 @@ export const cfgMigrations: DataMigrationsDict = {
     // dont wanna make a whole new system just for this:
     artCacheStore.deleteData().then(() => {
       // no need to load data since artCacheStore.memoryCache === false
-      info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.");
+      loggers.data.info("Cleared album artwork cache due to improvements in the way album artworks are resolved, which made a large portion of the cached artworks wrong.", LogLevel.Info);
     });
 
     // scale was changed from seconds to milliseconds
     if(newCfg.initTimeout <= 10)
-      newCfg.initTimeout *= 1000;
+      newCfg.initTimeout = toClamped("initTimeout", newCfg.initTimeout * 1000);
 
     return useNewRanges(newCfg, [
       "initTimeout",
       "thumbnailOverlayITunesImgRes",
+    ]);
+  },
+
+  // 11 -> 12 (v3.2)
+  12: (oldData: FeatureConfig) => {
+    // add extra thumbnailOverlayEnabled feature instead of combining it with thumbnailOverlayBehavior:
+    oldData.thumbnailOverlayEnabled = oldData.thumbnailOverlayBehavior !== "never";
+
+    // @ts-expect-error this one is also newly split:
+    oldData.autoScrollToActiveSongEnabled = oldData.autoScrollToActiveSongMode !== "never";
+
+    return useNewDefaults(oldData, [
+      "configMenuFocusContentButtonEnabled",
+      "lyricsSearchPromptHotkeyEnabled",
+      "lyricsSearchPromptHotkey",
+      "defaultObserverDebounce",
+      "globalAlertMode",
+      "openWelcomeMenu",
+      "verboseObservers",
+      "interactionLockHotkeyEnabled",
+      "interactionLockHotkey",
+      "interactionLockOverlayTimeout",
+      "songListTrackNumbersDomains",
     ]);
   },
 } as const satisfies DataMigrationsDict;
@@ -281,30 +305,29 @@ export const cfgMigrations: DataMigrationsDict = {
 //#region migration helpers
 
 /**
- * Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values.  
+ * Uses the default config data ({@linkcode cfgDefaultData}) as the base, then overwrites all values with the passed {@linkcode config} (can be a partial object), then sets all feature values defined by {@linkcode resetKeys} to their default values.  
  * This function is basically used for migrations where new features have been introduced, or where some features absolutely NEED to be reset to their new default value, like for a breaking change.  
  * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
-function useNewDefaults(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
-  const newData = structuredClone({ ...cfgDefaultData, ...(baseData ?? {}) });
+function useNewDefaults(config: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
+  const newData = structuredClone({ ...cfgDefaultData, ...(config ?? {}) });
   for(const key of resetKeys) // @ts-expect-error typescript funny moments part 0x1a4
     newData[key] = featInfo?.[key]?.default as never;
   return newData;
 }
 
 /**
- * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.  
+ * Uses {@linkcode config} as the base, then sets all keys provided in {@linkcode oldDefaults} to their old default values, as long as their current value is equal to the provided old default.  
  * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be set to the new default.  
  * This function is basically used for migrations where some features' default values have changed, but we don't want to upset users who have changed the value from its old default. May only be used for non-breaking changes.  
  * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
 function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
-  oldData: TConfig,
+  config: TConfig,
   oldDefaults: Array<{ key: FeatureKey, oldDefault: unknown }>,
 ): TConfig {
-  const newData = structuredClone(oldData);
+  const newData = structuredClone(config);
   for(const { key, oldDefault } of oldDefaults) {
-    // @ts-expect-error we love TS
     const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)
       newData[key] = defaultVal as never; // have you ever heard of the song "never gonna give you up" by rick astley?
@@ -313,7 +336,7 @@ function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 }
 
 /**
- * Uses the passed config as the base, then clamps all numeric feature values to their defined min/max ranges.  
+ * Uses the passed config as the base, then clamps all numeric feature values defined by {@linkcode keys} to their defined min/max ranges.  
  * Returns a [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone) copy of the updated config object.
  */
 function useNewRanges(config: FeatureConfig, keys: FeatKeysOfType<number>[]): FeatureConfig {
@@ -326,11 +349,19 @@ function useNewRanges(config: FeatureConfig, keys: FeatKeysOfType<number>[]): Fe
   return newCfg;
 }
 
-/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. **/
+/** Clamps the value of the given numeric feature key in the passed config object to its defined min/max range. */
 function clampNewRange(config: FeatureConfig, key: FeatKeysOfType<number>): number {
   const val = config[key];
-  const info = featInfo[key] as FeatureConfig[typeof key] extends number ? { min: number; max: number } : never;
-  return clamp(val as number, info.min, info.max);
+  const info = featInfo[key] as FeatureConfig[typeof key] extends number ? { min: number; max?: number } : never;
+  return clamp(val as number, info.min, "max" in info && typeof info.max === "number" ? info.max : Infinity);
+}
+
+/** Clamps the given numerical value using the given numerical feature's `min` and `max` props (see {@linkcode featInfo}) if they exist. Otherwise returns the given value as-is. */
+function toClamped(ftKey: FeatKeysOfType<number>, newValue: number) {
+  const ftInf = featInfo[ftKey];
+  if("min" in ftInf)
+    return clamp(newValue, ftInf.min, "max" in ftInf ? ftInf.max : Infinity);
+  return newValue;
 }
 
 //#region >> store
@@ -342,6 +373,10 @@ export const configStore = new DataStore<FeatureConfig>({
   defaultData: cfgDefaultData,
   migrations: cfgMigrations,
   compressionFormat,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 //#region >> init
@@ -360,8 +395,8 @@ export async function initConfig() {
   }
   catch { void 0; }
 
-  // remove extraneous keys (persistent save is deferred to the next setData call)
-  let data = fixCfgKeys(await configStore.loadData());
+  const rawData = await configStore.loadData();
+  let data = fixCfgKeys(rawData);
 
   // show prompt if config data was migrated
   if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
@@ -376,18 +411,24 @@ export async function initConfig() {
       window.addEventListener("bytm:allReady", () => openCfgMenu(), { once: true });
   }
 
-  log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
+  loggers.data.log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
-    warn("  ⚠️ - Config data was initialized with default values");
+    loggers.data.warn("  ⚠️ - Config data was initialized with default values");
   else if(oldFmtVer !== configStore.formatVersion) {
     try {
       await configStore.setData(data = fixCfgKeys(data));
-      info(`  ⚠️ - Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
+      loggers.data.info(`  ⚠️ - Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
     }
     catch(err) {
-      error("  ⚠️ - Config data migration failed, falling back to default data:", err);
+      loggers.data.error("  ⚠️ - Config data migration failed, falling back to default data:", err);
       await configStore.setData(data = configStore.defaultData);
     }
+  }
+  // fixCfgKeys() may have added or removed keys even without a format version change
+  // (e.g. new features added to a migration step after a client already recorded that version) - persist that fix too:
+  else if(await computeHash(JSON.stringify(rawData), "SHA-256") !== await computeHash(JSON.stringify(data), "SHA-256")) {
+    await configStore.setData(data);
+    loggers.data.info("  ⚠️ - Fixed missing or extraneous config keys without a version change");
   }
 
   emitInterface("bytm:configReady");
@@ -399,22 +440,22 @@ export async function initConfig() {
 
 /**
  * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.  
+ * Doesn't traverse nested objects.  
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
 export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   const newCfg = structuredClone(cfg);
-  const passedKeys = Object.keys(cfg);
+  const currentKeys = Object.keys(newCfg).filter(ck => typeof cfg[ck as keyof typeof cfg] !== "undefined" && featInfo[ck as keyof typeof featInfo]?.type !== "button");
   const defaultKeys = Object.keys(cfgDefaultData);
-  const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
-  if(missingKeys.length > 0) {
-    for(const key of missingKeys)
-      newCfg[key as keyof FeatureConfig] = cfgDefaultData[key as keyof FeatureConfig] as never;
-  }
-  const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
-  if(extraKeys.length > 0) {
-    for(const key of extraKeys)
-      delete newCfg[key as keyof FeatureConfig];
-  }
+
+  // add missing keys with default values:
+  for(const key of defaultKeys.filter(k => !currentKeys.includes(k)))
+    currentKeys.push(newCfg[key as keyof FeatureConfig] = cfgDefaultData[key as keyof FeatureConfig] as never);
+
+  // remove extraneous keys that are not in the default config:
+  for(const key of currentKeys.filter(k => !defaultKeys.includes(k)))
+    delete newCfg[key as keyof FeatureConfig];
+
   return newCfg as FeatureConfig;
 }
 
@@ -435,7 +476,7 @@ export function getFeature<TKey extends FeatureKey>(key: TKey | "_", defaultVal?
 export function setFeatures(featureConf: FeatureConfig) {
   const res = configStore.setData(featureConf);
   emitSiteEvent("configChanged", getFeaturesNoHidden());
-  info("Saved new feature config:", getFeaturesNoHidden());
+  loggers.data.info("Saved new feature config:", getFeaturesNoHidden());
   return res;
 }
 
@@ -454,7 +495,7 @@ export function getFeaturesNoHidden(featureCfg?: FeatureConfig): FeatureConfig {
 export function setDefaultFeatures() {
   const res = configStore.saveDefaultData();
   emitSiteEvent("configChanged", getFeaturesNoHidden());
-  info("Reset feature config to its default values");
+  loggers.data.info("Reset feature config to its default values");
   return res;
 }
 
@@ -473,5 +514,56 @@ export async function promptResetConfig() {
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 export async function clearConfig() {
   await configStore.deleteData();
-  info("Deleted config from persistent storage");
+  loggers.data.info("Deleted config from persistent storage");
+}
+
+// #region tagged features
+
+/** Object that maps feature types to their desired value types. All props are optional by default. */
+type SetFeatureValues = {
+  [T in FeatureTypeProps["type"]]?: Extract<FeatureTypeProps, { type: T }>["default"];
+};
+
+/** Object that maps modified feature keys to the new feature value. All props are optional by default. */
+type ModifiedFeatureValues = {
+  [T in keyof typeof featInfo]?: (typeof featInfo)[T]["default"];
+};
+
+/**
+ * Sets all features in the config that match *all* the provided `tags` with the corresponding feature type value in the `setFeatureValues` object.  
+ * Returns an object that maps modified feature keys to their new values.
+ */
+export async function configSetFeatsWithTags(tags: FeatureTag[], setFeatureValues: SetFeatureValues): Promise<ModifiedFeatureValues> {
+  const modified: ModifiedFeatureValues = {};
+
+  const features = getFeatures();
+
+  for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
+    if(!("tags" in ftInfo) || ("tags" in ftInfo && !tags.every(tag => (ftInfo.tags as string[]).includes(tag))))
+      continue;
+
+    if(typeof setFeatureValues[ftInfo.type] !== "undefined") {
+      // @ts-expect-error no good way to keep these generic without having a bunch of dumb type errors
+      features[ftKey] = modified[ftKey] = setFeatureValues[ftInfo.type];
+    }
+  }
+
+  await setFeatures(features);
+
+  return modified;
+}
+
+/** Returns a subset of the feature config where each property's feature has *all* the given `tags`. */
+export function getFeaturesWithTags(tags: FeatureTag[]): Partial<FeatureConfig> {
+  const feats: Partial<FeatureConfig> = {};
+
+  for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
+    if(!("tags" in ftInfo) || ("tags" in ftInfo && !tags.every(tag => (ftInfo.tags as string[]).includes(tag))))
+      continue;
+
+    // @ts-expect-error
+    feats[ftKey] = getFeature(ftKey);
+  }
+
+  return feats;
 }

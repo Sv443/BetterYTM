@@ -1,6 +1,10 @@
 import { autoPlural, pauseFor } from "@sv443-network/coreutils";
 import { preloadImages } from "@sv443-network/userutils";
-import { addStyleFromResource, clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, resourceAsString, setInnerHtml, t, transplantElement, warn } from "@util/index.ts";
+import { addStyleFromResource, clearInner, setInnerHtml, transplantElement } from "@util/dom.ts";
+import { getDomain, getResourceUrl, openInTab, resourceAsString } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { onInteraction } from "@util/input.ts";
+import { t } from "@util/translations.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/interface.ts";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "@feat/lyrics.ts";
@@ -11,16 +15,7 @@ import { showPrompt } from "@dialog/prompt.ts";
 import { getFeature } from "@/config.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 import "@feat/songLists.css";
-
-const songListSelector = `\
-ytmusic-playlist-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
-`;
+import { getSelector } from "@util/data.ts";
 
 /** Whether any song list item's checkbox is currently checked */
 let isCheckboxChecked = false;
@@ -30,13 +25,13 @@ let isCheckboxChecked = false;
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
   const multiSelectObs = new MutationObserver(() => {
-    const multiSelectEl = document.querySelector<HTMLElement>("ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]");
+    const multiSelectEl = document.querySelector<HTMLElement>(getSelector("songLists", "queueMultiSelect"));
     const newIsCheckboxChecked = Boolean(multiSelectEl) && !multiSelectEl?.hasAttribute("aria-hidden");
     if(newIsCheckboxChecked === isCheckboxChecked)
       return;
     isCheckboxChecked = newIsCheckboxChecked;
 
-    const allSongLists = document.querySelectorAll<HTMLElement>(songListSelector);
+    const allSongLists = document.querySelectorAll<HTMLElement>(getSelector("songLists", "all"));
     allSongLists.forEach((list) => {
       list.dataset.anyCheckboxChecked = String(isCheckboxChecked);
     });
@@ -49,17 +44,15 @@ export async function initQueueButtons() {
   });
 
   /** Tries to add queue buttons to the current song queue items on the /watch page. */
-  const tryAddCurrentQueueBtns = (
-    parentSelector: string,
-  ) => {
+  const tryAddCurrentQueueBtns = (parentSelector: string) => {
     if(getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere")
       return;
 
     const parent = document.querySelector<HTMLElement>(parentSelector);
     if(!parent)
-      return warn("Couldn't find current queue parent element to add queue buttons to");
+      return loggers.layout.warn("Couldn't find current queue parent element to add queue buttons to");
 
-    const queueItems = parent.querySelectorAll<HTMLElement>("ytmusic-player-queue-item");
+    const queueItems = parent.querySelectorAll<HTMLElement>(getSelector("songLists", "queueItem"));
 
     let amt = 0;
     for(const queueItm of queueItems) {
@@ -69,23 +62,23 @@ export async function initQueueButtons() {
       }
     }
     if(amt > 0)
-      log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
+      loggers.layout.log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
   };
 
   // current queue
 
-  siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #contents"));
-  siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns("ytmusic-player-queue #automix-contents"));
+  siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "currentQueueContainer")));
+  siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "autoplayQueueContainer")));
 
-  const queueItems = document.querySelectorAll<HTMLElement>("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
+  const queueItems = document.querySelectorAll<HTMLElement>(getSelector("songLists", "allCurrentQueueItems_global"));
   if(queueItems.length > 0) {
     queueItems.forEach(itm => addQueueButtons(itm, undefined, "currentQueue"));
-    log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
+    loggers.layout.log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
   }
 
   /** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
   const tryAddGenericListQueueBtns = (listElem: HTMLElement) => {
-    const queueItems = listElem.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer");
+    const queueItems = listElem.querySelectorAll<HTMLElement>(getSelector("songLists", "allGenericListItems_sub_listContainer"));
     if(queueItems.length === 0)
       return;
 
@@ -99,7 +92,7 @@ export async function initQueueButtons() {
     });
 
     addedBtnsCount > 0 &&
-      log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
+      loggers.layout.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
   };
 
   const doSongListsChecks = (songLists: NodeListOf<HTMLElement>) => {
@@ -111,14 +104,14 @@ export async function initQueueButtons() {
     }
   };
 
-  addSelectorListener("body", songListSelector, {
+  addSelectorListener("body", getSelector("songLists", "all"), {
     all: true,
     debounce: Math.floor(1000 / 6),
     listener: doSongListsChecks,
   });
 
   siteEvents.on("pathChanged", () => {
-    const songLists = document.querySelectorAll<HTMLElement>(songListSelector);
+    const songLists = document.querySelectorAll<HTMLElement>(getSelector("songLists", "all"));
     if(songLists.length > 0)
       doSongListsChecks(songLists);
   });
@@ -129,13 +122,13 @@ function checkSwapLikeDislikeBtns(songList: HTMLElement) {
   if(!getFeature("swapLikeDislikeButtons"))
     return;
 
-  songList.querySelectorAll<HTMLElement>("ytmusic-like-button-renderer #button-shape-dislike")
+  songList.querySelectorAll<HTMLElement>(getSelector("watchPage", "dislikeBtn"))
     .forEach((dislikeBtn) => {
       const parent = dislikeBtn.parentElement;
       if(!parent || parent.classList.contains("bytm-swapped-like-dislike"))
         return;
 
-      const likeBtn = parent.querySelector<HTMLElement>("#button-shape-like");
+      const likeBtn = parent.querySelector<HTMLElement>(getSelector("watchPage", "likeBtn"));
 
       if(likeBtn) {
         parent.classList.add("bytm-swapped-like-dislike");
@@ -156,11 +149,13 @@ function checkSwapLikeDislikeBtns(songList: HTMLElement) {
  */
 async function addQueueButtons(
   queueItem: HTMLElement,
-  containerParentSelector: string = ".song-info",
+  containerParentSelector: string | undefined = undefined,
   listType: "currentQueue" | "genericList" = "currentQueue",
   classes: string[] = [],
   insertPosition: "child" | "beforeParent" | "afterParent" = "child",
 ) {
+  containerParentSelector ??= getSelector("songLists", "allCurrentQueueItemsSongInfo_global");
+
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
 
@@ -188,7 +183,7 @@ async function addQueueButtons(
     lyricsBtnElem.tabIndex = 0;
 
     onInteraction(lyricsBtnElem, async (e: MouseEvent | KeyboardEvent) => {
-      const thumbSrc = queueItem.querySelector<HTMLImageElement>("yt-img-shadow img")?.src;
+      const thumbSrc = queueItem.querySelector<HTMLImageElement>(getSelector("songLists", "queueItemThumbnailImg"))?.src;
       const isVideo = thumbSrc ? thumbSrc.includes("ytimg.com/vi/") : true;
 
       // TODO: if isVideo, use just the song title, not the artist name
@@ -197,34 +192,34 @@ async function addQueueButtons(
         artist: string | null | undefined;
 
       if(listType === "currentQueue") {
-        const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
+        const songInfo = queueItem.querySelector<HTMLElement>(getSelector("songLists", "allCurrentQueueItemsSongInfo_global"));
         if(!songInfo)
-          return error("Couldn't find song info element in queue item", queueItem);
+          return loggers.layout.error("Couldn't find song info element in queue item", queueItem);
 
-        const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
+        const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>(getSelector("songLists", "currentQueueSongAndArtistNames"));
         song = songEl?.textContent;
         artist = artistEl?.textContent;
       }
       else if(listType === "genericList") {
-        const songEl = queueItem.querySelector<HTMLElement>(".title-column yt-formatted-string a");
+        const songEl = queueItem.querySelector<HTMLElement>(getSelector("songLists", "genericListSongName"));
         let artistEl: HTMLElement | null = null;
 
         if(location.pathname.startsWith("/playlist"))
-          artistEl = document.querySelector<HTMLElement>("ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a");
+          artistEl = document.querySelector<HTMLElement>(getSelector("songLists", "playlistPageArtistName"));
         if(!artistEl || !artistEl.textContent)
-          artistEl = queueItem.querySelector<HTMLElement>(".secondary-flex-columns yt-formatted-string:first-child a");
+          artistEl = queueItem.querySelector<HTMLElement>(getSelector("songLists", "genericListArtistName"));
 
         song = songEl?.textContent;
         artist = artistEl?.textContent;
 
         if(!artist) {
           // new playlist design
-          artistEl = document.querySelector<HTMLElement>("ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]");
+          artistEl = document.querySelector<HTMLElement>(getSelector("songLists", "playlistPageArtistNameAlternate"));
           artist = artistEl?.textContent;
         }
       }
       else
-        return error("Invalid list type:", listType);
+        return loggers.layout.error("Invalid list type:", listType);
 
       // hate doing it like this but there's nothing else in the DOM indicating what format the title is in
       if(song && isVideo && song.includes("-")) {
@@ -233,7 +228,7 @@ async function addQueueButtons(
       }
 
       if(!song || !artist)
-        return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
+        return loggers.layout.error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
 
       let lyricsUrl: string | undefined;
 
@@ -342,10 +337,10 @@ async function addQueueButtons(
       delImgElem.classList.add("bytm-spinner");
 
       // container of the queue item popup menu - element gets reused for every queue item
-      let queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+      let queuePopupCont = document.querySelector<HTMLElement>(getSelector("songLists", "queueItemPopoverContainer"));
       try {
         // three dots button to open the popup menu of a queue item
-        const dotsBtnElem = queueItem.querySelector<HTMLButtonElement>("ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button");
+        const dotsBtnElem = queueItem.querySelector<HTMLButtonElement>(getSelector("songLists", "queueItemDotsBtn"));
 
         if(dotsBtnElem) {
           if(queuePopupCont)
@@ -354,11 +349,11 @@ async function addQueueButtons(
           dotsBtnElem.click();
         }
         else {
-          info("Couldn't find three dots button in queue item, trying to open the context menu manually");
+          loggers.layout.info("Couldn't find three dots button in queue item, trying to open the context menu manually");
           queueItem.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: false }));
         }
 
-        queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+        queuePopupCont = document.querySelector<HTMLElement>(getSelector("songLists", "queueItemPopoverContainer"));
         queuePopupCont?.setAttribute("data-bytm-hidden", "true");
 
         await pauseFor(15);
@@ -366,8 +361,8 @@ async function addQueueButtons(
         delImgElem.src = deleteIconUrl;
         delImgElem.classList.remove("bytm-spinner");
 
-        const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-        const removeFromQueueBtnOptional = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)");
+        const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector<HTMLElement>(getSelector("songLists", "queueItemPopoverRemoveFromListBtn"));
+        const removeFromQueueBtnOptional = queuePopupCont?.querySelector<HTMLElement>(getSelector("songLists", "queueItemPopoverRemoveFromListBtnOptional"));
 
         let removeFromQueueBtn: HTMLElement | undefined;
 
@@ -388,7 +383,7 @@ async function addQueueButtons(
         }
 
         if(!removeFromQueueBtn) {
-          error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
+          loggers.layout.error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
           dotsBtnElem?.click();
           delImgElem.src = await getResourceUrl("icon-error");
           if(deleteBtnElem)
@@ -396,7 +391,7 @@ async function addQueueButtons(
         }
       }
       catch(err) {
-        error("Couldn't remove song from queue due to error:", err);
+        loggers.layout.error("Couldn't remove song from queue due to error:", err);
       }
       finally {
         queuePopupCont?.removeAttribute("data-bytm-hidden");
@@ -427,17 +422,24 @@ export async function addTrackNumbers() {
   (async () => {
     const promises: Promise<void | unknown>[] = [];
 
+    const siteSel = getFeature("songListTrackNumbersDomains");
+    const location = getFeature("songListTrackNumbers");
+
+    if(siteSel !== "all" && siteSel !== getDomain())
+      return;
+
     try {
-      const where = getFeature("songListTrackNumbers");
-      if(where === "genericLists" || where === "everywhere")
+      if(location === "genericLists" || location === "everywhere")
         promises.push(addStyleFromResource("css-track_numbers_song_lists"));
-      if(where === "currentQueue" || where === "everywhere")
+      if(location === "currentQueue" || location === "everywhere")
         promises.push(addStyleFromResource("css-track_numbers_current_queue"));
     }
     catch(err) {
-      error("Couldn't add track numbers style:", err);
+      loggers.layout.error("Couldn't add track numbers style:", err);
     }
 
     await Promise.allSettled(promises);
+
+    loggers.layout.log("Added track numbers style - for location(s):", location);
   })();
 }

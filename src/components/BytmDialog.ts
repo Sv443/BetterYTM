@@ -1,7 +1,9 @@
 import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "@util/index.ts";
+import { clearInner, getResourceUrl, onInteraction } from "@util/index.ts";
+import { getSelector } from "@util/data.ts";
+import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
 import { emitInterface } from "@/interface.ts";
 import "@comp/BytmDialog.css";
@@ -33,11 +35,11 @@ export type BytmDialogOptions = {
   /** Where to align or anchor the dialog vertically - defaults to "center" */
   verticalAlign?: "top" | "center" | "bottom";
   /** Called to render the body of the dialog */
-  renderBody: () => HTMLElement | Promise<HTMLElement>;
+  renderBody: (dialog: BytmDialog) => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
-  renderHeader?: () => HTMLElement | Promise<HTMLElement>;
+  renderHeader?: (dialog: BytmDialog) => HTMLElement | Promise<HTMLElement>;
   /** Called to render the footer of the dialog - leave undefined for no footer */
-  renderFooter?: () => HTMLElement | Promise<HTMLElement>;
+  renderFooter?: (dialog: BytmDialog) => HTMLElement | Promise<HTMLElement>;
 };
 
 export interface BytmDialogEvents extends EventsMap {
@@ -127,7 +129,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
         document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem), { once: true });
     }
     catch(e) {
-      return error("Failed to render dialog content:", e);
+      return loggers.dialog.error("Failed to render dialog content:", e);
     }
 
     this.attachListeners(bgElem);
@@ -202,7 +204,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
-      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+      return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
 
     dialogBg.style.visibility = "visible";
     dialogBg.style.display = "block";
@@ -231,7 +233,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
-      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+      return loggers.dialog.warn(`Couldn't find background element for dialog with ID '${this.id}'`);
 
     dialogBg.style.visibility = "hidden";
     dialogBg.style.display = "none";
@@ -320,7 +322,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     // remove the scroll lock and inert attribute on the body if no dialogs are open
     if(openDialogs.length === 0) {
       document.body.classList.remove("bytm-disable-scroll");
-      document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+      document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
     }
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
@@ -344,7 +346,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     // make sure body is inert and scroll is locked
     document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
+    document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
     dialogBg?.removeAttribute("inert");
@@ -373,8 +375,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
   /** Returns the dialog content element and all its children */
   protected async getDialogContent() {
-    const header = this.options.renderHeader?.();
-    const footer = this.options.renderFooter?.();
+    const header = this.options.renderHeader?.(this);
+    const footer = this.options.renderFooter?.(this);
 
     const dialogWrapperEl = document.createElement("div");
     dialogWrapperEl.id = `bytm-${this.id}-dialog`;
@@ -432,7 +434,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBodyElem.classList.add("bytm-dialog-body");
     this.options.small && dialogBodyElem.classList.add("small");
 
-    dialogBodyElem.appendChild(await this.options.renderBody());
+    dialogBodyElem.appendChild(await this.options.renderBody(this));
     dialogWrapperEl.appendChild(dialogBodyElem);
 
     //#region >footer

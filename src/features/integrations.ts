@@ -1,7 +1,8 @@
 import { getDomain } from "@util/misc.ts";
 import { addStyleFromResource } from "@util/dom.ts";
-import { error, info, log } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
+import type { FeatureConfig } from "@/types.ts";
 import "@feat/integrations.css";
 
 //#region Dark Reader
@@ -16,7 +17,7 @@ export async function disableDarkReader() {
   metaElem.id = "bytm-disable-dark-reader";
   document.head.appendChild(metaElem);
 
-  info("Disabled Dark Reader");
+  loggers.integration.info("Disabled Dark Reader");
 }
 
 //#region SponsorBlock
@@ -24,10 +25,10 @@ export async function disableDarkReader() {
 /** Fixes the z-index of the SponsorBlock panel */
 export async function fixSponsorBlock() {
   try {
-    return addStyleFromResource("css-fix_sponsorblock");
+    return await addStyleFromResource("css-fix_sponsorblock");
   }
   catch(err) {
-    error("Failed to fix SponsorBlock styling:", err);
+    loggers.integration.error("Failed to fix SponsorBlock styling:", err);
   }
 }
 
@@ -36,31 +37,25 @@ export async function fixSponsorBlock() {
 /** Adjust the BetterYTM styles if ThemeSong is ***not*** used */
 export async function fixPlayerPageTheming() {
   try {
-    return addStyleFromResource("css-fix_playerpage_theming");
+    return await addStyleFromResource("css-fix_playerpage_theming");
   }
   catch(err) {
-    error("Failed to fix BetterYTM player page theming:", err);
+    loggers.integration.error("Failed to fix BetterYTM player page theming:", err);
   }
 }
 
 /** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
 export async function fixThemeSong() {
   try {
-    const cssVarName = (() => {
-      switch(getFeature("themeSongLightness")) {
-      default:
-      case "darker":
-        return "--ts-palette-darkmuted-hex";
-      case "normal":
-        return "--ts-palette-muted-hex";
-      case "lighter":
-        return "--ts-palette-lightmuted-hex";
-      };
-    })();
-    document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
+    const varNames = {
+      darker: "--ts-palette-darkmuted-hex",
+      normal: "--ts-palette-muted-hex",
+      lighter: "--ts-palette-lightmuted-hex",
+    } satisfies Record<FeatureConfig["themeSongLightness"], string>;
+    document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${varNames[getFeature("themeSongLightness")] ?? varNames.darker})`);
   }
   catch(err) {
-    error("Failed to set ThemeSong integration color lightness:", err);
+    loggers.integration.error("Failed to set ThemeSong integration color lightness:", err);
   }
 }
 
@@ -68,9 +63,9 @@ export async function fixThemeSong() {
 export async function setThemeSongVisualizerOpacity() {
   if(!await addStyleFromResource(
     "css-themesong_visualizer_opacity",
-    (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2))
+    (css) => css.replace("_INSERT_OPACITY_VALUE_", (getFeature("themeSongVisualizerOpacity") / 100).toFixed(2)),
   ))
-    error("Couldn't add ThemeSong visualizer opacity style");
+    loggers.integration.error("Couldn't add ThemeSong visualizer opacity style");
   else
-    log("Set ThemeSong visualizer opacity to " + getFeature("themeSongVisualizerOpacity") + "%");
+    loggers.integration.log(`Set ThemeSong visualizer opacity to ${getFeature("themeSongVisualizerOpacity")}%`);
 }

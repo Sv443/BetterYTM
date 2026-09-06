@@ -5,15 +5,15 @@
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 
-<h4>With translations for: <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr></h4>
+<h4>With translations for: <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr>, <abbr title="Turkish (Turkey)">🇹🇷&nbsp;TR</abbr></h4>
 
 ---
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Special Thanks**](#special-thanks) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
 
 </div>
-<br>
+<br><br>
 
 ### Features
 All of these can be toggled and configured in the configuration menu.
@@ -44,12 +44,12 @@ If you disabled the watermark, you can still open it by clicking your avatar in 
   
 > [!NOTE]
 > 
-> My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
+> My work relies on donations, so if you like this userscript please consider [supporting the development ❤️](https://github.com/sponsors/Sv443)
 
 <br><br><br>
 
 ## Installation
-Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
+By installing BetterYTM, you agree to the [license terms](./LICENSE.txt), [disclaimers](#disclaimers) and [privacy notice.](#privacy)
 1. **Install a userscript manager browser extension - I highly recommend Violentmonkey ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)) or Tampermonkey.**  
   <sub>Other extensions are known to not work as expected, especially in isolated contexts like with FireMonkey, Greasemonkey or the Brave browser (<a href="https://github.com/Sv443/BetterYTM/issues/115#issuecomment-2468374348" target="_blank">more info here</a>).</sub>
 
@@ -57,9 +57,12 @@ Note: by installing BetterYTM, you agree to the [license terms](./LICENSE.txt), 
   <sub>Note: the `unsafeWindow` grant is required due to limitations in some browsers (<a href="https://github.com/Sv443/BetterYTM/issues/18" target="_blank">more info here</a>).</sub>
 
 <br>
-  
-If you want to install the latest (potentially unstable) development build, [look for the latest pull request](https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen) and click the install button there.  
-Please make sure to manually remove and reinstall the userscript once the next release is out to avoid any issues.
+
+> [!NOTE]  
+> 
+> - Should the regular version not work in your browser, please try [installing the extended compatibility edition.](https://github.com/Sv443/BetterYTM/raw/refs/heads/main/dist/BetterYTM_compat.user.js)
+> - If you want to install the latest (potentially unstable) development build, [look for the latest pull request](https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen) and click the install button there. Please make sure to manually remove and reinstall the userscript once the next release is out to avoid any issues.
+
 
 <br><br>
 
@@ -89,6 +92,7 @@ Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-
 </sup>
 
 Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
+If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)
 
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{PLUGINS}}> -->
@@ -109,9 +113,9 @@ Your userscript manager extension's storage API is used to store all settings an
 Open its settings to see and manage this data. Delete the userscript to automatically delete all associated data.  
   
 BetterYTM makes use of external services and APIs to provide some of its features, which may collect data about you.  
-You may disable these features in the configuration menu if you don't want to use them, which will prevent any data from being sent to the services.  
+You may disable these features immediately upon the first launch, or in the configuration menu, which will prevent any data from being sent to the services.  
   
-These are the privacy policies of the external services BetterYTM uses, and what data they collect:
+These are the privacy policies of the external services BetterYTM uses, and what data they may notably collect:
 - [Apple Music - Privacy Policy](https://www.apple.com/legal/privacy/data/en/apple-music/) (album and artist names, IP address)
 - [geniURL - Privacy Policy](https://sv443.net/privacypolicy/en) (song and artist names, script version, IP address)
 - [Return YouTube Dislike - Security FAQ](https://github.com/Anarios/return-youtube-dislike/blob/main/Docs/SECURITY-FAQ.md) (video ID, IP address)
@@ -133,6 +137,8 @@ This project is based on my extensive template for making a userscript with Type
 A big thank you to these people for their contributions to this project:
 - [indierodo](https://github.com/indierodo): Track numbers feature
 - [cryeprecision](https://github.com/cryeprecision): Exponential volume slider feature
+- [kcangny](https://github.com/kcangny): Turkish translations
+- [canarado](https://github.com/canarado): Version checking code
 
 <br><br>
 
@@ -158,7 +164,7 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 ### Disclaimers
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
 - I don't own and have not modified any third party icons, I just re-host them as they are [here](https://github.com/Sv443/BetterYTM/tree/main/assets/images/external/) for ensured availability and compatibility.
-- I do not intend to ever sell any personally identifiable data about the end user. Everything in this script is done and stored locally on your device or on the site the script runs on.  
+- I do not intend to ever remotely collect any data about you. Everything in this script is done and stored locally on your device or on the site the script runs on.  
   Do note that requests to external services may collect data about you, to the extent that those services do (which usually boils down your IP address and the videos you're watching). Refer to the [privacy section](#privacy) for more information.
 - This script comes as-is, so I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I will however gladly accept your [bug reports and feature requests](https://github.com/Sv443/BetterYTM/issues/new/choose) or [contributions to the code or translations.](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
 
@@ -167,7 +173,7 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
 <div align="center" style="text-align: center;">
 
 Made with ❤️ by [Sv443](https://github.com/Sv443)  
-If you like this userscript, please consider [supporting me](https://github.com/sponsors/Sv443)  
+If you like this userscript, please consider [supporting the development](https://github.com/sponsors/Sv443)  
   
 © 2022 Sv443 - [AGPL-3.0-or-later](./LICENSE.txt)
 

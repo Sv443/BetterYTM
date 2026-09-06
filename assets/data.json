@@ -19,40 +19,233 @@
         "www.youtube.com",
         "youtube.com",
         "youtu.be",
-        "m.youtube.com"
+        "m.youtube.com",
+        "youtube-nocookie.com",
+        "www.youtube-nocookie.com"
       ]
     }
   ],
-  "alerts": [
-    {
-      "id": "update-preview-version-hint-v3.1.0-rc.1",
-      "title": {
-        "de-DE": "BetterYTM ist veraltet",
-        "en-GB": "BetterYTM is outdated",
-        "en-US": "BetterYTM is outdated",
-        "es-ES": "BetterYTM está desactualizado",
-        "fr-FR": "BetterYTM est obsolète",
-        "hi-IN": "BetterYTM पुराना है",
-        "ja-JP": "BetterYTMは古くなっています",
-        "pt-BR": "BetterYTM está desatualizado",
-        "zh-CN": "BetterYTM 已过时"
+  "alerts": [],
+  "selectors": {
+    "generic": {
+      "app": {
+        "yt": "ytd-app",
+        "ytm": "ytmusic-app"
       },
-      "message": {
-        "de-DE": "Du verwendest derzeit eine veraltete Vorschauversion von BetterYTM.  \nBitte schau auf der Release-Seite nach der vollständigen Version v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "en-GB": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "en-US": "You're currently running an outdated preview version of BetterYTM.  \nPlease check on the releases page for the full v3.1.0 release:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "es-ES": "Actualmente estás ejecutando una versión de vista previa obsoleta de BetterYTM.  \nPor favor, consulta la página de lanzamientos para la versión completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "fr-FR": "Vous utilisez actuellement une version de prévisualisation obsolète de BetterYTM.  \nVeuillez consulter la page des versions pour la version complète v3.1.0 :  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "hi-IN": "आप वर्तमान में BetterYTM का एक पुराना पूर्वावलोकन संस्करण चला रहे हैं।  \nकृपया पूर्ण v3.1.0 रिलीज़ के लिए रिलीज़ पृष्ठ पर जांच करें:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "ja-JP": "現在、BetterYTMの古いプレビューバージョンを実行しています。  \n完全なv3.1.0リリースについては、リリースページを確認してください:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "pt-BR": "Você está atualmente executando uma versão de visualização desatualizada do BetterYTM.  \nPor favor, verifique na página de lançamentos para a versão completa v3.1.0:  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)",
-        "zh-CN": "您当前正在运行过时的BetterYTM预览版本。  \n请在发布页面上查看完整的v3.1.0版本：  \n[https://github.com/Sv443/BetterYTM/releases](https://github.com/Sv443/BetterYTM/releases)"
+      "video": {
+        "yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
+        "ytm": "ytmusic-player video"
       },
-      "domains": ["ytm", "yt"],
-      "important": true,
-      "version": "3.1.0-rc.1",
-      "dateMax": "2026-06-01T23:59:59.999Z"
+      "pageHeaderContainer_sub_ytAppHeader": {
+        "yt": "#channel-header-container, #page-header, #page-header-container"
+      },
+      "browseResponseHeader_sub_browseResponse": {
+        "ytm": "ytmusic-browse-response #header.ytmusic-browse-response"
+      }
+    },
+    "watchPage": {
+      "channelName": {
+        "yt": "/* regular: */ #owner ytd-channel-name yt-formatted-string a, /* collab vids: */ #owner ytd-video-owner-renderer yt-attributed-string a",
+        "ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
+      },
+      "votesRenderer": {
+        "yt": "ytd-watch-metadata segmented-like-dislike-button-view-model",
+        "ytm": ".middle-controls-buttons ytmusic-like-button-renderer"
+      },
+      "votesRendererShorts": {
+        "yt": "reel-action-bar-view-model"
+      },
+      "likeBtn": {
+        "yt": "#actions ytd-menu-renderer like-button-view-model button",
+        "ytm": "ytmusic-like-button-renderer #button-shape-like"
+      },
+      "likeBtnShorts": {
+        "yt": "like-button-view-model button"
+      },
+      "dislikeBtn": {
+        "ytm": "ytmusic-like-button-renderer #button-shape-dislike"
+      },
+      "dislikeBtnShorts": {
+        "yt": "dislike-button-view-model"
+      },
+      "likeBtnAlternate": {
+        "yt": "like-button-view-model button",
+        "ytm": "#button-shape-like button"
+      },
+      "dislikeBtnAlternate": {
+        "yt": "dislike-button-view-model button",
+        "ytm": "#button-shape-dislike button"
+      },
+      "progressBar": {
+        "yt": ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]",
+        "ytm": "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar"
+      },
+      "videoPlayer": {
+        "yt": "#movie_player"
+      },
+      "songImg": {
+        "ytm": "ytmusic-player #song-image"
+      }
+    },
+    "songLists": {
+      "all": {
+        "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents"
+      },
+      "currentQueueContainer": {
+        "ytm": "ytmusic-player-queue #contents"
+      },
+      "currentQueueSongAndArtistNames": {
+        "ytm": "yt-formatted-string"
+      },
+      "autoplayQueueContainer": {
+        "ytm": "ytmusic-player-queue #automix-contents"
+      },
+      "playlistPageArtistName": {
+        "ytm": "ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a"
+      },
+      "playlistPageArtistNameAlternate": {
+        "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]"
+      },
+      "genericListArtistName": {
+        "ytm": ".secondary-flex-columns yt-formatted-string:first-child a, .secondary-flex-columns yt-formatted-string[title]"
+      },
+      "genericListSongName": {
+        "ytm": ".title-column yt-formatted-string a"
+      },
+      "queueItem": {
+        "ytm": "ytmusic-player-queue-item"
+      },
+      "queueItemThumbnailImg": {
+        "ytm": "yt-img-shadow img"
+      },
+      "queueItemPopoverContainer": {
+        "ytm": "ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown"
+      },
+      "queueItemPopoverRemoveFromListBtn": {
+        "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)"
+      },
+      "queueItemPopoverRemoveFromListBtnOptional": {
+        "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)"
+      },
+      "queueItemDotsBtn": {
+        "ytm": "ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button"
+      },
+      "queueMultiSelect": {
+        "ytm": "ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]"
+      },
+      "allCurrentQueueItems_global": {
+        "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item"
+      },
+      "allCurrentQueueItemsSongInfo_global": {
+        "ytm": ".song-info, .flex-columns.ytmusic-responsive-list-item-renderer"
+      },
+      "allGenericListItems_sub_listContainer": {
+        "ytm": "ytmusic-responsive-list-item-renderer"
+      }
+    },
+    "volume": {
+      "volSlider_sub_playerBarRightControls": {
+        "ytm": "tp-yt-paper-slider#volume-slider"
+      },
+      "volSliderExpanded_sub_playerBarRightControls": {
+        "ytm": "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider"
+      },
+      "volSliderContainer_sub_playerBarRightControls": {
+        "ytm": ".bytm-vol-slider-cont"
+      },
+      "volSliderExpandedContainer_sub_playerBarRightControls": {
+        "ytm": "ytmusic-player-expanding-menu .bytm-vol-slider-cont"
+      }
+    },
+    "integration": {
+      "themeSongPlayerBarControls": {
+        "ytm": "#ts-panel-container"
+      }
+    },
+    "autoLike": {
+      "titleContainer": {
+        "yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
+        "ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
+      },
+      "titleContainerChannelName": {
+        "yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
+        "ytm": "yt-formatted-string, span.yt-core-attributed-string"
+      },
+      "titleContainerChannelNameAlternate": {
+        "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string"
+      },
+      "titleContainerButtonsContainer": {
+        "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model"
+      },
+      "titleContainerButtonsContainerLastButton": {
+        "ytm": "ytmusic-subscribe-button-renderer"
+      },
+      "titleContainerButtonsContainerShareButton": {
+        "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type"
+      },
+      "titleContainerOtherButtons_sub_ytAppHeader": {
+        "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction"
+      },
+      "channelName_global": {
+        "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string"
+      },
+      "channelNameFallback_global": {
+        "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]"
+      }
+    },
+    "observer": {
+      "bytmDialogContainer": "#bytm-dialog-container",
+      "browseResponse": {
+        "ytm": "ytmusic-browse-response"
+      },
+      "searchPage": {
+        "ytm": "ytmusic-search-page"
+      },
+      "navBar": {
+        "ytm": "ytmusic-nav-bar"
+      },
+      "mainPanel": {
+        "ytm": "ytmusic-player-page #main-panel"
+      },
+      "sideBar": {
+        "ytm": "ytmusic-app-layout tp-yt-app-drawer"
+      },
+      "sidePanel": {
+        "ytm": "#side-panel"
+      },
+      "playerBar": {
+        "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app"
+      },
+      "playerBarInfo": {
+        "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper"
+      },
+      "playerBarMiddleButtons": {
+        "ytm": ".middle-controls .middle-controls-buttons"
+      },
+      "playerBarRightControls": {
+        "ytm": "#right-controls"
+      },
+      "popupContainer": {
+        "ytm": "ytmusic-app ytmusic-popup-container"
+      },
+      "ytGuide": {
+        "yt": "#content tp-yt-app-drawer#guide #guide-inner-content"
+      },
+      "ytdBrowse": {
+        "yt": "ytd-app ytd-page-manager ytd-browse"
+      },
+      "ytAppHeader": {
+        "yt": "#header ytd-app-header, #header ytd-tabbed-page-header"
+      },
+      "ytWatchFlexy": {
+        "yt": "ytd-app ytd-watch-flexy"
+      },
+      "ytWatchMetadata": {
+        "yt": "#columns #primary-inner ytd-watch-metadata"
+      },
+      "ytMasthead": {
+        "yt": "#content ytd-masthead#masthead"
+      }
     }
-  ],
-  "selectors": {}
+  }
 }

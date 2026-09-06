@@ -5,9 +5,10 @@ import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, rep
 import { featInfo, groupedCategories, resolveAdornments } from "@feat/index.ts";
 import { copyToClipboard, setInnerHtml } from "@util/dom.ts";
 import { onInteraction } from "@util/input.ts";
-import { error, info, log, warn } from "@util/logging.ts";
-import { compressionSupported, getChangelogHtmlWithDetails, getDomain, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { compressionSupported, getChangelogHtmlWithDetails, getResourceUrl, parseMarkdown, reloadAllTabs, reloadTab, resourceAsString, tryToDecompressAndParse } from "@util/misc.ts";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "@util/translations.ts";
+import { getSelector } from "@util/data.ts";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/interface.ts";
 import { showPrompt, type PromptDialog } from "@dialog/prompt.ts";
@@ -16,6 +17,7 @@ import { BytmDialog, openDialogs, setCurrentDialogId } from "@comp/BytmDialog.ts
 import { ExImDialog } from "@comp/ExImDialog.ts";
 import { createHotkeyInput } from "@comp/hotkeyInput.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
+import { createCircularBtn } from "@comp/circularButton.ts";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo, ResourceKey } from "@/types.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import localeMapping from "@asset/locales.json" with { type: "json" };
@@ -92,13 +94,29 @@ export async function mountCfgMenu() {
     titleCont.role = "heading";
     titleCont.ariaLevel = "1";
 
+    const focusContentBtn = getFeature("configMenuFocusContentButtonEnabled") ? await createCircularBtn({
+      title: t("config_menu_focus_content_button_tooltip"),
+      resourceName: "icon-arrow_down",
+      onClick() {
+        document.querySelector<HTMLElement>(".bytm-ftconf-category:not(.hidden)")?.focus();
+      },
+    }) : undefined;
+
+    if(focusContentBtn) {
+      focusContentBtn.id = "bytm-menu-focus-content";
+      focusContentBtn.role = "button";
+      focusContentBtn.tabIndex = 0;
+    }
+
     const titleLogoElem = document.createElement("img");
     const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
     titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
     titleLogoElem.tabIndex = 0;
     titleLogoElem.role = "button";
+    titleLogoElem.alt = t("config_menu_title_logo_tooltip", { scriptName: scriptInfo.name });
     if(logoSrc)
       titleLogoElem.src = logoSrc;
+
     onInteraction(titleLogoElem, (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -127,13 +145,15 @@ export async function mountCfgMenu() {
 
     titleElem.appendChild(titleTextElem);
 
+    // title links:
+
     const linksCont = document.createElement("div");
     linksCont.id = "bytm-menu-linkscont";
     linksCont.role = "navigation";
 
     const linkTitlesShort = {
       github: "GitHub",
-      greasyfork: "GreasyFork",
+      greasyfork: "Greasy Fork",
       openuserjs: "OpenUserJS",
       discord: "Discord",
     };
@@ -181,6 +201,9 @@ export async function mountCfgMenu() {
 
     addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
 
+    const headerRightSideElem = document.createElement("div");
+    headerRightSideElem.id = "bytm-menu-header-right-side";
+
     const closeElem = document.createElement("img");
     closeElem.classList.add("bytm-menu-close");
     closeElem.role = "button";
@@ -189,13 +212,16 @@ export async function mountCfgMenu() {
     closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
     onInteraction(closeElem, (e) => closeCfgMenu(e));
 
+    headerRightSideElem.appendChild(linksCont);
+    headerRightSideElem.appendChild(closeElem);
+
     titleCont.appendChild(titleElem);
-    titleCont.appendChild(linksCont);
+    focusContentBtn && titleCont.appendChild(focusContentBtn);
 
     titleLogoHeaderCont.appendChild(titleCont);
 
     headerElem.appendChild(titleLogoHeaderCont);
-    headerElem.appendChild(closeElem);
+    headerElem.appendChild(headerRightSideElem);
 
     //#region > footer
     const footerCont = document.createElement("div");
@@ -254,7 +280,7 @@ export async function mountCfgMenu() {
             return;
 
           const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
-          log("Trying to import configuration:", parsed);
+          loggers.configMenu.log("Trying to import configuration:", parsed);
 
           if(!parsed || typeof parsed !== "object")
             return await showPrompt({ type: "alert", message: t("import_error.invalid") });
@@ -278,7 +304,7 @@ export async function mountCfgMenu() {
                   curFmtVer = ver;
                 }
                 catch(err) {
-                  error(`Error while running migration function for format version ${fmtVer}:`, err);
+                  loggers.configMenu.error(`Error while running migration function for format version ${fmtVer}:`, err);
                 }
               }
             }
@@ -291,7 +317,7 @@ export async function mountCfgMenu() {
           await setFeatures({ ...getFeatures(), ...parsed.data });
 
           if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
-            log("Reloading tab after importing configuration");
+            loggers.configMenu.log("Reloading tab after importing configuration");
             return reloadTab();
           }
 
@@ -299,7 +325,7 @@ export async function mountCfgMenu() {
           emitSiteEvent("rebuildCfgMenu", parsed.data);
         }
         catch(err) {
-          warn("Couldn't import configuration:", err);
+          loggers.configMenu.warn("Couldn't import configuration:", err);
           await showPrompt({ type: "alert", message: t("import_error.invalid") });
         }
       },
@@ -346,8 +372,7 @@ export async function mountCfgMenu() {
     const sidenavCont = document.createElement("nav");
     sidenavCont.classList.add("bytm-menu-sidenav");
     sidenavCont.id = "bytm-cfg-menu-sidenav";
-    sidenavCont.tabIndex = 0;
-    sidenavCont.ariaLabel = t("cfg_menu_sidenav_label");
+    sidenavCont.tabIndex = -1;
 
     bodyCont.appendChild(sidenavCont);
 
@@ -400,7 +425,7 @@ export async function mountCfgMenu() {
         return headerElem;
       }
       catch(err) {
-        error(`Error while creating sidenav header for category '${headerId}':`, err);
+        loggers.configMenu.error(`Error while creating sidenav header for category '${headerId}':`, err);
       }
     };
 
@@ -408,9 +433,7 @@ export async function mountCfgMenu() {
     const sidenavTopSectionCont = document.createElement("section");
     sidenavTopSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavTopSectionCont.id = "bytm-cfg-menu-sidenav-top-section";
-    sidenavTopSectionCont.role = "radiogroup";
-    sidenavTopSectionCont.tabIndex = 0;
-    sidenavTopSectionCont.ariaLabel = t("cfg_menu_sidenav_top_section_label", { scriptName: scriptInfo.name });
+    sidenavTopSectionCont.tabIndex = -1;
 
     // settings category headers:
     let firstCatHeader = true;
@@ -437,9 +460,7 @@ export async function mountCfgMenu() {
     const sidenavBtmSectionCont = document.createElement("section");
     sidenavBtmSectionCont.classList.add("bytm-menu-sidenav-section", "bytm-ignored-input");
     sidenavBtmSectionCont.id = "bytm-cfg-menu-sidenav-bottom-section";
-    sidenavBtmSectionCont.role = "radiogroup";
-    sidenavBtmSectionCont.tabIndex = 0;
-    sidenavBtmSectionCont.ariaLabel = t("cfg_menu_sidenav_bottom_section_label", { scriptName: scriptInfo.name });
+    sidenavBtmSectionCont.tabIndex = -1;
 
     // extra info headers:
     const extraInfoCategoryIDs = ["about", "changelog"] as const;
@@ -468,6 +489,7 @@ export async function mountCfgMenu() {
     topAnchor.id = "bytm-menu-top-anchor";
     featuresCont.appendChild(topAnchor);
 
+    //#region onCfgChange
     const onCfgChange = async (
       key: keyof typeof cfgDefaultData,
       initialVal: unknown,
@@ -491,7 +513,7 @@ export async function mountCfgMenu() {
 
       try {
         const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
-        info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
+        loggers.configMenu.info(`Feature config changed at key '${key}'${valueHidden ? "" : `, from value '${fmt(initialVal)}' to '${fmt(newVal)}'`}`);
 
         const featConf = structuredClone(getFeatures()) as FeatureConfig;
 
@@ -502,9 +524,14 @@ export async function mountCfgMenu() {
           typeof featConf[k as FeatureKey] !== "object"
           && featConf[k as FeatureKey] !== initConfig![k as FeatureKey]
         ) : [];
+
         const requiresReload =
           // @ts-expect-error
-          changedKeys.some((k) => featInfo[k as keyof typeof featInfo]?.reloadRequired !== false);
+          changedKeys.some((k) => featInfo[k as FeatureKey]?.reloadRequired !== false);
+
+        const promptMenuRemount =
+          // @ts-expect-error
+          changedKeys.some((k) => featInfo[k as FeatureKey]?.reloadMenuPrompt === true);
 
         await setFeatures(featConf);
 
@@ -520,6 +547,15 @@ export async function mountCfgMenu() {
           reloadFooterEl.setAttribute("aria-hidden", "true");
         }
 
+        if(promptMenuRemount) {
+          await showPrompt({
+            type: "confirm",
+            message: t("feature_changed_remount_config_menu"),
+            confirmBtnText: t("reopen"),
+            confirmBtnTooltip: t("reopen"),
+          }) && emitSiteEvent("recreateCfgMenu");
+        }
+
         if(initLocale !== featConf.locale) {
           await initTranslations(featConf.locale);
           setLocale(featConf.locale);
@@ -533,6 +569,7 @@ export async function mountCfgMenu() {
 
           const getReloadAllBtn = async (dialog: PromptDialog): Promise<HTMLButtonElement> => {
             const reloadAllBtn = document.createElement("button");
+            reloadAllBtn.classList.add("bytm-btn");
             reloadAllBtn.id = "bytm-prompt-dialog-reload-all";
             reloadAllBtn.textContent = `${t("reload_all_tabs_now")}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_all_tabs_now")}` : ""}`;
             reloadAllBtn.ariaLabel = reloadAllBtn.title = `${t("reload_all_tabs_tooltip", scriptInfo.name)}${isLocalesTextDifferent ? ` / ${tl(initLocale!, "reload_all_tabs_tooltip", scriptInfo.name)}` : ""}`;
@@ -560,7 +597,7 @@ export async function mountCfgMenu() {
             },
           })) {
             closeCfgMenu();
-            log("Reloading tab after changing language");
+            loggers.configMenu.log("Reloading tab after changing language");
             await reloadTab();
           }
         }
@@ -568,7 +605,7 @@ export async function mountCfgMenu() {
           setLocale(featConf.locale);
       }
       catch(err) {
-        error("Error while reacting to config change:", err);
+        loggers.configMenu.error("Error while reacting to config change:", err);
       }
       finally {
         // @ts-expect-error
@@ -699,7 +736,7 @@ export async function mountCfgMenu() {
           }
 
           if(!await hasKeyFor("en-US", `feature_desc.${featKey}`)) {
-            error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
+            loggers.configMenu.error(`Missing en-US translation with key "feature_desc.${featKey}" for feature description, skipping this config menu feature...`);
             continue;
           }
 
@@ -744,7 +781,7 @@ export async function mountCfgMenu() {
               });
             }
             else {
-              error(`Couldn't create help button SVG element for feature '${featKey}'`);
+              loggers.configMenu.error(`Couldn't create help button SVG element for feature '${featKey}'`);
             }
           }
 
@@ -943,11 +980,13 @@ export async function mountCfgMenu() {
             inputElem.setAttribute("aria-describedby", `bytm-ftitem-text-${featKey}`);
             inputElem.setAttribute("aria-labelledby", labelElem?.id ?? `bytm-ftitem-text-${featKey}`);
 
-            // after input, clamp the value between min and max and round it to step:
-            const hasMinOrMax = ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number");
-            const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
-
             if(isNumericInput) {
+              // after unfocusing, clamp the numeric input's value between min and max, and round it to step
+              // doing it here is purely visual as the onCfgChange function already correctly constrains the value before saving
+
+              const hasMinOrMax = ("min" in ftInfo && typeof ftInfo.min === "number" || "max" in ftInfo && typeof ftInfo.max === "number");
+              const hasStep = "step" in ftInfo && typeof ftInfo.step === "number";
+
               inputElem.addEventListener("blur", () => {
                 let v = Number(inputElem.value);
                 if(hasMinOrMax && !isNaN(v)) {
@@ -1084,6 +1123,7 @@ export async function mountCfgMenu() {
           greasyforkLink: pkg.hosts.greasyfork,
           openuserjsLink: pkg.hosts.openuserjs,
           fundingLink: pkg.funding.url,
+          issuesLink: pkg.bugs.url,
           discordLink: "https://dc.sv443.net/",
           currentYear: new Date().getFullYear(),
           licenseName: pkg.license,
@@ -1153,7 +1193,7 @@ export async function mountCfgMenu() {
         if(ftInfo.type === "slider")
           labelElem.textContent = `${fmtVal(Number(value), ftKey as FeatureKey)}${unitTxt}`;
       }
-      info("Rebuilt config menu");
+      loggers.configMenu.info("Rebuilt config menu");
     });
 
     //#region scroll indicator
@@ -1254,7 +1294,7 @@ export async function mountCfgMenu() {
 
           const svgContent = await resourceAsString(resourceKey);
           if(!svgContent) {
-            error(`Couldn't create mode display element for mode '${id}' because the resource '${resourceKey}' couldn't be loaded.`);
+            loggers.configMenu.error(`Couldn't create mode display element for mode '${id}' because the resource '${resourceKey}' couldn't be loaded.`);
             continue;
           }
           setInnerHtml(modeDisplayWrapperEl, svgContent);
@@ -1287,16 +1327,16 @@ export async function mountCfgMenu() {
 
     (document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
 
-    window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250));
+    window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250), { passive: true });
 
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+    document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
 
-    log(`Mounted config menu element in ${Date.now() - startTs}ms`);
+    loggers.configMenu.log(`Mounted config menu element in ${Date.now() - startTs}ms`);
 
     isCfgMenuMounting = false;
     isCfgMenuDoneMounting = true;
@@ -1328,7 +1368,7 @@ export async function mountCfgMenu() {
     siteEvents.once("recreateCfgMenu", async () => {
       const bgElem = document.querySelector("#bytm-cfg-menu-bg");
       if(!bgElem) {
-        error("Couldn't remount config menu because the background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+        loggers.configMenu.error("Couldn't remount config menu because the background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
         return;
       }
 
@@ -1357,7 +1397,7 @@ export async function mountCfgMenu() {
     });
   }
   catch(err) {
-    error("Error while creating and mounting config menu:", err);
+    loggers.configMenu.error("Error while creating and mounting config menu:", err);
     closeCfgMenu();
   }
 }
@@ -1380,7 +1420,7 @@ export async function openCfgMenu() {
     isCfgMenuOpen = true;
 
     document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
+    document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
     const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
     setCurrentDialogId("cfg-menu");
@@ -1391,7 +1431,7 @@ export async function openCfgMenu() {
     emitInterface("bytm:dialogOpened:cfg-menu" as "bytm:dialogOpened:id", undefined as unknown as BytmDialog);
 
     if(!menuBg) {
-      warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+      loggers.configMenu.warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
       closeCfgMenu();
       return;
     }
@@ -1408,7 +1448,7 @@ export async function openCfgMenu() {
     }
   }
   catch(err) {
-    error("Error while opening config menu:", err);
+    loggers.configMenu.error("Error while opening config menu:", err);
   }
 }
 
@@ -1424,7 +1464,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   if(enableScroll && !openDialogs.some(id => id !== "cfg-menu")) {
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+    document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
   }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
@@ -1440,7 +1480,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", undefined as unknown as BytmDialog);
 
   if(!menuBg)
-    return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+    return loggers.configMenu.warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
 
   menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
 

@@ -1,5 +1,5 @@
 import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { getOS, hasKey, onInteraction, setInnerHtml, t } from "@util/index.ts";
+import { getOS, hasKey, interactionKeys, onInteraction, setInnerHtml, t } from "@util/index.ts";
 import type { HotkeyObj } from "@/types.ts";
 import "@comp/hotkeyInput.css";
 
@@ -128,7 +128,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
       return;
     if(inputElem.dataset.state !== "active")
       return;
-    if(e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
+    if(e.code === "Tab" || e.code === "Escape" || interactionKeys.includes(e.code)) {
       deactivate();
       return;
     }
@@ -189,9 +189,9 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
 /** Returns HTML for the hotkey modifier keys info element */
 function getHotkeyModifiersHtml(hotkey: HotkeyObj) {
   const modifiers = [] as string[];
-  hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_ctrl")}</kbd>`);
-  hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier_shift")}</kbd>`);
-  hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}</kbd>`);
+  hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier.ctrl")}</kbd>`);
+  hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier.shift")}</kbd>`);
+  hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}</kbd>`);
   return `\
 <div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">
   <span>
@@ -221,17 +221,17 @@ async function getHkInputContent(hotkey: HotkeyObj) {
 }
 
 /** Converts a hotkey object to a string, with optional whitespace padding between symbols */
-function hotkeyToString(hotkey: HotkeyObj | undefined, padding = false) {
+export function hotkeyToString(hotkey: HotkeyObj | undefined, padding = false) {
   if(!hotkey)
     return t("hotkey_input_none_selected");
   let str = "";
   const p = padding ? " " : "";
   if(hotkey.ctrl)
-    str += `${t("hotkey_modifier_ctrl")}${p}+${p}`;
+    str += `${t("hotkey_modifier.ctrl")}${p}+${p}`;
   if(hotkey.shift)
-    str += `${t("hotkey_modifier_shift")}${p}+${p}`;
+    str += `${t("hotkey_modifier.shift")}${p}+${p}`;
   if(hotkey.alt)
-    str += `${getOS() === "mac" ? t("hotkey_modifier_mac_option") : t("hotkey_modifier_alt")}${p}+${p}`;
+    str += `${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}${p}+${p}`;
   str += hotkey.code;
   return str;
 }

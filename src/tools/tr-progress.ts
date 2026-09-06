@@ -54,15 +54,18 @@ async function run() {
   console.log(`Found ${trs.length} ${autoPlural("locale", trs)}:`, trs.join(", "));
 
   const { "en-US": enUS, ...restLocs } = translations;
+  /** en-US with nested keys flattened to dot notation */
+  const flatEnUS = flattenTrObject(enUS);
   const progress = {} as Record<TrLocale, number>;
 
   //#region progress table
 
   const progTableLines: string[] = [];
 
-  for(const [locale, translations] of Object.entries({ "en-US": enUS, ...restLocs })) {
-    for(const [k] of Object.entries(enUS)) {
-      if(translations[k]) {
+  for(const [locale, localeTrObj] of Object.entries({ "en-US": enUS, ...restLocs })) {
+    const flatLocaleTrObj = flattenTrObject(localeTrObj);
+    for(const k of Object.keys(flatEnUS)) {
+      if(flatLocaleTrObj[k]) {
         if(!progress[locale as TrLocale])
           progress[locale as TrLocale] = 0;
         progress[locale as TrLocale] += 1;
@@ -70,7 +73,7 @@ async function run() {
     }
 
     const trKeys = progress[locale as TrLocale];
-    const origKeys = Object.keys(enUS).length;
+    const origKeys = Object.keys(flatEnUS).length;
     const percent = Number(mapRange(trKeys, 0, origKeys, 0, 100).toFixed(1));
 
     const sym = trKeys === origKeys
@@ -97,15 +100,14 @@ async function run() {
 
   const missingKeys = [] as string[];
 
-  for(const [locale] of Object.entries({ "en-US": enUS, ...restLocs })) {
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const loc = locale as TrLocale;
+  for(const [locale, locTr] of Object.entries({ "en-US": enUS, ...restLocs })) {
+    if(locale === "en-US") continue;
+    const flatLocTr = flattenTrObject(locTr);
     const lines = [] as string[];
-    // TODO:FIXME: recurse over nested objects to extract keys & turn into dot notation
-    // for(const [k] of Object.entries(enUS)) {
-    //   if(!translations[k])
-    //     lines.push(`| \`${k}\` | \`${enUS[k].replace(/\n/gm, "\\n")}\` |`);
-    // }
+    for(const [k, v] of Object.entries(flatEnUS)) {
+      if(!flatLocTr[k])
+        lines.push(`| \`${k}\` | \`${(v as string).replace(/\n/gm, "\\n")}\` |`);
+    }
     if(lines.length > 0) {
       missingKeys.push(`
 <details><summary><code>${locale}</code> - ${lines.length} missing ${autoPlural("key", lines)} <i>(click to show)</i></summary><br>\n
@@ -123,7 +125,7 @@ ${lines.join("\n")}\n
   ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
   ‼️‼️‼️             THIS IS A GENERATED FILE             ‼️‼️‼️
   ‼️‼️‼️ all changes will be overwritten after next build ‼️‼️‼️
-  ‼️‼️‼️ only edit in \`src/tools/tr-progress-template.md\` ‼️‼️‼️
+  ‼️‼️‼️ only edit in 'src/tools/tr-progress-template.md' ‼️‼️‼️
   ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
 -->`;
 
@@ -141,6 +143,19 @@ ${lines.join("\n")}\n
   console.log(`\n${k.green("Finished updating translation progress")} - updated file at '${relative(rootDir, join(trDir, "README.md"))}'\n`);
 
   setImmediate(() => exit(0));
+}
+
+/** Recursively flattens a TrObject into a flat Record<string, string> using dot-notation keys */
+function flattenTrObject(obj: TrObject, prefix = ""): Record<string, string> {
+  const result: Record<string, string> = {};
+  for(const [key, value] of Object.entries(obj)) {
+    const fullKey = prefix ? `${prefix}.${key}` : key;
+    if(typeof value === "string")
+      result[fullKey] = value;
+    else
+      Object.assign(result, flattenTrObject(value, fullKey));
+  }
+  return result;
 }
 
 /**

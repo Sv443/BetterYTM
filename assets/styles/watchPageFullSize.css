@@ -6,7 +6,11 @@ ytmusic-player-page > .content #side-panel {
   margin-left: 24px !important;
 }
 
-@container player-page (min-width: 1600px) and (max-width: 1799px) {
+:root ytmusic-app #main-panel {
+  padding: 0 !important;
+}
+
+/* @container player-page (min-width: 1600px) and (max-width: 1799px) {
   :root ytmusic-app #main-panel {
     padding: 0 calc(35% - 47vh) !important;
   }
@@ -41,4 +45,4 @@ ytmusic-player-page > .content #side-panel {
     #player.ytmusic-player-page {
     max-width: unset !important;
   }
-}
+} */

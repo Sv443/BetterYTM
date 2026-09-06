@@ -2,10 +2,10 @@ import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-ne
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener } from "@/observers.ts";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString } from "@util/index.ts";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers, sanitizeUnicode, parseMarkdown, sanitizeHtml } from "@util/index.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
-import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
+import type { fetchLyricsUrlTop, fuzzyFetchLyricsInfo, sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
 import type { getLyricsCacheEntry } from "@feat/lyricsCache.ts";
 import type { isIgnoredInputElement } from "@feat/input.ts";
 import type { BytmDialog } from "@comp/BytmDialog.ts";
@@ -19,20 +19,11 @@ import type { showIconToast, showToast } from "@comp/toast.ts";
 import resources from "@asset/resources.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import type { featInfo } from "@feat/index.ts";
+import type { Logger } from "@util/Logger.ts";
 
 void ["type imports only:", resources, locales];
 
 //#region other
-
-/** Custom CLI args passed to rollup */
-export type RollupArgs = Partial<{
-  "config-mode": "development" | "production";
-  "config-branch": "main" | "develop";
-  "config-host": "greasyfork" | "github" | "openuserjs";
-  "config-assetSource": "local" | "github" | "jsdelivr";
-  "config-suffix": string;
-  "config-gen-meta": "true" | "false";
-}>;
 
 // I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 export enum LogLevel {
@@ -49,7 +40,7 @@ export type SiteSelection = Domain | "all";
 /** A selection option between one of the supported domains, or none of them. */
 export type SiteSelectionOrNone = SiteSelection | "none";
 
-/** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
+/** Key of a resource in `assets/resources.json` and extra keys defined by `src/tools/vite-plugin-bytm.ts` */
 export type ResourceKey = keyof typeof resources["resources"] | `trans-${keyof typeof locales}`;
 
 /** Key of a CSS resource in `assets/resources.json` */
@@ -177,7 +168,7 @@ export type NumberLengthFormat = "short" | "long";
 /** Preferred lightness of derived colors in the UI */
 export type ColorLightnessPref = "darker" | "normal" | "lighter";
 
-/** Like/dislike state identifier, as presented by the attribute `like-status` on the YTM element `ytmusic-player-bar ytmusic-like-button-renderer` */
+/** Like/dislike state identifier, as presented by the attribute `like-status` on the YTM element `ytmusic-player-bar ytmusic-like-button-renderer`. On YT the state is resolved differently but this type's value stays the same. */
 export type LikeDislikeState = "LIKE" | "DISLIKE" | "INDIFFERENT";
 
 /** Object for storing various timings related to the initialization process, for performance monitoring and debugging purposes. */
@@ -189,6 +180,12 @@ export type PerformanceReport = {
     domain: Domain;
     /** BYTM's version. */
     version: string;
+    /** BYTM's build number. */
+    buildNumber: typeof consts.buildNumber;
+    /** ISO timestamp of when BYTM was built. */
+    buildTime: string;
+    /** The mode BYTM was built in. Can be "development" or "production" */
+    mode: typeof consts.mode;
     /** The userscript manager extension's identifier (`GM.info.scriptHandler`). */
     scriptHandler: string;
     /** Version of the userscript manager extension (`GM.info.version`). */
@@ -196,30 +193,40 @@ export type PerformanceReport = {
     /** User agent string of the browser. */
     userAgent: string;
     /** Whether the page was loaded in incognito mode, which means other extensions are probably disabled. */
-    isIncognito?: boolean;
+    isIncognito: boolean | null;
     /** Which kind of sandboxing the userscript manager extension uses (Tampermonkey-only prop). */
-    sandboxMode?: string;
+    sandboxMode: string | null;
     /** How the script was injected into the page (Violentmonkey-only prop). */
-    injectInto?: string;
+    injectInto: string | null;
     /** Whether first-party isolation is enabled in the browser (Tampermonkey-only prop). */
-    isFirstPartyIsolation?: boolean;
+    isFirstPartyIsolation: boolean | null;
   };
+  /** Contains generic durations for specific initialization phases (or just noteworthy function calls), starting from whenever that phase starts, and recorded as soon as that phase ends. The keys are not strictly typed, but should be descriptive of the phase they measure. */
+  durations?: Record<LooseUnion<keyof PerformanceReport & FeatureKey>, number>;
+  /** Timestamp when feature initialization started. Every entry in `featureDurations` uses this as the starting point. */
+  featureStart: number;
+  /** For each feature identifier, the time in milliseconds **since feature initialization started** (see the `featureStart` timestamp). Recorded as soon as that feature's async initialization function finishes executing. The keys are not strictly typed, but in general they will be a member of the {@linkcode FeatureKey} union. */
+  featureDurations?: Record<LooseUnion<FeatureKey>, number>;
   /** Timestamp when the script starts synchronously executing, before the call to {@linkcode preInit()}. */
   start: number;
-  /** Contains generic durations for specific initialization phases (or just noteworthy function calls), starting from whenever that phase starts, and recorded when that phase ends. The keys are not strictly typed, but should be descriptive of the phase they measure. */
-  durations?: Record<LooseUnion<keyof PerformanceReport & FeatureKey>, number>;
-  /** For each feature identifier (not strictly typed), the time in milliseconds **since feature initialization started**, recorded when that feature's async initialization function finishes executing. */
-  featureDurations?: Record<LooseUnion<FeatureKey>, number>;
-  /** Time in milliseconds since `start`, recorded at the end of {@linkcode preInit()}. */
-  preInitEnd?: number;
-  /** Time in milliseconds since `start`, recorded when the `DOMContentLoaded` event fires. */
-  domLoaded?: number;
-  /** Time in milliseconds since `start` when the `bytm:ready` event is emitted, which signals that the bulk of BYTM is ready and all features have *started* initialization. */
-  ready?: number;
-  /** Time in milliseconds since `start` when all features have finished their async initialization functions and BYTM is fully ready. For plugins, this only factors in their deferred initialization. */
-  allReady?: number;
-  /** Time in milliseconds since `start` when the entire initialization process finishes, including any synchronous, post-ready, developer-only code. Runs very slightly after `ready`. */
-  postInitEnd?: number;
+  /** Various general timings starting at the `start` timestamp. */
+  sinceStart: {
+    /** Time in milliseconds since `start`, recorded at the end of {@linkcode preInit()}. */
+    preInitEnd?: number;
+    /** Time in milliseconds since `start`, recorded when the `DOMContentLoaded` event fires. */
+    domLoaded?: number;
+    /** Time in milliseconds since `start` when the `bytm:ready` event is emitted, which signals that the bulk of BYTM is ready and all features have at least *started* initialization. */
+    ready?: number;
+    /** Time in milliseconds since `start` when all features have finished their async initialization functions and BYTM is fully ready. For plugins, this only factors in their deferred initialization. */
+    allReady?: number;
+    /** Time in milliseconds since `start` when the entire initialization process finishes, including any synchronous, post-ready, developer-only code. Runs very slightly after `ready`. */
+    postInitEnd?: number;
+  };
+  /** Performance-related info regarding resources. */
+  resources: {
+    /** Amount of resources fetched from the remote CDN. */
+    fetchAttempts?: Record<ResourceKey | "_", number>;
+  };
 };
 
 //#region utility
@@ -262,6 +269,10 @@ export type BytmObject =
     // utility
     /** [NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#nanoemitter) class reference to create your own event emitters */
     NanoEmitter: typeof NanoEmitter;
+    /** Object of predefined Logger instances for different categories. In general, it's better to create your own Logger instances for your plugin or feature, but these can also be used when appropriate. */
+    loggers: typeof loggers;
+    /** The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system. */
+    Logger: typeof Logger;
 
     // dialogs legacy (TODO: remove in v4)
     /** @deprecated Please use the authenticated function `getBytmDialog()` instead. This property will be removed in BYTM v4.0.0 */
@@ -273,11 +284,11 @@ export type BytmObject =
 
     // dialogs
     /** Returns a reference to the {@linkcode BytmDialog} class, which can be used to create new dialogs */
-    getBytmDialog: () => typeof BytmDialog;
+    getBytmDialog: (token?: string) => typeof BytmDialog | undefined;
     /** Returns a reference to the {@linkcode ExImDialog} class, which can be used to create new export/import dialogs */
-    getExImDialog: () => typeof ExImDialog;
+    getExImDialog: (token?: string) => typeof ExImDialog | undefined;
     /** Returns a reference to the {@linkcode MarkdownDialog} class, which can be used to create new markdown rendering dialogs */
-    getMarkdownDialog: () => typeof MarkdownDialog;
+    getMarkdownDialog: (token?: string) => typeof MarkdownDialog | undefined;
   }
   // libraries
   & {
@@ -304,8 +315,108 @@ declare global {
     trustedTypes?: {
       createPolicy(name: string, policy: TTPolicy): TTPolicy;
     };
+    ytInitialPlayerResponse?: YTInitialPlayerResponse;
   }
 }
+
+//#region YT/YTM
+
+/**
+ * The `ytInitialPlayerResponse` object injected into the page by YT/YTM, containing metadata and playback info about the currently loaded video.
+ * Only the properties relevant to BYTM are narrowly typed - everything else is kept broad since it's either irrelevant or too volatile to rely on (e.g. tracking params, ad config, streaming URLs).
+ */
+export type YTInitialPlayerResponse = {
+  /** Generic metadata about the request/response itself - not relevant to BYTM. */
+  responseContext?: Record<string, unknown>;
+  /** Whether and why the video can currently be played. */
+  playabilityStatus: {
+    /** Whether the video is playable and if not, why. */
+    status: LooseUnion<"OK" | "ERROR" | "LOGIN_REQUIRED" | "UNPLAYABLE" | "LIVE_STREAM_OFFLINE" | "CONTENT_CHECK_REQUIRED" | "AGE_CHECK_REQUIRED">;
+    /** Whether the video can be played in an embedded player. */
+    playableInEmbed?: boolean;
+    /** Human-readable reason for the current status, if applicable (e.g. error or age restriction message). */
+    reason?: string;
+    [key: string]: unknown;
+  };
+  /** Contains the actual video/audio stream URLs and formats - not used by BYTM, so kept broad. */
+  streamingData?: Record<string, unknown>;
+  /** URLs YT pings to report playback progress - not relevant to BYTM. */
+  playbackTracking?: Record<string, unknown>;
+  /** Caption/subtitle track info - not currently used by BYTM. */
+  captions?: Record<string, unknown>;
+  /** Core metadata about the currently loaded video. */
+  videoDetails: {
+    /** The video ID (`v` query param / last part of the URL path). */
+    videoId: string;
+    /** The video's title. */
+    title: string;
+    /** The video's duration in seconds, as a stringified number. */
+    lengthSeconds: string;
+    /** The uploader's channel ID. */
+    channelId: string;
+    /** Whether the currently signed in account is the owner of the video. */
+    isOwnerViewing?: boolean;
+    /** The video's description. */
+    shortDescription?: string;
+    isCrawlable?: boolean;
+    /** Available thumbnail resolutions for the video. */
+    thumbnail?: {
+      thumbnails: {
+        url: string;
+        width: number;
+        height: number;
+      }[];
+    };
+    /** Whether the video can be liked/disliked. */
+    allowRatings?: boolean;
+    /** The video's view count, as a stringified number. */
+    viewCount?: string;
+    /** The uploader's channel name. */
+    author: string;
+    isPrivate?: boolean;
+    isUnpluggedCorpus?: boolean;
+    /** Whether the video is a currently active livestream. */
+    isLiveContent: boolean;
+    isTvfilmVideo?: boolean;
+    [key: string]: unknown;
+  };
+  /** Player configuration (playback rates, audio/DASH config, etc.) - not relevant to BYTM. */
+  playerConfig?: Record<string, unknown>;
+  /** Video preview storyboard (scrubbing thumbnails) info - not currently used by BYTM. */
+  storyboards?: Record<string, unknown>;
+  /** SEO-oriented metadata about the video, largely overlapping with {@linkcode videoDetails} but with some extra fields. */
+  microformat?: {
+    playerMicroformatRenderer: {
+      /** ISO 8601 timestamp of when the video was published/made public. */
+      publishDate: string;
+      /** The uploader's channel name. */
+      ownerChannelName: string;
+      /** ISO 8601 timestamp of when the video was uploaded. */
+      uploadDate: string;
+      /** The video ID (same as {@linkcode videoDetails}`.videoId`). */
+      externalVideoId: string;
+      /** The uploader's channel ID (same as {@linkcode videoDetails}`.channelId`). */
+      externalChannelId: string;
+      /** The video's duration in seconds, as a stringified number. */
+      lengthSeconds: string;
+      /** The video's like count, as a stringified number - dislikes are not exposed here. */
+      likeCount?: string;
+      /** The video's canonical, tracking-parameter-free URL. */
+      canonicalUrl?: string;
+      /** The video's category, e.g. "Gaming" or "Music". */
+      category?: string;
+      isFamilySafe?: boolean;
+      isUnlisted?: boolean;
+      [key: string]: unknown;
+    };
+  };
+  /** Legacy "info cards" data (annotations) - not relevant to BYTM. */
+  cards?: Record<string, unknown>;
+  /** Analytics tracking blob - not relevant to BYTM. */
+  trackingParams?: string;
+  frameworkUpdates?: Record<string, unknown>;
+  [key: string]: unknown;
+};
 
 //#region translations
 
@@ -407,7 +518,7 @@ export type PluginDef = {
       other?: string;
       /** URL to the plugin's bug tracker page, like GitHub issues. */
       bug?: string;
-      /** URL to the plugin's GreasyFork page. */
+      /** URL to the plugin's Greasy Fork page. */
       greasyfork?: string;
       /** URL to the plugin's OpenUserJS page. */
       openuserjs?: string;
@@ -441,29 +552,30 @@ export type PluginEventMap =
 export type PluginItem = Prettify<
   & {
     def: PluginDef;
+    grantedPerms: number;
   }
   & Pick<PluginRegisterResult, "events">
 >;
 
 //#region plugin interface
 
-/** All functions exposed by the interface on the global `BYTM` object */
+/** Most of the functions exposed by the interface via the global `BYTM` object. */
 export type InterfaceFunctions = {
   // meta:
-  /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it */
+  /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it. */
   getPluginInfo: typeof getPluginInfo;
-  /** 🔒 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins */
+  /** 🔒 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
   getInternals: typeof getInternals;
 
   // bytm-specific:
-  /** Returns the current domain as a constant string representation */
+  /** Returns the current domain as a constant string representation. */
   getDomain: typeof getDomain;
   /**
    * Returns the URL of a resource as defined in `assets/resources.json`  
    * There are also some resources like translation files that get added by `tools/post-build.ts`  
    *   
-   * The returned URL is a `blob:` URL served up by the userscript extension  
-   * This makes the resource fast to fetch and also prevents CORS issues
+   * The returned URL is a `blob:` URL served up by the userscript extension.  
+   * This makes the resource fast to fetch and also prevents CORS issues.
    */
   getResourceUrl: typeof getResourceUrl;
   /**
@@ -471,75 +583,79 @@ export type InterfaceFunctions = {
    * Uses a builtin cache to speed up subsequent calls, even across sessions.
    */
   resourceAsString: typeof resourceAsString;
-  /** Returns the unique session ID for the current tab */
+  /** Returns the unique session ID for the current tab. */
   getSessionId: typeof getSessionId;
-  /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used */
+  /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used. */
   reloadTab: typeof reloadTab;
 
   // dom:
-  /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string */
+  /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string. */
   setInnerHtml: typeof setInnerHtml;
-  /** Adds a listener to one of the already present SelectorObserver instances */
+  /** Sanitizes the given HTML string using DOMPurify in a TrustedTypes-compatible way (only if supported by the browser). */
+  sanitizeHtml: typeof sanitizeHtml;
+  /** Adds a listener to one of the already present SelectorObserver instances. */
   addSelectorListener: typeof addSelectorListener;
-  /** Registers accessible interaction listeners (click, enter, space) on the provided element */
+  /** Registers accessible interaction listeners (click, enter, space) on the provided element. */
   onInteraction: typeof onInteraction;
   /**
-   * Returns the current video time (on both YT and YTM)  
-   * In case it can't be determined on YT, mouse movement is simulated to bring up the video time  
-   * In order for that edge case not to error out, the function would need to be called in response to a user interaction event (e.g. click) due to the strict autoplay policy in browsers
+   * Returns the current video time (on both YT and YTM).  
+   * In case it can't be determined on YT, mouse movement is simulated to bring up the video time.  
+   * In order for that edge case not to error out, the function would need to be called in response to a user interaction event (e.g. click) due to the strict autoplay policy in browsers.
    */
   getVideoTime: typeof getVideoTime;
-  /** Returns the thumbnail URL for the provided video ID and thumbnail quality */
+  /** Returns the thumbnail URL for the provided video ID and thumbnail quality. */
   getThumbnailUrl: typeof getThumbnailUrl;
-  /** Returns the thumbnail URL with the best quality for the provided video ID */
+  /** Returns the thumbnail URL with the best quality for the provided video ID. */
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
-  /** Fetches the Apple Music / iTunes album info objects for the given artist and album names */
+  /** Fetches the Apple Music / iTunes album info objects for the given artist and album names. */
   fetchITunesAlbumInfo: typeof fetchITunesAlbumInfo;
-  /** Resolves the returned promise when the video element is queryable in the DOM */
+  /** Resolves the returned promise when the video element is queryable in the DOM. */
   waitVideoElementReady: typeof waitVideoElementReady;
-  /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found */
+  /** Returns the video element on the current page for both YTM and YT - returns null if it couldn't be found. */
   getVideoElement: typeof getVideoElement;
-  /** Returns the CSS selector to the video element for both YTM and YT */
+  /** Returns the CSS selector to the video element for both YTM and YT. */
   getVideoSelector: typeof getVideoSelector;
-  /** (On YTM only) returns the current media type (video or song) */
+  /** (On YTM only) returns the current media type (video or song). */
   getCurrentMediaType: typeof getCurrentMediaType;
-  /** Returns the like and dislike elements, as well as the current state of them as a string constant */
+  /** Returns the like and dislike elements, as well as the current state of them as a string constant. */
   getLikeDislikeBtns: typeof getLikeDislikeBtns;
-  /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored */
+  /** Checks whether the given element (or document.activeElement by default) is input element, so all other global keypresses should be ignored. */
   isIgnoredInputElement: typeof isIgnoredInputElement;
+  /** Converts a markdown string into an HTML string. Optionally and if supported, sanitizes using DOMPurify to create a TrustedHTML object. */
+  parseMarkdown: typeof parseMarkdown;
   
   // site events:
-  /** Adds a site event listener */
+  /** Adds a site event listener. */
   onSiteEvent: typeof siteEvents.on,
-  /** Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern */
+  /** Adds a site event listener that is only called once and also returns a Promise for use with the async/await pattern. */
   onceSiteEvent: typeof siteEvents.once,
-  /** Adds a listener for multiple site events at once, with configurable behavior */
+  /** Adds a listener for multiple site events at once, with configurable behavior. */
   onMultiSiteEvents: typeof siteEvents.onMulti,
 
   // translations:
-  /** 🔒 Sets the locale for all new translations */
+  /** 🔒 Sets the locale for all new translations. */
   setLocale: typeof setLocaleInterface;
-  /** Returns the current locale */
+  /** Returns the current locale. */
   getLocale: typeof getLocale;
-  /** Returns whether a translation key exists for the set locale */
+  /** Returns whether a translation key exists for the set locale. */
   hasKey: typeof hasKey;
-  /** Returns whether a translation key exists for the provided locale */
+  /** Returns whether a translation key exists for the provided locale. */
   hasKeyFor: typeof hasKeyFor;
-  /** Returns the translation for the provided translation key and currently set locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key and currently set locale (check the files in the folder `assets/translations`). */
   t: typeof t;
-  /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`). */
   tp: typeof tp;
-  /** Returns the translation for the provided translation key and provided locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key and provided locale (check the files in the folder `assets/translations`). */
   tl: typeof tl;
-  /** Returns the translation for the provided translation key, including pluralization identifier and provided locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key, including pluralization identifier and provided locale (check the files in the folder `assets/translations`). */
   tlp: typeof tlp;
 
   // feature config:
-  /** 🔒 Returns the current feature configuration */
+  /** 🔒 Returns the current feature configuration. */
   getFeatures: typeof getFeaturesInterface;
-  /** 🔒 Overwrites the feature configuration with the provided one */
+  /** 🔒 Overwrites the feature configuration with the provided one. */
   saveFeatures: typeof saveFeaturesInterface;
-  /** Returns the default feature configuration */
+  /** Returns the default feature configuration. */
   getDefaultFeatures: () => FeatureConfig;
 
   // lyrics:
@@ -549,36 +665,40 @@ export type InterfaceFunctions = {
   sanitizeSong: typeof sanitizeSong;
   /** Fetches the lyrics URL of the top search result for the provided song and artist. Before a request is sent, the cache is checked for a match. */
   fetchLyricsUrlTop: typeof fetchLyricsUrlTop;
+  /** Tries to rearrange the passed song and artist items until a fitting lyrics URL is fetched. Can send quite a lot of requests, so use this sparingly! */
+  fuzzyFetchLyricsInfo: typeof fuzzyFetchLyricsInfo;
   /** Returns the lyrics cache entry for the provided song and artist, if there is one. Never sends a request on its own. */
   getLyricsCacheEntry: typeof getLyricsCacheEntry;
 
   // auto-like:
-  /** 🔒 Returns the current auto-like data */
+  /** 🔒 Returns the current auto-like data. */
   getAutoLikeData: typeof getAutoLikeDataInterface;
-  /** 🔒 Overwrites the auto-like data */
+  /** 🔒 Overwrites the auto-like data. */
   saveAutoLikeData: typeof saveAutoLikeDataInterface;
-  /** Returns the votes for the provided video ID from the ReturnYoutubeDislike API */
+  /** Returns the votes for the provided video ID from the ReturnYoutubeDislike API. */
   fetchVideoVotes: typeof fetchVideoVotes;
 
   // components:
-  /** Creates a new hotkey input component */
+  /** Creates a new hotkey input component. */
   createHotkeyInput: typeof createHotkeyInput;
-  /** Creates a new toggle input component */
+  /** Creates a new toggle input component. */
   createToggleInput: typeof createToggleInput;
-  /** Creates a new circular button component */
+  /** Creates a new circular button component. */
   createCircularBtn: typeof createCircularBtn;
-  /** Creates a new ripple effect on the provided element or creates an empty element that has the effect */
+  /** Creates a new ripple effect on the provided element or creates an empty element that has the effect. */
   createRipple: typeof createRipple;
-  /** Shows a toast with the provided text */
+  /** Shows a toast with the provided text. */
   showToast: typeof showToast;
-  /** Shows a toast with the provided text and an icon */
+  /** Shows a toast with the provided text and an icon. */
   showIconToast: typeof showIconToast;
-  /** Shows a styled confirm() or alert() dialog with the provided message */
+  /** Shows a styled confirm() or alert() dialog with the provided message. */
   showPrompt: typeof showPromptInterface;
 
   // other:
-  /** Formats a number to a string using the configured locale and configured or passed number notation */
+  /** Formats a number to a string using the configured locale and configured or passed number notation. */
   formatNumber: typeof formatNumber;
+  /** Replaces all sorts of wacky Unicode variants with the regular ASCII variant if possible. */
+  sanitizeUnicode: typeof sanitizeUnicode;
 };
 
 //#region feature defs
@@ -605,6 +725,12 @@ export type FeatureCategory =
   | "lyrics"
   | "integrations"
   | "plugins";
+
+/** Loose list of predefined tags for features. */
+export type FeatureTag = LooseUnion<
+  | "privacy" // TODO: add option to welcome menu to turn all privacy-sensitive features off
+  | "network" // fetches remote data
+>;
 
 /** One option in a select input. */
 export type SelectOption = {
@@ -653,7 +779,7 @@ export type FeatureTypeProps =
     default: string | number;
     /**
      * Array of options to populate the select input with.  
-     * For translation purposes, specify a function instead, because translations must be loaded first.
+     * For translation purposes, specify a function instead, because translations must be loaded first and are not available at variable declaration time.
      */
     options: SelectOption[] | (() => SelectOption[]);
   } & FeatureFuncProps)
@@ -702,7 +828,7 @@ export type FeatureTypeProps =
      */
     type: "button";
     /** The value is always `undefined` for buttons, meaning it gets stripped out when serializing. */
-    default?: undefined;
+    default: undefined;
     /**
      * Called when the button is clicked.  
      * If it returns a Promise, the button will only be re-enabled after it resolves or rejects.  
@@ -719,6 +845,13 @@ export type FeatureFuncProps = {
    * - ⚠️ When setting this to true, also make sure to add the `reload` adornment to the `adornments` property.
    */
   reloadRequired?: boolean;
+  /**
+   * Whether the user should be prompted to remount the menu after the feature's value was changed.  
+   * Useful for features that influence something inside the config menu at render time.  
+   *   
+   * This option alone does not require a `reload` adornment, it should only be added when `reloadRequired` is also set to true.
+   */
+  reloadMenuPrompt?: boolean;
   /**
    * Called whenever the feature's value was changed.  
    * This is useful for features that need special active treatment to react to config changes instead of passively reading the config on demand.  
@@ -750,6 +883,8 @@ export type FeatureInfoEntry = {
     supportedSites: Domain[];
     /** Semver version since when this feature was added. Responsible for showing the "new feature" icon in the config menu. */
     since: `${number}.${number}.${number}` | `${number}.${number}.${number}-${string}`;
+    /** Array of extra tags for this feature. */
+    tags?: FeatureTag[];
     /**
      * String that may contain HTML that will be the help text for this feature.  
      * Specifying a function may be useful for pluralizing or inserting values into the translation at runtime.
@@ -786,6 +921,8 @@ export interface FeatureConfig {
   locale: TrLocale;
   /** Whether to default to US-English if the translation for the set locale is missing */
   localeFallback: boolean;
+  /** Whether to show a "focus content" button in the config menu to skip the navigation */
+  configMenuFocusContentButtonEnabled: boolean;
   /** Whether to check for updates to the script */
   versionCheck: boolean;
   /** Button to check for updates */
@@ -804,6 +941,12 @@ export interface FeatureConfig {
   initTimeout: number;
   /** Time in milliseconds between SelectorObserver checks - lower number = faster reaction to DOM changes but also more CPU usage */
   defaultObserverDebounce: number;
+  /** Whether to log whenever a SelectorObserver checks for elements and finds a selector */
+  verboseObservers: boolean;
+  /** Whether to show global alert messages and which ones to show */
+  globalAlertMode: "never" | "all" | "importantOnly";
+  /** Button that shows the welcome menu again. */
+  openWelcomeMenu: undefined;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Button to reset every DataStore instance to their default values */
@@ -822,7 +965,9 @@ export interface FeatureConfig {
   fixSpacing: boolean;
   /** Whether to truncate the song title, artist name, album name, release year, and like/dislike ratio in the player bar using an ellipsis */
   truncatePlayerBarSubtitles: boolean;
-  /** Where to show a thumbnail overlay over the video element and whether to show it at all */
+  /** Whether the thumbnail overlay is enabled */
+  thumbnailOverlayEnabled: boolean;
+  /** When to automatically show the thumbnail overlay */
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */
   thumbnailOverlayToggleBtnShown: boolean;
@@ -870,6 +1015,8 @@ export interface FeatureConfig {
   aboveQueueBtnsSticky: boolean;
   /** Add track numbers to each song list item */
   songListTrackNumbersEnabled: boolean;
+  /** On which domains to add track numbers to song list items */
+  songListTrackNumbersDomains: SiteSelection;
   /** Where to add track numbers */
   songListTrackNumbers: "currentQueue" | "genericLists" | "everywhere";
 
@@ -926,8 +1073,10 @@ export interface FeatureConfig {
   rememberSongTimeReduction: number;
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
+  /** Whether to automatically scroll to the active song in the queue */
+  autoScrollToActiveSongEnabled: boolean;
   /** When to automatically scroll to the active song in the queue */
-  autoScrollToActiveSongMode: "never" | "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
+  autoScrollToActiveSongMode: "initialPageLoad" | "videoChangeAll" | "videoChangeManual" | "videoChangeAuto";
   /** Whether to automatically click the "Yes" button on the "Are you still there?" popup */
   yesImStillThere: boolean;
 
@@ -987,6 +1136,10 @@ export interface FeatureConfig {
   currentLyricsHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to open the current song's lyrics in a new tab */
   currentLyricsHotkey: HotkeyObj;
+  /** Add a hotkey to open the lyrics search prompt dialog */
+  lyricsSearchPromptHotkeyEnabled: boolean;
+  /** The hotkey to open the lyrics search prompt dialog */
+  lyricsSearchPromptHotkey: HotkeyObj;
   /** Add a hotkey to skip to the last remembered time of the current video/song */
   skipToRemTimeHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to skip to the last remembered time of the current video/song */
@@ -999,6 +1152,12 @@ export interface FeatureConfig {
   clearSearchBarHotkeyEnabled: boolean;
   /** The hotkey that needs to be pressed to clear the search bar */
   clearSearchBarHotkey: HotkeyObj;
+  /** Add a hotkey to lock all page interactions until the hotkey is pressed again */
+  interactionLockHotkeyEnabled: boolean;
+  /** The hotkey that needs to be pressed to lock and unlock interaction on the page */
+  interactionLockHotkey: HotkeyObj;
+  /** For how long to show the interaction lock overlay when a key or mouse button is pressed */
+  interactionLockOverlayTimeout: number;
   /** Whether to rebind the next [J] and previous [K] keys */
   rebindNextAndPrevious: boolean;
   /** The hotkey that needs to be pressed to skip to the next video/song */

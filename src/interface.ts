@@ -1,14 +1,19 @@
 import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
+import { broadcastTxID, emitBroadcast } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable } from "@util/index.ts";
-import { addSelectorListener } from "@/observers.ts";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode, parseMarkdown, sanitizeHtml } from "@util/index.ts";
+import { loggers } from "@util/logging.ts";
+import { Logger } from "@util/Logger.ts";
+import { addSelectorListener, globservers } from "@/observers.ts";
+import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
-import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
+import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, fuzzyFetchLyricsInfo, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
-import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum } from "@/types.ts";
+import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum, LogLevel } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
+import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { createHotkeyInput } from "@comp/hotkeyInput.ts";
 import { createToggleInput } from "@comp/toggleInput.ts";
@@ -19,7 +24,7 @@ import { ExImDialog } from "@comp/ExImDialog.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
 import pkgJson from "@root/package.json" with { type: "json" };
 
-const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable } = constants;
+const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants;
 const { autoPlural, NanoEmitter, pureObj } = CoreUtils;
 const { getUnsafeWindow } = UserUtils;
 
@@ -42,9 +47,9 @@ export type InterfaceEvents = {
   /** Emitted whenever the locale is changed - if a plugin changed the locale, the plugin ID is provided as well */
   "bytm:setLocale": { locale: TrLocale, pluginId?: string };
   /** When this is emitted, plugins may register themselves at a much earlier stage, before things like the feature config are even loaded */
-  "bytm:preInitPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
+  "bytm:preInitPlugin": (pluginDef: PluginDef) => Promise<PluginRegisterResult>;
   /** When this is emitted, this is your call to register your plugin using the function passed as the sole argument */
-  "bytm:registerPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
+  "bytm:registerPlugin": (pluginDef: PluginDef) => Promise<PluginRegisterResult>;
   /**
    * Emitted whenever the SelectorObserver instances have been initialized and can be used to listen for DOM changes and wait for elements to be available.  
    * Use `unsafeWindow.BYTM.addObserverListener(name, selector, opts)` to add custom listener functions to the observers (see contributing guide).
@@ -96,6 +101,9 @@ export type InterfaceEvents = {
   /** Emitted when an entry is added to the artwork cache. Note: `entry.url` will be the *template URL* with a default resolution of 100x100. Use a simple string replacement to get any other resolution */
   "bytm:artworkCacheEntryAdded": { artist: string, album: string, entry: ArtCacheEntry };
 
+  /** Emitted when the full DataStoreSerializer instance (containing crucial as well as cache and misc. volatile data) was initialized and all the stores' data was loaded. */
+  "bytm:dataStoreSerializerLoaded": undefined;
+
   // NOTE:
   // Additionally, all events from `SiteEventsMap` in `src/siteEvents.ts`
   // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
@@ -120,6 +128,7 @@ export const allInterfaceEvents = [
   "bytm:lyricsCacheCleared",
   "bytm:lyricsCacheEntryAdded",
   "bytm:artworkCacheEntryAdded",
+  "bytm:dataStoreSerializerLoaded",
   ...allSiteEvents.map(e => `bytm:siteEvent:${e}`),
 ] as const;
 
@@ -141,6 +150,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
 
   // dom:
   setInnerHtml,
+  sanitizeHtml,
   addSelectorListener,
   onInteraction,
   getVideoTime,
@@ -153,6 +163,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getCurrentMediaType,
   getLikeDislikeBtns,
   isIgnoredInputElement,
+  parseMarkdown, // TODO: docs
 
   // site events:
   onSiteEvent: siteEvents.on.bind(siteEvents),
@@ -175,13 +186,14 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getDefaultFeatures: () => structuredClone(cfgDefaultData),
 
   // lyrics:
+  sanitizeArtists,
+  sanitizeSong,
   fetchLyricsUrlTop,
-  getLyricsCacheEntry,
+  fuzzyFetchLyricsInfo, // TODO: docs
+  getLyricsCacheEntry, // TODO: docs
   // TODO:
   // getLyricsCache: getLyricsCacheInterface,
   // saveLyricsCache: saveLyricsCacheInterface,
-  sanitizeArtists,
-  sanitizeSong,
 
   // auto-like:
   /*🔒*/ getAutoLikeData: getAutoLikeDataInterface,
@@ -199,12 +211,14 @@ const globalFuncs: InterfaceFunctions = pureObj({
 
   // other:
   formatNumber,
+  sanitizeUnicode, // TODO: docs
 });
 
 /** Initializes the BYTM interface */
-export function initInterface() {
+export function preInitInterface() {
   const props = {
     // constants
+    sessionId: getSessionId(),
     mode,
     branch,
     host,
@@ -220,7 +234,9 @@ export function initInterface() {
     ...globalFuncs,
 
     // classes
-    NanoEmitter,
+    NanoEmitter, // legacy (also available via CoreUtils and UserUtils now)
+    loggers,
+    Logger,
 
     // dialogs legacy (TODO: remove in v4)
     BytmDialog,
@@ -236,14 +252,12 @@ export function initInterface() {
     CoreUtils,
     UserUtils,
     compareVersions,
-  };
+  } satisfies Omit<BytmObject, "locale" | "logLevel">; // omit dynamic values set after initialization - see setGlobalProp() usages
 
   for(const [key, value] of Object.entries(props))
     setGlobalProp(key, value);
 
-  setGlobalProp("sessionId", getSessionId());
-
-  log("Initialized BYTM interface");
+  loggers.plugin.log("Initialized BYTM interface");
 }
 
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
@@ -277,52 +291,88 @@ export function emitInterface<
     emitOnPlugins(type, undefined, ...detail);
     if(getFeature("logEvents")) {
       detail.length > 0 && detail?.[0]
-        ? log(`Emitted interface event '${type}' with data:`, ...detail)
-        : log(`Emitted interface event '${type}' (without data)`);
+        ? loggers.plugin.log(`Emitted interface event '${type}' with data:`, ...detail)
+        : loggers.plugin.log(`Emitted interface event '${type}' (without data)`);
     }
   }
   catch(err) {
-    error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
+    loggers.plugin.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
   }
 }
 
 //#region register plugins
 
-/** Map of plugin ID and all registered plugins */
+/**
+ * Data stored by the {@linkcode pluginPermissionsStore}.  
+ * Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
+ * At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
+ */
+type PluginPermissionsStoreData = {
+  [pluginKey: string]: [grantedPermissions: number, requestedIntents: number];
+};
+
+/**
+ * Stores information about plugins that have been registered and have had their intents granted (thus turning them into permissions).  
+ * Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
+ * At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
+ */
+export const pluginPermissionsStore = new CoreUtils.DataStore<PluginPermissionsStoreData>({
+  id: "bytm-plugin-permissions",
+  engine: new UserUtils.GMStorageEngine(),
+  defaultData: {},
+  formatVersion: 0,
+  compressionFormat: null,
+});
+
+let pluginPermissionsStoreLoaded = false;
+
+/** Returns the permission integers from the {@linkcode pluginPermissionsStore} for the given plugin. */
+function getPermStorePerms(def: PluginDefResolvable): [grantedPerms: number, requestedIntents: number] | undefined {
+  if(!pluginPermissionsStoreLoaded)
+    throw new CoreUtils.DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
+  return pluginPermissionsStore.getData()?.[getPluginKey(def)];
+}
+
+/** Map of plugin key to all registered plugins */
 const registeredPlugins = new Map<string, PluginItem>();
 
-/** Map of plugin ID to auth token for plugins that have been registered */
+/** Map of plugin key to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map<string, string>();
 
-let pluginsInitialized = false;
-
 /** Pre-init for eager plugins that need to be initialized as soon as physically possible */
-export function preInitPlugins() {
+export async function preInitPlugins() {
+  if(!pluginPermissionsStoreLoaded) {
+    await pluginPermissionsStore.loadData();
+    pluginPermissionsStoreLoaded = true;
+  }
+
   emitInterface("bytm:preInitPlugin", registerPlugin);
 }
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
-export function initPlugins() {
+export async function initPlugins() {
+  if(!pluginPermissionsStoreLoaded) {
+    await pluginPermissionsStore.loadData();
+    pluginPermissionsStoreLoaded = true;
+  }
+
   emitInterface("bytm:registerPlugin", registerPlugin);
 
   registerDevPlugin();
 
   window.addEventListener("bytm:ready", () => {
-    pluginsInitialized = true;
     if(registeredPlugins.size > 0)
-      info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`);
+      loggers.plugin.info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`, LogLevel.Info);
     else
-      log("No plugins registered");
+      loggers.plugin.log("No plugins registered");
   }, { once: true });
 }
 
 /** Registers a plugin on the BYTM interface. */
-function registerPlugin(def: PluginDef): PluginRegisterResult {
+export async function registerPlugin(def: PluginDef): Promise<PluginRegisterResult> {
   try {
-    if(pluginsInitialized)
-      throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
-
     const plKey = getPluginKey(def);
+    const isDevPlugin = getPluginKey(def) === devPluginKey;
 
     if(registeredPlugins.has(plKey))
       throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
@@ -331,24 +381,35 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     if(validationErrors)
       throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
+    const requestedIntents = defToIntentsBitSet(def);
+    const permStoreEntry = getPermStorePerms(def);
+    if(!isDevPlugin && (!permStoreEntry || permStoreEntry[1] !== requestedIntents)) {
+      await siteEvents.once("staticDataInitialized");
+
+      // show dialog
+      const permDialog = getPluginPermissionsDialog(def);
+      permDialog.open();
+      await permDialog.once("close");
+    }
+
+    const grantedPermsInt = isDevPlugin ? PluginIntent.FullAccess : getPermStorePerms(def)?.[0] ?? 0;
+
     const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
     const token = crypto.randomUUID();
 
     registeredPlugins.set(plKey, {
       def: def,
+      grantedPerms: grantedPermsInt,
       events,
     });
     registeredPluginTokens.set(plKey, token);
 
-    // TODO: check perms and ask user for initial activation
-    const permissionInt = defToIntentsBitSet(def);
-
     const permissions: PluginRegisterResult["permissions"] = {
-      int: permissionInt,
-      array: parseBitSetEnumArray(permissionInt, PluginIntent as unknown as BitSetTSEnum),
+      int: grantedPermsInt,
+      array: parseBitSetEnumArray(grantedPermsInt, PluginIntent as unknown as BitSetTSEnum),
     };
 
-    info(`Successfully registered plugin '${plKey}'`);
+    loggers.plugin.info(`Successfully registered plugin '${plKey}'`, LogLevel.Info);
 
     setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
 
@@ -360,7 +421,7 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
     };
   }
   catch(err) {
-    error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
+    loggers.plugin.error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
     throw err;
   }
 };
@@ -368,20 +429,21 @@ function registerPlugin(def: PluginDef): PluginRegisterResult {
 /** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 export let devPluginToken: string | undefined;
 export const devPluginId = CoreUtils.randomId(8, 36, true, true);
+export let devPluginKey: string | undefined;
 
 /** Registers a plugin that only exists in development mode to test the plugin system */
-function registerDevPlugin() {
+async function registerDevPlugin() {
   if(mode !== "development")
     return;
   try {
-    const { token, events } = registerPlugin({
+    const devPluginDef = {
       plugin: {
         name: t("dev_plugin.name"),
         namespace: `${pkgJson.namespace}+${devPluginId}`,
         version: pkgJson.version,
         description: createTranslatable("dev_plugin.description"),
         homepage: {
-          source: pkgJson.homepage,
+          source: `https://github.com/${repo}/blob/${branch}/docs/almanac.md#developer-plugin`,
           changelog: `${pkgJson.homepage}/blob/${branch}/changelog.md`,
           bug: pkgJson.bugs.url,
           greasyfork: pkgJson.hosts.greasyfork,
@@ -391,13 +453,15 @@ function registerDevPlugin() {
         iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
       },
       intents: PluginIntent.FullAccess,
-    });
+    } as const satisfies PluginDef;
+    devPluginKey = getPluginKey(devPluginDef);
+    const { token, events } = await registerPlugin(devPluginDef);
 
     devPluginToken = token;
     setGlobalProp("devPluginEvents", events);
   }
   catch(err) {
-    error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
+    loggers.plugin.error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
   }
 }
 
@@ -407,12 +471,12 @@ export function getRegisteredPlugins() {
 }
 
 /** Returns the key for a given plugin definition */
-function getPluginKey(plugin: PluginDefResolvable) {
+export function getPluginKey(plugin: PluginDefResolvable) {
   return `${plugin.plugin.namespace}/${plugin.plugin.name}`;
 }
 
 /** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
-function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
+export function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
   return plugin
     ? {
       name: plugin.plugin.name,
@@ -423,7 +487,7 @@ function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
 }
 
 /** Checks whether two plugins are the same, given their resolvable definition objects */
-function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
+export function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
   return getPluginKey(def1) === getPluginKey(def2);
 }
 
@@ -537,13 +601,11 @@ export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvabl
   if(!Array.isArray(perms))
     throw new TypeError("The second argument must be an array of PluginIntent values");
 
-  const pluginIntents = defToIntentsBitSet(plugin.def);
-
-  return UserUtils.bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils.bitSetHas(pluginIntents, perm));
+  return UserUtils.bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils.bitSetHas(plugin.grantedPerms, perm));
 }
 
 /** Converts the intents from a PluginDef object into a bit set value. */
-function defToIntentsBitSet(def: PluginDef): number {
+export function defToIntentsBitSet(def: PluginDef): number {
   if(Array.isArray(def.intents))
     return def.intents.reduce((acc, intent) => acc | intent, 0);
   else if(typeof def.intents === "number")
@@ -553,7 +615,7 @@ function defToIntentsBitSet(def: PluginDef): number {
 }
 
 /** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
-function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetTSEnum): TNum[] {
+export function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetTSEnum): TNum[] {
   const result: TNum[] = [];
   for(const [, val] of Object.entries(enumRef))
     if((typeof val === "number" || typeof val === "bigint") && CoreUtils.bitSetHas(bitSet, val as TNum))
@@ -562,14 +624,14 @@ function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRe
 }
 
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
-function validatePluginDef(pluginDef: Partial<PluginDef>) {
+export function validatePluginDef(pluginDef: Partial<PluginDef>) {
   const errors = [] as string[];
 
   const addNoPropErr = (jsonPath: string, type: string) =>
-    errors.push(t("plugin_validation_error_no_property", jsonPath, type));
+    errors.push(t("plugin_validation_error.no_property", jsonPath, type));
 
   const addInvalidPropErr = (jsonPath: string, value: string, examples: string[]) =>
-    errors.push(tp("plugin_validation_error_invalid_property", examples, jsonPath, value, `'${examples.join("', '")}'`));
+    errors.push(tp("plugin_validation_error.invalid_property", examples, jsonPath, value, `'${examples.join("', '")}'`));
 
   // def.plugin and its properties:
   typeof pluginDef.plugin !== "object" && addNoPropErr("plugin", "object");
@@ -694,6 +756,9 @@ export function getInternals(token: string | undefined) {
 
   return {
     constants,
+    globservers,
+    getSerializerStores,
+    getSerializerStoresFull,
     emitInterface,
     emitSiteEvent,
     siteEvents,
@@ -702,5 +767,7 @@ export function getInternals(token: string | undefined) {
     setGlobalProp,
     enableDiscardBeforeUnload,
     disableDiscardBeforeUnload,
+    broadcastTxID,
+    emitBroadcast,
   };
 }

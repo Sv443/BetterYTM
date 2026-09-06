@@ -1,13 +1,14 @@
-import { autoPlural, compress, createTable, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
-import { getUnsafeWindow, isDomLoaded, preloadImages } from "@sv443-network/userutils";
-import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, errorNoToast, getLocale, getLogsTxt, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, warn, type TrKey } from "@util/index.ts";
+import { autoPlural, compress, createTable, CustomError, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
+import { getUnsafeWindow, isDomLoaded, onDomLoad as onDomLoadedUu, preloadImages } from "@sv443-network/userutils";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey, resourceFetches } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
-import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, scriptInfo } from "@/constants.ts";
-import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
+import { assetSource, buildNumber, buildTimestamp, compressionFormat, defaultLogLevel, initTime, mode, rawConsts, scriptInfo } from "@/constants.ts";
+import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
+import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initStaticData } from "@util/data.js";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
-import { devPluginToken, emitInterface, initInterface, initPlugins, preInitPlugins } from "@/interface.ts";
+import { devPluginToken, emitInterface, preInitInterface, initPlugins, preInitPlugins, type registerPlugin } from "@/interface.ts";
 import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
 import { downloadData, getDSSerializer } from "@/serializers.ts";
 import { getWelcomeDialog } from "@dialog/welcome.ts";
@@ -52,7 +53,8 @@ import {
 import localesJson from "@asset/locales.json" with { type: "json" };
 import resourcesJson from "@asset/resources.json" with { type: "json" };
 import packageJson from "@root/package.json" with { type: "json" };
-import { LogLevel, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type ResourceKey } from "@/types.ts";
+import { LogLevel, PluginIntent, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type PluginDef, type ResourceKey } from "@/types.ts";
+import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.js";
 
 //#region cns. watermark
 
@@ -105,19 +107,25 @@ const initTimings: PerformanceReport = {
   ],
   meta: {
     version: scriptInfo.version,
+    buildNumber,
+    buildTime: new Date(buildTimestamp).toISOString(),
+    mode,
     domain: getDomain(),
     userAgent: navigator.userAgent,
     scriptHandler: GM.info?.scriptHandler ?? "unknown",
     scriptHandlerVersion: GM.info?.version ?? "unknown",
-    isIncognito: GM.info?.isIncognito ?? undefined,
-    sandboxMode: GM.info?.sandboxMode ?? undefined,
     // @ts-expect-error - Violentmonkey-only property
-    injectInto: GM.info?.injectInto ?? undefined,
-    isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? undefined,
+    injectInto: GM.info?.injectInto ?? null,
+    isIncognito: GM.info?.isIncognito ?? null,
+    isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? null,
+    sandboxMode: GM.info?.sandboxMode ?? null,
   },
-  start: 0,
   durations: {} as PerformanceReport["durations"],
+  featureStart: 0,
   featureDurations: {} as PerformanceReport["featureDurations"],
+  start: 0,
+  sinceStart: {},
+  resources: {},
 };
 
 /**
@@ -144,24 +152,37 @@ function preInit() {
       "FireMonkey",
     ];
 
-    if(unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) // (translations not loaded yet)
-      return alert(`BetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.`);
+    if(unsupportedHandlers.includes(GM.info?.scriptHandler ?? "")) { // (translations not loaded yet)
+      const msg = `⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`;
+      // document.body may not exist yet this early - calling alert() before it does can crash other extensions that hook into the native prompt dialog
+      if(isDomLoaded())
+        alert(msg);
+      else
+        onDomLoadedUu().then(() => alert(msg));
+      return;
+    }
 
     setLogLevel(defaultLogLevel);
 
     initBroadcast();
 
-    initInterface();
+    preInitInterface();
     preInitPlugins();
+
+    initPermTestPlugin();
 
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
-    initTimings.preInitEnd = Date.now() - initTimings.start;
+    // use rawConsts to make sure vite doesn't treeshake it away (no, I tried `void` already and it doesn't work):
+    if(typeof rawConsts !== "object")
+      loggers.init.error("rawConsts is not an object??????? (this doesn't actually break the script, but it's still funny it happened)");
+      
+    initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
     init();
   }
   catch(err) {
-    return error("Fatal pre-init error:", err);
+    return loggers.init.error("Fatal pre-init error:", err);
   }
 }
 
@@ -177,7 +198,8 @@ async function init() {
     endCfgDur();
     setLogLevel(features.logLevel);
 
-    info("Session ID:", getSessionId());
+    const sesId = getSessionId();
+    loggers.init.info("Session started with ID:", sesId === null ? "(Error: sessionStorage not available)" : sesId, LogLevel.Info);
 
     // resource cache:
     const endResCacheDur = measureInitDuration("initResourceCache");
@@ -198,10 +220,10 @@ async function init() {
 
     // plugins:
     try {
-      initPlugins();
+      await initPlugins();
     }
     catch(err) {
-      error("Plugin loading error:", err);
+      loggers.init.error("Plugin loading error:", err);
       emitInterface("bytm:fatalError", "Error while loading plugins");
     }
 
@@ -220,8 +242,8 @@ async function init() {
       onDomLoad();
   }
   catch(err) {
-    error("Fatal error:", err);
-    alert(`\
+    loggers.init.error("Fatal error:", err);
+    const msg = `\
 ${scriptInfo.name} encountered a fatal error during initialization and will not work correctly, if at all.
 For information on what caused this error, please refer to the JS console.
 
@@ -231,7 +253,11 @@ ${assetSource === "local"
 }${mode === "development"
   ? `\n\n⚠️ You're running a development version of the script, so it might just be in a broken state at the moment. Either downgrade to the latest stable release, or check back later on the following page for an updated version:\n${packageJson.devVersionUrl}`
   : ""
-}`);
+}`;
+    // document.body may not exist yet this early - calling alert() before it does can crash other extensions that hook into the native prompt dialog
+    if(!isDomLoaded())
+      await onDomLoadedUu();
+    alert(msg);
   }
 }
 
@@ -239,7 +265,7 @@ ${assetSource === "local"
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
-  initTimings.domLoaded = Date.now() - initTimings.start;
+  initTimings.sinceStart.domLoaded = Date.now() - initTimings.start;
 
   const domain = getDomain();
   const feats = getFeatures();
@@ -250,6 +276,11 @@ async function onDomLoad() {
 
   // needs to run synchronously before any async volume-setting code (initVolumeFeatures) to avoid a microtask vs macrotask race condition
   initExponentialVolume();
+
+  // initialize data.json and check for active alerts
+  const endStaticDataDur = measureInitDuration("initStaticData");
+  await initStaticData();
+  endStaticDataDur();
 
   // initialize DOM globals:
   try {
@@ -271,28 +302,24 @@ async function onDomLoad() {
     }, 0);
   }
   catch(err) {
-    error("Encountered error in pre-init:", err);
+    loggers.init.error("Encountered error in pre-init:", err);
   }
 
-  info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
+  loggers.init.info(`DOM loaded and feature pre-init finished, now initializing all feature entrypoints for domain "${domain}"...`, LogLevel.Info);
 
   try {
+    await initVersionSessionCounter();
+
     //#region welcome dlg
 
     if(typeof await GM.getValue("bytm-installed") !== "string") {
       // open welcome menu with language selector
       const dlg = await getWelcomeDialog();
       dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
-      info("Showing welcome menu");
+      loggers.init.info("Showing welcome menu");
       await dlg.open();
       await dlg.once("close");
     }
-
-    // initialize data.json and check for active alerts
-    const endStaticDataDur = measureInitDuration("initStaticData");
-    initStaticData().then(() => endStaticDataDur());
-
-    await initVersionSessionCounter();
 
     if(domain === "ytm") {
       //#region (ytm) layout
@@ -337,15 +364,12 @@ async function onDomLoad() {
 
       ftInit.push(["aboveQueueButtons", initAboveQueueBtns()]);
 
-      if(feats.songListTrackNumbersEnabled)
-        ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
-
       //#region (ytm) behavior
 
       if(feats.closeToastsTimeout > 0)
         ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
-      ftInit.push(["autoScrollToActiveSongMode", initAutoScrollToActiveSong()]);
+      ftInit.push(["autoScrollToActiveSong", initAutoScrollToActiveSong()]);
 
       ftInit.push(["yesImStillThere", initStillThere()]);
 
@@ -396,7 +420,7 @@ async function onDomLoad() {
       }
     }
     catch(err) {
-      error("Couldn't add config menu option:", err);
+      loggers.init.error("Couldn't add config menu option:", err);
     }
 
     if(["ytm", "yt"].includes(domain)) {
@@ -404,6 +428,11 @@ async function onDomLoad() {
 
       if(feats.removeShareTrackingParamSites)
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
+
+      //#region (ytm+yt) song lists
+
+      if(feats.songListTrackNumbersEnabled)
+        ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 
       //#region (ytm+yt) input
 
@@ -422,8 +451,8 @@ async function onDomLoad() {
 
     emitInterface("bytm:featureInitStarted");
 
-    const initStartTs = Date.now();
-    const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8_000;
+    const initStartTs = initTimings.featureStart = Date.now();
+    const initTimeout = (feats.initTimeout > 0 ? feats.initTimeout : 8_000);
     const initializedFeats: string[] = [];
 
     const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
@@ -449,14 +478,14 @@ async function onDomLoad() {
       ]).then(() => {
         endFeatInitDur();
         emitInterface("bytm:allReady");
-        initTimings.allReady = Date.now() - initStartTs;
+        initTimings.sinceStart.allReady = Date.now() - initStartTs;
         if(initializedFeats.length < ftInit.length) {
-          errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${
+          loggers.init.errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${
             ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")
           }`);
         }
         else
-          info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints after ${Math.floor(Date.now() - initStartTs)}ms`);
+          loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints in ${Math.floor(Date.now() - initStartTs)}ms`, LogLevel.Info);
       })
     )();
 
@@ -466,29 +495,29 @@ async function onDomLoad() {
     // preload icons
     preloadResources();
 
-    initTimings.ready = Date.now() - initTimings.start;
+    initTimings.sinceStart.ready = Date.now() - initTimings.start;
     emitInterface("bytm:ready");
 
     try {
       registerDevCommands();
     }
     catch(e) {
-      warn("Couldn't register dev menu commands:", e);
+      loggers.init.warn("Couldn't register dev menu commands:", e);
     }
 
     try {
       runDevTreatments();
     }
     catch(e) {
-      warn("Couldn't run dev treatments:", e);
+      loggers.init.warn("Couldn't run dev treatments:", e);
     }
   }
   catch(err) {
-    error("Feature error:", err);
+    loggers.init.error("Feature error:", err);
     emitInterface("bytm:fatalError", "Error while initializing features");
   }
   finally {
-    initTimings.postInitEnd = Date.now() - initTimings.start;
+    initTimings.sinceStart.postInitEnd = Date.now() - initTimings.start;
   }
 }
 
@@ -502,9 +531,9 @@ async function preloadResources() {
     .map(k => getResourceUrl(k as ResourceKey));
   const urls = await Promise.all(urlPromises);
   if(urls.length > 0)
-    info("Preloading", urls.length, "resources:", urls);
+    loggers.init.info("Preloading", urls.length, "resources:", urls);
   else
-    info("No resources to preload");
+    loggers.init.info("No resources to preload");
   await preloadImages(urls);
 }
 
@@ -513,7 +542,7 @@ async function preloadResources() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 async function injectCssBundle() {
   if(!await addStyleFromResource("css-bundle"))
-    error("Couldn't inject CSS bundle due to an error");
+    loggers.init.error("Couldn't inject CSS bundle due to an error");
 }
 
 /** Initializes global CSS values */
@@ -534,7 +563,7 @@ function initGlobalCss() {
     applyVars();
   }
   catch(err) {
-    error("Couldn't initialize global CSS:", err);
+    loggers.init.error("Couldn't initialize global CSS:", err);
   }
 }
 
@@ -601,14 +630,14 @@ function registerDevCommands() {
 
   isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
     const keys = await GM.listValues();
-    dbg(`GM values (${keys.length}):`);
+    loggers.command.log(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      dbg("  No values found.");
+      loggers.command.log("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
 
-    const decodeError = (key: string, err: unknown) => error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
+    const decodeError = (key: string, err: unknown) => loggers.command.error(`  "${key}"${" ".repeat(longestKey - key.length)} -> [!!!!!] Decoding Error: ${err}`);
 
     for(const key of keys) {
       try {
@@ -633,7 +662,7 @@ function registerDevCommands() {
       try {
         const isEncoded = key.startsWith("__ds-") ? String(await GM.getValue(`__ds-${key.substring(5)}-enc`, "null")) !== "null" : false;
         const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-        dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+        loggers.command.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
       }
       catch(err) {
         decodeError(key, err);
@@ -643,9 +672,9 @@ function registerDevCommands() {
 
   isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
     const keys = await GM.listValues();
-    dbg(`GM values (${keys.length}):`);
+    loggers.command.log(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      dbg("  No values found.");
+      loggers.command.log("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
@@ -657,32 +686,32 @@ function registerDevCommands() {
     }
     for(const [key, val] of Object.entries(values)) {
       const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
+      loggers.command.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
     }
   });
 
   isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
-      dbg(`Clearing ${keys.length} GM values:`);
+      loggers.command.log(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
-        dbg("  No values found.");
+        loggers.command.log("  No values found.");
       for(const key of keys) {
         await GM.deleteValue(key);
-        dbg(`  Deleted ${key}`);
+        loggers.command.log(`  Deleted ${key}`);
       }
     }
   });
 
   isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
     await GM.deleteValue("bytm-installed");
-    dbg("Reset install time.");
+    loggers.command.log("Reset install time.");
   });
 
   isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
     const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
     await GM.deleteValue("bytm-version-session-counter");
-    dbg("Reset version session counter. Was previously:", verSesCount);
+    loggers.command.log("Reset version session counter. Was previously:", verSesCount);
   });
 
   isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
@@ -699,7 +728,7 @@ function registerDevCommands() {
         });
       });
     }
-    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    loggers.command.log(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
   isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
@@ -710,6 +739,7 @@ function registerDevCommands() {
         extraButtons: [
           (dlg) => {
             const btn = document.createElement("button");
+            btn.classList.add("bytm-btn");
             btn.textContent = btn.ariaLabel = "Copy and close";
             btn.addEventListener("click", async () => {
               copyToClipboard(result);
@@ -725,7 +755,7 @@ function registerDevCommands() {
 
     const showErr = async (type: "compress" | "decompress", err: unknown) => {
       const errMsg = `Error while trying to ${type === "compress" ? "" : "de"}compress`;
-      error(errMsg, err);
+      loggers.command.error(errMsg, err);
       await showPrompt({
         type: "alert",
         message: `${errMsg}:\n${err instanceof Error ? `${err.name}: ${err.message}` : String(err)}`,
@@ -802,9 +832,11 @@ function registerDevCommands() {
     }
   });
 
-  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
 
   isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+    initTimings.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
+
     downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
   });
 
@@ -820,13 +852,11 @@ function registerDevCommands() {
       type: "alert",
       message: devPluginToken ? `Developer plugin token for the current session:\n${devPluginToken}` : "Error: Dev plugin not registered yet.",
       extraButtons: [
-        (dlg) => {
+        () => {
           const btn = document.createElement("button");
-          btn.textContent = btn.ariaLabel = "Copy and close";
+          btn.textContent = btn.ariaLabel = "Copy";
           btn.addEventListener("click", async () => {
             devPluginToken && copyToClipboard(devPluginToken);
-            dlg.emitResolve(devPluginToken ?? null);
-            dlg.close();
           });
           return btn;
         },
@@ -836,7 +866,7 @@ function registerDevCommands() {
   );
 
   GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
-    downloadFile(`bytm-log-${new Date().toISOString()}.log`, getLogsTxt(), "text/plain");
+    downloadFile(`bytm-log-${new Date().toISOString()}.log`, serializeLogs(), "text/plain");
   });
 
   // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
@@ -845,7 +875,7 @@ function registerDevCommands() {
 
   //   const allTrKeys = Object.keys(await fetchLocaleJson("en-US"));
 
-  //   // dbg(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
+  //   // loggers.command.log(`${`${">".repeat(50)}\n`.repeat(3)}\nUsed translation keys (${obj.keys.length} of ${allTrKeys.length}):\n${obj.keys.map(k => `- ${k}`).join("\n")}`);
 
   //   const unusedKeys = [] as string[];
 
@@ -855,13 +885,15 @@ function registerDevCommands() {
   //   }
 
   //   if(unusedKeys.length > 0)
-  //     dbg(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
+  //     loggers.command.log(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
   // });
 
-  isDev && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
+  isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
     const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [
       [broadcastTxID, {
         sessionId: getSessionId(),
+        buildNumber,
+        version: scriptInfo.version,
         title: document.title,
         domain: getDomain(),
         initTime,
@@ -872,32 +904,34 @@ function registerDevCommands() {
       sessions.push([from, packet.data]);
     });
 
-    dbg("Collecting session info from open tabs...");
+    loggers.command.log("Collecting session info from open tabs...");
 
     setTimeout(() => {
-      const columns = ["#", "Self?", "Session ID:", "TxID:", "Domain:", "Initialized:", "Session Title:"];
-      const columnAlign: TableColumnAlign[] = ["left", "left", "left", "left", "left", "right", "left"];
+      const columns = ["#", "Self?", "Domain:", "Initialized:", "Session ID:", "TxID:", "Version:", "Build Number:", "Session Title:"];
+      const columnAlign: TableColumnAlign[] = ["right", "left", "left", "right", "left", "left", "left", "left", "left"];
 
-      const columnStyle = "color: #db3; font-weight: bold;";
-      const resetStyle = "color: inherit; font-weight: inherit;";
-      const styles = [];
-      for(let i = 0; i < columns.length; i++)
-        styles.push(columnStyle, resetStyle);
+      const styles = columns.reduce((a) => ([
+        ...a,
+        "color: #db3; font-weight: bold;",
+        "color: inherit; font-weight: inherit;",
+      ]), [] as string[]);
 
-      console.log(`[${scriptInfo.name}/#DEBUG] Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
+      console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${autoPlural("tab", sessions)}:\n${
         createTable([
           columns,
-          ...sessions.map(([txID, { sessionId, title, domain, initTime }], i) => {
-            const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(5, "0");
+          ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
+            const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1000)).padStart(4, "0");
             return [
               i + 1,
               txID === broadcastTxID ? "Yes" : "No",
-              sessionId,
-              txID,
               domain,
               `${initSince} ago`,
+              sessionId,
+              txID,
+              version,
+              buildNumber,
               title,
-            ];
+            ].map(v => String(v));
           }),
         ], {
           columnAlign,
@@ -915,7 +949,7 @@ function registerDevCommands() {
     });
   });
 
-  isAdv && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
+  isAny && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
     await showPrompt({
       type: "confirm",
       message: "Reload all open tabs that are running BetterYTM?",
@@ -923,15 +957,55 @@ function registerDevCommands() {
     }) && await reloadAllTabs();
   });
 
-  log("Registered dev menu commands");
+  loggers.command.log("Registered dev menu commands");
 }
 
 async function runDevTreatments() {
   if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
     return;
 
-  // const dlg = await getAllDataExImDialog();
-  // await dlg.open();
+  loggers.init.log("Running dev treatments.");
+}
+
+// TODO:#DEBUG#
+async function initPermTestPlugin() {
+  if(!await GM.getValue("bytm-dev-treatments", false))
+    return;
+
+  const permTestDef = {
+    plugin: {
+      name: "PERMISSION TEST",
+      namespace: packageJson.namespace,
+      version: packageJson.version,
+      license: {
+        name: packageJson.license,
+        url: packageJson.licenseUrl
+      },
+      description: {
+        "en-US": "Dev plugin for testing plugin permissions.",
+      },
+      homepage: {
+        source: packageJson.homepage,
+      },
+    },
+    intents: PluginIntent.ReadFeatureConfig
+      | PluginIntent.WriteFeatureConfig
+      | PluginIntent.SeeHiddenConfigValues
+      | PluginIntent.CreateModalDialogs
+      | PluginIntent.WriteTranslations,
+  } as const satisfies PluginDef;
+
+  // @ts-expect-error
+  getUnsafeWindow().addEventListener("bytm:registerPlugin", async ({ detail: register }: CustomEvent<typeof registerPlugin>) => {
+    if(typeof register === "function") {
+      const result = await register(permTestDef);
+      loggers.debug.log(">> Plugin permission test result:", result);
+
+      getUnsafeWindow().addEventListener("bytm:allReady", async () => {
+        await getPluginPermissionsDialog(permTestDef).open();
+      });
+    }
+  });
 }
 
 preInit();

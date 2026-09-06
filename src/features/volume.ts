@@ -1,10 +1,16 @@
-import { clamp, debounce, type Stringifiable } from "@sv443-network/coreutils";
+import { type Stringifiable, clamp, debounce } from "@sv443-network/coreutils";
 import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
-import { getFeature } from "@/config.ts";
-import { addStyleFromResource, error, getDomain, getReloadTabData, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady, warn } from "@util/index.ts";
-import { siteEvents } from "@/siteEvents.ts";
-import { featInfo } from "@feat/index.ts";
 import { addSelectorListener } from "@/observers.ts";
+import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from "@util/dom.ts";
+import { interactionKeys } from "@util/input.ts";
+import { getDomain, getReloadTabData, resourceAsString } from "@util/misc.ts";
+import { getFeature } from "@/config.ts";
+import { getSelector } from "@util/data.ts";
+import { loggers } from "@util/logging.ts";
+import { siteEvents } from "@/siteEvents.ts";
+import { t } from "@util/translations.ts";
+import { waitVideoElementReady } from "@util/dom.ts";
+import { featInfo } from "@feat/index.ts";
 import "@feat/volume.css";
 
 //#region init vol features
@@ -75,7 +81,7 @@ export async function initVolumeFeatures() {
       checkSharedVolume();
   };
 
-  addSelectorListener<HTMLInputElement>("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+  addSelectorListener<HTMLInputElement>("playerBarRightControls", getSelector("volume", "volSlider_sub_playerBarRightControls"), {
     listener: (el) => onSliderElExists("normal", el),
   });
 
@@ -85,12 +91,12 @@ export async function initVolumeFeatures() {
       return;
     sizeSmOnce = true;
 
-    addSelectorListener<HTMLInputElement>("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
+    addSelectorListener<HTMLInputElement>("playerBarRightControls", getSelector("volume", "volSliderExpanded_sub_playerBarRightControls"), {
       listener: (el) => onSliderElExists("expand", el),
     });
   };
 
-  window.addEventListener("resize", debounce(onResize, Math.floor(1000 / 6)));
+  window.addEventListener("resize", debounce(onResize, Math.floor(1000 / 6)), { passive: true });
   waitVideoElementReady().then(onResize);
   onResize();
 }
@@ -176,7 +182,7 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
 
       const delta = Number((e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>)?.detail ?? 1);
       if(isNaN(delta))
-        return warn("Invalid scroll delta:", delta);
+        return loggers.volume.warn("Invalid scroll delta:", delta);
 
       const volumeDir = -Math.sign(delta);
       const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
@@ -261,7 +267,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   // prevent video from minimizing
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
-  labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
+  labelContElem.addEventListener("keydown", (e) => interactionKeys.includes(e.key) && e.stopPropagation());
 
   const getSliderTooltip = (slider: HTMLInputElement) =>
     t("volume_tooltip", { volumePercent: getAdjustedVolValue(Number(slider.value)) });
@@ -292,7 +298,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   addSelectorListener(
     "playerBarRightControls",
-    type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont",
+    getSelector("volume", type === "normal" ? "volSliderContainer_sub_playerBarRightControls" : "volSliderExpandedContainer_sub_playerBarRightControls"),
     {
       listener: (volumeCont) => volumeCont.appendChild(labelContElem),
     }
@@ -302,7 +308,7 @@ async function addVolumeSliderLabel(type: "normal" | "expand", sliderElem: HTMLI
 
   /** Hide or show the ThemeSong media controls element when the volume slider is expanded */
   const setThemeSongContHidden = (hidden = true) => {
-    const contEl = document.querySelector<HTMLElement>("#ts-panel-container");
+    const contEl = document.querySelector<HTMLElement>(getSelector("integration", "themeSongPlayerBarControls"));
     contEl?.classList[(hidden ? "add" : "remove")]("bytm-hidden");
   };
 
@@ -341,7 +347,7 @@ function setVolSliderSize() {
   const size = getFeature("volumeSliderSize");
 
   if(typeof size !== "number" || isNaN(Number(size)))
-    return error("Invalid volume slider size:", size);
+    return loggers.volume.error("Invalid volume slider size:", size);
 
   setGlobalCssVar("vol-slider-size", `${size}px`);
   addStyleFromResource("css-vol_slider_size");
@@ -355,7 +361,7 @@ async function sharedVolumeChanged(vol: number) {
     await GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
   }
   catch(err) {
-    error("Couldn't save shared volume level due to an error:", err);
+    loggers.volume.error("Couldn't save shared volume level due to an error:", err);
   }
 }
 
@@ -371,7 +377,7 @@ async function checkSharedVolume() {
         return;
       lastCheckedSharedVolume = Number(vol);
 
-      const sliderElem = document.querySelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider");
+      const sliderElem = document.querySelector<HTMLInputElement>(getSelector("volume", "volSlider_sub_playerBarRightControls"));
       if(sliderElem) {
         sliderElem.value = String(vol);
         sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
@@ -381,7 +387,7 @@ async function checkSharedVolume() {
     setTimeout(checkSharedVolume, 333);
   }
   catch(err) {
-    error("Couldn't check for shared volume level due to an error:", err);
+    loggers.volume.error("Couldn't check for shared volume level due to an error:", err);
   }
 }
 
@@ -409,7 +415,7 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
   if(getFeature("volumeSharedBetweenTabs")) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
     if(getFeature("volumeSharedBetweenTabs"))
-      GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => error("Couldn't save shared volume level due to an error:", err));
+      GM.setValue("bytm-shared-volume", String(initialVol)).catch((err) => loggers.volume.error("Couldn't save shared volume level due to an error:", err));
   }
   sliderElem.value = String(initialVol);
   vidElem.volume = initialVol / 100;
@@ -417,5 +423,5 @@ async function setInitialTabVolume(sliderElem: HTMLInputElement) {
 
   const nonLinVol = getFeature("volumeSliderExponential") !== "linear";
 
-  log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
+  loggers.volume.log(`Set initial tab volume to ${initialVol}%${nonLinVol ? ` (${(expVolFn(initialVol / 100) * 100).toFixed(1)}%)` : ""}${reloadTabVol > 0 ? " from GM storage (reload)" : " from configuration (initial load)"}`);
 }

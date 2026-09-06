@@ -1,5 +1,6 @@
 import { fetchAdvanced } from "@sv443-network/coreutils";
-import { error, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError, resourceAsString, setInnerHtml } from "@util/index.ts";
+import { t, tp } from "@util/translations.ts";
+import { loggers, LyricsError } from "@util/logging.ts";
 import { emitInterface } from "@/interface.ts";
 import { mode, scriptInfo } from "@/constants.ts";
 import { getFeature } from "@/config.ts";
@@ -7,6 +8,10 @@ import { addSelectorListener } from "@/observers.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
+import { getCurrentMediaType, setInnerHtml } from "@util/dom.ts";
+import { openInTab, resourceAsString, sanitizeUnicode } from "@util/misc.ts";
+import { constructUrl } from "@util/xhr.ts";
+import { onInteraction } from "@util/input.ts";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -25,7 +30,7 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
   const songTitleElem = document.querySelector<HTMLDivElement>(".content-info-wrapper > yt-formatted-string");
 
   if(!songTitleElem)
-    return warn("Couldn't find song title element");
+    return loggers.lyrics.warn("Couldn't find song title element");
 
   currentSongTitle = songTitleElem.title;
 
@@ -98,7 +103,7 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
     url && addGeniusUrlToLyricsBtn(lyricsBtnElem, url);
   });
 
-  log("Inserted lyrics button into media controls bar");
+  loggers.lyrics.log("Inserted lyrics button into media controls bar");
 
   const thumbToggleElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-toggle");
 
@@ -147,21 +152,6 @@ export function sanitizeArtists(artists: string) {
   return sanitizeUnicode(artists);
 }
 
-const singleQuotesRegex = /[‘’‛‹›]/gm;
-const doubleQuotesRegex = /[“”„‟«»]/gm;
-const commaRegex = /[,，、]/gm;
-const periodRegex = /[.。．]/gm;
-
-function sanitizeUnicode(str: string) {
-  return str
-    // replace unicode symbols:
-    .replace(singleQuotesRegex, "'")
-    .replace(doubleQuotesRegex, "\"")
-    .replace(commaRegex, ",")
-    .replace(periodRegex, ".")
-    .trim();
-}
-
 /** Returns the lyrics URL from genius for the currently selected song */
 export async function getCurrentLyricsUrl() {
   try {
@@ -204,7 +194,7 @@ export async function getCurrentLyricsUrl() {
     return url;
   }
   catch(err) {
-    getFeature("errorOnLyricsNotFound") && error("Couldn't resolve lyrics URL:", err);
+    getFeature("errorOnLyricsNotFound") && loggers.lyrics.error("Couldn't resolve lyrics URL:", err);
     return undefined;
   }
 }
@@ -216,7 +206,7 @@ export async function fetchLyricsUrlTop(artist: string, song: string): Promise<s
     return path ? resolveLyricsUrl(path) : undefined;
   }
   catch(err) {
-    getFeature("errorOnLyricsNotFound") && error("Couldn't get lyrics URL due to error:", err);
+    getFeature("errorOnLyricsNotFound") && loggers.lyrics.error("Couldn't get lyrics URL due to error:", err);
     return undefined;
   }
 }
@@ -229,17 +219,17 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
   try {
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {
-      info(`Found lyrics path in cache: ${cacheEntry.path}`);
+      loggers.lyrics.info(`Found lyrics path in cache: ${cacheEntry.path}`);
       return [cacheEntry];
     }
 
-    const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
+    const fetchUrl = String(constructUrl(`${getFeature("geniUrlBase")}/search`, {
       disableFuzzy: null, // value-less param
       source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
       q: `${artist} ${song}`,
-    });
+    }));
 
-    log("Requesting lyrics from geniURL:", String(fetchUrl));
+    loggers.lyrics.log("Requesting lyrics from geniURL:", fetchUrl);
 
     const token = getFeature("geniUrlToken");
     const fetchRes = await fetchAdvanced(fetchUrl, {
@@ -256,14 +246,14 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
-      getFeature("errorOnLyricsNotFound") && error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`));
+      getFeature("errorOnLyricsNotFound") && loggers.lyrics.error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`));
       return undefined;
     }
 
     const result = await fetchRes.json();
 
     if(typeof result === "object" && result.error || !result || !result.all) {
-      getFeature("errorOnLyricsNotFound") && error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL: ${result.message}`));
+      getFeature("errorOnLyricsNotFound") && loggers.lyrics.error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL: ${result.message}`));
       return undefined;
     }
 
@@ -281,7 +271,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }[];
 
     if(allResults.length === 0) {
-      warn("No lyrics URL found for the provided song");
+      loggers.lyrics.warn("No lyrics URL found for the provided song");
       return undefined;
     }
 
@@ -306,7 +296,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }));
   }
   catch(err) {
-    getFeature("errorOnLyricsNotFound") && error("Couldn't get lyrics URL due to error:", err);
+    getFeature("errorOnLyricsNotFound") && loggers.lyrics.error("Couldn't get lyrics URL due to error:", err);
     return undefined;
   }
 }
@@ -354,14 +344,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      // const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
-      const search = await showPrompt({
-        type: "prompt",
-        message: t("open_lyrics_search_prompt"),
-        defaultValue: currentSongTitle,
-      });
-      if(search && search.length > 0)
-        openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+      await promptLyricsSearch();
     }
   }, {
     preventDefault: false,
@@ -371,9 +354,42 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   return linkElem;
 }
 
+/** Prompts to search for lyrics. Uses the song/video title as the default value. */
+export async function promptLyricsSearch() {
+  const search = await showPrompt({
+    type: "prompt",
+    message: t("open_lyrics_search_prompt"),
+    defaultValue: currentSongTitle,
+  });
+
+  if(search && search.length > 0)
+    openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+}
+
 /** Splits a video title that contains a hyphen into an artist and song */
 export function splitVideoTitle(title: string) {
   const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
 
   return { artist, song: rest.join("-") };
+}
+
+/**
+ * Tries to rearrange the passed song and artist items until a fitting lyrics URL is fetched.  
+ * Can send quite a lot of requests, so use this sparingly and prefer not to use it in an automatic context!  
+ *   
+ * Example:  
+ * `bruteForceLyricsInfo(["Song Name (Foo Remix)"], ["Artist Name", "Alternative Artist Name"])` would get split into `[["Song Name", "(Foo Remix)"], ["Artist Name", "Alternative Artist Name"]]` and combined in these ways (in priority order):
+ * 1. `Artist Name - Song Name (Foo Remix)`
+ * 2. `Alt.Artist Name - Song Name (Foo Remix)`
+ * - if `songName` doesn't contain hyphen:
+ *   1. `Artist Name - Song Name`
+ *   2. `Alt.Artist Name - Song Name`
+ * - if `songName` contains hyphen:
+ *   1. `Song Name` (barely sanitized)
+ */
+export function fuzzyFetchLyricsInfo(songName: string, artistNames?: string | [artist: string, altArtist: string]) {
+  void ["TODO:", songName, artistNames];
+  // Note:
+  // Execute best-guess fetches in parallel first, then parallelize the rest all together if that one fails to find an adequate match.
+  // Check for matches by arranging the given items, and weigh them by taking the priority order into account, as well as how much sanitation had to be done until a match was found.
 }

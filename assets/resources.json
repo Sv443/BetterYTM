@@ -54,10 +54,13 @@
     "icon-image_filled": "icons/image_filled.svg",
     "icon-image": "icons/image.svg",
     "icon-link": "icons/link.svg",
+    "icon-lock": "icons/lock.svg",
     "icon-lyrics": "icons/lyrics.svg",
     "icon-new": "icons/new.svg",
     "icon-prompt": "icons/help.svg",
     "icon-reload": "icons/refresh.svg",
+    "icon-shield_info": "icons/shield_info.svg",
+    "icon-shield_question": "icons/shield_question.svg",
     "icon-history": "icons/history.svg",
     "icon-skip_to": "icons/skip_to.svg",
     "icon-speed": "icons/speed.svg",
@@ -79,6 +82,7 @@
     "trans-hi-IN": "translations/hi-IN.json",
     "trans-ja-JP": "translations/ja-JP.json",
     "trans-pt-BR": "translations/pt-BR.json",
+    "trans-tr-TR": "translations/tr-TR.json",
     "trans-zh-CN": "translations/zh-CN.json"
   }
 }

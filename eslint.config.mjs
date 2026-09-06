@@ -34,7 +34,9 @@ const config = [
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ["vite.config.ts"],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -42,7 +44,7 @@ const config = [
   ...compat.extends(
     "eslint:recommended",
     "plugin:storybook/recommended",
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended"
   ),
   {
     languageOptions: {
@@ -118,4 +120,13 @@ const config = [
   },
 ];
 
-export default defineConfig(config);
+export default defineConfig(
+  config,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
+  },
+);

@@ -1,49 +1,29 @@
 import { pureObj, randomId } from "@sv443-network/coreutils";
 import { LogLevel } from "@/types.ts";
 
-type ConstTypes = {
-  mode: "production" | "development";
-  branch: "main" | "develop";
-  host: "github" | "greasyfork" | "openuserjs";
-  buildNumber: string;
-  buildTimestamp: number;
-  assetSource: "github" | "jsdelivr" | "local";
-  devServerPort: number;
-};
-
-/** Raw (unparsed) constants, injected by the script at `src/tools/post-build.ts` */
-const rawConsts = {
-  mode: "#{{MODE}}",
-  branch: "#{{BRANCH}}",
-  host: "#{{HOST}}",
-  buildNumber: "#{{BUILD_NUMBER}}",
-  buildTimestamp: "#{{BUILD_TIMESTAMP}}",
-  assetSource: "#{{ASSET_SOURCE}}",
-  devServerPort: "#{{DEV_SERVER_PORT}}",
-} as const satisfies Record<keyof ConstTypes, string>;
-
-/** Parses a raw constant or falls back to a default value */
-const getConst = <TKey extends keyof typeof rawConsts, TDefault extends string | number>(constKey: TKey, defaultVal: TDefault) => {
-  const val = rawConsts[constKey];
-  return (val.match(/^#{{.+}}$/) ? defaultVal : val) as ConstTypes[TKey] | TDefault;
-};
-
-/** Path to the GitHub repo */
+/**
+ * Check below this variable for the constant variables used throughout BetterYTM.  
+ * Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+ * Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
+ * @deprecated This object was reworked when the build process was migrated to vite.
+ */
+export const rawConsts = {};
+/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
 export const repo = "Sv443/BetterYTM";
-/** The mode in which the script was built (production or development) */
-export const mode = getConst("mode", "production");
-/** The branch to use in various URLs that point to the GitHub repo */
-export const branch = getConst("branch", "main");
-/** Which host the userscript was installed from */
-export const host = getConst("host", "github");
-/** The build number of the userscript */
-export const buildNumber = getConst("buildNumber", "!BUILD_ERROR!");
-/** When the script was built, as a UNIX timestamp */
-export const buildTimestamp = Number(getConst("buildTimestamp", 0));
-/** The source of the assets - github, jsdelivr or local */
-export const assetSource = getConst("assetSource", "jsdelivr");
-/** The port of the dev server */
-export const devServerPort = Number(getConst("devServerPort", 8710));
+/** The mode in which the script was built (production or development). */
+export const mode = __BYTM_MODE__;
+/** The branch to use in various URLs that point to the GitHub repo. */
+export const branch = __BYTM_BRANCH__;
+/** Which host the userscript was installed from. */
+export const host = __BYTM_HOST__;
+/** The build number of the userscript. */
+export const buildNumber = __BYTM_BUILD_NUMBER__;
+/** When the script was built, as a UNIX timestamp. */
+export const buildTimestamp = __BYTM_BUILD_TIMESTAMP__;
+/** The source of the assets - github, jsdelivr or local. */
+export const assetSource = __BYTM_ASSET_SOURCE__;
+/** The port of the dev server. */
+export const devServerPort = __BYTM_DEV_SERVER_PORT__;
 
 /** URL to the changelog file */
 export const changelogUrl = assetSource === "local"
@@ -59,7 +39,7 @@ export const initTime = Date.now();
 /** Names of platforms by key of {@linkcode host} */
 export const platformNames = pureObj({
   github: "GitHub",
-  greasyfork: "GreasyFork",
+  greasyfork: "Greasy Fork",
   openuserjs: "OpenUserJS",
 } as const);
 

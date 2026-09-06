@@ -3,11 +3,11 @@
 import { debounce, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { initTime } from "@/constants.ts";
+import { buildNumber, initTime, scriptInfo } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";
 import { getSerializerStoresFull } from "@/serializers.ts";
-import { error, info, log, warn } from "@util/logging.ts";
-import { getDomain, getSessionId, reloadTab } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
+import { getDomain, getSessionId, reloadTab, sliceNum } from "@util/misc.ts";
 import type { Domain } from "@/types.ts";
 
 // #region types
@@ -20,7 +20,7 @@ export type BroadcastPacketDataMap = {
     /** The ID of the DataStore that was updated. */
     id: string;
   };
-  /** Reloads all open tabs. */
+  /** Reloads all open tabs running BetterYTM except the sender's. */
   reloadTabs: void;
 
   // sessions:
@@ -34,6 +34,10 @@ export type BroadcastPacketDataMap = {
      * For actual unique identification, use the TxID in the `from` field of the transmitted packet instead.
      */
     sessionId: string | null;
+    /** The version of the BetterYTM build running in the session. */
+    version: string;
+    /** The build number of the BetterYTM build running in the session. */
+    buildNumber: string;
     /** Document title of the sender's tab for easier identification. */
     title: string;
     /** Which domain the session is on ("yt" or "ytm"). */
@@ -43,8 +47,12 @@ export type BroadcastPacketDataMap = {
   };
 
   // custom:
-  /** Reserved for custom, non-standard BYTM packets. */
-  custom: Record<string, SerializableVal>;
+  /**
+   * Reserved for custom, non-standard BYTM packets, sent by plugins or really any arbitrary script, library or API.  
+   * May contain any data serializable as JSON.  
+   * Identifying, validating and parsing the data is fully up to the receiver.
+   */
+  custom: SerializableVal | Record<PropertyKey, SerializableVal>;
 };
 
 /** The type of broadcast packet. */
@@ -69,9 +77,14 @@ export type BroadcastTransitPacket<TPacketType extends BroadcastPacketType = Bro
   from: string;
   /** List of TxIDs that indicates which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions. */
   to?: string[];
-  /** The actual packet to be sent. */
+  /** The actual packet object, without transmission metadata. */
   packet: BroadcastPacket<TPacketType>;
-  /** Unique nonce to prevent parsing the same packet multiple times. */
+  /**
+   * Unique floating-point nonce to prevent parsing the same packet multiple times.  
+   * The integer part of the number is an incrental number derived from a few of the least-significant bits of the current millisecond-accuracy epoch timestamp.  
+   * The float part is a randomly generated number from 0 to 1. This is the actual random part of the number.  
+   * This combination makes it possible to sort packets by the nonce for a more or less chronological order.
+   */
   nonce: number;
 };
 
@@ -102,6 +115,8 @@ export const broadcastEng = new GMStorageEngine({ dataStoreOptions: broadcastEng
 
 /** Which packets have already been received and processed. */
 const receivedNonces = new Set<number>();
+/** How many nonces should be stored in the {@linkcode receivedNonces} set. */
+const nonceCacheSize = 30;
 
 
 //#region init
@@ -117,7 +132,7 @@ export function initBroadcast() {
           newData = JSON.parse(newData);
       }
       catch(e) {
-        warn("Failed to parse broadcast packet as object:", newData, e);
+        loggers.broadcast.warn("Failed to parse broadcast packet as object:", newData, e);
       }
 
       if(isRemote && typeof newData === "object" && newData !== null && "packet" in newData && newData.packet !== null)
@@ -125,7 +140,7 @@ export function initBroadcast() {
     });
   }
   else
-    error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
+    loggers.broadcast.error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
 
   // broadcast DataStore data update packets:
   getSerializerStoresFull().forEach(store => {
@@ -137,14 +152,14 @@ export function initBroadcast() {
         },
       });
 
-      getFeature("logEvents") && log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
+      getFeature("logEvents") && loggers.broadcast.log(`Emitted broadcast packet for updated DataStore with ID "${store.id}"`);
     }, 100));
   });
 
   // receive and handle broadcast packets:
   siteEvents.on("broadcast", handleBroadcastPacket);
 
-  info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
+  loggers.broadcast.info(`Initialized broadcast module with TxID "${broadcastTxID}"`);
 }
 
 
@@ -172,10 +187,10 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
       if(data.id === configStore.id)
         emitSiteEvent("configChanged", configStore.getData());
 
-      getFeature("logEvents") && log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
+      getFeature("logEvents") && loggers.broadcast.log(`Received "dataStoreUpdate" packet for DataStore with ID "${data.id}", reloaded data for that store`);
     }
     catch(err) {
-      log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
+      loggers.broadcast.log(`Error while handling "dataStoreUpdate" packet for DataStore with ID "${data.id}":`, err);
     }
     break;
   }
@@ -189,12 +204,14 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
       type: "discoverSessionsReply",
       data: {
         sessionId: getSessionId(),
+        buildNumber,
+        version: scriptInfo.version,
         title: document.title,
         domain: getDomain(),
         initTime,
       },
     }, [from]);
-    getFeature("logEvents") && log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
+    getFeature("logEvents") && loggers.broadcast.log(`Replied to "discoverSessions" packet from session "${from}" with this session's TxID "${broadcastTxID}"`);
     break;
   }
 }
@@ -209,8 +226,8 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
  * @param to Optional array of TxIDs to specify which sessions should receive the packet. If empty or undefined, the packet will be sent to all other sessions.
  */
 export async function emitBroadcast<TPacketType extends BroadcastPacketType>(packet: BroadcastPacket<TPacketType>, to?: string[]) {
-  // use the 6 least significant Date.now bytes plus random floating point number for truly unique random nonces:
-  const nonce = Date.now() % 0xFFFFFF + Math.random();
+  // use the 9 least significant Date.now digits plus random floating point number for nice unique, sortable, random nonces:
+  const nonce = sliceNum(Date.now(), 4) + Math.random();
   return await broadcastEng.setValue(broadcastEngDSOpts.id, JSON.stringify({
     packet: {
       from: broadcastTxID,
@@ -252,14 +269,14 @@ function isValidTransitBroadcastPacket(obj: any): obj is BroadcastTransitPacket 
 /** Gets called when a broadcast packet is received to validate and relay it via {@linkcode siteEvents} */
 function relayBroadcastPacket(packet: object) {
   if(!isValidTransitBroadcastPacket(packet))
-    return warn("Received invalid broadcast packet, ignoring:", packet);
+    return loggers.broadcast.warn("Received invalid broadcast packet, ignoring:", packet);
 
   // if packet was already processed, ignore it
   if(receivedNonces.has(packet.nonce))
-    return warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
+    return loggers.broadcast.warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
 
   // remove oldest entry to prevent any potential memory leaks
-  if(receivedNonces.size >= 10) {
+  if(receivedNonces.size >= nonceCacheSize) {
     const oldestNonce = receivedNonces.values().next().value;
     oldestNonce && receivedNonces.delete(oldestNonce);
   }
@@ -271,7 +288,7 @@ function relayBroadcastPacket(packet: object) {
     return;
 
   if(getFeature("logEvents"))
-    log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
+    loggers.broadcast.log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
 
   const packetClean = pureObj(packet); // remove prototype chain
 

@@ -19,6 +19,7 @@ You should [start with the Getting Started guide](./getting-started.md) if you a
   - [**Plugin Template**](./getting-started.md#plugin-template)
   - [**TODO: Creating a Simple Plugin**](./getting-started.md#creating-a-simple-plugin)
   - [**TODO: Most Useful API Features**](./getting-started.md#most-useful-api-features)
+  - [**Almanac** (terms & concepts)](./almanac.md)
 - [**TODO: API Reference**](./api.md)
   - [**Full Feature Overview**](./api.md#full-feature-overview)
     - [TODO: Meta](./api.md#meta)

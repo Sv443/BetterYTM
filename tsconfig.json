@@ -40,11 +40,13 @@
       "@util/*": ["./src/utils/*"],
       "@/*": ["./src/*"],
       "@root/*": ["./*"],
-    },
+    }
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
+    "vite.config.ts",
+    "test.ts",
   ],
   "exclude": [
     "**/*.js",

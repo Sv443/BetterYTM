@@ -9,7 +9,7 @@ import "@dialog/pluginList.css";
 
 let pluginListDialog: BytmDialog | null = null;
 
-/** Creates and/or returns the import dialog */
+/** Creates and/or returns the plugin list dialog */
 export async function getPluginListDialog() {
   return pluginListDialog ??= new BytmDialog({
     id: "plugin-list",
@@ -156,15 +156,15 @@ async function renderBody() {
         const permissionsHeaderEl = document.createElement("div");
         permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
         permissionsHeaderEl.tabIndex = 0;
-        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list.permissions_header");
+        permissionsHeaderEl.textContent = permissionsHeaderEl.title = t("plugin_list.permissions_header");
         rightEl.appendChild(permissionsHeaderEl);
 
         for(const intent of intentsArr) {
           const intentEl = document.createElement("div");
           intentEl.classList.add("bytm-plugin-list-row-intent-item");
           intentEl.tabIndex = 0;
-          intentEl.textContent = t(`plugin_intent.name_${PluginIntent[intent]}`);
-          intentEl.title = intentEl.ariaLabel = t(`plugin_intent.description_${PluginIntent[intent]}`);
+          intentEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
+          intentEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`);
           rightEl.appendChild(intentEl);
         }
       }
@@ -173,7 +173,7 @@ async function renderBody() {
       const devPluginNoteEl = document.createElement("div");
       devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
       devPluginNoteEl.tabIndex = 0;
-      devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list.dev_plugin_note");
+      devPluginNoteEl.title = t("plugin_list.dev_plugin_note");
       const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
       setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
       rowEl.appendChild(devPluginNoteEl);

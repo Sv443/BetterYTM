@@ -6,16 +6,18 @@ import { doVersionCheck } from "@feat/versionCheck.ts";
 import { expVolFn } from "@feat/volume.ts";
 import { getLocale, t, tp } from "@util/translations.ts";
 import { formatNumber, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString } from "@util/misc.ts";
-import { error, getErrorDialog } from "@util/logging.ts";
+import { getErrorDialog, loggers } from "@util/logging.ts";
 import { getFeature, promptResetConfig } from "@/config.ts";
 import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "@/types.ts";
-import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { siteEvents } from "@/siteEvents.ts";
 import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "@/constants.ts";
 import { getDSSerializer } from "@/serializers.ts";
 import { closeToast, showIconToast } from "@comp/toast.ts";
 import { getAutoLikeDialog } from "@dialog/autoLike.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { getPluginListDialog } from "@dialog/pluginList.ts";
+import { getWelcomeDialog } from "@dialog/welcome.ts";
+import { closeCfgMenu } from "@menu/menu.ts";
 import langMapping from "@asset/locales.json" with { type: "json" };
 import packageJson from "@root/package.json" with { type: "json" };
 
@@ -55,22 +57,25 @@ const adornments = {
   /** Indicates that the feature relates to language, as a language-independent way to find the translation option. */
   globe: async () => await getAdornHtml("bytm-locale-icon", undefined, "icon-globe_small"),
   /** Indicates that changing this feature requires a page reload to take effect. */
-  reload: async () => getFeature("advancedMode") ? await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")) : undefined,
+  reload: async () => await getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload", undefined, t("feature_requires_reload")),
   /** Indicates that the feature is only configurable in advanced mode. */
   advanced: async () => await getAdornHtml("bytm-advanced-mode-icon", t("advanced_feature"), "icon-advanced_mode", undefined, t("advanced_feature")),
   /** Don't use directly - gets added automatically for features with a `since` property matching the current version, and a session count below {@linkcode newFeatureAdornmentMaxSessionCount} to indicate the feature was recently added. */
   newFeature: async () => await getAdornHtml("bytm-new-feature-icon", t("feature_is_new"), "icon-new", undefined, t("feature_is_new")),
+  /** Indicates a feature is privacy-sensitive as it may expose personally identifiable information about the user. */
+  privacy: async () => await getAdornHtml("bytm-privacy-icon", t("feature_is_privacy_sensitive"), "icon-shield_info", undefined, t("feature_is_privacy_sensitive"))
 } as const satisfies Record<string, AdornFunc>;
 
 /** Order of adornment elements in the {@linkcode combineAdornments()} function - lowest value first. */
-const adornmentOrder = new Map<AdornFunc, number>([
+const adornOrder = new Map<AdornFunc, number>([
   [adornments.alert, 0],
   [adornments.experimental, 1],
   [adornments.ytmOnly, 2],
   [adornments.globe, 3],
   [adornments.reload, 4],
   [adornments.advanced, 5],
-  [adornments.newFeature, 6],
+  [adornments.privacy, 6],
+  [adornments.newFeature, 999],
 ]);
 
 /** Creates an HTML string for the given adornment properties */
@@ -110,8 +115,8 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
     resolvedAdorns.push(adornments.newFeature);
 
   const sortedAdorns = resolvedAdorns.sort((a, b) => {
-    const aIdx = adornmentOrder.has(a) ? adornmentOrder.get(a)! : 0;
-    const bIdx = adornmentOrder.has(b) ? adornmentOrder.get(b)! : 0;
+    const aIdx = adornOrder.has(a) ? adornOrder.get(a)! : 0;
+    const bIdx = adornOrder.has(b) ? adornOrder.get(b)! : 0;
     return aIdx - bIdx;
   });
 
@@ -163,6 +168,11 @@ const options = {
     { value: "genericLists", label: t("list_button_placement_generic_lists") },
     { value: "everywhere", label: t("list_button_placement_everywhere") },
   ] satisfies SelectOption<FeatureConfig["songListTrackNumbers"]>[],
+  alertMode: () => [
+    { value: "never", label: t("alert_mode.never") },
+    { value: "all", label: t("alert_mode.all") },
+    { value: "importantOnly", label: t("alert_mode.important_only") },
+  ] satisfies SelectOption<FeatureConfig["globalAlertMode"]>[],
 } as const;
 
 //#region # features
@@ -203,10 +213,12 @@ export const groupedCategories: FeatureCategory[][] = [
  * | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element.                                       |
  * | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element.                                      |
  * | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties.                                             |
- * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                     |
+ * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect.                                                                    |
+ * | `reloadMenuPrompt: boolean`                                        | If true, when the option is modified, shows a prompt to re-render the config menu - default is undefiled (false).                                   |
  * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on.                                                            |
  * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false).                                                              |
  * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false).                       |
+ * | `tags: LooseUnion<FeatureTag>[]`                                   | Array of extra tags for this feature. Used for bulk-editing features based on common tags, like when switching BYTM's privacy mode.                 |
  * | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations.                    |
  * | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu.                                                                                |
  * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -232,6 +244,16 @@ export const featInfo = {
     default: true,
     advanced: true,
     adornments: [adornments.advanced, adornments.reload],
+  },
+  configMenuFocusContentButtonEnabled: {
+    type: "toggle",
+    category: "general",
+    group: "accessibility",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: false,
+    reloadMenuPrompt: true,
+    reloadRequired: false,
   },
   initTimeout: {
     type: "number",
@@ -261,6 +283,40 @@ export const featInfo = {
     advanced: true,
     adornments: [adornments.advanced, adornments.reload],
   },
+  verboseObservers: {
+    type: "toggle",
+    category: "general",
+    group: "bytmInternal",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: false,
+    advanced: true,
+    reloadRequired: true,
+    adornments: [adornments.advanced, adornments.reload],
+  },
+  globalAlertMode: {
+    type: "select",
+    category: "general",
+    group: "bytmInternal",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    options: options.alertMode,
+    default: "all",
+    advanced: true,
+    adornments: [adornments.advanced, adornments.reload],
+  },
+  openWelcomeMenu: {
+    type: "button",
+    category: "general",
+    group: "bytmInternal",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: undefined,
+    click: async () => {
+      closeCfgMenu();
+      await (await getWelcomeDialog()).open();
+    },
+  },
   versionCheck: {
     type: "toggle",
     category: "general",
@@ -276,6 +332,7 @@ export const featInfo = {
     group: "versionCheck",
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
+    default: undefined,
     click: () => doVersionCheck(true),
   },
   numbersFormat: {
@@ -317,10 +374,8 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "2.1.0-preview.1",
     default: true,
-    advanced: true,
     reloadRequired: false,
-    adornments: [adornments.advanced],
-    change: (newVal) => newVal ? error("Test error", new ExampleError("Example")) : void 0,
+    change: (newVal) => newVal ? loggers.misc.error("Test error", new ExampleError("Example")) : void 0,
   },
   resetConfig: {
     type: "button",
@@ -328,6 +383,7 @@ export const featInfo = {
     group: "resetData",
     supportedSites: ["ytm", "yt"],
     since: "3.0.0",
+    default: undefined,
     click: promptResetConfig,
     adornments: [adornments.reload],
   },
@@ -337,6 +393,7 @@ export const featInfo = {
     group: "resetData",
     supportedSites: ["ytm", "yt"],
     since: "2.2.0",
+    default: undefined,
     click: async () => {
       if(await showPrompt({
         type: "confirm",
@@ -392,7 +449,8 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     since: "2.0.0",
     default: false,
-    change: (newVal, initVal) => initVal !== newVal && emitSiteEvent("recreateCfgMenu"),
+    reloadMenuPrompt: true,
+    reloadRequired: false,
   },
 
   //#region cat:layout
@@ -445,6 +503,16 @@ export const featInfo = {
     default: true,
     adornments: [adornments.ytmOnly, adornments.reload],
   },
+  thumbnailOverlayEnabled: {
+    type: "toggle",
+    category: "layout",
+    group: "thumbnailOverlay",
+    supportedSites: ["ytm"],
+    since: "3.2.0",
+    tags: ["privacy", "network"],
+    default: true,
+    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
+  },
   thumbnailOverlayBehavior: {
     type: "select",
     category: "layout",
@@ -452,10 +520,10 @@ export const featInfo = {
     supportedSites: ["ytm"],
     since: "2.0.0",
     options: () => [
-      { value: "songsOnly", label: t("thumbnail_overlay.behavior_songs_only") },
-      { value: "videosOnly", label: t("thumbnail_overlay.behavior_videos_only") },
       { value: "always", label: t("thumbnail_overlay.behavior_always") },
       { value: "never", label: t("thumbnail_overlay.behavior_never") },
+      { value: "songsOnly", label: t("thumbnail_overlay.behavior_songs_only") },
+      { value: "videosOnly", label: t("thumbnail_overlay.behavior_videos_only") },
     ],
     default: "songsOnly",
     reloadRequired: false,
@@ -566,8 +634,9 @@ export const featInfo = {
     group: "votes",
     supportedSites: ["ytm"],
     since: "2.1.0",
+    tags: ["privacy", "network"],
     default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
+    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
   },
   swapLikeDislikeButtons: {
     type: "toggle",
@@ -650,20 +719,30 @@ export const featInfo = {
     type: "toggle",
     category: "songLists",
     group: "songListTrackNumbers",
-    supportedSites: ["ytm"],
+    supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
+    adornments: [adornments.reload],
   },
   songListTrackNumbers: {
     type: "select",
     category: "songLists",
     group: "songListTrackNumbers",
-    supportedSites: ["ytm"],
+    supportedSites: ["ytm", "yt"],
     since: "3.1.0",
     options: options.songListType,
     default: "genericLists",
-    adornments: [adornments.ytmOnly, adornments.reload],
+    adornments: [adornments.reload],
+  },
+  songListTrackNumbersDomains: {
+    type: "select",
+    category: "songLists",
+    group: "songListTrackNumbers",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    options: options.siteSelection,
+    default: "all",
+    adornments: [adornments.reload],
   },
 
   //#region cat:lyrics
@@ -673,8 +752,9 @@ export const featInfo = {
     group: "geniusLyrics",
     supportedSites: ["ytm"],
     since: "0.2.0",
+    tags: ["privacy", "network"],
     default: true,
-    adornments: [adornments.ytmOnly, adornments.reload],
+    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
   },
   errorOnLyricsNotFound: {
     type: "toggle",
@@ -749,6 +829,7 @@ export const featInfo = {
     group: "lyricsCache",
     supportedSites: ["ytm"],
     since: "2.0.0",
+    default: undefined,
     async click() {
       const entries = getLyricsCache().length;
       const formattedEntries = entries.toLocaleString(getLocale(), { style: "decimal", maximumFractionDigits: 0 });
@@ -1019,14 +1100,22 @@ export const featInfo = {
     default: true,
     adornments: [adornments.ytmOnly, adornments.reload],
   },
+  autoScrollToActiveSongEnabled: {
+    type: "toggle",
+    category: "behavior",
+    group: "autoScrollToActiveSong",
+    supportedSites: ["ytm"],
+    since: "3.2.0",
+    default: true,
+    adornments: [adornments.ytmOnly],
+  },
   autoScrollToActiveSongMode: {
     type: "select",
     category: "behavior",
-    group: "autoScrollToActiveSongMode",
+    group: "autoScrollToActiveSong",
     supportedSites: ["ytm"],
     since: "3.0.0",
     options: () => [
-      { value: "never", label: t("auto_scroll_to_active_song_mode.never") },
       { value: "initialPageLoad", label: t("auto_scroll_to_active_song_mode.initial_page_load") },
       { value: "videoChangeAll", label: t("auto_scroll_to_active_song_mode.video_change_all") },
       { value: "videoChangeManual", label: t("auto_scroll_to_active_song_mode.video_change_manual") },
@@ -1053,6 +1142,7 @@ export const featInfo = {
     group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
     since: "2.1.0",
+    default: undefined,
     click: () => getAutoLikeDialog().then(d => d.open()),
   },
   autoLikeChannelToggleBtn: {
@@ -1337,6 +1427,29 @@ export const featInfo = {
     reloadRequired: false,
     adornments: [adornments.ytmOnly],
   },
+  lyricsSearchPromptHotkeyEnabled: {
+    type: "toggle",
+    category: "hotkeys",
+    group: "lyricsSearchPromptHotkeyEnabled",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: true,
+    reloadRequired: false,
+  },
+  lyricsSearchPromptHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    group: "lyricsSearchPromptHotkeyEnabled",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: {
+      code: "KeyQ",
+      shift: false,
+      ctrl: false,
+      alt: true,
+    },
+    reloadRequired: false,
+  },
   skipToRemTimeHotkeyEnabled: {
     type: "toggle",
     category: "hotkeys",
@@ -1349,7 +1462,7 @@ export const featInfo = {
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       message: t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
-      duration: 20,
+      duration: 20_000,
       onClick: () => getErrorDialog(
         t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled_summary"),
         [t("feature_warning.skipToRemTimeHotkeyEnabled_rememberSongTime_disabled")]
@@ -1417,6 +1530,42 @@ export const featInfo = {
       ctrl: false,
       alt: false,
     },
+    reloadRequired: false,
+  },
+  interactionLockHotkeyEnabled: {
+    type: "toggle",
+    category: "hotkeys",
+    group: "interactionLockHotkey",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: true,
+    reloadRequired: false,
+  },
+  interactionLockHotkey: {
+    type: "hotkey",
+    category: "hotkeys",
+    group: "interactionLockHotkey",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    default: {
+      code: "Pause",
+      shift: false,
+      ctrl: false,
+      alt: true,
+    },
+    reloadRequired: false,
+  },
+  interactionLockOverlayTimeout: {
+    type: "slider",
+    category: "hotkeys",
+    group: "interactionLockHotkey",
+    supportedSites: ["ytm", "yt"],
+    since: "3.2.0",
+    unit: "s",
+    default: 5,
+    min: 0,
+    max: 10,
+    step: 0.5,
     reloadRequired: false,
   },
   rebindNextAndPrevious: {

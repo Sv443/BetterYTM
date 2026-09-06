@@ -180,6 +180,8 @@
 }
 
 .bytm-dialog-footer {
+  display: flex;
+  gap: 12px;
   font-size: 17px;
   text-decoration: underline;
 }
