@@ -107,7 +107,7 @@
         "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]"
       },
       "genericListArtistName": {
-        "ytm": ".secondary-flex-columns yt-formatted-string:first-child a"
+        "ytm": ".secondary-flex-columns yt-formatted-string:first-child a, .secondary-flex-columns yt-formatted-string[title]"
       },
       "genericListSongName": {
         "ytm": ".title-column yt-formatted-string a"
@@ -137,7 +137,7 @@
         "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item"
       },
       "allCurrentQueueItemsSongInfo_global": {
-        "ytm": ".song-info"
+        "ytm": ".song-info, .flex-columns.ytmusic-responsive-list-item-renderer"
       },
       "allGenericListItems_sub_listContainer": {
         "ytm": "ytmusic-responsive-list-item-renderer"
