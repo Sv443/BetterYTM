@@ -73,6 +73,7 @@
     "tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
     "tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
     "tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
+    "tr-to-nested": "node --no-warnings=ExperimentalWarning ./src/tools/tr-to-nested.ts",
     "tr-prep": "pnpm tr-format -p",
     "gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
     "alias-imports": "node --no-warnings=ExperimentalWarning ./src/tools/alias-imports.ts",
