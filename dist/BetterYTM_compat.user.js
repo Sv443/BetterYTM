@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4bc01741/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@69905bd4/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Mon, 07 Sep 2026 20:33:51 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Mon, 07 Sep 2026 21:42:33 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 4bc01741                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 69905bd4                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ Xvmkl45QN918                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ PlIyzvo72u7k                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6552,6 +6552,7 @@ Has: ${checksum}`);
 			"icon-edit": "icons/edit.svg",
 			"icon-error": "icons/error.svg",
 			"icon-experimental": "icons/beaker_small.svg",
+			"icon-gear": "icons/gear.svg",
 			"icon-globe_small": "icons/globe_small.svg",
 			"icon-globe": "icons/globe.svg",
 			"icon-help": "icons/help.svg",
@@ -6568,6 +6569,8 @@ Has: ${checksum}`);
 			"icon-shield_info": "icons/shield_info.svg",
 			"icon-shield_question": "icons/shield_question.svg",
 			"icon-history": "icons/history.svg",
+			"icon-plugin": "icons/plugin.svg",
+			"icon-plugin_off": "icons/plugin_off.svg",
 			"icon-skip_to": "icons/skip_to.svg",
 			"icon-speed": "icons/speed.svg",
 			"icon-spinner": "icons/spinner.svg",
@@ -6849,9 +6852,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "4bc01741";
+	var buildNumber$1 = "69905bd4";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788813231161;
+	var buildTimestamp = 1788817353437;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -13259,13 +13262,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	//#region src/dialogs/pluginPermissions.ts
 	var pluginPermsDialog = null;
 	/** Creates and/or returns the plugin permissions dialog */
-	function getPluginPermissionsDialog(def) {
+	function getPluginPermissionsDialog(def, initial = false) {
 		return pluginPermsDialog ??= new BytmDialog({
 			id: "plugin-perms",
 			width: 450,
 			height: 700,
 			closeBtnEnabled: true,
-			closeOnBgClick: false,
+			closeOnBgClick: !initial,
 			closeOnEscPress: true,
 			destroyOnClose: true,
 			small: true,
@@ -13304,14 +13307,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const hrElem = document.createElement("hr");
 		hrElem.classList.add("bytm-hr");
 		permsListCont.appendChild(hrElem);
+		const perms = getPermStorePerms(def);
 		for (const intent of intents) {
 			const itemEl = document.createElement("div");
 			itemEl.classList.add("bytm-plugin-perms-item");
 			itemEl.tabIndex = 0;
 			itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}`;
+			const initialValue = Array.isArray(perms) ? bitSetHas$1(perms[0], intent) : true;
 			const toggleEl = await createToggleInput({
 				id: `plugin-intent-${intent}`,
-				initialValue: true,
+				initialValue,
 				labelPos: "off",
 				onChange: () => void 0
 			});
@@ -13345,6 +13350,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const permStore = pluginPermissionsStore.getData();
 			permStore[pluginKey] = [grantedPerms, requestedIntents];
 			await pluginPermissionsStore.setData(permStore);
+			setRegisteredPluginPerms(def, grantedPerms);
+			emitBroadcast({ type: "pluginsUpdated" });
 			loggers.plugin.info(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms, LogLevel.Info);
 			permDlg.close();
 		});
@@ -13561,7 +13568,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const permStoreEntry = getPermStorePerms(def);
 			if (!isDevPlugin && (!permStoreEntry || permStoreEntry[1] !== requestedIntents)) {
 				await siteEvents.once("staticDataInitialized");
-				const permDialog = getPluginPermissionsDialog(def);
+				const permDialog = getPluginPermissionsDialog(def, true);
 				permDialog.open();
 				await permDialog.once("close");
 			}
@@ -13697,6 +13704,15 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Returns the registered plugins as an array of tuples with the items `[id: string, item: PluginItem]` */
 	function getRegisteredPlugins() {
 		return [...registeredPlugins.entries()];
+	}
+	/** Updates the given plugin to the given permissions in memory. Doesn't emit the `pluginsUpdated` broadcast event. */
+	function setRegisteredPluginPerms(plugin, perms) {
+		const plKey = getPluginKey(plugin);
+		const regPl = registeredPlugins.get(plKey);
+		if (regPl) {
+			regPl.grantedPerms = perms;
+			registeredPlugins.set(plKey, regPl);
+		}
 	}
 	/** Returns the key for a given plugin definition */
 	function getPluginKey(plugin) {
@@ -14392,8 +14408,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function getPluginListDialog() {
 		return pluginListDialog ??= new BytmDialog({
 			id: "plugin-list",
-			width: 900,
-			height: 600,
+			width: 950,
+			height: 700,
 			closeBtnEnabled: true,
 			closeOnBgClick: true,
 			closeOnEscPress: true,
@@ -14413,7 +14429,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		titleElem.textContent = t("plugin_list.title");
 		return titleElem;
 	}
-	async function renderBody$1() {
+	async function renderBody$1(dlg) {
 		const listContainerEl = document.createElement("div");
 		listContainerEl.id = "bytm-plugin-list-container";
 		const registeredPlugins = getRegisteredPlugins();
@@ -14426,7 +14442,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			listContainerEl.appendChild(noPluginsEl);
 			return listContainerEl;
 		}
-		for (const [, { def: { plugin, intents: intentsRaw } }] of registeredPlugins) {
+		for (const [, { def }] of registeredPlugins) {
+			const { plugin } = def;
 			const rowEl = document.createElement("div");
 			rowEl.classList.add("bytm-plugin-list-row");
 			const leftEl = document.createElement("div");
@@ -14488,34 +14505,68 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link.type_${key}`);
 				linksList.appendChild(linkEl);
 			}
-			const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
+			const pluginKey = `${plugin.namespace}/${plugin.name}`;
 			const devPluginIdentifier = `${package_default.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
-			const isDevPlugin = Boolean(pluginIdentifier === devPluginIdentifier && getPluginInfo(devPluginToken, devPluginIdentifier));
-			const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
+			const isDevPlugin = Boolean(pluginKey === devPluginIdentifier && getPluginInfo(devPluginToken, devPluginIdentifier));
+			const permsBitSet = getRegisteredPlugins().find(([key]) => key === pluginKey)?.[1].grantedPerms;
 			const intentsAmount = Object.keys(PluginIntent).length / 2;
-			const intentsArr = bitSetHas$1(intentsBitSet, PluginIntent.FullAccess) ? [PluginIntent.FullAccess] : typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
+			const permsArr = permsBitSet ? bitSetHas$1(permsBitSet, PluginIntent.FullAccess) ? [PluginIntent.FullAccess] : typeof permsBitSet === "number" ? (() => {
 				const arr = [];
-				for (let i = 0; i < intentsAmount; i++) if (intentsBitSet & 2 ** i) arr.push(2 ** i);
+				for (let i = 0; i < intentsAmount; i++) if (permsBitSet & 2 ** i) arr.push(2 ** i);
 				return arr;
-			})() : [];
+			})() : [] : [];
 			if (!isDevPlugin) {
-				if (intentsArr.length !== 0) {
-					const rightEl = document.createElement("div");
-					rightEl.classList.add("bytm-plugin-list-row-right");
-					rowEl.appendChild(rightEl);
-					const permissionsHeaderEl = document.createElement("div");
-					permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
-					permissionsHeaderEl.tabIndex = 0;
-					permissionsHeaderEl.textContent = permissionsHeaderEl.title = t("plugin_list.permissions_header");
-					rightEl.appendChild(permissionsHeaderEl);
-					for (const intent of intentsArr) {
-						const intentEl = document.createElement("div");
-						intentEl.classList.add("bytm-plugin-list-row-intent-item");
-						intentEl.tabIndex = 0;
-						intentEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
-						intentEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`);
-						rightEl.appendChild(intentEl);
-					}
+				const rightEl = document.createElement("div");
+				rightEl.classList.add("bytm-plugin-list-row-right");
+				rowEl.appendChild(rightEl);
+				const permContEl = document.createElement("div");
+				permContEl.classList.add("bytm-plugin-list-row-permission-container");
+				rightEl.appendChild(permContEl);
+				const buttonsContEl = document.createElement("div");
+				buttonsContEl.classList.add("bytm-plugin-list-row-buttons-container");
+				const permBtnEl = await createCircularBtn({
+					resourceName: "icon-gear",
+					onClick() {
+						const permDialog = getPluginPermissionsDialog(def);
+						permDialog.open();
+						permDialog.once("close", () => {
+							dlg.unmount();
+							dlg.open();
+						});
+					},
+					title: t("plugin_edit_permissions")
+				});
+				const unregisterBtnEl = await createCircularBtn({
+					resourceName: "icon-delete",
+					onClick() {
+						unregisterPlugins(def, true);
+					},
+					title: t("prompt_unregister")
+				});
+				buttonsContEl.appendChild(permBtnEl);
+				buttonsContEl.appendChild(unregisterBtnEl);
+				rightEl.appendChild(buttonsContEl);
+				const permissionsHeaderEl = document.createElement("div");
+				permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
+				permissionsHeaderEl.tabIndex = 0;
+				permissionsHeaderEl.textContent = permissionsHeaderEl.title = t("plugin_list.permissions_header");
+				permContEl.appendChild(permissionsHeaderEl);
+				for (const perm of permsArr) {
+					const intentEl = document.createElement("div");
+					intentEl.classList.add("bytm-plugin-list-row-perm-item");
+					intentEl.tabIndex = 0;
+					intentEl.textContent = t(`plugin_intent_name.${PluginIntent[perm]}`);
+					intentEl.title = t(`plugin_intent_description.${PluginIntent[perm]}`);
+					permContEl.appendChild(intentEl);
+				}
+				if (permsArr.length === 0) {
+					const noPermsNoteEl = document.createElement("div");
+					noPermsNoteEl.classList.add("bytm-plugin-list-row-right", "no-perms");
+					noPermsNoteEl.tabIndex = 0;
+					noPermsNoteEl.title = t("plugin_list.no_permissions");
+					const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
+					setInnerHtml(noPermsNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.no_permissions")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
+					permContEl.appendChild(noPermsNoteEl);
 				}
 			} else {
 				const devPluginNoteEl = document.createElement("div");
@@ -19789,7 +19840,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "4bc01741",
+				buildNumber: "69905bd4",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
