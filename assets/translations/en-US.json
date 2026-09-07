@@ -321,6 +321,7 @@
 
   "plugins_unregister_prompt-1": "Are you sure you want to unregister the installed plugin? It will prompt to re-register itself when the page is reloaded, unless you manually uninstall it.",
   "plugins_unregister_prompt-n": "Are you sure you want to unregister all ${pluginCount} installed plugins? They will prompt to re-register themselves when the page is reloaded, unless you manually uninstall them.",
+  "plugins_unregister_no_plugins_found": "You haven't installed any plugins or they don't run on this page.",
   "plugins_unregistered_markdown-1": "Successfully unregistered the following plugin:\n${pluginsList}\nReload all tabs now to fully revoke any and all access for this plugin.",
   "plugins_unregistered_markdown-n": "Successfully unregistered the following plugins:\n${pluginsList}\nReload all tabs now to fully revoke any and all access for these plugins.",
 

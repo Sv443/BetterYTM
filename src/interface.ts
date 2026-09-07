@@ -443,7 +443,7 @@ export async function unregisterPlugins(plugins: PluginDefResolvable | PluginDef
     return a;
   }, new Map<string, PluginItem>());
 
-  if(!await showPrompt({
+  if(regPluginsNoDev.size > 0 && !await showPrompt({
     type: "confirm",
     message: tp("plugins_unregister_prompt", regPluginsNoDev.size, regPluginsNoDev.size),
     confirmBtnText: t("prompt_unregister"),
@@ -527,6 +527,11 @@ export async function unregisterPlugins(plugins: PluginDefResolvable | PluginDef
       await mdDlg.open();
     }
   }
+  else
+    await showPrompt({
+      type: "alert",
+      message: t("plugins_unregister_no_plugins_found"),
+    });
 }
 
 /** Reloads the plugin data that's cached in memory. */
