@@ -20,7 +20,7 @@
 - **Fixes:**
   - Made error toasts show up again after being broken when toast queueing was overhauled.
 - **Plugin Changes:**
-  - **BREAKING:** The `registerPlugin()` function passed by the events `bytm:preInitPlugin` and `bytm:registerPlugin` will now return a `Promise<PluginRegisterResult>`, so that the page can show the new plugin permission dialogs.
+  - **BREAKING:** The `registerPlugin()` function passed by the events `bytm:preInitPlugin` and `bytm:registerPlugin` will now return a `Promise<PluginRegisterResult>`, so that the page can show the new plugin permission dialog.
   - Removed the restrictions that plugins need to be registered between `bytm:preInitPlugin` and `bytm:ready`. Now they can be registered after the latter event without throwing an error.
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.
