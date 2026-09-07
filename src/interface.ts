@@ -494,16 +494,12 @@ export async function unregisterPlugins(plugins: PluginDefResolvable | PluginDef
         body: tp("plugins_unregistered_markdown", unregisteredPlugins.length, {
           pluginsList: unregisteredPlugins.reduce((a, { key, name }, i) => `${a}${i > 0 ? "\n" : ""}- ${name} \`${key}\``, ""),
         }),
+        small: true,
         width: 700,
         height: 600,
         renderFooter(dlg) {
           const footerCont = document.createElement("div");
           footerCont.classList.add("bytm-dialog-footer", "align-right");
-
-          const reloadBtn = document.createElement("button");
-          reloadBtn.classList.add("bytm-btn");
-          reloadBtn.textContent = t("reload_now");
-          onInteraction(reloadBtn, () => location.reload());
 
           const reloadAllBtn = document.createElement("button");
           reloadAllBtn.classList.add("bytm-btn");
@@ -516,7 +512,6 @@ export async function unregisterPlugins(plugins: PluginDefResolvable | PluginDef
           closeBtn.title = t("close_menu_tooltip");
           onInteraction(closeBtn, () => dlg.close());
 
-          footerCont.appendChild(reloadBtn);
           footerCont.appendChild(reloadAllBtn);
           footerCont.appendChild(closeBtn);
 
