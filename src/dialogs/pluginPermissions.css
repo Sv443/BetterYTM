@@ -32,4 +32,5 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  text-decoration: underline dotted;
 }

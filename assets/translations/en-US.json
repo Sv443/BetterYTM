@@ -281,7 +281,8 @@
   "plugin_list.no_plugins": "No plugins are currently installed.\nVisit ${linkOpen}this page${linkClose} for more information.",
   "plugin_list.no_plugins_tooltip": "No plugins are currently installed.",
   "plugin_list.permissions_header": "Permissions:",
-  "plugin_list.dev_plugin_note": "The dev plugin always has full access.",
+  "plugin_list.dev_plugin_note": "Dev plugin always has full access.",
+  "plugin_list.no_permissions": "Plugin has no permissions.",
 
   "plugin_permissions_dialog.title": "Plugin Permissions",
   "plugin_permissions_dialog.description": "The plugin '${pluginName}' is asking for all the permissions listed below. Hover your cursor over them for an explanation.\nNote that turning some of these permissions off may cause the plugin to stop working.",

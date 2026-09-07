@@ -327,7 +327,7 @@ export const pluginPermissionsStore = new CoreUtils.DataStore<PluginPermissionsS
 let pluginPermissionsStoreLoaded = false;
 
 /** Returns the permission integers from the {@linkcode pluginPermissionsStore} for the given plugin. */
-function getPermStorePerms(def: PluginDefResolvable): [grantedPerms: number, requestedIntents: number] | undefined {
+export function getPermStorePerms(def: PluginDefResolvable): [grantedPerms: number, requestedIntents: number] | undefined {
   if(!pluginPermissionsStoreLoaded)
     throw new CoreUtils.DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
   return pluginPermissionsStore.getData()?.[getPluginKey(def)];
@@ -392,7 +392,7 @@ export async function registerPluginInternal(def: PluginDef, isDev = false): Pro
       await siteEvents.once("staticDataInitialized");
 
       // show dialog
-      const permDialog = getPluginPermissionsDialog(def);
+      const permDialog = getPluginPermissionsDialog(def, true);
       permDialog.open();
       await permDialog.once("close");
     }
@@ -576,6 +576,18 @@ async function registerDevPlugin() {
 /** Returns the registered plugins as an array of tuples with the items `[id: string, item: PluginItem]` */
 export function getRegisteredPlugins() {
   return [...registeredPlugins.entries()];
+}
+
+/** Updates the given plugin to the given permissions in memory. Doesn't emit the `pluginsUpdated` broadcast event. */
+export function setRegisteredPluginPerms(plugin: PluginDefResolvable, perms: number) {
+  const plKey = getPluginKey(plugin);
+  const regPl = registeredPlugins.get(plKey);
+
+  if(regPl) {
+    regPl.grantedPerms = perms;
+
+    registeredPlugins.set(plKey, regPl);
+  }
 }
 
 /** Returns the key for a given plugin definition */

@@ -1,24 +1,26 @@
+import { bitSetHas } from "@sv443-network/coreutils";
 import { BytmDialog } from "@comp/BytmDialog.ts";
-import { defToIntentsBitSet, getPluginKey, parseBitSetEnumArray, pluginPermissionsStore } from "@/interface.ts";
+import { defToIntentsBitSet, getPermStorePerms, getPluginKey, parseBitSetEnumArray, pluginPermissionsStore, setRegisteredPluginPerms } from "@/interface.ts";
 import { t } from "@util/translations.ts";
-import { LogLevel, PluginIntent, type BitSetTSEnum, type PluginDef } from "@/types.ts";
-import { showPrompt } from "@dialog/prompt.ts";
 import { onInteraction } from "@util/input.ts";
-import "@dialog/pluginPermissions.css";
-import { createToggleInput } from "@comp/toggleInput.ts";
 import { loggers } from "@util/logging.ts";
+import { emitBroadcast } from "@util/broadcast.ts";
+import { showPrompt } from "@dialog/prompt.ts";
+import { createToggleInput } from "@comp/toggleInput.ts";
 import { mode } from "@/constants.ts";
+import { LogLevel, PluginIntent, type BitSetTSEnum, type PluginDef } from "@/types.ts";
+import "@dialog/pluginPermissions.css";
 
 let pluginPermsDialog: BytmDialog | null = null;
 
 /** Creates and/or returns the plugin permissions dialog */
-export function getPluginPermissionsDialog(def: PluginDef) {
+export function getPluginPermissionsDialog(def: PluginDef, initial = false) {
   return pluginPermsDialog ??= new BytmDialog({
     id: "plugin-perms",
     width: 450,
     height: 700,
     closeBtnEnabled: true,
-    closeOnBgClick: false,
+    closeOnBgClick: !initial,
     closeOnEscPress: true,
     destroyOnClose: true,
     small: true,
@@ -67,15 +69,21 @@ async function renderBody(permDlg: BytmDialog, def: PluginDef) {
   hrElem.classList.add("bytm-hr");
   permsListCont.appendChild(hrElem);
 
+  const perms = getPermStorePerms(def);
+
   for(const intent of intents) {
     const itemEl = document.createElement("div");
     itemEl.classList.add("bytm-plugin-perms-item");
     itemEl.tabIndex = 0;
     itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + (mode === "development" ? `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}` : "");
 
+    const initialValue = Array.isArray(perms)
+      ? bitSetHas(perms[0], intent)
+      : true;
+
     const toggleEl = await createToggleInput({
       id: `plugin-intent-${intent}`,
-      initialValue: true,
+      initialValue,
       labelPos: "off",
       onChange: () => void 0,
     });
@@ -122,6 +130,8 @@ async function renderFooter(permDlg: BytmDialog, def: PluginDef) {
     permStore[pluginKey] = [grantedPerms, requestedIntents];
 
     await pluginPermissionsStore.setData(permStore);
+    setRegisteredPluginPerms(def, grantedPerms);
+    emitBroadcast({ type: "pluginsUpdated" });
 
     loggers.plugin.info(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms, LogLevel.Info);
 

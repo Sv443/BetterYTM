@@ -2514,6 +2514,7 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  text-decoration: underline dotted;
 }
 /* #region volume slider */
 
@@ -2643,9 +2644,21 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 }
 
 .bytm-plugin-list-row-left,
-.bytm-plugin-list-row-right {
+.bytm-plugin-list-row-permission-container,
+.bytm-plugin-list-row-buttons-container {
   display: flex;
   flex-direction: column;
+}
+
+.bytm-plugin-list-row-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bytm-plugin-list-row-buttons-container {
+  gap: 6px;
+  align-items: center;
 }
 
 .bytm-plugin-list-row-title {
@@ -2690,13 +2703,14 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   margin: 0 5px;
 }
 
-.bytm-plugin-list-row-right:not(.is-dev-plugin) {
+.bytm-plugin-list-row-right:not(.is-dev-plugin):not(.no-perms) {
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.bytm-plugin-list-row-right.is-dev-plugin {
+.bytm-plugin-list-row-right.is-dev-plugin,
+.bytm-plugin-list-row-right.no-perms {
   display: initial;
   flex-direction: unset;
 }
@@ -2720,13 +2734,17 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   padding-bottom: 5px;
 }
 
-.bytm-plugin-list-row-intent-item::before {
+.bytm-plugin-list-row-perm-item::before {
+  /* no idea why but for text-decoration: none to work, this has to be set even though it's ignored by the browser. CSS funny moments #12571986728637 */
+  display: inline-block;
   content: "•";
   margin-right: 3px;
+  text-decoration: none;
 }
 
-.bytm-plugin-list-row-intent-item {
+.bytm-plugin-list-row-perm-item {
   cursor: help;
+  text-decoration: underline dotted;
 }
 #bytm-interaction-lock-overlay {
   position: fixed;
