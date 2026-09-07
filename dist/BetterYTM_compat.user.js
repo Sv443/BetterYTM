@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5294d576/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@4bc01741/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 06 Sep 2026 14:34:46 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Mon, 07 Sep 2026 20:33:51 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 5294d576                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 4bc01741                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ n6PFsho54ExZ                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ Xvmkl45QN918                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6849,9 +6849,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "5294d576";
+	var buildNumber$1 = "4bc01741";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788705286058;
+	var buildTimestamp = 1788813231161;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -9142,7 +9142,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		"updateVolumeSliderLabel",
 		"autoLikeChannelsUpdated",
 		"voteLabelsAdded",
-		"broadcast"
+		"broadcast",
+		"staticDataInitialized"
 	];
 	/** EventEmitter instance that is used to detect various changes to the site and userscript */
 	var siteEvents = new NanoEmitter$2({ publicEmit: true });
@@ -10990,6 +10991,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
 			"tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
 			"tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
+			"tr-to-nested": "node --no-warnings=ExperimentalWarning ./src/tools/tr-to-nested.ts",
 			"tr-prep": "pnpm tr-format -p",
 			"gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
 			"alias-imports": "node --no-warnings=ExperimentalWarning ./src/tools/alias-imports.ts",
@@ -13156,6 +13158,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	var broadcastEng = new GMStorageEngine({ dataStoreOptions: broadcastEngDSOpts });
 	/** Which packets have already been received and processed. */
 	var receivedNonces = /* @__PURE__ */ new Set();
+	/** How many nonces should be stored in the {@linkcode receivedNonces} set. */
+	var nonceCacheSize = 30;
 	/** Initializes the broadcast module by setting up the necessary event listeners. */
 	function initBroadcast() {
 		if ("addValueChangeListener" in GM) GM.addValueChangeListener(broadcastEngDSOpts.id, (_name, _oldData, newData, isRemote) => {
@@ -13198,6 +13202,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			case "reloadTabs":
 				await reloadTab();
 				break;
+			case "pluginsUpdated":
+				reloadPluginData();
+				break;
 			case "discoverSessions":
 				emitBroadcast({
 					type: "discoverSessionsReply",
@@ -13237,7 +13244,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	function relayBroadcastPacket(packet) {
 		if (!isValidTransitBroadcastPacket(packet)) return loggers.broadcast.warn("Received invalid broadcast packet, ignoring:", packet);
 		if (receivedNonces.has(packet.nonce)) return loggers.broadcast.warn("Received broadcast packet with nonce that was already received, ignoring:", packet);
-		if (receivedNonces.size >= 10) {
+		if (receivedNonces.size >= nonceCacheSize) {
 			const oldestNonce = receivedNonces.values().next().value;
 			oldestNonce && receivedNonces.delete(oldestNonce);
 		}
@@ -13247,6 +13254,108 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const packetClean = pureObj$2(packet);
 		forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
 		forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean);
+	}
+	//#endregion
+	//#region src/dialogs/pluginPermissions.ts
+	var pluginPermsDialog = null;
+	/** Creates and/or returns the plugin permissions dialog */
+	function getPluginPermissionsDialog(def) {
+		return pluginPermsDialog ??= new BytmDialog({
+			id: "plugin-perms",
+			width: 450,
+			height: 700,
+			closeBtnEnabled: true,
+			closeOnBgClick: false,
+			closeOnEscPress: true,
+			destroyOnClose: true,
+			small: true,
+			renderHeader: renderHeader$3,
+			renderBody: (dlg) => renderBody$3(dlg, def),
+			renderFooter: (dlg) => renderFooter$1(dlg, def)
+		});
+	}
+	async function renderHeader$3() {
+		const titleElem = document.createElement("h2");
+		titleElem.id = "bytm-plugin-perms-title";
+		titleElem.classList.add("bytm-dialog-title");
+		titleElem.role = "heading";
+		titleElem.ariaLevel = "1";
+		titleElem.tabIndex = 0;
+		titleElem.textContent = t("plugin_permissions_dialog.title");
+		return titleElem;
+	}
+	async function renderBody$3(permDlg, def) {
+		const pluginKey = getPluginKey(def);
+		const permsListCont = document.createElement("div");
+		permsListCont.id = "bytm-plugin-perms-container";
+		if (!def) {
+			await showPrompt({
+				type: "alert",
+				message: t("plugin_error.plugin_not_registered", { pluginKey })
+			});
+			permDlg.once("open", () => permDlg.close());
+			return permsListCont;
+		}
+		const intents = parseBitSetEnumArray(defToIntentsBitSet(def), PluginIntent);
+		const descriptionElem = document.createElement("div");
+		descriptionElem.id = "bytm-plugin-perms-description";
+		descriptionElem.textContent = descriptionElem.title = t("plugin_permissions_dialog.description", { pluginName: def.plugin.name });
+		permsListCont.appendChild(descriptionElem);
+		const hrElem = document.createElement("hr");
+		hrElem.classList.add("bytm-hr");
+		permsListCont.appendChild(hrElem);
+		for (const intent of intents) {
+			const itemEl = document.createElement("div");
+			itemEl.classList.add("bytm-plugin-perms-item");
+			itemEl.tabIndex = 0;
+			itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}`;
+			const toggleEl = await createToggleInput({
+				id: `plugin-intent-${intent}`,
+				initialValue: true,
+				labelPos: "off",
+				onChange: () => void 0
+			});
+			const nameEl = document.createElement("div");
+			nameEl.classList.add("bytm-plugin-perms-item-name");
+			nameEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
+			itemEl.appendChild(toggleEl);
+			itemEl.appendChild(nameEl);
+			permsListCont.appendChild(itemEl);
+		}
+		return permsListCont;
+	}
+	async function renderFooter$1(permDlg, def) {
+		const pluginKey = getPluginKey(def);
+		const footerEl = document.createElement("div");
+		footerEl.id = "bytm-plugin-perms-footer";
+		footerEl.classList.add("bytm-dialog-footer", "align-right");
+		const requestedIntents = defToIntentsBitSet(def);
+		const confirmBtn = document.createElement("button");
+		confirmBtn.classList.add("bytm-btn");
+		confirmBtn.textContent = t("prompt_confirm");
+		confirmBtn.title = t("click_to_confirm_tooltip");
+		confirmBtn.autofocus = true;
+		onInteraction(confirmBtn, async () => {
+			let grantedPerms = 0;
+			for (const [, v] of Object.entries(PluginIntent)) {
+				if (typeof v !== "number") continue;
+				const checked = document.querySelector(`#bytm-toggle-plugin-intent-${v}`)?.checked ?? false;
+				grantedPerms = grantedPerms | (checked ? v : 0);
+			}
+			const permStore = pluginPermissionsStore.getData();
+			permStore[pluginKey] = [grantedPerms, requestedIntents];
+			await pluginPermissionsStore.setData(permStore);
+			loggers.plugin.info(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms, LogLevel.Info);
+			permDlg.close();
+		});
+		footerEl.appendChild(confirmBtn);
+		const cancelBtn = document.createElement("button");
+		cancelBtn.classList.add("bytm-btn");
+		cancelBtn.textContent = t("prompt_cancel");
+		cancelBtn.title = t("click_to_cancel_tooltip");
+		onInteraction(cancelBtn, () => permDlg.close());
+		footerEl.appendChild(cancelBtn);
+		return footerEl;
 	}
 	//#endregion
 	//#region src/components/MarkdownDialog.ts
@@ -13405,46 +13514,73 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		formatVersion: 0,
 		compressionFormat: null
 	});
+	var pluginPermissionsStoreLoaded = false;
+	/** Returns the permission integers from the {@linkcode pluginPermissionsStore} for the given plugin. */
+	function getPermStorePerms(def) {
+		if (!pluginPermissionsStoreLoaded) throw new DatedError$1(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
+		return pluginPermissionsStore.getData()?.[getPluginKey(def)];
+	}
 	/** Map of plugin key to all registered plugins */
 	var registeredPlugins = /* @__PURE__ */ new Map();
 	/** Map of plugin key to auth token for plugins that have been registered */
 	var registeredPluginTokens = /* @__PURE__ */ new Map();
-	var pluginsInitialized = false;
 	/** Pre-init for eager plugins that need to be initialized as soon as physically possible */
-	function preInitPlugins() {
+	async function preInitPlugins() {
+		if (!pluginPermissionsStoreLoaded) {
+			await pluginPermissionsStore.loadData();
+			pluginPermissionsStoreLoaded = true;
+		}
 		emitInterface("bytm:preInitPlugin", registerPlugin);
 	}
 	/** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
-	function initPlugins() {
+	async function initPlugins() {
+		if (!pluginPermissionsStoreLoaded) {
+			await pluginPermissionsStore.loadData();
+			pluginPermissionsStoreLoaded = true;
+		}
 		emitInterface("bytm:registerPlugin", registerPlugin);
 		registerDevPlugin();
 		window.addEventListener("bytm:ready", () => {
-			pluginsInitialized = true;
 			if (registeredPlugins.size > 0) loggers.plugin.info(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}${mode === "development" ? " (including dev plugin)" : ""}`, LogLevel.Info);
 			else loggers.plugin.log("No plugins registered");
 		}, { once: true });
 	}
 	/** Registers a plugin on the BYTM interface. */
-	function registerPlugin(def) {
+	async function registerPlugin(def) {
+		return await registerPluginInternal(def, false);
+	}
+	/** Internal way to register a plugin instead of using {@linkcode registerPlugin()} - allows setting the {@linkcode isDev} flag. */
+	async function registerPluginInternal(def, isDev = false) {
 		try {
-			if (pluginsInitialized) throw new PluginError(`Failed to register plugin '${getPluginKey(def)}': BYTM interface has already been initialized - plugins can only be registered after the 'bytm:registerPlugin' event and before the 'bytm:ready' event`);
 			const plKey = getPluginKey(def);
+			const isDevPlugin = getPluginKey(def) === devPluginKey;
 			if (registeredPlugins.has(plKey)) throw new PluginError(`Failed to register plugin '${plKey}': Plugin with the same name and namespace is already registered`);
 			const validationErrors = validatePluginDef(def);
 			if (validationErrors) throw new PluginError(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
+			const requestedIntents = defToIntentsBitSet(def);
+			const permStoreEntry = getPermStorePerms(def);
+			if (!isDevPlugin && (!permStoreEntry || permStoreEntry[1] !== requestedIntents)) {
+				await siteEvents.once("staticDataInitialized");
+				const permDialog = getPluginPermissionsDialog(def);
+				permDialog.open();
+				await permDialog.once("close");
+			}
+			const grantedPermsInt = isDevPlugin ? PluginIntent.FullAccess : getPermStorePerms(def)?.[0] ?? 0;
 			const events = new NanoEmitter({ publicEmit: true });
 			const token = crypto.randomUUID();
 			registeredPlugins.set(plKey, {
 				def,
-				events
+				grantedPerms: grantedPermsInt,
+				events,
+				isDev
 			});
 			registeredPluginTokens.set(plKey, token);
-			const permissionInt = defToIntentsBitSet(def);
 			const permissions = {
-				int: permissionInt,
-				array: parseBitSetEnumArray(permissionInt, PluginIntent)
+				int: grantedPermsInt,
+				array: parseBitSetEnumArray(grantedPermsInt, PluginIntent)
 			};
 			loggers.plugin.info(`Successfully registered plugin '${plKey}'`, LogLevel.Info);
+			emitBroadcast({ type: "pluginsUpdated" });
 			setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 0);
 			return {
 				info: getPluginInfo(token, def),
@@ -13457,14 +13593,82 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			throw err;
 		}
 	}
+	/** Unregisters 1 or multiple given plugins, if they are currently registered. If `promptReload` is set to true (which it is by default), the user is prompted for a page reload. */
+	async function unregisterPlugins(plugins, promptReload = true) {
+		const regPluginsNoDev = [...registeredPlugins.entries()].reduce((a, [key, item]) => {
+			if (!item.isDev) a.set(key, item);
+			return a;
+		}, /* @__PURE__ */ new Map());
+		if (regPluginsNoDev.size > 0 && !await showPrompt({
+			type: "confirm",
+			message: tp("plugins_unregister_prompt", regPluginsNoDev.size, regPluginsNoDev.size),
+			confirmBtnText: t("prompt_unregister"),
+			confirmBtnTooltip: t("click_to_unregister_tooltip"),
+			denyBtnText: t("prompt_cancel"),
+			denyBtnTooltip: t("click_to_cancel_tooltip")
+		})) return;
+		const unregisteredPlugins = [];
+		for (const pl of Array.isArray(plugins) ? plugins : [plugins]) {
+			const key = getPluginKey(pl);
+			const regPl = registeredPlugins.get(key);
+			if (regPl) {
+				if (regPl.isDev) continue;
+				regPl.events.emit("pluginUnregistered");
+				if (getPermStorePerms(regPl.def)) {
+					const permStoreData = await pluginPermissionsStore.loadData();
+					delete permStoreData[key];
+					await pluginPermissionsStore.setData(permStoreData);
+				}
+				unregisteredPlugins.push({
+					name: regPl.def.plugin.name,
+					key
+				});
+				registeredPlugins.delete(key);
+			}
+		}
+		if (unregisteredPlugins.length > 0) {
+			emitBroadcast({ type: "pluginsUpdated" });
+			if (promptReload) await new MarkdownDialog({
+				id: "unregistered-plugins",
+				body: tp("plugins_unregistered_markdown", unregisteredPlugins.length, { pluginsList: unregisteredPlugins.reduce((a, { key, name }, i) => `${a}${i > 0 ? "\n" : ""}- ${name} \`${key}\``, "") }),
+				small: true,
+				width: 700,
+				height: 600,
+				renderFooter(dlg) {
+					const footerCont = document.createElement("div");
+					footerCont.classList.add("bytm-dialog-footer", "align-right");
+					const reloadAllBtn = document.createElement("button");
+					reloadAllBtn.classList.add("bytm-btn");
+					reloadAllBtn.textContent = t("reload_all_tabs_now");
+					onInteraction(reloadAllBtn, () => reloadAllTabs());
+					const closeBtn = document.createElement("button");
+					closeBtn.classList.add("bytm-btn");
+					closeBtn.textContent = t("close");
+					closeBtn.title = t("close_menu_tooltip");
+					onInteraction(closeBtn, () => dlg.close());
+					footerCont.appendChild(reloadAllBtn);
+					footerCont.appendChild(closeBtn);
+					return footerCont;
+				}
+			}).open();
+		} else await showPrompt({
+			type: "alert",
+			message: t("plugins_unregister_no_plugins_found")
+		});
+	}
+	/** Reloads the plugin data that's cached in memory. */
+	function reloadPluginData() {
+		pluginPermissionsStore.loadData();
+	}
 	/** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 	var devPluginToken;
 	var devPluginId = randomId$1(8, 36, true, true);
+	var devPluginKey;
 	/** Registers a plugin that only exists in development mode to test the plugin system */
-	function registerDevPlugin() {
+	async function registerDevPlugin() {
 		if (mode !== "development") return;
 		try {
-			const { token, events } = registerPlugin({
+			const devPluginDef = {
 				plugin: {
 					name: t("dev_plugin.name"),
 					namespace: `${package_default.namespace}+${devPluginId}`,
@@ -13481,7 +13685,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png"
 				},
 				intents: PluginIntent.FullAccess
-			});
+			};
+			devPluginKey = getPluginKey(devPluginDef);
+			const { token, events } = await registerPluginInternal(devPluginDef, true);
 			devPluginToken = token;
 			setGlobalProp("devPluginEvents", events);
 		} catch (err) {
@@ -13538,8 +13744,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const asArray = (value) => Array.isArray(value) ? value : [value];
 		const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2]) : asArray(args[1])) ?? [];
 		if (!Array.isArray(perms)) throw new TypeError("The second argument must be an array of PluginIntent values");
-		const pluginIntents = defToIntentsBitSet(plugin.def);
-		return bitSetHas(pluginIntents, PluginIntent.FullAccess) || perms.every((perm) => bitSetHas$1(pluginIntents, perm));
+		return bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => bitSetHas$1(plugin.grantedPerms, perm));
 	}
 	/** Converts the intents from a PluginDef object into a bit set value. */
 	function defToIntentsBitSet(def) {
@@ -13793,8 +13998,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				closeOnEscPress: true,
 				destroyOnClose: true,
 				small: true,
-				renderHeader: renderHeader$3,
-				renderBody: () => renderBody$3({
+				renderHeader: renderHeader$2,
+				renderBody: () => renderBody$2({
 					latestTag,
 					changelogHtml
 				})
@@ -13802,7 +14007,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}
 		return verNotifDialog;
 	}
-	async function renderHeader$3() {
+	async function renderHeader$2() {
 		const logoEl = document.createElement("img");
 		logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
 		logoEl.src = await getResourceUrl("img-logo_dev");
@@ -13810,7 +14015,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		return logoEl;
 	}
 	var disableUpdateCheck = false;
-	async function renderBody$3({ latestTag, changelogHtml }) {
+	async function renderBody$2({ latestTag, changelogHtml }) {
 		disableUpdateCheck = false;
 		const wrapperEl = document.createElement("div");
 		const pEl = document.createElement("p");
@@ -14194,11 +14399,11 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			closeOnEscPress: true,
 			destroyOnClose: true,
 			small: true,
-			renderHeader: renderHeader$2,
-			renderBody: renderBody$2
+			renderHeader: renderHeader$1,
+			renderBody: renderBody$1
 		});
 	}
-	async function renderHeader$2() {
+	async function renderHeader$1() {
 		const titleElem = document.createElement("h2");
 		titleElem.id = "bytm-plugin-list-title";
 		titleElem.classList.add("bytm-dialog-title");
@@ -14208,7 +14413,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		titleElem.textContent = t("plugin_list.title");
 		return titleElem;
 	}
-	async function renderBody$2() {
+	async function renderBody$1() {
 		const listContainerEl = document.createElement("div");
 		listContainerEl.id = "bytm-plugin-list-container";
 		const registeredPlugins = getRegisteredPlugins();
@@ -14339,16 +14544,16 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				closeOnBgClick: false,
 				closeOnEscPress: true,
 				destroyOnClose: true,
-				renderHeader: renderHeader$1,
-				renderBody: renderBody$1,
-				renderFooter: renderFooter$1
+				renderHeader,
+				renderBody,
+				renderFooter
 			});
 			welcomeDialog.on("render", retranslateWelcomeMenu);
 			welcomeDialog.on("destroy", () => welcomeDialog = null);
 		}
 		return welcomeDialog;
 	}
-	async function renderHeader$1() {
+	async function renderHeader() {
 		const titleWrapperElem = document.createElement("div");
 		titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
 		const titleLogoElem = document.createElement("img");
@@ -14365,7 +14570,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		titleWrapperElem.appendChild(titleElem);
 		return titleWrapperElem;
 	}
-	async function renderBody$1() {
+	async function renderBody() {
 		const contentWrapper = document.createElement("div");
 		contentWrapper.id = "bytm-welcome-menu-content-wrapper";
 		const horSegmentCont = document.createElement("div");
@@ -14536,7 +14741,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			fn(el);
 		}
 	}
-	async function renderFooter$1() {
+	async function renderFooter() {
 		const footerCont = document.createElement("div");
 		footerCont.id = "bytm-welcome-menu-footer-cont";
 		const openCfgElem = document.createElement("button");
@@ -18781,7 +18986,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	async function initStaticData() {
 		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
 		const alertMode = getFeature("globalAlertMode", "importantOnly");
-		return await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
+		const result = await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
+		emitSiteEvent("staticDataInitialized");
+		return result;
 	}
 	//#endregion
 	//#region src/utils/dom.ts
@@ -19061,113 +19268,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		return element;
 	}
 	//#endregion
-	//#region src/dialogs/pluginPermissions.ts
-	var pluginPermsDialog = null;
-	/** Creates and/or returns the plugin permissions dialog */
-	async function getPluginPermissionsDialog(plugin) {
-		return pluginPermsDialog ??= new BytmDialog({
-			id: "plugin-perms",
-			width: 450,
-			height: 700,
-			closeBtnEnabled: true,
-			closeOnBgClick: false,
-			closeOnEscPress: true,
-			destroyOnClose: true,
-			small: true,
-			renderHeader,
-			renderBody: (dlg) => renderBody(dlg, plugin),
-			renderFooter: (dlg) => renderFooter(dlg, plugin)
-		});
-	}
-	async function renderHeader() {
-		const titleElem = document.createElement("h2");
-		titleElem.id = "bytm-plugin-perms-title";
-		titleElem.classList.add("bytm-dialog-title");
-		titleElem.role = "heading";
-		titleElem.ariaLevel = "1";
-		titleElem.tabIndex = 0;
-		titleElem.textContent = t("plugin_permissions_dialog.title");
-		return titleElem;
-	}
-	async function renderBody(permDlg, plugin) {
-		const pluginKey = typeof plugin === "string" ? plugin : getPluginKey(plugin);
-		const regPl = getRegisteredPlugins().find(([key]) => key === pluginKey);
-		const permsListCont = document.createElement("div");
-		permsListCont.id = "bytm-plugin-perms-container";
-		if (!regPl) {
-			await showPrompt({
-				type: "alert",
-				message: t("plugin_error.plugin_not_registered", { pluginKey })
-			});
-			permDlg.once("open", () => permDlg.close());
-			return permsListCont;
-		}
-		const { def } = regPl[1];
-		const intents = parseBitSetEnumArray(defToIntentsBitSet(def), PluginIntent);
-		const descriptionElem = document.createElement("div");
-		descriptionElem.id = "bytm-plugin-perms-description";
-		descriptionElem.textContent = descriptionElem.title = t("plugin_permissions_dialog.description", { pluginName: def.plugin.name });
-		permsListCont.appendChild(descriptionElem);
-		const hrElem = document.createElement("hr");
-		hrElem.classList.add("bytm-hr");
-		permsListCont.appendChild(hrElem);
-		for (const intent of intents) {
-			const itemEl = document.createElement("div");
-			itemEl.classList.add("bytm-plugin-perms-item");
-			itemEl.tabIndex = 0;
-			itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}`;
-			const toggleEl = await createToggleInput({
-				id: `plugin-intent-${intent}`,
-				initialValue: true,
-				labelPos: "off",
-				onChange: () => void 0
-			});
-			const nameEl = document.createElement("div");
-			nameEl.classList.add("bytm-plugin-perms-item-name");
-			nameEl.textContent = t(`plugin_intent_name.${PluginIntent[intent]}`);
-			itemEl.appendChild(toggleEl);
-			itemEl.appendChild(nameEl);
-			permsListCont.appendChild(itemEl);
-		}
-		return permsListCont;
-	}
-	async function renderFooter(permDlg, plugin) {
-		const pluginKey = typeof plugin === "string" ? plugin : getPluginKey(plugin);
-		const footerEl = document.createElement("div");
-		footerEl.id = "bytm-plugin-perms-footer";
-		footerEl.classList.add("bytm-dialog-footer", "align-right");
-		const regPl = getRegisteredPlugins().find(([key]) => key === pluginKey);
-		if (!regPl) throw new DatedError$1(`Couldn't render plugin permissions dialog footer because plugin ${typeof plugin === "string" ? plugin : JSON.stringify(plugin)} isn't registered yet.`);
-		const { def } = regPl[1];
-		const requestedIntents = defToIntentsBitSet(def);
-		const confirmBtn = document.createElement("button");
-		confirmBtn.classList.add("bytm-btn");
-		confirmBtn.textContent = t("prompt_confirm");
-		confirmBtn.title = t("click_to_confirm_tooltip");
-		confirmBtn.autofocus = true;
-		onInteraction(confirmBtn, async () => {
-			let grantedPerms = 0;
-			for (const [, v] of Object.entries(PluginIntent)) {
-				if (typeof v !== "number") continue;
-				const checked = document.querySelector(`#bytm-toggle-plugin-intent-${v}`)?.checked ?? false;
-				grantedPerms = grantedPerms | (checked ? v : 0);
-			}
-			const permStore = pluginPermissionsStore.getData();
-			permStore[pluginKey] = [grantedPerms, requestedIntents];
-			await pluginPermissionsStore.setData(permStore);
-			loggers.plugin.log(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms);
-			permDlg.close();
-		});
-		footerEl.appendChild(confirmBtn);
-		const cancelBtn = document.createElement("button");
-		cancelBtn.classList.add("bytm-btn");
-		cancelBtn.textContent = t("prompt_cancel");
-		cancelBtn.title = t("click_to_cancel_tooltip");
-		onInteraction(cancelBtn, () => permDlg.close());
-		footerEl.appendChild(cancelBtn);
-		return footerEl;
-	}
-	//#endregion
 	//#region src/index.ts
 	{
 		const [styleGradient, gradientContBg] = (() => {
@@ -19277,7 +19377,7 @@ Build #${buildNumber$1} (dev mode)
 			initLoc !== "en-US" && await initTranslations("en-US");
 			setLocale(initLoc);
 			try {
-				initPlugins();
+				await initPlugins();
 			} catch (err) {
 				loggers.init.error("Plugin loading error:", err);
 				emitInterface("bytm:fatalError", "Error while loading plugins");
@@ -19524,21 +19624,6 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				decodeError(key, err);
 			}
 		});
-		isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
-			const keys = await GM.listValues();
-			loggers.command.log(`GM values (${keys.length}):`);
-			if (keys.length === 0) loggers.command.log("  No values found.");
-			const values = {};
-			let longestKey = 0;
-			for (const key of keys) {
-				values[key] = await GM.getValue(key, void 0);
-				longestKey = Math.max(longestKey, key.length);
-			}
-			for (const [key, val] of Object.entries(values)) {
-				const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-				loggers.command.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
-			}
-		});
 		isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
 			const keys = await GM.listValues();
 			if (await showPrompt({
@@ -19701,13 +19786,10 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}],
 			extraButtonsPosition: "before"
 		}));
-		GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
-			downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, serializeLogs(), "text/plain");
-		});
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "5294d576",
+				buildNumber: "4bc01741",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -19775,6 +19857,12 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				confirmBtnText: "Reload"
 			}) && await reloadAllTabs();
 		});
+		GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
+			unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
+		});
+		GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
+			downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, serializeLogs(), "text/plain");
+		});
 		loggers.command.log("Registered dev menu commands");
 	}
 	async function runDevTreatments() {
@@ -19797,12 +19885,12 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			},
 			intents: PluginIntent.ReadFeatureConfig | PluginIntent.WriteFeatureConfig | PluginIntent.SeeHiddenConfigValues | PluginIntent.CreateModalDialogs | PluginIntent.WriteTranslations
 		};
-		getUnsafeWindow$1().addEventListener("bytm:registerPlugin", async ({ detail: register }) => {
+		getUnsafeWindow$1().addEventListener("bytm:preInitPlugin", async ({ detail: register }) => {
 			if (typeof register === "function") {
-				const result = register(permTestDef);
+				const result = await registerPluginInternal(permTestDef);
 				loggers.debug.log(">> Plugin permission test result:", result);
 				getUnsafeWindow$1().addEventListener("bytm:allReady", async () => {
-					await (await getPluginPermissionsDialog(permTestDef)).open();
+					await getPluginPermissionsDialog(permTestDef).open();
 				});
 			}
 		});
