@@ -7,6 +7,8 @@ import { PluginIntent } from "@/types.ts";
 import packageJson from "@root/package.json" with { type: "json" };
 import "@dialog/pluginList.css";
 
+// TODO: add permission configuration button that opens the pluginPermissions dialog
+
 let pluginListDialog: BytmDialog | null = null;
 
 /** Creates and/or returns the plugin list dialog */

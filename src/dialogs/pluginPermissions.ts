@@ -123,7 +123,7 @@ async function renderFooter(permDlg: BytmDialog, def: PluginDef) {
 
     await pluginPermissionsStore.setData(permStore);
 
-    loggers.plugin.log(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms, LogLevel.Info);
+    loggers.plugin.info(`Updated permissions for plugin '${pluginKey}' - requested:`, requestedIntents, "- granted:", grantedPerms, LogLevel.Info);
 
     permDlg.close();
   });

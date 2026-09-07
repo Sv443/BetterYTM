@@ -57,7 +57,6 @@
   "menu_command.get_dev_plugin_token": "統合開発者プラグイントークンを取得",
   "menu_command.gm_storage_delete_all": "GM ストレージ内のすべての値を削除 [⚠️ 全削除]",
   "menu_command.gm_storage_list_decompressed": "展開済みの GM 値をコンソールに一覧表示",
-  "menu_command.gm_storage_list_raw": "展開せずに生の GM 値をコンソールに一覧表示",
   "menu_command.import_full": "全データをインポート [🚧 開発中]",
   "menu_command.list_selectorobserver_listeners": "有効な SelectorObserver リスナーをコンソールに一覧表示",
   "menu_command.open_cfg_menu": "構成メニューを開く",

@@ -112,7 +112,6 @@
   "menu_command.get_dev_plugin_token": "एकीकृत डेवलपर प्लगइन टोकन प्राप्त करें",
   "menu_command.gm_storage_delete_all": "GM स्टोरेज के सभी मान हटाएं [⚠️ पूर्ण साफ़]",
   "menu_command.gm_storage_list_decompressed": "कंसोल में डिकंप्रेस किए गए GM मान सूचीबद्ध करें",
-  "menu_command.gm_storage_list_raw": "बिना डिकंप्रेशन के कंसोल में रॉ GM मान सूचीबद्ध करें",
   "menu_command.import_full": "पूर्ण डेटा आयात [🚧 प्रगति में]",
   "menu_command.list_selectorobserver_listeners": "कंसोल में सक्रिय SelectorObserver लिस्नर्स सूचीबद्ध करें",
   "menu_command.open_cfg_menu": "कॉन्फ़िग मेनू खोलें",

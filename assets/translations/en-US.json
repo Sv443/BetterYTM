@@ -120,7 +120,6 @@
   "menu_command.get_dev_plugin_token": "Get integrated developer plugin token",
   "menu_command.gm_storage_delete_all": "Delete all values in GM storage [⚠️ full wipe]",
   "menu_command.gm_storage_list_decompressed": "List decompressed GM values in console",
-  "menu_command.gm_storage_list_raw": "List raw GM values in console, without decompression",
   "menu_command.import_full": "Full data import [🚧 WIP]",
   "menu_command.list_selectorobserver_listeners": "List active SelectorObserver listeners in console",
   "menu_command.open_cfg_menu": "Open config menu",
@@ -131,6 +130,7 @@
   "menu_command.reset_version_session_counter": "Reset version session counter",
   "menu_command.throw_example_error": "Throw example error (& show error toast)",
   "menu_command.toggle_dev_treatments": "Toggle dev treatments",
+  "menu_command.unregister_all_plugins": "Unregister all plugins",
 
   "open_current_lyrics": "Open the current song's lyrics in a new tab - shift-click to open in a new window or ctrl-click to open manual search",
   "open_lyrics": "Open this song's lyrics in a new tab - ctrl-click to open manual search",
@@ -234,10 +234,12 @@
   "prompt_close": "Close",
   "prompt_dismiss": "Dismiss",
   "prompt_cancel": "Cancel",
+  "prompt_unregister": "Unregister",
 
   "click_to_confirm_tooltip": "Click to confirm",
   "click_to_close_tooltip": "Click to close",
   "click_to_cancel_tooltip": "Click to cancel",
+  "click_to_unregister_tooltip": "Click to unregister",
 
   "vote_label_likes-1": "${count} like",
   "vote_label_likes-n": "${count} likes",
@@ -316,6 +318,11 @@
   "plugin_validation_error.invalid_property-1": "Property '${property}' with value '${value}' is invalid. Example value: ${example}",
   "plugin_validation_error.invalid_property-n": "Property '${property}' with value '${value}' is invalid. Example values: ${example}",
   "plugin_error.plugin_not_registered": "Error: the plugin '${pluginKey}' is not registered yet.",
+
+  "plugins_unregister_prompt-1": "Are you sure you want to unregister the installed plugin? It will prompt to re-register itself when the page is reloaded, unless you manually uninstall it.",
+  "plugins_unregister_prompt-n": "Are you sure you want to unregister all ${pluginCount} installed plugins? They will prompt to re-register themselves when the page is reloaded, unless you manually uninstall them.",
+  "plugins_unregistered_markdown-1": "Successfully unregistered the following plugin:\n${pluginsList}\nReload all tabs now to fully revoke any and all access for this plugin.",
+  "plugins_unregistered_markdown-n": "Successfully unregistered the following plugins:\n${pluginsList}\nReload all tabs now to fully revoke any and all access for these plugins.",
 
   "dev_plugin.name": "Developer Plugin",
   "dev_plugin.description": "Internal plugin that only exists in development mode to make testing the plugin system easier.",

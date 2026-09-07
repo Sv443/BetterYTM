@@ -112,7 +112,6 @@
   "menu_command.get_dev_plugin_token": "Obtenir le jeton du plugin développeur intégré",
   "menu_command.gm_storage_delete_all": "Supprimer toutes les valeurs dans le stockage GM [⚠️ effacement complet]",
   "menu_command.gm_storage_list_decompressed": "Lister les valeurs GM décompressées dans la console",
-  "menu_command.gm_storage_list_raw": "Lister les valeurs GM brutes dans la console, sans décompression",
   "menu_command.import_full": "Importation complète des données [🚧 WIP]",
   "menu_command.list_selectorobserver_listeners": "Lister les écouteurs SelectorObserver actifs dans la console",
   "menu_command.open_cfg_menu": "Ouvrir le menu de configuration",

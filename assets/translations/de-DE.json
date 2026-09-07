@@ -119,7 +119,6 @@
   "menu_command.get_dev_plugin_token": "Integriertes Dev-Plugin-Token anzeigen",
   "menu_command.gm_storage_delete_all": "Lösche alle Werte im GM-Speicher [⚠️ vollständiger Wipe]",
   "menu_command.gm_storage_list_decompressed": "Liste dekomprimierte GM-Werte in der Konsole",
-  "menu_command.gm_storage_list_raw": "Liste rohe GM-Werte in der Konsole, ohne Dekompression",
   "menu_command.import_full": "Voll-Datenimport [🚧 WIP]",
   "menu_command.list_selectorobserver_listeners": "Aktive SelectorObserver-Listener in der Konsole auflisten",
   "menu_command.open_cfg_menu": "Konfigurationsmenü öffnen",
@@ -130,6 +129,7 @@
   "menu_command.reset_version_session_counter": "Version- & Session-Zähler zurücksetzen",
   "menu_command.throw_example_error": "Beispiel-Error werfen (und Error-Toast anzeigen)",
   "menu_command.toggle_dev_treatments": "Entwicklerbehandlungen umschalten",
+  "menu_command.unregister_all_plugins": "Alle Plugins abmelden",
 
   "open_current_lyrics": "Songtext des aktuellen Songs öffnen - Shift-Klick, um in einem neuen Fenster zu öffnen oder Strg-Klick, um manuell zu suchen",
   "open_lyrics": "Songtext in einem neuen Tab öffnen - Strg-Klick, um manuell zu suchen",

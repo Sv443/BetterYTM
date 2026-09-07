@@ -116,7 +116,6 @@
   "menu_command.get_dev_plugin_token": "Entegre geliştirici eklentisi jetonu al",
   "menu_command.gm_storage_delete_all": "GM depolamasındaki tüm verileri sil [⚠️ tam temizlik]",
   "menu_command.gm_storage_list_decompressed": "Konsolda açılmış GM değerlerini listele",
-  "menu_command.gm_storage_list_raw": "Konsolda, sıkıştırmayı açmadan ham GM değerlerini listele",
   "menu_command.import_full": "Tam veri içe aktarması [🚧 WIP]",
   "menu_command.list_selectorobserver_listeners": "Konsolda etkin SelectorObserver dinleyicilerini listele",
   "menu_command.open_cfg_menu": "Yapılandırma menüsünü aç",

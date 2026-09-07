@@ -489,7 +489,7 @@ export type PluginInfo = {
 /** Minimum part of the PluginDef object needed to make up the resolvable plugin identifier */
 export type PluginDefResolvable = PluginDef | { plugin: Pick<PluginDef["plugin"], "name" | "namespace"> };
 
-/** An object that describes a BYTM plugin */
+/** An object that describes a BYTM plugin. */
 export type PluginDef = {
   plugin: PluginInfo & {
     /**
@@ -543,6 +543,8 @@ export type PluginEventMap =
   & {
     /** Emitted when a plugin is registered on BYTM's side and can make use of authenticated API calls */
     pluginRegistered: (info: PluginInfo) => void;
+    /** Emitted when the user has chosen to unregister the plugin. */
+    pluginUnregistered: () => void;
   }
   // These are emitted on every plugin simultaneously, with the same or similar data:
   & SiteEventsMapPrefixed
@@ -551,8 +553,12 @@ export type PluginEventMap =
 /** A plugin in either the queue or registered map */
 export type PluginItem = Prettify<
   & {
+    /** The plugin definition object. */
     def: PluginDef;
+    /** The bitfield of permissions that were actually granted to the plugin. */
     grantedPerms: number;
+    /** Whether this is the integrated dev plugin. */
+    isDev: boolean;
   }
   & Pick<PluginRegisterResult, "events">
 >;

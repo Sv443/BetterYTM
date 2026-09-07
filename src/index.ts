@@ -8,7 +8,7 @@ import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initStaticData } from "@util/data.js";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
-import { devPluginToken, emitInterface, preInitInterface, initPlugins, preInitPlugins, type registerPlugin } from "@/interface.ts";
+import { devPluginToken, emitInterface, preInitInterface, initPlugins, preInitPlugins, type registerPlugin, unregisterPlugins, getRegisteredPlugins, registerPluginInternal } from "@/interface.ts";
 import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
 import { downloadData, getDSSerializer } from "@/serializers.ts";
 import { getWelcomeDialog } from "@dialog/welcome.ts";
@@ -670,26 +670,6 @@ function registerDevCommands() {
     }
   });
 
-  isAny && GM.registerMenuCommand(getCmdName("📋", "menu_command.gm_storage_list_raw"), async () => {
-    const keys = await GM.listValues();
-    loggers.command.log(`GM values (${keys.length}):`);
-    if(keys.length === 0)
-      loggers.command.log("  No values found.");
-
-    const values = {} as Record<string, Stringifiable | undefined>;
-    let longestKey = 0;
-
-    for(const key of keys) {
-      const val = await GM.getValue(key, undefined);
-      values[key] = val;
-      longestKey = Math.max(longestKey, key.length);
-    }
-    for(const [key, val] of Object.entries(values)) {
-      const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-      loggers.command.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
-    }
-  });
-
   isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
@@ -865,10 +845,6 @@ function registerDevCommands() {
     }),
   );
 
-  GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
-    downloadFile(`bytm-log-${new Date().toISOString()}.log`, serializeLogs(), "text/plain");
-  });
-
   // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
   //   const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
   //   const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
@@ -957,6 +933,14 @@ function registerDevCommands() {
     }) && await reloadAllTabs();
   });
 
+  GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
+    unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
+  });
+
+  GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
+    downloadFile(`bytm-log-${new Date().toISOString()}.log`, serializeLogs(), "text/plain");
+  });
+
   loggers.command.log("Registered dev menu commands");
 }
 
@@ -996,9 +980,9 @@ async function initPermTestPlugin() {
   } as const satisfies PluginDef;
 
   // @ts-expect-error
-  getUnsafeWindow().addEventListener("bytm:registerPlugin", async ({ detail: register }: CustomEvent<typeof registerPlugin>) => {
+  getUnsafeWindow().addEventListener("bytm:preInitPlugin", async ({ detail: register }: CustomEvent<typeof registerPlugin>) => {
     if(typeof register === "function") {
-      const result = await register(permTestDef);
+      const result = await registerPluginInternal(permTestDef);
       loggers.debug.log(">> Plugin permission test result:", result);
 
       getUnsafeWindow().addEventListener("bytm:allReady", async () => {

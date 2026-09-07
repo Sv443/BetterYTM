@@ -112,7 +112,6 @@
   "menu_command.get_dev_plugin_token": "获取开发者插件令牌",
   "menu_command.gm_storage_delete_all": "删除所有 GM 存储数据",
   "menu_command.gm_storage_list_decompressed": "以可读格式列出 GM 存储",
-  "menu_command.gm_storage_list_raw": "以原始格式列出 GM 存储",
   "menu_command.import_full": "导入所有数据",
   "menu_command.list_selectorobserver_listeners": "列出所有 SelectorObserver 监听器",
   "menu_command.open_cfg_menu": "打开配置菜单",

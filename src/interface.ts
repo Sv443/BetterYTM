@@ -3,7 +3,7 @@ import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { broadcastTxID, emitBroadcast } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
-import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode, parseMarkdown, sanitizeHtml } from "@util/index.ts";
+import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode, parseMarkdown, sanitizeHtml, reloadAllTabs } from "@util/index.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
@@ -370,6 +370,11 @@ export async function initPlugins() {
 
 /** Registers a plugin on the BYTM interface. */
 export async function registerPlugin(def: PluginDef): Promise<PluginRegisterResult> {
+  return await registerPluginInternal(def, false);
+};
+
+/** Internal way to register a plugin instead of using {@linkcode registerPlugin()} - allows setting the {@linkcode isDev} flag. */
+export async function registerPluginInternal(def: PluginDef, isDev = false): Promise<PluginRegisterResult> {
   try {
     const plKey = getPluginKey(def);
     const isDevPlugin = getPluginKey(def) === devPluginKey;
@@ -401,6 +406,7 @@ export async function registerPlugin(def: PluginDef): Promise<PluginRegisterResu
       def: def,
       grantedPerms: grantedPermsInt,
       events,
+      isDev,
     });
     registeredPluginTokens.set(plKey, token);
 
@@ -410,6 +416,8 @@ export async function registerPlugin(def: PluginDef): Promise<PluginRegisterResu
     };
 
     loggers.plugin.info(`Successfully registered plugin '${plKey}'`, LogLevel.Info);
+
+    emitBroadcast({ type: "pluginsUpdated" });
 
     setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
 
@@ -424,7 +432,107 @@ export async function registerPlugin(def: PluginDef): Promise<PluginRegisterResu
     loggers.plugin.error(`Failed to register plugin '${getPluginKey(def)}':`, err instanceof PluginError ? err : new PluginError(String(err)));
     throw err;
   }
-};
+}
+
+/** Unregisters 1 or multiple given plugins, if they are currently registered. If `promptReload` is set to true (which it is by default), the user is prompted for a page reload. */
+export async function unregisterPlugins(plugins: PluginDefResolvable | PluginDefResolvable[], promptReload = true) {
+  const regPluginsNoDev = [...registeredPlugins.entries()].reduce((a, [key, item]) => {
+    if(!item.isDev)
+      a.set(key, item);
+
+    return a;
+  }, new Map<string, PluginItem>());
+
+  if(!await showPrompt({
+    type: "confirm",
+    message: tp("plugins_unregister_prompt", regPluginsNoDev.size, regPluginsNoDev.size),
+    confirmBtnText: t("prompt_unregister"),
+    confirmBtnTooltip: t("click_to_unregister_tooltip"),
+    denyBtnText: t("prompt_cancel"),
+    denyBtnTooltip: t("click_to_cancel_tooltip"),
+  }))
+    return;
+
+  const unregisteredPlugins = [] as {
+    key: string;
+    name: string;
+  }[];
+
+  for(const pl of (Array.isArray(plugins) ? plugins : [plugins])) {
+    const key = getPluginKey(pl);
+    const regPl = registeredPlugins.get(key);
+    if(regPl) {
+      if(regPl.isDev)
+        continue; // skip dev plugins
+
+      // tell plugin it's being unregistered
+      regPl.events.emit("pluginUnregistered");
+
+      // un-grant intents
+      const perms = getPermStorePerms(regPl.def);
+      if(perms) {
+        const permStoreData = await pluginPermissionsStore.loadData();
+        delete permStoreData[key];
+        await pluginPermissionsStore.setData(permStoreData);
+      }
+
+      // remove runtime registration
+      unregisteredPlugins.push({
+        name: regPl.def.plugin.name,
+        key,
+      });
+      registeredPlugins.delete(key);
+    }
+  }
+
+  if(unregisteredPlugins.length > 0) {
+    emitBroadcast({ type: "pluginsUpdated" });
+
+    if(promptReload) {
+      const mdDlg = new MarkdownDialog({
+        id: "unregistered-plugins",
+        body: tp("plugins_unregistered_markdown", unregisteredPlugins.length, {
+          pluginsList: unregisteredPlugins.reduce((a, { key, name }, i) => `${a}${i > 0 ? "\n" : ""}- ${name} \`${key}\``, ""),
+        }),
+        width: 700,
+        height: 600,
+        renderFooter(dlg) {
+          const footerCont = document.createElement("div");
+          footerCont.classList.add("bytm-dialog-footer", "align-right");
+
+          const reloadBtn = document.createElement("button");
+          reloadBtn.classList.add("bytm-btn");
+          reloadBtn.textContent = t("reload_now");
+          onInteraction(reloadBtn, () => location.reload());
+
+          const reloadAllBtn = document.createElement("button");
+          reloadAllBtn.classList.add("bytm-btn");
+          reloadAllBtn.textContent = t("reload_all_tabs_now");
+          onInteraction(reloadAllBtn, () => reloadAllTabs());
+
+          const closeBtn = document.createElement("button");
+          closeBtn.classList.add("bytm-btn");
+          closeBtn.textContent = t("close");
+          closeBtn.title = t("close_menu_tooltip");
+          onInteraction(closeBtn, () => dlg.close());
+
+          footerCont.appendChild(reloadBtn);
+          footerCont.appendChild(reloadAllBtn);
+          footerCont.appendChild(closeBtn);
+
+          return footerCont;
+        },
+      });
+
+      await mdDlg.open();
+    }
+  }
+}
+
+/** Reloads the plugin data that's cached in memory. */
+export function reloadPluginData() {
+  pluginPermissionsStore.loadData();
+}
 
 /** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 export let devPluginToken: string | undefined;
@@ -455,7 +563,7 @@ async function registerDevPlugin() {
       intents: PluginIntent.FullAccess,
     } as const satisfies PluginDef;
     devPluginKey = getPluginKey(devPluginDef);
-    const { token, events } = await registerPlugin(devPluginDef);
+    const { token, events } = await registerPluginInternal(devPluginDef, true);
 
     devPluginToken = token;
     setGlobalProp("devPluginEvents", events);

@@ -2,6 +2,7 @@
 
 import { debounce, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
+import { reloadPluginData } from "@/interface.ts";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { buildNumber, initTime, scriptInfo } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";
@@ -22,6 +23,8 @@ export type BroadcastPacketDataMap = {
   };
   /** Reloads all open tabs running BetterYTM except the sender's. */
   reloadTabs: void;
+  /** Whenever a plugin was registered, unregistered, had permissions modified, or anything similar. */
+  pluginsUpdated: void;
 
   // sessions:
   /** Called to make other sessions reply with a `discoverSessionsReply`, in order to collect a list of all open sessions. */
@@ -194,9 +197,13 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
     }
     break;
   }
-  // reload this tab
+  // reload this tab:
   case "reloadTabs":
     await reloadTab();
+    break;
+  // refresh plugin cache data in memory:
+  case "pluginsUpdated":
+    reloadPluginData();
     break;
   // reply to "discoverSessions" packets with a "discoverSessionsReply" packet:
   case "discoverSessions":
