@@ -286,6 +286,8 @@
 
   "plugin_permissions_dialog.title": "Plugin Permissions",
   "plugin_permissions_dialog.description": "The plugin '${pluginName}' is asking for all the permissions listed below. Hover your cursor over them for an explanation.\nNote that turning some of these permissions off may cause the plugin to stop working.",
+  "plugin_edit_permissions": "Edit plugin permissions",
+  "plugin_unregister": "Unregister plugin",
 
   "plugin_link.type_source": "Repository",
   "plugin_link.type_changelog": "Changelog",

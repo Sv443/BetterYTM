@@ -65,9 +65,17 @@ async function renderBody(dlg: BytmDialog) {
     leftEl.classList.add("bytm-plugin-list-row-left");
     rowEl.appendChild(leftEl);
 
+    const leftTopEl = document.createElement("div");
+    leftTopEl.classList.add("bytm-plugin-list-row-left-top");
+    leftEl.appendChild(leftTopEl);
+
+    const leftBottomEl = document.createElement("div");
+    leftBottomEl.classList.add("bytm-plugin-list-row-left-bottom");
+    leftEl.appendChild(leftBottomEl);
+
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
-    leftEl.appendChild(headerWrapperEl);
+    leftTopEl.appendChild(headerWrapperEl);
 
     if(plugin.iconUrl) {
       const iconEl = document.createElement("img");
@@ -102,11 +110,11 @@ async function renderBody(dlg: BytmDialog) {
     descEl.classList.add("bytm-plugin-list-row-desc");
     descEl.tabIndex = 0;
     descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
-    leftEl.appendChild(descEl);
+    leftTopEl.appendChild(descEl);
 
     const linksList = document.createElement("div");
     linksList.classList.add("bytm-plugin-list-row-links-list");
-    leftEl.appendChild(linksList);
+    leftBottomEl.appendChild(linksList);
 
     let linkElCreated = false;
     for(const key in plugin.homepage) {
@@ -177,16 +185,15 @@ async function renderBody(dlg: BytmDialog) {
         },
         title: t("plugin_edit_permissions"),
       });
+      buttonsContEl.appendChild(permBtnEl);
+
       const unregisterBtnEl = await createCircularBtn({
         resourceName: "icon-delete",
-        onClick() {
-          unregisterPlugins(def, true);
-        },
-        title: t("prompt_unregister"),
+        onClick: () => unregisterPlugins(def, true),
+        title: t("plugin_unregister"),
       });
-
-      buttonsContEl.appendChild(permBtnEl);
       buttonsContEl.appendChild(unregisterBtnEl);
+
       rightEl.appendChild(buttonsContEl);
 
       const permissionsHeaderEl = document.createElement("div");
