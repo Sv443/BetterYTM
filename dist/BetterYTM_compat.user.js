@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@69905bd4/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e1f454c1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Mon, 07 Sep 2026 21:42:33 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Tue, 08 Sep 2026 11:01:59 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 69905bd4                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ e1f454c1                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ PlIyzvo72u7k                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 1kElCn4jBhmK                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6852,9 +6852,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "69905bd4";
+	var buildNumber$1 = "e1f454c1";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788817353437;
+	var buildTimestamp = 1788865319164;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -8779,6 +8779,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		init: "Init",
 		input: "Input",
 		integration: "Integration",
+		interface: "Interface",
 		layout: "Layout",
 		lyrics: "Lyrics",
 		misc: "Misc",
@@ -13491,7 +13492,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			compareVersions: esm_exports
 		};
 		for (const [key, value] of Object.entries(props)) setGlobalProp(key, value);
-		loggers.plugin.log("Initialized BYTM interface");
+		loggers.interface.log("Initialized BYTM interface");
 	}
 	/** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
 	function setGlobalProp(key, value) {
@@ -13504,9 +13505,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		try {
 			unsafeWindow.dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? void 0 }));
 			emitOnPlugins(type, void 0, ...detail);
-			if (getFeature("logEvents")) detail.length > 0 && detail?.[0] ? loggers.plugin.log(`Emitted interface event '${type}' with data:`, ...detail) : loggers.plugin.log(`Emitted interface event '${type}' (without data)`);
+			if (getFeature("logEvents")) detail.length > 0 && detail?.[0] ? loggers.interface.log(`Emitted interface event '${type}' with data:`, ...detail) : loggers.interface.log(`Emitted interface event '${type}' (without data)`);
 		} catch (err) {
-			loggers.plugin.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
+			loggers.interface.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
 		}
 	}
 	/**
@@ -19840,7 +19841,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "69905bd4",
+				buildNumber: "e1f454c1",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
