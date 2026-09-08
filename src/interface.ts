@@ -257,7 +257,7 @@ export function preInitInterface() {
   for(const [key, value] of Object.entries(props))
     setGlobalProp(key, value);
 
-  loggers.plugin.log("Initialized BYTM interface");
+  loggers.interface.log("Initialized BYTM interface");
 }
 
 /** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
@@ -291,12 +291,12 @@ export function emitInterface<
     emitOnPlugins(type, undefined, ...detail);
     if(getFeature("logEvents")) {
       detail.length > 0 && detail?.[0]
-        ? loggers.plugin.log(`Emitted interface event '${type}' with data:`, ...detail)
-        : loggers.plugin.log(`Emitted interface event '${type}' (without data)`);
+        ? loggers.interface.log(`Emitted interface event '${type}' with data:`, ...detail)
+        : loggers.interface.log(`Emitted interface event '${type}' (without data)`);
     }
   }
   catch(err) {
-    loggers.plugin.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
+    loggers.interface.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
   }
 }
 

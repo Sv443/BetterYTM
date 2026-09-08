@@ -13,12 +13,14 @@ export type LogCategory = LooseUnion<
   | "Command"
   | "ConfigMenu"
   | "Data"
+  | "Debug"
   | "Dialog"
   | "Feature"
   | "Hotkey"
   | "Init"
   | "Input"
   | "Integration"
+  | "Interface"
   | "Layout"
   | "Lyrics"
   | "Misc"
@@ -59,6 +61,7 @@ export const loggerCategoryMapping = {
   init:          "Init",
   input:         "Input",
   integration:   "Integration",
+  interface:     "Interface",
   layout:        "Layout",
   lyrics:        "Lyrics",
   misc:          "Misc",
