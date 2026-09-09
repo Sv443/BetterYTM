@@ -8,7 +8,7 @@
       "Sv443"
     ],
     "antifeatures": {
-      "tracking": "Kullanılan bazı servisler IP adresinizi ve dinlediğiniz şarkıları geçici olarak kaydedebilir. Bu özellikleri ayarlardan kapatabilirsiniz."
+      "tracking": "Kullanılan hizmetlerin bazıları, IP adresinizi ve dinlediğiniz şarkıları geçici olarak kaydeder. Bu özellikler, uygulamayı ilk kez başlattığınızda veya ayarlar menüsünden devre dışı bırakılabilir."
     }
   },
   "config_menu_option": "${scriptName} Yapılandırması",

@@ -7,7 +7,7 @@
       "Sv443"
     ],
     "antifeatures": {
-      "tracking": "Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren."
+      "tracking": "Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden."
     }
   },
   "config_menu_option": "${scriptName} Einstellungen",
