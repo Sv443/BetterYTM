@@ -361,14 +361,14 @@ select.bytm-ftconf-input {
     box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active,
-.bytm-kbd:active {
+.bytm-markdown-container kbd:not(.unclickable):active,
+.bytm-kbd:not(.unclickable):active {
   padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection,
-.bytm-kbd::selection {
+.bytm-markdown-container kbd:not(.unclickable)::selection,
+.bytm-kbd:not(.unclickable)::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -1117,6 +1117,17 @@ body.bytm-dom-ytm
 .bytm-hotkey-info[data-state="active"] {
   display: none;
 }
+
+.bytm-hotkey-input-modifier-container {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-hotkey-input-modifier-plus {
+  display: inline-block;
+  padding: 0px 5px;
+  height: auto;
+}
 :root {
   --bytm-menu-bg-highlight: #181818;
   --bytm-menu-bg-highlight-2: #252525;
@@ -1431,6 +1442,7 @@ body.bytm-dom-ytm
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;
+  gap: 14px;
 }
 
 .bytm-menu-link {
@@ -1443,10 +1455,6 @@ body.bytm-dom-ytm
   cursor: pointer;
 }
 
-.bytm-menu-link:not(:last-of-type) {
-  margin-right: 14px;
-}
-
 .bytm-menu-link .bytm-menu-img {
   width: 32px;
   height: 32px;
@@ -1456,7 +1464,8 @@ body.bytm-dom-ytm
   transition: transform 0.15s ease-out, padding 0.15s ease-out;
 }
 
-.bytm-menu-link:hover .bytm-menu-img {
+.bytm-menu-link:hover .bytm-menu-img,
+.bytm-menu-link:focus-within .bytm-menu-img {
   padding: 7px;
   transform: translateY(-14px);
 }
@@ -1476,7 +1485,8 @@ body.bytm-dom-ytm
   transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
 }
 
-.bytm-menu-link:hover .extended-link {
+.bytm-menu-link:hover .extended-link,
+.bytm-menu-link:focus-within .extended-link {
   visibility: visible;
   opacity: 1;
 }
@@ -1767,14 +1777,19 @@ select.bytm-ftconf-input {
     box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active,
-.bytm-kbd:active {
+.bytm-markdown-container kbd.unclickable,
+.bytm-kbd.unclickable {
+  cursor: initial;
+}
+
+.bytm-markdown-container kbd:not(.unclickable):active,
+.bytm-kbd:not(.unclickable):active {
   padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection,
-.bytm-kbd::selection {
+.bytm-markdown-container kbd:not(.unclickable)::selection,
+.bytm-kbd:not(.unclickable)::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -2149,6 +2164,10 @@ button.bytm-btn {
   background: revert;
   cursor: pointer;
   line-height: 1.4em;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 
 .bytm-link,

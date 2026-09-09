@@ -269,6 +269,10 @@ button.bytm-btn {
   background: revert;
   cursor: pointer;
   line-height: 1.4em;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 
 .bytm-link,

@@ -1,4 +1,4 @@
-import type { LooseUnion, NanoEmitter, Prettify, Stringifiable } from "@sv443-network/coreutils";
+import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/coreutils";
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener } from "@/observers.ts";
@@ -302,7 +302,8 @@ export type BytmObject =
 
 /** [Trusted Type Policy](https://developer.mozilla.org/en-US/docs/Web/API/TrustedTypePolicy) */
 export type TTPolicy = {
-  createHTML: (dirty: Stringifiable) => string;
+  /** Function that sanitizes the given HTML string. */
+  createHTML: (dirtyHtml: string) => string;
 };
 
 // this block communicates to TypeScript that the `BYTM` property exists on the `window` object:
@@ -435,44 +436,44 @@ export type Translatable = {
  * Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
  */
 export enum PluginIntent {
-  /** Plugin can read the feature configuration */
+  /** Plugin can read the feature configuration. */
   ReadFeatureConfig = 1,
-  /** Plugin can write to the feature configuration */
+  /** Plugin can write to the feature configuration. */
   WriteFeatureConfig = 2,
-  /** Plugin has access to hidden config values */
+  /** Plugin has access to hidden config values. */
   SeeHiddenConfigValues = 4,
-  /** Plugin can write to the lyrics cache */
+  /** Plugin can write to the lyrics cache. */
   WriteLyricsCache = 8,
-  /** Plugin can add new translations and overwrite existing ones */
+  /** Plugin can add new translations and overwrite existing ones. */
   WriteTranslations = 16,
-  /** Plugin can create modal dialogs */
+  /** Plugin can create modal dialogs. */
   CreateModalDialogs = 32,
-  /** Plugin can read auto-like data */
+  /** Plugin can read auto-like data. */
   ReadAutoLikeData = 64,
-  /** Plugin can write to auto-like data */
+  /** Plugin can write to auto-like data. */
   WriteAutoLikeData = 128,
-  /** Plugin has access to deeply internal functions and instances */
+  /** Plugin has access to deeply internal functions and instances. */
   InternalAccess = 256,
-  /** Grants all other intents */
+  /** Grants all other intents. */
   FullAccess = 512,
 }
 
-/** Result of a plugin registration */
+/** Result of a plugin registration. */
 export type PluginRegisterResult = {
-  /** Public info about the registered plugin */
+  /** Public info about the registered plugin. */
   info: PluginInfo;
-  /** NanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
+  /** NanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events. */
   events: NanoEmitter<PluginEventMap>;
-  /** Authentication token for the plugin to use in certain restricted function calls */
+  /** Authentication token for the plugin to use in certain restricted function calls. */
   token: string;
-  /** Permissions granted to the plugin - this is a bitwise OR of {@linkcode PluginIntent} values under the `int` prop, or an array of them under the `array` prop */
+  /** Permissions granted to the plugin - this is a bitwise OR of {@linkcode PluginIntent} values under the `int` prop, or an array of them under the `array` prop. */
   permissions: {
     int: number;
     array: PluginIntent[];
   };
 }
 
-/** Minimal object that describes a plugin - this is all info the other installed plugins can see */
+/** Minimal object that describes a plugin - this is all info the other installed plugins can see. */
 export type PluginInfo = {
   /** Name of the plugin */
   name: string;
@@ -482,11 +483,11 @@ export type PluginInfo = {
    * I recommend to set this value to a URL pointing to your homepage, or the author's username.
    */
   namespace: string;
-  /** Version of the plugin as a semver-compliant string */
+  /** Version of the plugin as a semver-compliant string. */
   version: string;
 };
 
-/** Minimum part of the PluginDef object needed to make up the resolvable plugin identifier */
+/** Minimum part of the PluginDef object needed to make up the resolvable plugin identifier. */
 export type PluginDefResolvable = PluginDef | { plugin: Pick<PluginDef["plugin"], "name" | "namespace"> };
 
 /** An object that describes a BYTM plugin. */
@@ -494,21 +495,21 @@ export type PluginDef = {
   plugin: PluginInfo & {
     /**
      * Descriptions of at least en-US and optionally any other locale supported by BYTM.  
-     * When an untranslated locale is set, the description will default to the value of en-US
+     * When an untranslated locale is set, the description will default to the value of en-US.
      */
     description: Partial<Record<keyof typeof locales, string>> & {
       "en-US": string;
     };
-    /** URL to the plugin's icon - recommended size: 48x48 to 128x128 */
+    /** URL to the plugin's icon - recommended size: 48x48 to 128x128. */
     iconUrl?: string;
-    /** Optional license information for the plugin */
+    /** Optional license information for the plugin. */
     license?: {
-      /** License [SPDX identifier](https://spdx.org/licenses/) or short name */
+      /** License [SPDX identifier](https://spdx.org/licenses/) or short name. */
       name: string;
-      /** URL to the license text */
+      /** URL to the license text. */
       url: string;
     };
-    /** Homepage URLs for the plugin */
+    /** Homepage URLs for the plugin. */
     homepage: {
       /** URL to the plugin's source code (i.e. Git repo) - closed source plugins are not officially accepted at the moment. */
       source: string;
@@ -524,17 +525,30 @@ export type PluginDef = {
       openuserjs?: string;
     };
   };
-  /** Intents (permissions) BYTM has to grant the plugin for it to work - use bitwise OR to combine multiple intents */
+  /** Intents (permissions) BYTM has to grant the plugin for it to work - use bitwise OR to combine multiple intents. */
   intents?: number | PluginIntent[];
-  /** Info about the plugin contributors */
+  /** Info about the plugin contributors. */
   contributors?: Array<{
-    /** Name of this contributor */
+    /** Name of this contributor. */
     name: string;
-    /** (optional) Email address of this contributor */
-    email?: string;
-    /** (optional) URL to this plugin contributor's homepage / GitHub profile */
+    /** (optional) URL to this plugin contributor's homepage / profile. Can be GitHub or any other source control or social media page. */
     url?: string;
-  }>;
+  } & (
+    | {
+      /** (optional) Email address of this contributor. If you want this to be encoded by default (against scrapers), use the `emailEncoded` prop instead. */
+      email?: string;
+      emailEncoded?: never;
+    }
+    | {
+      email?: never;
+      /**
+       * (optional) Email address of this contributor, encoded using `deflate-raw`, to protect it against scrapers.  
+       * Use the "🗜️ Compress or decompress text" menu command to encode a single email address at a time.  
+       * If this prop is specified, the `email` prop can't be set as well.
+       */
+      emailEncoded?: never;
+    }
+  )>;
 };
 
 /** All events that are dispatched to plugins individually, including everything in {@linkcode SiteEventsMap} and {@linkcode InterfaceEventsMap} - these don't have a prefix since they can't conflict with other events */

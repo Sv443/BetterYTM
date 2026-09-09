@@ -56,7 +56,7 @@ import packageJson from "@root/package.json" with { type: "json" };
 import { LogLevel, PluginIntent, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type PluginDef, type ResourceKey } from "@/types.ts";
 import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.js";
 
-//#region cns. watermark
+//#region >> console watermark
 
 {
   // console watermark with sexy gradient
@@ -95,7 +95,7 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
   );
 }
 
-//#region init timings
+//#region >> init timings
 
 const initTimings: PerformanceReport = {
   _comments: [
@@ -141,7 +141,7 @@ function measureInitDuration(name: LooseUnion<keyof PerformanceReport & FeatureK
   };
 }
 
-//#region preInit
+//#region >> pre-init
 
 /** Stuff that needs to be called ASAP */
 function preInit() {
@@ -186,7 +186,7 @@ function preInit() {
   }
 }
 
-//#region init
+//#region >> init
 
 async function init() {
   try {
@@ -261,7 +261,7 @@ ${assetSource === "local"
   }
 }
 
-//#region onDomLoad
+//#region >> onDomLoad
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
@@ -521,7 +521,7 @@ async function onDomLoad() {
   }
 }
 
-//#region preload icons
+//#region preload resources
 
 /** Preloads all resources that should be preloaded */
 async function preloadResources() {
@@ -537,7 +537,7 @@ async function preloadResources() {
   await preloadImages(urls);
 }
 
-//#region css
+//#region >> css
 
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 async function injectCssBundle() {
@@ -594,7 +594,7 @@ async function initFonts() {
   addStyle(css, "fonts");
 }
 
-//#region dev menu cmds
+//#region >> dev menu cmds
 
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevCommands() {
@@ -605,8 +605,10 @@ function registerDevCommands() {
   const isLtr = localesJson?.[getLocale()]?.textDir !== "rtl";
   const getCmdName = (emoji: string, key: TrKey & `menu_command.${string}`) => isLtr ? `${emoji} ${t(key)}` : `${t(key)} ${emoji}`;
 
+  // #region open_cfg_menu
   GM.registerMenuCommand(getCmdName("⚙️", "menu_command.open_cfg_menu"), () => openCfgMenu());
 
+  // #region reset_config
   GM.registerMenuCommand(getCmdName("♻️", "menu_command.reset_config"), async () => {
     const message = "Reset the configuration to its default values?\nThis will automatically reload the page.";
     try {
@@ -628,6 +630,7 @@ function registerDevCommands() {
     }
   });
 
+  // #region gm_storage_list_decompressed
   isAny && GM.registerMenuCommand(getCmdName("🔍", "menu_command.gm_storage_list_decompressed"), async () => {
     const keys = await GM.listValues();
     loggers.command.log(`GM values (${keys.length}):`);
@@ -670,6 +673,7 @@ function registerDevCommands() {
     }
   });
 
+  // #region gm_storage_delete_all
   isAny && GM.registerMenuCommand(getCmdName("🗑️", "menu_command.gm_storage_delete_all"), async () => {
     const keys = await GM.listValues();
     if(await showPrompt({ type: "confirm", message: `Clear all ${keys.length} GM values?\nSee console for details.`, confirmBtnText: "Clear" })) {
@@ -683,17 +687,20 @@ function registerDevCommands() {
     }
   });
 
+  // #region reset_install_timestamp
   isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
     await GM.deleteValue("bytm-installed");
     loggers.command.log("Reset install time.");
   });
 
+  // #region reset_version_session_counter
   isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
     const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
     await GM.deleteValue("bytm-version-session-counter");
     loggers.command.log("Reset version session counter. Was previously:", verSesCount);
   });
 
+  // #region list_selectorobserver_listeners
   isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
@@ -711,6 +718,7 @@ function registerDevCommands() {
     loggers.command.log(`Showing currently active listeners for ${Object.keys(globservers).length} SelectorObserver instances with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   });
 
+  // #region compress_or_decompress_text
   isAny && GM.registerMenuCommand(getCmdName("🗜️", "menu_command.compress_or_decompress_text"), async () => {
     const showFinalPrompt = async (type: "compress" | "decompress", initial: string, result: string) => {
       await showPrompt({
@@ -794,10 +802,13 @@ function registerDevCommands() {
     });
   });
 
+  // #region export_config
   isAny && GM.registerMenuCommand(getCmdName("📤", "menu_command.export_config"), () => downloadData(false));
 
+  // #region export_full
   isAny && GM.registerMenuCommand(getCmdName("💾", "menu_command.export_full"), () => downloadData(false, true));
 
+  // #region import_full
   isAny && GM.registerMenuCommand(getCmdName("📥", "menu_command.import_full"), async () => {
     const input = await showPrompt({
       type: "prompt",
@@ -812,14 +823,17 @@ function registerDevCommands() {
     }
   });
 
+  // #region throw_example_error
   isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
 
+  // #region get_performance_report
   isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
     initTimings.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
 
     downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
   });
 
+  // #region toggle_dev_treatments
   isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
     await GM.setValue("bytm-dev-treatments", val);
@@ -827,6 +841,7 @@ function registerDevCommands() {
       await reloadTab();
   });
 
+  // #region get_dev_plugin_token
   isDev && GM.registerMenuCommand(getCmdName("🔑", "menu_command.get_dev_plugin_token"), () =>
     showPrompt({
       type: "alert",
@@ -845,6 +860,7 @@ function registerDevCommands() {
     }),
   );
 
+  // #region tmp_log_used_tr_keys
   // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
   //   const data = await GM.getValue("__ds-bytm-dev-used-tr-keys-dat", "{\"keys\":[]}");
   //   const obj = typeof data === "string" ? JSON.parse(data) as { keys: string[] } : data;
@@ -864,6 +880,7 @@ function registerDevCommands() {
   //     loggers.command.log(`${">".repeat(50)}\n>> Unused translation keys (${unusedKeys.length} of ${allTrKeys.length}):\n${unusedKeys.map(k => `- ${k}`).join("\n")}`);
   // });
 
+  // #region collect_sessions
   isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
     const sessions: [txID: string, pktData: BroadcastPacketDataMap["discoverSessionsReply"]][] = [
       [broadcastTxID, {
@@ -925,6 +942,7 @@ function registerDevCommands() {
     });
   });
 
+  // #region reload_all_tabs
   isAny && GM.registerMenuCommand(getCmdName("🔄", "menu_command.reload_all_tabs"), async () => {
     await showPrompt({
       type: "confirm",
@@ -933,10 +951,12 @@ function registerDevCommands() {
     }) && await reloadAllTabs();
   });
 
+  // #region unregister_all_plugins
   GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
     unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
   });
 
+  // #region download_log_file
   GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
     downloadFile(`bytm-log-${new Date().toISOString()}.log`, serializeLogs(), "text/plain");
   });
@@ -944,6 +964,7 @@ function registerDevCommands() {
   loggers.command.log("Registered dev menu commands");
 }
 
+// #region >> dev treatments
 async function runDevTreatments() {
   if(mode !== "development" || !await GM.getValue("bytm-dev-treatments", false))
     return;

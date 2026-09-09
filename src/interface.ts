@@ -440,10 +440,11 @@ export async function unregisterPlugins(plugins: PluginDefResolvable | PluginDef
 
     return a;
   }, new Map<string, PluginItem>());
+  const pluginCount = regPluginsNoDev.size;
 
-  if(regPluginsNoDev.size > 0 && !await showPrompt({
+  if(pluginCount > 0 && !await showPrompt({
     type: "confirm",
-    message: tp("plugins_unregister_prompt", regPluginsNoDev.size, regPluginsNoDev.size),
+    message: tp("plugins_unregister_prompt", pluginCount, { pluginCount }),
     confirmBtnText: t("prompt_unregister"),
     confirmBtnTooltip: t("click_to_unregister_tooltip"),
     denyBtnText: t("prompt_cancel"),
@@ -556,15 +557,20 @@ async function registerDevPlugin() {
           openuserjs: pkgJson.hosts.openuserjs,
           other: pkgJson.hosts.github,
         },
-        iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png",
+        iconUrl: `https://raw.githubusercontent.com/${repo}/main/assets/images/logo/logo_dev_128.png`,
       },
       intents: PluginIntent.FullAccess,
+      contributors: [
+        {
+          name: pkgJson.author.name,
+          url: pkgJson.author.url,
+        },
+      ],
     } as const satisfies PluginDef;
     devPluginKey = getPluginKey(devPluginDef);
-    const { token, events } = await registerPluginInternal(devPluginDef, true);
+    const { token } = await registerPluginInternal(devPluginDef, true);
 
     devPluginToken = token;
-    setGlobalProp("devPluginEvents", events);
   }
   catch(err) {
     loggers.plugin.error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
@@ -589,8 +595,8 @@ export function setRegisteredPluginPerms(plugin: PluginDefResolvable, perms: num
 }
 
 /** Returns the key for a given plugin definition */
-export function getPluginKey(plugin: PluginDefResolvable) {
-  return `${plugin.plugin.namespace}/${plugin.plugin.name}`;
+export function getPluginKey({ plugin }: PluginDefResolvable) {
+  return `${plugin.namespace}/${plugin.name}`;
 }
 
 /** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */

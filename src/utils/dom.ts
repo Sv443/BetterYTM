@@ -343,7 +343,7 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
  * Sanitizes the provided HTML string with DOMPurify, including enhanced support for Trusted Types and a[target="_blank"] links.  
  * By default, automatically returns a TrustedHTML object if the browser supports it.
  */
-export function sanitizeHtml(html: Stringifiable, returnTrustedType = trustedTypesSupported) {
+export function sanitizeHtml(html: string, returnTrustedType = trustedTypesSupported) {
   return DOMPurify.sanitize(String(html), { RETURN_TRUSTED_TYPE: returnTrustedType });
 }
 
@@ -351,13 +351,13 @@ export function sanitizeHtml(html: Stringifiable, returnTrustedType = trustedTyp
  * Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML.  
  * If no HTML string is given, the element's innerHTML will be set to an empty string.
  */
-export function setInnerHtml(element: HTMLElement, html?: Stringifiable | null) {
+export function setInnerHtml(element: HTMLElement, html?: string | null) {
   if(!html)
     html = "";
 
   if(!ttPolicy && trustedTypesSupported) {
     ttPolicy = window.trustedTypes!.createPolicy("bytm-sanitize-html", {
-      createHTML: (html: Stringifiable) => sanitizeHtml(html, true) as unknown as string,
+      createHTML: (html: string) => sanitizeHtml(html, true) as unknown as string,
     });
   }
 
