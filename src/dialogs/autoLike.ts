@@ -125,9 +125,17 @@ async function renderBody() {
   descriptionEl.tabIndex = 0;
   contElem.appendChild(descriptionEl);
 
+  const hr1El = document.createElement("hr");
+  hr1El.classList.add("bytm-hr");
+  contElem.appendChild(hr1El);
+
   const searchCont = document.createElement("div");
   searchCont.classList.add("bytm-auto-like-channels-search-cont");
   contElem.appendChild(searchCont);
+
+  const hr2El = document.createElement("hr");
+  hr2El.classList.add("bytm-hr", "less-margin");
+  contElem.appendChild(hr2El);
 
   const searchContLeftSideEl = document.createElement("div");
   searchContLeftSideEl.classList.add("left-side");

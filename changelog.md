@@ -16,7 +16,9 @@
     - `autoScrollToActiveSongMode: "never"` - replaced with `autoScrollToActiveSongEnabled`.
   - The welcome menu now allows all privacy-sensitive features to be toggled off before the script runs for the first time.
   - Made the version check feature more resilient to stop erroneous update notifications for weird versions like `5` from showing up (by [@canarado](https://github.com/canarado)).
-  - The auto-like feature now works with collab videos, although it will only work with the first channel listed in the menu opened by clicking the channel names.
+  - Improved auto-like:
+    - The feature now works with collab videos, although it will only work with the first channel listed in the menu opened by clicking the channel names.
+    - Improved the styling of the auto-like channels dialog.
 - **Fixes:**
   - Made error toasts show up again after being broken when toast queueing was overhauled.
 - **Plugin Changes:**
