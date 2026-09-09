@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@e1f454c1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@893e5691/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -53,41 +53,41 @@
 // @description:zh-TW YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
-// @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos die du anschaust protokollieren. Du kannst diese Fuktionen in den Einstellungen deaktivieren.
-// @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. You can disable these features in the settings.
-// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:es    tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:es-MX tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuchas. Puedes desactivar estas funciones en la configuración.
-// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr    tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-CA tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-BE tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-CH tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:fr-LU tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les chansons que vous écoutez. Vous pouvez désactiver ces fonctionnalités dans les paramètres.
-// @antifeature:hi-IN tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:hi    tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:hi-NP tracking कुछ सेवाएं अस्थायी रूप से आपके आईपी पते और आप जो गाने सुनते हैं, उन्हें लॉग करेंगी। आप इन सुविधाओं को सेटिंग्स में अक्षम कर सकते हैं।
-// @antifeature:ja-JP tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
-// @antifeature:ja    tracking 一部のサービスは、あなたのIPアドレスと聞いた曲を一時的に記録します。これらの機能は設定で無効にできます。
-// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:pt    tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:pt-PT tracking Alguns dos serviços utilizados registrarão temporariamente o seu endereço IP e as músicas que você ouve. Você pode desativar esses recursos nas configurações.
-// @antifeature:tr-TR tracking Kullanılan bazı servisler IP adresinizi ve dinlediğiniz şarkıları geçici olarak kaydedebilir. Bu özellikleri ayarlardan kapatabilirsiniz.
-// @antifeature:tr    tracking Kullanılan bazı servisler IP adresinizi ve dinlediğiniz şarkıları geçici olarak kaydedebilir. Bu özellikleri ayarlardan kapatabilirsiniz.
-// @antifeature:zh-CN tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh    tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh-TW tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh-HK tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
-// @antifeature:zh-SG tracking 某些使用的服务将暂时记录您的 IP 地址和您收听的歌曲。您可以在设置中禁用这些功能。
+// @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
+// @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
+// @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
+// @antifeature:es-ES tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuches. Estas funciones se pueden desactivar al iniciar la aplicación por primera vez o en el menú de configuración.
+// @antifeature:es    tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuches. Estas funciones se pueden desactivar al iniciar la aplicación por primera vez o en el menú de configuración.
+// @antifeature:es-MX tracking Algunos de los servicios utilizados registrarán temporalmente tu dirección IP y las canciones que escuches. Estas funciones se pueden desactivar al iniciar la aplicación por primera vez o en el menú de configuración.
+// @antifeature:fr-FR tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les morceaux que vous écoutez. Ces fonctionnalités peuvent être désactivées lors du premier lancement ou dans le menu de configuration.
+// @antifeature:fr    tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les morceaux que vous écoutez. Ces fonctionnalités peuvent être désactivées lors du premier lancement ou dans le menu de configuration.
+// @antifeature:fr-CA tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les morceaux que vous écoutez. Ces fonctionnalités peuvent être désactivées lors du premier lancement ou dans le menu de configuration.
+// @antifeature:fr-BE tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les morceaux que vous écoutez. Ces fonctionnalités peuvent être désactivées lors du premier lancement ou dans le menu de configuration.
+// @antifeature:fr-CH tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les morceaux que vous écoutez. Ces fonctionnalités peuvent être désactivées lors du premier lancement ou dans le menu de configuration.
+// @antifeature:fr-LU tracking Certains des services utilisés enregistreront temporairement votre adresse IP et les morceaux que vous écoutez. Ces fonctionnalités peuvent être désactivées lors du premier lancement ou dans le menu de configuration.
+// @antifeature:hi-IN tracking कुछ उपयोग की गई सेवाएँ अस्थायी रूप से आपका आईपी पता और आपके द्वारा सुने जाने वाले गीतों को लॉग करेंगी। इन सुविधाओं को पहली बार लॉन्च करते समय या कॉन्फ़िग मेनू में अक्षम किया जा सकता है।
+// @antifeature:hi    tracking कुछ उपयोग की गई सेवाएँ अस्थायी रूप से आपका आईपी पता और आपके द्वारा सुने जाने वाले गीतों को लॉग करेंगी। इन सुविधाओं को पहली बार लॉन्च करते समय या कॉन्फ़िग मेनू में अक्षम किया जा सकता है।
+// @antifeature:hi-NP tracking कुछ उपयोग की गई सेवाएँ अस्थायी रूप से आपका आईपी पता और आपके द्वारा सुने जाने वाले गीतों को लॉग करेंगी। इन सुविधाओं को पहली बार लॉन्च करते समय या कॉन्फ़िग मेनू में अक्षम किया जा सकता है।
+// @antifeature:ja-JP tracking 一部のサービスでは、利用者のIPアドレスや再生した楽曲が一時的に記録される場合があります。これらの機能は、初回起動時または設定メニューから無効にすることができます。
+// @antifeature:ja    tracking 一部のサービスでは、利用者のIPアドレスや再生した楽曲が一時的に記録される場合があります。これらの機能は、初回起動時または設定メニューから無効にすることができます。
+// @antifeature:pt-BR tracking Alguns dos serviços utilizados registrarão temporariamente seu endereço IP e as músicas que você ouvir. Esses recursos podem ser desativados na primeira vez que o aplicativo for iniciado ou no menu de configurações.
+// @antifeature:pt    tracking Alguns dos serviços utilizados registrarão temporariamente seu endereço IP e as músicas que você ouvir. Esses recursos podem ser desativados na primeira vez que o aplicativo for iniciado ou no menu de configurações.
+// @antifeature:pt-PT tracking Alguns dos serviços utilizados registrarão temporariamente seu endereço IP e as músicas que você ouvir. Esses recursos podem ser desativados na primeira vez que o aplicativo for iniciado ou no menu de configurações.
+// @antifeature:tr-TR tracking Kullanılan hizmetlerin bazıları, IP adresinizi ve dinlediğiniz şarkıları geçici olarak kaydeder. Bu özellikler, uygulamayı ilk kez başlattığınızda veya ayarlar menüsünden devre dışı bırakılabilir.
+// @antifeature:tr    tracking Kullanılan hizmetlerin bazıları, IP adresinizi ve dinlediğiniz şarkıları geçici olarak kaydeder. Bu özellikler, uygulamayı ilk kez başlattığınızda veya ayarlar menüsünden devre dışı bırakılabilir.
+// @antifeature:zh-CN tracking 部分已使用的服务会暂时记录您的 IP 地址以及您收听的歌曲。这些功能可在首次启动时或通过设置菜单进行禁用。
+// @antifeature:zh    tracking 部分已使用的服务会暂时记录您的 IP 地址以及您收听的歌曲。这些功能可在首次启动时或通过设置菜单进行禁用。
+// @antifeature:zh-TW tracking 部分已使用的服务会暂时记录您的 IP 地址以及您收听的歌曲。这些功能可在首次启动时或通过设置菜单进行禁用。
+// @antifeature:zh-HK tracking 部分已使用的服务会暂时记录您的 IP 地址以及您收听的歌曲。这些功能可在首次启动时或通过设置菜单进行禁用。
+// @antifeature:zh-SG tracking 部分已使用的服务会暂时记录您的 IP 地址以及您收听的歌曲。这些功能可在首次启动时或通过设置菜单进行禁用。
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Tue, 08 Sep 2026 11:01:59 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 09 Sep 2026 15:24:58 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ e1f454c1                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 893e5691                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 1kElCn4jBhmK                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ hYqWTCZt4D48                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6852,9 +6852,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "e1f454c1";
+	var buildNumber$1 = "893e5691";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788865319164;
+	var buildTimestamp = 1788967498245;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -9859,9 +9859,15 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		descriptionEl.textContent = descriptionEl.ariaLabel = t("auto_like_channels_dialog_desc");
 		descriptionEl.tabIndex = 0;
 		contElem.appendChild(descriptionEl);
+		const hr1El = document.createElement("hr");
+		hr1El.classList.add("bytm-hr");
+		contElem.appendChild(hr1El);
 		const searchCont = document.createElement("div");
 		searchCont.classList.add("bytm-auto-like-channels-search-cont");
 		contElem.appendChild(searchCont);
+		const hr2El = document.createElement("hr");
+		hr2El.classList.add("bytm-hr", "less-margin");
+		contElem.appendChild(hr2El);
 		const searchContLeftSideEl = document.createElement("div");
 		searchContLeftSideEl.classList.add("left-side");
 		searchCont.appendChild(searchContLeftSideEl);
@@ -11006,7 +11012,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"knip": "knip",
 			"typedoc": "typedoc",
 			"storybook": "storybook dev -p 6006",
-			"build-storybook": "storybook build"
+			"build-storybook": "storybook build",
+			"clean-install": "pnpm clean --lockfile && pnpm i"
 		},
 		engines: {
 			"node": ">=22",
@@ -11043,8 +11050,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"@storybook/addon-interactions": "8.6.14",
 			"@storybook/addon-links": "10.2.19",
 			"@storybook/blocks": "8.6.14",
-			"@storybook/html-vite": "10.2.19",
 			"@storybook/html": "10.2.19",
+			"@storybook/html-vite": "10.2.19",
 			"@storybook/test": "8.6.15",
 			"@types/cors": "2.8.19",
 			"@types/express": "5.0.6",
@@ -11058,22 +11065,22 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"cors": "2.8.6",
 			"cross-env": "7.0.3",
 			"dotenv": "17.3.1",
+			"eslint": "10.9.1",
 			"eslint-plugin-storybook": "10.2.19",
-			"eslint": "10.0.3",
 			"express": "5.2.1",
 			"globals": "17.4.0",
 			"kleur": "4.1.5",
 			"knip": "5.86.0",
 			"nanoevents": "9.1.0",
 			"pnpm": "10.32.1",
-			"storybook-dark-mode": "5.0.0",
 			"storybook": "10.2.19",
+			"storybook-dark-mode": "5.0.0",
 			"terser": "5.47.1",
 			"tsx": "4.21.0",
-			"typedoc-plugin-markdown": "4.10.0",
 			"typedoc": "0.28.17",
-			"typescript-eslint": "8.57.0",
+			"typedoc-plugin-markdown": "4.10.0",
 			"typescript": "5.9.3",
+			"typescript-eslint": "8.57.0",
 			"vite": "8.0.11"
 		},
 		browserslist: [
@@ -14450,9 +14457,15 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const leftEl = document.createElement("div");
 			leftEl.classList.add("bytm-plugin-list-row-left");
 			rowEl.appendChild(leftEl);
+			const leftTopEl = document.createElement("div");
+			leftTopEl.classList.add("bytm-plugin-list-row-left-top");
+			leftEl.appendChild(leftTopEl);
+			const leftBottomEl = document.createElement("div");
+			leftBottomEl.classList.add("bytm-plugin-list-row-left-bottom");
+			leftEl.appendChild(leftBottomEl);
 			const headerWrapperEl = document.createElement("div");
 			headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
-			leftEl.appendChild(headerWrapperEl);
+			leftTopEl.appendChild(headerWrapperEl);
 			if (plugin.iconUrl) {
 				const iconEl = document.createElement("img");
 				iconEl.classList.add("bytm-plugin-list-row-icon");
@@ -14481,10 +14494,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			descEl.classList.add("bytm-plugin-list-row-desc");
 			descEl.tabIndex = 0;
 			descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
-			leftEl.appendChild(descEl);
+			leftTopEl.appendChild(descEl);
 			const linksList = document.createElement("div");
 			linksList.classList.add("bytm-plugin-list-row-links-list");
-			leftEl.appendChild(linksList);
+			leftBottomEl.appendChild(linksList);
 			let linkElCreated = false;
 			for (const key in plugin.homepage) {
 				const url = plugin.homepage[key];
@@ -14537,14 +14550,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					},
 					title: t("plugin_edit_permissions")
 				});
+				buttonsContEl.appendChild(permBtnEl);
 				const unregisterBtnEl = await createCircularBtn({
 					resourceName: "icon-delete",
-					onClick() {
-						unregisterPlugins(def, true);
-					},
-					title: t("prompt_unregister")
+					onClick: () => unregisterPlugins(def, true),
+					title: t("plugin_unregister")
 				});
-				buttonsContEl.appendChild(permBtnEl);
 				buttonsContEl.appendChild(unregisterBtnEl);
 				rightEl.appendChild(buttonsContEl);
 				const permissionsHeaderEl = document.createElement("div");
@@ -19841,7 +19852,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "e1f454c1",
+				buildNumber: "893e5691",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
