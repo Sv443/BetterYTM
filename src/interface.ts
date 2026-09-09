@@ -417,8 +417,6 @@ export async function registerPluginInternal(def: PluginDef, isDev = false): Pro
 
     loggers.plugin.info(`Successfully registered plugin '${plKey}'`, LogLevel.Info);
 
-    emitBroadcast({ type: "pluginsUpdated" });
-
     setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 0);
 
     return {
