@@ -20,6 +20,7 @@ import resources from "@asset/resources.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import type { featInfo } from "@feat/index.ts";
 import type { Logger } from "@util/Logger.ts";
+import type { getSelector } from "@util/data.ts";
 
 void ["type imports only:", resources, locales];
 
@@ -596,6 +597,8 @@ export type InterfaceFunctions = {
   getSessionId: typeof getSessionId;
   /** Smarter version of `location.reload()` that remembers video time and volume and makes other features like initial tab volume stand down if used. */
   reloadTab: typeof reloadTab;
+  /** Returns a remotely-fetched CSS selector of the given category and name. See `assets/data.json` for all possible values. */
+  getSelector: typeof getSelector;
 
   // dom:
   /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string. */

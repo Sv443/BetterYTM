@@ -6,6 +6,7 @@ import * as constants from "@/constants.ts";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode, parseMarkdown, sanitizeHtml, reloadAllTabs } from "@util/index.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
+import { getSelector } from "@util/data.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
@@ -147,6 +148,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   resourceAsString,
   getSessionId,
   reloadTab,
+  getSelector,
 
   // dom:
   setInnerHtml,
