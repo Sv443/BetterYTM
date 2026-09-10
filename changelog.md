@@ -31,20 +31,20 @@
   - Removed the restrictions that plugins need to be registered between `bytm:preInitPlugin` and `bytm:ready`. Now they can be registered after the latter event without throwing an error.
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.
-    - `Logger`: The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system.
+    - `Logger`: The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system, which can be downloaded using a GM menu command.
     - `sanitizeUnicode()`: Function that replaces all sorts of wacky Unicode characters with their ASCII counterparts if possible. This function is also used by `sanitizeArtists()` and `sanitizeSong()`.
-- **Internal Changes:**
-  - Added `m.youtube.com` and `youtube-nocookie.com` to the list of supported domains.
-  - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
-  - Refactored logging system to use new `Logger` class instances.
-  - Added "privacy-sensitive" feature adornment icon (`icon-shield_info` resource) to mark features that are tagged with the `privacy` tag.
-  - Made the "reload tab" feature adornment icon also show up when advanced mode is turned off.
   - Added new properties to the object returned by `BYTM.getInternals()`:
     - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
     - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.
     - `getSerializerStoresFull()` - Returns all `DataStore` instances, including those that are only used for caching.
   - Added new events to the plugin interface:
     - `bytm:dataStoreSerializerLoaded` - Emitted after all memory-cached DataStore instances' data was lazy-loaded.
+- **Internal Changes:**
+  - Added `m.youtube.com` and `youtube-nocookie.com` to the list of supported domains.
+  - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
+  - Refactored logging system to use new `Logger` class instances.
+  - Added "privacy-sensitive" feature adornment icon (`icon-shield_info` resource) to mark features that are tagged with the `privacy` tag.
+  - Made the "reload tab" feature adornment icon also show up when advanced mode is turned off.
   - All DataStore instances that have in-memory cached data will now be lazy-loaded after feature initialization is done. Note: lazy-loading starts after `bytm:allReady`, so it's more aimed at lowering initial data access times.
   - Features can now have tags associated with them, which is another way of filtering them, like when using the new internal functions `configSetFeatsWithTags()` and `getFeaturesWithTags()`.
   - Added an advanced-mode feature that allows SelectorObserver checks and found elements to be logged to the console for performance debugging.
