@@ -180,7 +180,7 @@ async function renderBody() {
   searchContLeftSideEl.appendChild(searchbarEl);
 
   const searchClearEl = document.createElement("button");
-  searchClearEl.classList.add("bytm-auto-like-channels-search-clear", "bytm-btn");
+  searchClearEl.classList.add("bytm-btn", "no-min-width");
   searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
   searchClearEl.tabIndex = 0;
   searchClearEl.innerText = "×";

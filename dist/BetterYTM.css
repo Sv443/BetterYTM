@@ -2170,6 +2170,10 @@ button.bytm-btn {
   -webkit-user-select: none;
 }
 
+button.bytm-btn:not(.no-min-width) {
+  min-width: 50px;
+}
+
 .bytm-link,
 .bytm-markdown-container a {
   color: #369bff !important;

@@ -325,8 +325,7 @@ DOMPurify.addHook("beforeSanitizeAttributes", (node) => {
   if(node.tagName === "A") {
     if(!node.hasAttribute("target"))
       node.setAttribute("target", "_self");
-    if(node.hasAttribute("target"))
-      node.setAttribute(tempTargetAttrName, node.getAttribute("target")!);
+    node.setAttribute(tempTargetAttrName, node.getAttribute("target")!);
   }
 });
 
