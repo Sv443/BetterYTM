@@ -1,4 +1,4 @@
-import { clamp, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import { autoPlural, clamp, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/interface.ts";
 import { getDomain } from "@util/misc.ts";
@@ -391,8 +391,8 @@ export function initObservers(cfg: FeatureConfig) {
           loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
         });
         obs.on("found", (data) => {
-          const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)).join(", ") : data.elements;
-          loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, elements, LogLevel.Info);
+          const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
+          loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural("element", elements)}:`, elements.join(", "), LogLevel.Info);
         });
       }
     }

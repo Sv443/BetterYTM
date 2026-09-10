@@ -224,7 +224,7 @@ export class Logger {
   /** Serializes an element in a way where it can actually be traced back on the page. */
   static serializeElement(val: Element) {
     const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement!.childNodes].findIndex((el) => el === val);
-    return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
+    return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}"${val.childNodes.length > 0 ? ` children="${val.childNodes.length}"` : ""}>]`;
   }
 
   //#region instance methods
