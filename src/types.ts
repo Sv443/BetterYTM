@@ -267,20 +267,10 @@ export type BytmObject =
   // classes
   & {
     // utility
-    /** [NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#nanoemitter) class reference to create your own event emitters */
-    NanoEmitter: typeof NanoEmitter;
     /** Object of predefined Logger instances for different categories. In general, it's better to create your own Logger instances for your plugin or feature, but these can also be used when appropriate. */
     loggers: typeof loggers;
     /** The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system. */
     Logger: typeof Logger;
-
-    // dialogs legacy (TODO: remove in v4)
-    /** @deprecated Please use the authenticated function `getBytmDialog()` instead. This property will be removed in BYTM v4.0.0 */
-    BytmDialog: typeof BytmDialog,
-    /** @deprecated Please use the authenticated function `getExImDialog()` instead. This property will be removed in BYTM v4.0.0 */
-    ExImDialog: typeof ExImDialog,
-    /** @deprecated Please use the authenticated function `getMarkdownDialog()` instead. This property will be removed in BYTM v4.0.0 */
-    MarkdownDialog: typeof MarkdownDialog,
 
     // dialogs
     /** Returns a reference to the {@linkcode BytmDialog} class, which can be used to create new dialogs */

@@ -234,14 +234,8 @@ export function preInitInterface() {
     ...globalFuncs,
 
     // classes
-    NanoEmitter, // legacy (also available via CoreUtils and UserUtils now)
     loggers,
     Logger,
-
-    // dialogs legacy (TODO: remove in v4)
-    BytmDialog,
-    ExImDialog,
-    MarkdownDialog,
 
     // dialogs
     getBytmDialog,
