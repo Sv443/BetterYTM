@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@893e5691/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a35b84e3/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 09 Sep 2026 15:24:58 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Thu, 10 Sep 2026 20:42:14 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 893e5691                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ a35b84e3                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ hYqWTCZt4D48                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ bJVnNTDMP6Jz                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -6792,25 +6792,25 @@ Has: ${checksum}`);
 	* Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
 	*/
 	var PluginIntent = /* @__PURE__ */ function(PluginIntent) {
-		/** Plugin can read the feature configuration */
+		/** Plugin can read the feature configuration. */
 		PluginIntent[PluginIntent["ReadFeatureConfig"] = 1] = "ReadFeatureConfig";
-		/** Plugin can write to the feature configuration */
+		/** Plugin can write to the feature configuration. */
 		PluginIntent[PluginIntent["WriteFeatureConfig"] = 2] = "WriteFeatureConfig";
-		/** Plugin has access to hidden config values */
+		/** Plugin has access to hidden config values. */
 		PluginIntent[PluginIntent["SeeHiddenConfigValues"] = 4] = "SeeHiddenConfigValues";
-		/** Plugin can write to the lyrics cache */
+		/** Plugin can write to the lyrics cache. */
 		PluginIntent[PluginIntent["WriteLyricsCache"] = 8] = "WriteLyricsCache";
-		/** Plugin can add new translations and overwrite existing ones */
+		/** Plugin can add new translations and overwrite existing ones. */
 		PluginIntent[PluginIntent["WriteTranslations"] = 16] = "WriteTranslations";
-		/** Plugin can create modal dialogs */
+		/** Plugin can create modal dialogs. */
 		PluginIntent[PluginIntent["CreateModalDialogs"] = 32] = "CreateModalDialogs";
-		/** Plugin can read auto-like data */
+		/** Plugin can read auto-like data. */
 		PluginIntent[PluginIntent["ReadAutoLikeData"] = 64] = "ReadAutoLikeData";
-		/** Plugin can write to auto-like data */
+		/** Plugin can write to auto-like data. */
 		PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
-		/** Plugin has access to deeply internal functions and instances */
+		/** Plugin has access to deeply internal functions and instances. */
 		PluginIntent[PluginIntent["InternalAccess"] = 256] = "InternalAccess";
-		/** Grants all other intents */
+		/** Grants all other intents. */
 		PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
 		return PluginIntent;
 	}({});
@@ -6852,9 +6852,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "893e5691";
+	var buildNumber$1 = "a35b84e3";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1788967498245;
+	var buildTimestamp = 1789072934996;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -8894,7 +8894,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		/** Serializes an element in a way where it can actually be traced back on the page. */
 		static serializeElement(val) {
 			const sibIdx = !val.parentElement ? "(root)" : [...val.parentElement.childNodes].findIndex((el) => el === val);
-			return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}">]`;
+			return `[Element <${val.tagName.toLowerCase()}${val.id ? ` id="${val.id}"` : ""}${val.className ? ` class="${val.className}"` : ""} sibling-idx="${sibIdx}"${val.childNodes.length > 0 ? ` children="${val.childNodes.length}"` : ""}>]`;
 		}
 		/**
 		* Logs all passed values to the console, as long as the log level is sufficient.  
@@ -9115,8 +9115,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
 				});
 				obs.on("found", (data) => {
-					const elements = data.elements instanceof NodeList ? [...data.elements].map((e) => Logger.serializeElement(e)).join(", ") : data.elements;
-					loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found element(s):`, elements, LogLevel.Info);
+					const elements = data.elements instanceof NodeList ? [...data.elements].map((e) => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
+					loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural$1("element", elements)}:`, elements.join(", "), LogLevel.Info);
 				});
 			}
 			globserversReady = true;
@@ -9902,7 +9902,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		}, 300));
 		searchContLeftSideEl.appendChild(searchbarEl);
 		const searchClearEl = document.createElement("button");
-		searchClearEl.classList.add("bytm-auto-like-channels-search-clear", "bytm-btn");
+		searchClearEl.classList.add("bytm-btn", "no-min-width");
 		searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
 		searchClearEl.tabIndex = 0;
 		searchClearEl.innerText = "×";
@@ -10903,15 +10903,15 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Returns HTML for the hotkey modifier keys info element */
 	function getHotkeyModifiersHtml(hotkey) {
 		const modifiers = [];
-		hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier.ctrl")}</kbd>`);
-		hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_modifier.shift")}</kbd>`);
-		hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}</kbd>`);
+		hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd unclickable">${t("hotkey_modifier.ctrl")}</kbd>`);
+		hotkey.shift && modifiers.push(`<kbd class="bytm-kbd unclickable">${t("hotkey_modifier.shift")}</kbd>`);
+		hotkey.alt && modifiers.push(`<kbd class="bytm-kbd unclickable">${getOS() === "mac" ? t("hotkey_modifier.mac_option") : t("hotkey_modifier.alt")}</kbd>`);
 		return `\
-<div class="bytm-hotkey-input-modifier-container" style="display: flex; align-items: center;">
+<div class="bytm-hotkey-input-modifier-container">
   <span>
     ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
   </span>
-  <span style="padding: 0px 5px; height: 20px;">
+  <span class="bytm-hotkey-input-modifier-plus">
     ${modifiers.length > 0 ? "+" : ""}
   </span>
 </div>`;
@@ -13485,12 +13485,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			sessionStorageAvailable,
 			...scriptInfo,
 			...globalFuncs,
-			NanoEmitter,
 			loggers,
 			Logger,
-			BytmDialog,
-			ExImDialog,
-			MarkdownDialog,
 			getBytmDialog,
 			getExImDialog,
 			getMarkdownDialog,
@@ -13595,7 +13591,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				array: parseBitSetEnumArray(grantedPermsInt, PluginIntent)
 			};
 			loggers.plugin.info(`Successfully registered plugin '${plKey}'`, LogLevel.Info);
-			emitBroadcast({ type: "pluginsUpdated" });
 			setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)), 0);
 			return {
 				info: getPluginInfo(token, def),
@@ -13610,13 +13605,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	/** Unregisters 1 or multiple given plugins, if they are currently registered. If `promptReload` is set to true (which it is by default), the user is prompted for a page reload. */
 	async function unregisterPlugins(plugins, promptReload = true) {
-		const regPluginsNoDev = [...registeredPlugins.entries()].reduce((a, [key, item]) => {
+		const pluginCount = [...registeredPlugins.entries()].reduce((a, [key, item]) => {
 			if (!item.isDev) a.set(key, item);
 			return a;
-		}, /* @__PURE__ */ new Map());
-		if (regPluginsNoDev.size > 0 && !await showPrompt({
+		}, /* @__PURE__ */ new Map()).size;
+		if (pluginCount > 0 && !await showPrompt({
 			type: "confirm",
-			message: tp("plugins_unregister_prompt", regPluginsNoDev.size, regPluginsNoDev.size),
+			message: tp("plugins_unregister_prompt", pluginCount, { pluginCount }),
 			confirmBtnText: t("prompt_unregister"),
 			confirmBtnTooltip: t("click_to_unregister_tooltip"),
 			denyBtnText: t("prompt_cancel"),
@@ -13697,14 +13692,17 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						openuserjs: package_default.hosts.openuserjs,
 						other: package_default.hosts.github
 					},
-					iconUrl: "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_dev_128.png"
+					iconUrl: `https://raw.githubusercontent.com/${repo}/main/assets/images/logo/logo_dev_128.png`
 				},
-				intents: PluginIntent.FullAccess
+				intents: PluginIntent.FullAccess,
+				contributors: [{
+					name: package_default.author.name,
+					url: package_default.author.url
+				}]
 			};
 			devPluginKey = getPluginKey(devPluginDef);
-			const { token, events } = await registerPluginInternal(devPluginDef, true);
+			const { token } = await registerPluginInternal(devPluginDef, true);
 			devPluginToken = token;
-			setGlobalProp("devPluginEvents", events);
 		} catch (err) {
 			loggers.plugin.error("Failed to register dev plugin:", err instanceof PluginError ? err : new PluginError(String(err), { cause: err }));
 		}
@@ -13723,8 +13721,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}
 	}
 	/** Returns the key for a given plugin definition */
-	function getPluginKey(plugin) {
-		return `${plugin.plugin.namespace}/${plugin.plugin.name}`;
+	function getPluginKey({ plugin }) {
+		return `${plugin.namespace}/${plugin.name}`;
 	}
 	/** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
 	function pluginDefToInfo(plugin) {
@@ -15379,17 +15377,26 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			});
 			addedBtnsCount > 0 && loggers.layout.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural$2("item", addedBtnsCount)} in list`, listElem);
 		};
-		const doSongListsChecks = (songLists) => {
+		const debouncedIdleSongListCheck = debounce$1((songLists) => {
+			doSongListsChecks(songLists, true);
+		}, 750, "idle");
+		const doSongListsChecks = (songLists, isDebounced = false) => {
+			loggers.debug.log(">>> checking lists:", songLists);
 			for (const list of songLists) {
 				if (getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists") tryAddGenericListQueueBtns(list);
 				if (getFeature("swapLikeDislikeButtons")) checkSwapLikeDislikeBtns(list);
 			}
+			!isDebounced && debouncedIdleSongListCheck(songLists);
 		};
 		addSelectorListener("body", getSelector("songLists", "all"), {
 			all: true,
 			debounce: Math.floor(1e3 / 6),
 			listener: doSongListsChecks
 		});
+		const onScrollPaths = ["/playlist", "/channel"];
+		window.addEventListener("scroll", () => {
+			if (onScrollPaths.some((path) => location.pathname.startsWith(path))) debouncedIdleSongListCheck(document.querySelectorAll(getSelector("songLists", "all")));
+		}, { capture: true });
 		siteEvents.on("pathChanged", () => {
 			const songLists = document.querySelectorAll(getSelector("songLists", "all"));
 			if (songLists.length > 0) doSongListsChecks(songLists);
@@ -19279,7 +19286,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	purify.addHook("beforeSanitizeAttributes", (node) => {
 		if (node.tagName === "A") {
 			if (!node.hasAttribute("target")) node.setAttribute("target", "_self");
-			if (node.hasAttribute("target")) node.setAttribute(tempTargetAttrName, node.getAttribute("target"));
+			node.setAttribute(tempTargetAttrName, node.getAttribute("target"));
 		}
 	});
 	purify.addHook("afterSanitizeAttributes", (node) => {
@@ -19852,7 +19859,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "893e5691",
+				buildNumber: "a35b84e3",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
