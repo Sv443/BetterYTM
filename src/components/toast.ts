@@ -64,8 +64,6 @@ let showingToast = false;
 /** Timeout ID for the currently shown toast */
 let timeout: ReturnType<typeof setTimeout> | undefined;
 
-// TODO:FIXME: no workis
-
 //#region icon toast
 
 /**

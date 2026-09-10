@@ -422,8 +422,7 @@ export type Translatable = {
 
 /**
  * Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
- * TODO: this feature is unfinished, but you should still specify the intents your plugin needs.  
- * Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
+ * Don't request more permissions than you actually need, as this is a bad practice and can lead to your plugin being rejected.
  */
 export enum PluginIntent {
   /** Plugin can read the feature configuration. */
@@ -738,7 +737,7 @@ export type FeatureCategory =
 
 /** Loose list of predefined tags for features. */
 export type FeatureTag = LooseUnion<
-  | "privacy" // TODO: add option to welcome menu to turn all privacy-sensitive features off
+  | "privacy" // exposes privacy-sensitive data - can be toggled off in the welcome menu
   | "network" // fetches remote data
 >;
 

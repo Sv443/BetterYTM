@@ -61,12 +61,10 @@ export interface BytmDialogEvents extends EventsMap {
 let dialogsInitialized = false;
 /** Container element for all BytmDialog elements */
 let dialogContainer: HTMLElement | undefined;
-// TODO: remove export as soon as config menu is migrated to use BytmDialog
 /** ID of the last opened (top-most) dialog */
 export let currentDialogId: string | null = null;
 /** IDs of all currently open dialogs, top-most first */
 export const openDialogs: string[] = [];
-/** TODO: remove as soon as config menu is migrated to use BytmDialog */
 export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
 
 //#region BytmDialog class

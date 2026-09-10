@@ -22,8 +22,6 @@ let fullSerializer: DataStoreSerializer | undefined;
 /** Set of IDs of all {@linkcode DataStore} instances whose data has finished loading at least once. */
 export const loadedStores = new Set<string>();
 
-// TODO: replace this with the "initializedAllStores" event in DataStoreSerializer in CoreUtils v3.8.0
-
 /** Wraps an array of {@linkcode DataStore} instances to attach event listeners. */
 function wrapStores(stores: DataStore<any, boolean>[]): DataStore<any, boolean>[] {
   for(const store of stores)

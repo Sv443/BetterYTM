@@ -47,7 +47,6 @@ export async function addWatermark() {
         exchangeLogo();
     };
 
-    // TODO:FIXME: space and enter dont work fsr
     onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
 
     addSelectorListener("navBar", "ytmusic-logo a", {
@@ -1176,8 +1175,6 @@ export async function fixHdrIssues() {
 }
 
 //#region show vote nums
-
-// TODO:FIXME: error shows up on non-watch pages
 
 /** Shows the amount of likes and dislikes on the current song */
 export async function initShowVotes() {

@@ -42,8 +42,7 @@ let initConfig: FeatureConfig | undefined;
 let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /**
- * Adds an element to open the BetterYTM menu  
- * TODO: replace with new menu using BytmDialog - see https://github.com/Sv443/BetterYTM/issues/23
+ * Mounts the BetterYTM menu to the DOM.
  */
 export async function mountCfgMenu() {
   try {

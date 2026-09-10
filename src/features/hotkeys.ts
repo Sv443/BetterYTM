@@ -193,7 +193,6 @@ async function initOpenLyricsHotkey() {
   }, { capture: true });
 }
 
-// TODO:FIXME: stopped working fsr
 async function initSearchLyricsPromptHotkey() {
   document.addEventListener("keydown", async (e) => {
     if(!getFeature("lyricsSearchPromptHotkeyEnabled"))
