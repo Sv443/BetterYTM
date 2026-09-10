@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@a35b84e3/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@456ad3bb/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Thu, 10 Sep 2026 20:42:14 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Thu, 10 Sep 2026 22:29:32 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ a35b84e3                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 456ad3bb                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 68X2XkmHs3t1                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 2cj3dCuDqHxA                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -481,8 +481,7 @@
 	}({});
 	/**
 	* Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
-	* TODO: this feature is unfinished, but you should still specify the intents your plugin needs.  
-	* Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
+	* Don't request more permissions than you actually need, as this is a bad practice and can lead to your plugin being rejected.
 	*/
 	var PluginIntent = /* @__PURE__ */ function(PluginIntent) {
 		/** Plugin can read the feature configuration. */
@@ -545,9 +544,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "a35b84e3";
+	var buildNumber$1 = "456ad3bb";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789072934080;
+	var buildTimestamp = 1789079372280;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -712,7 +711,6 @@
 	var currentDialogId = null;
 	/** IDs of all currently open dialogs, top-most first */
 	var openDialogs = [];
-	/** TODO: remove as soon as config menu is migrated to use BytmDialog */
 	var setCurrentDialogId = (id) => currentDialogId = id;
 	/** Creates and manages a modal dialog element */
 	var BytmDialog = class BytmDialog extends _sv443_network_coreutils.NanoEmitter {
@@ -3289,8 +3287,7 @@
 	/** Timeout id for the "copied" text in the hidden value copy button */
 	var hiddenCopiedTxtTimeout;
 	/**
-	* Adds an element to open the BetterYTM menu  
-	* TODO: replace with new menu using BytmDialog - see https://github.com/Sv443/BetterYTM/issues/23
+	* Mounts the BetterYTM menu to the DOM.
 	*/
 	async function mountCfgMenu() {
 		try {
@@ -5608,6 +5605,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		resourceAsString,
 		getSessionId,
 		reloadTab,
+		getSelector,
 		setInnerHtml,
 		sanitizeHtml,
 		addSelectorListener,
@@ -11601,7 +11599,6 @@ Build #${buildNumber$1} (dev mode)
 			initBroadcast();
 			preInitInterface();
 			preInitPlugins();
-			initPermTestPlugin();
 			if (getDomain() === "ytm") initBeforeUnloadHook();
 			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object??????? (this doesn't actually break the script, but it's still funny it happened)");
 			initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
@@ -12042,7 +12039,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "a35b84e3",
+				buildNumber: "456ad3bb",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -12121,32 +12118,6 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 	async function runDevTreatments() {
 		if (!await GM.getValue("bytm-dev-treatments", false)) return;
 		loggers.init.log("Running dev treatments.");
-	}
-	async function initPermTestPlugin() {
-		if (!await GM.getValue("bytm-dev-treatments", false)) return;
-		const permTestDef = {
-			plugin: {
-				name: "PERMISSION TEST",
-				namespace: package_default.namespace,
-				version: package_default.version,
-				license: {
-					name: package_default.license,
-					url: package_default.licenseUrl
-				},
-				description: { "en-US": "Dev plugin for testing plugin permissions." },
-				homepage: { source: package_default.homepage }
-			},
-			intents: PluginIntent.ReadFeatureConfig | PluginIntent.WriteFeatureConfig | PluginIntent.SeeHiddenConfigValues | PluginIntent.CreateModalDialogs | PluginIntent.WriteTranslations
-		};
-		(0, _sv443_network_userutils.getUnsafeWindow)().addEventListener("bytm:preInitPlugin", async ({ detail: register }) => {
-			if (typeof register === "function") {
-				const result = await registerPluginInternal(permTestDef);
-				loggers.debug.log(">> Plugin permission test result:", result);
-				(0, _sv443_network_userutils.getUnsafeWindow)().addEventListener("bytm:allReady", async () => {
-					await getPluginPermissionsDialog(permTestDef).open();
-				});
-			}
-		});
 	}
 	preInit();
 	//#endregion
