@@ -1,4 +1,4 @@
-import { autoPlural, pauseFor } from "@sv443-network/coreutils";
+import { autoPlural, debounce, pauseFor } from "@sv443-network/coreutils";
 import { preloadImages } from "@sv443-network/userutils";
 import { addStyleFromResource, clearInner, setInnerHtml, transplantElement } from "@util/dom.ts";
 import { getDomain, getResourceUrl, openInTab, resourceAsString } from "@util/misc.ts";
@@ -95,6 +95,10 @@ export async function initQueueButtons() {
       loggers.layout.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
   };
 
+  const debouncedIdleSongListCheck = debounce((songLists: NodeListOf<HTMLElement>) => {
+    doSongListsChecks(songLists);
+  }, 500, "idle");
+
   const doSongListsChecks = (songLists: NodeListOf<HTMLElement>) => {
     for(const list of songLists) {
       if(getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists")
@@ -102,6 +106,7 @@ export async function initQueueButtons() {
       if(getFeature("swapLikeDislikeButtons"))
         checkSwapLikeDislikeBtns(list);
     }
+    debouncedIdleSongListCheck(songLists);
   };
 
   addSelectorListener("body", getSelector("songLists", "all"), {
