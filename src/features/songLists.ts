@@ -117,6 +117,12 @@ export async function initQueueButtons() {
     listener: doSongListsChecks,
   });
 
+  const onScrollPaths = ["/playlist", "/channel"];
+  window.addEventListener("scroll", () => {
+    if(onScrollPaths.some(path => location.pathname.startsWith(path)))
+      debouncedIdleSongListCheck(document.querySelectorAll(getSelector("songLists", "all")));
+  }, { capture: true });
+
   siteEvents.on("pathChanged", () => {
     const songLists = document.querySelectorAll<HTMLElement>(getSelector("songLists", "all"));
     if(songLists.length > 0)
