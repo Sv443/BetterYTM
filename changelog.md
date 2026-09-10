@@ -2,6 +2,7 @@
 <div class="split"></div>
 
 <!-- #region 3.2.0 -->
+<!-- TODO: <details> -->
 ## 3.2.0
 - **New Features:**
   - Added Turkish translations (by [@kcangny](https://github.com/kcangny)).
@@ -16,13 +17,17 @@
     - `autoScrollToActiveSongMode: "never"` - replaced with `autoScrollToActiveSongEnabled`.
   - The welcome menu now allows all privacy-sensitive features to be toggled off before the script runs for the first time.
   - Made the version check feature more resilient to stop erroneous update notifications for weird versions like `5` from showing up (by [@canarado](https://github.com/canarado)).
-  - Improved auto-like:
-    - The feature now works with collab videos, although it will only work with the first channel listed in the menu opened by clicking the channel names.
+  - Improved auto-like feature:
+    - It now works with collab videos, although it will only work with the primary channel (the first channel listed in the menu opened by clicking the channel names).
     - Improved the styling of the auto-like channels dialog.
 - **Fixes:**
   - Made error toasts show up again after being broken when toast queueing was overhauled.
+  - Song list buttons show up more consistently now, like when a playlist has more than 100 entries or when they are moved via drag & drop.
 - **Plugin Changes:**
-  - **BREAKING:** The `registerPlugin()` function passed by the events `bytm:preInitPlugin` and `bytm:registerPlugin` will now return a `Promise<PluginRegisterResult>`, so that the page can show the new plugin permission dialog.
+  - ⚠️ **BREAKING:** The `registerPlugin()` function passed by the events `bytm:preInitPlugin` and `bytm:registerPlugin` will now return a `Promise<PluginRegisterResult>`, so that the page can show the new plugin permission dialog.  
+    Now that a plugin's intents can be denied, it's important to check for the permissions returned by the `registerPlugin()` function at runtime.
+  - ⚠️ **BREAKING:** The classes `BytmDialog`, `ExImDialog` and `MarkdownDialog` no longer exist on the plugin interface. Use the authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()` instead.
+  - ⚠️ **BREAKING:** Removed the property `NanoEmitter` on the plugin interface, as it has been available under `BYTM.CoreUtils.NanoEmitter` for a while.
   - Removed the restrictions that plugins need to be registered between `bytm:preInitPlugin` and `bytm:ready`. Now they can be registered after the latter event without throwing an error.
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.
