@@ -95,18 +95,20 @@ export async function initQueueButtons() {
       loggers.layout.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
   };
 
+  // after no more calls within 750ms, check again to fix issues with drag & drop
   const debouncedIdleSongListCheck = debounce((songLists: NodeListOf<HTMLElement>) => {
-    doSongListsChecks(songLists);
-  }, 500, "idle");
+    doSongListsChecks(songLists, true);
+  }, 750, "idle");
 
-  const doSongListsChecks = (songLists: NodeListOf<HTMLElement>) => {
+  const doSongListsChecks = (songLists: NodeListOf<HTMLElement>, isDebounced = false) => {
+    loggers.debug.log(">>> checking lists:", songLists);
     for(const list of songLists) {
       if(getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists")
         tryAddGenericListQueueBtns(list);
       if(getFeature("swapLikeDislikeButtons"))
         checkSwapLikeDislikeBtns(list);
     }
-    debouncedIdleSongListCheck(songLists);
+    !isDebounced && debouncedIdleSongListCheck(songLists);
   };
 
   addSelectorListener("body", getSelector("songLists", "all"), {
