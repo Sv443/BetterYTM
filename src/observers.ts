@@ -6,6 +6,7 @@ import { getSelector } from "@util/data.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { LogLevel, type Domain, type FeatureConfig } from "@/types.ts";
+import { recordObserverTick } from "@util/perf.ts";
 
 // !> If you came here looking for which observer to use, start out by looking at the types `SharedObserverName`, `YTMObserverName` and `YTObserverName`.
 // !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`.
@@ -150,7 +151,7 @@ export function initObservers(cfg: FeatureConfig) {
       const browseResponseSelector = getSelector("observer", "browseResponse");
       globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
         ...defaultObserverOptions,
-        defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
+        defaultDebounce: clamp(Math.floor(defaultObserverOptions.defaultDebounce / 2), 50, 1000),
         subtree: true,
       });
 
@@ -381,20 +382,22 @@ export function initObservers(cfg: FeatureConfig) {
 
     //#region finalize
 
-    if(getFeature("verboseObservers")) {
-      for(const [name, obs] of Object.entries(globservers)) {
-        const baseElem = typeof obs.baseElement === "string"
-          ? `'${obs.baseElement}'`
-          : Logger.serializeElement(obs.baseElement);
+    for(const [name, obs] of Object.entries(globservers)) {
+      const baseElem = typeof obs.baseElement === "string"
+        ? `'${obs.baseElement}'`
+        : Logger.serializeElement(obs.baseElement);
 
-        obs.on("checked", () => {
+      obs.on("checked", () => {
+        if(getFeature("verboseObservers"))
           loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
-        });
-        obs.on("found", (data) => {
-          const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
+        recordObserverTick(name as ObserverName, "checked");
+      });
+      obs.on("found", (data) => {
+        const elements = data.elements instanceof NodeList ? [...data.elements].map(e => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
+        if(getFeature("verboseObservers"))
           loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural("element", elements)}:`, elements.join(", "), LogLevel.Info);
-        });
-      }
+        recordObserverTick(name as ObserverName, "found", elements.length);
+      });
     }
 
     globserversReady = true;

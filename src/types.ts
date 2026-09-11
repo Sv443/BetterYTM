@@ -1,7 +1,7 @@
 import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/coreutils";
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
-import type { addSelectorListener } from "@/observers.ts";
+import type { addSelectorListener, globservers } from "@/observers.ts";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers, sanitizeUnicode, parseMarkdown, sanitizeHtml } from "@util/index.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
@@ -227,6 +227,15 @@ export type PerformanceReport = {
   resources: {
     /** Amount of resources fetched from the remote CDN. */
     fetchAttempts?: Record<ResourceKey | "_", number>;
+  };
+  /** Maps {@linkcode globservers} to an object of millis()-timestamps for performance analysis. */
+  observers: {
+    [TKey in keyof typeof globservers]?: {
+      /** Array with millis() values of when this observer checked for elements. */
+      checked?: number[];
+      /** Array of tuples of when elements were found with this observer. First item is the millis() value, second item is the amount of elements found. */
+      found?: [millis: number, numElements: number][];
+    };
   };
 };
 

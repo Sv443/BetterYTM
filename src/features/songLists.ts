@@ -101,7 +101,6 @@ export async function initQueueButtons() {
   }, 750, "idle");
 
   const doSongListsChecks = (songLists: NodeListOf<HTMLElement>, isDebounced = false) => {
-    loggers.debug.log(">>> checking lists:", songLists);
     for(const list of songLists) {
       if(getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists")
         tryAddGenericListQueueBtns(list);
