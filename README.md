@@ -87,17 +87,11 @@ BetterYTM supports plugin userscripts that can be installed in parallel and can 
 <!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
 <sup>
 
-Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin.
+Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin. If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)
 
 </sup>
 
-  
-
-<sup>
-
-If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)
-
-</sup>
+<br>
 
 - **[BetterYTM - Song Playlists](https://github.com/eissar/betterytm-song-playlists)** by [eissar](https://github.com/eissar)  
   Dynamically shows which of your playlists contain the currently selected song in YouTube Music.
