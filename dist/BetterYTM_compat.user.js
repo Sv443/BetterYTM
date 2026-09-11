@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@456ad3bb/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@844e0fb8/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Thu, 10 Sep 2026 22:29:33 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Fri, 11 Sep 2026 23:28:32 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 456ad3bb                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 844e0fb8                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ cJ39kq9MhES1                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ uXp8gbtv3KEX                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -4726,6 +4726,570 @@ Has: ${checksum}`);
 		}
 	};
 	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/utils.js
+	var semver = /^[v^~<>=]*?(\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+))?(?:-([\da-z\-]+(?:\.[\da-z\-]+)*))?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?)?)?$/i;
+	var validateAndParse = (version) => {
+		if (typeof version !== "string") throw new TypeError("Invalid argument expected string");
+		const match = version.match(semver);
+		if (!match) throw new Error(`Invalid argument not valid semver ('${version}' received)`);
+		match.shift();
+		return match;
+	};
+	var isWildcard = (s) => s === "*" || s === "x" || s === "X";
+	var tryParse = (v) => {
+		const n = parseInt(v, 10);
+		return isNaN(n) ? v : n;
+	};
+	var forceType = (a, b) => typeof a !== typeof b ? [String(a), String(b)] : [a, b];
+	var compareStrings = (a, b) => {
+		if (isWildcard(a) || isWildcard(b)) return 0;
+		const [ap, bp] = forceType(tryParse(a), tryParse(b));
+		if (ap > bp) return 1;
+		if (ap < bp) return -1;
+		return 0;
+	};
+	var compareSegments = (a, b) => {
+		for (let i = 0; i < Math.max(a.length, b.length); i++) {
+			const r = compareStrings(a[i] || "0", b[i] || "0");
+			if (r !== 0) return r;
+		}
+		return 0;
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compareVersions.js
+	/**
+	* Compare [semver](https://semver.org/) version strings to find greater, equal or lesser.
+	* This library supports the full semver specification, including comparing versions with different number of digits like `1.0.0`, `1.0`, `1`, and pre-release versions like `1.0.0-alpha`.
+	* @param v1 - First version to compare
+	* @param v2 - Second version to compare
+	* @returns Numeric value compatible with the [Array.sort(fn) interface](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
+	*/
+	var compareVersions = (v1, v2) => {
+		const n1 = validateAndParse(v1);
+		const n2 = validateAndParse(v2);
+		const p1 = n1.pop();
+		const p2 = n2.pop();
+		const r = compareSegments(n1, n2);
+		if (r !== 0) return r;
+		if (p1 && p2) return compareSegments(p1.split("."), p2.split("."));
+		else if (p1 || p2) return p1 ? -1 : 1;
+		return 0;
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compare.js
+	/**
+	* Compare [semver](https://semver.org/) version strings using the specified operator.
+	*
+	* @param v1 First version to compare
+	* @param v2 Second version to compare
+	* @param operator Allowed arithmetic operator to use
+	* @returns `true` if the comparison between the firstVersion and the secondVersion satisfies the operator, `false` otherwise.
+	*
+	* @example
+	* ```
+	* compare('10.1.8', '10.0.4', '>'); // return true
+	* compare('10.0.1', '10.0.1', '='); // return true
+	* compare('10.1.1', '10.2.2', '<'); // return true
+	* compare('10.1.1', '10.2.2', '<='); // return true
+	* compare('10.1.1', '10.2.2', '>='); // return false
+	* ```
+	*/
+	var compare = (v1, v2, operator) => {
+		assertValidOperator(operator);
+		const res = compareVersions(v1, v2);
+		return operatorResMap[operator].includes(res);
+	};
+	var operatorResMap = {
+		">": [1],
+		">=": [0, 1],
+		"=": [0],
+		"<=": [-1, 0],
+		"<": [-1],
+		"!=": [-1, 1]
+	};
+	var allowedOperators = Object.keys(operatorResMap);
+	var assertValidOperator = (op) => {
+		if (typeof op !== "string") throw new TypeError(`Invalid operator type, expected string but got ${typeof op}`);
+		if (allowedOperators.indexOf(op) === -1) throw new Error(`Invalid operator, expected one of ${allowedOperators.join("|")}`);
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/satisfies.js
+	/**
+	* Match [npm semver](https://docs.npmjs.com/cli/v6/using-npm/semver) version range.
+	*
+	* @param version Version number to match
+	* @param range Range pattern for version
+	* @returns `true` if the version number is within the range, `false` otherwise.
+	*
+	* @example
+	* ```
+	* satisfies('1.1.0', '^1.0.0'); // return true
+	* satisfies('1.1.0', '~1.0.0'); // return false
+	* ```
+	*/
+	var satisfies = (version, range) => {
+		range = range.replace(/([><=]+)\s+/g, "$1");
+		if (range.includes("||")) return range.split("||").some((r) => satisfies(version, r));
+		else if (range.includes(" - ")) {
+			const [a, b] = range.split(" - ", 2);
+			return satisfies(version, `>=${a} <=${b}`);
+		} else if (range.includes(" ")) return range.trim().replace(/\s{2,}/g, " ").split(" ").every((r) => satisfies(version, r));
+		const m = range.match(/^([<>=~^]+)/);
+		const op = m ? m[1] : "=";
+		if (op !== "^" && op !== "~") return compare(version, range, op);
+		const [v1, v2, v3, , vp] = validateAndParse(version);
+		const [r1, r2, r3, , rp] = validateAndParse(range);
+		const v = [
+			v1,
+			v2,
+			v3
+		];
+		const r = [
+			r1,
+			r2 !== null && r2 !== void 0 ? r2 : "x",
+			r3 !== null && r3 !== void 0 ? r3 : "x"
+		];
+		if (rp) {
+			if (!vp) return false;
+			if (compareSegments(v, r) !== 0) return false;
+			if (compareSegments(vp.split("."), rp.split(".")) === -1) return false;
+		}
+		const nonZero = r.findIndex((v) => v !== "0") + 1;
+		const i = op === "~" ? 2 : nonZero > 1 ? nonZero : 1;
+		if (compareSegments(v.slice(0, i), r.slice(0, i)) !== 0) return false;
+		if (compareSegments(v.slice(i), r.slice(i)) === -1) return false;
+		return true;
+	};
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/validate.js
+	/**
+	* Validate [semver](https://semver.org/) version strings.
+	*
+	* @param version Version number to validate
+	* @returns `true` if the version number is a valid semver version number, `false` otherwise.
+	*
+	* @example
+	* ```
+	* validate('1.0.0-rc.1'); // return true
+	* validate('1.0-rc.1'); // return false
+	* validate('foo'); // return false
+	* ```
+	*/
+	var validate = (version) => typeof version === "string" && /^[v\d]/.test(version) && semver.test(version);
+	/**
+	* Validate [semver](https://semver.org/) version strings strictly. Will not accept wildcards and version ranges.
+	*
+	* @param version Version number to validate
+	* @returns `true` if the version number is a valid semver version number `false` otherwise
+	*
+	* @example
+	* ```
+	* validate('1.0.0-rc.1'); // return true
+	* validate('1.0-rc.1'); // return false
+	* validate('foo'); // return false
+	* ```
+	*/
+	var validateStrict = (version) => typeof version === "string" && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/.test(version);
+	//#endregion
+	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/index.js
+	var esm_exports = /* @__PURE__ */ __exportAll({
+		compare: () => compare,
+		compareVersions: () => compareVersions,
+		satisfies: () => satisfies,
+		validate: () => validate,
+		validateStrict: () => validateStrict
+	});
+	var resources_default = {
+		externalAssetPattern: "^(css|doc|font|icon|img|trans)-",
+		preloadAssetPattern: "^(icon|img)-",
+		resources: {
+			"css-above_queue_btns": "styles/aboveQueueBtns.css",
+			"css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
+			"css-anchor_improvements": "styles/anchorImprovements.css",
+			"css-auto_like": "styles/autoLike.css",
+			"css-bundle": "/dist/BetterYTM.css",
+			"css-fix_hdr": "styles/fixHDR.css",
+			"css-fix_playerpage_theming": "styles/fixPlayerPageTheming.css",
+			"css-fix_spacing": "styles/fixSpacing.css",
+			"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
+			"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
+			"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
+			"css-show_votes": "styles/showVotes.css",
+			"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
+			"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
+			"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
+			"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
+			"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
+			"css-vol_slider_size": "styles/volSliderSize.css",
+			"css-watch_page_full_size": "styles/watchPageFullSize.css",
+			"doc-data": {
+				"path": "data.json",
+				"ref": "main",
+				"integrity": false
+			},
+			"doc-license": {
+				"path": "/LICENSE.txt",
+				"ref": "$BRANCH",
+				"integrity": false
+			},
+			"font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
+			"font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
+			"font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
+			"icon-advanced_mode": "icons/plus_circle_small.svg",
+			"icon-advanced_mode_large": "icons/plus_circle.svg",
+			"icon-alert": "icons/alert.svg",
+			"icon-arrow_down": "icons/arrow_down.svg",
+			"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
+			"icon-auto_like": "icons/auto_like.svg",
+			"icon-clear_list": "icons/clear_list.svg",
+			"icon-copy": "icons/copy.svg",
+			"icon-delete": "icons/delete.svg",
+			"icon-edit": "icons/edit.svg",
+			"icon-error": "icons/error.svg",
+			"icon-experimental": "icons/beaker_small.svg",
+			"icon-gear": "icons/gear.svg",
+			"icon-globe_small": "icons/globe_small.svg",
+			"icon-globe": "icons/globe.svg",
+			"icon-help": "icons/help.svg",
+			"icon-image_filled_am": "icons/image_filled_am.svg",
+			"icon-image_filled_yt": "icons/image_filled_yt.svg",
+			"icon-image_filled": "icons/image_filled.svg",
+			"icon-image": "icons/image.svg",
+			"icon-link": "icons/link.svg",
+			"icon-lock": "icons/lock.svg",
+			"icon-lyrics": "icons/lyrics.svg",
+			"icon-new": "icons/new.svg",
+			"icon-prompt": "icons/help.svg",
+			"icon-reload": "icons/refresh.svg",
+			"icon-shield_info": "icons/shield_info.svg",
+			"icon-shield_question": "icons/shield_question.svg",
+			"icon-history": "icons/history.svg",
+			"icon-plugin": "icons/plugin.svg",
+			"icon-plugin_off": "icons/plugin_off.svg",
+			"icon-skip_to": "icons/skip_to.svg",
+			"icon-speed": "icons/speed.svg",
+			"icon-spinner": "icons/spinner.svg",
+			"icon-upload": "icons/upload.svg",
+			"icon-ytm": "icons/ytm.svg",
+			"img-close": "images/close.png",
+			"img-discord": "images/external/discord.png",
+			"img-github": "images/external/github.png",
+			"img-greasyfork": "images/external/greasyfork.png",
+			"img-logo_dev": "images/logo/logo_dev_48.png",
+			"img-logo": "images/logo/logo_48.png",
+			"img-openuserjs": "images/external/openuserjs.png",
+			"trans-de-DE": "translations/de-DE.json",
+			"trans-en-GB": "translations/en-GB.json",
+			"trans-en-US": "translations/en-US.json",
+			"trans-es-ES": "translations/es-ES.json",
+			"trans-fr-FR": "translations/fr-FR.json",
+			"trans-hi-IN": "translations/hi-IN.json",
+			"trans-ja-JP": "translations/ja-JP.json",
+			"trans-pt-BR": "translations/pt-BR.json",
+			"trans-tr-TR": "translations/tr-TR.json",
+			"trans-zh-CN": "translations/zh-CN.json"
+		}
+	};
+	//#endregion
+	//#region assets/locales.json
+	var locales_default = {
+		"de-DE": {
+			"name": "Deutsch (Deutschland)",
+			"nameEnglish": "German (Germany)",
+			"emoji": "🇩🇪",
+			"userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"de",
+				"de-AT",
+				"de-BE",
+				"de-CH",
+				"de-LI",
+				"de-LU"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"en-US": {
+			"name": "English (United States)",
+			"nameEnglish": "English (United States)",
+			"emoji": "🇺🇸",
+			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["en", "en-CA"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"en-GB": {
+			"name": "English (Great Britain)",
+			"nameEnglish": "English (Great Britain)",
+			"emoji": "🇬🇧",
+			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"en-AU",
+				"en-IE",
+				"en-NZ",
+				"en-ZA"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"es-ES": {
+			"name": "Español (España)",
+			"nameEnglish": "Spanish (Spain)",
+			"emoji": "🇪🇸",
+			"userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["es", "es-MX"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"fr-FR": {
+			"name": "Français (France)",
+			"nameEnglish": "French (France)",
+			"emoji": "🇫🇷",
+			"userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"fr",
+				"fr-CA",
+				"fr-BE",
+				"fr-CH",
+				"fr-LU"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"hi-IN": {
+			"name": "हिंदी (भारत)",
+			"nameEnglish": "Hindi (India)",
+			"emoji": "🇮🇳",
+			"userscriptDesc": "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
+			"authors": ["Sv443"],
+			"altLocales": ["hi", "hi-NP"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "।",
+			"sentenceTerminators": [
+				"।",
+				".",
+				"!",
+				"?"
+			]
+		},
+		"ja-JP": {
+			"name": "日本語 (日本)",
+			"nameEnglish": "Japanese (Japan)",
+			"emoji": "🇯🇵",
+			"userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
+			"authors": ["Sv443"],
+			"altLocales": ["ja"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "。",
+			"sentenceTerminators": [
+				"。",
+				"！",
+				"？",
+				".",
+				"!",
+				"?"
+			]
+		},
+		"pt-BR": {
+			"name": "Português (Brasil)",
+			"nameEnglish": "Portuguese (Brazil)",
+			"emoji": "🇧🇷",
+			"userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
+			"authors": ["Sv443"],
+			"altLocales": ["pt", "pt-PT"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"tr-TR": {
+			"name": "Türkçe (Türkiye)",
+			"nameEnglish": "Turkish (Turkey)",
+			"emoji": "🇹🇷",
+			"userscriptDesc": "YouTube Music™ ve YouTube™ için yapılandırılabilir sayfa düzeni ve kullanıcı deneyimi iyileştirmeleri",
+			"authors": ["kcangny"],
+			"altLocales": ["tr"],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": ".",
+			"sentenceTerminators": [
+				".",
+				"!",
+				"?"
+			]
+		},
+		"zh-CN": {
+			"name": "中文（简化，中国）",
+			"nameEnglish": "Chinese (Simplified, China)",
+			"emoji": "🇨🇳",
+			"userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
+			"authors": ["Sv443"],
+			"altLocales": [
+				"zh",
+				"zh-TW",
+				"zh-HK",
+				"zh-SG"
+			],
+			"textDir": "ltr",
+			"sentenceTerminatorNeutral": "。",
+			"sentenceTerminators": [
+				"。",
+				"！",
+				"？",
+				".",
+				"!",
+				"?"
+			]
+		}
+	};
+	//#endregion
+	//#region src/types.ts
+	var LogLevel = /* @__PURE__ */ function(LogLevel) {
+		LogLevel[LogLevel["Debug"] = 0] = "Debug";
+		LogLevel[LogLevel["Info"] = 1] = "Info";
+		return LogLevel;
+	}({});
+	/**
+	* Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
+	* Don't request more permissions than you actually need, as this is a bad practice and can lead to your plugin being rejected.
+	*/
+	var PluginIntent = /* @__PURE__ */ function(PluginIntent) {
+		/** Plugin can read the feature configuration. */
+		PluginIntent[PluginIntent["ReadFeatureConfig"] = 1] = "ReadFeatureConfig";
+		/** Plugin can write to the feature configuration. */
+		PluginIntent[PluginIntent["WriteFeatureConfig"] = 2] = "WriteFeatureConfig";
+		/** Plugin has access to hidden config values. */
+		PluginIntent[PluginIntent["SeeHiddenConfigValues"] = 4] = "SeeHiddenConfigValues";
+		/** Plugin can write to the lyrics cache. */
+		PluginIntent[PluginIntent["WriteLyricsCache"] = 8] = "WriteLyricsCache";
+		/** Plugin can add new translations and overwrite existing ones. */
+		PluginIntent[PluginIntent["WriteTranslations"] = 16] = "WriteTranslations";
+		/** Plugin can create modal dialogs. */
+		PluginIntent[PluginIntent["CreateModalDialogs"] = 32] = "CreateModalDialogs";
+		/** Plugin can read auto-like data. */
+		PluginIntent[PluginIntent["ReadAutoLikeData"] = 64] = "ReadAutoLikeData";
+		/** Plugin can write to auto-like data. */
+		PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
+		/** Plugin has access to deeply internal functions and instances. */
+		PluginIntent[PluginIntent["InternalAccess"] = 256] = "InternalAccess";
+		/** Grants all other intents. */
+		PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
+		return PluginIntent;
+	}({});
+	//#endregion
+	//#region src/constants.ts
+	var constants_exports = /* @__PURE__ */ __exportAll({
+		assetSource: () => assetSource,
+		branch: () => branch$1,
+		buildNumber: () => buildNumber$1,
+		buildTimestamp: () => buildTimestamp,
+		changelogUrl: () => changelogUrl,
+		compressionFormat: () => compressionFormat$1,
+		defaultLogLevel: () => defaultLogLevel,
+		devServerPort: () => devServerPort,
+		host: () => host$1,
+		initTime: () => initTime,
+		initialParams: () => initialParams$1,
+		mode: () => mode$1,
+		newFeatureAdornmentMaxSessionCount: () => 20,
+		platformNames: () => platformNames,
+		rawConsts: () => rawConsts,
+		repo: () => repo$1,
+		scriptInfo: () => scriptInfo$1,
+		sessionStorageAvailable: () => sessionStorageAvailable$1
+	});
+	/**
+	* Check below this variable for the constant variables used throughout BetterYTM.  
+	* Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
+	* Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
+	* @deprecated This object was reworked when the build process was migrated to vite.
+	*/
+	var rawConsts = {};
+	/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
+	var repo$1 = "Sv443/BetterYTM";
+	/** The mode in which the script was built (production or development). */
+	var mode$1 = "development";
+	/** The branch to use in various URLs that point to the GitHub repo. */
+	var branch$1 = "develop";
+	/** Which host the userscript was installed from. */
+	var host$1 = "github";
+	/** The build number of the userscript. */
+	var buildNumber$1 = "844e0fb8";
+	/** When the script was built, as a UNIX timestamp. */
+	var buildTimestamp = 1789169312106;
+	/** The source of the assets - github, jsdelivr or local. */
+	var assetSource = "jsdelivr";
+	/** The port of the dev server. */
+	var devServerPort = 8710;
+	/** URL to the changelog file */
+	var changelogUrl = `https://raw.githubusercontent.com/${repo$1}/develop/changelog.md?build=${buildNumber$1}`;
+	/** The URL search parameters at the earliest possible time */
+	var initialParams$1 = new URL(location.href).searchParams;
+	/** Timestamp of when the script was initialized. */
+	var initTime = Date.now();
+	/** Names of platforms by key of {@linkcode host} */
+	var platformNames = pureObj$2({
+		github: "GitHub",
+		greasyfork: "Greasy Fork",
+		openuserjs: "OpenUserJS"
+	});
+	/** Default compression format used throughout BYTM */
+	var compressionFormat$1 = "deflate-raw";
+	/** Whether sessionStorage is available and working */
+	var sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function" && (() => {
+		try {
+			const key = `_bytm_test_${randomId$1(6, 36, false, true)}`;
+			sessionStorage.setItem(key, "test");
+			sessionStorage.removeItem(key);
+			return true;
+		} catch {
+			return false;
+		}
+	})();
+	/**
+	* Fallback and initial value of how much info should be logged to the devtools console  
+	* 0 = Debug (show everything) or 1 = Info (show only important stuff)
+	*/
+	var defaultLogLevel = LogLevel.Debug;
+	/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
+	var scriptInfo$1 = pureObj$2({
+		name: GM_info.script.name,
+		version: GM_info.script.version,
+		namespace: GM_info.script.namespace
+	});
+	//#endregion
 	//#region node_modules/.pnpm/dompurify@3.3.3/node_modules/dompurify/dist/purify.es.mjs
 	/*! @license DOMPurify 3.3.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.3.3/LICENSE */
 	var { entries, setPrototypeOf, isFrozen, getPrototypeOf, getOwnPropertyDescriptor } = Object;
@@ -6331,570 +6895,6 @@ Has: ${checksum}`);
 	}
 	var purify = createDOMPurify();
 	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/utils.js
-	var semver = /^[v^~<>=]*?(\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+))?(?:-([\da-z\-]+(?:\.[\da-z\-]+)*))?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?)?)?$/i;
-	var validateAndParse = (version) => {
-		if (typeof version !== "string") throw new TypeError("Invalid argument expected string");
-		const match = version.match(semver);
-		if (!match) throw new Error(`Invalid argument not valid semver ('${version}' received)`);
-		match.shift();
-		return match;
-	};
-	var isWildcard = (s) => s === "*" || s === "x" || s === "X";
-	var tryParse = (v) => {
-		const n = parseInt(v, 10);
-		return isNaN(n) ? v : n;
-	};
-	var forceType = (a, b) => typeof a !== typeof b ? [String(a), String(b)] : [a, b];
-	var compareStrings = (a, b) => {
-		if (isWildcard(a) || isWildcard(b)) return 0;
-		const [ap, bp] = forceType(tryParse(a), tryParse(b));
-		if (ap > bp) return 1;
-		if (ap < bp) return -1;
-		return 0;
-	};
-	var compareSegments = (a, b) => {
-		for (let i = 0; i < Math.max(a.length, b.length); i++) {
-			const r = compareStrings(a[i] || "0", b[i] || "0");
-			if (r !== 0) return r;
-		}
-		return 0;
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compareVersions.js
-	/**
-	* Compare [semver](https://semver.org/) version strings to find greater, equal or lesser.
-	* This library supports the full semver specification, including comparing versions with different number of digits like `1.0.0`, `1.0`, `1`, and pre-release versions like `1.0.0-alpha`.
-	* @param v1 - First version to compare
-	* @param v2 - Second version to compare
-	* @returns Numeric value compatible with the [Array.sort(fn) interface](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
-	*/
-	var compareVersions = (v1, v2) => {
-		const n1 = validateAndParse(v1);
-		const n2 = validateAndParse(v2);
-		const p1 = n1.pop();
-		const p2 = n2.pop();
-		const r = compareSegments(n1, n2);
-		if (r !== 0) return r;
-		if (p1 && p2) return compareSegments(p1.split("."), p2.split("."));
-		else if (p1 || p2) return p1 ? -1 : 1;
-		return 0;
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/compare.js
-	/**
-	* Compare [semver](https://semver.org/) version strings using the specified operator.
-	*
-	* @param v1 First version to compare
-	* @param v2 Second version to compare
-	* @param operator Allowed arithmetic operator to use
-	* @returns `true` if the comparison between the firstVersion and the secondVersion satisfies the operator, `false` otherwise.
-	*
-	* @example
-	* ```
-	* compare('10.1.8', '10.0.4', '>'); // return true
-	* compare('10.0.1', '10.0.1', '='); // return true
-	* compare('10.1.1', '10.2.2', '<'); // return true
-	* compare('10.1.1', '10.2.2', '<='); // return true
-	* compare('10.1.1', '10.2.2', '>='); // return false
-	* ```
-	*/
-	var compare = (v1, v2, operator) => {
-		assertValidOperator(operator);
-		const res = compareVersions(v1, v2);
-		return operatorResMap[operator].includes(res);
-	};
-	var operatorResMap = {
-		">": [1],
-		">=": [0, 1],
-		"=": [0],
-		"<=": [-1, 0],
-		"<": [-1],
-		"!=": [-1, 1]
-	};
-	var allowedOperators = Object.keys(operatorResMap);
-	var assertValidOperator = (op) => {
-		if (typeof op !== "string") throw new TypeError(`Invalid operator type, expected string but got ${typeof op}`);
-		if (allowedOperators.indexOf(op) === -1) throw new Error(`Invalid operator, expected one of ${allowedOperators.join("|")}`);
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/satisfies.js
-	/**
-	* Match [npm semver](https://docs.npmjs.com/cli/v6/using-npm/semver) version range.
-	*
-	* @param version Version number to match
-	* @param range Range pattern for version
-	* @returns `true` if the version number is within the range, `false` otherwise.
-	*
-	* @example
-	* ```
-	* satisfies('1.1.0', '^1.0.0'); // return true
-	* satisfies('1.1.0', '~1.0.0'); // return false
-	* ```
-	*/
-	var satisfies = (version, range) => {
-		range = range.replace(/([><=]+)\s+/g, "$1");
-		if (range.includes("||")) return range.split("||").some((r) => satisfies(version, r));
-		else if (range.includes(" - ")) {
-			const [a, b] = range.split(" - ", 2);
-			return satisfies(version, `>=${a} <=${b}`);
-		} else if (range.includes(" ")) return range.trim().replace(/\s{2,}/g, " ").split(" ").every((r) => satisfies(version, r));
-		const m = range.match(/^([<>=~^]+)/);
-		const op = m ? m[1] : "=";
-		if (op !== "^" && op !== "~") return compare(version, range, op);
-		const [v1, v2, v3, , vp] = validateAndParse(version);
-		const [r1, r2, r3, , rp] = validateAndParse(range);
-		const v = [
-			v1,
-			v2,
-			v3
-		];
-		const r = [
-			r1,
-			r2 !== null && r2 !== void 0 ? r2 : "x",
-			r3 !== null && r3 !== void 0 ? r3 : "x"
-		];
-		if (rp) {
-			if (!vp) return false;
-			if (compareSegments(v, r) !== 0) return false;
-			if (compareSegments(vp.split("."), rp.split(".")) === -1) return false;
-		}
-		const nonZero = r.findIndex((v) => v !== "0") + 1;
-		const i = op === "~" ? 2 : nonZero > 1 ? nonZero : 1;
-		if (compareSegments(v.slice(0, i), r.slice(0, i)) !== 0) return false;
-		if (compareSegments(v.slice(i), r.slice(i)) === -1) return false;
-		return true;
-	};
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/validate.js
-	/**
-	* Validate [semver](https://semver.org/) version strings.
-	*
-	* @param version Version number to validate
-	* @returns `true` if the version number is a valid semver version number, `false` otherwise.
-	*
-	* @example
-	* ```
-	* validate('1.0.0-rc.1'); // return true
-	* validate('1.0-rc.1'); // return false
-	* validate('foo'); // return false
-	* ```
-	*/
-	var validate = (version) => typeof version === "string" && /^[v\d]/.test(version) && semver.test(version);
-	/**
-	* Validate [semver](https://semver.org/) version strings strictly. Will not accept wildcards and version ranges.
-	*
-	* @param version Version number to validate
-	* @returns `true` if the version number is a valid semver version number `false` otherwise
-	*
-	* @example
-	* ```
-	* validate('1.0.0-rc.1'); // return true
-	* validate('1.0-rc.1'); // return false
-	* validate('foo'); // return false
-	* ```
-	*/
-	var validateStrict = (version) => typeof version === "string" && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/.test(version);
-	//#endregion
-	//#region node_modules/.pnpm/compare-versions@6.1.1/node_modules/compare-versions/lib/esm/index.js
-	var esm_exports = /* @__PURE__ */ __exportAll({
-		compare: () => compare,
-		compareVersions: () => compareVersions,
-		satisfies: () => satisfies,
-		validate: () => validate,
-		validateStrict: () => validateStrict
-	});
-	var resources_default = {
-		externalAssetPattern: "^(css|doc|font|icon|img|trans)-",
-		preloadAssetPattern: "^(icon|img)-",
-		resources: {
-			"css-above_queue_btns": "styles/aboveQueueBtns.css",
-			"css-above_queue_btns_sticky": "styles/aboveQueueBtnsSticky.css",
-			"css-anchor_improvements": "styles/anchorImprovements.css",
-			"css-auto_like": "styles/autoLike.css",
-			"css-bundle": "/dist/BetterYTM.css",
-			"css-fix_hdr": "styles/fixHDR.css",
-			"css-fix_playerpage_theming": "styles/fixPlayerPageTheming.css",
-			"css-fix_spacing": "styles/fixSpacing.css",
-			"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
-			"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
-			"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
-			"css-show_votes": "styles/showVotes.css",
-			"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
-			"css-themesong_visualizer_opacity": "styles/themeSongVisualizerOpacity.css",
-			"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
-			"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
-			"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
-			"css-vol_slider_size": "styles/volSliderSize.css",
-			"css-watch_page_full_size": "styles/watchPageFullSize.css",
-			"doc-data": {
-				"path": "data.json",
-				"ref": "main",
-				"integrity": false
-			},
-			"doc-license": {
-				"path": "/LICENSE.txt",
-				"ref": "$BRANCH",
-				"integrity": false
-			},
-			"font-cousine_ttf": "fonts/external/Cousine/Cousine-Regular.ttf",
-			"font-cousine_woff": "fonts/external/Cousine/Cousine-Regular.woff",
-			"font-cousine_woff2": "fonts/external/Cousine/Cousine-Regular.woff2",
-			"icon-advanced_mode": "icons/plus_circle_small.svg",
-			"icon-advanced_mode_large": "icons/plus_circle.svg",
-			"icon-alert": "icons/alert.svg",
-			"icon-arrow_down": "icons/arrow_down.svg",
-			"icon-auto_like_enabled": "icons/auto_like_enabled.svg",
-			"icon-auto_like": "icons/auto_like.svg",
-			"icon-clear_list": "icons/clear_list.svg",
-			"icon-copy": "icons/copy.svg",
-			"icon-delete": "icons/delete.svg",
-			"icon-edit": "icons/edit.svg",
-			"icon-error": "icons/error.svg",
-			"icon-experimental": "icons/beaker_small.svg",
-			"icon-gear": "icons/gear.svg",
-			"icon-globe_small": "icons/globe_small.svg",
-			"icon-globe": "icons/globe.svg",
-			"icon-help": "icons/help.svg",
-			"icon-image_filled_am": "icons/image_filled_am.svg",
-			"icon-image_filled_yt": "icons/image_filled_yt.svg",
-			"icon-image_filled": "icons/image_filled.svg",
-			"icon-image": "icons/image.svg",
-			"icon-link": "icons/link.svg",
-			"icon-lock": "icons/lock.svg",
-			"icon-lyrics": "icons/lyrics.svg",
-			"icon-new": "icons/new.svg",
-			"icon-prompt": "icons/help.svg",
-			"icon-reload": "icons/refresh.svg",
-			"icon-shield_info": "icons/shield_info.svg",
-			"icon-shield_question": "icons/shield_question.svg",
-			"icon-history": "icons/history.svg",
-			"icon-plugin": "icons/plugin.svg",
-			"icon-plugin_off": "icons/plugin_off.svg",
-			"icon-skip_to": "icons/skip_to.svg",
-			"icon-speed": "icons/speed.svg",
-			"icon-spinner": "icons/spinner.svg",
-			"icon-upload": "icons/upload.svg",
-			"icon-ytm": "icons/ytm.svg",
-			"img-close": "images/close.png",
-			"img-discord": "images/external/discord.png",
-			"img-github": "images/external/github.png",
-			"img-greasyfork": "images/external/greasyfork.png",
-			"img-logo_dev": "images/logo/logo_dev_48.png",
-			"img-logo": "images/logo/logo_48.png",
-			"img-openuserjs": "images/external/openuserjs.png",
-			"trans-de-DE": "translations/de-DE.json",
-			"trans-en-GB": "translations/en-GB.json",
-			"trans-en-US": "translations/en-US.json",
-			"trans-es-ES": "translations/es-ES.json",
-			"trans-fr-FR": "translations/fr-FR.json",
-			"trans-hi-IN": "translations/hi-IN.json",
-			"trans-ja-JP": "translations/ja-JP.json",
-			"trans-pt-BR": "translations/pt-BR.json",
-			"trans-tr-TR": "translations/tr-TR.json",
-			"trans-zh-CN": "translations/zh-CN.json"
-		}
-	};
-	//#endregion
-	//#region assets/locales.json
-	var locales_default = {
-		"de-DE": {
-			"name": "Deutsch (Deutschland)",
-			"nameEnglish": "German (Germany)",
-			"emoji": "🇩🇪",
-			"userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"de",
-				"de-AT",
-				"de-BE",
-				"de-CH",
-				"de-LI",
-				"de-LU"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"en-US": {
-			"name": "English (United States)",
-			"nameEnglish": "English (United States)",
-			"emoji": "🇺🇸",
-			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["en", "en-CA"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"en-GB": {
-			"name": "English (Great Britain)",
-			"nameEnglish": "English (Great Britain)",
-			"emoji": "🇬🇧",
-			"userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"en-AU",
-				"en-IE",
-				"en-NZ",
-				"en-ZA"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"es-ES": {
-			"name": "Español (España)",
-			"nameEnglish": "Spanish (Spain)",
-			"emoji": "🇪🇸",
-			"userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["es", "es-MX"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"fr-FR": {
-			"name": "Français (France)",
-			"nameEnglish": "French (France)",
-			"emoji": "🇫🇷",
-			"userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"fr",
-				"fr-CA",
-				"fr-BE",
-				"fr-CH",
-				"fr-LU"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"hi-IN": {
-			"name": "हिंदी (भारत)",
-			"nameEnglish": "Hindi (India)",
-			"emoji": "🇮🇳",
-			"userscriptDesc": "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
-			"authors": ["Sv443"],
-			"altLocales": ["hi", "hi-NP"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "।",
-			"sentenceTerminators": [
-				"।",
-				".",
-				"!",
-				"?"
-			]
-		},
-		"ja-JP": {
-			"name": "日本語 (日本)",
-			"nameEnglish": "Japanese (Japan)",
-			"emoji": "🇯🇵",
-			"userscriptDesc": "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
-			"authors": ["Sv443"],
-			"altLocales": ["ja"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "。",
-			"sentenceTerminators": [
-				"。",
-				"！",
-				"？",
-				".",
-				"!",
-				"?"
-			]
-		},
-		"pt-BR": {
-			"name": "Português (Brasil)",
-			"nameEnglish": "Portuguese (Brazil)",
-			"emoji": "🇧🇷",
-			"userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
-			"authors": ["Sv443"],
-			"altLocales": ["pt", "pt-PT"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"tr-TR": {
-			"name": "Türkçe (Türkiye)",
-			"nameEnglish": "Turkish (Turkey)",
-			"emoji": "🇹🇷",
-			"userscriptDesc": "YouTube Music™ ve YouTube™ için yapılandırılabilir sayfa düzeni ve kullanıcı deneyimi iyileştirmeleri",
-			"authors": ["kcangny"],
-			"altLocales": ["tr"],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": ".",
-			"sentenceTerminators": [
-				".",
-				"!",
-				"?"
-			]
-		},
-		"zh-CN": {
-			"name": "中文（简化，中国）",
-			"nameEnglish": "Chinese (Simplified, China)",
-			"emoji": "🇨🇳",
-			"userscriptDesc": "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
-			"authors": ["Sv443"],
-			"altLocales": [
-				"zh",
-				"zh-TW",
-				"zh-HK",
-				"zh-SG"
-			],
-			"textDir": "ltr",
-			"sentenceTerminatorNeutral": "。",
-			"sentenceTerminators": [
-				"。",
-				"！",
-				"？",
-				".",
-				"!",
-				"?"
-			]
-		}
-	};
-	//#endregion
-	//#region src/types.ts
-	var LogLevel = /* @__PURE__ */ function(LogLevel) {
-		LogLevel[LogLevel["Debug"] = 0] = "Debug";
-		LogLevel[LogLevel["Info"] = 1] = "Info";
-		return LogLevel;
-	}({});
-	/**
-	* Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
-	* Don't request more permissions than you actually need, as this is a bad practice and can lead to your plugin being rejected.
-	*/
-	var PluginIntent = /* @__PURE__ */ function(PluginIntent) {
-		/** Plugin can read the feature configuration. */
-		PluginIntent[PluginIntent["ReadFeatureConfig"] = 1] = "ReadFeatureConfig";
-		/** Plugin can write to the feature configuration. */
-		PluginIntent[PluginIntent["WriteFeatureConfig"] = 2] = "WriteFeatureConfig";
-		/** Plugin has access to hidden config values. */
-		PluginIntent[PluginIntent["SeeHiddenConfigValues"] = 4] = "SeeHiddenConfigValues";
-		/** Plugin can write to the lyrics cache. */
-		PluginIntent[PluginIntent["WriteLyricsCache"] = 8] = "WriteLyricsCache";
-		/** Plugin can add new translations and overwrite existing ones. */
-		PluginIntent[PluginIntent["WriteTranslations"] = 16] = "WriteTranslations";
-		/** Plugin can create modal dialogs. */
-		PluginIntent[PluginIntent["CreateModalDialogs"] = 32] = "CreateModalDialogs";
-		/** Plugin can read auto-like data. */
-		PluginIntent[PluginIntent["ReadAutoLikeData"] = 64] = "ReadAutoLikeData";
-		/** Plugin can write to auto-like data. */
-		PluginIntent[PluginIntent["WriteAutoLikeData"] = 128] = "WriteAutoLikeData";
-		/** Plugin has access to deeply internal functions and instances. */
-		PluginIntent[PluginIntent["InternalAccess"] = 256] = "InternalAccess";
-		/** Grants all other intents. */
-		PluginIntent[PluginIntent["FullAccess"] = 512] = "FullAccess";
-		return PluginIntent;
-	}({});
-	//#endregion
-	//#region src/constants.ts
-	var constants_exports = /* @__PURE__ */ __exportAll({
-		assetSource: () => assetSource,
-		branch: () => branch$1,
-		buildNumber: () => buildNumber$1,
-		buildTimestamp: () => buildTimestamp,
-		changelogUrl: () => changelogUrl,
-		compressionFormat: () => compressionFormat$1,
-		defaultLogLevel: () => defaultLogLevel,
-		devServerPort: () => devServerPort,
-		host: () => host$1,
-		initTime: () => initTime,
-		initialParams: () => initialParams$1,
-		mode: () => mode$1,
-		newFeatureAdornmentMaxSessionCount: () => 20,
-		platformNames: () => platformNames,
-		rawConsts: () => rawConsts,
-		repo: () => repo$1,
-		scriptInfo: () => scriptInfo$1,
-		sessionStorageAvailable: () => sessionStorageAvailable$1
-	});
-	/**
-	* Check below this variable for the constant variables used throughout BetterYTM.  
-	* Edit them however you want, but note that it's really easy to mess something up here and make the script stop working, so it's recommended to back up the code first.  
-	* Reload the page to apply changes and refer to your browser's JavaScript console (usually F12, Ctrl+Shift+K or Ctrl+Shift+I) for any errors with your changes.  
-	* @deprecated This object was reworked when the build process was migrated to vite.
-	*/
-	var rawConsts = {};
-	/** Path of the GitHub repo - not a URL nor a hostname nor a URL path. To be used in the construction of various GitHub-targeting URLs. */
-	var repo$1 = "Sv443/BetterYTM";
-	/** The mode in which the script was built (production or development). */
-	var mode$1 = "development";
-	/** The branch to use in various URLs that point to the GitHub repo. */
-	var branch$1 = "develop";
-	/** Which host the userscript was installed from. */
-	var host$1 = "github";
-	/** The build number of the userscript. */
-	var buildNumber$1 = "456ad3bb";
-	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789079373571;
-	/** The source of the assets - github, jsdelivr or local. */
-	var assetSource = "jsdelivr";
-	/** The port of the dev server. */
-	var devServerPort = 8710;
-	/** URL to the changelog file */
-	var changelogUrl = `https://raw.githubusercontent.com/${repo$1}/develop/changelog.md?build=${buildNumber$1}`;
-	/** The URL search parameters at the earliest possible time */
-	var initialParams$1 = new URL(location.href).searchParams;
-	/** Timestamp of when the script was initialized. */
-	var initTime = Date.now();
-	/** Names of platforms by key of {@linkcode host} */
-	var platformNames = pureObj$2({
-		github: "GitHub",
-		greasyfork: "Greasy Fork",
-		openuserjs: "OpenUserJS"
-	});
-	/** Default compression format used throughout BYTM */
-	var compressionFormat$1 = "deflate-raw";
-	/** Whether sessionStorage is available and working */
-	var sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function" && (() => {
-		try {
-			const key = `_bytm_test_${randomId$1(6, 36, false, true)}`;
-			sessionStorage.setItem(key, "test");
-			sessionStorage.removeItem(key);
-			return true;
-		} catch {
-			return false;
-		}
-	})();
-	/**
-	* Fallback and initial value of how much info should be logged to the devtools console  
-	* 0 = Debug (show everything) or 1 = Info (show only important stuff)
-	*/
-	var defaultLogLevel = LogLevel.Debug;
-	/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
-	var scriptInfo$1 = pureObj$2({
-		name: GM_info.script.name,
-		version: GM_info.script.version,
-		namespace: GM_info.script.namespace
-	});
-	//#endregion
 	//#region node_modules/.pnpm/marked@17.0.4/node_modules/marked/lib/marked.esm.js
 	/**
 	* marked v17.0.4 - a markdown parser
@@ -8405,6 +8405,169 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	b.parse;
 	x.lex;
 	//#endregion
+	//#region src/components/toast.ts
+	/** Max amount of seconds a toast can be shown for */
+	var maxToastDuration = 15e3;
+	/** Queue of future toasts to be shown */
+	var toastQueue = [];
+	/** Whether a toast is currently being shown */
+	var showingToast = false;
+	/** Timeout ID for the currently shown toast */
+	var timeout;
+	/**
+	* Shows a toast message with an icon.  
+	* @returns The toast element if it could be immediately shown, otherwise `void` (like when it was queued to be shown later)
+	*/
+	async function showIconToast({ duration, position = "tr", iconPos = "left", ...rest }) {
+		if (typeof duration !== "number" || isNaN(duration)) duration = getFeature("toastDuration") * 1e3;
+		if (duration <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
+		if (showingToast) return void toastQueue.push(() => showIconToast({
+			duration,
+			position,
+			iconPos,
+			...rest
+		}));
+		showingToast = true;
+		const toastWrapper = document.createElement("div");
+		toastWrapper.classList.add("bytm-toast-flex-wrapper");
+		let toastIcon;
+		if ("iconSrc" in rest) {
+			toastIcon = document.createElement("img");
+			toastIcon.classList.add("bytm-toast-icon", "img");
+			toastIcon.src = await rest.iconSrc;
+		} else {
+			toastIcon = document.createElement("div");
+			toastIcon.classList.add("bytm-toast-icon");
+			const iconHtml = await resourceAsString(rest.icon);
+			if (iconHtml) setInnerHtml(toastIcon, iconHtml);
+			if ("iconFill" in rest && rest.iconFill) toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
+		}
+		const toastMessage = document.createElement("div");
+		toastMessage.classList.add("bytm-toast-message");
+		if ("message" in rest) {
+			toastMessage.textContent = rest.message;
+			if ("subtitle" in rest && rest.subtitle) {
+				const subtitleEl = document.createElement("div");
+				subtitleEl.classList.add("bytm-toast-subtitle");
+				subtitleEl.textContent = rest.subtitle;
+				toastMessage.appendChild(subtitleEl);
+			}
+		} else toastMessage.appendChild(rest.element);
+		iconPos === "left" && toastWrapper.appendChild(toastIcon);
+		toastWrapper.appendChild(toastMessage);
+		iconPos === "right" && toastWrapper.appendChild(toastIcon);
+		showingToast = false;
+		const elem = await showToast({
+			duration,
+			position,
+			element: toastWrapper,
+			title: "message" in rest ? rest.message : rest.title,
+			onClick: rest.onClick
+		});
+		if (toastQueue.length > 0) return new Promise((resolve) => {
+			elem?.addEventListener("transitionend", async () => {
+				const nextToast = toastQueue.shift();
+				showingToast = false;
+				return resolve(void await nextToast());
+			}, { once: true });
+		});
+		else {
+			showingToast = false;
+			return elem;
+		}
+	}
+	/** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
+	async function showToast(arg) {
+		const props = typeof arg === "string" ? {
+			message: arg,
+			duration: getFeature("toastDuration") * 1e3
+		} : arg;
+		const { duration: durationMs = getFeature("toastDuration") * 1e3, onClick, position = "tr", ...rest } = props;
+		if (durationMs <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
+		if (showingToast) return void toastQueue.push(() => showToast(props));
+		showingToast = true;
+		if (document.querySelector("#bytm-toast")) await closeToast();
+		const toastElem = document.createElement("div");
+		toastElem.classList.add(`pos-${position.toLowerCase()}`);
+		onClick && toastElem.classList.add("clickable");
+		toastElem.id = "bytm-toast";
+		toastElem.role = "alert";
+		toastElem.ariaLive = "polite";
+		toastElem.ariaAtomic = "true";
+		toastElem.addEventListener("click", async (e) => {
+			onClick?.(e);
+			await closeToast();
+		}, { once: true });
+		if ("message" in rest) toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
+		else {
+			toastElem.appendChild(rest.element);
+			toastElem.title = toastElem.ariaLabel = rest.title;
+		}
+		document.body.appendChild(toastElem);
+		pauseFor$1(100).then(() => {
+			toastElem.classList.add("visible");
+			if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
+				timeout && clearTimeout(timeout);
+				timeout = setTimeout(closeToast, clamp$1(durationMs, 250, maxToastDuration));
+			}
+		});
+		if (toastQueue.length > 0) return new Promise((resolve) => {
+			toastElem?.addEventListener("transitionend", async () => {
+				const nextToast = toastQueue.shift();
+				showingToast = false;
+				return resolve(void await nextToast());
+			}, { once: true });
+		});
+		else {
+			showingToast = false;
+			return toastElem;
+		}
+	}
+	/** Closes the currently open toast */
+	async function closeToast() {
+		if (timeout) {
+			clearTimeout(timeout);
+			timeout = void 0;
+		}
+		const toastEls = document.querySelectorAll("#bytm-toast");
+		if (toastEls.length === 0) return;
+		await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
+			toastEl.addEventListener("transitionend", async () => toastEl.remove(), { once: true });
+			toastEl.classList.remove("visible");
+		}));
+	}
+	//#endregion
+	//#region src/utils/input.ts
+	var interactionKeys = [
+		"Enter",
+		"NumpadEnter",
+		" ",
+		"Space"
+	];
+	/**
+	* Adds generic, accessible interaction listeners to the passed element.  
+	* All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
+	* @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
+	*/
+	function onInteraction(elem, listener, listenerOptions) {
+		const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
+		const proxListener = (e) => {
+			if (e instanceof KeyboardEvent) if (interactionKeys.includes(e.key)) {
+				preventDefault && e.preventDefault();
+				stopPropagation && e.stopPropagation();
+			} else return;
+			else if (e instanceof MouseEvent) {
+				preventDefault && e.preventDefault();
+				stopPropagation && e.stopPropagation();
+			}
+			listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
+			listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
+			listener(e);
+		};
+		elem.addEventListener("click", proxListener, listenerOpts);
+		elem.addEventListener("keydown", proxListener, listenerOpts);
+	}
+	//#endregion
 	//#region src/utils/translations.ts
 	/** Contains the identifiers of all initialized and loaded translation locales */
 	var initializedLocales = /* @__PURE__ */ new Set();
@@ -8760,6 +8923,41 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		}
 	};
 	//#endregion
+	//#region src/components/MarkdownDialog.ts
+	var MarkdownDialog = class MarkdownDialog extends BytmDialog {
+		opts;
+		constructor(options) {
+			super({
+				...options,
+				id: `md-${options.id}`,
+				renderBody: () => this.renderBody()
+			});
+			this.opts = options;
+		}
+		/** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
+		static async parseMd(md, sanitize = false) {
+			const parsed = await g.parse(md, {
+				async: true,
+				gfm: true,
+				breaks: true
+			});
+			return sanitize ? sanitizeHtml(parsed) : parsed;
+		}
+		/** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
+		async renderBody() {
+			const bodyEl = document.createElement("div");
+			bodyEl.classList.add("bytm-md-dialog-body");
+			const mdCont = await consumeStringGen$1(this.opts.body);
+			const markdownEl = document.createElement("div");
+			markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
+			markdownEl.tabIndex = 0;
+			setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont, this.opts.sanitizeBody));
+			if (this.opts.modifyBodyElements) await this.opts.modifyBodyElements(bodyEl, markdownEl);
+			bodyEl.appendChild(markdownEl);
+			return bodyEl;
+		}
+	};
+	//#endregion
 	//#region src/utils/Logger.ts
 	/** Mapping of predefined {@linkcode LogCategory} entries. */
 	var loggerCategoryMapping = {
@@ -8937,6 +9135,289 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			console.log(this.conPrefixDbg, ...args);
 		}
 	};
+	var package_default = {
+		name: "@sv443/betterytm",
+		userscriptName: "BetterYTM",
+		version: "3.1.0",
+		description: "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+		license: "AGPL-3.0-or-later",
+		licenseUrl: "https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt",
+		homepage: "https://github.com/Sv443/BetterYTM",
+		namespace: "https://github.com/Sv443/BetterYTM",
+		pluginDiscoveryUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",
+		specialThanksUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks",
+		devVersionUrl: "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen",
+		main: "./src/index.ts",
+		type: "module",
+		author: {
+			"name": "Sv443",
+			"url": "https://github.com/Sv443"
+		},
+		contributors: [
+			{
+				"name": "indierodo",
+				"url": "https://github.com/indierodo",
+				"contributions": ["Track numbers feature"]
+			},
+			{
+				"name": "cryeprecision",
+				"url": "https://github.com/cryeprecision",
+				"contributions": ["Exponential volume slider feature"]
+			},
+			{
+				"name": "kcangny",
+				"url": "https://github.com/kcangny",
+				"contributions": ["Turkish translations"]
+			},
+			{
+				"name": "canarado",
+				"url": "https://github.com/canarado",
+				"contributions": ["Version checking code"]
+			}
+		],
+		bugs: { "url": "https://github.com/Sv443/BetterYTM/issues" },
+		funding: {
+			"type": "github",
+			"url": "https://github.com/sponsors/Sv443"
+		},
+		scripts: {
+			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
+			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
+			"build-dev": "pnpm build-dev-base && pnpm build-dev-compat",
+			"build-dev-base": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
+			"build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
+			"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
+			"build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
+			"build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
+			"build-prod-oujs": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=openuserjs BYTM_SUFFIX=_oujs vite build",
+			"build-prod-compat": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
+			"build-local-base": "cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build",
+			"build-prod-base": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
+			"preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
+			"serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
+			"lint": "eslint . && tsc --noEmit",
+			"tr": "node --no-warnings=ExperimentalWarning ./src/tools/tr.ts",
+			"tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
+			"tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
+			"tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
+			"tr-to-nested": "node --no-warnings=ExperimentalWarning ./src/tools/tr-to-nested.ts",
+			"tr-prep": "pnpm tr-format -p",
+			"gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
+			"alias-imports": "node --no-warnings=ExperimentalWarning ./src/tools/alias-imports.ts",
+			"node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
+			"invisible": "node --no-warnings=ExperimentalWarning --enable-source-maps src/tools/run-invisible.mjs",
+			"change": "changeset",
+			"changeset-version": "node src/tools/changeset-version.mjs",
+			"knip": "knip",
+			"typedoc": "typedoc",
+			"storybook": "storybook dev -p 6006",
+			"build-storybook": "storybook build",
+			"clean-install": "pnpm clean --lockfile && pnpm i"
+		},
+		engines: {
+			"node": ">=22",
+			"pnpm": ">=10"
+		},
+		repository: {
+			"type": "git",
+			"url": "git+https://github.com/Sv443/BetterYTM.git"
+		},
+		hosts: {
+			"github": "https://github.com/Sv443/BetterYTM",
+			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
+			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
+		},
+		updates: {
+			"github": "https://github.com/Sv443/BetterYTM/releases",
+			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
+			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
+		},
+		dependencies: {
+			"@sv443-network/coreutils": "3.8.0",
+			"@sv443-network/userutils": "11.0.0",
+			"compare-versions": "6.1.1",
+			"dompurify": "3.3.3",
+			"marked": "17.0.4",
+			"tslib": "2.8.1"
+		},
+		devDependencies: {
+			"@changesets/cli": "2.30.0",
+			"@chromatic-com/storybook": "5.0.1",
+			"@eslint/eslintrc": "3.3.5",
+			"@eslint/js": "10.0.1",
+			"@storybook/addon-essentials": "8.6.14",
+			"@storybook/addon-interactions": "8.6.14",
+			"@storybook/addon-links": "10.2.19",
+			"@storybook/blocks": "8.6.14",
+			"@storybook/html": "10.2.19",
+			"@storybook/html-vite": "10.2.19",
+			"@storybook/test": "8.6.15",
+			"@types/cors": "2.8.19",
+			"@types/express": "5.0.6",
+			"@types/node": "24.12.0",
+			"@types/tampermonkey": "5.0.5",
+			"@typescript-eslint/eslint-plugin": "8.57.0",
+			"@typescript-eslint/parser": "8.57.0",
+			"@typescript-eslint/utils": "8.57.0",
+			"comment-json": "5.0.0",
+			"concurrently": "9.2.1",
+			"cors": "2.8.6",
+			"cross-env": "7.0.3",
+			"dotenv": "17.3.1",
+			"eslint": "10.9.1",
+			"eslint-plugin-storybook": "10.2.19",
+			"express": "5.2.1",
+			"globals": "17.4.0",
+			"kleur": "4.1.5",
+			"knip": "5.86.0",
+			"nanoevents": "9.1.0",
+			"pnpm": "10.32.1",
+			"storybook": "10.2.19",
+			"storybook-dark-mode": "5.0.0",
+			"terser": "5.47.1",
+			"tsx": "4.21.0",
+			"typedoc": "0.28.17",
+			"typedoc-plugin-markdown": "4.10.0",
+			"typescript": "5.9.3",
+			"typescript-eslint": "8.57.0",
+			"vite": "8.0.11"
+		},
+		browserslist: [
+			"last 1 version",
+			"> 1%",
+			"not dead"
+		]
+	};
+	//#endregion
+	//#region src/utils/logging.ts
+	var showErrToast = debounce$1((errName, ...args) => showIconToast({
+		message: t("generic_error_toast_encountered_error_type", errName),
+		subtitle: t("generic_error_toast_click_for_details"),
+		icon: "icon-error",
+		iconFill: "var(--bytm-error-col)",
+		onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open()
+	}), 400);
+	var loggerOpts = { onError(...args) {
+		if (getFeature("showToastOnGenericError")) showErrToast(args.find((a) => a instanceof Error)?.name ?? t("error"), ...args);
+	} };
+	/** Pre-instantiated Logger instances, one per category. */
+	var loggers = Object.entries(loggerCategoryMapping).reduce((a, [catId, catName]) => ({
+		...a,
+		[catId]: new Logger(catName, loggerOpts)
+	}), {});
+	/** Returns a string representation of all logs across all Logger instances, formatted for downloading as a file. */
+	var serializeLogs = Logger.serializeLogs.bind(Logger);
+	/** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
+	function setLogLevel(level) {
+		setGlobalProp("logLevel", level);
+		if (Logger.curLogLevel !== level) loggers.misc.log("Set the log level to", LogLevel[level]);
+		Logger.curLogLevel = level;
+	}
+	function getErrorDialog(errName, args) {
+		return new MarkdownDialog({
+			id: "generic-error",
+			height: 400,
+			width: 500,
+			small: true,
+			destroyOnClose: true,
+			renderHeader() {
+				const header = document.createElement("h2");
+				header.classList.add("bytm-dialog-title");
+				header.role = "heading";
+				header.ariaLevel = "1";
+				header.tabIndex = 0;
+				header.textContent = header.ariaLabel = errName;
+				return header;
+			},
+			renderFooter(dlg) {
+				const footer = document.createElement("div");
+				footer.classList.add("bytm-dialog-footer", "align-right");
+				const dlLogsBtn = document.createElement("button");
+				dlLogsBtn.classList.add("bytm-btn");
+				dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
+				onInteraction(dlLogsBtn, () => {
+					downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, Logger.serializeLogs(), "text/plain");
+				});
+				const closeBtn = document.createElement("button");
+				closeBtn.classList.add("bytm-btn");
+				closeBtn.textContent = t("close");
+				closeBtn.ariaLabel = t("close_menu_tooltip");
+				onInteraction(closeBtn, () => dlg.close());
+				footer.appendChild(dlLogsBtn);
+				footer.appendChild(closeBtn);
+				return footer;
+			},
+			body: `\
+${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+  
+${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
+		});
+	}
+	/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
+	var LyricsError = class extends DatedError$1 {
+		constructor(message, opts) {
+			super(message, opts);
+			this.name = "LyricsError";
+		}
+	};
+	/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
+	var PluginError = class extends DatedError$1 {
+		constructor(message, opts) {
+			super(message, opts);
+			this.name = "PluginError";
+		}
+	};
+	//#endregion
+	//#region src/utils/perf.ts
+	var perfReport = {
+		_comments: [
+			`This is a performance report generated by ${scriptInfo$1.name} (${package_default.homepage})`,
+			"It shows the amount of time (in ms) it took to complete various stages of the initialization process.",
+			"- The 'start' property is a 13-digit epoch timestamp representing the time at which the script started running.",
+			"- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.",
+			"- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property."
+		],
+		meta: {
+			version: scriptInfo$1.version,
+			buildNumber: buildNumber$1,
+			buildTime: new Date(buildTimestamp).toISOString(),
+			mode: mode$1,
+			domain: "ytm",
+			userAgent: navigator.userAgent,
+			scriptHandler: GM.info?.scriptHandler ?? "unknown",
+			scriptHandlerVersion: GM.info?.version ?? "unknown",
+			injectInto: GM.info?.injectInto ?? null,
+			isIncognito: GM.info?.isIncognito ?? null,
+			isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? null,
+			sandboxMode: GM.info?.sandboxMode ?? null
+		},
+		durations: {},
+		featureStart: 0,
+		featureDurations: {},
+		start: 0,
+		sinceStart: {},
+		resources: {},
+		observers: {}
+	};
+	/**
+	* Starts a timer for measuring the duration of a specific phase of the initialization process.  
+	* Returns a function that, when called, will stop the timer and save the duration in the `initTimings` object under the specified name.
+	*/
+	function measureInitDuration(name) {
+		const start = Date.now();
+		return () => {
+			if (typeof perfReport.durations !== "object") perfReport.durations = {};
+			perfReport.durations[name] = Date.now() - start;
+		};
+	}
+	/** Records when a {@linkcode globservers} instance checks for elements and finds elements, to record the event times to the {@linkcode perfReport}. */
+	function recordObserverTick(globserverName, type, ...results) {
+		if (typeof perfReport.observers[globserverName] !== "object") perfReport.observers[globserverName] = {};
+		const obsData = [...perfReport.observers[globserverName][type] ?? []];
+		if (type === "checked") obsData.push(millis());
+		else obsData.push([millis(), results[0]]);
+		perfReport.observers[globserverName][type] = obsData;
+	}
 	//#endregion
 	//#region src/observers.ts
 	/** Global SelectorObserver instances usable throughout the script for improved performance */
@@ -8998,7 +9479,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					const browseResponseSelector = getSelector("observer", "browseResponse");
 					globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
 						...defaultObserverOptions,
-						defaultDebounce: Math.floor(defaultObserverOptions.defaultDebounce / 2),
+						defaultDebounce: clamp(Math.floor(defaultObserverOptions.defaultDebounce / 2), 50, 1e3),
 						subtree: true
 					});
 					globservers.body.addListener(browseResponseSelector, { listener: getEnableObsFn("browseResponse") });
@@ -9107,14 +9588,16 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					globservers.body.addListener(mastheadSelector, { listener: getEnableObsFn("ytMasthead") });
 				}
 			}
-			if (getFeature("verboseObservers")) for (const [name, obs] of Object.entries(globservers)) {
+			for (const [name, obs] of Object.entries(globservers)) {
 				const baseElem = typeof obs.baseElement === "string" ? `'${obs.baseElement}'` : Logger.serializeElement(obs.baseElement);
 				obs.on("checked", () => {
-					loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
+					if (getFeature("verboseObservers")) loggers.debug.log(`SelectorObserver with name '${name}' and base element ${baseElem} is checking for elements.`, LogLevel.Info);
+					recordObserverTick(name, "checked");
 				});
 				obs.on("found", (data) => {
 					const elements = data.elements instanceof NodeList ? [...data.elements].map((e) => Logger.serializeElement(e)) : [Logger.serializeElement(data.elements)];
-					loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural$1("element", elements)}:`, elements.join(", "), LogLevel.Info);
+					if (getFeature("verboseObservers")) loggers.debug.info(`SelectorObserver with name '${name}' and base element ${baseElem} found ${elements.length} ${autoPlural$1("element", elements)}:`, elements.join(", "), LogLevel.Info);
+					recordObserverTick(name, "found", elements.length);
 				});
 			}
 			globserversReady = true;
@@ -9274,37 +9757,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
 			lastPathname = String(location.pathname);
 		}
-	}
-	//#endregion
-	//#region src/utils/input.ts
-	var interactionKeys = [
-		"Enter",
-		"NumpadEnter",
-		" ",
-		"Space"
-	];
-	/**
-	* Adds generic, accessible interaction listeners to the passed element.  
-	* All listeners have the default behavior prevented and stop propagation (for keyboard events this only applies as long as the captured key is included in {@linkcode interactionKeys}).
-	* @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
-	*/
-	function onInteraction(elem, listener, listenerOptions) {
-		const { preventDefault = true, stopPropagation = true, ...listenerOpts } = listenerOptions ?? {};
-		const proxListener = (e) => {
-			if (e instanceof KeyboardEvent) if (interactionKeys.includes(e.key)) {
-				preventDefault && e.preventDefault();
-				stopPropagation && e.stopPropagation();
-			} else return;
-			else if (e instanceof MouseEvent) {
-				preventDefault && e.preventDefault();
-				stopPropagation && e.stopPropagation();
-			}
-			listenerOpts?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
-			listenerOpts?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
-			listener(e);
-		};
-		elem.addEventListener("click", proxListener, listenerOpts);
-		elem.addEventListener("keydown", proxListener, listenerOpts);
 	}
 	//#endregion
 	//#region src/dialogs/prompt.ts
@@ -10301,149 +10753,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
 	}
 	//#endregion
-	//#region src/utils/xhr.ts
-	/**
-	* Constructs a URL from a base URL (which may already contain query parameters and/or a hash) and a record of query parameters.  
-	* The query parameters already present in {@linkcode baseUrl} are merged with {@linkcode params}, with {@linkcode params} taking precedence on key conflicts.  
-	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
-	* All values will be stringified using their `toString()` method and then URI-encoded.
-	* @returns Returns a string instead of a URL object
-	*/
-	function constructUrlString(baseUrl, params) {
-		const [baseAndQuery, hash] = baseUrl.split("#");
-		const [base, query] = baseAndQuery.split("?");
-		const mergedParams = /* @__PURE__ */ new Map();
-		if (query) for (const part of query.split("&")) {
-			if (part.length === 0) continue;
-			const [k, v] = part.split("=");
-			mergedParams.set(decodeURIComponent(k), v === void 0 ? null : decodeURIComponent(v));
-		}
-		for (const [k, v] of Object.entries(params)) mergedParams.set(k, v);
-		const queryString = [...mergedParams.entries()].filter(([, v]) => v !== void 0).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&");
-		return `${base}${queryString.length > 0 ? `?${queryString}` : ""}${hash !== void 0 ? `#${hash}` : ""}`;
-	}
-	/**
-	* Constructs a URL object from a base URL and a record of query parameters.  
-	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
-	* All values will be stringified and then URI-encoded.  
-	* @returns Returns a URL object instead of a string
-	*/
-	function constructUrl(base, params) {
-		return new URL(constructUrlString(base, params));
-	}
-	/**
-	* Sends a request with the specified parameters and returns the response as a Promise.  
-	* Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to {@linkcode fetch()} and {@linkcode fetchAdvanced()}.
-	*/
-	function sendRequest(details) {
-		return new Promise((resolve, reject) => {
-			const success = (val) => {
-				getFeature("logHttp") && loggers.xhr.log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
-				resolve(val);
-			};
-			const failure = (err) => {
-				const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
-				getFeature("logHttp") && loggers.xhr.error(errStr, err);
-				reject(new Error(errStr, { cause: err }));
-			};
-			GM.xmlHttpRequest({
-				timeout: 1e4,
-				...details,
-				onload: success,
-				onerror: failure,
-				ontimeout: failure,
-				onabort: failure
-			});
-		});
-	}
-	/** Fetches a CSS file from the specified resource with a key starting with `css-` */
-	async function fetchCss(key) {
-		try {
-			return await (await fetchAdvanced$1(await getResourceUrl(key))).text() ?? void 0;
-		} catch (err) {
-			loggers.xhr.error(`Couldn't fetch CSS resource with key '${key}' due to an error:`, err);
-			return;
-		}
-	}
-	/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
-	var voteCache = /* @__PURE__ */ new Map();
-	/** Time-to-live for the vote cache in milliseconds */
-	var voteCacheTTL = 1e3 * 60 * 60;
-	/**
-	* Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
-	* @param videoID The video ID of the video
-	*/
-	async function fetchVideoVotes(videoID) {
-		try {
-			if (!videoID) return;
-			if (voteCache.has(videoID)) {
-				const cached = voteCache.get(videoID);
-				if (Date.now() - cached.timestamp < voteCacheTTL) {
-					loggers.xhr.info(`Returning cached video votes for video ID '${videoID}':`, cached);
-					return cached;
-				} else voteCache.delete(videoID);
-			}
-			const votesRaw = JSON.parse((await sendRequest({
-				method: "GET",
-				url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`
-			})).response);
-			if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
-				loggers.xhr.error("Couldn't parse video votes due to an error:", votesRaw);
-				return;
-			}
-			const votesObj = {
-				id: votesRaw.id,
-				likes: votesRaw.likes,
-				dislikes: votesRaw.dislikes,
-				rating: roundFixed$1(votesRaw.rating, 3),
-				timestamp: Date.now()
-			};
-			voteCache.set(votesObj.id, votesObj);
-			loggers.xhr.info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
-			return votesObj;
-		} catch (err) {
-			loggers.xhr.error("Couldn't fetch video votes due to an error:", err);
-			return;
-		}
-	}
-	/**
-	* Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`  
-	* Never throws, just returns an empty array on failure.
-	*/
-	async function fetchITunesAlbumInfo(artist, album) {
-		try {
-			const url = constructUrlString("https://itunes.apple.com/search", {
-				country: "us",
-				limit: 20,
-				entity: "album",
-				term: `${artist} ${album}`
-			});
-			loggers.xhr.log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
-			const req = await sendRequest({
-				method: "GET",
-				url
-			});
-			const json = JSON.parse(req.response);
-			if (!("resultCount" in json) || !("results" in json)) {
-				loggers.xhr.error("Couldn't parse iTunes album info due to an error:", json);
-				return [];
-			}
-			if (json.resultCount === 0) return [];
-			return json.results.filter((result) => {
-				if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result)) return false;
-				return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
-			}).map((result) => {
-				return {
-					...result,
-					collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, "")
-				};
-			});
-		} catch (err) {
-			loggers.xhr.error("Couldn't fetch iTunes album info due to an error:", err);
-			return [];
-		}
-	}
-	//#endregion
 	//#region src/features/lyrics.ts
 	/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 	var geniUrlRatelimitTimeframe = 30;
@@ -10934,159 +11243,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		str += hotkey.code;
 		return str;
 	}
-	var package_default = {
-		name: "@sv443/betterytm",
-		userscriptName: "BetterYTM",
-		version: "3.1.0",
-		description: "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-		license: "AGPL-3.0-or-later",
-		licenseUrl: "https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt",
-		homepage: "https://github.com/Sv443/BetterYTM",
-		namespace: "https://github.com/Sv443/BetterYTM",
-		pluginDiscoveryUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#plugins",
-		specialThanksUrl: "https://github.com/Sv443/BetterYTM/blob/main/README.md#special-thanks",
-		devVersionUrl: "https://github.com/Sv443/BetterYTM/pulls?q=sort%3Aupdated-desc+is%3Apr+is%3Aopen",
-		main: "./src/index.ts",
-		type: "module",
-		author: {
-			"name": "Sv443",
-			"url": "https://github.com/Sv443"
-		},
-		contributors: [
-			{
-				"name": "indierodo",
-				"url": "https://github.com/indierodo",
-				"contributions": ["Track numbers feature"]
-			},
-			{
-				"name": "cryeprecision",
-				"url": "https://github.com/cryeprecision",
-				"contributions": ["Exponential volume slider feature"]
-			},
-			{
-				"name": "kcangny",
-				"url": "https://github.com/kcangny",
-				"contributions": ["Turkish translations"]
-			},
-			{
-				"name": "canarado",
-				"url": "https://github.com/canarado",
-				"contributions": ["Version checking code"]
-			}
-		],
-		bugs: { "url": "https://github.com/Sv443/BetterYTM/issues" },
-		funding: {
-			"type": "github",
-			"url": "https://github.com/sponsors/Sv443"
-		},
-		scripts: {
-			"dev": "concurrently \"cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build --watch\" \"pnpm serve -S -L\"",
-			"dev-cdn": "concurrently \"cross-env BYTM_GEN_META=false vite build --watch\" \"pnpm serve\"",
-			"build-dev": "pnpm build-dev-base && pnpm build-dev-compat",
-			"build-dev-base": "cross-env BYTM_MODE=development BYTM_BRANCH=develop vite build",
-			"build-dev-compat": "cross-env BYTM_MODE=development BYTM_BRANCH=develop BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
-			"build-prod": "pnpm build-prod-gh && pnpm build-prod-gf && pnpm build-prod-oujs && pnpm build-prod-compat",
-			"build-prod-gh": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
-			"build-prod-gf": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=greasyfork BYTM_SUFFIX=_gf vite build",
-			"build-prod-oujs": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_HOST=openuserjs BYTM_SUFFIX=_oujs vite build",
-			"build-prod-compat": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
-			"build-local-base": "cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build",
-			"build-prod-base": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
-			"preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
-			"serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
-			"lint": "eslint . && tsc --noEmit",
-			"tr": "node --no-warnings=ExperimentalWarning ./src/tools/tr.ts",
-			"tr-changed": "node --no-warnings=ExperimentalWarning ./src/tools/tr-changed.ts",
-			"tr-progress": "node --no-warnings=ExperimentalWarning ./src/tools/tr-progress.ts",
-			"tr-format": "node --no-warnings=ExperimentalWarning ./src/tools/tr-format.ts",
-			"tr-to-nested": "node --no-warnings=ExperimentalWarning ./src/tools/tr-to-nested.ts",
-			"tr-prep": "pnpm tr-format -p",
-			"gen-readme": "node --no-warnings=ExperimentalWarning ./src/tools/gen-readme.ts",
-			"alias-imports": "node --no-warnings=ExperimentalWarning ./src/tools/alias-imports.ts",
-			"node-ts": "node --import tsx --no-warnings=ExperimentalWarning --enable-source-maps",
-			"invisible": "node --no-warnings=ExperimentalWarning --enable-source-maps src/tools/run-invisible.mjs",
-			"change": "changeset",
-			"changeset-version": "node src/tools/changeset-version.mjs",
-			"knip": "knip",
-			"typedoc": "typedoc",
-			"storybook": "storybook dev -p 6006",
-			"build-storybook": "storybook build",
-			"clean-install": "pnpm clean --lockfile && pnpm i"
-		},
-		engines: {
-			"node": ">=22",
-			"pnpm": ">=10"
-		},
-		repository: {
-			"type": "git",
-			"url": "git+https://github.com/Sv443/BetterYTM.git"
-		},
-		hosts: {
-			"github": "https://github.com/Sv443/BetterYTM",
-			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
-			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
-		},
-		updates: {
-			"github": "https://github.com/Sv443/BetterYTM/releases",
-			"greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
-			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
-		},
-		dependencies: {
-			"@sv443-network/coreutils": "3.8.0",
-			"@sv443-network/userutils": "11.0.0",
-			"compare-versions": "6.1.1",
-			"dompurify": "3.3.3",
-			"marked": "17.0.4",
-			"tslib": "2.8.1"
-		},
-		devDependencies: {
-			"@changesets/cli": "2.30.0",
-			"@chromatic-com/storybook": "5.0.1",
-			"@eslint/eslintrc": "3.3.5",
-			"@eslint/js": "10.0.1",
-			"@storybook/addon-essentials": "8.6.14",
-			"@storybook/addon-interactions": "8.6.14",
-			"@storybook/addon-links": "10.2.19",
-			"@storybook/blocks": "8.6.14",
-			"@storybook/html": "10.2.19",
-			"@storybook/html-vite": "10.2.19",
-			"@storybook/test": "8.6.15",
-			"@types/cors": "2.8.19",
-			"@types/express": "5.0.6",
-			"@types/node": "24.12.0",
-			"@types/tampermonkey": "5.0.5",
-			"@typescript-eslint/eslint-plugin": "8.57.0",
-			"@typescript-eslint/parser": "8.57.0",
-			"@typescript-eslint/utils": "8.57.0",
-			"comment-json": "5.0.0",
-			"concurrently": "9.2.1",
-			"cors": "2.8.6",
-			"cross-env": "7.0.3",
-			"dotenv": "17.3.1",
-			"eslint": "10.9.1",
-			"eslint-plugin-storybook": "10.2.19",
-			"express": "5.2.1",
-			"globals": "17.4.0",
-			"kleur": "4.1.5",
-			"knip": "5.86.0",
-			"nanoevents": "9.1.0",
-			"pnpm": "10.32.1",
-			"storybook": "10.2.19",
-			"storybook-dark-mode": "5.0.0",
-			"terser": "5.47.1",
-			"tsx": "4.21.0",
-			"typedoc": "0.28.17",
-			"typedoc-plugin-markdown": "4.10.0",
-			"typescript": "5.9.3",
-			"typescript-eslint": "8.57.0",
-			"vite": "8.0.11"
-		},
-		browserslist: [
-			"last 1 version",
-			"> 1%",
-			"not dead"
-		]
-	};
 	//#endregion
 	//#region src/menu/menu.ts
 	/** Whether the config menu has finished mounting and can be opened with {@linkcode openCfgMenu()} */
@@ -13370,41 +13526,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		return footerEl;
 	}
 	//#endregion
-	//#region src/components/MarkdownDialog.ts
-	var MarkdownDialog = class MarkdownDialog extends BytmDialog {
-		opts;
-		constructor(options) {
-			super({
-				...options,
-				id: `md-${options.id}`,
-				renderBody: () => this.renderBody()
-			});
-			this.opts = options;
-		}
-		/** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
-		static async parseMd(md, sanitize = false) {
-			const parsed = await g.parse(md, {
-				async: true,
-				gfm: true,
-				breaks: true
-			});
-			return sanitize ? sanitizeHtml(parsed) : parsed;
-		}
-		/** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
-		async renderBody() {
-			const bodyEl = document.createElement("div");
-			bodyEl.classList.add("bytm-md-dialog-body");
-			const mdCont = await consumeStringGen$1(this.opts.body);
-			const markdownEl = document.createElement("div");
-			markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
-			markdownEl.tabIndex = 0;
-			setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont, this.opts.sanitizeBody));
-			if (this.opts.modifyBodyElements) await this.opts.modifyBodyElements(bodyEl, markdownEl);
-			bodyEl.appendChild(markdownEl);
-			return bodyEl;
-		}
-	};
-	//#endregion
 	//#region src/interface.ts
 	var { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants_exports;
 	var { autoPlural, NanoEmitter, pureObj } = CoreUtils_exports;
@@ -15379,7 +15500,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			doSongListsChecks(songLists, true);
 		}, 750, "idle");
 		const doSongListsChecks = (songLists, isDebounced = false) => {
-			loggers.debug.log(">>> checking lists:", songLists);
 			for (const list of songLists) {
 				if (getFeature("listButtonsPlacement") === "everywhere" || getFeature("listButtonsPlacement") === "genericLists") tryAddGenericListQueueBtns(list);
 				if (getFeature("swapLikeDislikeButtons")) checkSwapLikeDislikeBtns(list);
@@ -18582,481 +18702,147 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}
 	}
 	//#endregion
-	//#region src/components/toast.ts
-	/** Max amount of seconds a toast can be shown for */
-	var maxToastDuration = 15e3;
-	/** Queue of future toasts to be shown */
-	var toastQueue = [];
-	/** Whether a toast is currently being shown */
-	var showingToast = false;
-	/** Timeout ID for the currently shown toast */
-	var timeout;
+	//#region src/utils/xhr.ts
 	/**
-	* Shows a toast message with an icon.  
-	* @returns The toast element if it could be immediately shown, otherwise `void` (like when it was queued to be shown later)
+	* Constructs a URL from a base URL (which may already contain query parameters and/or a hash) and a record of query parameters.  
+	* The query parameters already present in {@linkcode baseUrl} are merged with {@linkcode params}, with {@linkcode params} taking precedence on key conflicts.  
+	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
+	* All values will be stringified using their `toString()` method and then URI-encoded.
+	* @returns Returns a string instead of a URL object
 	*/
-	async function showIconToast({ duration, position = "tr", iconPos = "left", ...rest }) {
-		if (typeof duration !== "number" || isNaN(duration)) duration = getFeature("toastDuration") * 1e3;
-		if (duration <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
-		if (showingToast) return void toastQueue.push(() => showIconToast({
-			duration,
-			position,
-			iconPos,
-			...rest
-		}));
-		showingToast = true;
-		const toastWrapper = document.createElement("div");
-		toastWrapper.classList.add("bytm-toast-flex-wrapper");
-		let toastIcon;
-		if ("iconSrc" in rest) {
-			toastIcon = document.createElement("img");
-			toastIcon.classList.add("bytm-toast-icon", "img");
-			toastIcon.src = await rest.iconSrc;
-		} else {
-			toastIcon = document.createElement("div");
-			toastIcon.classList.add("bytm-toast-icon");
-			const iconHtml = await resourceAsString(rest.icon);
-			if (iconHtml) setInnerHtml(toastIcon, iconHtml);
-			if ("iconFill" in rest && rest.iconFill) toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
+	function constructUrlString(baseUrl, params) {
+		const [baseAndQuery, hash] = baseUrl.split("#");
+		const [base, query] = baseAndQuery.split("?");
+		const mergedParams = /* @__PURE__ */ new Map();
+		if (query) for (const part of query.split("&")) {
+			if (part.length === 0) continue;
+			const [k, v] = part.split("=");
+			mergedParams.set(decodeURIComponent(k), v === void 0 ? null : decodeURIComponent(v));
 		}
-		const toastMessage = document.createElement("div");
-		toastMessage.classList.add("bytm-toast-message");
-		if ("message" in rest) {
-			toastMessage.textContent = rest.message;
-			if ("subtitle" in rest && rest.subtitle) {
-				const subtitleEl = document.createElement("div");
-				subtitleEl.classList.add("bytm-toast-subtitle");
-				subtitleEl.textContent = rest.subtitle;
-				toastMessage.appendChild(subtitleEl);
-			}
-		} else toastMessage.appendChild(rest.element);
-		iconPos === "left" && toastWrapper.appendChild(toastIcon);
-		toastWrapper.appendChild(toastMessage);
-		iconPos === "right" && toastWrapper.appendChild(toastIcon);
-		showingToast = false;
-		const elem = await showToast({
-			duration,
-			position,
-			element: toastWrapper,
-			title: "message" in rest ? rest.message : rest.title,
-			onClick: rest.onClick
-		});
-		if (toastQueue.length > 0) return new Promise((resolve) => {
-			elem?.addEventListener("transitionend", async () => {
-				const nextToast = toastQueue.shift();
-				showingToast = false;
-				return resolve(void await nextToast());
-			}, { once: true });
-		});
-		else {
-			showingToast = false;
-			return elem;
-		}
+		for (const [k, v] of Object.entries(params)) mergedParams.set(k, v);
+		const queryString = [...mergedParams.entries()].filter(([, v]) => v !== void 0).map(([k, v]) => `${k}${v === null ? "" : `=${encodeURIComponent(String(v))}`}`).join("&");
+		return `${base}${queryString.length > 0 ? `?${queryString}` : ""}${hash !== void 0 ? `#${hash}` : ""}`;
 	}
-	/** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
-	async function showToast(arg) {
-		const props = typeof arg === "string" ? {
-			message: arg,
-			duration: getFeature("toastDuration") * 1e3
-		} : arg;
-		const { duration: durationMs = getFeature("toastDuration") * 1e3, onClick, position = "tr", ...rest } = props;
-		if (durationMs <= 0) return loggers.dialog.info("Toast duration is <= 0, so it won't be shown");
-		if (showingToast) return void toastQueue.push(() => showToast(props));
-		showingToast = true;
-		if (document.querySelector("#bytm-toast")) await closeToast();
-		const toastElem = document.createElement("div");
-		toastElem.classList.add(`pos-${position.toLowerCase()}`);
-		onClick && toastElem.classList.add("clickable");
-		toastElem.id = "bytm-toast";
-		toastElem.role = "alert";
-		toastElem.ariaLive = "polite";
-		toastElem.ariaAtomic = "true";
-		toastElem.addEventListener("click", async (e) => {
-			onClick?.(e);
-			await closeToast();
-		}, { once: true });
-		if ("message" in rest) toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
-		else {
-			toastElem.appendChild(rest.element);
-			toastElem.title = toastElem.ariaLabel = rest.title;
-		}
-		document.body.appendChild(toastElem);
-		pauseFor$1(100).then(() => {
-			toastElem.classList.add("visible");
-			if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
-				timeout && clearTimeout(timeout);
-				timeout = setTimeout(closeToast, clamp$1(durationMs, 250, maxToastDuration));
-			}
-		});
-		if (toastQueue.length > 0) return new Promise((resolve) => {
-			toastElem?.addEventListener("transitionend", async () => {
-				const nextToast = toastQueue.shift();
-				showingToast = false;
-				return resolve(void await nextToast());
-			}, { once: true });
-		});
-		else {
-			showingToast = false;
-			return toastElem;
-		}
+	/**
+	* Constructs a URL object from a base URL and a record of query parameters.  
+	* If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
+	* All values will be stringified and then URI-encoded.  
+	* @returns Returns a URL object instead of a string
+	*/
+	function constructUrl(base, params) {
+		return new URL(constructUrlString(base, params));
 	}
-	/** Closes the currently open toast */
-	async function closeToast() {
-		if (timeout) {
-			clearTimeout(timeout);
-			timeout = void 0;
-		}
-		const toastEls = document.querySelectorAll("#bytm-toast");
-		if (toastEls.length === 0) return;
-		await Promise.allSettled(Array.from(toastEls).map(async (toastEl) => {
-			toastEl.addEventListener("transitionend", async () => toastEl.remove(), { once: true });
-			toastEl.classList.remove("visible");
-		}));
-	}
-	//#endregion
-	//#region src/utils/logging.ts
-	var showErrToast = debounce$1((errName, ...args) => showIconToast({
-		message: t("generic_error_toast_encountered_error_type", errName),
-		subtitle: t("generic_error_toast_click_for_details"),
-		icon: "icon-error",
-		iconFill: "var(--bytm-error-col)",
-		onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open()
-	}), 400);
-	var loggerOpts = { onError(...args) {
-		if (getFeature("showToastOnGenericError")) showErrToast(args.find((a) => a instanceof Error)?.name ?? t("error"), ...args);
-	} };
-	/** Pre-instantiated Logger instances, one per category. */
-	var loggers = Object.entries(loggerCategoryMapping).reduce((a, [catId, catName]) => ({
-		...a,
-		[catId]: new Logger(catName, loggerOpts)
-	}), {});
-	/** Returns a string representation of all logs across all Logger instances, formatted for downloading as a file. */
-	var serializeLogs = Logger.serializeLogs.bind(Logger);
-	/** Sets the current log level across all Logger instances. 0 = Debug, 1 = Info */
-	function setLogLevel(level) {
-		setGlobalProp("logLevel", level);
-		if (Logger.curLogLevel !== level) loggers.misc.log("Set the log level to", LogLevel[level]);
-		Logger.curLogLevel = level;
-	}
-	function getErrorDialog(errName, args) {
-		return new MarkdownDialog({
-			id: "generic-error",
-			height: 400,
-			width: 500,
-			small: true,
-			destroyOnClose: true,
-			renderHeader() {
-				const header = document.createElement("h2");
-				header.classList.add("bytm-dialog-title");
-				header.role = "heading";
-				header.ariaLevel = "1";
-				header.tabIndex = 0;
-				header.textContent = header.ariaLabel = errName;
-				return header;
-			},
-			renderFooter(dlg) {
-				const footer = document.createElement("div");
-				footer.classList.add("bytm-dialog-footer", "align-right");
-				const dlLogsBtn = document.createElement("button");
-				dlLogsBtn.classList.add("bytm-btn");
-				dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
-				onInteraction(dlLogsBtn, () => {
-					downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, Logger.serializeLogs(), "text/plain");
-				});
-				const closeBtn = document.createElement("button");
-				closeBtn.classList.add("bytm-btn");
-				closeBtn.textContent = t("close");
-				closeBtn.ariaLabel = t("close_menu_tooltip");
-				onInteraction(closeBtn, () => dlg.close());
-				footer.appendChild(dlLogsBtn);
-				footer.appendChild(closeBtn);
-				return footer;
-			},
-			body: `\
-${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-  
-${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
+	/**
+	* Sends a request with the specified parameters and returns the response as a Promise.  
+	* Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to {@linkcode fetch()} and {@linkcode fetchAdvanced()}.
+	*/
+	function sendRequest(details) {
+		return new Promise((resolve, reject) => {
+			const success = (val) => {
+				getFeature("logHttp") && loggers.xhr.log(`HTTP request '${details.method ?? "GET"} ${details.url}' succeeded with status ${val.status}:`, getterifyObj(val));
+				resolve(val);
+			};
+			const failure = (err) => {
+				const errStr = `HTTP request '${details.method ?? "GET"} ${details.url}' failed:`;
+				getFeature("logHttp") && loggers.xhr.error(errStr, err);
+				reject(new Error(errStr, { cause: err }));
+			};
+			GM.xmlHttpRequest({
+				timeout: 1e4,
+				...details,
+				onload: success,
+				onerror: failure,
+				ontimeout: failure,
+				onabort: failure
+			});
 		});
 	}
-	/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
-	var LyricsError = class extends DatedError$1 {
-		constructor(message, opts) {
-			super(message, opts);
-			this.name = "LyricsError";
-		}
-	};
-	/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
-	var PluginError = class extends DatedError$1 {
-		constructor(message, opts) {
-			super(message, opts);
-			this.name = "PluginError";
-		}
-	};
-	var data_default = {
-		formatVersion: 0,
-		domains: [{
-			"id": "ytm",
-			"name": "YouTube Music",
-			"nameShort": "YT Music",
-			"abbr": "YTM",
-			"hostnames": ["music.youtube.com"]
-		}, {
-			"id": "yt",
-			"name": "YouTube",
-			"nameShort": "YT",
-			"abbr": "YT",
-			"hostnames": [
-				"www.youtube.com",
-				"youtube.com",
-				"youtu.be",
-				"m.youtube.com",
-				"youtube-nocookie.com",
-				"www.youtube-nocookie.com"
-			]
-		}],
-		alerts: [],
-		selectors: {
-			"generic": {
-				"app": {
-					"yt": "ytd-app",
-					"ytm": "ytmusic-app"
-				},
-				"video": {
-					"yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
-					"ytm": "ytmusic-player video"
-				},
-				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
-				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" }
-			},
-			"watchPage": {
-				"channelName": {
-					"yt": "/* regular: */ #owner ytd-channel-name yt-formatted-string a, /* collab vids: */ #owner ytd-video-owner-renderer yt-attributed-string a",
-					"ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
-				},
-				"votesRenderer": {
-					"yt": "ytd-watch-metadata segmented-like-dislike-button-view-model",
-					"ytm": ".middle-controls-buttons ytmusic-like-button-renderer"
-				},
-				"votesRendererShorts": { "yt": "reel-action-bar-view-model" },
-				"likeBtn": {
-					"yt": "#actions ytd-menu-renderer like-button-view-model button",
-					"ytm": "ytmusic-like-button-renderer #button-shape-like"
-				},
-				"likeBtnShorts": { "yt": "like-button-view-model button" },
-				"dislikeBtn": { "ytm": "ytmusic-like-button-renderer #button-shape-dislike" },
-				"dislikeBtnShorts": { "yt": "dislike-button-view-model" },
-				"likeBtnAlternate": {
-					"yt": "like-button-view-model button",
-					"ytm": "#button-shape-like button"
-				},
-				"dislikeBtnAlternate": {
-					"yt": "dislike-button-view-model button",
-					"ytm": "#button-shape-dislike button"
-				},
-				"progressBar": {
-					"yt": ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]",
-					"ytm": "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar"
-				},
-				"videoPlayer": { "yt": "#movie_player" },
-				"songImg": { "ytm": "ytmusic-player #song-image" }
-			},
-			"songLists": {
-				"all": { "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents" },
-				"currentQueueContainer": { "ytm": "ytmusic-player-queue #contents" },
-				"currentQueueSongAndArtistNames": { "ytm": "yt-formatted-string" },
-				"autoplayQueueContainer": { "ytm": "ytmusic-player-queue #automix-contents" },
-				"playlistPageArtistName": { "ytm": "ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a" },
-				"playlistPageArtistNameAlternate": { "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]" },
-				"genericListArtistName": { "ytm": ".secondary-flex-columns yt-formatted-string:first-child a, .secondary-flex-columns yt-formatted-string[title]" },
-				"genericListSongName": { "ytm": ".title-column yt-formatted-string a" },
-				"queueItem": { "ytm": "ytmusic-player-queue-item" },
-				"queueItemThumbnailImg": { "ytm": "yt-img-shadow img" },
-				"queueItemPopoverContainer": { "ytm": "ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown" },
-				"queueItemPopoverRemoveFromListBtn": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)" },
-				"queueItemPopoverRemoveFromListBtnOptional": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)" },
-				"queueItemDotsBtn": { "ytm": "ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button" },
-				"queueMultiSelect": { "ytm": "ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]" },
-				"allCurrentQueueItems_global": { "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item" },
-				"allCurrentQueueItemsSongInfo_global": { "ytm": ".song-info, .flex-columns.ytmusic-responsive-list-item-renderer" },
-				"allGenericListItems_sub_listContainer": { "ytm": "ytmusic-responsive-list-item-renderer" }
-			},
-			"volume": {
-				"volSlider_sub_playerBarRightControls": { "ytm": "tp-yt-paper-slider#volume-slider" },
-				"volSliderExpanded_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider" },
-				"volSliderContainer_sub_playerBarRightControls": { "ytm": ".bytm-vol-slider-cont" },
-				"volSliderExpandedContainer_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu .bytm-vol-slider-cont" }
-			},
-			"integration": { "themeSongPlayerBarControls": { "ytm": "#ts-panel-container" } },
-			"autoLike": {
-				"titleContainer": {
-					"yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
-					"ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
-				},
-				"titleContainerChannelName": {
-					"yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
-					"ytm": "yt-formatted-string, span.yt-core-attributed-string"
-				},
-				"titleContainerChannelNameAlternate": { "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string" },
-				"titleContainerButtonsContainer": { "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model" },
-				"titleContainerButtonsContainerLastButton": { "ytm": "ytmusic-subscribe-button-renderer" },
-				"titleContainerButtonsContainerShareButton": { "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type" },
-				"titleContainerOtherButtons_sub_ytAppHeader": { "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction" },
-				"channelName_global": { "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string" },
-				"channelNameFallback_global": { "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]" }
-			},
-			"observer": {
-				"bytmDialogContainer": "#bytm-dialog-container",
-				"browseResponse": { "ytm": "ytmusic-browse-response" },
-				"searchPage": { "ytm": "ytmusic-search-page" },
-				"navBar": { "ytm": "ytmusic-nav-bar" },
-				"mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
-				"sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
-				"sidePanel": { "ytm": "#side-panel" },
-				"playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
-				"playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
-				"playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
-				"playerBarRightControls": { "ytm": "#right-controls" },
-				"popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
-				"ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
-				"ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
-				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
-				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
-				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
-				"ytMasthead": { "yt": "#content ytd-masthead#masthead" }
-			}
-		}
-	};
-	//#endregion
-	//#region src/utils/data.ts
-	/** URL to the remote data JSON file on a CDN. */
-	var remoteDataUrl = `https://raw.githubusercontent.com/${repo$1}/refs/heads/${branch$1}/assets/data.json`;
-	var staticData;
-	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
-	async function getStaticData() {
+	/** Fetches a CSS file from the specified resource with a key starting with `css-` */
+	async function fetchCss(key) {
 		try {
-			if (staticData) return staticData;
-			loggers.data.info("Development mode is active. Initializing with static data.json:", data_default, LogLevel.Info);
-			return staticData = data_default;
-		} catch (e) {
-			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
-			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
-			return staticData = data_default;
+			return await (await fetchAdvanced$1(await getResourceUrl(key))).text() ?? void 0;
+		} catch (err) {
+			loggers.xhr.error(`Couldn't fetch CSS resource with key '${key}' due to an error:`, err);
+			return;
 		}
 	}
-	/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
-	function getDefaultStaticData() {
-		return data_default;
+	/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
+	var voteCache = /* @__PURE__ */ new Map();
+	/** Time-to-live for the vote cache in milliseconds */
+	var voteCacheTTL = 1e3 * 60 * 60;
+	/**
+	* Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
+	* @param videoID The video ID of the video
+	*/
+	async function fetchVideoVotes(videoID) {
+		try {
+			if (!videoID) return;
+			if (voteCache.has(videoID)) {
+				const cached = voteCache.get(videoID);
+				if (Date.now() - cached.timestamp < voteCacheTTL) {
+					loggers.xhr.info(`Returning cached video votes for video ID '${videoID}':`, cached);
+					return cached;
+				} else voteCache.delete(videoID);
+			}
+			const votesRaw = JSON.parse((await sendRequest({
+				method: "GET",
+				url: `https://returnyoutubedislikeapi.com/votes?videoId=${videoID}`
+			})).response);
+			if (!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
+				loggers.xhr.error("Couldn't parse video votes due to an error:", votesRaw);
+				return;
+			}
+			const votesObj = {
+				id: votesRaw.id,
+				likes: votesRaw.likes,
+				dislikes: votesRaw.dislikes,
+				rating: roundFixed$1(votesRaw.rating, 3),
+				timestamp: Date.now()
+			};
+			voteCache.set(votesObj.id, votesObj);
+			loggers.xhr.info(`Fetched video votes for watch ID '${videoID}':`, votesObj);
+			return votesObj;
+		} catch (err) {
+			loggers.xhr.error("Couldn't fetch video votes due to an error:", err);
+			return;
+		}
 	}
 	/**
-	* Returns the selector with the given ID.  
-	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
+	* Fetches all album info objects from the Apple Music / iTunes API endpoint at `https://itunes.apple.com/search?country=us&limit=5&entity=album&term=$ARTIST%20$SONG`  
+	* Never throws, just returns an empty array on failure.
 	*/
-	function getSelector(group, id, throws) {
-		const dom = getDomain();
-		if (throws !== false) try {
-			if (typeof staticData?.selectors !== "object") throw new DatedError$1("Static data hasn't been fetched yet.");
-			const sel = staticData.selectors?.[group]?.[id];
-			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
-			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
-			return typeof sel === "string" ? sel : sel[dom];
-		} catch (e) {
-			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
-			throw e;
-		}
-		const sel = staticData?.selectors?.[group]?.[id];
-		return typeof sel === "string" ? sel : sel?.[dom];
-	}
-	var alertsStore = new DataStore$1({
-		id: "bytm-alerts",
-		defaultData: { dismissed: [] },
-		formatVersion: 0,
-		engine: new GMStorageEngine(),
-		memoryCache: false,
-		compressionFormat: null,
-		nanoEmitterOptions: {
-			publicEmit: false,
-			catchUpEvents: ["loadData"]
-		}
-	});
-	/** Checks if there are active alerts and shows a prompt for each of them. */
-	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
-		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
-		for (const alert of activeAlerts) {
-			if (alertMode === "importantOnly" && !alert.important) continue;
-			const dlg = createAlertDialog(alert);
-			dlg.open();
-			await dlg.once("close");
-			alertsData = await alertsStore.loadData();
-			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
-		}
-	}
-	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
-	function isAlertActive(alert, alertsData) {
-		if (alertsData.dismissed.includes(alert.id)) return false;
-		if (alert.domains.length === 0) return false;
-		if (!alert.domains.includes(getDomain())) return false;
-		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
-		if ("versionMin" in alert && alert.versionMin && compareVersions(alert.versionMin, scriptInfo$1.version) > 0) return false;
-		if ("versionMax" in alert && alert.versionMax && compareVersions(alert.versionMax, scriptInfo$1.version) < 0) return false;
-		const now = /* @__PURE__ */ new Date();
-		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
-		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
-		return true;
-	}
-	/** Creates an alert dialog for the given alert data. */
-	function createAlertDialog(alert) {
-		return new MarkdownDialog({
-			id: "static-data-alert",
-			height: 500,
-			width: 600,
-			small: true,
-			destroyOnClose: true,
-			closeOnBgClick: !alert.important,
-			closeOnEscPress: !alert.important,
-			async renderHeader() {
-				const headerEl = document.createElement("div");
-				headerEl.id = "bytm-static-data-alert-dialog-header";
-				headerEl.classList.add("bytm-flex-row");
-				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
-				const header = document.createElement("h2");
-				header.classList.add("bytm-dialog-title");
-				header.role = "heading";
-				header.ariaLevel = "1";
-				header.tabIndex = 0;
-				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
-				headerEl.appendChild(header);
-				return headerEl;
-			},
-			renderFooter() {
-				const footer = document.createElement("div");
-				footer.classList.add("bytm-dialog-footer", "align-right");
-				const closeBtn = document.createElement("button");
-				closeBtn.classList.add("bytm-btn");
-				closeBtn.type = "button";
-				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
-				onInteraction(closeBtn, () => {
-					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
-					if (titleCloseBtn) titleCloseBtn.click();
-					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
-				});
-				footer.appendChild(closeBtn);
-				return footer;
-			},
-			body: resolveTranslatable(alert.message),
-			sanitizeBody: true,
-			modifyBodyElements(_bw, mdCont) {
-				mdCont.ariaLive = "polite";
-				mdCont.ariaAtomic = "true";
+	async function fetchITunesAlbumInfo(artist, album) {
+		try {
+			const url = constructUrlString("https://itunes.apple.com/search", {
+				country: "us",
+				limit: 20,
+				entity: "album",
+				term: `${artist} ${album}`
+			});
+			loggers.xhr.log(`Fetching iTunes album info for '${artist} - ${album}' with URL: ${url}`);
+			const req = await sendRequest({
+				method: "GET",
+				url
+			});
+			const json = JSON.parse(req.response);
+			if (!("resultCount" in json) || !("results" in json)) {
+				loggers.xhr.error("Couldn't parse iTunes album info due to an error:", json);
+				return [];
 			}
-		});
-	}
-	/** Initializes the static data by fetching it and performing necessary checks and actions. */
-	async function initStaticData() {
-		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
-		const alertMode = getFeature("globalAlertMode", "importantOnly");
-		const result = await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
-		emitSiteEvent("staticDataInitialized");
-		return result;
+			if (json.resultCount === 0) return [];
+			return json.results.filter((result) => {
+				if (!("collectionType" in result) || !("collectionName" in result) || !("artistName" in result) || !("collectionId" in result) || !("artworkUrl60" in result) || !("artworkUrl100" in result)) return false;
+				return result.collectionType === "Album" && result.collectionName && result.artistName && result.collectionId && result.artworkUrl60 && result.artworkUrl100;
+			}).map((result) => {
+				return {
+					...result,
+					collectionName: result.collectionName.trim().replace(/ - (Single|EP|LP|Album|Soundtrack|Compilation|Mixtape|Remix|Live|Version|Edition|Reissue|Anniversary Edition|Deluxe Edition|Box Set|Set|Collection|Discography)$/, "")
+				};
+			});
+		} catch (err) {
+			loggers.xhr.error("Couldn't fetch iTunes album info due to an error:", err);
+			return [];
+		}
 	}
 	//#endregion
 	//#region src/utils/dom.ts
@@ -19335,6 +19121,272 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		if (!target.insertAdjacentElement(position, element)) throw new Error(`Failed to transplant element at position "${position}"`);
 		return element;
 	}
+	var data_default = {
+		formatVersion: 0,
+		domains: [{
+			"id": "ytm",
+			"name": "YouTube Music",
+			"nameShort": "YT Music",
+			"abbr": "YTM",
+			"hostnames": ["music.youtube.com"]
+		}, {
+			"id": "yt",
+			"name": "YouTube",
+			"nameShort": "YT",
+			"abbr": "YT",
+			"hostnames": [
+				"www.youtube.com",
+				"youtube.com",
+				"youtu.be",
+				"m.youtube.com",
+				"youtube-nocookie.com",
+				"www.youtube-nocookie.com"
+			]
+		}],
+		alerts: [],
+		selectors: {
+			"generic": {
+				"app": {
+					"yt": "ytd-app",
+					"ytm": "ytmusic-app"
+				},
+				"video": {
+					"yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
+					"ytm": "ytmusic-player video"
+				},
+				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
+				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" }
+			},
+			"watchPage": {
+				"channelName": {
+					"yt": "/* regular: */ #owner ytd-channel-name yt-formatted-string a, /* collab vids: */ #owner ytd-video-owner-renderer yt-attributed-string a",
+					"ytm": "ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]"
+				},
+				"votesRenderer": {
+					"yt": "ytd-watch-metadata segmented-like-dislike-button-view-model",
+					"ytm": ".middle-controls-buttons ytmusic-like-button-renderer"
+				},
+				"votesRendererShorts": { "yt": "reel-action-bar-view-model" },
+				"likeBtn": {
+					"yt": "#actions ytd-menu-renderer like-button-view-model button",
+					"ytm": "ytmusic-like-button-renderer #button-shape-like"
+				},
+				"likeBtnShorts": { "yt": "like-button-view-model button" },
+				"dislikeBtn": { "ytm": "ytmusic-like-button-renderer #button-shape-dislike" },
+				"dislikeBtnShorts": { "yt": "dislike-button-view-model" },
+				"likeBtnAlternate": {
+					"yt": "like-button-view-model button",
+					"ytm": "#button-shape-like button"
+				},
+				"dislikeBtnAlternate": {
+					"yt": "dislike-button-view-model button",
+					"ytm": "#button-shape-dislike button"
+				},
+				"progressBar": {
+					"yt": ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]",
+					"ytm": "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar"
+				},
+				"videoPlayer": { "yt": "#movie_player" },
+				"songImg": { "ytm": "ytmusic-player #song-image" }
+			},
+			"songLists": {
+				"all": { "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents" },
+				"currentQueueContainer": { "ytm": "ytmusic-player-queue #contents" },
+				"currentQueueSongAndArtistNames": { "ytm": "yt-formatted-string" },
+				"autoplayQueueContainer": { "ytm": "ytmusic-player-queue #automix-contents" },
+				"playlistPageArtistName": { "ytm": "ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a" },
+				"playlistPageArtistNameAlternate": { "ytm": "ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]" },
+				"genericListArtistName": { "ytm": ".secondary-flex-columns yt-formatted-string:first-child a, .secondary-flex-columns yt-formatted-string[title]" },
+				"genericListSongName": { "ytm": ".title-column yt-formatted-string a" },
+				"queueItem": { "ytm": "ytmusic-player-queue-item" },
+				"queueItemThumbnailImg": { "ytm": "yt-img-shadow img" },
+				"queueItemPopoverContainer": { "ytm": "ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown" },
+				"queueItemPopoverRemoveFromListBtn": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)" },
+				"queueItemPopoverRemoveFromListBtnOptional": { "ytm": "tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(4)" },
+				"queueItemDotsBtn": { "ytm": "ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button" },
+				"queueMultiSelect": { "ytm": "ytmusic-dialog[dialog-type=\"multiSelectMenuBar\"]" },
+				"allCurrentQueueItems_global": { "ytm": "#contents.ytmusic-player-queue > ytmusic-player-queue-item" },
+				"allCurrentQueueItemsSongInfo_global": { "ytm": ".song-info, .flex-columns.ytmusic-responsive-list-item-renderer" },
+				"allGenericListItems_sub_listContainer": { "ytm": "ytmusic-responsive-list-item-renderer" }
+			},
+			"volume": {
+				"volSlider_sub_playerBarRightControls": { "ytm": "tp-yt-paper-slider#volume-slider" },
+				"volSliderExpanded_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider" },
+				"volSliderContainer_sub_playerBarRightControls": { "ytm": ".bytm-vol-slider-cont" },
+				"volSliderExpandedContainer_sub_playerBarRightControls": { "ytm": "ytmusic-player-expanding-menu .bytm-vol-slider-cont" }
+			},
+			"integration": { "themeSongPlayerBarControls": { "ytm": "#ts-panel-container" } },
+			"autoLike": {
+				"titleContainer": {
+					"yt": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, yt-page-header-view-model yt-dynamic-text-view-model, .ytPageHeaderViewModelHeadlineInfo > yt-dynamic-text-view-model",
+					"ytm": "ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title, ytmusic-immersive-header-renderer .ytmusic-immersive-header-renderer yt-formatted-string.title"
+				},
+				"titleContainerChannelName": {
+					"yt": "yt-formatted-string, h1 > .yt-core-attributed-string, h1 > .ytAttributedStringHost, h1 > span",
+					"ytm": "yt-formatted-string, span.yt-core-attributed-string"
+				},
+				"titleContainerChannelNameAlternate": { "ytm": "ytmusic-visual-header-renderer .content-container h2 yt-formatted-string" },
+				"titleContainerButtonsContainer": { "yt": "#inner-header-container #buttons, yt-flexible-actions-view-model" },
+				"titleContainerButtonsContainerLastButton": { "ytm": "ytmusic-subscribe-button-renderer" },
+				"titleContainerButtonsContainerShareButton": { "ytm": "ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type" },
+				"titleContainerOtherButtons_sub_ytAppHeader": { "yt": "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action, yt-flexible-actions-view-model .ytFlexibleActionsViewModelAction" },
+				"channelName_global": { "ytm": ".ytmusic-immersive-header-renderer > h1 > yt-formatted-string" },
+				"channelNameFallback_global": { "ytm": "ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]" }
+			},
+			"observer": {
+				"bytmDialogContainer": "#bytm-dialog-container",
+				"browseResponse": { "ytm": "ytmusic-browse-response" },
+				"searchPage": { "ytm": "ytmusic-search-page" },
+				"navBar": { "ytm": "ytmusic-nav-bar" },
+				"mainPanel": { "ytm": "ytmusic-player-page #main-panel" },
+				"sideBar": { "ytm": "ytmusic-app-layout tp-yt-app-drawer" },
+				"sidePanel": { "ytm": "#side-panel" },
+				"playerBar": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app" },
+				"playerBarInfo": { "ytm": "ytmusic-app-layout ytmusic-player-bar.ytmusic-app .middle-controls .content-info-wrapper" },
+				"playerBarMiddleButtons": { "ytm": ".middle-controls .middle-controls-buttons" },
+				"playerBarRightControls": { "ytm": "#right-controls" },
+				"popupContainer": { "ytm": "ytmusic-app ytmusic-popup-container" },
+				"ytGuide": { "yt": "#content tp-yt-app-drawer#guide #guide-inner-content" },
+				"ytdBrowse": { "yt": "ytd-app ytd-page-manager ytd-browse" },
+				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
+				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
+				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
+				"ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+			}
+		}
+	};
+	//#endregion
+	//#region src/utils/data.ts
+	/** URL to the remote data JSON file on a CDN. */
+	var remoteDataUrl = `https://raw.githubusercontent.com/${repo$1}/refs/heads/${branch$1}/assets/data.json`;
+	var staticData;
+	/** Loads the static data by fetching the remote JSON or falling back to the bundled JSON if the fetch fails. */
+	async function getStaticData() {
+		try {
+			if (staticData) return staticData;
+			loggers.data.info("Development mode is active. Initializing with static data.json:", data_default, LogLevel.Info);
+			return staticData = data_default;
+		} catch (e) {
+			loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
+			loggers.data.info("Falling back to the bundled static data:", getterifyObj(data_default));
+			return staticData = data_default;
+		}
+	}
+	/** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
+	function getDefaultStaticData() {
+		return data_default;
+	}
+	/**
+	* Returns the selector with the given ID.  
+	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
+	*/
+	function getSelector(group, id, throws) {
+		const dom = getDomain();
+		if (throws !== false) try {
+			if (typeof staticData?.selectors !== "object") throw new DatedError$1("Static data hasn't been fetched yet.");
+			const sel = staticData.selectors?.[group]?.[id];
+			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
+			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
+			return typeof sel === "string" ? sel : sel[dom];
+		} catch (e) {
+			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
+			throw e;
+		}
+		const sel = staticData?.selectors?.[group]?.[id];
+		return typeof sel === "string" ? sel : sel?.[dom];
+	}
+	var alertsStore = new DataStore$1({
+		id: "bytm-alerts",
+		defaultData: { dismissed: [] },
+		formatVersion: 0,
+		engine: new GMStorageEngine(),
+		memoryCache: false,
+		compressionFormat: null,
+		nanoEmitterOptions: {
+			publicEmit: false,
+			catchUpEvents: ["loadData"]
+		}
+	});
+	/** Checks if there are active alerts and shows a prompt for each of them. */
+	async function checkActiveAlerts(alertMode, { alerts }, alertsData) {
+		const activeAlerts = alerts.filter((alert) => isAlertActive(alert, alertsData));
+		for (const alert of activeAlerts) {
+			if (alertMode === "importantOnly" && !alert.important) continue;
+			const dlg = createAlertDialog(alert);
+			dlg.open();
+			await dlg.once("close");
+			alertsData = await alertsStore.loadData();
+			await alertsStore.setData({ dismissed: [alert.id, ...alertsData.dismissed] });
+		}
+	}
+	/** Checks whether the given alert is active based on its constraints and whether it was already dismissed. */
+	function isAlertActive(alert, alertsData) {
+		if (alertsData.dismissed.includes(alert.id)) return false;
+		if (alert.domains.length === 0) return false;
+		if (!alert.domains.includes(getDomain())) return false;
+		if ("version" in alert && alert.version !== scriptInfo$1.version) return false;
+		if ("versionMin" in alert && alert.versionMin && compareVersions(alert.versionMin, scriptInfo$1.version) > 0) return false;
+		if ("versionMax" in alert && alert.versionMax && compareVersions(alert.versionMax, scriptInfo$1.version) < 0) return false;
+		const now = /* @__PURE__ */ new Date();
+		if (alert.dateMin && new Date(alert.dateMin) > now) return false;
+		if (alert.dateMax && new Date(alert.dateMax) < now) return false;
+		return true;
+	}
+	/** Creates an alert dialog for the given alert data. */
+	function createAlertDialog(alert) {
+		return new MarkdownDialog({
+			id: "static-data-alert",
+			height: 500,
+			width: 600,
+			small: true,
+			destroyOnClose: true,
+			closeOnBgClick: !alert.important,
+			closeOnEscPress: !alert.important,
+			async renderHeader() {
+				const headerEl = document.createElement("div");
+				headerEl.id = "bytm-static-data-alert-dialog-header";
+				headerEl.classList.add("bytm-flex-row");
+				setInnerHtml(headerEl, await resourceAsString("icon-alert"));
+				const header = document.createElement("h2");
+				header.classList.add("bytm-dialog-title");
+				header.role = "heading";
+				header.ariaLevel = "1";
+				header.tabIndex = 0;
+				header.textContent = header.ariaLabel = resolveTranslatable(alert.title);
+				headerEl.appendChild(header);
+				return headerEl;
+			},
+			renderFooter() {
+				const footer = document.createElement("div");
+				footer.classList.add("bytm-dialog-footer", "align-right");
+				const closeBtn = document.createElement("button");
+				closeBtn.classList.add("bytm-btn");
+				closeBtn.type = "button";
+				closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
+				onInteraction(closeBtn, () => {
+					const titleCloseBtn = document.querySelector("#bytm-md-static-data-alert-dialog .bytm-dialog-close");
+					if (titleCloseBtn) titleCloseBtn.click();
+					else loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+				});
+				footer.appendChild(closeBtn);
+				return footer;
+			},
+			body: resolveTranslatable(alert.message),
+			sanitizeBody: true,
+			modifyBodyElements(_bw, mdCont) {
+				mdCont.ariaLive = "polite";
+				mdCont.ariaAtomic = "true";
+			}
+		});
+	}
+	/** Initializes the static data by fetching it and performing necessary checks and actions. */
+	async function initStaticData() {
+		const [staticData, alertsData] = await Promise.all([getStaticData(), alertsStore.loadData()]);
+		const alertMode = getFeature("globalAlertMode", "importantOnly");
+		const result = await Promise.allSettled([...alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []]);
+		emitSiteEvent("staticDataInitialized");
+		return result;
+	}
 	//#endregion
 	//#region src/index.ts
 	{
@@ -19362,50 +19414,10 @@ Build #${buildNumber$1} (dev mode)
 ─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript
 ─ The Cousine font: https://fonts.google.com/specimen/Cousine`, `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`, `${styleCommon} background-color: ${gradientContBg}; padding-left: 8px; padding-right: 8px;`, "color: #fff; font-size: 1.2rem;", "padding: initial; font-size: 0.9rem;", "padding: initial; font-size: 1rem;");
 	}
-	var initTimings = {
-		_comments: [
-			`This is a performance report generated by ${scriptInfo$1.name} (${package_default.homepage})`,
-			"It shows the amount of time (in ms) it took to complete various stages of the initialization process.",
-			"- The 'start' property is a 13-digit epoch timestamp representing the time at which the script started running.",
-			"- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.",
-			"- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property."
-		],
-		meta: {
-			version: scriptInfo$1.version,
-			buildNumber: buildNumber$1,
-			buildTime: new Date(buildTimestamp).toISOString(),
-			mode: mode$1,
-			domain: getDomain(),
-			userAgent: navigator.userAgent,
-			scriptHandler: GM.info?.scriptHandler ?? "unknown",
-			scriptHandlerVersion: GM.info?.version ?? "unknown",
-			injectInto: GM.info?.injectInto ?? null,
-			isIncognito: GM.info?.isIncognito ?? null,
-			isFirstPartyIsolation: GM.info?.isFirstPartyIsolation ?? null,
-			sandboxMode: GM.info?.sandboxMode ?? null
-		},
-		durations: {},
-		featureStart: 0,
-		featureDurations: {},
-		start: 0,
-		sinceStart: {},
-		resources: {}
-	};
-	/**
-	* Starts a timer for measuring the duration of a specific phase of the initialization process.  
-	* Returns a function that, when called, will stop the timer and save the duration in the `initTimings` object under the specified name.
-	*/
-	function measureInitDuration(name) {
-		const start = Date.now();
-		return () => {
-			if (typeof initTimings.durations !== "object") initTimings.durations = {};
-			initTimings.durations[name] = Date.now() - start;
-		};
-	}
 	/** Stuff that needs to be called ASAP */
 	function preInit() {
 		try {
-			initTimings.start = Date.now();
+			perfReport.start = Date.now();
 			if (["FireMonkey"].includes(GM.info?.scriptHandler ?? "")) {
 				const msg = `⚠️⚠️⚠️\nBetterYTM does not work when using ${GM.info?.scriptHandler ?? "(unknown)"} as the userscript manager extension and will be disabled.\nIt's highly recommended you use either ViolentMonkey, TamperMonkey or GreaseMonkey.\n⚠️⚠️⚠️`;
 				if (isDomLoaded()) alert(msg);
@@ -19417,8 +19429,9 @@ Build #${buildNumber$1} (dev mode)
 			preInitInterface();
 			preInitPlugins();
 			if (getDomain() === "ytm") initBeforeUnloadHook();
+			perfReport.meta.domain = getDomain();
 			if (typeof rawConsts !== "object") loggers.init.error("rawConsts is not an object??????? (this doesn't actually break the script, but it's still funny it happened)");
-			initTimings.sinceStart.preInitEnd = Date.now() - initTimings.start;
+			perfReport.sinceStart.preInitEnd = Date.now() - perfReport.start;
 			init();
 		} catch (err) {
 			return loggers.init.error("Fatal pre-init error:", err);
@@ -19466,7 +19479,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 	}
 	/** Called when the DOM has finished loading and can be queried and altered by the userscript */
 	async function onDomLoad() {
-		initTimings.sinceStart.domLoaded = Date.now() - initTimings.start;
+		perfReport.sinceStart.domLoaded = Date.now() - perfReport.start;
 		const domain = getDomain();
 		const feats = getFeatures();
 		const ftInit = [];
@@ -19545,14 +19558,14 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				if (feats.disableDarkReaderSites !== "none") ftInit.push(["disableDarkReaderSites", disableDarkReader()]);
 			}
 			emitInterface("bytm:featureInitStarted");
-			const initStartTs = initTimings.featureStart = Date.now();
+			const initStartTs = perfReport.featureStart = Date.now();
 			const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8e3;
 			const initializedFeats = [];
 			const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
 			Promise.race([pauseFor$1(initTimeout), Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
 				const v = await prom;
-				initTimings.featureDurations = {
-					...initTimings.featureDurations ?? {},
+				perfReport.featureDurations = {
+					...perfReport.featureDurations ?? {},
 					[name]: Date.now() - initStartTs
 				};
 				initializedFeats.push(name);
@@ -19562,7 +19575,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			})))]).then(() => {
 				endFeatInitDur();
 				emitInterface("bytm:allReady");
-				initTimings.sinceStart.allReady = Date.now() - initStartTs;
+				perfReport.sinceStart.allReady = Date.now() - initStartTs;
 				if (initializedFeats.length < ftInit.length) loggers.init.errorNoToast(`Only ${initializedFeats.length} out of ${ftInit.length} feature entrypoints initialized within the limit of ${initTimeout}ms. These ones have timed out:${ftInit.reduce((a, [name]) => initializedFeats.includes(name) ? a : `${a}\n- ${name}`, "")}`);
 				else loggers.init.info(`Done initializing ${initializedFeats.length} / ${ftInit.length} feature entrypoints in ${Math.floor(Date.now() - initStartTs)}ms`, LogLevel.Info);
 			});
@@ -19571,7 +19584,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				cancelable: true
 			}));
 			preloadResources();
-			initTimings.sinceStart.ready = Date.now() - initTimings.start;
+			perfReport.sinceStart.ready = Date.now() - perfReport.start;
 			emitInterface("bytm:ready");
 			try {
 				registerDevCommands();
@@ -19587,7 +19600,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			loggers.init.error("Feature error:", err);
 			emitInterface("bytm:fatalError", "Error while initializing features");
 		} finally {
-			initTimings.sinceStart.postInitEnd = Date.now() - initTimings.start;
+			perfReport.sinceStart.postInitEnd = Date.now() - perfReport.start;
 		}
 	}
 	/** Preloads all resources that should be preloaded */
@@ -19824,11 +19837,11 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		});
 		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError$1("ExampleError", "Test error")));
 		isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
-			initTimings.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
+			perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
 				...a,
 				[key]: vals
 			}), {});
-			downloadFile(`${scriptInfo$1.name} Performance Report @ ${(/* @__PURE__ */ new Date()).toISOString()}.json`, JSON.stringify(initTimings, null, 2), "application/json");
+			downloadFile(`${scriptInfo$1.name} Performance Report @ ${(/* @__PURE__ */ new Date()).toISOString()}.json`, JSON.stringify(perfReport, null, 2), "application/json");
 		});
 		isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
 			const val = !await GM.getValue("bytm-dev-treatments", false);
@@ -19856,7 +19869,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "456ad3bb",
+				buildNumber: "844e0fb8",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
