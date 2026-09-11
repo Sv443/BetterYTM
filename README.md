@@ -88,7 +88,8 @@ Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-
 
 </sup>
 
-Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
+- **[BetterYTM - Song Playlists](https://github.com/eissar/betterytm-song-playlists)** by [eissar](https://github.com/eissar)  
+  Dynamically shows which of your playlists contain the currently selected song in YouTube Music.
 
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{PLUGINS}}> -->
