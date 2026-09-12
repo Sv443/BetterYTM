@@ -24,6 +24,7 @@
   - Improved auto-like feature:
     - It now works with collab videos, although it will only work with the primary channel (the first channel listed in the menu opened by clicking the channel names).
     - Improved the styling of the auto-like channels dialog.
+    - The `autoLikeTimeout` feature is now a number input field and allows any value above or equal to `1`, in increments of `0.1`.
 - **Fixes:**
   - Added an "enhanced compatibility" build of the script that is meant to fix import issues on Chromium-based browsers, by including all dependencies directly in the script (at the cost of installation size).
   - Made error toasts show up again after being broken when toast queueing was overhauled.
