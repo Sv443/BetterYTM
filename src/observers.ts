@@ -1,4 +1,4 @@
-import { autoPlural, clamp, SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import { autoPlural, clamp, type SelectorListenerOptions, SelectorObserver, type SelectorObserverOptions } from "@sv443-network/userutils";
 import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/interface.ts";
 import { getDomain } from "@util/misc.ts";

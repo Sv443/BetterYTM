@@ -94,6 +94,14 @@ const config = [
       }],
       "comma-dangle": ["error", "only-multiline"],
       "no-misleading-character-class": "off",
+      // keeps type-only imports out of the runtime module graph, so they can never cause an
+      // import cycle - enforced alongside `pnpm check-deps`
+      "@typescript-eslint/consistent-type-imports": ["error", {
+        prefer: "type-imports",
+        fixStyle: "inline-type-imports",
+        disallowTypeAnnotations: false,
+      }],
+      "@typescript-eslint/no-import-type-side-effects": "error",
     },
   }, {
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],

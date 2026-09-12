@@ -4,7 +4,7 @@ import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/interface.ts";
 import { addSelectorListener, globserversReady } from "@/observers.ts";
-import { FeatureConfig, type FeatureCategory } from "@/types.ts";
+import type { FeatureConfig, FeatureCategory } from "@/types.ts";
 import type { BroadcastPacketType, BroadcastTransitPacket } from "@util/broadcast.ts";
 
 /** Mapped type that creates a typed site event entry for each {@linkcode BroadcastPacketType}, e.g. `"broadcast:discoverSessionsReply"` */

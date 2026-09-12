@@ -8,7 +8,7 @@ import { getLocale, t, tp } from "@util/translations.ts";
 import { formatNumber, getPreferredLocale, getResourceUrl, getVersionSessionCount, reloadTab, resourceAsString } from "@util/misc.ts";
 import { getErrorDialog, loggers } from "@util/logging.ts";
 import { getFeature, promptResetConfig } from "@/config.ts";
-import { FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "@/types.ts";
+import { type FeatureInfo, LogLevel, type AdornFunc, type ColorLightnessPref, type FeatureCategory, type FeatureConfig, type FeatureKey, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "@/types.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { mode, newFeatureAdornmentMaxSessionCount, scriptInfo } from "@/constants.ts";
 import { getDSSerializer } from "@/serializers.ts";
