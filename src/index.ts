@@ -764,16 +764,6 @@ function registerDevCommands() {
     }
   });
 
-  // #region throw_example_error
-  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
-
-  // #region get_performance_report
-  isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
-    perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
-
-    downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(perfReport, null, 2), "application/json");
-  });
-
   // #region toggle_dev_treatments
   isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
     const val = !await GM.getValue("bytm-dev-treatments", false);
@@ -800,6 +790,14 @@ function registerDevCommands() {
       extraButtonsPosition: "before",
     }),
   );
+
+  // #region unregister_all_plugins
+  GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
+    unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
+  });
+
+  // #region throw_example_error
+  isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
 
   // #region tmp_log_used_tr_keys
   // isDev && GM.registerMenuCommand("[TMP] Log used translation keys", async () => {
@@ -892,9 +890,11 @@ function registerDevCommands() {
     }) && await reloadAllTabs();
   });
 
-  // #region unregister_all_plugins
-  GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
-    unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
+  // #region get_performance_report
+  GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+    perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({ ...a, [key]: vals }), {} as Record<ResourceKey | "_", number>);
+
+    downloadFile(`${scriptInfo.name} Performance Report @ ${new Date().toISOString()}.json`, JSON.stringify(perfReport, null, 2), "application/json");
   });
 
   // #region download_log_file
