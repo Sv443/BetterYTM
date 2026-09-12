@@ -1,7 +1,7 @@
 import { clamp, DataStore } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compressionFormat } from "@/constants.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { getFeature } from "@/config.ts";
 import { loggers } from "@util/index.ts";
 import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";

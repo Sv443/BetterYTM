@@ -14,7 +14,7 @@ import { loggers } from "@util/logging.ts";
 import { t, tp } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "@util/xhr.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { compressionFormat, mode, scriptInfo } from "@/constants.ts";
 import { openCfgMenu } from "@menu/menu.ts";
 import { showPrompt } from "@dialog/prompt.ts";

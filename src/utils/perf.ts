@@ -1,7 +1,7 @@
 import type { LooseUnion } from "@sv443-network/coreutils";
-import { getDefaultStaticData } from "@util/data.ts";
 import { buildNumber, buildTimestamp, mode, scriptInfo } from "@/constants.ts";
-import { millis } from "@util/index.ts";
+import { millis } from "@util/pure.ts";
+import { getDomain } from "@util/domain.ts";
 import type { FeatureKey, PerformanceReport } from "@/types.ts";
 import packageJson from "@root/package.json" with { type: "json" };
 
@@ -20,7 +20,7 @@ export const perfReport: PerformanceReport = {
     buildNumber,
     buildTime: new Date(buildTimestamp).toISOString(),
     mode,
-    domain: "ytm", // initialized in index.ts:preInit() because of circular dependency shit
+    domain: getDomain(),
     userAgent: navigator.userAgent,
     scriptHandler: GM.info?.scriptHandler ?? "unknown",
     scriptHandlerVersion: GM.info?.version ?? "unknown",
@@ -38,8 +38,6 @@ export const perfReport: PerformanceReport = {
   resources: {},
   observers: {},
 };
-
-export const _ = () => getDefaultStaticData();
 
 /**
  * Starts a timer for measuring the duration of a specific phase of the initialization process.  

@@ -15,7 +15,7 @@ import { createLongBtn } from "@comp/longButton.ts";
 import { createRipple } from "@comp/ripple.ts";
 import { LogLevel, type AutoLikeData } from "@/types.ts";
 import "@feat/autoLike.css";
-import { getSelector } from "@util/data.ts";
+import { getSelector } from "@util/selectors.ts";
 
 // TODO:FIXME: race condition: multiple buttons can appear on YT channel pages, with both the @ID format as well as UC... (extraneous)
 

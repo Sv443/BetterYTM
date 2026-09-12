@@ -1,8 +1,8 @@
 import { autoPlural, clamp, type SelectorListenerOptions, SelectorObserver, type SelectorObserverOptions } from "@sv443-network/userutils";
 import { getFeature } from "@/config.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { getDomain } from "@util/domain.ts";
-import { getSelector } from "@util/data.ts";
+import { getSelector } from "@util/selectors.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { LogLevel, type Domain, type FeatureConfig } from "@/types.ts";

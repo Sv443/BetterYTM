@@ -7,6 +7,7 @@ export * from "@util/locale.ts";
 export * from "@util/versionSessions.ts";
 export * from "@util/resourceUrl.ts";
 export * from "@util/unloadGuard.ts";
+export * from "@util/selectors.ts";
 export * from "@util/pure.ts";
 export * from "@util/translations.js";
 export * from "@util/xhr.js";

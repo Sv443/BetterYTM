@@ -2,7 +2,7 @@ import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Pre
 import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { addSelectorListener, globserversReady } from "@/observers.ts";
 import type { FeatureConfig, FeatureCategory } from "@/types.ts";
 import type { BroadcastPacketType, BroadcastTransitPacket } from "@util/broadcast.ts";
@@ -88,28 +88,7 @@ export type SiteEventsMapPrefixed = {
   [K in keyof SiteEventsMap as `bytm:siteEvent:${K}`]: SiteEventsMap[K];
 };
 
-/** Array of all site events. */
-export const allSiteEvents = [
-  "configChanged",
-  "configHeaderSelected",
-  "configOptionChanged",
-  "rebuildCfgMenu",
-  "recreateCfgMenu",
-  "cfgMenuClosed",
-  "welcomeMenuClosed",
-  "hotkeyInputActive",
-  "queueChanged",
-  "autoplayQueueChanged",
-  "songTitleChanged",
-  "watchIdChanged",
-  "pathChanged",
-  "fullscreenToggled",
-  "updateVolumeSliderLabel",
-  "autoLikeChannelsUpdated",
-  "voteLabelsAdded",
-  "broadcast",
-  "staticDataInitialized",
-] as const satisfies readonly (keyof SiteEventsMap)[];
+export { allSiteEvents } from "@/core/siteEventNames.ts";
 
 /** EventEmitter instance that is used to detect various changes to the site and userscript */
 export const siteEvents = new NanoEmitter<SiteEventsMap>({

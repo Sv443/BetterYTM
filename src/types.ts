@@ -21,7 +21,7 @@ import resources from "@asset/resources.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import type { featInfo } from "@feat/index.ts";
 import type { Logger } from "@util/Logger.ts";
-import type { getSelector } from "@util/data.ts";
+import type { getSelector } from "@util/selectors.ts";
 
 void ["type imports only:", resources, locales];
 

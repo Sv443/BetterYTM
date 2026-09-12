@@ -2,7 +2,6 @@
 
 import { debounce, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
-import { reloadPluginData } from "@/interface.ts";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { buildNumber, initTime, scriptInfo } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";
@@ -203,9 +202,9 @@ async function handleBroadcastPacket(type: BroadcastPacketType, { from, to, pack
   case "reloadTabs":
     await reloadTab();
     break;
-  // refresh plugin cache data in memory:
+  // refresh plugin cache data in memory - handled in index.ts via the "broadcast:pluginsUpdated"
+  // site event, so this module doesn't have to depend on the plugin interface:
   case "pluginsUpdated":
-    reloadPluginData();
     break;
   // reply to "discoverSessions" packets with a "discoverSessionsReply" packet:
   case "discoverSessions":

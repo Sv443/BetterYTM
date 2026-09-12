@@ -6,7 +6,7 @@ import { interactionKeys } from "@util/input.ts";
 import { getReloadTabData, resourceAsString } from "@util/misc.ts";
 import { getDomain } from "@util/domain.ts";
 import { getFeature } from "@/config.ts";
-import { getSelector } from "@util/data.ts";
+import { getSelector } from "@util/selectors.ts";
 import { loggers } from "@util/logging.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { t } from "@util/translations.ts";

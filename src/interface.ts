@@ -2,20 +2,22 @@ import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { setGlobalProp } from "@/core/globals.ts";
+import { emitInterface, setLogEventsEnabled, allInterfaceEvents, type InterfaceEvents, type InterfaceEventsMap } from "@/core/interfaceEvents.ts";
+import { registeredPlugins, registeredPluginTokens, emitOnPlugins, getPluginKey } from "@/plugins/store.ts";
 import { broadcastTxID, emitBroadcast } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode, parseMarkdown, sanitizeHtml, reloadAllTabs } from "@util/index.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
-import { getSelector } from "@util/data.ts";
+import { getSelector } from "@util/selectors.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
-import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
-import { autoLikeStore, fetchLyricsUrlTop, fuzzyFetchLyricsInfo, getLyricsCacheEntry, isIgnoredInputElement, type ArtCacheEntry } from "@feat/index.ts";
+import { cfgDefaultData, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
+import { autoLikeStore, fetchLyricsUrlTop, fuzzyFetchLyricsInfo, getLyricsCacheEntry, isIgnoredInputElement } from "@feat/index.ts";
 import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import { disableDiscardBeforeUnload, enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
-import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
-import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum, LogLevel } from "@/types.ts";
+import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
+import { PluginIntent, type FeatureConfig, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum, LogLevel } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
@@ -33,107 +35,6 @@ const { autoPlural, NanoEmitter, pureObj } = CoreUtils;
 
 //#region interface globals
 
-/** All events that can be emitted on the BYTM interface and the data they provide */
-export type InterfaceEventsMap = {
-  [K in keyof InterfaceEvents]: (data: InterfaceEvents[K]) => void;
-};
-
-/** All events that can be emitted on the BYTM interface and the data they provide */
-export type InterfaceEvents = {
-  //#region startup events
-  // (sorted in order of execution)
-
-  /** Emitted as soon as the feature config has finished loading and can be accessed via `unsafeWindow.BYTM.getFeatures(token)` */
-  "bytm:configReady": undefined;
-  /** Emitted when the lyrics cache has been loaded */
-  "bytm:lyricsCacheReady": undefined;
-  /** Emitted whenever the locale is changed - if a plugin changed the locale, the plugin ID is provided as well */
-  "bytm:setLocale": { locale: TrLocale, pluginId?: string };
-  /** When this is emitted, plugins may register themselves at a much earlier stage, before things like the feature config are even loaded */
-  "bytm:preInitPlugin": (pluginDef: PluginDef) => Promise<PluginRegisterResult>;
-  /** When this is emitted, this is your call to register your plugin using the function passed as the sole argument */
-  "bytm:registerPlugin": (pluginDef: PluginDef) => Promise<PluginRegisterResult>;
-  /**
-   * Emitted whenever the SelectorObserver instances have been initialized and can be used to listen for DOM changes and wait for elements to be available.  
-   * Use `unsafeWindow.BYTM.addObserverListener(name, selector, opts)` to add custom listener functions to the observers (see contributing guide).
-   */
-  "bytm:observersReady": undefined;
-
-  /**
-   * Emitted when the feature initialization has started.  
-   * This is the last event that is emitted before the `bytm:ready` event.  
-   * As soon as this is emitted, you cannot register any more plugins.
-   */
-  "bytm:featureInitStarted": undefined;
-  /** Emitted when a feature has been initialized. The data is the feature's key as seen in `onDomLoad()` of `src/index.ts` */
-  "bytm:featureInitialized": string;
-  /** Emitted when the feature with the specified key has been initialized - in TS, use `"bytm:featureInitialized:myFeatureKey" as "bytm:featureInitialized:id"` to make the error go away */
-  "bytm:featureInitialized:id": void;
-
-
-  /** Emitted when BYTM has finished general initialization. */
-  "bytm:ready": undefined;
-  /** Emitted when all features have been initialized or initialization has timed out. */
-  "bytm:allReady": undefined;
-
-  //#region additional events
-  // (not sorted)
-
-  /**
-   * Emitted when a fatal error occurs and the script can't continue to run.  
-   * Returns a short error description that's not really meant to be displayed to the user (console is fine).  
-   * But may be helpful in plugin development if the plugin causes an internal error.
-   */
-  "bytm:fatalError": string;
-
-  /** Emitted when a dialog was opened - returns the dialog's instance (or undefined in the case of the config menu) */
-  "bytm:dialogOpened": BytmDialog | undefined;
-  /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance (or undefined in the case of the config menu) - in TS, use `"bytm:dialogOpened:myIdWhatever" as "bytm:dialogOpened:id"` to make the error go away */
-  "bytm:dialogOpened:id": BytmDialog | undefined;
-  /** Emitted when a dialog was closed - returns the dialog's instance (or undefined in the case of the config menu) */
-  "bytm:dialogClosed": BytmDialog | undefined;
-  /** Emitted when the dialog with the specified ID was closed - returns the dialog's instance (or undefined in the case of the config menu) - in TS, use `"bytm:dialogClosed:myIdWhatever" as "bytm:dialogClosed:id"` to make the error go away */
-  "bytm:dialogClosed:id": BytmDialog | undefined;
-
-  /** Emitted whenever the lyrics URL for a song is loaded */
-  "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
-  /** Emitted when the lyrics cache has been cleared */
-  "bytm:lyricsCacheCleared": undefined;
-  /** Emitted when an entry is added to the lyrics cache - "penalized" entries get removed from cache faster because they were less related in lyrics lookups, opposite to the "best" entries */
-  "bytm:lyricsCacheEntryAdded": { type: "best" | "penalized", entry: LyricsCacheEntry };
-  /** Emitted when an entry is added to the artwork cache. Note: `entry.url` will be the *template URL* with a default resolution of 100x100. Use a simple string replacement to get any other resolution */
-  "bytm:artworkCacheEntryAdded": { artist: string, album: string, entry: ArtCacheEntry };
-
-  /** Emitted when the full DataStoreSerializer instance (containing crucial as well as cache and misc. volatile data) was initialized and all the stores' data was loaded. */
-  "bytm:dataStoreSerializerLoaded": undefined;
-
-  // NOTE:
-  // Additionally, all events from `SiteEventsMap` in `src/siteEvents.ts`
-  // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
-};
-
-/** Array of all events emittable on the interface (excluding plugin-specific, private events) */
-export const allInterfaceEvents = [
-  "bytm:registerPlugin",
-  "bytm:featureInitStarted",
-  "bytm:featureInitialized",
-  "bytm:featureInitialized:id",
-  "bytm:ready",
-  "bytm:allReady",
-  "bytm:fatalError",
-  "bytm:observersReady",
-  "bytm:configReady",
-  "bytm:setLocale",
-  "bytm:dialogOpened",
-  "bytm:dialogOpened:id",
-  "bytm:lyricsLoaded",
-  "bytm:lyricsCacheReady",
-  "bytm:lyricsCacheCleared",
-  "bytm:lyricsCacheEntryAdded",
-  "bytm:artworkCacheEntryAdded",
-  "bytm:dataStoreSerializerLoaded",
-  ...allSiteEvents.map(e => `bytm:siteEvent:${e}`),
-] as const;
 
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
@@ -258,30 +159,11 @@ export function preInitInterface() {
   loggers.interface.log("Initialized BYTM interface");
 }
 
-/** Emits an event on the BYTM interface */
-export function emitInterface<
-  TEvt extends keyof InterfaceEvents,
-  TDetail extends InterfaceEvents[TEvt],
->(
-  type: TEvt | keyof SiteEventsMapPrefixed,
-  ...detail: (TDetail extends undefined ? [undefined?] : [TDetail])
-) {
-  try {
-    unsafeWindow.dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
-    //@ts-expect-error
-    emitOnPlugins(type, undefined, ...detail);
-    if(getFeature("logEvents")) {
-      detail.length > 0 && detail?.[0]
-        ? loggers.interface.log(`Emitted interface event '${type}' with data:`, ...detail)
-        : loggers.interface.log(`Emitted interface event '${type}' (without data)`);
-    }
-  }
-  catch(err) {
-    loggers.interface.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
-  }
-}
 
 export { setGlobalProp };
+
+export { emitInterface, setLogEventsEnabled, allInterfaceEvents, emitOnPlugins, getPluginKey };
+export type { InterfaceEvents, InterfaceEventsMap };
 
 //#region register plugins
 
@@ -315,12 +197,6 @@ export function getPermStorePerms(def: PluginDefResolvable): [grantedPerms: numb
     throw new CoreUtils.DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
   return pluginPermissionsStore.getData()?.[getPluginKey(def)];
 }
-
-/** Map of plugin key to all registered plugins */
-const registeredPlugins = new Map<string, PluginItem>();
-
-/** Map of plugin key to auth token for plugins that have been registered */
-const registeredPluginTokens = new Map<string, string>();
 
 /** Pre-init for eager plugins that need to be initialized as soon as physically possible */
 export async function preInitPlugins() {
@@ -577,10 +453,6 @@ export function setRegisteredPluginPerms(plugin: PluginDefResolvable, perms: num
   }
 }
 
-/** Returns the key for a given plugin definition */
-export function getPluginKey({ plugin }: PluginDefResolvable) {
-  return `${plugin.namespace}/${plugin.name}`;
-}
 
 /** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
 export function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
@@ -598,16 +470,6 @@ export function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
   return getPluginKey(def1) === getPluginKey(def2);
 }
 
-/** Emits an event on all plugins that match the predicate (all plugins by default) */
-export function emitOnPlugins<TEvtKey extends keyof PluginEventMap>(
-  event: TEvtKey,
-  predicate: ((def: PluginDef) => boolean) | boolean = true,
-  ...data: Parameters<PluginEventMap[TEvtKey]>
-) {
-  for(const { def, events } of registeredPlugins.values())
-    if(typeof predicate === "boolean" ? predicate : predicate(def))
-      events.emit(event, ...data);
-}
 
 /**
  * @private FOR INTERNAL USE ONLY!  

@@ -2,7 +2,7 @@ import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
 import { tr } from "@sv443-network/userutils";
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { loggers } from "@util/logging.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { setGlobalProp } from "@/core/globals.ts";
 import { getFeature } from "@/config.ts";
 import langMapping from "@asset/locales.json" with { type: "json" };

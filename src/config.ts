@@ -6,7 +6,7 @@ import { reloadTab, t, type TrLocale } from "@util/index.ts";
 import { loggers, setErrorToastsEnabled } from "@util/logging.ts";
 import { emitSiteEvent } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface, setLogEventsEnabled } from "@/core/interfaceEvents.ts";
 import { closeCfgMenu, openCfgMenu } from "@menu/menu.ts";
 import { LogLevel, type FeatKeysOfType, type FeatureConfig, type FeatureInfo, type FeatureKey, type FeatureTag, type FeatureTypeProps, type NumberLengthFormat } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
@@ -401,6 +401,7 @@ export async function initConfig() {
 
   // @util/logging.ts can't read the config itself (it sits below it), so push the value in
   setErrorToastsEnabled(Boolean(data.showToastOnGenericError));
+  setLogEventsEnabled(Boolean(data.logEvents));
 
   // show prompt if config data was migrated
   if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
@@ -480,6 +481,7 @@ export function getFeature<TKey extends FeatureKey>(key: TKey | "_", defaultVal?
 export function setFeatures(featureConf: FeatureConfig) {
   const res = configStore.setData(featureConf);
   setErrorToastsEnabled(Boolean(featureConf.showToastOnGenericError));
+  setLogEventsEnabled(Boolean(featureConf.logEvents));
   emitSiteEvent("configChanged", getFeaturesNoHidden());
   loggers.data.info("Saved new feature config:", getFeaturesNoHidden());
   return res;

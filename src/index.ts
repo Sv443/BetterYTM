@@ -10,7 +10,8 @@ import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } fro
 import { loggers } from "@util/index.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
-import { devPluginToken, emitInterface, preInitInterface, initPlugins, preInitPlugins, unregisterPlugins, getRegisteredPlugins } from "@/interface.ts";
+import { devPluginToken, preInitInterface, initPlugins, preInitPlugins, unregisterPlugins, getRegisteredPlugins, reloadPluginData } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { initObservers, addSelectorListener, globservers } from "@/observers.ts";
 import { downloadData, getDSSerializer } from "@/serializers.ts";
 import { getWelcomeDialog } from "@dialog/welcome.ts";
@@ -125,13 +126,16 @@ function preInit() {
 
     initBroadcast();
 
+    // @util/broadcast.ts can't call into the plugin interface directly (it sits below it),
+    // so the reaction to this packet is wired up here instead
+    siteEvents.on("broadcast:pluginsUpdated", () => reloadPluginData());
+
     preInitInterface();
     preInitPlugins();
 
     if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
-    perfReport.meta.domain = getDomain();
 
     // use rawConsts to make sure vite doesn't treeshake it away (no, I tried `void` already and it doesn't work):
     if(typeof rawConsts !== "object")

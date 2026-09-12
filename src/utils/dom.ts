@@ -1,7 +1,7 @@
 import { consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
 import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
-import { getSelector } from "@util/data.ts";
+import { getSelector } from "@util/selectors.ts";
 import { fetchCss } from "@util/xhr.ts";
 import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
@@ -9,7 +9,7 @@ import { t } from "@util/translations.ts";
 import { addSelectorListener } from "@/observers.ts";
 import type { LikeDislikeState, StyleResourceKey, TTPolicy } from "@/types.ts";
 import { siteEvents } from "@/siteEvents.ts";
-import { showPrompt } from "@dialog/prompt.ts";
+import { tryUse } from "@/core/hooks.ts";
 
 //#region vid elem
 
@@ -310,7 +310,7 @@ export function copyToClipboard(text: Stringifiable) {
     GM.setClipboard(String(text));
   }
   catch {
-    showPrompt({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
+    tryUse("showPrompt")?.({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
   }
 }
 

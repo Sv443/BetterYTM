@@ -1,7 +1,7 @@
 import { fetchAdvanced } from "@sv443-network/coreutils";
 import { t, tp } from "@util/translations.ts";
 import { loggers, LyricsError } from "@util/logging.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { mode, scriptInfo } from "@/constants.ts";
 import { getFeature } from "@/config.ts";
 import { addSelectorListener } from "@/observers.ts";

@@ -9,7 +9,7 @@ import { loggers } from "@util/logging.ts";
 import { onInteraction } from "@util/input.ts";
 import { t } from "@util/translations.ts";
 import { siteEvents } from "@/siteEvents.ts";
-import { emitInterface } from "@/interface.ts";
+import { emitInterface } from "@/core/interfaceEvents.ts";
 import { fetchLyricsUrlTop, createLyricsBtn, splitVideoTitle } from "@feat/lyrics.ts";
 import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import { getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
@@ -19,7 +19,7 @@ import { showPrompt } from "@dialog/prompt.ts";
 import { getFeature } from "@/config.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 import "@feat/songLists.css";
-import { getSelector } from "@util/data.ts";
+import { getSelector } from "@util/selectors.ts";
 
 /** Whether any song list item's checkbox is currently checked */
 let isCheckboxChecked = false;
