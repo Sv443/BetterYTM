@@ -1,21 +1,31 @@
-import { DataStore, fetchAdvanced } from "@sv443-network/coreutils";
+import { DataStore, DatedError, fetchAdvanced } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compareVersions } from "compare-versions";
-import { repo, scriptInfo } from "@/constants.ts";
+import { branch, mode, repo, scriptInfo } from "@/constants.ts";
 import { setInnerHtml } from "@util/dom.ts";
-import { info, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { getDomain, getterifyObj, resourceAsString } from "@util/misc.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
-import type { Domain, Translatable } from "@/types.ts";
+import { LogLevel, type Domain, type FeatureConfig, type Translatable } from "@/types.ts";
 import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
+import { getFeature } from "@/config.ts";
+import { emitSiteEvent } from "@/siteEvents.ts";
+
+// TODO: expose on interface
+
+// used alert IDs:
+// - update-preview-version-hint-v3.1.0-rc.1
 
 //#region types
 
 // TODO: extract union type from {@linkcode defaultStaticData.selectors} keys.
 /** Union of all selector identifiers defined in the static data JSON. */
-export type StaticSelector = string;
+export type SelectorGroup = keyof typeof defaultStaticData.selectors;
+
+/** Union of all selector identifiers defined in the static data JSON. */
+export type SelectorByGroup<TGroup extends SelectorGroup> = keyof (typeof defaultStaticData.selectors[TGroup]);
 
 /** Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings. */
 export type StaticData = {
@@ -31,10 +41,10 @@ export type StaticData = {
   /** List of alerts to potentially display to users. May be empty. */
   alerts: GlobalAlert[];
   /** Mapping of selector identifiers to per-domain selector strings. */
-  selectors: Record<StaticSelector, {
+  selectors: Record<SelectorGroup, {
     /** DOM selector strings for all domains supported by BYTM, keyed by domain identifier (can be \"ytm\" or \"yt\"). */
     [domain in Domain]?: string;
-  }>;
+  } | string>;
 };
 
 /** Alert to be shown globally on the supported sites. */
@@ -69,10 +79,10 @@ export type GlobalAlert = {
 //#region vars
 
 /** URL to the remote data JSON file on a CDN. */
-const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/main/assets/data.json` as const;
+const remoteDataUrl = `https://raw.githubusercontent.com/${repo}/refs/heads/${branch}/assets/data.json` as const;
 
 /** Current format version of the static data JSON. If the fetched data has a different format version, it will be rejected and the bundled data will be used instead. */
-const staticDataFormatVersion = 0;
+const staticDataFormatVersion = 1;
 
 let staticData: StaticData | undefined;
 
@@ -84,6 +94,11 @@ export async function getStaticData(): Promise<StaticData> {
     if(staticData)
       return staticData;
 
+    if(mode === "development") {
+      loggers.data.info("Development mode is active. Initializing with static data.json:", defaultStaticData, LogLevel.Info);
+      return staticData = defaultStaticData as StaticData;
+    }
+
     const res = await fetchAdvanced(remoteDataUrl, {
       timeout: 10_000,
     });
@@ -91,17 +106,17 @@ export async function getStaticData(): Promise<StaticData> {
     if(res.ok) {
       const data = await res.json();
       if(isStaticData(data)) {
-        info("Successfully fetched remote static data:", data);
+        loggers.data.info("Successfully loaded remote static data:", data, LogLevel.Info);
         return staticData = data;
       }
       else
-        warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
+        loggers.data.warn("Remote static data is in an unsupported format, falling back to bundled data:", getterifyObj(defaultStaticData));
     }
     return staticData = defaultStaticData as StaticData;
   }
   catch(e) {
-    warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a non-fatal error:`, e);
-    info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
+    loggers.data.warn(`Failed to fetch remote static data from '${remoteDataUrl}' due to a recoverable error:`, e);
+    loggers.data.info("Falling back to the bundled static data:", getterifyObj(defaultStaticData));
     return staticData = defaultStaticData as StaticData;
   }
 }
@@ -109,6 +124,55 @@ export async function getStaticData(): Promise<StaticData> {
 /** Returns the bundled static data JSON. Mainly used for synchronous access when the latest data isn't required. */
 export function getDefaultStaticData() {
   return defaultStaticData;
+}
+
+//#region getSelector
+
+/**
+ * Returns the selector with the given ID.  
+ * By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
+ */
+export function getSelector<
+  TSelectorGroup extends SelectorGroup,
+  TThrows extends boolean | undefined = true,
+>(
+  group: TSelectorGroup,
+  id: SelectorByGroup<TSelectorGroup>,
+  throws?: TThrows,
+): TThrows extends true ? string : (string | undefined) {
+  const dom = getDomain();
+  if(throws !== false) {
+    try {
+      if(typeof staticData?.selectors !== "object")
+        throw new DatedError("Static data hasn't been fetched yet.");
+      // @ts-expect-error can't find a way to fix the type
+      const sel = staticData.selectors?.[group]?.[id];
+      if(!(["string", "object"].includes(typeof sel)))
+        throw new DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
+      if(typeof sel === "object" && dom !== null && !(dom in sel))
+        throw new DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
+
+      return typeof sel === "string"
+        ? sel
+        : sel[dom] as TThrows extends true ? string : (string | undefined);
+    }
+    catch(e) {
+      loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
+      throw e;
+    }
+  }
+
+  // @ts-expect-error ^
+  const sel = staticData?.selectors?.[group]?.[id];
+
+  return typeof sel === "string"
+    ? sel
+    : sel?.[dom] as TThrows extends true ? string : (string | undefined);
+}
+
+/** Same as {@linkcode getSelector()}, but sets the `throws` parameter to false by default. */
+export function tryGetSelector<TSelectorGroup extends SelectorGroup>(group: TSelectorGroup, id: SelectorByGroup<TSelectorGroup>): string | undefined {
+  return getSelector(group, id, false);
 }
 
 //#region validate
@@ -150,15 +214,21 @@ export const alertsStore = new DataStore<AlertsStoreData, false>({
   engine: new GMStorageEngine(),
   memoryCache: false,
   compressionFormat: null,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 /** Checks if there are active alerts and shows a prompt for each of them. */
-async function checkActiveAlerts({ alerts }: StaticData, alertsData: AlertsStoreData): Promise<void> {
+async function checkActiveAlerts(alertMode: FeatureConfig["globalAlertMode"], { alerts }: StaticData, alertsData: AlertsStoreData): Promise<void> {
   const activeAlerts = alerts.filter(alert => isAlertActive(alert, alertsData));
 
   for(const alert of activeAlerts) {
+    if(alertMode === "importantOnly" && !alert.important)
+      continue;
     const dlg = createAlertDialog(alert);
-    await dlg.open();
+    dlg.open();
     await dlg.once("close");
     alertsData = await alertsStore.loadData();
     await alertsStore.setData({
@@ -229,6 +299,7 @@ export function createAlertDialog(alert: GlobalAlert) {
       footer.classList.add("bytm-dialog-footer", "align-right");
     
       const closeBtn = document.createElement("button");
+      closeBtn.classList.add("bytm-btn");
       closeBtn.type = "button";
       closeBtn.textContent = closeBtn.ariaLabel = t("prompt_dismiss");
       onInteraction(closeBtn, () => {
@@ -236,7 +307,7 @@ export function createAlertDialog(alert: GlobalAlert) {
         if(titleCloseBtn)
           titleCloseBtn.click();
         else
-          warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
+          loggers.data.warn("Couldn't find the alert dialog's close button to trigger a click on it, closing the dialog won't work properly:", titleCloseBtn);
       });
     
       footer.appendChild(closeBtn);
@@ -260,7 +331,13 @@ export async function initStaticData() {
     alertsStore.loadData(),
   ]);
 
-  return await Promise.allSettled([
-    checkActiveAlerts(staticData, alertsData),
+  const alertMode = getFeature("globalAlertMode", "importantOnly");
+
+  const result = await Promise.allSettled([
+    ...(alertMode !== "never" ? [checkActiveAlerts(alertMode, staticData, alertsData)] : []),
   ]);
+
+  emitSiteEvent("staticDataInitialized");
+
+  return result;
 }

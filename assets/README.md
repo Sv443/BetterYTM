@@ -78,21 +78,21 @@ The path to the resource can be relative, in which case it's resolved relative t
 If it starts with a slash, it will be resolved relative to the project root (where `package.json` is).  
 Otherwise, it will be treated as a static URL.  
   
-All values will be run through the function `resolveResourceVal()` in [`src/tools/post-build.ts`](../src/tools/post-build.ts) to replace placeholders with dynamic values.  
+All values will be run through the function `resolveResourceVal()` in [`src/tools/vite-plugin-bytm.ts`](../src/tools/vite-plugin-bytm.ts) to replace placeholders with dynamic values.  
 For example, `$BRANCH` will be replaced with the build branch name. Find all possible replacements in that function's declaration.  
   
 The configuration object can have the following properties:
 | Property | Type     | Description              |
 | :------- | :------- | :----------------------- |
 | `path`   | `string` | The path to the resource |
-| `ref?`   | `string` | The GitHub ref to use for the resource, e.g. `main`, a Git tag like `v2.0.0` or a commit hash - defaults to the branch resolved in [`src/tools/post-build.ts`](./src/tools/post-build.ts) |
+| `ref?`   | `string` | The GitHub ref to use for the resource, e.g. `main`, a Git tag like `v2.0.0` or a commit hash - defaults to the branch resolved in [`src/tools/vite-plugin-bytm.ts`](../src/tools/vite-plugin-bytm.ts) |
 
 <br>
 
 ### [`require.json`](require.json)
 This file contains the npm libraries that are loaded into the runtime through the `@require` userscript directive.  
 This is done to massively reduce the bundle size and make use of the userscript manager extension's caching.  
-Each library will be set as an external in the [rollup configuration](../rollup.config.js) to prevent it from including it in the bundle.  
+Each library will be set as an external in the [Vite configuration](../vite.config.ts) to prevent it from including it in the bundle.  
 The version of each package will be parsed from [`package.json`](../package.json)'s `dependencies` or `devDependencies` to ensure consistent versions across the project.  
   
 Inside the file is an array of objects, which each have one of the following sets of properties:  

@@ -1,0 +1,9 @@
+paths:
+  - 'src'
+  - 'assets'
+paths-ignore:
+  - '**/*.user.js'
+  - 'dist/**'
+  - 'src/tools/**'
+  - 'src/stories/**'
+  - 'src/dev/**'

@@ -5,7 +5,7 @@ import { assetSource, buildNumber, changelogUrl, compressionFormat, devServerPor
 import { enableDiscardBeforeUnload } from "@feat/behavior.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { getFeature } from "@/config.ts";
-import { error, info, log, warn } from "@util/logging.ts";
+import { loggers } from "@util/logging.ts";
 import { sendRequest } from "@util/xhr.ts";
 import { getLocale, type TrLocale } from "@util/translations.ts";
 import { emitBroadcast } from "@util/broadcast.ts";
@@ -35,6 +35,13 @@ export function getDomain(): Domain {
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
+const initMs = Date.now();
+
+/** Returns the milliseconds since script init. */
+export function millis() {
+  return Date.now() - initMs;
+}
+
 /**
  * Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable.  
  * Note: as duplicated tabs will receive the same sessionStorage, this ID is not guaranteed to be entirely unique.
@@ -52,7 +59,7 @@ export function getSessionId(): string | null {
     return sesId;
   }
   catch(err) {
-    warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+    loggers.misc.warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
     return null;
   }
 }
@@ -95,9 +102,17 @@ export function getWatchId() {
 
 /**
  * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`  
- * Returns null if the current page is not a channel page or there was an error parsing the URL
+ * First, tries to resolve it via `ytInitialPlayerResponse` on the domain `yt`, then tries to parse the URL (only works for channel pages on both YTM and YT).  
+ * Returns `null` if the current page is not a channel page or there was an error parsing the URL.
  */
 export function getCurrentChannelId() {
+  const iprID = getDomain() === "yt" && "ytInitialPlayerResponse" in getUnsafeWindow()
+    ? getUnsafeWindow().ytInitialPlayerResponse?.videoDetails.channelId
+    : null;
+
+  if(iprID)
+    return iprID;
+
   return parseChannelIdFromUrl(location.href);
 }
 
@@ -157,7 +172,7 @@ export async function getBestThumbnailUrl(videoID: string) {
         response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
       }
       catch(err) {
-        error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
+        loggers.misc.error(`Error while sending HEAD request to thumbnail URL for video ID '${videoID}' with quality '${quality}':`, err);
         void err;
       }
       if(response && response.status < 300 && response.status >= 200)
@@ -192,7 +207,7 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
       parsed = JSON.parse(await decompress(val, compressionFormat, "string"));
     }
     catch(err) {
-      error("Couldn't decompress and parse data.", err);
+      loggers.misc.error("Couldn't decompress and parse data.", err);
       return null;
     }
   }
@@ -245,6 +260,10 @@ const reloadTabStore = new DataStore<ReloadTabData, false>({
   defaultData: {
     entries: [],
   },
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 const reloadTabEntryMaxTTL = 1000 * 60 * 60 * 24;
@@ -272,7 +291,7 @@ export async function getReloadTabData(sessionId?: string | null, deleteAfterRea
     return sesEntry;
   }
   catch(err) {
-    error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
+    loggers.misc.error("Couldn't get reload tab data, sessionStorage might be unavailable:", err);
     return null;
   }
 }
@@ -280,7 +299,7 @@ export async function getReloadTabData(sessionId?: string | null, deleteAfterRea
 /** add `time_continue` param only if current video time is greater than this value */
 const reloadTabVideoTimeThreshold = 3;
 
-/** Reloads the tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the `bytm-reload-tab` DataStore */
+/** Reloads the own tab. If a video is currently playing, its time and volume will be preserved through the URL parameter `time_continue` and the {@linkcode reloadTabStore} DataStore (ID `bytm-reload-tab`) */
 export async function reloadTab() {
   const win = getUnsafeWindow();
   try {
@@ -315,14 +334,14 @@ export async function reloadTab() {
     win.location.reload();
   }
   catch(err) {
-    error("Couldn't save video time and volume before reloading tab:", err);
+    loggers.misc.error("Couldn't save video time and volume before reloading tab:", err);
     win.location.reload();
   }
 }
 
 /** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
 export async function reloadAllTabs(reloadSelf = true, toTxIDs?: string[]) {
-  info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
+  loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
 
   emitBroadcast({
     type: "reloadTabs",
@@ -354,7 +373,7 @@ export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
         inline: "center",
       });
 
-      log("Scrolled to active song in queue:", activeItem);
+      loggers.misc.log("Scrolled to active song in queue:", activeItem);
     }
   });
 }
@@ -395,6 +414,48 @@ export function getterifyObj<TObj extends object>(obj: TObj): TObj {
   }
 
   return newObj;
+}
+
+/** Slices digits off the beginning of the given number {@linkcode n} */
+export function sliceNum(n: number, count: number) {
+  return n % (10 ** (String(n).length - count));
+}
+
+// curly/angle/low-9 quotes, primes, turned commas and fullwidth/modifier variants used as apostrophes:
+const singleQuotesRegex = /[‘’‚‛‹›′ʼʹ＇❛❜`´]/gmu;
+// curly/angle/low-9 double quotes, double primes, fullwidth and CJK corner-bracket-style quotation marks:
+const doubleQuotesRegex = /[“”„‟«»″＂❝❞〝〞〟]/gmu;
+// fullwidth, ideographic, Arabic and small-form commas:
+const commaRegex = /[，、،﹐﹑､]/gmu;
+// fullwidth, ideographic, Arabic, small-form periods and the "one dot leader":
+const periodRegex = /[．。۔﹒｡․]/gmu;
+// non-breaking, en/em quad, en/em/three/four/six-per-em, figure, punctuation, thin, hair, narrow no-break, medium
+// mathematical and ideographic space separators, normalized to a regular space:
+const unicodeSpaceRegex = /[\u00a0\u2000-\u200a\u202f\u205f\u3000]/gmu;
+// soft hyphen, Mongolian vowel separator, Arabic letter mark, zero-width space/non-joiner/joiner, LTR/RTL marks, word joiner,
+// invisible math operators, variation selectors, interlinear annotation chars and the BOM/zero-width no-break space:
+const invisCharRegex = /[\u00ad\u180e\u061c\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufe00-\ufe0f\ufff9-\ufffb\ufeff]+/gmu;
+
+/**
+ * Replaces all sorts of wacky Unicode variants with the regular ASCII variant if possible.  
+ * Supports the following character types:
+ * - `'`: curly/angle/low-9 quotes, primes, turned commas and fullwidth/modifier variants used as apostrophes.
+ * - `"`: curly/angle/low-9 double quotes, double primes, fullwidth and CJK corner-bracket-style quotation marks.
+ * - `,`: fullwidth, ideographic, Arabic and small-form commas.
+ * - `.`: fullwidth, ideographic, Arabic, small-form periods and the "one dot leader".
+ * - ` `: non-breaking, en/em quad, en/em/three/four/six-per-em, figure, punctuation, thin, hair, narrow no-break, medium mathematical and ideographic space separators.
+ * - `(removed)`: soft hyphen, Mongolian vowel separator, Arabic letter mark, zero-width space/non-joiner/joiner, LTR/RTL marks, word joiner, invisible math operators, variation selectors, interlinear annotation chars and the BOM/zero-width no-break space.
+ */
+export function sanitizeUnicode(str: string) {
+  return str
+    // replace unicode symbols:
+    .replace(singleQuotesRegex, "'")
+    .replace(doubleQuotesRegex, "\"")
+    .replace(commaRegex, ",")
+    .replace(periodRegex, ".")
+    .replace(unicodeSpaceRegex, " ")
+    .replace(invisCharRegex, "")
+    .trim();
 }
 
 //#region version session counter
@@ -469,9 +530,16 @@ export async function getResourceUrl(name: ResourceKey | "_") {
     }
   }
 
-  warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
+  loggers.misc.warn(`Couldn't get blob URL nor external URL for the resource '${name}', attempting to use base64-encoded data: URI fallback`);
   // @ts-expect-error VM and TM have the second parameter to return the b64 URI, GM doesn't
   return await GM.getResourceUrl(name, false);
+}
+
+/** Collection of remote fetch attempts per resource, for inclusion in the performance report. */
+export const resourceFetches = new Map<ResourceKey | "_", number[]>();
+
+function logResourceFetch(key: ResourceKey | "_") {
+  resourceFetches.set(key, [...(resourceFetches.get(key) ?? []), millis()]);
 }
 
 type ResourceCache = {
@@ -496,6 +564,10 @@ export const resourceCacheStore = new DataStore({
     created: Date.now(),
     cacheKey: resourceCacheKey,
   } as ResourceCache,
+  nanoEmitterOptions: {
+    publicEmit: false,
+    catchUpEvents: ["loadData"],
+  },
 });
 
 /** Resources with these prefixes are cached in the resource cache */
@@ -528,7 +600,6 @@ function resourceCacheGet(key: ResourceKey | "_") {
 async function resourceCacheSet(key: ResourceKey | "_", val: string) {
   const data = resourceCacheStore.getData();
   data.resources[key] = val;
-  data.created = Date.now();
   return await resourceCacheStore.setData(data);
 }
 
@@ -551,19 +622,21 @@ export async function resourceAsString(resourceKey: ResourceKey | "_") {
     if(!resourceUrl)
       throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 
+    logResourceFetch(resourceKey);
     const res = await fetchAdvanced(resourceUrl);
+
     if(!res.ok)
       throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
 
     const str = await res.text();
 
-    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)))
+    if(cachedResourcePrefixes.some(prefix => resourceKey.startsWith(prefix)) && !await resourceCacheHas(resourceKey))
       await resourceCacheSet(resourceKey, str);
 
     return str;
   }
   catch(err) {
-    error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
+    loggers.misc.error(`Couldn't fetch resource '${resourceKey}' as string from URL '${resourceUrl}' due to an error:`, err);
     return null;
   }
 }
@@ -624,7 +697,7 @@ export async function parseMarkdown(mdString: string, sanitize = true) {
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
   const clRes = await fetchAdvanced(changelogUrl);
-  log("Fetched changelog:", clRes);
+  loggers.misc.log("Fetched changelog:", clRes);
   return await clRes.text();
 }
 
@@ -647,7 +720,7 @@ export async function getChangelogHtmlWithDetails() {
     return sanitizeHtml(changelogHtml);
   }
   catch(err) {
-    error("Couldn't fetch or parse changelog:", err);
+    loggers.misc.error("Couldn't fetch or parse changelog:", err);
     return `Error while preparing changelog: ${err}`;
   }
 }

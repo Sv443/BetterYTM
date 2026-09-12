@@ -1,20 +1,22 @@
 import { bitSetHas } from "@sv443-network/coreutils";
 import { BytmDialog } from "@comp/BytmDialog.ts";
-import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins } from "@/interface.ts";
+import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins, unregisterPlugins } from "@/interface.ts";
 import { getLocale, activeLocaleDir, t } from "@util/translations.ts";
 import { setInnerHtml } from "@util/dom.ts";
 import { PluginIntent } from "@/types.ts";
 import packageJson from "@root/package.json" with { type: "json" };
 import "@dialog/pluginList.css";
+import { createCircularBtn } from "@comp/circularButton.ts";
+import { getPluginPermissionsDialog } from "@dialog/pluginPermissions.ts";
 
 let pluginListDialog: BytmDialog | null = null;
 
-/** Creates and/or returns the import dialog */
+/** Creates and/or returns the plugin list dialog */
 export async function getPluginListDialog() {
   return pluginListDialog ??= new BytmDialog({
     id: "plugin-list",
-    width: 900,
-    height: 600,
+    width: 950,
+    height: 700,
     closeBtnEnabled: true,
     closeOnBgClick: true,
     closeOnEscPress: true,
@@ -37,7 +39,7 @@ async function renderHeader() {
   return titleElem;
 }
 
-async function renderBody() {
+async function renderBody(dlg: BytmDialog) {
   const listContainerEl = document.createElement("div");
   listContainerEl.id = "bytm-plugin-list-container";
 
@@ -53,7 +55,9 @@ async function renderBody() {
     return listContainerEl;
   }
 
-  for(const [, { def: { plugin, intents: intentsRaw } }] of registeredPlugins) {
+  for(const [, { def }] of registeredPlugins) {
+    const { plugin } = def;
+
     const rowEl = document.createElement("div");
     rowEl.classList.add("bytm-plugin-list-row");
 
@@ -61,9 +65,17 @@ async function renderBody() {
     leftEl.classList.add("bytm-plugin-list-row-left");
     rowEl.appendChild(leftEl);
 
+    const leftTopEl = document.createElement("div");
+    leftTopEl.classList.add("bytm-plugin-list-row-left-top");
+    leftEl.appendChild(leftTopEl);
+
+    const leftBottomEl = document.createElement("div");
+    leftBottomEl.classList.add("bytm-plugin-list-row-left-bottom");
+    leftEl.appendChild(leftBottomEl);
+
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
-    leftEl.appendChild(headerWrapperEl);
+    leftTopEl.appendChild(headerWrapperEl);
 
     if(plugin.iconUrl) {
       const iconEl = document.createElement("img");
@@ -98,11 +110,11 @@ async function renderBody() {
     descEl.classList.add("bytm-plugin-list-row-desc");
     descEl.tabIndex = 0;
     descEl.textContent = descEl.title = descEl.ariaLabel = plugin.description[getLocale()] ?? plugin.description["en-US"];
-    leftEl.appendChild(descEl);
+    leftTopEl.appendChild(descEl);
 
     const linksList = document.createElement("div");
     linksList.classList.add("bytm-plugin-list-row-links-list");
-    leftEl.appendChild(linksList);
+    leftBottomEl.appendChild(linksList);
 
     let linkElCreated = false;
     for(const key in plugin.homepage) {
@@ -129,51 +141,91 @@ async function renderBody() {
       linksList.appendChild(linkEl);
     }
 
-    const pluginIdentifier = `${plugin.namespace}/${plugin.name}`;
+    const pluginKey = `${plugin.namespace}/${plugin.name}`;
     const devPluginIdentifier = `${packageJson.namespace}+${devPluginId}/${t("dev_plugin.name")}`;
     const isDevPlugin = Boolean(
-      pluginIdentifier === devPluginIdentifier
+      pluginKey === devPluginIdentifier
       && getPluginInfo(devPluginToken, devPluginIdentifier)
     );
 
-    const intentsBitSet = Array.isArray(intentsRaw) ? intentsRaw.reduce((acc, intent) => acc | intent, 0) : typeof intentsRaw === "number" ? intentsRaw : 0;
+    const permsBitSet = getRegisteredPlugins().find(([key]) => key === pluginKey)?.[1].grantedPerms;
     const intentsAmount = Object.keys(PluginIntent).length / 2;
-    const intentsArr = bitSetHas(intentsBitSet, PluginIntent.FullAccess)
-      ? [PluginIntent.FullAccess]
-      : (typeof intentsBitSet === "number" && intentsBitSet > 0 ? (() => {
-        const arr = [];
-        for(let i = 0; i < intentsAmount; i++)
-          if(intentsBitSet & (2 ** i)) arr.push(2 ** i);
-        return arr;
-      })() : []);
+    const permsArr = permsBitSet
+      ? bitSetHas(permsBitSet, PluginIntent.FullAccess)
+        ? [PluginIntent.FullAccess]
+        : (typeof permsBitSet === "number" ? (() => {
+          const arr = [];
+          for(let i = 0; i < intentsAmount; i++)
+            if(permsBitSet & (2 ** i)) arr.push(2 ** i);
+          return arr;
+        })() : [])
+      : [];
 
     if(!isDevPlugin) {
-      if(intentsArr.length !== 0) {
-        const rightEl = document.createElement("div");
-        rightEl.classList.add("bytm-plugin-list-row-right");
-        rowEl.appendChild(rightEl);
+      const rightEl = document.createElement("div");
+      rightEl.classList.add("bytm-plugin-list-row-right");
+      rowEl.appendChild(rightEl);
 
-        const permissionsHeaderEl = document.createElement("div");
-        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
-        permissionsHeaderEl.tabIndex = 0;
-        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list.permissions_header");
-        rightEl.appendChild(permissionsHeaderEl);
+      const permContEl = document.createElement("div");
+      permContEl.classList.add("bytm-plugin-list-row-permission-container");
+      rightEl.appendChild(permContEl);
 
-        for(const intent of intentsArr) {
-          const intentEl = document.createElement("div");
-          intentEl.classList.add("bytm-plugin-list-row-intent-item");
-          intentEl.tabIndex = 0;
-          intentEl.textContent = t(`plugin_intent.name_${PluginIntent[intent]}`);
-          intentEl.title = intentEl.ariaLabel = t(`plugin_intent.description_${PluginIntent[intent]}`);
-          rightEl.appendChild(intentEl);
-        }
+      const buttonsContEl = document.createElement("div");
+      buttonsContEl.classList.add("bytm-plugin-list-row-buttons-container");
+
+      const permBtnEl = await createCircularBtn({
+        resourceName: "icon-gear",
+        onClick() {
+          const permDialog = getPluginPermissionsDialog(def);
+          permDialog.open();
+          permDialog.once("close", () => {
+            dlg.unmount();
+            dlg.open();
+          });
+        },
+        title: t("plugin_edit_permissions"),
+      });
+      buttonsContEl.appendChild(permBtnEl);
+
+      const unregisterBtnEl = await createCircularBtn({
+        resourceName: "icon-delete",
+        onClick: () => unregisterPlugins(def, true),
+        title: t("plugin_unregister"),
+      });
+      buttonsContEl.appendChild(unregisterBtnEl);
+
+      rightEl.appendChild(buttonsContEl);
+
+      const permissionsHeaderEl = document.createElement("div");
+      permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
+      permissionsHeaderEl.tabIndex = 0;
+      permissionsHeaderEl.textContent = permissionsHeaderEl.title = t("plugin_list.permissions_header");
+      permContEl.appendChild(permissionsHeaderEl);
+
+      for(const perm of permsArr) {
+        const intentEl = document.createElement("div");
+        intentEl.classList.add("bytm-plugin-list-row-perm-item");
+        intentEl.tabIndex = 0;
+        intentEl.textContent = t(`plugin_intent_name.${PluginIntent[perm]}`);
+        intentEl.title = t(`plugin_intent_description.${PluginIntent[perm]}`);
+        permContEl.appendChild(intentEl);
+      }
+
+      if(permsArr.length === 0) {
+        const noPermsNoteEl = document.createElement("div");
+        noPermsNoteEl.classList.add("bytm-plugin-list-row-right", "no-perms");
+        noPermsNoteEl.tabIndex = 0;
+        noPermsNoteEl.title = t("plugin_list.no_permissions");
+        const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
+        setInnerHtml(noPermsNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.no_permissions")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
+        permContEl.appendChild(noPermsNoteEl);
       }
     }
     else {
       const devPluginNoteEl = document.createElement("div");
       devPluginNoteEl.classList.add("bytm-plugin-list-row-right", "is-dev-plugin");
       devPluginNoteEl.tabIndex = 0;
-      devPluginNoteEl.title = devPluginNoteEl.ariaLabel = t("plugin_list.dev_plugin_note");
+      devPluginNoteEl.title = t("plugin_list.dev_plugin_note");
       const infoIcon = "<span class=\"bytm-dev-plugin-note-info-icon\">🛈</span>";
       setInnerHtml(devPluginNoteEl, `${activeLocaleDir === "ltr" ? `${infoIcon} ` : ""}${t("plugin_list.dev_plugin_note")}${activeLocaleDir === "rtl" ? ` ${infoIcon}` : ""}`);
       rowEl.appendChild(devPluginNoteEl);

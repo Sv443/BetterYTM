@@ -1,6 +1,7 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
 import { tr } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, log, warn } from "@util/index.ts";
+import { getResourceUrl } from "@util/misc.ts";
+import { loggers } from "@util/logging.ts";
 import { emitInterface, setGlobalProp } from "@/interface.ts";
 import { getFeature } from "@/config.ts";
 import langMapping from "@asset/locales.json" with { type: "json" };
@@ -36,6 +37,10 @@ tr.addTransform(tr.transforms.templateLiteral);
 //   defaultData: { keys: [] },
 //   formatVersion: 0,
 //   compressionFormat: null,
+//   nanoEmitterOptions: {
+//     publicEmit: false,
+//     catchUpEvents: ["loadData"],
+//   },
 // });
 
 /** Used to check which keys are unused. */
@@ -57,7 +62,7 @@ const devMarkTrKeyUsed = async (key: string) => {
   //   return await devUsedTrKeysStore.setData(data);
   // }
   // catch(e) {
-  //   error("Failed to mark translation key as used", e);
+  //   loggers.translation.error("Failed to mark translation key as used", e);
   // }
 };
 
@@ -94,11 +99,11 @@ export async function initTranslations(locale: TrLocale) {
 
     tr.addTranslations(locale, { ...meta, ...trans });
 
-    info(`Loaded translations for locale '${locale}'`);
+    loggers.translation.info(`Loaded translations for locale '${locale}'`);
   }
   catch(err) {
     const errStr = `Couldn't load translations for locale '${locale}'`;
-    error(errStr, err);
+    loggers.translation.error(errStr, err);
     throw new Error(errStr, { cause: err });
   }
 }
@@ -109,7 +114,7 @@ export async function fetchTranslationResource(locale: TrLocale) {
   const res = await fetchAdvanced(url);
   const bodyTxt = await res.text();
 
-  getFeature("logHttp") && log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
+  getFeature("logHttp") && loggers.translation.log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
 
   if(res.status < 200 || res.status >= 300)
     throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
@@ -163,7 +168,7 @@ export function tp(key: TFuncKey, num: number | unknown[] | NodeList, ...args: T
 /** Returns the translated string for the given key in the specified locale, after optionally inserting positional arguments into 1-indexed `%n` placeholders. */
 export function tl(locale: TrLocale, key: TFuncKey, ...args: TrArg[]) {
   if(locale === "en-US")
-    hasKeyFor(locale, key).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+    hasKeyFor(locale, key).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
 
   devMarkTrKeyUsed(key);
 
@@ -183,7 +188,7 @@ export function tlp(locale: TrLocale, key: TFuncKey, num: number | unknown[] | N
   devMarkTrKeyUsed(tlKey);
 
   if(locale === "en-US")
-    hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
+    hasKeyFor(locale, tlKey).then((hasKey) => !hasKey && loggers.translation.warn(`Translation key '${key}' not found for locale 'en-US' - expect random errors!`)).catch(() => void 0);
 
   const trans = tl(locale, tlKey, ...args);
 

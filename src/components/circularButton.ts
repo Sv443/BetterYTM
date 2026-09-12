@@ -7,6 +7,8 @@ type CircularBtnOptions = {
   title: string;
   /** Whether the button should have a ripple effect - defaults to true */
   ripple?: boolean;
+  /** Function to modify the element before it's returned. */
+  modifyElement?: (element: HTMLElement) => HTMLElement | Promise<HTMLElement>;
 } & (
   | {
     /** Resource key for the button icon */
@@ -17,11 +19,11 @@ type CircularBtnOptions = {
   }
 ) & (
   | {
-    /** URL to navigate to when the button is clicked */
+    /** URL to navigate to when the button is clicked. This makes the button use an `<a>` element with `target="_blank"` by default */
     href: string;
   }
   | {
-    /** Callback function to execute when the button is clicked */
+    /** Callback function to execute when the button is interacted with (using {@linkcode onInteraction()}). This makes the button use a `<div>` element. */
     onClick: (event: MouseEvent | KeyboardEvent) => void;
   }
 );
@@ -35,6 +37,7 @@ type CircularBtnOptions = {
 export async function createCircularBtn({
   title,
   ripple = true,
+  modifyElement,
   ...rest
 }: CircularBtnOptions) {
   let btnElem: HTMLElement;
@@ -71,5 +74,10 @@ export async function createCircularBtn({
     btnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
   }
 
-  return ripple ? createRipple(btnElem) : btnElem;
+  const rippleElem = ripple ? createRipple(btnElem) : btnElem;
+
+  if(modifyElement)
+    await modifyElement(btnElem);
+
+  return rippleElem;
 }

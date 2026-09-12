@@ -2,7 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import k from "kleur";
-import type { PluginDef } from "../types.ts";
+import type { PluginJsonEntry } from "@/types.ts";
 import locales from "../../assets/locales.json" with { type: "json" };
 import pluginsJson from "../../assets/plugins.json" with { type: "json" };
 import pkgJson from "../../package.json" with { type: "json" };
@@ -23,9 +23,6 @@ const changes = {
 const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
 const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-summary.md");
 
-const pluginList = pluginsJson as PluginDef[];
-
-
 /** Modifies the readme files with content inserted into the sections defined in {@linkcode changes} */
 async function run() {
   const readmeFiles = [
@@ -42,7 +39,7 @@ async function run() {
   for(const { path, content } of readmeFiles) {
     console.info(`Generating '${path}'...`);
 
-    const result = await modifyReadme(content.split(/\r?\n/gm), changes);
+    const result = await modifyReadme(content.split(/\r?\n/gm), changes, path);
 
     await writeFile(path, result);
   }
@@ -53,7 +50,7 @@ async function run() {
 }
 
 /** Modify the given lines with the passed {@linkcode changes} */
-async function modifyReadme(readmeLines: string[], changes: Record<string, () => Promise<string>>) {
+async function modifyReadme(readmeLines: string[], changes: Record<string, (path: string) => Promise<string>>, path: string) {
   let lines = [...readmeLines];
   let retLines = [] as string[];
   for(const [name, getContent] of Object.entries(changes)) {
@@ -73,7 +70,7 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
       throw new Error(`No end tag found for section <{{${name.toUpperCase()}}}>`);
 
     // replace the content between the two lines
-    const newContent = await getContent();
+    const newContent = await getContent(path);
     retLines.push(...lines.splice(0, beginLine + 1));
     retLines.push("<!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->");
     retLines.push(...newContent.split(/\r?\n/gm));
@@ -93,7 +90,7 @@ async function genHeader() {
     .sort(([a], [b]) => trimCode(a).localeCompare(trimCode(b)))
     .reduce((acc, [locale, { emoji, nameEnglish }], i) => {
       const countryCode = locale.split("-")[1];
-      return `${acc}${i > 0 ? ", " : ""}<abbr title="${nameEnglish}">${emoji}&nbsp;${countryCode}</abbr>`;
+      return `${acc}${i > 0 ? ", " : ""}<abbr title="${emoji} ${nameEnglish}">${emoji}&nbsp;${countryCode}</abbr>`;
     }, "");
 
   return `\
@@ -104,23 +101,27 @@ async function genHeader() {
 <h4>With translations for: ${langStr}</h4>
 
 ---
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
+### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy)
+#### [**Development**](#development) • [**Special Thanks**](#special-thanks) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
 `;
 }
 
-async function genPluginList() {
-  void ["TODO:", pluginList];
+async function genPluginList(path: string) {
+  const isSummary = path === readmeSummaryPath;
 
-  return `\
-<sup>
+  const pluginList = Object.values(pluginsJson as PluginJsonEntry[]).reduce((a, pl, i) => `${a}${i > 0 ? "\n" : ""}\
+- **[${pl.name["en-US"]}](${pl.links.source}) by ${"url" in pl.author ? `[${pl.author.name}](${pl.author.url})` : `${pl.author.name}`}**  
+  ${pl.description["en-US"]}  
+  [Click here to install the latest version.](${pl.links.install})\
+`, "");
 
-Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin.
+  return `
+${pluginList}
 
-</sup>
+<br>
 
-- **[BetterYTM - Song Playlists](https://github.com/eissar/betterytm-song-playlists)** by [eissar](https://github.com/eissar)  
-  Dynamically shows which of your playlists contain the currently selected song in YouTube Music.
-`;
+> ${!isSummary ? "[!NOTE]  \n> \n> " : "Note: "}\
+Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin. If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)`;
 }
 
 run();

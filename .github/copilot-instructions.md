@@ -7,7 +7,7 @@ description: This file describes the general project structure, base directives 
 # Project Outline
 
 This is a Userscript called BetterYTM, which enhances the pages YouTube Music and YouTube with tons of quality of life features, such as auto-liking, better lyrics lookup, finer volume control and tons more layout and usability improvements.  
-It is written in TypeScript, uses pnpm and ESLint, and is bundled with Rollup and a custom transformation script in `src/tools/post-build.ts`.  
+It is written in TypeScript, uses pnpm and ESLint, and is bundled with Vite 8 (Rolldown) via `vite.config.ts` with a custom plugin at `src/tools/vite-plugin-bytm.ts`.  
 Components are written using the vanilla JS DOM API, no framework like React is used.
 
 # Base Directives
@@ -20,6 +20,9 @@ Components are written using the vanilla JS DOM API, no framework like React is 
 - Realize dead ends and think about solutions or alternatives. Interject with questions if needed and speak up when there's an objectively better path.
 - Ask for new or updated context if needed instead of making assumptions.
 - In the output, instead of including unmodified members, only show the new or modified code and make use of comments like `/* existing code */`.
+- Barrel exports (re-exports from an index file) should be avoided to prevent circular dependencies and maintain clearer import paths.
+- Prefer options objects as function/method parameters when there are more than 2 parameters or when the logic is not easily inferrable from the function/method and parameter names alone.
+- When members are mentioned in TSDoc comments and also imported at the top of the file, they should be mentioned using the `{@linkcode ...}` tag.
 
 # Libraries Summary
 

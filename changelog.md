@@ -1,6 +1,75 @@
 <!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
+<!-- #region 4.0.0 -->
+<!-- TODO: <details> -->
+## 4.0.0
+- **New Features:**
+  - Turkish translations (by [@kcangny](https://github.com/kcangny)).
+  - 🎵 Extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.
+  - Hotkey to quickly search for the lyrics of a song, anywhere on YT or YTM (<kbd>Alt</kbd><kbd>Q</kbd> by default).
+  - Hotkey to lock all interactions until the hotkey is pressed again (<kbd>Alt</kbd><kbd>Pause</kbd> by default).
+  - Configuration option for the global alerts system (whether to show all alerts, only important ones or none).
+- **Improvements and Changes:**
+  - Turned features that had a combined toggle and mode selection into two separate features, to allow for more flexible configuration and easier toggling:
+    - `thumbnailOverlayBehavior: "never"` - replaced with `thumbnailOverlayEnabled`.
+      - Setting the thumbnail overlay mode to `never` will now disable only the automatic thumbnail overlay, allowing for the toggle button to be used independently.
+    - `autoScrollToActiveSongMode: "never"` - replaced with `autoScrollToActiveSongEnabled`.
+  - The "switch sites" hotkeys now also work on `/playlist` and `/channel` pages.
+  - Song list numbers will now also show up on YT playlists that are manually sorted, if enabled.
+  - Some static data like CSS selectors are now fetched remotely, allowing the script to react to layout changes way faster and without having to go through the full release cycle.
+  - The welcome menu now allows all privacy-sensitive features to be toggled off before the script runs for the first time.
+  - The welcome menu can now be opened again using an option in the config menu.
+  - Made the version check feature more resilient to stop erroneous update notifications for weird versions like `5` from showing up (by [@canarado](https://github.com/canarado)).
+  - Improved auto-like feature:
+    - It now works with collab videos, although it will only work with the primary channel (the first channel listed in the menu opened by clicking the channel names).
+    - Improved the styling of the auto-like channels dialog.
+    - The `autoLikeTimeout` feature is now a number input field and allows any value above or equal to `1`, in increments of `0.1`.
+- **Fixes:**
+  - Added an "enhanced compatibility" build of the script that is meant to fix import issues on Chromium-based browsers, by including all dependencies directly in the script (at the cost of installation size).
+  - Made error toasts show up again after being broken when toast queueing was overhauled.
+  - Song list buttons show up more consistently now, like when a playlist has more than 100 entries or when they are moved via drag & drop.
+  - When multiple dialog windows are opened at a time, the focus locks will now be set correctly.
+- **Plugin Changes:**
+  - ⚠️ **BREAKING:** The `registerPlugin()` function passed by the events `bytm:preInitPlugin` and `bytm:registerPlugin` will now return a `Promise<PluginRegisterResult>`, so that the page can show the new plugin permission dialog.  
+    Now that a plugin's intents can be denied, it's important to check for the permissions returned by the `registerPlugin()` function at runtime.
+  - ⚠️ **BREAKING:** The classes `BytmDialog`, `ExImDialog` and `MarkdownDialog` no longer exist on the plugin interface. Use the authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()` instead.
+  - ⚠️ **BREAKING:** Removed the property `NanoEmitter` on the plugin interface, as it has been available under `BYTM.CoreUtils.NanoEmitter` for a while.
+  - Removed the restrictions that plugins need to be registered between `bytm:preInitPlugin` and `bytm:ready`. Now they can be registered after the latter event without throwing an error.
+  - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
+    - `loggers`: An object of predefined Logger instances of different categories.
+    - `Logger`: The Logger class, which can be used to create a new logging category. Any created Logger instance will automatically share its logs with BYTM's internal logging system, which can be downloaded using a GM menu command.
+    - `getSelector()`: Returns a remotely fetched CSS selector for the given category and name. Refer to `assets/data.json` in BYTM's source code for a list of all values.
+    - `sanitizeUnicode()`: Function that replaces all sorts of wacky Unicode characters with their ASCII counterparts if possible. This function is also used by `sanitizeArtists()` and `sanitizeSong()`.
+  - Added new properties to the object returned by `BYTM.getInternals()`:
+    - `globservers` - Object of all `SelectorObserver` instances used by BYTM.
+    - `getSerializerStores()` - Returns all `DataStore` instances that contain user-configured data.
+    - `getSerializerStoresFull()` - Returns all `DataStore` instances, including those that are only used for caching.
+  - Added new events to the plugin interface:
+    - `bytm:dataStoreSerializerLoaded` - Emitted after all memory-cached DataStore instances' data was lazy-loaded.
+- **Internal Changes:**
+  - Added `m.youtube.com` and `youtube-nocookie.com` to the list of supported domains.
+  - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
+  - Refactored logging system to use new `Logger` class instances.
+  - Added "privacy-sensitive" feature adornment icon (`icon-shield_info` resource) to mark features that are tagged with the `privacy` tag.
+  - Made the "reload tab" feature adornment icon also show up when advanced mode is turned off.
+  - All DataStore instances that have in-memory cached data will now be lazy-loaded after feature initialization is done. Note: lazy-loading starts after `bytm:allReady`, so it's more aimed at lowering initial data access times.
+  - Features can now have tags associated with them, which is another way of filtering them, like when using the new internal functions `configSetFeatsWithTags()` and `getFeaturesWithTags()`.
+  - Added an advanced-mode feature that allows SelectorObserver checks and found elements to be logged to the console for performance debugging.
+  - Updated the dependencies CoreUtils to v3.8.0 and UserUtils to v11.0.0
+  - The `BytmDialog` and `MarkdownDialog` render functions now receive the dialog instance as the sole parameter.
+  - Changed the ID of the `BytmDialog` returned by `showPrompt()` from `prompt-dialog` to just `prompt`.
+  - Added type `YTInitialPlayerResponse` exported by `src/types.ts`, for the global YT variable `ytInitialPlayerResponse`.
+  - Made `getVideoElement()` work with the YT Shorts player too.
+  - The <kbd>NumpadEnter</kbd> key will now also trigger interactions like the <kbd>Enter</kbd> and <kbd>Space</kbd> keys.
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/172" rel="noopener noreferrer">Also see pull request #172</a>
+</div>
+
+<div class="split"></div>
+<br>
+
 <!-- #region 3.1.0 -->
 ## 3.1.0
 - **New Features:**

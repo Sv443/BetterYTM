@@ -1,20 +1,28 @@
-import { getResourceUrl, initTranslations, setInnerHtml, setLocale, t, warn, type TrLocale } from "@util/index.ts";
-import { BytmDialog } from "@comp/BytmDialog.ts";
+import { getResourceUrl } from "@util/misc.ts";
+import { initTranslations, setLocale, t, type TrLocale } from "@util/translations.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { loggers } from "@util/logging.ts";
 import { openCfgMenu } from "@menu/menu.ts";
+import { BytmDialog } from "@comp/BytmDialog.ts";
+import { configSetFeatsWithTags, getFeature, getFeatures, getFeaturesWithTags, setFeatures } from "@/config.ts";
 import { mode, scriptInfo } from "@/constants.ts";
-import { getFeature, getFeatures, setFeatures } from "@/config.ts";
+import { featInfo } from "@feat/index.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
+import { LogLevel, type ResourceKey } from "@/types.ts";
+import { forceEmitSiteEvent } from "@/siteEvents.ts";
 
 let welcomeDialog: BytmDialog | null = null;
 
-/** Creates and/or returns the import dialog */
+// #region getWelcomeDialog
+
+/** Creates and/or returns the welcome dialog */
 export async function getWelcomeDialog() {
   if(!welcomeDialog) {
     welcomeDialog = new BytmDialog({
       id: "welcome",
-      width: 700,
-      height: 500,
+      width: 800,
+      height: 600,
       closeBtnEnabled: true,
       closeOnBgClick: false,
       closeOnEscPress: true,
@@ -24,9 +32,12 @@ export async function getWelcomeDialog() {
       renderFooter,
     });
     welcomeDialog.on("render", retranslateWelcomeMenu);
+    welcomeDialog.on("destroy", () => welcomeDialog = null);
   }
   return welcomeDialog;
 }
+
+// #region renderHeader
 
 async function renderHeader() {
   const titleWrapperElem = document.createElement("div");
@@ -50,46 +61,133 @@ async function renderHeader() {
   return titleWrapperElem;
 }
 
+//#region renderBody
+
 async function renderBody() {
   const contentWrapper = document.createElement("div");
   contentWrapper.id = "bytm-welcome-menu-content-wrapper";
 
+  // horizontal stacked segments
+
+  const horSegmentCont = document.createElement("div");
+  horSegmentCont.id = "bytm-welcome-menu-horizontal-segment-container";
+
+  const getHorSegmentElements = async (imgKey: ResourceKey & `icon-${string}`) => {
+    const segCont = document.createElement("div");
+    segCont.classList.add("bytm-welcome-menu-segment-cont");
+
+    const segImg = document.createElement("img");
+    segImg.classList.add("bytm-welcome-menu-horizontal-segment-img", "bytm-no-select");
+    segImg.src = await getResourceUrl(imgKey);
+
+    return [
+      segCont,
+      segImg,
+    ];
+  };
+
   // locale switcher
+  {
+    const [localeCont, localeImg] = await getHorSegmentElements("icon-globe");
+    localeImg.id = "bytm-welcome-menu-locale-img";
 
-  const localeCont = document.createElement("div");
-  localeCont.id = "bytm-welcome-menu-locale-cont";
+    const localeSelectElem = document.createElement("select");
+    localeSelectElem.id = "bytm-welcome-menu-locale-select";
+    localeSelectElem.classList.add("bytm-welcome-menu-select");
 
-  const localeImg = document.createElement("img");
-  localeImg.id = "bytm-welcome-menu-locale-img";
-  localeImg.classList.add("bytm-no-select");
-  localeImg.src = await getResourceUrl("icon-globe");
+    for(const [locale, { name, emoji }] of Object.entries(locales)) {
+      const optionElem = document.createElement("option");
+      optionElem.value = locale;
+      optionElem.textContent = `${emoji} ${name}`;
+      localeSelectElem.appendChild(optionElem);
+    }
+    localeSelectElem.value = getFeature("locale");
 
-  const localeSelectElem = document.createElement("select");
-  localeSelectElem.id = "bytm-welcome-menu-locale-select";
+    localeSelectElem.addEventListener("change", async () => {
+      const selectedLocale = localeSelectElem.value;
+      const feats = Object.assign({}, getFeatures());
+      feats.locale = selectedLocale as TrLocale;
+      setFeatures(feats);
 
-  for(const [locale, { name }] of Object.entries(locales)) {
-    const localeOptionElem = document.createElement("option");
-    localeOptionElem.value = locale;
-    localeOptionElem.textContent = name;
-    localeSelectElem.appendChild(localeOptionElem);
+      await initTranslations(selectedLocale as TrLocale);
+      setLocale(selectedLocale as TrLocale);
+      retranslateWelcomeMenu();
+    });
+
+    localeImg.title = localeSelectElem.title = t("welcome_menu_language_tooltip");
+
+    localeCont.appendChild(localeImg);
+    localeCont.appendChild(localeSelectElem);
+
+    horSegmentCont.appendChild(localeCont);
   }
-  localeSelectElem.value = getFeature("locale");
 
-  localeSelectElem.addEventListener("change", async () => {
-    const selectedLocale = localeSelectElem.value;
-    const feats = Object.assign({}, getFeatures());
-    feats.locale = selectedLocale as TrLocale;
-    setFeatures(feats);
+  // privacy switcher
+  {
+    const [privacyCont, privacyImg] = await getHorSegmentElements("icon-shield_question");
+    privacyImg.id = "bytm-welcome-menu-privacy-img";
 
-    await initTranslations(selectedLocale as TrLocale);
-    setLocale(selectedLocale as TrLocale);
-    retranslateWelcomeMenu();
-  });
+    const privacySelectElem = document.createElement("select");
+    privacySelectElem.id = "bytm-welcome-menu-privacy-select";
+    privacySelectElem.classList.add("bytm-welcome-menu-select");
 
-  localeCont.appendChild(localeImg);
-  localeCont.appendChild(localeSelectElem);
+    privacyImg.title = privacySelectElem.title = t("welcome_menu_privacy_tooltip");
 
-  contentWrapper.appendChild(localeCont);
+    const options = [
+      {
+        value: "default",
+        label: t("privacy_mode.default"),
+      },
+      {
+        value: "enhanced",
+        label: t("privacy_mode.enhanced"),
+      },
+    ] as const;
+
+    for(const { value, label } of options) {
+      const optionElem = document.createElement("option");
+      optionElem.id = `bytm-welcome-menu-privacy-option-${value}`;
+      optionElem.value = value;
+      optionElem.textContent = label;
+      privacySelectElem.appendChild(optionElem);
+    }
+
+    let privacySelectDefaultVal = "default";
+
+    for(const [, ftInfo] of Object.entries(featInfo)) {
+      if("tags" in ftInfo && ftInfo.tags.includes("privacy") && typeof ftInfo.default === "boolean")
+        privacySelectDefaultVal = Object.values(getFeaturesWithTags(["privacy"])).filter(v => typeof v === "boolean").every(v => !v) ? "enhanced" : "default";
+    }
+
+    privacySelectElem.value = privacySelectDefaultVal;
+
+    privacySelectElem.addEventListener("change", async () => {
+      const isPrivacy = privacySelectElem.value === "enhanced";
+
+      const modifiedConf = await configSetFeatsWithTags(["privacy"], {
+        number: isPrivacy ? 0 : 1,
+        toggle: !isPrivacy,
+      });
+
+      forceEmitSiteEvent("recreateCfgMenu");
+
+      loggers.init.log(`Toggled selection of privacy-sensitive features ${isPrivacy ? "off" : "on"} - modified config:`, modifiedConf, LogLevel.Info);
+    });
+
+    privacyCont.appendChild(privacyImg);
+    privacyCont.appendChild(privacySelectElem);
+
+    horSegmentCont.appendChild(privacyCont);
+  }
+
+  contentWrapper.appendChild(horSegmentCont);
+
+  // hr
+
+  const hrElem = document.createElement("hr");
+  hrElem.classList.add("bytm-hr");
+
+  contentWrapper.appendChild(hrElem);
 
   // text
 
@@ -149,6 +247,8 @@ async function renderBody() {
   return contentWrapper;
 }
 
+// #region retranslateWelcomeMenu
+
 /** Retranslates all elements inside the welcome menu */
 function retranslateWelcomeMenu() {
   const getLink = (href: string): [string, string] => {
@@ -170,18 +270,38 @@ function retranslateWelcomeMenu() {
     "#bytm-welcome-text-line3": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
     "#bytm-welcome-text-line4": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url))),
     "#bytm-welcome-text-line5": (e: HTMLElement) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url))),
+    "#bytm-welcome-menu-privacy-img": (e: HTMLElement) => {
+      e.title = t("welcome_menu_privacy_tooltip");
+    },
+    "#bytm-welcome-menu-privacy-select": (e: HTMLElement) => {
+      e.title = t("welcome_menu_privacy_tooltip");
+    },
+    "#bytm-welcome-menu-privacy-option-default": (e: HTMLElement) => {
+      e.textContent = t(`privacy_mode.${(e as HTMLOptionElement).value}`);
+    },
+    "#bytm-welcome-menu-privacy-option-enhanced": (e: HTMLElement) => {
+      e.textContent = t(`privacy_mode.${(e as HTMLOptionElement).value}`);
+    },
+    "#bytm-welcome-menu-locale-img": (e: HTMLElement) => {
+      e.title = t("welcome_menu_language_tooltip");
+    },
+    "#bytm-welcome-menu-locale-select": (e: HTMLElement) => {
+      e.title = t("welcome_menu_language_tooltip");
+    },
   };
 
   for(const [selector, fn] of Object.entries(changes)) {
     const el = document.querySelector<HTMLElement>(selector);
     if(!el) {
-      warn(`Couldn't find element in welcome menu with selector '${selector}'`);
+      loggers.dialog.warn(`Couldn't find element in welcome menu with selector '${selector}'`);
       continue;
     }
 
     fn(el);
   }
 }
+
+// #region renderFooter
 
 async function renderFooter() {
   const footerCont = document.createElement("div");
