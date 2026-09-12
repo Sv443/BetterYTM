@@ -6,7 +6,7 @@
 ## 4.0.0
 - **New Features:**
   - Turkish translations (by [@kcangny](https://github.com/kcangny)).
-  - Extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.
+  - 🎵 Extra toggle for the thumbnail overlay, to be able to turn the whole feature off and on more easily.
   - Hotkey to quickly search for the lyrics of a song, anywhere on YT or YTM (<kbd>Alt</kbd><kbd>Q</kbd> by default).
   - Hotkey to lock all interactions until the hotkey is pressed again (<kbd>Alt</kbd><kbd>Pause</kbd> by default).
   - Configuration option for the global alerts system (whether to show all alerts, only important ones or none).
