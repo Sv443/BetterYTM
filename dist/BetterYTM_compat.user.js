@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2d2c168a/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@36387935/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sat, 12 Sep 2026 11:12:56 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 12 Sep 2026 19:44:54 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 2d2c168a                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 36387935                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 41qogc96T4Xh                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ QfEs7p0qYQ23                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -5246,9 +5246,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "2d2c168a";
+	var buildNumber$1 = "36387935";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789211576074;
+	var buildTimestamp = 1789242294280;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -9375,7 +9375,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			"It shows the amount of time (in ms) it took to complete various stages of the initialization process.",
 			"- The 'start' property is a 13-digit epoch timestamp representing the time at which the script started running.",
 			"- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.",
-			"- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property."
+			"- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property.",
+			"- 'resources' will only contain entries whenever the resource cache was empty on startup (like on a fresh install, or if the resource cache is cleared through the userscript manager extension's storage management tool). Its 'fetchAttempts' prop will be an object mapping a resource key to the amount of times it was fetched.",
+			"- The entries in the 'observers' property are timestamps of two types; whenever an observer 'checked' for elements, and whenever an observer 'found' elements (tuple of timestamp and amount of elements found)."
 		],
 		meta: {
 			version: scriptInfo$1.version,
@@ -16962,14 +16964,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			adornments: [adornments.advanced]
 		},
 		autoLikeTimeout: {
-			type: "slider",
+			type: "number",
 			category: "autoLike",
 			group: "autoLikeChannels",
 			supportedSites: ["ytm", "yt"],
 			since: "2.1.0",
-			min: 3,
-			max: 30,
-			step: .5,
+			min: 1,
+			step: .1,
 			default: 5,
 			unit: "s",
 			reloadRequired: false
@@ -19724,15 +19725,6 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				}
 			}
 		});
-		isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
-			await GM.deleteValue("bytm-installed");
-			loggers.command.log("Reset install time.");
-		});
-		isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
-			const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
-			await GM.deleteValue("bytm-version-session-counter");
-			loggers.command.log("Reset version session counter. Was previously:", verSesCount);
-		});
 		isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
 			const lines = [];
 			let listenersAmt = 0;
@@ -19840,14 +19832,6 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				})) await reloadTab();
 			}
 		});
-		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError$1("ExampleError", "Test error")));
-		isAny && GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
-			perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
-				...a,
-				[key]: vals
-			}), {});
-			downloadFile(`${scriptInfo$1.name} Performance Report @ ${(/* @__PURE__ */ new Date()).toISOString()}.json`, JSON.stringify(perfReport, null, 2), "application/json");
-		});
 		isAny && GM.registerMenuCommand(getCmdName("🧪", "menu_command.toggle_dev_treatments"), async () => {
 			const val = !await GM.getValue("bytm-dev-treatments", false);
 			await GM.setValue("bytm-dev-treatments", val);
@@ -19871,10 +19855,14 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}],
 			extraButtonsPosition: "before"
 		}));
+		GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
+			unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
+		});
+		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError$1("ExampleError", "Test error")));
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "2d2c168a",
+				buildNumber: "36387935",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -19942,8 +19930,12 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				confirmBtnText: "Reload"
 			}) && await reloadAllTabs();
 		});
-		GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
-			unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
+		GM.registerMenuCommand(getCmdName("⏱️", "menu_command.get_performance_report"), () => {
+			perfReport.resources.fetchAttempts = [...resourceFetches.entries()].reduce((a, [key, vals]) => ({
+				...a,
+				[key]: vals
+			}), {});
+			downloadFile(`${scriptInfo$1.name} Performance Report @ ${(/* @__PURE__ */ new Date()).toISOString()}.json`, JSON.stringify(perfReport, null, 2), "application/json");
 		});
 		GM.registerMenuCommand(getCmdName("📄", "menu_command.download_log_file"), () => {
 			downloadFile(`bytm-log-${(/* @__PURE__ */ new Date()).toISOString()}.log`, serializeLogs(), "text/plain");
