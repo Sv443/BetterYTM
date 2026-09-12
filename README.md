@@ -82,16 +82,20 @@ To find out more about these integrations, [click here](./src/dev/integrations.m
 
 ## Plugins
 BetterYTM supports plugin userscripts that can be installed in parallel. Check below for a list of officially recognized plugins.  
+Click on the install button to automatically install the latest version.  
   
 <!-- <{{PLUGINS}}> -->
 <!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
-Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin. If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)
+
+- **[BetterYTM - Song Playlists](https://github.com/eissar/betterytm-song-playlists) by [eissar](https://github.com/eissar)**  
+  Dynamically shows which of your playlists contain the currently selected song in YouTube Music.  
+  [Click here to install the latest version.](https://github.com/eissar/betterytm-song-playlists/releases/latest/download/betterytm-song-playlists.user.js)
 
 <br>
 
-- **[BetterYTM - Song Playlists](https://github.com/eissar/betterytm-song-playlists)** by [eissar](https://github.com/eissar)  
-  Dynamically shows which of your playlists contain the currently selected song in YouTube Music.
-
+> [!NOTE]  
+> 
+> Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin. If you want some ideas for plugins, check out the [plugin ideas issue label.](https://github.com/Sv443/BetterYTM/issues?q=sort%3Aupdated-desc%20is%3Aissue%20label%3A%22plugin%20idea%22)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{PLUGINS}}> -->
 
