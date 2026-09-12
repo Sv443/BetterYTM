@@ -12,6 +12,8 @@ export const perfReport: PerformanceReport = {
     "- The 'start' property is a 13-digit epoch timestamp representing the time at which the script started running.",
     "- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.",
     "- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property.",
+    "- 'resources' will only contain entries whenever the resource cache was empty on startup (like on a fresh install, or if the resource cache is cleared through the userscript manager extension's storage management tool). Its 'fetchAttempts' prop will be an object mapping a resource key to the amount of times it was fetched.",
+    "- The entries in the 'observers' property are timestamps of two types; whenever an observer 'checked' for elements, and whenever an observer 'found' elements (tuple of timestamp and amount of elements found).",
   ],
   meta: {
     version: scriptInfo.version,
