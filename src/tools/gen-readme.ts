@@ -90,7 +90,7 @@ async function genHeader() {
     .sort(([a], [b]) => trimCode(a).localeCompare(trimCode(b)))
     .reduce((acc, [locale, { emoji, nameEnglish }], i) => {
       const countryCode = locale.split("-")[1];
-      return `${acc}${i > 0 ? ", " : ""}<abbr title="${nameEnglish}">${emoji}&nbsp;${countryCode}</abbr>`;
+      return `${acc}${i > 0 ? ", " : ""}<abbr title="${emoji} ${nameEnglish}">${emoji}&nbsp;${countryCode}</abbr>`;
     }, "");
 
   return `\
@@ -101,9 +101,8 @@ async function genHeader() {
 <h4>With translations for: ${langStr}</h4>
 
 ---
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins)
-#### [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development)
-#### [**Special Thanks**](#special-thanks) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
+### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy)
+#### [**Development**](#development) • [**Special Thanks**](#special-thanks) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)\
 `;
 }
 

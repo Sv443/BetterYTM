@@ -4,12 +4,11 @@
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
 
-<h4>With translations for: <abbr title="Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="Spanish (Spain)">🇪🇸&nbsp;ES</abbr>, <abbr title="French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="Japanese (Japan)">🇯🇵&nbsp;JP</abbr>, <abbr title="Turkish (Turkey)">🇹🇷&nbsp;TR</abbr></h4>
+<h4>With translations for: <abbr title="🇧🇷 Portuguese (Brazil)">🇧🇷&nbsp;BR</abbr>, <abbr title="🇨🇳 Chinese (Simplified, China)">🇨🇳&nbsp;CN</abbr>, <abbr title="🇩🇪 German (Germany)">🇩🇪&nbsp;DE</abbr>, <abbr title="🇪🇸 Spanish (Spain)">🇪🇸&nbsp;ES</abbr>, <abbr title="🇫🇷 French (France)">🇫🇷&nbsp;FR</abbr>, <abbr title="🇮🇳 Hindi (India)">🇮🇳&nbsp;IN</abbr>, <abbr title="🇯🇵 Japanese (Japan)">🇯🇵&nbsp;JP</abbr>, <abbr title="🇹🇷 Turkish (Turkey)">🇹🇷&nbsp;TR</abbr></h4>
 
 ---
-#### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins)
-#### [**Support**](#support) • [**Privacy**](#privacy) • [**Development**](#development)
-#### [**Special Thanks**](#special-thanks) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+### [**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Privacy**](#privacy)
+#### [**Development**](#development) • [**Special Thanks**](#special-thanks) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
 
