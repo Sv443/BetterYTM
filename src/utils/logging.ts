@@ -1,37 +1,35 @@
 import { DatedError, debounce } from "@sv443-network/coreutils";
-import { showIconToast } from "@comp/toast.ts";
-import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
-import { getFeature } from "@/config.ts";
-import { setGlobalProp } from "@/interface.ts";
-import { t } from "@util/translations.ts";
-import { onInteraction } from "@util/input.ts";
-import { downloadFile } from "@util/dom.ts";
+import { setGlobalProp } from "@/core/globals.ts";
+import { tryUse } from "@/core/hooks.ts";
 import { LogLevel } from "@/types.ts";
 import { Logger, loggerCategoryMapping, type LoggerOptions } from "@util/Logger.ts";
-import packageJson from "@root/package.json" with { type: "json" };
 
 export type { LogLine } from "@util/Logger.ts";
 
 //#region loggers
 
+/**
+ * Whether a generic error should also be surfaced as a toast.  
+ * Pushed in by the config init instead of read from {@linkcode getFeature}, so this module doesn't
+ * have to depend on the config store.
+ */
+let errorToastsEnabled = false;
+
+/** Sets whether generic errors are surfaced as a toast - called by the config init */
+export const setErrorToastsEnabled = (enabled: boolean) => void (errorToastsEnabled = enabled);
+
 const showErrToast = debounce(
-  (errName: string, ...args: unknown[]) =>
-    showIconToast({
-      message: t("generic_error_toast_encountered_error_type", errName),
-      subtitle: t("generic_error_toast_click_for_details"),
-      icon: "icon-error",
-      iconFill: "var(--bytm-error-col)",
-      onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-    }),
+  (errName: string, args: unknown[]) => tryUse("reportError")?.(errName, args),
   400,
 );
 
 const loggerOpts: LoggerOptions = {
   onError(...args): void {
-    if(getFeature("showToastOnGenericError")) {
-      const err = args.find(a => a instanceof Error);
-      showErrToast(err?.name ?? t("error"), ...args);
-    }
+    if(!errorToastsEnabled)
+      return;
+    const err = args.find(a => a instanceof Error);
+    // the message is localized by the provider in @/bindings.ts - this module has no translations
+    showErrToast(err?.name ?? "Error", args);
   },
 };
 
@@ -102,53 +100,6 @@ export function errorNoToast(...args: unknown[]): void {
  */
 export function dbg(...args: unknown[]): void {
   loggers.uncategorized.dbg(...args);
-}
-
-//#region error dialog
-
-export function getErrorDialog(errName: string, args: unknown[]) {
-  return new MarkdownDialog({
-    id: "generic-error",
-    height: 400,
-    width: 500,
-    small: true,
-    destroyOnClose: true,
-    renderHeader() {
-      const header = document.createElement("h2");
-      header.classList.add("bytm-dialog-title");
-      header.role = "heading";
-      header.ariaLevel = "1";
-      header.tabIndex = 0;
-      header.textContent = header.ariaLabel = errName;
-
-      return header;
-    },
-    renderFooter(dlg) {
-      const footer = document.createElement("div");
-      footer.classList.add("bytm-dialog-footer", "align-right");
-
-      const dlLogsBtn = document.createElement("button");
-      dlLogsBtn.classList.add("bytm-btn");
-      dlLogsBtn.textContent = dlLogsBtn.ariaLabel = t("download_log_file");
-      onInteraction(dlLogsBtn, () => {
-        downloadFile(`bytm-log-${new Date().toISOString()}.log`, Logger.serializeLogs(), "text/plain");
-      });
-
-      const closeBtn = document.createElement("button");
-      closeBtn.classList.add("bytm-btn");
-      closeBtn.textContent = t("close");
-      closeBtn.ariaLabel = t("close_menu_tooltip");
-      onInteraction(closeBtn, () => dlg.close());
-
-      footer.appendChild(dlLogsBtn);
-      footer.appendChild(closeBtn);
-      return footer;
-    },
-    body: `\
-${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-  
-${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
-  });
 }
 
 //#region error classes

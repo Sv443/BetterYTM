@@ -1,6 +1,7 @@
 import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
+import { setGlobalProp } from "@/core/globals.ts";
 import { broadcastTxID, emitBroadcast } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
 import { getDomain, waitVideoElementReady, getResourceUrl, getSessionId, getVideoTime, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes, setInnerHtml, getCurrentMediaType, tl, tlp, PluginError, formatNumber, reloadTab, getVideoElement, getVideoSelector, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, createTranslatable, sanitizeUnicode, parseMarkdown, sanitizeHtml, reloadAllTabs } from "@util/index.ts";
@@ -10,7 +11,9 @@ import { getSelector } from "@util/data.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { cfgDefaultData, getFeature, getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
-import { autoLikeStore, disableDiscardBeforeUnload, enableDiscardBeforeUnload, fetchLyricsUrlTop, fuzzyFetchLyricsInfo, getLyricsCacheEntry, isIgnoredInputElement, sanitizeArtists, sanitizeSong, type ArtCacheEntry } from "@feat/index.ts";
+import { autoLikeStore, fetchLyricsUrlTop, fuzzyFetchLyricsInfo, getLyricsCacheEntry, isIgnoredInputElement, type ArtCacheEntry } from "@feat/index.ts";
+import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
+import { disableDiscardBeforeUnload, enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
 import { allSiteEvents, emitSiteEvent, siteEvents, type SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import { PluginIntent, type FeatureConfig, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions, type BitSetTSEnum, LogLevel } from "@/types.ts";
 import { showPrompt } from "@dialog/prompt.ts";
@@ -27,7 +30,6 @@ import pkgJson from "@root/package.json" with { type: "json" };
 
 const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants;
 const { autoPlural, NanoEmitter, pureObj } = CoreUtils;
-const { getUnsafeWindow } = UserUtils;
 
 //#region interface globals
 
@@ -256,23 +258,6 @@ export function preInitInterface() {
   loggers.interface.log("Initialized BYTM interface");
 }
 
-/** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
-export function setGlobalProp<
-  TKey extends keyof BytmObject,
-  TValue = BytmObject[TKey],
->(
-  key: TKey | (string & {}),
-  value: TValue,
-) {
-  // use unsafeWindow so the properties are available to plugins (outside of the userscript's scope)
-  const win = getUnsafeWindow();
-
-  if(typeof win.BYTM !== "object")
-    win.BYTM = pureObj({}) as BytmObject;
-
-  win.BYTM[key] = value;
-}
-
 /** Emits an event on the BYTM interface */
 export function emitInterface<
   TEvt extends keyof InterfaceEvents,
@@ -295,6 +280,8 @@ export function emitInterface<
     loggers.interface.error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
   }
 }
+
+export { setGlobalProp };
 
 //#region register plugins
 

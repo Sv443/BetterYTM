@@ -9,7 +9,9 @@ import { showPrompt } from "@dialog/prompt.ts";
 import { addLyricsCacheEntryBest, getLyricsCacheEntry, resolveLyricsUrl } from "@feat/lyricsCache.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 import { getCurrentMediaType, setInnerHtml } from "@util/dom.ts";
-import { openInTab, resourceAsString, sanitizeUnicode } from "@util/misc.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { openInTab } from "@util/pure.ts";
+import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import { constructUrl } from "@util/xhr.ts";
 import { onInteraction } from "@util/input.ts";
 
@@ -114,43 +116,6 @@ async function addActualLyricsBtn(likeContainer: HTMLElement) {
 }
 
 //#region lyrics utils
-
-const parensRegex = /\(.+\)/gm;
-const squareParensRegex = /\[.+\]/gm;
-
-/** Removes everything in parentheses from the passed song name */
-export function sanitizeSong(songName: string) {
-  if(typeof songName !== "string")
-    return songName;
-
-  // trim right after the song name:
-  const sanitized = songName
-    .replace(parensRegex, "")
-    .replace(squareParensRegex, "");
-
-  return sanitizeUnicode(sanitized);
-}
-
-/**
- * Removes the secondary artists (if they exist) from the passed artists string.  
- * Intelligently splits at commas and bullet (•) characters, and removes everything after the first ampersand (&) or feat.
- */
-export function sanitizeArtists(artists: string) {
-  artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
-
-  if(artists.match(/&/))
-    artists = artists.split(/\s*&\s*/gm)[0];
-
-  if(artists.match(/,/))
-    artists = artists.split(/,\s*/gm)[0];
-
-  if(artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?\W)/i))
-    artists = artists
-      .replace(parensRegex, "")
-      .replace(squareParensRegex, "");
-
-  return sanitizeUnicode(artists);
-}
 
 /** Returns the lyrics URL from genius for the currently selected song */
 export async function getCurrentLyricsUrl() {

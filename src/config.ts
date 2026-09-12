@@ -1,8 +1,9 @@
 import { DataStore, type DataMigrationsDict, type LooseUnion, clamp, pureObj, computeHash } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
-import { artCacheStore, enableDiscardBeforeUnload, featInfo } from "@feat/index.ts";
+import { artCacheStore, featInfo } from "@feat/index.ts";
+import { enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
 import { reloadTab, t, type TrLocale } from "@util/index.ts";
-import { loggers } from "@util/logging.ts";
+import { loggers, setErrorToastsEnabled } from "@util/logging.ts";
 import { emitSiteEvent } from "@/siteEvents.ts";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/interface.ts";
@@ -398,6 +399,9 @@ export async function initConfig() {
   const rawData = await configStore.loadData();
   let data = fixCfgKeys(rawData);
 
+  // @util/logging.ts can't read the config itself (it sits below it), so push the value in
+  setErrorToastsEnabled(Boolean(data.showToastOnGenericError));
+
   // show prompt if config data was migrated
   if(oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
     if(await showPrompt({
@@ -475,6 +479,7 @@ export function getFeature<TKey extends FeatureKey>(key: TKey | "_", defaultVal?
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 export function setFeatures(featureConf: FeatureConfig) {
   const res = configStore.setData(featureConf);
+  setErrorToastsEnabled(Boolean(featureConf.showToastOnGenericError));
   emitSiteEvent("configChanged", getFeaturesNoHidden());
   loggers.data.info("Saved new feature config:", getFeaturesNoHidden());
   return res;

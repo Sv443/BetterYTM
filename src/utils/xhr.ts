@@ -1,6 +1,7 @@
 import { roundFixed, fetchAdvanced, type Prettify, type Stringifiable } from "@sv443-network/coreutils";
 import type { ITunesAlbumObj, ITunesAPIResponse, RYDVotesObj, StyleResourceKey, VideoVotesObj } from "@/types.ts";
-import { getResourceUrl, getterifyObj } from "@util/misc.ts";
+import { getResourceUrl } from "@util/resourceUrl.ts";
+import { getterifyObj } from "@util/pure.ts";
 import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
 

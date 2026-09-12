@@ -1,10 +1,12 @@
 import { getUnsafeWindow, openInNewTab } from "@sv443-network/userutils";
-import { enableDiscardBeforeUnload, remTimeTryRestoreTime } from "@feat/behavior.ts";
+import { remTimeTryRestoreTime } from "@feat/behavior.ts";
+import { enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
 import { isIgnoredInputElement } from "@feat/input.ts";
 import { getFeature } from "@/config.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { getLikeDislikeBtns, getVideoTime, setInnerHtml } from "@util/dom.ts";
-import { getDomain, resourceAsString } from "@util/misc.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { LogLevel, type Domain, type FeatKeysOfType, type HotkeyObj } from "@/types.ts";
 import { promptLyricsSearch } from "@feat/lyrics.ts";

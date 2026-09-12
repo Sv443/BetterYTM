@@ -71,6 +71,9 @@ export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
 
 /** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
+  /** Lets low-level modules like the Logger recognize a dialog without having to import this class */
+  public readonly [Symbol.toStringTag] = "BytmDialog";
+
   public readonly options;
   public readonly id;
 

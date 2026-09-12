@@ -6,29 +6,18 @@ import { initialParams } from "@/constants.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { loggers } from "@util/logging.ts";
 import { clearNode, getCurrentMediaType, getVideoElement, getVideoTime, waitVideoElementReady } from "@util/dom.ts";
-import { getDomain, getWatchId, scrollToCurrentSongInQueue } from "@util/misc.ts";
+import { scrollToCurrentSongInQueue } from "@util/misc.ts";
+import { getWatchId } from "@util/pure.ts";
+import { getDomain } from "@util/domain.ts";
+import { getDiscardOverride } from "@util/unloadGuard.ts";
 import { LogLevel } from "@/types.ts";
 
 //#region beforeunload popup
 
-let discardBeforeUnloadOverride: boolean | undefined;
-
-/** Disables the popup before leaving the site */
-export function enableDiscardBeforeUnload() {
-  discardBeforeUnloadOverride = true;
-  loggers.behavior.info("Disabled popup before leaving the site");
-}
-
-/** (Re-)enables the popup before leaving the site */
-export function disableDiscardBeforeUnload() {
-  discardBeforeUnloadOverride = false;
-  loggers.behavior.info("Enabled popup before leaving the site");
-}
-
 /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
 export async function initBeforeUnloadHook() {
   try {
-    interceptWindowEvent("beforeunload", () => typeof discardBeforeUnloadOverride !== "undefined" ? discardBeforeUnloadOverride : getFeature("disableBeforeUnloadPopup"));
+    interceptWindowEvent("beforeunload", () => getDiscardOverride() ?? getFeature("disableBeforeUnloadPopup"));
   }
   catch(err) {
     loggers.behavior.error("Error in beforeunload hook:", err);

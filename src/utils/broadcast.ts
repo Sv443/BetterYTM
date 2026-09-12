@@ -8,7 +8,9 @@ import { buildNumber, initTime, scriptInfo } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";
 import { getSerializerStoresFull } from "@/serializers.ts";
 import { loggers } from "@util/logging.ts";
-import { getDomain, getSessionId, reloadTab, sliceNum } from "@util/misc.ts";
+import { getSessionId, reloadTab } from "@util/misc.ts";
+import { sliceNum } from "@util/pure.ts";
+import { getDomain } from "@util/domain.ts";
 import type { Domain } from "@/types.ts";
 
 // #region types

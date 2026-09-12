@@ -1,5 +1,5 @@
 import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
-import { getDomain } from "@util/misc.ts";
+import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/interface.ts";

@@ -1,6 +1,5 @@
 import { clamp, DatedError } from "@sv443-network/coreutils";
 import type { LooseUnion } from "@sv443-network/coreutils";
-import { BytmDialog } from "@comp/BytmDialog.ts";
 import { scriptInfo } from "@/constants.ts";
 import { LogLevel } from "@/types.ts";
 
@@ -81,6 +80,12 @@ export const loggerCategoryMapping = {
  * All instances share a single static log store accessible via {@linkcode Logger.logs}.  
  * Custom logging infrastructure should push new log lines using the static method {@linkcode Logger.pushLog()}, so that a BYTM log download will include the custom logs as well.
  */
+/** Whether the given value is a `BytmDialog`, checked without importing the component */
+function isBytmDialog(val: unknown): val is { id: string, isOpen: () => boolean } {
+  return typeof val === "object" && val !== null
+    && (val as { [Symbol.toStringTag]?: string })[Symbol.toStringTag] === "BytmDialog";
+}
+
 export class Logger {
   public readonly category: LogCategory;
 
@@ -159,7 +164,8 @@ export class Logger {
       return `[Blob (${val.type}, ${val.size} bytes)]`;
     if(val instanceof File)
       return `[File (${val.name}, ${val.type}, ${val.size} bytes)]`;
-    if(val instanceof BytmDialog)
+    // duck-typed instead of `instanceof` so this module doesn't have to import the component
+    if(isBytmDialog(val))
       return `[BytmDialog #${val.id}${val.isOpen() ? " (is open)" : ""}]`;
     if(typeof val === "object") {
       const unknownObj = `[Object <${val.constructor?.name ?? "(unknown)"}>]`;

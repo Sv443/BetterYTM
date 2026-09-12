@@ -1,4 +1,4 @@
-import { getDomain } from "@util/misc.ts";
+import { getDomain } from "@util/domain.ts";
 import { addStyleFromResource } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
 import { getFeature } from "@/config.ts";

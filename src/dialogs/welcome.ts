@@ -1,4 +1,4 @@
-import { getResourceUrl } from "@util/misc.ts";
+import { getResourceUrl } from "@util/resourceUrl.ts";
 import { initTranslations, setLocale, t, type TrLocale } from "@util/translations.ts";
 import { setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";

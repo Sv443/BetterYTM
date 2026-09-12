@@ -4,7 +4,7 @@ import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/interface.ts";
 import { getFeature } from "@/config.ts";
 import { loggers } from "@util/index.ts";
-import { sanitizeArtists, sanitizeSong } from "@feat/lyrics.ts";
+import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 
 export type LyricsCache = {

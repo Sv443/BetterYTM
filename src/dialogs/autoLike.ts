@@ -1,5 +1,6 @@
 import { compress, debounce } from "@sv443-network/coreutils";
-import { compressionSupported, getDomain, isValidChannelId, parseChannelIdFromUrl, tryToDecompressAndParse } from "@util/misc.ts";
+import { compressionSupported, tryToDecompressAndParse } from "@util/misc.ts";
+import { getDomain, isValidChannelId, parseChannelIdFromUrl } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { t, tp } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";

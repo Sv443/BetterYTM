@@ -3,7 +3,7 @@ import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad } from "@sv443-
 import DOMPurify from "dompurify";
 import { getSelector } from "@util/data.ts";
 import { fetchCss } from "@util/xhr.ts";
-import { getDomain } from "@util/misc.ts";
+import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
 import { addSelectorListener } from "@/observers.ts";

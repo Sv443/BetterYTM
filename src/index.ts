@@ -1,6 +1,8 @@
 import { autoPlural, compress, createTable, CustomError, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
 import { getUnsafeWindow, isDomLoaded, onDomLoad as onDomLoadedUu, preloadImages } from "@sv443-network/userutils";
+import { initBindings } from "@/bindings.ts";
 import { initStaticData } from "@util/data.js";
+import { enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
 import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey, resourceFetches } from "@util/index.ts";
 import { clearConfig, getFeature, getFeatures, initConfig } from "@/config.ts";
 import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, rawConsts, scriptInfo } from "@/constants.ts";
@@ -27,7 +29,7 @@ import {
   initQueueButtons, initAboveQueueBtns,
   addTrackNumbers,
   // behavior category:
-  initBeforeUnloadHook, enableDiscardBeforeUnload,
+  initBeforeUnloadHook,
   initAutoCloseToasts, initRememberVideoTime,
   initAutoScrollToActiveSong, initStillThere,
   initHideCursorOnIdle,
@@ -100,6 +102,9 @@ Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
 /** Stuff that needs to be called ASAP */
 function preInit() {
   try {
+    // wire up the late-bound implementations before anything can call into them
+    initBindings();
+
     perfReport.start = Date.now();
 
     const unsupportedHandlers = [
