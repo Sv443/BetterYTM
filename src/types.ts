@@ -576,6 +576,28 @@ export type PluginItem = Prettify<
   & Pick<PluginRegisterResult, "events">
 >;
 
+/** An entry in the file `assets/plugins.json` */
+export type PluginJsonEntry = {
+  /** Name of the plugin, in at least the `en-US` locale. */
+  name: Translatable;
+  /** Description of the plugin, in at least the `en-US` locale. */
+  description: Translatable;
+  /** Plugin author information. */
+  author: {
+    /** Name of the main author. */
+    name: string;
+    /** URL to the main author's source control or social media page. */
+    url?: string;
+  };
+  /** Other links. */
+  links: {
+    /** Link to the plugin's source code. */
+    source: string;
+    /** Direct installation link for the latest version of the plugin. */
+    install: string;
+  };
+};
+
 //#region plugin interface
 
 /** Most of the functions exposed by the interface via the global `BYTM` object. */
