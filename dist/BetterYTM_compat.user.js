@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           3.1.0
+// @version           4.0.0-beta.1
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@844e0fb8/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2d2c168a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Fri, 11 Sep 2026 23:28:32 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sat, 12 Sep 2026 11:12:56 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 844e0fb8                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 2d2c168a                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ uXp8gbtv3KEX                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 41qogc96T4Xh                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -5246,9 +5246,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "844e0fb8";
+	var buildNumber$1 = "2d2c168a";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789169312106;
+	var buildTimestamp = 1789211576074;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -9138,7 +9138,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	var package_default = {
 		name: "@sv443/betterytm",
 		userscriptName: "BetterYTM",
-		version: "3.1.0",
+		version: "4.0.0-beta.1",
 		description: "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
 		license: "AGPL-3.0-or-later",
 		licenseUrl: "https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt",
@@ -15107,14 +15107,19 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	/** Switches to the other site (between YT and YTM). */
 	async function switchSite(newDomain, inNewTab = false) {
 		try {
-			if (!["/watch", "/playlist"].some((v) => location.pathname.startsWith(v))) return loggers.hotkey.warn("Not on a supported page, so the site switch is ignored");
+			if (![
+				"/watch",
+				"/playlist",
+				"/channel"
+			].some((v) => location.pathname.startsWith(v))) return loggers.hotkey.warn("Not on a supported page, so the site switch is ignored");
+			const isWatchPage = location.pathname.startsWith("/watch");
 			let subdomain;
 			if (newDomain === "ytm") subdomain = "music";
 			else if (newDomain === "yt") subdomain = "www";
 			if (!subdomain) throw new Error(`Unrecognized domain '${newDomain}'`);
-			enableDiscardBeforeUnload();
+			!inNewTab && enableDiscardBeforeUnload();
 			const { pathname, search, hash } = new URL(location.href);
-			const time = await getVideoTime(0);
+			const time = isWatchPage ? await getVideoTime(0) : null;
 			loggers.hotkey.log(`Found video time of ${time} seconds`);
 			const cleanSearch = search.split("&").filter((param) => !param.match(/^\??(t|time_continue)=/)).join("&");
 			const newSearch = typeof time === "number" && time > videoTimeThreshold ? cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&time_continue=${time}` : `?time_continue=${time}` : cleanSearch;
@@ -19869,7 +19874,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "844e0fb8",
+				buildNumber: "2d2c168a",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
