@@ -118,7 +118,6 @@
   "menu_command.get_performance_report": "परफॉर्मेंस रिपोर्ट डाउनलोड करें",
   "menu_command.reload_all_tabs": "सभी खुले सत्र (टैब) पुनः लोड करें",
   "menu_command.reset_config": "कॉन्फ़िग रीसेट करें",
-  "menu_command.reset_install_timestamp": "इंस्टॉल टाइमस्टैम्प रीसेट करें",
   "menu_command.throw_example_error": "उदाहरण त्रुटि फेंकें (और त्रुटि टोस्ट दिखाएँ)",
   "menu_command.toggle_dev_treatments": "डेव ट्रीटमेंट्स टॉगल करें",
 

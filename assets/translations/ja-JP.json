@@ -63,7 +63,6 @@
   "menu_command.get_performance_report": "パフォーマンスレポートをダウンロード",
   "menu_command.reload_all_tabs": "開いているすべてのセッション（タブ）を再読み込み",
   "menu_command.reset_config": "設定をリセット",
-  "menu_command.reset_install_timestamp": "インストール日時をリセット",
   "menu_command.throw_example_error": "サンプルエラーを発生させる（エラートーストも表示）",
   "menu_command.toggle_dev_treatments": "開発向け処理を切り替え",
 

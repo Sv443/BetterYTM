@@ -641,12 +641,6 @@ function registerDevCommands() {
     }
   });
 
-  // #region reset_install_timestamp
-  isDev && GM.registerMenuCommand(getCmdName("🕐", "menu_command.reset_install_timestamp"), async () => {
-    await GM.deleteValue("bytm-installed");
-    loggers.command.log("Reset install time.");
-  });
-
   // #region list_selectorobserver_listeners
   isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
     const lines = [] as string[];

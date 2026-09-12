@@ -118,7 +118,6 @@
   "menu_command.get_performance_report": "Télécharger le rapport de performance",
   "menu_command.reload_all_tabs": "Recharger toutes les sessions ouvertes (onglets)",
   "menu_command.reset_config": "Réinitialiser la configuration",
-  "menu_command.reset_install_timestamp": "Réinitialiser l'horodatage d'installation",
   "menu_command.throw_example_error": "Lancer une erreur exemple (& afficher le toast d'erreur)",
   "menu_command.toggle_dev_treatments": "Basculer les traitements de développement",
 

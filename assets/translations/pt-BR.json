@@ -118,7 +118,6 @@
   "menu_command.get_performance_report": "Baixar relatório de desempenho",
   "menu_command.reload_all_tabs": "Recarregar todas as sessões abertas (abas)",
   "menu_command.reset_config": "Redefinir configuração",
-  "menu_command.reset_install_timestamp": "Redefinir timestamp de instalação",
   "menu_command.throw_example_error": "Lançar erro de exemplo (& exibir toast de erro)",
   "menu_command.toggle_dev_treatments": "Alternar tratamentos de desenvolvedor",
 
