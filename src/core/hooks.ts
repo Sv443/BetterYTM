@@ -19,6 +19,10 @@ export type LateBindings = {
   showPrompt: typeof import("@dialog/prompt.ts").showPrompt;
   /** Owned by `@menu/menu.ts` */
   closeCfgMenu: typeof import("@menu/menu.ts").closeCfgMenu;
+  /** Owned by `@menu/resetConfig.ts` */
+  promptResetConfig: typeof import("@menu/resetConfig.ts").promptResetConfig;
+  /** Clears the album art cache. Owned by `@feat/layout.ts` (its `artCacheStore.deleteData`). */
+  clearArtCache: () => Promise<unknown>;
 };
 
 const impls = new Map<keyof LateBindings, unknown>();

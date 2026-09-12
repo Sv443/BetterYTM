@@ -1,6 +1,7 @@
 import { clamp, compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
 import { isScrollable } from "@sv443-network/userutils";
-import { type cfgDefaultData, cfgFormatVersion, getFeature, getFeatures, cfgMigrations, setFeatures } from "@/config.ts";
+import { getFeature, getFeatures, setFeatures } from "@/config.ts";
+import { type cfgDefaultData, cfgFormatVersion, cfgMigrations } from "@/configSchema.ts";
 import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, repo, scriptInfo } from "@/constants.ts";
 import { featInfo, groupedCategories, resolveAdornments } from "@feat/index.ts";
 import { copyToClipboard, setInnerHtml } from "@util/dom.ts";

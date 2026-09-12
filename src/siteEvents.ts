@@ -1,7 +1,6 @@
 import { autoPlural, createRecurringTask, NanoEmitter, type LooseUnion, type Prettify } from "@sv443-network/coreutils";
 import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
-import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { addSelectorListener, globserversReady } from "@/observers.ts";
 import type { FeatureConfig, FeatureCategory } from "@/types.ts";
@@ -227,13 +226,19 @@ export function initSiteEvents() {
 let bytmReady = false;
 window.addEventListener("bytm:allReady", () => bytmReady = true, { once: true });
 
+/** Whether emitted site events should be logged. Pushed in by the config init so this module doesn't depend on the config store. */
+let siteEventLoggingEnabled = false;
+
+/** Sets whether emitted site events are logged - called by the config init */
+export const setSiteEventLogging = (enabled: boolean) => void (siteEventLoggingEnabled = enabled);
+
 // FIXME: not a big fan of delaying events until `bytm:allReady`, but changing it requires refactoring a lot of ugly code
 
 /** Emits a site event with the given key and arguments - if `bytm:allReady` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   try {
     const logEmit = () => {
-      if(getFeature("logEvents")) {
+      if(siteEventLoggingEnabled) {
         args.length > 0
           ? loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural("argument", args)}:`, ...args)
           : loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
