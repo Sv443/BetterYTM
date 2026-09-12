@@ -123,7 +123,6 @@
   "menu_command.reload_all_tabs": "Açık tüm oturumları yeniden yükle (sekmeler)",
   "menu_command.reset_config": "Yapılandırmayı sıfırla",
   "menu_command.reset_install_timestamp": "Yükleme zaman damgasını sıfırla",
-  "menu_command.reset_version_session_counter": "Sürüm oturum sayacını sıfırla",
   "menu_command.throw_example_error": "Örnek hata göster (& hata mesajını göster)",
   "menu_command.toggle_dev_treatments": "Geliştirici modunu aç/kapat",
 

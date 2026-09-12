@@ -119,7 +119,6 @@
   "menu_command.reload_all_tabs": "重新加载所有标签页",
   "menu_command.reset_config": "重置配置",
   "menu_command.reset_install_timestamp": "重置安装时间戳",
-  "menu_command.reset_version_session_counter": "重置版本会话计数器",
   "menu_command.throw_example_error": "抛出示例错误",
   "menu_command.toggle_dev_treatments": "切换开发者处理模式",
 

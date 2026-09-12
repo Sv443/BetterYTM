@@ -647,13 +647,6 @@ function registerDevCommands() {
     loggers.command.log("Reset install time.");
   });
 
-  // #region reset_version_session_counter
-  isAny && GM.registerMenuCommand(getCmdName("🔢", "menu_command.reset_version_session_counter"), async () => {
-    const verSesCount = await GM.getValue("bytm-version-session-counter", "{}");
-    await GM.deleteValue("bytm-version-session-counter");
-    loggers.command.log("Reset version session counter. Was previously:", verSesCount);
-  });
-
   // #region list_selectorobserver_listeners
   isAny && GM.registerMenuCommand(getCmdName("👂", "menu_command.list_selectorobserver_listeners"), async () => {
     const lines = [] as string[];

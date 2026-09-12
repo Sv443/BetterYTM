@@ -120,7 +120,6 @@
   "menu_command.reload_all_tabs": "Recargar todas las sesiones abiertas (pestañas)",
   "menu_command.reset_config": "Restablecer configuración",
   "menu_command.reset_install_timestamp": "Restablecer marca de tiempo de instalación",
-  "menu_command.reset_version_session_counter": "Restablecer contador de sesiones de versión",
   "menu_command.throw_example_error": "Lanzar error de ejemplo (y mostrar notificación de error)",
   "menu_command.toggle_dev_treatments": "Alternar ajustes de desarrollo",
 

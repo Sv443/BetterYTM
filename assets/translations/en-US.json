@@ -127,7 +127,6 @@
   "menu_command.reload_all_tabs": "Reload all open sessions (tabs)",
   "menu_command.reset_config": "Reset config",
   "menu_command.reset_install_timestamp": "Reset install timestamp",
-  "menu_command.reset_version_session_counter": "Reset version session counter",
   "menu_command.throw_example_error": "Throw example error (& show error toast)",
   "menu_command.toggle_dev_treatments": "Toggle dev treatments",
   "menu_command.unregister_all_plugins": "Unregister all plugins",
