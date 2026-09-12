@@ -75,8 +75,9 @@ To find out more about these integrations, [click here](./src/dev/integrations.m
 <br><br>
 
 ## Plugins
-BetterYTM supports plugin userscripts that can be installed in parallel. Check below for a list of officially recognized plugins.  
-Click on the install button to automatically install the latest version.  
+BetterYTM supports external plugin scripts that can be installed in parallel, to further enhance various aspects of the websites.  
+  
+See below for a list of officially recognized plugins. Click on the install button to be redirected to the latest version's installation page.  
   
 <!-- <{{PLUGINS}}> -->
 <!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
