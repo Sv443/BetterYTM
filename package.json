@@ -125,6 +125,7 @@
     "@storybook/html": "10.2.19",
     "@storybook/html-vite": "10.2.19",
     "@storybook/test": "8.6.15",
+    "@sv443-network/coreutils": "3.8.0",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
     "@types/node": "24.12.0",
