@@ -22,22 +22,26 @@ import ts from "typescript";
  * - `pnpm check-deps --graph` - dump the resolved value-import graph as JSON
  */
 
+/** Directories and file patterns that are not part of the runtime graph */
+const excluded = [/^src[/\\]tools[/\\]/, /^src[/\\]dev[/\\]/, /^src[/\\]stories[/\\]/, /\.d\.ts$/, /[/\\]test\.ts$/];
+
 const rootDir = resolve(fileURLToPath(import.meta.url), "../../../");
 const srcDir = join(rootDir, "src");
 const cfgPath = join(rootDir, "src/tools/layers.json");
+
+const depGraphFileName = ".dep-graph.ignore.json";
 
 const args = process.argv.slice(2);
 const hasFlag = (...names: string[]) => names.some(n => args.includes(n));
 
 type LayerCfg = {
+  /** Max amount of strongly connected component files allowed in the codebase. Should approach 0 as time goes on, then stay there. */
   maxSccFiles: number;
+  /** Can be used to temporarily disable layer enforcement. */
   enforceLayers: boolean;
   /** Ordered lowest-first. Each entry is a list of globs; the first matching layer wins. */
   layers: string[][];
 };
-
-/** Directories and file patterns that are not part of the runtime graph */
-const excluded = [/^src[/\\]tools[/\\]/, /^src[/\\]dev[/\\]/, /^src[/\\]stories[/\\]/, /\.d\.ts$/, /[/\\]test\.ts$/];
 
 //#region graph building
 
@@ -280,7 +284,7 @@ else {
     console.log();
     console.log(`  ${k.yellow("●")} group of ${comp.length}, shortest cycle:`);
     console.log(`    ${cycle.join(k.gray(" → "))}`);
-    if(hasFlag("--list", "-l"))
+    if(hasFlag("--list", "-L"))
       for(const f of comp)
         console.log(k.gray(`      ${f}`));
   }
@@ -312,16 +316,16 @@ if(cfg.enforceLayers) {
   }
 }
 
-if(hasFlag("--graph")) {
-  const out = join(rootDir, ".dep-graph.json");
+if(hasFlag("--graph", "-G")) {
+  const out = join(rootDir, depGraphFileName);
   writeFileSync(out, JSON.stringify(Object.fromEntries([...graph].map(([f, e]) => [f, e.map(x => x.to)])), null, 2));
   console.log(k.gray(`\n  wrote ${relative(rootDir, out)}`));
 }
 
-if(hasFlag("--write-baseline")) {
+if(hasFlag("--write-baseline", "-W")) {
   writeFileSync(cfgPath, `${JSON.stringify({ ...cfg, maxSccFiles: sccFiles }, null, 2)}\n`);
   console.log(k.gray(`\n  baseline updated: maxSccFiles = ${sccFiles}`));
-  process.exit(0);
+  exit(0);
 }
 
 console.log();
@@ -343,4 +347,9 @@ if(violations.length > 0)
   failed = true;
 
 console.log();
-process.exit(failed ? 1 : 0);
+exit(failed ? 1 : 0);
+
+/** Schedules an exit after the current IO event queue is finished. */
+function exit(code = 0) {
+  setImmediate(() => process.exit(code));
+}
