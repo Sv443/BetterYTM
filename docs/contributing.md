@@ -152,12 +152,12 @@ To edit an existing translation, please follow these steps:
   It uses Vite's watch mode (`vite build --watch`) to incrementally rebuild on any file change and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager ([see the "extras" section](#extras)).  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
     
-  This command uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript. Note that this also means the server needs to keep running for the userscript to work. If it's not running, you will run into weird errors because none of the necessary assets are able to be fetched.  
+  This command uses the local server as the assetSource, so that all changes are immediately reflected in the built userscript. Note that this also means the server needs to keep running for the userscript to work. If it's not running, you will run into an error popup on page load (and unexplainable errors on the page should you ignore it), because none of the vital assets like static data and translations are able to be fetched.  
   Also, no meta file will be generated, since it's not needed for local development.  
     
   Once the build is finished, a link will be printed to the console. Open it to install the userscript.
 - **`pnpm dev-cdn`**  
-  Works exactly like `pnpm dev`, but uses the default CDN as the asset source.  
+  Works exactly like `pnpm dev`, but uses the default CDN (jsdelivr) as the asset source.  
   Practically, this means the server doesn't have to be constantly running.  
   But this also means that changes to the assets won't be reflected in the userscript until committed, pushed and the script is rebuilt.  
   Also, no meta file will be generated, since it's not needed for local development.  
@@ -183,12 +183,23 @@ To edit an existing translation, please follow these steps:
 
   Shorthand commands:
   - `pnpm build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
-    Sets `BYTM_MODE=production` and `BYTM_BRANCH=main` (assetSource defaults to `jsdelivr`)
+    Sets `BYTM_MODE=production` and `BYTM_BRANCH=main` (`BYTM_ASSET_SOURCE` defaults to `jsdelivr`).
   - `pnpm build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
-    Sets `BYTM_MODE=development` and `BYTM_BRANCH=develop`
-  - `pnpm preview` - Same as `pnpm build-prod-gh`, but with `BYTM_ASSET_SOURCE=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
+    Sets `BYTM_MODE=development` and `BYTM_BRANCH=develop`.  
+    Also generates the strict compatibility mode version, and metadata files for both.
+  - `build-prod-compat` & `build-dev-compat` - used for building the script in strict compatibility mode.  
+    These commands just set `BYTM_COMPAT_MODE=strict` and `BYTM_SUFFIX=_compat`, and otherwise just match the `build-prod` and `build-dev` counterparts.
+  - `pnpm preview` - Builds a production preview with `BYTM_BRANCH=develop`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
 - **`pnpm lint`**  
-  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
+  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!  
+  In addition, the `check-deps` script is run, which checks for circular imports. Refer to that command's documentation below for more info.
+- **`pnpm check-deps`**  
+  Runs the script at `src/tools/check-deps.ts` to build a graph of all the imports in the codebase, then checks for strongly connected components (SCCs) using [Tarjan's algorithm](https://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm), and alerts and fails if there are circular dependencies.  
+  The file at `src/tools/layers.json` is used to configure code layers, as well as the target number of SCCs (should approach 0 over time while the codebase is refactored, then stay there), and has a "killswitch" to temporarily bypass the layer enforcement until the code is ready for a refactor.  
+  Arguments:
+  - `--list` or `-L` - instead of just printing a summary, also lists every cycle that was found.
+  - `--graph` or `-G` - also create a graph file at `.dep-graph.ignore.json` (which is just an object mapping file path to an array of imported file paths).
+  - `--write-baseline` or `-W` - writes the collected data to `layers.json` as the new baseline.
 - **`pnpm storybook`**  
   Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
 - **`pnpm gen-readme`**  
@@ -214,12 +225,6 @@ To edit an existing translation, please follow these steps:
   Add the flag `-L` or `--logging` to log all requests to the console.  
   Add the flag `-X=<seconds>` or `--auto-exit-time=<seconds>` to automatically exit the process after a certain amount of time, like when just a single or a few requests need to be sent. The `pnpm preview` command makes use of this flag to shortly allow for installing the userscript via HTTP URL.  
   Use the additional flag `-S` or `--silent` to prevent any extra console logs, like the HTTP port and legend of incoming requests.
-- **`pnpm check-deps`**  
-  Runs the script at `src/tools/check-deps.ts` to build a graph of all the imports in the codebase. Then checks for strongly connected components (SCCs) using Tarjan's algorithm, and alerts if there are circular dependencies. The file at `src/tools/layers.json` is used to configure code layers, as well as the target number of SCCs (should approach 0 over time while the codebase is refactored, then stay there).  
-  Arguments:
-  - `--list` or `-L` - instead of just printing a summary, also lists every cycle that was found.
-  - `--graph` or `-G` - also create a graph file at `.dep-graph.ignore.json`
-  - `--write-baseline` or `-W` - records the collected SCC data as the new baseline for `layers.json`
 - **`pnpm --silent invisible "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
