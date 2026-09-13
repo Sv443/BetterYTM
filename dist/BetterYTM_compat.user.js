@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@84bf1957/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5e66c62f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 13 Sep 2026 17:54:53 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 13 Sep 2026 18:21:57 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 84bf1957                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 5e66c62f                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ CpWb2EUPG262                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ rX17uSFxM3DR                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -193,1656 +193,6 @@
 	var require___vite_browser_external = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		module.exports = {};
 	}));
-	//#endregion
-	//#region node_modules/.pnpm/@sv443-network+coreutils@3.8.0/node_modules/@sv443-network/coreutils/dist/CoreUtils.mjs
-	var CoreUtils_exports = /* @__PURE__ */ __exportAll({
-		BrowserStorageEngine: () => BrowserStorageEngine$1,
-		ChecksumMismatchError: () => ChecksumMismatchError$1,
-		CustomError: () => CustomError$1,
-		DataStore: () => DataStore$1,
-		DataStoreEngine: () => DataStoreEngine$1,
-		DataStoreSerializer: () => DataStoreSerializer$1,
-		DatedError: () => DatedError$1,
-		Debouncer: () => Debouncer$1,
-		FileStorageEngine: () => FileStorageEngine$1,
-		IndexedDBStorageEngine: () => IndexedDBStorageEngine$1,
-		MigrationError: () => MigrationError$1,
-		NanoEmitter: () => NanoEmitter$2,
-		NetworkError: () => NetworkError$1,
-		PicoEmitter: () => PicoEmitter$1,
-		ScriptContextError: () => ScriptContextError$1,
-		ValidationError: () => ValidationError$1,
-		abtoa: () => abtoa$1,
-		atoab: () => atoab$1,
-		autoPlural: () => autoPlural$2,
-		bitSetHas: () => bitSetHas$1,
-		capitalize: () => capitalize$1,
-		clamp: () => clamp$1,
-		compress: () => compress$1,
-		computeHash: () => computeHash$1,
-		consumeGen: () => consumeGen$1,
-		consumeStringGen: () => consumeStringGen$1,
-		createProgressBar: () => createProgressBar$1,
-		createRecurringTask: () => createRecurringTask$1,
-		createTable: () => createTable$1,
-		darkenColor: () => darkenColor$1,
-		debounce: () => debounce$1,
-		decompress: () => decompress$1,
-		defaultPbChars: () => defaultPbChars$1,
-		defaultTableLineCharset: () => defaultTableLineCharset$1,
-		digitCount: () => digitCount$1,
-		fetchAdvanced: () => fetchAdvanced$1,
-		formatNumber: () => formatNumber$2,
-		getCallStack: () => getCallStack$1,
-		getListLength: () => getListLength$1,
-		getterifyObj: () => getterifyObj$2,
-		hexToRgb: () => hexToRgb$1,
-		insertValues: () => insertValues$1,
-		joinArrayReadable: () => joinArrayReadable$1,
-		lightenColor: () => lightenColor$1,
-		mapRange: () => mapRange$1,
-		overflowVal: () => overflowVal$2,
-		pauseFor: () => pauseFor$1,
-		pureObj: () => pureObj$2,
-		randRange: () => randRange$1,
-		randomId: () => randomId$1,
-		randomItem: () => randomItem$1,
-		randomItemIndex: () => randomItemIndex$1,
-		randomizeArray: () => randomizeArray$1,
-		rgbToHex: () => rgbToHex$1,
-		roundFixed: () => roundFixed$1,
-		scheduleExit: () => scheduleExit$1,
-		secsToTimeStr: () => secsToTimeStr$1,
-		setImmediateInterval: () => setImmediateInterval$1,
-		setImmediateTimeoutLoop: () => setImmediateTimeoutLoop$1,
-		takeRandomItem: () => takeRandomItem$1,
-		takeRandomItemIndex: () => takeRandomItemIndex$1,
-		truncStr: () => truncStr$1,
-		valsWithin: () => valsWithin$1
-	});
-	function bitSetHas$1(bitSet, checkVal) {
-		return (bitSet & checkVal) === checkVal;
-	}
-	function clamp$1(value, min, max) {
-		if (typeof max !== "number") {
-			max = min;
-			min = 0;
-		}
-		return Math.max(Math.min(value, max), min);
-	}
-	function digitCount$1(num, withDecimals = true) {
-		num = Number(!["string", "number"].includes(typeof num) ? String(num) : num);
-		if (typeof num === "number" && isNaN(num)) return NaN;
-		const [intPart, decPart] = num.toString().split(".");
-		return (intPart === "0" ? 1 : Math.floor(Math.log10(Math.abs(Number(intPart))) + 1)) + (withDecimals && decPart ? decPart.length : 0);
-	}
-	function formatNumber$2(number, locale, format) {
-		return number.toLocaleString(locale, format === "short" ? {
-			notation: "compact",
-			compactDisplay: "short",
-			maximumFractionDigits: 1
-		} : {
-			style: "decimal",
-			maximumFractionDigits: 0
-		});
-	}
-	function mapRange$1(value, range1min, range1max, range2min, range2max) {
-		if (typeof range2min === "undefined" || typeof range2max === "undefined") {
-			range2max = range1max;
-			range1max = range1min;
-			range2min = range1min = 0;
-		}
-		if (Number(range1min) === 0 && Number(range2min) === 0) return value * (range2max / range1max);
-		return (value - range1min) * ((range2max - range2min) / (range1max - range1min)) + range2min;
-	}
-	function overflowVal$2(value, minOrMax, max) {
-		const min = typeof max === "number" ? minOrMax : 0;
-		max = typeof max === "number" ? max : minOrMax;
-		if (min > max) throw new RangeError(`Parameter "min" can't be bigger than "max"`);
-		if (isNaN(value) || isNaN(min) || isNaN(max) || !isFinite(value) || !isFinite(min) || !isFinite(max)) return NaN;
-		if (value >= min && value <= max) return value;
-		const range = max - min + 1;
-		return ((value - min) % range + range) % range + min;
-	}
-	function randRange$1(...args) {
-		let min, max, enhancedEntropy = false;
-		if (typeof args[0] === "number" && typeof args[1] === "number") [min, max] = args;
-		else if (typeof args[0] === "number" && typeof args[1] !== "number") {
-			min = 0;
-			[max] = args;
-		} else throw new TypeError(`Wrong parameter(s) provided - expected (number, boolean|undefined) or (number, number, boolean|undefined) but got (${args.map((a) => typeof a).join(", ")}) instead`);
-		if (typeof args[2] === "boolean") enhancedEntropy = args[2];
-		else if (typeof args[1] === "boolean") enhancedEntropy = args[1];
-		min = Number(min);
-		max = Number(max);
-		if (isNaN(min) || isNaN(max)) return NaN;
-		if (min > max) throw new TypeError(`Parameter "min" can't be bigger than "max"`);
-		if (enhancedEntropy) {
-			const uintArr = new Uint8Array(1);
-			crypto.getRandomValues(uintArr);
-			return Number(Array.from(uintArr, (v) => Math.round(mapRange$1(v, 0, 255, min, max)).toString(10)).join(""));
-		} else return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-	function roundFixed$1(num, fractionDigits) {
-		const scale = 10 ** fractionDigits;
-		return Math.round(num * scale) / scale;
-	}
-	function valsWithin$1(a, b, dec = 1, withinRange = .5) {
-		return Math.abs(roundFixed$1(a, dec) - roundFixed$1(b, dec)) <= withinRange;
-	}
-	function randomItem$1(array) {
-		return randomItemIndex$1(array)[0];
-	}
-	function randomItemIndex$1(array) {
-		if (array.length === 0) return [void 0, void 0];
-		const idx = randRange$1(array.length - 1);
-		return [array[idx], idx];
-	}
-	function randomizeArray$1(array) {
-		const retArray = [...array];
-		if (array.length === 0) return retArray;
-		for (let i = retArray.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[retArray[i], retArray[j]] = [retArray[j], retArray[i]];
-		}
-		return retArray;
-	}
-	function takeRandomItem$1(arr) {
-		var _a;
-		return (_a = takeRandomItemIndex$1(arr)) == null ? void 0 : _a[0];
-	}
-	function takeRandomItemIndex$1(arr) {
-		const [itm, idx] = randomItemIndex$1(arr);
-		if (idx === void 0) return [void 0, void 0];
-		arr.splice(idx, 1);
-		return [itm, idx];
-	}
-	function darkenColor$1(color, percent, upperCase = false) {
-		var _a;
-		color = color.trim();
-		const darkenRgb = (r2, g2, b2, percent2) => {
-			r2 = Math.max(0, Math.min(255, r2 - r2 * percent2 / 100));
-			g2 = Math.max(0, Math.min(255, g2 - g2 * percent2 / 100));
-			b2 = Math.max(0, Math.min(255, b2 - b2 * percent2 / 100));
-			return [
-				r2,
-				g2,
-				b2
-			];
-		};
-		let r, g, b, a;
-		const isHexCol = color.match(/^#?([0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/);
-		if (isHexCol) [r, g, b, a] = hexToRgb$1(color);
-		else if (color.startsWith("rgb")) {
-			const rgbValues = (_a = color.match(/\d+(\.\d+)?/g)) == null ? void 0 : _a.map(Number);
-			if (!rgbValues) throw new TypeError("Invalid RGB/RGBA color format");
-			[r, g, b, a] = rgbValues;
-		} else throw new TypeError("Unsupported color format");
-		[r, g, b] = darkenRgb(r, g, b, percent);
-		if (isHexCol) return rgbToHex$1(r, g, b, a, color.startsWith("#"), upperCase);
-		else if (color.startsWith("rgba")) return `rgba(${r}, ${g}, ${b}, ${a ?? NaN})`;
-		else return `rgb(${r}, ${g}, ${b})`;
-	}
-	function hexToRgb$1(hex) {
-		hex = (hex.startsWith("#") ? hex.slice(1) : hex).trim();
-		const a = hex.length === 8 || hex.length === 4 ? parseInt(hex.slice(-(hex.length / 4)), 16) / (hex.length === 8 ? 255 : 15) : void 0;
-		if (!isNaN(Number(a))) hex = hex.slice(0, -(hex.length / 4));
-		if (hex.length === 3 || hex.length === 4) hex = hex.split("").map((c) => c + c).join("");
-		const hexInt = parseInt(hex, 16);
-		const r = hexInt >> 16 & 255;
-		const g = hexInt >> 8 & 255;
-		const b = hexInt & 255;
-		return [
-			clamp$1(r, 0, 255),
-			clamp$1(g, 0, 255),
-			clamp$1(b, 0, 255),
-			typeof a === "number" ? clamp$1(a, 0, 1) : void 0
-		];
-	}
-	function lightenColor$1(color, percent, upperCase = false) {
-		return darkenColor$1(color, percent * -1, upperCase);
-	}
-	function rgbToHex$1(red, green, blue, alpha, withHash = true, upperCase = false) {
-		const toHexVal = (n) => clamp$1(Math.round(n), 0, 255).toString(16).padStart(2, "0")[upperCase ? "toUpperCase" : "toLowerCase"]();
-		return `${withHash ? "#" : ""}${toHexVal(red)}${toHexVal(green)}${toHexVal(blue)}${alpha ? toHexVal(alpha * 255) : ""}`;
-	}
-	function abtoa$1(buf) {
-		return btoa(new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), ""));
-	}
-	function atoab$1(str) {
-		return Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
-	}
-	async function compress$1(input, compressionFormat, outputType = "string") {
-		const byteArray = input instanceof Uint8Array ? input : new TextEncoder().encode((input == null ? void 0 : input.toString()) ?? String(input));
-		const comp = new CompressionStream(compressionFormat);
-		const writer = comp.writable.getWriter();
-		writer.write(byteArray);
-		writer.close();
-		const uintArr = new Uint8Array(await new Response(comp.readable).arrayBuffer());
-		return outputType === "arrayBuffer" ? uintArr : abtoa$1(uintArr);
-	}
-	async function decompress$1(input, compressionFormat, outputType = "string") {
-		const byteArray = input instanceof Uint8Array ? input : atoab$1((input == null ? void 0 : input.toString()) ?? String(input));
-		const decomp = new DecompressionStream(compressionFormat);
-		const writer = decomp.writable.getWriter();
-		writer.write(byteArray);
-		writer.close();
-		const uintArr = new Uint8Array(await new Response(decomp.readable).arrayBuffer());
-		return outputType === "arrayBuffer" ? uintArr : new TextDecoder().decode(uintArr);
-	}
-	async function computeHash$1(input, algorithm = "SHA-256") {
-		let data;
-		if (typeof input === "string") data = new TextEncoder().encode(input);
-		else data = input;
-		const hashBuffer = await crypto.subtle.digest(algorithm, data);
-		return Array.from(new Uint8Array(hashBuffer)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
-	}
-	function randomId$1(length = 16, radix = 16, enhancedEntropy = false, randomCase = true) {
-		if (length < 1) throw new RangeError("The length argument must be at least 1");
-		if (radix < 2 || radix > 36) throw new RangeError("The radix argument must be between 2 and 36");
-		let arr = [];
-		const caseArr = randomCase ? [0, 1] : [0];
-		if (enhancedEntropy) {
-			const uintArr = new Uint8Array(length);
-			crypto.getRandomValues(uintArr);
-			arr = Array.from(uintArr, (v) => mapRange$1(v, 0, 255, 0, radix).toString(radix).substring(0, 1));
-		} else arr = Array.from({ length }, () => Math.floor(Math.random() * radix).toString(radix));
-		if (!arr.some((v) => /[a-zA-Z]/.test(v))) return arr.join("");
-		return arr.map((v) => caseArr[randRange$1(0, caseArr.length - 1, enhancedEntropy)] === 1 ? v.toUpperCase() : v).join("");
-	}
-	var DatedError$1 = class extends Error {
-		date;
-		constructor(message, options) {
-			super(message, options);
-			this.name = this.constructor.name;
-			this.date = /* @__PURE__ */ new Date();
-		}
-	};
-	var ChecksumMismatchError$1 = class extends DatedError$1 {
-		constructor(message, options) {
-			super(message, options);
-			this.name = "ChecksumMismatchError";
-		}
-	};
-	var CustomError$1 = class extends DatedError$1 {
-		constructor(name, message, options) {
-			super(message, options);
-			this.name = name;
-		}
-	};
-	var MigrationError$1 = class extends DatedError$1 {
-		constructor(message, options) {
-			super(message, options);
-			this.name = "MigrationError";
-		}
-	};
-	var ValidationError$1 = class extends DatedError$1 {
-		constructor(message, options) {
-			super(message, options);
-			this.name = "ValidationError";
-		}
-	};
-	var ScriptContextError$1 = class extends DatedError$1 {
-		constructor(message, options) {
-			super(message, options);
-			this.name = "ScriptContextError";
-		}
-	};
-	var NetworkError$1 = class extends DatedError$1 {
-		constructor(message, options) {
-			super(message, options);
-			this.name = "NetworkError";
-		}
-	};
-	async function consumeGen$1(valGen, ...args) {
-		return await (typeof valGen === "function" ? valGen(...args) : valGen);
-	}
-	async function consumeStringGen$1(strGen, ...args) {
-		return typeof strGen === "string" ? strGen : String(typeof strGen === "function" ? await strGen(...args) : strGen);
-	}
-	async function fetchAdvanced$1(input, options = {}) {
-		const { timeout = 1e4, signal, ...restOpts } = options;
-		const fetchOpts = { ...restOpts };
-		if (signal) fetchOpts.signal = signal;
-		let timeoutId;
-		try {
-			const fetchPromise = fetch(input, fetchOpts);
-			if (timeout < 0) return await fetchPromise;
-			const res = await Promise.race([fetchPromise, new Promise((_, reject) => {
-				timeoutId = setTimeout(() => reject(new DOMException("The operation timed out.", "TimeoutError")), timeout);
-			})]);
-			clearTimeout(timeoutId);
-			return res;
-		} catch (err) {
-			clearTimeout(timeoutId);
-			throw new NetworkError$1("Error while calling fetch", { cause: err });
-		}
-	}
-	function getListLength$1(listLike, zeroOnInvalid = true) {
-		return "length" in listLike ? listLike.length : "size" in listLike ? listLike.size : "count" in listLike ? listLike.count : zeroOnInvalid ? 0 : NaN;
-	}
-	function pauseFor$1(time, signal, rejectOnAbort = false) {
-		return new Promise((res, rej) => {
-			const timeout = setTimeout(() => res(), time);
-			signal?.addEventListener("abort", () => {
-				clearTimeout(timeout);
-				rejectOnAbort ? rej(new CustomError$1("AbortError", "The pause was aborted")) : res();
-			});
-		});
-	}
-	function pureObj$2(obj) {
-		return Object.assign(/* @__PURE__ */ Object.create(null), obj ?? {});
-	}
-	function getterifyObj$2(obj, asCopy = false) {
-		const newObj = {};
-		for (const key in obj) Object.defineProperty(newObj, key, {
-			get: () => obj[key],
-			enumerable: true,
-			configurable: true
-		});
-		return asCopy ? structuredClone(newObj) : newObj;
-	}
-	function setImmediateInterval$1(callback, interval, signal) {
-		let intervalId;
-		const cleanup = () => clearInterval(intervalId);
-		const loop = () => {
-			if (signal == null ? void 0 : signal.aborted) return cleanup();
-			callback();
-		};
-		signal?.addEventListener("abort", cleanup);
-		loop();
-		intervalId = setInterval(loop, interval);
-	}
-	function setImmediateTimeoutLoop$1(callback, interval, signal) {
-		let timeout;
-		const cleanup = () => clearTimeout(timeout);
-		const loop = async () => {
-			if (signal == null ? void 0 : signal.aborted) return cleanup();
-			await callback();
-			timeout = setTimeout(loop, interval);
-		};
-		signal?.addEventListener("abort", cleanup);
-		loop();
-	}
-	function scheduleExit$1(code = 0, timeout = 0) {
-		if (timeout < 0) throw new TypeError("Timeout must be a non-negative number");
-		let exit;
-		if (typeof process !== "undefined" && "exit" in process && typeof process.exit === "function") exit = () => process.exit(code);
-		else if (typeof Deno !== "undefined" && "exit" in Deno && typeof Deno.exit === "function") exit = () => Deno.exit(code);
-		else throw new ScriptContextError$1("Cannot exit the process, no exit method available");
-		setTimeout(exit, timeout);
-	}
-	function getCallStack$1(asArray, lines = Infinity) {
-		if (typeof lines !== "number" || isNaN(lines) || lines < 0) throw new TypeError("lines parameter must be a non-negative number");
-		try {
-			throw new CustomError$1("GetCallStack", "Capturing a stack trace with CoreUtils.getCallStack(). If you see this anywhere, you can safely ignore it.");
-		} catch (err) {
-			const stack = (err.stack ?? "").split("\n").map((line) => line.trim()).slice(2, lines + 2);
-			return asArray !== false ? stack : stack.join("\n");
-		}
-	}
-	function createRecurringTask$1(options) {
-		var _a;
-		let iterations = 0;
-		let aborted = false;
-		(_a = options.signal) == null || _a.addEventListener("abort", () => {
-			aborted = true;
-		}, { once: true });
-		const runRecurringTask = async (initial = false) => {
-			var _a2;
-			if (aborted) return;
-			try {
-				if ((options.immediate ?? true) || !initial) {
-					iterations++;
-					if (await ((_a2 = options.condition) == null ? void 0 : _a2.call(options, iterations - 1)) ?? true) {
-						const val = await options.task(iterations - 1);
-						if (options.onSuccess) await options.onSuccess(val, iterations - 1);
-					}
-				}
-			} catch (err) {
-				if (options.onError) await options.onError(err, iterations - 1);
-				if (options.abortOnError) aborted = true;
-				if (!options.onError && !options.abortOnError) throw err;
-			}
-			if (!aborted && (typeof options.maxIterations !== "number" || iterations < options.maxIterations)) setTimeout(runRecurringTask, options.timeout);
-		};
-		return runRecurringTask(true);
-	}
-	function autoPlural$2(term, num, pluralType = "auto") {
-		if (typeof num !== "number") {
-			if ("length" in num) num = num.length;
-			else if ("size" in num) num = num.size;
-			else if ("count" in num) num = num.count;
-		}
-		if (!["-s", "-ies"].includes(pluralType)) pluralType = "auto";
-		if (isNaN(num)) num = 2;
-		switch (pluralType === "auto" ? String(term).endsWith("y") ? "-ies" : "-s" : pluralType) {
-			case "-s": return `${term}${num === 1 ? "" : "s"}`;
-			case "-ies": return `${String(term).slice(0, -1)}${num === 1 ? "y" : "ies"}`;
-		}
-	}
-	function capitalize$1(text) {
-		return text.charAt(0).toUpperCase() + text.slice(1);
-	}
-	var defaultPbChars$1 = {
-		100: "█",
-		75: "▓",
-		50: "▒",
-		25: "░",
-		0: "─"
-	};
-	function createProgressBar$1(percentage, barLength, chars = defaultPbChars$1) {
-		if (percentage < 0 || percentage > 100) throw new RangeError(`Percentage must be between 0 and 100, got ${percentage}`);
-		if (barLength < 0) throw new RangeError(`Bar length must be non-negative, got ${barLength}`);
-		if (percentage === 100) return chars[100].repeat(barLength);
-		const filledLength = Math.floor(percentage / 100 * barLength);
-		const remainingPercentage = percentage / 100 * barLength - filledLength;
-		let lastBlock = "";
-		if (remainingPercentage >= .75) lastBlock = chars[75];
-		else if (remainingPercentage >= .5) lastBlock = chars[50];
-		else if (remainingPercentage >= .25) lastBlock = chars[25];
-		const filledBar = chars[100].repeat(filledLength);
-		const emptyBar = chars[0].repeat(barLength - filledLength - (lastBlock ? 1 : 0));
-		return `${filledBar}${lastBlock}${emptyBar}`;
-	}
-	function insertValues$1(input, ...values) {
-		return input.replace(/%\d/gm, (match) => {
-			var _a;
-			return (_a = values[Number(match.substring(1)) - 1] ?? match) == null ? void 0 : _a.toString();
-		});
-	}
-	function joinArrayReadable$1(array, separators = ", ", lastSeparator = " and ") {
-		const arr = [...array];
-		if (arr.length === 0) return "";
-		else if (arr.length === 1) return String(arr[0]);
-		else if (arr.length === 2) return arr.join(lastSeparator);
-		const lastItm = lastSeparator + arr[arr.length - 1];
-		arr.pop();
-		return arr.join(separators) + lastItm;
-	}
-	function secsToTimeStr$1(seconds) {
-		const isNegative = seconds < 0;
-		const s = Math.abs(seconds);
-		if (isNaN(s) || !isFinite(s)) throw new TypeError("The seconds argument must be a valid number");
-		const hrs = Math.floor(s / 3600);
-		const mins = Math.floor(s % 3600 / 60);
-		const secs = Math.floor(s % 60);
-		return (isNegative ? "-" : "") + [
-			hrs ? hrs + ":" : "",
-			String(mins).padStart(mins > 0 || hrs > 0 ? 2 : 1, "0"),
-			":",
-			String(secs).padStart(secs > 0 || mins > 0 || hrs > 0 || seconds === 0 ? 2 : 1, "0")
-		].join("");
-	}
-	function truncStr$1(input, length, endStr = "...") {
-		const str = (input == null ? void 0 : input.toString()) ?? String(input);
-		const finalStr = str.length > length ? str.substring(0, length - endStr.length) + endStr : str;
-		return finalStr.length > length ? finalStr.substring(0, length) : finalStr;
-	}
-	var defaultTableLineCharset$1 = {
-		single: {
-			horizontal: "─",
-			vertical: "│",
-			topLeft: "┌",
-			topRight: "┐",
-			bottomLeft: "└",
-			bottomRight: "┘",
-			leftT: "├",
-			rightT: "┤",
-			topT: "┬",
-			bottomT: "┴",
-			cross: "┼"
-		},
-		double: {
-			horizontal: "═",
-			vertical: "║",
-			topLeft: "╔",
-			topRight: "╗",
-			bottomLeft: "╚",
-			bottomRight: "╝",
-			leftT: "╠",
-			rightT: "╣",
-			topT: "╦",
-			bottomT: "╩",
-			cross: "╬"
-		},
-		none: {
-			horizontal: " ",
-			vertical: " ",
-			topLeft: " ",
-			topRight: " ",
-			bottomLeft: " ",
-			bottomRight: " ",
-			leftT: " ",
-			rightT: " ",
-			topT: " ",
-			bottomT: " ",
-			cross: " "
-		}
-	};
-	function createTable$1(rows, options) {
-		var _a;
-		const opts = {
-			columnAlign: "left",
-			truncateAbove: Infinity,
-			truncEndStr: "…",
-			minPadding: 1,
-			lineStyle: "single",
-			applyCellStyle: () => void 0,
-			applyLineStyle: () => void 0,
-			lineCharset: defaultTableLineCharset$1,
-			...options ?? {}
-		};
-		const defRange = (val, min, max) => clamp$1(typeof val !== "number" || isNaN(Number(val)) ? min : val, min, max);
-		opts.truncateAbove = defRange(opts.truncateAbove, 0, Infinity);
-		opts.minPadding = defRange(opts.minPadding, 0, Infinity);
-		const lnCh = opts.lineCharset[opts.lineStyle];
-		const stripAnsi = (str) => str.replace(/\u001b\[[0-9;]*m/g, "");
-		const stringRows = rows.map((row) => row.map((cell) => String(cell)));
-		const colCount = ((_a = rows[0]) == null ? void 0 : _a.length) ?? 0;
-		if (colCount === 0 || stringRows.length === 0) return "";
-		if (isFinite(opts.truncateAbove)) {
-			const truncAnsi = (str, maxVisible, endStr) => {
-				const limit = maxVisible - endStr.length;
-				if (limit <= 0) return endStr.slice(0, maxVisible);
-				let visible = 0;
-				let result = "";
-				let i = 0;
-				let hasAnsi = false;
-				while (i < str.length) {
-					if (str[i] === "\x1B" && str[i + 1] === "[") {
-						const seqEnd = str.indexOf("m", i + 2);
-						if (seqEnd !== -1) {
-							result += str.slice(i, seqEnd + 1);
-							hasAnsi = true;
-							i = seqEnd + 1;
-							continue;
-						}
-					}
-					if (visible === limit) {
-						result += endStr;
-						if (hasAnsi) result += "\x1B[0m";
-						return result;
-					}
-					result += str[i];
-					visible++;
-					i++;
-				}
-				return result;
-			};
-			for (const row of stringRows) for (let j = 0; j < row.length; j++) if (stripAnsi(row[j] ?? "").length > opts.truncateAbove) row[j] = truncAnsi(row[j] ?? "", opts.truncateAbove, opts.truncEndStr);
-		}
-		const colWidths = Array.from({ length: colCount }, (_, j) => Math.max(0, ...stringRows.map((row) => stripAnsi(row[j] ?? "").length)));
-		const applyLn = (i, j, ch) => {
-			const [before = "", after = ""] = opts.applyLineStyle(i, j) ?? [];
-			return `${before}${ch}${after}`;
-		};
-		const buildBorderRow = (lineIdx, leftCh, midCh, rightCh) => {
-			let result = "";
-			let j = 0;
-			result += applyLn(lineIdx, j++, leftCh);
-			for (let col = 0; col < colCount; col++) {
-				const cellWidth = (colWidths[col] ?? 0) + opts.minPadding * 2;
-				for (let ci = 0; ci < cellWidth; ci++) result += applyLn(lineIdx, j++, lnCh.horizontal);
-				if (col < colCount - 1) result += applyLn(lineIdx, j++, midCh);
-			}
-			result += applyLn(lineIdx, j++, rightCh);
-			return result;
-		};
-		const lines = [];
-		for (let rowIdx = 0; rowIdx < stringRows.length; rowIdx++) {
-			const row = stringRows[rowIdx] ?? [];
-			const lineIdxBase = rowIdx * 3;
-			if (opts.lineStyle !== "none") lines.push(rowIdx === 0 ? buildBorderRow(lineIdxBase, lnCh.topLeft, lnCh.topT, lnCh.topRight) : buildBorderRow(lineIdxBase, lnCh.leftT, lnCh.cross, lnCh.rightT));
-			let contentLine = "";
-			let j = 0;
-			contentLine += applyLn(lineIdxBase + 1, j++, lnCh.vertical);
-			for (let colIdx = 0; colIdx < colCount; colIdx++) {
-				const cell = row[colIdx] ?? "";
-				const visLen = stripAnsi(cell).length;
-				const extra = (colWidths[colIdx] ?? 0) - visLen;
-				const align = (Array.isArray(opts.columnAlign) ? opts.columnAlign[colIdx] : opts.columnAlign) ?? "left";
-				let leftPad;
-				let rightPad;
-				switch (align) {
-					case "right":
-						leftPad = opts.minPadding + extra;
-						rightPad = opts.minPadding;
-						break;
-					case "centerLeft":
-						leftPad = opts.minPadding + Math.floor(extra / 2);
-						rightPad = opts.minPadding + Math.ceil(extra / 2);
-						break;
-					case "centerRight":
-						leftPad = opts.minPadding + Math.ceil(extra / 2);
-						rightPad = opts.minPadding + Math.floor(extra / 2);
-						break;
-					default:
-						leftPad = opts.minPadding;
-						rightPad = opts.minPadding + extra;
-				}
-				const [cellBefore = "", cellAfter = ""] = opts.applyCellStyle(rowIdx, colIdx) ?? [];
-				contentLine += " ".repeat(leftPad) + cellBefore + cell + cellAfter + " ".repeat(rightPad);
-				contentLine += applyLn(lineIdxBase + 1, j++, lnCh.vertical);
-			}
-			lines.push(contentLine);
-			if (opts.lineStyle !== "none" && rowIdx === stringRows.length - 1) lines.push(buildBorderRow(lineIdxBase + 2, lnCh.bottomLeft, lnCh.bottomT, lnCh.bottomRight));
-		}
-		return lines.join("\n");
-	}
-	var createNanoEvents$1 = () => ({
-		emit(event, ...args) {
-			for (let callbacks = this.events[event] || [], i = 0, length = callbacks.length; i < length; i++) callbacks[i](...args);
-		},
-		events: {},
-		on(event, cb) {
-			(this.events[event] ||= []).push(cb);
-			return () => {
-				var _a;
-				this.events[event] = (_a = this.events[event]) == null ? void 0 : _a.filter((i) => cb !== i);
-			};
-		}
-	});
-	var PicoEmitter$1 = class {
-		/**
-		* The nanoevents emitter instance used internally.  
-		* ⚠️ You should use the protected method `emitEvent()` instead of emitting directly through this, as it updates the catch-up memory for any events listed in `catchUpEvents`. Only use `this.events.emit()` if you're not using `catchUpEvents` or are doing manual memory management.
-		*/
-		events = createNanoEvents$1();
-		eventUnsubscribes = [];
-		emitterOptions;
-		/** Stores the latest arguments for each emitted event that's listed in `catchUpEvents`. */
-		catchUpMemory = /* @__PURE__ */ new Map();
-		/**
-		* ⚠️ You cannot instantiate `PicoEmitter` directly, it's only meant for extending in your own classes. If you want a standalone emitter, use `NanoEmitter` instead.
-		*/
-		constructor(options = {}) {
-			this.emitterOptions = { ...options };
-		}
-		/**
-		* Emits an event on this instance.  
-		* You should use this over `this.events.emit()` in subclasses as it updates the catch-up memory for any event listed in `catchUpEvents`, so that listeners attached after emitting can still receive the latest value.
-		*/
-		emitEvent(event, ...args) {
-			var _a;
-			if ((_a = this.emitterOptions.catchUpEvents) == null ? void 0 : _a.includes(event)) this.catchUpMemory.set(event, args);
-			this.events.emit(event, ...args);
-		}
-		/**
-		* Subscribes to an event and calls the callback when it's emitted.  
-		* If the event has already been emitted and is listed in `catchUpEvents`, the callback will be called immediately with the latest emitted arguments (catch-up behaviour).
-		* @param event The event to subscribe to. Use `as "_"` in case your event names aren't thoroughly typed (like when using a template literal, e.g. \`event-${val}\` as "_")
-		* @returns Returns a function that can be called to unsubscribe the event listener
-		* @example ```ts
-		* const emitter = new PicoEmitter<{
-		*   foo: (bar: string) => void;
-		* }>({
-		*   publicEmit: true,
-		* });
-		* 
-		* let i = 0;
-		* const unsub = emitter.on("foo", (bar) => {
-		*   // unsubscribe after 10 events:
-		*   if(++i === 10) unsub();
-		*   console.log(bar);
-		* });
-		* 
-		* emitter.emit("foo", "bar");
-		* ```
-		*/
-		on(event, cb) {
-			let unsub;
-			const unsubProxy = () => {
-				if (!unsub) return;
-				unsub();
-				this.eventUnsubscribes = this.eventUnsubscribes.filter((u) => u !== unsub);
-			};
-			unsub = this.events.on(event, cb);
-			this.eventUnsubscribes.push(unsub);
-			const memory = this.catchUpMemory.get(event);
-			if (memory) cb(...memory);
-			return unsubProxy;
-		}
-		/**
-		* Subscribes to an event and calls the callback or resolves the Promise only once when it's emitted.  
-		* If the event has already been emitted and is listed in `catchUpEvents`, the callback will be called immediately with the latest emitted arguments (catch-up behaviour).
-		* @param event The event to subscribe to. Use `as "_"` in case your event names aren't thoroughly typed (like when using a template literal, e.g. \`event-${val}\` as "_")
-		* @param cb The callback to call when the event is emitted - if provided or not, the returned Promise will resolve with the event arguments
-		* @returns Returns a Promise that resolves with the event arguments when the event is emitted
-		* @example ```ts
-		* const emitter = new PicoEmitter<{
-		*   foo: (bar: string) => void;
-		* }>();
-		* 
-		* // Promise syntax:
-		* const [bar] = await emitter.once("foo");
-		* console.log(bar);
-		* 
-		* // Callback syntax:
-		* emitter.once("foo", (bar) => console.log(bar));
-		* ```
-		*/
-		once(event, cb) {
-			const memory = this.catchUpMemory.get(event);
-			if (memory) {
-				const args = memory;
-				cb?.(...args);
-				return Promise.resolve(args);
-			}
-			return new Promise((resolve) => {
-				let unsub;
-				const onceProxy = ((...args) => {
-					cb?.(...args);
-					unsub?.();
-					resolve(args);
-				});
-				unsub = this.events.on(event, onceProxy);
-				this.eventUnsubscribes.push(unsub);
-			});
-		}
-		/**
-		* Allows subscribing to multiple events and calling the callback only when one of, all of, or a subset of the events are emitted, either continuously or only once.  
-		* If any of the events have already been emitted and are listed in `catchUpEvents`, the callback will be called immediately if the criteria are met, with the latest emitted arguments (catch-up behaviour).
-		* @param options An object or array of objects with the following properties:  
-		* `callback` (required) is the function that will be called when the conditions are met.  
-		*   
-		* Set `once` to true to call the callback only once for the first event (or set of events) that match the criteria, then stop listening.  
-		* If `signal` is provided, the subscription will be canceled when the given signal is aborted.  
-		*   
-		* If `oneOf` is used, the callback will be called when any of the matching events are emitted.  
-		* If `allOf` is used, the callback will be called after all of the matching events are emitted at least once, then any time any of them are emitted.  
-		* If both `oneOf` and `allOf` are used together, the callback will be called when any of the `oneOf` events are emitted AND all of the `allOf` events have been emitted at least once.  
-		* At least one of `oneOf` or `allOf` must be provided.  
-		*   
-		* @returns Returns a function that can be called to unsubscribe all listeners created by this call. Alternatively, pass an `AbortSignal` to all options objects to achieve the same effect or for finer control.
-		*/
-		onMulti(options) {
-			const allUnsubs = [];
-			const unsubAll = () => {
-				for (const unsub of allUnsubs) unsub();
-				allUnsubs.splice(0, allUnsubs.length);
-				this.eventUnsubscribes = this.eventUnsubscribes.filter((u) => !allUnsubs.includes(u));
-			};
-			for (const opts of Array.isArray(options) ? options : [options]) {
-				const { oneOf, allOf, once, signal, callback } = {
-					allOf: [],
-					oneOf: [],
-					once: false,
-					...opts
-				};
-				if (signal == null ? void 0 : signal.aborted) return unsubAll;
-				if (oneOf.length === 0 && allOf.length === 0) throw new TypeError("PicoEmitter.onMulti(): Either `oneOf` or `allOf` or both must be provided in the options");
-				const curEvtUnsubs = [];
-				const checkUnsubAllEvt = (force = false) => {
-					if (!(signal == null ? void 0 : signal.aborted) && !force) return;
-					for (const unsub of curEvtUnsubs) unsub();
-					curEvtUnsubs.splice(0, curEvtUnsubs.length);
-					this.eventUnsubscribes = this.eventUnsubscribes.filter((u) => !curEvtUnsubs.includes(u));
-				};
-				const allOfEmitted = /* @__PURE__ */ new Set();
-				const allOfConditionMet = () => allOf.length === 0 || allOfEmitted.size === allOf.length;
-				for (const event of oneOf) {
-					const unsub = this.events.on(event, ((...args) => {
-						checkUnsubAllEvt();
-						if (allOfConditionMet()) {
-							callback(event, ...args);
-							if (once) checkUnsubAllEvt(true);
-						}
-					}));
-					curEvtUnsubs.push(unsub);
-				}
-				for (const event of allOf) {
-					const unsub = this.events.on(event, ((...args) => {
-						checkUnsubAllEvt();
-						allOfEmitted.add(event);
-						if (allOfConditionMet() && (oneOf.length === 0 || oneOf.includes(event))) {
-							callback(event, ...args);
-							if (once) checkUnsubAllEvt(true);
-						}
-					}));
-					curEvtUnsubs.push(unsub);
-				}
-				allUnsubs.push(() => checkUnsubAllEvt(true));
-			}
-			return unsubAll;
-		}
-		/** Unsubscribes all event listeners from this instance. Also clears the event catch-up memory. */
-		unsubscribeAll() {
-			for (const unsub of this.eventUnsubscribes) unsub();
-			this.eventUnsubscribes = [];
-			this.catchUpMemory.clear();
-		}
-	};
-	var NanoEmitter$2 = class extends PicoEmitter$1 {
-		events = createNanoEvents$1();
-		eventUnsubscribes = [];
-		emitterOptions;
-		/** Stores the last arguments for each event listed in `catchUpEvents` */
-		catchUpMemory = /* @__PURE__ */ new Map();
-		/** Creates a new instance of NanoEmitter - a lightweight event emitter with helper methods and a strongly typed event map */
-		constructor(options = {}) {
-			super(options);
-			this.emitterOptions = {
-				publicEmit: false,
-				...options
-			};
-		}
-		/**
-		* Emits an event on this instance.  
-		* - ⚠️ Needs `publicEmit` to be set to true in the NanoEmitter constructor or super() call!
-		* @param event The event to emit
-		* @param args The arguments to pass to the event listeners
-		* @returns Returns true if `publicEmit` is true and the event was emitted successfully
-		*/
-		emit(event, ...args) {
-			if (this.emitterOptions.publicEmit) {
-				this.emitEvent(event, ...args);
-				return true;
-			}
-			return false;
-		}
-		/** Unsubscribes all event listeners from this instance. Also clears the event catch-up memory. */
-		unsubscribeAll() {
-			super.unsubscribeAll();
-		}
-	};
-	var dsFmtVer$1 = 1;
-	var DataStore$1 = class extends NanoEmitter$2 {
-		id;
-		formatVersion;
-		defaultData;
-		encodeData;
-		decodeData;
-		compressionFormat = "deflate-raw";
-		memoryCache;
-		engine;
-		keyPrefix;
-		options;
-		/**
-		* Whether all first-init checks should be done.  
-		* This includes migrating the internal DataStore format, migrating data from the UserUtils format, and anything similar.  
-		* This is set to `true` by default. Create a subclass and set it to `false` before calling {@linkcode loadData()} if you want to explicitly skip these checks.
-		*/
-		firstInit = true;
-		/** In-memory cached copy of the data that is saved in persistent storage used for synchronous read access. */
-		cachedData;
-		migrations;
-		migrateIds = [];
-		/**
-		* Creates an instance of DataStore to manage a sync & async database that is cached in memory and persistently saved across sessions.  
-		* Supports migrating data from older versions to newer ones and populating the cache with default data if no persistent data is found.  
-		*   
-		* - ⚠️ Make sure to call {@linkcode loadData()} at least once after creating an instance, or the returned data will be the same as `options.defaultData`
-		* 
-		* @template TData The type of the data that is saved in persistent storage for the currently set format version (will be automatically inferred from `defaultData` if not provided) - **This has to be a JSON-compatible object!** (no undefined, circular references, etc.)
-		* @param opts The options for this DataStore instance
-		*/
-		constructor(opts) {
-			super(opts.nanoEmitterOptions);
-			this.id = opts.id;
-			this.formatVersion = opts.formatVersion;
-			this.defaultData = opts.defaultData;
-			this.memoryCache = opts.memoryCache ?? true;
-			this.cachedData = this.memoryCache ? opts.defaultData : {};
-			this.migrations = opts.migrations;
-			if (opts.migrateIds) this.migrateIds = Array.isArray(opts.migrateIds) ? opts.migrateIds : [opts.migrateIds];
-			this.engine = typeof opts.engine === "function" ? opts.engine() : opts.engine;
-			this.keyPrefix = opts.keyPrefix ?? "__ds-";
-			this.options = opts;
-			if ("encodeData" in opts && "decodeData" in opts && Array.isArray(opts.encodeData) && Array.isArray(opts.decodeData)) {
-				this.encodeData = [opts.encodeData[0], opts.encodeData[1]];
-				this.decodeData = [opts.decodeData[0], opts.decodeData[1]];
-				this.compressionFormat = opts.encodeData[0] ?? null;
-			} else if (opts.compressionFormat === null) {
-				this.encodeData = void 0;
-				this.decodeData = void 0;
-				this.compressionFormat = null;
-			} else {
-				const fmt = typeof opts.compressionFormat === "string" ? opts.compressionFormat : "deflate-raw";
-				this.compressionFormat = fmt;
-				this.encodeData = [fmt, async (data) => await compress$1(data, fmt, "string")];
-				this.decodeData = [fmt, async (data) => await decompress$1(data, fmt, "string")];
-			}
-			this.engine.setDataStoreOptions({
-				id: this.id,
-				encodeData: this.encodeData,
-				decodeData: this.decodeData
-			});
-		}
-		/**
-		* Loads the data saved in persistent storage into the in-memory cache and also returns a copy of it.  
-		* Automatically populates persistent storage with default data if it doesn't contain any data yet.  
-		* Also runs all necessary migration functions if the data format has changed since the last time the data was saved.
-		*/
-		async loadData() {
-			try {
-				if (this.firstInit) {
-					this.firstInit = false;
-					const dsVer = Number(await this.engine.getValue("__ds_fmt_ver", 0));
-					const oldData = await this.engine.getValue(`_uucfg-${this.id}`, null);
-					if (oldData) {
-						const oldVer = Number(await this.engine.getValue(`_uucfgver-${this.id}`, NaN));
-						const oldEnc = await this.engine.getValue(`_uucfgenc-${this.id}`, null);
-						const promises = [];
-						const migrateFmt = (oldKey, newKey, value) => {
-							promises.push(this.engine.setValue(newKey, value));
-							promises.push(this.engine.deleteValue(oldKey));
-						};
-						migrateFmt(`_uucfg-${this.id}`, `${this.keyPrefix}${this.id}-dat`, oldData);
-						if (!isNaN(oldVer)) migrateFmt(`_uucfgver-${this.id}`, `${this.keyPrefix}${this.id}-ver`, oldVer);
-						if (typeof oldEnc === "boolean" || oldEnc === "true" || oldEnc === "false" || typeof oldEnc === "number" || oldEnc === "0" || oldEnc === "1") migrateFmt(`_uucfgenc-${this.id}`, `${this.keyPrefix}${this.id}-enf`, [
-							0,
-							"0",
-							true,
-							"true"
-						].includes(oldEnc) ? this.compressionFormat ?? null : null);
-						else {
-							promises.push(this.engine.setValue(`${this.keyPrefix}${this.id}-enf`, this.compressionFormat));
-							promises.push(this.engine.deleteValue(`_uucfgenc-${this.id}`));
-						}
-						await Promise.allSettled(promises);
-					}
-					if (isNaN(dsVer) || dsVer < dsFmtVer$1) await this.engine.setValue("__ds_fmt_ver", dsFmtVer$1);
-				}
-				if (this.migrateIds.length > 0) {
-					await this.migrateId(this.migrateIds);
-					this.migrateIds = [];
-				}
-				const storedDataRaw = await this.engine.getValue(`${this.keyPrefix}${this.id}-dat`, null);
-				const storedFmtVer = Number(await this.engine.getValue(`${this.keyPrefix}${this.id}-ver`, NaN));
-				if (typeof storedDataRaw !== "string" && typeof storedDataRaw !== "object" || storedDataRaw === null || isNaN(storedFmtVer)) {
-					await this.saveDefaultData(false);
-					const data = this.engine.deepCopy(this.defaultData);
-					this.emitEvent("loadData", data);
-					return data;
-				}
-				const storedData = storedDataRaw ?? JSON.stringify(this.defaultData);
-				const encodingFmt = String(await this.engine.getValue(`${this.keyPrefix}${this.id}-enf`, null));
-				const isEncoded = encodingFmt !== "null" && encodingFmt !== "false" && encodingFmt !== "0" && encodingFmt !== "" && encodingFmt !== null;
-				let parsed = typeof storedData === "string" ? await this.engine.deserializeData(storedData, isEncoded) : storedData;
-				if (storedFmtVer < this.formatVersion && this.migrations) parsed = await this.runMigrations(parsed, storedFmtVer);
-				const result = this.memoryCache ? this.cachedData = this.engine.deepCopy(parsed) : this.engine.deepCopy(parsed);
-				this.emitEvent("loadData", result);
-				return result;
-			} catch (err) {
-				const error = err instanceof Error ? err : new Error(String(err));
-				console.warn("Error while parsing JSON data, resetting it to the default value.", err);
-				this.emitEvent("error", error);
-				await this.saveDefaultData();
-				return this.defaultData;
-			}
-		}
-		/**
-		* Returns a copy of the data from the in-memory cache.  
-		* Use {@linkcode loadData()} to get fresh data from persistent storage (usually not necessary since the cache should always exactly reflect persistent storage).  
-		* ⚠️ Only available when `memoryCache` is `true` (default). When set to `false`, this produces a type and runtime error - use {@linkcode loadData()} instead.
-		*/
-		getData() {
-			if (!this.memoryCache) throw new DatedError$1("In-memory cache is disabled for this DataStore instance, so getData() can't be used. Please use loadData() instead.");
-			return this.engine.deepCopy(this.cachedData);
-		}
-		/** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
-		setData(data) {
-			const dataCopy = this.engine.deepCopy(data);
-			if (this.memoryCache) {
-				this.cachedData = data;
-				this.emitEvent("updateDataSync", dataCopy);
-			}
-			return new Promise(async (resolve) => {
-				const results = await Promise.allSettled([
-					this.engine.setValue(`${this.keyPrefix}${this.id}-dat`, await this.engine.serializeData(data, this.encodingEnabled())),
-					this.engine.setValue(`${this.keyPrefix}${this.id}-ver`, this.formatVersion),
-					this.engine.setValue(`${this.keyPrefix}${this.id}-enf`, this.compressionFormat)
-				]);
-				if (results.every((r) => r.status === "fulfilled")) this.emitEvent("updateData", dataCopy);
-				else {
-					const error = /* @__PURE__ */ new Error("Error while saving data to persistent storage: " + results.map((r) => r.status === "rejected" ? r.reason : null).filter(Boolean).join("; "));
-					console.error(error);
-					this.emitEvent("error", error);
-				}
-				resolve();
-			});
-		}
-		/**
-		* Saves the default data passed in the constructor synchronously to the in-memory cache and asynchronously to persistent storage.
-		* @param emitEvent Whether to emit the `setDefaultData` event - set to `false` to prevent event emission (used internally during initial population in {@linkcode loadData()})
-		*/
-		async saveDefaultData(emitEvent = true) {
-			if (this.memoryCache) this.cachedData = this.defaultData;
-			const results = await Promise.allSettled([
-				this.engine.setValue(`${this.keyPrefix}${this.id}-dat`, await this.engine.serializeData(this.defaultData, this.encodingEnabled())),
-				this.engine.setValue(`${this.keyPrefix}${this.id}-ver`, this.formatVersion),
-				this.engine.setValue(`${this.keyPrefix}${this.id}-enf`, this.compressionFormat)
-			]);
-			if (results.every((r) => r.status === "fulfilled")) emitEvent && this.emitEvent("setDefaultData", this.defaultData);
-			else {
-				const error = /* @__PURE__ */ new Error("Error while saving default data to persistent storage: " + results.map((r) => r.status === "rejected" ? r.reason : null).filter(Boolean).join("; "));
-				console.error(error);
-				this.emitEvent("error", error);
-			}
-		}
-		/**
-		* Call this method to clear all persistently stored data associated with this DataStore instance, including the storage container (if supported by the DataStoreEngine).  
-		* The in-memory cache will be left untouched, so you may still access the data with {@linkcode getData()}  
-		* Calling {@linkcode loadData()} or {@linkcode setData()} after this method was called will recreate persistent storage with the cached or default data.
-		*/
-		async deleteData() {
-			var _a, _b;
-			await Promise.allSettled([
-				this.engine.deleteValue(`${this.keyPrefix}${this.id}-dat`),
-				this.engine.deleteValue(`${this.keyPrefix}${this.id}-ver`),
-				this.engine.deleteValue(`${this.keyPrefix}${this.id}-enf`)
-			]);
-			await ((_b = (_a = this.engine).deleteStorage) == null ? void 0 : _b.call(_a));
-			this.emitEvent("deleteData");
-		}
-		/** Returns whether encoding and decoding are enabled for this DataStore instance */
-		encodingEnabled() {
-			return Boolean(this.encodeData && this.decodeData) && this.compressionFormat !== null || Boolean(this.compressionFormat);
-		}
-		/**
-		* Runs all necessary migration functions consecutively and saves the result to the in-memory cache and persistent storage and also returns it.  
-		* This method is automatically called by {@linkcode loadData()} if the data format has changed since the last time the data was saved.  
-		* Though calling this method manually is not necessary, it can be useful if you want to run migrations for special occasions like a user importing potentially outdated data that has been previously exported.  
-		*   
-		* If one of the migrations fails, the data will be reset to the default value if `resetOnError` is set to `true` (default). Otherwise, an error will be thrown and no data will be saved.
-		*/
-		async runMigrations(oldData, oldFmtVer, resetOnError = true) {
-			if (!this.migrations) return oldData;
-			let newData = oldData;
-			const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
-			let lastFmtVer = oldFmtVer;
-			for (let i = 0; i < sortedMigrations.length; i++) {
-				const [fmtVer, migrationFunc] = sortedMigrations[i];
-				const ver = Number(fmtVer);
-				if (oldFmtVer < this.formatVersion && oldFmtVer < ver) try {
-					const migRes = migrationFunc(newData);
-					newData = migRes instanceof Promise ? await migRes : migRes;
-					lastFmtVer = oldFmtVer = ver;
-					const isFinal = ver >= this.formatVersion || i === sortedMigrations.length - 1;
-					this.emitEvent("migrateData", ver, newData, isFinal);
-				} catch (err) {
-					const migError = new MigrationError$1(`Error while running migration function for format version '${fmtVer}'`, { cause: err });
-					this.emitEvent("migrationError", ver, migError);
-					this.emitEvent("error", migError);
-					if (!resetOnError) throw migError;
-					await this.saveDefaultData();
-					return this.engine.deepCopy(this.defaultData);
-				}
-			}
-			await Promise.allSettled([
-				this.engine.setValue(`${this.keyPrefix}${this.id}-dat`, await this.engine.serializeData(newData, this.encodingEnabled())),
-				this.engine.setValue(`${this.keyPrefix}${this.id}-ver`, lastFmtVer),
-				this.engine.setValue(`${this.keyPrefix}${this.id}-enf`, this.compressionFormat)
-			]);
-			const result = this.memoryCache ? this.cachedData = this.engine.deepCopy(newData) : this.engine.deepCopy(newData);
-			this.emitEvent("updateData", result);
-			return result;
-		}
-		/**
-		* Tries to migrate the currently saved persistent data from one or more old IDs to the ID set in the constructor.  
-		* If no data exist for the old ID(s), nothing will be done, but some time may still pass trying to fetch the non-existent data.
-		*/
-		async migrateId(oldIds) {
-			const ids = Array.isArray(oldIds) ? oldIds : [oldIds];
-			await Promise.all(ids.map(async (id) => {
-				const [data, fmtVer, isEncoded] = await (async () => {
-					const [d, f, e] = await Promise.all([
-						this.engine.getValue(`${this.keyPrefix}${id}-dat`, JSON.stringify(this.defaultData)),
-						this.engine.getValue(`${this.keyPrefix}${id}-ver`, NaN),
-						this.engine.getValue(`${this.keyPrefix}${id}-enf`, null)
-					]);
-					return [
-						d,
-						Number(f),
-						Boolean(e) && String(e) !== "null"
-					];
-				})();
-				if (data === void 0 || isNaN(fmtVer)) return;
-				const parsed = await this.engine.deserializeData(data, isEncoded);
-				await Promise.allSettled([
-					this.engine.setValue(`${this.keyPrefix}${this.id}-dat`, await this.engine.serializeData(parsed, this.encodingEnabled())),
-					this.engine.setValue(`${this.keyPrefix}${this.id}-ver`, fmtVer),
-					this.engine.setValue(`${this.keyPrefix}${this.id}-enf`, this.compressionFormat),
-					this.engine.deleteValue(`${this.keyPrefix}${id}-dat`),
-					this.engine.deleteValue(`${this.keyPrefix}${id}-ver`),
-					this.engine.deleteValue(`${this.keyPrefix}${id}-enf`)
-				]);
-				this.emitEvent("migrateId", id, this.id);
-			}));
-		}
-	};
-	var DataStoreEngine$1 = class {
-		dataStoreOptions;
-		constructor(options) {
-			if (options) this.dataStoreOptions = options;
-		}
-		/** Called by DataStore on creation, to pass its options. Only call this if you are using this instance standalone! */
-		setDataStoreOptions(dataStoreOptions) {
-			this.dataStoreOptions = dataStoreOptions;
-		}
-		/** Serializes the given object to a string, optionally encoded with `options.encodeData` if {@linkcode useEncoding} is not set to false and the `encodeData` and `decodeData` options are set */
-		async serializeData(data, useEncoding) {
-			var _a, _b, _c, _d, _e;
-			this.ensureDataStoreOptions();
-			const stringData = JSON.stringify(data);
-			if (!useEncoding || !((_a = this.dataStoreOptions) == null ? void 0 : _a.encodeData) || !((_b = this.dataStoreOptions) == null ? void 0 : _b.decodeData)) return stringData;
-			const encRes = (_e = (_d = (_c = this.dataStoreOptions) == null ? void 0 : _c.encodeData) == null ? void 0 : _d[1]) == null ? void 0 : _e.call(_d, stringData);
-			if (encRes instanceof Promise) return await encRes;
-			return encRes;
-		}
-		/** Deserializes the given string to a JSON object, optionally decoded with `options.decodeData` if {@linkcode useEncoding} is set to true */
-		async deserializeData(data, useEncoding) {
-			var _a, _b, _c;
-			this.ensureDataStoreOptions();
-			let decRes = ((_a = this.dataStoreOptions) == null ? void 0 : _a.decodeData) && useEncoding ? (_c = (_b = this.dataStoreOptions.decodeData) == null ? void 0 : _b[1]) == null ? void 0 : _c.call(_b, data) : void 0;
-			if (decRes instanceof Promise) decRes = await decRes;
-			return JSON.parse(decRes ?? data);
-		}
-		/** Throws an error if the {@linkcode DataStoreOptions} are not set or invalid. Call in every method where {@linkcode DataStoreEngineDSOptions} needs to be present. */
-		ensureDataStoreOptions() {
-			if (!this.dataStoreOptions) throw new DatedError$1("DataStoreEngine must be initialized with DataStore options before use. If you are using this instance standalone, set them in the constructor or call `setDataStoreOptions()` with the DataStore options.");
-			if (!this.dataStoreOptions.id) throw new DatedError$1("DataStoreEngine must be initialized with a valid DataStore ID");
-		}
-		/**
-		* Copies a JSON-compatible object and loses all its internal references in the process.  
-		* Uses [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone) if available, otherwise falls back to `JSON.parse(JSON.stringify(obj))`.
-		*/
-		deepCopy(obj) {
-			try {
-				if ("structuredClone" in globalThis) return structuredClone(obj);
-			} catch {}
-			return JSON.parse(JSON.stringify(obj));
-		}
-	};
-	var BrowserStorageEngine$1 = class extends DataStoreEngine$1 {
-		options;
-		/**
-		* Creates an instance of `BrowserStorageEngine`.  
-		*   
-		* - ⚠️ Requires a DOM environment  
-		* - ⚠️ Don't reuse engine instances, always create a new one for each {@linkcode DataStore} instance
-		*/
-		constructor(options) {
-			super(options == null ? void 0 : options.dataStoreOptions);
-			this.options = {
-				type: "localStorage",
-				...options
-			};
-		}
-		/** Fetches a value from persistent storage */
-		async getValue(name, defaultValue) {
-			const val = this.options.type === "localStorage" ? globalThis.localStorage.getItem(name) : globalThis.sessionStorage.getItem(name);
-			return typeof val === "undefined" ? defaultValue : val;
-		}
-		/** Sets a value in persistent storage */
-		async setValue(name, value) {
-			if (this.options.type === "localStorage") globalThis.localStorage.setItem(name, String(value));
-			else globalThis.sessionStorage.setItem(name, String(value));
-		}
-		/** Deletes a value from persistent storage */
-		async deleteValue(name) {
-			if (this.options.type === "localStorage") globalThis.localStorage.removeItem(name);
-			else globalThis.sessionStorage.removeItem(name);
-		}
-	};
-	var fs$1;
-	var FileStorageEngine$1 = class extends DataStoreEngine$1 {
-		options;
-		fileAccessQueue = Promise.resolve();
-		/**
-		* Creates an instance of `FileStorageEngine`.  
-		*   
-		* - ⚠️ Requires Node.js or Deno with Node compatibility (v1.31+)  
-		* - ⚠️ Don't reuse engine instances, always create a new one for each {@linkcode DataStore} instance
-		*/
-		constructor(options) {
-			super(options == null ? void 0 : options.dataStoreOptions);
-			this.options = {
-				filePath: (id) => `.ds-${id}`,
-				...options
-			};
-		}
-		/** Reads the file contents */
-		async readFile() {
-			var _a, _b, _c, _d;
-			this.ensureDataStoreOptions();
-			try {
-				if (!fs$1) fs$1 = (_a = await Promise.resolve().then(() => /* @__PURE__ */ __toESM(require___vite_browser_external(), 1))) == null ? void 0 : _a.default;
-				if (!fs$1) throw new ScriptContextError$1("FileStorageEngine requires Node.js or Deno with Node compatibility (v1.31+)", { cause: new DatedError$1("'node:fs/promises' module not available") });
-				const path = typeof this.options.filePath === "string" ? this.options.filePath : this.options.filePath(this.dataStoreOptions.id, this.dataStoreOptions);
-				const data = await fs$1.readFile(path, "utf-8");
-				return data ? JSON.parse(await ((_d = (_c = (_b = this.dataStoreOptions) == null ? void 0 : _b.decodeData) == null ? void 0 : _c[1]) == null ? void 0 : _d.call(_c, data)) ?? data) : void 0;
-			} catch {
-				return;
-			}
-		}
-		/** Overwrites the file contents */
-		async writeFile(data) {
-			var _a, _b, _c, _d;
-			this.ensureDataStoreOptions();
-			try {
-				if (!fs$1) fs$1 = (_a = await Promise.resolve().then(() => /* @__PURE__ */ __toESM(require___vite_browser_external(), 1))) == null ? void 0 : _a.default;
-				if (!fs$1) throw new ScriptContextError$1("FileStorageEngine requires Node.js or Deno with Node compatibility (v1.31+)", { cause: new DatedError$1("'node:fs/promises' module not available") });
-				const path = typeof this.options.filePath === "string" ? this.options.filePath : this.options.filePath(this.dataStoreOptions.id, this.dataStoreOptions);
-				await fs$1.mkdir(path.slice(0, path.lastIndexOf(path.includes("/") ? "/" : "\\")), { recursive: true });
-				await fs$1.writeFile(path, await ((_d = (_c = (_b = this.dataStoreOptions) == null ? void 0 : _b.encodeData) == null ? void 0 : _c[1]) == null ? void 0 : _d.call(_c, JSON.stringify(data))) ?? JSON.stringify(data, void 0, 2), "utf-8");
-			} catch (err) {
-				console.error("Error writing file:", err);
-			}
-		}
-		/** Fetches a value from persistent storage */
-		async getValue(name, defaultValue) {
-			const data = await this.readFile();
-			if (!data) return defaultValue;
-			const value = data == null ? void 0 : data[name];
-			if (typeof value === "undefined") return defaultValue;
-			if (typeof defaultValue === "string") {
-				if (typeof value === "object" && value !== null) return JSON.stringify(value);
-				if (typeof value === "string") return value;
-				return String(value);
-			}
-			if (typeof value === "string") try {
-				return JSON.parse(value);
-			} catch {
-				return defaultValue;
-			}
-			return value;
-		}
-		/** Sets a value in persistent storage */
-		async setValue(name, value) {
-			this.fileAccessQueue = this.fileAccessQueue.then(async () => {
-				let data = await this.readFile();
-				if (!data) data = {};
-				let storeVal = value;
-				if (typeof value === "string") try {
-					if (value.startsWith("{") || value.startsWith("[")) {
-						const parsed = JSON.parse(value);
-						if (typeof parsed === "object" && parsed !== null) storeVal = parsed;
-					}
-				} catch {}
-				data[name] = storeVal;
-				await this.writeFile(data);
-			}).catch((err) => {
-				console.error("Error in setValue:", err);
-				throw err;
-			});
-			await this.fileAccessQueue.catch(() => {});
-		}
-		/** Deletes a value from persistent storage */
-		async deleteValue(name) {
-			this.fileAccessQueue = this.fileAccessQueue.then(async () => {
-				const data = await this.readFile();
-				if (!data) return;
-				delete data[name];
-				await this.writeFile(data);
-			}).catch((err) => {
-				console.error("Error in deleteValue:", err);
-				throw err;
-			});
-			await this.fileAccessQueue.catch(() => {});
-		}
-		/** Deletes the file that contains the data of this DataStore. */
-		async deleteStorage() {
-			var _a;
-			this.ensureDataStoreOptions();
-			try {
-				if (!fs$1) fs$1 = (_a = await Promise.resolve().then(() => /* @__PURE__ */ __toESM(require___vite_browser_external(), 1))) == null ? void 0 : _a.default;
-				if (!fs$1) throw new ScriptContextError$1("FileStorageEngine requires Node.js or Deno with Node compatibility (v1.31+)", { cause: new DatedError$1("'node:fs/promises' module not available") });
-				const path = typeof this.options.filePath === "string" ? this.options.filePath : this.options.filePath(this.dataStoreOptions.id, this.dataStoreOptions);
-				return await fs$1.unlink(path);
-			} catch (err) {
-				console.error("Error deleting file:", err);
-			}
-		}
-	};
-	var IndexedDBStorageEngine$1 = class extends DataStoreEngine$1 {
-		options;
-		/** Name of the IndexedDB object store that holds the key-value pairs */
-		storeName;
-		/** Cached handle to the opened database, populated lazily on the first call to {@linkcode getValue}, {@linkcode setValue} or {@linkcode deleteValue} */
-		db;
-		/** Resolves once the database has finished opening, so concurrent calls don't open it more than once */
-		dbOpenPromise;
-		/**
-		* Creates an instance of `IndexedDBStorageEngine`, a {@linkcode DataStore} storage engine that uses the [IndexedDB API.](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)  
-		* This allows even non-JSON-serializable data to be stored, like a [File](https://developer.mozilla.org/en-US/docs/Web/API/File) or [Blob.](https://developer.mozilla.org/en-US/docs/Web/API/Blob)  
-		*   
-		* - ⚠️ Requires an environment with access to the [IndexedDB API.](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)  
-		* - ⚠️ Don't reuse engine instances, always create a new one for each instance of stored data (or {@linkcode DataStore} instance).
-		*/
-		constructor(options) {
-			super(options == null ? void 0 : options.dataStoreOptions);
-			this.options = {
-				dbStoreName: "keyval",
-				dbPrefix: "__ds-",
-				...options
-			};
-			this.storeName = this.options.dbStoreName;
-		}
-		/** Fetches a value from persistent storage. */
-		async getValue(name, defaultValue) {
-			const db = await this.openDb();
-			const val = await new Promise((resolve, reject) => {
-				const req = db.transaction(this.storeName, "readonly").objectStore(this.storeName).get(name);
-				req.addEventListener("success", () => resolve(req.result));
-				req.addEventListener("error", () => reject(req.error));
-			});
-			return typeof val === "undefined" ? defaultValue : val;
-		}
-		/** Sets a value in persistent storage. */
-		async setValue(name, value) {
-			const db = await this.openDb();
-			await new Promise((resolve, reject) => {
-				const tx = db.transaction(this.storeName, "readwrite");
-				tx.objectStore(this.storeName).put(value, name);
-				tx.addEventListener("complete", () => resolve());
-				tx.addEventListener("error", () => reject(tx.error));
-				tx.addEventListener("abort", () => reject(tx.error));
-			});
-		}
-		/** Deletes a value from persistent storage. */
-		async deleteValue(name) {
-			const db = await this.openDb();
-			await new Promise((resolve, reject) => {
-				const tx = db.transaction(this.storeName, "readwrite");
-				tx.objectStore(this.storeName).delete(name);
-				tx.addEventListener("complete", () => resolve());
-				tx.addEventListener("error", () => reject(tx.error));
-				tx.addEventListener("abort", () => reject(tx.error));
-			});
-		}
-		/** Lazily opens the {@linkcode IDBDatabase} for this DataStore's ID, or returns the cached instance from a previous call. */
-		openDb() {
-			this.ensureDataStoreOptions();
-			if (this.db) return Promise.resolve(this.db);
-			if (this.dbOpenPromise) return this.dbOpenPromise;
-			if (typeof indexedDB === "undefined") throw new ScriptContextError$1("IndexedDBStorageEngine requires a DOM environment with access to the IndexedDB API", { cause: new DatedError$1("'indexedDB' is not available in the global scope") });
-			return this.dbOpenPromise = new Promise((resolve, reject) => {
-				const req = indexedDB.open(`${this.options.dbPrefix}${this.dataStoreOptions.id}`);
-				req.addEventListener("upgradeneeded", () => {
-					req.result.createObjectStore(this.storeName);
-				});
-				req.addEventListener("success", () => {
-					this.db = req.result;
-					resolve(req.result);
-				});
-				req.addEventListener("error", () => reject(req.error));
-			});
-		}
-	};
-	var DataStoreSerializer$1 = class _DataStoreSerializer extends PicoEmitter$1 {
-		stores;
-		options;
-		/** Set of IDs of loaded stores. Is kept in sync via {@linkcode bindStoreEvents()}. */
-		loadedStores = /* @__PURE__ */ new Set();
-		/** Unsubscribe functions for the event listeners bound to each contained {@linkcode DataStore} instance, keyed by store ID. */
-		storeEventUnsubs = /* @__PURE__ */ new Map();
-		constructor(stores, options = {}) {
-			super(options == null ? void 0 : options.picoEmitterOptions);
-			if (!crypto || !crypto.subtle) throw new ScriptContextError$1("DataStoreSerializer has to run in a secure context (HTTPS) or in another environment that implements the subtleCrypto API!");
-			this.stores = stores;
-			this.options = {
-				addChecksum: true,
-				ensureIntegrity: true,
-				remapIds: {},
-				stringifyData: true,
-				picoEmitterOptions: {},
-				...options
-			};
-			for (const store of this.stores) this.bindStoreEvents(store);
-		}
-		/**
-		* Subscribes to the relevant events of a single {@linkcode DataStore} instance and forwards them as this instance's own events, so that they're also emitted when a contained store is loaded, reset or deleted directly through its own instance instead of through this serializer.
-		*/
-		bindStoreEvents(store) {
-			this.storeEventUnsubs.set(store.id, [
-				store.on("loadData", () => {
-					this.loadedStores.add(store.id);
-					this.emitEvent("loadedStore", store);
-					if (this.stores.every((s) => this.loadedStores.has(s.id))) this.emitEvent("loadedAllStores");
-				}),
-				store.on("setDefaultData", () => this.emitEvent("resetStores", [store])),
-				store.on("deleteData", () => {
-					this.loadedStores.delete(store.id);
-					this.emitEvent("deletedStores", [store]);
-				})
-			]);
-		}
-		/** Unsubscribes from the events of all currently bound {@linkcode DataStore} instances. */
-		unbindStoreEvents() {
-			for (const unsubs of this.storeEventUnsubs.values()) for (const unsub of unsubs) unsub();
-			this.storeEventUnsubs.clear();
-		}
-		/**
-		* Calculates the checksum of a string or {@linkcode DataStoreData} object. By default, this uses {@linkcode computeHash()} with SHA-256, digested as a hex string.  
-		* Override this in a subclass if a custom checksum method is needed for some reason.
-		*/
-		async calcChecksum(input, algorithm = "SHA-256") {
-			try {
-				return computeHash$1(typeof input === "string" ? input : JSON.stringify(input), algorithm);
-			} catch (err) {
-				throw new Error(`Failed to calculate checksum: ${err.message}`, { cause: err });
-			}
-		}
-		/**
-		* Serializes only a subset of the {@linkcode DataStore}s into a string.  
-		* @param stores An array of store IDs or functions that take a store ID and return a boolean
-		* @param useEncoding Whether to encode the data using each DataStore's `encodeData()` method
-		* @param stringified Whether to return the result as a string or as an array of `SerializedDataStore` objects
-		*/
-		async serializePartial(stores, useEncoding = true, stringified = true) {
-			var _a;
-			const serData = [];
-			const filteredStores = this.stores.filter((s) => typeof stores === "function" ? stores(s.id) : stores.includes(s.id));
-			for (const storeInst of filteredStores) {
-				const encoded = Boolean(useEncoding && storeInst.encodingEnabled() && ((_a = storeInst.encodeData) == null ? void 0 : _a[1]));
-				const rawData = storeInst.memoryCache ? storeInst.getData() : await storeInst.loadData();
-				const data = encoded ? await storeInst.encodeData[1](JSON.stringify(rawData)) : this.options.stringifyData ? JSON.stringify(rawData) : rawData;
-				serData.push({
-					id: storeInst.id,
-					data,
-					formatVersion: storeInst.formatVersion,
-					encoded,
-					checksum: this.options.addChecksum ? await this.calcChecksum(data) : void 0
-				});
-			}
-			return stringified ? JSON.stringify(serData) : serData;
-		}
-		/**
-		* Serializes the data stores into a string.  
-		* @param useEncoding Whether to encode the data using each {@linkcode DataStore}'s `encodeData()` method
-		* @param stringified Whether to return the result as a string or as an array of `SerializedDataStore` objects
-		*/
-		async serialize(useEncoding = true, stringified = true) {
-			return this.serializePartial(this.stores.map((s) => s.id), useEncoding, stringified);
-		}
-		/**
-		* Deserializes the data exported via {@linkcode serialize()} and imports only a subset into the DataStore instances.  
-		* Also triggers the migration process if the data format has changed.
-		*/
-		async deserializePartial(stores, data) {
-			const deserStores = typeof data === "string" ? JSON.parse(data) : data;
-			if (!Array.isArray(deserStores) || !deserStores.every(_DataStoreSerializer.isSerializedDataStoreObj)) throw new TypeError("Invalid serialized data format! Expected an array of SerializedDataStore objects.");
-			const resolveStoreId = (id) => {
-				var _a;
-				return ((_a = Object.entries(this.options.remapIds).find(([, v]) => v.includes(id))) == null ? void 0 : _a[0]) ?? id;
-			};
-			for (const storeData of deserStores) {
-				const curStoreID = resolveStoreId(storeData.id);
-				if (!(typeof stores === "function" ? stores(curStoreID) : stores.includes(curStoreID))) continue;
-				const storeInst = this.stores.find((s) => s.id === curStoreID);
-				if (!storeInst) throw new DatedError$1(`Can't deserialize data because no DataStore instance with the ID "${curStoreID}" was found! Make sure to provide it in the DataStoreSerializer constructor.`);
-				if (this.options.ensureIntegrity && typeof storeData.checksum === "string") {
-					const checksum = await this.calcChecksum(storeData.data);
-					if (checksum !== storeData.checksum) throw new ChecksumMismatchError$1(`Checksum mismatch for DataStore with ID "${storeData.id}"!
-Expected: ${storeData.checksum}
-Has: ${checksum}`);
-				}
-				const decodedData = storeData.encoded && storeInst.encodingEnabled() ? await storeInst.decodeData[1](typeof storeData.data === "string" ? storeData.data : JSON.stringify(storeData.data)) : storeData.data;
-				if (storeData.formatVersion && !isNaN(Number(storeData.formatVersion)) && Number(storeData.formatVersion) < storeInst.formatVersion) await storeInst.runMigrations(typeof decodedData === "string" ? JSON.parse(decodedData) : decodedData, Number(storeData.formatVersion), false);
-				else await storeInst.setData(typeof decodedData === "string" ? JSON.parse(decodedData) : decodedData);
-			}
-		}
-		/**
-		* Deserializes the data exported via {@linkcode serialize()} and imports the data into all matching {@linkcode DataStore} instances.  
-		* Also triggers the migration process if the data format has changed.
-		*/
-		async deserialize(data) {
-			return this.deserializePartial(this.stores.map((s) => s.id), data);
-		}
-		/**
-		* Loads the persistent data of the {@linkcode DataStore} instances into the in-memory cache.  
-		* Also triggers the migration process if the data format has changed.
-		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be loaded
-		* @returns Returns a PromiseSettledResult array with the results of each DataStore instance in the format `{ id: string, data: object }`
-		*/
-		async loadStoresData(stores) {
-			return Promise.allSettled(this.getStoresFiltered(stores).map(async (store) => ({
-				id: store.id,
-				data: await store.loadData()
-			})));
-		}
-		/**
-		* Resets the persistent and in-memory data of the {@linkcode DataStore} instances to their default values.
-		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be affected
-		*/
-		async resetStoresData(stores) {
-			return Promise.allSettled(this.getStoresFiltered(stores).map((store) => store.saveDefaultData()));
-		}
-		/**
-		* Deletes the persistent data of the {@linkcode DataStore} instances.
-		* Leaves the in-memory data untouched.
-		* @param stores An array of store IDs or a function that takes the store IDs and returns a boolean - if omitted, all stores will be affected
-		*/
-		async deleteStoresData(stores) {
-			return Promise.allSettled(this.getStoresFiltered(stores).map((store) => store.deleteData()));
-		}
-		/** Returns an array of the {@linkcode DataStore} instances managed by this DataStoreSerializer. */
-		getStores() {
-			return this.stores;
-		}
-		/**
-		* Overwrites this DataStoreSerializer instance's stores.
-		* @param stores Array of new stores for this instance to manage.
-		* @param loadData Set to true to call {@linkcode DataStoreSerializer.loadStoresData()} for the overwritten stores before resolving.
-		*/
-		async setStores(stores, loadData = false) {
-			this.unbindStoreEvents();
-			this.stores = stores;
-			this.loadedStores = /* @__PURE__ */ new Set();
-			for (const store of this.stores) this.bindStoreEvents(store);
-			if (loadData) await this.loadStoresData();
-		}
-		/** Returns the {@linkcode DataStore} instances whose IDs match the provided array or function. */
-		getStoresFiltered(stores) {
-			return this.stores.filter((s) => typeof stores === "undefined" ? true : Array.isArray(stores) ? stores.includes(s.id) : stores(s.id));
-		}
-		/** Checks if a given value is an array of SerializedDataStore objects. */
-		static isSerializedDataStoreObjArray(obj) {
-			return Array.isArray(obj) && obj.every((o) => typeof o === "object" && o !== null && "id" in o && "data" in o && "formatVersion" in o && "encoded" in o);
-		}
-		/** Checks if a given value is a SerializedDataStore object. */
-		static isSerializedDataStoreObj(obj) {
-			return typeof obj === "object" && obj !== null && "id" in obj && "data" in obj && "formatVersion" in obj && "encoded" in obj;
-		}
-	};
-	var Debouncer$1 = class extends NanoEmitter$2 {
-		/**
-		* Creates a new debouncer with the specified timeout and edge type.
-		* @param timeout Timeout in milliseconds between letting through calls - defaults to 200
-		* @param type The edge type to use for the debouncer - see {@linkcode DebouncerType} for details or [the documentation for an explanation and diagram](https://github.com/Sv443-Network/UserUtils/blob/main/docs.md#debouncer) - defaults to "immediate"
-		*/
-		constructor(timeout = 200, type = "immediate", nanoEmitterOptions) {
-			super(nanoEmitterOptions);
-			this.timeout = timeout;
-			this.type = type;
-		}
-		timeout;
-		type;
-		/** All registered listener functions and the time they were attached */
-		listeners = [];
-		/** The currently active timeout */
-		activeTimeout;
-		/** The latest queued call */
-		queuedCall;
-		/** Adds a listener function that will be called on timeout */
-		addListener(fn) {
-			this.listeners.push(fn);
-		}
-		/** Removes the listener with the specified function reference */
-		removeListener(fn) {
-			const idx = this.listeners.findIndex((l) => l === fn);
-			idx !== -1 && this.listeners.splice(idx, 1);
-		}
-		/** Removes all listeners */
-		removeAllListeners() {
-			this.listeners = [];
-		}
-		/** Returns all registered listeners */
-		getListeners() {
-			return this.listeners;
-		}
-		/** Sets the timeout for the debouncer */
-		setTimeout(timeout) {
-			this.emitEvent("change", this.timeout = timeout, this.type);
-		}
-		/** Returns the current timeout */
-		getTimeout() {
-			return this.timeout;
-		}
-		/** Whether the timeout is currently active, meaning any latest call to the {@linkcode call()} method will be queued */
-		isTimeoutActive() {
-			return typeof this.activeTimeout !== "undefined";
-		}
-		/** Sets the edge type for the debouncer */
-		setType(type) {
-			this.emitEvent("change", this.timeout, this.type = type);
-		}
-		/** Returns the current edge type */
-		getType() {
-			return this.type;
-		}
-		/** Use this to call the debouncer with the specified arguments that will be passed to all listener functions registered with {@linkcode addListener()} */
-		call(...args) {
-			const cl = (...a) => {
-				this.queuedCall = void 0;
-				this.emitEvent("call", ...a);
-				this.listeners.forEach((l) => l.call(this, ...a));
-			};
-			const setRepeatTimeout = () => {
-				this.activeTimeout = setTimeout(() => {
-					if (this.queuedCall) {
-						this.queuedCall();
-						setRepeatTimeout();
-					} else this.activeTimeout = void 0;
-				}, this.timeout);
-			};
-			switch (this.type) {
-				case "immediate":
-					if (typeof this.activeTimeout === "undefined") {
-						cl(...args);
-						setRepeatTimeout();
-					} else this.queuedCall = () => cl(...args);
-					break;
-				case "idle":
-					if (this.activeTimeout) clearTimeout(this.activeTimeout);
-					this.activeTimeout = setTimeout(() => {
-						cl(...args);
-						this.activeTimeout = void 0;
-					}, this.timeout);
-					break;
-				default: throw new TypeError(`Invalid debouncer type: ${this.type}`);
-			}
-		}
-	};
-	function debounce$1(fn, timeout = 200, type = "immediate", nanoEmitterOptions) {
-		const debouncer = new Debouncer$1(timeout, type, nanoEmitterOptions);
-		debouncer.addListener(fn);
-		const func = ((...args) => debouncer.call(...args));
-		func.debouncer = debouncer;
-		return func;
-	}
 	//#endregion
 	//#region node_modules/.pnpm/@sv443-network+userutils@11.0.0/node_modules/@sv443-network/userutils/dist/UserUtils.mjs
 	var UserUtils_exports = /* @__PURE__ */ __exportAll({
@@ -5094,9 +3444,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "84bf1957";
+	var buildNumber$1 = "5e66c62f";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789322093822;
+	var buildTimestamp = 1789323717842;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -5108,7 +3458,7 @@ Has: ${checksum}`);
 	/** Timestamp of when the script was initialized. */
 	var initTime = Date.now();
 	/** Names of platforms by key of {@linkcode host} */
-	var platformNames = pureObj$2({
+	var platformNames = pureObj$1({
 		github: "GitHub",
 		greasyfork: "Greasy Fork",
 		openuserjs: "OpenUserJS"
@@ -5118,7 +3468,7 @@ Has: ${checksum}`);
 	/** Whether sessionStorage is available and working */
 	var sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function" && (() => {
 		try {
-			const key = `_bytm_test_${randomId$1(6, 36, false, true)}`;
+			const key = `_bytm_test_${randomId(6, 36, false, true)}`;
 			sessionStorage.setItem(key, "test");
 			sessionStorage.removeItem(key);
 			return true;
@@ -5132,7 +3482,7 @@ Has: ${checksum}`);
 	*/
 	var defaultLogLevel = LogLevel.Debug;
 	/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
-	var scriptInfo$1 = pureObj$2({
+	var scriptInfo$1 = pureObj$1({
 		name: GM_info.script.name,
 		version: GM_info.script.version,
 		namespace: GM_info.script.namespace
@@ -5149,7 +3499,7 @@ Has: ${checksum}`);
 	/** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
 	function setGlobalProp(key, value) {
 		const win = getUnsafeWindow();
-		if (typeof win.BYTM !== "object") win.BYTM = pureObj$2({});
+		if (typeof win.BYTM !== "object") win.BYTM = pureObj$1({});
 		win.BYTM[key] = value;
 	}
 	//#endregion
@@ -5243,7 +3593,7 @@ Has: ${checksum}`);
 			if (Array.isArray(val)) return `[Array (${val.length}) <${val.map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
 			if (val instanceof Element) return Logger.serializeElement(val);
 			if (typeof val === "function") return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
-			if (val instanceof DatedError$1) return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
+			if (val instanceof DatedError) return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
 			if (val instanceof Error) return `[${val.name}: ${val.message}]`;
 			if (val instanceof Date) return `[Date (@ ${val.toISOString()})]`;
 			if (val instanceof Response) return `[Response ${val.status} (${val.url})]`;
@@ -5267,7 +3617,7 @@ Has: ${checksum}`);
 		static getLogLevel(args) {
 			const minLogLvl = 0, maxLogLvl = 1;
 			const lastArg = args.at(-1);
-			if (typeof lastArg === "number" && lastArg >= 0 && lastArg <= Object.keys(LogLevel).length / 2 - 1) return clamp$1(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+			if (typeof lastArg === "number" && lastArg >= 0 && lastArg <= Object.keys(LogLevel).length / 2 - 1) return clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
 			return LogLevel.Debug;
 		}
 		/** Returns a string representation of all logs, formatted for downloading as a file. */
@@ -5345,7 +3695,7 @@ Has: ${checksum}`);
 	var errorToastsEnabled = false;
 	/** Sets whether generic errors are surfaced as a toast - called by the config init */
 	var setErrorToastsEnabled = (enabled) => void (errorToastsEnabled = enabled);
-	var showErrToast = debounce$1((errName, args) => tryUse("reportError")?.(errName, args), 400);
+	var showErrToast = debounce((errName, args) => tryUse("reportError")?.(errName, args), 400);
 	var loggerOpts = { onError(...args) {
 		if (!errorToastsEnabled) return;
 		showErrToast(args.find((a) => a instanceof Error)?.name ?? "Error", args);
@@ -5364,14 +3714,14 @@ Has: ${checksum}`);
 		Logger.curLogLevel = level;
 	}
 	/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
-	var LyricsError = class extends DatedError$1 {
+	var LyricsError = class extends DatedError {
 		constructor(message, opts) {
 			super(message, opts);
 			this.name = "LyricsError";
 		}
 	};
 	/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
-	var PluginError = class extends DatedError$1 {
+	var PluginError = class extends DatedError {
 		constructor(message, opts) {
 			super(message, opts);
 			this.name = "PluginError";
@@ -5453,7 +3803,7 @@ Has: ${checksum}`);
 	* Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
 	* At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
 	*/
-	var pluginPermissionsStore = new DataStore$1({
+	var pluginPermissionsStore = new DataStore({
 		id: "bytm-plugin-permissions",
 		engine: new GMStorageEngine(),
 		defaultData: {},
@@ -5471,7 +3821,7 @@ Has: ${checksum}`);
 	}
 	/** Returns the permission integers from the {@linkcode pluginPermissionsStore} for the given plugin. */
 	function getPermStorePerms(def) {
-		if (!pluginPermissionsStoreLoaded) throw new DatedError$1(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
+		if (!pluginPermissionsStoreLoaded) throw new DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
 		return pluginPermissionsStore.getData()?.[getPluginKey(def)];
 	}
 	/** Updates the given plugin to the given permissions in memory. Doesn't emit the `pluginsUpdated` broadcast event. */
@@ -5492,7 +3842,7 @@ Has: ${checksum}`);
 	/** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
 	function parseBitSetEnumArray(bitSet, enumRef) {
 		const result = [];
-		for (const [, val] of Object.entries(enumRef)) if ((typeof val === "number" || typeof val === "bigint") && bitSetHas$1(bitSet, val)) result.push(val);
+		for (const [, val] of Object.entries(enumRef)) if ((typeof val === "number" || typeof val === "bigint") && bitSetHas(bitSet, val)) result.push(val);
 		return result;
 	}
 	//#endregion
@@ -6351,7 +4701,7 @@ Has: ${checksum}`);
 	//#endregion
 	//#region src/configSchema.ts
 	/** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
-	var cfgDefaultData = pureObj$2(Object.keys(featDefaults).filter((ftKey) => "default" in featDefaults[ftKey] && featDefaults[ftKey].default !== void 0).reduce((acc, key) => {
+	var cfgDefaultData = pureObj$1(Object.keys(featDefaults).filter((ftKey) => "default" in featDefaults[ftKey] && featDefaults[ftKey].default !== void 0).reduce((acc, key) => {
 		acc[key] = "default" in featDefaults[key] ? featDefaults[key].default : void 0;
 		return acc;
 	}, {}));
@@ -6464,7 +4814,7 @@ Has: ${checksum}`);
 				key: "toastDuration",
 				oldDefault: 3
 			}]);
-			newData.arrowKeySkipBy = clamp$1(newData.arrowKeySkipBy, .5, 30);
+			newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, .5, 30);
 			return newData;
 		},
 		8: (oldData) => {
@@ -6481,10 +4831,10 @@ Has: ${checksum}`);
 			return useNewDefaults(oldData, ["resetEverything"]);
 		},
 		10: (oldData) => {
-			oldData.closeToastsTimeout = clamp$1(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
-			oldData.lyricsCacheMaxSize = clamp$1(oldData.lyricsCacheMaxSize, featDefaults.lyricsCacheMaxSize.min, featDefaults.lyricsCacheMaxSize.max);
+			oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
+			oldData.lyricsCacheMaxSize = clamp(oldData.lyricsCacheMaxSize, featDefaults.lyricsCacheMaxSize.min, featDefaults.lyricsCacheMaxSize.max);
 			oldData.autoCloseToasts = oldData.closeToastsTimeout > 0;
-			oldData.closeToastsTimeout = clamp$1(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
+			oldData.closeToastsTimeout = clamp(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
 			if ("thumbnailOverlayImageFit" in oldData) delete oldData.thumbnailOverlayImageFit;
 			return useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
 				"aboveQueueBtnsSticky",
@@ -6646,12 +4996,12 @@ Has: ${checksum}`);
 	function clampNewRange(config, key) {
 		const val = config[key];
 		const info = featDefaults[key];
-		return clamp$1(val, info.min, "max" in info && typeof info.max === "number" ? info.max : Infinity);
+		return clamp(val, info.min, "max" in info && typeof info.max === "number" ? info.max : Infinity);
 	}
 	/** Clamps the given numerical value using the given numerical feature's `min` and `max` props (see {@linkcode featDefaults}) if they exist. Otherwise returns the given value as-is. */
 	function toClamped(ftKey, newValue) {
 		const ftInf = featDefaults[ftKey];
-		if ("min" in ftInf) return clamp$1(newValue, ftInf.min, "max" in ftInf ? ftInf.max : Infinity);
+		if ("min" in ftInf) return clamp(newValue, ftInf.min, "max" in ftInf ? ftInf.max : Infinity);
 		return newValue;
 	}
 	/**
@@ -6678,8 +5028,8 @@ Has: ${checksum}`);
 	* prompt ({@linkcode "@menu/resetConfig.ts"}) all live elsewhere for exactly this reason.
 	*/
 	/** Emits "changed" whenever the feature config is saved. Bridged onto the site-event bus by {@linkcode "@/configInit.ts"}, so this module doesn't have to depend on it. */
-	var configEvents = new NanoEmitter$2({ publicEmit: false });
-	var configStore = new DataStore$1({
+	var configEvents = new NanoEmitter$1({ publicEmit: false });
+	var configStore = new DataStore({
 		id: "bytm-config",
 		formatVersion: 12,
 		engine: new GMStorageEngine(),
@@ -6796,7 +5146,7 @@ Has: ${checksum}`);
 	}
 	/** Fetches the JSON translations file of the passed locale. */
 	async function fetchTranslationResource(locale) {
-		const res = await fetchAdvanced$1(await getResourceUrl(`trans-${locale}`));
+		const res = await fetchAdvanced(await getResourceUrl(`trans-${locale}`));
 		const bodyTxt = await res.text();
 		getFeature("logHttp") && loggers.translation.log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
 		if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
@@ -8680,10 +7030,10 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	function getSelector(group, id, throws) {
 		const dom = getDomain();
 		if (throws !== false) try {
-			if (typeof staticData?.selectors !== "object") throw new DatedError$1("Static data hasn't been fetched yet.");
+			if (typeof staticData?.selectors !== "object") throw new DatedError("Static data hasn't been fetched yet.");
 			const sel = staticData.selectors?.[group]?.[id];
-			if (!["string", "object"].includes(typeof sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
-			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new DatedError$1(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
+			if (!["string", "object"].includes(typeof sel)) throw new DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
+			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 			return typeof sel === "string" ? sel : sel[dom];
 		} catch (e) {
 			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
@@ -8791,7 +7141,6 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
 		},
 		dependencies: {
-			"@sv443-network/coreutils": "3.8.0",
 			"@sv443-network/userutils": "11.0.0",
 			"compare-versions": "6.1.1",
 			"dompurify": "3.3.3",
@@ -8810,6 +7159,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"@storybook/html": "10.2.19",
 			"@storybook/html-vite": "10.2.19",
 			"@storybook/test": "8.6.15",
+			"@sv443-network/coreutils": "3.8.0",
 			"@types/cors": "2.8.19",
 			"@types/express": "5.0.6",
 			"@types/node": "24.12.0",
@@ -9145,7 +7495,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Fetches a CSS file from the specified resource with a key starting with `css-` */
 	async function fetchCss(key) {
 		try {
-			return await (await fetchAdvanced$1(await getResourceUrl(key))).text() ?? void 0;
+			return await (await fetchAdvanced(await getResourceUrl(key))).text() ?? void 0;
 		} catch (err) {
 			loggers.xhr.error(`Couldn't fetch CSS resource with key '${key}' due to an error:`, err);
 			return;
@@ -9181,7 +7531,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				id: votesRaw.id,
 				likes: votesRaw.likes,
 				dislikes: votesRaw.dislikes,
-				rating: roundFixed$1(votesRaw.rating, 3),
+				rating: roundFixed(votesRaw.rating, 3),
 				timestamp: Date.now()
 			};
 			voteCache.set(votesObj.id, votesObj);
@@ -10837,7 +9187,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	//#endregion
 	//#region src/siteEvents.ts
 	/** EventEmitter instance that is used to detect various changes to the site and userscript */
-	var siteEvents = new NanoEmitter$2({ publicEmit: true });
+	var siteEvents = new NanoEmitter$1({ publicEmit: true });
 	var observers = [];
 	var lastVidId = null;
 	var lastPathname = null;
@@ -10892,7 +9242,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				if (globserversReady) registerFullScreenObs();
 				else window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
 			}
-			createRecurringTask$1({
+			createRecurringTask({
 				timeout: 150,
 				task: runIntervalChecks
 			});
@@ -10902,7 +9252,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					checkVideoIdChange(new URL(target.href).searchParams.get("v"));
 				}).observe(el, { attributeFilter: ["href"] });
 			} });
-			getDomain() === "ytm" && createRecurringTask$1({
+			getDomain() === "ytm" && createRecurringTask({
 				timeout: 250,
 				task: () => checkVideoIdChange()
 			});
@@ -10920,7 +9270,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	function emitSiteEvent(key, ...args) {
 		try {
 			const logEmit = () => {
-				if (siteEventLoggingEnabled) args.length > 0 ? loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural$2("argument", args)}:`, ...args) : loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+				if (siteEventLoggingEnabled) args.length > 0 ? loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${autoPlural$1("argument", args)}:`, ...args) : loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
 			};
 			if (!bytmReady) {
 				const startTs = Date.now();
@@ -11128,9 +9478,9 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	*/
 	async function addStyle(css, ref, transform = (c) => c) {
 		if (!isDomLoaded()) throw new Error("DOM has not finished loading yet");
-		const elem = addGlobalStyle(await transform(await consumeStringGen$1(css)));
+		const elem = addGlobalStyle(await transform(await consumeStringGen(css)));
 		elem.classList.add("bytm-style");
-		elem.id = `bytm-style-${ref ?? randomId$1(6, 36)}`;
+		elem.id = `bytm-style-${ref ?? randomId(6, 36)}`;
 		return elem;
 	}
 	/**
@@ -11190,7 +9540,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	}
 	var trustedTypesSupported = typeof window?.trustedTypes?.createPolicy === "function";
 	var ttPolicy;
-	var tempTargetAttrName = `data-tmp-target-${randomId$1(6, 36)}`;
+	var tempTargetAttrName = `data-tmp-target-${randomId(6, 36)}`;
 	purify.addHook("beforeSanitizeAttributes", (node) => {
 		if (node.tagName === "A") {
 			if (!node.hasAttribute("target")) node.setAttribute("target", "_self");
@@ -11255,7 +9605,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		try {
 			if (!sessionStorageAvailable$1) throw new Error("Session storage unavailable");
 			let sesId = window.sessionStorage.getItem("_bytm-session-id");
-			if (!sesId) window.sessionStorage.setItem("_bytm-session-id", sesId = randomId$1(10, 36));
+			if (!sesId) window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(10, 36));
 			return sesId;
 		} catch (err) {
 			loggers.misc.warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
@@ -11267,7 +9617,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	async function compressionSupported() {
 		if (typeof isCompressionSupported === "boolean") return isCompressionSupported;
 		try {
-			await compress$1(".", compressionFormat$1, "string");
+			await compress(".", compressionFormat$1, "string");
 			return isCompressionSupported = true;
 		} catch {
 			return isCompressionSupported = false;
@@ -11302,18 +9652,18 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Tries to parse an uncompressed or compressed input string as a JSON object */
 	async function tryToDecompressAndParse(input) {
 		let parsed;
-		const val = await consumeStringGen$1(input);
+		const val = await consumeStringGen(input);
 		try {
 			parsed = JSON.parse(val);
 		} catch {
 			try {
-				parsed = JSON.parse(await decompress$1(val, compressionFormat$1, "string"));
+				parsed = JSON.parse(await decompress(val, compressionFormat$1, "string"));
 			} catch (err) {
 				loggers.misc.error("Couldn't decompress and parse data.", err);
 				return null;
 			}
 		}
-		await pauseFor$1(randRange$1(400, 800));
+		await pauseFor(randRange(400, 800));
 		return parsed;
 	}
 	/** Formats a number based on the config or the passed {@linkcode notation} */
@@ -11327,7 +9677,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			maximumFractionDigits: 0
 		});
 	}
-	var reloadTabStore = new DataStore$1({
+	var reloadTabStore = new DataStore({
 		id: "bytm-reload-tab",
 		engine: new GMStorageEngine(),
 		formatVersion: 0,
@@ -11411,7 +9761,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	var resourceCacheTTL = 1e3 * 60 * 60 * 24 * 7;
 	var resourceCacheKey = scriptInfo$1.version;
 	/** Cache for resources fetched via {@linkcode resourceAsString()} */
-	var resourceCacheStore = new DataStore$1({
+	var resourceCacheStore = new DataStore({
 		id: "bytm-resource-cache",
 		formatVersion: 0,
 		engine: new GMStorageEngine(),
@@ -11466,7 +9816,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		try {
 			if (!resourceUrl) throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 			logResourceFetch(resourceKey);
-			const res = await fetchAdvanced$1(resourceUrl);
+			const res = await fetchAdvanced(resourceUrl);
 			if (!res.ok) throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
 			const str = await res.text();
 			if (cachedResourcePrefixes.some((prefix) => resourceKey.startsWith(prefix)) && !await resourceCacheHas(resourceKey)) await resourceCacheSet(resourceKey, str);
@@ -11491,7 +9841,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	}
 	/** Returns the content of the changelog markdown file */
 	async function getChangelogMd() {
-		const clRes = await fetchAdvanced$1(changelogUrl);
+		const clRes = await fetchAdvanced(changelogUrl);
 		loggers.misc.log("Fetched changelog:", clRes);
 		return await clRes.text();
 	}
@@ -11610,11 +9960,11 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			toastElem.title = toastElem.ariaLabel = rest.title;
 		}
 		document.body.appendChild(toastElem);
-		pauseFor$1(100).then(() => {
+		pauseFor(100).then(() => {
 			toastElem.classList.add("visible");
 			if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
 				timeout && clearTimeout(timeout);
-				timeout = setTimeout(closeToast, clamp$1(durationMs, 250, maxToastDuration));
+				timeout = setTimeout(closeToast, clamp(durationMs, 250, maxToastDuration));
 			}
 		});
 		if (toastQueue.length > 0) return new Promise((resolve) => {
@@ -11685,7 +10035,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	var openDialogs = [];
 	var setCurrentDialogId = (id) => currentDialogId = id;
 	/** Creates and manages a modal dialog element */
-	var BytmDialog = class BytmDialog extends NanoEmitter$2 {
+	var BytmDialog = class BytmDialog extends NanoEmitter$1 {
 		/** Lets low-level modules like the Logger recognize a dialog without having to import this class */
 		[Symbol.toStringTag] = "BytmDialog";
 		options;
@@ -11941,7 +10291,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		async renderBody() {
 			const bodyEl = document.createElement("div");
 			bodyEl.classList.add("bytm-md-dialog-body");
-			const mdCont = await consumeStringGen$1(this.opts.body);
+			const mdCont = await consumeStringGen(this.opts.body);
 			const markdownEl = document.createElement("div");
 			markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
 			markdownEl.tabIndex = 0;
@@ -12068,7 +10418,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				inputElem.autofocus = true;
 				inputElem.autocomplete = "off";
 				inputElem.spellcheck = false;
-				inputElem.value = "defaultValue" in rest && rest.defaultValue ? await consumeStringGen$1(rest.defaultValue) : "";
+				inputElem.value = "defaultValue" in rest && rest.defaultValue ? await consumeStringGen(rest.defaultValue) : "";
 				const inputEnterListener = (e) => {
 					if ("code" in e && ["Enter", "NumpadEnter"].includes(e.code)) {
 						inputElem.removeEventListener("keydown", inputEnterListener);
@@ -12227,7 +10577,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	//#endregion
 	//#region src/features/lyricsCache.ts
-	var lyricsCacheStore = new DataStore$1({
+	var lyricsCacheStore = new DataStore({
 		id: "bytm-lyrics-cache",
 		defaultData: { cache: [] },
 		formatVersion: 3,
@@ -12515,7 +10865,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/components/toggleInput.ts
 	/** Creates a simple toggle element */
-	async function createToggleInput({ onChange, initialValue = false, id = randomId$1(6, 36), labelPos = "left" }) {
+	async function createToggleInput({ onChange, initialValue = false, id = randomId(6, 36), labelPos = "left" }) {
 		const wrapperEl = document.createElement("div");
 		wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
 		wrapperEl.role = "switch";
@@ -12773,7 +11123,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			sizeSmOnce = true;
 			addSelectorListener("playerBarRightControls", getSelector("volume", "volSliderExpanded_sub_playerBarRightControls"), { listener: (el) => onSliderElExists("expand", el) });
 		};
-		window.addEventListener("resize", debounce$1(onResize, Math.floor(1e3 / 6)), { passive: true });
+		window.addEventListener("resize", debounce(onResize, Math.floor(1e3 / 6)), { passive: true });
 		waitVideoElementReady().then(onResize);
 		onResize();
 	}
@@ -12857,7 +11207,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		/** Renders the given volume value in the range [0, 100] after adjusting for the configured exponential scaling. */
 		const getAdjustedVolValue = (val) => {
 			if (isNaN(val)) return String(val);
-			val = clamp$1(val, 0, 100);
+			val = clamp(val, 0, 100);
 			const valAdjusted = (expVolFn(val / 100) * 100).toFixed(1);
 			return ["0.0", "100.0"].includes(valAdjusted) ? valAdjusted.slice(0, -2) : valAdjusted;
 		};
@@ -13035,9 +11385,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	]);
 	/** Creates an HTML string for the given adornment properties */
 	async function getAdornHtml(className, title, resource, extraAttributes, clickDialogText) {
-		title = title ? await consumeStringGen$1(title) : void 0;
-		extraAttributes = extraAttributes ? await consumeStringGen$1(extraAttributes) : void 0;
-		const id = randomId$1(8, 36);
+		title = title ? await consumeStringGen(title) : void 0;
+		extraAttributes = extraAttributes ? await consumeStringGen(extraAttributes) : void 0;
+		const id = randomId(8, 36);
 		if (clickDialogText) siteEvents.once("cfgMenuMounted", () => {
 			const elem = document.getElementById(`bytm-adornment-${id}`);
 			if (!elem) return;
@@ -13095,8 +11445,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			ensureIntegrity: false,
 			stringifyData: false
 		};
-		if (!full) return serializer ??= new DataStoreSerializer$1(getSerializerStores(), dsOpts);
-		else return fullSerializer ??= new DataStoreSerializer$1(getSerializerStoresFull(), dsOpts);
+		if (!full) return serializer ??= new DataStoreSerializer(getSerializerStores(), dsOpts);
+		else return fullSerializer ??= new DataStoreSerializer(getSerializerStoresFull(), dsOpts);
 	}
 	window.addEventListener("bytm:ready", async () => {
 		const promises = [];
@@ -13204,7 +11554,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/features/autoLike.ts
 	/** DataStore instance for all auto-liked channels */
-	var autoLikeStore = new DataStore$1({
+	var autoLikeStore = new DataStore({
 		id: "bytm-auto-like-channels",
 		formatVersion: 2,
 		defaultData: { channels: [] },
@@ -13435,7 +11785,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			headerEl.role = "heading";
 			headerEl.ariaLevel = "1";
 			headerEl.tabIndex = 0;
-			headerEl.textContent = headerEl.ariaLabel = await consumeStringGen$1(opts.title);
+			headerEl.textContent = headerEl.ariaLabel = await consumeStringGen(opts.title);
 			return headerEl;
 		}
 		static async renderBody(opts) {
@@ -13448,14 +11798,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				descEl.classList.add("bytm-exim-dialog-desc");
 				descEl.role = "note";
 				descEl.tabIndex = 0;
-				descEl.textContent = descEl.ariaLabel = await consumeStringGen$1(opts.descExport);
+				descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descExport);
 				const dataEl = document.createElement("textarea");
 				dataEl.classList.add("bytm-exim-dialog-data");
 				dataEl.readOnly = true;
 				dataEl.tabIndex = 0;
 				dataEl.value = t("click_to_reveal");
 				onInteraction(dataEl, async () => {
-					dataEl.value = await consumeStringGen$1(opts.exportData);
+					dataEl.value = await consumeStringGen(opts.exportData);
 					dataEl.setSelectionRange(0, dataEl.value.length);
 				});
 				const exportCenterBtnCont = document.createElement("div");
@@ -13466,7 +11816,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					resourceName: "icon-copy",
 					ripple: true,
 					async onClick({ shiftKey }) {
-						copyToClipboard(await consumeStringGen$1(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
+						copyToClipboard(await consumeStringGen(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
 						await showToast({ message: t("copied_to_clipboard") });
 					}
 				});
@@ -13480,7 +11830,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				descEl.classList.add("bytm-exim-dialog-desc");
 				descEl.role = "note";
 				descEl.tabIndex = 0;
-				descEl.textContent = descEl.ariaLabel = await consumeStringGen$1(opts.descImport);
+				descEl.textContent = descEl.ariaLabel = await consumeStringGen(opts.descImport);
 				const dataEl = document.createElement("textarea");
 				dataEl.classList.add("bytm-exim-dialog-data");
 				dataEl.tabIndex = 0;
@@ -13579,7 +11929,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			id: "auto-like-channels-export-import",
 			width: 800,
 			height: 600,
-			exportData: async () => await compressionSupported() ? await compress$1(JSON.stringify(autoLikeStore.getData()), compressionFormat$1, "string") : JSON.stringify(autoLikeStore.getData()),
+			exportData: async () => await compressionSupported() ? await compress(JSON.stringify(autoLikeStore.getData()), compressionFormat$1, "string") : JSON.stringify(autoLikeStore.getData()),
 			exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
 			async onImport(data) {
 				try {
@@ -13653,7 +12003,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		searchbarEl.autofocus = true;
 		searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
 		searchbarEl.spellcheck = false;
-		searchbarEl.addEventListener("input", debounce$1(() => {
+		searchbarEl.addEventListener("input", debounce(() => {
 			const searchVal = searchbarEl.value.trim().toLowerCase();
 			const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
 			for (const row of rows) {
@@ -13677,7 +12027,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		searchContLeftSideEl.appendChild(searchClearEl);
 		const channelListCont = document.createElement("div");
 		channelListCont.id = "bytm-auto-like-channels-list";
-		const setChannelEnabled = debounce$1((id, enabled) => {
+		const setChannelEnabled = debounce((id, enabled) => {
 			autoLikeStore.setData({ channels: autoLikeStore.getData().channels.map((ch) => ch.id === id ? {
 				...ch,
 				enabled
@@ -13859,7 +12209,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/utils/broadcast.ts
 	/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
-	var broadcastTxID = randomId$1(10, 36);
+	var broadcastTxID = randomId(10, 36);
 	var broadcastEngDSOpts = {
 		id: "bytm-broadcast",
 		encodeData: [null, (d) => d],
@@ -13887,7 +12237,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 		else loggers.broadcast.error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
 		getSerializerStoresFull().forEach((store) => {
-			store.on("updateData", debounce$1(() => {
+			store.on("updateData", debounce(() => {
 				emitBroadcast({
 					type: "dataStoreUpdate",
 					data: { id: store.id }
@@ -13964,16 +12314,16 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		receivedNonces.add(packet.nonce);
 		if (packet.from === broadcastTxID || Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")) return;
 		if (getFeature("logEvents")) loggers.broadcast.log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
-		const packetClean = pureObj$2(packet);
+		const packetClean = pureObj$1(packet);
 		forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
 		forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean);
 	}
 	/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
 	async function reloadAllTabs(reloadSelf = true, toTxIDs) {
-		loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural$2("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
+		loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural$1("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
 		emitBroadcast({ type: "reloadTabs" }, toTxIDs);
 		return reloadSelf ? await (async () => {
-			await pauseFor$1(30);
+			await pauseFor(30);
 			return await reloadTab();
 		})() : void 0;
 	}
@@ -14104,7 +12454,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}));
 			loggers.lyrics.log("Requesting lyrics from geniURL:", fetchUrl);
 			const token = getFeature("geniUrlToken");
-			const fetchRes = await fetchAdvanced$1(fetchUrl, { ...token ? { headers: { Authorization: `Bearer ${token}` } } : {} });
+			const fetchRes = await fetchAdvanced(fetchUrl, { ...token ? { headers: { Authorization: `Bearer ${token}` } } : {} });
 			if (fetchRes.status === 429) {
 				const waitSeconds = Number(fetchRes.headers.get("Retry-After") ?? geniUrlRatelimitTimeframe);
 				await showPrompt({
@@ -14262,7 +12612,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (evt.code === "ArrowLeft") skipBy *= -1;
 			loggers.input.log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
 			const vidElem = getVideoElement();
-			if (vidElem && vidElem.readyState > 0) vidElem.currentTime = clamp$1(vidElem.currentTime + skipBy, 0, vidElem.duration);
+			if (vidElem && vidElem.readyState > 0) vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
 		});
 		loggers.input.log("Added arrow key press listener");
 	}
@@ -14272,7 +12622,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		if (!getVideoElement()) return loggers.input.warn("Couldn't find video element, so the keypress is ignored");
 		if (!sliderEl) return loggers.input.warn("Couldn't find volume slider element, so the keypress is ignored");
 		const step = Number(sliderEl.step);
-		const newVol = clamp$1(Number(sliderEl.value) + (evt.code === "ArrowUp" ? 1 : -1) * clamp$1(getFeature("arrowKeyVolumeStep", featDefaults.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
+		const newVol = clamp(Number(sliderEl.value) + (evt.code === "ArrowUp" ? 1 : -1) * clamp(getFeature("arrowKeyVolumeStep", featDefaults.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
 		if (newVol !== Number(sliderEl.value)) {
 			sliderEl.value = String(newVol);
 			sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
@@ -14289,7 +12639,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			evt.preventDefault();
 			evt.stopImmediatePropagation();
 			const newTime = vid.currentTime + getFeature("frameSkipAmount") * (evt.code === "Comma" ? -1 : 1);
-			vid.currentTime = clamp$1(newTime, 0, vid.duration);
+			vid.currentTime = clamp(newTime, 0, vid.duration);
 			loggers.input.log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1e3 % 1e3)}ms)`);
 		});
 		loggers.input.log("Added frame skip key press listener");
@@ -14311,7 +12661,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const videoTime = await getVideoTime();
 				const dpBuffer = getFeature("numKeysSkipToTimeDoublePressBuffer");
 				const vidTimeIsClose = dpBuffer > 0 && videoTime ? Math.abs(videoTime - newVidTime) < dpBuffer : false;
-				const vidTimeAtStartOrEnd = valsWithin$1(videoTime ?? -Infinity, vidElem.duration, 1) || valsWithin$1(videoTime ?? Infinity, 0, 1);
+				const vidTimeAtStartOrEnd = valsWithin(videoTime ?? -Infinity, vidElem.duration, 1) || valsWithin(videoTime ?? Infinity, 0, 1);
 				if (lastKeyPress[1] !== e.key || Date.now() - lastKeyPress[0] > doublePressTime) {
 					lastKeyPress[0] = Date.now();
 					lastKeyPress[1] = e.key;
@@ -14386,7 +12736,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			itemEl.classList.add("bytm-plugin-perms-item");
 			itemEl.tabIndex = 0;
 			itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}`;
-			const initialValue = Array.isArray(perms) ? bitSetHas$1(perms[0], intent) : true;
+			const initialValue = Array.isArray(perms) ? bitSetHas(perms[0], intent) : true;
 			const toggleEl = await createToggleInput({
 				id: `plugin-intent-${intent}`,
 				initialValue,
@@ -14620,7 +12970,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/interface.ts
 	var { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants_exports;
-	var { autoPlural, NanoEmitter, pureObj } = CoreUtils_exports;
+	var { autoPlural, NanoEmitter, pureObj } = UserUtils_exports;
 	/**
 	* All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
 	* If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
@@ -14699,7 +13049,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			getBytmDialog,
 			getExImDialog,
 			getMarkdownDialog,
-			CoreUtils: CoreUtils_exports,
 			UserUtils: UserUtils_exports,
 			compareVersions: esm_exports
 		};
@@ -14837,7 +13186,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	/** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 	var devPluginToken;
-	var devPluginId = randomId$1(8, 36, true, true);
+	var devPluginId = randomId(8, 36, true, true);
 	var devPluginKey;
 	/** Registers a plugin that only exists in development mode to test the plugin system */
 	async function registerDevPlugin() {
@@ -14914,7 +13263,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const asArray = (value) => Array.isArray(value) ? value : [value];
 		const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2]) : asArray(args[1])) ?? [];
 		if (!Array.isArray(perms)) throw new TypeError("The second argument must be an array of PluginIntent values");
-		return bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => bitSetHas$1(plugin.grantedPerms, perm));
+		return bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => bitSetHas(plugin.grantedPerms, perm));
 	}
 	/** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 	function validatePluginDef(pluginDef) {
@@ -15142,7 +13491,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const isDevPlugin = Boolean(pluginKey === devPluginIdentifier && getPluginInfo(devPluginToken, devPluginIdentifier));
 			const permsBitSet = getRegisteredPlugins().find(([key]) => key === pluginKey)?.[1].grantedPerms;
 			const intentsAmount = Object.keys(PluginIntent).length / 2;
-			const permsArr = permsBitSet ? bitSetHas$1(permsBitSet, PluginIntent.FullAccess) ? [PluginIntent.FullAccess] : typeof permsBitSet === "number" ? (() => {
+			const permsArr = permsBitSet ? bitSetHas(permsBitSet, PluginIntent.FullAccess) ? [PluginIntent.FullAccess] : typeof permsBitSet === "number" ? (() => {
 				const arr = [];
 				for (let i = 0; i < intentsAmount; i++) if (permsBitSet & 2 ** i) arr.push(2 ** i);
 				return arr;
@@ -15457,7 +13806,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	* this file needs. Each entry spreads its {@linkcode featDefaults} counterpart rather than
 	* repeating the value - see `@feat/featDefaults.ts` for why.
 	*/
-	var ExampleError = class extends DatedError$1 {
+	var ExampleError = class extends DatedError {
 		constructor(message, options) {
 			super(message, options);
 			this.name = "ExampleError";
@@ -17087,7 +15436,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				id: "config-export-import",
 				width: 800,
 				height: 600,
-				exportData: async () => await compressionSupported() ? await compress$1(JSON.stringify({
+				exportData: async () => await compressionSupported() ? await compress(JSON.stringify({
 					formatVersion: 12,
 					data: getFeatures()
 				}), compressionFormat$1, "string") : exportDataSpecial(),
@@ -17259,7 +15608,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const ftInfo = featInfo?.[key];
 				const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
 				if (["number", "slider"].includes(ftInfo.type)) {
-					if ("min" in ftInfo || "max" in ftInfo) newVal = clamp$1(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
+					if ("min" in ftInfo || "max" in ftInfo) newVal = clamp(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
 					if ("step" in ftInfo) newVal = Math.round(Number(newVal) / Number(ftInfo.step)) * Number(ftInfo.step);
 				}
 				try {
@@ -17341,7 +15690,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				}
 			};
 			/** Call whenever the feature config is changed */
-			const confChanged = debounce$1(onCfgChange, 333);
+			const confChanged = debounce(onCfgChange, 333);
 			/**
 			* Formats the value `v` based on the provided `key` using the `featInfo` object.  
 			* If a custom `renderValue` function is defined for the `key`, it will be used to format the value.  
@@ -17647,7 +15996,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 											customInputEl.classList.remove("bytm-busy");
 											customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
 										};
-										const rTime = randRange$1(200, 400);
+										const rTime = randRange(200, 400);
 										if (Date.now() - startTs < rTime) setTimeout(finalize, rTime - (Date.now() - startTs));
 										else finalize();
 									});
@@ -17678,7 +16027,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					const aboutTextCont = document.createElement("p");
 					aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
 					aboutTextCont.classList.add("bytm-markdown-container");
-					setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", pureObj$2({
+					setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", pureObj$1({
 						scriptName: scriptInfo$1.name,
 						scriptVersion: package_default.version,
 						buildNumber: buildNumber$1,
@@ -17840,7 +16189,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			menuContainer.appendChild(footerCont);
 			backgroundElem.appendChild(menuContainer);
 			(document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
-			window.addEventListener("resize", debounce$1(checkToggleScrollIndicator, 250), { passive: true });
+			window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250), { passive: true });
 			isCfgMenuOpen = false;
 			document.body.classList.remove("bytm-disable-scroll");
 			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
@@ -18015,7 +16364,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			try {
 				if (improveLogoCalled) return;
 				improveLogoCalled = true;
-				const svg = await (await fetchAdvanced$1("https://music.youtube.com/img/on_platform_logo_dark.svg")).text();
+				const svg = await (await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg")).text();
 				addSelectorListener("navBar", "ytmusic-logo > a", { listener: (logoElem) => {
 					logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
 					setInnerHtml(logoElem, svg);
@@ -18159,7 +16508,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			};
 			addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer", { listener: (sidebarCont) => {
 				const itemsAmt = addSidebarAnchors(sidebarCont);
-				loggers.layout.log(`Added anchors around ${itemsAmt} sidebar ${autoPlural$2("item", itemsAmt)}`);
+				loggers.layout.log(`Added anchors around ${itemsAmt} sidebar ${autoPlural$1("item", itemsAmt)}`);
 			} });
 			addSelectorListener("body", "ytmusic-nav-bar", { listener(navBar) {
 				let miniSidebarCont = document.querySelector("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
@@ -18173,7 +16522,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const improveMiniSidebarAnchors = () => {
 					const itemsAmt = addSidebarAnchors(miniSidebarCont);
 					navBar.classList.add("bytm-mini-sidebar-anchors-added");
-					loggers.layout.log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural$2("item", itemsAmt)}`);
+					loggers.layout.log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural$1("item", itemsAmt)}`);
 					mut.disconnect();
 				};
 				if (miniSidebarCont) improveMiniSidebarAnchors();
@@ -18191,7 +16540,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							const items = songListEl.querySelectorAll("ytmusic-player-queue-item");
 							if (!items.length) return;
 							const itemsAmt = improveSongListClickArea(items);
-							itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural$2("item", itemsAmt)}`);
+							itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} current song list ${autoPlural$1("item", itemsAmt)}`);
 						});
 					}
 				});
@@ -18203,7 +16552,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					const items = songListEl.querySelectorAll("ytmusic-responsive-list-item-renderer, .card-content-container");
 					if (!items.length) return;
 					const itemsAmt = improveSongListClickArea(items);
-					itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} song list ${autoPlural$2("item", itemsAmt)}`);
+					itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} song list ${autoPlural$1("item", itemsAmt)}`);
 				});
 			};
 			const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
@@ -18392,7 +16741,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}, 1);
 	}
 	/** Album artwork cache */
-	var artCacheStore = new DataStore$1({
+	var artCacheStore = new DataStore({
 		id: "bytm-artwork-cache",
 		migrateIds: ["album-art-cache"],
 		formatVersion: 1,
@@ -18720,7 +17069,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				show();
 				cursorHideTimerCb();
 			};
-			vidContainer.addEventListener("mousemove", debounce$1(onMove, 150), { capture: true });
+			vidContainer.addEventListener("mousemove", debounce(onMove, 150), { capture: true });
 			vidContainer.addEventListener("mouseleave", () => {
 				cursorHideTimer && clearTimeout(cursorHideTimer);
 				hideTransTimer && clearTimeout(hideTransTimer);
@@ -18870,7 +17219,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const mainPanel = document.querySelector(globservers.mainPanel.baseElement);
 			loggers.layout.log("Initialized watch page full size", mainPanel);
 			if (mainPanel) {
-				window.addEventListener("resize", debounce$1(() => {
+				window.addEventListener("resize", debounce(() => {
 					const headerHeight = document.querySelector("ytmusic-header-renderer")?.offsetHeight ?? 0;
 					mainPanel.style.maxHeight = `calc(100vh - ${headerHeight}px - 50px)`;
 					loggers.misc.dbg("Set main panel max height to", mainPanel.style.maxHeight);
@@ -18926,7 +17275,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			return setStaticData(data_default);
 		}
 	}
-	var alertsStore = new DataStore$1({
+	var alertsStore = new DataStore({
 		id: "bytm-alerts",
 		defaultData: { dismissed: [] },
 		formatVersion: 0,
@@ -19036,14 +17385,14 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		try {
 			const oldData = await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-dat`, "{}");
 			const oldDataObj = JSON.parse(oldData);
-			if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0) oldDataHash = await computeHash$1(JSON.stringify(oldDataObj), "sha256");
+			if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0) oldDataHash = await computeHash(JSON.stringify(oldDataObj), "sha256");
 		} catch {}
 		const rawData = await configStore.loadData();
 		let data = fixCfgKeys(rawData);
 		setErrorToastsEnabled(Boolean(data.showToastOnGenericError));
 		setLogEventsEnabled(Boolean(data.logEvents));
 		setSiteEventLogging(Boolean(data.logEvents));
-		if (oldDataHash && oldDataHash !== await computeHash$1(JSON.stringify(data), "sha256")) {
+		if (oldDataHash && oldDataHash !== await computeHash(JSON.stringify(data), "sha256")) {
 			if (await showPrompt({
 				type: "confirm",
 				message: t("config_data_changed_prompt_open_menu"),
@@ -19062,7 +17411,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			loggers.data.error("  ⚠️ - Config data migration failed, falling back to default data:", err);
 			await configStore.setData(data = configStore.defaultData);
 		}
-		else if (await computeHash$1(JSON.stringify(rawData), "SHA-256") !== await computeHash$1(JSON.stringify(data), "SHA-256")) {
+		else if (await computeHash(JSON.stringify(rawData), "SHA-256") !== await computeHash(JSON.stringify(data), "SHA-256")) {
 			await configStore.setData(data);
 			loggers.data.info("  ⚠️ - Fixed missing or extraneous config keys without a version change");
 		}
@@ -19114,14 +17463,14 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				addQueueButtons(queueItm, void 0, "currentQueue");
 				amt++;
 			}
-			if (amt > 0) loggers.songLists.log(`Added buttons to ${amt} new queue ${autoPlural$2("item", amt)}`);
+			if (amt > 0) loggers.songLists.log(`Added buttons to ${amt} new queue ${autoPlural$1("item", amt)}`);
 		};
 		siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "currentQueueContainer")));
 		siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "autoplayQueueContainer")));
 		const queueItems = document.querySelectorAll(getSelector("songLists", "allCurrentQueueItems_global"));
 		if (queueItems.length > 0) {
 			queueItems.forEach((itm) => addQueueButtons(itm, void 0, "currentQueue"));
-			loggers.songLists.log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural$2("item", queueItems)}`);
+			loggers.songLists.log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural$1("item", queueItems)}`);
 		}
 		/** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
 		const tryAddGenericListQueueBtns = (listElem) => {
@@ -19134,9 +17483,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
 				addedBtnsCount++;
 			});
-			addedBtnsCount > 0 && loggers.songLists.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural$2("item", addedBtnsCount)} in list`, listElem);
+			addedBtnsCount > 0 && loggers.songLists.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural$1("item", addedBtnsCount)} in list`, listElem);
 		};
-		const debouncedIdleSongListCheck = debounce$1((songLists) => {
+		const debouncedIdleSongListCheck = debounce((songLists) => {
 			doSongListsChecks(songLists, true);
 		}, 750, "idle");
 		const doSongListsChecks = (songLists, isDebounced = false) => {
@@ -19321,7 +17670,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					}
 					queuePopupCont = document.querySelector(getSelector("songLists", "queueItemPopoverContainer"));
 					queuePopupCont?.setAttribute("data-bytm-hidden", "true");
-					await pauseFor$1(15);
+					await pauseFor(15);
 					delImgElem.src = deleteIconUrl;
 					delImgElem.classList.remove("bytm-spinner");
 					const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector(getSelector("songLists", "queueItemPopoverRemoveFromListBtn"));
@@ -19331,7 +17680,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					else if (removeFromQueueOrPlaylistBtn) removeFromQueueBtn = removeFromQueueOrPlaylistBtn;
 					removeFromQueueBtn?.click();
 					if (removeFromQueueBtn && listType === "genericList") {
-						await pauseFor$1(200);
+						await pauseFor(200);
 						clearInner(queueItem);
 						queueItem.remove();
 					}
@@ -19398,7 +17747,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						if (!toastElem || !toastElem.hasAttribute("allow-click-through")) continue;
 						if (toastElem.classList.contains("bytm-closing")) continue;
 						toastElem.classList.add("bytm-closing");
-						await pauseFor$1(Math.max(getFeature("closeToastsTimeout") * 1e3 + animTimeout, animTimeout));
+						await pauseFor(Math.max(getFeature("closeToastsTimeout") * 1e3 + animTimeout, animTimeout));
 						toastElem.classList.remove("paper-toast-open");
 						toastElem.addEventListener("transitionend", () => {
 							toastElem.classList.remove("bytm-closing");
@@ -19421,7 +17770,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	var prevTime = -1;
 	/** Initializes the autoScrollToActiveSong feature */
 	async function initAutoScrollToActiveSong() {
-		createRecurringTask$1({
+		createRecurringTask({
 			timeout: 50,
 			async task() {
 				const vidEl = await waitVideoElementReady();
@@ -19459,9 +17808,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		if (remTimeEntries.some((e) => "watchID" in e)) {
 			remTimeEntries = remTimeEntries.filter((e) => "id" in e);
 			await GM.setValue("bytm-remember-times", JSON.stringify(remTimeEntries));
-			loggers.behavior.log(`Removed ${remTimeEntries.length} ${autoPlural$2("entry", remTimeEntries)} with an outdated format from the video time cache`);
+			loggers.behavior.log(`Removed ${remTimeEntries.length} ${autoPlural$1("entry", remTimeEntries)} with an outdated format from the video time cache`);
 		}
-		loggers.behavior.log(`Initialized video time restoring with ${remTimeEntries.length} initial ${autoPlural$2("entry", remTimeEntries)}:`, remTimeEntries);
+		loggers.behavior.log(`Initialized video time restoring with ${remTimeEntries.length} initial ${autoPlural$1("entry", remTimeEntries)}:`, remTimeEntries);
 		await remTimeTryRestoreTime();
 		try {
 			if (!isDomLoaded()) document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop, { once: true });
@@ -19501,7 +17850,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						const doRestoreTime = async () => {
 							if (!vidElem) vidElem = await waitVideoElementReady();
 							const vidRestoreTime = entry.time - getFeature("rememberSongTimeReduction", 0);
-							vidElem.currentTime = clamp$1(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+							vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
 							await remTimeDeleteEntry(entry.id);
 							loggers.behavior.info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
 							return resolve(true);
@@ -19656,8 +18005,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const vidEl = getVideoElement();
 			if (!vidEl) return;
 			for (let i = 0; i < 20; i++) {
-				const x = Math.random() * clamp$1(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100);
-				const y = Math.random() * clamp$1(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
+				const x = Math.random() * clamp(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100);
+				const y = Math.random() * clamp(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
 				vidEl?.dispatchEvent(new MouseEvent("mousemove", {
 					bubbles: true,
 					cancelable: true,
@@ -19669,10 +18018,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					movementY: incY,
 					view: getUnsafeWindow()
 				}));
-				await pauseFor$1(10);
+				await pauseFor(10);
 			}
 		};
-		setImmediateInterval$1(async () => {
+		setImmediateInterval(async () => {
 			if (!getFeature("yesImStillThere")) return;
 			tryClick();
 			await tryMove();
@@ -20239,7 +18588,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8e3;
 			const initializedFeats = [];
 			const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
-			Promise.race([pauseFor$1(initTimeout), Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
+			Promise.race([pauseFor(initTimeout), Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
 				const v = await prom;
 				perfReport.featureDurations = {
 					...perfReport.featureDurations ?? {},
@@ -20368,7 +18717,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				/** Whether a -dat key is encoded. Assumes that compressionFormat never changes. */
 				const isEncoded = isDatKey ? String(await GM.getValue(`__ds-${dsID}-enf`, "null")) !== "null" : false;
 				const val = await GM.getValue(key, void 0);
-				values[key] = typeof val !== "undefined" && isEncoded ? await decompress$1(val, "deflate-raw", "string") : val;
+				values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, "deflate-raw", "string") : val;
 				longestKey = Math.max(longestKey, key.length);
 			} catch (err) {
 				decodeError(key, err);
@@ -20451,7 +18800,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 						const val = dlg.getInputValue();
 						try {
 							if (val && val.length > 0) {
-								const result = await compress$1(val, "deflate-raw");
+								const result = await compress(val, "deflate-raw");
 								dlg.emitResolve(result);
 								dlg.close();
 								await showFinalPrompt("compress", val, result);
@@ -20470,7 +18819,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 						const val = dlg.getInputValue();
 						try {
 							if (val && val.length > 0) {
-								const result = await decompress$1(val, "deflate-raw");
+								const result = await decompress(val, "deflate-raw");
 								dlg.emitResolve(result);
 								await showFinalPrompt("decompress", val, result);
 								dlg.close();
@@ -20529,11 +18878,11 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
 			unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
 		});
-		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError$1("ExampleError", "Test error")));
+		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new CustomError("ExampleError", "Test error")));
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "84bf1957",
+				buildNumber: "5e66c62f",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -20571,8 +18920,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 					"color: #db3; font-weight: bold;",
 					"color: inherit; font-weight: inherit;"
 				], []);
-				console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${autoPlural$2("tab", sessions)}:\n${createTable$1([columns, ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
-					const initSince = secsToTimeStr$1(Math.floor((Date.now() - initTime) / 1e3)).padStart(4, "0");
+				console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${autoPlural$1("tab", sessions)}:\n${createTable([columns, ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
+					const initSince = secsToTimeStr(Math.floor((Date.now() - initTime) / 1e3)).padStart(4, "0");
 					return [
 						i + 1,
 						txID === broadcastTxID ? "Yes" : "No",

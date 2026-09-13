@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@84bf1957/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5e66c62f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -109,7 +109,6 @@
 // @grant             GM.openInTab
 // @grant             GM.registerMenuCommand
 // @grant             unsafeWindow
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/coreutils@3.8.0/dist/CoreUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@11.0.0/dist/UserUtils.umd.js
 // @require           https://cdn.jsdelivr.net/npm/marked@17.0.4/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.1/lib/umd/index.js
@@ -134,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 13 Sep 2026 17:54:53 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 13 Sep 2026 18:21:57 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 84bf1957                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 5e66c62f                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 90SVq571GE91                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 8t1Fbak11Iu7                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -161,7 +160,7 @@
 /* C&D this 🖕 */
 
 
-(function(_sv443_network_coreutils, _sv443_network_userutils, marked, dompurify, compare_versions) {
+(function(_sv443_network_userutils, marked, dompurify, compare_versions) {
 	//#region \0rolldown/runtime.js
 	var __create = Object.create;
 	var __defProp = Object.defineProperty;
@@ -193,7 +192,6 @@
 		enumerable: true
 	}) : target, mod));
 	//#endregion
-	_sv443_network_coreutils = __toESM(_sv443_network_coreutils, 1);
 	_sv443_network_userutils = __toESM(_sv443_network_userutils, 1);
 	dompurify = __toESM(dompurify, 1);
 	compare_versions = __toESM(compare_versions, 1);
@@ -565,9 +563,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "84bf1957";
+	var buildNumber$1 = "5e66c62f";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789322093181;
+	var buildTimestamp = 1789323717207;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -579,7 +577,7 @@
 	/** Timestamp of when the script was initialized. */
 	var initTime = Date.now();
 	/** Names of platforms by key of {@linkcode host} */
-	var platformNames = (0, _sv443_network_coreutils.pureObj)({
+	var platformNames = (0, _sv443_network_userutils.pureObj)({
 		github: "GitHub",
 		greasyfork: "Greasy Fork",
 		openuserjs: "OpenUserJS"
@@ -589,7 +587,7 @@
 	/** Whether sessionStorage is available and working */
 	var sessionStorageAvailable$1 = typeof sessionStorage?.setItem === "function" && (() => {
 		try {
-			const key = `_bytm_test_${(0, _sv443_network_coreutils.randomId)(6, 36, false, true)}`;
+			const key = `_bytm_test_${(0, _sv443_network_userutils.randomId)(6, 36, false, true)}`;
 			sessionStorage.setItem(key, "test");
 			sessionStorage.removeItem(key);
 			return true;
@@ -603,7 +601,7 @@
 	*/
 	var defaultLogLevel = LogLevel.Debug;
 	/** Info about the userscript, parsed from the userscript header (injected by src/tools/post-build.ts) */
-	var scriptInfo$1 = (0, _sv443_network_coreutils.pureObj)({
+	var scriptInfo$1 = (0, _sv443_network_userutils.pureObj)({
 		name: GM_info.script.name,
 		version: GM_info.script.version,
 		namespace: GM_info.script.namespace
@@ -620,7 +618,7 @@
 	/** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
 	function setGlobalProp(key, value) {
 		const win = (0, _sv443_network_userutils.getUnsafeWindow)();
-		if (typeof win.BYTM !== "object") win.BYTM = (0, _sv443_network_coreutils.pureObj)({});
+		if (typeof win.BYTM !== "object") win.BYTM = (0, _sv443_network_userutils.pureObj)({});
 		win.BYTM[key] = value;
 	}
 	//#endregion
@@ -714,7 +712,7 @@
 			if (Array.isArray(val)) return `[Array (${val.length}) <${val.map((v) => Logger.serializeLogVal(v, false)).join(", ")}>]`;
 			if (val instanceof Element) return Logger.serializeElement(val);
 			if (typeof val === "function") return val.name ? `[Function <${val.name}()>]` : "[anonymous function()]";
-			if (val instanceof _sv443_network_coreutils.DatedError) return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
+			if (val instanceof _sv443_network_userutils.DatedError) return `[${val.name} (@ ${val.date.toISOString()}): ${val.message}]`;
 			if (val instanceof Error) return `[${val.name}: ${val.message}]`;
 			if (val instanceof Date) return `[Date (@ ${val.toISOString()})]`;
 			if (val instanceof Response) return `[Response ${val.status} (${val.url})]`;
@@ -738,7 +736,7 @@
 		static getLogLevel(args) {
 			const minLogLvl = 0, maxLogLvl = 1;
 			const lastArg = args.at(-1);
-			if (typeof lastArg === "number" && lastArg >= 0 && lastArg <= Object.keys(LogLevel).length / 2 - 1) return (0, _sv443_network_coreutils.clamp)(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+			if (typeof lastArg === "number" && lastArg >= 0 && lastArg <= Object.keys(LogLevel).length / 2 - 1) return (0, _sv443_network_userutils.clamp)(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
 			return LogLevel.Debug;
 		}
 		/** Returns a string representation of all logs, formatted for downloading as a file. */
@@ -816,7 +814,7 @@
 	var errorToastsEnabled = false;
 	/** Sets whether generic errors are surfaced as a toast - called by the config init */
 	var setErrorToastsEnabled = (enabled) => void (errorToastsEnabled = enabled);
-	var showErrToast = (0, _sv443_network_coreutils.debounce)((errName, args) => tryUse("reportError")?.(errName, args), 400);
+	var showErrToast = (0, _sv443_network_userutils.debounce)((errName, args) => tryUse("reportError")?.(errName, args), 400);
 	var loggerOpts = { onError(...args) {
 		if (!errorToastsEnabled) return;
 		showErrToast(args.find((a) => a instanceof Error)?.name ?? "Error", args);
@@ -835,14 +833,14 @@
 		Logger.curLogLevel = level;
 	}
 	/** Error class for errors thrown by the lyrics fetching functions - extends {@linkcode DatedError} */
-	var LyricsError = class extends _sv443_network_coreutils.DatedError {
+	var LyricsError = class extends _sv443_network_userutils.DatedError {
 		constructor(message, opts) {
 			super(message, opts);
 			this.name = "LyricsError";
 		}
 	};
 	/** Error class for errors thrown by the plugin interface - extends {@linkcode DatedError} */
-	var PluginError = class extends _sv443_network_coreutils.DatedError {
+	var PluginError = class extends _sv443_network_userutils.DatedError {
 		constructor(message, opts) {
 			super(message, opts);
 			this.name = "PluginError";
@@ -924,7 +922,7 @@
 	* Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
 	* At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
 	*/
-	var pluginPermissionsStore = new _sv443_network_coreutils.DataStore({
+	var pluginPermissionsStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-plugin-permissions",
 		engine: new _sv443_network_userutils.GMStorageEngine(),
 		defaultData: {},
@@ -942,7 +940,7 @@
 	}
 	/** Returns the permission integers from the {@linkcode pluginPermissionsStore} for the given plugin. */
 	function getPermStorePerms(def) {
-		if (!pluginPermissionsStoreLoaded) throw new _sv443_network_coreutils.DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
+		if (!pluginPermissionsStoreLoaded) throw new _sv443_network_userutils.DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
 		return pluginPermissionsStore.getData()?.[getPluginKey(def)];
 	}
 	/** Updates the given plugin to the given permissions in memory. Doesn't emit the `pluginsUpdated` broadcast event. */
@@ -963,7 +961,7 @@
 	/** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
 	function parseBitSetEnumArray(bitSet, enumRef) {
 		const result = [];
-		for (const [, val] of Object.entries(enumRef)) if ((typeof val === "number" || typeof val === "bigint") && (0, _sv443_network_coreutils.bitSetHas)(bitSet, val)) result.push(val);
+		for (const [, val] of Object.entries(enumRef)) if ((typeof val === "number" || typeof val === "bigint") && (0, _sv443_network_userutils.bitSetHas)(bitSet, val)) result.push(val);
 		return result;
 	}
 	//#endregion
@@ -1822,7 +1820,7 @@
 	//#endregion
 	//#region src/configSchema.ts
 	/** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
-	var cfgDefaultData = (0, _sv443_network_coreutils.pureObj)(Object.keys(featDefaults).filter((ftKey) => "default" in featDefaults[ftKey] && featDefaults[ftKey].default !== void 0).reduce((acc, key) => {
+	var cfgDefaultData = (0, _sv443_network_userutils.pureObj)(Object.keys(featDefaults).filter((ftKey) => "default" in featDefaults[ftKey] && featDefaults[ftKey].default !== void 0).reduce((acc, key) => {
 		acc[key] = "default" in featDefaults[key] ? featDefaults[key].default : void 0;
 		return acc;
 	}, {}));
@@ -1935,7 +1933,7 @@
 				key: "toastDuration",
 				oldDefault: 3
 			}]);
-			newData.arrowKeySkipBy = (0, _sv443_network_coreutils.clamp)(newData.arrowKeySkipBy, .5, 30);
+			newData.arrowKeySkipBy = (0, _sv443_network_userutils.clamp)(newData.arrowKeySkipBy, .5, 30);
 			return newData;
 		},
 		8: (oldData) => {
@@ -1952,10 +1950,10 @@
 			return useNewDefaults(oldData, ["resetEverything"]);
 		},
 		10: (oldData) => {
-			oldData.closeToastsTimeout = (0, _sv443_network_coreutils.clamp)(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
-			oldData.lyricsCacheMaxSize = (0, _sv443_network_coreutils.clamp)(oldData.lyricsCacheMaxSize, featDefaults.lyricsCacheMaxSize.min, featDefaults.lyricsCacheMaxSize.max);
+			oldData.closeToastsTimeout = (0, _sv443_network_userutils.clamp)(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
+			oldData.lyricsCacheMaxSize = (0, _sv443_network_userutils.clamp)(oldData.lyricsCacheMaxSize, featDefaults.lyricsCacheMaxSize.min, featDefaults.lyricsCacheMaxSize.max);
 			oldData.autoCloseToasts = oldData.closeToastsTimeout > 0;
-			oldData.closeToastsTimeout = (0, _sv443_network_coreutils.clamp)(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
+			oldData.closeToastsTimeout = (0, _sv443_network_userutils.clamp)(oldData.closeToastsTimeout, featDefaults.closeToastsTimeout.min, featDefaults.closeToastsTimeout.max);
 			if ("thumbnailOverlayImageFit" in oldData) delete oldData.thumbnailOverlayImageFit;
 			return useNewDefaultsIfUnchanged(useNewDefaults(oldData, [
 				"aboveQueueBtnsSticky",
@@ -2117,12 +2115,12 @@
 	function clampNewRange(config, key) {
 		const val = config[key];
 		const info = featDefaults[key];
-		return (0, _sv443_network_coreutils.clamp)(val, info.min, "max" in info && typeof info.max === "number" ? info.max : Infinity);
+		return (0, _sv443_network_userutils.clamp)(val, info.min, "max" in info && typeof info.max === "number" ? info.max : Infinity);
 	}
 	/** Clamps the given numerical value using the given numerical feature's `min` and `max` props (see {@linkcode featDefaults}) if they exist. Otherwise returns the given value as-is. */
 	function toClamped(ftKey, newValue) {
 		const ftInf = featDefaults[ftKey];
-		if ("min" in ftInf) return (0, _sv443_network_coreutils.clamp)(newValue, ftInf.min, "max" in ftInf ? ftInf.max : Infinity);
+		if ("min" in ftInf) return (0, _sv443_network_userutils.clamp)(newValue, ftInf.min, "max" in ftInf ? ftInf.max : Infinity);
 		return newValue;
 	}
 	/**
@@ -2149,8 +2147,8 @@
 	* prompt ({@linkcode "@menu/resetConfig.ts"}) all live elsewhere for exactly this reason.
 	*/
 	/** Emits "changed" whenever the feature config is saved. Bridged onto the site-event bus by {@linkcode "@/configInit.ts"}, so this module doesn't have to depend on it. */
-	var configEvents = new _sv443_network_coreutils.NanoEmitter({ publicEmit: false });
-	var configStore = new _sv443_network_coreutils.DataStore({
+	var configEvents = new _sv443_network_userutils.NanoEmitter({ publicEmit: false });
+	var configStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-config",
 		formatVersion: 12,
 		engine: new _sv443_network_userutils.GMStorageEngine(),
@@ -2267,7 +2265,7 @@
 	}
 	/** Fetches the JSON translations file of the passed locale. */
 	async function fetchTranslationResource(locale) {
-		const res = await (0, _sv443_network_coreutils.fetchAdvanced)(await getResourceUrl(`trans-${locale}`));
+		const res = await (0, _sv443_network_userutils.fetchAdvanced)(await getResourceUrl(`trans-${locale}`));
 		const bodyTxt = await res.text();
 		getFeature("logHttp") && loggers.translation.log(`Fetched translation resource for locale '${locale}' with status ${res.status}`);
 		if (res.status < 200 || res.status >= 300) throw new Error(`Failed to fetch translation resource for locale '${locale}'`);
@@ -2641,10 +2639,10 @@
 	function getSelector(group, id, throws) {
 		const dom = getDomain();
 		if (throws !== false) try {
-			if (typeof staticData?.selectors !== "object") throw new _sv443_network_coreutils.DatedError("Static data hasn't been fetched yet.");
+			if (typeof staticData?.selectors !== "object") throw new _sv443_network_userutils.DatedError("Static data hasn't been fetched yet.");
 			const sel = staticData.selectors?.[group]?.[id];
-			if (!["string", "object"].includes(typeof sel)) throw new _sv443_network_coreutils.DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
-			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new _sv443_network_coreutils.DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
+			if (!["string", "object"].includes(typeof sel)) throw new _sv443_network_userutils.DatedError(`Selector '${group}.${String(id)}' doesn't exist or is neither a string nor an object.`);
+			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new _sv443_network_userutils.DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 			return typeof sel === "string" ? sel : sel[dom];
 		} catch (e) {
 			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
@@ -2752,7 +2750,6 @@
 			"openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
 		},
 		dependencies: {
-			"@sv443-network/coreutils": "3.8.0",
 			"@sv443-network/userutils": "11.0.0",
 			"compare-versions": "6.1.1",
 			"dompurify": "3.3.3",
@@ -2771,6 +2768,7 @@
 			"@storybook/html": "10.2.19",
 			"@storybook/html-vite": "10.2.19",
 			"@storybook/test": "8.6.15",
+			"@sv443-network/coreutils": "3.8.0",
 			"@types/cors": "2.8.19",
 			"@types/express": "5.0.6",
 			"@types/node": "24.12.0",
@@ -3106,7 +3104,7 @@
 	/** Fetches a CSS file from the specified resource with a key starting with `css-` */
 	async function fetchCss(key) {
 		try {
-			return await (await (0, _sv443_network_coreutils.fetchAdvanced)(await getResourceUrl(key))).text() ?? void 0;
+			return await (await (0, _sv443_network_userutils.fetchAdvanced)(await getResourceUrl(key))).text() ?? void 0;
 		} catch (err) {
 			loggers.xhr.error(`Couldn't fetch CSS resource with key '${key}' due to an error:`, err);
 			return;
@@ -3142,7 +3140,7 @@
 				id: votesRaw.id,
 				likes: votesRaw.likes,
 				dislikes: votesRaw.dislikes,
-				rating: (0, _sv443_network_coreutils.roundFixed)(votesRaw.rating, 3),
+				rating: (0, _sv443_network_userutils.roundFixed)(votesRaw.rating, 3),
 				timestamp: Date.now()
 			};
 			voteCache.set(votesObj.id, votesObj);
@@ -3193,7 +3191,7 @@
 	//#endregion
 	//#region src/siteEvents.ts
 	/** EventEmitter instance that is used to detect various changes to the site and userscript */
-	var siteEvents = new _sv443_network_coreutils.NanoEmitter({ publicEmit: true });
+	var siteEvents = new _sv443_network_userutils.NanoEmitter({ publicEmit: true });
 	var observers = [];
 	var lastVidId = null;
 	var lastPathname = null;
@@ -3248,7 +3246,7 @@
 				if (globserversReady) registerFullScreenObs();
 				else window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
 			}
-			(0, _sv443_network_coreutils.createRecurringTask)({
+			(0, _sv443_network_userutils.createRecurringTask)({
 				timeout: 150,
 				task: runIntervalChecks
 			});
@@ -3258,7 +3256,7 @@
 					checkVideoIdChange(new URL(target.href).searchParams.get("v"));
 				}).observe(el, { attributeFilter: ["href"] });
 			} });
-			getDomain() === "ytm" && (0, _sv443_network_coreutils.createRecurringTask)({
+			getDomain() === "ytm" && (0, _sv443_network_userutils.createRecurringTask)({
 				timeout: 250,
 				task: () => checkVideoIdChange()
 			});
@@ -3276,7 +3274,7 @@
 	function emitSiteEvent(key, ...args) {
 		try {
 			const logEmit = () => {
-				if (siteEventLoggingEnabled) args.length > 0 ? loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${(0, _sv443_network_coreutils.autoPlural)("argument", args)}:`, ...args) : loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
+				if (siteEventLoggingEnabled) args.length > 0 ? loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' with ${args.length} ${(0, _sv443_network_userutils.autoPlural)("argument", args)}:`, ...args) : loggers.siteEvent.log(`Emitted site event 'bytm:siteEvent:${key}' (without data)`);
 			};
 			if (!bytmReady) {
 				const startTs = Date.now();
@@ -3484,9 +3482,9 @@
 	*/
 	async function addStyle(css, ref, transform = (c) => c) {
 		if (!(0, _sv443_network_userutils.isDomLoaded)()) throw new Error("DOM has not finished loading yet");
-		const elem = (0, _sv443_network_userutils.addGlobalStyle)(await transform(await (0, _sv443_network_coreutils.consumeStringGen)(css)));
+		const elem = (0, _sv443_network_userutils.addGlobalStyle)(await transform(await (0, _sv443_network_userutils.consumeStringGen)(css)));
 		elem.classList.add("bytm-style");
-		elem.id = `bytm-style-${ref ?? (0, _sv443_network_coreutils.randomId)(6, 36)}`;
+		elem.id = `bytm-style-${ref ?? (0, _sv443_network_userutils.randomId)(6, 36)}`;
 		return elem;
 	}
 	/**
@@ -3546,7 +3544,7 @@
 	}
 	var trustedTypesSupported = typeof window?.trustedTypes?.createPolicy === "function";
 	var ttPolicy;
-	var tempTargetAttrName = `data-tmp-target-${(0, _sv443_network_coreutils.randomId)(6, 36)}`;
+	var tempTargetAttrName = `data-tmp-target-${(0, _sv443_network_userutils.randomId)(6, 36)}`;
 	dompurify.default.addHook("beforeSanitizeAttributes", (node) => {
 		if (node.tagName === "A") {
 			if (!node.hasAttribute("target")) node.setAttribute("target", "_self");
@@ -3611,7 +3609,7 @@
 		try {
 			if (!sessionStorageAvailable$1) throw new Error("Session storage unavailable");
 			let sesId = window.sessionStorage.getItem("_bytm-session-id");
-			if (!sesId) window.sessionStorage.setItem("_bytm-session-id", sesId = (0, _sv443_network_coreutils.randomId)(10, 36));
+			if (!sesId) window.sessionStorage.setItem("_bytm-session-id", sesId = (0, _sv443_network_userutils.randomId)(10, 36));
 			return sesId;
 		} catch (err) {
 			loggers.misc.warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
@@ -3623,7 +3621,7 @@
 	async function compressionSupported() {
 		if (typeof isCompressionSupported === "boolean") return isCompressionSupported;
 		try {
-			await (0, _sv443_network_coreutils.compress)(".", compressionFormat$1, "string");
+			await (0, _sv443_network_userutils.compress)(".", compressionFormat$1, "string");
 			return isCompressionSupported = true;
 		} catch {
 			return isCompressionSupported = false;
@@ -3658,18 +3656,18 @@
 	/** Tries to parse an uncompressed or compressed input string as a JSON object */
 	async function tryToDecompressAndParse(input) {
 		let parsed;
-		const val = await (0, _sv443_network_coreutils.consumeStringGen)(input);
+		const val = await (0, _sv443_network_userutils.consumeStringGen)(input);
 		try {
 			parsed = JSON.parse(val);
 		} catch {
 			try {
-				parsed = JSON.parse(await (0, _sv443_network_coreutils.decompress)(val, compressionFormat$1, "string"));
+				parsed = JSON.parse(await (0, _sv443_network_userutils.decompress)(val, compressionFormat$1, "string"));
 			} catch (err) {
 				loggers.misc.error("Couldn't decompress and parse data.", err);
 				return null;
 			}
 		}
-		await (0, _sv443_network_coreutils.pauseFor)((0, _sv443_network_coreutils.randRange)(400, 800));
+		await (0, _sv443_network_userutils.pauseFor)((0, _sv443_network_userutils.randRange)(400, 800));
 		return parsed;
 	}
 	/** Formats a number based on the config or the passed {@linkcode notation} */
@@ -3683,7 +3681,7 @@
 			maximumFractionDigits: 0
 		});
 	}
-	var reloadTabStore = new _sv443_network_coreutils.DataStore({
+	var reloadTabStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-reload-tab",
 		engine: new _sv443_network_userutils.GMStorageEngine(),
 		formatVersion: 0,
@@ -3767,7 +3765,7 @@
 	var resourceCacheTTL = 1e3 * 60 * 60 * 24 * 7;
 	var resourceCacheKey = scriptInfo$1.version;
 	/** Cache for resources fetched via {@linkcode resourceAsString()} */
-	var resourceCacheStore = new _sv443_network_coreutils.DataStore({
+	var resourceCacheStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-resource-cache",
 		formatVersion: 0,
 		engine: new _sv443_network_userutils.GMStorageEngine(),
@@ -3822,7 +3820,7 @@
 		try {
 			if (!resourceUrl) throw new Error(`Couldn't find URL for resource '${resourceKey}'`);
 			logResourceFetch(resourceKey);
-			const res = await (0, _sv443_network_coreutils.fetchAdvanced)(resourceUrl);
+			const res = await (0, _sv443_network_userutils.fetchAdvanced)(resourceUrl);
 			if (!res.ok) throw new Error(`Couldn't fetch resource '${resourceKey}' at URL '${resourceUrl}' with status ${res.status} (${res.statusText})`);
 			const str = await res.text();
 			if (cachedResourcePrefixes.some((prefix) => resourceKey.startsWith(prefix)) && !await resourceCacheHas(resourceKey)) await resourceCacheSet(resourceKey, str);
@@ -3847,7 +3845,7 @@
 	}
 	/** Returns the content of the changelog markdown file */
 	async function getChangelogMd() {
-		const clRes = await (0, _sv443_network_coreutils.fetchAdvanced)(changelogUrl);
+		const clRes = await (0, _sv443_network_userutils.fetchAdvanced)(changelogUrl);
 		loggers.misc.log("Fetched changelog:", clRes);
 		return await clRes.text();
 	}
@@ -3966,11 +3964,11 @@
 			toastElem.title = toastElem.ariaLabel = rest.title;
 		}
 		document.body.appendChild(toastElem);
-		(0, _sv443_network_coreutils.pauseFor)(100).then(() => {
+		(0, _sv443_network_userutils.pauseFor)(100).then(() => {
 			toastElem.classList.add("visible");
 			if (durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
 				timeout && clearTimeout(timeout);
-				timeout = setTimeout(closeToast, (0, _sv443_network_coreutils.clamp)(durationMs, 250, maxToastDuration));
+				timeout = setTimeout(closeToast, (0, _sv443_network_userutils.clamp)(durationMs, 250, maxToastDuration));
 			}
 		});
 		if (toastQueue.length > 0) return new Promise((resolve) => {
@@ -4041,7 +4039,7 @@
 	var openDialogs = [];
 	var setCurrentDialogId = (id) => currentDialogId = id;
 	/** Creates and manages a modal dialog element */
-	var BytmDialog = class BytmDialog extends _sv443_network_coreutils.NanoEmitter {
+	var BytmDialog = class BytmDialog extends _sv443_network_userutils.NanoEmitter {
 		/** Lets low-level modules like the Logger recognize a dialog without having to import this class */
 		[Symbol.toStringTag] = "BytmDialog";
 		options;
@@ -4297,7 +4295,7 @@
 		async renderBody() {
 			const bodyEl = document.createElement("div");
 			bodyEl.classList.add("bytm-md-dialog-body");
-			const mdCont = await (0, _sv443_network_coreutils.consumeStringGen)(this.opts.body);
+			const mdCont = await (0, _sv443_network_userutils.consumeStringGen)(this.opts.body);
 			const markdownEl = document.createElement("div");
 			markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
 			markdownEl.tabIndex = 0;
@@ -4424,7 +4422,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				inputElem.autofocus = true;
 				inputElem.autocomplete = "off";
 				inputElem.spellcheck = false;
-				inputElem.value = "defaultValue" in rest && rest.defaultValue ? await (0, _sv443_network_coreutils.consumeStringGen)(rest.defaultValue) : "";
+				inputElem.value = "defaultValue" in rest && rest.defaultValue ? await (0, _sv443_network_userutils.consumeStringGen)(rest.defaultValue) : "";
 				const inputEnterListener = (e) => {
 					if ("code" in e && ["Enter", "NumpadEnter"].includes(e.code)) {
 						inputElem.removeEventListener("keydown", inputEnterListener);
@@ -4583,7 +4581,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	//#endregion
 	//#region src/features/lyricsCache.ts
-	var lyricsCacheStore = new _sv443_network_coreutils.DataStore({
+	var lyricsCacheStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-lyrics-cache",
 		defaultData: { cache: [] },
 		formatVersion: 3,
@@ -4697,7 +4695,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/components/toggleInput.ts
 	/** Creates a simple toggle element */
-	async function createToggleInput({ onChange, initialValue = false, id = (0, _sv443_network_coreutils.randomId)(6, 36), labelPos = "left" }) {
+	async function createToggleInput({ onChange, initialValue = false, id = (0, _sv443_network_userutils.randomId)(6, 36), labelPos = "left" }) {
 		const wrapperEl = document.createElement("div");
 		wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
 		wrapperEl.role = "switch";
@@ -4955,7 +4953,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			sizeSmOnce = true;
 			addSelectorListener("playerBarRightControls", getSelector("volume", "volSliderExpanded_sub_playerBarRightControls"), { listener: (el) => onSliderElExists("expand", el) });
 		};
-		window.addEventListener("resize", (0, _sv443_network_coreutils.debounce)(onResize, Math.floor(1e3 / 6)), { passive: true });
+		window.addEventListener("resize", (0, _sv443_network_userutils.debounce)(onResize, Math.floor(1e3 / 6)), { passive: true });
 		waitVideoElementReady().then(onResize);
 		onResize();
 	}
@@ -5039,7 +5037,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		/** Renders the given volume value in the range [0, 100] after adjusting for the configured exponential scaling. */
 		const getAdjustedVolValue = (val) => {
 			if (isNaN(val)) return String(val);
-			val = (0, _sv443_network_coreutils.clamp)(val, 0, 100);
+			val = (0, _sv443_network_userutils.clamp)(val, 0, 100);
 			const valAdjusted = (expVolFn(val / 100) * 100).toFixed(1);
 			return ["0.0", "100.0"].includes(valAdjusted) ? valAdjusted.slice(0, -2) : valAdjusted;
 		};
@@ -5217,9 +5215,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	]);
 	/** Creates an HTML string for the given adornment properties */
 	async function getAdornHtml(className, title, resource, extraAttributes, clickDialogText) {
-		title = title ? await (0, _sv443_network_coreutils.consumeStringGen)(title) : void 0;
-		extraAttributes = extraAttributes ? await (0, _sv443_network_coreutils.consumeStringGen)(extraAttributes) : void 0;
-		const id = (0, _sv443_network_coreutils.randomId)(8, 36);
+		title = title ? await (0, _sv443_network_userutils.consumeStringGen)(title) : void 0;
+		extraAttributes = extraAttributes ? await (0, _sv443_network_userutils.consumeStringGen)(extraAttributes) : void 0;
+		const id = (0, _sv443_network_userutils.randomId)(8, 36);
 		if (clickDialogText) siteEvents.once("cfgMenuMounted", () => {
 			const elem = document.getElementById(`bytm-adornment-${id}`);
 			if (!elem) return;
@@ -5277,8 +5275,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			ensureIntegrity: false,
 			stringifyData: false
 		};
-		if (!full) return serializer ??= new _sv443_network_coreutils.DataStoreSerializer(getSerializerStores(), dsOpts);
-		else return fullSerializer ??= new _sv443_network_coreutils.DataStoreSerializer(getSerializerStoresFull(), dsOpts);
+		if (!full) return serializer ??= new _sv443_network_userutils.DataStoreSerializer(getSerializerStores(), dsOpts);
+		else return fullSerializer ??= new _sv443_network_userutils.DataStoreSerializer(getSerializerStoresFull(), dsOpts);
 	}
 	window.addEventListener("bytm:ready", async () => {
 		const promises = [];
@@ -5386,7 +5384,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/features/autoLike.ts
 	/** DataStore instance for all auto-liked channels */
-	var autoLikeStore = new _sv443_network_coreutils.DataStore({
+	var autoLikeStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-auto-like-channels",
 		formatVersion: 2,
 		defaultData: { channels: [] },
@@ -5617,7 +5615,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			headerEl.role = "heading";
 			headerEl.ariaLevel = "1";
 			headerEl.tabIndex = 0;
-			headerEl.textContent = headerEl.ariaLabel = await (0, _sv443_network_coreutils.consumeStringGen)(opts.title);
+			headerEl.textContent = headerEl.ariaLabel = await (0, _sv443_network_userutils.consumeStringGen)(opts.title);
 			return headerEl;
 		}
 		static async renderBody(opts) {
@@ -5630,14 +5628,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				descEl.classList.add("bytm-exim-dialog-desc");
 				descEl.role = "note";
 				descEl.tabIndex = 0;
-				descEl.textContent = descEl.ariaLabel = await (0, _sv443_network_coreutils.consumeStringGen)(opts.descExport);
+				descEl.textContent = descEl.ariaLabel = await (0, _sv443_network_userutils.consumeStringGen)(opts.descExport);
 				const dataEl = document.createElement("textarea");
 				dataEl.classList.add("bytm-exim-dialog-data");
 				dataEl.readOnly = true;
 				dataEl.tabIndex = 0;
 				dataEl.value = t("click_to_reveal");
 				onInteraction(dataEl, async () => {
-					dataEl.value = await (0, _sv443_network_coreutils.consumeStringGen)(opts.exportData);
+					dataEl.value = await (0, _sv443_network_userutils.consumeStringGen)(opts.exportData);
 					dataEl.setSelectionRange(0, dataEl.value.length);
 				});
 				const exportCenterBtnCont = document.createElement("div");
@@ -5648,7 +5646,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					resourceName: "icon-copy",
 					ripple: true,
 					async onClick({ shiftKey }) {
-						copyToClipboard(await (0, _sv443_network_coreutils.consumeStringGen)(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
+						copyToClipboard(await (0, _sv443_network_userutils.consumeStringGen)(shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData));
 						await showToast({ message: t("copied_to_clipboard") });
 					}
 				});
@@ -5662,7 +5660,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				descEl.classList.add("bytm-exim-dialog-desc");
 				descEl.role = "note";
 				descEl.tabIndex = 0;
-				descEl.textContent = descEl.ariaLabel = await (0, _sv443_network_coreutils.consumeStringGen)(opts.descImport);
+				descEl.textContent = descEl.ariaLabel = await (0, _sv443_network_userutils.consumeStringGen)(opts.descImport);
 				const dataEl = document.createElement("textarea");
 				dataEl.classList.add("bytm-exim-dialog-data");
 				dataEl.tabIndex = 0;
@@ -5761,7 +5759,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			id: "auto-like-channels-export-import",
 			width: 800,
 			height: 600,
-			exportData: async () => await compressionSupported() ? await (0, _sv443_network_coreutils.compress)(JSON.stringify(autoLikeStore.getData()), compressionFormat$1, "string") : JSON.stringify(autoLikeStore.getData()),
+			exportData: async () => await compressionSupported() ? await (0, _sv443_network_userutils.compress)(JSON.stringify(autoLikeStore.getData()), compressionFormat$1, "string") : JSON.stringify(autoLikeStore.getData()),
 			exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
 			async onImport(data) {
 				try {
@@ -5835,7 +5833,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		searchbarEl.autofocus = true;
 		searchbarEl.autocomplete = searchbarEl.autocapitalize = "off";
 		searchbarEl.spellcheck = false;
-		searchbarEl.addEventListener("input", (0, _sv443_network_coreutils.debounce)(() => {
+		searchbarEl.addEventListener("input", (0, _sv443_network_userutils.debounce)(() => {
 			const searchVal = searchbarEl.value.trim().toLowerCase();
 			const rows = document.querySelectorAll(".bytm-auto-like-channel-row");
 			for (const row of rows) {
@@ -5859,7 +5857,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		searchContLeftSideEl.appendChild(searchClearEl);
 		const channelListCont = document.createElement("div");
 		channelListCont.id = "bytm-auto-like-channels-list";
-		const setChannelEnabled = (0, _sv443_network_coreutils.debounce)((id, enabled) => {
+		const setChannelEnabled = (0, _sv443_network_userutils.debounce)((id, enabled) => {
 			autoLikeStore.setData({ channels: autoLikeStore.getData().channels.map((ch) => ch.id === id ? {
 				...ch,
 				enabled
@@ -6041,7 +6039,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/utils/broadcast.ts
 	/** Random ID used to identify the sender of packets emitted via broadcast, and to determine which packets should be received based on the `to` field of the transmitted packets. */
-	var broadcastTxID = (0, _sv443_network_coreutils.randomId)(10, 36);
+	var broadcastTxID = (0, _sv443_network_userutils.randomId)(10, 36);
 	var broadcastEngDSOpts = {
 		id: "bytm-broadcast",
 		encodeData: [null, (d) => d],
@@ -6069,7 +6067,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		});
 		else loggers.broadcast.error(`${GM_info.scriptHandler} doesn't have GM.addValueChangeListener support, inter-session communication will not work!`);
 		getSerializerStoresFull().forEach((store) => {
-			store.on("updateData", (0, _sv443_network_coreutils.debounce)(() => {
+			store.on("updateData", (0, _sv443_network_userutils.debounce)(() => {
 				emitBroadcast({
 					type: "dataStoreUpdate",
 					data: { id: store.id }
@@ -6146,16 +6144,16 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		receivedNonces.add(packet.nonce);
 		if (packet.from === broadcastTxID || Array.isArray(packet.to) && !packet.to.includes(broadcastTxID ?? "")) return;
 		if (getFeature("logEvents")) loggers.broadcast.log(`Received broadcast packet of type "${packet.packet.type}" from session "${packet.from}":`, packet);
-		const packetClean = (0, _sv443_network_coreutils.pureObj)(packet);
+		const packetClean = (0, _sv443_network_userutils.pureObj)(packet);
 		forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
 		forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean);
 	}
 	/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
 	async function reloadAllTabs(reloadSelf = true, toTxIDs) {
-		loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${(0, _sv443_network_coreutils.autoPlural)("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
+		loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${(0, _sv443_network_userutils.autoPlural)("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
 		emitBroadcast({ type: "reloadTabs" }, toTxIDs);
 		return reloadSelf ? await (async () => {
-			await (0, _sv443_network_coreutils.pauseFor)(30);
+			await (0, _sv443_network_userutils.pauseFor)(30);
 			return await reloadTab();
 		})() : void 0;
 	}
@@ -6286,7 +6284,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			}));
 			loggers.lyrics.log("Requesting lyrics from geniURL:", fetchUrl);
 			const token = getFeature("geniUrlToken");
-			const fetchRes = await (0, _sv443_network_coreutils.fetchAdvanced)(fetchUrl, { ...token ? { headers: { Authorization: `Bearer ${token}` } } : {} });
+			const fetchRes = await (0, _sv443_network_userutils.fetchAdvanced)(fetchUrl, { ...token ? { headers: { Authorization: `Bearer ${token}` } } : {} });
 			if (fetchRes.status === 429) {
 				const waitSeconds = Number(fetchRes.headers.get("Retry-After") ?? geniUrlRatelimitTimeframe);
 				await showPrompt({
@@ -6444,7 +6442,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (evt.code === "ArrowLeft") skipBy *= -1;
 			loggers.input.log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
 			const vidElem = getVideoElement();
-			if (vidElem && vidElem.readyState > 0) vidElem.currentTime = (0, _sv443_network_coreutils.clamp)(vidElem.currentTime + skipBy, 0, vidElem.duration);
+			if (vidElem && vidElem.readyState > 0) vidElem.currentTime = (0, _sv443_network_userutils.clamp)(vidElem.currentTime + skipBy, 0, vidElem.duration);
 		});
 		loggers.input.log("Added arrow key press listener");
 	}
@@ -6454,7 +6452,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		if (!getVideoElement()) return loggers.input.warn("Couldn't find video element, so the keypress is ignored");
 		if (!sliderEl) return loggers.input.warn("Couldn't find volume slider element, so the keypress is ignored");
 		const step = Number(sliderEl.step);
-		const newVol = (0, _sv443_network_coreutils.clamp)(Number(sliderEl.value) + (evt.code === "ArrowUp" ? 1 : -1) * (0, _sv443_network_coreutils.clamp)(getFeature("arrowKeyVolumeStep", featDefaults.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
+		const newVol = (0, _sv443_network_userutils.clamp)(Number(sliderEl.value) + (evt.code === "ArrowUp" ? 1 : -1) * (0, _sv443_network_userutils.clamp)(getFeature("arrowKeyVolumeStep", featDefaults.arrowKeyVolumeStep.default), isNaN(step) ? 5 : step, 100), 0, 100);
 		if (newVol !== Number(sliderEl.value)) {
 			sliderEl.value = String(newVol);
 			sliderEl.dispatchEvent(new Event("change", { bubbles: true }));
@@ -6471,7 +6469,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			evt.preventDefault();
 			evt.stopImmediatePropagation();
 			const newTime = vid.currentTime + getFeature("frameSkipAmount") * (evt.code === "Comma" ? -1 : 1);
-			vid.currentTime = (0, _sv443_network_coreutils.clamp)(newTime, 0, vid.duration);
+			vid.currentTime = (0, _sv443_network_userutils.clamp)(newTime, 0, vid.duration);
 			loggers.input.log(`Captured key '${evt.code}' and skipped to ${Math.floor(newTime / 60)}m ${(newTime % 60).toFixed(1)}s (${Math.floor(newTime * 1e3 % 1e3)}ms)`);
 		});
 		loggers.input.log("Added frame skip key press listener");
@@ -6493,7 +6491,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const videoTime = await getVideoTime();
 				const dpBuffer = getFeature("numKeysSkipToTimeDoublePressBuffer");
 				const vidTimeIsClose = dpBuffer > 0 && videoTime ? Math.abs(videoTime - newVidTime) < dpBuffer : false;
-				const vidTimeAtStartOrEnd = (0, _sv443_network_coreutils.valsWithin)(videoTime ?? -Infinity, vidElem.duration, 1) || (0, _sv443_network_coreutils.valsWithin)(videoTime ?? Infinity, 0, 1);
+				const vidTimeAtStartOrEnd = (0, _sv443_network_userutils.valsWithin)(videoTime ?? -Infinity, vidElem.duration, 1) || (0, _sv443_network_userutils.valsWithin)(videoTime ?? Infinity, 0, 1);
 				if (lastKeyPress[1] !== e.key || Date.now() - lastKeyPress[0] > doublePressTime) {
 					lastKeyPress[0] = Date.now();
 					lastKeyPress[1] = e.key;
@@ -6568,7 +6566,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			itemEl.classList.add("bytm-plugin-perms-item");
 			itemEl.tabIndex = 0;
 			itemEl.title = t(`plugin_intent_description.${PluginIntent[intent]}`) + `\n[Dev] value: ${intent} - name: ${PluginIntent[intent]}`;
-			const initialValue = Array.isArray(perms) ? (0, _sv443_network_coreutils.bitSetHas)(perms[0], intent) : true;
+			const initialValue = Array.isArray(perms) ? (0, _sv443_network_userutils.bitSetHas)(perms[0], intent) : true;
 			const toggleEl = await createToggleInput({
 				id: `plugin-intent-${intent}`,
 				initialValue,
@@ -6802,7 +6800,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	//#endregion
 	//#region src/interface.ts
 	var { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants_exports;
-	var { autoPlural: autoPlural$4, NanoEmitter, pureObj: pureObj$1 } = _sv443_network_coreutils;
+	var { autoPlural: autoPlural$4, NanoEmitter, pureObj: pureObj$1 } = _sv443_network_userutils;
 	/**
 	* All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
 	* If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
@@ -6881,7 +6879,6 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			getBytmDialog,
 			getExImDialog,
 			getMarkdownDialog,
-			CoreUtils: _sv443_network_coreutils,
 			UserUtils: _sv443_network_userutils,
 			compareVersions: compare_versions
 		};
@@ -7019,7 +7016,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	}
 	/** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 	var devPluginToken;
-	var devPluginId = _sv443_network_coreutils.randomId(8, 36, true, true);
+	var devPluginId = _sv443_network_userutils.randomId(8, 36, true, true);
 	var devPluginKey;
 	/** Registers a plugin that only exists in development mode to test the plugin system */
 	async function registerDevPlugin() {
@@ -7096,7 +7093,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const asArray = (value) => Array.isArray(value) ? value : [value];
 		const perms = (typeof args[0] === "string" && typeof args[1] === "string" ? asArray(args[2]) : asArray(args[1])) ?? [];
 		if (!Array.isArray(perms)) throw new TypeError("The second argument must be an array of PluginIntent values");
-		return _sv443_network_userutils.bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => _sv443_network_coreutils.bitSetHas(plugin.grantedPerms, perm));
+		return _sv443_network_userutils.bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => _sv443_network_userutils.bitSetHas(plugin.grantedPerms, perm));
 	}
 	/** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 	function validatePluginDef(pluginDef) {
@@ -7324,7 +7321,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const isDevPlugin = Boolean(pluginKey === devPluginIdentifier && getPluginInfo(devPluginToken, devPluginIdentifier));
 			const permsBitSet = getRegisteredPlugins().find(([key]) => key === pluginKey)?.[1].grantedPerms;
 			const intentsAmount = Object.keys(PluginIntent).length / 2;
-			const permsArr = permsBitSet ? (0, _sv443_network_coreutils.bitSetHas)(permsBitSet, PluginIntent.FullAccess) ? [PluginIntent.FullAccess] : typeof permsBitSet === "number" ? (() => {
+			const permsArr = permsBitSet ? (0, _sv443_network_userutils.bitSetHas)(permsBitSet, PluginIntent.FullAccess) ? [PluginIntent.FullAccess] : typeof permsBitSet === "number" ? (() => {
 				const arr = [];
 				for (let i = 0; i < intentsAmount; i++) if (permsBitSet & 2 ** i) arr.push(2 ** i);
 				return arr;
@@ -7639,7 +7636,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	* this file needs. Each entry spreads its {@linkcode featDefaults} counterpart rather than
 	* repeating the value - see `@feat/featDefaults.ts` for why.
 	*/
-	var ExampleError = class extends _sv443_network_coreutils.DatedError {
+	var ExampleError = class extends _sv443_network_userutils.DatedError {
 		constructor(message, options) {
 			super(message, options);
 			this.name = "ExampleError";
@@ -9269,7 +9266,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				id: "config-export-import",
 				width: 800,
 				height: 600,
-				exportData: async () => await compressionSupported() ? await (0, _sv443_network_coreutils.compress)(JSON.stringify({
+				exportData: async () => await compressionSupported() ? await (0, _sv443_network_userutils.compress)(JSON.stringify({
 					formatVersion: 12,
 					data: getFeatures()
 				}), compressionFormat$1, "string") : exportDataSpecial(),
@@ -9441,7 +9438,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const ftInfo = featInfo?.[key];
 				const valueHidden = ftInfo && "valueHidden" in ftInfo && ftInfo.valueHidden === true;
 				if (["number", "slider"].includes(ftInfo.type)) {
-					if ("min" in ftInfo || "max" in ftInfo) newVal = (0, _sv443_network_coreutils.clamp)(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
+					if ("min" in ftInfo || "max" in ftInfo) newVal = (0, _sv443_network_userutils.clamp)(Number(newVal), "min" in ftInfo ? Number(ftInfo.min) : -Infinity, "max" in ftInfo ? Number(ftInfo.max) : Infinity);
 					if ("step" in ftInfo) newVal = Math.round(Number(newVal) / Number(ftInfo.step)) * Number(ftInfo.step);
 				}
 				try {
@@ -9523,7 +9520,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				}
 			};
 			/** Call whenever the feature config is changed */
-			const confChanged = (0, _sv443_network_coreutils.debounce)(onCfgChange, 333);
+			const confChanged = (0, _sv443_network_userutils.debounce)(onCfgChange, 333);
 			/**
 			* Formats the value `v` based on the provided `key` using the `featInfo` object.  
 			* If a custom `renderValue` function is defined for the `key`, it will be used to format the value.  
@@ -9829,7 +9826,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 											customInputEl.classList.remove("bytm-busy");
 											customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
 										};
-										const rTime = (0, _sv443_network_coreutils.randRange)(200, 400);
+										const rTime = (0, _sv443_network_userutils.randRange)(200, 400);
 										if (Date.now() - startTs < rTime) setTimeout(finalize, rTime - (Date.now() - startTs));
 										else finalize();
 									});
@@ -9860,7 +9857,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					const aboutTextCont = document.createElement("p");
 					aboutTextCont.id = "bytm-cfg-menu-about-text-cont";
 					aboutTextCont.classList.add("bytm-markdown-container");
-					setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", (0, _sv443_network_coreutils.pureObj)({
+					setInnerHtml(aboutTextCont, await parseMarkdown(t("about_bytm_content_markdown", (0, _sv443_network_userutils.pureObj)({
 						scriptName: scriptInfo$1.name,
 						scriptVersion: package_default.version,
 						buildNumber: buildNumber$1,
@@ -10022,7 +10019,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			menuContainer.appendChild(footerCont);
 			backgroundElem.appendChild(menuContainer);
 			(document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
-			window.addEventListener("resize", (0, _sv443_network_coreutils.debounce)(checkToggleScrollIndicator, 250), { passive: true });
+			window.addEventListener("resize", (0, _sv443_network_userutils.debounce)(checkToggleScrollIndicator, 250), { passive: true });
 			isCfgMenuOpen = false;
 			document.body.classList.remove("bytm-disable-scroll");
 			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
@@ -10197,7 +10194,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			try {
 				if (improveLogoCalled) return;
 				improveLogoCalled = true;
-				const svg = await (await (0, _sv443_network_coreutils.fetchAdvanced)("https://music.youtube.com/img/on_platform_logo_dark.svg")).text();
+				const svg = await (await (0, _sv443_network_userutils.fetchAdvanced)("https://music.youtube.com/img/on_platform_logo_dark.svg")).text();
 				addSelectorListener("navBar", "ytmusic-logo > a", { listener: (logoElem) => {
 					logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
 					setInnerHtml(logoElem, svg);
@@ -10341,7 +10338,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			};
 			addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer", { listener: (sidebarCont) => {
 				const itemsAmt = addSidebarAnchors(sidebarCont);
-				loggers.layout.log(`Added anchors around ${itemsAmt} sidebar ${(0, _sv443_network_coreutils.autoPlural)("item", itemsAmt)}`);
+				loggers.layout.log(`Added anchors around ${itemsAmt} sidebar ${(0, _sv443_network_userutils.autoPlural)("item", itemsAmt)}`);
 			} });
 			addSelectorListener("body", "ytmusic-nav-bar", { listener(navBar) {
 				let miniSidebarCont = document.querySelector("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
@@ -10355,7 +10352,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				const improveMiniSidebarAnchors = () => {
 					const itemsAmt = addSidebarAnchors(miniSidebarCont);
 					navBar.classList.add("bytm-mini-sidebar-anchors-added");
-					loggers.layout.log(`Added anchors around ${itemsAmt} mini sidebar ${(0, _sv443_network_coreutils.autoPlural)("item", itemsAmt)}`);
+					loggers.layout.log(`Added anchors around ${itemsAmt} mini sidebar ${(0, _sv443_network_userutils.autoPlural)("item", itemsAmt)}`);
 					mut.disconnect();
 				};
 				if (miniSidebarCont) improveMiniSidebarAnchors();
@@ -10373,7 +10370,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 							const items = songListEl.querySelectorAll("ytmusic-player-queue-item");
 							if (!items.length) return;
 							const itemsAmt = improveSongListClickArea(items);
-							itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} current song list ${(0, _sv443_network_coreutils.autoPlural)("item", itemsAmt)}`);
+							itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} current song list ${(0, _sv443_network_userutils.autoPlural)("item", itemsAmt)}`);
 						});
 					}
 				});
@@ -10385,7 +10382,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					const items = songListEl.querySelectorAll("ytmusic-responsive-list-item-renderer, .card-content-container");
 					if (!items.length) return;
 					const itemsAmt = improveSongListClickArea(items);
-					itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} song list ${(0, _sv443_network_coreutils.autoPlural)("item", itemsAmt)}`);
+					itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} song list ${(0, _sv443_network_userutils.autoPlural)("item", itemsAmt)}`);
 				});
 			};
 			const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
@@ -10574,7 +10571,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		}, 1);
 	}
 	/** Album artwork cache */
-	var artCacheStore = new _sv443_network_coreutils.DataStore({
+	var artCacheStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-artwork-cache",
 		migrateIds: ["album-art-cache"],
 		formatVersion: 1,
@@ -10902,7 +10899,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				show();
 				cursorHideTimerCb();
 			};
-			vidContainer.addEventListener("mousemove", (0, _sv443_network_coreutils.debounce)(onMove, 150), { capture: true });
+			vidContainer.addEventListener("mousemove", (0, _sv443_network_userutils.debounce)(onMove, 150), { capture: true });
 			vidContainer.addEventListener("mouseleave", () => {
 				cursorHideTimer && clearTimeout(cursorHideTimer);
 				hideTransTimer && clearTimeout(hideTransTimer);
@@ -11052,7 +11049,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const mainPanel = document.querySelector(globservers.mainPanel.baseElement);
 			loggers.layout.log("Initialized watch page full size", mainPanel);
 			if (mainPanel) {
-				window.addEventListener("resize", (0, _sv443_network_coreutils.debounce)(() => {
+				window.addEventListener("resize", (0, _sv443_network_userutils.debounce)(() => {
 					const headerHeight = document.querySelector("ytmusic-header-renderer")?.offsetHeight ?? 0;
 					mainPanel.style.maxHeight = `calc(100vh - ${headerHeight}px - 50px)`;
 					loggers.misc.dbg("Set main panel max height to", mainPanel.style.maxHeight);
@@ -11108,7 +11105,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			return setStaticData(data_default);
 		}
 	}
-	var alertsStore = new _sv443_network_coreutils.DataStore({
+	var alertsStore = new _sv443_network_userutils.DataStore({
 		id: "bytm-alerts",
 		defaultData: { dismissed: [] },
 		formatVersion: 0,
@@ -11218,14 +11215,14 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		try {
 			const oldData = await configStore.engine.getValue(`${configStore.keyPrefix}${configStore.id}-dat`, "{}");
 			const oldDataObj = JSON.parse(oldData);
-			if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0) oldDataHash = await (0, _sv443_network_coreutils.computeHash)(JSON.stringify(oldDataObj), "sha256");
+			if (oldDataObj !== null && typeof oldDataObj === "object" && Object.keys(oldDataObj).length > 0) oldDataHash = await (0, _sv443_network_userutils.computeHash)(JSON.stringify(oldDataObj), "sha256");
 		} catch {}
 		const rawData = await configStore.loadData();
 		let data = fixCfgKeys(rawData);
 		setErrorToastsEnabled(Boolean(data.showToastOnGenericError));
 		setLogEventsEnabled(Boolean(data.logEvents));
 		setSiteEventLogging(Boolean(data.logEvents));
-		if (oldDataHash && oldDataHash !== await (0, _sv443_network_coreutils.computeHash)(JSON.stringify(data), "sha256")) {
+		if (oldDataHash && oldDataHash !== await (0, _sv443_network_userutils.computeHash)(JSON.stringify(data), "sha256")) {
 			if (await showPrompt({
 				type: "confirm",
 				message: t("config_data_changed_prompt_open_menu"),
@@ -11244,7 +11241,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			loggers.data.error("  ⚠️ - Config data migration failed, falling back to default data:", err);
 			await configStore.setData(data = configStore.defaultData);
 		}
-		else if (await (0, _sv443_network_coreutils.computeHash)(JSON.stringify(rawData), "SHA-256") !== await (0, _sv443_network_coreutils.computeHash)(JSON.stringify(data), "SHA-256")) {
+		else if (await (0, _sv443_network_userutils.computeHash)(JSON.stringify(rawData), "SHA-256") !== await (0, _sv443_network_userutils.computeHash)(JSON.stringify(data), "SHA-256")) {
 			await configStore.setData(data);
 			loggers.data.info("  ⚠️ - Fixed missing or extraneous config keys without a version change");
 		}
@@ -11296,14 +11293,14 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				addQueueButtons(queueItm, void 0, "currentQueue");
 				amt++;
 			}
-			if (amt > 0) loggers.songLists.log(`Added buttons to ${amt} new queue ${(0, _sv443_network_coreutils.autoPlural)("item", amt)}`);
+			if (amt > 0) loggers.songLists.log(`Added buttons to ${amt} new queue ${(0, _sv443_network_userutils.autoPlural)("item", amt)}`);
 		};
 		siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "currentQueueContainer")));
 		siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "autoplayQueueContainer")));
 		const queueItems = document.querySelectorAll(getSelector("songLists", "allCurrentQueueItems_global"));
 		if (queueItems.length > 0) {
 			queueItems.forEach((itm) => addQueueButtons(itm, void 0, "currentQueue"));
-			loggers.songLists.log(`Added buttons to ${queueItems.length} existing "current song queue" ${(0, _sv443_network_coreutils.autoPlural)("item", queueItems)}`);
+			loggers.songLists.log(`Added buttons to ${queueItems.length} existing "current song queue" ${(0, _sv443_network_userutils.autoPlural)("item", queueItems)}`);
 		}
 		/** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
 		const tryAddGenericListQueueBtns = (listElem) => {
@@ -11316,9 +11313,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
 				addedBtnsCount++;
 			});
-			addedBtnsCount > 0 && loggers.songLists.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${(0, _sv443_network_coreutils.autoPlural)("item", addedBtnsCount)} in list`, listElem);
+			addedBtnsCount > 0 && loggers.songLists.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${(0, _sv443_network_userutils.autoPlural)("item", addedBtnsCount)} in list`, listElem);
 		};
-		const debouncedIdleSongListCheck = (0, _sv443_network_coreutils.debounce)((songLists) => {
+		const debouncedIdleSongListCheck = (0, _sv443_network_userutils.debounce)((songLists) => {
 			doSongListsChecks(songLists, true);
 		}, 750, "idle");
 		const doSongListsChecks = (songLists, isDebounced = false) => {
@@ -11503,7 +11500,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					}
 					queuePopupCont = document.querySelector(getSelector("songLists", "queueItemPopoverContainer"));
 					queuePopupCont?.setAttribute("data-bytm-hidden", "true");
-					await (0, _sv443_network_coreutils.pauseFor)(15);
+					await (0, _sv443_network_userutils.pauseFor)(15);
 					delImgElem.src = deleteIconUrl;
 					delImgElem.classList.remove("bytm-spinner");
 					const removeFromQueueOrPlaylistBtn = queuePopupCont?.querySelector(getSelector("songLists", "queueItemPopoverRemoveFromListBtn"));
@@ -11513,7 +11510,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					else if (removeFromQueueOrPlaylistBtn) removeFromQueueBtn = removeFromQueueOrPlaylistBtn;
 					removeFromQueueBtn?.click();
 					if (removeFromQueueBtn && listType === "genericList") {
-						await (0, _sv443_network_coreutils.pauseFor)(200);
+						await (0, _sv443_network_userutils.pauseFor)(200);
 						clearInner(queueItem);
 						queueItem.remove();
 					}
@@ -11580,7 +11577,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						if (!toastElem || !toastElem.hasAttribute("allow-click-through")) continue;
 						if (toastElem.classList.contains("bytm-closing")) continue;
 						toastElem.classList.add("bytm-closing");
-						await (0, _sv443_network_coreutils.pauseFor)(Math.max(getFeature("closeToastsTimeout") * 1e3 + animTimeout, animTimeout));
+						await (0, _sv443_network_userutils.pauseFor)(Math.max(getFeature("closeToastsTimeout") * 1e3 + animTimeout, animTimeout));
 						toastElem.classList.remove("paper-toast-open");
 						toastElem.addEventListener("transitionend", () => {
 							toastElem.classList.remove("bytm-closing");
@@ -11603,7 +11600,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	var prevTime = -1;
 	/** Initializes the autoScrollToActiveSong feature */
 	async function initAutoScrollToActiveSong() {
-		(0, _sv443_network_coreutils.createRecurringTask)({
+		(0, _sv443_network_userutils.createRecurringTask)({
 			timeout: 50,
 			async task() {
 				const vidEl = await waitVideoElementReady();
@@ -11641,9 +11638,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		if (remTimeEntries.some((e) => "watchID" in e)) {
 			remTimeEntries = remTimeEntries.filter((e) => "id" in e);
 			await GM.setValue("bytm-remember-times", JSON.stringify(remTimeEntries));
-			loggers.behavior.log(`Removed ${remTimeEntries.length} ${(0, _sv443_network_coreutils.autoPlural)("entry", remTimeEntries)} with an outdated format from the video time cache`);
+			loggers.behavior.log(`Removed ${remTimeEntries.length} ${(0, _sv443_network_userutils.autoPlural)("entry", remTimeEntries)} with an outdated format from the video time cache`);
 		}
-		loggers.behavior.log(`Initialized video time restoring with ${remTimeEntries.length} initial ${(0, _sv443_network_coreutils.autoPlural)("entry", remTimeEntries)}:`, remTimeEntries);
+		loggers.behavior.log(`Initialized video time restoring with ${remTimeEntries.length} initial ${(0, _sv443_network_userutils.autoPlural)("entry", remTimeEntries)}:`, remTimeEntries);
 		await remTimeTryRestoreTime();
 		try {
 			if (!(0, _sv443_network_userutils.isDomLoaded)()) document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop, { once: true });
@@ -11683,7 +11680,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						const doRestoreTime = async () => {
 							if (!vidElem) vidElem = await waitVideoElementReady();
 							const vidRestoreTime = entry.time - getFeature("rememberSongTimeReduction", 0);
-							vidElem.currentTime = (0, _sv443_network_coreutils.clamp)(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+							vidElem.currentTime = (0, _sv443_network_userutils.clamp)(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
 							await remTimeDeleteEntry(entry.id);
 							loggers.behavior.info(`Restored ${getDomain() === "ytm" ? getCurrentMediaType() : "video"} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
 							return resolve(true);
@@ -11838,8 +11835,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			const vidEl = getVideoElement();
 			if (!vidEl) return;
 			for (let i = 0; i < 20; i++) {
-				const x = Math.random() * (0, _sv443_network_coreutils.clamp)(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100);
-				const y = Math.random() * (0, _sv443_network_coreutils.clamp)(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
+				const x = Math.random() * (0, _sv443_network_userutils.clamp)(window.innerWidth, 100, Math.max(200, window.innerWidth) - 100);
+				const y = Math.random() * (0, _sv443_network_userutils.clamp)(window.innerHeight, 100, Math.max(200, window.innerHeight) - 100);
 				vidEl?.dispatchEvent(new MouseEvent("mousemove", {
 					bubbles: true,
 					cancelable: true,
@@ -11851,10 +11848,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					movementY: incY,
 					view: (0, _sv443_network_userutils.getUnsafeWindow)()
 				}));
-				await (0, _sv443_network_coreutils.pauseFor)(10);
+				await (0, _sv443_network_userutils.pauseFor)(10);
 			}
 		};
-		(0, _sv443_network_coreutils.setImmediateInterval)(async () => {
+		(0, _sv443_network_userutils.setImmediateInterval)(async () => {
 			if (!getFeature("yesImStillThere")) return;
 			tryClick();
 			await tryMove();
@@ -12421,7 +12418,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			const initTimeout = feats.initTimeout > 0 ? feats.initTimeout : 8e3;
 			const initializedFeats = [];
 			const endFeatInitDur = measureInitDuration("featuresAllReady_deferred");
-			Promise.race([(0, _sv443_network_coreutils.pauseFor)(initTimeout), Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
+			Promise.race([(0, _sv443_network_userutils.pauseFor)(initTimeout), Promise.allSettled(ftInit.map(([name, prom]) => new Promise(async (res) => {
 				const v = await prom;
 				perfReport.featureDurations = {
 					...perfReport.featureDurations ?? {},
@@ -12550,7 +12547,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				/** Whether a -dat key is encoded. Assumes that compressionFormat never changes. */
 				const isEncoded = isDatKey ? String(await GM.getValue(`__ds-${dsID}-enf`, "null")) !== "null" : false;
 				const val = await GM.getValue(key, void 0);
-				values[key] = typeof val !== "undefined" && isEncoded ? await (0, _sv443_network_coreutils.decompress)(val, "deflate-raw", "string") : val;
+				values[key] = typeof val !== "undefined" && isEncoded ? await (0, _sv443_network_userutils.decompress)(val, "deflate-raw", "string") : val;
 				longestKey = Math.max(longestKey, key.length);
 			} catch (err) {
 				decodeError(key, err);
@@ -12633,7 +12630,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 						const val = dlg.getInputValue();
 						try {
 							if (val && val.length > 0) {
-								const result = await (0, _sv443_network_coreutils.compress)(val, "deflate-raw");
+								const result = await (0, _sv443_network_userutils.compress)(val, "deflate-raw");
 								dlg.emitResolve(result);
 								dlg.close();
 								await showFinalPrompt("compress", val, result);
@@ -12652,7 +12649,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 						const val = dlg.getInputValue();
 						try {
 							if (val && val.length > 0) {
-								const result = await (0, _sv443_network_coreutils.decompress)(val, "deflate-raw");
+								const result = await (0, _sv443_network_userutils.decompress)(val, "deflate-raw");
 								dlg.emitResolve(result);
 								await showFinalPrompt("decompress", val, result);
 								dlg.close();
@@ -12711,11 +12708,11 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		GM.registerMenuCommand(getCmdName("🧩", "menu_command.unregister_all_plugins"), () => {
 			unregisterPlugins(getRegisteredPlugins().map(([, { def }]) => def), true);
 		});
-		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new _sv443_network_coreutils.CustomError("ExampleError", "Test error")));
+		isDev && GM.registerMenuCommand(getCmdName("💥", "menu_command.throw_example_error"), () => loggers.command.error("Test error thrown by user command:", new _sv443_network_userutils.CustomError("ExampleError", "Test error")));
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "84bf1957",
+				buildNumber: "5e66c62f",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
@@ -12753,8 +12750,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 					"color: #db3; font-weight: bold;",
 					"color: inherit; font-weight: inherit;"
 				], []);
-				console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${(0, _sv443_network_coreutils.autoPlural)("tab", sessions)}:\n${(0, _sv443_network_coreutils.createTable)([columns, ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
-					const initSince = (0, _sv443_network_coreutils.secsToTimeStr)(Math.floor((Date.now() - initTime) / 1e3)).padStart(4, "0");
+				console.log(`${loggers.command.conPrefix} Collected information from ${sessions.length} open ${(0, _sv443_network_userutils.autoPlural)("tab", sessions)}:\n${(0, _sv443_network_userutils.createTable)([columns, ...sessions.map(([txID, { sessionId, version, buildNumber, title, domain, initTime }], i) => {
+					const initSince = (0, _sv443_network_userutils.secsToTimeStr)(Math.floor((Date.now() - initTime) / 1e3)).padStart(4, "0");
 					return [
 						i + 1,
 						txID === broadcastTxID ? "Yes" : "No",
@@ -12801,4 +12798,4 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 	}
 	preInit();
 	//#endregion
-})(CoreUtils, UserUtils, marked, DOMPurify, compareVersions);
+})(UserUtils, marked, DOMPurify, compareVersions);
