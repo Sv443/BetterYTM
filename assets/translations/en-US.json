@@ -171,6 +171,10 @@
   "list_button_placement_generic_lists": "In generic song lists only",
   "list_button_placement_everywhere": "In every song list",
 
+  "style_option.gradient": "Gradient",
+  "style_option.opaque": "Opaque",
+  "style_option.transparent": "Transparent",
+
   "alert_mode.never": "Never",
   "alert_mode.all": "Show all alerts",
   "alert_mode.important_only": "Important alerts only",
@@ -455,9 +459,11 @@
   "feature_desc.deleteFromQueueButton": "Add a button to each song in a list to quickly remove it",
   "feature_desc.listButtonsPlacement": "Where should the list buttons show up?",
   "feature_helptext.listButtonsPlacement": "There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.",
+  "feature_desc.listButtonsStyle": "How to style the buttons in the currently playing queue",
   "feature_desc.scrollToActiveSongBtn": "Add a button above the queue to scroll to the currently playing song",
   "feature_desc.clearQueueBtn": "Add a button above the currently playing queue or playlist to quickly clear it",
   "feature_desc.aboveQueueBtnsSticky": "Always position the element containing the buttons above the queue at the top of the list",
+  "feature_desc.aboveQueueHeaderStyle": "How to style the header above the currently playing queue",
   "feature_desc.songListTrackNumbersEnabled": "Add track numbers to song lists",
   "feature_desc.songListTrackNumbers": "Where should the track numbers be shown?",
   "feature_desc.songListTrackNumbersDomains": "On which sites should the track numbers be shown?",

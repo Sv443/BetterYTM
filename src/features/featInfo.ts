@@ -54,17 +54,20 @@ const removeEmoji = (str: string) => str.replace(/(\p{Emoji_Presentation}|\p{Ext
 
 /** Common options for config items of type "select" */
 const options = {
+  /** `all`, `yt`, `ytm` */
   siteSelection: () => [
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
   ] satisfies SelectOption<SiteSelection>[],
+  /** `all`, `yt`, `ytm`, `none` */
   siteSelectionOrNone: () => [
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
     { value: "none", label: t("site_selection_none") },
   ] satisfies SelectOption<SiteSelectionOrNone>[],
+  /** Any key of {@linkcode langMapping} (`assets/locales.json`) */
   locale: () => Object.entries(langMapping)
     .reduce((a, [locale, { name, emoji }]) => (
       [...a, {
@@ -73,25 +76,34 @@ const options = {
       }]
     ), [] as SelectOption[])
     .sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
+  /** `darker`, `normal`, `lighter` */
   colorLightness: () => [
     { value: "darker", label: t("color_lightness.darker") },
     { value: "normal", label: t("color_lightness.normal") },
     { value: "lighter", label: t("color_lightness.lighter") },
   ] satisfies SelectOption<ColorLightnessPref>[],
+  /** `am`, `yt` */
   thumbOverlaySources: () => [
     { value: "am", label: t("thumbnail_overlay.source_am") },
     { value: "yt", label: t("thumbnail_overlay.source_yt") },
   ] satisfies SelectOption<FeatureConfig["thumbnailOverlayPreferredSource"]>[],
+  /** `currentQueue`, `genericLists`, `everywhere` */
   songListType: () => [
     { value: "currentQueue", label: t("list_button_placement_queue_only") },
     { value: "genericLists", label: t("list_button_placement_generic_lists") },
     { value: "everywhere", label: t("list_button_placement_everywhere") },
   ] satisfies SelectOption<FeatureConfig["songListTrackNumbers"]>[],
+  /** `never`, `all`, `importantOnly` */
   alertMode: () => [
     { value: "never", label: t("alert_mode.never") },
     { value: "all", label: t("alert_mode.all") },
     { value: "importantOnly", label: t("alert_mode.important_only") },
   ] satisfies SelectOption<FeatureConfig["globalAlertMode"]>[],
+  /** `opaque`, `transparent` */
+  binaryOpacity: () => ([
+    { value: "opaque", label: t("style_option.opaque") },
+    { value: "transparent", label: t("style_option.transparent") },
+  ]),
 } as const;
 
 //#region # features
@@ -510,6 +522,17 @@ export const featInfo = {
     reloadRequired: false,
     adornments: [adornments.ytmOnly],
   },
+  listButtonsStyle: {
+    ...featDefaults.listButtonsStyle,
+    options: () => ([
+      ...options.binaryOpacity(),
+      { value: "gradient", label: t("style_option.gradient") },
+    ]),
+    category: "songLists",
+    group: "queueButtons",
+    supportedSites: ["ytm"],
+    adornments: [adornments.ytmOnly, adornments.reload],
+  },
   scrollToActiveSongBtn: {
     ...featDefaults.scrollToActiveSongBtn,
     category: "songLists",
@@ -531,6 +554,14 @@ export const featInfo = {
     supportedSites: ["ytm"],
     advanced: true,
     adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
+  },
+  aboveQueueHeaderStyle: {
+    ...featDefaults.aboveQueueHeaderStyle,
+    options: options.binaryOpacity,
+    category: "songLists",
+    group: "aboveQueueButtons",
+    supportedSites: ["ytm"],
+    adornments: [adornments.ytmOnly, adornments.reload],
   },
   songListTrackNumbersEnabled: {
     ...featDefaults.songListTrackNumbersEnabled,

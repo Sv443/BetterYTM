@@ -37,7 +37,7 @@ import {
   improveLogo,
 } from "@feat/layout.ts";
 import { initVolumeFeatures, initExponentialVolume } from "@feat/volume.ts";
-import { initQueueButtons, addTrackNumbers } from "@feat/songLists.ts";
+import { initCurrentQueue, initQueueButtons, addTrackNumbers } from "@feat/songLists.ts";
 import {
   initBeforeUnloadHook, initAutoCloseToasts, initRememberVideoTime,
   initAutoScrollToActiveSong, initStillThere,
@@ -48,7 +48,7 @@ import { initHotkeys } from "@feat/hotkeys.ts";
 import { addPlayerBarLyricsBtn } from "@feat/lyrics.ts";
 import { initLyricsCache } from "@feat/lyricsCache.ts";
 import {
-  disableDarkReader, fixSponsorBlock, fixPlayerPageTheming,
+  disableDarkReader, fixSponsorBlock,
   fixThemeSong, setThemeSongVisualizerOpacity,
 } from "@feat/integrations.ts";
 import { initVersionCheck } from "@feat/versionCheck.ts";
@@ -321,6 +321,8 @@ async function onDomLoad() {
 
       //#region (ytm) song lists
 
+      ftInit.push(["initCurrentQueue", initCurrentQueue()]);
+
       if(feats.lyricsQueueButton || feats.deleteFromQueueButton)
         ftInit.push(["queueButtons", initQueueButtons()]);
 
@@ -354,15 +356,11 @@ async function onDomLoad() {
       if(feats.sponsorBlockIntegration)
         ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
 
-      const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
-
       if(feats.themeSongVisualizerOpacity !== 100)
         ftInit.push(["themeSongVisualizerOpacity", setThemeSongVisualizerOpacity()]);
 
       if(feats.themeSongIntegration)
-        ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);
-      else
-        ftInit.push(["themeSongIntegration", Promise.allSettled([fixPlayerPageTheming(), hideThemeSongLogo])]);
+        ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), addStyleFromResource("css-hide_themesong_logo")])]);
 
       if(feats.removeThumbnailRatingBar)
         ftInit.push(["removeThumbnailRatingBar", (async () => void await addStyleFromResource("css-remove_thumb_rating_bar"))()]);

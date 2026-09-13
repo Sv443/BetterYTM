@@ -27,6 +27,7 @@ export type LogCategory = LooseUnion<
   | "Plugin"
   | "Observer"
   | "SiteEvent"
+  | "SongLists"
   | "Translation"
   | "Volume"
   | "XHR"
@@ -68,6 +69,7 @@ export const loggerCategoryMapping = {
   plugin:        "Plugin",
   observer:      "Observer",
   siteEvent:     "SiteEvent",
+  songLists:     "SongLists",
   translation:   "Translation",
   volume:        "Volume",
   xhr:           "XHR",

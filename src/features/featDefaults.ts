@@ -25,7 +25,7 @@ export const featDefaults = {
   configMenuFocusContentButtonEnabled: {
     type: "toggle",
     default: false,
-    since: "3.2.0",
+    since: "4.0.0",
   },
   initTimeout: {
     type: "number",
@@ -44,17 +44,17 @@ export const featDefaults = {
   verboseObservers: {
     type: "toggle",
     default: false,
-    since: "3.2.0",
+    since: "4.0.0",
   },
   globalAlertMode: {
     type: "select",
     default: "all",
-    since: "3.2.0",
+    since: "4.0.0",
   },
   openWelcomeMenu: {
     type: "button",
     default: undefined,
-    since: "3.2.0",
+    since: "4.0.0",
   },
   versionCheck: {
     type: "toggle",
@@ -142,7 +142,7 @@ export const featDefaults = {
     type: "toggle",
     default: true,
     tags: ["privacy", "network"] as FeatureTag[],
-    since: "3.2.0",
+    since: "4.0.0",
   },
   thumbnailOverlayBehavior: {
     type: "select",
@@ -228,6 +228,11 @@ export const featDefaults = {
     default: "everywhere",
     since: "1.1.0",
   },
+  listButtonsStyle: {
+    type: "select",
+    default: "opaque",
+    since: "4.0.0",
+  },
   scrollToActiveSongBtn: {
     type: "toggle",
     default: true,
@@ -243,6 +248,11 @@ export const featDefaults = {
     default: true,
     since: "3.0.0",
   },
+  aboveQueueHeaderStyle: {
+    type: "select",
+    default: "transparent",
+    since: "4.0.0",
+  },
   songListTrackNumbersEnabled: {
     type: "toggle",
     default: true,
@@ -256,7 +266,7 @@ export const featDefaults = {
   songListTrackNumbersDomains: {
     type: "select",
     default: "all",
-    since: "3.2.0",
+    since: "4.0.0",
   },
   geniusLyrics: {
     type: "toggle",
@@ -424,7 +434,7 @@ export const featDefaults = {
   autoScrollToActiveSongEnabled: {
     type: "toggle",
     default: true,
-    since: "3.2.0",
+    since: "4.0.0",
   },
   autoScrollToActiveSongMode: {
     type: "select",
@@ -588,7 +598,7 @@ export const featDefaults = {
   lyricsSearchPromptHotkeyEnabled: {
     type: "toggle",
     default: true,
-    since: "3.2.0",
+    since: "4.0.0",
   },
   lyricsSearchPromptHotkey: {
     type: "hotkey",
@@ -598,7 +608,7 @@ export const featDefaults = {
       ctrl: false,
       alt: true,
     },
-    since: "3.2.0",
+    since: "4.0.0",
   },
   skipToRemTimeHotkeyEnabled: {
     type: "toggle",
@@ -648,7 +658,7 @@ export const featDefaults = {
   interactionLockHotkeyEnabled: {
     type: "toggle",
     default: true,
-    since: "3.2.0",
+    since: "4.0.0",
   },
   interactionLockHotkey: {
     type: "hotkey",
@@ -658,14 +668,14 @@ export const featDefaults = {
       ctrl: false,
       alt: true,
     },
-    since: "3.2.0",
+    since: "4.0.0",
   },
   interactionLockOverlayTimeout: {
     type: "slider",
     default: 5,
     min: 0,
     max: 10,
-    since: "3.2.0",
+    since: "4.0.0",
   },
   rebindNextAndPrevious: {
     type: "toggle",

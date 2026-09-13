@@ -34,16 +34,6 @@ export async function fixSponsorBlock() {
 
 //#region ThemeSong
 
-/** Adjust the BetterYTM styles if ThemeSong is ***not*** used */
-export async function fixPlayerPageTheming() {
-  try {
-    return await addStyleFromResource("css-fix_playerpage_theming");
-  }
-  catch(err) {
-    loggers.integration.error("Failed to fix BetterYTM player page theming:", err);
-  }
-}
-
 /** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
 export async function fixThemeSong() {
   try {

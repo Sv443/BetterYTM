@@ -303,6 +303,8 @@ export const cfgMigrations: DataMigrationsDict = {
       "interactionLockHotkey",
       "interactionLockOverlayTimeout",
       "songListTrackNumbersDomains",
+      "listButtonsStyle",
+      "aboveQueueHeaderStyle",
     ]);
   },
 } as const satisfies DataMigrationsDict;

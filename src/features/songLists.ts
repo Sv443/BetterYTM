@@ -8,6 +8,7 @@ import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { onInteraction } from "@util/input.ts";
 import { t } from "@util/translations.ts";
+import { getSelector } from "@util/selectors.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { fetchLyricsUrlTop, createLyricsBtn, splitVideoTitle } from "@feat/lyrics.ts";
@@ -19,10 +20,32 @@ import { showPrompt } from "@dialog/prompt.ts";
 import { getFeature } from "@/config.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 import "@feat/songLists.css";
-import { getSelector } from "@util/selectors.ts";
 
 /** Whether any song list item's checkbox is currently checked */
 let isCheckboxChecked = false;
+
+//#region init current queue
+
+/** Initializes the current song queue styling. */
+export async function initCurrentQueue() {
+  const promises: Promise<unknown>[] = [];
+
+  try {
+    promises.push(addStyleFromResource(getFeature("aboveQueueHeaderStyle") === "transparent" ? "css-queue_header_transparent" : "css-queue_header_opaque"));
+  }
+  catch(err) {
+    loggers.songLists.error("Couldn't add current queue header style due to error:", err);
+  }
+
+  try {
+    promises.push(addStyleFromResource(`css-queue_item_${getFeature("listButtonsStyle")}`));
+  }
+  catch(err) {
+    loggers.songLists.error("Couldn't add current queue list item style due to error:", err);
+  }
+
+  return await Promise.all(promises);
+}
 
 //#region init queue btns
 

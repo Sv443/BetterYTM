@@ -1059,12 +1059,16 @@ export interface FeatureConfig {
   deleteFromQueueButton: boolean;
   /** Where to place the buttons in the queue */
   listButtonsPlacement: "currentQueue" | "genericLists" | "everywhere";
+  /** How the buttons in the currently playing queue should be styled. */
+  listButtonsStyle: "gradient" | "opaque";
   /** Add a button above the queue to scroll to the currently playing song */
   scrollToActiveSongBtn: boolean;
   /** Add a button above the queue to clear it */
   clearQueueBtn: boolean;
   /** Whether the above queue button container should use sticky positioning */
   aboveQueueBtnsSticky: boolean;
+  /** How the header above the currently playing queue should be styled. */
+  aboveQueueHeaderStyle: "transparent" | "opaque";
   /** Add track numbers to each song list item */
   songListTrackNumbersEnabled: boolean;
   /** On which domains to add track numbers to song list items */
