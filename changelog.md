@@ -2,7 +2,6 @@
 <div class="split"></div>
 
 <!-- #region 4.0.0 -->
-<!-- TODO: <details> -->
 ## 4.0.0
 - **New Features:**
   - Turkish translations (by [@kcangny](https://github.com/kcangny)).
@@ -30,6 +29,10 @@
   - Made error toasts show up again after being broken when toast queueing was overhauled.
   - Song list buttons show up more consistently now, like when a playlist has more than 100 entries or when they are moved via drag & drop.
   - When multiple dialog windows are opened at a time, the focus locks will now be set correctly.
+
+<details><summary><b><i>Click to expand plugin and internal changes</i></b></summary>
+<sup>(I did my best to order these by relevance for each section)</sup>
+
 - **Plugin Changes:**
   - ⚠️ **BREAKING:** The `registerPlugin()` function passed by the events `bytm:preInitPlugin` and `bytm:registerPlugin` will now return a `Promise<PluginRegisterResult>`, so that the page can show the new plugin permission dialog.  
     Now that a plugin's intents can be denied, it's important to check for the permissions returned by the `registerPlugin()` function at runtime.
@@ -63,6 +66,8 @@
   - Added type `YTInitialPlayerResponse` exported by `src/types.ts`, for the global YT variable `ytInitialPlayerResponse`.
   - Made `getVideoElement()` work with the YT Shorts player too.
   - The <kbd>NumpadEnter</kbd> key will now also trigger interactions like the <kbd>Enter</kbd> and <kbd>Space</kbd> keys.
+
+</details>
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/172" rel="noopener noreferrer">Also see pull request #172</a>
