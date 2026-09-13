@@ -1,7 +1,9 @@
 import { NanoEmitter } from "@sv443-network/coreutils";
 import { isDomLoaded } from "@sv443-network/userutils";
 import type { EventsMap } from "nanoevents";
-import { clearInner, getResourceUrl, onInteraction } from "@util/index.ts";
+import { clearInner } from "@util/dom.ts";
+import { onInteraction } from "@util/input.ts";
+import { getResourceUrl } from "@util/resourceUrl.ts";
 import { getSelector } from "@util/selectors.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";

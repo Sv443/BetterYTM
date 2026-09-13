@@ -1,5 +1,8 @@
 import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";
-import { getOS, hasKey, interactionKeys, onInteraction, setInnerHtml, t } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { interactionKeys, onInteraction } from "@util/input.ts";
+import { getOS } from "@util/pure.ts";
+import { hasKey, t } from "@util/translations.ts";
 import type { HotkeyObj } from "@/types.ts";
 import "@comp/hotkeyInput.css";
 

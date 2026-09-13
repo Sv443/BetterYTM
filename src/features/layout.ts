@@ -3,7 +3,7 @@ import { addParent, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-n
 import { getFeature, getFeatures } from "@/config.ts";
 import { forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
-import { featInfo } from "@feat/index.ts";
+import { featInfo } from "@feat/featInfo.ts";
 import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import { formatNumber, getBestThumbnailUrl, resourceAsString, scrollToCurrentSongInQueue } from "@util/misc.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";

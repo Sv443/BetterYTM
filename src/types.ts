@@ -2,7 +2,15 @@ import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/coreutils
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener, globservers } from "@/observers.ts";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber, getVideoElement, getVideoSelector, reloadTab, getLikeDislikeBtns, fetchITunesAlbumInfo, resourceAsString, loggers, sanitizeUnicode, parseMarkdown, sanitizeHtml } from "@util/index.ts";
+import type { getVideoTime, waitVideoElementReady, setInnerHtml, getCurrentMediaType, getVideoElement, getVideoSelector, getLikeDislikeBtns, sanitizeHtml } from "@util/dom.ts";
+import type { getDomain } from "@util/domain.ts";
+import type { onInteraction } from "@util/input.ts";
+import type { loggers } from "@util/logging.ts";
+import type { getSessionId, getBestThumbnailUrl, formatNumber, reloadTab, resourceAsString, parseMarkdown } from "@util/misc.ts";
+import type { getThumbnailUrl, sanitizeUnicode } from "@util/pure.ts";
+import type { getResourceUrl } from "@util/resourceUrl.ts";
+import type { TrLocale, t, tp, getLocale, hasKey, hasKeyFor, tl, tlp } from "@util/translations.ts";
+import type { fetchVideoVotes, fetchITunesAlbumInfo } from "@util/xhr.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
 import type { fetchLyricsUrlTop, fuzzyFetchLyricsInfo } from "@feat/lyrics.ts";
@@ -19,7 +27,7 @@ import type { createRipple } from "@comp/ripple.ts";
 import type { showIconToast, showToast } from "@comp/toast.ts";
 import resources from "@asset/resources.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
-import type { featInfo } from "@feat/index.ts";
+import type { featInfo } from "@feat/featInfo.ts";
 import type { Logger } from "@util/Logger.ts";
 import type { getSelector } from "@util/selectors.ts";
 

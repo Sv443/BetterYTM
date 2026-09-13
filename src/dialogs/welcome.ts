@@ -6,7 +6,7 @@ import { openCfgMenu } from "@menu/menu.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { configSetFeatsWithTags, getFeature, getFeatures, getFeaturesWithTags, setFeatures } from "@/config.ts";
 import { mode, scriptInfo } from "@/constants.ts";
-import { featInfo } from "@feat/index.ts";
+import { featInfo } from "@feat/featInfo.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import { LogLevel, type ResourceKey } from "@/types.ts";

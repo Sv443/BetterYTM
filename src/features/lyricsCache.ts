@@ -3,7 +3,7 @@ import { GMStorageEngine } from "@sv443-network/userutils";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { getFeature } from "@/config.ts";
-import { loggers } from "@util/index.ts";
+import { loggers } from "@util/logging.ts";
 import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import type { LyricsCacheEntry } from "@/types.ts";
 

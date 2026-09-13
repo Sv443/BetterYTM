@@ -3,12 +3,20 @@ import { getUnsafeWindow, isDomLoaded, onDomLoad as onDomLoadedUu, preloadImages
 import { initBindings } from "@/bindings.ts";
 import { initStaticData } from "@util/data.js";
 import { enableDiscardBeforeUnload } from "@util/unloadGuard.ts";
-import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, getLocale, serializeLogs, getResourceUrl, initResourceCache, initVersionSessionCounter, reloadAllTabs, reloadTab, setGlobalCssVars, t, type TrKey, resourceFetches } from "@util/index.ts";
+import { addStyle, addStyleFromResource, copyToClipboard, downloadFile, setGlobalCssVars } from "@util/dom.ts";
+import { serializeLogs } from "@util/logging.ts";
+import { initResourceCache, reloadAllTabs, reloadTab, resourceFetches } from "@util/misc.ts";
+import { getResourceUrl } from "@util/resourceUrl.ts";
+import { getLocale, t, type TrKey } from "@util/translations.ts";
+import { initVersionSessionCounter } from "@util/versionSessions.ts";
 import { clearConfig, getFeature, getFeatures } from "@/config.ts";
 import { initConfig } from "@/configInit.ts";
 import { assetSource, buildNumber, compressionFormat, defaultLogLevel, initTime, mode, rawConsts, scriptInfo } from "@/constants.ts";
-import { getDomain, getSessionId, setLogLevel, initTranslations, setLocale } from "@util/index.ts";
-import { loggers } from "@util/index.ts";
+import { getDomain } from "@util/domain.ts";
+import { setLogLevel } from "@util/logging.ts";
+import { getSessionId } from "@util/misc.ts";
+import { initTranslations, setLocale } from "@util/translations.ts";
+import { loggers } from "@util/logging.ts";
 import { broadcastTxID, emitBroadcast, initBroadcast, type BroadcastPacketDataMap } from "@util/broadcast.ts";
 import { initSiteEvents, siteEvents } from "@/siteEvents.ts";
 import { devPluginToken, preInitInterface, initPlugins, preInitPlugins, unregisterPlugins, getRegisteredPlugins, reloadPluginData } from "@/interface.ts";
@@ -19,41 +27,31 @@ import { getWelcomeDialog } from "@dialog/welcome.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { mountCfgMenu, openCfgMenu } from "@menu/menu.ts";
 import {
-  // layout category:
   addWatermark, initRemShareTrackParam,
   fixSpacing, initTruncatePlayerBarSubtitles,
   initThumbnailOverlay, fixHdrIssues,
   initShowVotes, initSwapLikeDislikeBtns,
-  initWatchPageFullSize,
-  // volume category:
-  initVolumeFeatures, initExponentialVolume,
-  // song lists category:
-  initQueueButtons, initAboveQueueBtns,
-  addTrackNumbers,
-  // behavior category:
-  initBeforeUnloadHook,
-  initAutoCloseToasts, initRememberVideoTime,
-  initAutoScrollToActiveSong, initStillThere,
-  initHideCursorOnIdle,
-  // input category:
-  initArrowKeySkip, initFrameSkip,
-  addAnchorImprovements, initNumKeysSkip,
-  initAutoLike,
-  // hotkeys category:
-  initHotkeys,
-  // lyrics category:
-  addPlayerBarLyricsBtn, initLyricsCache,
-  // integrations category:
-  disableDarkReader, fixSponsorBlock,
-  fixPlayerPageTheming, fixThemeSong,
-  setThemeSongVisualizerOpacity,
-  // general category:
-  initVersionCheck,
-  // cfg menu:
+  initWatchPageFullSize, initAboveQueueBtns,
+  initHideCursorOnIdle, addAnchorImprovements,
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
-  // misc:
   improveLogo,
-} from "./features/index.js";
+} from "@feat/layout.ts";
+import { initVolumeFeatures, initExponentialVolume } from "@feat/volume.ts";
+import { initQueueButtons, addTrackNumbers } from "@feat/songLists.ts";
+import {
+  initBeforeUnloadHook, initAutoCloseToasts, initRememberVideoTime,
+  initAutoScrollToActiveSong, initStillThere,
+} from "@feat/behavior.ts";
+import { initArrowKeySkip, initFrameSkip, initNumKeysSkip } from "@feat/input.ts";
+import { initAutoLike } from "@feat/autoLike.ts";
+import { initHotkeys } from "@feat/hotkeys.ts";
+import { addPlayerBarLyricsBtn } from "@feat/lyrics.ts";
+import { initLyricsCache } from "@feat/lyricsCache.ts";
+import {
+  disableDarkReader, fixSponsorBlock, fixPlayerPageTheming,
+  fixThemeSong, setThemeSongVisualizerOpacity,
+} from "@feat/integrations.ts";
+import { initVersionCheck } from "@feat/versionCheck.ts";
 import { measureInitDuration, perfReport } from "@util/perf.js";
 import { LogLevel, type FeatureGroupKey, type FeatureKey, type PerformanceReport, type ResourceKey } from "@/types.ts";
 import localesJson from "@asset/locales.json" with { type: "json" };

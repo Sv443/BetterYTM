@@ -4,7 +4,7 @@ import { getDomain, isValidChannelId, parseChannelIdFromUrl } from "@util/domain
 import { loggers } from "@util/logging.ts";
 import { t, tp } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
-import { autoLikeStore, initAutoLikeStore } from "@feat/index.ts";
+import { autoLikeStore, initAutoLikeStore } from "@feat/autoLike.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { ExImDialog } from "@comp/ExImDialog.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";

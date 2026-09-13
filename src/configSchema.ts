@@ -11,7 +11,7 @@ import { loggers } from "@util/logging.ts";
  * Split out of {@linkcode "@/config.ts"} - which owns the live config store and needs to be
  * importable from almost every layer - because computing {@linkcode cfgDefaultData} needs
  * {@linkcode featDefaults} at module-init time. Kept separate from `featInfo` itself
- * ({@linkcode "@feat/index.ts"}), which pulls in dialogs, the menu and serializers to power its
+ * ({@linkcode "@feat/featDefaults.ts"}), which pulls in dialogs, the menu and serializers to power its
  * config-menu UI callbacks; this module only needs the plain default-value data.
  */
 

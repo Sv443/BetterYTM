@@ -4,7 +4,7 @@ import { LogLevel, type FeatureTag } from "@/types.ts";
 
 /**
  * Default value, type and validation-range metadata for every feature, keyed the same as
- * {@linkcode "@feat/index.ts".featInfo}.
+ * {@linkcode "@feat/featInfo.ts".featInfo}.
  *
  * Split out of `featInfo` because {@linkcode "@/configSchema.ts"} needs this at module-init time to
  * compute `cfgDefaultData`, while `featInfo` itself pulls in dialogs, the menu and serializers to

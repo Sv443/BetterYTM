@@ -1,5 +1,8 @@
 import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
-import { getOS, resourceAsString, setInnerHtml, t } from "@util/index.ts";
+import { setInnerHtml } from "@util/dom.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { getOS } from "@util/pure.ts";
+import { t } from "@util/translations.ts";
 import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 import "@dialog/prompt.css";
 

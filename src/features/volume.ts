@@ -11,7 +11,7 @@ import { loggers } from "@util/logging.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { t } from "@util/translations.ts";
 import { waitVideoElementReady } from "@util/dom.ts";
-import { featInfo } from "@feat/index.ts";
+import { featInfo } from "@feat/featInfo.ts";
 import "@feat/volume.css";
 
 //#region init vol features
