@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import k from "kleur";
+import { styleText } from "node:util";
 import { parse, stringify, moveComments, type CommentObject } from "comment-json";
 import locales from "../../assets/locales.json" with { type: "json" };
 
@@ -78,7 +78,7 @@ async function run() {
     : allLocales;
 
   if(!targetLocales.length) {
-    console.error(`${k.red("No matching locales found.")}\nExample: pnpm run tr-to-nested en-US,de-DE\n`);
+    console.error(`${styleText("red", "No matching locales found.")}\nExample: pnpm run tr-to-nested en-US,de-DE\n`);
     return schedExit(1);
   }
 
@@ -105,11 +105,11 @@ async function run() {
   }
 
   if(updatedTrFiles.length) {
-    console.log(`${k.green(`Nested the flat keys of ${updatedTrFiles.length} translation file${updatedTrFiles.length === 1 ? "" : "s"}:`)} ${[...updatedTrFiles].sort().join(", ")}\n`);
+    console.log(`${styleText("green", `Nested the flat keys of ${updatedTrFiles.length} translation file${updatedTrFiles.length === 1 ? "" : "s"}:`)} ${[...updatedTrFiles].sort().join(", ")}\n`);
     return schedExit(0);
   }
 
-  console.log(k.yellow("No translation files needed to be converted.\n"));
+  console.log(styleText("yellow", "No translation files needed to be converted.\n"));
   return schedExit(0);
 }
 

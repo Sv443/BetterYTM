@@ -4,9 +4,9 @@ import { createHash } from "node:crypto";
 import { exec } from "node:child_process";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { styleText } from "node:util";
 import { createTable } from "@sv443-network/coreutils";
 import type { Plugin, PluginOption, ResolvedConfig } from "vite";
-import k from "kleur";
 import localesJson from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };
 import type en_US from "../../assets/translations/en-US.json";
@@ -147,7 +147,7 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
       if(genMeta)
         await writeFile(join(rootPath, resolvedOutDir, `BetterYTM${suffix}.meta.js`), generatedHeader);
 
-      const modeText = k.bold().white(`${(buildMode === "production" ? k.bgMagenta : k.bgBlue)("(⭡)")}${k.bold().bgBlack(` ${buildMode} mode `)}`);
+      const modeText = styleText(["bold", "white"], `${styleText(buildMode === "production" ? "bgMagenta" : "bgBlue", "(⭡)")}${styleText(["bold", "bgBlack"], ` ${buildMode} mode `)}`);
 
       let buildStats: Partial<BuildStats>[] = [];
       if(await fileExists(buildStatsPath)) {
@@ -166,9 +166,9 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
         const sizeDiff = finalSizeKiB - prevBuildStats.sizeKiB;
         const sizeDiffTrunc = parseFloat(sizeDiff.toFixed(2));
         if(sizeDiffTrunc !== 0) {
-          const sizeCol = (sizeDiff > 0 ? k.yellow : k.green)().bold;
+          const sizeDiffCol = ["bold", sizeDiff > 0 ? "yellow" : "green"] as Parameters<typeof styleText>[0];
           const sizeDiffNum = `${sizeDiff > 0 ? "+" : sizeDiff !== 0 ? "-" : ""}${Math.abs(sizeDiffTrunc)}`;
-          sizeIndicator = ` ${k.gray("(")}${sizeCol(sizeDiffNum)}${k.gray(")")}`;
+          sizeIndicator = ` ${styleText("gray", "(")}${styleText(sizeDiffCol, sizeDiffNum)}${styleText("gray", ")")}`;
         }
       }
 
@@ -176,9 +176,9 @@ export function createBytmPlugin(options: BtymPluginOptions): Plugin {
       console.info([
         "",
         `Successfully built BetterYTM in ${modeText}`,
-        `Build number (last commit SHA): ${k.green(buildNumber)}`,
-        `Generated file ${k.underline(outFile)} with a size of ${k.green(`${finalSizeKiB} KiB`)}${sizeIndicator}`,
-        `Userscript URL: ${k.blue().underline(devServerUserscriptUrl)}`,
+        `Build number (last commit SHA): ${styleText("green", buildNumber)}`,
+        `Generated file ${styleText("underline", outFile)} with a size of ${styleText("green", `${finalSizeKiB} KiB`)}${sizeIndicator}`,
+        `Userscript URL: ${styleText(["blue", "underline"], devServerUserscriptUrl)}`,
         "",
       ].join("\n"));
 
@@ -433,7 +433,7 @@ async function getResourceDirectives(ref: string, options: BtymPluginOptions): P
         resourcesHashed[name] = { path: getResourceUrl(path, entryRef, options), ref: entryRef, hash: await getFileHash(path) };
       }
       catch(err) {
-        console.warn(k.yellow(`Couldn't add hashed resource '${name}':`), err);
+        console.warn(styleText("yellow", `Couldn't add hashed resource '${name}':`), err);
       }
     };
 
@@ -554,7 +554,7 @@ function getLocalizedDescriptions(): string | undefined {
     return descriptions.join("\n");
   }
   catch(err) {
-    console.warn(k.yellow("No localized descriptions found:"), err);
+    console.warn(styleText("yellow", "No localized descriptions found:"), err);
     return undefined;
   }
 }
@@ -659,7 +659,7 @@ export function getLastCommitSha(): Promise<string> {
   return new Promise((res, rej) => {
     exec("git rev-parse --short HEAD", (err, stdout, stderr) => {
       if(err) {
-        console.error(k.red("\nError while checking for latest Git commit.\nPlease ensure you have Git installed and set up properly.\n"), stderr);
+        console.error(styleText("red", "\nError while checking for latest Git commit.\nPlease ensure you have Git installed and set up properly.\n"), stderr);
         return rej(err);
       }
       return res(String(stdout).replace(/\r?\n/gm, "").trim());

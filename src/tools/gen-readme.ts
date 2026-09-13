@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import k from "kleur";
+import { styleText } from "node:util";
 import type { PluginJsonEntry } from "@/types.ts";
 import locales from "../../assets/locales.json" with { type: "json" };
 import pluginsJson from "../../assets/plugins.json" with { type: "json" };
@@ -44,7 +44,7 @@ async function run() {
     await writeFile(path, result);
   }
 
-  console.log(k.green("\nReadme files generated successfully\n"));
+  console.log(styleText("green", "\nReadme files generated successfully\n"));
 
   setImmediate(() => process.exit(0));
 }
