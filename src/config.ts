@@ -1,4 +1,4 @@
-import { DataStore, NanoEmitter } from "@sv443-network/coreutils";
+import { DataStore, NanoEmitter } from "@sv443-network/userutils";
 import { registerStore } from "@/core/storeRegistry.ts";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { featDefaults } from "@feat/featDefaults.ts";

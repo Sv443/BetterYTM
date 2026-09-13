@@ -1,4 +1,4 @@
-import { bitSetHas } from "@sv443-network/coreutils";
+import { bitSetHas } from "@sv443-network/userutils";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { devPluginId, devPluginToken, getPluginInfo, getRegisteredPlugins, unregisterPlugins } from "@/interface.ts";
 import { getLocale, activeLocaleDir, t } from "@util/translations.ts";

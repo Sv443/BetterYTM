@@ -1,4 +1,4 @@
-import { DatedError } from "@sv443-network/coreutils";
+import { DatedError } from "@sv443-network/userutils";
 import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import type { Domain } from "@/types.ts";

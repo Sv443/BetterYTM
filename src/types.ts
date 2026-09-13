@@ -1,4 +1,4 @@
-import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/coreutils";
+import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/userutils";
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener, globservers } from "@/observers.ts";
@@ -301,8 +301,6 @@ export type BytmObject =
   }
   // libraries
   & {
-    /** The entire CoreUtils library */
-    CoreUtils: typeof import("@sv443-network/coreutils");
     /** The entire UserUtils library */
     UserUtils: typeof import("@sv443-network/userutils");
     /** The entire compare-versions library */

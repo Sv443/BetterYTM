@@ -1,4 +1,4 @@
-import { pureObj, randomId } from "@sv443-network/coreutils";
+import { pureObj, randomId } from "@sv443-network/userutils";
 import { LogLevel } from "@/types.ts";
 
 /**

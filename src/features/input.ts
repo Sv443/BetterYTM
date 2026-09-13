@@ -1,4 +1,4 @@
-import { clamp, valsWithin } from "@sv443-network/coreutils";
+import { clamp, valsWithin } from "@sv443-network/userutils";
 import { getDomain } from "@util/domain.ts";
 import { getVideoElement, waitVideoElementReady, getVideoTime } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";

@@ -5,7 +5,7 @@ import { exec } from "node:child_process";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { styleText } from "node:util";
-import { createTable } from "@sv443-network/coreutils";
+import { createTable } from "@sv443-network/userutils";
 import type { Plugin, PluginOption, ResolvedConfig } from "vite";
 import localesJson from "../../assets/locales.json" with { type: "json" };
 import resourcesJson from "../../assets/resources.json" with { type: "json" };

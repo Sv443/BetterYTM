@@ -1,5 +1,4 @@
-import { pureObj } from "@sv443-network/coreutils";
-import { getUnsafeWindow } from "@sv443-network/userutils";
+import { getUnsafeWindow, pureObj } from "@sv443-network/userutils";
 import type { BytmObject } from "@/types.ts";
 
 /**

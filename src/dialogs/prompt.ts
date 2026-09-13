@@ -1,4 +1,4 @@
-import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
+import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import { setInnerHtml } from "@util/dom.ts";
 import { resourceAsString } from "@util/misc.ts";
 import { getOS } from "@util/pure.ts";

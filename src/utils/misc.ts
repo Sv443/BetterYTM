@@ -1,7 +1,6 @@
-import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
-import { registerStore } from "@/core/storeRegistry.ts";
-import { getUnsafeWindow, GMStorageEngine } from "@sv443-network/userutils";
+import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, getUnsafeWindow, GMStorageEngine, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/userutils";
 import { marked } from "marked";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { getThumbnailUrl, millis, type ThumbQuality } from "@util/pure.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { buildNumber, changelogUrl, compressionFormat, mode, scriptInfo, sessionStorageAvailable } from "@/constants.ts";

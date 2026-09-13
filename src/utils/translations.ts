@@ -1,5 +1,4 @@
-import { fetchAdvanced, type Stringifiable } from "@sv443-network/coreutils";
-import { tr } from "@sv443-network/userutils";
+import { fetchAdvanced, tr, type Stringifiable } from "@sv443-network/userutils";
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { loggers } from "@util/logging.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";

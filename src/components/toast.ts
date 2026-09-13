@@ -1,4 +1,4 @@
-import { clamp, pauseFor } from "@sv443-network/coreutils";
+import { clamp, pauseFor } from "@sv443-network/userutils";
 import { resourceAsString } from "@util/misc.ts";
 import { loggers } from "@util/logging.ts";
 import { setInnerHtml } from "@util/dom.ts";

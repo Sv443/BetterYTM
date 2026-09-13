@@ -1,5 +1,4 @@
-import { autoPlural, createRecurringTask, clamp, pauseFor, setImmediateInterval } from "@sv443-network/coreutils";
-import { getUnsafeWindow, interceptWindowEvent, isDomLoaded } from "@sv443-network/userutils";
+import { autoPlural, createRecurringTask, clamp, pauseFor, setImmediateInterval, getUnsafeWindow, interceptWindowEvent, isDomLoaded } from "@sv443-network/userutils";
 import { getFeature } from "@/config.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { initialParams } from "@/constants.ts";

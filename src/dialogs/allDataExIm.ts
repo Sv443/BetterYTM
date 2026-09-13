@@ -1,4 +1,4 @@
-import { consumeStringGen, type SerializedDataStore } from "@sv443-network/coreutils";
+import { consumeStringGen, type SerializedDataStore } from "@sv443-network/userutils";
 import { copyToClipboard, downloadFile } from "@util/dom.ts";
 import { t } from "@util/translations.ts";
 import { loggers } from "@util/logging.ts";

@@ -1,4 +1,4 @@
-import { DatedError, debounce } from "@sv443-network/coreutils";
+import { DatedError, debounce } from "@sv443-network/userutils";
 import { setGlobalProp } from "@/core/globals.ts";
 import { tryUse } from "@/core/hooks.ts";
 import { LogLevel } from "@/types.ts";

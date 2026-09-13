@@ -1,5 +1,4 @@
-import { DataStore, DatedError, bitSetHas } from "@sv443-network/coreutils";
-import { GMStorageEngine } from "@sv443-network/userutils";
+import { DataStore, DatedError, GMStorageEngine, bitSetHas } from "@sv443-network/userutils";
 import { registerStore } from "@/core/storeRegistry.ts";
 import type { PluginDef, PluginEventMap, PluginItem, PluginDefResolvable, BitSetTSEnum } from "@/types.ts";
 

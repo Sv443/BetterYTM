@@ -1,5 +1,4 @@
-import { type Stringifiable, clamp, debounce } from "@sv443-network/coreutils";
-import { addParent, getUnsafeWindow } from "@sv443-network/userutils";
+import { addParent, getUnsafeWindow, type Stringifiable, clamp, debounce } from "@sv443-network/userutils";
 import { addSelectorListener } from "@/observers.ts";
 import { addStyleFromResource, setGlobalCssVar, setInnerHtml } from "@util/dom.ts";
 import { interactionKeys } from "@util/input.ts";

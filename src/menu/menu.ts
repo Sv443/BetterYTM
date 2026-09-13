@@ -1,5 +1,4 @@
-import { clamp, compress, debounce, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/coreutils";
-import { isScrollable } from "@sv443-network/userutils";
+import { clamp, compress, debounce, isScrollable, pureObj, randRange, type LooseUnion, type Stringifiable } from "@sv443-network/userutils";
 import { getFeature, getFeatures, setFeatures } from "@/config.ts";
 import { type cfgDefaultData, cfgFormatVersion, cfgMigrations } from "@/configSchema.ts";
 import { branch, buildNumber, buildTimestamp, compressionFormat, host, mode, repo, scriptInfo } from "@/constants.ts";

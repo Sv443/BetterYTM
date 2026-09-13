@@ -1,7 +1,6 @@
-import { DataStore, fetchAdvanced } from "@sv443-network/coreutils";
-import { registerStore } from "@/core/storeRegistry.ts";
-import { GMStorageEngine } from "@sv443-network/userutils";
+import { DataStore, GMStorageEngine, fetchAdvanced } from "@sv443-network/userutils";
 import { compareVersions } from "compare-versions";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { branch, mode, repo, scriptInfo } from "@/constants.ts";
 import { setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";

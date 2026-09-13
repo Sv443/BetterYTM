@@ -1,5 +1,4 @@
-import { clamp, DatedError } from "@sv443-network/coreutils";
-import type { LooseUnion } from "@sv443-network/coreutils";
+import { clamp, DatedError, type LooseUnion } from "@sv443-network/userutils";
 import { scriptInfo } from "@/constants.ts";
 import { LogLevel } from "@/types.ts";
 

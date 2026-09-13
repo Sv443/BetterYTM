@@ -18,7 +18,7 @@
 const x = 0; void x;
 
 import { parseArgs, styleText } from "node:util";
-import { scheduleExit } from "@sv443-network/coreutils";
+import { scheduleExit } from "@sv443-network/userutils";
 import { trDelete } from "./tr/tr-delete.ts";
 import type { TrCommand } from "./tr/tr-types";
 

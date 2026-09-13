@@ -1,5 +1,4 @@
-import { DataStore } from "@sv443-network/coreutils";
-import { GMStorageEngine } from "@sv443-network/userutils";
+import { DataStore, GMStorageEngine } from "@sv443-network/userutils";
 import { getFeature } from "@/config.ts";
 import { addSelectorListener } from "@/observers.ts";
 import { emitSiteEvent, siteEvents } from "@/siteEvents.ts";

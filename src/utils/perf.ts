@@ -1,4 +1,4 @@
-import type { LooseUnion } from "@sv443-network/coreutils";
+import type { LooseUnion } from "@sv443-network/userutils";
 import { buildNumber, buildTimestamp, mode, scriptInfo } from "@/constants.ts";
 import { millis } from "@util/pure.ts";
 import { getDomain } from "@util/domain.ts";

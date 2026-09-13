@@ -1,4 +1,4 @@
-import { consumeStringGen, randomId, type StringGen } from "@sv443-network/coreutils";
+import { consumeStringGen, randomId, type StringGen } from "@sv443-network/userutils";
 import { compare as compareVer } from "compare-versions";
 import { t } from "@util/translations.ts";
 import { resourceAsString } from "@util/misc.ts";

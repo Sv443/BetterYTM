@@ -1,4 +1,4 @@
-import { ChecksumMismatchError, DataStoreSerializer, type DataStore, type DataStoreSerializerOptions } from "@sv443-network/coreutils";
+import { ChecksumMismatchError, DataStoreSerializer, type DataStore, type DataStoreSerializerOptions } from "@sv443-network/userutils";
 import { getStores } from "@/core/storeRegistry.ts";
 import { scriptInfo } from "@/constants.ts";
 import { showPrompt } from "@dialog/prompt.ts";

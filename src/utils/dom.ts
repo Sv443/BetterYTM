@@ -1,5 +1,4 @@
-import { consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
-import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad } from "@sv443-network/userutils";
+import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad, consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
 import { getSelector } from "@util/selectors.ts";
 import { fetchCss } from "@util/xhr.ts";

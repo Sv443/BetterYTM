@@ -1,4 +1,4 @@
-import { fetchAdvanced } from "@sv443-network/coreutils";
+import { fetchAdvanced } from "@sv443-network/userutils";
 import { t, tp } from "@util/translations.ts";
 import { loggers, LyricsError } from "@util/logging.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";

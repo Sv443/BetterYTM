@@ -1,4 +1,4 @@
-import { computeHash } from "@sv443-network/coreutils";
+import { computeHash } from "@sv443-network/userutils";
 import { configEvents, configStore } from "@/config.ts";
 import { fixCfgKeys } from "@/configSchema.ts";
 import { loggers, setErrorToastsEnabled } from "@util/logging.ts";

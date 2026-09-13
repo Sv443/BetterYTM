@@ -1,4 +1,4 @@
-import { autoPlural, debounce, pauseFor } from "@sv443-network/coreutils";
+import { autoPlural, debounce, pauseFor } from "@sv443-network/userutils";
 import { preloadImages } from "@sv443-network/userutils";
 import { addStyleFromResource, clearInner, setInnerHtml, transplantElement } from "@util/dom.ts";
 import { resourceAsString } from "@util/misc.ts";

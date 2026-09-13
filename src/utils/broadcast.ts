@@ -1,7 +1,6 @@
 // module that facilitates inter-session (tab) communication via broadcast packets
 
-import { autoPlural, debounce, pauseFor, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
-import { GMStorageEngine } from "@sv443-network/userutils";
+import { autoPlural, debounce, GMStorageEngine, pauseFor, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/userutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { buildNumber, initTime, scriptInfo } from "@/constants.ts";
 import { configStore, getFeature } from "@/config.ts";

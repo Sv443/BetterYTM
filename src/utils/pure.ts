@@ -1,5 +1,4 @@
-import { openInNewTab } from "@sv443-network/userutils";
-import type { StringGen } from "@sv443-network/coreutils";
+import { openInNewTab, type StringGen } from "@sv443-network/userutils";
 
 /**
  * Dependency-free helpers.  

@@ -1,4 +1,4 @@
-import type { DataStore } from "@sv443-network/coreutils";
+import type { DataStore } from "@sv443-network/userutils";
 
 /**
  * Central registry of every {@linkcode DataStore} instance in the codebase, so

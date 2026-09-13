@@ -1,4 +1,4 @@
-import { randomId } from "@sv443-network/coreutils";
+import { randomId } from "@sv443-network/userutils";
 import { t } from "@util/translations.ts";
 import "@comp/toggleInput.css";
 

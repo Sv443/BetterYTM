@@ -1,5 +1,4 @@
-import { clamp, DataStore } from "@sv443-network/coreutils";
-import { GMStorageEngine } from "@sv443-network/userutils";
+import { clamp, DataStore, GMStorageEngine } from "@sv443-network/userutils";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { registerStore } from "@/core/storeRegistry.ts";

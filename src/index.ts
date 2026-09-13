@@ -1,5 +1,4 @@
-import { autoPlural, compress, createTable, CustomError, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign } from "@sv443-network/coreutils";
-import { getUnsafeWindow, isDomLoaded, onDomLoad as onDomLoadedUu, preloadImages } from "@sv443-network/userutils";
+import { autoPlural, compress, createTable, CustomError, decompress, pauseFor, secsToTimeStr, type LooseUnion, type Stringifiable, type TableColumnAlign, getUnsafeWindow, isDomLoaded, onDomLoad as onDomLoadedUu, preloadImages } from "@sv443-network/userutils";
 import { initBindings } from "@/bindings.ts";
 import { initStaticData } from "@util/data.js";
 import { enableDiscardBeforeUnload } from "@util/unloadGuard.ts";

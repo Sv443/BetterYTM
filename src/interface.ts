@@ -1,4 +1,3 @@
-import * as CoreUtils from "@sv443-network/coreutils";
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { setGlobalProp } from "@/core/globals.ts";
@@ -42,7 +41,7 @@ import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
 import pkgJson from "@root/package.json" with { type: "json" };
 
 const { mode, branch, host, buildNumber, compressionFormat, scriptInfo, initialParams, sessionStorageAvailable, repo } = constants;
-const { autoPlural, NanoEmitter, pureObj } = CoreUtils;
+const { autoPlural, NanoEmitter, pureObj } = UserUtils;
 
 //#region interface globals
 
@@ -159,7 +158,6 @@ export function preInitInterface() {
     getMarkdownDialog,
 
     // libraries
-    CoreUtils,
     UserUtils,
     compareVersions,
   } satisfies Omit<BytmObject, "locale" | "logLevel">; // omit dynamic values set after initialization - see setGlobalProp() usages
@@ -368,7 +366,7 @@ export function reloadPluginData() {
 
 /** After the dev plugin is registered, this token can be used to access anything on the plugin interface */
 export let devPluginToken: string | undefined;
-export const devPluginId = CoreUtils.randomId(8, 36, true, true);
+export const devPluginId = UserUtils.randomId(8, 36, true, true);
 export let devPluginKey: string | undefined;
 
 /** Registers a plugin that only exists in development mode to test the plugin system */
@@ -531,7 +529,7 @@ export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvabl
   if(!Array.isArray(perms))
     throw new TypeError("The second argument must be an array of PluginIntent values");
 
-  return UserUtils.bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils.bitSetHas(plugin.grantedPerms, perm));
+  return UserUtils.bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => UserUtils.bitSetHas(plugin.grantedPerms, perm));
 }
 
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */

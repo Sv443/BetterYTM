@@ -1,4 +1,4 @@
-import { type DataMigrationsDict, type LooseUnion, clamp, pureObj } from "@sv443-network/coreutils";
+import { type DataMigrationsDict, type LooseUnion, clamp, pureObj } from "@sv443-network/userutils";
 import { featDefaults } from "@feat/featDefaults.ts";
 import { tryUse } from "@/core/hooks.ts";
 import { LogLevel, type FeatKeysOfType, type FeatureConfig, type FeatureKey, type NumberLengthFormat } from "@/types.ts";

@@ -1,5 +1,4 @@
-import { DatedError } from "@sv443-network/coreutils";
-import { openInNewTab } from "@sv443-network/userutils";
+import { DatedError, openInNewTab } from "@sv443-network/userutils";
 import { clearLyricsCache, getLyricsCache } from "@feat/lyricsCache.ts";
 import { featDefaults } from "@feat/featDefaults.ts";
 import { doVersionCheck } from "@feat/versionCheck.ts";
