@@ -2892,25 +2892,11 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 }
 
 #side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
-  background: rgba(255, 255, 255, 0.1);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-themed-bg-col) 15%
-  );
   display: none;
   position: absolute;
   right: 0;
   padding-left: 25px;
   height: 100%;
-}
-
-#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-themesong-bg-accent-col, #1d1d1d) 15%
-  );
 }
 
 .bytm-generic-list-queue-btn-container {
