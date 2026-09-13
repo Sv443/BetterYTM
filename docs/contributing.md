@@ -214,6 +214,12 @@ To edit an existing translation, please follow these steps:
   Add the flag `-L` or `--logging` to log all requests to the console.  
   Add the flag `-X=<seconds>` or `--auto-exit-time=<seconds>` to automatically exit the process after a certain amount of time, like when just a single or a few requests need to be sent. The `pnpm preview` command makes use of this flag to shortly allow for installing the userscript via HTTP URL.  
   Use the additional flag `-S` or `--silent` to prevent any extra console logs, like the HTTP port and legend of incoming requests.
+- **`pnpm check-deps`**  
+  Runs the script at `src/tools/check-deps.ts` to build a graph of all the imports in the codebase. Then checks for strongly connected components (SCCs) using Tarjan's algorithm, and alerts if there are circular dependencies. The file at `src/tools/layers.json` is used to configure code layers, as well as the target number of SCCs (should approach 0 over time while the codebase is refactored, then stay there).  
+  Arguments:
+  - `--list` or `-L` - instead of just printing a summary, also lists every cycle that was found.
+  - `--graph` or `-G` - also create a graph file at `.dep-graph.ignore.json`
+  - `--write-baseline` or `-W` - records the collected SCC data as the new baseline for `layers.json`
 - **`pnpm --silent invisible "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
