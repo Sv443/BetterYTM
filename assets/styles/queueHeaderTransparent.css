@@ -1,3 +1,3 @@
 #side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer {
-  backdrop-filter: blur(4px) brightness(85%) grayscale(20%);
+  backdrop-filter: blur(4px) grayscale(20%);
 }
