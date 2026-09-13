@@ -1,6 +1,6 @@
 // module that facilitates inter-session (tab) communication via broadcast packets
 
-import { debounce, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
+import { autoPlural, debounce, pauseFor, pureObj, randomId, type DataStoreEngineDSOptions, type SerializableVal } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { buildNumber, initTime, scriptInfo } from "@/constants.ts";
@@ -304,3 +304,20 @@ function relayBroadcastPacket(packet: object) {
   forceEmitSiteEvent("broadcast", packet.packet.type, packetClean);
   forceEmitSiteEvent(`broadcast:${packet.packet.type}`, packetClean as any); // love dealing with TS mapped type shenanigans
 }
+
+/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
+export async function reloadAllTabs(reloadSelf = true, toTxIDs?: string[]) {
+  loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
+
+  emitBroadcast({
+    type: "reloadTabs",
+  }, toTxIDs);
+
+  return reloadSelf
+    ? await (async () => {
+      await pauseFor(30); // broadcast is synchronous, but we might still be working on something in our async queue
+      return await reloadTab();
+    })()
+    : undefined;
+}
+

@@ -11,7 +11,7 @@ import { loggers } from "@util/logging.ts";
  * Split out of {@linkcode "@/config.ts"} - which owns the live config store and needs to be
  * importable from almost every layer - because computing {@linkcode cfgDefaultData} needs
  * {@linkcode featDefaults} at module-init time. Kept separate from `featInfo` itself
- * ({@linkcode "@feat/featDefaults.ts"}), which pulls in dialogs, the menu and serializers to power its
+ * ({@linkcode "@feat/featInfo.ts"}), which pulls in dialogs, the menu and serializers to power its
  * config-menu UI callbacks; this module only needs the plain default-value data.
  */
 
@@ -25,10 +25,10 @@ export const cfgFormatVersion = 12;
 /** Default feature config data using the current feature info object, used when no data is found in persistent storage or when the user resets the config */
 export const cfgDefaultData = pureObj(
   (Object.keys(featDefaults) as (keyof typeof featDefaults)[])
-    .filter((ftKey) => featDefaults?.[ftKey] && "default" in featDefaults[ftKey] && featDefaults[ftKey].default !== undefined)
+    .filter((ftKey) => "default" in featDefaults[ftKey] && featDefaults[ftKey].default !== undefined)
     .reduce<Partial<FeatureConfig>>((acc, key) => {
-      acc[key] = featDefaults?.[key] && "default" in featDefaults[key]
-        ? featDefaults?.[key]?.default as undefined // TypeScript moments to relax and study to part 578
+      acc[key] = "default" in featDefaults[key]
+        ? featDefaults[key].default as undefined // TypeScript moments to relax and study to part 578
         : undefined;
       return acc;
     }, {}) as FeatureConfig
@@ -317,7 +317,7 @@ export const cfgMigrations: DataMigrationsDict = {
 function useNewDefaults(config: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featDefaults>[]): FeatureConfig {
   const newData = structuredClone({ ...cfgDefaultData, ...(config ?? {}) });
   for(const key of resetKeys) // @ts-expect-error typescript funny moments part 0x1a4
-    newData[key] = featDefaults?.[key]?.default as never;
+    newData[key] = featDefaults[key as keyof typeof featDefaults]?.default as never;
   return newData;
 }
 
@@ -333,7 +333,7 @@ function useNewDefaultsIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 ): TConfig {
   const newData = structuredClone(config);
   for(const { key, oldDefault } of oldDefaults) {
-    const defaultVal = featDefaults?.[key]?.default as TConfig[typeof key];
+    const defaultVal = featDefaults[key as keyof typeof featDefaults]?.default as TConfig[typeof key];
     if(newData[key] === oldDefault)
       newData[key] = defaultVal as never; // have you ever heard of the song "never gonna give you up" by rick astley?
   }

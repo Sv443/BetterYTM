@@ -1,17 +1,12 @@
 import { ChecksumMismatchError, DataStoreSerializer, type DataStore, type DataStoreSerializerOptions } from "@sv443-network/coreutils";
-import { configStore } from "@/config.ts";
+import { getStores } from "@/core/storeRegistry.ts";
 import { scriptInfo } from "@/constants.ts";
-import { autoLikeStore } from "@feat/autoLike.ts";
-import { artCacheStore } from "@feat/layout.ts";
-import { lyricsCacheStore } from "@feat/lyricsCache.ts";
 import { showPrompt } from "@dialog/prompt.ts";
 import { t } from "@util/translations.ts";
 import { loggers } from "@util/logging.ts";
 import { downloadFile } from "@util/dom.ts";
-import { alertsStore } from "@util/data.ts";
-import { reloadTab, resourceCacheStore } from "@util/misc.ts";
+import { reloadTab } from "@util/misc.ts";
 import packageJson from "@root/package.json" with { type: "json" };
-import { pluginPermissionsStore } from "@/interface.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 
 /** Central serializer for all data stores */
@@ -32,28 +27,17 @@ function wrapStores(stores: DataStore<any, boolean>[]): DataStore<any, boolean>[
 }
 
 /**
- * Array of all {@linkcode DataStore} instances that are included in the crucial-data-only DataStoreSerializer instance.  
- * Call function to lazy-load stores, as import order is all kinds of messed up.  
- * This is only truly safe to call after `bytm:allReady`!
+ * Array of all "crucial" {@linkcode DataStore} instances (registered without `full: true` in
+ * {@linkcode "@/core/storeRegistry.ts"}) that are included in the crucial-data-only
+ * DataStoreSerializer instance.
  */
-export const getSerializerStores = () => wrapStores([
-  configStore,
-  autoLikeStore,
-  alertsStore,
-  pluginPermissionsStore,
-] satisfies DataStore<any, boolean>[]);
+export const getSerializerStores = () => wrapStores(getStores(false));
 
 /**
- * Array of all {@linkcode DataStore} instances, including the caches and other stores that store volatile-ish data.  
- * Call function to lazy-load stores, as import order is all kinds of messed up.  
- * This is only truly safe to call after `bytm:allReady`!
+ * Array of every registered {@linkcode DataStore} instance, including the caches and other stores
+ * that store volatile-ish data.
  */
-export const getSerializerStoresFull = () => wrapStores([
-  ...getSerializerStores(),
-  artCacheStore,
-  lyricsCacheStore,
-  resourceCacheStore,
-] satisfies DataStore<any, boolean>[]);
+export const getSerializerStoresFull = () => wrapStores(getStores(true));
 
 /** Array of IDs of all stores included in the DataStoreSerializer instance obtained via {@linkcode getSerializerStores()} or {@linkcode getSerializerStores()}, depending on if {@linkcode full} is set to true or false (default). */
 export const getSerializerStoresIds = (full = false) => (full ? getSerializerStoresFull : getSerializerStores)().map(store => store.id);

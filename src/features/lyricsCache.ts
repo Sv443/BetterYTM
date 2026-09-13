@@ -2,6 +2,7 @@ import { clamp, DataStore } from "@sv443-network/coreutils";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compressionFormat } from "@/constants.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { getFeature } from "@/config.ts";
 import { loggers } from "@util/logging.ts";
 import { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
@@ -52,6 +53,7 @@ export const lyricsCacheStore = new DataStore({
     catchUpEvents: ["loadData"],
   },
 });
+registerStore(lyricsCacheStore, { full: true });
 
 export async function initLyricsCache() {
   const data = await lyricsCacheStore.loadData();

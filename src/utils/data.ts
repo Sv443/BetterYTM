@@ -1,4 +1,5 @@
 import { DataStore, fetchAdvanced } from "@sv443-network/coreutils";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { compareVersions } from "compare-versions";
 import { branch, mode, repo, scriptInfo } from "@/constants.ts";
@@ -148,6 +149,7 @@ export const alertsStore = new DataStore<AlertsStoreData, false>({
     catchUpEvents: ["loadData"],
   },
 });
+registerStore(alertsStore);
 
 /** Checks if there are active alerts and shows a prompt for each of them. */
 async function checkActiveAlerts(alertMode: FeatureConfig["globalAlertMode"], { alerts }: StaticData, alertsData: AlertsStoreData): Promise<void> {

@@ -3,9 +3,10 @@ import { t } from "@util/translations.ts";
 import { showIconToast } from "@comp/toast.ts";
 import { getErrorDialog } from "@dialog/errorDialog.ts";
 import { showPrompt } from "@dialog/prompt.ts";
-import { closeCfgMenu } from "@menu/menu.ts";
+import { closeCfgMenu, openCfgMenu } from "@menu/menu.ts";
 import { promptResetConfig } from "@menu/resetConfig.ts";
 import { artCacheStore } from "@feat/layout.ts";
+import { getAutoLikeDialog } from "@dialog/autoLike.ts";
 
 /**
  * Every late-bound implementation in one place.  
@@ -27,6 +28,8 @@ export function initBindings(): void {
 
   provide("showPrompt", showPrompt);
   provide("closeCfgMenu", closeCfgMenu);
+  provide("openCfgMenu", openCfgMenu);
   provide("promptResetConfig", promptResetConfig);
   provide("clearArtCache", () => artCacheStore.deleteData());
+  provide("getAutoLikeDialog", getAutoLikeDialog);
 }

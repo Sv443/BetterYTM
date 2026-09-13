@@ -2,7 +2,7 @@ import { clamp, valsWithin } from "@sv443-network/coreutils";
 import { getDomain } from "@util/domain.ts";
 import { getVideoElement, waitVideoElementReady, getVideoTime } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
-import { featInfo } from "@feat/featInfo.ts";
+import { featDefaults } from "@feat/featDefaults.ts";
 import { getFeature } from "@/config.ts";
 import { addSelectorListener } from "@/observers.ts";
 
@@ -77,7 +77,7 @@ export async function initArrowKeySkip() {
     evt.preventDefault();
     evt.stopImmediatePropagation();
 
-    let skipBy = getFeature("arrowKeySkipBy", featInfo.arrowKeySkipBy.default);
+    let skipBy = getFeature("arrowKeySkipBy", featDefaults.arrowKeySkipBy.default);
     if(evt.code === "ArrowLeft")
       skipBy *= -1;
 
@@ -106,7 +106,7 @@ function handleVolumeKeyPress(evt: KeyboardEvent) {
   const newVol = clamp(
     Number(sliderEl.value)
       + (evt.code === "ArrowUp" ? 1 : -1)
-      * clamp((getFeature("arrowKeyVolumeStep", featInfo.arrowKeyVolumeStep.default)), isNaN(step) ? 5 : step, 100),
+      * clamp((getFeature("arrowKeyVolumeStep", featDefaults.arrowKeyVolumeStep.default)), isNaN(step) ? 5 : step, 100),
     0,
     100,
   );

@@ -2,11 +2,11 @@ import { getResourceUrl } from "@util/resourceUrl.ts";
 import { initTranslations, setLocale, t, type TrLocale } from "@util/translations.ts";
 import { setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
-import { openCfgMenu } from "@menu/menu.ts";
+import { tryUse } from "@/core/hooks.ts";
 import { BytmDialog } from "@comp/BytmDialog.ts";
 import { configSetFeatsWithTags, getFeature, getFeatures, getFeaturesWithTags, setFeatures } from "@/config.ts";
 import { mode, scriptInfo } from "@/constants.ts";
-import { featInfo } from "@feat/featInfo.ts";
+import { featDefaults } from "@feat/featDefaults.ts";
 import pkg from "@root/package.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import { LogLevel, type ResourceKey } from "@/types.ts";
@@ -154,7 +154,7 @@ async function renderBody() {
 
     let privacySelectDefaultVal = "default";
 
-    for(const [, ftInfo] of Object.entries(featInfo)) {
+    for(const [, ftInfo] of Object.entries(featDefaults)) {
       if("tags" in ftInfo && ftInfo.tags.includes("privacy") && typeof ftInfo.default === "boolean")
         privacySelectDefaultVal = Object.values(getFeaturesWithTags(["privacy"])).filter(v => typeof v === "boolean").every(v => !v) ? "enhanced" : "default";
     }
@@ -312,7 +312,7 @@ async function renderFooter() {
   openCfgElem.classList.add("bytm-btn");
   openCfgElem.addEventListener("click", () => {
     welcomeDialog?.close();
-    openCfgMenu();
+    tryUse("openCfgMenu")?.();
   });
 
   const closeBtnElem = document.createElement("button");

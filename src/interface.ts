@@ -3,14 +3,14 @@ import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { setGlobalProp } from "@/core/globals.ts";
 import { emitInterface, setLogEventsEnabled, allInterfaceEvents, type InterfaceEvents, type InterfaceEventsMap } from "@/core/interfaceEvents.ts";
-import { registeredPlugins, registeredPluginTokens, emitOnPlugins, getPluginKey } from "@/plugins/store.ts";
-import { broadcastTxID, emitBroadcast } from "@util/broadcast.ts";
+import { registeredPlugins, registeredPluginTokens, emitOnPlugins, getPluginKey, pluginPermissionsStore, ensurePluginPermissionsLoaded, getPermStorePerms, setRegisteredPluginPerms, defToIntentsBitSet, parseBitSetEnumArray } from "@/plugins/store.ts";
+import { broadcastTxID, emitBroadcast, reloadAllTabs } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
 import { waitVideoElementReady, getVideoTime, setInnerHtml, getCurrentMediaType, getVideoElement, getVideoSelector, getLikeDislikeBtns, sanitizeHtml } from "@util/dom.ts";
 import { getDomain } from "@util/domain.ts";
 import { onInteraction } from "@util/input.ts";
 import { PluginError, loggers } from "@util/logging.ts";
-import { getSessionId, getBestThumbnailUrl, formatNumber, reloadTab, resourceAsString, parseMarkdown, reloadAllTabs } from "@util/misc.ts";
+import { getSessionId, getBestThumbnailUrl, formatNumber, reloadTab, resourceAsString, parseMarkdown } from "@util/misc.ts";
 import { getThumbnailUrl, sanitizeUnicode } from "@util/pure.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, tl, tlp, createTranslatable } from "@util/translations.ts";
@@ -173,58 +173,21 @@ export function preInitInterface() {
 
 export { setGlobalProp };
 
-export { emitInterface, setLogEventsEnabled, allInterfaceEvents, emitOnPlugins, getPluginKey };
+export { emitInterface, setLogEventsEnabled, allInterfaceEvents, emitOnPlugins, getPluginKey, pluginPermissionsStore, getPermStorePerms, setRegisteredPluginPerms, defToIntentsBitSet, parseBitSetEnumArray };
 export type { InterfaceEvents, InterfaceEventsMap };
 
 //#region register plugins
 
-/**
- * Data stored by the {@linkcode pluginPermissionsStore}.  
- * Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
- * At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
- */
-type PluginPermissionsStoreData = {
-  [pluginKey: string]: [grantedPermissions: number, requestedIntents: number];
-};
-
-/**
- * Stores information about plugins that have been registered and have had their intents granted (thus turning them into permissions).  
- * Maps a plugin key (see {@linkcode getPluginKey()}) to a tuple of granted permissions (index 0), at the point in time where the plugin requested the given intents (index 1).  
- * At init time, should the plugin register itself with an intent bitset that doesn't match the requested intents (tuple index 1), the plugin permission dialog should be shown again, since permissions need to be re-granted or reconfigured.
- */
-export const pluginPermissionsStore = new CoreUtils.DataStore<PluginPermissionsStoreData>({
-  id: "bytm-plugin-permissions",
-  engine: new UserUtils.GMStorageEngine(),
-  defaultData: {},
-  formatVersion: 0,
-  compressionFormat: null,
-});
-
-let pluginPermissionsStoreLoaded = false;
-
-/** Returns the permission integers from the {@linkcode pluginPermissionsStore} for the given plugin. */
-export function getPermStorePerms(def: PluginDefResolvable): [grantedPerms: number, requestedIntents: number] | undefined {
-  if(!pluginPermissionsStoreLoaded)
-    throw new CoreUtils.DatedError(`Couldn't get permissions for plugin '${getPluginKey(def)}' because the permissions store isn't loaded yet.`);
-  return pluginPermissionsStore.getData()?.[getPluginKey(def)];
-}
-
 /** Pre-init for eager plugins that need to be initialized as soon as physically possible */
 export async function preInitPlugins() {
-  if(!pluginPermissionsStoreLoaded) {
-    await pluginPermissionsStore.loadData();
-    pluginPermissionsStoreLoaded = true;
-  }
+  await ensurePluginPermissionsLoaded();
 
   emitInterface("bytm:preInitPlugin", registerPlugin);
 }
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export async function initPlugins() {
-  if(!pluginPermissionsStoreLoaded) {
-    await pluginPermissionsStore.loadData();
-    pluginPermissionsStoreLoaded = true;
-  }
+  await ensurePluginPermissionsLoaded();
 
   emitInterface("bytm:registerPlugin", registerPlugin);
 
@@ -452,19 +415,6 @@ export function getRegisteredPlugins() {
   return [...registeredPlugins.entries()];
 }
 
-/** Updates the given plugin to the given permissions in memory. Doesn't emit the `pluginsUpdated` broadcast event. */
-export function setRegisteredPluginPerms(plugin: PluginDefResolvable, perms: number) {
-  const plKey = getPluginKey(plugin);
-  const regPl = registeredPlugins.get(plKey);
-
-  if(regPl) {
-    regPl.grantedPerms = perms;
-
-    registeredPlugins.set(plKey, regPl);
-  }
-}
-
-
 /** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
 export function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
   return plugin
@@ -582,25 +532,6 @@ export function pluginHasPerms(...args: [pluginDefOrNameOrId: PluginDefResolvabl
     throw new TypeError("The second argument must be an array of PluginIntent values");
 
   return UserUtils.bitSetHas(plugin.grantedPerms, PluginIntent.FullAccess) || perms.every((perm) => CoreUtils.bitSetHas(plugin.grantedPerms, perm));
-}
-
-/** Converts the intents from a PluginDef object into a bit set value. */
-export function defToIntentsBitSet(def: PluginDef): number {
-  if(Array.isArray(def.intents))
-    return def.intents.reduce((acc, intent) => acc | intent, 0);
-  else if(typeof def.intents === "number")
-    return def.intents;
-  else
-    return 0;
-}
-
-/** Iterates over the {@linkcode enumRef} and returns an array of all intents that are set in the passed {@linkcode bitSet} value. */
-export function parseBitSetEnumArray<TNum extends number | bigint>(bitSet: TNum, enumRef: BitSetTSEnum): TNum[] {
-  const result: TNum[] = [];
-  for(const [, val] of Object.entries(enumRef))
-    if((typeof val === "number" || typeof val === "bigint") && CoreUtils.bitSetHas(bitSet, val as TNum))
-      result.push(val as TNum);
-  return result;
 }
 
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */

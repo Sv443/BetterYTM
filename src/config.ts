@@ -1,4 +1,5 @@
 import { DataStore, NanoEmitter } from "@sv443-network/coreutils";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { GMStorageEngine } from "@sv443-network/userutils";
 import { featDefaults } from "@feat/featDefaults.ts";
 import { compressionFormat } from "@/constants.ts";
@@ -33,6 +34,7 @@ export const configStore = new DataStore<FeatureConfig>({
     catchUpEvents: ["loadData"],
   },
 });
+registerStore(configStore);
 
 //#region feature getters/setters
 

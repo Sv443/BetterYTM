@@ -1,4 +1,5 @@
-import { autoPlural, compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
+import { compress, consumeStringGen, DataStore, decompress, fetchAdvanced, pauseFor, randomId, randRange, type StringGen } from "@sv443-network/coreutils";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { getUnsafeWindow, GMStorageEngine } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { getThumbnailUrl, millis, type ThumbQuality } from "@util/pure.ts";
@@ -10,7 +11,6 @@ import { getFeature } from "@/config.ts";
 import { loggers } from "@util/logging.ts";
 import { sendRequest } from "@util/xhr.ts";
 import { getLocale } from "@util/translations.ts";
-import { emitBroadcast } from "@util/broadcast.ts";
 import { getVideoElement, getVideoTime, sanitizeHtml } from "@util/dom.ts";
 import type { NumberLengthFormat, ResourceKey } from "@/types.ts";
 
@@ -222,23 +222,6 @@ export async function reloadTab() {
   }
 }
 
-/** Sends a broadcast packet to all open sessions to trigger a reload in all of them, including this one by default. */
-export async function reloadAllTabs(reloadSelf = true, toTxIDs?: string[]) {
-  loggers.misc.info(`Emitting broadcast to reload ${toTxIDs && toTxIDs.length > 0 ? `${toTxIDs.length} ${autoPlural("tab", toTxIDs)}` : "all tabs"}${reloadSelf ? ", then self-reloading" : ""}.`);
-
-  emitBroadcast({
-    type: "reloadTabs",
-  }, toTxIDs);
-
-  return reloadSelf
-    ? await (async () => {
-      await pauseFor(30); // broadcast is synchronous, but we might still be working on something in our async queue
-      return await reloadTab();
-    })()
-    : undefined;
-}
-
-
 /** Scrolls to the currently playing queue item in the queue once it's available */
 export function scrollToCurrentSongInQueue(evt?: MouseEvent | KeyboardEvent) {
   addSelectorListener("sidePanel", "ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]", {
@@ -295,6 +278,7 @@ export const resourceCacheStore = new DataStore({
     catchUpEvents: ["loadData"],
   },
 });
+registerStore(resourceCacheStore, { full: true });
 
 /** Resources with these prefixes are cached in the resource cache */
 const cachedResourcePrefixes = [

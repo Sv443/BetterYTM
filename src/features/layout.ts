@@ -1,4 +1,5 @@
 import { DataStore, autoPlural, debounce, fetchAdvanced } from "@sv443-network/coreutils";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { addParent, GMStorageEngine, isDomLoaded, preloadImages } from "@sv443-network/userutils";
 import { getFeature, getFeatures } from "@/config.ts";
 import { forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
@@ -642,6 +643,7 @@ export const artCacheStore = new DataStore({
     catchUpEvents: ["loadData"],
   },
 });
+registerStore(artCacheStore, { full: true });
 
 async function deleteExpiredAlbumArtCacheEntries() {
   const ttl = 1000 * 60 * 60 * 24 * getFeature("thumbnailOverlayAlbumArtCacheTTL");

@@ -1,6 +1,6 @@
 import { bitSetHas } from "@sv443-network/coreutils";
 import { BytmDialog } from "@comp/BytmDialog.ts";
-import { defToIntentsBitSet, getPermStorePerms, getPluginKey, parseBitSetEnumArray, pluginPermissionsStore, setRegisteredPluginPerms } from "@/interface.ts";
+import { defToIntentsBitSet, getPermStorePerms, getPluginKey, parseBitSetEnumArray, pluginPermissionsStore, setRegisteredPluginPerms } from "@/plugins/store.ts";
 import { t } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { loggers } from "@util/logging.ts";

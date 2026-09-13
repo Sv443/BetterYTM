@@ -9,7 +9,8 @@ import { getCurrentChannelId, getDomain, isValidChannelId, sanitizeChannelId } f
 import { addStyleFromResource, clearNode, getCurrentMediaType, getLikeDislikeBtns, setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
-import { getAutoLikeDialog } from "@dialog/autoLike.ts";
+import { use } from "@/core/hooks.ts";
+import { registerStore } from "@/core/storeRegistry.ts";
 import { showIconToast } from "@comp/toast.ts";
 import { createLongBtn } from "@comp/longButton.ts";
 import { createRipple } from "@comp/ripple.ts";
@@ -46,6 +47,7 @@ export const autoLikeStore = new DataStore<AutoLikeData>({
     catchUpEvents: ["loadData"],
   },
 });
+registerStore(autoLikeStore);
 
 let autoLikeStoreLoaded = false;
 
@@ -94,7 +96,7 @@ export async function initAutoLike() {
               message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
               subtitle: t("auto_like_click_to_configure"),
               icon: "icon-auto_like",
-              onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+              onClick: () => use("getAutoLikeDialog")().then((dlg) => dlg.open()),
             }).catch(e => loggers.autoLike.error("Error while showing auto-like toast:", e));
 
             loggers.autoLike.info(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id}) - permalink: https://${getDomain() === "ytm" ? "music.youtube.com/watch?v=" : "youtu.be/"}${new URL(location.href).searchParams.get("v")}`, LogLevel.Info);
@@ -190,7 +192,7 @@ export async function initAutoLike() {
                       message: t("auto_liked_a_channels_video", likeChan.name),
                       subtitle: t("auto_like_click_to_configure"),
                       icon: "icon-auto_like",
-                      onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+                      onClick: () => use("getAutoLikeDialog")().then((dlg) => dlg.open()),
                     }).catch(e => loggers.autoLike.error("Error while showing auto-like toast:", e));
                     loggers.autoLike.log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
                   }
@@ -290,7 +292,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
     toggleInitialState: chan?.enabled ?? false,
     togglePredicate({ shiftKey, ctrlKey }) {
       const shiftOrCtrl = shiftKey || ctrlKey;
-      shiftOrCtrl && getAutoLikeDialog().then((dlg) => dlg.open());
+      shiftOrCtrl && use("getAutoLikeDialog")().then((dlg) => dlg.open());
       return !shiftOrCtrl;
     },
     async onToggle(isToggled) {
@@ -324,7 +326,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
           message: isToggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
           subtitle: t("auto_like_click_to_configure"),
           icon: `icon-auto_like${isToggled ? "_enabled" : ""}`,
-          onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
+          onClick: () => use("getAutoLikeDialog")().then((dlg) => dlg.open()),
         }).catch(e => loggers.autoLike.error("Error while showing auto-like toast:", e));
         loggers.autoLike.log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${isToggled ? "enabled" : "disabled"}`);
       }

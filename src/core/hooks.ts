@@ -19,10 +19,14 @@ export type LateBindings = {
   showPrompt: typeof import("@dialog/prompt.ts").showPrompt;
   /** Owned by `@menu/menu.ts` */
   closeCfgMenu: typeof import("@menu/menu.ts").closeCfgMenu;
+  /** Owned by `@menu/menu.ts` */
+  openCfgMenu: typeof import("@menu/menu.ts").openCfgMenu;
   /** Owned by `@menu/resetConfig.ts` */
   promptResetConfig: typeof import("@menu/resetConfig.ts").promptResetConfig;
   /** Clears the album art cache. Owned by `@feat/layout.ts` (its `artCacheStore.deleteData`). */
   clearArtCache: () => Promise<unknown>;
+  /** Opens the auto-like management dialog. Owned by `@dialog/autoLike.ts`. */
+  getAutoLikeDialog: typeof import("@dialog/autoLike.ts").getAutoLikeDialog;
 };
 
 const impls = new Map<keyof LateBindings, unknown>();

@@ -11,7 +11,7 @@ import { loggers } from "@util/logging.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { t } from "@util/translations.ts";
 import { waitVideoElementReady } from "@util/dom.ts";
-import { featInfo } from "@feat/featInfo.ts";
+import { featDefaults } from "@feat/featDefaults.ts";
 import "@feat/volume.css";
 
 //#region init vol features
@@ -27,7 +27,7 @@ export async function initVolumeFeatures() {
 
     sliderElem.setAttribute("step", "1");
 
-    if(getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
+    if(getFeature("volumeSliderScrollStep") !== featDefaults.volumeSliderScrollStep.default)
       initScrollStep(volSliderCont, sliderElem);
 
     addParent(sliderElem, volSliderCont);
