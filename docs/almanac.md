@@ -302,9 +302,9 @@ For a list of all site events and their arguments, refer to the file [`src/siteE
 # Libraries
 BetterYTM's source code depends on the following notable libraries:
 
-- `@sv443-network/coreutils` - Core JavaScript utilities - exposed via `BYTM.CoreUtils`
-  - [DataStore](#datastore) - Used for persistently storing migratable data in BetterYTM
 - `@sv443-network/userutils` - Userscript and generic DOM utilities - exposed via `BYTM.UserUtils`
+- `@sv443-network/coreutils` - Core JavaScript utilities - all features are re-exported via UserUtils
+  - [DataStore](#datastore) - Used for persistently storing migratable data in BetterYTM
 - `compare-versions` - Tiny library used for comparing and validating [semver versions](https://semver.org/) - exposed via `BYTM.compareVersions`
 - `marked` - Used to render Markdown as HTML - available via `BYTM.parseMarkdown()`
 - `dompurify` - Used to sanitize remotely fetched HTML in a [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) compatible way, for added security - available via `BYTM.parseMarkdown()`, `BYTM.setInnerHtml()` and `BYTM.sanitizeHtml()`

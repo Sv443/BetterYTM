@@ -39,6 +39,7 @@
     Now that a plugin's intents can be denied, it's important to check for the permissions returned by the `registerPlugin()` function at runtime.
   - ⚠️ **BREAKING:** The classes `BytmDialog`, `ExImDialog` and `MarkdownDialog` no longer exist on the plugin interface. Use the authenticated functions `getBytmDialog()`, `getExImDialog()` and `getMarkdownDialog()` instead.
   - ⚠️ **BREAKING:** Removed the property `NanoEmitter` on the plugin interface, as it has been available under `BYTM.CoreUtils.NanoEmitter` for a while.
+  - ⚠️ **BREAKING:** Removed the [CoreUtils library](https://github.com/Sv443-Network/CoreUtils) (property `BYTM.CoreUtils`), since all features are entirely included in the [UserUtils library](https://github.com/Sv443-Network/UserUtils) (property `BYTM.UserUtils`).
   - Removed the restrictions that plugins need to be registered between `bytm:preInitPlugin` and `bytm:ready`. Now they can be registered after the latter event without throwing an error.
   - Added new features to the BYTM object. [Refer to the API docs for details.](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#global-functions-and-classes)
     - `loggers`: An object of predefined Logger instances of different categories.

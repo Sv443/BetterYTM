@@ -107,7 +107,6 @@
     "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
   },
   "dependencies": {
-    "@sv443-network/coreutils": "3.8.0",
     "@sv443-network/userutils": "11.0.0",
     "compare-versions": "6.1.1",
     "dompurify": "3.3.3",

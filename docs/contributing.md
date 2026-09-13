@@ -306,11 +306,6 @@ If you need help with these, don't hesitate to reach out to me ([see my homepage
     The final locale code should be in the format `language-COUNTRY` (e.g. `en-US`, `en-GB`, ...)
   2. Add a translation file for the locale by following the instructions in the ["adding translations" section](#adding-translations-for-a-new-language)
   3. Your locale will be immediately available in the userscript after the next build.
-- **Updating CoreUtils & UserUtils:**
-  - Since UserUtils re-exports CoreUtils in its entirety, the versions of both libraries need to be compatible with each other.
-  1. In the [UserUtils repo](https://github.com/Sv443-Network/UserUtils), switch to the tag of the version you want to update to. Write down that version number as well.
-  2. Navigate to the `package.json` file and write down the version number of CoreUtils that is used in the `dependencies` section.
-  3. Update both libraries using the command `pnpm i @sv443-network/coreutils@<version> @sv443-network/userutils@<version>` in the project root, where `<version>` is the version number from the previous steps.
 - **Creating a release:**
   1. Make sure the version in `package.json` is bumped according to [semantic versioning.](https://semver.org/)
   2. Run `pnpm i` so the version is updated in the lockfile.
