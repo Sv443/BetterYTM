@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@1b679bb1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2fb7693c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -54,13 +54,13 @@
 // @description:zh-HK YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @description:zh-SG YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @antifeature       tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
-// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
-// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
-// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
-// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
-// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
-// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
-// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Konfigurationsmenü ausgeschaltet werden.
+// @antifeature:de-DE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de    tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-AT tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-BE tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-CH tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-LI tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
+// @antifeature:de-LU tracking Manche der benutzten Services werden temporär deine IP Adresse und die Videos, die du anschaust, protokollieren. Diese Funktionen können beim ersten Start oder jederzeit im Einstellungsmenü ausgeschaltet werden.
 // @antifeature:en-US tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
 // @antifeature:en    tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
 // @antifeature:en-CA tracking Some of the used services will temporarily log your IP address and the songs you listen to. These features can be disabled on first launch or in the config menu.
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 13 Sep 2026 18:23:58 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 13 Sep 2026 20:27:31 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 1b679bb1                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 2fb7693c                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ UYbg2Dfva684                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ pZiWgUDMb0N6                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3444,9 +3444,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "1b679bb1";
+	var buildNumber$1 = "2fb7693c";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789323838551;
+	var buildTimestamp = 1789331251919;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -18882,7 +18882,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "1b679bb1",
+				buildNumber: "2fb7693c",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
