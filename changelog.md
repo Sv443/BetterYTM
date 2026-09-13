@@ -9,6 +9,7 @@
   - Hotkey to quickly search for the lyrics of a song, anywhere on YT or YTM (<kbd>Alt</kbd><kbd>Q</kbd> by default).
   - Hotkey to lock all interactions until the hotkey is pressed again (<kbd>Alt</kbd><kbd>Pause</kbd> by default).
   - Configuration option for the global alerts system (whether to show all alerts, only important ones or none).
+  - 🎵 Change the styling of the currently playing queue's header and buttons, for more compatibility with third-party extensions like BetterLyrics.
 - **Improvements and Changes:**
   - Turned features that had a combined toggle and mode selection into two separate features, to allow for more flexible configuration and easier toggling:
     - `thumbnailOverlayBehavior: "never"` - replaced with `thumbnailOverlayEnabled`.
@@ -53,6 +54,8 @@
 - **Internal Changes:**
   - Added `m.youtube.com` and `youtube-nocookie.com` to the list of supported domains.
   - Added `Logger` class to tag every log with a category, in preparation for a future log filtering feature.
+  - Did a major codebase refactor to untangle all circular dependencies and barrel-exports, like `features/index.ts` and `utils/index.ts`. Added the command `pnpm check-deps` to run a custom import map checking script. Also happens automatically when running `pnpm lint`, and so this is done on every push via CI.  
+    In essence, this means the script should be way more reliable and compatible, and easier to maintain in the long run.
   - Refactored logging system to use new `Logger` class instances.
   - Added "privacy-sensitive" feature adornment icon (`icon-shield_info` resource) to mark features that are tagged with the `privacy` tag.
   - Made the "reload tab" feature adornment icon also show up when advanced mode is turned off.
