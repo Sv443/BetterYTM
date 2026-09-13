@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@5bf7f6db/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@47c17215/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -134,11 +134,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 13 Sep 2026 15:11:22 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Sun, 13 Sep 2026 17:42:33 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 5bf7f6db                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 47c17215                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ wF4rvlMC9VDQ                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ 1xmamf5CJVIU                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -224,10 +224,14 @@
 			"css-auto_like": "styles/autoLike.css",
 			"css-bundle": "/dist/BetterYTM.css",
 			"css-fix_hdr": "styles/fixHDR.css",
-			"css-fix_playerpage_theming": "styles/fixPlayerPageTheming.css",
 			"css-fix_spacing": "styles/fixSpacing.css",
 			"css-fix_sponsorblock": "styles/fixSponsorBlock.css",
 			"css-hide_themesong_logo": "styles/hideThemeSongLogo.css",
+			"css-queue_header_opaque": "styles/queueHeaderOpaque.css",
+			"css-queue_header_transparent": "styles/queueHeaderTransparent.css",
+			"css-queue_item_gradient": "styles/queueItemGradient.css",
+			"css-queue_item_opaque": "styles/queueItemOpaque.css",
+			"css-queue_item_transparent": "styles/queueItemTransparent.css",
 			"css-remove_thumb_rating_bar": "styles/removeThumbRatingBar.css",
 			"css-show_votes": "styles/showVotes.css",
 			"css-swap_like_dislike_btns": "styles/swapLikeDislikeBtns.css",
@@ -561,9 +565,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "5bf7f6db";
+	var buildNumber$1 = "47c17215";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789312282935;
+	var buildTimestamp = 1789321353022;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -645,6 +649,7 @@
 		plugin: "Plugin",
 		observer: "Observer",
 		siteEvent: "SiteEvent",
+		songLists: "SongLists",
 		translation: "Translation",
 		volume: "Volume",
 		xhr: "XHR"
@@ -1064,7 +1069,7 @@
 		configMenuFocusContentButtonEnabled: {
 			type: "toggle",
 			default: false,
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		initTimeout: {
 			type: "number",
@@ -1083,17 +1088,17 @@
 		verboseObservers: {
 			type: "toggle",
 			default: false,
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		globalAlertMode: {
 			type: "select",
 			default: "all",
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		openWelcomeMenu: {
 			type: "button",
 			default: void 0,
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		versionCheck: {
 			type: "toggle",
@@ -1181,7 +1186,7 @@
 			type: "toggle",
 			default: true,
 			tags: ["privacy", "network"],
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		thumbnailOverlayBehavior: {
 			type: "select",
@@ -1267,6 +1272,11 @@
 			default: "everywhere",
 			since: "1.1.0"
 		},
+		listButtonsStyle: {
+			type: "select",
+			default: "opaque",
+			since: "4.0.0"
+		},
 		scrollToActiveSongBtn: {
 			type: "toggle",
 			default: true,
@@ -1282,6 +1292,11 @@
 			default: true,
 			since: "3.0.0"
 		},
+		aboveQueueHeaderStyle: {
+			type: "select",
+			default: "transparent",
+			since: "4.0.0"
+		},
 		songListTrackNumbersEnabled: {
 			type: "toggle",
 			default: true,
@@ -1295,7 +1310,7 @@
 		songListTrackNumbersDomains: {
 			type: "select",
 			default: "all",
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		geniusLyrics: {
 			type: "toggle",
@@ -1463,7 +1478,7 @@
 		autoScrollToActiveSongEnabled: {
 			type: "toggle",
 			default: true,
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		autoScrollToActiveSongMode: {
 			type: "select",
@@ -1627,7 +1642,7 @@
 		lyricsSearchPromptHotkeyEnabled: {
 			type: "toggle",
 			default: true,
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		lyricsSearchPromptHotkey: {
 			type: "hotkey",
@@ -1637,7 +1652,7 @@
 				ctrl: false,
 				alt: true
 			},
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		skipToRemTimeHotkeyEnabled: {
 			type: "toggle",
@@ -1687,7 +1702,7 @@
 		interactionLockHotkeyEnabled: {
 			type: "toggle",
 			default: true,
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		interactionLockHotkey: {
 			type: "hotkey",
@@ -1697,14 +1712,14 @@
 				ctrl: false,
 				alt: true
 			},
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		interactionLockOverlayTimeout: {
 			type: "slider",
 			default: 5,
 			min: 0,
 			max: 10,
-			since: "3.2.0"
+			since: "4.0.0"
 		},
 		rebindNextAndPrevious: {
 			type: "toggle",
@@ -2053,7 +2068,9 @@
 				"interactionLockHotkeyEnabled",
 				"interactionLockHotkey",
 				"interactionLockOverlayTimeout",
-				"songListTrackNumbersDomains"
+				"songListTrackNumbersDomains",
+				"listButtonsStyle",
+				"aboveQueueHeaderStyle"
 			]);
 		}
 	};
@@ -2694,7 +2711,7 @@
 			"build-prod-compat": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_COMPAT_MODE=strict BYTM_SUFFIX=_compat vite build",
 			"build-local-base": "cross-env BYTM_ASSET_SOURCE=local BYTM_GEN_META=false vite build",
 			"build-prod-base": "cross-env BYTM_MODE=production BYTM_BRANCH=main vite build",
-			"preview": "cross-env BYTM_MODE=production BYTM_BRANCH=main BYTM_ASSET_SOURCE=local vite build && pnpm serve -S -L -X=10",
+			"preview": "cross-env BYTM_MODE=production BYTM_BRANCH=develop vite build && pnpm serve -S -L -X=10",
 			"serve": "node --no-warnings=ExperimentalWarning ./src/tools/serve.ts",
 			"lint": "eslint . && tsc --noEmit && pnpm check-deps",
 			"check-deps": "node --no-warnings=ExperimentalWarning ./src/tools/check-deps.ts",
@@ -2770,7 +2787,6 @@
 			"eslint-plugin-storybook": "10.2.19",
 			"express": "5.2.1",
 			"globals": "17.4.0",
-			"kleur": "4.1.5",
 			"knip": "5.86.0",
 			"nanoevents": "9.1.0",
 			"pnpm": "10.32.1",
@@ -7632,6 +7648,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	var removeEmoji = (str) => str.replace(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu, "").trim();
 	/** Common options for config items of type "select" */
 	var options = {
+		/** `all`, `yt`, `ytm` */
 		siteSelection: () => [
 			{
 				value: "all",
@@ -7646,6 +7663,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				label: t("site_selection_only_ytm")
 			}
 		],
+		/** `all`, `yt`, `ytm`, `none` */
 		siteSelectionOrNone: () => [
 			{
 				value: "all",
@@ -7664,10 +7682,12 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				label: t("site_selection_none")
 			}
 		],
+		/** Any key of {@linkcode langMapping} (`assets/locales.json`) */
 		locale: () => Object.entries(locales_default).reduce((a, [locale, { name, emoji }]) => [...a, {
 			value: locale,
 			label: `${emoji} ${name}`
 		}], []).sort((a, b) => removeEmoji(a.label).localeCompare(removeEmoji(b.label))),
+		/** `darker`, `normal`, `lighter` */
 		colorLightness: () => [
 			{
 				value: "darker",
@@ -7682,6 +7702,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				label: t("color_lightness.lighter")
 			}
 		],
+		/** `am`, `yt` */
 		thumbOverlaySources: () => [{
 			value: "am",
 			label: t("thumbnail_overlay.source_am")
@@ -7689,6 +7710,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			value: "yt",
 			label: t("thumbnail_overlay.source_yt")
 		}],
+		/** `currentQueue`, `genericLists`, `everywhere` */
 		songListType: () => [
 			{
 				value: "currentQueue",
@@ -7703,6 +7725,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				label: t("list_button_placement_everywhere")
 			}
 		],
+		/** `never`, `all`, `importantOnly` */
 		alertMode: () => [
 			{
 				value: "never",
@@ -7716,7 +7739,15 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				value: "importantOnly",
 				label: t("alert_mode.important_only")
 			}
-		]
+		],
+		/** `opaque`, `transparent` */
+		binaryOpacity: () => [{
+			value: "opaque",
+			label: t("style_option.opaque")
+		}, {
+			value: "transparent",
+			label: t("style_option.transparent")
+		}]
 	};
 	/** List of categories that are related to each other and can be grouped together in the config menu. */
 	var groupedCategories = [
@@ -8173,6 +8204,17 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			reloadRequired: false,
 			adornments: [adornments.ytmOnly]
 		},
+		listButtonsStyle: {
+			...featDefaults.listButtonsStyle,
+			options: () => [...options.binaryOpacity(), {
+				value: "gradient",
+				label: t("style_option.gradient")
+			}],
+			category: "songLists",
+			group: "queueButtons",
+			supportedSites: ["ytm"],
+			adornments: [adornments.ytmOnly, adornments.reload]
+		},
 		scrollToActiveSongBtn: {
 			...featDefaults.scrollToActiveSongBtn,
 			category: "songLists",
@@ -8198,6 +8240,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				adornments.advanced,
 				adornments.reload
 			]
+		},
+		aboveQueueHeaderStyle: {
+			...featDefaults.aboveQueueHeaderStyle,
+			options: options.binaryOpacity,
+			category: "songLists",
+			group: "aboveQueueButtons",
+			supportedSites: ["ytm"],
+			adornments: [adornments.ytmOnly, adornments.reload]
 		},
 		songListTrackNumbersEnabled: {
 			...featDefaults.songListTrackNumbersEnabled,
@@ -11205,6 +11255,21 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	//#region src/features/songLists.ts
 	/** Whether any song list item's checkbox is currently checked */
 	var isCheckboxChecked = false;
+	/** Initializes the current song queue styling. */
+	async function initCurrentQueue() {
+		const promises = [];
+		try {
+			promises.push(addStyleFromResource(getFeature("aboveQueueHeaderStyle") === "transparent" ? "css-queue_header_transparent" : "css-queue_header_opaque"));
+		} catch (err) {
+			loggers.songLists.error("Couldn't add current queue header style due to error:", err);
+		}
+		try {
+			promises.push(addStyleFromResource(`css-queue_item_${getFeature("listButtonsStyle")}`));
+		} catch (err) {
+			loggers.songLists.error("Couldn't add current queue list item style due to error:", err);
+		}
+		return await Promise.all(promises);
+	}
 	/** Initializes the queue buttons */
 	async function initQueueButtons() {
 		new MutationObserver(() => {
@@ -11224,21 +11289,21 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const tryAddCurrentQueueBtns = (parentSelector) => {
 			if (getFeature("listButtonsPlacement") !== "currentQueue" && getFeature("listButtonsPlacement") !== "everywhere") return;
 			const parent = document.querySelector(parentSelector);
-			if (!parent) return loggers.layout.warn("Couldn't find current queue parent element to add queue buttons to");
+			if (!parent) return loggers.songLists.warn("Couldn't find current queue parent element to add queue buttons to");
 			const queueItems = parent.querySelectorAll(getSelector("songLists", "queueItem"));
 			let amt = 0;
 			for (const queueItm of queueItems) if (!queueItm.classList.contains("bytm-has-queue-btns")) {
 				addQueueButtons(queueItm, void 0, "currentQueue");
 				amt++;
 			}
-			if (amt > 0) loggers.layout.log(`Added buttons to ${amt} new queue ${(0, _sv443_network_coreutils.autoPlural)("item", amt)}`);
+			if (amt > 0) loggers.songLists.log(`Added buttons to ${amt} new queue ${(0, _sv443_network_coreutils.autoPlural)("item", amt)}`);
 		};
 		siteEvents.on("queueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "currentQueueContainer")));
 		siteEvents.on("autoplayQueueChanged", () => tryAddCurrentQueueBtns(getSelector("songLists", "autoplayQueueContainer")));
 		const queueItems = document.querySelectorAll(getSelector("songLists", "allCurrentQueueItems_global"));
 		if (queueItems.length > 0) {
 			queueItems.forEach((itm) => addQueueButtons(itm, void 0, "currentQueue"));
-			loggers.layout.log(`Added buttons to ${queueItems.length} existing "current song queue" ${(0, _sv443_network_coreutils.autoPlural)("item", queueItems)}`);
+			loggers.songLists.log(`Added buttons to ${queueItems.length} existing "current song queue" ${(0, _sv443_network_coreutils.autoPlural)("item", queueItems)}`);
 		}
 		/** Tries to add queue buttons to the items in generic song lists, like playlists, albums, artist pages, etc. */
 		const tryAddGenericListQueueBtns = (listElem) => {
@@ -11251,7 +11316,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
 				addedBtnsCount++;
 			});
-			addedBtnsCount > 0 && loggers.layout.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${(0, _sv443_network_coreutils.autoPlural)("item", addedBtnsCount)} in list`, listElem);
+			addedBtnsCount > 0 && loggers.songLists.log(`Added buttons to ${addedBtnsCount} new "generic song list" ${(0, _sv443_network_coreutils.autoPlural)("item", addedBtnsCount)} in list`, listElem);
 		};
 		const debouncedIdleSongListCheck = (0, _sv443_network_coreutils.debounce)((songLists) => {
 			doSongListsChecks(songLists, true);
@@ -11328,7 +11393,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				let song, artist;
 				if (listType === "currentQueue") {
 					const songInfo = queueItem.querySelector(getSelector("songLists", "allCurrentQueueItemsSongInfo_global"));
-					if (!songInfo) return loggers.layout.error("Couldn't find song info element in queue item", queueItem);
+					if (!songInfo) return loggers.songLists.error("Couldn't find song info element in queue item", queueItem);
 					const [songEl, artistEl] = songInfo.querySelectorAll(getSelector("songLists", "currentQueueSongAndArtistNames"));
 					song = songEl?.textContent;
 					artist = artistEl?.textContent;
@@ -11343,12 +11408,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						artistEl = document.querySelector(getSelector("songLists", "playlistPageArtistNameAlternate"));
 						artist = artistEl?.textContent;
 					}
-				} else return loggers.layout.error("Invalid list type:", listType);
+				} else return loggers.songLists.error("Invalid list type:", listType);
 				if (song && isVideo && song.includes("-")) {
 					artist = song.split("-")[0]?.trim();
 					song = song.split("-").slice(1).join("-").trim();
 				}
-				if (!song || !artist) return loggers.layout.error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
+				if (!song || !artist) return loggers.songLists.error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
 				let lyricsUrl;
 				const artistsSan = sanitizeArtists(artist);
 				const songSan = sanitizeSong(song);
@@ -11430,7 +11495,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						if (queuePopupCont) queuePopupCont.setAttribute("data-bytm-hidden", "true");
 						dotsBtnElem.click();
 					} else {
-						loggers.layout.info("Couldn't find three dots button in queue item, trying to open the context menu manually");
+						loggers.songLists.info("Couldn't find three dots button in queue item, trying to open the context menu manually");
 						queueItem.dispatchEvent(new MouseEvent("contextmenu", {
 							bubbles: true,
 							cancelable: false
@@ -11453,13 +11518,13 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						queueItem.remove();
 					}
 					if (!removeFromQueueBtn) {
-						loggers.layout.error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
+						loggers.songLists.error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
 						dotsBtnElem?.click();
 						delImgElem.src = await getResourceUrl("icon-error");
 						if (deleteBtnElem) deleteBtnElem.ariaLabel = deleteBtnElem.title = listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list");
 					}
 				} catch (err) {
-					loggers.layout.error("Couldn't remove song from queue due to error:", err);
+					loggers.songLists.error("Couldn't remove song from queue due to error:", err);
 				} finally {
 					queuePopupCont?.removeAttribute("data-bytm-hidden");
 				}
@@ -11485,10 +11550,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				if (location === "genericLists" || location === "everywhere") promises.push(addStyleFromResource("css-track_numbers_song_lists"));
 				if (location === "currentQueue" || location === "everywhere") promises.push(addStyleFromResource("css-track_numbers_current_queue"));
 			} catch (err) {
-				loggers.layout.error("Couldn't add track numbers style:", err);
+				loggers.songLists.error("Couldn't add track numbers style:", err);
 			}
 			await Promise.allSettled(promises);
-			loggers.layout.log("Added track numbers style - for location(s):", location);
+			loggers.songLists.log("Added track numbers style - for location(s):", location);
 		})();
 	}
 	//#endregion
@@ -12163,14 +12228,6 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			loggers.integration.error("Failed to fix SponsorBlock styling:", err);
 		}
 	}
-	/** Adjust the BetterYTM styles if ThemeSong is ***not*** used */
-	async function fixPlayerPageTheming() {
-		try {
-			return await addStyleFromResource("css-fix_playerpage_theming");
-		} catch (err) {
-			loggers.integration.error("Failed to fix BetterYTM player page theming:", err);
-		}
-	}
 	/** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
 	async function fixThemeSong() {
 		try {
@@ -12330,6 +12387,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				if (feats.swapLikeDislikeButtons) ftInit.push(["swapLikeDislikeBtns", initSwapLikeDislikeBtns()]);
 				if (feats.watchPageFullSize) ftInit.push(["watchPageFullSize", initWatchPageFullSize()]);
 				ftInit.push(["volumeFeatures", initVolumeFeatures()]);
+				ftInit.push(["initCurrentQueue", initCurrentQueue()]);
 				if (feats.lyricsQueueButton || feats.deleteFromQueueButton) ftInit.push(["queueButtons", initQueueButtons()]);
 				ftInit.push(["aboveQueueButtons", initAboveQueueBtns()]);
 				if (feats.closeToastsTimeout > 0) ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
@@ -12340,10 +12398,8 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 				if (feats.anchorImprovements) ftInit.push(["anchorImprovements", addAnchorImprovements()]);
 				if (feats.geniusLyrics) ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
 				if (feats.sponsorBlockIntegration) ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
-				const hideThemeSongLogo = addStyleFromResource("css-hide_themesong_logo");
 				if (feats.themeSongVisualizerOpacity !== 100) ftInit.push(["themeSongVisualizerOpacity", setThemeSongVisualizerOpacity()]);
-				if (feats.themeSongIntegration) ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), hideThemeSongLogo])]);
-				else ftInit.push(["themeSongIntegration", Promise.allSettled([fixPlayerPageTheming(), hideThemeSongLogo])]);
+				if (feats.themeSongIntegration) ftInit.push(["themeSongIntegration", Promise.allSettled([fixThemeSong(), addStyleFromResource("css-hide_themesong_logo")])]);
 				if (feats.removeThumbnailRatingBar) ftInit.push(["removeThumbnailRatingBar", (async () => void await addStyleFromResource("css-remove_thumb_rating_bar"))()]);
 			}
 			try {
@@ -12659,7 +12715,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "5bf7f6db",
+				buildNumber: "47c17215",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
