@@ -39,11 +39,10 @@ When a low-level module needs behavior owned by a higher one (rare - most appare
 
 # Libraries Summary
 
-- UserUtils: DOM and GM utilities, notably:
+- UserUtils: JS, DOM and GM utilities, notably:
   - `DataStore`: Persistent JSON database including data migration and other features.
     - `GMStorageEngine`: A wrapper around the GM and browser storage APIs.
   - `DataStoreSerializer`: A serializer for combining, exporting and importing multiple DataStore instances.
-- CoreUtils: Misc JS utilities.
   - `NanoEmitter`: Wrapper around `nanoevents` to offer a class resembling Node's EventEmitter, with lots of extra features.
 - compare-versions: Semver comparison library.
 - DOMPurify: HTML sanitizer.

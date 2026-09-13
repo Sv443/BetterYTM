@@ -88,9 +88,7 @@ These are the ways to interact with BetterYTM; through constants, events and glo
   [**Find a summary with examples below.**](#global-functions-and-classes)  
 
 - Additionally, the following namespaces expose entire libraries for you that BetterYTM has already loaded in:
-  - `unsafeWindow.BYTM.CoreUtils` contains all exported members from the [CoreUtils library.](https://github.com/Sv443-Network/CoreUtils)  
-    It will soon be the main dependency of UserUtils, and contains some more utility functions and updated features from UserUtils.
-  - `unsafeWindow.BYTM.UserUtils` contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)  
+  - `unsafeWindow.BYTM.UserUtils` contains all exported members from the [UserUtils library](https://github.com/Sv443-Network/UserUtils), which in turn includes the entire [CoreUtils library.](https://github.com/Sv443-Network/CoreUtils)  
     This library can register listeners for when CSS selectors exist, intercept events, manage persistent user configurations, allow you to modify the DOM more easily and more.
   - `unsafeWindow.BYTM.compareVersions` has all functions from the [compare-versions library.](https://npmjs.com/package/compare-versions)  
     Use it to compare semver-compliant version strings.
@@ -304,7 +302,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > The returned properties include:  
 > - `token` - A per-session private token that is used for authenticated function calls that **should not be persistently stored.**
-> - `events` - A [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM. Its `publicEmit` prop is set to `true`, so you can use its `emit()` method if that's what you want to do for whatever reason. Other plugins will *not* receive your own dispatched events.  
+> - `events` - A [CoreUtils/UserUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM. Its `publicEmit` prop is set to `true`, so you can use its `emit()` method if that's what you want to do for whatever reason. Other plugins will *not* receive your own dispatched events.  
 >   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts).
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin. This is a reduced version of the plugin definition object.
 > - `permissions` - An object with the properties `int` and `array`, which are the granted intents as a bitwise-OR number and as an array of PluginIntent enum numbers, respectively.
@@ -314,8 +312,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > // Assuming BetterYTM is added as a submodule in the "/bytm/" folder
 > import type { PluginDef, PluginIntent } from "bytm/src/types.ts";
-> // Load the version of CoreUtils that's installed in BetterYTM
-> const { CoreUtils } = unsafeWindow.BYTM;
+> // Load the version of UserUtils that's installed in BetterYTM
+> const { UserUtils } = unsafeWindow.BYTM;
 > 
 > // Search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
@@ -404,7 +402,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     // const { token, events, permissions } = unsafeWindow.BYTM.registerPlugin(pluginDef);
 > 
 >     // show a welcome alert once, if the CreateModalDialogs intent was granted
->     if(CoreUtils.bitSetHas(permissions.int, PluginIntent.CreateModalDialogs)) {
+>     if(UserUtils.bitSetHas(permissions.int, PluginIntent.CreateModalDialogs)) {
 >       if(!await GM.getValue("my_plugin_welcome_msg_shown", false)) {
 >         await unsafeWindow.BYTM.showPrompt({
 >           type: "alert",
@@ -509,7 +507,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | `constants` | `Object` | Contains all exports from the `src/constants.ts` file |
 > | `emitInterface` | `Function` | Emits a generic, global interface event |
 > | `emitSiteEvent` | `Function` | Emits an event using the siteEvents system |
-> | `siteEvents` | [CoreUtils `NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) | Event emitting instance of the siteEvents system |
+> | `siteEvents` | [CoreUtils/UserUtils `NanoEmitter`](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) | Event emitting instance of the siteEvents system |
 > | `addSelectorListener` | `Function` | Adds a listener checking for DOM changes using BYTM's own SelectorObserver instances |
 > | `showPrompt` | `Function` | Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt` |
 > | `setGlobalProp` | `Function` | Sets a global property on the `unsafeWindow.BYTM` object |
@@ -1676,7 +1674,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Adds a listener that triggers after one of, or all of the given site events are dispatched, either continuously or just once, with configurable behavior.  
 > Returns a function that can be called to unsubscribe all listeners created by this call.  
 >   
-> Please refer to [the method `onMulti()` of CoreUtils' `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) for more information on this function.
+> Please refer to [the method `onMulti()` of the CoreUtils/UserUtils `NanoEmitter` class](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) for more information on this function.
 
 <br>
 
@@ -1721,7 +1719,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <br>
 > 
 > Methods:  
-> The methods from the [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) class are also available here.  
+> The methods from the [CoreUtils/UserUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) class are also available here.  
 > These are the additional methods that are exclusive to the `BytmDialog` class:  
 > - `open(e?: MouseEvent | KeyboardEvent): Promise<void>`  
 >   Opens the dialog - also mounts it if it hasn't been mounted yet.  
@@ -1950,7 +1948,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | `modifyBodyElements?: (bodyWrapper: HTMLDivElement, markdownContainer: HTMLDivElement) => void \| Promise<void>;` | Optional function that can be used to modify the body elements after they are created (or other tasks like adding listeners). The `bodyWrapper` is the outer wrapper element with the class `bytm-md-dialog-body` and the `markdownContainer` is the direct parent of the markdown content, with the classes `bytm-markdown-dialog-content` and `bytm-markdown-container`. |
 >   
 > Methods:  
-> The methods from the [CoreUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
+> The methods from the [CoreUtils/UserUtils NanoEmitter](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#class-nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
 > - `static parseMd(md: string, sanitize = false): Promise<string>`  
 >   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.  
 >   If `sanitize` is set to true, the resulting HTML string will be sanitized with DOMPurify to remove any potentially XSS-causing code.
@@ -2417,7 +2415,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   The callback is called and the Promise is resolved at the same time.
 > - `onMulti(options: NanoEmitterOnMultiOptions | Array<NanoEmitterOnMultiOptions>): () => void`  
 >   Allows subscribing to multiple events and calling the callback only when one of, all of, or a subset of the events are emitted, either continuously or only once.  
->   Refer to the [CoreUtils `NanoEmitter.onMulti()` documentation](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#nanoemitteronmulti) for details.
+>   Refer to the [CoreUtils/UserUtils `NanoEmitter.onMulti()` documentation](https://github.com/Sv443-Network/CoreUtils/blob/main/docs.md#nanoemitteronmulti) for details.
 > - `emit(event: string, ...args: any[]): boolean`  
 >   Emits the specified event with the passed arguments.  
 >   Has to be enabled through the `publicEmit` option in the constructor first!  
