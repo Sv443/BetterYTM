@@ -172,7 +172,7 @@ To edit an existing translation, please follow these steps:
   Variables:  
   - `BYTM_MODE=<value>` - The mode to build in. Can be either `production` or `development` (default).
   - `BYTM_BRANCH=<value>` - The branch to target when creating various GitHub CDN URLs, like when loading resources. Can be any branch name that exists on the `repo` defined in `src/constants.ts`, but should be `main` for production and `develop` for development (default). Cannot be a ref like a tag or SHA1 hash.
-  - `BYTM_HOST=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`. This affects mostly only cosmetic things, as well as the update URL in the userscript header, but for `greasyfork`, all comments are stripped out to fit in the 0.5 MB limit.
+  - `BYTM_HOST=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`. This affects mostly cosmetic things, as well as the update URL in the userscript header, but for `greasyfork`, all comments are stripped out to help fit in the 2 MB limit.
   - `BYTM_ASSET_SOURCE=<value>` - Where to get the resource files from. Can be either `local`, `jsdelivr` (default) or `github`.
   - `BYTM_SUFFIX=<value>` - File name suffix to add just before the `.user.js` extension. Defaults to an empty string.
   - `BYTM_GEN_META=<value>` - Whether or not to generate the `.meta.js` file, containing only the userscript header, to massively reduce the amount of downloaded data for version checks by the userscript manager extension via `@updateURL`. Can be either `true` (default) or `false`.
@@ -286,9 +286,8 @@ If you need help with these, don't hesitate to reach out to me ([see my homepage
 - **Creating a new reusable UI component:**
   1. Create a new file in the `src/components` folder with a descriptive name
   2. Add a function that takes a single object of properties as an argument (kind of like a React component), and returns an element that extends the `HTMLElement` interface (like what the return value of `document.createElement()` is)
-  3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
-  4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
-  5. Write some API documentation for the component inside the file [`docs/api.md`](./docs/api.md) under the appropriate section, following the format of the other entries
+  3. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
+  4. Write some API documentation for the component inside the file [`docs/api.md`](./docs/api.md) under the appropriate section, following the format of the other entries
 - **Adding a locale** (language & country code):
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](../assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.  

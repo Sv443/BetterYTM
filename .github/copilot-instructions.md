@@ -24,6 +24,19 @@ Components are written using the vanilla JS DOM API, no framework like React is 
 - Prefer options objects as function/method parameters when there are more than 2 parameters or when the logic is not easily inferrable from the function/method and parameter names alone.
 - When members are mentioned in TSDoc comments and also imported at the top of the file, they should be mentioned using the `{@linkcode ...}` tag.
 
+# Dependency Layering
+
+`src/` has zero circular imports, enforced by `pnpm check-deps` (part of `pnpm lint`), which fails the build on any cycle or on an import from a higher layer to a lower one. The layers, roughly lowest to highest:
+
+- **Leaves** (`src/types.ts`, `src/constants.ts`, `src/core/*.ts`, `src/utils/pure.ts`, `src/utils/domain.ts`, `src/utils/locale.ts`, `src/features/featDefaults.ts`, `src/plugins/store.ts`): zero internal value imports (type-only imports don't count - they're erased at build time).
+- **Low utils** (`src/utils/logging.ts`, `src/config.ts`, `src/configSchema.ts`): only import leaves.
+- **Mid utils** (`src/utils/dom.ts`, `src/utils/translations.ts`, `src/utils/misc.ts`, `src/siteEvents.ts`, `src/observers.ts`, `src/utils/broadcast.ts`): may import config/logging but not components, dialogs, features or the menu.
+- **Components → Dialogs/Features → Menu → Bootstrap** (`src/interface.ts`, `src/configInit.ts`, `src/bindings.ts`, `src/index.ts`): each may only import from strictly lower layers; nothing imports the bootstrap layer.
+
+The exact, machine-checked order is `src/tools/layers.json#layers` (one array per layer, lowest first) - regenerate it with `pnpm check-deps --write-baseline` after a legitimate restructure, don't hand-edit it to silence a real violation.
+
+When a low-level module needs behavior owned by a higher one (rare - most apparent cases are just misfiled code that should move down a layer instead), use the late-binding registry in `src/core/hooks.ts`: register the implementation once in `src/bindings.ts`, then call it via `tryUse("key")?.()` or `use("key")()`. Every registered inversion should be a genuine one, not a workaround for not wanting to move code.
+
 # Libraries Summary
 
 - UserUtils: DOM and GM utilities, notably:
