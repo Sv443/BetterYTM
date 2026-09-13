@@ -399,7 +399,6 @@
   "feature_desc.showVotes": "Oynatılan şarkının beğeni oranlarını göster",
   "feature_helptext.showVotes": "Bu özellik, Return YouTube Dislike tarafından desteklenmektedir ve oynatılan şarkının yaklaşık beğeni oranını gösterir.",
   "feature_desc.swapLikeDislikeButtons": "Beğenme ve beğenme tuşlarının yerini değiştir",
-  "feature_helptext.swapLikeDislikeButtons": "YouTube'da beğeni tuşu solda YouTube Music'te ise diğer tarafta. Bu özelliği açmak YouTube Music'te yerlerini değiştirerek sayfalar arasında tutarlılık sağlar.",
   "feature_desc.numbersFormat": "Sayılar nasıl biçimlendirilmeli?",
   "feature_desc.watchPageFullSize": "/watch sayfasındayken ana içerik mevcut tüm boşluğu kullanır",
 

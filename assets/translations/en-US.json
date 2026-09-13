@@ -436,7 +436,6 @@
   "feature_desc.showVotes": "Show the amount of likes and dislikes on the currently playing song",
   "feature_helptext.showVotes": "This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.",
   "feature_desc.swapLikeDislikeButtons": "Swap the position of the like and dislike buttons",
-  "feature_helptext.swapLikeDislikeButtons": "On YT, the like button is on the left side. On YTM it's the other way around. Enabling this feature makes the two pages consistent by swapping them around on YTM.",
   "feature_desc.numbersFormat": "How should numbers be formatted?",
   "feature_desc.watchPageFullSize": "Make the main content on the /watch page use all available space",
 

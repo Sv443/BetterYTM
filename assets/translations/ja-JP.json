@@ -400,7 +400,6 @@
   "feature_desc.showVotes": "現在再生中の曲のいいねと嫌いの数を表示する",
   "feature_helptext.showVotes": "この機能は Return YouTube Dislike によって提供され、現在再生中の曲のいいねと嫌いの数をおおよその数で表示します。",
   "feature_desc.swapLikeDislikeButtons": "「いいね！」と「嫌い」ボタンの位置を入れ替える",
-  "feature_helptext.swapLikeDislikeButtons": "YouTube では「いいね！」ボタンが左側にありますが、YouTube Music ではその逆です。この機能を有効にすると、YTM 上でボタンの位置を入れ替えて、両方のページを一貫性のあるものにします。",
   "feature_desc.numbersFormat": "数字のフォーマット方法",
   "feature_desc.watchPageFullSize": "/watch ページのメインコンテンツを利用可能なすべてのスペースで使用する",
 

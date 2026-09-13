@@ -388,7 +388,6 @@
   "feature_desc.showVotes": "显示当前播放的歌曲的喜欢和不喜欢的数量",
   "feature_helptext.showVotes": "此功能由 Return YouTube Dislike 提供支持，将显示当前播放的歌曲的大致喜欢和不喜欢的数量。",
   "feature_desc.swapLikeDislikeButtons": "交换喜欢和不喜欢按钮的位置",
-  "feature_helptext.swapLikeDislikeButtons": "如果您安装了 Return YouTube Dislike 扩展，喜欢和不喜欢按钮将显示在一起。此功能将它们的不少见顺序交换。",
   "feature_desc.numbersFormat": "数字应该如何格式化？",
   "feature_desc.watchPageFullSize": "在 /watch 页面上使主要内容使用所有可用空间",
 

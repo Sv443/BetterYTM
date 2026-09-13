@@ -400,7 +400,6 @@
   "feature_desc.showVotes": "Afficher le nombre de j'aime et de je n'aime pas sur la chanson en cours de lecture",
   "feature_helptext.showVotes": "Cette fonctionnalité est alimentée par Return YouTube Dislike et affichera le nombre approximatif de j'aime et de je n'aime pas sur la chanson en cours de lecture.",
   "feature_desc.swapLikeDislikeButtons": "Échanger la position des boutons j'aime et je n'aime pas",
-  "feature_helptext.swapLikeDislikeButtons": "Sur YouTube, le bouton j'aime est du côté gauche. Sur YTM, c'est l'inverse. En activant cette fonctionnalité, les deux pages seront cohérentes en les échangeant sur YTM.",
   "feature_desc.numbersFormat": "Comment les nombres doivent-ils être formatés?",
   "feature_desc.watchPageFullSize": "Rendre le contenu principal de la page /watch utiliser tout l'espace disponible",
 

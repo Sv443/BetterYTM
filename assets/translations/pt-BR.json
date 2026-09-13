@@ -399,7 +399,6 @@
   "feature_desc.showVotes": "Mostrar a quantidade de curtidas e descurtidas na música que está tocando atualmente",
   "feature_helptext.showVotes": "Este recurso é alimentado pelo Return YouTube Dislike e mostrará a quantidade aproximada de curtidas e descurtidas na música em reprodução.",
   "feature_desc.swapLikeDislikeButtons": "Trocar a posição dos botões de curtir e descurtir",
-  "feature_helptext.swapLikeDislikeButtons": "No YT, o botão de curtir fica à esquerda. No YTM é o contrário. Ativar este recurso torna as duas páginas consistentes trocando-os no YTM.",
   "feature_desc.numbersFormat": "Como os números devem ser formatados?",
   "feature_desc.watchPageFullSize": "Fazer o conteúdo principal na página /watch usar todo o espaço disponível",
 
