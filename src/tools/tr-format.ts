@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import k from "kleur";
+import { styleText } from "node:util";
 import type { TrLocale } from "../utils/translations.ts";
 import locales from "../../assets/locales.json" with { type: "json" };
 
@@ -110,7 +110,7 @@ for(const locale of localeKeys) {
 
   reformattedAmt++;
 }
-console.log(`\nDone reformatting ${k.green(reformattedAmt)} translation file${reformattedAmt === 1 ? "" : "s"}!\n`);
+console.log(`\nDone reformatting ${styleText("green", String(reformattedAmt))} translation file${reformattedAmt === 1 ? "" : "s"}!\n`);
 
 
 //#region utils

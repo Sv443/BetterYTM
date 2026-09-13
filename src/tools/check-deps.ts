@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, relative, resolve, posix } from "node:path";
 import { fileURLToPath } from "node:url";
-import k from "kleur";
+import { styleText } from "node:util";
 import ts from "typescript";
 
 /**
@@ -271,22 +271,22 @@ const sccs = findSccs();
 const sccFiles = sccs.reduce((a, c) => a + c.length, 0);
 
 console.log();
-console.log(k.bold(`Checked ${files.length} runtime modules in src/`));
+console.log(styleText("bold", `Checked ${files.length} runtime modules in src/`));
 console.log();
 
 if(sccs.length === 0)
-  console.log(k.green("  ✓ no import cycles"));
+  console.log(styleText("green", "  ✓ no import cycles"));
 else {
-  console.log(k.yellow(`  ${sccFiles} file${sccFiles === 1 ? "" : "s"} in ${sccs.length} cyclic group${sccs.length === 1 ? "" : "s"}:`));
+  console.log(styleText("yellow", `  ${sccFiles} file${sccFiles === 1 ? "" : "s"} in ${sccs.length} cyclic group${sccs.length === 1 ? "" : "s"}:`));
   for(const comp of sccs) {
     const within = new Set(comp);
     const cycle = shortestCycle(comp[0], within);
     console.log();
-    console.log(`  ${k.yellow("●")} group of ${comp.length}, shortest cycle:`);
-    console.log(`    ${cycle.join(k.gray(" → "))}`);
+    console.log(`  ${styleText("yellow", "●")} group of ${comp.length}, shortest cycle:`);
+    console.log(`    ${cycle.join(styleText("gray", " → "))}`);
     if(hasFlag("--list", "-L"))
       for(const f of comp)
-        console.log(k.gray(`      ${f}`));
+        console.log(styleText("gray", `      ${f}`));
   }
 }
 
@@ -308,23 +308,23 @@ if(cfg.enforceLayers) {
   }
   console.log();
   if(violations.length === 0)
-    console.log(k.green("  ✓ no layer violations"));
+    console.log(styleText("green", "  ✓ no layer violations"));
   else {
-    console.log(k.red(`  ${violations.length} layer violation${violations.length === 1 ? "" : "s"}:`));
+    console.log(styleText("red", `  ${violations.length} layer violation${violations.length === 1 ? "" : "s"}:`));
     for(const v of violations)
-      console.log(k.red(`    ${v}`));
+      console.log(styleText("red", `    ${v}`));
   }
 }
 
 if(hasFlag("--graph", "-G")) {
   const out = join(rootDir, depGraphFileName);
   writeFileSync(out, JSON.stringify(Object.fromEntries([...graph].map(([f, e]) => [f, e.map(x => x.to)])), null, 2));
-  console.log(k.gray(`\n  wrote ${relative(rootDir, out)}`));
+  console.log(styleText("gray", `\n  wrote ${relative(rootDir, out)}`));
 }
 
 if(hasFlag("--write-baseline", "-W")) {
   writeFileSync(cfgPath, `${JSON.stringify({ ...cfg, maxSccFiles: sccFiles }, null, 2)}\n`);
-  console.log(k.gray(`\n  baseline updated: maxSccFiles = ${sccFiles}`));
+  console.log(styleText("gray", `\n  baseline updated: maxSccFiles = ${sccFiles}`));
   exit(0);
 }
 
@@ -332,16 +332,16 @@ console.log();
 let failed = false;
 
 if(sccFiles > cfg.maxSccFiles) {
-  console.log(k.red(`  ✗ ${sccFiles} files in cycles, baseline allows ${cfg.maxSccFiles}`));
-  console.log(k.gray("    A change introduced new cycles. Break them, or see src/tools/layers.json."));
+  console.log(styleText("red", `  ✗ ${sccFiles} files in cycles, baseline allows ${cfg.maxSccFiles}`));
+  console.log(styleText("gray", "    A change introduced new cycles. Break them, or see src/tools/layers.json."));
   failed = true;
 }
 else if(sccFiles < cfg.maxSccFiles) {
-  console.log(k.green(`  ✓ ${sccFiles} files in cycles, below the baseline of ${cfg.maxSccFiles}`));
-  console.log(k.gray("    Progress! Run `pnpm check-deps --write-baseline` to lock it in."));
+  console.log(styleText("green", `  ✓ ${sccFiles} files in cycles, below the baseline of ${cfg.maxSccFiles}`));
+  console.log(styleText("gray", "    Progress! Run `pnpm check-deps --write-baseline` to lock it in."));
 }
 else
-  console.log(k.gray(`  ${sccFiles} files in cycles (at baseline)`));
+  console.log(styleText("gray", `  ${sccFiles} files in cycles (at baseline)`));
 
 if(violations.length > 0)
   failed = true;
