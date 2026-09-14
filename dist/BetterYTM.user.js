@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d55cc60b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@35daa38c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -133,11 +133,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Mon, 14 Sep 2026 16:43:35 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Mon, 14 Sep 2026 16:47:58 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ d55cc60b                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 35daa38c                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ F4dLH5V4DpSN                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ gaGZE3C58047                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -566,9 +566,9 @@
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "d55cc60b";
+	var buildNumber$1 = "35daa38c";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789404215649;
+	var buildTimestamp = 1789404478375;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -11944,7 +11944,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			if (![
 				"/watch",
 				"/playlist",
-				"/channel"
+				"/channel",
+				"/@"
 			].some((v) => location.pathname.startsWith(v))) return loggers.hotkey.warn("Not on a supported page, so the site switch is ignored");
 			const isWatchPage = location.pathname.startsWith("/watch");
 			let subdomain;
@@ -12745,7 +12746,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "d55cc60b",
+				buildNumber: "35daa38c",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
