@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8cdb95c9/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8010f3c1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Mon, 14 Sep 2026 20:55:23 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Mon, 14 Sep 2026 21:10:45 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 8cdb95c9                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 8010f3c1                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ F206cPwc03H1                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ e8esTCVRpp0C                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3447,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "8cdb95c9";
+	var buildNumber$1 = "8010f3c1";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789419323803;
+	var buildTimestamp = 1789420245430;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -10430,7 +10430,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				inputElem.spellcheck = false;
 				inputElem.value = "defaultValue" in rest && rest.defaultValue ? await consumeStringGen(rest.defaultValue) : "";
 				const inputEnterListener = (e) => {
-					if ("code" in e && ["Enter", "NumpadEnter"].includes(e.code)) {
+					if ("code" in e && ["Enter", "NumpadEnter"].includes(e.code) && "shiftKey" in e && !e.shiftKey) {
 						inputElem.removeEventListener("keydown", inputEnterListener);
 						this.emitResolve(inputElem?.value?.trim() ?? null);
 						promptDialog?.close();
@@ -18917,7 +18917,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "8cdb95c9",
+				buildNumber: "8010f3c1",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
