@@ -323,7 +323,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     // remove the scroll lock and inert attribute on the body if no dialogs are open
     if(openDialogs.length === 0) {
-      document.body.classList.remove("bytm-disable-scroll");
+      document.body.classList.remove("bytm-no-scroll");
       document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
     }
 
@@ -347,7 +347,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     }
 
     // make sure body is inert and scroll is locked
-    document.body.classList.add("bytm-disable-scroll");
+    document.body.classList.add("bytm-no-scroll");
     document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
@@ -385,6 +385,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogWrapperEl.classList.add("bytm-dialog");
     dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
     dialogWrapperEl.role = "dialog";
+    dialogWrapperEl.ariaModal = "true";
     dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
     dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
 
