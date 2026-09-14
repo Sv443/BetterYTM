@@ -13,7 +13,7 @@ html[dark] {
   --bytm-themed-icon-col: #fff;
 }
 
-.bytm-disable-scroll {
+.bytm-no-scroll {
   overflow: hidden !important;
 }
 
@@ -292,11 +292,11 @@ button.bytm-btn:not(.no-min-width) {
   text-decoration: underline !important;
 }
 
-button[disabled] {
+.bytm-btn[disabled] {
   cursor: not-allowed;
 }
 
-button[disabled].bytm-busy {
+.bytm-btn[disabled].bytm-busy {
   cursor: progress;
 }
 
