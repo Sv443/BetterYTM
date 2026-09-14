@@ -1,4 +1,4 @@
-import type { LooseUnion } from "@sv443-network/coreutils";
+import type { LooseUnion } from "@sv443-network/userutils";
 import "@comp/ripple.css";
 
 type RippleProps<TElem extends HTMLElement> = {

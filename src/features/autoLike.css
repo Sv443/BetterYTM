@@ -2,6 +2,18 @@
   --bytm-auto-like-btn-color: #bf87f0;
 }
 
+#bytm-auto-like-channels-dialog-body {
+  padding-top: 11px;
+}
+
+#bytm-auto-like-channels-dialog-body hr {
+  margin: 13px 15px 12px 15px;
+}
+
+#bytm-auto-like-channels-dialog-body hr.less-margin {
+  margin-top: 11px;
+}
+
 #bytm-auto-like-channels-list {
   display: flex;
   flex-direction: column;
@@ -41,7 +53,6 @@
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  font-style: italic;
   font-size: 1.45rem;
   color: #bbb;
 }

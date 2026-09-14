@@ -17,7 +17,7 @@ assignees: Sv443
 
 ### Install link(s):
 <!-- Link(s) to where users can install the plugin. -->
-<!-- For example GreasyFork, OpenUserJS or your own website. -->
+<!-- For example Greasy Fork, OpenUserJS or your own website. -->
 
 
 ### Source link:

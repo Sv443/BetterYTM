@@ -1,3 +1,93 @@
+:root {
+  --bytm-toast-bg-color: #323232;
+  --bytm-toast-text-color: #fff;
+  --bytm-toast-offset-ver: 80px;
+  --bytm-toast-offset-hor: 25px;
+  --bytm-toast-transition-time: 0.5s;
+  --bytm-toast-transform-distance: 175px;
+}
+
+#bytm-toast {
+  position: fixed;
+  z-index: 1042069;
+  opacity: 0.000001;
+  pointer-events: none;
+  padding: 10px 16px;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  cursor: default;
+
+  background-color: var(--bytm-toast-bg-color);
+  color: var(--bytm-toast-text-color);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+
+  transition:
+    opacity var(--bytm-toast-transition-time) ease,
+    transform var(--bytm-toast-transition-time) ease;
+}
+
+#bytm-toast.clickable {
+  cursor: pointer;
+}
+
+#bytm-toast.visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+#bytm-toast.pos-tl {
+  top: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-tr {
+  top: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-br {
+  bottom: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.pos-bl {
+  bottom: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.visible.pos-tl,
+#bytm-toast.visible.pos-tr,
+#bytm-toast.visible.pos-br,
+#bytm-toast.visible.pos-bl {
+  transform: translate(0, 0);
+}
+
+.bytm-toast-flex-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-toast-icon.img,
+.bytm-toast-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-toast-icon path {
+  fill: var(--toast-icon-fill, #fff);
+}
+
+.bytm-toast-subtitle {
+  color: #ccc;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
 /* Applies to all BytmDialog instances */
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
@@ -180,6 +270,8 @@
 }
 
 .bytm-dialog-footer {
+  display: flex;
+  gap: 12px;
   font-size: 17px;
   text-decoration: underline;
 }
@@ -359,14 +451,14 @@ select.bytm-ftconf-input {
     box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active,
-.bytm-kbd:active {
+.bytm-markdown-container kbd:not(.unclickable):active,
+.bytm-kbd:not(.unclickable):active {
   padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection,
-.bytm-kbd::selection {
+.bytm-markdown-container kbd:not(.unclickable)::selection,
+.bytm-kbd:not(.unclickable)::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -477,7 +569,6 @@ hr {
   align-items: center;
   margin-right: 6px;
 }
-
 /* #region general */
 :root {
   --bytm-locale-color: #5ea2ec;
@@ -490,6 +581,7 @@ hr {
   --bytm-ytm-only-note-col: #fff2ec;
   --bytm-flame-lower-col: #ffb300;
   --bytm-flame-upper-col: #ff6f00;
+  --bytm-shield-col: #4ed2e9;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
@@ -640,6 +732,10 @@ hr {
   fill: var(--bytm-flame-upper-col, #fff);
 }
 
+.bytm-privacy-icon svg path {
+  fill: var(--bytm-shield-col, #fff);
+}
+
 /* #region welcome dialog */
 
 #bytm-welcome-menu-title-wrapper {
@@ -658,21 +754,30 @@ hr {
   overflow-y: auto;
 }
 
-#bytm-welcome-menu-locale-cont {
+#bytm-welcome-menu-horizontal-segment-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 60px;
+  margin-bottom: 24px;
+}
+
+.bytm-welcome-menu-segment-cont {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
 
-#bytm-welcome-menu-locale-img {
+.bytm-welcome-menu-horizontal-segment-img {
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
 }
 
 #bytm-welcome-menu-text-cont {
-  margin-top: 16px;
+  margin-top: 24px;
 }
 
 #bytm-welcome-menu-text {
@@ -680,7 +785,7 @@ hr {
   line-height: 20px;
 }
 
-#bytm-welcome-menu-locale-select {
+.bytm-welcome-menu-select {
   font-size: 1.6rem;
 }
 
@@ -700,7 +805,59 @@ hr {
 #bytm-static-data-alert-dialog-header {
   padding: 0px 8px;
 }
+#bytm-prompt-dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
+#bytm-prompt-dialog-header svg {
+  width: 24px;
+  height: 24px;
+}
+
+#bytm-prompt-dialog-upper-cont,
+#bytm-prompt-dialog-message {
+  font-size: 1.6rem;
+  white-space: pre-wrap;
+}
+
+.bytm-prompt-type-prompt #bytm-prompt-dialog-message {
+  margin-bottom: 15px;
+}
+
+#bytm-prompt-dialog-input {
+  font-size: 1.6rem;
+  width: 100%;
+}
+
+textarea#bytm-prompt-dialog-input {
+  resize: vertical;
+  min-height: 50px;
+  max-height: calc(max(200px, min(var(--bytm-dialog-height-max), 35vh) - 80px));
+}
+
+#bytm-prompt-dialog-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: end;
+}
+
+#bytm-prompt-dialog-buttons-cont {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+#bytm-prompt-dialog-buttons-cont button {
+  cursor: pointer;
+}
+
+.bytm-prompt-dialog-button {
+  padding: 2px 6px;
+  font-size: 1.45rem;
+}
 .bytm-toggle-wrapper {
   display: flex;
   align-items: center;
@@ -759,61 +916,6 @@ hr {
   position: absolute;
   visibility: hidden;
 }
-
-#bytm-prompt-dialog-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-prompt-dialog-header svg {
-  width: 24px;
-  height: 24px;
-}
-
-#bytm-prompt-dialog-upper-cont,
-#bytm-prompt-dialog-message {
-  font-size: 1.6rem;
-  white-space: pre-wrap;
-}
-
-.bytm-prompt-type-prompt #bytm-prompt-dialog-message {
-  margin-bottom: 15px;
-}
-
-#bytm-prompt-dialog-input {
-  font-size: 1.6rem;
-  width: 100%;
-}
-
-textarea#bytm-prompt-dialog-input {
-  resize: vertical;
-  min-height: 50px;
-  max-height: calc(max(200px, min(var(--bytm-dialog-height-max), 35vh) - 80px));
-}
-
-#bytm-prompt-dialog-button-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: end;
-}
-
-#bytm-prompt-dialog-buttons-cont {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-}
-
-#bytm-prompt-dialog-buttons-cont button {
-  cursor: pointer;
-}
-
-.bytm-prompt-dialog-button {
-  padding: 2px 6px;
-  font-size: 1.45rem;
-}
-
 /* #region volume slider */
 
 .bytm-vol-slider-cont {
@@ -833,16 +935,10 @@ textarea#bytm-prompt-dialog-input {
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  background-color: var(--bytm-slider-label-bg-col);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-slider-label-bg-col) 20%
-  );
   font-size: 1.45rem;
   text-align: right;
   padding: 15px;
-  padding-right: 5px;
+  padding-right: 8px;
   opacity: 0.000001;
   transition: opacity 0.2s ease;
 }
@@ -888,98 +984,6 @@ textarea#bytm-prompt-dialog-input {
   width: 20px;
   height: 20px;
 }
-
-:root {
-  --bytm-toast-bg-color: #323232;
-  --bytm-toast-text-color: #fff;
-  --bytm-toast-offset-ver: 80px;
-  --bytm-toast-offset-hor: 25px;
-  --bytm-toast-transition-time: 0.5s;
-  --bytm-toast-transform-distance: 175px;
-}
-
-#bytm-toast {
-  position: fixed;
-  z-index: 1042069;
-  opacity: 0.000001;
-  pointer-events: none;
-  padding: 10px 16px;
-  border-radius: 3px;
-  font-size: 1.5rem;
-  cursor: default;
-
-  background-color: var(--bytm-toast-bg-color);
-  color: var(--bytm-toast-text-color);
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
-
-  transition:
-    opacity var(--bytm-toast-transition-time) ease,
-    transform var(--bytm-toast-transition-time) ease;
-}
-
-#bytm-toast.clickable {
-  cursor: pointer;
-}
-
-#bytm-toast.visible {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-#bytm-toast.pos-tl {
-  top: var(--bytm-toast-offset-ver);
-  left: var(--bytm-toast-offset-hor);
-  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
-}
-
-#bytm-toast.pos-tr {
-  top: var(--bytm-toast-offset-ver);
-  right: var(--bytm-toast-offset-hor);
-  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
-}
-
-#bytm-toast.pos-br {
-  bottom: var(--bytm-toast-offset-ver);
-  right: var(--bytm-toast-offset-hor);
-  transform: translate(0, var(--bytm-toast-transform-distance));
-}
-
-#bytm-toast.pos-bl {
-  bottom: var(--bytm-toast-offset-ver);
-  left: var(--bytm-toast-offset-hor);
-  transform: translate(0, var(--bytm-toast-transform-distance));
-}
-
-#bytm-toast.visible.pos-tl,
-#bytm-toast.visible.pos-tr,
-#bytm-toast.visible.pos-br,
-#bytm-toast.visible.pos-bl {
-  transform: translate(0, 0);
-}
-
-.bytm-toast-flex-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-.bytm-toast-icon.img,
-.bytm-toast-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-toast-icon path {
-  fill: var(--toast-icon-fill, #fff);
-}
-
-.bytm-toast-subtitle {
-  color: #ccc;
-  font-size: 1.2rem;
-  font-weight: 400;
-}
-
 /* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
 
 /* use prefix for more specificity: */
@@ -1040,41 +1044,20 @@ body .bytm-ripple.slowest {
     opacity: 0;
   }
 }
-
-.bytm-exim-dialog-panes-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  height: 100%;
-  overflow: hidden;
-}
-
-.bytm-exim-dialog-pane {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 48%;
-}
-
-.bytm-exim-dialog-center-btn-cont {
-  display: flex;
-  justify-content: center;
-}
-
-.bytm-exim-dialog-pane textarea {
-  height: 120px;
-  resize: none;
-}
-
-.bytm-auto-like-channels-footer-wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-
 :root {
   --bytm-auto-like-btn-color: #bf87f0;
+}
+
+#bytm-auto-like-channels-dialog-body {
+  padding-top: 11px;
+}
+
+#bytm-auto-like-channels-dialog-body hr {
+  margin: 13px 15px 12px 15px;
+}
+
+#bytm-auto-like-channels-dialog-body hr.less-margin {
+  margin-top: 11px;
 }
 
 #bytm-auto-like-channels-list {
@@ -1116,7 +1099,6 @@ body .bytm-ripple.slowest {
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  font-style: italic;
   font-size: 1.45rem;
   color: #bbb;
 }
@@ -1243,7 +1225,72 @@ body.bytm-dom-ytm
   .bytm-generic-long-btn-txt {
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
+.bytm-exim-dialog-panes-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  height: 100%;
+  overflow: hidden;
+}
 
+.bytm-exim-dialog-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 48%;
+}
+
+.bytm-exim-dialog-center-btn-cont {
+  display: flex;
+  justify-content: center;
+}
+
+.bytm-exim-dialog-pane textarea {
+  height: 120px;
+  resize: none;
+}
+.bytm-auto-like-channels-footer-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+#bytm-plugin-perms-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+#bytm-plugin-perms-footer {
+  gap: 16px;
+}
+
+#bytm-plugin-perms-description {
+  white-space: preserve;
+}
+
+.bytm-plugin-perms-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  cursor: help;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-plugin-perms-item:hover {
+  background-color: var(--bytm-dialog-bg-highlight);
+}
+
+.bytm-plugin-perms-item-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-decoration: underline dotted;
+}
 .bytm-hotkey-wrapper {
   display: flex;
   flex-direction: row;
@@ -1265,6 +1312,182 @@ body.bytm-dom-ytm
   display: none;
 }
 
+.bytm-hotkey-input-modifier-container {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-hotkey-input-modifier-plus {
+  display: inline-block;
+  padding: 0px 5px;
+  height: auto;
+}
+#bytm-plugin-list-dialog-bg {
+  --bytm-plugin-list-secondary-col: #c4c4c4;
+  --bytm-plugin-list-row-padding-ver: 16px;
+  --bytm-plugin-list-row-max-height: 130px;
+}
+
+#bytm-plugin-list-dialog-body {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.bytm-plugin-list-no-plugins {
+  font-size: 1.7rem;
+  text-align: center;
+  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
+  white-space: pre-wrap;
+}
+
+.bytm-plugin-list-row {
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
+  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
+}
+
+.bytm-plugin-list-row:first-child {
+  padding-top: 0;
+}
+
+.bytm-plugin-list-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bytm-plugin-list-row-header-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.bytm-plugin-list-row-icon {
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bytm-plugin-list-row-left,
+.bytm-plugin-list-row-left-top,
+.bytm-plugin-list-row-left-bottom,
+.bytm-plugin-list-row-permission-container,
+.bytm-plugin-list-row-buttons-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.bytm-plugin-list-row-left {
+  height: 100%;
+  justify-content: space-between;
+}
+
+.bytm-plugin-list-row-permission-container {
+  padding-right: 16px;
+  gap: 2px;
+}
+
+.bytm-plugin-list-row-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bytm-plugin-list-row-buttons-container {
+  gap: 6px;
+  align-items: center;
+}
+
+.bytm-plugin-list-row-title {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1px;
+}
+
+.bytm-plugin-list-row-version {
+  font-size: 1.25rem;
+  font-weight: normal;
+  color: var(--bytm-plugin-list-secondary-col);
+  margin-left: 10px;
+}
+
+.bytm-plugin-list-row-namespace {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--bytm-plugin-list-secondary-col);
+}
+
+.bytm-plugin-list-row-desc {
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  overflow-x: hidden;
+  max-height: calc(var(--bytm-plugin-list-row-max-height) - 30px);
+  overflow-y: auto;
+}
+
+.bytm-plugin-list-row-links-list {
+  font-size: 1.45rem;
+  margin-top: 4px;
+  white-space: pre;
+}
+
+.bytm-plugin-list-row-links-list-bullet {
+  margin: 0 5px;
+}
+
+.bytm-plugin-list-row-right:not(.is-dev-plugin):not(.no-perms) .bytm-plugin-list-row-permission-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bytm-plugin-list-row-right.is-dev-plugin,
+.bytm-plugin-list-row-right.no-perms {
+  display: initial;
+  flex-direction: unset;
+}
+
+.bytm-plugin-list-row-right {
+  min-width: 25%;
+  max-height: var(--bytm-plugin-list-row-max-height);
+}
+
+.bytm-dev-plugin-note-info-icon {
+  color: #95c2ed;
+}
+
+.bytm-plugin-list-row-permissions-header {
+  background-color: var(--bytm-dialog-bg);
+  font-size: 1.45rem;
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+
+.bytm-plugin-list-row-perm-item::before {
+  /* no idea why but for text-decoration: none to work, this has to be set even though it's ignored by the browser. CSS funny moments #12571986728637 */
+  display: inline-block;
+  content: "•";
+  margin-right: 3px;
+  text-decoration: none;
+}
+
+.bytm-plugin-list-row-perm-item {
+  cursor: help;
+  text-decoration: underline dotted;
+}
 :root {
   --bytm-menu-bg-highlight: #181818;
   --bytm-menu-bg-highlight-2: #252525;
@@ -1491,6 +1714,16 @@ body.bytm-dom-ytm
   border-style: none none solid none !important;
 }
 
+#bytm-menu-focus-content {
+  margin-left: 16px;
+}
+
+#bytm-menu-header-right-side {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
 .bytm-menu-title-logo-header-cont {
   display: flex;
 }
@@ -1569,7 +1802,7 @@ body.bytm-dom-ytm
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;
-  margin-left: 48px;
+  gap: 14px;
 }
 
 .bytm-menu-link {
@@ -1582,10 +1815,6 @@ body.bytm-dom-ytm
   cursor: pointer;
 }
 
-.bytm-menu-link:not(:last-of-type) {
-  margin-right: 14px;
-}
-
 .bytm-menu-link .bytm-menu-img {
   width: 32px;
   height: 32px;
@@ -1595,7 +1824,8 @@ body.bytm-dom-ytm
   transition: transform 0.15s ease-out, padding 0.15s ease-out;
 }
 
-.bytm-menu-link:hover .bytm-menu-img {
+.bytm-menu-link:hover .bytm-menu-img,
+.bytm-menu-link:focus-within .bytm-menu-img {
   padding: 7px;
   transform: translateY(-14px);
 }
@@ -1610,11 +1840,13 @@ body.bytm-dom-ytm
   text-decoration: none;
   color: var(--bytm-menu-subtitle-color) !important;
   white-space: pre;
+  text-wrap: nowrap;
   font-size: 1.1rem;
   transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
 }
 
-.bytm-menu-link:hover .extended-link {
+.bytm-menu-link:hover .extended-link,
+.bytm-menu-link:focus-within .extended-link {
   visibility: visible;
   opacity: 1;
 }
@@ -1905,14 +2137,19 @@ select.bytm-ftconf-input {
     box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active,
-.bytm-kbd:active {
+.bytm-markdown-container kbd.unclickable,
+.bytm-kbd.unclickable {
+  cursor: initial;
+}
+
+.bytm-markdown-container kbd:not(.unclickable):active,
+.bytm-kbd:not(.unclickable):active {
   padding-bottom: 1px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection,
-.bytm-kbd::selection {
+.bytm-markdown-container kbd:not(.unclickable)::selection,
+.bytm-kbd:not(.unclickable)::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -2016,7 +2253,6 @@ hr {
   margin: 8px 0px 12px 0px;
   border: revert;
 }
-
 /* #region misc */
 
 :root {
@@ -2032,7 +2268,7 @@ html[dark] {
   --bytm-themed-icon-col: #fff;
 }
 
-.bytm-disable-scroll {
+.bytm-no-scroll {
   overflow: hidden !important;
 }
 
@@ -2277,7 +2513,7 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
   -webkit-user-select: none;
 }
 
-/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
+/* YT and YTM do some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
 button.bytm-btn {
   padding: revert;
   border: revert;
@@ -2288,6 +2524,14 @@ button.bytm-btn {
   background: revert;
   cursor: pointer;
   line-height: 1.4em;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+button.bytm-btn:not(.no-min-width) {
+  min-width: 50px;
 }
 
 .bytm-link,
@@ -2303,11 +2547,11 @@ button.bytm-btn {
   text-decoration: underline !important;
 }
 
-button[disabled] {
+.bytm-btn[disabled] {
   cursor: not-allowed;
 }
 
-button[disabled].bytm-busy {
+.bytm-btn[disabled].bytm-busy {
   cursor: progress;
 }
 
@@ -2495,21 +2739,37 @@ ytmusic-player[player-ui-state="FULLSCREEN"] #bytm-thumbnail-overlay {
   border-radius: 0;
 }
 
-#bytm-thumbnail-overlay-img {
+.bytm-thumbnail-overlay-img {
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: inherit;
   object-fit: contain;
+  filter: drop-shadow(0 0 1.25rem rgba(0, 0, 0, 0.7));
 }
 
-#bytm-thumbnail-overlay-img[data-media-type="song"] {
+:root #bytm-thumbnail-overlay-img[data-media-type="song"] {
   object-fit: cover;
 }
 
 ytmusic-player[player-ui-state="FULLSCREEN"]
   #bytm-thumbnail-overlay-img[data-media-type="song"] {
   object-fit: contain;
+}
+
+:root #bytm-thumbnail-overlay-bg-img {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  object-fit: cover;
+  filter: blur(12px) brightness(75%) contrast(85%);
+}
+
+ytmusic-player[player-ui-state="FULLSCREEN"]
+  #bytm-thumbnail-overlay-bg-img[data-media-type="song"] {
+  display: inline-block;
 }
 
 #bytm-thumbnail-overlay-indicator {
@@ -2614,167 +2874,6 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
     opacity: 0;
   }
 }
-
-#bytm-plugin-list-dialog-bg {
-  --bytm-plugin-list-secondary-col: #c4c4c4;
-  --bytm-plugin-list-row-padding-ver: 12px;
-  --bytm-plugin-list-row-max-height: 130px;
-}
-
-#bytm-plugin-list-dialog-body {
-  overflow-y: auto;
-  max-height: 100%;
-}
-
-.bytm-plugin-list-no-plugins {
-  font-size: 1.7rem;
-  text-align: center;
-  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
-  white-space: pre-wrap;
-}
-
-.bytm-plugin-list-row {
-  display: grid;
-  grid-template-columns: 8fr 4fr;
-  align-items: flex-start;
-  gap: 20px;
-  border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
-  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
-}
-
-.bytm-plugin-list-row:first-child {
-  padding-top: 0;
-}
-
-.bytm-plugin-list-row:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.bytm-plugin-list-row-header-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 5px;
-}
-
-.bytm-plugin-list-row-icon {
-  width: 32px;
-  height: 32px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.bytm-plugin-list-row-left,
-.bytm-plugin-list-row-right {
-  display: flex;
-  flex-direction: column;
-}
-
-.bytm-plugin-list-row-title {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-end;
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 1px;
-}
-
-.bytm-plugin-list-row-version {
-  font-size: 1.25rem;
-  font-weight: normal;
-  color: var(--bytm-plugin-list-secondary-col);
-  margin-left: 10px;
-}
-
-.bytm-plugin-list-row-namespace {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: var(--bytm-plugin-list-secondary-col);
-}
-
-.bytm-plugin-list-row-desc {
-  overflow-wrap: break-word;
-  text-overflow: ellipsis;
-  white-space: pre-wrap;
-  overflow-x: hidden;
-  max-height: calc(var(--bytm-plugin-list-row-max-height) - 30px);
-  overflow-y: auto;
-}
-
-.bytm-plugin-list-row-links-list {
-  font-size: 1.45rem;
-  margin-top: 4px;
-  white-space: pre;
-}
-
-.bytm-plugin-list-row-links-list-bullet {
-  margin: 0 5px;
-}
-
-.bytm-plugin-list-row-right:not(.is-dev-plugin) {
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.bytm-plugin-list-row-right.is-dev-plugin {
-  display: initial;
-  flex-direction: unset;
-}
-
-.bytm-plugin-list-row-right {
-  overflow-y: auto;
-  min-width: 25%;
-  max-height: var(--bytm-plugin-list-row-max-height);
-}
-
-.bytm-dev-plugin-note-info-icon {
-  color: #95c2ed;
-}
-
-.bytm-plugin-list-row-permissions-header {
-  position: sticky;
-  top: 0;
-  background-color: var(--bytm-dialog-bg);
-  font-size: 1.45rem;
-  font-weight: bold;
-  padding-bottom: 5px;
-}
-
-.bytm-plugin-list-row-intent-item::before {
-  content: "•";
-  margin-right: 3px;
-}
-
-.bytm-plugin-list-row-intent-item {
-  cursor: help;
-}
-
-:root {
-  --bytm-themed-bg-col: var(--ts-playerpage-color, #030303);
-}
-
-#ts-visualizer-container #ThemeSong-Visualizer canvas {
-  /* Fix for the thumbnail overlay */
-  z-index: 1;
-}
-
-/* hide ThemeSong container when hovering enlarged slider: */
-
-#ts-panel-container {
-  opacity: 1;
-  transition: opacity 0.1s ease;
-}
-
-#ts-panel-container.bytm-hidden {
-  opacity: 0;
-}
-
 /* #region queue buttons */
 
 #side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
@@ -2787,25 +2886,11 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
 }
 
 #side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
-  background: rgba(255, 255, 255, 0.1);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-themed-bg-col) 15%
-  );
   display: none;
   position: absolute;
   right: 0;
   padding-left: 25px;
   height: 100%;
-}
-
-#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-themesong-bg-accent-col, #1d1d1d) 15%
-  );
 }
 
 .bytm-generic-list-queue-btn-container {
@@ -2886,3 +2971,71 @@ ytmusic-player-queue-item
   button {
   box-shadow: inset 0 0 1000px rgba(255, 255, 255, 0.2);
 }
+#bytm-interaction-lock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  z-index: 9999999999;
+}
+
+#bytm-interaction-lock-overlay.hidden {
+  display: none !important;
+}
+
+#bytm-interaction-lock-overlay-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  max-width: 400px;
+  text-align: center;
+}
+
+#bytm-interaction-lock-overlay-lock-img {
+  width: 64px;
+  height: 64px;
+}
+
+#bytm-interaction-lock-overlay-lock-img svg {
+  width: 100%;
+  height: 100%;
+}
+
+#bytm-interaction-lock-overlay-message {
+  margin: 0;
+  font-size: 18px;
+  white-space: preserve;
+}
+
+#bytm-interaction-lock-disable-btn {
+  margin-top: 12px;
+  font-size: 16px;
+}
+:root {
+  --bytm-themed-bg-col: var(--ts-playerpage-color, #030303);
+}
+
+#ts-visualizer-container #ThemeSong-Visualizer canvas {
+  /* Fix for the thumbnail overlay */
+  z-index: 1;
+}
+
+/* hide ThemeSong container when hovering enlarged slider: */
+
+#ts-panel-container {
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+
+#ts-panel-container.bytm-hidden {
+  opacity: 0;
+}
+/*$vite$:1*/

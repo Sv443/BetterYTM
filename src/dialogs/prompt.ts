@@ -1,5 +1,8 @@
-import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/coreutils";
-import { getOS, resourceAsString, setInnerHtml, t } from "@util/index.ts";
+import { consumeStringGen, type StringGen, type Stringifiable } from "@sv443-network/userutils";
+import { setInnerHtml } from "@util/dom.ts";
+import { resourceAsString } from "@util/misc.ts";
+import { getOS } from "@util/pure.ts";
+import { t } from "@util/translations.ts";
 import { BytmDialog, type BytmDialogOptions } from "@comp/BytmDialog.ts";
 import "@dialog/prompt.css";
 
@@ -75,7 +78,7 @@ export type PromptDialogResolveVal = boolean | string | null;
 //#region PromptDialog
 
 let promptDialog: PromptDialog | null = null;
-const promptDialogId = "prompt-dialog";
+const promptDialogId = "prompt";
 
 /**
  * This is a custom dialog to emulate and enhance the behavior of the native `confirm()`, `alert()`, and `prompt()` functions.  
@@ -90,7 +93,7 @@ export class PromptDialog extends BytmDialog {
       height: 400,
       destroyOnClose: true,
       closeBtnEnabled: true,
-      closeOnBgClick: props.type !== "prompt",
+      closeOnBgClick: true,
       closeOnEscPress: true,
       small: true,
       ...props.dialogOptions,
@@ -100,7 +103,11 @@ export class PromptDialog extends BytmDialog {
     });
     this.type = props.type;
 
-    this.on("render", () => this.focusOnRender());
+    const unsub = this.on("render", () => {
+      if(this.options.destroyOnClose)
+        unsub();
+      setTimeout(() => this.focusOnRender(), 25);
+    });
   }
 
   /** Emits the "resolve" event with the specified value. Should be called every time the dialog is about to be closed. */
@@ -158,7 +165,7 @@ export class PromptDialog extends BytmDialog {
 
       // dont ask me why intersecting the input and textarea de-narrows the gd event type
       const inputEnterListener = (e: Event) => {
-        if("key" in e && e.key === "Enter") {
+        if("code" in e && ["Enter", "NumpadEnter"].includes(e.code as string) && "shiftKey" in e && !e.shiftKey) {
           inputElem.removeEventListener("keydown", inputEnterListener);
           this.emitResolve(inputElem?.value?.trim() ?? null);
           promptDialog?.close();
@@ -189,7 +196,7 @@ export class PromptDialog extends BytmDialog {
     if(confirmBtn) {
       const { confirmBtnText, confirmBtnTooltip } = rest as ConfirmBtnProps;
       confirmBtn.id = "bytm-prompt-dialog-confirm";
-      confirmBtn.classList.add("bytm-prompt-dialog-button");
+      confirmBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");
       confirmBtn.textContent = await this.consumePromptStringGen(type, confirmBtnText, t("prompt_confirm"));
       confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
@@ -206,7 +213,7 @@ export class PromptDialog extends BytmDialog {
     const closeBtn = rest.denyBtnEnabled === false ? undefined : document.createElement("button");
     if(closeBtn) {
       closeBtn.id = "bytm-prompt-dialog-close";
-      closeBtn.classList.add("bytm-prompt-dialog-button");
+      closeBtn.classList.add("bytm-prompt-dialog-button", "bytm-btn");
       closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
       closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
       closeBtn.tabIndex = 0;
@@ -280,7 +287,7 @@ export class PromptDialog extends BytmDialog {
 
     let captureEnterKey = true;
     document.addEventListener("keydown", (e) => {
-      if(e.key === "Enter" && captureEnterKey) {
+      if(["Enter", "NumpadEnter"].includes(e.code) && captureEnterKey) {
         const confBtn = document.querySelector<HTMLButtonElement>("#bytm-prompt-dialog-confirm");
         const closeBtn = document.querySelector<HTMLButtonElement>("#bytm-prompt-dialog-close");
 
