@@ -2556,12 +2556,22 @@ These are the available selectors:
 
 | Selector | Description |
 | :-- | :-- |
+| `#body` | Always applied to the &lt;body&gt;, can be used to increase [selector specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Specificity) |
 | `.bytm-dom-yt` | Applied to the &lt;body&gt;, only when on YT |
 | `.bytm-dom-ytm` | Applied to the &lt;body&gt;, only when on YT Music |
 | `.bytm-no-select` | Prevents text selection on the element and all its children |
-| `.bytm-generic-btn` | Needs to be applied to a button's wrapper element to give it the generic BetterYTM button appearance |
+| `.bytm-no-scroll` | Prevents contents from overflowing |
+| `.bytm-ellipsis` | Prevents text from wrapping, and truncates it with an ellipsis (...) when it overflows |
+| `.bytm-ellipsis-wrap` | Doesn't prevent text from wrapping, and truncates it with an ellipsis (...) when it overflows |
+| `.bytm-btn` | When applied to a &lt;button&gt;, reverts all custom page styling to yield the standard styling by the browser |
+| `.bytm-generic-btn` | Needs to be applied to a button's wrapper element to give it the generic circular BetterYTM button appearance |
+| `.bytm-generic-btn.long` | Both classes will make the button's style work if it contains horizontally stretching child elements |
 | `.bytm-generic-btn-img` | Needs to be given to the button's svg icon or img element so it gets styled correctly |
 | `#bytm-dialog-container` | This is the container that holds all BytmDialog elements |
+| `.bytm-flex-row` | Generic flexbox helper - row, 16px gap |
+| `.bytm-flex-row-no-gap` | Generic flexbox helper - row, no gap |
+| `.bytm-flex-col` | Generic flexbox helper - column, 8px gap |
+| `.bytm-flex-col-no-gap` | Generic flexbox helper - column, no gap |
 
 <br>
 
