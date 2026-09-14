@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@2fb7693c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@700dfd2b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Sun, 13 Sep 2026 20:27:31 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Mon, 14 Sep 2026 11:50:30 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 2fb7693c                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 700dfd2b                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ pZiWgUDMb0N6                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ k22oHv866cjI                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3118,7 +3118,10 @@ Has: ${checksum}`);
 			"css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
 			"css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
 			"css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
+			"css-vol_slider_gradient": "styles/volSliderGradient.css",
+			"css-vol_slider_opaque": "styles/volSliderOpaque.css",
 			"css-vol_slider_size": "styles/volSliderSize.css",
+			"css-vol_slider_transparent": "styles/volSliderTransparent.css",
 			"css-watch_page_full_size": "styles/watchPageFullSize.css",
 			"doc-data": {
 				"path": "data.json",
@@ -3444,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "2fb7693c";
+	var buildNumber$1 = "700dfd2b";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789331251919;
+	var buildTimestamp = 1789386630330;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -4247,6 +4250,11 @@ Has: ${checksum}`);
 			default: true,
 			since: "1.0.0"
 		},
+		volumeSliderLabelStyle: {
+			type: "select",
+			default: "gradient",
+			since: "4.0.0"
+		},
 		volumeSliderSize: {
 			type: "number",
 			default: 150,
@@ -4949,7 +4957,8 @@ Has: ${checksum}`);
 				"interactionLockOverlayTimeout",
 				"songListTrackNumbersDomains",
 				"listButtonsStyle",
-				"aboveQueueHeaderStyle"
+				"aboveQueueHeaderStyle",
+				"volumeSliderLabelStyle"
 			]);
 		}
 	};
@@ -11080,6 +11089,11 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	/** Initializes all volume-related features */
 	async function initVolumeFeatures() {
 		let listenerOnce = false;
+		try {
+			addStyleFromResource(`css-vol_slider_${getFeature("volumeSliderLabelStyle")}`);
+		} catch (err) {
+			loggers.volume.error("Couldn't add volume slider style due to error:", err);
+		}
 		const onSliderElExists = async (type, sliderElem) => {
 			const volSliderCont = document.createElement("div");
 			volSliderCont.classList.add("bytm-vol-slider-cont");
@@ -13914,7 +13928,12 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}, {
 			value: "transparent",
 			label: t("style_option.transparent")
-		}]
+		}],
+		/** `gradient`, `opaque`, `transparent` */
+		gradientOpacity: () => [{
+			value: "gradient",
+			label: t("style_option.gradient")
+		}, ...options.binaryOpacity()]
 	};
 	/** List of categories that are related to each other and can be grouped together in the config menu. */
 	var groupedCategories = [
@@ -14373,10 +14392,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		},
 		listButtonsStyle: {
 			...featDefaults.listButtonsStyle,
-			options: () => [...options.binaryOpacity(), {
-				value: "gradient",
-				label: t("style_option.gradient")
-			}],
+			options: options.gradientOpacity,
 			category: "songLists",
 			group: "queueButtons",
 			supportedSites: ["ytm"],
@@ -14579,6 +14595,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		},
 		volumeSliderLabel: {
 			...featDefaults.volumeSliderLabel,
+			category: "volume",
+			group: "volumeSlider",
+			supportedSites: ["ytm"],
+			adornments: [adornments.ytmOnly, adornments.reload]
+		},
+		volumeSliderLabelStyle: {
+			...featDefaults.volumeSliderLabelStyle,
+			options: options.gradientOpacity,
 			category: "volume",
 			group: "volumeSlider",
 			supportedSites: ["ytm"],
@@ -18511,6 +18535,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		const feats = getFeatures();
 		const ftInit = [];
 		document.body.classList.add(`bytm-dom-${domain}`);
+		if (!document.body.getAttribute("id")) document.body.id = "body";
 		initExponentialVolume();
 		const endStaticDataDur = measureInitDuration("initStaticData");
 		await initStaticData();
@@ -18882,7 +18907,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "2fb7693c",
+				buildNumber: "700dfd2b",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
