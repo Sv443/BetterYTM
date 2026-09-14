@@ -1200,8 +1200,8 @@ export const featInfo = {
     category: "hotkeys",
     group: "interactionLockHotkey",
     supportedSites: ["ytm", "yt"],
-    unit: "s",
     step: 0.5,
+    renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
     reloadRequired: false,
   },
   rebindNextAndPrevious: {
