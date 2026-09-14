@@ -105,6 +105,8 @@ function exchangeLogo() {
       const newLogo = document.createElement("img");
       newLogo.classList.add("bytm-mod-logo-img");
       newLogo.src = bytmLogoUrl;
+      if(logoElem.ariaLabel)
+        newLogo.alt = logoElem.ariaLabel;
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
@@ -136,7 +138,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   cfgOptItemElem.classList.add("bytm-cfg-menu-option-item");
   cfgOptItemElem.role = "button";
   cfgOptItemElem.tabIndex = 0;
-  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
+  cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
 
   onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button button");
@@ -151,6 +153,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
   cfgOptIconElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+  cfgOptIconElem.ariaHidden = "true";
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
@@ -180,6 +183,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
   const cfgOptImgElem = document.createElement("img");
   cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
   cfgOptImgElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
+  cfgOptImgElem.ariaHidden = "true";
 
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
@@ -877,7 +881,7 @@ export async function initThumbnailOverlay() {
           indicatorElem.id = "bytm-thumbnail-overlay-indicator";
           indicatorElem.src = await getResourceUrl("icon-image");
           indicatorElem.role = "presentation";
-          indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay.indicator_tooltip");
+          indicatorElem.title = indicatorElem.alt = t("thumbnail_overlay.indicator_tooltip");
           indicatorElem.ariaHidden = "true";
           indicatorElem.style.display = "none";
           indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
