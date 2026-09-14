@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@700dfd2b/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d55cc60b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Mon, 14 Sep 2026 11:50:30 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Mon, 14 Sep 2026 16:43:36 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 700dfd2b                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ d55cc60b                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ k22oHv866cjI                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ GUkSS8dZfo7Y                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3447,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "700dfd2b";
+	var buildNumber$1 = "d55cc60b";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789386630330;
+	var buildTimestamp = 1789404216259;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -10196,7 +10196,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			if (currentDialogId) if (currentDialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
 			else document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
 			if (openDialogs.length === 0) {
-				document.body.classList.remove("bytm-disable-scroll");
+				document.body.classList.remove("bytm-no-scroll");
 				document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 			}
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.setAttribute("inert", "true");
@@ -10205,7 +10205,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		setBgInert() {
 			for (const dialogId of openDialogs) if (dialogId !== this.id) if (dialogId === "cfg-menu") document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
 			else document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
-			document.body.classList.add("bytm-disable-scroll");
+			document.body.classList.add("bytm-no-scroll");
 			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 			document.querySelector(`#bytm-${this.id}-dialog-bg`)?.removeAttribute("inert");
 		}
@@ -10227,6 +10227,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			dialogWrapperEl.classList.add("bytm-dialog");
 			dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
 			dialogWrapperEl.role = "dialog";
+			dialogWrapperEl.ariaModal = "true";
 			dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
 			dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
 			if (this.options.verticalAlign !== "center") dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
@@ -15294,6 +15295,9 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			menuContainer.ariaLabel = menuContainer.title = "";
 			menuContainer.classList.add("bytm-menu");
 			menuContainer.id = "bytm-cfg-menu";
+			menuContainer.role = "dialog";
+			menuContainer.ariaModal = "true";
+			menuContainer.setAttribute("aria-labelledby", "bytm-config-menu-title");
 			const headerElem = document.createElement("div");
 			headerElem.classList.add("bytm-menu-header");
 			const titleLogoHeaderCont = document.createElement("div");
@@ -15340,6 +15344,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const titleElem = document.createElement("h1");
 			titleElem.classList.add("bytm-menu-title");
 			const titleTextElem = document.createElement("div");
+			titleTextElem.id = "bytm-config-menu-title";
 			titleTextElem.textContent = t("config_menu_title", scriptInfo$1.name);
 			titleElem.appendChild(titleTextElem);
 			const linksCont = document.createElement("div");
@@ -16006,7 +16011,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 									customInputEl.classList.add("bytm-btn");
 									customInputEl.tabIndex = 0;
 									customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
-									customInputEl.ariaLabel = customInputEl.title = t(`feature_desc.${featKey}`);
+									customInputEl.title = t(`feature_desc.${featKey}`);
 									onInteraction(customInputEl, async () => {
 										if (customInputEl.disabled) return;
 										const startTs = Date.now();
@@ -16113,7 +16118,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			scrollIndicator.classList.add("bytm-no-select");
 			scrollIndicator.src = await getResourceUrl("icon-arrow_down");
 			scrollIndicator.role = "button";
-			scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
+			scrollIndicator.title = t("scroll_to_bottom");
 			featuresCont.appendChild(scrollIndicator);
 			scrollIndicator.addEventListener("click", () => {
 				document.querySelector("#bytm-menu-bottom-anchor")?.scrollIntoView({ behavior: "smooth" });
@@ -16215,7 +16220,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			(document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
 			window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250), { passive: true });
 			isCfgMenuOpen = false;
-			document.body.classList.remove("bytm-disable-scroll");
+			document.body.classList.remove("bytm-no-scroll");
 			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 			backgroundElem.style.visibility = "hidden";
 			backgroundElem.style.display = "none";
@@ -16274,7 +16279,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			if (!isCfgMenuDoneMounting) if (isCfgMenuMounting) return void siteEvents.once("cfgMenuMounted", () => openCfgMenu());
 			else await mountCfgMenu();
 			isCfgMenuOpen = true;
-			document.body.classList.add("bytm-disable-scroll");
+			document.body.classList.add("bytm-no-scroll");
 			document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
 			const menuBg = document.querySelector("#bytm-cfg-menu-bg");
 			setCurrentDialogId("cfg-menu");
@@ -16304,7 +16309,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		isCfgMenuOpen = false;
 		evt?.bubbles && evt.stopPropagation();
 		if (enableScroll && !openDialogs.some((id) => id !== "cfg-menu")) {
-			document.body.classList.remove("bytm-disable-scroll");
+			document.body.classList.remove("bytm-no-scroll");
 			document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
 		}
 		const menuBg = document.querySelector("#bytm-cfg-menu-bg");
@@ -16411,6 +16416,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const newLogo = document.createElement("img");
 			newLogo.classList.add("bytm-mod-logo-img");
 			newLogo.src = bytmLogoUrl;
+			if (logoElem.ariaLabel) newLogo.alt = logoElem.ariaLabel;
 			logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 			bytmLogoUrl && document.head.querySelectorAll("link[rel=\"icon\"]").forEach((e, i) => {
 				if (i !== 0) {
@@ -16434,7 +16440,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		cfgOptItemElem.classList.add("bytm-cfg-menu-option-item");
 		cfgOptItemElem.role = "button";
 		cfgOptItemElem.tabIndex = 0;
-		cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo$1.name);
+		cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo$1.name);
 		onInteraction(cfgOptItemElem, async (e) => {
 			document.querySelector("ytmusic-nav-bar ytmusic-settings-button button")?.click();
 			if (!e.shiftKey && !e.ctrlKey || logoExchanged) openCfgMenu();
@@ -16443,6 +16449,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const cfgOptIconElem = document.createElement("img");
 		cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
 		cfgOptIconElem.src = await getResourceUrl("img-logo_dev");
+		cfgOptIconElem.ariaHidden = "true";
 		const cfgOptTextElem = document.createElement("div");
 		cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
 		cfgOptTextElem.textContent = t("config_menu_option", scriptInfo$1.name);
@@ -16464,6 +16471,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const cfgOptImgElem = document.createElement("img");
 		cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
 		cfgOptImgElem.src = await getResourceUrl("img-logo_dev");
+		cfgOptImgElem.ariaHidden = "true";
 		const cfgOptItemElem = document.createElement("div");
 		cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
 		cfgOptItemElem.textContent = scriptInfo$1.name;
@@ -16913,7 +16921,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						indicatorElem.id = "bytm-thumbnail-overlay-indicator";
 						indicatorElem.src = await getResourceUrl("icon-image");
 						indicatorElem.role = "presentation";
-						indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay.indicator_tooltip");
+						indicatorElem.title = indicatorElem.alt = t("thumbnail_overlay.indicator_tooltip");
 						indicatorElem.ariaHidden = "true";
 						indicatorElem.style.display = "none";
 						indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
@@ -18907,7 +18915,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "700dfd2b",
+				buildNumber: "d55cc60b",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
