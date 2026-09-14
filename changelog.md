@@ -30,6 +30,7 @@
   - Made error toasts show up again after being broken when toast queueing was overhauled.
   - Song list buttons show up more consistently now, like when a playlist has more than 100 entries or when they are moved via drag & drop.
   - When multiple dialog windows are opened at a time, the focus locks will now be set correctly.
+  - The `yesImStillThere` feature now only dispatches its events when no native modal dialog (like the "add to playlist" dialog) is open.
 
 <details><summary><b><i>Click to expand plugin and internal changes</i></b></summary>
 <sup>(I did my best to order these by relevance for each section)</sup>

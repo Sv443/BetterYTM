@@ -387,6 +387,8 @@ export async function initStillThere() {
       return loggers.behavior.warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
     if(isDragging || Date.now() - lastClick < lastInteractionTimeout)
       return loggers.behavior.warn("Click is currently held down - not dispatching \"Are you still there?\" events");
+    if([...document.querySelectorAll<HTMLElement>("ytmusic-popup-container tp-yt-paper-dialog")].every((el) => el.getAttribute("aria-hidden") !== "true"))
+      return loggers.behavior.warn("Dialog is currently open - not dispatching \"Are you still there?\" events");
 
     // click the navbar
     const navBar = document.querySelector<HTMLElement>("ytmusic-nav-bar .center-content");
