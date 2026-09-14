@@ -356,7 +356,7 @@ For example, [`globalThis.BYTM.getVideoElement()`](../contributing.md#getvideoel
 <br>
 
 ### Authenticated Interface Functions
-Contrary to the non-authenticated ones, functions like [`globalThis.BYTM.getBytmDialog()`](../contributing.md#getbytmdialog) require an [authentication token](#plugin-token) to be provided, else they will mostly just return `undefined` (while some others like [`globalThis.BYTM.getFeatures()`](../contributing.md#getfeatures) just return reduced data).  
+Contrary to the non-authenticated ones, functions like [`globalThis.BYTM.getBytmDialog()`](../contributing.md#getbytmdialog) require an [authentication token](#plugin-token) to be provided, else they will mostly just return `undefined` (while some others like [`globalThis.BYTM.getFeatures()`](../contributing.md#getfeatures) can return reduced data when the `ReadFeatureConfig` [intent](#plugin-intents) is granted but not `SeeHiddenConfigValues`).  
 This token is acquired after successfully [registering the script as a plugin.](#plugin-registration)
 
 <br>

@@ -44,3 +44,4 @@ You should [start with the Getting Started guide](./getting-started.md) if you a
     - [CLI Commands](./contributing.md#cli-commands)
     - [Extras](./contributing.md#extras)
     - [**Common Procedures**](./contributing.md#common-procedures)
+  - [**Accessibility Guide**](./a11y.md)

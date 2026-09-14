@@ -1332,7 +1332,6 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
 > If features are set to be hidden using `valueHidden: true`, their value will be `undefined` in the returned object, unless the plugin was granted the `SeeHiddenConfigValues` intent.  
-> In the future, a plugin intent (see [`registerPlugin()`](#registerplugin)) could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
 >   
 > ⚠️ Requires the intent `ReadFeatureConfig` to be granted, else always returns `undefined`.  
 > If the intent `SeeHiddenConfigValues` is granted, hidden values will not be replaced with `undefined`. Only use this intent if there really is no conceivable other way of doing what you want to do.  
