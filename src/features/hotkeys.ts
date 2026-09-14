@@ -103,7 +103,7 @@ export async function initSiteSwitchHotkey() {
 /** Switches to the other site (between YT and YTM). */
 async function switchSite(newDomain: Domain, inNewTab = false) {
   try {
-    if(!(["/watch", "/playlist", "/channel"].some(v => location.pathname.startsWith(v))))
+    if(!(["/watch", "/playlist", "/channel", "/@"].some(v => location.pathname.startsWith(v))))
       return loggers.hotkey.warn("Not on a supported page, so the site switch is ignored");
 
     const isWatchPage = location.pathname.startsWith("/watch");
