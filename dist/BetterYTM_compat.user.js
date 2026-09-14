@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@35daa38c/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8cdb95c9/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Mon, 14 Sep 2026 16:47:58 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Mon, 14 Sep 2026 20:55:23 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 35daa38c                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 8cdb95c9                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ 0WOFTXC39Bhq                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ F206cPwc03H1                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3447,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "35daa38c";
+	var buildNumber$1 = "8cdb95c9";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789404478997;
+	var buildTimestamp = 1789419323803;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -15081,8 +15081,8 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "hotkeys",
 			group: "interactionLockHotkey",
 			supportedSites: ["ytm", "yt"],
-			unit: "s",
 			step: .5,
+			renderValue: (val) => Number(val) === 0 ? t("toggled_off") : `${val}s`,
 			reloadRequired: false
 		},
 		rebindNextAndPrevious: {
@@ -18001,6 +18001,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		const tryClick = () => {
 			if (isInFullscreen) return loggers.behavior.warn("Fullscreen is active - not dispatching \"Are you still there?\" events");
 			if (isDragging || Date.now() - lastClick < lastInteractionTimeout) return loggers.behavior.warn("Click is currently held down - not dispatching \"Are you still there?\" events");
+			if ([...document.querySelectorAll("ytmusic-popup-container tp-yt-paper-dialog")].every((el) => el.getAttribute("aria-hidden") !== "true")) return loggers.behavior.warn("Dialog is currently open - not dispatching \"Are you still there?\" events");
 			const navBar = document.querySelector("ytmusic-nav-bar .center-content");
 			navBar?.dispatchEvent(new MouseEvent("click", {
 				altitudeAngle: 1 + Math.random(),
@@ -18916,7 +18917,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "35daa38c",
+				buildNumber: "8cdb95c9",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
