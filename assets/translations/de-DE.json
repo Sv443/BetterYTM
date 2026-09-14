@@ -441,6 +441,7 @@
   "feature_desc.volumeSliderExponentialLabelType": "Art der Beschriftung bei aktivierter exponentiellen Skala",
   "feature_helptext.volumeSliderExponentialLabelType": "Bei Verwendung der exponentiellen Skala kann der Lautstärkeregler verschiedene Arten von Beschriftungen anzeigen, um den aktuellen Lautstärkepegel anzuzeigen:\n\n- Positions-basiert: Zeigt die Position des Reglers als Prozentsatz (0% bis 100%) an\n- Wert-basiert: Zeigt den tatsächlichen wahrgenommenen Lautstärkepegel als Prozentsatz (0% bis 100%) an\n- Beide: Zeigt den Positionswert, gefolgt vom wahrgenommenen Lautstärkepegel in Klammern, an",
   "feature_desc.volumeSliderLabel": "Füge eine Prozent-Beschriftung neben dem Lautstärkeregler hinzu",
+  "feature_desc.volumeSliderLabelStyle": "Wie soll die Beschriftung neben dem Lautstärkeregler aussehen?",
   "feature_desc.volumeSliderSize": "Die Breite des Lautstärkereglers in Pixeln",
   "feature_desc.volumeSliderStep": "Lautstärkeregler-Sensitivität (um wie wenig Prozent die Lautstärke auf einmal geändert werden kann)",
   "feature_desc.volumeSliderScrollStep": "Lautstärkeregler-Sensitivität beim Scrollen mit dem Mausrad, in Prozent",

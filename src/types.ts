@@ -47,6 +47,12 @@ export type Domain = "yt" | "ytm";
 /** A selection option between one of the supported domains, or all of them. */
 export type SiteSelection = Domain | "all";
 
+/** Whether something is transparent or opaque. */
+export type BinaryOpacity = "transparent" | "opaque";
+
+/** Whether something uses a gradient, or is transparent or opaque. */
+export type GradientOpacity = "gradient" | BinaryOpacity;
+
 /** A selection option between one of the supported domains, or none of them. */
 export type SiteSelectionOrNone = SiteSelection | "none";
 
@@ -1130,7 +1136,7 @@ export interface FeatureConfig {
   /** Where to place the buttons in the queue */
   listButtonsPlacement: "currentQueue" | "genericLists" | "everywhere";
   /** How the buttons in the currently playing queue should be styled. */
-  listButtonsStyle: "gradient" | "opaque";
+  listButtonsStyle: GradientOpacity;
   /** Add a button above the queue to scroll to the currently playing song */
   scrollToActiveSongBtn: boolean;
   /** Add a button above the queue to clear it */
@@ -1138,7 +1144,7 @@ export interface FeatureConfig {
   /** Whether the above queue button container should use sticky positioning */
   aboveQueueBtnsSticky: boolean;
   /** How the header above the currently playing queue should be styled. */
-  aboveQueueHeaderStyle: "transparent" | "opaque";
+  aboveQueueHeaderStyle: BinaryOpacity;
   /** Add track numbers to each song list item */
   songListTrackNumbersEnabled: boolean;
   /** On which domains to add track numbers to song list items */
@@ -1169,6 +1175,8 @@ export interface FeatureConfig {
   volumeSliderExponentialLabelType: "positionBased" | "valueBased" | "both";
   /** Add a percentage label to the volume slider */
   volumeSliderLabel: boolean;
+  /** How the volume slider label background should be styled */
+  volumeSliderLabelStyle: GradientOpacity;
   /** The width of the volume slider in pixels */
   volumeSliderSize: number;
   /** Volume slider sensitivity - the smaller this number, the finer the volume control */

@@ -103,6 +103,11 @@ const options = {
     { value: "opaque", label: t("style_option.opaque") },
     { value: "transparent", label: t("style_option.transparent") },
   ]),
+  /** `gradient`, `opaque`, `transparent` */
+  gradientOpacity: () => ([
+    { value: "gradient", label: t("style_option.gradient") },
+    ...options.binaryOpacity(),
+  ]),
 } as const;
 
 //#region # features
@@ -523,10 +528,7 @@ export const featInfo = {
   },
   listButtonsStyle: {
     ...featDefaults.listButtonsStyle,
-    options: () => ([
-      ...options.binaryOpacity(),
-      { value: "gradient", label: t("style_option.gradient") },
-    ]),
+    options: options.gradientOpacity,
     category: "songLists",
     group: "queueButtons",
     supportedSites: ["ytm"],
@@ -693,6 +695,14 @@ export const featInfo = {
   },
   volumeSliderLabel: {
     ...featDefaults.volumeSliderLabel,
+    category: "volume",
+    group: "volumeSlider",
+    supportedSites: ["ytm"],
+    adornments: [adornments.ytmOnly, adornments.reload],
+  },
+  volumeSliderLabelStyle: {
+    ...featDefaults.volumeSliderLabelStyle,
+    options: options.gradientOpacity,
     category: "volume",
     group: "volumeSlider",
     supportedSites: ["ytm"],

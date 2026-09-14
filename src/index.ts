@@ -234,6 +234,9 @@ async function onDomLoad() {
 
   // for being able to query styles based on domain (just prefix any CSS selector with ".bytm-dom-yt " or ".bytm-dom-ytm ")
   document.body.classList.add(`bytm-dom-${domain}`);
+  // for being able to add a `1,0,0` specificity to any CSS selector (by prefixing it with "#body ")
+  if(!document.body.getAttribute("id"))
+    document.body.id = "body";
 
   // needs to run synchronously before any async volume-setting code (initVolumeFeatures) to avoid a microtask vs macrotask race condition
   initExponentialVolume();

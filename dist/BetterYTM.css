@@ -935,16 +935,10 @@ textarea#bytm-prompt-dialog-input {
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  background-color: var(--bytm-slider-label-bg-col);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    var(--bytm-slider-label-bg-col) 20%
-  );
   font-size: 1.45rem;
   text-align: right;
   padding: 15px;
-  padding-right: 5px;
+  padding-right: 8px;
   opacity: 0.000001;
   transition: opacity 0.2s ease;
 }

@@ -305,6 +305,7 @@ export const cfgMigrations: DataMigrationsDict = {
       "songListTrackNumbersDomains",
       "listButtonsStyle",
       "aboveQueueHeaderStyle",
+      "volumeSliderLabelStyle",
     ]);
   },
 } as const satisfies DataMigrationsDict;

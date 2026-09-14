@@ -19,6 +19,13 @@ import "@feat/volume.css";
 export async function initVolumeFeatures() {
   let listenerOnce = false;
 
+  try {
+    addStyleFromResource(`css-vol_slider_${getFeature("volumeSliderLabelStyle")}`);
+  }
+  catch(err) {
+    loggers.volume.error("Couldn't add volume slider style due to error:", err);
+  }
+
   // sliderElem is not technically an input element but behaves pretty much the same
   const onSliderElExists = async (type: "normal" | "expand", sliderElem: HTMLInputElement) => {
     const volSliderCont = document.createElement("div");

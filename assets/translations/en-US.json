@@ -444,6 +444,7 @@
   "feature_desc.volumeSliderExponentialLabelType": "The type of volume label to show when using the exponential scale",
   "feature_helptext.volumeSliderExponentialLabelType": "When using the exponential scale, the volume slider can show different types of labels to indicate the current volume level:\n\n- Position-based: Shows the position of the slider as a percentage (0% to 100%)\n- Value-based: Shows the actual perceived volume level as a percentage (0% to 100%)\n- Both: Shows the position value, followed by the perceived volume level in parentheses",
   "feature_desc.volumeSliderLabel": "Add a percentage label next to the volume slider",
+  "feature_desc.volumeSliderLabelStyle": "How to style the volume slider label",
   "feature_desc.volumeSliderSize": "The width of the volume slider in pixels",
   "feature_desc.volumeSliderStep": "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
   "feature_desc.volumeSliderScrollStep": "Volume slider scroll wheel sensitivity in percent",

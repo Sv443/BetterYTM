@@ -324,6 +324,11 @@ export const featDefaults = {
     default: true,
     since: "1.0.0",
   },
+  volumeSliderLabelStyle: {
+    type: "select",
+    default: "gradient",
+    since: "4.0.0",
+  },
   volumeSliderSize: {
     type: "number",
     default: 150,

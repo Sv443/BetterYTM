@@ -23,7 +23,10 @@
     "css-track_numbers_current_queue": "styles/trackNumbersCurrentQueue.css",
     "css-track_numbers_song_lists": "styles/trackNumbersSongLists.css",
     "css-truncate_player_bar_subtitles": "styles/truncatePlayerBarSubtitles.css",
+    "css-vol_slider_gradient": "styles/volSliderGradient.css",
+    "css-vol_slider_opaque": "styles/volSliderOpaque.css",
     "css-vol_slider_size": "styles/volSliderSize.css",
+    "css-vol_slider_transparent": "styles/volSliderTransparent.css",
     "css-watch_page_full_size": "styles/watchPageFullSize.css",
     "doc-data": {
       "path": "data.json",
