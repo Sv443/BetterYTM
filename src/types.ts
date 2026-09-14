@@ -323,6 +323,15 @@ declare global {
     trustedTypes?: {
       createPolicy(name: string, policy: TTPolicy): TTPolicy;
     };
+    /**
+     * The `ytInitialData` object injected into the page by YT, containing the page's initial content and layout data.
+     * Only the properties relevant to BYTM are narrowly typed - everything else is kept broad since it's either irrelevant, too volatile, or varies too much between page types to rely on (e.g. main content, tracking params, popup menus).
+     */
+    ytInitialData?: YTInitialData;
+    /**
+     * The `ytInitialPlayerResponse` object injected into the page by YT/YTM, containing metadata and playback info about the currently loaded video.  
+     * Only the properties relevant to BYTM are narrowly typed - everything else is kept broad since it's either irrelevant or too volatile to rely on (e.g. tracking params, ad config, streaming URLs).
+     */
     ytInitialPlayerResponse?: YTInitialPlayerResponse;
   }
 }
@@ -330,13 +339,76 @@ declare global {
 //#region YT/YTM
 
 /**
- * The `ytInitialPlayerResponse` object injected into the page by YT/YTM, containing metadata and playback info about the currently loaded video.
+ * The `ytInitialData` object injected into the page by YT, containing the page's initial content and layout data.
+ * Only the properties relevant to BYTM are narrowly typed - everything else is kept broad since it's either irrelevant, too volatile, or varies too much between page types to rely on (e.g. main content, tracking params, popup menus).
+ */
+export type YTInitialData = {
+  /** Generic metadata about the request/response itself. */
+  responseContext?: Record<string, unknown>;
+  /** Main content of the page - structure varies heavily depending on the page type (home, search, watch, channel, playlist, etc.). */
+  contents?: Record<string, unknown>;
+  /** Header content above {@linkcode contents} - structure varies depending on the page type. */
+  header?: Record<string, unknown>;
+  /** The top navigation bar, present on YT (not YTM), containing the logo, search box, and account/notification buttons. */
+  topbar?: {
+    desktopTopbarRenderer?: {
+      /** The search box in the top navigation bar. */
+      searchbox?: {
+        fusionSearchboxRenderer?: {
+          /** Placeholder text shown in the empty search box. */
+          placeholderText?: { runs: { text: string }[] };
+          [key: string]: unknown;
+        };
+      };
+      /** The two-letter country code YT has detected or assumes for the current user. */
+      countryCode?: string;
+      /**
+       * Dialog listing YT's native keyboard shortcuts, opened via the "?" key.  
+       * Can be useful for detecting conflicts with BYTM's own hotkeys or for keeping documentation in sync.
+       */
+      hotkeyDialog?: {
+        hotkeyDialogRenderer?: {
+          /** Title of the dialog, e.g. "Keyboard shortcuts". */
+          title?: { runs: { text: string }[] };
+          /** Grouped sections of hotkeys, e.g. "Playback", "General", etc. */
+          sections: {
+            hotkeyDialogSectionRenderer: {
+              /** Title of the section, e.g. "Playback". */
+              title: { runs: { text: string }[] };
+              /** Individual hotkey entries in this section. */
+              options: {
+                hotkeyDialogSectionOptionRenderer: {
+                  /** Human-readable description of what the hotkey does. */
+                  label: { runs: { text: string }[] };
+                  /** The key combination as a human-readable string, e.g. "k" or "CONTROL + ←". */
+                  hotkey: string;
+                  /** Accessible label for the hotkey, used when the key symbol itself isn't screen-reader friendly (e.g. "," -> "Comma"). */
+                  hotkeyAccessibilityLabel?: { accessibilityData: { label: string } };
+                  [key: string]: unknown;
+                };
+              }[];
+              [key: string]: unknown;
+            };
+          }[];
+          [key: string]: unknown;
+        };
+      };
+      [key: string]: unknown;
+    };
+  };
+  /** Analytics tracking blob. */
+  trackingParams?: string;
+  [key: string]: unknown;
+};
+
+/**
+ * The `ytInitialPlayerResponse` object injected into the page by YT, containing metadata and playback info about the currently loaded video.  
  * Only the properties relevant to BYTM are narrowly typed - everything else is kept broad since it's either irrelevant or too volatile to rely on (e.g. tracking params, ad config, streaming URLs).
  */
 export type YTInitialPlayerResponse = {
-  /** Generic metadata about the request/response itself - not relevant to BYTM. */
+  /** Generic metadata about the request/response itself. */
   responseContext?: Record<string, unknown>;
-  /** Whether and why the video can currently be played. */
+  /** Whether and why the video can or can't currently be played. */
   playabilityStatus: {
     /** Whether the video is playable and if not, why. */
     status: LooseUnion<"OK" | "ERROR" | "LOGIN_REQUIRED" | "UNPLAYABLE" | "LIVE_STREAM_OFFLINE" | "CONTENT_CHECK_REQUIRED" | "AGE_CHECK_REQUIRED">;
@@ -346,11 +418,11 @@ export type YTInitialPlayerResponse = {
     reason?: string;
     [key: string]: unknown;
   };
-  /** Contains the actual video/audio stream URLs and formats - not used by BYTM, so kept broad. */
+  /** Contains the actual video/audio stream URLs and formats. */
   streamingData?: Record<string, unknown>;
-  /** URLs YT pings to report playback progress - not relevant to BYTM. */
+  /** URLs YT pings to report playback progress. */
   playbackTracking?: Record<string, unknown>;
-  /** Caption/subtitle track info - not currently used by BYTM. */
+  /** Caption/subtitle track info. */
   captions?: Record<string, unknown>;
   /** Core metadata about the currently loaded video. */
   videoDetails: {
@@ -388,11 +460,11 @@ export type YTInitialPlayerResponse = {
     isTvfilmVideo?: boolean;
     [key: string]: unknown;
   };
-  /** Player configuration (playback rates, audio/DASH config, etc.) - not relevant to BYTM. */
+  /** Player configuration (playback rates, audio/DASH config, etc.). */
   playerConfig?: Record<string, unknown>;
-  /** Video preview storyboard (scrubbing thumbnails) info - not currently used by BYTM. */
+  /** Video preview storyboard (scrubbing thumbnails) info. */
   storyboards?: Record<string, unknown>;
-  /** SEO-oriented metadata about the video, largely overlapping with {@linkcode videoDetails} but with some extra fields. */
+  /** SEO-oriented metadata about the video, largely overlapping with `videoDetails`` but with some extra fields. */
   microformat?: {
     playerMicroformatRenderer: {
       /** ISO 8601 timestamp of when the video was published/made public. */
@@ -401,9 +473,9 @@ export type YTInitialPlayerResponse = {
       ownerChannelName: string;
       /** ISO 8601 timestamp of when the video was uploaded. */
       uploadDate: string;
-      /** The video ID (same as {@linkcode videoDetails}`.videoId`). */
+      /** The video ID (same as `videoDetails.videoId`). */
       externalVideoId: string;
-      /** The uploader's channel ID (same as {@linkcode videoDetails}`.channelId`). */
+      /** The uploader's channel ID (same as `videoDetails.channelId`). */
       externalChannelId: string;
       /** The video's duration in seconds, as a stringified number. */
       lengthSeconds: string;
@@ -418,9 +490,9 @@ export type YTInitialPlayerResponse = {
       [key: string]: unknown;
     };
   };
-  /** Legacy "info cards" data (annotations) - not relevant to BYTM. */
+  /** Legacy "info cards" data (annotations). */
   cards?: Record<string, unknown>;
-  /** Analytics tracking blob - not relevant to BYTM. */
+  /** Analytics tracking blob. */
   trackingParams?: string;
   frameworkUpdates?: Record<string, unknown>;
   [key: string]: unknown;
