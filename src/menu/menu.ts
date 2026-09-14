@@ -82,6 +82,9 @@ export async function mountCfgMenu() {
     menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
     menuContainer.classList.add("bytm-menu");
     menuContainer.id = "bytm-cfg-menu";
+    menuContainer.role = "dialog";
+    menuContainer.ariaModal = "true";
+    menuContainer.setAttribute("aria-labelledby", "bytm-config-menu-title");
 
 
     //#region > title bar
@@ -143,6 +146,7 @@ export async function mountCfgMenu() {
     titleElem.classList.add("bytm-menu-title");
 
     const titleTextElem = document.createElement("div");
+    titleTextElem.id = "bytm-config-menu-title";
     titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
 
     titleElem.appendChild(titleTextElem);
@@ -1041,7 +1045,7 @@ export async function mountCfgMenu() {
               customInputEl.classList.add("bytm-btn");
               customInputEl.tabIndex = 0;
               customInputEl.textContent = await hasKey(`feature_btn.${featKey}`) ? t(`feature_btn.${featKey}`) : t("trigger_btn_action");
-              customInputEl.ariaLabel = customInputEl.title = t(`feature_desc.${featKey}`);
+              customInputEl.title = t(`feature_desc.${featKey}`);
 
               onInteraction(customInputEl, async () => {
                 if((customInputEl as HTMLButtonElement).disabled)
@@ -1204,7 +1208,7 @@ export async function mountCfgMenu() {
     scrollIndicator.classList.add("bytm-no-select");
     scrollIndicator.src = await getResourceUrl("icon-arrow_down");
     scrollIndicator.role = "button";
-    scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
+    scrollIndicator.title = t("scroll_to_bottom");
 
     featuresCont.appendChild(scrollIndicator);
 
@@ -1333,7 +1337,7 @@ export async function mountCfgMenu() {
 
     // ensure stuff is reset if menu was opened before being added
     isCfgMenuOpen = false;
-    document.body.classList.remove("bytm-disable-scroll");
+    document.body.classList.remove("bytm-no-scroll");
     document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
     backgroundElem.style.visibility = "hidden";
     backgroundElem.style.display = "none";
@@ -1421,7 +1425,7 @@ export async function openCfgMenu() {
 
     isCfgMenuOpen = true;
 
-    document.body.classList.add("bytm-disable-scroll");
+    document.body.classList.add("bytm-no-scroll");
     document.querySelector(getSelector("generic", "app"))?.setAttribute("inert", "true");
     const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
@@ -1465,7 +1469,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   evt?.bubbles && evt.stopPropagation();
 
   if(enableScroll && !openDialogs.some(id => id !== "cfg-menu")) {
-    document.body.classList.remove("bytm-disable-scroll");
+    document.body.classList.remove("bytm-no-scroll");
     document.querySelector(getSelector("generic", "app"))?.removeAttribute("inert");
   }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
