@@ -28,16 +28,16 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en-US`](./en-US.json) | `554` (default locale) |  |
-| ✅ | [`de-DE`](./de-DE.json) | `554/554` (100%) | ─ |
-|  | [`en-GB`](./en-GB.json) | `554/554` (100%) | `en-US` |
-| ‼️ | [`es-ES`](./es-ES.json) | `503/554` (90.8%) | ─ |
-| ‼️ | [`fr-FR`](./fr-FR.json) | `503/554` (90.8%) | ─ |
-| ‼️ | [`hi-IN`](./hi-IN.json) | `503/554` (90.8%) | ─ |
-| ‼️ | [`ja-JP`](./ja-JP.json) | `503/554` (90.8%) | ─ |
-| ‼️ | [`pt-BR`](./pt-BR.json) | `503/554` (90.8%) | ─ |
-| ‼️ | [`tr-TR`](./tr-TR.json) | `503/554` (90.8%) | ─ |
-| ‼️ | [`zh-CN`](./zh-CN.json) | `503/554` (90.8%) | ─ |
+|  | [`en-US`](./en-US.json) | `555` (default locale) |  |
+| ✅ | [`de-DE`](./de-DE.json) | `555/555` (100%) | ─ |
+|  | [`en-GB`](./en-GB.json) | `555/555` (100%) | `en-US` |
+| ‼️ | [`es-ES`](./es-ES.json) | `503/555` (90.6%) | ─ |
+| ‼️ | [`fr-FR`](./fr-FR.json) | `503/555` (90.6%) | ─ |
+| ‼️ | [`hi-IN`](./hi-IN.json) | `503/555` (90.6%) | ─ |
+| ‼️ | [`ja-JP`](./ja-JP.json) | `503/555` (90.6%) | ─ |
+| ‼️ | [`pt-BR`](./pt-BR.json) | `503/555` (90.6%) | ─ |
+| ‼️ | [`tr-TR`](./tr-TR.json) | `503/555` (90.6%) | ─ |
+| ‼️ | [`zh-CN`](./zh-CN.json) | `503/555` (90.6%) | ─ |
 
 > <sub>✅ Fully translated</sub><br>
 > <sub>⚠ Almost fully translated</sub><br>
@@ -54,7 +54,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 ### Missing keys:
 
-<details><summary><code>es-ES</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es-ES</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -92,6 +92,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `feature_group_header.accessibility` | `Accessibility:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
 | `feature_desc.songListTrackNumbersDomains` | `On which sites should the track numbers be shown?` |
@@ -112,7 +113,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>fr-FR</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr-FR</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -150,6 +151,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `feature_group_header.accessibility` | `Accessibility:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
 | `feature_desc.songListTrackNumbersDomains` | `On which sites should the track numbers be shown?` |
@@ -170,7 +172,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>hi-IN</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi-IN</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -208,6 +210,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `feature_group_header.accessibility` | `Accessibility:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
 | `feature_desc.songListTrackNumbersDomains` | `On which sites should the track numbers be shown?` |
@@ -228,7 +231,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>ja-JP</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja-JP</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -266,6 +269,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `feature_group_header.accessibility` | `Accessibility:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
 | `feature_desc.songListTrackNumbersDomains` | `On which sites should the track numbers be shown?` |
@@ -286,7 +290,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>pt-BR</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt-BR</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -324,6 +328,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `feature_group_header.accessibility` | `Accessibility:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
 | `feature_desc.songListTrackNumbersDomains` | `On which sites should the track numbers be shown?` |
@@ -344,7 +349,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>tr-TR</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>tr-TR</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -382,6 +387,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `feature_group_header.accessibility` | `Accessibility:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
 | `feature_desc.songListTrackNumbersDomains` | `On which sites should the track numbers be shown?` |
@@ -402,7 +408,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 
 <br></details>
 
-<details><summary><code>zh-CN</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh-CN</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -440,6 +446,7 @@ To submit or edit a translation, please [follow this guide.](../../docs/contribu
 | `feature_group_header.accessibility` | `Accessibility:` |
 | `feature_group_header.lyricsSearchPromptHotkeyEnabled` | `Lyrics Search Dialog:` |
 | `feature_group_header.interactionLockHotkey` | `Interaction Lock:` |
+| `feature_desc.volumeSliderLabelStyle` | `How to style the volume slider label` |
 | `feature_desc.listButtonsStyle` | `How to style the buttons in the currently playing queue` |
 | `feature_desc.aboveQueueHeaderStyle` | `How to style the header above the currently playing queue` |
 | `feature_desc.songListTrackNumbersDomains` | `On which sites should the track numbers be shown?` |
