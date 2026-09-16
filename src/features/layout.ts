@@ -14,6 +14,7 @@ import { loggers } from "@util/logging.ts";
 import { t, tp } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "@util/xhr.ts";
+import { getString } from "@util/staticData.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { compressionFormat, mode, scriptInfo } from "@/constants.ts";
 import { openCfgMenu } from "@menu/menu.ts";
@@ -69,7 +70,7 @@ export function improveLogo() {
         return;
       improveLogoCalled = true;
 
-      const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
+      const res = await fetchAdvanced(getString("ytm_platform_logo_svg_url"));
       const svg = await res.text();
 
       addSelectorListener("navBar", "ytmusic-logo > a", {
