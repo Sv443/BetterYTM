@@ -7,7 +7,7 @@ import { loggers } from "@util/logging.ts";
 import { resourceAsString } from "@util/misc.ts";
 import { getterifyObj } from "@util/pure.ts";
 import { getDomain } from "@util/domain.ts";
-import { getStaticDataRef, setStaticData, type StaticData } from "@util/selectors.ts";
+import { getStaticDataRef, setStaticData, type StaticData } from "@util/staticData.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
 import { LogLevel, type Domain, type FeatureConfig, type Translatable } from "@/types.ts";
@@ -23,7 +23,7 @@ import { emitSiteEvent } from "@/siteEvents.ts";
 
 //#region types
 
-export type { SelectorGroup, SelectorByGroup, StaticData } from "@util/selectors.ts";
+export type { SelectorGroup, SelectorByGroup, StaticDataStringID, StaticData } from "@util/staticData.ts";
 
 /** Alert to be shown globally on the supported sites. */
 export type GlobalAlert = {

@@ -154,6 +154,16 @@
         "additionalProperties": false
       }
     },
+    "strings": {
+      "type": "object",
+      "description": "Mapping of string identifiers to arbitrary strings.",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_-]*$": {
+          "type": "string",
+          "description": "Any string."
+        }
+      }
+    },
     "selectors": {
       "type": "object",
       "description": "Mapping of selector identifiers to selector groups and per-domain selector strings.",

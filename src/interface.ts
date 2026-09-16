@@ -15,7 +15,7 @@ import { getResourceUrl } from "@util/resourceUrl.ts";
 import { setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, tl, tlp, createTranslatable } from "@util/translations.ts";
 import { fetchVideoVotes, fetchITunesAlbumInfo } from "@util/xhr.ts";
 import { Logger } from "@util/Logger.ts";
-import { getSelector } from "@util/selectors.ts";
+import { getSelector } from "@util/staticData.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";

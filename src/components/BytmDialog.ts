@@ -3,7 +3,7 @@ import type { EventsMap } from "nanoevents";
 import { clearInner } from "@util/dom.ts";
 import { onInteraction } from "@util/input.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
-import { getSelector } from "@util/selectors.ts";
+import { getSelector } from "@util/staticData.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";

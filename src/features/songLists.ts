@@ -8,7 +8,7 @@ import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";
 import { onInteraction } from "@util/input.ts";
 import { t } from "@util/translations.ts";
-import { getSelector } from "@util/selectors.ts";
+import { getSelector } from "@util/staticData.ts";
 import { siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { fetchLyricsUrlTop, createLyricsBtn, splitVideoTitle } from "@feat/lyrics.ts";

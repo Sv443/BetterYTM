@@ -6,19 +6,23 @@ import type { GlobalAlert } from "@util/data.ts";
 import defaultStaticData from "@asset/data.json" with { type: "json" };
 
 /**
- * Resolves CSS selectors out of the static data.  
+ * Resolves CSS selectors and URLs out of the static data.  
  *   
  * Split out of {@linkcode "@util/data.ts"} because almost every layer needs {@linkcode getSelector},
  * while `data.ts` itself pulls in dialogs, translations and the config. `data.ts` still owns
  * fetching the data and hands it over via {@linkcode setStaticData}.
  */
 
-// TODO: extract union type from {@linkcode defaultStaticData.selectors} keys.
+// #region types
+
 /** Union of all selector identifiers defined in the static data JSON. */
 export type SelectorGroup = keyof typeof defaultStaticData.selectors;
 
 /** Union of all selector identifiers defined in the static data JSON. */
 export type SelectorByGroup<TGroup extends SelectorGroup> = keyof (typeof defaultStaticData.selectors[TGroup]);
+
+/** Union of all string identifiers defined in the static data JSON. */
+export type StaticDataStringID = keyof typeof defaultStaticData.strings;
 
 /** Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings. */
 export type StaticData = {
@@ -33,12 +37,16 @@ export type StaticData = {
   }>;
   /** List of alerts to potentially display to users. May be empty. */
   alerts: GlobalAlert[];
+  /** Mapping of static string identifiers to arbitrary strings. */
+  strings: Record<StaticDataStringID, string>;
   /** Mapping of selector identifiers to per-domain selector strings. */
   selectors: Record<SelectorGroup, {
     /** DOM selector strings for all domains supported by BYTM, keyed by domain identifier (can be \"ytm\" or \"yt\"). */
     [domain in Domain]?: string;
   } | string>;
 };
+
+// #region staticData
 
 let staticData: StaticData | undefined;
 
@@ -51,9 +59,11 @@ export function setStaticData<TData extends StaticData>(data: TData): TData {
 /** Returns the currently stored static data, or undefined if it hasn't been fetched yet */
 export const getStaticDataRef = () => staticData;
 
+// #region getSelector
+
 /**
  * Returns the selector with the given ID.  
- * By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
+ * @throws By default, the function `throws` an error if the given selector doesn't exist, is invalid, or doesn't have a value for the current domain.
  */
 export function getSelector<
   TSelectorGroup extends SelectorGroup,
@@ -80,7 +90,7 @@ export function getSelector<
         : sel[dom] as TThrows extends true ? string : (string | undefined);
     }
     catch(e) {
-      loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
+      loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to an error:`, e);
       throw e;
     }
   }
@@ -96,4 +106,39 @@ export function getSelector<
 /** Same as {@linkcode getSelector()}, but sets the `throws` parameter to false by default. */
 export function tryGetSelector<TSelectorGroup extends SelectorGroup>(group: TSelectorGroup, id: SelectorByGroup<TSelectorGroup>): string | undefined {
   return getSelector(group, id, false);
+}
+
+// #region getUrl
+
+/**
+ * Returns the string with the given ID.  
+ * @throws By default, the function `throws` an error if the given string doesn't exist or is invalid.
+ */
+export function getString<
+  TThrows extends boolean | undefined = true,
+>(
+  id: StaticDataStringID,
+  throws?: TThrows,
+): TThrows extends true ? string : (string | undefined) {
+  if(throws !== false) {
+    try {
+      if(typeof staticData?.strings !== "object")
+        throw new DatedError("Static data hasn't been fetched yet.");
+      const str = staticData.strings?.[id];
+      if(typeof str !== "string")
+        throw new DatedError(`String '${id}' doesn't exist or is not of type string.`);
+      return str;
+    }
+    catch(e) {
+      loggers.data.error(`Couldn't get string '${id}' due to an error:`, e);
+      throw e;
+    }
+  }
+
+  return staticData?.strings?.[id] as TThrows extends true ? string : (string | undefined);
+}
+
+/** Same as {@linkcode getString()}, but sets the `throws` parameter to false by default. */
+export function tryGetString(id: StaticDataStringID): string | undefined {
+  return getString(id, false);
 }

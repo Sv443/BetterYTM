@@ -11,7 +11,7 @@ import { compressionSupported, getChangelogHtmlWithDetails, parseMarkdown, reloa
 import { reloadAllTabs } from "@util/broadcast.ts";
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { getLocale, hasKey, hasKeyFor, initTranslations, setLocale, t, tl, type TrKey, type TrLocale } from "@util/translations.ts";
-import { getSelector } from "@util/selectors.ts";
+import { getSelector } from "@util/staticData.ts";
 import { emitSiteEvent, forceEmitSiteEvent, siteEvents } from "@/siteEvents.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { showPrompt, type PromptDialog } from "@dialog/prompt.ts";

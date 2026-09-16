@@ -8,6 +8,7 @@ import { getCurrentChannelId, getDomain, isValidChannelId, sanitizeChannelId } f
 import { addStyleFromResource, clearNode, getCurrentMediaType, getLikeDislikeBtns, setInnerHtml } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
 import { t } from "@util/translations.ts";
+import { getSelector } from "@util/staticData.ts";
 import { use } from "@/core/hooks.ts";
 import { registerStore } from "@/core/storeRegistry.ts";
 import { showIconToast } from "@comp/toast.ts";
@@ -15,7 +16,6 @@ import { createLongBtn } from "@comp/longButton.ts";
 import { createRipple } from "@comp/ripple.ts";
 import { LogLevel, type AutoLikeData } from "@/types.ts";
 import "@feat/autoLike.css";
-import { getSelector } from "@util/selectors.ts";
 
 // TODO:FIXME: race condition: multiple buttons can appear on YT channel pages, with both the @ID format as well as UC... (extraneous)
 

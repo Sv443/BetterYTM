@@ -26,6 +26,9 @@
     }
   ],
   "alerts": [],
+  "strings": {
+    "ytm_platform_logo_svg_url": "https://music.youtube.com/img/on_platform_logo_dark.svg"
+  },
   "selectors": {
     "generic": {
       "app": {

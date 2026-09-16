@@ -29,7 +29,7 @@ import resources from "@asset/resources.json" with { type: "json" };
 import locales from "@asset/locales.json" with { type: "json" };
 import type { featInfo } from "@feat/featInfo.ts";
 import type { Logger } from "@util/Logger.ts";
-import type { getSelector } from "@util/selectors.ts";
+import type { getSelector } from "@util/staticData.ts";
 
 void ["type imports only:", resources, locales];
 

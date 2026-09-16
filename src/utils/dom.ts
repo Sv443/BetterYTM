@@ -1,6 +1,6 @@
 import { addGlobalStyle, getUnsafeWindow, isDomLoaded, onDomLoad, consumeStringGen, randomId, type StringGen, type Stringifiable } from "@sv443-network/userutils";
 import DOMPurify from "dompurify";
-import { getSelector } from "@util/selectors.ts";
+import { getSelector } from "@util/staticData";
 import { fetchCss } from "@util/xhr.ts";
 import { getDomain } from "@util/domain.ts";
 import { loggers } from "@util/logging.ts";

@@ -2,7 +2,7 @@ import { autoPlural, clamp, type SelectorListenerOptions, SelectorObserver, type
 import { getFeature } from "@/config.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { getDomain } from "@util/domain.ts";
-import { getSelector } from "@util/selectors.ts";
+import { getSelector } from "@util/staticData.ts";
 import { loggers } from "@util/logging.ts";
 import { Logger } from "@util/Logger.ts";
 import { LogLevel, type Domain, type FeatureConfig } from "@/types.ts";
