@@ -14,6 +14,7 @@ export const perfReport: PerformanceReport = {
     "- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property.",
     "- 'resources' will only contain entries whenever the resource cache was empty on startup (like on a fresh install, or if the resource cache is cleared through the userscript manager extension's storage management tool). Its 'fetchAttempts' prop will be an object mapping a resource key to the amount of times it was fetched.",
     "- The entries in the 'observers' property are timestamps of two types; whenever an observer 'checked' for elements, and whenever an observer 'found' elements (tuple of timestamp and amount of elements found).",
+    "- The 'plugins' property's contents can be modified by plugins. Each plugin's performance information object is keyed by the plugin id (in the format '<namespace>/<name>`)",
   ],
   meta: {
     version: scriptInfo.version,
@@ -37,6 +38,7 @@ export const perfReport: PerformanceReport = {
   sinceStart: {},
   resources: {},
   observers: {},
+  plugins: {},
 };
 
 /**
@@ -66,4 +68,9 @@ export function recordObserverTick<TObsName extends keyof PerformanceReport["obs
 
   // @ts-expect-error idw deal with this
   perfReport.observers[globserverName]![type] = obsData;
+}
+
+/** Overrides the plugin performance object for the given plugin. */
+export function setPluginPerf(pluginId: string, object: Record<string, unknown>) {
+  perfReport.plugins[pluginId] = object;
 }

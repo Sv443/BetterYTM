@@ -10,22 +10,20 @@ import { getDomain } from "@util/domain.ts";
 import { getStaticDataRef, setStaticData, type StaticData } from "@util/staticData.ts";
 import { resolveTranslatable, t } from "@util/translations.ts";
 import { MarkdownDialog } from "@comp/MarkdownDialog.ts";
-import { LogLevel, type Domain, type FeatureConfig, type Translatable } from "@/types.ts";
-import defaultStaticData from "@asset/data.json" with { type: "json" };
 import { onInteraction } from "@util/input.ts";
 import { getFeature } from "@/config.ts";
 import { emitSiteEvent } from "@/siteEvents.ts";
-
-// TODO: expose on interface
-
-// used alert IDs:
-// - update-preview-version-hint-v3.1.0-rc.1
+import defaultStaticData from "@asset/data.json" with { type: "json" };
+import { LogLevel, type Domain, type FeatureConfig, type Translatable } from "@/types.ts";
 
 //#region types
 
 export type { SelectorGroup, SelectorByGroup, StaticDataStringID, StaticData } from "@util/staticData.ts";
 
-/** Alert to be shown globally on the supported sites. */
+/**
+ * Alert to be shown globally on the supported sites.
+ * - `update-preview-version-hint-v3.1.0-rc.1`
+ */
 export type GlobalAlert = {
   /** Unique identifier for the alert. */
   id: string;

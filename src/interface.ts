@@ -16,6 +16,7 @@ import { setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale, tl, tlp,
 import { fetchVideoVotes, fetchITunesAlbumInfo } from "@util/xhr.ts";
 import { Logger } from "@util/Logger.ts";
 import { getSelector } from "@util/staticData.ts";
+import { setPluginPerf } from "@util/perf.ts";
 import { addSelectorListener, globservers } from "@/observers.ts";
 import { getSerializerStores, getSerializerStoresFull } from "@/serializers.ts";
 import { getFeatures, getFeaturesNoHidden, setFeatures } from "@/config.ts";
@@ -54,6 +55,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   // meta:
   /*🔒*/ getPluginInfo,
   /*🔒*/ getInternals,
+  /*🔒*/ setPerformance: setPerformanceInterface,
 
   // bytm-specific:
   getDomain,
@@ -61,7 +63,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   resourceAsString,
   getSessionId,
   reloadTab,
-  getSelector,
+  getSelector, // TODO: docs
 
   // dom:
   setInnerHtml,
@@ -653,6 +655,18 @@ export function showPromptInterface(token: string | undefined, ...args: Paramete
   if(pluginId === undefined || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs))
     return;
   return showPrompt(...args);
+}
+
+/**
+ * Sets or overwrites the performance info object.  
+ * It's included in the performance report that can be downloaded by the user, so the plugin can be debugged and benchmarked better.  
+ * The calling plugin needs to be registered, but it doesn't require any permissions for this, the token is just used for identification.
+ */
+export function setPerformanceInterface(token: string | undefined, performanceInfo: Record<string, unknown>) {
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined)
+    return;
+  setPluginPerf(pluginId, performanceInfo);
 }
 
 //#region internals

@@ -12,7 +12,7 @@ import type { getResourceUrl } from "@util/resourceUrl.ts";
 import type { TrLocale, t, tp, getLocale, hasKey, hasKeyFor, tl, tlp } from "@util/translations.ts";
 import type { fetchVideoVotes, fetchITunesAlbumInfo } from "@util/xhr.ts";
 import type { siteEvents, SiteEventsMapPrefixed } from "@/siteEvents.ts";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, showPromptInterface } from "@/interface.ts";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getInternals, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface, setPerformanceInterface, showPromptInterface } from "@/interface.ts";
 import type { fetchLyricsUrlTop, fuzzyFetchLyricsInfo } from "@feat/lyrics.ts";
 import type { sanitizeArtists, sanitizeSong } from "@feat/lyricsSanitize.ts";
 import type { getLyricsCacheEntry } from "@feat/lyricsCache.ts";
@@ -251,6 +251,10 @@ export type PerformanceReport = {
       /** Array of tuples of when elements were found with this observer. First item is the millis() value, second item is the amount of elements found. */
       found?: [millis: number, numElements: number][];
     };
+  };
+  /** Each plugin can overwrite the object keyed by its plugin key to include data in the performance report. */
+  plugins: {
+    [pluginKey: string]: Record<string, unknown> | undefined;
   };
 };
 
@@ -692,6 +696,8 @@ export type InterfaceFunctions = {
   getPluginInfo: typeof getPluginInfo;
   /** 🔒 Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
   getInternals: typeof getInternals;
+  /** 🔒 Sets or overwrites the performance info object. It's included in the performance report that can be downloaded by the user, so the plugin can be debugged and benchmarked better. */
+  setPerformance: typeof setPerformanceInterface;
 
   // bytm-specific:
   /** Returns the current domain as a constant string representation. */
