@@ -32,7 +32,7 @@
       "src/configSchema.ts",
       "src/core/interfaceEvents.ts",
       "src/utils/resourceUrl.ts",
-      "src/utils/selectors.ts",
+      "src/utils/staticData.ts",
       "src/utils/unloadGuard.ts"
     ],
     [
