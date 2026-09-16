@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@8010f3c1/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9b1cbd6e/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Mon, 14 Sep 2026 21:10:45 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Wed, 16 Sep 2026 19:34:50 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 8010f3c1                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ 9b1cbd6e                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ e8esTCVRpp0C                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ samQGKiUAnZK                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3447,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "8010f3c1";
+	var buildNumber$1 = "9b1cbd6e";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789420245430;
+	var buildTimestamp = 1789587290083;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -6861,6 +6861,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			]
 		}],
 		alerts: [],
+		strings: { "ytm_platform_logo_svg_url": "https://music.youtube.com/img/on_platform_logo_dark.svg" },
 		selectors: {
 			"generic": {
 				"app": {
@@ -7023,7 +7024,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		return parseChannelIdFromUrl(location.href);
 	}
 	//#endregion
-	//#region src/utils/selectors.ts
+	//#region src/utils/staticData.ts
 	var staticData;
 	/** Stores the static data once it has been fetched - called by `@util/data.ts` */
 	function setStaticData(data) {
@@ -7034,7 +7035,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	var getStaticDataRef = () => staticData;
 	/**
 	* Returns the selector with the given ID.  
-	* By default, the function throws an error if the given selector doesn't exist, or doesn't have a value for the current domain.
+	* @throws By default, the function `throws` an error if the given selector doesn't exist, is invalid, or doesn't have a value for the current domain.
 	*/
 	function getSelector(group, id, throws) {
 		const dom = getDomain();
@@ -7045,11 +7046,27 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			if (typeof sel === "object" && dom !== null && !(dom in sel)) throw new DatedError(`Selector '${group}.${String(id)}' doesn't contain a value for the current domain '${dom}'.`);
 			return typeof sel === "string" ? sel : sel[dom];
 		} catch (e) {
-			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to error:`, e);
+			loggers.data.error(`Couldn't get selector '${group}.${String(id)}' due to an error:`, e);
 			throw e;
 		}
 		const sel = staticData?.selectors?.[group]?.[id];
 		return typeof sel === "string" ? sel : sel?.[dom];
+	}
+	/**
+	* Returns the string with the given ID.  
+	* @throws By default, the function `throws` an error if the given string doesn't exist or is invalid.
+	*/
+	function getString(id, throws) {
+		if (throws !== false) try {
+			if (typeof staticData?.strings !== "object") throw new DatedError("Static data hasn't been fetched yet.");
+			const str = staticData.strings?.[id];
+			if (typeof str !== "string") throw new DatedError(`String '${id}' doesn't exist or is not of type string.`);
+			return str;
+		} catch (e) {
+			loggers.data.error(`Couldn't get string '${id}' due to an error:`, e);
+			throw e;
+		}
+		return staticData?.strings?.[id];
 	}
 	var package_default = {
 		name: "@sv443/betterytm",
@@ -7214,7 +7231,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			"- The timings in the 'durations' property are generic measurements of how long certain phases are. These measurements do not start at the 'start' property timestamp.",
 			"- The timings in the 'featureDurations' property are measurements of how long it took for each individual feature entrypoint to initialize, starting from the beginning of the feature initialization phase - also refer to 'featuresAllReady_deferred' in the 'durations' property.",
 			"- 'resources' will only contain entries whenever the resource cache was empty on startup (like on a fresh install, or if the resource cache is cleared through the userscript manager extension's storage management tool). Its 'fetchAttempts' prop will be an object mapping a resource key to the amount of times it was fetched.",
-			"- The entries in the 'observers' property are timestamps of two types; whenever an observer 'checked' for elements, and whenever an observer 'found' elements (tuple of timestamp and amount of elements found)."
+			"- The entries in the 'observers' property are timestamps of two types; whenever an observer 'checked' for elements, and whenever an observer 'found' elements (tuple of timestamp and amount of elements found).",
+			"- The 'plugins' property's contents can be modified by plugins. Each plugin's performance information object is keyed by the plugin id (in the format '<namespace>/<name>`)"
 		],
 		meta: {
 			version: scriptInfo$1.version,
@@ -7236,7 +7254,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		start: 0,
 		sinceStart: {},
 		resources: {},
-		observers: {}
+		observers: {},
+		plugins: {}
 	};
 	/**
 	* Starts a timer for measuring the duration of a specific phase of the initialization process.  
@@ -7256,6 +7275,10 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		if (type === "checked") obsData.push(millis());
 		else obsData.push([millis(), results[0]]);
 		perfReport.observers[globserverName][type] = obsData;
+	}
+	/** Overrides the plugin performance object for the given plugin. */
+	function setPluginPerf(pluginId, object) {
+		perfReport.plugins[pluginId] = object;
 	}
 	//#endregion
 	//#region src/observers.ts
@@ -12058,7 +12081,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
 			nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
 			nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
-			const chanHref = !chanId.startsWith("@") && getDomain() === "ytm" ? `https://music.youtube.com/channel/${chanId}` : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+			const chanHref = !chanId.startsWith("@") && getDomain() === "ytm" ? `https://music.youtube.com/channel/${chanId}` : `https://www.youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
 			const nameElem = document.createElement("a");
 			nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
 			nameElem.ariaLabel = nameElem.textContent = chanName;
@@ -12993,6 +13016,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 	var globalFuncs = pureObj({
 		getPluginInfo,
 		getInternals,
+		setPerformance: setPerformanceInterface,
 		getDomain,
 		getResourceUrl,
 		resourceAsString,
@@ -13369,6 +13393,16 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		const pluginId = resolveToken(token);
 		if (pluginId === void 0 || !pluginHasPerms(pluginId, PluginIntent.CreateModalDialogs)) return;
 		return showPrompt(...args);
+	}
+	/**
+	* Sets or overwrites the performance info object.  
+	* It's included in the performance report that can be downloaded by the user, so the plugin can be debugged and benchmarked better.  
+	* The calling plugin needs to be registered, but it doesn't require any permissions for this, the token is just used for identification.
+	*/
+	function setPerformanceInterface(token, performanceInfo) {
+		const pluginId = resolveToken(token);
+		if (pluginId === void 0) return;
+		setPluginPerf(pluginId, performanceInfo);
 	}
 	/** Returns a selection of internal functions and objects that can be used by core libraries and deeper reaching plugins. */
 	function getInternals(token) {
@@ -16393,7 +16427,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			try {
 				if (improveLogoCalled) return;
 				improveLogoCalled = true;
-				const svg = await (await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg")).text();
+				const svg = await (await fetchAdvanced(getString("ytm_platform_logo_svg_url"))).text();
 				addSelectorListener("navBar", "ytmusic-logo > a", { listener: (logoElem) => {
 					logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
 					setInnerHtml(logoElem, svg);
@@ -18917,7 +18951,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "8010f3c1",
+				buildNumber: "9b1cbd6e",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
