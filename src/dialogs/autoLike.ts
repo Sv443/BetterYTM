@@ -221,7 +221,7 @@ async function renderBody() {
 
     const chanHref = (!chanId.startsWith("@") && getDomain() === "ytm")
       ? `https://music.youtube.com/channel/${chanId}`
-      : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+      : `https://www.youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
 
     const nameElem = document.createElement("a");
     nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
