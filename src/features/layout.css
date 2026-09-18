@@ -44,6 +44,20 @@ html[dark] {
   gap: 16px;
 }
 
+.bytm-flex-row-gap-m {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.bytm-flex-row-gap-s {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
 .bytm-flex-row-no-gap {
   display: flex;
   flex-direction: row;

@@ -2569,6 +2569,8 @@ These are the available selectors:
 | `#bytm-dialog-container` | This is the container that holds all BytmDialog elements |
 | `.bytm-flex-row` | Generic flexbox helper - row, 16px gap |
 | `.bytm-flex-row-no-gap` | Generic flexbox helper - row, no gap |
+| `.bytm-flex-row-gap-m` | Generic flexbox helper - row, 8px gap |
+| `.bytm-flex-row-gap-s` | Generic flexbox helper - row, 5px gap |
 | `.bytm-flex-col` | Generic flexbox helper - column, 8px gap |
 | `.bytm-flex-col-no-gap` | Generic flexbox helper - column, no gap |
 
