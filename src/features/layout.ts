@@ -1439,7 +1439,7 @@ const searchBarContClass = "bytm-list-search-bar-cont";
 
 /** Applies the given search query to all items in the popup container */
 function applyPopupContSearch(popupContainer: HTMLElement, query?: string) {
-
+  void [popupContainer, query];
 }
 
 /** Creates a search bar element, a clear button, and their flex wrapper and returns it */
