@@ -48,7 +48,8 @@ export type YTObserverName =
   | "ytdBrowse"        // channel pages for example
   | "ytAppHeader"      // header of the page
   | "ytWatchFlexy"     // the main content of the /watch page
-  | "ytWatchMetadata"; // the metadata section of the /watch page
+  | "ytWatchMetadata"  // the metadata section of the /watch page
+  | "ytPopupContainer";// container for all popup elements like <tp-yt-iron-dropdown>
 
 //#region vars
 
@@ -376,6 +377,19 @@ export function initObservers(cfg: FeatureConfig) {
 
       globservers.body.addListener(mastheadSelector, {
         listener: getEnableObsFn("ytMasthead"),
+      });
+
+      //#region ytPopupContainer
+      // -> the popup container that holds all elements like <tp-yt-iron-dropdown>
+      //    enabled by "body"
+      const popupContainerSelector = getSelector("observer", "ytPopupContainer");
+      globservers.ytPopupContainer = new SelectorObserver(popupContainerSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(popupContainerSelector, {
+        listener: getEnableObsFn("ytPopupContainer"),
       });
     }
     }
