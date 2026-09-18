@@ -757,7 +757,7 @@ export type InterfaceFunctions = {
   isIgnoredInputElement: typeof isIgnoredInputElement;
   /** Converts a markdown string into an HTML string. Optionally and if supported, sanitizes using DOMPurify to create a TrustedHTML object. */
   parseMarkdown: typeof parseMarkdown;
-  /** Prevents the given events' listeners from being called for the given container element. Use the optional predicate function to control whenever this happens. */
+  /** Prevents the given events' listeners from being called and bubbling, for the given container element. Use the optional predicate function to control whenever this happens. */
   preventEvents: typeof preventEvents;
   
   // site events:

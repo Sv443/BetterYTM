@@ -213,6 +213,16 @@ export const featDefaults = {
     default: true,
     since: "3.0.0",
   },
+  searchablePlaylistPopupsEnabled: {
+    type: "toggle",
+    default: true,
+    since: "4.0.0",
+  },
+  searchableSongListsEnabled: {
+    type: "toggle",
+    default: true,
+    since: "4.0.0",
+  },
   lyricsQueueButton: {
     type: "toggle",
     default: true,

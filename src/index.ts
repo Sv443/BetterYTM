@@ -33,7 +33,7 @@ import {
   initWatchPageFullSize, initAboveQueueBtns,
   initHideCursorOnIdle, addAnchorImprovements,
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
-  improveLogo,
+  improveLogo, initSearchableLists,
 } from "@feat/layout.ts";
 import { initVolumeFeatures, initExponentialVolume } from "@feat/volume.ts";
 import { initCurrentQueue, initQueueButtons, addTrackNumbers } from "@feat/songLists.ts";
@@ -390,6 +390,9 @@ async function onDomLoad() {
 
       if(feats.removeShareTrackingParamSites)
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
+
+      if(feats.searchablePlaylistPopupsEnabled || feats.searchableSongListsEnabled)
+        ftInit.push(["searchableLists", initSearchableLists()]);
 
       //#region (ytm+yt) song lists
 

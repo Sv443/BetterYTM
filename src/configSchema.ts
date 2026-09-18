@@ -306,6 +306,8 @@ export const cfgMigrations: DataMigrationsDict = {
       "listButtonsStyle",
       "aboveQueueHeaderStyle",
       "volumeSliderLabelStyle",
+      "searchablePlaylistPopupsEnabled",
+      "searchableSongListsEnabled",
     ]);
   },
 } as const satisfies DataMigrationsDict;

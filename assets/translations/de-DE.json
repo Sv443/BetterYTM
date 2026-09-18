@@ -367,6 +367,7 @@
   "feature_group_header.fixHdrIssues": "HDR-Probleme beheben:",
   "feature_group_header.votes": "Likes und Dislikes:",
   "feature_group_header.watchPageFullSize": "Vergrößerte Wiedergabe-Seite:",
+  "feature_group_header.searchableLists": "Durchsuchbare Listen:",
   "feature_group_header.queueButtons": "Knöpfe in Songlisten:",
   "feature_group_header.aboveQueueButtons": "Knöpfe über der Wiedergabeliste:",
   "feature_group_header.songListTrackNumbers": "Tracknummern:",
@@ -435,6 +436,8 @@
   "feature_desc.swapLikeDislikeButtons": "Tausche die Position der Like- und Dislike-Buttons",
   "feature_desc.numbersFormat": "Wie sollen Zahlen formatiert werden?",
   "feature_desc.watchPageFullSize": "Vergrößere den Hauptinhalt auf der /watch-Seite, um den gesamt verfügbaren Platz zu nutzen",
+  "feature_desc.searchablePlaylistPopupsEnabled": "Füge eine Suchleiste zu Playlist-Popups hinzu",
+  "feature_desc.searchableSongListsEnabled": "Füge eine Suchleiste zu generischen Song- und Video-Listen hinzu",
 
   "feature_desc.volumeSliderExponential": "Die Skala für den Lautstärkeregler",
   "feature_helptext.volumeSliderExponential": "Standardmäßig verwendet der Lautstärkeregler eine lineare Skala, was bedeutet, dass die Lautstärke gleichmäßig von 0% bis 100% ansteigt. Mit dieser Funktion wird die Skala annähernd exponentiell, was bedeutet, dass die Lautstärke in den niedrigeren Bereichen feiner abgestuft ist und in den höheren Bereichen schneller ansteigt. Dies kann hilfreich sein, wenn du Schwierigkeiten hast, die Lautstärke in den niedrigeren Bereichen genau einzustellen.\n\nSiehe auch https://www.dr-lex.be/info-stuff/volumecontrols.html",

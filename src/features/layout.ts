@@ -9,12 +9,12 @@ import { formatNumber, getBestThumbnailUrl, resourceAsString, scrollToCurrentSon
 import { getResourceUrl } from "@util/resourceUrl.ts";
 import { getWatchId, openInTab, overflowVal } from "@util/pure.ts";
 import { getDomain } from "@util/domain.ts";
-import { addStyleFromResource, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "@util/dom.ts";
+import { addStyleFromResource, preventEvents, getCurrentMediaType, getLikeDislikeBtns, getVideoTime, setInnerHtml, waitVideoElementReady } from "@util/dom.ts";
 import { loggers } from "@util/logging.ts";
 import { t, tp } from "@util/translations.ts";
 import { onInteraction } from "@util/input.ts";
 import { fetchITunesAlbumInfo, fetchVideoVotes } from "@util/xhr.ts";
-import { getString } from "@util/staticData.ts";
+import { getSelector, getString } from "@util/staticData.ts";
 import { emitInterface } from "@/core/interfaceEvents.ts";
 import { compressionFormat, mode, scriptInfo } from "@/constants.ts";
 import { openCfgMenu } from "@menu/menu.ts";
@@ -1399,4 +1399,100 @@ export async function initTruncatePlayerBarSubtitles() {
     loggers.layout.error("Couldn't load stylesheet to truncate player bar subtitles");
   else
     loggers.layout.log("Truncated player bar subtitles");
+}
+
+//#region searchable lists
+
+/** Adds search inputs to lists */
+export async function initSearchableLists() {
+  // >> YTM >>
+  if(getDomain() === "ytm") {
+    if(getFeature("searchablePlaylistPopupsEnabled")) {
+      // TODO:
+    }
+    if(getFeature("searchableSongListsEnabled")) {
+      // TODO:
+    }
+  }
+  // >> YT >>
+  else {
+    if(getFeature("searchablePlaylistPopupsEnabled")) {
+      addSelectorListener<0, "yt">("ytPopupContainer", getSelector("generic", "playlistPopup_sub_popupContainer"), {
+        all: true,
+        continuous: true,
+        listener(popupConts) {
+          for(const pc of popupConts) {
+            const listItemCont = pc.querySelector<HTMLElement>("yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model");
+            if(listItemCont && listItemCont.childElementCount > 0)
+              addPopupSearchBar(pc);
+          }
+        },
+      });
+    }
+    if(getFeature("searchableSongListsEnabled")) {
+      // TODO:
+    }
+  }
+}
+
+const searchBarContClass = "bytm-list-search-bar-cont";
+
+/** Applies the given search query to all items in the popup container */
+function applyPopupContSearch(popupContainer: HTMLElement, query?: string) {
+
+}
+
+/** Creates a search bar element, a clear button, and their flex wrapper and returns it */
+function createSearchBarEl(popupContainer: HTMLElement): HTMLElement {
+  const applyPopupContSearchDebounced = debounce(applyPopupContSearch, 300);
+
+  const searchWrapper = document.createElement("div");
+  searchWrapper.classList.add(searchBarContClass, "bytm-flex-row");
+
+  const searchBar = document.createElement("input");
+  searchBar.classList.add("bytm-list-search-bar");
+  searchBar.placeholder = searchBar.title = t("search_placeholder");
+
+  searchBar.addEventListener("input", () => applyPopupContSearchDebounced(popupContainer, searchBar.value));
+
+  const clearBtn = document.createElement("button");
+  clearBtn.classList.add("bytm-list-search-clear-btn", "bytm-btn", "no-min-width");
+  clearBtn.title = t("search_clear");
+  clearBtn.tabIndex = 0;
+  clearBtn.innerText = "×";
+
+  onInteraction(clearBtn, () => {
+    searchBar.value = "";
+    applyPopupContSearchDebounced(popupContainer);
+  });
+
+  searchWrapper.appendChild(searchBar);
+  searchWrapper.appendChild(clearBtn);
+
+  preventEvents("click", searchWrapper);
+
+  return searchWrapper;
+}
+
+/** Adds a search bar to the given popup container */
+function addPopupSearchBar(popupContainer: HTMLElement) {
+  const isPlaylistPopup = [...(popupContainer.querySelectorAll<HTMLElement>("yt-list-view-model > toggleable-list-item-view-model") ?? [])].length > 0;
+  const searchBarCont = popupContainer.querySelector(`.${searchBarContClass}`);
+
+  if(searchBarCont && !isPlaylistPopup)
+    searchBarCont.remove();
+
+  if(searchBarCont)
+    return;
+
+  const parentSel = getSelector("generic", "playlistPopupMainContainer_sub_popupContainer");
+  const parentEl = popupContainer.querySelector<HTMLElement>(parentSel);
+
+  console.log(">>>>> adding popup search bar", popupContainer, parentEl, [...(popupContainer.querySelectorAll<HTMLElement>("yt-list-view-model > toggleable-list-item-view-model") ?? [])]);
+
+  if(parentEl && isPlaylistPopup) {
+    const searchBar = createSearchBarEl(popupContainer);
+
+    parentEl.insertAdjacentElement("afterbegin", searchBar);
+  }
 }

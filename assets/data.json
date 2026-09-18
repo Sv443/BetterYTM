@@ -44,6 +44,12 @@
       },
       "browseResponseHeader_sub_browseResponse": {
         "ytm": "ytmusic-browse-response #header.ytmusic-browse-response"
+      },
+      "playlistPopup_sub_popupContainer": {
+        "yt": "tp-yt-iron-dropdown[prevent-autonav=true]"
+      },
+      "playlistPopupMainContainer_sub_popupContainer": {
+        "yt": "yt-contextual-sheet-layout > .ytContextualSheetLayoutContentContainer"
       }
     },
     "watchPage": {
@@ -248,6 +254,9 @@
       },
       "ytMasthead": {
         "yt": "#content ytd-masthead#masthead"
+      },
+      "ytPopupContainer": {
+        "yt": "ytd-app > ytd-popup-container"
       }
     }
   }

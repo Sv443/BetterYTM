@@ -619,3 +619,9 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
     opacity: 0;
   }
 }
+
+/* #region list search bars */
+
+.bytm-list-search-bar-cont {
+  padding: 0px 16px 8px 16px;
+}
