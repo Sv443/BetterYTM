@@ -166,7 +166,7 @@ export const featInfo = {
     group: "locale",
     supportedSites: ["ytm", "yt"],
     options: options.locale,
-    adornments: [adornments.globe, adornments.reload],
+    adornments: [adornments.globe],
   },
   localeFallback: {
     ...featDefaults.localeFallback,
@@ -174,7 +174,6 @@ export const featInfo = {
     group: "locale",
     supportedSites: ["ytm", "yt"],
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   configMenuFocusContentButtonEnabled: {
     ...featDefaults.configMenuFocusContentButtonEnabled,
@@ -192,7 +191,6 @@ export const featInfo = {
     step: 100,
     unit: "ms",
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   defaultObserverDebounce: {
     ...featDefaults.defaultObserverDebounce,
@@ -202,7 +200,6 @@ export const featInfo = {
     step: 5,
     unit: "ms",
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   verboseObservers: {
     ...featDefaults.verboseObservers,
@@ -211,7 +208,6 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     advanced: true,
     reloadRequired: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   globalAlertMode: {
     ...featDefaults.globalAlertMode,
@@ -220,7 +216,6 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     options: options.alertMode,
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   openWelcomeMenu: {
     ...featDefaults.openWelcomeMenu,
@@ -237,7 +232,6 @@ export const featInfo = {
     category: "general",
     group: "versionCheck",
     supportedSites: ["ytm", "yt"],
-    adornments: [adornments.reload],
   },
   checkVersionNow: {
     ...featDefaults.checkVersionNow,
@@ -286,7 +280,6 @@ export const featInfo = {
     group: "resetData",
     supportedSites: ["ytm", "yt"],
     click: () => tryUse("promptResetConfig")?.(),
-    adornments: [adornments.reload],
   },
   resetEverything: {
     ...featDefaults.resetEverything,
@@ -305,7 +298,6 @@ export const featInfo = {
       }
     },
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   logLevel: {
     ...featDefaults.logLevel,
@@ -317,7 +309,6 @@ export const featInfo = {
       { value: LogLevel.Info, label: t("log_level_info") },
     ],
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   logEvents: {
     ...featDefaults.logEvents,
@@ -325,7 +316,6 @@ export const featInfo = {
     group: "logging",
     supportedSites: ["ytm", "yt"],
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   logHttp: {
     ...featDefaults.logHttp,
@@ -333,7 +323,6 @@ export const featInfo = {
     group: "logging",
     supportedSites: ["ytm", "yt"],
     advanced: true,
-    adornments: [adornments.advanced, adornments.reload],
   },
   advancedMode: {
     ...featDefaults.advancedMode,
@@ -350,14 +339,12 @@ export const featInfo = {
     category: "layout",
     group: "watermarkEnabled",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   removeShareTrackingParam: {
     ...featDefaults.removeShareTrackingParam,
     category: "layout",
     group: "removeShareTrackingParam",
     supportedSites: ["ytm", "yt"],
-    adornments: [adornments.reload],
   },
   removeShareTrackingParamSites: {
     ...featDefaults.removeShareTrackingParamSites,
@@ -367,7 +354,6 @@ export const featInfo = {
     options: options.siteSelection,
     advanced: true,
     reloadRequired: false,
-    adornments: [adornments.advanced],
   },
   fixSpacing: {
     ...featDefaults.fixSpacing,
@@ -375,21 +361,19 @@ export const featInfo = {
     group: "fixLayout",
     supportedSites: ["ytm"],
     advanced: true,
-    adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
   },
   truncatePlayerBarSubtitles: {
     ...featDefaults.truncatePlayerBarSubtitles,
     category: "layout",
     group: "fixLayout",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   thumbnailOverlayEnabled: {
     ...featDefaults.thumbnailOverlayEnabled,
     category: "layout",
     group: "thumbnailOverlay",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
+    adornments: [adornments.privacy],
   },
   thumbnailOverlayBehavior: {
     ...featDefaults.thumbnailOverlayBehavior,
@@ -403,14 +387,12 @@ export const featInfo = {
       { value: "videosOnly", label: t("thumbnail_overlay.behavior_videos_only") },
     ],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   thumbnailOverlayToggleBtnShown: {
     ...featDefaults.thumbnailOverlayToggleBtnShown,
     category: "layout",
     group: "thumbnailOverlay",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   thumbnailOverlayITunesImgRes: {
     ...featDefaults.thumbnailOverlayITunesImgRes,
@@ -420,7 +402,6 @@ export const featInfo = {
     step: 100,
     renderValue: (n: string) => `${n}x${n}`,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   thumbnailOverlayAlbumArtCacheMaxSize: {
     ...featDefaults.thumbnailOverlayAlbumArtCacheMaxSize,
@@ -432,7 +413,6 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     reloadRequired: false,
     advanced: true,
-    adornments: [adornments.advanced, adornments.ytmOnly],
   },
   thumbnailOverlayAlbumArtCacheTTL: {
     ...featDefaults.thumbnailOverlayAlbumArtCacheTTL,
@@ -444,14 +424,12 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     reloadRequired: false,
     advanced: true,
-    adornments: [adornments.advanced, adornments.ytmOnly],
   },
   thumbnailOverlayShowIndicator: {
     ...featDefaults.thumbnailOverlayShowIndicator,
     category: "layout",
     group: "thumbnailOverlay",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   thumbnailOverlayIndicatorOpacity: {
     ...featDefaults.thumbnailOverlayIndicatorOpacity,
@@ -461,7 +439,6 @@ export const featInfo = {
     step: 5,
     unit: "%",
     advanced: true,
-    adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
   },
   thumbnailOverlayPreferredSource: {
     ...featDefaults.thumbnailOverlayPreferredSource,
@@ -470,7 +447,6 @@ export const featInfo = {
     supportedSites: ["ytm"],
     options: options.thumbOverlaySources,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   fixHdrIssues: {
     ...featDefaults.fixHdrIssues,
@@ -478,28 +454,37 @@ export const featInfo = {
     group: "fixHdrIssues",
     supportedSites: ["ytm"],
     advanced: true,
-    adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
   },
   showVotes: {
     ...featDefaults.showVotes,
     category: "layout",
     group: "votes",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
+    adornments: [adornments.privacy],
   },
   swapLikeDislikeButtons: {
     ...featDefaults.swapLikeDislikeButtons,
     category: "layout",
     group: "votes",
     supportedSites: ["ytm", "yt"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   watchPageFullSize: {
     ...featDefaults.watchPageFullSize,
     category: "layout",
     group: "watchPageFullSize",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
+  },
+  searchablePlaylistPopupsEnabled: {
+    ...featDefaults.searchablePlaylistPopupsEnabled,
+    category: "layout",
+    group: "searchableLists",
+    supportedSites: ["ytm", "yt"],
+  },
+  searchableSongListsEnabled: {
+    ...featDefaults.searchableSongListsEnabled,
+    category: "layout",
+    group: "searchableLists",
+    supportedSites: ["ytm", "yt"],
   },
 
   //#region cat:song lists
@@ -508,14 +493,12 @@ export const featInfo = {
     category: "songLists",
     group: "queueButtons",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   deleteFromQueueButton: {
     ...featDefaults.deleteFromQueueButton,
     category: "songLists",
     group: "queueButtons",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   listButtonsPlacement: {
     ...featDefaults.listButtonsPlacement,
@@ -524,7 +507,6 @@ export const featInfo = {
     supportedSites: ["ytm"],
     options: options.songListType,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   listButtonsStyle: {
     ...featDefaults.listButtonsStyle,
@@ -532,21 +514,18 @@ export const featInfo = {
     category: "songLists",
     group: "queueButtons",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   scrollToActiveSongBtn: {
     ...featDefaults.scrollToActiveSongBtn,
     category: "songLists",
     group: "aboveQueueButtons",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   clearQueueBtn: {
     ...featDefaults.clearQueueBtn,
     category: "songLists",
     group: "aboveQueueButtons",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   aboveQueueBtnsSticky: {
     ...featDefaults.aboveQueueBtnsSticky,
@@ -554,7 +533,6 @@ export const featInfo = {
     group: "aboveQueueButtons",
     supportedSites: ["ytm"],
     advanced: true,
-    adornments: [adornments.ytmOnly, adornments.advanced, adornments.reload],
   },
   aboveQueueHeaderStyle: {
     ...featDefaults.aboveQueueHeaderStyle,
@@ -562,14 +540,12 @@ export const featInfo = {
     category: "songLists",
     group: "aboveQueueButtons",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   songListTrackNumbersEnabled: {
     ...featDefaults.songListTrackNumbersEnabled,
     category: "songLists",
     group: "songListTrackNumbers",
     supportedSites: ["ytm", "yt"],
-    adornments: [adornments.reload],
   },
   songListTrackNumbers: {
     ...featDefaults.songListTrackNumbers,
@@ -577,7 +553,6 @@ export const featInfo = {
     group: "songListTrackNumbers",
     supportedSites: ["ytm", "yt"],
     options: options.songListType,
-    adornments: [adornments.reload],
   },
   songListTrackNumbersDomains: {
     ...featDefaults.songListTrackNumbersDomains,
@@ -585,7 +560,6 @@ export const featInfo = {
     group: "songListTrackNumbers",
     supportedSites: ["ytm", "yt"],
     options: options.siteSelection,
-    adornments: [adornments.reload],
   },
 
   //#region cat:lyrics
@@ -594,7 +568,7 @@ export const featInfo = {
     category: "lyrics",
     group: "geniusLyrics",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload, adornments.privacy],
+    adornments: [adornments.privacy],
   },
   errorOnLyricsNotFound: {
     ...featDefaults.errorOnLyricsNotFound,
@@ -602,7 +576,6 @@ export const featInfo = {
     group: "geniusLyrics",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   geniUrlBase: {
     ...featDefaults.geniUrlBase,
@@ -612,7 +585,6 @@ export const featInfo = {
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly, adornments.advanced],
   },
   geniUrlToken: {
     ...featDefaults.geniUrlToken,
@@ -622,7 +594,6 @@ export const featInfo = {
     normalize: (val: string) => val.trim(),
     advanced: true,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly, adornments.advanced],
   },
   lyricsCacheMaxSize: {
     ...featDefaults.lyricsCacheMaxSize,
@@ -634,7 +605,6 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     advanced: true,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly, adornments.advanced],
   },
   lyricsCacheTTL: {
     ...featDefaults.lyricsCacheTTL,
@@ -646,7 +616,6 @@ export const featInfo = {
     renderValue: (val: string) => formatNumber(Number(val), "long"),
     advanced: true,
     reloadRequired: false,
-    adornments: [adornments.ytmOnly, adornments.advanced],
   },
   clearLyricsCache: {
     ...featDefaults.clearLyricsCache,
@@ -662,7 +631,6 @@ export const featInfo = {
       }
     },
     advanced: true,
-    adornments: [adornments.ytmOnly, adornments.advanced],
   },
 
   //#region cat:volume
@@ -678,7 +646,6 @@ export const featInfo = {
       { value: "x^4", label: t("volume_mapping.x4") },
       { value: "x^5", label: t("volume_mapping.x5") }
     ],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   volumeSliderExponentialLabelType: {
     ...featDefaults.volumeSliderExponentialLabelType,
@@ -691,14 +658,12 @@ export const featInfo = {
       { value: "both", label: t("volume_label_mapped_type.both") },
     ],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   volumeSliderLabel: {
     ...featDefaults.volumeSliderLabel,
     category: "volume",
     group: "volumeSlider",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   volumeSliderLabelStyle: {
     ...featDefaults.volumeSliderLabelStyle,
@@ -706,7 +671,6 @@ export const featInfo = {
     category: "volume",
     group: "volumeSlider",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   volumeSliderSize: {
     ...featDefaults.volumeSliderSize,
@@ -715,7 +679,6 @@ export const featInfo = {
     supportedSites: ["ytm"],
     step: 1,
     unit: "px",
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   volumeSliderStep: {
     ...featDefaults.volumeSliderStep,
@@ -723,7 +686,6 @@ export const featInfo = {
     group: "volumeSlider",
     supportedSites: ["ytm"],
     unit: "%",
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   volumeSliderScrollStep: {
     ...featDefaults.volumeSliderScrollStep,
@@ -731,14 +693,12 @@ export const featInfo = {
     group: "volumeSlider",
     supportedSites: ["ytm"],
     unit: "%",
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   volumeSharedBetweenTabs: {
     ...featDefaults.volumeSharedBetweenTabs,
     category: "volume",
     group: "volumeSharedBetweenTabs",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   setInitialTabVolume: {
     ...featDefaults.setInitialTabVolume,
@@ -746,8 +706,8 @@ export const featInfo = {
     group: "initialTabVolume",
     supportedSites: ["ytm"],
     adornments: () => getFeature("volumeSharedBetweenTabs")
-      ? [adornments.ytmOnly, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reload]
-      : [adornments.ytmOnly, adornments.reload],
+      ? [adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))]
+      : [],
   },
   initialTabVolumeLevel: {
     ...featDefaults.initialTabVolumeLevel,
@@ -768,8 +728,8 @@ export const featInfo = {
       return `${value}%`;
     },
     adornments: () => getFeature("volumeSharedBetweenTabs")
-      ? [adornments.ytmOnly, adornments.reload, adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))]
-      : [adornments.ytmOnly, adornments.reload],
+      ? [adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))]
+      : [],
   },
 
   //#region cat:behavior
@@ -802,7 +762,6 @@ export const featInfo = {
     group: "rememberSongTime",
     supportedSites: ["ytm", "yt"],
     helpText: () => tp("feature_helptext.rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
-    adornments: [adornments.reload],
   },
   rememberSongTimeSites: {
     ...featDefaults.rememberSongTimeSites,
@@ -810,7 +769,6 @@ export const featInfo = {
     group: "rememberSongTime",
     supportedSites: ["ytm", "yt"],
     options: options.siteSelection,
-    adornments: [adornments.reload],
   },
   rememberSongTimeDuration: {
     ...featDefaults.rememberSongTimeDuration,
@@ -845,7 +803,6 @@ export const featInfo = {
     group: "hideCursorOnIdle",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   hideCursorOnIdleDelay: {
     ...featDefaults.hideCursorOnIdleDelay,
@@ -855,7 +812,6 @@ export const featInfo = {
     step: 0.25,
     unit: "s",
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   hidePlayerBarOnIdleInFullscreen: {
     ...featDefaults.hidePlayerBarOnIdleInFullscreen,
@@ -863,21 +819,18 @@ export const featInfo = {
     group: "hideCursorOnIdle",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   yesImStillThere: {
     ...featDefaults.yesImStillThere,
     category: "behavior",
     group: "yesImStillThere",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   autoScrollToActiveSongEnabled: {
     ...featDefaults.autoScrollToActiveSongEnabled,
     category: "behavior",
     group: "autoScrollToActiveSong",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly],
   },
   autoScrollToActiveSongMode: {
     ...featDefaults.autoScrollToActiveSongMode,
@@ -891,7 +844,6 @@ export const featInfo = {
       { value: "videoChangeAuto", label: t("auto_scroll_to_active_song_mode.video_change_auto") },
     ],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
 
   //#region cat:autoLike
@@ -900,7 +852,6 @@ export const featInfo = {
     category: "autoLike",
     group: "autoLikeChannels",
     supportedSites: ["ytm", "yt"],
-    adornments: [adornments.reload],
   },
   autoLikeOpenMgmtDialog: {
     ...featDefaults.autoLikeOpenMgmtDialog,
@@ -916,7 +867,6 @@ export const featInfo = {
     supportedSites: ["ytm", "yt"],
     reloadRequired: false,
     advanced: true,
-    adornments: [adornments.advanced],
   },
   // TODO:
   // autoLikePlayerBarToggleBtn: {
@@ -926,7 +876,6 @@ export const featInfo = {
   //   supportedSites: ["ytm", "yt"],
   //   since: "x.x.x",
   //   default: false,
-  //   adornments: [adornments.reload],
   // },
   autoLikeTimeout: {
     ...featDefaults.autoLikeTimeout,
@@ -952,7 +901,6 @@ export const featInfo = {
     group: "arrowKeySupport",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   arrowKeySkipBy: {
     ...featDefaults.arrowKeySkipBy,
@@ -962,7 +910,6 @@ export const featInfo = {
     step: 0.1,
     unit: "s",
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   arrowKeyVolumeStep: {
     ...featDefaults.arrowKeyVolumeStep,
@@ -972,7 +919,6 @@ export const featInfo = {
     step: 1,
     unit: "%",
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   frameSkip: {
     ...featDefaults.frameSkip,
@@ -980,7 +926,6 @@ export const featInfo = {
     group: "frameSkip",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   frameSkipWhilePlaying: {
     ...featDefaults.frameSkipWhilePlaying,
@@ -988,7 +933,6 @@ export const featInfo = {
     group: "frameSkip",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   frameSkipAmount: {
     ...featDefaults.frameSkipAmount,
@@ -999,14 +943,12 @@ export const featInfo = {
     unit: "s",
     reloadRequired: false,
     advanced: true,
-    adornments: [adornments.ytmOnly, adornments.advanced],
   },
   anchorImprovements: {
     ...featDefaults.anchorImprovements,
     category: "input",
     group: "anchorImprovements",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   numKeysSkipToTime: {
     ...featDefaults.numKeysSkipToTime,
@@ -1014,7 +956,6 @@ export const featInfo = {
     group: "numKeysSkipToTime",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   numKeysSkipToTimeDoublePress: {
     ...featDefaults.numKeysSkipToTimeDoublePress,
@@ -1042,7 +983,6 @@ export const featInfo = {
     ),
     reloadRequired: false,
     advanced: true,
-    adornments: [adornments.advanced],
   },
 
   //#region cat:hotkeys
@@ -1102,7 +1042,6 @@ export const featInfo = {
     group: "currentLyricsHotkeyEnabled",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   currentLyricsHotkey: {
     ...featDefaults.currentLyricsHotkey,
@@ -1110,7 +1049,6 @@ export const featInfo = {
     group: "currentLyricsHotkeyEnabled",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   lyricsSearchPromptHotkeyEnabled: {
     ...featDefaults.lyricsSearchPromptHotkeyEnabled,
@@ -1210,7 +1148,6 @@ export const featInfo = {
     group: "rebindNextAndPrevious",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   nextHotkey: {
     ...featDefaults.nextHotkey,
@@ -1218,7 +1155,6 @@ export const featInfo = {
     group: "rebindNextAndPrevious",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   previousHotkey: {
     ...featDefaults.previousHotkey,
@@ -1226,7 +1162,6 @@ export const featInfo = {
     group: "rebindNextAndPrevious",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   rebindPlayPause: {
     ...featDefaults.rebindPlayPause,
@@ -1234,7 +1169,6 @@ export const featInfo = {
     group: "rebindPlayPause",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   playPauseHotkey: {
     ...featDefaults.playPauseHotkey,
@@ -1242,7 +1176,6 @@ export const featInfo = {
     group: "rebindPlayPause",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
 
   //#region cat:integrations
@@ -1252,21 +1185,18 @@ export const featInfo = {
     group: "darkReader",
     supportedSites: ["ytm", "yt"],
     options: options.siteSelectionOrNone,
-    adornments: [adornments.reload],
   },
   sponsorBlockIntegration: {
     ...featDefaults.sponsorBlockIntegration,
     category: "integrations",
     group: "sponsorBlock",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   themeSongIntegration: {
     ...featDefaults.themeSongIntegration,
     category: "integrations",
     group: "themeSong",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   themeSongLightness: {
     ...featDefaults.themeSongLightness,
@@ -1274,7 +1204,6 @@ export const featInfo = {
     group: "themeSong",
     supportedSites: ["ytm"],
     options: options.colorLightness,
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   themeSongVisualizerOpacity: {
     ...featDefaults.themeSongVisualizerOpacity,
@@ -1283,14 +1212,12 @@ export const featInfo = {
     supportedSites: ["ytm"],
     step: 1,
     unit: "%",
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   themeSongVisualizerHotkeyEnabled: {
     ...featDefaults.themeSongVisualizerHotkeyEnabled,
     category: "integrations",
     group: "themeSongVisualizer",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
   themeSongVisualizerHotkey: {
     ...featDefaults.themeSongVisualizerHotkey,
@@ -1298,14 +1225,12 @@ export const featInfo = {
     group: "themeSongVisualizer",
     supportedSites: ["ytm"],
     reloadRequired: false,
-    adornments: [adornments.ytmOnly],
   },
   removeThumbnailRatingBar: {
     ...featDefaults.removeThumbnailRatingBar,
     category: "integrations",
     group: "thumbnailRatingBar",
     supportedSites: ["ytm"],
-    adornments: [adornments.ytmOnly, adornments.reload],
   },
 
   //#region cat:plugins

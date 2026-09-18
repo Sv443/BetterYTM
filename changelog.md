@@ -63,6 +63,7 @@
   - Added "privacy-sensitive" feature adornment icon (`icon-shield_info` resource) to mark features that are tagged with the `privacy` tag.
   - Made the "reload tab" feature adornment icon also show up when advanced mode is turned off.
   - Added feature info flag `reloadMenuPrompt` as a standardized way of prompting for a config menu re-render as a reaction to feature value changes.
+  - More feature adornment icons are now data-generated (all `reload`, `ytmOnly`, `advanced` and `newFeature` icons).
   - All DataStore instances that have in-memory cached data will now be lazy-loaded after feature initialization is done. Note: lazy-loading starts after `bytm:allReady`, so it's more aimed at lowering initial data access times.
   - Features can now have tags associated with them, which is another way of filtering them, like when using the new internal functions `configSetFeatsWithTags()` and `getFeaturesWithTags()`.
   - Added an advanced-mode feature that allows SelectorObserver checks and found elements to be logged to the console for performance debugging.

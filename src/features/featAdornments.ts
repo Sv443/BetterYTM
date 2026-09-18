@@ -83,8 +83,28 @@ export async function resolveAdornments(ftInfo: FeatureInfo, featKey: FeatureKey
   const isDev = mode === "development";
   const resolvedAdorns = adorns ? [...adorns] : [];
 
+  const addAdorn = (adornFn: AdornFunc) => {
+    if(!resolvedAdorns.find(a => a === adornFn))
+      resolvedAdorns.push(adornFn);
+  };
+
+  // >> data-generated adornments:
+
+  // reload required:
+  if(!("reloadRequired" in feat) || feat.reloadRequired === true)
+    addAdorn(adornments.reload);
+
+  // YTM only:
+  if(feat.supportedSites.length === 1 && feat.supportedSites[0] === "ytm")
+    addAdorn(adornments.ytmOnly);
+
+  // advanced mode:
+  if(feat.advanced === true)
+    addAdorn(adornments.advanced);
+
+  // new feature:
   if(feat.since && compareVer(feat.since, scriptInfo.version, isDev ? ">" : ">=") && (getVersionSessionCount() < newFeatureAdornmentMaxSessionCount || isDev))
-    resolvedAdorns.push(adornments.newFeature);
+    addAdorn(adornments.newFeature);
 
   const sortedAdorns = resolvedAdorns.sort((a, b) => {
     const aIdx = adornOrder.has(a) ? adornOrder.get(a)! : 0;
