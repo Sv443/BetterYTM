@@ -7,7 +7,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@9b1cbd6e/assets/images/logo/logo_dev_48.png
+// @icon              https://cdn.jsdelivr.net/gh/Sv443/BetterYTM@d2962bde/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @match             https://m.youtube.com/*
@@ -129,11 +129,11 @@
   ┌────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
   │ Build Mode:    │ development                   │ (Affects default config values, GM menu commands, and dev tooltips)        │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Time:    │ Wed, 16 Sep 2026 19:34:50 GMT │ (UTC timestamp of when the script was built)                               │
+  │ Build Time:    │ Fri, 18 Sep 2026 20:46:18 GMT │ (UTC timestamp of when the script was built)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build Number:  │ 9b1cbd6e                      │ (8-character SHA of the previous Git commit)                               │
+  │ Build Number:  │ d2962bde                      │ (8-character SHA of the previous Git commit)                               │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-  │ Build UID:     │ samQGKiUAnZK                  │ (Random string appended to URLs to force-refresh cached assets)            │
+  │ Build UID:     │ E7rM3tHS5Dwn                  │ (Random string appended to URLs to force-refresh cached assets)            │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
   │ Asset Source:  │ jsdelivr                      │ (Where all assets like image files, styles, JSONs, etc. are loaded from)   │
   ├────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
@@ -3447,9 +3447,9 @@ Has: ${checksum}`);
 	/** Which host the userscript was installed from. */
 	var host$1 = "github";
 	/** The build number of the userscript. */
-	var buildNumber$1 = "9b1cbd6e";
+	var buildNumber$1 = "d2962bde";
 	/** When the script was built, as a UNIX timestamp. */
-	var buildTimestamp = 1789587290083;
+	var buildTimestamp = 1789764378726;
 	/** The source of the assets - github, jsdelivr or local. */
 	var assetSource = "jsdelivr";
 	/** The port of the dev server. */
@@ -4138,6 +4138,16 @@ Has: ${checksum}`);
 			type: "toggle",
 			default: true,
 			since: "3.0.0"
+		},
+		searchablePlaylistPopupsEnabled: {
+			type: "toggle",
+			default: true,
+			since: "4.0.0"
+		},
+		searchableSongListsEnabled: {
+			type: "toggle",
+			default: true,
+			since: "4.0.0"
 		},
 		lyricsQueueButton: {
 			type: "toggle",
@@ -4958,7 +4968,9 @@ Has: ${checksum}`);
 				"songListTrackNumbersDomains",
 				"listButtonsStyle",
 				"aboveQueueHeaderStyle",
-				"volumeSliderLabelStyle"
+				"volumeSliderLabelStyle",
+				"searchablePlaylistPopupsEnabled",
+				"searchableSongListsEnabled"
 			]);
 		}
 	};
@@ -6868,12 +6880,51 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					"yt": "ytd-app",
 					"ytm": "ytmusic-app"
 				},
+				"appHeader": { "ytm": "ytmusic-header-renderer" },
+				"navBar": {
+					"yt": "#masthead-container",
+					"ytm": "ytmusic-nav-bar"
+				},
+				"player": { "ytm": "ytmusic-player#player" },
+				"playerMedia": { "ytm": "ytmusic-player #song-media-window" },
 				"video": {
 					"yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
 					"ytm": "ytmusic-player video"
 				},
 				"pageHeaderContainer_sub_ytAppHeader": { "yt": "#channel-header-container, #page-header, #page-header-container" },
-				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" }
+				"browseResponseHeader_sub_browseResponse": { "ytm": "ytmusic-browse-response #header.ytmusic-browse-response" },
+				"playlistPopup_sub_popupContainer": { "yt": "tp-yt-iron-dropdown[prevent-autonav=true]" },
+				"playlistPopupMainContainer_sub_popupContainer": { "yt": "yt-contextual-sheet-layout > .ytContextualSheetLayoutContentContainer" }
+			},
+			"layout": {
+				"navBarLogoContent": { "ytm": "ytmusic-logo a" },
+				"navBarLogoPath": { "ytm": "svg > g > path" },
+				"navbarSettingsButton": { "ytm": "ytmusic-nav-bar ytmusic-settings-button button" },
+				"sidebarItems_sub_sidebar": { "ytm": "ytmusic-guide-entry-renderer tp-yt-paper-item" },
+				"sidebarItemRenderers_sub_sidebar": { "ytm": "#contentContainer #guide-content #items ytmusic-guide-entry-renderer" },
+				"miniSidebarContainer": { "ytm": "#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer" },
+				"listItemLeftItems_sub_listItem": { "ytm": ".left-items" },
+				"listItemTitle_sub_listItem": { "ytm": ".title-column .title a" },
+				"listItem_homePage": { "ytm": "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer" },
+				"listItem_watchPageRelated": { "ytm": "ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer" },
+				"listItem_playlists": { "ytm": "#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer" },
+				"listItem_genericShelves": { "ytm": "#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer" },
+				"genericSongListItems": { "ytm": "ytmusic-responsive-list-item-renderer, .card-content-container" },
+				"genericSongListItemPlayButton_sub_listItem": { "ytm": "ytmusic-play-button-renderer" },
+				"sharePanel": {
+					"yt": "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer",
+					"ytm": "yt-unified-share-panel-renderer"
+				},
+				"sharePanelInput_sub_sharePanel": {
+					"yt": "input#share-url",
+					"ytm": "input#share-url"
+				},
+				"popupListItemContainer_sub_popupContainer": { "yt": "yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model" },
+				"popupListItemsAll_sub_popupContainer": { "ytm": "yt-list-view-model > toggleable-list-item-view-model" },
+				"queueHeaderButtons_sub_sidePanel": { "ytm": "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons" },
+				"queueHeaderRenderer_sub_sidePanel": { "ytm": "ytmusic-queue-header-renderer" },
+				"playerBarSubtitleContainer": { "ytm": ".content-info-wrapper .subtitle yt-formatted-string" },
+				"playerBarSubtitleAnchors_sub_playerBarInfo": { "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span" }
 			},
 			"watchPage": {
 				"channelName": {
@@ -6890,7 +6941,10 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 					"ytm": "ytmusic-like-button-renderer #button-shape-like"
 				},
 				"likeBtnShorts": { "yt": "like-button-view-model button" },
+				"likeBtnRenderer": { "ytm": "ytmusic-like-button-renderer#like-button-renderer" },
+				"likeBtnShape_sub_votesRenderer": { "ytm": "#button-shape-like" },
 				"dislikeBtn": { "ytm": "ytmusic-like-button-renderer #button-shape-dislike" },
+				"dislikeBtnShape_sub_votesRenderer": { "ytm": "#button-shape-dislike" },
 				"dislikeBtnShorts": { "yt": "dislike-button-view-model" },
 				"likeBtnAlternate": {
 					"yt": "like-button-view-model button",
@@ -6909,6 +6963,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 			},
 			"songLists": {
 				"all": { "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents" },
+				"searchPage": { "ytm": "ytmusic-shelf-renderer #contents, ytmusic-card-shelf-renderer .card-container" },
 				"currentQueueContainer": { "ytm": "ytmusic-player-queue #contents" },
 				"currentQueueSongAndArtistNames": { "ytm": "yt-formatted-string" },
 				"autoplayQueueContainer": { "ytm": "ytmusic-player-queue #automix-contents" },
@@ -6969,7 +7024,8 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 				"ytAppHeader": { "yt": "#header ytd-app-header, #header ytd-tabbed-page-header" },
 				"ytWatchFlexy": { "yt": "ytd-app ytd-watch-flexy" },
 				"ytWatchMetadata": { "yt": "#columns #primary-inner ytd-watch-metadata" },
-				"ytMasthead": { "yt": "#content ytd-masthead#masthead" }
+				"ytMasthead": { "yt": "#content ytd-masthead#masthead" },
+				"ytPopupContainer": { "yt": "ytd-app > ytd-popup-container" }
 			}
 		}
 	};
@@ -7034,7 +7090,7 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 	/** Returns the currently stored static data, or undefined if it hasn't been fetched yet */
 	var getStaticDataRef = () => staticData;
 	/**
-	* Returns the selector with the given ID.  
+	* Returns the selector with the given ID, resolved from the file at `assets/data.json` - see also {@linkcode StaticData}.  
 	* @throws By default, the function `throws` an error if the given selector doesn't exist, is invalid, or doesn't have a value for the current domain.
 	*/
 	function getSelector(group, id, throws) {
@@ -7448,6 +7504,12 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 						subtree: true
 					});
 					globservers.body.addListener(mastheadSelector, { listener: getEnableObsFn("ytMasthead") });
+					const popupContainerSelector = getSelector("observer", "ytPopupContainer");
+					globservers.ytPopupContainer = new SelectorObserver(popupContainerSelector, {
+						...defaultObserverOptions,
+						subtree: true
+					});
+					globservers.body.addListener(popupContainerSelector, { listener: getEnableObsFn("ytPopupContainer") });
 				}
 			}
 			for (const [name, obs] of Object.entries(globservers)) {
@@ -9627,6 +9689,18 @@ Please report this to https://github.com/markedjs/marked.`, e) {
 		if (!target.insertAdjacentElement(position, element)) throw new Error(`Failed to transplant element at position "${position}"`);
 		return element;
 	}
+	/**
+	* Prevents the given events' listeners from being called and bubbling, for the given container element.  
+	* Use the optional predicate function to control whenever this happens.
+	*/
+	function preventEvents(events, container, predicate) {
+		for (const evt of Array.isArray(events) ? events : [events]) container.addEventListener(evt, (e) => {
+			if (!predicate || predicate(e)) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+			}
+		}, { capture: true });
+	}
 	//#endregion
 	//#region src/utils/misc.ts
 	/**
@@ -11446,7 +11520,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		if (typeof adorns === "function") adorns = adorns();
 		const isDev = mode$1 === "development";
 		const resolvedAdorns = adorns ? [...adorns] : [];
-		if (feat.since && compare(feat.since, scriptInfo$1.version, isDev ? ">" : ">=") && (getVersionSessionCount() < 20 || isDev)) resolvedAdorns.push(adornments.newFeature);
+		const addAdorn = (adornFn) => {
+			if (!resolvedAdorns.find((a) => a === adornFn)) resolvedAdorns.push(adornFn);
+		};
+		if (!("reloadRequired" in feat) || feat.reloadRequired === true) addAdorn(adornments.reload);
+		if (feat.supportedSites.length === 1 && feat.supportedSites[0] === "ytm") addAdorn(adornments.ytmOnly);
+		if (feat.advanced === true) addAdorn(adornments.advanced);
+		if (feat.since && compare(feat.since, scriptInfo$1.version, isDev ? ">" : ">=") && (getVersionSessionCount() < 20 || isDev)) addAdorn(adornments.newFeature);
 		const sortedAdorns = resolvedAdorns.sort((a, b) => {
 			return (adornOrder.has(a) ? adornOrder.get(a) : 0) - (adornOrder.has(b) ? adornOrder.get(b) : 0);
 		});
@@ -13038,6 +13118,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		getLikeDislikeBtns,
 		isIgnoredInputElement,
 		parseMarkdown,
+		preventEvents,
 		onSiteEvent: siteEvents.on.bind(siteEvents),
 		onceSiteEvent: siteEvents.once.bind(siteEvents),
 		onMultiSiteEvents: siteEvents.onMulti.bind(siteEvents),
@@ -14033,15 +14114,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "locale",
 			supportedSites: ["ytm", "yt"],
 			options: options.locale,
-			adornments: [adornments.globe, adornments.reload]
+			adornments: [adornments.globe]
 		},
 		localeFallback: {
 			...featDefaults.localeFallback,
 			category: "general",
 			group: "locale",
 			supportedSites: ["ytm", "yt"],
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		configMenuFocusContentButtonEnabled: {
 			...featDefaults.configMenuFocusContentButtonEnabled,
@@ -14058,8 +14138,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm", "yt"],
 			step: 100,
 			unit: "ms",
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		defaultObserverDebounce: {
 			...featDefaults.defaultObserverDebounce,
@@ -14068,8 +14147,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm", "yt"],
 			step: 5,
 			unit: "ms",
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		verboseObservers: {
 			...featDefaults.verboseObservers,
@@ -14077,8 +14155,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "bytmInternal",
 			supportedSites: ["ytm", "yt"],
 			advanced: true,
-			reloadRequired: true,
-			adornments: [adornments.advanced, adornments.reload]
+			reloadRequired: true
 		},
 		globalAlertMode: {
 			...featDefaults.globalAlertMode,
@@ -14086,8 +14163,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "bytmInternal",
 			supportedSites: ["ytm", "yt"],
 			options: options.alertMode,
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		openWelcomeMenu: {
 			...featDefaults.openWelcomeMenu,
@@ -14103,8 +14179,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			...featDefaults.versionCheck,
 			category: "general",
 			group: "versionCheck",
-			supportedSites: ["ytm", "yt"],
-			adornments: [adornments.reload]
+			supportedSites: ["ytm", "yt"]
 		},
 		checkVersionNow: {
 			...featDefaults.checkVersionNow,
@@ -14153,8 +14228,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "general",
 			group: "resetData",
 			supportedSites: ["ytm", "yt"],
-			click: () => tryUse("promptResetConfig")?.(),
-			adornments: [adornments.reload]
+			click: () => tryUse("promptResetConfig")?.()
 		},
 		resetEverything: {
 			...featDefaults.resetEverything,
@@ -14172,8 +14246,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					await reloadTab();
 				}
 			},
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		logLevel: {
 			...featDefaults.logLevel,
@@ -14187,24 +14260,21 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				value: LogLevel.Info,
 				label: t("log_level_info")
 			}],
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		logEvents: {
 			...featDefaults.logEvents,
 			category: "general",
 			group: "logging",
 			supportedSites: ["ytm", "yt"],
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		logHttp: {
 			...featDefaults.logHttp,
 			category: "general",
 			group: "logging",
 			supportedSites: ["ytm", "yt"],
-			advanced: true,
-			adornments: [adornments.advanced, adornments.reload]
+			advanced: true
 		},
 		advancedMode: {
 			...featDefaults.advancedMode,
@@ -14218,15 +14288,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			...featDefaults.watermarkEnabled,
 			category: "layout",
 			group: "watermarkEnabled",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		removeShareTrackingParam: {
 			...featDefaults.removeShareTrackingParam,
 			category: "layout",
 			group: "removeShareTrackingParam",
-			supportedSites: ["ytm", "yt"],
-			adornments: [adornments.reload]
+			supportedSites: ["ytm", "yt"]
 		},
 		removeShareTrackingParamSites: {
 			...featDefaults.removeShareTrackingParamSites,
@@ -14235,38 +14303,27 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm", "yt"],
 			options: options.siteSelection,
 			advanced: true,
-			reloadRequired: false,
-			adornments: [adornments.advanced]
+			reloadRequired: false
 		},
 		fixSpacing: {
 			...featDefaults.fixSpacing,
 			category: "layout",
 			group: "fixLayout",
 			supportedSites: ["ytm"],
-			advanced: true,
-			adornments: [
-				adornments.ytmOnly,
-				adornments.advanced,
-				adornments.reload
-			]
+			advanced: true
 		},
 		truncatePlayerBarSubtitles: {
 			...featDefaults.truncatePlayerBarSubtitles,
 			category: "layout",
 			group: "fixLayout",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		thumbnailOverlayEnabled: {
 			...featDefaults.thumbnailOverlayEnabled,
 			category: "layout",
 			group: "thumbnailOverlay",
 			supportedSites: ["ytm"],
-			adornments: [
-				adornments.ytmOnly,
-				adornments.reload,
-				adornments.privacy
-			]
+			adornments: [adornments.privacy]
 		},
 		thumbnailOverlayBehavior: {
 			...featDefaults.thumbnailOverlayBehavior,
@@ -14291,15 +14348,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					label: t("thumbnail_overlay.behavior_videos_only")
 				}
 			],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		thumbnailOverlayToggleBtnShown: {
 			...featDefaults.thumbnailOverlayToggleBtnShown,
 			category: "layout",
 			group: "thumbnailOverlay",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		thumbnailOverlayITunesImgRes: {
 			...featDefaults.thumbnailOverlayITunesImgRes,
@@ -14308,8 +14363,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm"],
 			step: 100,
 			renderValue: (n) => `${n}x${n}`,
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		thumbnailOverlayAlbumArtCacheMaxSize: {
 			...featDefaults.thumbnailOverlayAlbumArtCacheMaxSize,
@@ -14320,8 +14374,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			unit: (val) => ` ${tp("unit_entries", val)}`,
 			renderValue: (val) => formatNumber(Number(val), "long"),
 			reloadRequired: false,
-			advanced: true,
-			adornments: [adornments.advanced, adornments.ytmOnly]
+			advanced: true
 		},
 		thumbnailOverlayAlbumArtCacheTTL: {
 			...featDefaults.thumbnailOverlayAlbumArtCacheTTL,
@@ -14332,15 +14385,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			unit: (val) => ` ${tp("unit_days", val)}`,
 			renderValue: (val) => formatNumber(Number(val), "long"),
 			reloadRequired: false,
-			advanced: true,
-			adornments: [adornments.advanced, adornments.ytmOnly]
+			advanced: true
 		},
 		thumbnailOverlayShowIndicator: {
 			...featDefaults.thumbnailOverlayShowIndicator,
 			category: "layout",
 			group: "thumbnailOverlay",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		thumbnailOverlayIndicatorOpacity: {
 			...featDefaults.thumbnailOverlayIndicatorOpacity,
@@ -14349,12 +14400,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm"],
 			step: 5,
 			unit: "%",
-			advanced: true,
-			adornments: [
-				adornments.ytmOnly,
-				adornments.advanced,
-				adornments.reload
-			]
+			advanced: true
 		},
 		thumbnailOverlayPreferredSource: {
 			...featDefaults.thumbnailOverlayPreferredSource,
@@ -14362,59 +14408,57 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "thumbnailOverlay",
 			supportedSites: ["ytm"],
 			options: options.thumbOverlaySources,
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		fixHdrIssues: {
 			...featDefaults.fixHdrIssues,
 			category: "layout",
 			group: "fixHdrIssues",
 			supportedSites: ["ytm"],
-			advanced: true,
-			adornments: [
-				adornments.ytmOnly,
-				adornments.advanced,
-				adornments.reload
-			]
+			advanced: true
 		},
 		showVotes: {
 			...featDefaults.showVotes,
 			category: "layout",
 			group: "votes",
 			supportedSites: ["ytm"],
-			adornments: [
-				adornments.ytmOnly,
-				adornments.reload,
-				adornments.privacy
-			]
+			adornments: [adornments.privacy]
 		},
 		swapLikeDislikeButtons: {
 			...featDefaults.swapLikeDislikeButtons,
 			category: "layout",
 			group: "votes",
-			supportedSites: ["ytm", "yt"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm", "yt"]
 		},
 		watchPageFullSize: {
 			...featDefaults.watchPageFullSize,
 			category: "layout",
 			group: "watchPageFullSize",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
+		},
+		searchablePlaylistPopupsEnabled: {
+			...featDefaults.searchablePlaylistPopupsEnabled,
+			category: "layout",
+			group: "searchableLists",
+			supportedSites: ["ytm", "yt"]
+		},
+		searchableSongListsEnabled: {
+			...featDefaults.searchableSongListsEnabled,
+			category: "layout",
+			group: "searchableLists",
+			supportedSites: ["ytm", "yt"]
 		},
 		lyricsQueueButton: {
 			...featDefaults.lyricsQueueButton,
 			category: "songLists",
 			group: "queueButtons",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		deleteFromQueueButton: {
 			...featDefaults.deleteFromQueueButton,
 			category: "songLists",
 			group: "queueButtons",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		listButtonsPlacement: {
 			...featDefaults.listButtonsPlacement,
@@ -14422,92 +14466,74 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "queueButtons",
 			supportedSites: ["ytm"],
 			options: options.songListType,
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		listButtonsStyle: {
 			...featDefaults.listButtonsStyle,
 			options: options.gradientOpacity,
 			category: "songLists",
 			group: "queueButtons",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		scrollToActiveSongBtn: {
 			...featDefaults.scrollToActiveSongBtn,
 			category: "songLists",
 			group: "aboveQueueButtons",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		clearQueueBtn: {
 			...featDefaults.clearQueueBtn,
 			category: "songLists",
 			group: "aboveQueueButtons",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		aboveQueueBtnsSticky: {
 			...featDefaults.aboveQueueBtnsSticky,
 			category: "songLists",
 			group: "aboveQueueButtons",
 			supportedSites: ["ytm"],
-			advanced: true,
-			adornments: [
-				adornments.ytmOnly,
-				adornments.advanced,
-				adornments.reload
-			]
+			advanced: true
 		},
 		aboveQueueHeaderStyle: {
 			...featDefaults.aboveQueueHeaderStyle,
 			options: options.binaryOpacity,
 			category: "songLists",
 			group: "aboveQueueButtons",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		songListTrackNumbersEnabled: {
 			...featDefaults.songListTrackNumbersEnabled,
 			category: "songLists",
 			group: "songListTrackNumbers",
-			supportedSites: ["ytm", "yt"],
-			adornments: [adornments.reload]
+			supportedSites: ["ytm", "yt"]
 		},
 		songListTrackNumbers: {
 			...featDefaults.songListTrackNumbers,
 			category: "songLists",
 			group: "songListTrackNumbers",
 			supportedSites: ["ytm", "yt"],
-			options: options.songListType,
-			adornments: [adornments.reload]
+			options: options.songListType
 		},
 		songListTrackNumbersDomains: {
 			...featDefaults.songListTrackNumbersDomains,
 			category: "songLists",
 			group: "songListTrackNumbers",
 			supportedSites: ["ytm", "yt"],
-			options: options.siteSelection,
-			adornments: [adornments.reload]
+			options: options.siteSelection
 		},
 		geniusLyrics: {
 			...featDefaults.geniusLyrics,
 			category: "lyrics",
 			group: "geniusLyrics",
 			supportedSites: ["ytm"],
-			adornments: [
-				adornments.ytmOnly,
-				adornments.reload,
-				adornments.privacy
-			]
+			adornments: [adornments.privacy]
 		},
 		errorOnLyricsNotFound: {
 			...featDefaults.errorOnLyricsNotFound,
 			category: "lyrics",
 			group: "geniusLyrics",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		geniUrlBase: {
 			...featDefaults.geniUrlBase,
@@ -14516,8 +14542,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm"],
 			normalize: (val) => val.trim().replace(/\/+$/, ""),
 			advanced: true,
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly, adornments.advanced]
+			reloadRequired: false
 		},
 		geniUrlToken: {
 			...featDefaults.geniUrlToken,
@@ -14526,8 +14551,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm"],
 			normalize: (val) => val.trim(),
 			advanced: true,
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly, adornments.advanced]
+			reloadRequired: false
 		},
 		lyricsCacheMaxSize: {
 			...featDefaults.lyricsCacheMaxSize,
@@ -14538,8 +14562,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			unit: (val) => ` ${tp("unit_entries", val)}`,
 			renderValue: (val) => formatNumber(Number(val), "long"),
 			advanced: true,
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly, adornments.advanced]
+			reloadRequired: false
 		},
 		lyricsCacheTTL: {
 			...featDefaults.lyricsCacheTTL,
@@ -14550,8 +14573,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			unit: (val) => ` ${tp("unit_days", val)}`,
 			renderValue: (val) => formatNumber(Number(val), "long"),
 			advanced: true,
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly, adornments.advanced]
+			reloadRequired: false
 		},
 		clearLyricsCache: {
 			...featDefaults.clearLyricsCache,
@@ -14574,8 +14596,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					});
 				}
 			},
-			advanced: true,
-			adornments: [adornments.ytmOnly, adornments.advanced]
+			advanced: true
 		},
 		volumeSliderExponential: {
 			...featDefaults.volumeSliderExponential,
@@ -14603,8 +14624,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					value: "x^5",
 					label: t("volume_mapping.x5")
 				}
-			],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			]
 		},
 		volumeSliderExponentialLabelType: {
 			...featDefaults.volumeSliderExponentialLabelType,
@@ -14625,23 +14645,20 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					label: t("volume_label_mapped_type.both")
 				}
 			],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		volumeSliderLabel: {
 			...featDefaults.volumeSliderLabel,
 			category: "volume",
 			group: "volumeSlider",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		volumeSliderLabelStyle: {
 			...featDefaults.volumeSliderLabelStyle,
 			options: options.gradientOpacity,
 			category: "volume",
 			group: "volumeSlider",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		volumeSliderSize: {
 			...featDefaults.volumeSliderSize,
@@ -14649,42 +14666,34 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "volumeSlider",
 			supportedSites: ["ytm"],
 			step: 1,
-			unit: "px",
-			adornments: [adornments.ytmOnly, adornments.reload]
+			unit: "px"
 		},
 		volumeSliderStep: {
 			...featDefaults.volumeSliderStep,
 			category: "volume",
 			group: "volumeSlider",
 			supportedSites: ["ytm"],
-			unit: "%",
-			adornments: [adornments.ytmOnly, adornments.reload]
+			unit: "%"
 		},
 		volumeSliderScrollStep: {
 			...featDefaults.volumeSliderScrollStep,
 			category: "volume",
 			group: "volumeSlider",
 			supportedSites: ["ytm"],
-			unit: "%",
-			adornments: [adornments.ytmOnly, adornments.reload]
+			unit: "%"
 		},
 		volumeSharedBetweenTabs: {
 			...featDefaults.volumeSharedBetweenTabs,
 			category: "volume",
 			group: "volumeSharedBetweenTabs",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		setInitialTabVolume: {
 			...featDefaults.setInitialTabVolume,
 			category: "volume",
 			group: "initialTabVolume",
 			supportedSites: ["ytm"],
-			adornments: () => getFeature("volumeSharedBetweenTabs") ? [
-				adornments.ytmOnly,
-				adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")),
-				adornments.reload
-			] : [adornments.ytmOnly, adornments.reload]
+			adornments: () => getFeature("volumeSharedBetweenTabs") ? [adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))] : []
 		},
 		initialTabVolumeLevel: {
 			...featDefaults.initialTabVolumeLevel,
@@ -14700,11 +14709,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				}
 				return `${value}%`;
 			},
-			adornments: () => getFeature("volumeSharedBetweenTabs") ? [
-				adornments.ytmOnly,
-				adornments.reload,
-				adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))
-			] : [adornments.ytmOnly, adornments.reload]
+			adornments: () => getFeature("volumeSharedBetweenTabs") ? [adornments.alert(t("feature_warning.setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'"))] : []
 		},
 		disableBeforeUnloadPopup: {
 			...featDefaults.disableBeforeUnloadPopup,
@@ -14734,16 +14739,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "behavior",
 			group: "rememberSongTime",
 			supportedSites: ["ytm", "yt"],
-			helpText: () => tp("feature_helptext.rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
-			adornments: [adornments.reload]
+			helpText: () => tp("feature_helptext.rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime"))
 		},
 		rememberSongTimeSites: {
 			...featDefaults.rememberSongTimeSites,
 			category: "behavior",
 			group: "rememberSongTime",
 			supportedSites: ["ytm", "yt"],
-			options: options.siteSelection,
-			adornments: [adornments.reload]
+			options: options.siteSelection
 		},
 		rememberSongTimeDuration: {
 			...featDefaults.rememberSongTimeDuration,
@@ -14777,8 +14780,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "behavior",
 			group: "hideCursorOnIdle",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		hideCursorOnIdleDelay: {
 			...featDefaults.hideCursorOnIdleDelay,
@@ -14787,30 +14789,26 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm"],
 			step: .25,
 			unit: "s",
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		hidePlayerBarOnIdleInFullscreen: {
 			...featDefaults.hidePlayerBarOnIdleInFullscreen,
 			category: "behavior",
 			group: "hideCursorOnIdle",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		yesImStillThere: {
 			...featDefaults.yesImStillThere,
 			category: "behavior",
 			group: "yesImStillThere",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		autoScrollToActiveSongEnabled: {
 			...featDefaults.autoScrollToActiveSongEnabled,
 			category: "behavior",
 			group: "autoScrollToActiveSong",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly]
+			supportedSites: ["ytm"]
 		},
 		autoScrollToActiveSongMode: {
 			...featDefaults.autoScrollToActiveSongMode,
@@ -14835,15 +14833,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					label: t("auto_scroll_to_active_song_mode.video_change_auto")
 				}
 			],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		autoLikeChannels: {
 			...featDefaults.autoLikeChannels,
 			category: "autoLike",
 			group: "autoLikeChannels",
-			supportedSites: ["ytm", "yt"],
-			adornments: [adornments.reload]
+			supportedSites: ["ytm", "yt"]
 		},
 		autoLikeOpenMgmtDialog: {
 			...featDefaults.autoLikeOpenMgmtDialog,
@@ -14858,8 +14854,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "autoLikeChannels",
 			supportedSites: ["ytm", "yt"],
 			reloadRequired: false,
-			advanced: true,
-			adornments: [adornments.advanced]
+			advanced: true
 		},
 		autoLikeTimeout: {
 			...featDefaults.autoLikeTimeout,
@@ -14882,8 +14877,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "input",
 			group: "arrowKeySupport",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		arrowKeySkipBy: {
 			...featDefaults.arrowKeySkipBy,
@@ -14892,8 +14886,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm"],
 			step: .1,
 			unit: "s",
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		arrowKeyVolumeStep: {
 			...featDefaults.arrowKeyVolumeStep,
@@ -14902,24 +14895,21 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			supportedSites: ["ytm"],
 			step: 1,
 			unit: "%",
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		frameSkip: {
 			...featDefaults.frameSkip,
 			category: "input",
 			group: "frameSkip",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		frameSkipWhilePlaying: {
 			...featDefaults.frameSkipWhilePlaying,
 			category: "input",
 			group: "frameSkip",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		frameSkipAmount: {
 			...featDefaults.frameSkipAmount,
@@ -14929,23 +14919,20 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			step: 1e-4,
 			unit: "s",
 			reloadRequired: false,
-			advanced: true,
-			adornments: [adornments.ytmOnly, adornments.advanced]
+			advanced: true
 		},
 		anchorImprovements: {
 			...featDefaults.anchorImprovements,
 			category: "input",
 			group: "anchorImprovements",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		numKeysSkipToTime: {
 			...featDefaults.numKeysSkipToTime,
 			category: "input",
 			group: "numKeysSkipToTime",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		numKeysSkipToTimeDoublePress: {
 			...featDefaults.numKeysSkipToTimeDoublePress,
@@ -14964,8 +14951,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			step: .5,
 			renderValue: (value) => String(Number(value) === 0 ? t("toggled_off") : `${formatNumber(Number(value), "short")}s`),
 			reloadRequired: false,
-			advanced: true,
-			adornments: [adornments.advanced]
+			advanced: true
 		},
 		switchBetweenSites: {
 			...featDefaults.switchBetweenSites,
@@ -15021,16 +15007,14 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "hotkeys",
 			group: "currentLyricsHotkeyEnabled",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		currentLyricsHotkey: {
 			...featDefaults.currentLyricsHotkey,
 			category: "hotkeys",
 			group: "currentLyricsHotkeyEnabled",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		lyricsSearchPromptHotkeyEnabled: {
 			...featDefaults.lyricsSearchPromptHotkeyEnabled,
@@ -15124,70 +15108,61 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			category: "hotkeys",
 			group: "rebindNextAndPrevious",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		nextHotkey: {
 			...featDefaults.nextHotkey,
 			category: "hotkeys",
 			group: "rebindNextAndPrevious",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		previousHotkey: {
 			...featDefaults.previousHotkey,
 			category: "hotkeys",
 			group: "rebindNextAndPrevious",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		rebindPlayPause: {
 			...featDefaults.rebindPlayPause,
 			category: "hotkeys",
 			group: "rebindPlayPause",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		playPauseHotkey: {
 			...featDefaults.playPauseHotkey,
 			category: "hotkeys",
 			group: "rebindPlayPause",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		disableDarkReaderSites: {
 			...featDefaults.disableDarkReaderSites,
 			category: "integrations",
 			group: "darkReader",
 			supportedSites: ["ytm", "yt"],
-			options: options.siteSelectionOrNone,
-			adornments: [adornments.reload]
+			options: options.siteSelectionOrNone
 		},
 		sponsorBlockIntegration: {
 			...featDefaults.sponsorBlockIntegration,
 			category: "integrations",
 			group: "sponsorBlock",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		themeSongIntegration: {
 			...featDefaults.themeSongIntegration,
 			category: "integrations",
 			group: "themeSong",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		themeSongLightness: {
 			...featDefaults.themeSongLightness,
 			category: "integrations",
 			group: "themeSong",
 			supportedSites: ["ytm"],
-			options: options.colorLightness,
-			adornments: [adornments.ytmOnly, adornments.reload]
+			options: options.colorLightness
 		},
 		themeSongVisualizerOpacity: {
 			...featDefaults.themeSongVisualizerOpacity,
@@ -15195,30 +15170,26 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			group: "themeSongVisualizer",
 			supportedSites: ["ytm"],
 			step: 1,
-			unit: "%",
-			adornments: [adornments.ytmOnly, adornments.reload]
+			unit: "%"
 		},
 		themeSongVisualizerHotkeyEnabled: {
 			...featDefaults.themeSongVisualizerHotkeyEnabled,
 			category: "integrations",
 			group: "themeSongVisualizer",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		themeSongVisualizerHotkey: {
 			...featDefaults.themeSongVisualizerHotkey,
 			category: "integrations",
 			group: "themeSongVisualizer",
 			supportedSites: ["ytm"],
-			reloadRequired: false,
-			adornments: [adornments.ytmOnly]
+			reloadRequired: false
 		},
 		removeThumbnailRatingBar: {
 			...featDefaults.removeThumbnailRatingBar,
 			category: "integrations",
 			group: "thumbnailRatingBar",
-			supportedSites: ["ytm"],
-			adornments: [adornments.ytmOnly, adornments.reload]
+			supportedSites: ["ytm"]
 		},
 		openPluginList: {
 			...featDefaults.openPluginList,
@@ -16415,7 +16386,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				stopPropagation: true,
 				capture: true
 			});
-			addSelectorListener("navBar", "ytmusic-logo a", { listener(logoElem) {
+			addSelectorListener("navBar", getSelector("layout", "navBarLogoContent"), { listener(logoElem) {
 				logoElem.appendChild(watermarkEl);
 				loggers.layout.log("Added watermark element");
 			} });
@@ -16428,10 +16399,10 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 				if (improveLogoCalled) return;
 				improveLogoCalled = true;
 				const svg = await (await fetchAdvanced(getString("ytm_platform_logo_svg_url"))).text();
-				addSelectorListener("navBar", "ytmusic-logo > a", { listener: (logoElem) => {
+				addSelectorListener("navBar", getSelector("layout", "navBarLogoContent"), { listener: (logoElem) => {
 					logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
 					setInnerHtml(logoElem, svg);
-					logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
+					logoElem.querySelectorAll(getSelector("layout", "navBarLogoPath")).forEach((el) => el.classList.add("bytm-mod-logo-remove"));
 					loggers.layout.log("Swapped logo to inline SVG");
 					resolve();
 				} });
@@ -16476,7 +16447,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		cfgOptItemElem.tabIndex = 0;
 		cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo$1.name);
 		onInteraction(cfgOptItemElem, async (e) => {
-			document.querySelector("ytmusic-nav-bar ytmusic-settings-button button")?.click();
+			document.querySelector(getSelector("layout", "navbarSettingsButton"))?.click();
 			if (!e.shiftKey && !e.ctrlKey || logoExchanged) openCfgMenu();
 			if (!logoExchanged && (e.shiftKey || e.ctrlKey)) exchangeLogo();
 		});
@@ -16526,13 +16497,13 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}
 		try {
 			const preventDefault = (e) => e.preventDefault();
-			/** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
+			/** Adds anchor improvements to `<ytmusic-responsive-list-item-renderer>` */
 			const addListItemAnchors = (items) => {
 				for (const item of items) {
 					if (item.classList.contains("bytm-anchor-improved")) continue;
 					item.classList.add("bytm-anchor-improved");
-					const thumbnailElem = item.querySelector(".left-items");
-					const titleElem = item.querySelector(".title-column .title a");
+					const thumbnailElem = item.querySelector(getSelector("layout", "listItemLeftItems_sub_listItem"));
+					const titleElem = item.querySelector(getSelector("layout", "listItemTitle_sub_listItem"));
 					if (!thumbnailElem || !titleElem) continue;
 					const anchorElem = document.createElement("a");
 					anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
@@ -16543,22 +16514,22 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 					addParent(thumbnailElem, anchorElem);
 				}
 			};
-			addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+			addSelectorListener("body", getSelector("layout", "listItem_homePage"), {
 				continuous: true,
 				all: true,
 				listener: addListItemAnchors
 			});
-			addSelectorListener("body", "ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+			addSelectorListener("body", getSelector("layout", "listItem_watchPageRelated"), {
 				continuous: true,
 				all: true,
 				listener: addListItemAnchors
 			});
-			addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+			addSelectorListener("body", getSelector("layout", "listItem_playlists"), {
 				continuous: true,
 				all: true,
 				listener: addListItemAnchors
 			});
-			addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+			addSelectorListener("body", getSelector("layout", "listItem_genericShelves"), {
 				continuous: true,
 				all: true,
 				listener: addListItemAnchors
@@ -16568,19 +16539,20 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 		}
 		try {
 			const addSidebarAnchors = (sidebarCont) => {
-				const items = sidebarCont.parentNode.querySelectorAll("ytmusic-guide-entry-renderer tp-yt-paper-item");
+				const items = sidebarCont.parentNode.querySelectorAll(getSelector("layout", "sidebarItems_sub_sidebar"));
 				improveSidebarAnchors(items);
 				return items.length;
 			};
-			addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer", { listener: (sidebarCont) => {
+			addSelectorListener("sideBar", getSelector("layout", "sidebarItemRenderers_sub_sidebar"), { listener: (sidebarCont) => {
 				const itemsAmt = addSidebarAnchors(sidebarCont);
 				loggers.layout.log(`Added anchors around ${itemsAmt} sidebar ${autoPlural$1("item", itemsAmt)}`);
 			} });
-			addSelectorListener("body", "ytmusic-nav-bar", { listener(navBar) {
-				let miniSidebarCont = document.querySelector("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+			addSelectorListener("body", getSelector("generic", "navBar"), { listener(navBar) {
+				const miniSidebarSelector = getSelector("layout", "miniSidebarContainer");
+				let miniSidebarCont = document.querySelector(miniSidebarSelector);
 				const mut = new MutationObserver(() => setTimeout(() => {
 					if (navBar.hasAttribute("guide-collapsed") && !navBar.classList.contains("bytm-mini-sidebar-anchors-added")) {
-						miniSidebarCont = document.querySelector("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+						miniSidebarCont = document.querySelector(miniSidebarSelector);
 						if (!miniSidebarCont) return loggers.layout.error("Couldn't find mini sidebar element while adding anchors");
 						improveMiniSidebarAnchors();
 					}
@@ -16615,7 +16587,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			siteEvents.on("autoplayQueueChanged", () => checkCurrentList());
 			const genericSongListListener = (songLists) => {
 				songLists.forEach((songListEl) => {
-					const items = songListEl.querySelectorAll("ytmusic-responsive-list-item-renderer, .card-content-container");
+					const items = songListEl.querySelectorAll(getSelector("layout", "genericSongListItems"));
 					if (!items.length) return;
 					const itemsAmt = improveSongListClickArea(items);
 					itemsAmt > 0 && loggers.layout.log(`Improved clickable area of ${itemsAmt} song list ${autoPlural$1("item", itemsAmt)}`);
@@ -16624,9 +16596,7 @@ ${t("generic_error_dialog_open_console_note", package_default.bugs.url)}`
 			const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
 				if (path.includes("/search")) {
 					pathChangedUnsub();
-					addSelectorListener("searchPage", `\
-ytmusic-shelf-renderer #contents,
-ytmusic-card-shelf-renderer .card-container`, {
+					addSelectorListener("searchPage", getSelector("songLists", "searchPage"), {
 						continuous: true,
 						all: true,
 						debounce: 200,
@@ -16634,14 +16604,7 @@ ytmusic-card-shelf-renderer .card-container`, {
 					});
 				}
 			});
-			addSelectorListener("browseResponse", `\
-ytmusic-playlist-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
+			addSelectorListener("browseResponse", getSelector("songLists", "all"), {
 				continuous: true,
 				all: true,
 				debounce: 200,
@@ -16695,7 +16658,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					(el) => Boolean(el.getAttribute("href")?.length),
 					(el) => el.classList.contains("bytm-anchor"),
 					(el) => el.classList.contains("multi-select-overlay")
-				].every((acnd) => !acnd(tgt))) item.querySelector("ytmusic-play-button-renderer")?.click();
+				].every((acnd) => !acnd(tgt))) item.querySelector(getSelector("layout", "genericSongListItemPlayButton_sub_listItem"))?.click();
 			});
 			itemsAmt++;
 		});
@@ -16717,15 +16680,9 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				loggers.layout.warn("Couldn't remove tracking parameter from share link due to error:", err);
 			}
 		};
-		const [sharePanelSel, inputSel] = (() => {
-			switch (getDomain()) {
-				case "ytm": return ["tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", "input#share-url"];
-				case "yt": return ["yt-unified-share-panel-renderer", "input#share-url"];
-			}
-		})();
-		addSelectorListener("body", sharePanelSel, { listener: (sharePanelEl) => {
+		addSelectorListener("body", getSelector("layout", "sharePanel"), { listener: (sharePanelEl) => {
 			new MutationObserver(() => {
-				const inputElem = sharePanelEl.querySelector(inputSel);
+				const inputElem = sharePanelEl.querySelector(getSelector("layout", "sharePanelInput_sub_sharePanel"));
 				inputElem && removeSiParam(inputElem);
 			}).observe(sharePanelEl, {
 				childList: true,
@@ -16776,12 +16733,12 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				}
 			}];
 			if (!contBtns.some((b) => Boolean(b.condition))) return;
-			addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", { async listener(rightBtnsEl) {
+			addSelectorListener("sidePanel", getSelector("layout", "queueHeaderButtons_sub_sidePanel"), { async listener(rightBtnsEl) {
 				try {
 					const aboveQueueBtnCont = document.createElement("div");
 					aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
 					addParent(rightBtnsEl, aboveQueueBtnCont);
-					const headerEl = rightBtnsEl.closest("ytmusic-queue-header-renderer");
+					const headerEl = rightBtnsEl.closest(getSelector("layout", "queueHeaderRenderer_sub_sidePanel"));
 					if (!headerEl) return loggers.layout.error("Couldn't find queue header element while adding above queue buttons");
 					siteEvents.on("fullscreenToggled", (isFullscreen) => {
 						headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
@@ -16842,7 +16799,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		if (!getFeature("thumbnailOverlayEnabled")) return;
 		deleteExpiredAlbumArtCacheEntries();
 		waitVideoElementReady().then(() => {
-			const playerSelector = "ytmusic-player#player";
+			const playerSelector = getSelector("generic", "player");
 			const playerEl = document.querySelector(playerSelector);
 			if (!playerEl) return loggers.layout.error("Couldn't find video player element while adding thumbnail overlay");
 			/** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
@@ -16910,10 +16867,10 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 					getBestThumbnailUrl(videoID).then((url) => {
 						if (ac.signal.aborted ? void 0 : bestNativeThumbUrl = url) setThumbOverlayUrl(url);
 					}).catch(() => void 0);
-					addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", { async listener() {
+					addSelectorListener("playerBarInfo", getSelector("layout", "playerBarSubtitleAnchors_sub_playerBarInfo"), { async listener() {
 						if (ac.signal.aborted) return;
 						const [primaryArtist, albumName] = (() => {
-							const parent = document.querySelector(".content-info-wrapper .subtitle yt-formatted-string");
+							const parent = document.querySelector(getSelector("layout", "playerBarSubtitleContainer"));
 							if (!parent) return [void 0, void 0];
 							const splitList = [...parent.querySelectorAll("a, span")].reduce((acc, el) => {
 								if (el.tagName === "SPAN" && el.innerText.includes("•")) {
@@ -16995,7 +16952,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						});
 						setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
 						toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
-						addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", { listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem) });
+						addSelectorListener("playerBarMiddleButtons", getSelector("watchPage", "likeBtnRenderer"), { listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem) });
 					}
 					loggers.layout.log("Added thumbnail overlay");
 				} catch (err) {
@@ -17060,8 +17017,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		return match;
 	}
 	async function initHideCursorOnIdle() {
-		addSelectorListener("mainPanel", "ytmusic-player#player", { listener(vidContainer) {
-			const overlayElem = document.querySelector("ytmusic-player #song-media-window");
+		addSelectorListener("mainPanel", getSelector("generic", "player"), { listener(vidContainer) {
+			const overlayElem = document.querySelector(getSelector("generic", "playerMedia"));
 			if (!overlayElem) return loggers.layout.warn("Couldn't find overlay element while initializing cursor hiding");
 			/** Last element the mouse was hovered over */
 			let lastMouseoverElement = null;
@@ -17157,7 +17114,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	/** Shows the amount of likes and dislikes on the current song */
 	async function initShowVotes() {
-		addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", { async listener(voteCont) {
+		addSelectorListener("playerBar", getSelector("watchPage", "votesRenderer"), { async listener(voteCont) {
 			try {
 				const videoID = getWatchId();
 				if (!videoID) {
@@ -17169,8 +17126,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 				if (getFeature("showVotes")) {
 					addVoteNumbers(voteCont, voteObj);
 					siteEvents.on("watchIdChanged", async (videoID) => {
-						const labelLikes = document.querySelector("ytmusic-like-button-renderer .bytm-vote-label.likes");
-						const labelDislikes = document.querySelector("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
+						const labelLikes = document.querySelector(`${getSelector("watchPage", "votesRenderer")} .bytm-vote-label.likes`);
+						const labelDislikes = document.querySelector(`${getSelector("watchPage", "votesRenderer")} .bytm-vote-label.dislikes`);
 						if (!labelLikes || !labelDislikes) return loggers.layout.error("Couldn't find vote label elements while updating like and dislike counts");
 						if (labelLikes.dataset.watchId === videoID && labelDislikes.dataset.watchId === videoID) return loggers.layout.log("Vote labels already updated for this video");
 						const voteObj = await fetchVideoVotes(videoID);
@@ -17183,7 +17140,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 						labelDislikes.textContent = formatNumber(voteObj.dislikes);
 						labelDislikes.title = labelDislikes.ariaLabel = dislikesLabelText;
 						labelDislikes.dataset.watchId = getWatchId() ?? "";
-						addSelectorListener("playerBar", "ytmusic-like-button-renderer#like-button-renderer", { listener: (bar) => upsertVoteBtnLabels(bar, likesLabelText, dislikesLabelText) });
+						addSelectorListener("playerBar", getSelector("watchPage", "likeBtnRenderer"), { listener: (bar) => upsertVoteBtnLabels(bar, likesLabelText, dislikesLabelText) });
 					});
 				}
 			} catch (err) {
@@ -17192,8 +17149,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 		} });
 	}
 	function addVoteNumbers(voteCont, voteObj) {
-		const likeBtn = voteCont.querySelector("#button-shape-like");
-		const dislikeBtn = voteCont.querySelector("#button-shape-dislike");
+		const likeBtn = voteCont.querySelector(getSelector("watchPage", "likeBtnShape_sub_votesRenderer"));
+		const dislikeBtn = voteCont.querySelector(getSelector("watchPage", "dislikeBtnShape_sub_votesRenderer"));
 		if (!likeBtn || !dislikeBtn) return loggers.layout.error("Couldn't find like or dislike button while adding vote numbers");
 		const likeBtnCont = document.createElement("div");
 		likeBtnCont.id = "bytm-like-btn-cont";
@@ -17259,8 +17216,8 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	}
 	/** Updates or inserts the labels on the native like and dislike buttons */
 	function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
-		const likeBtn = parentEl.querySelector("#button-shape-like button");
-		const dislikeBtn = parentEl.querySelector("#button-shape-dislike button");
+		const likeBtn = parentEl.querySelector(getSelector("watchPage", "likeBtnAlternate"));
+		const dislikeBtn = parentEl.querySelector(getSelector("watchPage", "dislikeBtnAlternate"));
 		if (likeBtn) likeBtn.title = likeBtn.ariaLabel = likesLabelText;
 		if (dislikeBtn) dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
 	}
@@ -17286,7 +17243,7 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 			loggers.layout.log("Initialized watch page full size", mainPanel);
 			if (mainPanel) {
 				window.addEventListener("resize", debounce(() => {
-					const headerHeight = document.querySelector("ytmusic-header-renderer")?.offsetHeight ?? 0;
+					const headerHeight = document.querySelector(getSelector("generic", "appHeader"))?.offsetHeight ?? 0;
 					mainPanel.style.maxHeight = `calc(100vh - ${headerHeight}px - 50px)`;
 					loggers.misc.dbg("Set main panel max height to", mainPanel.style.maxHeight);
 				}, 200), { passive: true });
@@ -17298,6 +17255,64 @@ ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shel
 	async function initTruncatePlayerBarSubtitles() {
 		if (!await addStyleFromResource("css-truncate_player_bar_subtitles")) loggers.layout.error("Couldn't load stylesheet to truncate player bar subtitles");
 		else loggers.layout.log("Truncated player bar subtitles");
+	}
+	/** Adds search inputs to lists */
+	async function initSearchableLists() {
+		if (getDomain() === "ytm") {
+			if (getFeature("searchablePlaylistPopupsEnabled")) {}
+			if (getFeature("searchableSongListsEnabled")) {}
+		} else {
+			if (getFeature("searchablePlaylistPopupsEnabled")) addSelectorListener("ytPopupContainer", getSelector("generic", "playlistPopup_sub_popupContainer"), {
+				all: true,
+				continuous: true,
+				listener(popupConts) {
+					for (const pc of popupConts) {
+						const listItemCont = pc.querySelector(getSelector("layout", "popupListItemContainer_sub_popupContainer"));
+						if (listItemCont && listItemCont.childElementCount > 0) addPopupSearchBar(pc);
+					}
+				}
+			});
+			if (getFeature("searchableSongListsEnabled")) {}
+		}
+	}
+	var searchBarContClass = "bytm-list-search-bar-cont";
+	/** Applies the given search query to all items in the popup container */
+	function applyPopupContSearch(popupContainer, query) {}
+	/** Creates a search bar element, a clear button, and their flex wrapper and returns it */
+	function createSearchBarEl(popupContainer) {
+		const applyPopupContSearchDebounced = debounce(applyPopupContSearch, 300);
+		const searchWrapper = document.createElement("div");
+		searchWrapper.classList.add(searchBarContClass, "bytm-flex-row-gap-s");
+		const searchBar = document.createElement("input");
+		searchBar.classList.add("bytm-list-search-bar");
+		searchBar.placeholder = searchBar.title = t("search_placeholder");
+		searchBar.addEventListener("input", () => applyPopupContSearchDebounced(popupContainer, searchBar.value));
+		const clearBtn = document.createElement("button");
+		clearBtn.classList.add("bytm-list-search-clear-btn", "bytm-btn", "no-min-width");
+		clearBtn.title = t("search_clear");
+		clearBtn.tabIndex = 0;
+		clearBtn.innerText = "×";
+		onInteraction(clearBtn, () => {
+			searchBar.value = "";
+			applyPopupContSearchDebounced(popupContainer);
+		});
+		searchWrapper.appendChild(searchBar);
+		searchWrapper.appendChild(clearBtn);
+		preventEvents("click", searchWrapper);
+		return searchWrapper;
+	}
+	/** Adds a search bar to the given popup container */
+	function addPopupSearchBar(popupContainer) {
+		const isPlaylistPopup = [...popupContainer.querySelectorAll(getSelector("layout", "popupListItemsAll_sub_popupContainer")) ?? []].length > 0;
+		const searchBarCont = popupContainer.querySelector(`.${searchBarContClass}`);
+		if (searchBarCont && !isPlaylistPopup) searchBarCont.remove();
+		if (searchBarCont) return;
+		const parentSel = getSelector("generic", "playlistPopupMainContainer_sub_popupContainer");
+		const parentEl = popupContainer.querySelector(parentSel);
+		if (parentEl && isPlaylistPopup) {
+			const searchBar = createSearchBarEl(popupContainer);
+			parentEl.insertAdjacentElement("afterbegin", searchBar);
+		}
 	}
 	//#endregion
 	//#region src/bindings.ts
@@ -18646,6 +18661,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 			}
 			if (["ytm", "yt"].includes(domain)) {
 				if (feats.removeShareTrackingParamSites) ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
+				if (feats.searchablePlaylistPopupsEnabled || feats.searchableSongListsEnabled) ftInit.push(["searchableLists", initSearchableLists()]);
 				if (feats.songListTrackNumbersEnabled) ftInit.push(["songListTrackNumbers", addTrackNumbers()]);
 				ftInit.push(["hotkeys", initHotkeys()]);
 				if (feats.autoLikeChannels) ftInit.push(["autoLikeChannels", initAutoLike()]);
@@ -18951,7 +18967,7 @@ ${`Please report this bug using the issue tracker on GitHub:\n${package_default.
 		isAny && GM.registerMenuCommand(getCmdName("🗂️", "menu_command.collect_sessions"), () => {
 			const sessions = [[broadcastTxID, {
 				sessionId: getSessionId(),
-				buildNumber: "9b1cbd6e",
+				buildNumber: "d2962bde",
 				version: scriptInfo$1.version,
 				title: document.title,
 				domain: getDomain(),
