@@ -35,6 +35,19 @@
         "yt": "ytd-app",
         "ytm": "ytmusic-app"
       },
+      "appHeader": {
+        "ytm": "ytmusic-header-renderer"
+      },
+      "navBar": {
+        "yt": "#masthead-container",
+        "ytm": "ytmusic-nav-bar"
+      },
+      "player": {
+        "ytm": "ytmusic-player#player"
+      },
+      "playerMedia": {
+        "ytm": "ytmusic-player #song-media-window"
+      },
       "video": {
         "yt": "ytd-player #shorts-player video, ytd-player #movie_player video",
         "ytm": "ytmusic-player video"
@@ -50,6 +63,76 @@
       },
       "playlistPopupMainContainer_sub_popupContainer": {
         "yt": "yt-contextual-sheet-layout > .ytContextualSheetLayoutContentContainer"
+      }
+    },
+    "layout": {
+      "navBarLogoContent": {
+        "ytm": "ytmusic-logo a"
+      },
+      "navBarLogoPath": {
+        "ytm": "svg > g > path"
+      },
+      "navbarSettingsButton": {
+        "ytm": "ytmusic-nav-bar ytmusic-settings-button button"
+      },
+      "sidebarItems_sub_sidebar": {
+        "ytm": "ytmusic-guide-entry-renderer tp-yt-paper-item"
+      },
+      "sidebarItemRenderers_sub_sidebar": {
+        "ytm": "#contentContainer #guide-content #items ytmusic-guide-entry-renderer"
+      },
+      "miniSidebarContainer": {
+        "ytm": "#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer"
+      },
+      "listItemLeftItems_sub_listItem": {
+        "ytm": ".left-items"
+      },
+      "listItemTitle_sub_listItem": {
+        "ytm": ".title-column .title a"
+      },
+      "listItem_homePage": {
+        "ytm": "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer"
+      },
+      "listItem_watchPageRelated": {
+        "ytm": "ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer"
+      },
+      "listItem_playlists": {
+        "ytm": "#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer"
+      },
+      "listItem_genericShelves": {
+        "ytm": "#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer"
+      },
+      "genericSongListItems": {
+        "ytm": "ytmusic-responsive-list-item-renderer, .card-content-container"
+      },
+      "genericSongListItemPlayButton_sub_listItem": {
+        "ytm": "ytmusic-play-button-renderer"
+      },
+      "sharePanel": {
+        "yt": "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer",
+        "ytm": "yt-unified-share-panel-renderer"
+      },
+      "sharePanelInput_sub_sharePanel": {
+        "yt": "input#share-url",
+        "ytm": "input#share-url"
+      },
+      "popupListItemContainer_sub_popupContainer": {
+        "yt": "yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model"
+      },
+      "popupListItemsAll_sub_popupContainer": {
+        "ytm": "yt-list-view-model > toggleable-list-item-view-model"
+      },
+      "queueHeaderButtons_sub_sidePanel": {
+        "ytm": "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons"
+      },
+      "queueHeaderRenderer_sub_sidePanel": {
+        "ytm": "ytmusic-queue-header-renderer"
+      },
+      "playerBarSubtitleContainer": {
+        "ytm": ".content-info-wrapper .subtitle yt-formatted-string"
+      },
+      "playerBarSubtitleAnchors_sub_playerBarInfo": {
+        "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span"
       }
     },
     "watchPage": {
@@ -71,8 +154,17 @@
       "likeBtnShorts": {
         "yt": "like-button-view-model button"
       },
+      "likeBtnRenderer": {
+        "ytm": "ytmusic-like-button-renderer#like-button-renderer"
+      },
+      "likeBtnShape_sub_votesRenderer": {
+        "ytm": "#button-shape-like"
+      },
       "dislikeBtn": {
         "ytm": "ytmusic-like-button-renderer #button-shape-dislike"
+      },
+      "dislikeBtnShape_sub_votesRenderer": {
+        "ytm": "#button-shape-dislike"
       },
       "dislikeBtnShorts": {
         "yt": "dislike-button-view-model"
@@ -99,6 +191,9 @@
     "songLists": {
       "all": {
         "ytm": "ytmusic-playlist-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents, ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents"
+      },
+      "searchPage": {
+        "ytm": "ytmusic-shelf-renderer #contents, ytmusic-card-shelf-renderer .card-container"
       },
       "currentQueueContainer": {
         "ytm": "ytmusic-player-queue #contents"

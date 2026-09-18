@@ -53,7 +53,7 @@ export async function addWatermark() {
 
     onInteraction(watermarkEl, (e) => watermarkOpenMenu(e), { preventDefault: true, stopPropagation: true, capture: true });
 
-    addSelectorListener("navBar", "ytmusic-logo a", {
+    addSelectorListener("navBar", getSelector("layout", "navBarLogoContent"), {
       listener(logoElem) {
         logoElem.appendChild(watermarkEl);
         loggers.layout.log("Added watermark element");
@@ -73,11 +73,11 @@ export function improveLogo() {
       const res = await fetchAdvanced(getString("ytm_platform_logo_svg_url"));
       const svg = await res.text();
 
-      addSelectorListener("navBar", "ytmusic-logo > a", {
+      addSelectorListener("navBar", getSelector("layout", "navBarLogoContent"), {
         listener: (logoElem) => {
           logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
           setInnerHtml(logoElem, svg);
-          logoElem.querySelectorAll("svg > g > path").forEach((el) => el.classList.add("bytm-mod-logo-remove"));
+          logoElem.querySelectorAll(getSelector("layout", "navBarLogoPath")).forEach((el) => el.classList.add("bytm-mod-logo-remove"));
 
           loggers.layout.log("Swapped logo to inline SVG");
           resolve();
@@ -142,7 +142,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
 
   onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
-    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button button");
+    const settingsBtnElem = document.querySelector<HTMLElement>(getSelector("layout", "navbarSettingsButton"));
     settingsBtnElem?.click();
 
     if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
@@ -220,7 +220,7 @@ export async function addAnchorImprovements() {
   try {
     const preventDefault = (e: MouseEvent) => e.preventDefault();
 
-    /** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
+    /** Adds anchor improvements to `<ytmusic-responsive-list-item-renderer>` */
     const addListItemAnchors = (items: NodeListOf<HTMLElement>) => {
       for(const item of items) {
         if(item.classList.contains("bytm-anchor-improved"))
@@ -228,8 +228,8 @@ export async function addAnchorImprovements() {
 
         item.classList.add("bytm-anchor-improved");
 
-        const thumbnailElem = item.querySelector<HTMLElement>(".left-items");
-        const titleElem = item.querySelector<HTMLAnchorElement>(".title-column .title a");
+        const thumbnailElem = item.querySelector<HTMLElement>(getSelector("layout", "listItemLeftItems_sub_listItem"));
+        const titleElem = item.querySelector<HTMLAnchorElement>(getSelector("layout", "listItemTitle_sub_listItem"));
 
         if(!thumbnailElem || !titleElem)
           continue;
@@ -248,7 +248,7 @@ export async function addAnchorImprovements() {
 
     // home page
 
-    addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    addSelectorListener("body", getSelector("layout", "listItem_homePage"), {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -256,7 +256,7 @@ export async function addAnchorImprovements() {
 
     // related tab in /watch
 
-    addSelectorListener("body", "ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+    addSelectorListener("body", getSelector("layout", "listItem_watchPageRelated"), {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -264,7 +264,7 @@ export async function addAnchorImprovements() {
 
     // playlists
 
-    addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    addSelectorListener("body", getSelector("layout", "listItem_playlists"), {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -272,7 +272,7 @@ export async function addAnchorImprovements() {
 
     // generic shelves
 
-    addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    addSelectorListener("body", getSelector("layout", "listItem_genericShelves"), {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -286,25 +286,26 @@ export async function addAnchorImprovements() {
 
   try {
     const addSidebarAnchors = (sidebarCont: HTMLElement) => {
-      const items = sidebarCont.parentNode!.querySelectorAll<HTMLElement>("ytmusic-guide-entry-renderer tp-yt-paper-item");
+      const items = sidebarCont.parentNode!.querySelectorAll<HTMLElement>(getSelector("layout", "sidebarItems_sub_sidebar"));
       improveSidebarAnchors(items);
       return items.length;
     };
 
-    addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+    addSelectorListener("sideBar", getSelector("layout", "sidebarItemRenderers_sub_sidebar"), {
       listener: (sidebarCont) => {
         const itemsAmt = addSidebarAnchors(sidebarCont);
         loggers.layout.log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
       },
     });
 
-    addSelectorListener("body", "ytmusic-nav-bar", {
+    addSelectorListener("body", getSelector("generic", "navBar"), {
       listener(navBar) {
-        let miniSidebarCont = document.querySelector<HTMLElement>("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+        const miniSidebarSelector = getSelector("layout", "miniSidebarContainer");
+        let miniSidebarCont = document.querySelector<HTMLElement>(miniSidebarSelector);
 
         const mut = new MutationObserver(() => setTimeout(() => {
           if(navBar.hasAttribute("guide-collapsed") && !navBar.classList.contains("bytm-mini-sidebar-anchors-added")) {
-            miniSidebarCont = document.querySelector<HTMLElement>("#mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer");
+            miniSidebarCont = document.querySelector<HTMLElement>(miniSidebarSelector);
             if(!miniSidebarCont)
               return loggers.layout.error("Couldn't find mini sidebar element while adding anchors");
             improveMiniSidebarAnchors();
@@ -334,6 +335,7 @@ export async function addAnchorImprovements() {
 
   try {
     const checkCurrentList = () => {
+      // TODO: check if this still works, and if not remove it or add selector to data.json
       addSelectorListener("sidePanel", "ytmusic-player-queue #contents, ytmusic-player-queue #automix-contents", {
         all: true,
         listener(songLists) {
@@ -354,7 +356,7 @@ export async function addAnchorImprovements() {
 
     const genericSongListListener = (songLists: NodeListOf<HTMLElement>) => {
       songLists.forEach((songListEl) => {
-        const items = songListEl.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer, .card-content-container");
+        const items = songListEl.querySelectorAll<HTMLElement>(getSelector("layout", "genericSongListItems"));
         if(!items.length)
           return;
 
@@ -366,9 +368,7 @@ export async function addAnchorImprovements() {
     const pathChangedUnsub = siteEvents.on("pathChanged", (path) => {
       if(path.includes("/search")) {
         pathChangedUnsub();
-        addSelectorListener("searchPage", `\
-ytmusic-shelf-renderer #contents,
-ytmusic-card-shelf-renderer .card-container`, {
+        addSelectorListener("searchPage", getSelector("songLists", "searchPage"), {
           continuous: true,
           all: true,
           debounce: 200,
@@ -377,14 +377,7 @@ ytmusic-card-shelf-renderer .card-container`, {
       }
     });
 
-    addSelectorListener("browseResponse", `\
-ytmusic-playlist-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
-ytmusic-section-list-renderer[page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents`, {
+    addSelectorListener("browseResponse", getSelector("songLists", "all"), {
       continuous: true,
       all: true,
       debounce: 200,
@@ -457,7 +450,7 @@ function improveSongListClickArea(items: NodeListOf<HTMLElement>): number {
       ] satisfies CondFns;
 
       if(conditions.some((cnd) => cnd(tgt)) && antiConditions.every((acnd) => !acnd(tgt)))
-        item.querySelector<HTMLElement>("ytmusic-play-button-renderer")?.click();
+        item.querySelector<HTMLElement>(getSelector("layout", "genericSongListItemPlayButton_sub_listItem"))?.click();
     });
 
     itemsAmt++;
@@ -496,17 +489,10 @@ export async function initRemShareTrackParam() {
     }
   };
 
-  const [sharePanelSel, inputSel] = (() => {
-    switch(getDomain()) {
-    case "ytm": return ["tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", "input#share-url"];
-    case "yt": return ["yt-unified-share-panel-renderer", "input#share-url"];
-    }
-  })();
-
-  addSelectorListener("body", sharePanelSel, {
+  addSelectorListener("body", getSelector("layout", "sharePanel"), {
     listener: (sharePanelEl) => {
       const obs = new MutationObserver(() => {
-        const inputElem = sharePanelEl.querySelector<HTMLInputElement>(inputSel);
+        const inputElem = sharePanelEl.querySelector<HTMLInputElement>(getSelector("layout", "sharePanelInput_sub_sharePanel"));
         inputElem && removeSiParam(inputElem);
       });
 
@@ -571,7 +557,7 @@ export async function initAboveQueueBtns() {
     if(!contBtns.some(b => Boolean(b.condition)))
       return;
 
-    addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
+    addSelectorListener("sidePanel", getSelector("layout", "queueHeaderButtons_sub_sidePanel"), {
       async listener(rightBtnsEl) {
         try {
           const aboveQueueBtnCont = document.createElement("div");
@@ -579,7 +565,7 @@ export async function initAboveQueueBtns() {
 
           addParent(rightBtnsEl, aboveQueueBtnCont);
 
-          const headerEl = rightBtnsEl.closest<HTMLElement>("ytmusic-queue-header-renderer");
+          const headerEl = rightBtnsEl.closest<HTMLElement>(getSelector("layout", "queueHeaderRenderer_sub_sidePanel"));
           if(!headerEl)
             return loggers.layout.error("Couldn't find queue header element while adding above queue buttons");
 
@@ -679,7 +665,7 @@ export async function initThumbnailOverlay() {
 
   // so the script init doesn't keep waiting until a /watch page is loaded
   waitVideoElementReady().then(() => {
-    const playerSelector = "ytmusic-player#player";
+    const playerSelector = getSelector("generic", "player");
     const playerEl = document.querySelector<HTMLElement>(playerSelector);
 
     if(!playerEl)
@@ -803,7 +789,7 @@ export async function initThumbnailOverlay() {
             setThumbOverlayUrl(url!);
         }).catch(() => void 0);
 
-        addSelectorListener("playerBarInfo", ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span", {
+        addSelectorListener("playerBarInfo", getSelector("layout", "playerBarSubtitleAnchors_sub_playerBarInfo"), {
           async listener() {
             if(ac.signal.aborted)
               return;
@@ -812,7 +798,7 @@ export async function initThumbnailOverlay() {
               // format: <span><a>Artist1</a><span> & </span><a>Artist2</a><span> • </span><a>Album Name</a><span> • </span><span>Year</span>
               // sometimes artists and album are only wrapped by a <span>, sometimes there's a single artist, sometimes two or more
 
-              const parent = document.querySelector<HTMLElement>(".content-info-wrapper .subtitle yt-formatted-string");
+              const parent = document.querySelector<HTMLElement>(getSelector("layout", "playerBarSubtitleContainer"));
               if(!parent)
                 return [undefined, undefined];
 
@@ -941,7 +927,7 @@ export async function initThumbnailOverlay() {
           setInnerHtml(toggleBtnElem, await resourceAsString("icon-image"));
           toggleBtnElem.querySelector("svg")?.classList.add("bytm-generic-btn-img");
 
-          addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
+          addSelectorListener("playerBarMiddleButtons", getSelector("watchPage", "likeBtnRenderer"), {
             listener: (likeContainer) =>
               likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
           });
@@ -1040,11 +1026,9 @@ async function getBestITunesAlbumMatch(videoId: string, artistsRaw: string, albu
 //#region idle hide cursor
 
 export async function initHideCursorOnIdle() {
-  addSelectorListener("mainPanel", "ytmusic-player#player", {
+  addSelectorListener("mainPanel", getSelector("generic", "player"), {
     listener(vidContainer) {
-      const overlaySelector = "ytmusic-player #song-media-window";
-
-      const overlayElem = document.querySelector<HTMLElement>(overlaySelector);
+      const overlayElem = document.querySelector<HTMLElement>(getSelector("generic", "playerMedia"));
 
       if(!overlayElem)
         return loggers.layout.warn("Couldn't find overlay element while initializing cursor hiding");
@@ -1187,7 +1171,7 @@ export async function fixHdrIssues() {
 
 /** Shows the amount of likes and dislikes on the current song */
 export async function initShowVotes() {
-  addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
+  addSelectorListener("playerBar", getSelector("watchPage", "votesRenderer"), {
     async listener(voteCont: HTMLElement): Promise<void> {
       try {
         const videoID = getWatchId();
@@ -1204,8 +1188,8 @@ export async function initShowVotes() {
           addVoteNumbers(voteCont, voteObj);
 
           siteEvents.on("watchIdChanged", async (videoID) => {
-            const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
-            const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
+            const labelLikes = document.querySelector<HTMLElement>(`${getSelector("watchPage", "votesRenderer")} .bytm-vote-label.likes`);
+            const labelDislikes = document.querySelector<HTMLElement>(`${getSelector("watchPage", "votesRenderer")} .bytm-vote-label.dislikes`);
 
             if(!labelLikes || !labelDislikes)
               return loggers.layout.error("Couldn't find vote label elements while updating like and dislike counts");
@@ -1228,7 +1212,7 @@ export async function initShowVotes() {
             labelDislikes.title = labelDislikes.ariaLabel = dislikesLabelText;
             labelDislikes.dataset.watchId = getWatchId() ?? "";
 
-            addSelectorListener("playerBar", "ytmusic-like-button-renderer#like-button-renderer", {
+            addSelectorListener("playerBar", getSelector("watchPage", "likeBtnRenderer"), {
               listener: (bar) => upsertVoteBtnLabels(bar, likesLabelText, dislikesLabelText),
             });
           });
@@ -1242,8 +1226,8 @@ export async function initShowVotes() {
 }
 
 function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
-  const likeBtn = voteCont.querySelector<HTMLElement>("#button-shape-like");
-  const dislikeBtn = voteCont.querySelector<HTMLElement>("#button-shape-dislike");
+  const likeBtn = voteCont.querySelector<HTMLElement>(getSelector("watchPage", "likeBtnShape_sub_votesRenderer"));
+  const dislikeBtn = voteCont.querySelector<HTMLElement>(getSelector("watchPage", "dislikeBtnShape_sub_votesRenderer"));
 
   if(!likeBtn || !dislikeBtn)
     return loggers.layout.error("Couldn't find like or dislike button while adding vote numbers");
@@ -1336,8 +1320,8 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
 
 /** Updates or inserts the labels on the native like and dislike buttons */
 function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, dislikesLabelText: string) {
-  const likeBtn = parentEl.querySelector<HTMLElement>("#button-shape-like button");
-  const dislikeBtn = parentEl.querySelector<HTMLElement>("#button-shape-dislike button");
+  const likeBtn = parentEl.querySelector<HTMLElement>(getSelector("watchPage", "likeBtnAlternate"));
+  const dislikeBtn = parentEl.querySelector<HTMLElement>(getSelector("watchPage", "dislikeBtnAlternate"));
 
   if(likeBtn)
     likeBtn.title = likeBtn.ariaLabel = likesLabelText;
@@ -1380,7 +1364,7 @@ export async function initWatchPageFullSize() {
 
     if(mainPanel) {
       window.addEventListener("resize", debounce(() => {
-        const headerHeight = document.querySelector<HTMLElement>("ytmusic-header-renderer")?.offsetHeight ?? 0;
+        const headerHeight = document.querySelector<HTMLElement>(getSelector("generic", "appHeader"))?.offsetHeight ?? 0;
         mainPanel.style.maxHeight = `calc(100vh - ${headerHeight}px - 50px)`;
         loggers.misc.dbg("Set main panel max height to", mainPanel.style.maxHeight);
       }, 200), { passive: true });
@@ -1422,7 +1406,7 @@ export async function initSearchableLists() {
         continuous: true,
         listener(popupConts) {
           for(const pc of popupConts) {
-            const listItemCont = pc.querySelector<HTMLElement>("yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model");
+            const listItemCont = pc.querySelector<HTMLElement>(getSelector("layout", "popupListItemContainer_sub_popupContainer"));
             if(listItemCont && listItemCont.childElementCount > 0)
               addPopupSearchBar(pc);
           }
@@ -1447,7 +1431,7 @@ function createSearchBarEl(popupContainer: HTMLElement): HTMLElement {
   const applyPopupContSearchDebounced = debounce(applyPopupContSearch, 300);
 
   const searchWrapper = document.createElement("div");
-  searchWrapper.classList.add(searchBarContClass, "bytm-flex-row");
+  searchWrapper.classList.add(searchBarContClass, "bytm-flex-row-gap-s");
 
   const searchBar = document.createElement("input");
   searchBar.classList.add("bytm-list-search-bar");
@@ -1476,7 +1460,7 @@ function createSearchBarEl(popupContainer: HTMLElement): HTMLElement {
 
 /** Adds a search bar to the given popup container */
 function addPopupSearchBar(popupContainer: HTMLElement) {
-  const isPlaylistPopup = [...(popupContainer.querySelectorAll<HTMLElement>("yt-list-view-model > toggleable-list-item-view-model") ?? [])].length > 0;
+  const isPlaylistPopup = [...(popupContainer.querySelectorAll<HTMLElement>(getSelector("layout", "popupListItemsAll_sub_popupContainer")) ?? [])].length > 0;
   const searchBarCont = popupContainer.querySelector(`.${searchBarContClass}`);
 
   if(searchBarCont && !isPlaylistPopup)
@@ -1487,8 +1471,6 @@ function addPopupSearchBar(popupContainer: HTMLElement) {
 
   const parentSel = getSelector("generic", "playlistPopupMainContainer_sub_popupContainer");
   const parentEl = popupContainer.querySelector<HTMLElement>(parentSel);
-
-  console.log(">>>>> adding popup search bar", popupContainer, parentEl, [...(popupContainer.querySelectorAll<HTMLElement>("yt-list-view-model > toggleable-list-item-view-model") ?? [])]);
 
   if(parentEl && isPlaylistPopup) {
     const searchBar = createSearchBarEl(popupContainer);
