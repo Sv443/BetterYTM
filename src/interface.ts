@@ -5,7 +5,7 @@ import { emitInterface, setLogEventsEnabled, allInterfaceEvents, type InterfaceE
 import { registeredPlugins, registeredPluginTokens, emitOnPlugins, getPluginKey, pluginPermissionsStore, ensurePluginPermissionsLoaded, getPermStorePerms, setRegisteredPluginPerms, defToIntentsBitSet, parseBitSetEnumArray } from "@/plugins/store.ts";
 import { broadcastTxID, emitBroadcast, reloadAllTabs } from "@util/broadcast.ts";
 import * as constants from "@/constants.ts";
-import { waitVideoElementReady, getVideoTime, setInnerHtml, getCurrentMediaType, getVideoElement, getVideoSelector, getLikeDislikeBtns, sanitizeHtml } from "@util/dom.ts";
+import { waitVideoElementReady, getVideoTime, setInnerHtml, getCurrentMediaType, getVideoElement, getVideoSelector, getLikeDislikeBtns, sanitizeHtml, preventEvents } from "@util/dom.ts";
 import { getDomain } from "@util/domain.ts";
 import { onInteraction } from "@util/input.ts";
 import { PluginError, loggers } from "@util/logging.ts";
@@ -81,6 +81,7 @@ const globalFuncs: InterfaceFunctions = pureObj({
   getLikeDislikeBtns,
   isIgnoredInputElement,
   parseMarkdown, // TODO: docs
+  preventEvents, // TODO: docs
 
   // site events:
   onSiteEvent: siteEvents.on.bind(siteEvents),

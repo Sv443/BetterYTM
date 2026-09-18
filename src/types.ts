@@ -2,7 +2,7 @@ import type { LooseUnion, NanoEmitter, Prettify } from "@sv443-network/userutils
 import type * as consts from "@/constants.ts";
 import type { scriptInfo } from "@/constants.ts";
 import type { addSelectorListener, globservers } from "@/observers.ts";
-import type { getVideoTime, waitVideoElementReady, setInnerHtml, getCurrentMediaType, getVideoElement, getVideoSelector, getLikeDislikeBtns, sanitizeHtml } from "@util/dom.ts";
+import type { getVideoTime, waitVideoElementReady, setInnerHtml, getCurrentMediaType, getVideoElement, getVideoSelector, getLikeDislikeBtns, sanitizeHtml, preventEvents } from "@util/dom.ts";
 import type { getDomain } from "@util/domain.ts";
 import type { onInteraction } from "@util/input.ts";
 import type { loggers } from "@util/logging.ts";
@@ -757,6 +757,8 @@ export type InterfaceFunctions = {
   isIgnoredInputElement: typeof isIgnoredInputElement;
   /** Converts a markdown string into an HTML string. Optionally and if supported, sanitizes using DOMPurify to create a TrustedHTML object. */
   parseMarkdown: typeof parseMarkdown;
+  /** Prevents the given events' listeners from being called for the given container element. Use the optional predicate function to control whenever this happens. */
+  preventEvents: typeof preventEvents;
   
   // site events:
   /** Adds a site event listener. */
@@ -1133,6 +1135,10 @@ export interface FeatureConfig {
   numbersFormat: NumberLengthFormat;
   /** Whether to remove all padding around the main content on the /watch page on YTM */
   watchPageFullSize: boolean;
+  /** Whether to add search bars to "add to playlist" popups on YTM and YT */
+  searchablePlaylistPopupsEnabled: boolean;
+  /** Whether to add search bars to generic song lists on YTM and YT */
+  searchableSongListsEnabled: boolean;
 
   //#region songLists
   /** Add a button to each song in the queue to quickly open its lyrics page */

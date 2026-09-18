@@ -393,3 +393,18 @@ export function transplantElement<TElem extends Element = HTMLElement>(element: 
 
   return element;
 }
+
+/**
+ * Prevents the given events' listeners from being called and bubbling, for the given container element.  
+ * Use the optional predicate function to control whenever this happens.
+ */
+export function preventEvents<TContainer extends HTMLElement, TKey extends keyof HTMLElementEventMap>(events: TKey | TKey[], container: TContainer, predicate?: (e: HTMLElementEventMap[TKey]) => boolean) {
+  for(const evt of Array.isArray(events) ? events : [events]) {
+    container.addEventListener(evt, (e) => {
+      if(!predicate || predicate(e)) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    }, { capture: true });
+  }
+}
