@@ -41,7 +41,7 @@ export enum LogLevel {
   Info,
 }
 
-/** Which domain this script is currently running on. */
+/** Identifier of supported domains for this script. */
 export type Domain = "yt" | "ytm";
 
 /** A selection option between one of the supported domains, or all of them. */

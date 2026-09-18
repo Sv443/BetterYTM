@@ -24,7 +24,10 @@ export type SelectorByGroup<TGroup extends SelectorGroup> = keyof (typeof defaul
 /** Union of all string identifiers defined in the static data JSON. */
 export type StaticDataStringID = keyof typeof defaultStaticData.strings;
 
-/** Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings. */
+/**
+ * Static data used by BYTM at runtime, including domain definitions, alerts, and DOM selector mappings.  
+ * This is a JSON object fetched dynamically from the file `assets/data.json` that can be accessed with {@linkcode getDomain()}, {@linkcode getSelector()}, {@linkcode getString()} or {@linkcode getStaticDataRef()}
+ */
 export type StaticData = {
   /** Format version for future compatibility checks. */
   formatVersion: number;
@@ -62,7 +65,7 @@ export const getStaticDataRef = () => staticData;
 // #region getSelector
 
 /**
- * Returns the selector with the given ID.  
+ * Returns the selector with the given ID, resolved from the file at `assets/data.json` - see also {@linkcode StaticData}.  
  * @throws By default, the function `throws` an error if the given selector doesn't exist, is invalid, or doesn't have a value for the current domain.
  */
 export function getSelector<
