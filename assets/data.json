@@ -108,19 +108,17 @@
       "genericSongListItemPlayButton_sub_listItem": {
         "ytm": "ytmusic-play-button-renderer"
       },
-      "sharePanel": {
-        "yt": "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer",
-        "ytm": "yt-unified-share-panel-renderer"
+      "playerBarSubtitleContainer": {
+        "ytm": ".content-info-wrapper .subtitle yt-formatted-string"
       },
-      "sharePanelInput_sub_sharePanel": {
-        "yt": "input#share-url",
-        "ytm": "input#share-url"
+      "playerBarSubtitleAnchors_sub_playerBarInfo": {
+        "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span"
       },
       "popupListItemContainer_sub_popupContainer": {
         "yt": "yt-sheet-view-model .ytContextualSheetLayoutContentContainer yt-list-view-model"
       },
       "popupListItemsAll_sub_popupContainer": {
-        "ytm": "yt-list-view-model > toggleable-list-item-view-model"
+        "yt": "yt-list-view-model > toggleable-list-item-view-model"
       },
       "queueHeaderButtons_sub_sidePanel": {
         "ytm": "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons"
@@ -128,12 +126,11 @@
       "queueHeaderRenderer_sub_sidePanel": {
         "ytm": "ytmusic-queue-header-renderer"
       },
-      "playerBarSubtitleContainer": {
-        "ytm": ".content-info-wrapper .subtitle yt-formatted-string"
+      "sharePanel": {
+        "yt": "yt-unified-share-panel-renderer",
+        "ytm": "tp-yt-paper-dialog ytmusic-unified-share-panel-renderer"
       },
-      "playerBarSubtitleAnchors_sub_playerBarInfo": {
-        "ytm": ".subtitle > yt-formatted-string a, .subtitle > yt-formatted-string span"
-      }
+      "sharePanelInput_sub_sharePanel": "input#share-url"
     },
     "watchPage": {
       "channelName": {
